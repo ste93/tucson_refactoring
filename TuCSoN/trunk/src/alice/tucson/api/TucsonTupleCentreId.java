@@ -1,26 +1,40 @@
+/*
+ * TuCSoN coordination infrastructure - Copyright (C) 2001-2002  aliCE team at deis.unibo.it
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
 package alice.tucson.api;
 
 import alice.respect.api.InvalidTupleCentreIdException;
 import alice.respect.api.TupleCentreId;
 
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
+
 import alice.tuprolog.Term;
 
 import java.io.Serializable;
 
-/**
- * 
- */
-@SuppressWarnings("serial")
 public class TucsonTupleCentreId implements alice.tuplecentre.api.TupleCentreId, Serializable{
 
+	private static final long serialVersionUID = -4503481713163088789L;
 	private Object tid;
 	
-//	sure this is enough? better check which objects can be passed here other than String...
 	public TucsonTupleCentreId(Object id) throws TucsonInvalidTupleCentreIdException{		
-		if(id.getClass().getName().equals("alice.respect.api.TupleCentreId")){
+		if(id.getClass().getName().equals("alice.respect.api.TupleCentreId"))
 			tid = id;
-		}else{
+		else{
 			try{
 				tid = new TupleCentreId((String) id);
 			}catch(InvalidTupleCentreIdException e){
@@ -29,7 +43,8 @@ public class TucsonTupleCentreId implements alice.tuplecentre.api.TupleCentreId,
 		}
 	}
 
-	public TucsonTupleCentreId(String tcName, String hostName, String portName) throws TucsonInvalidTupleCentreIdException{
+	public TucsonTupleCentreId(String tcName, String hostName, String portName)
+			throws TucsonInvalidTupleCentreIdException{
 		try{
 			tid = new TupleCentreId(tcName, hostName, portName);
 		}catch(InvalidTupleCentreIdException e){
@@ -58,11 +73,6 @@ public class TucsonTupleCentreId implements alice.tuplecentre.api.TupleCentreId,
 		return ((TupleCentreId) tid).getPort();
 	}
 
-//	are you kidding?
-	public boolean checkSyntax(){
-		return true;
-	}
-
 	public boolean isAgent(){
 		return false;
 	}
@@ -71,12 +81,10 @@ public class TucsonTupleCentreId implements alice.tuplecentre.api.TupleCentreId,
 		return true;
 	}
 	
-//	when is this meant to return true?
 	public boolean isEnv(){
 		return false;
 	}
 
-//	TO CHECK: required by the ObservationService!
 	public Term toTerm() {
 		return alice.tuprolog.Term.createTerm(tid.toString());
 	}

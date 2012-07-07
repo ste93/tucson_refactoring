@@ -17,71 +17,55 @@
  */
 package alice.tucson.introspection;
 
-import alice.tucson.api.exceptions.*;
+import alice.tucson.api.TucsonAgentId;
+import alice.tucson.api.TucsonTupleCentreId;
+import alice.tucson.api.exceptions.TucsonGenericException;
 
-import alice.tucson.api.*;
-
-public class Inspector extends Thread implements InspectorContextListener
-{
+public class Inspector extends Thread implements InspectorContextListener{
+	
 	protected InspectorContext context;
 	protected boolean quit;
 
-	public Inspector(TucsonAgentId id, TucsonTupleCentreId tid) throws TucsonGenericException
-	{		
+	public Inspector(TucsonAgentId id, TucsonTupleCentreId tid) throws TucsonGenericException{		
 		context = new InspectorContextStub(id, tid);		
 		context.addInspectorContextListener(this);
 		quit = false;		
 	}
 
-	public Inspector(TucsonAgentId id, TucsonTupleCentreId tid, int port) throws TucsonGenericException
-	{
+	public Inspector(TucsonAgentId id, TucsonTupleCentreId tid, int port) throws TucsonGenericException{
 		context = new InspectorContextStub(id, tid);
 		context.addInspectorContextListener(this);
 		quit = false;
 	}
 
-	/**
-	 * behaviour: wait a new observable event and take some actions, according
-	 * to specific instance of inspector
-	 */
-	public synchronized void run()
-	{
-		System.out.println("[ Inspector ] start.");
-		while (!quit)
-		{
-			try
-			{
+	public synchronized void run(){
+		System.out.println("[Inspector]: I'm started.");
+		while (!quit){
+			try{
 				context.acceptVMEvent();
-			}
-			catch (Exception e)
-			{
-				//e.printStackTrace();
+			}catch (Exception e) {
+				e.printStackTrace();
 				break;
 			}
 		}
-		System.out.println("[ Inspector ] shutdown.");
+		System.out.println("[Inspector]: I'm leaving, bye :)");
 	}
 
-	public InspectorContext getContext()
-	{
+	public InspectorContext getContext(){
 		return context;
 	}
 
-	public void onContextEvent(InspectorContextEvent ev)
-	{
+	public void onContextEvent(InspectorContextEvent ev){
 	}
 
-	public void quit()
-	{
-		try
-		{
+	public void quit(){
+		try{
 			quit = true;
 			context.exit();
 			this.interrupt();
-		}
-		catch (Exception ex)
-		{
+		}catch (Exception ex){
 			ex.printStackTrace();
 		}
 	}
+	
 }

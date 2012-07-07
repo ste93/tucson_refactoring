@@ -17,14 +17,9 @@
  */
 package alice.tucson.api;
 
-import java.io.*;
-import java.net.*;
-
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.UnknownACCException;
 import alice.tucson.service.ACCProxyAgentSide;
-
-/* MODIFIED BY <s.mariani@unibo.it> */
 
 /**
  * TuCSoN Meta Agent Coordination Context.
@@ -70,54 +65,8 @@ public class TucsonMetaACC{
 		return getContext(agentId, "localhost", 20504);
 	}
 
-	/**
-	 * 
-	 * 
-	 * @return
-	 */
 	public static String getVersion(){
-		return "TuCSoN-1.9.10";
+		return "TuCSoN-1.10.0.0205";
 	}
 
-	/**
-	 * 
-	 * 
-	 * @param node
-	 * @param port
-	 * 
-	 * @return
-	 */
-/*	public static boolean isActive(InetAddress node, Integer port){
-		
-		if(port==null)
-			port = 20504;
-		
-		StringBuffer buf = null;
-		BufferedReader br = null;
-		try{
-			Socket s = new Socket(node, port);
-			buf = new StringBuffer();
-			br = new BufferedReader(new InputStreamReader(s.getInputStream()));
-			String line = br.readLine();
-			while(line != null){
-				buf.append(line);
-				line = br.readLine();
-			}
-		}catch(IOException ex){
-			System.err.println("[Tucson-MetaACC]: " + ex);
-		}finally{
-			try{
-				br.close();
-			}catch(IOException ex){
-				System.err.println("[Tucson-MetaACC]: " + ex);
-			}
-		}
-//		TuCSoN Infrastructure
-		if(buf.toString().indexOf("TuCSoN-1.9.10") != -1)
-			return true;
-		else
-			return false;
-		
-	}
-*/
 }

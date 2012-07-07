@@ -19,9 +19,6 @@ package alice.tucson.api;
 
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
-import alice.tucson.service.TucsonOpCompletionEvent;
-
-import java.util.*;
 
 /**
  * Base class to extend to implement TuCSoN Agents.
@@ -30,14 +27,13 @@ import java.util.*;
  * Agent's main execution cyle, that is the method {@link alice.tucson.api.TucsonAgent#main
  * main}.
  */
-public abstract class TucsonAgent{
+public abstract class TucsonAgent implements TucsonOperationCompletionListener{
 
 	private EnhancedACC context;
 	private TucsonAgentId aid;
 	private String node;
 	private int port;
-	@SuppressWarnings("unused")
-	private HashMap <TucsonOpId, TucsonOpCompletionEvent> events = null;
+//	private HashMap <TucsonOpId, TucsonOpCompletionEvent> events = null;
 
 	/**
 	 * Most complete constructor, allows to specify the ip address where the TuCSoN
@@ -51,7 +47,6 @@ public abstract class TucsonAgent{
 		this.aid = aid;
 		this.node = netid;
 		this.port = port;
-		events = new HashMap <TucsonOpId, TucsonOpCompletionEvent>();
 	}
 	
 	/**
@@ -130,7 +125,7 @@ public abstract class TucsonAgent{
 	 * 
 	 * @return The TucsonAgentId for this agent
 	 */
-	public TucsonAgentId getTucsonAgentId(){
+	public final TucsonAgentId getTucsonAgentId(){
 		return aid;
 	}
 	
@@ -156,6 +151,8 @@ public abstract class TucsonAgent{
 	protected void setContext(EnhancedACC context){
 		this.context = context;
 	}
+	
+	protected abstract void operationCompleted(ITucsonOperation op);
 
 	/**
 	 * Internal Thread responsible for ACC acquisition and main cycle execution.

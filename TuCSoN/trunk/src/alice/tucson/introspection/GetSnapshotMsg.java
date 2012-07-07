@@ -17,19 +17,19 @@
  */
 package alice.tucson.introspection;
 
-import alice.tucson.api.*;
+import alice.tucson.api.TucsonAgentId;
 
-@SuppressWarnings("serial")
-public class GetSnapshotMsg extends NodeMsg
-{
+public class GetSnapshotMsg extends NodeMsg{
+	
+	private static final long serialVersionUID = -7715943663646624722L;
 	public static final byte TSET = 1;
 	public static final byte WSET = 2;
 
 	public byte what;
 
-	public GetSnapshotMsg(TucsonAgentId id, byte what_)
-	{
+	public GetSnapshotMsg(TucsonAgentId id, byte what_){
 		super(id, "getSnapshot");
 		what = what_;
 	}
+	
 }

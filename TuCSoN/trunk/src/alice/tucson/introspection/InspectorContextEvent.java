@@ -17,7 +17,8 @@
  */
 package alice.tucson.introspection;
 
-import java.util.*;
+import java.util.List;
+
 import alice.tuplecentre.core.TriggeredReaction;
 
 /**
@@ -26,9 +27,9 @@ import alice.tuplecentre.core.TriggeredReaction;
  * @see alice.tucson.InspectorContext
  * 
  */
-@SuppressWarnings("serial")
-public class InspectorContextEvent implements java.io.Serializable
-{
+public class InspectorContextEvent implements java.io.Serializable{
+
+	private static final long serialVersionUID = -5586328696570013265L;
 
 	/** virtual machine time */
 	public long vmTime;
@@ -37,10 +38,10 @@ public class InspectorContextEvent implements java.io.Serializable
 	public long localTime;
 
 	/** tuple observed or to set */
-	public List tuples = null;
+	public List<?> tuples = null;
 
 	/** events observed */
-	public List wnEvents = null;
+	public List<?> wnEvents = null;
 
 	/** observed a reaction ok */
 	public TriggeredReaction reactionOk = null;
@@ -48,7 +49,6 @@ public class InspectorContextEvent implements java.io.Serializable
 	/** observed a reaction failure */
 	public TriggeredReaction reactionFailed = null;
 
-	public InspectorContextEvent()
-	{
-	}
+	public InspectorContextEvent(){}
+	
 }
