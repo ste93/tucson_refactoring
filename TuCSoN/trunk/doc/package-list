@@ -1,0 +1,13 @@
+alice.logictuple
+alice.respect.api
+alice.respect.core
+alice.tucson.api
+alice.tucson.api.exceptions
+alice.tucson.introspection
+alice.tucson.introspection.tools
+alice.tucson.network
+alice.tucson.parsing
+alice.tucson.service
+alice.tucson.service.tools
+alice.tuplecentre.api
+alice.tuplecentre.core
