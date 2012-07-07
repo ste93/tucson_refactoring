@@ -17,9 +17,6 @@
  */
 package alice.tucson.api;
 
-import java.util.Iterator;
-import java.util.List;
-
 import alice.logictuple.InvalidTupleOperationException;
 import alice.logictuple.LogicTuple;
 
@@ -35,11 +32,12 @@ import alice.tuprolog.Library;
 import alice.tuprolog.Struct;
 import alice.tuprolog.Term;
 
-/**
- * 
- */
+import java.util.Iterator;
+import java.util.List;
+
 public class Tucson2PLibrary extends Library{
 	
+	private static final long serialVersionUID = 6716779172091533171L;
 	private EnhancedACC context;
 	private TucsonAgentId agentId;
 
@@ -109,16 +107,8 @@ public class Tucson2PLibrary extends Library{
 				+ "TC@Netid:Port ? nop_s(E,G,R) :- !, nop_s(E,G,R, TC@Netid:Port). \n"
 				+ "TC@Netid:Port ? get_s(L) :- !, get_s(L, TC@Netid:Port). \n"
 				+ "TC@Netid:Port ? set_s(L) :- !, set_s(L, TC@Netid:Port). \n";
-
 	}
 
-	/**
-	 * 
-	 * 
-	 * @param arg0
-	 * @param arg1
-	 * @return
-	 */
 	public boolean out_2(Term arg0, Term arg1){
 		if(context == null)
 			return false;
@@ -149,13 +139,6 @@ public class Tucson2PLibrary extends Library{
 		return op.isResultSuccess();
 	}
 
-	/**
-	 * 
-	 * 
-	 * @param arg0
-	 * @param arg1
-	 * @return
-	 */
 	public boolean in_2(Term arg0, Term arg1){
 		if(context == null)
 			return false;
@@ -188,13 +171,6 @@ public class Tucson2PLibrary extends Library{
 		return op.isResultSuccess();
 	}
 
-	/**
-	 * 
-	 * 
-	 * @param arg0
-	 * @param arg1
-	 * @return
-	 */
 	public boolean rd_2(Term arg0, Term arg1){
 		if(context == null)
 			return false;
@@ -227,13 +203,6 @@ public class Tucson2PLibrary extends Library{
 		return op.isResultSuccess();
 	}
 
-	/**
-	 * 
-	 * 
-	 * @param arg0
-	 * @param arg1
-	 * @return
-	 */
 	public boolean inp_2(Term arg0, Term arg1){
 		if(context == null)
 			return false;
@@ -266,13 +235,6 @@ public class Tucson2PLibrary extends Library{
 		return op.isResultSuccess();
 	}
 
-	/**
-	 * 
-	 * 
-	 * @param arg0
-	 * @param arg1
-	 * @return
-	 */
 	public boolean rdp_2(Term arg0, Term arg1){
 		if(context == null)
 			return false;
@@ -305,13 +267,6 @@ public class Tucson2PLibrary extends Library{
 		return op.isResultSuccess();
 	}
 	
-	/**
-	 * 
-	 * 
-	 * @param arg0
-	 * @param arg1
-	 * @return
-	 */
 	public boolean no_2(Term arg0, Term arg1){
 		if(context == null)
 			return false;
@@ -344,13 +299,6 @@ public class Tucson2PLibrary extends Library{
 		return op.isResultSuccess();
 	}
 	
-	/**
-	 * 
-	 * 
-	 * @param arg0
-	 * @param arg1
-	 * @return
-	 */
 	public boolean nop_2(Term arg0, Term arg1){
 		if(context == null)
 			return false;
@@ -383,13 +331,6 @@ public class Tucson2PLibrary extends Library{
 		return op.isResultSuccess();
 	}
 
-	/**
-	 * 
-	 * 
-	 * @param arg0
-	 * @param arg1
-	 * @return
-	 */
 	public boolean get_2(Term arg0, Term arg1){
 		if(context == null)
 			return false;
@@ -423,13 +364,6 @@ public class Tucson2PLibrary extends Library{
 		return op.isResultSuccess();
 	}
 	
-	/**
-	 * 
-	 * 
-	 * @param arg0
-	 * @param arg1
-	 * @return
-	 */
 	public boolean set_2(Term arg0, Term arg1){
 		if(context == null)
 			return false;
@@ -462,15 +396,6 @@ public class Tucson2PLibrary extends Library{
 	
 	
 	
-	/**
-	 * 
-	 * 
-	 * @param arg0
-	 * @param arg1
-	 * @param arg2
-	 * @param arg3
-	 * @return
-	 */
 	public boolean out_s_4(Term arg0, Term arg1, Term arg2, Term arg3){
 		if(context == null)
 			return false;
@@ -501,15 +426,6 @@ public class Tucson2PLibrary extends Library{
 		return op.isResultSuccess();
 	}
 
-	/**
-	 * 
-	 * 
-	 * @param arg0
-	 * @param arg1
-	 * @param arg2
-	 * @param arg3
-	 * @return
-	 */
 	public boolean in_s_4(Term arg0, Term arg1, Term arg2, Term arg3){
 		if(context == null)
 			return false;
@@ -542,15 +458,6 @@ public class Tucson2PLibrary extends Library{
 		return op.isResultSuccess();
 	}
 
-	/**
-	 * 
-	 * 
-	 * @param arg0
-	 * @param arg1
-	 * @param arg2
-	 * @param arg3
-	 * @return
-	 */
 	public boolean rd_s_4(Term arg0, Term arg1, Term arg2, Term arg3){
 		if(context == null)
 			return false;
@@ -583,15 +490,6 @@ public class Tucson2PLibrary extends Library{
 		return op.isResultSuccess();
 	}
 
-	/**
-	 * 
-	 * 
-	 * @param arg0
-	 * @param arg1
-	 * @param arg2
-	 * @param arg3
-	 * @return
-	 */
 	public boolean inp_s_4(Term arg0, Term arg1, Term arg2, Term arg3){
 		if(context == null)
 			return false;
@@ -624,15 +522,6 @@ public class Tucson2PLibrary extends Library{
 		return op.isResultSuccess();
 	}
 
-	/**
-	 * 
-	 * 
-	 * @param arg0
-	 * @param arg1
-	 * @param arg2
-	 * @param arg3
-	 * @return
-	 */
 	public boolean rdp_s_4(Term arg0, Term arg1, Term arg2, Term arg3){
 		if(context == null)
 			return false;
@@ -665,15 +554,6 @@ public class Tucson2PLibrary extends Library{
 		return op.isResultSuccess();
 	}
 	
-	/**
-	 * 
-	 * 
-	 * @param arg0
-	 * @param arg1
-	 * @param arg2
-	 * @param arg3
-	 * @return
-	 */
 	public boolean no_s_4(Term arg0, Term arg1, Term arg2, Term arg3){
 		if(context == null)
 			return false;
@@ -706,15 +586,6 @@ public class Tucson2PLibrary extends Library{
 		return op.isResultSuccess();
 	}
 	
-	/**
-	 * 
-	 * 
-	 * @param arg0
-	 * @param arg1
-	 * @param arg2
-	 * @param arg3
-	 * @return
-	 */
 	public boolean nop_s_4(Term arg0, Term arg1, Term arg2, Term arg3){
 		if(context == null)
 			return false;
@@ -747,13 +618,6 @@ public class Tucson2PLibrary extends Library{
 		return op.isResultSuccess();
 	}
 
-	/**
-	 * 
-	 * 
-	 * @param arg0
-	 * @param arg1
-	 * @return
-	 */
 	public boolean get_s_2(Term arg0, Term arg1){
 		if(context == null)
 			return false;
@@ -791,13 +655,6 @@ public class Tucson2PLibrary extends Library{
 		return op.isResultSuccess();
 	}
 	
-	/**
-	 * 
-	 * 
-	 * @param arg0
-	 * @param arg1
-	 * @return
-	 */
 	public boolean set_s_2(Term arg0, Term arg1){
 		if(context == null)
 			return false;
@@ -873,10 +730,6 @@ public class Tucson2PLibrary extends Library{
 			i++;
 		}
 		return new Struct(termArray);
-	}
-	
-	private void log(String msg){
-		System.out.println("[TuCSoN2PLibrary]: " + msg);
 	}
 	
 }

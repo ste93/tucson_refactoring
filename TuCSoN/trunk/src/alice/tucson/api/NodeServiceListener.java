@@ -17,7 +17,6 @@
  */
 package alice.tucson.api;
 
-
 import alice.tuplecentre.api.ObservableEventListener;
 
 public interface NodeServiceListener extends ObservableEventListener{

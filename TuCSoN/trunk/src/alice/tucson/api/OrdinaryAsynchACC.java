@@ -17,7 +17,7 @@
  */
 package alice.tucson.api;
 
-import alice.logictuple.*;
+import alice.logictuple.LogicTuple;
 
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
@@ -55,7 +55,8 @@ public interface OrdinaryAsynchACC extends RootACC{
 	 * @see alice.tucson.api.TucsonOperationCompletionListener TucsonOperationCompletionListener
 	 * @see alice.tucson.api.ITucsonOperation ITucsonOperation
 	 */
-	ITucsonOperation out(Object tid, LogicTuple tuple, TucsonOperationCompletionListener l) throws TucsonOperationNotPossibleException, UnreachableNodeException;
+	ITucsonOperation out(Object tid, LogicTuple tuple, TucsonOperationCompletionListener l)
+			throws TucsonOperationNotPossibleException, UnreachableNodeException;
 
 	/**
 	 * In Linda primitive, asynchronous version. Retrieves the specified tuple
@@ -82,7 +83,8 @@ public interface OrdinaryAsynchACC extends RootACC{
 	 * @see alice.tucson.api.TucsonOperationCompletionListener TucsonOperationCompletionListener
 	 * @see alice.tucson.api.ITucsonOperation ITucsonOperation
 	 */
-	ITucsonOperation in(Object tid, LogicTuple tuple, TucsonOperationCompletionListener l) throws TucsonOperationNotPossibleException, UnreachableNodeException;
+	ITucsonOperation in(Object tid, LogicTuple tuple, TucsonOperationCompletionListener l)
+			throws TucsonOperationNotPossibleException, UnreachableNodeException;
 
 	/**
 	 * Rd Linda primitive, asynchronous version. Reads (w/o removing) the specified tuple
@@ -109,7 +111,8 @@ public interface OrdinaryAsynchACC extends RootACC{
 	 * @see alice.tucson.api.TucsonOperationCompletionListener TucsonOperationCompletionListener
 	 * @see alice.tucson.api.ITucsonOperation ITucsonOperation
 	 */
-	ITucsonOperation rd(Object tid, LogicTuple tuple, TucsonOperationCompletionListener l) throws TucsonOperationNotPossibleException, UnreachableNodeException;
+	ITucsonOperation rd(Object tid, LogicTuple tuple, TucsonOperationCompletionListener l)
+			throws TucsonOperationNotPossibleException, UnreachableNodeException;
 	
 	/**
 	 * Inp Linda primitive, asynchronous version. Retrieves the specified tuple
@@ -135,7 +138,8 @@ public interface OrdinaryAsynchACC extends RootACC{
 	 * @see alice.tucson.api.TucsonOperationCompletionListener TucsonOperationCompletionListener
 	 * @see alice.tucson.api.ITucsonOperation ITucsonOperation
 	 */
-	ITucsonOperation inp(Object tid, LogicTuple tuple, TucsonOperationCompletionListener l) throws TucsonOperationNotPossibleException, UnreachableNodeException;
+	ITucsonOperation inp(Object tid, LogicTuple tuple, TucsonOperationCompletionListener l)
+			throws TucsonOperationNotPossibleException, UnreachableNodeException;
 
 	/**
 	 * Rdp Linda primitive, asynchronous version. Reads (w/o removing) the specified tuple
@@ -161,12 +165,39 @@ public interface OrdinaryAsynchACC extends RootACC{
 	 * @see alice.tucson.api.TucsonOperationCompletionListener TucsonOperationCompletionListener
 	 * @see alice.tucson.api.ITucsonOperation ITucsonOperation
 	 */
-	ITucsonOperation rdp(Object tid, LogicTuple tuple, TucsonOperationCompletionListener l) throws TucsonOperationNotPossibleException, UnreachableNodeException;
+	ITucsonOperation rdp(Object tid, LogicTuple tuple, TucsonOperationCompletionListener l)
+			throws TucsonOperationNotPossibleException, UnreachableNodeException;
 
-	/* MODIFIED BY <s.mariani@unibo.it> */
-	
 	/**
 	 * No Linda primitive, asynchronous version. Checks absence of the specified tuple
+	 * in the given target tuplecentre, WITHOUT waiting the completion answer from
+	 * the TuCSoN node. The TuCSoN agent this proxy instance refers to will be
+	 * asynchronously notified upon need (that is, when completion reply arrives).
+	 * 
+	 * Notice that the primitive semantics is still SUSPENSIVE: until any tuple is found
+	 * to match the given template, no success completion answer is forwarded to
+	 * the TuCSoN Agent exploiting this proxy (but thanks to asynchronous behaviour,
+	 * TuCSoN Agent could do something else instead of getting stuck)
+	 * 
+	 * @param tid Target TuCSoN tuplecentre id {@link alice.tucson.api.TucsonTupleCentreId tid}
+	 * @param tuple Tuple to be checked for absence from the target tuplecentre
+	 * @param l The listener who should be notified upon operation completion
+	 * 
+	 * @return An object representing the primitive invocation on the TuCSoN infrastructure
+	 * which will store its result
+	 * 
+	 * @throws TucsonOperationNotPossibleException
+	 * @throws UnreachableNodeException
+	 * 
+	 * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
+	 * @see alice.tucson.api.TucsonOperationCompletionListener TucsonOperationCompletionListener
+	 * @see alice.tucson.api.ITucsonOperation ITucsonOperation
+	 */
+	ITucsonOperation no(Object tid, LogicTuple tuple, TucsonOperationCompletionListener l)
+			throws TucsonOperationNotPossibleException, UnreachableNodeException;
+	
+	/**
+	 * Nop Linda primitive, asynchronous version. Checks absence of the specified tuple
 	 * in the given target tuplecentre, WITHOUT waiting the completion answer from
 	 * the TuCSoN node. The TuCSoN agent this proxy instance refers to will be
 	 * asynchronously notified upon need (that is, when completion reply arrives).
@@ -189,33 +220,8 @@ public interface OrdinaryAsynchACC extends RootACC{
 	 * @see alice.tucson.api.TucsonOperationCompletionListener TucsonOperationCompletionListener
 	 * @see alice.tucson.api.ITucsonOperation ITucsonOperation
 	 */
-	ITucsonOperation no(Object tid, LogicTuple tuple, TucsonOperationCompletionListener l) throws TucsonOperationNotPossibleException, UnreachableNodeException;
-	
-	/**
-	 * No Linda primitive, asynchronous version. Checks absence of the specified tuple
-	 * in the given target tuplecentre, WITHOUT waiting the completion answer from
-	 * the TuCSoN node. The TuCSoN agent this proxy instance refers to will be
-	 * asynchronously notified upon need (that is, when completion reply arrives).
-	 * 
-	 * This time the primitive semantics is NOT SUSPENSIVE: if a tuple is found
-	 * to match the given template, a failure completion answer is forwarded to
-	 * the TuCSoN Agent exploiting this proxy
-	 * 
-	 * @param tid Target TuCSoN tuplecentre id {@link alice.tucson.api.TucsonTupleCentreId tid}
-	 * @param tuple Tuple to be checked for absence from the target tuplecentre
-	 * @param l The listener who should be notified upon operation completion
-	 * 
-	 * @return An object representing the primitive invocation on the TuCSoN infrastructure
-	 * which will store its result
-	 * 
-	 * @throws TucsonOperationNotPossibleException
-	 * @throws UnreachableNodeException
-	 * 
-	 * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
-	 * @see alice.tucson.api.TucsonOperationCompletionListener TucsonOperationCompletionListener
-	 * @see alice.tucson.api.ITucsonOperation ITucsonOperation
-	 */
-	ITucsonOperation nop(Object tid, LogicTuple tuple, TucsonOperationCompletionListener l) throws TucsonOperationNotPossibleException, UnreachableNodeException;
+	ITucsonOperation nop(Object tid, LogicTuple tuple, TucsonOperationCompletionListener l)
+			throws TucsonOperationNotPossibleException, UnreachableNodeException;
 	
 	/**
 	 * Set TuCSoN primitive, asynchronous version. Inserts all the tuples in the
@@ -237,7 +243,8 @@ public interface OrdinaryAsynchACC extends RootACC{
 	 * @see alice.tucson.api.TucsonOperationCompletionListener TucsonOperationCompletionListener
 	 * @see alice.tucson.api.ITucsonOperation ITucsonOperation
 	 */
-	ITucsonOperation set(Object tid, LogicTuple tuple, TucsonOperationCompletionListener l) throws TucsonOperationNotPossibleException, UnreachableNodeException;
+	ITucsonOperation set(Object tid, LogicTuple tuple, TucsonOperationCompletionListener l)
+			throws TucsonOperationNotPossibleException, UnreachableNodeException;
 	
 	/**
 	 * Get TuCSoN primitive, asynchronous version. Reads (w/o removing) all the tuples
@@ -261,6 +268,7 @@ public interface OrdinaryAsynchACC extends RootACC{
 	 * @see alice.tucson.api.TucsonOperationCompletionListener TucsonOperationCompletionListener
 	 * @see alice.tucson.api.ITucsonOperation ITucsonOperation
 	 */
-	ITucsonOperation get(Object tid, TucsonOperationCompletionListener l) throws TucsonOperationNotPossibleException, UnreachableNodeException;
+	ITucsonOperation get(Object tid, TucsonOperationCompletionListener l)
+			throws TucsonOperationNotPossibleException, UnreachableNodeException;
 	
 }

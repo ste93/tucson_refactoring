@@ -17,13 +17,12 @@
  */
 package alice.tucson.api;
 
-import alice.logictuple.*;
+import alice.logictuple.InvalidLogicTupleException;
+import alice.logictuple.InvalidTupleOperationException;
+import alice.logictuple.LogicTuple;
 
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
-
-
-/* MODIFIED BY <s.mariani@unibo.it> */
 
 /**
  * Agent Coordination Context enabling interaction with the Specification Tuple Space (storing ReSpecT
@@ -47,7 +46,9 @@ public interface SpecificationAsynchACC extends RootACC{
 	 * (if the primitive successfully completes)
 	 * 
 	 * @param tid Target TuCSoN tuplecentre id {@link alice.tucson.api.TucsonTupleCentreId tid}
-	 * @param tuple Reaction Specification to be emitted in the target tuplecentre
+	 * @param event 
+	 * @param guards 
+	 * @param reactionBody 
 	 * @param l The listener who should be notified upon operation completion
 	 * 
 	 * @return An object representing the primitive invocation on the TuCSoN infrastructure
@@ -61,7 +62,9 @@ public interface SpecificationAsynchACC extends RootACC{
 	 * @see alice.tucson.api.ITucsonOperation ITucsonOperation
 	 * @see alice.respect.api.RespectSpecification RespectSpecification
 	 */
-	ITucsonOperation out_s(Object tid, LogicTuple event, LogicTuple guards, LogicTuple reactionBody, TucsonOperationCompletionListener l) throws TucsonOperationNotPossibleException, UnreachableNodeException;
+	ITucsonOperation out_s(Object tid, LogicTuple event, LogicTuple guards, LogicTuple reactionBody,
+			TucsonOperationCompletionListener l) throws TucsonOperationNotPossibleException,
+			UnreachableNodeException;
 	
 	/**
 	 * In_s Specification primitive, asynchronous version. Retrieves the specified Reaction
@@ -76,7 +79,9 @@ public interface SpecificationAsynchACC extends RootACC{
 	 * TuCSoN Agent could go something else instead of getting stuck)
 	 * 
 	 * @param tid Target TuCSoN tuplecentre id {@link alice.tucson.api.TucsonTupleCentreId tid}
-	 * @param tuple Reaction Specification to be retrieved from the target tuplecentre
+	 * @param event 
+	 * @param guards 
+	 * @param reactionBody 
 	 * @param l The listener who should be notified upon operation completion
 	 * 
 	 * @return An object representing the primitive invocation on the TuCSoN infrastructure
@@ -90,7 +95,9 @@ public interface SpecificationAsynchACC extends RootACC{
 	 * @see alice.tucson.api.ITucsonOperation ITucsonOperation
 	 * @see alice.respect.api.RespectSpecification RespectSpecification
 	 */
-	ITucsonOperation in_s(Object tid, LogicTuple event, LogicTuple guards, LogicTuple reactionBody, TucsonOperationCompletionListener l) throws TucsonOperationNotPossibleException, UnreachableNodeException;
+	ITucsonOperation in_s(Object tid, LogicTuple event, LogicTuple guards, LogicTuple reactionBody,
+			TucsonOperationCompletionListener l) throws TucsonOperationNotPossibleException,
+			UnreachableNodeException;
 	
 	/**
 	 * Rd_s Specification primitive, asynchronous version. Reads (w/o removing) the specified Reaction
@@ -105,7 +112,9 @@ public interface SpecificationAsynchACC extends RootACC{
 	 * TuCSoN Agent could go something else instead of getting stuck)
 	 * 
 	 * @param tid Target TuCSoN tuplecentre id {@link alice.tucson.api.TucsonTupleCentreId tid}
-	 * @param tuple Reaction Specification to be read from the target tuplecentre
+	 * @param event 
+	 * @param guards 
+	 * @param reactionBody 
 	 * @param l The listener who should be notified upon operation completion
 	 * 
 	 * @return An object representing the primitive invocation on the TuCSoN infrastructure
@@ -119,7 +128,9 @@ public interface SpecificationAsynchACC extends RootACC{
 	 * @see alice.tucson.api.ITucsonOperation ITucsonOperation
 	 * @see alice.respect.api.RespectSpecification RespectSpecification
 	 */
-	ITucsonOperation rd_s(Object tid, LogicTuple event, LogicTuple guards, LogicTuple reactionBody, TucsonOperationCompletionListener l) throws TucsonOperationNotPossibleException, UnreachableNodeException;
+	ITucsonOperation rd_s(Object tid, LogicTuple event, LogicTuple guards, LogicTuple reactionBody,
+			TucsonOperationCompletionListener l) throws TucsonOperationNotPossibleException,
+			UnreachableNodeException;
 
 	/**
 	 * Inp_s Specification primitive, asynchronous version. Retrieves the specified Reaction
@@ -133,7 +144,9 @@ public interface SpecificationAsynchACC extends RootACC{
 	 * the TuCSoN Agent exploiting this proxy
 	 * 
 	 * @param tid Target TuCSoN tuplecentre id {@link alice.tucson.api.TucsonTupleCentreId tid}
-	 * @param tuple Reaction Specification to be retrieved from the target tuplecentre
+	 * @param event 
+	 * @param guards 
+	 * @param reactionBody 
 	 * @param l The listener who should be notified upon operation completion
 	 * 
 	 * @return An object representing the primitive invocation on the TuCSoN infrastructure
@@ -147,7 +160,9 @@ public interface SpecificationAsynchACC extends RootACC{
 	 * @see alice.tucson.api.ITucsonOperation ITucsonOperation
 	 * @see alice.respect.api.RespectSpecification RespectSpecification
 	 */
-	ITucsonOperation inp_s(Object tid, LogicTuple event, LogicTuple guards, LogicTuple reactionBody, TucsonOperationCompletionListener l) throws TucsonOperationNotPossibleException, UnreachableNodeException;
+	ITucsonOperation inp_s(Object tid, LogicTuple event, LogicTuple guards, LogicTuple reactionBody,
+			TucsonOperationCompletionListener l) throws TucsonOperationNotPossibleException,
+			UnreachableNodeException;
 		
 	/**
 	 * Rdp_s Specification primitive, asynchronous version. Reads (w/o removing) the specified Reaction
@@ -161,7 +176,9 @@ public interface SpecificationAsynchACC extends RootACC{
 	 * the TuCSoN Agent exploiting this proxy
 	 * 
 	 * @param tid Target TuCSoN tuplecentre id {@link alice.tucson.api.TucsonTupleCentreId tid}
-	 * @param tuple Reaction Specification to be read from the target tuplecentre
+	 * @param event 
+	 * @param guards 
+	 * @param reactionBody 
 	 * @param l The listener who should be notified upon operation completion
 	 * 
 	 * @return An object representing the primitive invocation on the TuCSoN infrastructure
@@ -175,12 +192,45 @@ public interface SpecificationAsynchACC extends RootACC{
 	 * @see alice.tucson.api.ITucsonOperation ITucsonOperation
 	 * @see alice.respect.api.RespectSpecification RespectSpecification
 	 */
-	ITucsonOperation rdp_s(Object tid, LogicTuple event, LogicTuple guards, LogicTuple reactionBody, TucsonOperationCompletionListener l) throws TucsonOperationNotPossibleException, UnreachableNodeException;
-
-	/* MODIFIED BY <s.mariani@unibo.it> */
+	ITucsonOperation rdp_s(Object tid, LogicTuple event, LogicTuple guards, LogicTuple reactionBody,
+			TucsonOperationCompletionListener l) throws TucsonOperationNotPossibleException,
+			UnreachableNodeException;
 	
 	/**
 	 * No_s Specification primitive, asynchronous version. Checks absence of the
+	 * specified Reaction Specification (wrapped in a Logic Tuple)
+	 * in the given target tuplecentre, WITHOUT waiting the completion answer from
+	 * the TuCSoN node. The TuCSoN agent this proxy instance refers to will be
+	 * asynchronously notified upon need (that is, when completion reply arrives).
+	 * 
+	 * Notice that the primitive semantics is still SUSPENSIVE: until any Reaction Specification
+	 * is found to match the given template, no success completion answer is forwarded to
+	 * the TuCSoN Agent exploiting this proxy (but thanks to asynchronous behaviour,
+	 * TuCSoN Agent could go something else instead of getting stuck)
+	 * 
+	 * @param tid Target TuCSoN tuplecentre id {@link alice.tucson.api.TucsonTupleCentreId tid}
+	 * @param event 
+	 * @param guards 
+	 * @param reactionBody 
+	 * @param l The listener who should be notified upon operation completion
+	 * 
+	 * @return An object representing the primitive invocation on the TuCSoN infrastructure
+	 * which will store its result
+	 * 
+	 * @throws TucsonOperationNotPossibleException
+	 * @throws UnreachableNodeException
+	 * 
+	 * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
+	 * @see alice.tucson.api.TucsonOperationCompletionListener TucsonOperationCompletionListener
+	 * @see alice.tucson.api.ITucsonOperation ITucsonOperation
+	 * @see alice.respect.api.RespectSpecification RespectSpecification
+	 */
+	ITucsonOperation no_s(Object tid, LogicTuple event, LogicTuple guards, LogicTuple reactionBody,
+			TucsonOperationCompletionListener l) throws TucsonOperationNotPossibleException,
+			UnreachableNodeException;
+	
+	/**
+	 * Nop_s Specification primitive, asynchronous version. Checks absence of the
 	 * specified Reaction Specification (wrapped in a Logic Tuple)
 	 * in the given target tuplecentre, WITHOUT waiting the completion answer from
 	 * the TuCSoN node. The TuCSoN agent this proxy instance refers to will be
@@ -191,7 +241,9 @@ public interface SpecificationAsynchACC extends RootACC{
 	 * the TuCSoN Agent exploiting this proxy
 	 * 
 	 * @param tid Target TuCSoN tuplecentre id {@link alice.tucson.api.TucsonTupleCentreId tid}
-	 * @param tuple Reaction Specification to be checked for absence from the target tuplecentre
+	 * @param event 
+	 * @param guards 
+	 * @param reactionBody 
 	 * @param l The listener who should be notified upon operation completion
 	 * 
 	 * @return An object representing the primitive invocation on the TuCSoN infrastructure
@@ -205,35 +257,9 @@ public interface SpecificationAsynchACC extends RootACC{
 	 * @see alice.tucson.api.ITucsonOperation ITucsonOperation
 	 * @see alice.respect.api.RespectSpecification RespectSpecification
 	 */
-	ITucsonOperation no_s(Object tid, LogicTuple event, LogicTuple guards, LogicTuple reactionBody, TucsonOperationCompletionListener l) throws TucsonOperationNotPossibleException, UnreachableNodeException;
-	
-	/**
-	 * No_s Specification primitive, asynchronous version. Checks absence of the
-	 * specified Reaction Specification (wrapped in a Logic Tuple)
-	 * in the given target tuplecentre, WITHOUT waiting the completion answer from
-	 * the TuCSoN node. The TuCSoN agent this proxy instance refers to will be
-	 * asynchronously notified upon need (that is, when completion reply arrives).
-	 * 
-	 * Semantics is NOT SUSPENSIVE: if a Reaction Specification is found
-	 * to match the given template, a failure completion answer is forwarded to
-	 * the TuCSoN Agent exploiting this proxy
-	 * 
-	 * @param tid Target TuCSoN tuplecentre id {@link alice.tucson.api.TucsonTupleCentreId tid}
-	 * @param tuple Reaction Specification to be checked for absence from the target tuplecentre
-	 * @param l The listener who should be notified upon operation completion
-	 * 
-	 * @return An object representing the primitive invocation on the TuCSoN infrastructure
-	 * which will store its result
-	 * 
-	 * @throws TucsonOperationNotPossibleException
-	 * @throws UnreachableNodeException
-	 * 
-	 * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
-	 * @see alice.tucson.api.TucsonOperationCompletionListener TucsonOperationCompletionListener
-	 * @see alice.tucson.api.ITucsonOperation ITucsonOperation
-	 * @see alice.respect.api.RespectSpecification RespectSpecification
-	 */
-	ITucsonOperation nop_s(Object tid, LogicTuple event, LogicTuple guards, LogicTuple reactionBody, TucsonOperationCompletionListener l) throws TucsonOperationNotPossibleException, UnreachableNodeException;
+	ITucsonOperation nop_s(Object tid, LogicTuple event, LogicTuple guards, LogicTuple reactionBody,
+			TucsonOperationCompletionListener l) throws TucsonOperationNotPossibleException,
+			UnreachableNodeException;
 	
 	/**
 	 * Set_s TuCSoN primitive, asynchronous version. Replace the specification space
@@ -258,7 +284,9 @@ public interface SpecificationAsynchACC extends RootACC{
 	 * @see alice.tucson.api.ITucsonOperation ITucsonOperation
 	 * @see alice.respect.api.RespectSpecification RespectSpecification
 	 */
-	ITucsonOperation set_s(Object tid, String spec, TucsonOperationCompletionListener l) throws TucsonOperationNotPossibleException, UnreachableNodeException, InvalidLogicTupleException;
+	ITucsonOperation set_s(Object tid, String spec, TucsonOperationCompletionListener l)
+			throws TucsonOperationNotPossibleException, UnreachableNodeException,
+			InvalidLogicTupleException;
 	
 	/**
 	 * Get_s TuCSoN primitive, asynchronous version. Reads (w/o removing) all the Reaction Specifications
@@ -284,6 +312,8 @@ public interface SpecificationAsynchACC extends RootACC{
 	 * @see alice.tucson.api.ITucsonOperation ITucsonOperation
 	 * @see alice.respect.api.RespectSpecification RespectSpecification
 	 */
-	ITucsonOperation get_s(Object tid, TucsonOperationCompletionListener l) throws TucsonOperationNotPossibleException, UnreachableNodeException, InvalidTupleOperationException;
+	ITucsonOperation get_s(Object tid, TucsonOperationCompletionListener l)
+			throws TucsonOperationNotPossibleException, UnreachableNodeException,
+			InvalidTupleOperationException;
 	
 }

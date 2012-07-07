@@ -17,13 +17,6 @@
  */
 package alice.tucson.api;
 
-/* MODIFIED BY <s.mariani@unibo.it> */
-
-/**
- * This class represents the default ACC. It embeds all other contexts, thus
- * both Ordinary and Specification primitives and both blocking and non-blocking
- * agent-side behaviors.
- */
 public interface DefaultACC extends SynchACC, AsynchACC{	
 	
 }

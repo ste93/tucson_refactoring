@@ -23,25 +23,17 @@ import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import java.io.Serializable;
 import java.lang.reflect.*;
 
-/**
- * 
- */
-@SuppressWarnings("serial")
 public abstract class Automaton extends TucsonAgent implements Serializable{
 
+	private static final long serialVersionUID = -8327090817152965357L;
 	protected String state = "boot";
 	protected Object[] arguments = null;
-	@SuppressWarnings("rawtypes")
-	static protected Class[] argType;
+	static protected Class<?>[] argType;
 
 	public Automaton(String aid) throws TucsonInvalidAgentIdException{
 		super(aid);
 	}
 
-	/**
-	 * 
-	 * @param s
-	 */
 	protected void become(String s){
 		if(!state.equals("end")){
 			state = s;
@@ -49,11 +41,6 @@ public abstract class Automaton extends TucsonAgent implements Serializable{
 		}
 	}
 
-	/**
-	 * 
-	 * @param s
-	 * @param args
-	 */
 	protected void become(String s, Object[] args){
 		if(!state.equals("end")){
 			state = s;
@@ -61,21 +48,17 @@ public abstract class Automaton extends TucsonAgent implements Serializable{
 		}
 	}
 
-	/**
-	 * 
-	 */
 	protected abstract void boot();
 
-	/**
-	 * 
-	 */
 	final protected void main(){
 		
-//		what the hell is this!?
+//		I don't think  the string is correct...
 		try{
 			argType = new Class[] { Class.forName("[Ljava.lang.Object;") };
-		}catch(Exception ex){
-			
+		}catch(ClassNotFoundException e){
+			System.err.println("[Automaton]: " + e);
+			e.printStackTrace();
+			error();
 		}
 		
 		while(true){
@@ -83,9 +66,9 @@ public abstract class Automaton extends TucsonAgent implements Serializable{
 				if(arguments == null){
 					Method m;
 					try{
-						m = this.getClass().getDeclaredMethod(state, null);
+						m = this.getClass().getDeclaredMethod(state, (Class<?>[])null);
 						m.setAccessible(true);
-						m.invoke(this, null);
+						m.invoke(this, (Object[])null);
 					}catch(SecurityException e){
 						System.err.println("[Automaton]: " + e);
 						e.printStackTrace();

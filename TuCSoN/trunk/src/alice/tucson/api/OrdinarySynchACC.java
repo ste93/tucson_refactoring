@@ -17,14 +17,12 @@
  */
 package alice.tucson.api;
 
-import alice.logictuple.*;
+import alice.logictuple.LogicTuple;
 
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
 
 import alice.tuplecentre.core.OperationTimeOutException;
-
-/* MODIFIED BY <s.mariani@unibo.it> */
 
 /**
  * Agent Coordination Context enabling interaction with the Ordinary Tuple Space (basic Linda-like
@@ -55,7 +53,8 @@ public interface OrdinarySynchACC extends RootACC{
 	 * 
 	 * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
 	 */
-	ITucsonOperation out(Object tid, LogicTuple tuple, Long ms) throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException;
+	ITucsonOperation out(Object tid, LogicTuple tuple, Long ms)
+			throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException;
 
 	/**
 	 * In Linda primitive, synchronous version. Retrieves the specified tuple
@@ -74,7 +73,8 @@ public interface OrdinarySynchACC extends RootACC{
 	 * 
 	 * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
 	 */
-	ITucsonOperation in(Object tid, LogicTuple tuple, Long ms) throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException;
+	ITucsonOperation in(Object tid, LogicTuple tuple, Long ms)
+			throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException;
 
 	/**
 	 * Rd Linda primitive, synchronous version. Reads (w/o removing) the specified tuple
@@ -93,7 +93,8 @@ public interface OrdinarySynchACC extends RootACC{
 	 * 
 	 * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
 	 */
-	ITucsonOperation rd(Object tid, LogicTuple tuple, Long ms) throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException;
+	ITucsonOperation rd(Object tid, LogicTuple tuple, Long ms)
+			throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException;
 	
 	/**
 	 * Inp Linda primitive, synchronous version. Retrieves the specified tuple
@@ -112,7 +113,8 @@ public interface OrdinarySynchACC extends RootACC{
 	 * 
 	 * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
 	 */
-	ITucsonOperation inp(Object tid, LogicTuple tuple, Long ms) throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException;
+	ITucsonOperation inp(Object tid, LogicTuple tuple, Long ms)
+			throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException;
 	
 	/**
 	 * Rdp Linda primitive, synchronous version. Reads (w/o removing) the specified tuple
@@ -131,12 +133,31 @@ public interface OrdinarySynchACC extends RootACC{
 	 * 
 	 * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
 	 */
-	ITucsonOperation rdp(Object tid, LogicTuple tuple, Long ms) throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException;
-	
-	/* MODIFIED BY <s.mariani@unibo.it> */
+	ITucsonOperation rdp(Object tid, LogicTuple tuple, Long ms)
+			throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException;
 	
 	/**
 	 * No Linda primitive, synchronous version. Checks absence of the specified tuple
+	 * in the given target tuplecentre, waiting the completion answer from
+	 * the TuCSoN node for a maximum time specified in ms timeunit.
+	 * 
+	 * @param tid Target TuCSoN tuplecentre id {@link alice.tucson.api.TucsonTupleCentreId tid}
+	 * @param tuple Tuple to be checked for absence from the target tuplecentre
+	 * @param ms Maximum waiting time tolerated by the callee TuCSoN Agent
+	 * 
+	 * @return The Logic Tuple resulting from the completion of the primitive
+	 * 
+	 * @throws TucsonOperationNotPossibleException
+	 * @throws UnreachableNodeException
+	 * @throws OperationTimeOutException
+	 * 
+	 * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
+	 */
+	ITucsonOperation no(Object tid, LogicTuple tuple, Long ms)
+			throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException;
+	
+	/**
+	 * Nop Linda primitive, synchronous version. Checks absence of the specified tuple
 	 * in the given target tuplecentre, waiting the completion answer from
 	 * the TuCSoN node for a maximum time specified in ms timeunit.
 	 * 
@@ -155,29 +176,8 @@ public interface OrdinarySynchACC extends RootACC{
 	 * 
 	 * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
 	 */
-	ITucsonOperation no(Object tid, LogicTuple tuple, Long ms) throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException;
-	
-	/**
-	 * No Linda primitive, synchronous version. Checks absence of the specified tuple
-	 * in the given target tuplecentre, waiting the completion answer from
-	 * the TuCSoN node for a maximum time specified in ms timeunit.
-	 * 
-	 * Semantics is NOT SUSPENSIVE: if a tuple is found to match the given template,
-	 * a failure completion answer is forwarded to the TuCSoN Agent exploiting this proxy
-	 * 
-	 * @param tid Target TuCSoN tuplecentre id {@link alice.tucson.api.TucsonTupleCentreId tid}
-	 * @param tuple Tuple to be checked for absence from the target tuplecentre
-	 * @param ms Maximum waiting time tolerated by the callee TuCSoN Agent
-	 * 
-	 * @return The Logic Tuple resulting from the completion of the primitive
-	 * 
-	 * @throws TucsonOperationNotPossibleException
-	 * @throws UnreachableNodeException
-	 * @throws OperationTimeOutException
-	 * 
-	 * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
-	 */
-	ITucsonOperation nop(Object tid, LogicTuple tuple, Long ms) throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException;
+	ITucsonOperation nop(Object tid, LogicTuple tuple, Long ms)
+			throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException;
 	
 	/**
 	 * Set TuCSoN primitive, synchronous version. Inserts all the tuples in the
@@ -196,7 +196,8 @@ public interface OrdinarySynchACC extends RootACC{
 	 * 
 	 * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
 	 */
-	ITucsonOperation set(Object tid, LogicTuple tuple, Long ms) throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException;
+	ITucsonOperation set(Object tid, LogicTuple tuple, Long ms)
+			throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException;
 	
 	/**
 	 * Get TuCSoN primitive, synchronous version. Reads (w/o removing) all the tuples
@@ -217,6 +218,7 @@ public interface OrdinarySynchACC extends RootACC{
 	 * 
 	 * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
 	 */
-	ITucsonOperation get(Object tid, Long ms) throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException;
+	ITucsonOperation get(Object tid, Long ms)
+			throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException;
 
 }

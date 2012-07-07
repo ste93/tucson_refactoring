@@ -17,40 +17,16 @@
  */
 package alice.tucson.api;
 
-import alice.tucson.api.*;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
 import alice.tucson.service.TucsonOpCompletionEvent;
 
-/**
- * 
- */
 public interface InterTupleCentreACC{
 	
-	/**
-	 * 
-	 * @param id
-	 * @param timeout
-	 * @return
-	 */
 	TucsonOpCompletionEvent waitForCompletion(TucsonOpId id, int timeout);
 
-	/**
-	 * 
-	 * @param id
-	 * @return
-	 */
 	TucsonOpCompletionEvent waitForCompletion(TucsonOpId id);
 
-	/**
-	 * 
-	 * @param tid
-	 * @param type
-	 * @param t
-	 * @return
-	 * @throws TucsonOperationNotPossibleException
-	 * @throws UnreachableNodeException
-	 */
 	TucsonOpId doOperation(Object tid, int type, Object t) throws TucsonOperationNotPossibleException, UnreachableNodeException;
 
 }
