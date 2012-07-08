@@ -17,23 +17,18 @@
  */
 package alice.tucson.introspection;
 
-
 import alice.tucson.api.TucsonAgentId;
 
-/**
- * message sent by an inspector to a daemon in order to become an (inspector)
- * user of a tuple centre
- */
-@SuppressWarnings("serial")
-public class NewInspectorMsg extends NodeMsg
-{
+public class NewInspectorMsg extends NodeMsg{
+	
+	private static final long serialVersionUID = -8887997708884852194L;
 	public String tcName;
 	public InspectorProtocol info;
 
-	public NewInspectorMsg(TucsonAgentId aid, String tcName_, InspectorProtocol info_)
-	{
+	public NewInspectorMsg(TucsonAgentId aid, String tcName_, InspectorProtocol info_){
 		super(aid, "newInspector");
 		tcName = tcName_;
 		info = info_;
 	}
+	
 }

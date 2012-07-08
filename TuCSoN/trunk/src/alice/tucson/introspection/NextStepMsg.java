@@ -17,17 +17,14 @@
  */
 package alice.tucson.introspection;
 
-
 import alice.tucson.api.TucsonAgentId;
 
-/**
- * inspector message to ask a new execution step for a traced tuple centre vm
- */
-@SuppressWarnings("serial")
-public class NextStepMsg extends NodeMsg
-{
-	public NextStepMsg(TucsonAgentId id)
-	{
+public class NextStepMsg extends NodeMsg{
+	
+	private static final long serialVersionUID = 3967973492584768476L;
+
+	public NextStepMsg(TucsonAgentId id){
 		super(id, "nextStep");
 	}
+	
 }

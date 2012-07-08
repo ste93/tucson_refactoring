@@ -18,19 +18,17 @@
 package alice.tucson.introspection;
 
 import alice.logictuple.LogicTuple;
+
 import alice.tucson.api.TucsonAgentId;
 
-/**
- * inspector message to set a new tuple set in the observed tuple centre
- */
-@SuppressWarnings("serial")
-public class SetTupleSetMsg extends NodeMsg
-{
+public class SetTupleSetMsg extends NodeMsg{
+	
+	private static final long serialVersionUID = 3683932175338169242L;
 	public java.util.ArrayList<LogicTuple> tupleSet;
 
-	public SetTupleSetMsg(TucsonAgentId id, java.util.ArrayList<LogicTuple> ts)
-	{
+	public SetTupleSetMsg(TucsonAgentId id, java.util.ArrayList<LogicTuple> ts){
 		super(id, "setTupleSet");
 		tupleSet = ts;
 	}
+	
 }

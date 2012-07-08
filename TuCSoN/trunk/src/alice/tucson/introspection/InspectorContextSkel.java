@@ -17,35 +17,46 @@
  */
 package alice.tucson.introspection;
 
-import alice.tuplecentre.core.*;
-import alice.tuplecentre.api.*;
-
-import alice.tucson.api.*;
-import alice.tucson.api.exceptions.*;
-import alice.tucson.network.TucsonProtocol;
-import alice.tucson.service.*;
-import alice.tucson.api.TucsonAgentId;
-import alice.tucson.api.TucsonTupleCentreId;
-
 import alice.logictuple.LogicTuple;
 
-import java.util.*;
-import java.io.*;
-import java.lang.reflect.*;
+import alice.tucson.api.TucsonAgentId;
+import alice.tucson.api.TucsonTupleCentreId;
+import alice.tucson.api.exceptions.TucsonGenericException;
+import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
+import alice.tucson.api.exceptions.TucsonInvalidLogicTupleException;
+import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
+import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
+import alice.tucson.network.TucsonProtocol;
+import alice.tucson.service.ACCAbstractProxyNodeSide;
+import alice.tucson.service.ACCDescription;
+import alice.tucson.service.ACCProvider;
+import alice.tucson.service.TucsonNodeService;
+import alice.tucson.service.TucsonOperation;
+import alice.tucson.service.TucsonTCUsers;
+import alice.tucson.service.TupleCentreContainer;
 
-/**
- * Inspector context skeleton
- */
-public class InspectorContextSkel extends ACCAbstractProxyNodeSide implements InspectableEventListener
-{
+import alice.tuplecentre.api.InspectableEventListener;
+import alice.tuplecentre.core.InspectableEvent;
+import alice.tuplecentre.core.ObservableEventExt;
+import alice.tuplecentre.core.ObservableEventReactionFail;
+import alice.tuplecentre.core.ObservableEventReactionOK;
+import alice.tuplecentre.core.TriggeredReaction;
+import alice.tuplecentre.core.TupleCentreOperation;
+
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.LinkedList;
+
+public class InspectorContextSkel extends ACCAbstractProxyNodeSide implements InspectableEventListener{
+	
 	/** channel with remote inspector proxy */
 	ObjectOutputStream outStream;
 	ObjectInputStream inStream;
 
 	TucsonProtocol dialog;
-
-	/** reference to the observed tuple centre */
-	//RespectVM core;
 
 	/** current observation protocol */
 	InspectorProtocol protocol;
@@ -53,404 +64,263 @@ public class InspectorContextSkel extends ACCAbstractProxyNodeSide implements In
 	boolean nextStep;
 	boolean shutdown = false;
 	ACCProvider manager;
-
 	int ctxId;
 	TucsonAgentId agentId;
 	TucsonTupleCentreId tcId;
 
-	public InspectorContextSkel(ACCProvider man, TucsonProtocol dialog, TucsonNodeService node, ACCDescription p) throws Exception
-	{		
+	public InspectorContextSkel(ACCProvider man, TucsonProtocol dialog, TucsonNodeService node,
+			ACCDescription p) throws TucsonGenericException{
+		
 		this.dialog = dialog;
 		manager = man;
-
-		try
-		{			
+		NewInspectorMsg msg = null;
+		try{			
 			ctxId = Integer.parseInt(p.getProperty("context-id"));
+			String name = p.getProperty("agent-identity");
+			agentId = new TucsonAgentId(name);		
+			inStream = dialog.getInputStream();
+			outStream = dialog.getOutputStream();				
+			
+			msg = (NewInspectorMsg) inStream.readObject();	
+			tcId = new TucsonTupleCentreId(msg.tcName);
+		}catch(NumberFormatException e){
+			e.printStackTrace();
+		} catch (TucsonInvalidAgentIdException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (TucsonInvalidTupleCentreIdException e) {
+			e.printStackTrace();
 		}
-		catch (Exception ex)
-		{
-			ex.printStackTrace();
-		}
-		
-		String name = p.getProperty("agent-identity");
-		agentId = new TucsonAgentId(name);		
-		//System.out.println(name);
-		inStream = dialog.getInputStream();
-		//System.out.println("PROVA");
-		outStream = dialog.getOutputStream();				
-		
-		NewInspectorMsg msg = (NewInspectorMsg) inStream.readObject();	
-		tcId = new TucsonTupleCentreId(msg.tcName);
 		
 		TucsonTCUsers coreInfo = node.resolveCore(msg.tcName);		
-		
 		if (coreInfo == null)
-		{
 			throw new TucsonGenericException("Internal error: InspectorContextSkel constructor");
-		}
-						
 		protocol = msg.info;
-	}
-
-	protected void log(String st)
-	{
-		System.out.println("[INSPECTOR CONTEXT] " + st);
-	}
-
-	public void run()
-	{
-		log("inspector booted.");
-		try
-		{
-			TupleCentreContainer.doManagementOperation(TucsonOperation.addInspCode(), tcId, this);
-		}
-		catch (TucsonOperationNotPossibleException e1)
-		{
-			e1.printStackTrace();
-		}
-		catch (TucsonInvalidLogicTupleException e1)
-		{
-			e1.printStackTrace();
-		}
-		//core.addInspector(this);
 		
-		while (!shutdown)
-		{
-			try
-			{
+	}
+
+	public void run(){
+		
+		log("I'm on.");
+		try{
+			TupleCentreContainer.doManagementOperation(TucsonOperation.addInspCode(), tcId, this);
+			while (!shutdown){
 				NodeMsg msg = (NodeMsg) inStream.readObject();
-				Class cl = msg.getClass();
-				//log("Elena: " + cl.getName());
+				Class<?> cl = msg.getClass();
 				Method m = this.getClass().getMethod(msg.action, new Class[] { cl });
-				//log("Elena: " + m.getName());
 				m.invoke(this, new Object[] { msg });
 			}
-			catch (Exception e)
-			{
-				e.printStackTrace();
-				break;
-			}
-		}
-		try
-		{
 			dialog.end();
-		}
-		catch (Exception ex)
-		{
-			ex.printStackTrace();
-		}
-		
-		try
-		{
 			TupleCentreContainer.doManagementOperation(TucsonOperation.rmvInspCode(), tcId, this);
-		}
-		catch (TucsonOperationNotPossibleException e1)
-		{
-			e1.printStackTrace();
-		}
-		catch (TucsonInvalidLogicTupleException e1)
-		{
-			e1.printStackTrace();
+		}catch(IOException e){
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (NoSuchMethodException e) {
+			e.printStackTrace();
+		} catch (SecurityException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+		} catch (TucsonOperationNotPossibleException e) {
+			e.printStackTrace();
+		} catch (TucsonInvalidLogicTupleException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		
-		//core.removeInspector(this);
 		manager.shutdownContext(ctxId, agentId);
-		log("inspector exit.");
+		log("I'm off, bye :)");
+		
 	}
 
-	/**
-	 * notifying service invoked by the tuple centre virtual machine when a new
-	 * observable event has been produced
-	 */
-	synchronized public void onInspectableEvent(InspectableEvent ev)
-	{
-		//System.out.println("Nuovo envento");
-		while (protocol.tracing && !nextStep)
-		{
-			try
-			{
-				wait();
-			}
-			catch (Exception ex)
-			{
-			}
-		}
-		nextStep = false;
+	synchronized public void onInspectableEvent(InspectableEvent ev){
 		
-		try
-		{
+		try{
+			
+			while (protocol.tracing && !nextStep)
+				wait();
+			nextStep = false;
+		
 			InspectorContextEvent msg = new InspectorContextEvent();
 			msg.localTime = System.currentTimeMillis();
 			msg.vmTime = ev.getTime();
 
-			if (ev.getType() == InspectableEvent.TYPE_NEWSTATE)
-			{
-				if (protocol.tsetObservType == InspectorProtocol.PROACTIVE_OBSERVATION)
-				{
-					//System.out.println("tuple");
+			if (ev.getType() == InspectableEvent.TYPE_NEWSTATE){
+				
+				if (protocol.tsetObservType == InspectorProtocol.PROACTIVE_OBSERVATION){
 					LogicTuple[] ltSet = (LogicTuple[]) TupleCentreContainer.doManagementOperation(TucsonOperation.getTSetCode(), tcId, protocol.tsetFilter);					
-					//LogicTuple[] ltSet = core.getTSet(protocol.tsetFilter);
-					//LogicTuple[] ltSet = core.getTSet(null);
-					
-					msg.tuples = new LinkedList();
-					if(ltSet != null)
-					{
+					msg.tuples = new LinkedList<LogicTuple>();
+					if(ltSet != null){
 						for(LogicTuple lt: ltSet)
-						{
 							msg.tuples.add(lt);
-						}
-						/*if (protocol.tsetFilter == null)
-						{
-							for(LogicTuple lt: ltSet)
-							{
-								msg.tuples.add(lt);
-							}
-						}
-						else
-						{
-							for(LogicTuple lt: ltSet)
-							{
-								if (protocol.tsetFilter.match(lt))
-								{
-									msg.tuples.add(lt);
-								}
-							}
-						}*/
 					}
 				}
-				if (protocol.pendingQueryObservType == InspectorProtocol.PROACTIVE_OBSERVATION)
-				{			
-					//System.out.println("query");
+				
+				if (protocol.pendingQueryObservType == InspectorProtocol.PROACTIVE_OBSERVATION){			
 					LogicTuple[] ltSet = (LogicTuple[]) TupleCentreContainer.doManagementOperation(TucsonOperation.getWSetCode(), tcId, protocol.wsetFilter);
-					//LogicTuple[] ltSet = core.getWSet(protocol.tsetFilter);
-					//LogicTuple[] ltSet = core.getWSet(null);
-					
-					msg.wnEvents = new LinkedList();					
-					if(ltSet != null)
-					{
+					msg.wnEvents = new LinkedList<LogicTuple>();					
+					if(ltSet != null){
 						for(LogicTuple lt: ltSet)
-						{
 							msg.wnEvents.add(lt);
-							//System.out.println(lt);
-						}
 					}
-				}				
-				//System.out.println("SEND " + msg.tuples + " " + msg.wnEvents);
+				}
+				
 				outStream.writeObject(msg);
 				outStream.flush();
-			}
-			else if (ev.getType() == ObservableEventExt.TYPE_REACTIONOK)
-			{
-				if (protocol.reactionsObservType != InspectorProtocol.NO_OBSERVATION)
-				{
+				
+			}else if (ev.getType() == ObservableEventExt.TYPE_REACTIONOK){
+				
+				if (protocol.reactionsObservType != InspectorProtocol.NO_OBSERVATION){
 					TriggeredReaction zCopy = new TriggeredReaction(null, ((ObservableEventReactionOK) ev).z.getReaction());
-					
-					//ObservableEventReactionFail evCopy = new ObservableEventReactionFail(ev.getSource(), ev.getType()); 
 					msg.reactionOk = zCopy;
-					
 					outStream.writeObject(msg);
 					outStream.flush();
 				}
-			}
-			else if (ev.getType() == ObservableEventExt.TYPE_REACTIONFAIL)
-			{
-				if (protocol.reactionsObservType != InspectorProtocol.NO_OBSERVATION)
-				{
+				
+			}else if (ev.getType() == ObservableEventExt.TYPE_REACTIONFAIL){
+				
+				if (protocol.reactionsObservType != InspectorProtocol.NO_OBSERVATION){
 					TriggeredReaction zCopy = new TriggeredReaction(null, ((ObservableEventReactionFail) ev).z.getReaction());
-					
-					//ObservableEventReactionFail evCopy = new ObservableEventReactionFail(ev.getSource(), ev.getType()); 
 					msg.reactionFailed = zCopy;
-					//System.out.println("QUIUIIIIIIIIIIIIIII" +msg.reactionFailed.getEvent().getEventProp(getName()).toString());
 					outStream.writeObject(msg);
 					outStream.flush();
 				}
+				
 			}
+			
+		}catch(InterruptedException e){
+			e.printStackTrace();
+		} catch (TucsonOperationNotPossibleException e) {
+			e.printStackTrace();
+		} catch (TucsonInvalidLogicTupleException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-		catch (Exception ex)
-		{
-			ex.printStackTrace();
-		}
+
 	}
 
-	// service requested from remote proxy
-
 	/** setting new observation protocol */
-	synchronized public void setProtocol(SetProtocolMsg msg)
-	{
+	synchronized public void setProtocol(SetProtocolMsg msg){
 		boolean wasTracing = protocol.tracing;
 		protocol = msg.info;
-		
 		if (wasTracing)
-		{
 			notifyAll();
-		}
-		
 		if (!protocol.tracing)
-		{
 			onInspectableEvent(new InspectableEvent(this, InspectableEvent.TYPE_NEWSTATE));
-		}
 	}
 
 	/** get a tuple centre set (T set, W set,...) snapshot */
-	public void getSnapshot(GetSnapshotMsg m)
-	{
+	public void getSnapshot(GetSnapshotMsg m){
+		
 		InspectorContextEvent msg = new InspectorContextEvent();
-		//synchronized (core)
-		//{
-			msg.vmTime = System.currentTimeMillis();
-			msg.localTime = System.currentTimeMillis();						
+		msg.vmTime = System.currentTimeMillis();
+		msg.localTime = System.currentTimeMillis();						
+		
+		if (m.what == GetSnapshotMsg.TSET){
 			
-			if (m.what == GetSnapshotMsg.TSET)
-			{
-				msg.tuples = new LinkedList();
-				LogicTuple[] tSet = null;
-				
-				try
-				{
-					tSet = (LogicTuple[]) TupleCentreContainer.doManagementOperation(TucsonOperation.getTSetCode(), tcId, protocol.tsetFilter);
-				}
-				catch (TucsonOperationNotPossibleException e)
-				{
-					e.printStackTrace();
-				}
-				catch (TucsonInvalidLogicTupleException e)
-				{
-					e.printStackTrace();
-				}
-				
-				for(LogicTuple lt: tSet)
-				{
-					msg.tuples.add(lt);
-				}
+			msg.tuples = new LinkedList<LogicTuple>();
+			LogicTuple[] tSet = null;
+			try{
+				tSet = (LogicTuple[]) TupleCentreContainer.doManagementOperation(TucsonOperation.getTSetCode(), tcId, protocol.tsetFilter);
+			}catch (TucsonOperationNotPossibleException e){
+				e.printStackTrace();
+			}catch (TucsonInvalidLogicTupleException e){
+				e.printStackTrace();
 			}
-			else if (m.what == GetSnapshotMsg.WSET)
-			{
-				//System.out.println("update");
-				LogicTuple[] ltSet = null;
-				try
-				{
-					//System.out.println(protocol.wsetFilter);
-					ltSet = (LogicTuple[]) TupleCentreContainer.doManagementOperation(TucsonOperation.getWSetCode(), tcId, protocol.wsetFilter);
-				}
-				catch (TucsonOperationNotPossibleException e)
-				{
-					e.printStackTrace();
-				}
-				catch (TucsonInvalidLogicTupleException e)
-				{
-					e.printStackTrace();
-				}
-				
-				msg.wnEvents = new LinkedList();
-				
-				for(LogicTuple lt: ltSet)
-				{
-					msg.wnEvents.add(lt);
-				}							
+			for(LogicTuple lt: tSet)
+				msg.tuples.add(lt);
+			
+		}else if (m.what == GetSnapshotMsg.WSET){
+			
+			LogicTuple[] ltSet = null;
+			try{
+				ltSet = (LogicTuple[]) TupleCentreContainer.doManagementOperation(TucsonOperation.getWSetCode(), tcId, protocol.wsetFilter);
+			}catch (TucsonOperationNotPossibleException e){
+				e.printStackTrace();
+			}catch (TucsonInvalidLogicTupleException e){
+				e.printStackTrace();
 			}
-			try
-			{
-				outStream.writeObject(msg);
-				outStream.flush();
-			}
-			catch (Exception ex)
-			{
-				ex.printStackTrace();
-			}
-		//}
+			msg.wnEvents = new LinkedList<LogicTuple>();
+			for(LogicTuple lt: ltSet)
+				msg.wnEvents.add(lt);
+
+		}
+		
+		try{
+			outStream.writeObject(msg);
+			outStream.flush();
+		}catch(IOException e){
+			e.printStackTrace();
+		}
+
 	}
 
 	/** reset the tuple centre VM */
-	synchronized public void reset(ResetMsg msg)
-	{
-		//core.reset();
-		try
-		{
+	synchronized public void reset(ResetMsg msg){
+		try{
 			TupleCentreContainer.doManagementOperation(TucsonOperation.reset(), tcId, null);
-		}
-		catch (TucsonOperationNotPossibleException e)
-		{
+		}catch (TucsonOperationNotPossibleException e){
 			e.printStackTrace();
-		}
-		catch (TucsonInvalidLogicTupleException e)
-		{
+		}catch (TucsonInvalidLogicTupleException e){
 			e.printStackTrace();
 		}
 	}
 
 	/** ask a new step for a tuple centre vm during tracing */
-	synchronized public void nextStep(NextStepMsg msg)
-	{
-		if (protocol.tracing)
-		{
+	synchronized public void nextStep(NextStepMsg msg){
+		if (protocol.tracing){
 			nextStep = true;
 			notifyAll();
 		}
 	}
 
 	/** set a new tuple set */
-	synchronized public void setTupleSet(SetTupleSetMsg m)
-	{
-		try
-		{
-			//synchronized (core)
-			//{				
-				//core.removeAllTuples();
-				/*Iterator it = m.tupleSet.listIterator();
-				while (it.hasNext())
-				{
-					Tuple tuple = (Tuple) it.next();
-				//	core.addTuple(tuple);
-				}*/
-				TupleCentreContainer.doBlockingOperation(TucsonOperation.set_Code(), agentId, tcId, m.tupleSet);
-			//}
-		}
-		catch (Exception ex)
-		{
-			ex.printStackTrace();
+	synchronized public void setTupleSet(SetTupleSetMsg m){
+		try{
+			TupleCentreContainer.doBlockingOperation(TucsonOperation.set_Code(), agentId, tcId, m.tupleSet);
+		}catch(TucsonInvalidLogicTupleException e){
+			e.printStackTrace();
+		}catch(TucsonOperationNotPossibleException e){
+			e.printStackTrace();
 		}
 	}
 	
 	/** set a new tuple set */
-	synchronized public void setEventSet(SetEventSetMsg m)
-	{
-		try
-		{
+	synchronized public void setEventSet(SetEventSetMsg m){
+		try{
 				TupleCentreContainer.doManagementOperation(TucsonOperation.setWSetCode(), tcId, m.eventWnSet);
-		}
-		catch (Exception ex)
-		{
-			ex.printStackTrace();
+		}catch(TucsonInvalidLogicTupleException e){
+			e.printStackTrace();
+		}catch(TucsonOperationNotPossibleException e){
+			e.printStackTrace();
 		}
 	}
-
-	public synchronized void notify(OutputEvent ev)
-	{
-	}
-
-	/** set a new Wn event set */
-	/*
-	 * synchronized public void setEventSet(SetEventSetMsg m){ try {
-	 * synchronized (core) { core.getWSet().empty(); Iterator
-	 * it=m.eventWnSet.listIterator(); while (it.hasNext()){ Event
-	 * event=(Event)it.next(); core.getWSet().add(event); } }
-	 * System.out.println("new event set ok."); } catch (Exception ex){
-	 * ex.printStackTrace(); } }
-	 */
 
 	/** shutdown the inspector */
-	public void exit(ShutdownMsg msg)
-	{
+	public void exit(ShutdownMsg msg){
 		exit();
 	}
 
-	public void exit()
-	{
+	public void exit(){
 		shutdown = true;
 	}
 
-	public void operationCompleted(TupleCentreOperation op)
-	{
-		// TODO Auto-generated method stub		
+	public void operationCompleted(TupleCentreOperation op){
+		// TODO Auto-generated method stub
 	}
+	
+	protected void log(String st){
+		System.out.println("[InspectorContextSkel]: " + st);
+	}
+	
 }

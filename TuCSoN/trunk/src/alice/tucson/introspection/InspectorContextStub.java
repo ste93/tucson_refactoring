@@ -17,23 +17,25 @@
  */
 package alice.tucson.introspection;
 
-import alice.tucson.api.*;
-import alice.tucson.api.exceptions.*;
-
+import alice.tucson.api.TucsonAgentId;
+import alice.tucson.api.TucsonTupleCentreId;
+import alice.tucson.api.exceptions.OperationNotAllowedException;
+import alice.tucson.api.exceptions.TucsonGenericException;
+import alice.tucson.api.exceptions.UnreachableNodeException;
 import alice.tucson.network.TucsonProtocol;
 import alice.tucson.network.TucsonProtocolTCP;
 import alice.tucson.service.ACCDescription;
 
 import alice.tuplecentre.core.Event;
 
-import java.util.*;
-import java.io.*;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+import java.util.Vector;
 
-/**
- * 
- */
-public class InspectorContextStub implements InspectorContext
-{
+public class InspectorContextStub implements InspectorContext{
+	
 	/** user id */
 	private TucsonAgentId id;
 
@@ -48,31 +50,24 @@ public class InspectorContextStub implements InspectorContext
 	private ObjectOutputStream outStream;
 	private ObjectInputStream inStream;
 
-	/* listeners registrated for virtual machine output events */
+	/** listeners registrated for virtual machine output events */
 	private Vector contextListeners = new Vector();
 
-	/**
-	 */
 	private Event evReceived;
-
 	private ACCDescription profile;
 
-	public InspectorContextStub(TucsonAgentId id, TucsonTupleCentreId tid) throws TucsonGenericException, TucsonGenericException
-	{
+	public InspectorContextStub(TucsonAgentId id, TucsonTupleCentreId tid) throws TucsonGenericException, TucsonGenericException{
 		profile = new ACCDescription();		
 		profile.setProperty("agent-identity", id.toString());
 		profile.setProperty("agent-role", "$inspector");
 		profile.setProperty("tuple-centre", tid.getName());
-
 		this.id = id;
 		this.tid = tid;		
 		try {
 			info = getTupleCentreInfo(tid);
 		} catch (UnreachableNodeException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (OperationNotAllowedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}				
 	}
@@ -80,21 +75,14 @@ public class InspectorContextStub implements InspectorContext
 	/**
 	 * waits and processes TuCSoN virtual machine events
 	 */
-	public void acceptVMEvent() throws Exception
-	{		
-		//System.out.println("readObject " + inStream);		
+	public void acceptVMEvent() throws Exception{		
 		InspectorContextEvent msg = (InspectorContextEvent) inStream.readObject();		
-		//System.out.println("messaggio ricevuto " + msg);
-		
 		for (int i = 0; i < contextListeners.size(); i++)
-		{
 			((InspectorContextListener) contextListeners.elementAt(i)).onContextEvent(msg);
-		}
 	}
 
 	/** setting a new observation protocol */
-	public void setProtocol(InspectorProtocol p) throws Exception
-	{
+	public void setProtocol(InspectorProtocol p) throws Exception{
 		InspectorProtocol newp = new InspectorProtocol();
 		newp.tsetObservType = p.tsetObservType;
 		newp.tsetFilter = p.tsetFilter;
@@ -107,46 +95,38 @@ public class InspectorContextStub implements InspectorContext
 		protocol = p;
 	}
 
-	// action allowed to an inspector, according with current protocol
-
 	/** get a snapshot of tuple set */
-	public void getSnapshot(byte snapshotMsg) throws Exception
-	{
+	public void getSnapshot(byte snapshotMsg) throws Exception{
 		outStream.writeObject(new GetSnapshotMsg(id, snapshotMsg));
 		outStream.flush();
 	}
 
 	/** reset the tuple centre */
-	public void reset() throws Exception
-	{
+	public void reset() throws Exception{
 		outStream.writeObject(new ResetMsg(id));
 		outStream.flush();
 	}
 
 	/** when doing trace -> ask for a new virtual machine step */
-	public void nextStep() throws Exception
-	{
+	public void nextStep() throws Exception{
 		outStream.writeObject(new NextStepMsg(id));
 		outStream.flush();
 	}
 
 	/** set a new tuple set */
-	public void setTupleSet(ArrayList tset) throws Exception
-	{
+	public void setTupleSet(ArrayList tset) throws Exception{
 		outStream.writeObject(new SetTupleSetMsg(id, tset));
 		outStream.flush();
 	}
 	
 	/** set a new query set */
-	public void setEventSet(ArrayList wset) throws Exception
-	{
+	public void setEventSet(ArrayList wset) throws Exception{
 		outStream.writeObject(new SetEventSetMsg(id, wset));
 		outStream.flush();
 	}
 
 	/** shutdown inspector */
-	public void exit() throws Exception
-	{
+	public void exit() throws Exception{
 		outStream.writeObject(new ShutdownMsg(id));
 		outStream.flush();
 	}
@@ -154,15 +134,13 @@ public class InspectorContextStub implements InspectorContext
 	/**
 	 * resolve information about a tuple centre
 	 */
-	protected void resolveTupleCentreInfo(TucsonTupleCentreId tid) throws TucsonGenericException, IOException
-	{		
+	protected void resolveTupleCentreInfo(TucsonTupleCentreId tid) throws TucsonGenericException,
+		IOException{		
 		try {
 			info = getTupleCentreInfo(tid);
 		} catch (UnreachableNodeException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (OperationNotAllowedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -172,22 +150,16 @@ public class InspectorContextStub implements InspectorContext
 	 * daemon providing the tuple centre otherwise return the already
 	 * established connection
 	 */
-	private TucsonProtocol getTupleCentreInfo(TucsonTupleCentreId tid) throws TucsonGenericException, UnreachableNodeException, OperationNotAllowedException
-	{		
-		try
-		{
+	private TucsonProtocol getTupleCentreInfo(TucsonTupleCentreId tid) throws TucsonGenericException,
+		UnreachableNodeException, OperationNotAllowedException{		
+		
+		try{
 			String node = alice.util.Tools.removeApices(tid.getNode());
 			int port = tid.getPort();
-
 			TucsonProtocol dialog = new TucsonProtocolTCP(node, port);
 			dialog.sendEnterRequest(profile);			
 			dialog.receiveEnterRequestAnswer();			
-			
-			//System.out.println("Richiesta accettata " + dialog.isEnterRequestAccepted());
-			
-			if (dialog.isEnterRequestAccepted())
-			{								
-				//System.out.println(tid.getName());				
+			if (dialog.isEnterRequestAccepted()){								
 				outStream = dialog.getOutputStream();
 				inStream = dialog.getInputStream();							
 				protocol = new InspectorProtocol();				
@@ -195,13 +167,14 @@ public class InspectorContextStub implements InspectorContext
 				outStream.writeObject(msg);
 				return dialog;
 			}
-		}
-		catch (Exception ex)
-		{
+		}catch(IOException e){
 			throw new alice.tucson.api.exceptions.UnreachableNodeException();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
 		throw new alice.tucson.api.exceptions.OperationNotAllowedException();
+		
 	}
 
 	/**
@@ -210,16 +183,14 @@ public class InspectorContextStub implements InspectorContext
 	 * @param l
 	 *            the listener
 	 */
-	public void addInspectorContextListener(InspectorContextListener l)
-	{
+	public void addInspectorContextListener(InspectorContextListener l){
 		contextListeners.addElement(l);
 	}
 
 	/**
 	 * Removes a listener to Inspector Events
 	 */
-	public void removeInspectorContextListener(InspectorContextListener l)
-	{
+	public void removeInspectorContextListener(InspectorContextListener l){
 		contextListeners.removeElement(l);
 	}
 

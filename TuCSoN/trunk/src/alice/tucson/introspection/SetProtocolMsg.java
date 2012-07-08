@@ -19,17 +19,14 @@ package alice.tucson.introspection;
 
 import alice.tucson.api.TucsonAgentId;
 
-/**
- * inspector message to set a new observation protocol
- */
-@SuppressWarnings("serial")
-public class SetProtocolMsg extends NodeMsg
-{
+public class SetProtocolMsg extends NodeMsg{
+	
+	private static final long serialVersionUID = 7284025970406889712L;
 	public InspectorProtocol info;
 
-	public SetProtocolMsg(TucsonAgentId id, InspectorProtocol p)
-	{
+	public SetProtocolMsg(TucsonAgentId id, InspectorProtocol p){
 		super(id, "setProtocol");
 		info = p;
 	}
+	
 }

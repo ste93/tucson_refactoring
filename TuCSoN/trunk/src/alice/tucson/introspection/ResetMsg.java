@@ -19,15 +19,12 @@ package alice.tucson.introspection;
 
 import alice.tucson.api.TucsonAgentId;
 
+public class ResetMsg extends NodeMsg{
+	
+	private static final long serialVersionUID = 5161921319537355981L;
 
-/**
- * inspector message to reset the observed tuple centre vm
- */
-@SuppressWarnings("serial")
-public class ResetMsg extends NodeMsg
-{
-	public ResetMsg(TucsonAgentId id)
-	{
+	public ResetMsg(TucsonAgentId id){
 		super(id, "reset");
 	}
+	
 }

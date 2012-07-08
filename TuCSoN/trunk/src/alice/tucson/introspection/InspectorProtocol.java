@@ -17,21 +17,20 @@
  */
 package alice.tucson.introspection;
 
-import java.io.*;
-import alice.logictuple.*;
+import java.io.Serializable;
 
-/**
- * this class defines the observation protocol of inspectors
- */
-@SuppressWarnings("serial")
-public class InspectorProtocol implements Serializable
-{
-	// observation types
+import alice.logictuple.LogicTuple;
+
+public class InspectorProtocol implements Serializable{
+	
+	private static final long serialVersionUID = -6842026459178793395L;
 
 	/** don't observe */
 	public static final byte NO_OBSERVATION = 1;
+	
 	/** observe only when asked by inspector */
 	public static final byte REACTIVE_OBSERVATION = 2;
+	
 	/** observe continuosly */
 	public static final byte PROACTIVE_OBSERVATION = 3;
 
@@ -52,4 +51,5 @@ public class InspectorProtocol implements Serializable
 
 	/** desired tracing state for the vm */
 	public boolean tracing = false;
+	
 }

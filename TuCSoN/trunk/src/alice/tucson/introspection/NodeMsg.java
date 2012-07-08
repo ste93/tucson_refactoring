@@ -17,32 +17,26 @@
  */
 package alice.tucson.introspection;
 
-import alice.tucson.api.*;
+import java.io.Serializable;
 
-import java.io.*;
+import alice.tucson.api.TucsonAgentId;
 
-/**
- * base class for message requesting a service from a user or inspector to a
- * tuple centre node
- */
-@SuppressWarnings("serial")
-public class NodeMsg implements Serializable
-{
+public class NodeMsg implements Serializable{
+	
+	private static final long serialVersionUID = -3499870079832457223L;
 	public TucsonAgentId aid;
 	public String action;
 
-	protected NodeMsg()
-	{
+	protected NodeMsg(){
 	}
 
-	public NodeMsg(TucsonAgentId aid)
-	{
+	public NodeMsg(TucsonAgentId aid){
 		this.aid = aid;
 	}
 
-	public NodeMsg(TucsonAgentId aid, String act)
-	{
+	public NodeMsg(TucsonAgentId aid, String act){
 		this.aid = aid;
 		action = act;
 	}
+	
 }

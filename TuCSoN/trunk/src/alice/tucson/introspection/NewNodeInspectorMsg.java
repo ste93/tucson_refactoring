@@ -17,18 +17,14 @@
  */
 package alice.tucson.introspection;
 
-
 import alice.tucson.api.TucsonAgentId;
 
-/**
- * message sent by an node inspector to a daemon
- */
-@SuppressWarnings("serial")
-public class NewNodeInspectorMsg extends NodeMsg
-{
+public class NewNodeInspectorMsg extends NodeMsg{
 
-	public NewNodeInspectorMsg(TucsonAgentId aid)
-	{
+	private static final long serialVersionUID = 6582272720835623886L;
+
+	public NewNodeInspectorMsg(TucsonAgentId aid){
 		super(aid, "newNodeInspector");
 	}
+	
 }

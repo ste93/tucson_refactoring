@@ -19,17 +19,14 @@ package alice.tucson.introspection;
 
 import alice.tucson.api.TucsonAgentId;
 
-/**
- * inspector message to set a new event Wn set in the observed tuple centre
- */
-@SuppressWarnings("serial")
-public class SetEventSetMsg extends NodeMsg
-{
-	public java.util.ArrayList eventWnSet;
+public class SetEventSetMsg extends NodeMsg{
+	
+	private static final long serialVersionUID = -3946179149619833984L;
+	public java.util.ArrayList<?> eventWnSet;
 
-	public SetEventSetMsg(TucsonAgentId id, java.util.ArrayList ts)
-	{
+	public SetEventSetMsg(TucsonAgentId id, java.util.ArrayList<?> ts){
 		super(id, "setEventSet");
 		eventWnSet = ts;
 	}
+	
 }

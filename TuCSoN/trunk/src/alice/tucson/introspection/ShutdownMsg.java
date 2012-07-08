@@ -17,22 +17,17 @@
  */
 package alice.tucson.introspection;
 
-
 import alice.tucson.api.TucsonAgentId;
 
-/**
- * base class for message requesting a service from a user or inspector to a
- * tuple centre node
- */
-@SuppressWarnings("serial")
-public class ShutdownMsg extends NodeMsg
-{
-	protected ShutdownMsg()
-	{
+public class ShutdownMsg extends NodeMsg{
+	
+	private static final long serialVersionUID = -745435883778999790L;
+
+	protected ShutdownMsg(){
 	}
 
-	public ShutdownMsg(TucsonAgentId aid)
-	{
+	public ShutdownMsg(TucsonAgentId aid){
 		super(aid, "exit");
 	}
+	
 }

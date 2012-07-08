@@ -17,28 +17,23 @@
  */
 package alice.tucson.introspection;
 
-import alice.tucson.api.*;
+import alice.tucson.api.TucsonAgentId;
+import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.service.ACCDescription;
 
-/**
- * Helper class defining the properties for an Inspector Context.
- * 
- * 
- * @version 1.0
- */
-@SuppressWarnings("serial")
-public class InspectorProfile extends ACCDescription
-{
-	public InspectorProfile(TucsonAgentId aid, TucsonTupleCentreId tid)
-	{
+public class InspectorProfile extends ACCDescription{
+	
+	private static final long serialVersionUID = 4542989407611049869L;
+
+	public InspectorProfile(TucsonAgentId aid, TucsonTupleCentreId tid){
 		setProperty("context-name", "inspector");
 		setProperty("agent-identity", aid.toString());
 		setProperty("tuple-centre", tid.getName());
 		setProperty("node", tid.getNode());
 	}
 
-	public InspectorProfile(TucsonAgentId aid, TucsonTupleCentreId tid, int port)
-	{
+	public InspectorProfile(TucsonAgentId aid, TucsonTupleCentreId tid, int port){
 		this(aid, tid);
 	}
+	
 }

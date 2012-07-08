@@ -38,10 +38,10 @@ public class InspectorContextEvent implements java.io.Serializable{
 	public long localTime;
 
 	/** tuple observed or to set */
-	public List<?> tuples = null;
+	public List tuples = null;
 
 	/** events observed */
-	public List<?> wnEvents = null;
+	public List wnEvents = null;
 
 	/** observed a reaction ok */
 	public TriggeredReaction reactionOk = null;
