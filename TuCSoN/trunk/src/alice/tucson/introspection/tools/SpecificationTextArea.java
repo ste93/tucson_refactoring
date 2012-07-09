@@ -24,14 +24,18 @@
  */
 package alice.tucson.introspection.tools;
 
-import alice.util.jedit.*;
-
 import java.awt.Color;
 
-public class SpecificationTextArea extends TextAreaDefaults
-{
-	public SpecificationTextArea()
-	{
+import alice.util.jedit.DefaultInputHandler;
+import alice.util.jedit.SyntaxDocument;
+import alice.util.jedit.SyntaxStyle;
+import alice.util.jedit.TextAreaDefaults;
+import alice.util.jedit.Token;
+
+public class SpecificationTextArea extends TextAreaDefaults{
+	
+	public SpecificationTextArea(){
+		
 	    inputHandler = new DefaultInputHandler();
 	    inputHandler.addDefaultKeyBindings();
 	    document = new SyntaxDocument();
@@ -45,7 +49,7 @@ public class SpecificationTextArea extends TextAreaDefaults
 	    rows = 25;
 	    styles = getSyntaxStyles();
 	    caretColor = Color.red;
-            selectionColor = new Color(0xccccff);
+        selectionColor = new Color(0xccccff);
 	    lineHighlightColor = new Color(0xe0e0e0);
 	    lineHighlight = true;
 	    bracketHighlightColor = Color.black;
@@ -53,10 +57,10 @@ public class SpecificationTextArea extends TextAreaDefaults
 	    eolMarkerColor = new Color(0x009999);
 	    eolMarkers = false;
 	    paintInvalid = true;
+	    
 	}
 
-	private SyntaxStyle[] getSyntaxStyles()
-	{
+	private SyntaxStyle[] getSyntaxStyles(){
 		SyntaxStyle[] styles = new SyntaxStyle[Token.ID_COUNT];
 		styles[Token.COMMENT1] = new SyntaxStyle(new Color(0x808080),true,false);
 		styles[Token.COMMENT2] = new SyntaxStyle(new Color(0x990033),true,false);
@@ -68,7 +72,6 @@ public class SpecificationTextArea extends TextAreaDefaults
 		styles[Token.LABEL] = new SyntaxStyle(new Color(0x008000),false,false);
 		styles[Token.OPERATOR] = new SyntaxStyle(Color.black,false,true);
 		styles[Token.INVALID] = new SyntaxStyle(Color.red,false,true);
-
 		return styles;
 	}
 

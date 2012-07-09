@@ -17,18 +17,16 @@
  */
 package alice.tucson.introspection.tools;
 
-import java.io.*;
-import java.util.*;
-
-import alice.tucson.api.TucsonAgentId;
-import alice.tucson.api.TucsonTupleCentreId;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Iterator;
 
 import alice.logictuple.LogicTuple;
-
+import alice.tucson.api.TucsonAgentId;
+import alice.tucson.api.TucsonTupleCentreId;
 import alice.tuplecentre.core.TriggeredReaction;
 
-public class InspectorCore extends alice.tucson.introspection.Inspector
-{
+public class InspectorCore extends alice.tucson.introspection.Inspector{
 	Inspector form;
 
 	boolean loggingTuples = false;
@@ -39,107 +37,87 @@ public class InspectorCore extends alice.tucson.introspection.Inspector
 	boolean loggingQueries = false;
 	String logQueryFilename;
 	FileWriter logQueryWriter;
-	// LogicTuple logQueryFilter;
 
 	boolean loggingReactions = false;
 	String logReactionFilename;
 	FileWriter logReactionWriter;
 
-	// LogicTuple logQueryFilter;
-
-	public InspectorCore(Inspector f, TucsonAgentId id_, TucsonTupleCentreId tid_) throws Exception
-	{
+	public InspectorCore(Inspector f, TucsonAgentId id_, TucsonTupleCentreId tid_) throws Exception{
 		super(id_, tid_);
 		form = f;
 		logTupleFilename = "inspector-tuples.log";
 		logQueryFilename = "inspector-queries.log";
 		logReactionFilename = "inspector-reactions.log";		
-		try
-		{
+		try{
 			logTupleWriter = new FileWriter(logTupleFilename, true);
 			logQueryWriter = new FileWriter(logQueryFilename, true);
 			logReactionWriter = new FileWriter(logReactionFilename, true);
-		}
-		catch (Exception ex)
-		{
+		}catch (IOException e){
+			e.printStackTrace();
 		}
 	}
 
-	public void onContextEvent(alice.tucson.introspection.InspectorContextEvent msg)
-	{
-		//System.out.println("Eventi" + msg.wnEvents);
-		//System.out.println("Eventi" + msg.tuples);
-		if (msg.tuples != null)
-		{
+	public void onContextEvent(alice.tucson.introspection.InspectorContextEvent msg){
+		
+		if (msg.tuples != null){
+			
 			TupleViewer viewer = form.getTupleForm();
 			viewer.setVMTime(msg.vmTime);
 			msg.localTime = System.currentTimeMillis();
 			viewer.setLocalTime(msg.localTime);
 			String st = "";
-
 			Iterator it = msg.tuples.iterator();
 			int n = 0;
 			
-			while (it.hasNext())
-			{
+			while (it.hasNext()){
 				st = st + it.next().toString() + "\n";
-				// log("context event: " + st);
 				n++;
 			}
 			viewer.setNItems(n);
 			viewer.setText(st);
 			
-			if (loggingTuples)
-			{
-				try
-				{
+			if (loggingTuples){
+				
+				try{
+					
 					st = "";
 					logTupleWriter.write("snapshot( \n" + "    time_vm(" + msg.vmTime + "),\n" + "    time_local("
 							+ msg.localTime + "),\n" + "    tuple_filter(" + form.protocol.tsetFilter + "),\n"
 							+ "    tuple_log_filter(" + logTupleFilter + "),\n" + "    tuple_list([ \n");
 
 					it = msg.tuples.iterator();
-					if (logTupleFilter == null)
-					{
-						if (it.hasNext())
-						{
+					if (logTupleFilter == null){
+						if (it.hasNext()){
 							st = st + "        " + it.next().toString();
 							while (it.hasNext())
-							{
 								st = st + ",\n        " + it.next().toString() + "\n";
-							}
 						}
-					}
-					else
-					{
-						if (it.hasNext())
-						{
+					}else{
+						if (it.hasNext()){
 							LogicTuple tuple = (LogicTuple) it.next();
-
 							if (logTupleFilter.match(tuple))
-							{
 								st = st + "        " + tuple.toString();
-							}
-							while (it.hasNext())
-							{
+							while (it.hasNext()){
 								tuple = (LogicTuple) it.next();
 								if (logTupleFilter.match(tuple))
-								{
 									st = st + ",\n        " + tuple.toString();
-								}
 							}
 						}
 					}
+					
 					logTupleWriter.write(st + "])).\n");
 					logTupleWriter.flush();
+					
+				}catch(IOException e){
+					e.printStackTrace();
 				}
-				catch (Exception ex)
-				{
-				}
+				
 			}
+			
 		}
-		if (msg.wnEvents != null)
-		{			
+		
+		if (msg.wnEvents != null){
+			
 			EventViewer viewer = form.getQueryForm();
 			msg.localTime = System.currentTimeMillis();
 			viewer.setVMTime(msg.vmTime);
@@ -147,159 +125,109 @@ public class InspectorCore extends alice.tucson.introspection.Inspector
 			String st = "";
 			Iterator it = msg.wnEvents.iterator();
 			int n = 0;
-			//System.out.println("Eventi" + it.hasNext());
-			while (it.hasNext())
-			{
-				//System.out.println("while" + it.next());
-				// tupleEvent+=ev.getOperationName()+"(";
-				// if (ev.tuple!=null){
-				// tupleEvent+=ev.tuple+") from agent "+ev.idAgent;
-				// } else {
-				// tupleEvent+=ev.template+") from agent "+ev.idAgent;
-				// }
-				//System.out.println(it.next());
+
+			while (it.hasNext()){
 				st = st + it.next() + "\n";				
 				n++;
 			}
 			viewer.setNItems(n);
 			viewer.setText(st);
-			if (loggingQueries)
-			{
-				try
-				{
+			
+			if (loggingQueries){
+				try{
 					st = "";
 					logQueryWriter.write("snapshot( \n" + "    time_vm(" + msg.vmTime + "),\n" + "    time_local("
-							+ msg.localTime + "),\n" +
-							 //"query_filter(" + form.protocol.queryFilter + "),\n"+
-							 //" query_log_filter(" + logQueryFilter + "),\n"+
-							"    query_list([ \n");
-
+							+ msg.localTime + "),\n" + "    query_list([ \n");
 					it = msg.wnEvents.iterator();
-					if (it.hasNext())
-					{
+					if (it.hasNext()){
 						st = st + "        " + it.next();
 						while (it.hasNext())
-						{
 							st = st + ",\n        " + it.next();
-						}
 					}
-
 					logQueryWriter.write(st + "])).\n");
 					logQueryWriter.flush();
-				}
-				catch (Exception ex)
-				{
+				}catch (IOException e){
+					e.printStackTrace();
 				}
 			}
+			
 		}
 
-		if (msg.reactionOk != null)
-		{
+		if (msg.reactionOk != null){
+			
 			ReactionViewer viewer = form.getReactionForm();
 			TriggeredReaction tr = msg.reactionOk;
 			viewer.appendText("time: " + msg.vmTime + "\n" + tr.getReaction() + " OK\n");
-			if (loggingReactions)
-			{
-				//System.out.println("LOG OK");
-				try
-				{
+			if (loggingReactions){
+				try{
 					logReactionWriter.write("succeed-reaction( time(" + msg.vmTime + "), " + tr.getReaction() + ").\n");
 					logReactionWriter.flush();
-				}
-				catch (Exception ex)
-				{
+				}catch (IOException e){
+					e.printStackTrace();
 				}
 			}
 
-		}
-		else if (msg.reactionFailed != null)
-		{
+		}else if (msg.reactionFailed != null){
+			
 			ReactionViewer viewer = form.getReactionForm();
 			TriggeredReaction tr = msg.reactionFailed;
 			viewer.appendText("time: " + msg.vmTime + "\n" + tr.getReaction() + " FAILED\n");
-			if (loggingReactions)
-			{
-				//System.out.println("LOG FAILED");
-				try
-				{
+			if (loggingReactions){
+				try{
 					logReactionWriter.write("failed-reaction( time(" + msg.vmTime + "), " + tr.getReaction() + ").\n");
 					logReactionWriter.flush();
-				}
-				catch (Exception ex)
-				{
+				}catch (IOException e){
+					e.printStackTrace();
 				}
 			}
+			
 		}
+		
 	}
 
-	void changeLogTupleFile(String name)
-	{
+	void changeLogTupleFile(String name){
 		logTupleFilename = name;
-		if (logTupleWriter != null)
-		{
-			try
-			{
+		if (logTupleWriter != null){
+			try{
 				logTupleWriter.close();
+			}catch (IOException e){
+				e.printStackTrace();
 			}
-			catch (Exception ex)
-			{
-			}
-		}
-		try
-		{
+		}try{
 			logTupleWriter = new FileWriter(logTupleFilename, true);
-		}
-		catch (Exception ex)
-		{
+		}catch (IOException e){
+			e.printStackTrace();
 		}
 	}
 
-	void changeLogQueryFile(String name)
-	{
+	void changeLogQueryFile(String name){
 		logQueryFilename = name;
-		if (logQueryWriter != null)
-		{
-			try
-			{
+		if (logQueryWriter != null){
+			try{
 				logQueryWriter.close();
+			}catch (IOException e){
+				e.printStackTrace();
 			}
-			catch (Exception ex)
-			{
-			}
-		}
-		try
-		{
+		}try{
 			logQueryWriter = new FileWriter(logQueryFilename, true);
-		}
-		catch (Exception ex)
-		{
+		}catch (IOException e){
+			e.printStackTrace();
 		}
 	}
 
-	void changeLogReactionFile(String name)
-	{
+	void changeLogReactionFile(String name){
 		logReactionFilename = name;
-		if (logReactionWriter != null)
-		{
-			try
-			{
+		if (logReactionWriter != null){
+			try{
 				logReactionWriter.close();
+			}catch (IOException e){
+				e.printStackTrace();
 			}
-			catch (Exception ex)
-			{
-			}
-		}
-		try
-		{
+		}try{
 			logReactionWriter = new FileWriter(logReactionFilename, true);
-		}
-		catch (Exception ex)
-		{
+		}catch (IOException e){
+			e.printStackTrace();
 		}
 	}
 
-	private void log(String st)
-	{
-		System.out.println("InspectorCore: " + st);
-	}
 }
