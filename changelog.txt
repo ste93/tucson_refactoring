@@ -1,0 +1,35 @@
+commit 67c6d30f208d2b91261c656f77532ff68abd0336
+Author: Stefano Mariani <s.mariani@unibo.it>
+Date:   Mon Jul 9 08:56:17 2012 +0200
+
+    Fixed some introspection.tools package comments
+
+commit 4541e1565fcf0615d590449597a8976e21a5d76d
+Author: Stefano Mariani <s.mariani@unibo.it>
+Date:   Sun Jul 8 16:15:48 2012 +0200
+
+    Fixed some introspection.tools package warnings
+
+commit b2121282343c622ad41261f0ee42437602e0a8f4
+Author: Stefano Mariani <s.mariani@unibo.it>
+Date:   Sun Jul 8 14:57:37 2012 +0200
+
+    Fixed introspection package warnings
+
+commit b8c6e0c02d8eda9596d5277eb3677ee1d1981650
+Author: Stefano Mariani <s.mariani@unibo.it>
+Date:   Sat Jul 7 21:57:56 2012 +0200
+
+    Fixed some other comments
+
+commit 1657a3cf217ae3b605ceb4a74bcba93475431df1
+Author: Stefano Mariani <s.mariani@unibo.it>
+Date:   Sat Jul 7 17:28:43 2012 +0200
+
+    Fixed some comments
+
+commit 476b27fb64b1fefa263665b0593ed0d9267bc84d
+Author: Stefano Mariani <s.mariani@unibo.it>
+Date:   Sat Jul 7 15:04:32 2012 +0200
+
+    Boot commit
