@@ -370,19 +370,12 @@ public class TupleCentreContainer{
 			if(type == TucsonOperation.nop_sCode())
 				return context.nop_s((AgentId) aid.getLocalAgentId(), (LogicTuple) t);
 			if(type == TucsonOperation.set_sCode()){
-				if(aid.toString().equals("node_agent") || aid.toString().startsWith("inspector_edit_spec_")){
+//				if(aid.toString().equals("node_agent") || aid.toString().startsWith("inspector_edit_spec_")){
+				if(t.getName().equals("spec")){
 					((BlockingSpecContext)context).set_s((AgentId) aid.getLocalAgentId(), new RespectSpecification(((LogicTuple) t).getArg(0).getName()));
 					return res;
 				}
-//				RespectReactionParser p = new RespectReactionParser(t);
-//				String spec = p.parse();
 				return ((BlockingSpecContext)context).set_s((AgentId) aid.getLocalAgentId(), t);
-//				return ((BlockingSpecContext)context).set_s((AgentId) aid.getLocalAgentId(), new RespectSpecification(spec));
-//				RespectSpecification rSpec = ((BlockingSpecContext)context).set_s((AgentId) aid.getLocalAgentId(), new RespectSpecification(spec));
-//				if(rSpec != null)
-//					return t;
-//				else
-//					return null;
 			}
 			if(type == TucsonOperation.get_sCode()){
 				return ((BlockingSpecContext)context).get_s((AgentId) aid.getLocalAgentId());
