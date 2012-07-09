@@ -89,8 +89,6 @@ public class InterTupleCentreACCProxy implements InterTupleCentreACC{
 				throw new TucsonOperationNotPossibleException();
 			}
 		}
-		if(!tcid.checkSyntax() || !aid.checkSyntax())
-			throw new TucsonOperationNotPossibleException();
 
 		int nTry = 0;
 		boolean exception;
