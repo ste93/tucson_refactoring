@@ -307,11 +307,6 @@ public class CLIAgent extends alice.util.Automaton{
 						prompt("success: " + op.getLogicTupleListResult());
 					else
 						prompt("failure: " + op.getLogicTupleListResult());
-//					LogicTuple t = context.set_s(tid, templ, Long.MAX_VALUE);
-//					if(t == null)
-//						prompt("failure");
-//					else
-//						prompt("success");
 				}else if(methodName.equals("get_s")){
 					busy();
 					ITucsonOperation op = context.get_s(tid, Long.MAX_VALUE);
