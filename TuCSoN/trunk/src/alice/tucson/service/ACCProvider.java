@@ -81,7 +81,7 @@ public class ACCProvider{
 			
 			String agentName = profile.getProperty("agent-identity");
 			LogicTuple req = new LogicTuple("context_request", new Value(agentName), new Var("CtxId"));
-			LogicTuple result = TupleCentreContainer.inp(aid, config, req);
+			LogicTuple result = (LogicTuple) TupleCentreContainer.doBlockingOperation(TucsonOperation.inpCode(), aid, config, req);
 			
 			if(result == null){
 				profile.setProperty("failure", "context not available");
@@ -135,7 +135,7 @@ public class ACCProvider{
 		LogicTuple req = new LogicTuple("context_shutdown", new Value(ctxId), new Value(aid.toString()), new Var("CtxId"));
 		LogicTuple result;
 		try{
-			result = TupleCentreContainer.inp(this.aid, config, req);
+			result = (LogicTuple) TupleCentreContainer.doBlockingOperation(TucsonOperation.inpCode(), this.aid, config, req);
 		}catch(Exception e){
 			System.err.println("[ACCProvider]: " + e);
 			e.printStackTrace();

@@ -303,10 +303,10 @@ public class TucsonNodeService{
 			try{
 				try{
 					TupleArgument tcArg = TupleArgument.parse(tcName);
-					TupleCentreContainer.inp(nodeAid, idConfigTC, new LogicTuple("tuple_centre", tcArg));
-					TupleCentreContainer.inp(nodeAid, idConfigTC, new LogicTuple("is_persistent", new Value(tcName)));
+					TupleCentreContainer.doBlockingOperation(TucsonOperation.inpCode(), nodeAid, idConfigTC, new LogicTuple("tuple_centre", tcArg));
+					TupleCentreContainer.doBlockingOperation(TucsonOperation.inpCode(), nodeAid, idConfigTC, new LogicTuple("is_persistent", new Value(tcName)));
 				}catch(Exception ex){
-					TupleCentreContainer.inp(nodeAid, idConfigTC, new LogicTuple("tuple_centre", new Value(tcName)));
+					TupleCentreContainer.doBlockingOperation(TucsonOperation.inpCode(), nodeAid, idConfigTC, new LogicTuple("tuple_centre", new Value(tcName)));
 				}
 			}catch(Exception e){
 				System.err.println("[TucsonNodeService]: " + e);
@@ -335,7 +335,7 @@ public class TucsonNodeService{
 				TupleArgument tid = Value.parse(tc.getTucsonTupleCentreId().getName());
 				if(template.match(tid)){
 					TupleCentreContainer.enablePersistence(tc.getTucsonTupleCentreId(), PERSISTENCY_PATH + "tc_" + tc.getTucsonTupleCentreId().getName() + ".dat");
-					TupleCentreContainer.out(nodeAid, tc.getTucsonTupleCentreId(), new LogicTuple("is_persistent", new Value(tc.getTucsonTupleCentreId().getName())), null);
+					TupleCentreContainer.doBlockingOperation(TucsonOperation.outCode(), nodeAid, tc.getTucsonTupleCentreId(), new LogicTuple("is_persistent", new Value(tc.getTucsonTupleCentreId().getName())));
 				}
 			}catch(InvalidTupleArgumentException e){
 				System.err.println("[TucsonNodeService]: " + e);
@@ -357,7 +357,7 @@ public class TucsonNodeService{
 		TucsonTCUsers tar = cores.get(tc);
 		TupleCentreContainer.enablePersistence(tar.getTucsonTupleCentreId(), PERSISTENCY_PATH + "tc_" + tar.getTucsonTupleCentreId().getName() + ".dat");
 		try{
-			TupleCentreContainer.out(nodeAid, tar.getTucsonTupleCentreId(), new LogicTuple("is_persistent", new Value(tar.getTucsonTupleCentreId().getName())), null);
+			TupleCentreContainer.doBlockingOperation(TucsonOperation.outCode(), nodeAid, tar.getTucsonTupleCentreId(), new LogicTuple("is_persistent", new Value(tar.getTucsonTupleCentreId().getName())));
 		}catch(Exception e){
 			System.err.println("[TucsonNodeService]: " + e);
 			e.printStackTrace();
@@ -380,7 +380,7 @@ public class TucsonNodeService{
 					TupleArgument tid = Value.parse(tc.getTucsonTupleCentreId().getName());
 					if(template.match(tid)){
 						TupleCentreContainer.disablePersistence(tc.getTucsonTupleCentreId());
-						TupleCentreContainer.in(nodeAid, tc.getTucsonTupleCentreId(), new LogicTuple("is_persistent", new Value(tc.getTucsonTupleCentreId().getName())), null);
+						TupleCentreContainer.doBlockingOperation(TucsonOperation.inCode(), nodeAid, tc.getTucsonTupleCentreId(), new LogicTuple("is_persistent", new Value(tc.getTucsonTupleCentreId().getName())));
 					}
 				}catch(InvalidTupleArgumentException e){
 					System.err.println("[TucsonNodeService]: " + e);
@@ -405,7 +405,7 @@ public class TucsonNodeService{
 		TucsonTCUsers tar = cores.get(tc);
 		TupleCentreContainer.disablePersistence(tar.getTucsonTupleCentreId());
 		try{
-			TupleCentreContainer.in(nodeAid, tar.getTucsonTupleCentreId(), new LogicTuple("is_persistent", new Value(tar.getTucsonTupleCentreId().getName())), null);
+			TupleCentreContainer.doBlockingOperation(TucsonOperation.inCode(), nodeAid, tar.getTucsonTupleCentreId(), new LogicTuple("is_persistent", new Value(tar.getTucsonTupleCentreId().getName())));
 		}catch(Exception e){
 			System.err.println("[TucsonNodeService]: " + e);
 			e.printStackTrace();
@@ -437,7 +437,7 @@ public class TucsonNodeService{
 					TupleCentreContainer.loadPersistentInformation(cores.get(tcName).getTucsonTupleCentreId(), PERSISTENCY_PATH + files[i]);
 					TupleCentreContainer.enablePersistence(cores.get(tcName).getTucsonTupleCentreId(), PERSISTENCY_PATH + files[i]);
 					try{
-						TupleCentreContainer.out(nodeAid, cores.get(tcName).getTucsonTupleCentreId(), new LogicTuple("is_persistent", new Value(tcName)), null);
+						TupleCentreContainer.doBlockingOperation(TucsonOperation.outCode(), nodeAid, cores.get(tcName).getTucsonTupleCentreId(), new LogicTuple("is_persistent", new Value(tcName)));
 					}catch(Exception e){
 						System.err.println("[TucsonNodeService]: " + e);
 						e.printStackTrace();
@@ -522,8 +522,8 @@ public class TucsonNodeService{
 			InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream(DEFAULT_BOOT_SPEC_FILE);
 			String spec = alice.util.Tools.loadText(new BufferedInputStream(is));
 			LogicTuple specTuple = new LogicTuple("spec", new Value(spec));
-			TupleCentreContainer.set_s(nodeAid, idConfigTC, specTuple);
-			TupleCentreContainer.out(nodeAid, idConfigTC, new LogicTuple("boot"), null);
+			TupleCentreContainer.doBlockingSpecOperation(TucsonOperation.set_sCode(), nodeAid, idConfigTC, specTuple);
+			TupleCentreContainer.doBlockingOperation(TucsonOperation.outCode(), nodeAid, idConfigTC, new LogicTuple("boot"));
 			addAgent(nodeAid);
 		}catch(TucsonInvalidTupleCentreIdException e){
 			System.err.println("[TucsonNodeService]: " + e);
@@ -551,8 +551,8 @@ public class TucsonNodeService{
 			InputStream is = ClassLoader.getSystemResourceAsStream(DEFAULT_OBS_SPEC_FILE);
 			String spec = alice.util.Tools.loadText(new BufferedInputStream(is));
 			LogicTuple specTuple = new LogicTuple("spec", new Value(spec));
-			TupleCentreContainer.set_s(nodeAid, idObsTC, specTuple);
-			TupleCentreContainer.out(nodeAid, idObsTC, new LogicTuple("boot"), null);
+			TupleCentreContainer.doBlockingSpecOperation(TucsonOperation.set_sCode(), nodeAid, idObsTC, specTuple);
+			TupleCentreContainer.doBlockingOperation(TucsonOperation.outCode(), nodeAid, idObsTC, new LogicTuple("boot"));
 			obsService = new ObservationService(idObsTC);
 		}catch(TucsonInvalidTupleCentreIdException e){
 			System.err.println("[TucsonNodeService]: " + e);

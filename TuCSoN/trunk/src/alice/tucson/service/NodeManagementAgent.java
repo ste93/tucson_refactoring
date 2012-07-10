@@ -46,7 +46,7 @@ public class NodeManagementAgent extends Thread{
 		try{
 			while(true){
 				LogicTuple cmd;
-				cmd = TupleCentreContainer.in(nodeManAid, config, new LogicTuple("cmd", new Var("X")));
+				cmd = (LogicTuple) TupleCentreContainer.doBlockingOperation(TucsonOperation.inCode(), nodeManAid, config, new LogicTuple("cmd", new Var("X")));
 				execCmd(cmd.getArg(0));
 			}
 		}catch(InvalidTermException e){
@@ -73,19 +73,19 @@ public class NodeManagementAgent extends Thread{
 			String tcName = cmd.getArg(0).getName();
 			boolean result = node.destroyCore(tcName);
 			if(result)
-				TupleCentreContainer.out(nodeManAid, config, new LogicTuple("cmd_result", new Value("destroy"), new Value("ok")));
+				TupleCentreContainer.doBlockingOperation(TucsonOperation.outCode(), nodeManAid, config, new LogicTuple("cmd_result", new Value("destroy"), new Value("ok")));
 			else
-				TupleCentreContainer.out(nodeManAid, config, new LogicTuple("cmd_result", new Value("destroy"), new Value("failed")));
+				TupleCentreContainer.doBlockingOperation(TucsonOperation.outCode(), nodeManAid, config, new LogicTuple("cmd_result", new Value("destroy"), new Value("failed")));
 		
 		}else if(name.equals("enable_persistency")){
 			
 			node.enablePersistence(cmd.getArg(0));
-			TupleCentreContainer.out(nodeManAid, config, new LogicTuple("cmd_result", cmd, new Value("ok")));
+			TupleCentreContainer.doBlockingOperation(TucsonOperation.outCode(), nodeManAid, config, new LogicTuple("cmd_result", cmd, new Value("ok")));
 			
 		}else if(name.equals("disable_persistency")){
 			
 			node.disablePersistence(cmd.getArg(0));
-			TupleCentreContainer.out(nodeManAid, config, new LogicTuple("cmd_result", new Value("disable_persistency"), new Value("ok")));
+			TupleCentreContainer.doBlockingOperation(TucsonOperation.outCode(), nodeManAid, config, new LogicTuple("cmd_result", new Value("disable_persistency"), new Value("ok")));
 			
 		}else if(name.equals("enable_observability")){
 			
