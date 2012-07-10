@@ -23,6 +23,7 @@ import alice.respect.api.OperationNotPossibleException;
 import alice.respect.api.RespectSpecification;
 import alice.respect.api.RespectTC;
 import alice.respect.api.TupleCentreId;
+import alice.tucson.parsing.MyOpManager;
 import alice.tuplecentre.core.BehaviourSpecification;
 import alice.tuplecentre.api.Tuple;
 import alice.tuplecentre.api.TupleTemplate;
@@ -598,7 +599,6 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
     	}
         try {
         	this.timers.clear();
-            //System.out.println("setting spec: \n"+spec);
             Struct co=new Struct(spec.toString());
             if (co.isAtom()){
                 alice.tuprolog.Theory thspec=new alice.tuprolog.Theory(co.getName());
@@ -733,31 +733,23 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
     	noReactionTh = null;
     	Prolog engine = new Prolog();
     	try{
-//    		Theory th = new Theory(spec.toString());
-//    		engine.setTheory(th);
     		engine.solve("retractall(reaction(X,Y,Z)).");
     		engine.solveEnd();
-//    		if(!spec.equals("")){
-	    		Parser parser = new Parser(spec.toString());
-	//    		System.out.println("[RespectVMContext]: spec = " + spec.toString());
-	    		Term term = parser.nextTerm(true);
-	//    		System.out.println("[RespectVMContext]: term = " + term);
-	    		while(term!=null){
-	    			engine.solve("assert("+term+").");
-	    			term = parser.nextTerm(true);
-	//    			System.out.println("[RespectVMContext]: term = " + term);
-	    		}
-	    		engine.solveEnd();
-	    		spy("INITIAL SET: "+engine.getTheory());
-	    		noReactionTh = engine.getTheory();
-//    		}
+    		Parser parser = new Parser(new MyOpManager(), spec.toString());
+    		System.out.println("[RespectVMContext]: spec = " + spec.toString());
+    		Term term = parser.nextTerm(true);
+//    		System.out.println("[RespectVMContext]: term = " + term);
+    		while(term!=null){
+    			engine.solve("assert("+term+").");
+    			term = parser.nextTerm(true);
+//    			System.out.println("[RespectVMContext]: term = " + term);
+    		}
+    		engine.solveEnd();
+    		spy("INITIAL SET: "+engine.getTheory());
+    		noReactionTh = engine.getTheory();
     	}catch(Exception e){
     		e.printStackTrace();
     	}
-//    	if(!spec.equals("")){
-//    		tSpecSet.empty();
-//    		return true;
-//    	}
     	boolean result = setReactionSpecHelper(spec);
     	if (result){
     		tSpecSet.empty();
