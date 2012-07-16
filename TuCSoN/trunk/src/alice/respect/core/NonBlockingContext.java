@@ -3,96 +3,81 @@ package alice.respect.core;
 import alice.logictuple.InvalidLogicTupleException;
 import alice.logictuple.InvalidTupleOperationException;
 import alice.logictuple.LogicTuple;
+
 import alice.respect.api.INonBlockingContext;
 import alice.respect.api.IRespectOperation;
 import alice.respect.api.IRespectTC;
 import alice.respect.api.OperationNotPossibleException;
+
 import alice.tuplecentre.api.IId;
 import alice.tuplecentre.core.OperationCompletionListener;
 
-public class NonBlockingContext implements INonBlockingContext {
-
-	private IRespectTC core;
+public class NonBlockingContext extends AbstractContext implements INonBlockingContext {
     
     public NonBlockingContext(IRespectTC core_){
-        core=core_;
+        super(core_);
     }
 
     public IRespectOperation out(IId id, LogicTuple t, OperationCompletionListener l)
 			throws InvalidLogicTupleException, OperationNotPossibleException {
-		if (t==null){
+		if (t==null)
             throw new InvalidLogicTupleException();
-        }
-		IRespectOperation op = core.out(id,t,l);
-		return op;
+		return getCore().out(id,t,l);
 	}
     
 	public IRespectOperation in(IId id, LogicTuple t,
 			OperationCompletionListener l) throws InvalidLogicTupleException,
 			OperationNotPossibleException {
-		if (t==null){
+		if (t==null)
             throw new InvalidLogicTupleException();
-        }
-		IRespectOperation op = core.in(id,t,l);
-		return op;
+		return getCore().in(id,t,l);
 	}
 
 	public IRespectOperation inp(IId id, LogicTuple t,
 			OperationCompletionListener l) throws InvalidLogicTupleException,
 			OperationNotPossibleException {
-		if (t==null){
+		if (t==null)
             throw new InvalidLogicTupleException();
-        }
-		IRespectOperation op = core.inp(id,t,l);
-		return op;
+		return getCore().inp(id,t,l);
 	}
 
 	public IRespectOperation rd(IId id, LogicTuple t,
 			OperationCompletionListener l) throws InvalidLogicTupleException,
 			OperationNotPossibleException {
-		if (t==null){
+		if (t==null)
             throw new InvalidLogicTupleException();
-        }
-		IRespectOperation op = core.rd(id,t,l);
-		return op;
+		return getCore().rd(id,t,l);
 	}
 
 	public IRespectOperation rdp(IId id, LogicTuple t,
 			OperationCompletionListener l) throws InvalidLogicTupleException,
 			OperationNotPossibleException {
-		if (t==null){
+		if (t==null)
             throw new InvalidLogicTupleException();
-        }
-		IRespectOperation op = core.rdp(id,t,l);
-		return op;
+		return getCore().rdp(id,t,l);
 	}
 	
 	public IRespectOperation no(IId id, LogicTuple t,
 			OperationCompletionListener l) throws InvalidLogicTupleException,
 			OperationNotPossibleException {
-		if (t==null){
+		if (t==null)
             throw new InvalidLogicTupleException();
-        }
-		IRespectOperation op = core.no(id,t,l);
-		return op;
+		return getCore().no(id,t,l);
 	}
 	
 	public IRespectOperation nop(IId id, LogicTuple t,
 			OperationCompletionListener l) throws InvalidLogicTupleException,
 			OperationNotPossibleException {
-		if (t==null){
+		if (t==null)
             throw new InvalidLogicTupleException();
-        }
-		IRespectOperation op = core.nop(id,t,l);
-		return op;
+		return getCore().nop(id,t,l);
 	}
 
 
 	@Override
 	public IRespectOperation get(IId aid, OperationCompletionListener l)
 			throws InvalidLogicTupleException, OperationNotPossibleException {
-		IRespectOperation op = core.get(aid, l);
-		return op;
+		return getCore().get(aid, l);
 	}
 
 
@@ -100,31 +85,21 @@ public class NonBlockingContext implements INonBlockingContext {
 	public IRespectOperation set(IId aid, LogicTuple t,
 			OperationCompletionListener l) throws InvalidLogicTupleException,
 			OperationNotPossibleException {
-		if (t==null){
+		if (t==null)
             throw new InvalidLogicTupleException();
-        }
-		IRespectOperation op = core.set(aid,t,l);
-		return op;
+		return getCore().set(aid,t,l);
 	}
-	
-//	my personal updates
 	
 	public IRespectOperation in_all(IId aid, LogicTuple t,
 			OperationCompletionListener l) throws InvalidLogicTupleException,
 			OperationNotPossibleException {
-		try {
-			if (t==null || t.getArity()!=2){
-				throw new InvalidLogicTupleException();
-			}
-		} catch (InvalidTupleOperationException e2) {
-			e2.printStackTrace();
-		}
-		
 		IRespectOperation op = null;
 		try {
-			op = core.in_all(aid, new LogicTuple(t.getArg(0)), l);
-		} catch (InvalidTupleOperationException e) {
-			e.printStackTrace();
+			if (t==null || t.getArity()!=2)
+				throw new InvalidLogicTupleException();
+			op = getCore().in_all(aid, new LogicTuple(t.getArg(0)), l);
+		} catch (InvalidTupleOperationException e2) {
+			e2.printStackTrace();
 		}
 		return op;
 	}
@@ -132,19 +107,13 @@ public class NonBlockingContext implements INonBlockingContext {
 	public IRespectOperation rd_all(IId aid, LogicTuple t,
 			OperationCompletionListener l) throws InvalidLogicTupleException,
 			OperationNotPossibleException {
-		try {
-			if (t==null || t.getArity()!=2){
-				throw new InvalidLogicTupleException();
-			}
-		} catch (InvalidTupleOperationException e2) {
-			e2.printStackTrace();
-		}
-		
 		IRespectOperation op = null;
 		try {
-			op = core.rd_all(aid, new LogicTuple(t.getArg(0)), l);
-		} catch (InvalidTupleOperationException e) {
-			e.printStackTrace();
+			if (t==null || t.getArity()!=2)
+				throw new InvalidLogicTupleException();
+			op = getCore().rd_all(aid, new LogicTuple(t.getArg(0)), l);
+		} catch (InvalidTupleOperationException e2) {
+			e2.printStackTrace();
 		}
 		return op;
 	}
@@ -152,47 +121,33 @@ public class NonBlockingContext implements INonBlockingContext {
 	public IRespectOperation urd(IId aid, LogicTuple t,
 			OperationCompletionListener l) throws InvalidLogicTupleException,
 			OperationNotPossibleException {
-		if (t==null){
+		if (t==null)
 			throw new InvalidLogicTupleException();
-		}
-		
-		IRespectOperation op = core.urd(aid, t, l);
-		return op;
+		return getCore().urd(aid, t, l);
 	}
 	
 	public IRespectOperation uin(IId aid, LogicTuple t,
 			OperationCompletionListener l) throws InvalidLogicTupleException,
 			OperationNotPossibleException {
-		if (t==null){
+		if (t==null)
 			throw new InvalidLogicTupleException();
-		}
-		
-		IRespectOperation op = core.uin(aid, t, l);
-		return op;
+		return getCore().uin(aid, t, l);
 	}
 	
 	public IRespectOperation urdp(IId aid, LogicTuple t,
 			OperationCompletionListener l) throws InvalidLogicTupleException,
 			OperationNotPossibleException {
-		if (t==null){
+		if (t==null)
 			throw new InvalidLogicTupleException();
-		}
-		
-		IRespectOperation op = core.urdp(aid, t, l);
-		return op;
+		return getCore().urdp(aid, t, l);
 	}
 	
 	public IRespectOperation uinp(IId aid, LogicTuple t,
 			OperationCompletionListener l) throws InvalidLogicTupleException,
 			OperationNotPossibleException {
-		if (t==null){
+		if (t==null)
 			throw new InvalidLogicTupleException();
-		}
-		
-		IRespectOperation op = core.uinp(aid, t, l);
-		return op;
+		return getCore().uinp(aid, t, l);
 	}
 	
-//	*******************
-
 }

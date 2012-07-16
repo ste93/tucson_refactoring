@@ -31,14 +31,20 @@ public interface IBlockingContext {
 	LogicTuple in_all(AgentId aid, LogicTuple t) throws InvalidLogicTupleException, OperationNotPossibleException;
 	
 	LogicTuple rd_all(AgentId aid, LogicTuple t) throws InvalidLogicTupleException, OperationNotPossibleException;
+	
+	LogicTuple no_all(AgentId aid, LogicTuple t) throws InvalidLogicTupleException, OperationNotPossibleException;
 
 	LogicTuple urd(AgentId aid, LogicTuple t) throws InvalidLogicTupleException, OperationNotPossibleException;
 
 	LogicTuple uin(AgentId aid, LogicTuple t) throws InvalidLogicTupleException, OperationNotPossibleException;
 	
+	LogicTuple uno(AgentId aid, LogicTuple t) throws InvalidLogicTupleException, OperationNotPossibleException;
+	
 	LogicTuple urdp(AgentId aid, LogicTuple t) throws InvalidLogicTupleException, OperationNotPossibleException;
 	
 	LogicTuple uinp(AgentId aid, LogicTuple t) throws InvalidLogicTupleException, OperationNotPossibleException;
+	
+	LogicTuple unop(AgentId aid, LogicTuple t) throws InvalidLogicTupleException, OperationNotPossibleException;
 	
 //  *******************
 	
