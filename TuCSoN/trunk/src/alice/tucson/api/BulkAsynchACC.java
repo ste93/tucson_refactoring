@@ -28,4 +28,6 @@ public interface BulkAsynchACC extends RootACC{
 	
 	ITucsonOperation rd_all(Object tid, LogicTuple tuple, TucsonOperationCompletionListener l) throws TucsonOperationNotPossibleException, UnreachableNodeException;
 	
+	ITucsonOperation no_all(Object tid, LogicTuple tuple, TucsonOperationCompletionListener l) throws TucsonOperationNotPossibleException, UnreachableNodeException;
+	
 }

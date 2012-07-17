@@ -30,4 +30,6 @@ public interface BulkSynchACC extends RootACC{
 	
 	ITucsonOperation rd_all(Object tid, LogicTuple tuple, Long ms) throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException;
 	
+	ITucsonOperation no_all(Object tid, LogicTuple tuple, Long ms) throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException;
+	
 }

@@ -224,14 +224,20 @@ public class TupleCentreContainer{
 				return context.in_all((AgentId) aid.getLocalAgentId(), t, l);
 			if(type == TucsonOperation.rd_allCode())
 				return context.rd_all((AgentId) aid.getLocalAgentId(), t, l);
+			if(type == TucsonOperation.no_allCode())
+				return context.no_all((AgentId) aid.getLocalAgentId(), t, l);
 			if(type == TucsonOperation.uinCode())
 				return context.uin((AgentId) aid.getLocalAgentId(), t, l);
 			if(type == TucsonOperation.uinpCode())
 				return context.uinp((AgentId) aid.getLocalAgentId(), t, l);
 			if(type == TucsonOperation.urdCode())
 				return context.urd((AgentId) aid.getLocalAgentId(), t, l);
+			if(type == TucsonOperation.unoCode())
+				return context.uno((AgentId) aid.getLocalAgentId(), t, l);
 			if(type == TucsonOperation.urdpCode())
 				return context.urdp((AgentId) aid.getLocalAgentId(), t, l);
+			if(type == TucsonOperation.unopCode())
+				return context.unop((AgentId) aid.getLocalAgentId(), t, l);
 			if(type == TucsonOperation.inCode())
 				return context.in((AgentId) aid.getLocalAgentId(), t, l);
 			if(type == TucsonOperation.inpCode())

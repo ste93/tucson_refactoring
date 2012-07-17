@@ -456,6 +456,13 @@ public class ACCProxyAgentSide implements EnhancedACC{
 			UnreachableNodeException {
 		return doNonBlockingOperation(TucsonOperation.urdCode(), tid, tuple, l);
 	}
+	
+	public ITucsonOperation uno(Object tid, LogicTuple tuple,
+			TucsonOperationCompletionListener l)
+			throws TucsonOperationNotPossibleException,
+			UnreachableNodeException {
+		return doNonBlockingOperation(TucsonOperation.unoCode(), tid, tuple, l);
+	}
 
 	public ITucsonOperation uinp(Object tid, LogicTuple tuple,
 			TucsonOperationCompletionListener l)
@@ -470,6 +477,13 @@ public class ACCProxyAgentSide implements EnhancedACC{
 			UnreachableNodeException {
 		return doNonBlockingOperation(TucsonOperation.urdpCode(), tid, tuple, l);
 	}
+	
+	public ITucsonOperation unop(Object tid, LogicTuple tuple,
+			TucsonOperationCompletionListener l)
+			throws TucsonOperationNotPossibleException,
+			UnreachableNodeException {
+		return doNonBlockingOperation(TucsonOperation.unopCode(), tid, tuple, l);
+	}
 
 	public ITucsonOperation in_all(Object tid, LogicTuple tuple,
 			TucsonOperationCompletionListener l)
@@ -483,6 +497,13 @@ public class ACCProxyAgentSide implements EnhancedACC{
 			throws TucsonOperationNotPossibleException,
 			UnreachableNodeException {
 		return doNonBlockingOperation(TucsonOperation.rd_allCode(), tid, tuple, l);
+	}
+	
+	public ITucsonOperation no_all(Object tid, LogicTuple tuple,
+			TucsonOperationCompletionListener l)
+			throws TucsonOperationNotPossibleException,
+			UnreachableNodeException {
+		return doNonBlockingOperation(TucsonOperation.no_allCode(), tid, tuple, l);
 	}
 	
 	
@@ -1115,6 +1136,12 @@ public class ACCProxyAgentSide implements EnhancedACC{
 			UnreachableNodeException, OperationTimeOutException {
 		return doBlockingOperation(TucsonOperation.urdCode(), tid, tuple, ms);
 	}
+	
+	public ITucsonOperation uno(Object tid, LogicTuple tuple, Long ms)
+			throws TucsonOperationNotPossibleException,
+			UnreachableNodeException, OperationTimeOutException {
+		return doBlockingOperation(TucsonOperation.unoCode(), tid, tuple, ms);
+	}
 
 	public ITucsonOperation uinp(Object tid, LogicTuple tuple, Long ms)
 			throws TucsonOperationNotPossibleException,
@@ -1127,6 +1154,12 @@ public class ACCProxyAgentSide implements EnhancedACC{
 			UnreachableNodeException, OperationTimeOutException {
 		return doBlockingOperation(TucsonOperation.urdpCode(), tid, tuple, ms);
 	}
+	
+	public ITucsonOperation unop(Object tid, LogicTuple tuple, Long ms)
+			throws TucsonOperationNotPossibleException,
+			UnreachableNodeException, OperationTimeOutException {
+		return doBlockingOperation(TucsonOperation.unopCode(), tid, tuple, ms);
+	}
 
 	public ITucsonOperation in_all(Object tid, LogicTuple tuple, Long ms)
 			throws TucsonOperationNotPossibleException,
@@ -1138,6 +1171,12 @@ public class ACCProxyAgentSide implements EnhancedACC{
 			throws TucsonOperationNotPossibleException,
 			UnreachableNodeException, OperationTimeOutException {
 		return doBlockingOperation(TucsonOperation.rd_allCode(), tid, tuple, ms);
+	}
+	
+	public ITucsonOperation no_all(Object tid, LogicTuple tuple, Long ms)
+			throws TucsonOperationNotPossibleException,
+			UnreachableNodeException, OperationTimeOutException {
+		return doBlockingOperation(TucsonOperation.no_allCode(), tid, tuple, ms);
 	}
 	
 	
@@ -1512,12 +1551,7 @@ public class ACCProxyAgentSide implements EnhancedACC{
 			throw new OperationTimeOutException();
 		}
 		return op;
-//		if(op.isGet())
-//			return op.getLogicTupleResultList();
-//		else{
-//			return op.getLogicTupleResult();
-//		}
-		
+
 	}
 	
 	/**
@@ -1593,8 +1627,6 @@ public class ACCProxyAgentSide implements EnhancedACC{
 				op = new TucsonOperation(type, (Tuple) t, l, this);
 			else
 				op = new TucsonOperation(type, (TupleTemplate) t, l, this);
-//			log("Sending TucsonOperation request <id="+op.getId()+", type="+op.getType()+"," +
-//					"target_tc="+tcid.toString()+", tuple="+op.getLogicTupleArgument()+">...");
 			operations.put(op.getId(), op);
 			
 			TucsonMsgRequest msg = new TucsonMsgRequest(op.getId(), op.getType(), tcid.toString(),
@@ -1810,6 +1842,7 @@ public class ACCProxyAgentSide implements EnhancedACC{
 					int type = msg.getType();
 					if(type == TucsonOperation.uinCode() || type == TucsonOperation.uinpCode()
 							|| type == TucsonOperation.urdCode() || type == TucsonOperation.urdpCode()
+							|| type == TucsonOperation.unoCode() || type == TucsonOperation.unopCode()
 							|| type == TucsonOperation.noCode() || type == TucsonOperation.no_sCode()
 							|| type == TucsonOperation.nopCode() || type == TucsonOperation.nop_sCode()
 							|| type == TucsonOperation.inCode() || type == TucsonOperation.rdCode()
@@ -1830,15 +1863,11 @@ public class ACCProxyAgentSide implements EnhancedACC{
 							ev = new TucsonOpCompletionEvent(new TucsonOpId(msg.getId()), ok, false);
 						}
 						
-//					}else if(type == TucsonOperation.get_sCode()){
-//						
-//						LogicTuple tupleRes = new LogicTuple((TupleArgument)msg.getTupleResult());
-//						ev = new TucsonOpCompletionEvent(new TucsonOpId(msg.getId()), ok, msg.isSuccess(), tupleRes);
-//						
 					}else if(type == TucsonOperation.set_Code() || type == TucsonOperation.set_sCode()
 							|| type == TucsonOperation.outCode() || type == TucsonOperation.out_sCode()){
 						ev = new TucsonOpCompletionEvent(new TucsonOpId(msg.getId()), ok, msg.isSuccess());
 					}else if(type == TucsonOperation.in_allCode() || type == TucsonOperation.rd_allCode()
+							|| type == TucsonOperation.no_allCode()
 							|| type == TucsonOperation.get_Code() || type == TucsonOperation.get_sCode()){
 						List<LogicTuple> tupleSetRes = (List<LogicTuple>) msg.getTupleResult();
 						ev = new TucsonOpCompletionEvent(new TucsonOpId(msg.getId()), ok, msg.isSuccess(), tupleSetRes);
@@ -1852,14 +1881,11 @@ public class ACCProxyAgentSide implements EnhancedACC{
 				}
 				
 				TucsonOperation op = operations.remove(msg.getId());
-				if(op.isInAll() || op.isRdAll() || op.isGet() || op.isSet() || op.isGet_s()
+				if(op.isNoAll() || op.isInAll() || op.isRdAll() || op.isGet() || op.isSet() || op.isGet_s()
 						|| op.isSet_s()){
 					op.setLogicTupleListResult((List<LogicTuple>) msg.getTupleResult());
-//				}else if(op.isGet_s()){
-//					op.setTupleResult(new LogicTuple((TupleArgument)msg.getTupleResult()));
 				}else{
 					op.setTupleResult((LogicTuple) msg.getTupleResult());
-//					log("msg.getTupleResult = " + msg.getTupleResult());
 				}
 				if(msg.isResultSuccess())
 					op.setOpResult(Outcome.SUCCESS);

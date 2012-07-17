@@ -196,7 +196,16 @@ public class CLIAgent extends alice.util.Automaton{
 						prompt("success: " + op.getLogicTupleListResult());
 					else
 						prompt("failure: " + op.getLogicTupleListResult());
-				}else if(methodName.equals("in_all")){
+				}else if(methodName.equals("no_all")){
+					LogicTuple templ = LogicTuple.parse(tuple);
+					busy();
+					ITucsonOperation op = context.no_all(tid, templ, (Long) null);
+					if(op.isResultSuccess())
+						prompt("success: " + op.getLogicTupleListResult());
+					else
+						prompt("failure: " + op.getLogicTupleListResult());
+				}
+				else if(methodName.equals("in_all")){
 					LogicTuple templ = LogicTuple.parse(tuple);
 					busy();
 					ITucsonOperation op = context.in_all(tid, templ, (Long) null);
@@ -212,7 +221,16 @@ public class CLIAgent extends alice.util.Automaton{
 						prompt("success: " + op.getLogicTupleResult());
 					else
 						prompt("failure: " + op.getLogicTupleResult());
-				}else if(methodName.equals("urdp")){
+				}else if(methodName.equals("uno")){
+					LogicTuple templ = LogicTuple.parse(tuple);
+					busy();
+					ITucsonOperation op = context.uno(tid, templ, (Long) null);
+					if(op.isResultSuccess())
+						prompt("success: " + op.getLogicTupleResult());
+					else
+						prompt("failure: " + op.getLogicTupleResult());
+				}
+				else if(methodName.equals("urdp")){
 					LogicTuple templ = LogicTuple.parse(tuple);
 					busy();
 					ITucsonOperation op = context.urdp(tid, templ, (Long) null);
@@ -220,7 +238,16 @@ public class CLIAgent extends alice.util.Automaton{
 						prompt("success: " + op.getLogicTupleResult());
 					else
 						prompt("failure: " + op.getLogicTupleResult());
-				}else if(methodName.equals("uin")){
+				}else if(methodName.equals("unop")){
+					LogicTuple templ = LogicTuple.parse(tuple);
+					busy();
+					ITucsonOperation op = context.unop(tid, templ, (Long) null);
+					if(op.isResultSuccess())
+						prompt("success: " + op.getLogicTupleResult());
+					else
+						prompt("failure: " + op.getLogicTupleResult());
+				}
+				else if(methodName.equals("uin")){
 					LogicTuple templ = LogicTuple.parse(tuple);
 					busy();
 					ITucsonOperation op = context.uin(tid, templ, (Long) null);

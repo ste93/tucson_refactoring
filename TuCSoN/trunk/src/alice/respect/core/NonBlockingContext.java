@@ -153,7 +153,7 @@ public class NonBlockingContext extends AbstractContext implements INonBlockingC
 			OperationNotPossibleException {
 	    if (t==null)
 	        throw new InvalidLogicTupleException();
-		return getCore().uno(id,t);
+		return getCore().uno(id,t,l);
 	}
 	
 	public IRespectOperation urdp(IId aid, LogicTuple t,
@@ -177,7 +177,7 @@ public class NonBlockingContext extends AbstractContext implements INonBlockingC
 			OperationNotPossibleException {
 	    if (t==null)
 	        throw new InvalidLogicTupleException();
-		return getCore().unop(id,t);
+		return getCore().unop(id,t,l);
 	}
 	
 }

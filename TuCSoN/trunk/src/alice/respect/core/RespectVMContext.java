@@ -752,7 +752,6 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
     		engine.solve("retractall(reaction(X,Y,Z)).");
     		engine.solveEnd();
     		Parser parser = new Parser(new MyOpManager(), spec.toString());
-    		System.out.println("[RespectVMContext]: spec = " + spec.toString());
     		Term term = parser.nextTerm(true);
 //    		System.out.println("[RespectVMContext]: term = " + term);
     		while(term!=null){

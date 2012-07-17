@@ -196,7 +196,7 @@ public class SpeakingState extends TupleCentreVMState {
 	            		foundSatisfied=true;
 		            }
 		            else if (op.isUnop()){
-		                tuple = vm.readUniformTuple(op.getTemplateArgument());
+		            	tuple = vm.readUniformTuple(op.getTemplateArgument());
 		                if(tuple==null){
 	            			op.setOpResult(Outcome.SUCCESS);
 	            			op.setTupleResult(op.getTemplateArgument());
@@ -325,6 +325,7 @@ public class SpeakingState extends TupleCentreVMState {
 			
 			if(!ev.isLinking()){
 				vm.notifyOutputEvent(out_ev);
+//				System.out.println("[SpeakingState]: out_ev = " + out_ev.toString());
 				if (((RespectVMContext)vm).getRespectVM().getObservers().size()>0)
 					((RespectVMContext)vm).getRespectVM().notifyObservableEvent(out_ev);
 			}

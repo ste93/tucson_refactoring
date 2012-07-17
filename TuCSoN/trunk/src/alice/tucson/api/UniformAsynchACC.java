@@ -30,10 +30,16 @@ public interface UniformAsynchACC extends RootACC{
 	ITucsonOperation urd(Object tid, LogicTuple tuple, TucsonOperationCompletionListener l)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException;
 	
+	ITucsonOperation uno(Object tid, LogicTuple tuple, TucsonOperationCompletionListener l)
+			throws TucsonOperationNotPossibleException, UnreachableNodeException;
+	
 	ITucsonOperation uinp(Object tid, LogicTuple tuple, TucsonOperationCompletionListener l)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException;
 	
 	ITucsonOperation urdp(Object tid, LogicTuple tuple, TucsonOperationCompletionListener l)
+			throws TucsonOperationNotPossibleException, UnreachableNodeException;
+	
+	ITucsonOperation unop(Object tid, LogicTuple tuple, TucsonOperationCompletionListener l)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException;
 
 }
