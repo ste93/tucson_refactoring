@@ -153,11 +153,26 @@ public class SpeakingState extends TupleCentreVMState {
 		                op.setTupleListResult(tuples);
 	            		foundSatisfied=true;
 		            }
+		            else if (op.isNoAll()){
+		            	List<Tuple> tuples = new LinkedList<Tuple>();
+		                tuples = vm.readAllTuples(op.getTemplateArgument());
+		                op.setOpResult(Outcome.SUCCESS);
+		                op.setTupleListResult(tuples);
+	            		foundSatisfied=true;
+		            }
 		            else if (op.isUrd()){
 		                tuple = vm.readUniformTuple(op.getTemplateArgument());
 		                if (tuple!=null){
 							op.setOpResult(Outcome.SUCCESS);
 				            op.setTupleResult(tuple);
+							foundSatisfied=true;
+						}// we do nothing: urd is suspensive hence we cannot conclude FAILURE yet!
+		            }
+		            else if (op.isUno()){
+		                tuple = vm.readUniformTuple(op.getTemplateArgument());
+		                if (tuple==null){
+							op.setOpResult(Outcome.SUCCESS);
+				            op.setTupleResult(op.getTemplateArgument());
 							foundSatisfied=true;
 						}// we do nothing: urd is suspensive hence we cannot conclude FAILURE yet!
 		            }
@@ -177,6 +192,17 @@ public class SpeakingState extends TupleCentreVMState {
 	            		}else{
 	            			op.setOpResult(Outcome.FAILURE);
 	            			op.setTupleResult(op.getTemplateArgument());
+	            		}
+	            		foundSatisfied=true;
+		            }
+		            else if (op.isUnop()){
+		                tuple = vm.readUniformTuple(op.getTemplateArgument());
+		                if(tuple==null){
+	            			op.setOpResult(Outcome.SUCCESS);
+	            			op.setTupleResult(op.getTemplateArgument());
+	            		}else{
+	            			op.setOpResult(Outcome.FAILURE);
+	            			op.setTupleResult(tuple);
 	            		}
 	            		foundSatisfied=true;
 		            }
@@ -295,14 +321,6 @@ public class SpeakingState extends TupleCentreVMState {
 
 		if (foundSatisfied){
 			
-//			TupleCentreOperation op = ev.getOperation();
-//			if(!op.isResultDefined() && !ev.isLinking()){
-//				if(op.isGet()){
-//					op.setTupleListResult(tupleList);
-//				}else{
-//					op.setTupleResult(tuple);
-//				}
-//			}
 			out_ev = new OutputEvent(ev);
 			
 			if(!ev.isLinking()){

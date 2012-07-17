@@ -118,6 +118,20 @@ public class NonBlockingContext extends AbstractContext implements INonBlockingC
 		return op;
 	}
 	
+	public IRespectOperation no_all(IId id, LogicTuple t,
+			OperationCompletionListener l) throws InvalidLogicTupleException,
+			OperationNotPossibleException {
+		IRespectOperation op = null;
+		try {
+			if (t==null || t.getArity()!=2)
+				throw new InvalidLogicTupleException();
+			op = getCore().no_all(id,new LogicTuple(t.getArg(0)), l);
+		} catch (InvalidTupleOperationException e2) {
+			throw new OperationNotPossibleException();
+		}
+		return op;
+	}
+	
 	public IRespectOperation urd(IId aid, LogicTuple t,
 			OperationCompletionListener l) throws InvalidLogicTupleException,
 			OperationNotPossibleException {
@@ -134,6 +148,14 @@ public class NonBlockingContext extends AbstractContext implements INonBlockingC
 		return getCore().uin(aid, t, l);
 	}
 	
+	public IRespectOperation uno(IId id, LogicTuple t,
+			OperationCompletionListener l) throws InvalidLogicTupleException,
+			OperationNotPossibleException {
+	    if (t==null)
+	        throw new InvalidLogicTupleException();
+		return getCore().uno(id,t);
+	}
+	
 	public IRespectOperation urdp(IId aid, LogicTuple t,
 			OperationCompletionListener l) throws InvalidLogicTupleException,
 			OperationNotPossibleException {
@@ -148,6 +170,14 @@ public class NonBlockingContext extends AbstractContext implements INonBlockingC
 		if (t==null)
 			throw new InvalidLogicTupleException();
 		return getCore().uinp(aid, t, l);
+	}
+	
+	public IRespectOperation unop(IId id, LogicTuple t,
+			OperationCompletionListener l) throws InvalidLogicTupleException,
+			OperationNotPossibleException {
+	    if (t==null)
+	        throw new InvalidLogicTupleException();
+		return getCore().unop(id,t);
 	}
 	
 }
