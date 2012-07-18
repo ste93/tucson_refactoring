@@ -80,9 +80,12 @@ public abstract class TupleCentreOperation implements ITupleCentreOperation
 	
 	public static final int OPTYPE_IN_ALL = 40;
 	public static final int OPTYPE_RD_ALL = 41;
+	public static final int OPTYPE_NO_ALL = 410;
 	public static final int OPTYPE_URD = 44;
+	public static final int OPTYPE_UNO = 440;
 	public static final int OPTYPE_UIN = 45;
 	public static final int OPTYPE_URDP = 46;
+	public static final int OPTYPE_UNOP = 460;
 	public static final int OPTYPE_UINP = 47;
 	
 //	******************
@@ -211,12 +214,6 @@ public abstract class TupleCentreOperation implements ITupleCentreOperation
 	 * @return true if the result is defined
 	 */
 	public boolean isResultDefined(){
-//		if (isNo() || isInp() || isRdp() || isNo_s() || isInp_s() || isRdp_s() || isGet() || isGet_s()){
-//			System.out.println("[TupleCentreOperation]: isPredicativeOp = true");
-//			return this.isOperationCompleted();
-//		}
-//		System.out.println("[TupleCentreOperation]: isPredicativeOp = false");
-//		return this.result.isResultDefined();
 		return this.result.isResultDefined();
 	}
 	
@@ -274,8 +271,16 @@ public abstract class TupleCentreOperation implements ITupleCentreOperation
 		return type == TupleCentreOperation.OPTYPE_RD_ALL;
 	}
 	
+	public boolean isNoAll(){
+		return type == TupleCentreOperation.OPTYPE_NO_ALL;
+	}
+	
 	public boolean isUrd(){
 		return type == TupleCentreOperation.OPTYPE_URD;
+	}
+	
+	public boolean isUno(){
+		return type == TupleCentreOperation.OPTYPE_UNO;
 	}
 	
 	public boolean isUin(){
@@ -284,6 +289,10 @@ public abstract class TupleCentreOperation implements ITupleCentreOperation
 	
 	public boolean isUrdp(){
 		return type == TupleCentreOperation.OPTYPE_URDP;
+	}
+	
+	public boolean isUnop(){
+		return type == TupleCentreOperation.OPTYPE_UNOP;
 	}
 	
 	public boolean isUinp(){

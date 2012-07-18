@@ -120,6 +120,12 @@ public class RespectTC implements IRespectTC {
 		return op;
 	}
 	
+	public IRespectOperation no_all(IId id, LogicTuple t, OperationCompletionListener l) throws OperationNotPossibleException {
+		RespectOperation op=RespectOperation.makeNoAll(getProlog(),t,l);
+		vm.doOperation(id,op);
+		return op;
+	}
+	
 	public IRespectOperation urd(IId id, LogicTuple t, OperationCompletionListener l) throws OperationNotPossibleException {
 		RespectOperation op=RespectOperation.makeUrd(getProlog(),t,l);
 		vm.doOperation(id,op);
@@ -132,6 +138,12 @@ public class RespectTC implements IRespectTC {
 		return op;
 	}
 	
+	public IRespectOperation uno(IId id, LogicTuple t, OperationCompletionListener l) throws OperationNotPossibleException {
+		RespectOperation op=RespectOperation.makeUno(getProlog(),t,l);
+		vm.doOperation(id,op);
+		return op;
+	}
+	
 	public IRespectOperation urdp(IId id, LogicTuple t, OperationCompletionListener l) throws OperationNotPossibleException {
 		RespectOperation op=RespectOperation.makeUrdp(getProlog(),t,l);
 		vm.doOperation(id,op);
@@ -140,6 +152,12 @@ public class RespectTC implements IRespectTC {
 	
 	public IRespectOperation uinp(IId id, LogicTuple t, OperationCompletionListener l) throws OperationNotPossibleException {
 		RespectOperation op=RespectOperation.makeUinp(getProlog(),t,l);
+		vm.doOperation(id,op);
+		return op;
+	}
+	
+	public IRespectOperation unop(IId id, LogicTuple t, OperationCompletionListener l) throws OperationNotPossibleException {
+		RespectOperation op=RespectOperation.makeUnop(getProlog(),t,l);
 		vm.doOperation(id,op);
 		return op;
 	}
@@ -262,6 +280,10 @@ public class RespectTC implements IRespectTC {
 		return this.rd_all(id, t,null);
 	}
 	
+	public IRespectOperation no_all(IId id, LogicTuple t) throws OperationNotPossibleException {
+		return this.no_all(id, t,null);
+	}
+	
 	public IRespectOperation urd(IId id, LogicTuple t) throws OperationNotPossibleException {
 		return this.urd(id, t,null);
 	}
@@ -270,12 +292,20 @@ public class RespectTC implements IRespectTC {
 		return this.uin(id, t,null);
 	}
 	
+	public IRespectOperation uno(IId id, LogicTuple t) throws OperationNotPossibleException {
+		return this.uno(id, t,null);
+	}
+	
 	public IRespectOperation urdp(IId id, LogicTuple t) throws OperationNotPossibleException {
 		return this.urdp(id, t,null);
 	}
 	
 	public IRespectOperation uinp(IId id, LogicTuple t) throws OperationNotPossibleException {
 		return this.uinp(id, t,null);
+	}
+	
+	public IRespectOperation unop(IId id, LogicTuple t) throws OperationNotPossibleException {
+		return this.unop(id, t,null);
 	}
 	
 //	*******************************************************

@@ -262,17 +262,22 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 //	                my personal updates
 	                else if (op.isUrd()){
 	                	currentReactionTerm = new Struct("urd", op.getLogicTupleArgument().toTerm());
-	                }else if (op.isUin()){
+	                }else if (op.isUno())
+	                	currentReactionTerm = new Struct("uno", op.getLogicTupleArgument().toTerm());
+	                else if (op.isUin()){
 	                	currentReactionTerm = new Struct("uin", op.getLogicTupleArgument().toTerm());
 	                }else if (op.isUrdp()){
 	                	currentReactionTerm = new Struct("urdp", op.getLogicTupleArgument().toTerm());
-	                }else if (op.isUinp()){
+	                }else if (op.isUnop())
+	                	currentReactionTerm = new Struct("unop", op.getLogicTupleArgument().toTerm());
+	                else if (op.isUinp()){
 	                	currentReactionTerm = new Struct("uinp", op.getLogicTupleArgument().toTerm());
 	                }else if (op.isInAll()){
 	                	currentReactionTerm = new Struct("in_all", op.getLogicTupleArgument().toTerm());
 	                }else if (op.isRdAll()){
 	                	currentReactionTerm = new Struct("rd_all", op.getLogicTupleArgument().toTerm());
-	                }
+	                }else if (op.isNoAll())
+	                	currentReactionTerm = new Struct("no_all", op.getLogicTupleArgument().toTerm());
 //	                *******************
 	            }else if (ev.isOutput()){
 	                alice.tuplecentre.core.OutputEvent oe = (alice.tuplecentre.core.OutputEvent)ev;
@@ -314,17 +319,22 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 //		                my personal updates
 		                else if (op.isUrd()){
 		                	currentReactionTerm = new Struct("urd", op.getLogicTupleArgument().toTerm());
-		                }else if (op.isUin()){
+		                }else if (op.isUno())
+		                	currentReactionTerm = new Struct("uno", op.getLogicTupleArgument().toTerm());
+		                else if (op.isUin()){
 		                	currentReactionTerm = new Struct("uin", op.getLogicTupleArgument().toTerm());
 		                }else if (op.isUrdp()){
 		                	currentReactionTerm = new Struct("urdp", op.getLogicTupleArgument().toTerm());
-		                }else if (op.isUinp()){
+		                }else if (op.isUnop())
+		                	currentReactionTerm = new Struct("unop", op.getLogicTupleArgument().toTerm());
+		                else if (op.isUinp()){
 		                	currentReactionTerm = new Struct("uinp", op.getLogicTupleArgument().toTerm());
 		                }else if (op.isInAll()){
 		                	currentReactionTerm = new Struct("in_all", op.getLogicTupleArgument().toTerm());
 		                }else if (op.isRdAll()){
 		                	currentReactionTerm = new Struct("rd_all", op.getLogicTupleArgument().toTerm());
-		                }
+		                }else if (op.isNoAll())
+		                	currentReactionTerm = new Struct("no_all", op.getLogicTupleArgument().toTerm());
 //		                *******************
 					}else{
 						System.out.println("[RespectVMContext]: output phase");
@@ -349,11 +359,7 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 		                } else  if (op.isOut()){
 		                    currentReactionTerm=new Struct("out",op.getLogicTupleResult().toTerm());
 		                }else if (op.isNo()){
-//		                	LogicTuple result = op.getLogicTupleResult();
-//							if (result!=null)
-//								currentReactionTerm=new Struct("no",result.toTerm());
-//							else
-								currentReactionTerm=new Struct("no",op.getLogicTupleArgument().toTerm());
+							currentReactionTerm=new Struct("no",op.getLogicTupleArgument().toTerm());
 		                }else if (op.isNop()){
 		                	LogicTuple result = op.getLogicTupleResult();
 							if (result!=null){
@@ -382,11 +388,7 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 		                } else if (op.isOut_s()){
 		                	currentReactionTerm=new Struct("out_s",op.getLogicTupleResult().toTerm());
 		                }else if (op.isNo_s()){
-//		                	LogicTuple result = op.getLogicTupleResult();
-//							if (result!=null)
-//								currentReactionTerm=new Struct("no_s",result.toTerm());
-//							else
-								currentReactionTerm=new Struct("no_s",op.getLogicTupleArgument().toTerm());
+							currentReactionTerm=new Struct("no_s",op.getLogicTupleArgument().toTerm());
 		                }else if (op.isNop_s()){
 		                	LogicTuple result = op.getLogicTupleResult();
 							if (result!=null){
@@ -398,7 +400,9 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 //		                my personal updates
 		                else if (op.isUrd()){
 		                	currentReactionTerm = new Struct("urd", op.getLogicTupleArgument().toTerm());
-		                }else if (op.isUin()){
+		                }else if (op.isUno())
+		                	currentReactionTerm = new Struct("uno", op.getLogicTupleArgument().toTerm());
+		                else if (op.isUin()){
 		                	currentReactionTerm = new Struct("uin", op.getLogicTupleArgument().toTerm());
 		                }else if (op.isUrdp()){
 		                	LogicTuple result = op.getLogicTupleResult();
@@ -407,6 +411,13 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 							} else {
 								currentReactionTerm=new Struct("urdp",op.getLogicTupleArgument().toTerm());
 							}		                
+						}else if (op.isUnop()){
+		                	LogicTuple result = op.getLogicTupleResult();
+							if (result!=null){
+								currentReactionTerm=new Struct("unop",result.toTerm());
+							} else {
+								currentReactionTerm=new Struct("unop",op.getLogicTupleArgument().toTerm());
+							}
 						}else if (op.isUinp()){
 							LogicTuple result = op.getLogicTupleResult();
 							if (result!=null){
@@ -418,6 +429,8 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 		                	currentReactionTerm = new Struct("in_all", op.getLogicTupleArgument().toTerm());
 		                }else if (op.isRdAll()){
 		                	currentReactionTerm = new Struct("rd_all", op.getLogicTupleArgument().toTerm());
+		                }else if (op.isNoAll()){
+		                	currentReactionTerm = new Struct("no_all", op.getLogicTupleArgument().toTerm());
 		                }
 //		                *******************
 					}
@@ -449,13 +462,16 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 //	                my personal updates
 	                else if (rop.isUrdR()){
 	                	currentReactionTerm = new Struct("urd", rop.getArgument().toTerm());
-	                }else if (rop.isUinR()){
+	                }else if (rop.isUnoR())
+	                	currentReactionTerm = new Struct("uno", rop.getArgument().toTerm());
+	                else if (rop.isUinR()){
 	                	currentReactionTerm = new Struct("uin", rop.getArgument().toTerm());
 	                }else if (rop.isInAllR()){
 	                	currentReactionTerm = new Struct("in_all", rop.getArgument().toTerm());
 	                }else if (rop.isRdAllR()){
 	                	currentReactionTerm = new Struct("rd_all", rop.getArgument().toTerm());
-	                }
+	                }else if (rop.isNoAllR())
+	                	currentReactionTerm = new Struct("no_all", rop.getArgument().toTerm());
 //	                *******************
 	            }
 	            
@@ -736,7 +752,6 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
     		engine.solve("retractall(reaction(X,Y,Z)).");
     		engine.solveEnd();
     		Parser parser = new Parser(new MyOpManager(), spec.toString());
-    		System.out.println("[RespectVMContext]: spec = " + spec.toString());
     		Term term = parser.nextTerm(true);
 //    		System.out.println("[RespectVMContext]: term = " + term);
     		while(term!=null){

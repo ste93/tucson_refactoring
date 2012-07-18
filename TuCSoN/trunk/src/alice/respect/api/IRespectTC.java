@@ -284,6 +284,10 @@ public interface IRespectTC  {
 
 	IRespectOperation rd_all(IId id, LogicTuple t, OperationCompletionListener l) throws OperationNotPossibleException;
 	
+	IRespectOperation no_all(IId id, LogicTuple t) throws OperationNotPossibleException;
+
+	IRespectOperation no_all(IId id, LogicTuple t, OperationCompletionListener l) throws OperationNotPossibleException;
+	
 	/**
 	 * Retrieves all tuples in the tuple centre matching the template
 	 * 
@@ -307,6 +311,10 @@ public interface IRespectTC  {
 	IRespectOperation uin(IId id, LogicTuple t) throws OperationNotPossibleException;
 	
 	IRespectOperation uin(IId id, LogicTuple t, OperationCompletionListener l) throws OperationNotPossibleException;
+	
+	IRespectOperation uno(IId id, LogicTuple t) throws OperationNotPossibleException;
+	
+	IRespectOperation uno(IId id, LogicTuple t, OperationCompletionListener l) throws OperationNotPossibleException;
 
 	/**
 	 * Retrieves all tuples in the tuple centre matching the template
@@ -331,6 +339,10 @@ public interface IRespectTC  {
 	IRespectOperation uinp(IId id, LogicTuple t) throws OperationNotPossibleException;
 	
 	IRespectOperation uinp(IId id, LogicTuple t, OperationCompletionListener l) throws OperationNotPossibleException;
+	
+	IRespectOperation unop(IId id, LogicTuple t) throws OperationNotPossibleException;
+	
+	IRespectOperation unop(IId id, LogicTuple t, OperationCompletionListener l) throws OperationNotPossibleException;
 
 	//	*******************
 	

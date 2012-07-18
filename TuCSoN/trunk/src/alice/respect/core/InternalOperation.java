@@ -58,8 +58,10 @@ public class InternalOperation {
 //	my personal updates
 	private static final int OPTYPE_UINR = 12;
 	private static final int OPTYPE_URDR = 13;
+	private static final int OPTYPE_UNOR = 139;
 	private static final int OPTYPE_IN_ALLR = 16;
 	private static final int OPTYPE_RD_ALLR = 17;
+	private static final int OPTYPE_NO_ALLR = 179;
 //	*******************
  	
  	private int type;
@@ -154,12 +156,20 @@ public class InternalOperation {
 		return type==OPTYPE_URDR;
 	}
 	
+	public boolean isUnoR(){
+		return type==OPTYPE_UNOR;
+	}
+	
 	public boolean isInAllR(){
 		return type==OPTYPE_IN_ALLR;
 	}
 	
 	public boolean isRdAllR(){
 		return type==OPTYPE_RD_ALLR;
+	}
+	
+	public boolean isNoAllR(){
+		return type==OPTYPE_NO_ALLR;
 	}
 	
 //	*******************

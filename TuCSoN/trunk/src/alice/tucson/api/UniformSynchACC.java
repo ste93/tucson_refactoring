@@ -34,11 +34,19 @@ public interface UniformSynchACC extends RootACC{
 			throws TucsonOperationNotPossibleException, UnreachableNodeException,
 			OperationTimeOutException;
 	
+	ITucsonOperation uno(Object tid, LogicTuple tuple, Long ms)
+			throws TucsonOperationNotPossibleException, UnreachableNodeException,
+			OperationTimeOutException;
+	
 	ITucsonOperation uinp(Object tid, LogicTuple tuple, Long ms)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException,
 			OperationTimeOutException;
 	
 	ITucsonOperation urdp(Object tid, LogicTuple tuple, Long ms)
+			throws TucsonOperationNotPossibleException, UnreachableNodeException,
+			OperationTimeOutException;
+	
+	ITucsonOperation unop(Object tid, LogicTuple tuple, Long ms)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException,
 			OperationTimeOutException;
 	

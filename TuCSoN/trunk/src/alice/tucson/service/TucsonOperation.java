@@ -45,6 +45,10 @@ public class TucsonOperation extends TupleCentreOperation implements ITucsonOper
 		return OPTYPE_URD;
 	}
 	
+	public static int unoCode(){
+		return OPTYPE_UNO;
+	}
+	
 	public static int uinpCode(){
 		return OPTYPE_UINP;
 	}
@@ -53,12 +57,20 @@ public class TucsonOperation extends TupleCentreOperation implements ITucsonOper
 		return OPTYPE_URDP;
 	}
 	
+	public static int unopCode(){
+		return OPTYPE_UNOP;
+	}
+	
 	public static int in_allCode(){
 		return OPTYPE_IN_ALL;
 	}
 	
 	public static int rd_allCode(){
 		return OPTYPE_RD_ALL;
+	}
+	
+	public static int no_allCode(){
+		return OPTYPE_NO_ALL;
 	}
 	
 	public static int outCode(){

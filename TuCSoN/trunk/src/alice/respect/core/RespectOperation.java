@@ -141,6 +141,10 @@ public class RespectOperation extends TupleCentreOperation implements IRespectOp
 		return new RespectOperation(p, TupleCentreOperation.OPTYPE_RD_ALL,(TupleTemplate)t,l);
 	}
 	
+	public static RespectOperation makeNoAll(Prolog p, LogicTuple t,OperationCompletionListener l){
+		return new RespectOperation(p, TupleCentreOperation.OPTYPE_NO_ALL,(TupleTemplate)t,l);
+	}
+	
 	public static RespectOperation makeUrd(Prolog p, LogicTuple t,OperationCompletionListener l){
 		return new RespectOperation(p, TupleCentreOperation.OPTYPE_URD,(TupleTemplate)t,l);
 	}
@@ -149,12 +153,20 @@ public class RespectOperation extends TupleCentreOperation implements IRespectOp
 		return new RespectOperation(p, TupleCentreOperation.OPTYPE_UIN,(TupleTemplate)t,l);
 	}
 	
+	public static RespectOperation makeUno(Prolog p, LogicTuple t,OperationCompletionListener l){
+		return new RespectOperation(p, TupleCentreOperation.OPTYPE_UNO,(TupleTemplate)t,l);
+	}
+	
 	public static RespectOperation makeUrdp(Prolog p, LogicTuple t,OperationCompletionListener l){
 		return new RespectOperation(p, TupleCentreOperation.OPTYPE_URDP,(TupleTemplate)t,l);
 	}
 	
 	public static RespectOperation makeUinp(Prolog p, LogicTuple t,OperationCompletionListener l){
 		return new RespectOperation(p, TupleCentreOperation.OPTYPE_UINP,(TupleTemplate)t,l);
+	}
+	
+	public static RespectOperation makeUnop(Prolog p, LogicTuple t,OperationCompletionListener l){
+		return new RespectOperation(p, TupleCentreOperation.OPTYPE_UNOP,(TupleTemplate)t,l);
 	}
 	
 //	*******************
@@ -333,15 +345,21 @@ public class RespectOperation extends TupleCentreOperation implements IRespectOp
 			opName = "in_all";
 		}else if (isRdAll()){
 			opName = "rd_all";
-		}else if (isUrd()){
+		}else if (isNoAll())
+			opName = "no_all";
+		else if (isUrd()){
 			opName = "urd";
 		}else if (isUin()){
 			opName = "uin";
-		}else if (isUrdp()){
+		}else if (isUno())
+			opName = "uno";
+		else if (isUrdp()){
 			opName = "urdp";
 		}else if (isUinp()){
 			opName = "uinp";
-		}else if (isGet()){
+		}else if (isUnop())
+			opName = "unop";
+		else if (isGet()){
 			opName = "get";
 			LogicTuple[] tupleL=new LogicTuple[]{};
 			tupleL=this.getLogicTupleListResult().toArray(tupleL);

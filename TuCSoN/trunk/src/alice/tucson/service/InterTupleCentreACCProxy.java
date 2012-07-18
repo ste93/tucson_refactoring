@@ -308,7 +308,9 @@ public class InterTupleCentreACCProxy implements InterTupleCentreACC{
 							|| type == TucsonOperation.inpCode() || type == TucsonOperation.rdpCode()
 							|| type == TucsonOperation.uinCode() || type == TucsonOperation.urdCode()
 							|| type == TucsonOperation.uinpCode() || type == TucsonOperation.urdpCode()
+							|| type == TucsonOperation.unoCode() || type == TucsonOperation.unopCode()
 							|| type == TucsonOperation.in_allCode() || type == TucsonOperation.rd_allCode()
+							|| type == TucsonOperation.no_allCode()
 							|| type == TucsonOperation.in_sCode() || type == TucsonOperation.rd_sCode()
 							|| type == TucsonOperation.inp_sCode() || type == TucsonOperation.rdp_sCode()){
 
