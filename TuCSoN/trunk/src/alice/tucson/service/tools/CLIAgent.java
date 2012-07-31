@@ -188,7 +188,15 @@ public class CLIAgent extends alice.util.Automaton{
 				}
 				
 				/*MODIFIED BY <s.mariani@unibo.it>*/
-				else if(methodName.equals("rd_all")){
+				else if(methodName.equals("out_all")){
+					LogicTuple t = LogicTuple.parse(tuple);
+					busy();
+					ITucsonOperation op = context.out_all(tid, t, Long.MAX_VALUE);
+					if(op.isResultSuccess())
+						prompt("success: " + op.getLogicTupleListResult());
+					else
+						prompt("failure: " + op.getLogicTupleListResult());
+				}else if(methodName.equals("rd_all")){
 					LogicTuple templ = LogicTuple.parse(tuple);
 					busy();
 					ITucsonOperation op = context.rd_all(tid, templ, (Long) null);
@@ -354,13 +362,22 @@ public class CLIAgent extends alice.util.Automaton{
 					log("\t\tout(Tuple)");
 					log("\t\tin(TupleTemplate)");
 					log("\t\trd(TupleTemplate)");
+					log("\t\tno(TupleTemplate)");
 					log("\t\tinp(TupleTemplate)");
 					log("\t\trdp(TupleTemplate)");
-					log("\t\tno(TupleTemplate)");
 					log("\t\tnop(TupleTemplate)");
 					log("\t\tget()");
 					log("\t\tset([Tuple1, ..., TupleN])");
-					log("\t\tout_s(E,G,R)");
+					log("\t\tin_all(TupleTemplate, TupleList)");
+					log("\t\trd_all(TupleTemplate, TupleList)");
+					log("\t\tno_all(TupleTemplate, TupleList)");
+					log("\t\tuin(TupleTemplate)");
+					log("\t\turd(TupleTemplate)");
+					log("\t\tuno(TupleTemplate)");
+					log("\t\tuinp(TupleTemplate)");
+					log("\t\turdp(TupleTemplate)");
+					log("\t\tunop(TupleTemplate)");
+					log("\t\tout_s(Event,Guard,Reaction)");
 					log("\t\tin_s(EventTemplate, GuardTemplate, ReactionTemplate)");
 					log("\t\trd_s(EventTemplate, GuardTemplate, ReactionTemplate)");
 					log("\t\tinp_s(EventTemplate, GuardTemplate ,ReactionTemplate)");
@@ -368,7 +385,7 @@ public class CLIAgent extends alice.util.Automaton{
 					log("\t\tno_s(EventTemplate, GuardTemplate, ReactionTemplate)");
 					log("\t\tnop_s(EventTemplate, GuardTemplate, ReactionTemplate)");
 					log("\t\tget_s()");
-					log("\t\tset_s([(E1,G1,R1), ..., (En,Gn,Rn)])");
+					log("\t\tset_s([(Event1,Guard1,Reaction1), ..., (EventN,GuardN,ReactionN)])");
 					log("--------------------------------------------------------------------------------");
 				}
 				

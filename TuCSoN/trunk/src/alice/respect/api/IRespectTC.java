@@ -260,6 +260,10 @@ public interface IRespectTC  {
 	
 //	my personal updates
 	
+	IRespectOperation out_all(IId id, LogicTuple t) throws OperationNotPossibleException;
+	
+	IRespectOperation out_all(IId id, LogicTuple t, OperationCompletionListener l) throws OperationNotPossibleException;
+	
 	/**
 	 * Retrieves all tuples in the tuple centre matching the template
 	 * 

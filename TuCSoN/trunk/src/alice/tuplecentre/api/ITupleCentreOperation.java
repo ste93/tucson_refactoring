@@ -34,6 +34,8 @@ public interface ITupleCentreOperation{
 
 //	my personal update
 	
+	boolean isOutAll();
+	
 	boolean isInAll();
 
 	boolean isRdAll();

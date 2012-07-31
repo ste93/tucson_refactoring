@@ -32,6 +32,8 @@ public interface INonBlockingContext {
 
 //	my personal updates
 	
+	IRespectOperation out_all(IId aid, LogicTuple t, OperationCompletionListener l) throws InvalidLogicTupleException, OperationNotPossibleException;
+	
 	IRespectOperation in_all(IId aid, LogicTuple t, OperationCompletionListener l) throws InvalidLogicTupleException, OperationNotPossibleException;
 
 	IRespectOperation rd_all(IId aid, LogicTuple t, OperationCompletionListener l) throws InvalidLogicTupleException, OperationNotPossibleException;

@@ -108,6 +108,12 @@ public class RespectTC implements IRespectTC {
 	
 //	my personal updates
 	
+	public IRespectOperation out_all(IId id, LogicTuple t, OperationCompletionListener l) throws OperationNotPossibleException {
+		RespectOperation op=RespectOperation.makeOutAll(getProlog(),t,l);
+		vm.doOperation(id,op);
+		return op;
+	}
+	
 	public IRespectOperation in_all(IId id, LogicTuple t, OperationCompletionListener l) throws OperationNotPossibleException {
 		RespectOperation op=RespectOperation.makeInAll(getProlog(),t,l);
 		vm.doOperation(id,op);
@@ -271,6 +277,10 @@ public class RespectTC implements IRespectTC {
 	}
 	
 //	************** my personal updates **************
+	
+	public IRespectOperation out_all(IId id, LogicTuple t) throws OperationNotPossibleException {
+		return this.out_all(id, t,null);
+	}
 	
 	public IRespectOperation in_all(IId id, LogicTuple t) throws OperationNotPossibleException {
 		return this.in_all(id, t,null);

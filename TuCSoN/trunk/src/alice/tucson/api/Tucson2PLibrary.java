@@ -70,6 +70,7 @@ public class Tucson2PLibrary extends Library{
 				+ "urdp(T) :- urdp(T, default@localhost:20504). \n"
 				+ "uno(T) :- uno(T, default@localhost:20504). \n"
 				+ "unop(T) :- unop(T, default@localhost:20504). \n"
+				+ "out_all(L) :- out_all(L, default@localhost:20504). \n"
 				+ "in_all(T,L) :- in_all(T, L, default@localhost:20504). \n"
 				+ "rd_all(T,L) :- rd_all(T, L, default@localhost:20504). \n"
 				+ "no_all(T,L) :- no_all(T, L, default@localhost:20504). \n"
@@ -100,6 +101,7 @@ public class Tucson2PLibrary extends Library{
 				+ "TC@Netid:Port ? urdp(T) :- urdp(T, TC@Netid:Port). \n"
 				+ "TC@Netid:Port ? uno(T) :- uno(T, TC@Netid:Port). \n"
 				+ "TC@Netid:Port ? unop(T) :- unop(T, TC@Netid:Port). \n"
+				+ "TC@Netid:Port ? out_all(L) :- out_all(L, TC@Netid:Port). \n"
 				+ "TC@Netid:Port ? in_all(T,L) :- in_all(T, L, TC@Netid:Port). \n"
 				+ "TC@Netid:Port ? rd_all(T,L) :- rd_all(T, L, TC@Netid:Port). \n"
 				+ "TC@Netid:Port ? no_all(T,L) :- no_all(T, L, TC@Netid:Port). \n"
@@ -882,6 +884,36 @@ public class Tucson2PLibrary extends Library{
 		}
 		if(!op.isResultSuccess())
 			unify(arg0, op.getLogicTupleResult().toTerm());
+		return op.isResultSuccess();
+	}
+	
+	public boolean out_all_2(Term arg0, Term arg1){
+		if(context == null)
+			return false;
+		TucsonTupleCentreId tid;
+		try{
+			tid = new TucsonTupleCentreId(arg1.toString());
+		}catch(TucsonInvalidTupleCentreIdException e){
+			System.err.println("[Tucson2PLibrary]: " + e);
+			e.printStackTrace();
+			return false;
+		}
+		ITucsonOperation op;
+		try{
+			op = context.out_all(tid, new LogicTuple(arg0), (Long)null);
+		}catch(TucsonOperationNotPossibleException e){
+			System.err.println("[Tucson2PLibrary]: " + e);
+			e.printStackTrace();
+			return false;
+		}catch(UnreachableNodeException e){
+			System.err.println("[Tucson2PLibrary]: " + e);
+			e.printStackTrace();
+			return false;
+		} catch (OperationTimeOutException e) {
+			System.err.println("[Tucson2PLibrary]: " + e);
+			e.printStackTrace();
+			return false;
+		}
 		return op.isResultSuccess();
 	}
 	

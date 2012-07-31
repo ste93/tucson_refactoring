@@ -25,6 +25,13 @@ public class NonBlockingContext extends AbstractContext implements INonBlockingC
 		return getCore().out(id,t,l);
 	}
     
+    public IRespectOperation out_all(IId id, LogicTuple t, OperationCompletionListener l)
+			throws InvalidLogicTupleException, OperationNotPossibleException {
+		if (t==null)
+            throw new InvalidLogicTupleException();
+		return getCore().out_all(id,t,l);
+	}
+    
 	public IRespectOperation in(IId id, LogicTuple t,
 			OperationCompletionListener l) throws InvalidLogicTupleException,
 			OperationNotPossibleException {

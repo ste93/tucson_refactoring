@@ -26,6 +26,8 @@ import alice.tuplecentre.core.OperationTimeOutException;
 
 public interface BulkSynchACC extends RootACC{
 
+	ITucsonOperation out_all(Object tid, LogicTuple tuple, Long ms) throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException;
+	
 	ITucsonOperation in_all(Object tid, LogicTuple tuple, Long ms) throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException;
 	
 	ITucsonOperation rd_all(Object tid, LogicTuple tuple, Long ms) throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException;

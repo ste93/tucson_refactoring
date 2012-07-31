@@ -133,6 +133,10 @@ public class RespectOperation extends TupleCentreOperation implements IRespectOp
 	
 //	my personal updates
 	
+	public static RespectOperation makeOutAll(Prolog p, LogicTuple t,OperationCompletionListener l){
+		return new RespectOperation(p, TupleCentreOperation.OPTYPE_OUT_ALL,(TupleTemplate)t,l);
+	}
+	
 	public static RespectOperation makeInAll(Prolog p, LogicTuple t,OperationCompletionListener l){
 		return new RespectOperation(p, TupleCentreOperation.OPTYPE_IN_ALL,(TupleTemplate)t,l);
 	}
@@ -340,8 +344,9 @@ public class RespectOperation extends TupleCentreOperation implements IRespectOp
 			opName = "no";
 		}else if (isNop()){
 			opName = "nop";
-		}
-		else if (isInAll()){
+		}else if (isOutAll()){
+			opName = "out_all";
+		}else if (isInAll()){
 			opName = "in_all";
 		}else if (isRdAll()){
 			opName = "rd_all";
