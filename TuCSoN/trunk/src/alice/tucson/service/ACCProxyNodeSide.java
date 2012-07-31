@@ -236,7 +236,7 @@ public class ACCProxyNodeSide extends ACCAbstractProxyNodeSide{
 				}
 				
 			}else if(msg_type == TucsonOperation.noCode() || msg_type == TucsonOperation.nopCode()
-					|| msg_type == TucsonOperation.outCode()
+					|| msg_type == TucsonOperation.outCode() || msg_type == TucsonOperation.out_allCode()
 					|| msg_type == TucsonOperation.inCode() || msg_type == TucsonOperation.inpCode()
 					|| msg_type == TucsonOperation.rdCode() || msg_type == TucsonOperation.rdpCode()
 					|| msg_type == TucsonOperation.uinCode() || msg_type == TucsonOperation.uinpCode()
@@ -336,7 +336,7 @@ public class ACCProxyNodeSide extends ACCAbstractProxyNodeSide{
 			}else{
 				reply = new TucsonMsgReply(msg.getId(), op.getType(), true, false, false, msg.getTuple(), (LogicTuple) op.getTupleResult());
 			}
-		}else if(op.isInAll() || op.isRdAll() || op.isNoAll()){
+		}else if(op.isInAll() || op.isRdAll() || op.isNoAll() || op.isOutAll()){
 			if(op.getTupleListResult()==null)
 				op.setTupleListResult(new LinkedList<Tuple>());
 			if(op.isResultSuccess()){

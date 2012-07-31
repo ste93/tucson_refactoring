@@ -272,6 +272,8 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 	                	currentReactionTerm = new Struct("unop", op.getLogicTupleArgument().toTerm());
 	                else if (op.isUinp()){
 	                	currentReactionTerm = new Struct("uinp", op.getLogicTupleArgument().toTerm());
+	                }else if (op.isOutAll()){
+	                	currentReactionTerm = new Struct("out_all", op.getLogicTupleArgument().toTerm());
 	                }else if (op.isInAll()){
 	                	currentReactionTerm = new Struct("in_all", op.getLogicTupleArgument().toTerm());
 	                }else if (op.isRdAll()){
@@ -329,6 +331,8 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 		                	currentReactionTerm = new Struct("unop", op.getLogicTupleArgument().toTerm());
 		                else if (op.isUinp()){
 		                	currentReactionTerm = new Struct("uinp", op.getLogicTupleArgument().toTerm());
+		                }else if (op.isOutAll()){
+		                	currentReactionTerm = new Struct("out_all", op.getLogicTupleArgument().toTerm());
 		                }else if (op.isInAll()){
 		                	currentReactionTerm = new Struct("in_all", op.getLogicTupleArgument().toTerm());
 		                }else if (op.isRdAll()){
@@ -425,7 +429,9 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 							} else {
 								currentReactionTerm=new Struct("uinp",op.getLogicTupleArgument().toTerm());
 							}		                
-						}else if (op.isInAll()){
+						}else if (op.isOutAll()){
+		                	currentReactionTerm = new Struct("out_all", op.getLogicTupleArgument().toTerm());
+		                }else if (op.isInAll()){
 		                	currentReactionTerm = new Struct("in_all", op.getLogicTupleArgument().toTerm());
 		                }else if (op.isRdAll()){
 		                	currentReactionTerm = new Struct("rd_all", op.getLogicTupleArgument().toTerm());
@@ -466,6 +472,8 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 	                	currentReactionTerm = new Struct("uno", rop.getArgument().toTerm());
 	                else if (rop.isUinR()){
 	                	currentReactionTerm = new Struct("uin", rop.getArgument().toTerm());
+	                }else if (rop.isOutAllR()){
+	                	currentReactionTerm = new Struct("out_all", rop.getArgument().toTerm());
 	                }else if (rop.isInAllR()){
 	                	currentReactionTerm = new Struct("in_all", rop.getArgument().toTerm());
 	                }else if (rop.isRdAllR()){
@@ -853,6 +861,18 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 
     public void        addTuple(Tuple t){
         tSet.add((alice.logictuple.LogicTuple)t);
+    }
+    
+    public void addListTuple(Tuple t){
+    	LogicTuple tuple = (LogicTuple)t;
+    	while(!(tuple.toString().equals("[]"))){
+			try {
+				tSet.add(new LogicTuple(tuple.getArg(0)));
+				tuple = new LogicTuple(tuple.getArg(1));
+			} catch (InvalidTupleOperationException e) {
+				e.printStackTrace();
+			}
+    	}
     }
 
     public  Tuple       removeMatchingTuple(TupleTemplate t){

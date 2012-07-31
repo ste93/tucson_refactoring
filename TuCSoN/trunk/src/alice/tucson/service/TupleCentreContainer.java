@@ -219,7 +219,8 @@ public class TupleCentreContainer{
 				return context.nop((AgentId) aid.getLocalAgentId(), t, l);
 			if(type == TucsonOperation.outCode())
 				return context.out((AgentId) aid.getLocalAgentId(), t, l);
-//			MODIFIED BY <s.mariani@unibo.it>
+			if(type == TucsonOperation.out_allCode())
+				return context.out_all((AgentId) aid.getLocalAgentId(), t, l);
 			if(type == TucsonOperation.in_allCode())
 				return context.in_all((AgentId) aid.getLocalAgentId(), t, l);
 			if(type == TucsonOperation.rd_allCode())

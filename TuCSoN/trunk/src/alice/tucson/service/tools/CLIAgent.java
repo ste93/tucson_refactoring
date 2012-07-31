@@ -188,7 +188,15 @@ public class CLIAgent extends alice.util.Automaton{
 				}
 				
 				/*MODIFIED BY <s.mariani@unibo.it>*/
-				else if(methodName.equals("rd_all")){
+				else if(methodName.equals("out_all")){
+					LogicTuple t = LogicTuple.parse(tuple);
+					busy();
+					ITucsonOperation op = context.out_all(tid, t, Long.MAX_VALUE);
+					if(op.isResultSuccess())
+						prompt("success: " + op.getLogicTupleListResult());
+					else
+						prompt("failure: " + op.getLogicTupleListResult());
+				}else if(methodName.equals("rd_all")){
 					LogicTuple templ = LogicTuple.parse(tuple);
 					busy();
 					ITucsonOperation op = context.rd_all(tid, templ, (Long) null);

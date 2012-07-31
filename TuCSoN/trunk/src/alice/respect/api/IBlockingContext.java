@@ -28,6 +28,8 @@ public interface IBlockingContext {
 	
 //	my personal updates
 	
+	void out_all(AgentId aid, LogicTuple t) throws InvalidLogicTupleException, OperationNotPossibleException;
+	
 	LogicTuple in_all(AgentId aid, LogicTuple t) throws InvalidLogicTupleException, OperationNotPossibleException;
 	
 	LogicTuple rd_all(AgentId aid, LogicTuple t) throws InvalidLogicTupleException, OperationNotPossibleException;

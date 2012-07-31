@@ -484,6 +484,13 @@ public class ACCProxyAgentSide implements EnhancedACC{
 			UnreachableNodeException {
 		return doNonBlockingOperation(TucsonOperation.unopCode(), tid, tuple, l);
 	}
+	
+	public ITucsonOperation out_all(Object tid, LogicTuple tuple,
+			TucsonOperationCompletionListener l)
+			throws TucsonOperationNotPossibleException,
+			UnreachableNodeException {
+		return doNonBlockingOperation(TucsonOperation.out_allCode(), tid, tuple, l);
+	}
 
 	public ITucsonOperation in_all(Object tid, LogicTuple tuple,
 			TucsonOperationCompletionListener l)
@@ -1159,6 +1166,12 @@ public class ACCProxyAgentSide implements EnhancedACC{
 			throws TucsonOperationNotPossibleException,
 			UnreachableNodeException, OperationTimeOutException {
 		return doBlockingOperation(TucsonOperation.unopCode(), tid, tuple, ms);
+	}
+	
+	public ITucsonOperation out_all(Object tid, LogicTuple tuple, Long ms)
+			throws TucsonOperationNotPossibleException,
+			UnreachableNodeException, OperationTimeOutException {
+		return doBlockingOperation(TucsonOperation.out_allCode(), tid, tuple, ms);
 	}
 
 	public ITucsonOperation in_all(Object tid, LogicTuple tuple, Long ms)
@@ -1864,7 +1877,8 @@ public class ACCProxyAgentSide implements EnhancedACC{
 						}
 						
 					}else if(type == TucsonOperation.set_Code() || type == TucsonOperation.set_sCode()
-							|| type == TucsonOperation.outCode() || type == TucsonOperation.out_sCode()){
+							|| type == TucsonOperation.outCode() || type == TucsonOperation.out_sCode()
+							|| type == TucsonOperation.out_allCode()){
 						ev = new TucsonOpCompletionEvent(new TucsonOpId(msg.getId()), ok, msg.isSuccess());
 					}else if(type == TucsonOperation.in_allCode() || type == TucsonOperation.rd_allCode()
 							|| type == TucsonOperation.no_allCode()
@@ -1882,7 +1896,7 @@ public class ACCProxyAgentSide implements EnhancedACC{
 				
 				TucsonOperation op = operations.remove(msg.getId());
 				if(op.isNoAll() || op.isInAll() || op.isRdAll() || op.isGet() || op.isSet() || op.isGet_s()
-						|| op.isSet_s()){
+						|| op.isSet_s() || op.isOutAll()){
 					op.setLogicTupleListResult((List<LogicTuple>) msg.getTupleResult());
 				}else{
 					op.setTupleResult((LogicTuple) msg.getTupleResult());

@@ -61,6 +61,10 @@ public class TucsonOperation extends TupleCentreOperation implements ITucsonOper
 		return OPTYPE_UNOP;
 	}
 	
+	public static int out_allCode(){
+		return OPTYPE_OUT_ALL;
+	}
+	
 	public static int in_allCode(){
 		return OPTYPE_IN_ALL;
 	}
@@ -252,7 +256,7 @@ public class TucsonOperation extends TupleCentreOperation implements ITucsonOper
 	}
 
 	public LogicTuple getLogicTupleArgument(){
-		if(isOut() | isOut_s() | isSet_s() | isSet())
+		if(isOut() || isOut_s() || isSet_s() || isSet() || isOutAll())
 			return (LogicTuple) getTupleArgument();
 		else
 			return (LogicTuple) getTemplateArgument();

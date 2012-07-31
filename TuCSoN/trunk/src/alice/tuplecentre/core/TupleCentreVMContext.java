@@ -334,6 +334,8 @@ public abstract class TupleCentreVMContext implements ITupleCentreManagement, IT
      *  @param t the tuple to be addedd
      */
     public abstract void        addTuple(Tuple t);
+    
+    public abstract void addListTuple(Tuple t);
 
     /**
      * Removes (not deterministically) from the tuple set  a tuple

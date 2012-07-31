@@ -75,9 +75,8 @@ public abstract class TupleCentreOperation implements ITupleCentreOperation
 	public static final int OPTYPE_HAS_INSP = 37;
 	public static final int OPTYPE_SET_WSET = 38;
 	public static final int RESET = 39;
-	
-//	my personal update
-	
+		
+	public static final int OPTYPE_OUT_ALL = 333;
 	public static final int OPTYPE_IN_ALL = 40;
 	public static final int OPTYPE_RD_ALL = 41;
 	public static final int OPTYPE_NO_ALL = 410;
@@ -87,9 +86,7 @@ public abstract class TupleCentreOperation implements ITupleCentreOperation
 	public static final int OPTYPE_URDP = 46;
 	public static final int OPTYPE_UNOP = 460;
 	public static final int OPTYPE_UINP = 47;
-	
-//	******************
-	
+		
 	protected boolean operationCompleted;
 	protected OperationCompletionListener listener;
 
@@ -262,6 +259,10 @@ public abstract class TupleCentreOperation implements ITupleCentreOperation
 	}
 	
 //	my personal update
+	
+	public boolean isOutAll(){
+		return type == TupleCentreOperation.OPTYPE_OUT_ALL;
+	}
 	
 	public boolean isInAll(){
 		return type == TupleCentreOperation.OPTYPE_IN_ALL;

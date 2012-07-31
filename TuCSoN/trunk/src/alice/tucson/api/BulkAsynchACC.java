@@ -24,6 +24,8 @@ import alice.tucson.api.exceptions.UnreachableNodeException;
 
 public interface BulkAsynchACC extends RootACC{
 
+	ITucsonOperation out_all(Object tid, LogicTuple tuple, TucsonOperationCompletionListener l) throws TucsonOperationNotPossibleException, UnreachableNodeException;
+	
 	ITucsonOperation in_all(Object tid, LogicTuple tuple, TucsonOperationCompletionListener l) throws TucsonOperationNotPossibleException, UnreachableNodeException;
 	
 	ITucsonOperation rd_all(Object tid, LogicTuple tuple, TucsonOperationCompletionListener l) throws TucsonOperationNotPossibleException, UnreachableNodeException;

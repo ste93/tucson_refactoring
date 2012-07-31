@@ -59,6 +59,7 @@ public class InternalOperation {
 	private static final int OPTYPE_UINR = 12;
 	private static final int OPTYPE_URDR = 13;
 	private static final int OPTYPE_UNOR = 139;
+	private static final int OPTYPE_OUT_ALLR = 111;
 	private static final int OPTYPE_IN_ALLR = 16;
 	private static final int OPTYPE_RD_ALLR = 17;
 	private static final int OPTYPE_NO_ALLR = 179;
@@ -160,6 +161,10 @@ public class InternalOperation {
 		return type==OPTYPE_UNOR;
 	}
 	
+	public boolean isOutAllR(){
+		return type==OPTYPE_OUT_ALLR;
+	}
+	
 	public boolean isInAllR(){
 		return type==OPTYPE_IN_ALLR;
 	}
@@ -239,6 +244,10 @@ public class InternalOperation {
 	}
 	
 //	my personal updates
+	
+	public static InternalOperation makeOutAllR(LogicTuple t){
+		return new InternalOperation(OPTYPE_OUT_ALLR,t);
+	}
 	
 	public static InternalOperation makeInAllR(LogicTuple t){
 		return new InternalOperation(OPTYPE_IN_ALLR,t);

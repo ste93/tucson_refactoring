@@ -102,6 +102,7 @@ public class Library extends alice.tuprolog.Library {
 		"TC ? uinp(T) :- uinp(T,TC). \n"+
 		"TC ? urd(T) :- urd(T,TC). \n"+
 		"TC ? urdp(T) :- urdp(T,TC). \n"+
+		"TC ? out_all(L) :- out_all(L,TC). \n"+
 		"TC ? in_all(T,L) :- in_all(T,L,TC). \n"+
 		"TC ? rd_all(T,L) :- rd_all(T,L,TC). \n"+
 		
@@ -109,6 +110,7 @@ public class Library extends alice.tuprolog.Library {
 		"urdp(T):-urdp(T,this@localhost). \n"+
 		"uin(T):-uin(T,this@localhost). \n"+
 		"uinp(T):-uinp(T,this@localhost). \n"+
+		"out_all(L):-out_all(L,this@localhost). \n"+
 		"in_all(T,L):-in_all(T,L,this@localhost). \n"+
 		"rd_all(T,L):-rd_all(T,L,this@localhost). \n"+
 		//***********************
@@ -169,6 +171,42 @@ public class Library extends alice.tuprolog.Library {
     		System.out.println("[Library]: Remote out triggered...");
 	    	InputEvent ce=vm.getCurrentEvent();
 			InputEvent out_ev = new InputEvent(ce.getReactingTC(),RespectOperation.makeOut(getProlog(), new LogicTuple(arg0.copyGoal(v,0)),null),tid,vm.getCurrentTime());
+			out_ev.setIsLinking(true);
+			out_ev.setTarget(tid);
+			vm.addTemporaryOutputEvent(out_ev);
+			return true;
+	    }
+    }
+    
+    public boolean out_all_2(Term arg0,Term arg1){
+
+    	String tcName = null;
+    	TupleCentreId tid = null;
+    	try{
+    		tid=new TupleCentreId(arg1);
+    	}catch(Exception e){
+    		e.printStackTrace();
+    		return false;
+    	}
+    	tcName = tid.getName();
+    	
+        AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
+
+    	if(tcName.equals("this")){
+    		System.out.println("[Library]: Local out_all triggered...");
+	        Term newArg=arg0.copyGoal(v,0);
+	        LogicTuple tuArg=new LogicTuple(newArg);
+	        vm.addListTuple(tuArg);
+	        InputEvent ce=vm.getCurrentEvent();
+			InternalEvent ev=new InternalEvent(ce,InternalOperation.makeOutAllR(new LogicTuple(arg0.copyGoal(v,0))));
+			ev.setSource(ce.getReactingTC());
+	        ev.setTarget(ce.getReactingTC());
+			vm.fetchTriggeredReactions(ev);
+	        return true;
+    	}else{
+    		System.out.println("[Library]: Remote out_all triggered...");
+	    	InputEvent ce=vm.getCurrentEvent();
+			InputEvent out_ev = new InputEvent(ce.getReactingTC(),RespectOperation.makeOutAll(getProlog(), new LogicTuple(arg0.copyGoal(v,0)),null),tid,vm.getCurrentTime());
 			out_ev.setIsLinking(true);
 			out_ev.setTarget(tid);
 			vm.addTemporaryOutputEvent(out_ev);

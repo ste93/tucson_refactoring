@@ -86,6 +86,12 @@ public class SpeakingState extends TupleCentreVMState {
 		        		op.setOpResult(Outcome.SUCCESS);
 			            op.setTupleResult(tuple);
 			            foundSatisfied = true;
+		            } else if (op.isOutAll()){
+		            	tuple = op.getTupleArgument();
+		        		vm.addListTuple(tuple);
+		        		op.setOpResult(Outcome.SUCCESS);
+			            op.setTupleResult(tuple);
+			            foundSatisfied = true;
 		            } else if (op.isIn()){
 		                tuple = vm.removeMatchingTuple(op.getTemplateArgument());
 						if (tuple!=null){

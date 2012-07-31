@@ -118,6 +118,14 @@ public class BlockingContext extends AbstractContext implements IBlockingContext
 		return op.getLogicTupleListResult();
 	}
 	
+	public void out_all(AgentId id, LogicTuple t) throws InvalidLogicTupleException,
+		OperationNotPossibleException {
+	    if (t==null)
+	        throw new InvalidLogicTupleException();
+		IRespectOperation op = getCore().out_all(id,t);
+		op.waitForOperationCompletion();
+	}
+	
 	public LogicTuple in_all(AgentId id, LogicTuple t) throws InvalidLogicTupleException,
 		OperationNotPossibleException {
 		IRespectOperation op = null;
