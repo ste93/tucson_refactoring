@@ -96,7 +96,7 @@ public class RespectOperation extends TupleCentreOperation implements IRespectOp
 	 * @return
 	 */
 	public LogicTuple getLogicTupleArgument(){
-		if (isOut() | isOut_s()){
+		if (isOut() || isOut_s() || isOutAll()){
 			return (LogicTuple)getTupleArgument();
 		} else {
 			return (LogicTuple)getTemplateArgument();
@@ -134,7 +134,7 @@ public class RespectOperation extends TupleCentreOperation implements IRespectOp
 //	my personal updates
 	
 	public static RespectOperation makeOutAll(Prolog p, LogicTuple t,OperationCompletionListener l){
-		return new RespectOperation(p, TupleCentreOperation.OPTYPE_OUT_ALL,(TupleTemplate)t,l);
+		return new RespectOperation(p, TupleCentreOperation.OPTYPE_OUT_ALL,(Tuple)t,l);
 	}
 	
 	public static RespectOperation makeInAll(Prolog p, LogicTuple t,OperationCompletionListener l){
@@ -328,7 +328,7 @@ public class RespectOperation extends TupleCentreOperation implements IRespectOp
 		} else {
 			t = getLogicTupleArgument();
 		}
-		
+//		System.out.println("[RespectOperation]: t = " + t);
 		String opName;
 		if (isOut()){
 			opName = "out";

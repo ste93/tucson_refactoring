@@ -19,6 +19,8 @@ package alice.tucson.introspection;
 
 import java.util.ArrayList;
 
+import alice.tucson.api.TucsonTupleCentreId;
+
 /**
  * Defines the basic context for TuCSoN Inspector
  *
@@ -54,5 +56,7 @@ public interface InspectorContext {
 
     /** Removes a listener to Inspector Events */
     void removeInspectorContextListener(InspectorContextListener l);
+    
+    TucsonTupleCentreId getTid();
 
 }

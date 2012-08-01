@@ -144,7 +144,7 @@ public class ACCProxyNodeSide extends ACCAbstractProxyNodeSide{
 				node.addTCAgent(agentId, tid);
 				try{
 					resList= (List<LogicTuple>) TupleCentreContainer.doBlockingSpecOperation(msg_type, agentId, tid, msg.getTuple());
-//					log("res = " + res);
+					log("resList = " + resList);
 				}catch(Exception e){
 					System.err.println("[ACCProxyNodeSide]: " + e);
 					e.printStackTrace();

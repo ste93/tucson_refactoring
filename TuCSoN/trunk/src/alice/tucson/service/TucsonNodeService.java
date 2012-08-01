@@ -168,7 +168,7 @@ public class TucsonNodeService{
 	}
 
 	public static String getVersion(){
-		return "TuCSoN-1.9.10";
+		return "TuCSoN-1.10.1.0205";
 	}
 
 	/**
