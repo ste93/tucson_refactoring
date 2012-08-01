@@ -1635,8 +1635,9 @@ public class ACCProxyAgentSide implements EnhancedACC{
 			ObjectOutputStream outStream = session.getOutputStream();		
 
 			TucsonOperation op = null;					
-			if((type == TucsonOperation.outCode()) | (type == TucsonOperation.out_sCode())
-					| (type == TucsonOperation.set_sCode()) | (type == TucsonOperation.set_Code()))
+			if((type == TucsonOperation.outCode()) || (type == TucsonOperation.out_sCode())
+					|| (type == TucsonOperation.set_sCode()) || (type == TucsonOperation.set_Code())
+					|| type == TucsonOperation.out_allCode())
 				op = new TucsonOperation(type, (Tuple) t, l, this);
 			else
 				op = new TucsonOperation(type, (TupleTemplate) t, l, this);
@@ -1644,6 +1645,7 @@ public class ACCProxyAgentSide implements EnhancedACC{
 			
 			TucsonMsgRequest msg = new TucsonMsgRequest(op.getId(), op.getType(), tcid.toString(),
 					op.getLogicTupleArgument());
+//			log("requesting op " + msg.getType() + ", " + msg.getTuple() + ", " + msg.getTid());
 			
 			try{
 				TucsonMsgRequest.write(outStream, msg);

@@ -863,16 +863,20 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
         tSet.add((alice.logictuple.LogicTuple)t);
     }
     
-    public void addListTuple(Tuple t){
+    public List<Tuple> addListTuple(Tuple t){
+    	List<Tuple> list = new LinkedList<>();
     	LogicTuple tuple = (LogicTuple)t;
+    	log("tuple = " + tuple);
     	while(!(tuple.toString().equals("[]"))){
 			try {
 				tSet.add(new LogicTuple(tuple.getArg(0)));
+				list.add(new LogicTuple(tuple.getArg(0)));
 				tuple = new LogicTuple(tuple.getArg(1));
 			} catch (InvalidTupleOperationException e) {
 				e.printStackTrace();
 			}
     	}
+    	return list;
     }
 
     public  Tuple       removeMatchingTuple(TupleTemplate t){
@@ -1465,6 +1469,10 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 	
 //	*********************
 
+	private void log(String s){
+		System.out.println("[RespectVMContext]: " + s);
+	}
+	
 }
 
 
