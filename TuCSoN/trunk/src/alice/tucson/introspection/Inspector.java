@@ -39,7 +39,8 @@ public class Inspector extends Thread implements InspectorContextListener{
 	}
 
 	public synchronized void run(){
-		System.out.println("[Inspector]: I'm started.");
+		System.out.println("[Inspector]: Started on TuCSoN Node < " + context.getTid().getName()
+				+ "@" + context.getTid().getNode() + ":" + context.getTid().getPort() + " >");
 		while (!quit){
 			try{
 				context.acceptVMEvent();
@@ -48,7 +49,8 @@ public class Inspector extends Thread implements InspectorContextListener{
 				break;
 			}
 		}
-		System.out.println("[Inspector]: I'm leaving, bye :)");
+		System.out.println("[Inspector]: Leaving TuCSoN Node < " + context.getTid().getName()
+				+ "@" + context.getTid().getNode() + ":" + context.getTid().getPort() + " >, bye :)");
 	}
 
 	public InspectorContext getContext(){

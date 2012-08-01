@@ -220,7 +220,7 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 	            currentReactionTerm=null;
 	            
 	            if (ev.isInput()){
-	            	System.out.println("[RespectVMContext]: input phase");
+	            	log("input phase");
 	                InputEvent ie = (InputEvent)ev;
 					RespectOperation op=(RespectOperation)ev.getOperation();
 	                if (op.isOut()){
@@ -287,7 +287,7 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 	                spy("IS LINKING"+((OutputEvent)ev).isLinking());
 				
 					if(((OutputEvent)ev).isLinking()){
-						System.out.println("[RespectVMContext]: linking event processing");
+						log("linking event processing");
 						if (op.isOut()){
 		                	//System.out.println(""+op.getLogicTupleArgument().toTerm());
 		                    currentReactionTerm=new Struct("out",op.getLogicTupleArgument().toTerm());
@@ -341,7 +341,7 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 		                	currentReactionTerm = new Struct("no_all", op.getLogicTupleArgument().toTerm());
 //		                *******************
 					}else{
-						System.out.println("[RespectVMContext]: output phase");
+						log("output phase");
 		                if (op.isIn()){
 		                    currentReactionTerm=new Struct("in",op.getLogicTupleResult().toTerm());
 		                } else if (op.isRd()){
@@ -441,7 +441,7 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 //		                *******************
 					}
 	            } else if (ev.isInternal()){
-	            	System.out.println("[RespectVMContext]: internal event processing");
+	            	log("internal event processing");
 	                InternalEvent ev1=(InternalEvent)ev;
 	                InternalOperation rop=ev1.getInternalOperation();
 	                if (rop.isInR()){
@@ -508,7 +508,7 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 	                		Struct trigReaction = new Struct("reaction",currentReactionTerm,info.getVarValue("R"));
 	                		TriggeredReaction tr=new TriggeredReaction(ev,new LogicReaction(trigReaction));
 	                		zSet.add(tr);
-	                		System.out.println("[RespectVMContext]: triggered reaction = "+tr.getReaction());
+	                		log("triggered reaction = "+tr.getReaction());
 	                	}
 	                	
 	                    if (trigCore.hasOpenAlternatives()){
@@ -541,14 +541,14 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 		temporaryOutputEventList.clear();
 
         Term goalList=((LogicReaction)z.getReaction()).getStructReaction().getTerm(1);
-        System.out.println("[RespectVMContext]: goalList = "+goalList.toString());
+//        System.out.println("[RespectVMContext]: goalList = "+goalList.toString());
         currentReactionEvent=z.getEvent();
 
         //System.out.println("CURRENT EVENT: "+currentEvent);
         spy("EVAL REACTION: "+goalList);
         SolveInfo info=core.solve(goalList);
         core.solveEnd();
-        System.out.println("[RespectVMContext]: Prolog evaluation success = "+info.isSuccess());
+        log("Prolog evaluation success = "+info.isSuccess());
         if (info.isSuccess()){
             // add to the total set of activities to spawn
             //activitiesToSpawn.addAll(activitiesToSpawn_singleReaction);
@@ -602,12 +602,12 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
     
     private boolean evalGuard(Term g){
      
-    	System.out.println("[RespectVMContext]: guard = " + g);
+//    	System.out.println("[RespectVMContext]: guard = " + g);
 //    	System.out.println("[RespectVMContext]: core.getTheory() = " + core.getTheory());
         SolveInfo info=core.solve(g);
         core.solveEnd();
         spy("GUARD EVALUATION: "+info.isSuccess());
-        System.out.println("[RespectVMContext]: guard is " + info.isSuccess());
+//        System.out.println("[RespectVMContext]: guard is " + info.isSuccess());
         return info.isSuccess();
     }
     
@@ -761,11 +761,11 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
     		engine.solveEnd();
     		Parser parser = new Parser(new MyOpManager(), spec.toString());
     		Term term = parser.nextTerm(true);
-//    		System.out.println("[RespectVMContext]: term = " + term);
+    		log("term = " + term);
     		while(term!=null){
     			engine.solve("assert("+term+").");
     			term = parser.nextTerm(true);
-//    			System.out.println("[RespectVMContext]: term = " + term);
+    			log("term = " + term);
     		}
     		engine.solveEnd();
     		spy("INITIAL SET: "+engine.getTheory());
@@ -793,6 +793,7 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 
     	}
     	this.isExternalSetSpec = false;
+    	log("result = " + result);
 		return result;
     }
  
@@ -866,7 +867,7 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
     public List<Tuple> addListTuple(Tuple t){
     	List<Tuple> list = new LinkedList<>();
     	LogicTuple tuple = (LogicTuple)t;
-    	log("tuple = " + tuple);
+//    	log("tuple = " + tuple);
     	while(!(tuple.toString().equals("[]"))){
 			try {
 				tSet.add(new LogicTuple(tuple.getArg(0)));
@@ -897,7 +898,7 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-    	System.out.println("[RespectVMContext]: addSpecTuple = " + t);
+//    	log("addSpecTuple = " + t);
     	tSpecSet.add((LogicTuple)t);
     		this.setReactionSpecHelper(
    				new alice.respect.api.RespectSpecification(
@@ -1470,7 +1471,7 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 //	*********************
 
 	private void log(String s){
-		System.out.println("[RespectVMContext]: " + s);
+		System.out.println("..[RespectVMContext]: " + s);
 	}
 	
 }

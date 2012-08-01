@@ -120,8 +120,10 @@ public class BlockingSpecContext extends AbstractContext implements IBlockingSpe
   	
 	public List<LogicTuple> set_s(AgentId aid, RespectSpecification spec) throws OperationNotPossibleException, InvalidSpecificationException {
 		IRespectOperation op = getCore().set_s(aid, spec);
-		if(aid.toString().equals("node_agent") || aid.toString().startsWith("inspector_edit_spec_"))
+		System.out.println("aid = " + aid);
+		if(aid.toString().equals("node_agent") || aid.toString().startsWith("':'(inspector_edit_spec_"))
 			return new LinkedList<LogicTuple>();
+		System.out.println("here");
 		op.waitForOperationCompletion();
 		return op.getLogicTupleListResult();
 	}

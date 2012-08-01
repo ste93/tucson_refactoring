@@ -152,7 +152,7 @@ public abstract class TucsonAgent implements TucsonOperationCompletionListener{
 		this.context = context;
 	}
 	
-	protected abstract void operationCompleted(ITucsonOperation op);
+	public abstract void operationCompleted(ITucsonOperation op);
 
 	/**
 	 * Internal Thread responsible for ACC acquisition and main cycle execution.

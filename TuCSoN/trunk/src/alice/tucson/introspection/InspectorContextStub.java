@@ -28,6 +28,7 @@ import alice.tucson.service.ACCDescription;
 
 import alice.tuplecentre.core.Event;
 
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -76,9 +77,13 @@ public class InspectorContextStub implements InspectorContext{
 	 * waits and processes TuCSoN virtual machine events
 	 */
 	public void acceptVMEvent() throws Exception{		
-		InspectorContextEvent msg = (InspectorContextEvent) inStream.readObject();		
-		for (int i = 0; i < contextListeners.size(); i++)
-			((InspectorContextListener) contextListeners.elementAt(i)).onContextEvent(msg);
+		try{
+			InspectorContextEvent msg = (InspectorContextEvent) inStream.readObject();
+			for (int i = 0; i < contextListeners.size(); i++)
+				((InspectorContextListener) contextListeners.elementAt(i)).onContextEvent(msg);
+		}catch(EOFException e){
+			
+		}
 	}
 
 	/** setting a new observation protocol */
@@ -192,6 +197,10 @@ public class InspectorContextStub implements InspectorContext{
 	 */
 	public void removeInspectorContextListener(InspectorContextListener l){
 		contextListeners.removeElement(l);
+	}
+	
+	public TucsonTupleCentreId getTid(){
+		return tid;
 	}
 
 }

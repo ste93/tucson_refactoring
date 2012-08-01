@@ -53,7 +53,6 @@ public class EditSpec extends javax.swing.JFrame{
 	private javax.swing.JButton bSaveAs;
 	private javax.swing.JTextField outputState;
 	private javax.swing.JTextField caretPosition;
-	private javax.swing.JButton bCheck;
 
 	/** Creates new form GUIEditTheory */
 	public EditSpec(TucsonTupleCentreId tid_){
@@ -109,7 +108,6 @@ public class EditSpec extends javax.swing.JFrame{
 		bSave = new javax.swing.JButton();
 		bSaveAs = new javax.swing.JButton();
 		jPanel3 = new javax.swing.JPanel();
-		bCheck = new javax.swing.JButton();
 		bOk = new javax.swing.JButton();
 		bGet = new javax.swing.JButton();
 		caretPosition = new javax.swing.JTextField();
@@ -195,22 +193,6 @@ public class EditSpec extends javax.swing.JFrame{
 
 		jPanel3.setLayout(new java.awt.GridBagLayout());
 
-		bCheck.setFont(new java.awt.Font("Arial", 0, 11));
-		bCheck.setText("Test");
-		bCheck.setToolTipText("test the specification");
-		bCheck.setFocusPainted(false);
-		bCheck.setPreferredSize(new java.awt.Dimension(60, 30));
-		bCheck.addActionListener(new java.awt.event.ActionListener(){
-			public void actionPerformed(java.awt.event.ActionEvent evt){
-				bCheckActionPerformed(evt);
-			}
-		});
-
-		gridBagConstraints = new java.awt.GridBagConstraints();
-		gridBagConstraints.gridx = 0;
-		gridBagConstraints.gridy = 0;
-		jPanel3.add(bCheck, gridBagConstraints);
-
 		bOk.setFont(new java.awt.Font("Arial", 0, 11));
 		bOk.setText("Set");
 		bOk.setToolTipText("set the specification to the tuple centre");
@@ -276,7 +258,7 @@ public class EditSpec extends javax.swing.JFrame{
 
 	private void bGetActionPerformed(java.awt.event.ActionEvent evt){
 		try{
-			String spec = context.get_s(tid, (Long) null).getSpecResult();
+			String spec = ""+context.get_s(tid, (Long) null).getLogicTupleListResult();
 			inputSpec.setText(spec);
 			outputState.setText("Specification read.");
 		}catch (TucsonOperationNotPossibleException e){
@@ -296,7 +278,7 @@ public class EditSpec extends javax.swing.JFrame{
 
 	private void formComponentShown(java.awt.event.ComponentEvent evt){
 		try{
-			String spec = context.get_s(tid, (Long) null).getSpecResult();
+			String spec = ""+context.get_s(tid, (Long) null).getLogicTupleListResult();
 			inputSpec.setText(spec);
 			outputState.setText("Specification read.");
 		}catch (TucsonOperationNotPossibleException e){

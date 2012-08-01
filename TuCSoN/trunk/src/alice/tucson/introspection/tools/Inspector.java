@@ -650,15 +650,18 @@ public class Inspector extends javax.swing.JFrame{
 			st_aid = "inspector" + System.currentTimeMillis();
 		}
 		
-		String tcname = null;
+		String tcname = "default";
+//		String tcname = null;
 		if (alice.util.Tools.isOpt(args, "-tcname"))
 			tcname = alice.util.Tools.getOpt(args, "-tcname");
 		
-		String netid = null;
+		String netid = "localhost";
+//		String netid = null;
 		if (alice.util.Tools.isOpt(args, "-netid"))
 			netid = alice.util.Tools.getOpt(args, "-netid");
 		
-		String port = null;
+		String port = "20504";
+//		String port = null;
 		if (alice.util.Tools.isOpt(args, "-port"))
 			port = alice.util.Tools.getOpt(args, "-port");
 

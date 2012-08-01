@@ -21,4 +21,6 @@ import alice.tuplecentre.core.OperationCompletionListener;
 
 public interface TucsonOperationCompletionListener extends OperationCompletionListener{
 	
+	void operationCompleted(ITucsonOperation op);
+	
 }

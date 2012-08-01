@@ -360,6 +360,7 @@ public class RespectTC implements IRespectTC {
 	@Override
 	public IRespectOperation set_s(IId aid, RespectSpecification spec) throws OperationNotPossibleException, InvalidSpecificationException {
 		boolean accepted = vm.setReactionSpec(spec);
+		System.out.println("[RespectTC]: accepted = " + accepted);
 		if (!accepted){
 			throw new InvalidSpecificationException();
 		}else

@@ -157,7 +157,7 @@ public class Library extends alice.tuprolog.Library {
         AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
 
     	if(tcName.equals("this")){
-    		System.out.println("[Library]: Local out triggered...");
+    		log("Local out triggered...");
 	        Term newArg=arg0.copyGoal(v,0);
 	        LogicTuple tuArg=new LogicTuple(newArg);
 	        vm.addTuple(tuArg);
@@ -168,7 +168,7 @@ public class Library extends alice.tuprolog.Library {
 			vm.fetchTriggeredReactions(ev);
 	        return true;
     	}else{
-    		System.out.println("[Library]: Remote out triggered...");
+    		log("Remote out triggered...");
 	    	InputEvent ce=vm.getCurrentEvent();
 			InputEvent out_ev = new InputEvent(ce.getReactingTC(),RespectOperation.makeOut(getProlog(), new LogicTuple(arg0.copyGoal(v,0)),null),tid,vm.getCurrentTime());
 			out_ev.setIsLinking(true);
@@ -193,7 +193,7 @@ public class Library extends alice.tuprolog.Library {
         AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
 
     	if(tcName.equals("this")){
-    		System.out.println("[Library]: Local out_all triggered...");
+    		log("Local out_all triggered...");
 	        Term newArg=arg0.copyGoal(v,0);
 	        LogicTuple tuArg=new LogicTuple(newArg);
 	        vm.addListTuple(tuArg);
@@ -204,7 +204,7 @@ public class Library extends alice.tuprolog.Library {
 			vm.fetchTriggeredReactions(ev);
 	        return true;
     	}else{
-    		System.out.println("[Library]: Remote out_all triggered...");
+    		log("Remote out_all triggered...");
 	    	InputEvent ce=vm.getCurrentEvent();
 			InputEvent out_ev = new InputEvent(ce.getReactingTC(),RespectOperation.makeOutAll(getProlog(), new LogicTuple(arg0.copyGoal(v,0)),null),tid,vm.getCurrentTime());
 			out_ev.setIsLinking(true);
@@ -230,7 +230,7 @@ public class Library extends alice.tuprolog.Library {
     	AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
     	
     	if(tcName.equals("this")){
-    		System.out.println("[Library]: Local in triggered...");
+    		log("Local in triggered...");
 	        alice.tuplecentre.api.Tuple tuple=vm.removeMatchingTuple(tuArg);
 	        if (tuple!=null){
 	            Term term=((LogicTuple)tuple).toTerm();
@@ -245,7 +245,7 @@ public class Library extends alice.tuprolog.Library {
 	            return false;
 	        }
 	    }else{
-	    	System.out.println("[Library]: Remote in triggered...");
+	    	log("Remote in triggered...");
 	    	InputEvent ce=vm.getCurrentEvent();
 			InputEvent out_ev = new InputEvent(ce.getReactingTC(),RespectOperation.makeIn(getProlog(), new LogicTuple(arg0.copyGoal(v,0)),null),tid,vm.getCurrentTime());
 			out_ev.setIsLinking(true);
@@ -271,7 +271,7 @@ public class Library extends alice.tuprolog.Library {
 	  	AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
 	  	
 	  	if(tcName.equals("this")){
-	  		System.out.println("[Library]: Local uin triggered...");
+	  		log("Local uin triggered...");
 	        alice.tuplecentre.api.Tuple tuple=vm.removeUniformTuple(tuArg);
 	        if (tuple!=null){
 	            Term term=((LogicTuple)tuple).toTerm();
@@ -286,7 +286,7 @@ public class Library extends alice.tuprolog.Library {
 	            return false;
 	        }
 	  	}else{
-	  		System.out.println("[Library]: Remote uin triggered...");
+	  		log("Remote uin triggered...");
 	    	InputEvent ce=vm.getCurrentEvent();
 			InputEvent out_ev = new InputEvent(ce.getReactingTC(),RespectOperation.makeUin(getProlog(), new LogicTuple(arg0.copyGoal(v,0)),null),tid,vm.getCurrentTime());
 			out_ev.setIsLinking(true);
@@ -312,14 +312,11 @@ public class Library extends alice.tuprolog.Library {
 	  	AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
 	  	
 	  	if(tcName.equals("this")){
-	  		System.out.println("[Library]: Local in_all triggered...");
+	  		log("Local in_all triggered...");
 	        List<alice.tuplecentre.api.Tuple> tuples = vm.inAllTuples(tuArg);
-	        System.out.println("[Library]: tuples = " + tuples);
 	        if (tuples!=null){
 	            Term term = list2tuple(tuples);
-	            System.out.println("[Library]: term = " + term);
 	            unify(arg1,term.copyGoal(v,0));
-	            System.out.println("[Library]: arg1 = " + arg1);
 //	            InputEvent ce=vm.getCurrentEvent();
 //	            String tupleStr = arg0.toString()+","+arg1.copyGoal(v,0);
 //	            LogicTuple resultArg = null;
@@ -337,7 +334,7 @@ public class Library extends alice.tuprolog.Library {
 	            return false;
 	        }
 	    }else{
-	    	System.out.println("[Library]: Remote in_all triggered...");
+	    	log("Remote in_all triggered...");
 	    	InputEvent ce=vm.getCurrentEvent();
 	    	String tuple = arg0.toString()+","+arg1.copyGoal(v, 0);
 	    	LogicTuple resultArg = null;
@@ -371,7 +368,7 @@ public class Library extends alice.tuprolog.Library {
     	AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
     	
     	if(tcName.equals("this")){
-    		System.out.println("[Library]: Local inp triggered...");
+    		log("Local inp triggered...");
 	        alice.tuplecentre.api.Tuple tuple=vm.removeMatchingTuple(tuArg);
 	        if (tuple!=null){
 	            Term term=((LogicTuple)tuple).toTerm();
@@ -386,7 +383,7 @@ public class Library extends alice.tuprolog.Library {
 	            return false;
 	        }
 	    }else{
-	    	System.out.println("[Library]: Remote inp triggered...");
+	    	log("Remote inp triggered...");
 	    	InputEvent ce=vm.getCurrentEvent();
 			InputEvent out_ev = new InputEvent(ce.getReactingTC(),RespectOperation.makeInp(getProlog(), new LogicTuple(arg0.copyGoal(v,0)),null),tid,vm.getCurrentTime());
 			out_ev.setIsLinking(true);
@@ -412,7 +409,7 @@ public class Library extends alice.tuprolog.Library {
 	  	AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
 	  	
 	  	if(tcName.equals("this")){
-	  		System.out.println("[Library]: Local uinp triggered...");
+	  		log("Local uinp triggered...");
 	        alice.tuplecentre.api.Tuple tuple=vm.removeUniformTuple(tuArg);
 	        if (tuple!=null){
 	            Term term=((LogicTuple)tuple).toTerm();
@@ -428,7 +425,7 @@ public class Library extends alice.tuprolog.Library {
 	            	
 	        }
 	    }else{
-	    	System.out.println("[Library]: Remote uinp triggered...");
+	    	log("Remote uinp triggered...");
 	    	InputEvent ce=vm.getCurrentEvent();
 			InputEvent out_ev = new InputEvent(ce.getReactingTC(),RespectOperation.makeUinp(getProlog(),new LogicTuple(arg0.copyGoal(v,0)),null),tid,vm.getCurrentTime());
 			out_ev.setIsLinking(true);
@@ -454,7 +451,7 @@ public class Library extends alice.tuprolog.Library {
     	AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
     	
     	if(tcName.equals("this")){
-    		System.out.println("[Library]: Local rd triggered...");
+    		log("Local rd triggered...");
 	        alice.tuplecentre.api.Tuple tuple=vm.readMatchingTuple(tuArg);
 	        if (tuple!=null){
 	            Term term=((LogicTuple)tuple).toTerm();
@@ -469,7 +466,7 @@ public class Library extends alice.tuprolog.Library {
 	            return false;
 	        }
 	    }else{
-	    	System.out.println("[Library]: Remote rd triggered...");
+	    	log("Remote rd triggered...");
 	    	InputEvent ce=vm.getCurrentEvent();
 			InputEvent out_ev = new InputEvent(ce.getReactingTC(),RespectOperation.makeRd(getProlog(), new LogicTuple(arg0.copyGoal(v,0)),null),tid,vm.getCurrentTime());
 			out_ev.setIsLinking(true);
@@ -495,7 +492,7 @@ public class Library extends alice.tuprolog.Library {
 	  	AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
 	  	
 	  	if(tcName.equals("this")){
-	  		System.out.println("[Library]: Local urd triggered...");
+	  		log("Local urd triggered...");
 	        alice.tuplecentre.api.Tuple tuple=vm.readUniformTuple(tuArg);
 	        if (tuple!=null){
 	            Term term=((LogicTuple)tuple).toTerm();
@@ -510,7 +507,7 @@ public class Library extends alice.tuprolog.Library {
 	            return false;
 	        }
 	    }else{
-	    	System.out.println("[Library]: Remote urd triggered...");
+	    	log("Remote urd triggered...");
 	    	InputEvent ce=vm.getCurrentEvent();
 			InputEvent out_ev = new InputEvent(ce.getReactingTC(),RespectOperation.makeUrd(getProlog(),new LogicTuple(arg0.copyGoal(v,0)),null),tid,vm.getCurrentTime());
 			out_ev.setIsLinking(true);
@@ -536,14 +533,11 @@ public class Library extends alice.tuprolog.Library {
 	  	AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
 	  	
 	  	if(tcName.equals("this")){
-	  		System.out.println("[Library]: Local rd_all triggered...");
+	  		log("Local rd_all triggered...");
 	        List<alice.tuplecentre.api.Tuple> tuples = vm.readAllTuples(tuArg);
-	        System.out.println("[Library]: tuples = " + tuples);
 	        if (tuples!=null){
 	            Term term = list2tuple(tuples);
-	            System.out.println("[Library]: term = " + term);
 	            unify(arg1,term.copyGoal(v,0));
-	            System.out.println("[Library]: arg1 = " + arg1);
 //	            InputEvent ce=vm.getCurrentEvent();
 //	            String tupleStr = arg0.toString()+","+arg1.copyGoal(v,0);
 //	            LogicTuple resultArg = null;
@@ -561,7 +555,7 @@ public class Library extends alice.tuprolog.Library {
 	            return false;
 	        }
 	    }else{
-	    	System.out.println("[Library]: Remote rd_all triggered...");
+	    	log("Remote rd_all triggered...");
 	    	InputEvent ce=vm.getCurrentEvent();
 	    	String tuple = arg0.toString()+","+arg1.copyGoal(v,0);
 	    	LogicTuple resultArg = null;
@@ -594,7 +588,7 @@ public class Library extends alice.tuprolog.Library {
     	AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
     	
     	if(tcName.equals("this")){
-    		System.out.println("[Library]: Local rdp triggered...");
+    		log("Local rdp triggered...");
 	        alice.tuplecentre.api.Tuple tuple=vm.readMatchingTuple(tuArg);
 	        if (tuple!=null){
 	            Term term=((LogicTuple)tuple).toTerm();
@@ -609,7 +603,7 @@ public class Library extends alice.tuprolog.Library {
 	            return false;
 	        }
 	    }else{
-	    	System.out.println("[Library]: Remote rdp triggered...");
+	    	log("Remote rdp triggered...");
 	    	InputEvent ce=vm.getCurrentEvent();
 			InputEvent out_ev = new InputEvent(ce.getReactingTC(),RespectOperation.makeRdp(getProlog(), new LogicTuple(arg0.copyGoal(v,0)),null),tid,vm.getCurrentTime());
 			out_ev.setIsLinking(true);
@@ -635,7 +629,7 @@ public class Library extends alice.tuprolog.Library {
 	  	AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
 	  	
 	  	if(tcName.equals("this")){
-	  		System.out.println("[Library]: Local urdp triggered...");
+	  		log("Local urdp triggered...");
 	        alice.tuplecentre.api.Tuple tuple=vm.readUniformTuple(tuArg);
 	        if (tuple!=null){
 	            Term term=((LogicTuple)tuple).toTerm();
@@ -650,7 +644,7 @@ public class Library extends alice.tuprolog.Library {
 	            return false;
 	        }
 	    }else{
-	    	System.out.println("[Library]: Remote urdp triggered...");
+	    	log("Remote urdp triggered...");
 	    	InputEvent ce=vm.getCurrentEvent();
 			InputEvent out_ev = new InputEvent(ce.getReactingTC(),RespectOperation.makeUrdp(getProlog(),new LogicTuple(arg0.copyGoal(v,0)),null),tid,vm.getCurrentTime());
 			out_ev.setIsLinking(true);
@@ -676,7 +670,7 @@ public class Library extends alice.tuprolog.Library {
     	AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
 
     	if(tcName.equals("this")){
-    		System.out.println("[Library]: Local no triggered...");
+    		log("Local no triggered...");
 	        alice.tuplecentre.api.Tuple tuple=vm.readMatchingTuple(tuArg);
 	        if (tuple==null){
 	        	System.out.println("[Library]: no success");
@@ -687,7 +681,7 @@ public class Library extends alice.tuprolog.Library {
 				vm.fetchTriggeredReactions(ev);
 	            return true;
 	        } else {
-	        	System.out.println("[Library]: no failure");
+	        	log("no failure");
 //	            InputEvent ce=vm.getCurrentEvent();
 //	            InternalEvent ev=new InternalEvent(ce,InternalOperation.makeNoR(new LogicTuple(arg0.copyGoal(v,0)))); 
 //				ev.setSource(ce.getReactingTC());
@@ -696,7 +690,7 @@ public class Library extends alice.tuprolog.Library {
 	            return false;
 	        }
     	}else{
-    		System.out.println("[Library]: Remote no triggered...");
+    		log("Remote no triggered...");
 	    	InputEvent ce=vm.getCurrentEvent();
 			InputEvent out_ev = new InputEvent(ce.getReactingTC(),RespectOperation.makeNo(getProlog(), new LogicTuple(arg0.copyGoal(v,0)),null),tid,vm.getCurrentTime());
 			out_ev.setIsLinking(true);
@@ -722,7 +716,7 @@ public class Library extends alice.tuprolog.Library {
     	AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
 
     	if(tcName.equals("this")){
-    		System.out.println("[Library]: Local nop triggered...");
+    		log("Local nop triggered...");
 	        alice.tuplecentre.api.Tuple tuple=vm.readMatchingTuple(tuArg);
 	        if (tuple==null){
 	        	System.out.println("[Library]: nop success");
@@ -733,7 +727,7 @@ public class Library extends alice.tuprolog.Library {
 				vm.fetchTriggeredReactions(ev);
 	            return true;
 	        } else {
-	        	System.out.println("[Library]: nop failure");
+	        	log("nop failure");
 //	            InputEvent ce=vm.getCurrentEvent();
 //	            InternalEvent ev=new InternalEvent(ce,InternalOperation.makeNoR(new LogicTuple(arg0.copyGoal(v,0)))); 
 //				ev.setSource(ce.getReactingTC());
@@ -742,7 +736,7 @@ public class Library extends alice.tuprolog.Library {
 	            return false;
 	        }
     	}else{
-    		System.out.println("[Library]: Remote nop triggered...");
+    		log("Remote nop triggered...");
 	    	InputEvent ce=vm.getCurrentEvent();
 			InputEvent out_ev = new InputEvent(ce.getReactingTC(),RespectOperation.makeNop(getProlog(), new LogicTuple(arg0.copyGoal(v,0)),null),tid,vm.getCurrentTime());
 			out_ev.setIsLinking(true);
@@ -768,15 +762,13 @@ public class Library extends alice.tuprolog.Library {
     	AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
     	
     	if(tcName.equals("this")){
-    		System.out.println("[Library]: Local get triggered...");
+    		log("Local get triggered...");
     		List<Tuple> list = vm.getAllTuples();
     		TupleArgument[] array = new TupleArgument[list.size()];
     		int i = 0;
     		while(!list.isEmpty())
     			array[i++] = new TupleArgument(((LogicTuple)list.remove(0)).toTerm());
-    		System.out.println("[Library]: array = " + array);
 	        alice.tuplecentre.api.Tuple tuple = new LogicTuple("get", array);
-	        System.out.println("[Library]: tuple = " + tuple);
 	        try {
 				if (((LogicTuple)tuple).getArg(0) != null){
 				    Term term=((LogicTuple)tuple).toTerm();
@@ -795,7 +787,7 @@ public class Library extends alice.tuprolog.Library {
 				return false;
 			}
 	    }else{
-	    	System.out.println("[Library]: Remote get triggered...");
+	    	log("Remote get triggered...");
 	    	InputEvent ce=vm.getCurrentEvent();
 	    	InputEvent out_ev = new InputEvent(ce.getReactingTC(),RespectOperation.makeGet(getProlog(), new LogicTuple(arg0.copyGoal(v,0)),null),tid,vm.getCurrentTime());
 			out_ev.setIsLinking(true);
@@ -830,7 +822,7 @@ public class Library extends alice.tuprolog.Library {
 		}
 
     	if(tcName.equals("this")){
-    		System.out.println("[Library]: Local out_s triggered...");
+    		log("Local out_s triggered...");
 	        Term newArg=goal.copyGoal(v,0);
 	        LogicTuple tuArg=new LogicTuple(newArg);
 	        vm.addSpecTuple(tuArg);
@@ -841,7 +833,7 @@ public class Library extends alice.tuprolog.Library {
 			vm.fetchTriggeredReactions(ev);
 	        return true;
     	}else{
-    		System.out.println("[Library]: Remote out_s triggered...");
+    		log("Remote out_s triggered...");
 	    	InputEvent ce=vm.getCurrentEvent();
 			InputEvent out_ev = new InputEvent(ce.getReactingTC(),RespectOperation.makeOut_s(getProlog(), new LogicTuple(goal.copyGoal(v,0)),null),tid,vm.getCurrentTime());
 			out_ev.setIsLinking(true);
@@ -873,7 +865,7 @@ public class Library extends alice.tuprolog.Library {
 		}
     	
     	if(tcName.equals("this")){
-    		System.out.println("[Library]: Local in_s triggered...");
+    		log("Local in_s triggered...");
     		Term newArg=goal.copyGoal(v,0);
 	        LogicTuple tuArg=new LogicTuple(newArg);
 	        alice.tuplecentre.api.Tuple tuple=vm.removeMatchingSpecTuple(tuArg);
@@ -890,7 +882,7 @@ public class Library extends alice.tuprolog.Library {
 	            return false;
 	        }
 	    }else{
-	    	System.out.println("[Library]: Remote in_s triggered...");
+	    	log("Remote in_s triggered...");
 	    	InputEvent ce=vm.getCurrentEvent();
 			InputEvent out_ev = new InputEvent(ce.getReactingTC(),RespectOperation.makeIn_s(getProlog(), new LogicTuple(goal.copyGoal(v,0)),null),tid,vm.getCurrentTime());
 			out_ev.setIsLinking(true);
@@ -922,7 +914,7 @@ public class Library extends alice.tuprolog.Library {
 		}
     	
     	if(tcName.equals("this")){
-    		System.out.println("[Library]: Local rd_s triggered...");
+    		log("Local rd_s triggered...");
     		Term newArg=goal.copyGoal(v,0);
 	        LogicTuple tuArg=new LogicTuple(newArg);
 	        alice.tuplecentre.api.Tuple tuple=vm.readMatchingSpecTuple(tuArg);
@@ -939,7 +931,7 @@ public class Library extends alice.tuprolog.Library {
 	            return false;
 	        }
 	    }else{
-	    	System.out.println("[Library]: Remote rd_s triggered...");
+	    	log("Remote rd_s triggered...");
 	    	InputEvent ce=vm.getCurrentEvent();
 			InputEvent out_ev = new InputEvent(ce.getReactingTC(),RespectOperation.makeRd_s(getProlog(), new LogicTuple(goal.copyGoal(v,0)),null),tid,vm.getCurrentTime());
 			out_ev.setIsLinking(true);
@@ -971,7 +963,7 @@ public class Library extends alice.tuprolog.Library {
 		}
     	
     	if(tcName.equals("this")){
-    		System.out.println("[Library]: Local inp_s triggered...");
+    		log("Local inp_s triggered...");
     		Term newArg=goal.copyGoal(v,0);
 	        LogicTuple tuArg=new LogicTuple(newArg);
 	        alice.tuplecentre.api.Tuple tuple=vm.removeMatchingSpecTuple(tuArg);
@@ -988,7 +980,7 @@ public class Library extends alice.tuprolog.Library {
 	            return false;
 	        }
 	    }else{
-	    	System.out.println("[Library]: Remote inp_s triggered...");
+	    	log("Remote inp_s triggered...");
 	    	InputEvent ce=vm.getCurrentEvent();
 			InputEvent out_ev = new InputEvent(ce.getReactingTC(),RespectOperation.makeInp_s(getProlog(), new LogicTuple(goal.copyGoal(v,0)),null),tid,vm.getCurrentTime());
 			out_ev.setIsLinking(true);
@@ -1020,7 +1012,7 @@ public class Library extends alice.tuprolog.Library {
 		}
     	
     	if(tcName.equals("this")){
-    		System.out.println("[Library]: Local rdp_s triggered...");
+    		log("Local rdp_s triggered...");
     		Term newArg=goal.copyGoal(v,0);
 	        LogicTuple tuArg=new LogicTuple(newArg);
 	        alice.tuplecentre.api.Tuple tuple=vm.readMatchingSpecTuple(tuArg);
@@ -1037,7 +1029,7 @@ public class Library extends alice.tuprolog.Library {
 	            return false;
 	        }
 	    }else{
-	    	System.out.println("[Library]: Remote rdp_s triggered...");
+	    	log("Remote rdp_s triggered...");
 	    	InputEvent ce=vm.getCurrentEvent();
 			InputEvent out_ev = new InputEvent(ce.getReactingTC(),RespectOperation.makeRdp_s(getProlog(), new LogicTuple(goal.copyGoal(v,0)),null),tid,vm.getCurrentTime());
 			out_ev.setIsLinking(true);
@@ -1069,12 +1061,12 @@ public class Library extends alice.tuprolog.Library {
 		}
 
     	if(tcName.equals("this")){
-    		System.out.println("[Library]: Local no_s triggered...");
+    		log("Local no_s triggered...");
     		Term newArg=goal.copyGoal(v,0);
 	        LogicTuple tuArg=new LogicTuple(newArg);
 	        alice.tuplecentre.api.Tuple tuple=vm.readMatchingSpecTuple(tuArg);
 	        if (tuple==null){
-	        	System.out.println("[Library]: no_s success");
+	        	log("no_s success");
 	        	InputEvent ce=vm.getCurrentEvent();
 				InternalEvent ev=new InternalEvent(ce,InternalOperation.makeNo_sR(new LogicTuple(goal.copyGoal(v,0)))); 
 				ev.setSource(ce.getReactingTC());
@@ -1082,13 +1074,13 @@ public class Library extends alice.tuprolog.Library {
 				vm.fetchTriggeredReactions(ev);
 	            return true;
 	        } else {
-	        	System.out.println("[Library]: no_s failure");
+	        	log("no_s failure");
 //	        	Term term=((LogicTuple)tuple).toTerm();
 //	            unify(goal,term.copyGoal(v,0));
 	            return false;
 	        }
     	}else{
-    		System.out.println("[Library]: Remote no_s triggered...");
+    		log("Remote no_s triggered...");
 	    	InputEvent ce=vm.getCurrentEvent();
 			InputEvent out_ev = new InputEvent(ce.getReactingTC(),RespectOperation.makeNo_s(getProlog(), new LogicTuple(goal.copyGoal(v,0)),null),tid,vm.getCurrentTime());
 			out_ev.setIsLinking(true);
@@ -1120,12 +1112,12 @@ public class Library extends alice.tuprolog.Library {
 		}
 
     	if(tcName.equals("this")){
-    		System.out.println("[Library]: Local nop_s triggered...");
+    		log("Local nop_s triggered...");
     		Term newArg=goal.copyGoal(v,0);
 	        LogicTuple tuArg=new LogicTuple(newArg);
 	        alice.tuplecentre.api.Tuple tuple=vm.readMatchingSpecTuple(tuArg);
 	        if (tuple==null){
-	        	System.out.println("[Library]: nop_s success");
+	        	log("nop_s success");
 	        	InputEvent ce=vm.getCurrentEvent();
 				InternalEvent ev=new InternalEvent(ce,InternalOperation.makeNo_sR(new LogicTuple(goal.copyGoal(v,0)))); 
 				ev.setSource(ce.getReactingTC());
@@ -1133,13 +1125,13 @@ public class Library extends alice.tuprolog.Library {
 				vm.fetchTriggeredReactions(ev);
 	            return true;
 	        } else {
-	        	System.out.println("[Library]: nop_s failure");
+	        	log("nop_s failure");
 //	        	Term term=((LogicTuple)tuple).toTerm();
 //	            unify(goal,term.copyGoal(v,0));
 	            return false;
 	        }
     	}else{
-    		System.out.println("[Library]: Remote nop_s triggered...");
+    		log("Remote nop_s triggered...");
 	    	InputEvent ce=vm.getCurrentEvent();
 			InputEvent out_ev = new InputEvent(ce.getReactingTC(),RespectOperation.makeNop_s(getProlog(), new LogicTuple(goal.copyGoal(v,0)),null),tid,vm.getCurrentTime());
 			out_ev.setIsLinking(true);
@@ -1165,7 +1157,7 @@ public class Library extends alice.tuprolog.Library {
     	AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
     	
     	if(tcName.equals("this")){
-    		System.out.println("[Library]: Local get_s triggered...");
+    		log("Local get_s triggered...");
     		Iterator<LogicTuple> it = vm.getSpecTupleSetIterator();
     		List<Tuple> list = new LinkedList<Tuple>();
     		while(it.hasNext()){
@@ -1175,9 +1167,7 @@ public class Library extends alice.tuprolog.Library {
     		int i = 0;
     		while(!list.isEmpty())
     			array[i++] = new TupleArgument(((LogicTuple)list.remove(0)).toTerm());
-    		System.out.println("[Library]: array = " + array);
 	        alice.tuplecentre.api.Tuple tuple = new LogicTuple("get_s", array);
-	        System.out.println("[Library]: tuple = " + tuple);
 	        try {
 				if (((LogicTuple)tuple).getArg(0) != null){
 				    Term term=((LogicTuple)tuple).toTerm();
@@ -1196,7 +1186,7 @@ public class Library extends alice.tuprolog.Library {
 				return false;
 			}
 	    }else{
-	    	System.out.println("[Library]: Remote get_s triggered...");
+	    	log("Remote get_s triggered...");
 	    	InputEvent ce=vm.getCurrentEvent();
 	    	InputEvent out_ev = new InputEvent(ce.getReactingTC(),RespectOperation.makeGet_s(getProlog(), new LogicTuple(arg0.copyGoal(v,0)),null),tid,vm.getCurrentTime());
 			out_ev.setIsLinking(true);
@@ -1282,7 +1272,6 @@ public class Library extends alice.tuprolog.Library {
     public boolean request_0(){
     	Event ev = vm.getCurrentReactionEvent();
         TupleCentreOperation op = ev.getOperation();
-        System.out.println("[Library-request]: isResultDef = " + op.isResultDefined());
         return !op.isResultDefined();
     }
     
@@ -1305,7 +1294,6 @@ public class Library extends alice.tuprolog.Library {
     public boolean response_0(){
     	Event ev = vm.getCurrentReactionEvent();
         TupleCentreOperation op = ev.getOperation();
-        System.out.println("[Library-response]: isResultDef = " + op.isResultDefined());
         return op.isResultDefined();
 //        if(op.isResultDefined()){
 //        	System.out.println("[Library-response]: isOutputEv = " + (ev instanceof OutputEvent));
@@ -1342,41 +1330,13 @@ public class Library extends alice.tuprolog.Library {
     public boolean success_0(){
         Event ev = vm.getCurrentReactionEvent();
         RespectOperation op = (RespectOperation)ev.getOperation();
-        System.out.println("[Library-success]: isResultSuccess = " + op.isResultSuccess());
         return op.isResultSuccess();
-//        if(op.isResultDefined()){
-//        	Term res = op.getLogicTupleResult().toTerm();
-//        	if(res != null)
-//    			return true;
-//        	else
-//    			return false;
-//        }else
-//        	return false;
     }
     
     public boolean failure_0(){
     	Event ev = vm.getCurrentReactionEvent();
         RespectOperation op = (RespectOperation)ev.getOperation();
-        System.out.println("[Library-failure]: isResultFailure = " + op.isResultFailure());
         return op.isResultFailure();
-//        System.out.println("[Library-failure]: isResultDef = " + op.isResultDefined());
-//        if(op.isResultDefined()){
-//        	if(op.isNo() || op.isInp() || op.isRdp() || op.isNo_s() || op.isInp_s() || op.isRdp_s()){
-//        		System.out.println("[Library-failure]: isPredicativeOp = true");
-//        		if(op.getTupleResult()==null){
-//        			System.out.println("[Library-failure]: returning TRUE");
-//        			return true;
-//        		}else
-//        			return false;
-//        	}else{
-//	        	Term res = op.getLogicTupleResult().toTerm();
-//	        	if(res != null)
-//	    			return false;
-//	        	else
-//	    			return true;
-//        	}
-//        }else
-//        	return true;
     }
 
     public boolean before_1(Term time){
@@ -1603,5 +1563,9 @@ public boolean spawn_3(Term agentId, Term agentType, Term arg){
 		}
 		return new Struct(termArray);
 	}
+    
+    private void log(String s){
+    	System.out.println("....[Library]: " + s);
+    }
     
 }

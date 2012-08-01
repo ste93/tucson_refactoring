@@ -43,6 +43,7 @@ import alice.tuplecentre.core.ObservableEventReactionOK;
 import alice.tuplecentre.core.TriggeredReaction;
 import alice.tuplecentre.core.TupleCentreOperation;
 
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -115,6 +116,8 @@ public class InspectorContextSkel extends ACCAbstractProxyNodeSide implements In
 			}
 			dialog.end();
 			TupleCentreContainer.doManagementOperation(TucsonOperation.rmvInspCode(), tcId, this);
+		}catch(EOFException e){
+			
 		}catch(IOException e){
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
