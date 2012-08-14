@@ -8,6 +8,7 @@
  *
  */
 package alice.respect.core;
+
 import java.util.*;
 
 /**
@@ -18,11 +19,9 @@ import java.util.*;
 public class PendingQuerySet  {
 
     private LinkedList events;
-    // to manage transactions
     private LinkedList evAdded;
     private LinkedList evRemoved;
     private boolean transaction;
-
 
     public PendingQuerySet(){
 		events=new LinkedList();
@@ -74,15 +73,12 @@ public class PendingQuerySet  {
      */
     public void endTransaction(boolean commit){
         if (!commit){
-            //System.out.println("[ tspace ] roll back!");
             Iterator it = evAdded.listIterator();
             while (it.hasNext()) {
             	events.remove(it.next());
             }
-            
 			it = evRemoved.listIterator();
 			while (it.hasNext()) {
-                //System.out.println("[tspace] adding "+(Tuple)list[i]);
                 events.add(it.next());
             }
         }
@@ -91,11 +87,10 @@ public class PendingQuerySet  {
         evRemoved.clear();
     }
 
-    public void    empty(){
+    public void empty(){
         events.clear();
     }
 
-    // get + remove
     public alice.tuplecentre.core.Event get(){
         alice.tuplecentre.core.Event ev= (alice.tuplecentre.core.Event) events.removeFirst();
         if (transaction){
