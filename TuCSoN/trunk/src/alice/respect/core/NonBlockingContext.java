@@ -12,7 +12,7 @@ import alice.respect.api.exceptions.OperationNotPossibleException;
 import alice.tuplecentre.api.IId;
 import alice.tuplecentre.core.OperationCompletionListener;
 
-public class NonBlockingContext extends AbstractContext implements IOrdinaryAsynchInterface {
+public class NonBlockingContext extends RootInterface implements IOrdinaryAsynchInterface {
     
     public NonBlockingContext(IRespectTC core_){
         super(core_);

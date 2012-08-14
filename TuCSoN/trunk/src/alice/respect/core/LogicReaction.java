@@ -16,9 +16,9 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 package alice.respect.core;
+
 import java.util.AbstractMap;
 import java.util.LinkedHashMap;
-
 import alice.tuprolog.*;
 
 /**
@@ -27,10 +27,10 @@ import alice.tuprolog.*;
  * 
  * @author aricci
  */
-@SuppressWarnings("serial")
 public class LogicReaction implements alice.tuplecentre.core.Reaction, java.io.Serializable{
 
-    private Struct reaction;
+    private static final long serialVersionUID = -930986977792219715L;
+	private Struct reaction;
 
     public LogicReaction(){
     }

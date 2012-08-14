@@ -32,7 +32,7 @@ import alice.respect.api.exceptions.OperationTimeOutException;
  * 
  * @author aricci
  */
-public class TimedContext extends AbstractContext implements ITimedContext  {
+public class TimedContext extends RootInterface implements ITimedContext  {
     
     //private IRespectTC core;
     

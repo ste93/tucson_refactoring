@@ -25,13 +25,12 @@ import alice.tuplecentre.core.*;
  * @author aricci
  * @version 1.0
  */
-@SuppressWarnings("serial")
 public class InternalEvent extends alice.tuplecentre.core.Event {
 
-    private InputEvent inputEvent;
+    private static final long serialVersionUID = 8362450931717138730L;
+	private InputEvent inputEvent;
     private InternalOperation internalOperation; 
     
-
 	public InternalEvent(InputEvent ev, InternalOperation op){
 		super(ev.getId(),ev.getOperation(),ev.getReactingTC(),ev.getTime());
 		inputEvent=ev;

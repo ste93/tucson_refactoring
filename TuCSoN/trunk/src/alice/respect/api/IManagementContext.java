@@ -91,13 +91,6 @@ public interface IManagementContext  {
 	void nextStepCommand() throws OperationNotPossibleException;
 
 	/**
-	 * Enables spying information about VM state and dynamics
-	 * 
-	 * @param what true to enable 
-	 */
-	void setSpy(boolean what);
-	
-	/**
 	 * Gets current content of the tuple set 
 	 * 
 	 * @param filter tuple filtering tuples to be retrieved

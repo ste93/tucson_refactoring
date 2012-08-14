@@ -17,7 +17,7 @@ import alice.respect.api.exceptions.InvalidSpecificationException;
 import alice.respect.api.exceptions.InvalidTupleCentreIdException;
 import alice.respect.api.exceptions.OperationNotPossibleException;
 
-import alice.respect.core.BlockingSpecContext;
+import alice.respect.core.SpecificationSynchInterface;
 import alice.respect.core.RespectTCContainer;
 
 import alice.tucson.api.TucsonAgentId;
@@ -159,10 +159,6 @@ public class TupleCentreContainer{
 		
 		if(type == TucsonOperation.setMngModeCode()){
 			context.setManagementMode((Boolean)obj);
-			return true;
-		}
-		if(type == TucsonOperation.setSpyCode()){
-			context.setSpy((Boolean)obj);
 			return true;
 		}
 		
@@ -380,12 +376,12 @@ public class TupleCentreContainer{
 //				if(aid.toString().equals("node_agent") || aid.toString().startsWith("inspector_edit_spec_")){
 				if(t.getName().equals("spec")){
 					log("t = " + t);
-					return ((BlockingSpecContext)context).set_s((AgentId) aid.getLocalAgentId(), new RespectSpecification(((LogicTuple) t).getArg(0).getName()));
+					return ((SpecificationSynchInterface)context).set_s((AgentId) aid.getLocalAgentId(), new RespectSpecification(((LogicTuple) t).getArg(0).getName()));
 				}
-				return ((BlockingSpecContext)context).set_s((AgentId) aid.getLocalAgentId(), t);
+				return ((SpecificationSynchInterface)context).set_s((AgentId) aid.getLocalAgentId(), t);
 			}
 			if(type == TucsonOperation.get_sCode()){
-				return ((BlockingSpecContext)context).get_s((AgentId) aid.getLocalAgentId());
+				return ((SpecificationSynchInterface)context).get_s((AgentId) aid.getLocalAgentId());
 			}
 		}catch(InvalidLogicTupleException e){
 			throw new TucsonInvalidLogicTupleException();
