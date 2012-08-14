@@ -1,7 +1,6 @@
 package alice.respect.api;
 
 import java.util.List;
-
 import alice.logictuple.LogicTuple;
 
 /**
@@ -27,10 +26,12 @@ public interface IRespectOperation extends alice.tuplecentre.api.ITupleCentreOpe
 	LogicTuple getLogicTupleArgument();
 	
 	boolean isTime();
-	boolean isGetEnv();
-	boolean isSetEnv();
-	boolean isEnv();
 	
+	boolean isGetEnv();
+	
+	boolean isSetEnv();
+
+	boolean isEnv();
 	
 	/**
 	 * Gets the results of a get operation

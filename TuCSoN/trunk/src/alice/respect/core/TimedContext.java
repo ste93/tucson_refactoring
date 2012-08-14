@@ -17,12 +17,13 @@
  */
 package alice.respect.core;
 import alice.logictuple.*;
+import alice.logictuple.exception.InvalidLogicTupleException;
 import alice.respect.api.AgentId;
 import alice.respect.api.IRespectTC;
 import alice.respect.api.IRespectOperation;
 import alice.respect.api.ITimedContext;
-import alice.respect.api.OperationNotPossibleException;
-import alice.respect.api.OperationTimeOutException;
+import alice.respect.api.exceptions.OperationNotPossibleException;
+import alice.respect.api.exceptions.OperationTimeOutException;
 
 /**
  *
@@ -51,7 +52,7 @@ public class TimedContext extends AbstractContext implements ITimedContext  {
 		}
     }
     
-    public LogicTuple in(AgentId id, LogicTuple t,long ms) throws InvalidLogicTupleException, OperationNotPossibleException, alice.respect.api.OperationTimeOutException {
+    public LogicTuple in(AgentId id, LogicTuple t,long ms) throws InvalidLogicTupleException, OperationNotPossibleException, alice.respect.api.exceptions.OperationTimeOutException {
         if (t==null){
             throw new InvalidLogicTupleException();
         }
@@ -59,7 +60,7 @@ public class TimedContext extends AbstractContext implements ITimedContext  {
 		try {
 			op.waitForOperationCompletion(ms);
 		} catch (Exception  ex){
-			throw new alice.respect.api.OperationTimeOutException(op);
+			throw new alice.respect.api.exceptions.OperationTimeOutException(op);
 		}
 		return unify(t,op.getLogicTupleResult());
     }

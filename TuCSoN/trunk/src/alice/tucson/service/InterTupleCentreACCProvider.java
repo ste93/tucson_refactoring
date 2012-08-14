@@ -1,6 +1,7 @@
 package alice.tucson.service;
 
 import alice.respect.api.*;
+import alice.respect.api.exceptions.OperationNotPossibleException;
 
 import alice.respect.core.RespectOperation;
 

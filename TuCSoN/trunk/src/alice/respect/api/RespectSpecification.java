@@ -27,9 +27,7 @@ import alice.tuplecentre.core.BehaviourSpecification;
 public class RespectSpecification extends BehaviourSpecification {
 
 	private String spec;
-	/**
-	 * 
-	 */
+
 	public RespectSpecification(String s) {
 		super();
 		spec=s;
@@ -38,4 +36,5 @@ public class RespectSpecification extends BehaviourSpecification {
 	public String toString(){
 		return spec;
 	}
+
 }

@@ -1,17 +1,16 @@
 package alice.respect.core;
 
-import alice.respect.api.IBlockingContext;
-import alice.respect.api.IBlockingSpecContext;
+import alice.respect.api.IOrdinarySynchInterface;
+import alice.respect.api.ISpecificationSynchInterface;
 import alice.respect.api.ILinkContext;
 import alice.respect.api.IManagementContext;
-import alice.respect.api.INonBlockingContext;
-import alice.respect.api.INonBlockingSpecContext;
+import alice.respect.api.IOrdinaryAsynchInterface;
+import alice.respect.api.ISpecificationAsynchInterface;
 import alice.respect.api.IRemoteLinkProvider;
 import alice.respect.api.ITCRegistry;
-import alice.respect.api.InstantiationNotPossibleException;
-import alice.respect.api.OperationNotPossibleException;
-import alice.respect.api.RespectTC;
 import alice.respect.api.TupleCentreId;
+import alice.respect.api.exceptions.InstantiationNotPossibleException;
+import alice.respect.api.exceptions.OperationNotPossibleException;
 import alice.tucson.service.RemoteLinkProvider;
 
 /**
@@ -68,7 +67,7 @@ public class RespectTCContainer
 		return true;
 	}
 
-	public IBlockingContext getBlockingContext(TupleCentreId id) throws OperationNotPossibleException
+	public IOrdinarySynchInterface getBlockingContext(TupleCentreId id) throws OperationNotPossibleException
 	{
 		try
 		{
@@ -82,7 +81,7 @@ public class RespectTCContainer
 		}
 	}
 
-	public INonBlockingContext getNonBlockingContext(TupleCentreId id)
+	public IOrdinaryAsynchInterface getNonBlockingContext(TupleCentreId id)
 	{
 		try
 		{
@@ -132,7 +131,7 @@ public class RespectTCContainer
 		}
 	}
 
-	public INonBlockingSpecContext getNonBlockingSpecContext(TupleCentreId id) throws OperationNotPossibleException
+	public ISpecificationAsynchInterface getNonBlockingSpecContext(TupleCentreId id) throws OperationNotPossibleException
 	{
 		try
 		{
@@ -146,7 +145,7 @@ public class RespectTCContainer
 		}
 	}
 
-	public IBlockingSpecContext getBlockingSpecContext(TupleCentreId id) throws OperationNotPossibleException
+	public ISpecificationSynchInterface getBlockingSpecContext(TupleCentreId id) throws OperationNotPossibleException
 	{
 		try
 		{

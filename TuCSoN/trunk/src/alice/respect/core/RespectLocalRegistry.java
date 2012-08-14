@@ -3,8 +3,8 @@ package alice.respect.core;
 import java.util.HashMap;
 import alice.respect.api.IRespectTC;
 import alice.respect.api.ITCRegistry;
-import alice.respect.api.InstantiationNotPossibleException;
 import alice.respect.api.TupleCentreId;
+import alice.respect.api.exceptions.InstantiationNotPossibleException;
 
 public class RespectLocalRegistry implements ITCRegistry {
 

@@ -19,6 +19,8 @@ package alice.respect.api;
 
 import java.lang.reflect.*;
 
+import alice.respect.api.exceptions.RespectException;
+import alice.respect.core.RespectTC;
 
 /**
  * Base class for building ReSpecT agents.
@@ -27,7 +29,6 @@ import java.lang.reflect.*;
  *
  */
 public abstract class Agent  {
-
 
     private AgentId id;
     private RespectTC tc;
@@ -55,13 +56,9 @@ public abstract class Agent  {
      */
     abstract  protected void mainPlan();
 
-   
     public AgentId getId(){
         return id;
     }
-
-	//
-	
 	
 	final protected void execPlan(String name) throws Exception {
 		Method m = this.getClass().getDeclaredMethod(name,ARGS_CLASS);
@@ -69,7 +66,6 @@ public abstract class Agent  {
 		new PlanExecutor(this,m).start();
 	}
 	
-	//
     final class PlanExecutor extends Thread {
         private Agent agent;
         private Method activity;
@@ -81,9 +77,10 @@ public abstract class Agent  {
             try {
                 activity.invoke(agent,ARGS);
             } catch (Exception ex){
-                //ex.printStackTrace();
+//                ex.printStackTrace();
             }
         }
     }
+    
 }
 

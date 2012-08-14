@@ -16,18 +16,19 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 package alice.respect.api;
+
+import alice.respect.api.exceptions.InvalidAgentIdException;
 import alice.respect.core.AgentIdOperatorManager;
 import alice.tuprolog.*;
+
 /**
  * Agent identifier.
  * 
  * @author aricci
  */
-@SuppressWarnings("serial")
 public class AgentId implements alice.tuplecentre.api.AgentId, java.io.Serializable {
 
     private static AgentIdOperatorManager opManager = new AgentIdOperatorManager();
-
     protected Term id;
 
     /**
@@ -39,10 +40,8 @@ public class AgentId implements alice.tuplecentre.api.AgentId, java.io.Serializa
      * @throws InvalidAgentIdException if it is not a valid identifier
      */
     public AgentId(String sid) throws InvalidAgentIdException {
-//    	System.out.println("[AgentId]: " + sid);
         try{
             id=Term.createTerm(sid,opManager);
-//            System.out.println("[AgentId]: " + id);
         } catch (InvalidTermException e){
         	e.printStackTrace();
             throw new InvalidAgentIdException();
@@ -95,5 +94,6 @@ public class AgentId implements alice.tuplecentre.api.AgentId, java.io.Serializa
 	public boolean isEnv(){
 		return false;
 	}
+	
 }
 

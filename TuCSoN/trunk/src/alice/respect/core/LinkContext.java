@@ -1,8 +1,8 @@
 package alice.respect.core;
 
 import alice.respect.api.ILinkContext;
-import alice.respect.api.OperationNotPossibleException;
 import alice.respect.api.TupleCentreId;
+import alice.respect.api.exceptions.OperationNotPossibleException;
 
 import alice.tuplecentre.core.TupleCentreOperation;
 

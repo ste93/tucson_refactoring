@@ -1,6 +1,7 @@
 package alice.tucson.service;
 
 import alice.logictuple.*;
+import alice.logictuple.exception.InvalidTupleOperationException;
 
 import alice.tucson.api.*;
 

@@ -20,13 +20,14 @@ import java.util.LinkedList;
 import java.util.List;
 
 import alice.logictuple.*;
+import alice.logictuple.exception.InvalidLogicTupleException;
 import alice.respect.api.AgentId;
-import alice.respect.api.IBlockingSpecContext;
+import alice.respect.api.ISpecificationSynchInterface;
 import alice.respect.api.IRespectTC;
 import alice.respect.api.IRespectOperation;
-import alice.respect.api.InvalidSpecificationException;
-import alice.respect.api.OperationNotPossibleException;
 import alice.respect.api.RespectSpecification;
+import alice.respect.api.exceptions.InvalidSpecificationException;
+import alice.respect.api.exceptions.OperationNotPossibleException;
 
 /**
  *
@@ -35,7 +36,7 @@ import alice.respect.api.RespectSpecification;
  * 
  * @author aricci
  */
-public class BlockingSpecContext extends AbstractContext implements IBlockingSpecContext {
+public class BlockingSpecContext extends AbstractContext implements ISpecificationSynchInterface {
     
     //private IRespectTC core;
     

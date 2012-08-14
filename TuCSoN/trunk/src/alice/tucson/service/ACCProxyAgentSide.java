@@ -18,6 +18,8 @@
 package alice.tucson.service;
 
 import alice.logictuple.*;
+import alice.logictuple.exception.InvalidLogicTupleException;
+import alice.logictuple.exception.InvalidTupleOperationException;
 
 import alice.tucson.api.EnhancedACC;
 import alice.tucson.api.ITucsonOperation;

@@ -17,8 +17,8 @@
  */
 package alice.tucson.introspection.tools;
 
-import alice.logictuple.InvalidTupleOperationException;
 import alice.logictuple.LogicTuple;
+import alice.logictuple.exception.InvalidTupleOperationException;
 
 import alice.tucson.api.EnhancedACC;
 import alice.tucson.api.TucsonAgentId;

@@ -19,10 +19,9 @@ package alice.respect.core;
 import java.util.*;
 
 import alice.respect.api.ILinkContext;
-import alice.respect.api.OperationNotPossibleException;
 import alice.respect.api.RespectSpecification;
-import alice.respect.api.RespectTC;
 import alice.respect.api.TupleCentreId;
+import alice.respect.api.exceptions.OperationNotPossibleException;
 import alice.tucson.parsing.MyOpManager;
 import alice.tuplecentre.core.BehaviourSpecification;
 import alice.tuplecentre.api.Tuple;
@@ -31,6 +30,8 @@ import alice.tuplecentre.core.*;
 import alice.tuprolog.*;
 import alice.tuprolog.Var;
 import alice.logictuple.*;
+import alice.logictuple.exception.InvalidLogicTupleException;
+import alice.logictuple.exception.InvalidTupleOperationException;
 
 /**
  * This class defines a ReSpecT Context
@@ -138,7 +139,7 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 			core.loadLibrary("alice.tuprolog.lib.ISOLibrary");
 			core.loadLibrary("alice.tuprolog.lib.JavaLibrary");
 			
-			((alice.respect.core.Library)core.loadLibrary("alice.respect.core.Library")).init(this);
+			((alice.respect.api.Respect2PLibrary)core.loadLibrary("alice.respect.core.Library")).init(this);
         } catch (Exception ex){
             ex.printStackTrace();
         }
@@ -149,7 +150,7 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 			trigCore.loadLibrary("alice.tuprolog.lib.JavaLibrary");
 			trigCore.loadLibrary("alice.tuprolog.lib.ISOLibrary");
             trigCore.loadLibrary("alice.respect.core.Library");
-            ((alice.respect.core.Library)trigCore.getLibrary("alice.respect.core.Library")).init(this);
+            ((alice.respect.api.Respect2PLibrary)trigCore.getLibrary("alice.respect.core.Library")).init(this);
         } catch (Exception ex){
             ex.printStackTrace();
         }

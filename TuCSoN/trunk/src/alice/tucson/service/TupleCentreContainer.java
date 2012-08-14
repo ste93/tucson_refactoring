@@ -1,21 +1,21 @@
 package alice.tucson.service;
 
-import alice.logictuple.InvalidLogicTupleException;
-import alice.logictuple.InvalidTupleOperationException;
 import alice.logictuple.LogicTuple;
+import alice.logictuple.exception.InvalidLogicTupleException;
+import alice.logictuple.exception.InvalidTupleOperationException;
 
 import alice.respect.api.AgentId;
-import alice.respect.api.IBlockingContext;
-import alice.respect.api.IBlockingSpecContext;
+import alice.respect.api.IOrdinarySynchInterface;
+import alice.respect.api.ISpecificationSynchInterface;
 import alice.respect.api.IManagementContext;
-import alice.respect.api.INonBlockingContext;
-import alice.respect.api.INonBlockingSpecContext;
-import alice.respect.api.InstantiationNotPossibleException;
-import alice.respect.api.InvalidSpecificationException;
-import alice.respect.api.InvalidTupleCentreIdException;
-import alice.respect.api.OperationNotPossibleException;
+import alice.respect.api.IOrdinaryAsynchInterface;
+import alice.respect.api.ISpecificationAsynchInterface;
 import alice.respect.api.RespectSpecification;
 import alice.respect.api.TupleCentreId;
+import alice.respect.api.exceptions.InstantiationNotPossibleException;
+import alice.respect.api.exceptions.InvalidSpecificationException;
+import alice.respect.api.exceptions.InvalidTupleCentreIdException;
+import alice.respect.api.exceptions.OperationNotPossibleException;
 
 import alice.respect.core.BlockingSpecContext;
 import alice.respect.core.RespectTCContainer;
@@ -209,7 +209,7 @@ public class TupleCentreContainer{
 	 */
 	public static ITupleCentreOperation doNonBlockingOperation(int type, TucsonAgentId aid, TucsonTupleCentreId tid, LogicTuple t, OperationCompletionListener l) throws TucsonInvalidLogicTupleException, TucsonOperationNotPossibleException{			
 		ITupleCentreOperation res = null;
-		INonBlockingContext context = null;
+		IOrdinaryAsynchInterface context = null;
 		try{
 //			log("(TupleCentreId) tid.getInternalTupleCentreId() = " + ((TupleCentreId) tid.getInternalTupleCentreId()));
 			context = (RespectTCContainer.getRespectTCContainer()).getNonBlockingContext((TupleCentreId) tid.getInternalTupleCentreId());
@@ -272,7 +272,7 @@ public class TupleCentreContainer{
 	 */
 	public static ITupleCentreOperation doNonBlockingSpecOperation(int type, TucsonAgentId aid, TucsonTupleCentreId tid, LogicTuple t, OperationCompletionListener l) throws TucsonInvalidLogicTupleException, TucsonOperationNotPossibleException{
 		ITupleCentreOperation res = null;
-		INonBlockingSpecContext context = null;
+		ISpecificationAsynchInterface context = null;
 		try{
 			context = (RespectTCContainer.getRespectTCContainer()).getNonBlockingSpecContext((TupleCentreId) tid.getInternalTupleCentreId());			
 			if(type == TucsonOperation.no_sCode())
@@ -312,9 +312,9 @@ public class TupleCentreContainer{
 	 * @throws TucsonOperationNotPossibleException
 	 */
 	public static Object doBlockingOperation(int type, TucsonAgentId aid, TucsonTupleCentreId tid, Object o) throws TucsonInvalidLogicTupleException, TucsonOperationNotPossibleException{
-		IBlockingContext context = null;
+		IOrdinarySynchInterface context = null;
 		try{
-			context = (IBlockingContext) (RespectTCContainer.getRespectTCContainer()).getBlockingContext((TupleCentreId) tid.getInternalTupleCentreId());			
+			context = (IOrdinarySynchInterface) (RespectTCContainer.getRespectTCContainer()).getBlockingContext((TupleCentreId) tid.getInternalTupleCentreId());			
 			if(type == TucsonOperation.outCode()){
 				context.out((AgentId) aid.getLocalAgentId(), (LogicTuple) o);
 				return o;
@@ -357,9 +357,9 @@ public class TupleCentreContainer{
 	 */
 	public static Object doBlockingSpecOperation(int type, TucsonAgentId aid, TucsonTupleCentreId tid, LogicTuple t) throws TucsonInvalidLogicTupleException, TucsonOperationNotPossibleException, TucsonInvalidSpecificationException{
 		LogicTuple res = null;		
-		IBlockingSpecContext context = null;
+		ISpecificationSynchInterface context = null;
 		try{
-			context = (IBlockingSpecContext) (RespectTCContainer.getRespectTCContainer()).getBlockingSpecContext((TupleCentreId) tid.getInternalTupleCentreId());
+			context = (ISpecificationSynchInterface) (RespectTCContainer.getRespectTCContainer()).getBlockingSpecContext((TupleCentreId) tid.getInternalTupleCentreId());
 			if(type == TucsonOperation.out_sCode()){
 				context.out_s((AgentId) aid.getLocalAgentId(), (LogicTuple) t);
 				return res;

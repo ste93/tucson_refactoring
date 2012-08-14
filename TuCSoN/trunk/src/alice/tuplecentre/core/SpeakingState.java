@@ -19,9 +19,9 @@ package alice.tuplecentre.core;
 
 import java.util.*;
 
-import alice.logictuple.InvalidLogicTupleException;
 import alice.logictuple.LogicTuple;
 import alice.logictuple.Value;
+import alice.logictuple.exception.InvalidLogicTupleException;
 import alice.respect.api.RespectSpecification;
 import alice.respect.core.RespectVMContext;
 import alice.tuplecentre.api.Tuple;

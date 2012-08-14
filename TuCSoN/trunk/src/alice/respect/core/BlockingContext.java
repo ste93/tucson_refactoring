@@ -19,16 +19,16 @@ package alice.respect.core;
 
 import java.util.List;
 
-import alice.logictuple.InvalidLogicTupleException;
-import alice.logictuple.InvalidTupleOperationException;
 import alice.logictuple.LogicTuple;
 import alice.logictuple.TupleArgument;
+import alice.logictuple.exception.InvalidLogicTupleException;
+import alice.logictuple.exception.InvalidTupleOperationException;
 
 import alice.respect.api.AgentId;
-import alice.respect.api.IBlockingContext;
+import alice.respect.api.IOrdinarySynchInterface;
 import alice.respect.api.IRespectTC;
 import alice.respect.api.IRespectOperation;
-import alice.respect.api.OperationNotPossibleException;
+import alice.respect.api.exceptions.OperationNotPossibleException;
 
 /**
  *
@@ -37,7 +37,7 @@ import alice.respect.api.OperationNotPossibleException;
  * 
  * @author aricci
  */
-public class BlockingContext extends AbstractContext implements IBlockingContext {
+public class BlockingContext extends AbstractContext implements IOrdinarySynchInterface {
     
     public BlockingContext(IRespectTC core){
         super(core);

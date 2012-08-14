@@ -18,8 +18,10 @@
 package alice.respect.api;
 
 import alice.logictuple.*;
+import alice.logictuple.exception.InvalidLogicTupleException;
+import alice.respect.api.exceptions.InvalidSpecificationException;
+import alice.respect.api.exceptions.OperationNotPossibleException;
 import alice.respect.core.RespectVM;
-
 import alice.tuplecentre.api.IId;
 import alice.tuplecentre.core.OperationCompletionListener;
 
@@ -42,31 +44,6 @@ public interface IRespectTC  {
 	IRespectOperation out(IId id, LogicTuple t, OperationCompletionListener l) throws OperationNotPossibleException;
 	
 	IRespectOperation out(IId id, LogicTuple t) throws OperationNotPossibleException;
-   
-	/**
-	 * Gets the whole tuple set
-	 * 
-	 * @param id agent identifier
-	 * @param listener listening for operation completion
-	 * @return The object representing the operation
-	 * @throws OperationNotPossibleException if the operation is not possible given current state of the tuple centre
-	 */
-	IRespectOperation get(IId id,OperationCompletionListener l) throws OperationNotPossibleException;
-	
-	IRespectOperation get(IId id) throws OperationNotPossibleException;
-	
-	/**
-	 * Gets the whole tuple set
-	 * 
-	 * @param id agent identifier
-	 * @param listener listening for operation completion
-	 * @return The object representing the operation
-	 * @throws OperationNotPossibleException if the operation is not possible given current state of the tuple centre
-	 * @throws InvalidLogicTupleException 
-	 */
-	IRespectOperation set(IId id, LogicTuple tuple, OperationCompletionListener l) throws OperationNotPossibleException, InvalidLogicTupleException;
-	
-	IRespectOperation set(IId id, LogicTuple tuple) throws OperationNotPossibleException, InvalidLogicTupleException;
 	
 	/**
 	 * Retrieves a tuple in the tuple centre
@@ -144,6 +121,31 @@ public interface IRespectTC  {
 	
 	IRespectOperation nop(IId id, LogicTuple t)  throws OperationNotPossibleException;
     
+	/**
+	 * Gets the whole tuple set
+	 * 
+	 * @param id agent identifier
+	 * @param listener listening for operation completion
+	 * @return The object representing the operation
+	 * @throws OperationNotPossibleException if the operation is not possible given current state of the tuple centre
+	 */
+	IRespectOperation get(IId id,OperationCompletionListener l) throws OperationNotPossibleException;
+	
+	IRespectOperation get(IId id) throws OperationNotPossibleException;
+	
+	/**
+	 * Gets the whole tuple set
+	 * 
+	 * @param id agent identifier
+	 * @param listener listening for operation completion
+	 * @return The object representing the operation
+	 * @throws OperationNotPossibleException if the operation is not possible given current state of the tuple centre
+	 * @throws InvalidLogicTupleException 
+	 */
+	IRespectOperation set(IId id, LogicTuple tuple, OperationCompletionListener l) throws OperationNotPossibleException, InvalidLogicTupleException;
+	
+	IRespectOperation set(IId id, LogicTuple tuple) throws OperationNotPossibleException, InvalidLogicTupleException;
+	
 	
 	
 	/**
@@ -258,8 +260,6 @@ public interface IRespectTC  {
 	
 	
 	
-//	my personal updates
-	
 	IRespectOperation out_all(IId id, LogicTuple t) throws OperationNotPossibleException;
 	
 	IRespectOperation out_all(IId id, LogicTuple t, OperationCompletionListener l) throws OperationNotPossibleException;
@@ -288,6 +288,13 @@ public interface IRespectTC  {
 
 	IRespectOperation rd_all(IId id, LogicTuple t, OperationCompletionListener l) throws OperationNotPossibleException;
 	
+	/**
+	 * 
+	 * @param id
+	 * @param t
+	 * @return
+	 * @throws OperationNotPossibleException
+	 */
 	IRespectOperation no_all(IId id, LogicTuple t) throws OperationNotPossibleException;
 
 	IRespectOperation no_all(IId id, LogicTuple t, OperationCompletionListener l) throws OperationNotPossibleException;
@@ -316,6 +323,13 @@ public interface IRespectTC  {
 	
 	IRespectOperation uin(IId id, LogicTuple t, OperationCompletionListener l) throws OperationNotPossibleException;
 	
+	/**
+	 * 
+	 * @param id
+	 * @param t
+	 * @return
+	 * @throws OperationNotPossibleException
+	 */
 	IRespectOperation uno(IId id, LogicTuple t) throws OperationNotPossibleException;
 	
 	IRespectOperation uno(IId id, LogicTuple t, OperationCompletionListener l) throws OperationNotPossibleException;
@@ -344,14 +358,17 @@ public interface IRespectTC  {
 	
 	IRespectOperation uinp(IId id, LogicTuple t, OperationCompletionListener l) throws OperationNotPossibleException;
 	
+	/**
+	 * 
+	 * @param id
+	 * @param t
+	 * @return
+	 * @throws OperationNotPossibleException
+	 */
 	IRespectOperation unop(IId id, LogicTuple t) throws OperationNotPossibleException;
 	
 	IRespectOperation unop(IId id, LogicTuple t, OperationCompletionListener l) throws OperationNotPossibleException;
 
-	//	*******************
-	
-	
-	
 	/**
 	 * Gets the tuple centre id
 	 * 

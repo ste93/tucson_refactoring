@@ -18,7 +18,7 @@
 package alice.tuplecentre.core;
 import java.util.*;
 
-import alice.respect.api.RespectTC;
+import alice.respect.core.RespectTC;
 import alice.tuplecentre.api.AgentId;
 import alice.tuplecentre.api.IId;
 import alice.tuplecentre.api.ITupleCentre;

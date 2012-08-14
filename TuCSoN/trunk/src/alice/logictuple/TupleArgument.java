@@ -17,6 +17,8 @@
  */
 package alice.logictuple;
 
+import alice.logictuple.exception.InvalidTupleArgumentException;
+import alice.logictuple.exception.InvalidTupleOperationException;
 import alice.tuprolog.Prolog;
 import alice.tuprolog.Term;
 import alice.tuprolog.Struct;

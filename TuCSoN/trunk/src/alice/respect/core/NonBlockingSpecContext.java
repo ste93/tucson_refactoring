@@ -1,16 +1,16 @@
 package alice.respect.core;
 
-import alice.logictuple.InvalidLogicTupleException;
 import alice.logictuple.LogicTuple;
-import alice.respect.api.INonBlockingSpecContext;
+import alice.logictuple.exception.InvalidLogicTupleException;
+import alice.respect.api.ISpecificationAsynchInterface;
 import alice.respect.api.IRespectOperation;
 import alice.respect.api.IRespectTC;
-import alice.respect.api.OperationNotPossibleException;
 import alice.respect.api.RespectSpecification;
+import alice.respect.api.exceptions.OperationNotPossibleException;
 import alice.tuplecentre.api.IId;
 import alice.tuplecentre.core.OperationCompletionListener;
 
-public class NonBlockingSpecContext implements INonBlockingSpecContext {
+public class NonBlockingSpecContext implements ISpecificationAsynchInterface {
 
 	private IRespectTC core;
     

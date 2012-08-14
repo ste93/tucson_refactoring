@@ -4,9 +4,9 @@ import java.util.List;
 
 import alice.logictuple.LogicTuple;
 import alice.respect.api.IManagementContext;
-import alice.respect.api.InvalidSpecificationException;
-import alice.respect.api.OperationNotPossibleException;
 import alice.respect.api.RespectSpecification;
+import alice.respect.api.exceptions.InvalidSpecificationException;
+import alice.respect.api.exceptions.OperationNotPossibleException;
 import alice.tuplecentre.api.InspectableEventListener;
 import alice.tuplecentre.api.ObservableEventListener;
 

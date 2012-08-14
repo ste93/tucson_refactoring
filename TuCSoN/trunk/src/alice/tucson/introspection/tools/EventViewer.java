@@ -17,8 +17,8 @@
  */
 package alice.tucson.introspection.tools;
 
-import alice.logictuple.InvalidLogicTupleException;
 import alice.logictuple.LogicTuple;
+import alice.logictuple.exception.InvalidLogicTupleException;
 import alice.tucson.introspection.GetSnapshotMsg;
 import alice.tucson.introspection.InspectorProtocol;
 
