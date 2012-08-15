@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 package alice.respect.core;
+
 import java.util.*;
 
 import alice.respect.api.ILinkContext;
@@ -45,74 +46,41 @@ import alice.logictuple.exception.InvalidTupleOperationException;
  */
 public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContext {
 
-	
 	/**are we setting a specification from outside?*/
 	private boolean isExternalSetSpec;
-	
 	/**Used to keep trace of theory other than reactions*/
 	private Theory noReactionTh;
-
 	/**List of timers scheduled for execution*/
 	private List<Timer> timers;
-	
     /** multiset of tuples T */
     private TupleSet tSet;
-    
     /** multiset of specification tuple Sigma */
     private TupleSet tSpecSet;
-
     /** multiset of pending query set  */
     private PendingQuerySet wSet;
-
     /** multiset of triggered reactions Z */
     private TRSet zSet;
-    
     /** multiset of triggered timed reactions */
     private TRSet timeSet;
-
-    /** list of output event waiting to be served */
-  // private ArrayList        outputEventList;
-    
     /** list of temporary output event caused by linkability operation:
      * they are added to the output queue (outputEventList only when the
      * related reaction is successfully executed
-     *  */
-    private ArrayList        temporaryOutputEventList;
-    
-    
-    
+     */
+    private ArrayList temporaryOutputEventList;
     private RespectSpecification        reactionSpec;
-    
     private boolean transaction;
-
     private RespectVM vm;
-    // engine for reactions evaluation
     private Prolog core;
-    
-    // engine for reactions triggering
     private Prolog trigCore;
-    
-    // current event serverd
     private Event currentReactionEvent;
-
-   
     private Struct currentReactionTerm;
-    
-    //private TransducerManager tm;
-    
-    // it is necessary when introducing linkability since listener for completion of
-    //operations on different tuple centres can start fetching new reactions at any time
     private Object semaphore;
-    
-    // Qui devo definire l'OntManager
     private RespectTC respectTC; 
-    
     private Prolog matcher = new Prolog();
     
-    // Qui devo passare anche l'OntoManager    
     public RespectVMContext(RespectVM vm, TupleCentreId tid, int queueSize, RespectTC respectTC){
-        super(tid, queueSize,respectTC);
         
+    	super(tid, queueSize,respectTC);
         timers = new Vector<Timer>();
         semaphore = new Object();
         tSet=new TupleSet();
@@ -121,92 +89,39 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
         zSet=new TRSet();
         this.timeSet=new TRSet();
         this.vm = vm;
-       
-        // outputEventList = new ArrayList();
         temporaryOutputEventList = new ArrayList();
-        
-       // Qui devo assegnare l'OntManager passato come argomento
         this.respectTC = respectTC;
-        
-		try {
-	        	core=new Prolog(new String[]{});
-	        	alice.tuprolog.event.OutputListener l=new alice.tuprolog.event.OutputListener() {
-	            	public void onOutput(alice.tuprolog.event.OutputEvent ev) {
-	                	System.out.print(ev.getMsg());
-	        	}};
-	        	core.addOutputListener(l);
+		
+        try {
+	    	core=new Prolog(new String[]{});
+	    	alice.tuprolog.event.OutputListener l=new alice.tuprolog.event.OutputListener() {
+	        	public void onOutput(alice.tuprolog.event.OutputEvent ev) {
+	            	System.out.print(ev.getMsg());
+	    	}};
+	    	core.addOutputListener(l);
 			core.loadLibrary("alice.tuprolog.lib.BasicLibrary");
 			core.loadLibrary("alice.tuprolog.lib.ISOLibrary");
 			core.loadLibrary("alice.tuprolog.lib.JavaLibrary");
-			
 			((alice.respect.api.Respect2PLibrary)core.loadLibrary("alice.respect.core.Library")).init(this);
-        } catch (Exception ex){
+        }catch(Exception ex){
             ex.printStackTrace();
         }
 		try {
 			trigCore=new Prolog(new String[]{});
 			trigCore.loadLibrary("alice.tuprolog.lib.BasicLibrary");
-
 			trigCore.loadLibrary("alice.tuprolog.lib.JavaLibrary");
 			trigCore.loadLibrary("alice.tuprolog.lib.ISOLibrary");
             trigCore.loadLibrary("alice.respect.core.Library");
             ((alice.respect.api.Respect2PLibrary)trigCore.getLibrary("alice.respect.core.Library")).init(this);
-        } catch (Exception ex){
+        }catch (Exception ex){
             ex.printStackTrace();
         }
 
         reactionSpec=new RespectSpecification("");
         this.reset();
-        
         this.isExternalSetSpec = false;
 
     }
-    /*
-    //Used by actuator
-    public RespectVMContext(RespectVM vm, TupleCentreId tid, int queueSize, TransducerManager tm){
-        super(tid, queueSize);
-        
-        timers = new Vector<Timer>();
-        semaphore = new Object();
-        tSet=new TupleSet();
-        tSpecSet = new TupleSet();
-        wSet=new PendingQuerySet();
-        zSet=new TRSet();
-        this.timeSet=new TRSet();
-        this.vm = vm;
-        
-        this.tm=tm;
-        
-        System.out.println("************************************************ TRANSDUCERMANAGER VMCONTEXT"+ this.tm.toString());
-       
-        // outputEventList = new ArrayList();
-        temporaryOutputEventList = new ArrayList();
-        
-		try {
-	        	core=new Prolog(new String[]{});
-	        	alice.tuprolog.OutputListener l=new alice.tuprolog.OutputListener() {
-	            	public void onOutput(alice.tuprolog.OutputEvent ev) {
-	                	System.out.print(ev.getMsg());
-	        	}};
-	        	core.addOutputListener(l);
-			core.loadLibrary("alice.tuprolog.lib.BasicLibrary");
-			((alice.respect.core.Library)core.loadLibrary("alice.respect.core.Library")).init(this);
-        } catch (Exception ex){
-            ex.printStackTrace();
-        }
-		try {
-			trigCore=new Prolog(new String[]{});
-			trigCore.loadLibrary("alice.tuprolog.lib.BasicLibrary");
-            trigCore.loadLibrary("alice.respect.core.Library");
-            ((alice.respect.core.Library)trigCore.getLibrary("alice.respect.core.Library")).init(this);
-        } catch (Exception ex){
-            ex.printStackTrace();
-        }
-
-        reactionSpec=new RespectSpecification("");
-        this.reset();
-
-    }*/
 
     public boolean triggeredReaction(){
         return !zSet.isEmpty();
@@ -215,53 +130,50 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
     public void fetchTriggeredReactions(Event ev){
        
     	synchronized(semaphore){
-    	
     		try {
-            
 	            currentReactionTerm=null;
 	            
 	            if (ev.isInput()){
+	            	
 	            	log("input phase");
 	                InputEvent ie = (InputEvent)ev;
 					RespectOperation op=(RespectOperation)ev.getOperation();
-	                if (op.isOut()){
-	                	//System.out.println(""+op.getLogicTupleArgument().toTerm());
+	                
+					if (op.isOut()){
 	                    currentReactionTerm=new Struct("out",op.getLogicTupleArgument().toTerm());
-	                } else if (op.isIn()){
+	                }else if (op.isIn()){
 		                currentReactionTerm=new Struct("in",op.getLogicTupleArgument().toTerm());
-					} else if (op.isRd()){
+					}else if (op.isRd()){
 						currentReactionTerm=new Struct("rd",op.getLogicTupleArgument().toTerm());
-	                } else if (op.isInp()){
+	                }else if (op.isInp()){
 	                    currentReactionTerm=new Struct("inp",op.getLogicTupleArgument().toTerm());
-	                } else if (op.isRdp()){
+	                }else if (op.isRdp()){
 	                    currentReactionTerm=new Struct("rdp",op.getLogicTupleArgument().toTerm());
 	                }else if (op.isNo()){
 	                    currentReactionTerm=new Struct("no",op.getLogicTupleArgument().toTerm());
 	                }else if (op.isNop()){
 	                    currentReactionTerm=new Struct("nop",op.getLogicTupleArgument().toTerm());
-	                } else if (op.isOut_s()){
+	                }else if (op.isOut_s()){
 	                	currentReactionTerm = new Struct("out_s", op.getLogicTupleArgument().toTerm());
-	                } else if (op.isRd_s()){
+	                }else if (op.isRd_s()){
 	                	currentReactionTerm = new Struct("rd_s", op.getLogicTupleArgument().toTerm());
-	                } else if (op.isIn_s()){
+	                }else if (op.isIn_s()){
 	                	currentReactionTerm = new Struct("in_s", op.getLogicTupleArgument().toTerm());
-	                } else if (op.isRdp_s()){
+	                }else if (op.isRdp_s()){
 	                	currentReactionTerm = new Struct("rdp_s", op.getLogicTupleArgument().toTerm());
-	                } else if (op.isInp_s()){
+	                }else if (op.isInp_s()){
 	                	currentReactionTerm = new Struct("inp_s", op.getLogicTupleArgument().toTerm());
 		            }else if (op.isNo_s()){
 	                    currentReactionTerm=new Struct("no_s",op.getLogicTupleArgument().toTerm());
 	                }else if (op.isNop_s()){
 	                    currentReactionTerm=new Struct("nop_s",op.getLogicTupleArgument().toTerm());
-	                } else if (op.isGetEnv()){
+	                }else if (op.isGetEnv()){
 	                	currentReactionTerm = new Struct("getEnv", op.getLogicTupleArgument().getArg(0).toTerm(),op.getLogicTupleArgument().getArg(1).toTerm());
 	                }else if (op.isSetEnv()){
 	                	currentReactionTerm = new Struct("setEnv", op.getLogicTupleArgument().getArg(0).toTerm(),op.getLogicTupleArgument().getArg(1).toTerm());
 	                }else if (op.isTime()){
 	                	currentReactionTerm = new Struct("time", op.getLogicTupleArgument().toTerm());
-	                }
-//	                my personal updates
-	                else if (op.isUrd()){
+	                }else if (op.isUrd()){
 	                	currentReactionTerm = new Struct("urd", op.getLogicTupleArgument().toTerm());
 	                }else if (op.isUno())
 	                	currentReactionTerm = new Struct("uno", op.getLogicTupleArgument().toTerm());
@@ -281,46 +193,44 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 	                	currentReactionTerm = new Struct("rd_all", op.getLogicTupleArgument().toTerm());
 	                }else if (op.isNoAll())
 	                	currentReactionTerm = new Struct("no_all", op.getLogicTupleArgument().toTerm());
-//	                *******************
+
 	            }else if (ev.isOutput()){
+	            	
 	                alice.tuplecentre.core.OutputEvent oe = (alice.tuplecentre.core.OutputEvent)ev;
 					RespectOperation op=(RespectOperation)ev.getOperation();
-	                spy("IS LINKING"+((OutputEvent)ev).isLinking());
 				
 					if(((OutputEvent)ev).isLinking()){
 						log("linking event processing");
+						
 						if (op.isOut()){
-		                	//System.out.println(""+op.getLogicTupleArgument().toTerm());
 		                    currentReactionTerm=new Struct("out",op.getLogicTupleArgument().toTerm());
-		                } else if (op.isIn()){
+		                }else if (op.isIn()){
 			                currentReactionTerm=new Struct("in",op.getLogicTupleArgument().toTerm());
-						} else if (op.isRd()){
+						}else if (op.isRd()){
 							currentReactionTerm=new Struct("rd",op.getLogicTupleArgument().toTerm());
-		                } else if (op.isInp()){
+		                }else if (op.isInp()){
 		                    currentReactionTerm=new Struct("inp",op.getLogicTupleArgument().toTerm());
-		                } else if (op.isRdp()){
+		                }else if (op.isRdp()){
 		                    currentReactionTerm=new Struct("rdp",op.getLogicTupleArgument().toTerm());
 		                }else if (op.isNo()){
 		                    currentReactionTerm=new Struct("no",op.getLogicTupleArgument().toTerm());
 		                }else if (op.isNop()){
 		                    currentReactionTerm=new Struct("nop",op.getLogicTupleArgument().toTerm());
-		                } else if (op.isOut_s()){
+		                }else if (op.isOut_s()){
 		                	currentReactionTerm = new Struct("out_s", op.getLogicTupleArgument().toTerm());
-		                } else if (op.isIn_s()){
+		                }else if (op.isIn_s()){
 			                currentReactionTerm=new Struct("in_s",op.getLogicTupleArgument().toTerm());
-						} else if (op.isRd_s()){
+						}else if (op.isRd_s()){
 							currentReactionTerm=new Struct("rd_s",op.getLogicTupleArgument().toTerm());
-		                } else if (op.isInp_s()){
+		                }else if (op.isInp_s()){
 		                    currentReactionTerm=new Struct("inp_s",op.getLogicTupleArgument().toTerm());
-		                } else if (op.isRdp_s()){
+		                }else if (op.isRdp_s()){
 		                    currentReactionTerm=new Struct("rdp_s",op.getLogicTupleArgument().toTerm());
 		                }else if (op.isNo_s()){
 		                    currentReactionTerm=new Struct("no_s",op.getLogicTupleArgument().toTerm());
 		                }else if (op.isNop_s()){
 		                    currentReactionTerm=new Struct("nop_s",op.getLogicTupleArgument().toTerm());
-		                }
-//		                my personal updates
-		                else if (op.isUrd()){
+		                }else if (op.isUrd()){
 		                	currentReactionTerm = new Struct("urd", op.getLogicTupleArgument().toTerm());
 		                }else if (op.isUno())
 		                	currentReactionTerm = new Struct("uno", op.getLogicTupleArgument().toTerm());
@@ -340,30 +250,32 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 		                	currentReactionTerm = new Struct("rd_all", op.getLogicTupleArgument().toTerm());
 		                }else if (op.isNoAll())
 		                	currentReactionTerm = new Struct("no_all", op.getLogicTupleArgument().toTerm());
-//		                *******************
+
 					}else{
+						
 						log("output phase");
-		                if (op.isIn()){
+						
+						if (op.isOut()){
+		                    currentReactionTerm=new Struct("out",op.getLogicTupleResult().toTerm());
+		                }else if (op.isIn()){
 		                    currentReactionTerm=new Struct("in",op.getLogicTupleResult().toTerm());
-		                } else if (op.isRd()){
+		                }else if (op.isRd()){
 							currentReactionTerm=new Struct("rd",op.getLogicTupleResult().toTerm());
-						} else if (op.isInp()){
+						}else if (op.isInp()){
 							LogicTuple result = op.getLogicTupleResult();
 							if (result!=null){
 								currentReactionTerm=new Struct("inp",result.toTerm());
 							} else {
 								currentReactionTerm=new Struct("inp",op.getLogicTupleArgument().toTerm());
 							}
-		                } else if (op.isRdp()){
+		                }else if (op.isRdp()){
 							LogicTuple result = op.getLogicTupleResult();
 							if (result!=null){
 								currentReactionTerm=new Struct("rdp",result.toTerm());
 							} else {
 								currentReactionTerm=new Struct("rdp",op.getLogicTupleArgument().toTerm());
 							}
-		                } else  if (op.isOut()){
-		                    currentReactionTerm=new Struct("out",op.getLogicTupleResult().toTerm());
-		                }else if (op.isNo()){
+		                }else  if (op.isNo()){
 							currentReactionTerm=new Struct("no",op.getLogicTupleArgument().toTerm());
 		                }else if (op.isNop()){
 		                	LogicTuple result = op.getLogicTupleResult();
@@ -372,26 +284,26 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 							} else {
 								currentReactionTerm=new Struct("nop",op.getLogicTupleArgument().toTerm());
 							}
-		                } else if (op.isIn_s()){
+		                }else if (op.isOut_s()){
+		                	currentReactionTerm=new Struct("out_s",op.getLogicTupleResult().toTerm());
+		                }else if (op.isIn_s()){
 		                    currentReactionTerm=new Struct("in_s",op.getLogicTupleResult().toTerm());
-		                } else if (op.isRd_s()){
+		                }else if (op.isRd_s()){
 							currentReactionTerm=new Struct("rd_s",op.getLogicTupleResult().toTerm());
-						} else if (op.isInp_s()){
+						}else if (op.isInp_s()){
 							LogicTuple result = op.getLogicTupleResult();
 							if (result!=null){
 								currentReactionTerm=new Struct("inp_s",result.toTerm());
 							} else {
 								currentReactionTerm=new Struct("inp_s",op.getLogicTupleArgument().toTerm());
 							}
-		                } else if (op.isRdp_s()){
+		                }else if (op.isRdp_s()){
 							LogicTuple result = op.getLogicTupleResult();
 							if (result!=null){
 								currentReactionTerm=new Struct("rdp_s",result.toTerm());
 							} else {
 								currentReactionTerm=new Struct("rdp_s",op.getLogicTupleArgument().toTerm());
 							}
-		                } else if (op.isOut_s()){
-		                	currentReactionTerm=new Struct("out_s",op.getLogicTupleResult().toTerm());
 		                }else if (op.isNo_s()){
 							currentReactionTerm=new Struct("no_s",op.getLogicTupleArgument().toTerm());
 		                }else if (op.isNop_s()){
@@ -401,9 +313,7 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 							} else {
 								currentReactionTerm=new Struct("nop_s",op.getLogicTupleArgument().toTerm());
 							}
-		                }
-//		                my personal updates
-		                else if (op.isUrd()){
+		                }else if (op.isUrd()){
 		                	currentReactionTerm = new Struct("urd", op.getLogicTupleArgument().toTerm());
 		                }else if (op.isUno())
 		                	currentReactionTerm = new Struct("uno", op.getLogicTupleArgument().toTerm());
@@ -439,25 +349,27 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 		                }else if (op.isNoAll()){
 		                	currentReactionTerm = new Struct("no_all", op.getLogicTupleArgument().toTerm());
 		                }
-//		                *******************
 					}
-	            } else if (ev.isInternal()){
+					
+	            }else if (ev.isInternal()){
+	            	
 	            	log("internal event processing");
 	                InternalEvent ev1=(InternalEvent)ev;
 	                InternalOperation rop=ev1.getInternalOperation();
-	                if (rop.isInR()){
-	                    currentReactionTerm=new Struct("in",rop.getArgument().toTerm());
-	                } else if (rop.isOutR()){
+	                
+	                if (rop.isOutR()){
 	                    currentReactionTerm=new Struct("out",rop.getArgument().toTerm());
-	                } else if (rop.isRdR()){
+	                }else if (rop.isInR()){
+	                    currentReactionTerm=new Struct("in",rop.getArgument().toTerm());
+	                }else if (rop.isRdR()){
 	                    currentReactionTerm=new Struct("rd",rop.getArgument().toTerm());
-	                } else if (rop.isNoR()){
+	                }else if (rop.isNoR()){
 	                    currentReactionTerm=new Struct("no",rop.getArgument().toTerm());
-	                } else if (rop.isIn_sR()){
-	                	currentReactionTerm = new Struct("in_s", rop.getArgument().toTerm());
-	                } else if (rop.isOut_sR()){
+	                }else if (rop.isOut_sR()){
 	                	currentReactionTerm = new Struct("out_s", rop.getArgument().toTerm());
-	                } else if (rop.isRd_sR()){
+	                }else if (rop.isIn_sR()){
+	                	currentReactionTerm = new Struct("in_s", rop.getArgument().toTerm());
+	                }else if (rop.isRd_sR()){
 	                	currentReactionTerm = new Struct("rd_s", rop.getArgument().toTerm());
 	                }else if (rop.isNo_sR()){
 	                    currentReactionTerm=new Struct("no_s",rop.getArgument().toTerm());
@@ -465,9 +377,7 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 	                	currentReactionTerm = new Struct("getEnv", rop.getArgument().getArg(0).toTerm(),rop.getArgument().getArg(1).toTerm());
 	                }else if (rop.isSetEnv()){
 	                	currentReactionTerm = new Struct("setEnv", rop.getArgument().getArg(0).toTerm(),rop.getArgument().getArg(1).toTerm());
-	                }
-//	                my personal updates
-	                else if (rop.isUrdR()){
+	                }else if (rop.isUrdR()){
 	                	currentReactionTerm = new Struct("urd", rop.getArgument().toTerm());
 	                }else if (rop.isUnoR())
 	                	currentReactionTerm = new Struct("uno", rop.getArgument().toTerm());
@@ -481,37 +391,24 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 	                	currentReactionTerm = new Struct("rd_all", rop.getArgument().toTerm());
 	                }else if (rop.isNoAllR())
 	                	currentReactionTerm = new Struct("no_all", rop.getArgument().toTerm());
-//	                *******************
+
 	            }
 	            
 	            if (currentReactionTerm!=null){
-	            	
 	            	AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
 	            	currentReactionTerm = (Struct)currentReactionTerm.copyGoal(v, 0);
-	            	
-	    
 	            	Struct tev=new Struct("reaction",currentReactionTerm,new alice.tuprolog.Var("G"),new alice.tuprolog.Var("R"));
-	                //String tev="reaction("+currentReactionTerm+",R).";
 	                SolveInfo info = trigCore.solve(tev);
-	                
 	                alice.tuprolog.Term guard=null;
-	                
 	                while (info.isSuccess()){
-	                	//System.out.println("Sol: "+info.getSolution());
 	                	guard = info.getVarValue("G");
-	                	spy("Guard to evaluate: "+guard);
-	                	
-	                	//we have to set the current reaction event because the respect library (loaded into tuProlog Engine)
-	                	//uses this event to resolve the guard predicates
 	                	this.currentReactionEvent = ev;
-	                	
 	                	if( this.evalGuard(guard)){
 	                		Struct trigReaction = new Struct("reaction",currentReactionTerm,info.getVarValue("R"));
 	                		TriggeredReaction tr=new TriggeredReaction(ev,new LogicReaction(trigReaction));
 	                		zSet.add(tr);
 	                		log("triggered reaction = "+tr.getReaction());
 	                	}
-	                	
 	                    if (trigCore.hasOpenAlternatives()){
 	                        info=trigCore.solveNext();
 	                    } else {
@@ -520,15 +417,16 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 	                    trigCore.solveEnd();
 	                }
 	            }
-	        } catch (Exception ex){
+	            
+	        }catch (Exception ex){
 	            notifyException("INTERNAL ERROR: fetchTriggeredReactions "+ev);
 				ex.printStackTrace();
 	            trigCore.solveEnd();
 	        }
         
-    	}//end of synchronization
+    	}
+    	
     }
-
 
     public void evalReaction(TriggeredReaction z){
         	
@@ -542,41 +440,28 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 		temporaryOutputEventList.clear();
 
         Term goalList=((LogicReaction)z.getReaction()).getStructReaction().getTerm(1);
-//        System.out.println("[RespectVMContext]: goalList = "+goalList.toString());
         currentReactionEvent=z.getEvent();
 
-        //System.out.println("CURRENT EVENT: "+currentEvent);
-        spy("EVAL REACTION: "+goalList);
         SolveInfo info=core.solve(goalList);
         core.solveEnd();
         log("Prolog evaluation success = "+info.isSuccess());
         if (info.isSuccess()){
-            // add to the total set of activities to spawn
-            //activitiesToSpawn.addAll(activitiesToSpawn_singleReaction);
-            spy("Reaction evaluation succeeded: "+goalList);
             if (vm.hasInspectors())
             	vm.notifyInspectableEvent(new ObservableEventReactionOK(this,z));            
-			
-			// notifies possible output events
 			int n = temporaryOutputEventList.size();
 			for (int i=0; i<n; i++){
 				InputEvent curr = (alice.tuplecentre.core.InputEvent)temporaryOutputEventList.get(i);
-				//this.notifyOutputEvent((alice.tuplecentre.core.OutputEvent)outputEventList.get(i));            
-//				System.out.println("[RespectVMContext]: curr = " + curr);
 				this.addPendingQueryEvent(curr);
-				//this.fetchTriggeredReactions(curr);
 			}
-			
-            
-        } else {
-            
-            spy("Reaction evaluation failed: "+goalList);
+        }else {
             if (vm.hasInspectors())
             	vm.notifyInspectableEvent(new ObservableEventReactionFail(this,z));            
         }
         boolean success=info.isSuccess();
         boolean specModified = tSpecSet.operationsPending();
+        
         temporaryOutputEventList.clear();
+        
         zSet.endTransaction(success);
         wSet.endTransaction(success);
         tSet.endTransaction(success);
@@ -587,28 +472,18 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
         	setReactionSpecHelper(new RespectSpecification(
         			tSpecSet.toString()));
         }
+        
     }
     
     public void addTemporaryOutputEvent(InputEvent out){
-//    	System.out.println("[RespectVMContext]: out = " + out);
     	synchronized(this.temporaryOutputEventList){
-    		
     		this.temporaryOutputEventList.add(out);
-    		spy("Added a temporary outputEvent, operation: "+out.getOperation());
-    		
-    		
     	}
-    	
     }
     
     private boolean evalGuard(Term g){
-     
-//    	System.out.println("[RespectVMContext]: guard = " + g);
-//    	System.out.println("[RespectVMContext]: core.getTheory() = " + core.getTheory());
         SolveInfo info=core.solve(g);
         core.solveEnd();
-        spy("GUARD EVALUATION: "+info.isSuccess());
-//        System.out.println("[RespectVMContext]: guard is " + info.isSuccess());
         return info.isSuccess();
     }
     
@@ -619,137 +494,109 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
     }
    
     protected boolean setReactionSpecHelper(BehaviourSpecification spec){
-    	if (transaction){
+    	
+    	if (transaction)
     		return false;
-    	}
+    	
         try {
+        	
         	this.timers.clear();
             Struct co=new Struct(spec.toString());
             if (co.isAtom()){
                 alice.tuprolog.Theory thspec=new alice.tuprolog.Theory(co.getName());
                 core.setTheory(thspec);
                 trigCore.setTheory(thspec);
-            } else if (co.isList()){
+            }else if (co.isList()){
                 alice.tuprolog.Theory thspec=new alice.tuprolog.Theory(co);
                 core.setTheory(thspec);
                 trigCore.setTheory(thspec);
-            } else {
+            }else {
                 notifyException("Invalid reaction spec:\n"+co);
                 return false;
             }
 
-            
             if((noReactionTh != null) && !this.isExternalSetSpec){
             	core.addTheory(noReactionTh);
             	trigCore.addTheory(noReactionTh);
-            	spy("Added non-reaction theory");
             }
-            spy("New behaviour set.");
-            spy("TH1: "+core.getTheory());
-            spy("TH2: "+trigCore.getTheory());
-            
             reactionSpec=(RespectSpecification)spec;
-            
             Iterator<Term> it;
             it = this.foundTimeReactions();
+
             while(it.hasNext()){
-            	
             	Term current = it.next();
-            	
-            	spy("time "+current);
-            	
             	Timer currTimer = new Timer();
             	long timeValue = ((alice.tuprolog.Number)current).longValue();
             	long currLocalTime = this.getCurrentTime();
-            	spy("Current ReSpecT VM local time: "+currLocalTime);
-            	
             	long delay;
-            	
-            	if(timeValue > currLocalTime) delay = timeValue - currLocalTime;
-            	else delay = 0;
-            	
+            	if(timeValue > currLocalTime)
+            		delay = timeValue - currLocalTime;
+            	else
+            		delay = 0;
             	currTimer.schedule(new RespectTimerTask(this,RespectOperation.makeTime(getPrologCore(),new LogicTuple("time",new TupleArgument(current)), null)),delay);
-            	//this.timers.add(currTimer);
-            	spy("scheduled "+RespectOperation.makeTime(getPrologCore(),new LogicTuple("time",new TupleArgument(current)),null));
-            	
-            	
             }
-            
-            
             return true;
-        } catch (alice.tuprolog.InvalidTheoryException ex){
+
+        }catch(alice.tuprolog.InvalidTheoryException ex){
         	ex.printStackTrace();
             notifyException("Invalid reaction spec. "+ex.line+" "+ex.pos);
             notifyException(spec.toString());
-            //ex.printStackTrace();
             return false;
-        } catch (Exception ex){
+        }catch(Exception ex){
             notifyException("Invalid reaction spec.");
             return false;
-        }          
+        }     
+        
     }
     
     protected boolean addReactionSpecHelper(BehaviourSpecification spec){
-    	if (transaction){
+    
+    	if (transaction)
     		return false;
-    	}
+
         try {
+        	
         	this.timers.clear();
-            //System.out.println("setting spec: \n"+spec);
             Struct co=new Struct(spec.toString());
             if (co.isAtom()){
                 alice.tuprolog.Theory thspec=new alice.tuprolog.Theory(co.getName());
                 core.addTheory(thspec);
                 trigCore.addTheory(thspec);
-            } else if (co.isList()){
+            }else if (co.isList()){
                 alice.tuprolog.Theory thspec=new alice.tuprolog.Theory(co);
                 core.addTheory(thspec);
                 trigCore.addTheory(thspec);
-            } else {
+            }else {
                 notifyException("Invalid reaction spec:\n"+co);
                 return false;
             }
 
-            spy("New behaviour set.");
-            
             reactionSpec=(RespectSpecification)spec;
-            
             Iterator<Term> it;
             it = this.foundTimeReactions();
             while(it.hasNext()){
-            	
             	Term current = it.next();
-            	
-            	spy("time "+current);
-            	
             	Timer currTimer = new Timer();
             	long timeValue = ((alice.tuprolog.Number)current).longValue();
             	long currLocalTime = this.getCurrentTime();
-            	spy("Current ReSpecT VM local time: "+currLocalTime);
-            	
             	long delay;
-            	
-            	if(timeValue > currLocalTime) delay = timeValue - currLocalTime;
-            	else delay = 0;
-            	
+            	if(timeValue > currLocalTime)
+            		delay = timeValue - currLocalTime;
+            	else
+            		delay = 0;
             	currTimer.schedule(new RespectTimerTask(this,RespectOperation.makeTime(getPrologCore(), new LogicTuple("time",new TupleArgument(current)), null)),delay);
-            	//this.timers.add(currTimer);
-            	spy("scheduled "+RespectOperation.makeTime(getPrologCore(), new LogicTuple("time",new TupleArgument(current)),null));
-            	
-            	
             }
-            
-            
             return true;
-        } catch (alice.tuprolog.InvalidTheoryException ex){
+
+        }catch (alice.tuprolog.InvalidTheoryException ex){
             notifyException("Invalid reaction spec. "+ex.line+" "+ex.pos);
             notifyException(spec.toString());
-            //ex.printStackTrace();
             return false;
-        } catch (Exception ex){
+        }catch (Exception ex){
             notifyException("Invalid reaction spec.");
             return false;
-        }          
+        }
+        
     }
     
     public boolean setReactionSpec(BehaviourSpecification spec){
@@ -757,6 +604,7 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
     	this.isExternalSetSpec = true;
     	noReactionTh = null;
     	Prolog engine = new Prolog();
+
     	try{
     		engine.solve("retractall(reaction(X,Y,Z)).");
     		engine.solveEnd();
@@ -769,12 +617,13 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
     			log("term = " + term);
     		}
     		engine.solveEnd();
-    		spy("INITIAL SET: "+engine.getTheory());
     		noReactionTh = engine.getTheory();
     	}catch(Exception e){
     		e.printStackTrace();
     	}
+    	
     	boolean result = setReactionSpecHelper(spec);
+    	
     	if (result){
     		tSpecSet.empty();
     		try {
@@ -785,20 +634,18 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
     					info = core.solveNext();
     				}
     		} catch (alice.tuprolog.NoMoreSolutionException ex) {
-    			spy("tSpecSet update on Beahaviour Specification change completed.");
     		} catch (alice.tuprolog.NoSolutionException ex){
-    			spy("tSpecSet update on Beahaviour Specification change completed.");
     		} catch(MalformedGoalException ex) {
     			ex.printStackTrace();
     		}
-
     	}
+    	
     	this.isExternalSetSpec = false;
     	log("result = " + result);
 		return result;
+		
     }
  
-
     public BehaviourSpecification getReactionSpec(){
         return reactionSpec;
     }
@@ -834,8 +681,6 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
         }
     }
 
-    // ----------------------------
-    
     public Struct getCurrentReactionTerm(){
         return currentReactionTerm;
     }
@@ -843,9 +688,6 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
     public Event getCurrentReactionEvent(){
         return currentReactionEvent;
     }
-
-    // ----------------------------
-
 
     /**
      * resets the virtual machine to boot state
@@ -858,17 +700,13 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
         setBootTime();
     }
 
-
-    // ----------------------------------------------------------------
-
-    public void        addTuple(Tuple t){
+    public void addTuple(Tuple t){
         tSet.add((alice.logictuple.LogicTuple)t);
     }
     
     public List<Tuple> addListTuple(Tuple t){
     	List<Tuple> list = new LinkedList<>();
     	LogicTuple tuple = (LogicTuple)t;
-//    	log("tuple = " + tuple);
     	while(!(tuple.toString().equals("[]"))){
 			try {
 				tSet.add(new LogicTuple(tuple.getArg(0)));
@@ -881,14 +719,13 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
     	return list;
     }
 
-    public  Tuple       removeMatchingTuple(TupleTemplate t){
+    public  Tuple removeMatchingTuple(TupleTemplate t){
         Tuple tuple=tSet.getMatchingTuple((alice.logictuple.LogicTuple)t);
         return tuple;
-
     }
 
-    public Tuple       readMatchingTuple(TupleTemplate t){
-        return  tSet.readMatchingTuple((alice.logictuple.LogicTuple)t);
+    public Tuple readMatchingTuple(TupleTemplate t){
+        return tSet.readMatchingTuple((alice.logictuple.LogicTuple)t);
     }
     
     public void addSpecTuple(Tuple t){
@@ -896,10 +733,8 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 			if(((LogicTuple)t).getName().equals(","))
 				t = new LogicTuple("reaction", ((LogicTuple)t).getArg(0), ((LogicTuple)t).getArg(1).getArg(0), ((LogicTuple)t).getArg(1).getArg(1));
 		} catch (InvalidTupleOperationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-//    	log("addSpecTuple = " + t);
     	tSpecSet.add((LogicTuple)t);
     		this.setReactionSpecHelper(
    				new alice.respect.api.RespectSpecification(
@@ -921,7 +756,7 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
     	return tuple;
     }
     
-    public Iterator    getTupleSetIterator(){
+    public Iterator getTupleSetIterator(){
         return tSet.getIterator();
     }
     
@@ -932,13 +767,12 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
     public void emptyTupleSet(){
         tSet.empty();
     }
-    // ---------------------------------------------------------------
 
-    public void        addPendingQueryEvent(InputEvent w){
+    public void addPendingQueryEvent(InputEvent w){
         wSet.add(w);
     }
 
-    public Iterator    getPendingQuerySetIterator(){
+    public Iterator getPendingQuerySetIterator(){
         return wSet.getIterator();
     }
 
@@ -960,8 +794,6 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 		return wSet.removeEventOfOperation(operationId);
 	}
     
-    // ----------------------------------------------------------------
-
     public TriggeredReaction removeTriggeredReaction(){
         if (zSet.isEmpty()){
             return null;
@@ -970,67 +802,47 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
         }
     }
 
-    public Iterator            getTriggeredReactionSetIterator(){
+    public Iterator getTriggeredReactionSetIterator(){
         return zSet.getIterator();
     }
+    
     public void notifyNewInputEvent() {
         this.vm.notifyNewInputEvent();
     }
     
     public void notifyInputEnvEvent(InputEvent in){
     	addEnvInputEvent(in);
-    	spy("Accepting new event " + in);
     	vm.notifyNewInputEvent();
     }
     
     public void notifyInputEvent(InputEvent in){ 	
     	this.addInputEvent(in); 	
-    	//because the vm could be waiting for an input event if there are no input event in the queue
     	this.notifyNewInputEvent();
     }
     
-   //---------------------------------------------------------------
-		
-  /*  public void  addOutputEvent(alice.tuplecentre.core.OutputEvent ev){
-        outputEventList.add(ev);
-    }*/
-
-	// 
-	
-    // Aggiunta la gestione del filtro t
 	public LogicTuple[] getTSet(LogicTuple filter){
 		LogicTuple[] ltSet = tSet.toArray();
-		
 		ArrayList<LogicTuple> supportList = new ArrayList<LogicTuple>();
-		
 		if (filter == null)
 			return ltSet;
-		
 		for(LogicTuple tuple : ltSet)
 			if (filter.match(tuple))
 				supportList.add(tuple);		
-		
 		return supportList.toArray(new LogicTuple[0]);
 	}
 	
 	public LogicTuple[] getWSet(LogicTuple filter){
 		LogicTuple[] tuples = new LogicTuple[this.wSet.size()];
-		
 		ArrayList<LogicTuple> supportList = new ArrayList<LogicTuple>();				
-		
 		Event[] ev = wSet.toArray();
-		//System.out.println("context.getWSet(filter):");
 		for(int i=0;i<tuples.length;i++){			
 			tuples[i] = ((RespectOperation)ev[i].getOperation()).toTuple();
-			//System.out.println(tuples[i]);
 		}
 		if (filter == null)
 			return tuples;
-		
 		for(LogicTuple tuple : tuples)
 			if (filter.match(tuple))
 				supportList.add(tuple);		
-		
 		return supportList.toArray(new LogicTuple[0]);		
 	}
 	
@@ -1038,62 +850,43 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 		
 		this.wSet.empty();
 		
-		for(LogicTuple t : wSet)
-		{
-			//System.out.println(t);
+		for(LogicTuple t : wSet){
+			
 			String operation = t.toString();
 			String opKind = operation.substring(0,2);
-			//System.out.println(opKind);						
 			
-			if(opKind.equals("rd"))				
-			{		
-				String tupla = operation.substring(3,operation.length()-1);
-				//System.out.println(tupla);
-				LogicTuple logicTuple = null;
-				try
-				{
-					logicTuple = LogicTuple.parse(tupla);
-				}
-				catch (InvalidLogicTupleException e1)
-				{
-					e1.printStackTrace();
-				}
+			if(opKind.equals("rd")){
 				
-				RespectOperation op = RespectOperation.makeRd(getPrologCore(), logicTuple, null);
-				try
-				{
+				String tupla = operation.substring(3,operation.length()-1);
+				LogicTuple logicTuple = null;
+				try{
+					logicTuple = LogicTuple.parse(tupla);
+					RespectOperation op = RespectOperation.makeRd(getPrologCore(), logicTuple, null);
 					vm.doOperation(null,op);
-				}
-				catch (OperationNotPossibleException e)
-				{
+				}catch (InvalidLogicTupleException e1){
+					e1.printStackTrace();
+				} catch (OperationNotPossibleException e) {
 					e.printStackTrace();
 				}
-			}
-			else if(opKind.equals("in"))				
-			{
-				String tupla = operation.substring(3,operation.length()-1);
-				//System.out.println(tupla);
-				LogicTuple logicTuple = null;
-				try
-				{
-					logicTuple = LogicTuple.parse(tupla);
-				}
-				catch (InvalidLogicTupleException e1)
-				{
-					e1.printStackTrace();
-				}
 				
-				RespectOperation op = RespectOperation.makeIn(getPrologCore(), logicTuple,null);
-				try
-				{
+			}else if(opKind.equals("in")){
+				
+				String tupla = operation.substring(3,operation.length()-1);
+				LogicTuple logicTuple = null;
+				try{
+					logicTuple = LogicTuple.parse(tupla);
+					RespectOperation op = RespectOperation.makeIn(getPrologCore(), logicTuple,null);
 					vm.doOperation(null,op);
-				}
-				catch (OperationNotPossibleException e)
-				{
+				}catch (InvalidLogicTupleException e1){
+					e1.printStackTrace();
+				} catch (OperationNotPossibleException e) {
 					e.printStackTrace();
 				}
+				
 			}
+			
 		}
+		
 	}
 
 	public LogicTuple[] getTRSet(LogicTuple t){
@@ -1106,146 +899,65 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 		return tuples;
 	}
 
-	
 	public Iterator<Term> foundTimeReactions() {
 		
 		Vector<Term> foundReactions = new Vector<Term>();
 		try {
-	            
-					
-	         		//boolean timedReaction = false;
-	            	
-	            	Struct timed = new Struct("time",new alice.tuprolog.Var("Time"));
-	    
-	            	Struct tev=new Struct("reaction",timed,new alice.tuprolog.Var("G"),new alice.tuprolog.Var("R"));
-	                //String tev="reaction("+currentReactionTerm+",R).";
-	                
-	            	//long currentTime = this.getCurrentTime();
-	            	//spy("CURRENT TIME: \n"+ev+" -> "+currentTime);
-	            	SolveInfo info = trigCore.solve(tev);
-	                
-	                alice.tuprolog.Term guard=null;
-	                
-	                while (info.isSuccess()){
-	                	//System.out.println("Sol: "+info.getSolution());
-	                	
-	                	
-	                	//we have to set the current reaction event because the respect library (loaded into tuProlog Engine)
-	                	//uses this event to resolve the guard predicates
-	                //	this.currentReactionEvent = ev;
-	                	
-	                	
-	                		
-	                	//long reactionTime = ((alice.tuprolog.Int)info.getVarValue("Time")).longValue();
-	                	foundReactions.add(info.getVarValue("Time"));
-	                		
-	                		
-	                	
-	                	
-	                    if (trigCore.hasOpenAlternatives()){
-	                        info=trigCore.solveNext();
-	                    } else {
-	                        break;
-	                    }
-	                    trigCore.solveEnd();
-	                    
-	                    
-	                    
-	                    //spy("THEORY: "+trigCore.getTheory());
-	                }
-	                
-	                	            
-	        }catch (Exception ex){
-	            notifyException("INTERNAL ERROR: fetchTimedReactions ");
-				ex.printStackTrace();
-	            trigCore.solveEnd();
-	        }/**finally{
-	        	
-	        	trigCore.solveEnd();
-	        	//trigCore.setTheory(core.getTheory());
-	        	
-	        } */
-	        
-	        return foundReactions.iterator();
+        	Struct timed = new Struct("time",new alice.tuprolog.Var("Time"));
+        	Struct tev=new Struct("reaction",timed,new alice.tuprolog.Var("G"),new alice.tuprolog.Var("R"));
+        	SolveInfo info = trigCore.solve(tev);
+            alice.tuprolog.Term guard=null;
+            while (info.isSuccess()){
+            	foundReactions.add(info.getVarValue("Time"));
+                if (trigCore.hasOpenAlternatives())
+                    info=trigCore.solveNext();
+                else
+                    break;
+                trigCore.solveEnd();
+            }
+        }catch (Exception ex){
+            notifyException("INTERNAL ERROR: fetchTimedReactions ");
+			ex.printStackTrace();
+            trigCore.solveEnd();
+        }
+        return foundReactions.iterator();
 			
-		}
-	
+	}
 	
 	public void fetchTimedReactions(Event ev) {
-	try {
+		
+		try {
             
-         		boolean timedReaction = false;
-            	
-            	Term timed = (((RespectOperation)ev.getOperation()).getLogicTupleArgument().toTerm());
-            	spy("TIMED? "+timed);
-            	Struct tev=new Struct("reaction",timed,new alice.tuprolog.Var("G"),new alice.tuprolog.Var("R"));
-                //String tev="reaction("+currentReactionTerm+",R).";
-                
-            	//long currentTime = this.getCurrentTime();
-            	//spy("CURRENT TIME: \n"+ev+" -> "+currentTime);
-            	SolveInfo info = trigCore.solve(tev);
-                
-                alice.tuprolog.Term guard=null;
-                
-                while (info.isSuccess()){
-                	//System.out.println("Sol: "+info.getSolution());
-                	guard = info.getVarValue("G");
-                	spy("Guard to evaluate: "+guard);
-                	
-                	//we have to set the current reaction event because the respect library (loaded into tuProlog Engine)
-                	//uses this event to resolve the guard predicates
-                	this.currentReactionEvent = ev;
-                	
-                	if( this.evalGuard(guard)){
-                		
-                    	
-                		//long reactionTime = ((alice.tuprolog.Int)info.getVarValue("Time")).longValue();
-                		
-                		//if(reactionTime<=currentTime){
-                		Term reactions = info.getVarValue("R");
-                		Struct trigReaction = new Struct("reaction",timed,reactions);
-                		TriggeredReaction tr=new TriggeredReaction(ev,new LogicReaction(trigReaction));
-                		this.timeSet.add(tr);
-                		timedReaction = true;
-                		//SolveInfo removeInfo = this.trigCore.solve("retract(reaction( time("+reactionTime+"), (G),("+reactions+"))) .");
-                		//spy("Remove time reaction - 1: \n"+ev+" -> "+removeInfo.isSuccess());
-                		
-                		spy("TO BE REMOVED: "+timed+" local time is: "+this.getCurrentTime());
-                		SolveInfo removeInfo = this.core.solve("retract(reaction( "+timed+", (G),("+reactions+"))) .");
-                		spy("CORE: Remove time reaction - 2: \n"+ev+" -> "+removeInfo.isSuccess());
-                		this.core.solveEnd();
-                		
-                		spy("New time-triggered reaction: \n"+ev+" -> "+tr.getReaction());
-                		//}
-                	}
-                	
-                    if (trigCore.hasOpenAlternatives()){
-                        info=trigCore.solveNext();
-                    } else {
-                        break;
-                    }
-                    trigCore.solveEnd();
-                    SolveInfo removeInfo = this.trigCore.solve("retract(reaction( "+timed+", (G),("+info.getVarValue("R")+"))) .");
-            		spy("TRIGCORE: Remove time reaction - 2: \n"+ev+" -> "+removeInfo.isSuccess());
-            		trigCore.solveEnd();
-                    
-                    
-                    //spy("THEORY: "+trigCore.getTheory());
-                }
-                
-                
-                //if(timedReaction) trigCore.setTheory(core.getTheory());
-            
-        }catch (Exception ex){
+     		boolean timedReaction = false;
+        	Term timed = (((RespectOperation)ev.getOperation()).getLogicTupleArgument().toTerm());
+        	Struct tev=new Struct("reaction",timed,new alice.tuprolog.Var("G"),new alice.tuprolog.Var("R"));
+        	SolveInfo info = trigCore.solve(tev);
+            alice.tuprolog.Term guard=null;
+            while (info.isSuccess()){
+            	guard = info.getVarValue("G");
+            	this.currentReactionEvent = ev;
+            	if( this.evalGuard(guard)){
+            		Term reactions = info.getVarValue("R");
+            		Struct trigReaction = new Struct("reaction",timed,reactions);
+            		TriggeredReaction tr=new TriggeredReaction(ev,new LogicReaction(trigReaction));
+            		this.timeSet.add(tr);
+            		timedReaction = true;
+            		SolveInfo removeInfo = this.core.solve("retract(reaction( "+timed+", (G),("+reactions+"))) .");
+            		this.core.solveEnd();
+            	}
+                if (trigCore.hasOpenAlternatives())
+                    info=trigCore.solveNext();
+                else
+                    break;
+                trigCore.solveEnd();
+                SolveInfo removeInfo = this.trigCore.solve("retract(reaction( "+timed+", (G),("+info.getVarValue("R")+"))) .");
+        		trigCore.solveEnd();
+            }
+    
+		}catch (Exception ex){
             notifyException("INTERNAL ERROR: fetchTimedReactions "+ev);
-			//ex.printStackTrace();
             trigCore.solveEnd();
-        }/**finally{
-        	
-        	trigCore.solveEnd();
-        	//trigCore.setTheory(core.getTheory());
-        	
-        } */
+        }
 		
 	}
 
@@ -1253,45 +965,35 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 		return !timeSet.isEmpty();
 	}
 
-	
 	public TriggeredReaction removeTimeTriggeredReaction() {
-		 if (timeSet.isEmpty()){
-	            return null;
-	        } else {
-	        	spy("GOT a TIME REACTION");
-	            return timeSet.get();
-	        }
+		if (timeSet.isEmpty())
+            return null;
+        else
+            return timeSet.get();
 	}
 	
-	@Override
 	public void updateSpecAfterTimedReaction(TriggeredReaction tr) {
 		LogicReaction lr = (LogicReaction)tr.getReaction();
 		Struct rStruct = lr.getStructReaction();
 		Struct rg = new Struct(rStruct.getName(),
-				rStruct.getArg(0),
-				new Var(),
-				rStruct.getArg(1)
-				);
+			rStruct.getArg(0),
+			new Var(),
+			rStruct.getArg(1)
+		);
 		this.removeMatchingSpecTuple(new LogicTuple(rg));
 	}
 
 	public void linkOperation(OutputEvent oe) {
 		TupleCentreId target = (TupleCentreId)oe.getTarget();
 		try{
-			
 			TupleCentreOperation op = oe.getOperation();
 			op.addListener(new CompletionListener(oe,target));
-//			System.out.println("[RespectVMContext]: oe.getTarget() = "+oe.getTarget()+" - oe.getSource() = "+oe.getSource()+" - oe.getOperation() = "+oe.getOperation());
 			ILinkContext link = RespectTCContainer.getRespectTCContainer().getLinkContext(target);
-			
 			link.doOperation((TupleCentreId)oe.getSource(), op);
-			
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-		
 	}
-	
 	
 	class CompletionListener implements OperationCompletionListener{
 
@@ -1301,70 +1003,37 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
     	public CompletionListener(OutputEvent inter,TupleCentreId source){
     		this.inter = inter;
     		this.currentTC = source;
-    		/*inter.setSource(inter.getTarget());*/
-    	//	this.in = in;
     	}
     	
 		public void operationCompleted(TupleCentreOperation arg0) {
-			
-			//RespectOperation rArg0 = (RespectOperation)arg0;
-			//InternalOperation intOp;
 			arg0.removeListener();
-			
 			InputEvent res = new InputEvent(inter.getTarget(),arg0,currentTC,getCurrentTime());
-			
-			
 			notifyInputEvent(res);
-			/*if(rArg0.isIn() || rArg0.isInp()){
-				intOp = InternalOperation.makeInR(rArg0.getLogicTupleResult());
-			}else if(rArg0.isRd() || rArg0.isRdp() ){
-				intOp = InternalOperation.makeRdR(rArg0.getLogicTupleResult());
-			}else{
-				intOp = InternalOperation.makeOutR(rArg0.getLogicTupleResult());
-			}
-			
-			InternalEvent ev=new InternalEvent(in,intOp); 
-            ev.setSource(in.getSource());
-            ev.setTarget(in.getTarget());
-            vm.fetchTriggeredReactions(ev);*/
 		}
     	
-    	
     }
-
-
-//	public TransducerManager getTransducerManager() {
-//		return tm;
-//	}
 
 	public List<Tuple> getAllTuples() {
 		List<Tuple> tl = new LinkedList<Tuple>();
 		Iterator<LogicTuple> it = this.tSet.getIterator();
-		while(it.hasNext()){
+		while(it.hasNext())
 			tl.add((Tuple)it.next());
-		}
 		return tl;
 	}
 	
-	// Metodo necessario per realizzare la set 
 	public void setAllTuples(List<Tuple> tupleList) {		
-		
 		this.tSet.empty();
-
 		for(Tuple t : tupleList)
 			this.addTuple(t);
 	}
 	
 	public void setAllSpecTuples(List<Tuple> tupleList) {		
-		
 		this.tSpecSet.empty();
-
 		for(Tuple t : tupleList)
 			this.addSpecTuple(t);
 	}
 	
-	public RespectVM getRespectVM()
-	{
+	public RespectVM getRespectVM(){
 		return vm;
 	}
 	
@@ -1372,21 +1041,16 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 		return matcher;
 	}
 	
-//	my personal updates implementing in_all operation
-	
 	public List<Tuple> inAllTuples(TupleTemplate t) {
 		List<Tuple> tl = new LinkedList<Tuple>();
 		TupleTemplate t2=t;
         Tuple tuple=removeMatchingTuple(t2);
-        
         if(tuple ==null) return null;
-        
 		while(tuple!=null){
 			t2=t;
 			tl.add((Tuple)tuple);
 			tuple=removeMatchingTuple(t2);
 		}
-//		return list2tuple(tl);
 		return tl;
 	}
 	
@@ -1394,9 +1058,7 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 		List<Tuple> tl = new LinkedList<Tuple>();
 		TupleTemplate t2=t;
         Tuple tuple=removeMatchingTuple(t2);
-        
         if(tuple==null) return null;
-        
         while(tuple!=null){
 			t2=t;
 			tl.add((Tuple)tuple);
@@ -1404,39 +1066,17 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 		}
 		List<Tuple> tl2 = tl;
 		Iterator<Tuple> it = tl2.iterator();
-
 		while(it.hasNext()){
 			addTuple(it.next());
 		}
-//		return list2tuple(tl);
 		return tl;
-	}
-	
-	public List<Tuple> readAllTuples2uniform(TupleTemplate t) {
-		List<Tuple> tl = new LinkedList<Tuple>();
-		TupleTemplate t2=t;
-        Tuple tuple=removeMatchingTuple(t2);
-        
-        if(tuple==null) return null;
-        
-        while(tuple!=null){
-			t2=t;
-			tl.add((Tuple)tuple);
-			tuple=removeMatchingTuple(t2);
-		}
-		List<Tuple> tl2 = tl;
-		Iterator<Tuple> it = tl2.iterator();
-
-		while(it.hasNext()){
-			addTuple(it.next());
-		}
-        return tl;
 	}
 	
 	public Tuple readUniformTuple(TupleTemplate t){
 		List<Tuple> tl = new LinkedList<Tuple>();
-		tl = readAllTuples2uniform(t);
-		if(tl==null) return null;
+		tl = readAllTuples(t);
+		if(tl==null)
+			return null;
 		else{
 			int extracted = new Random().nextInt(tl.size());
 			return tl.get(extracted);
@@ -1444,10 +1084,10 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 	}
 	
 	public Tuple removeUniformTuple(TupleTemplate t){
-
 		List<Tuple> tl = new LinkedList<Tuple>();
-		tl = readAllTuples2uniform(t);
-		if(tl == null) return null;
+		tl = readAllTuples(t);
+		if(tl == null)
+			return null;
 		else{
 			int extracted = new Random().nextInt(tl.size());
 			Tuple toRemove = tl.get(extracted);
@@ -1456,21 +1096,6 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 		}
 	}
 	
-	private Tuple list2tuple(List<Tuple> list){
-		Term [] termArray = new Term[list.size()];
-		Iterator<Tuple> it = list.iterator();
-		int i=0;
-		while(it.hasNext()){
-			termArray[i] = ((LogicTuple)it.next()).toTerm();
-			i++;
-		}
-		
-		Term result = new Struct(termArray);
-		return new LogicTuple(new TupleArgument(result));
-	}
-	
-//	*********************
-
 	private void log(String s){
 		System.out.println("..[RespectVMContext]: " + s);
 	}

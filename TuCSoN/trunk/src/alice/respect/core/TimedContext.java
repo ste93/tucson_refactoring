@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 package alice.respect.core;
+
 import alice.logictuple.*;
 import alice.logictuple.exception.InvalidLogicTupleException;
 import alice.respect.api.AgentId;
@@ -34,16 +35,13 @@ import alice.respect.api.exceptions.OperationTimeOutException;
  */
 public class TimedContext extends RootInterface implements ITimedContext  {
     
-    //private IRespectTC core;
-    
     public TimedContext(IRespectTC core){
         super(core);
     }
     
     public void out(AgentId id, LogicTuple t,long ms) throws InvalidLogicTupleException, OperationNotPossibleException, OperationTimeOutException {
-        if (t==null){
+        if (t==null)
             throw new InvalidLogicTupleException();
-        }
 		IRespectOperation op = getCore().out(id,t);
 		try {
 			op.waitForOperationCompletion(ms);
@@ -53,9 +51,8 @@ public class TimedContext extends RootInterface implements ITimedContext  {
     }
     
     public LogicTuple in(AgentId id, LogicTuple t,long ms) throws InvalidLogicTupleException, OperationNotPossibleException, alice.respect.api.exceptions.OperationTimeOutException {
-        if (t==null){
+        if (t==null)
             throw new InvalidLogicTupleException();
-        }
 		IRespectOperation op = getCore().in(id,t);
 		try {
 			op.waitForOperationCompletion(ms);
@@ -66,9 +63,8 @@ public class TimedContext extends RootInterface implements ITimedContext  {
     }
     
 	public LogicTuple rd(AgentId id, LogicTuple t, long ms) throws InvalidLogicTupleException, OperationNotPossibleException, OperationTimeOutException {
-		if (t==null){
+		if (t==null)
 			throw new InvalidLogicTupleException();
-		}
 		IRespectOperation op = getCore().rd(id,t);
 		try {
 			op.waitForOperationCompletion(ms);
@@ -79,9 +75,8 @@ public class TimedContext extends RootInterface implements ITimedContext  {
 	}
 
 	public LogicTuple inp(AgentId id, LogicTuple t, long ms) throws InvalidLogicTupleException, OperationNotPossibleException, OperationTimeOutException {
-		if (t==null){
+		if (t==null)
 			throw new InvalidLogicTupleException();
-		}
 		IRespectOperation op = getCore().inp(id,t);
 		try {
 			op.waitForOperationCompletion(ms);
@@ -89,17 +84,15 @@ public class TimedContext extends RootInterface implements ITimedContext  {
 			throw new OperationTimeOutException(op);
 		}
 		LogicTuple result = op.getLogicTupleResult();
-		if (result==null){
+		if (result==null)
 			return null;
-		} else {
+		else
 			return unify(t,op.getLogicTupleResult());
-		}
 	}
     
 	public LogicTuple rdp(AgentId id, LogicTuple t,long ms) throws InvalidLogicTupleException, OperationNotPossibleException, OperationTimeOutException {
-		if (t==null){
+		if (t==null)
 			throw new InvalidLogicTupleException();
-		}
 		IRespectOperation op = getCore().rdp(id,t);
 		try {
 			op.waitForOperationCompletion(ms);
@@ -107,11 +100,11 @@ public class TimedContext extends RootInterface implements ITimedContext  {
 			throw new OperationTimeOutException(op);
 		}
 		LogicTuple result = op.getLogicTupleResult();
-		if (result==null){
+		if (result==null)
 			return null;
-		} else {
+		else
 			return unify(t,op.getLogicTupleResult());
-		}
 	}
+	
 }
 

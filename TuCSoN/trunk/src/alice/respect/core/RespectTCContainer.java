@@ -19,33 +19,22 @@ import alice.tucson.service.RemoteLinkProvider;
  * @author matteo casadei v 2.1.1
  * 
  */
-public class RespectTCContainer
-{
+public class RespectTCContainer{
+	
 	private ITCRegistry registry;
-
 	private IRemoteLinkProvider stub;
-
 	private static RespectTCContainer container;
 	private static int defaultport;
-	
 	public static final int QUEUE_SIZE = 10;
 	
-	// Definizione del Reasoner
-
-	private RespectTCContainer()
-	{
+	private RespectTCContainer(){
 		this.registry = new RespectLocalRegistry();
-		// Creazione del Reasoner
 		this.stub = null;
 	}
 
-	public static RespectTCContainer getRespectTCContainer()
-	{
+	public static RespectTCContainer getRespectTCContainer(){
 		if (RespectTCContainer.container == null)
-		{
 			RespectTCContainer.container = new RespectTCContainer();
-		}
-
 		return RespectTCContainer.container;
 	}
 
@@ -57,38 +46,25 @@ public class RespectTCContainer
 		return defaultport;
 	}
 	
-	// Metodo per ottenere il Reasoner
-
-	// Qui devo passare il riferimento all'Otologia relativa al tc
-	public boolean createRespectTC(TupleCentreId id, Integer q) throws InstantiationNotPossibleException
-	{
-		// Qui devo passare il riferimento all'Ontologia relativa al tc
+	public boolean createRespectTC(TupleCentreId id, Integer q) throws InstantiationNotPossibleException{
 		registry.addTC(new RespectTC(id, this, q));
 		return true;
 	}
 
-	public IOrdinarySynchInterface getBlockingContext(TupleCentreId id) throws OperationNotPossibleException
-	{
-		try
-		{
+	public IOrdinarySynchInterface getBlockingContext(TupleCentreId id) throws OperationNotPossibleException{
+		try{
 			return ((RespectTC) registry.getTC(id)).getBlockingContext();
-		}
-		catch (Exception e)
-		{
+		}catch (Exception e){
 			RespectTC tc = new RespectTC(id, this, QUEUE_SIZE);
 			this.registry.addTC(tc);
 			return tc.getBlockingContext();
 		}
 	}
 
-	public IOrdinaryAsynchInterface getNonBlockingContext(TupleCentreId id)
-	{
-		try
-		{
+	public IOrdinaryAsynchInterface getNonBlockingContext(TupleCentreId id){
+		try{
 			return ((RespectTC) registry.getTC(id)).getNonBlockingContext();
-		}
-		catch (Exception e)
-		{
+		}catch (Exception e){
 			RespectTC tc = new RespectTC(id, this, QUEUE_SIZE);
 			this.registry.addTC(tc);
 			return tc.getNonBlockingContext();
@@ -103,8 +79,6 @@ public class RespectTCContainer
 	 * @throws OperationNotPossibleException
 	 */
 	public ILinkContext getLinkContext(TupleCentreId id) throws OperationNotPossibleException{
-		
-//		System.out.println("[RespectTCContainer]:  id = " + id.toString());
 		if ( (id.getNode().equals("localhost") || id.getNode().equals("127.0.0.1")) && id.getPort() == defaultport ){
 			try{
 				return ((RespectTC) registry.getTC(id)).getLinkContext();
@@ -114,78 +88,48 @@ public class RespectTCContainer
 				return tc.getLinkContext();
 			}
 		}
-
 		if (this.stub == null)
 			this.stub = new RemoteLinkProvider();
-//			throw new OperationNotPossibleException();
 		return stub.getRemoteLinkContext(id);
-
 	}
 
-	public void addStub(IRemoteLinkProvider stub)
-	{
-		// per aggiungere lo stub nel caso in cui sia presente l'infrastruttura TuCSoN 
+	public void addStub(IRemoteLinkProvider stub){
 		if (stub == null)
-		{
 			this.stub = stub;
-		}
 	}
 
-	public ISpecificationAsynchInterface getNonBlockingSpecContext(TupleCentreId id) throws OperationNotPossibleException
-	{
-		try
-		{
+	public ISpecificationAsynchInterface getNonBlockingSpecContext(TupleCentreId id) throws OperationNotPossibleException{
+		try{
 			return ((RespectTC) registry.getTC(id)).getNonBlockingSpecContext();
-		}
-		catch (Exception e)
-		{
+		}catch (Exception e){
 			RespectTC tc = new RespectTC(id, this, QUEUE_SIZE);
 			this.registry.addTC(tc);
 			return tc.getNonBlockingSpecContext();
 		}
 	}
 
-	public ISpecificationSynchInterface getBlockingSpecContext(TupleCentreId id) throws OperationNotPossibleException
-	{
-		try
-		{
+	public ISpecificationSynchInterface getBlockingSpecContext(TupleCentreId id) throws OperationNotPossibleException{
+		try{
 			return ((RespectTC) registry.getTC(id)).getBlockingSpecContext();
-		}
-		catch (Exception e)
-		{
+		}catch (Exception e){
 			RespectTC tc = new RespectTC(id, this, QUEUE_SIZE);
 			this.registry.addTC(tc);
 			return tc.getBlockingSpecContext();
 		}
 	}
 
-	public IManagementContext getManagementContext(TupleCentreId id) throws OperationNotPossibleException
-	{
-		try
-		{
+	public IManagementContext getManagementContext(TupleCentreId id) throws OperationNotPossibleException{
+		try{
 			return ((RespectTC) registry.getTC(id)).getManagementContext();
-		}
-		catch (Exception e)
-		{
+		}catch (Exception e){
 			RespectTC tc = new RespectTC(id, this, QUEUE_SIZE);
 			this.registry.addTC(tc);
 			return tc.getManagementContext();
 		}
 	}
 
-	// Was used by RespectFramework	and Inspector
-	/**
-	 * This method should not be used. Use instead get*ContextMethods 
-	 * 
-	 * @deprecated
-	 * 
-	 */	
-	public RespectTC getTC(TupleCentreId id) throws InstantiationNotPossibleException 
-	{ 				 
-		return (RespectTC) registry.getTC(id);
-	}	 
-	
 	public ITCRegistry getRegistry(){
 		return registry;
 	}
+	
 }

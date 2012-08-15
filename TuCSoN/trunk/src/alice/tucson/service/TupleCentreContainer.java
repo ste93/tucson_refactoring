@@ -63,22 +63,6 @@ public class TupleCentreContainer{
 	
 	/**
 	 * 
-	 * @param id
-	 * @return
-	 */
-//	if we follow @deprecated instructions we should get a <...>Context insted of a RespectTC,
-//	but how to decide which? who decides? based upon what?
-	public static Object getTC(TucsonTupleCentreId id){ 	
-		try{
-			return (RespectTCContainer.getRespectTCContainer()).getTC((TupleCentreId)id.getInternalTupleCentreId());
-		}catch (InstantiationNotPossibleException e){
-			System.err.println("[TupleCentreContainer]: " + e);
-			return null;
-		}
-	 }	 
-	
-	/**
-	 * 
 	 * @param type
 	 * @param tid
 	 * @param obj

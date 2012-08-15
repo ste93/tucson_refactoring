@@ -25,10 +25,11 @@ package alice.respect.core;
  *  
  *  @author aricci
  */
-@SuppressWarnings("serial")
 public class TupleCentreIdOperatorManager extends alice.tuprolog.OperatorManager {
 	
-	 public TupleCentreIdOperatorManager(){
+	private static final long serialVersionUID = 1319340757322429430L;
+
+	public TupleCentreIdOperatorManager(){
         opNew("@","xfx",550);
         opNew(":","xfx",549);
         opNew(".","xfx",548);

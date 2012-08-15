@@ -18,20 +18,18 @@
 package alice.respect.core;
 
 import java.util.*;
-
 import alice.logictuple.LogicTuple;
 import alice.tuprolog.Var;
+
 /**
  * Class representing a Tuple Set.
  */
 public class TupleSet  {
 
     private LinkedList<LogicTuple> tuples;
-    // to manage transactions
     private LinkedList<LogicTuple> tAdded;
     private LinkedList<LogicTuple> tRemoved;
     private boolean transaction;
-
 
     public TupleSet(){
 		tuples=new LinkedList<LogicTuple>();
@@ -42,16 +40,14 @@ public class TupleSet  {
 
     public void add(LogicTuple t){
         tuples.add(t);
-        if (transaction){
+        if (transaction)
             tAdded.add(t);
-        }
     }
 
     public void remove(LogicTuple t){
         tuples.remove(t);
-        if (transaction){
+        if (transaction)
             tRemoved.add(t);
-        }
     }
 
     public boolean isEmpty(){
@@ -83,47 +79,32 @@ public class TupleSet  {
      */
     public void endTransaction(boolean commit){
         if (!commit){
-            //System.out.println("[ tspace ] roll back!");
             Iterator<LogicTuple> it = tAdded.listIterator();
-            while (it.hasNext()) {
-            	//System.out.println("[tspace] removing "+(LogicTuple)list[i]);
+            while (it.hasNext())
                 tuples.remove(it.next());
-            }
             it=tRemoved.listIterator();
-			while (it.hasNext()) {
-                //System.out.println("[tspace] adding "+(LogicTuple)list[i]);
+			while (it.hasNext())
                 tuples.add(it.next());
-            }
         }
         transaction=false;
         tAdded.clear();
         tRemoved.clear();
     }
 
-    public void    empty(){
+    public void empty(){
         tuples.clear();
     }
 
     public LogicTuple getMatchingTuple(LogicTuple templ){
         if (templ==null)
             return null;
-        //System.out.println("TSET: getMatchingTuple "+templ);
         ListIterator<LogicTuple> l=tuples.listIterator();
         while (l.hasNext()){
             LogicTuple tu=l.next();
-            //System.out.println("-- "+tu);
             if (templ.match(tu)){
-                //System.out.println(">> FOUND"+tu);
                 l.remove();
-                if (transaction){
+                if (transaction)
                     tRemoved.add(tu);
-                }
-            	/* copy needs to be returned as tu refers to a tuple in
-            	 * tuple set and it also gets stored in operation 
-            	 * result thus creating aliasing, note that getMatchingTuple
-            	 * should remove the tuple but as it is used in transactional
-            	 * contexts the operation can be potentially aborted.
-            	 */
                 AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
                 return new LogicTuple(tu.toTerm().copyGoal(v, 0));
             }
@@ -134,17 +115,10 @@ public class TupleSet  {
     public LogicTuple readMatchingTuple(LogicTuple templ){
         if (templ==null)
             return null;
-        //System.out.println("TSET: readMatchingTuple "+templ);
         ListIterator<LogicTuple> l=tuples.listIterator();
         while (l.hasNext()){
             LogicTuple tu=l.next();
-            //System.out.println("-- "+tu);
             if (templ.match(tu)){
-                //System.out.println(">> FOUND"+tu);
-            	/* copy needs to be returned as tu referes to a tuple in
-            	 * tuple set and it also gets stored in operation 
-            	 * result thus creating aliasing
-            	 */             	
             	AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
                 return new LogicTuple(tu.toTerm().copyGoal(v, 0));
             }
@@ -167,9 +141,8 @@ public class TupleSet  {
      */
     public String toString() {
     	String str = "";
-    	for(LogicTuple t: tuples){
+    	for(LogicTuple t: tuples)
     		str += t.toString() + ".\n";
-    	}
     	return str;
     }
 
@@ -181,7 +154,8 @@ public class TupleSet  {
     public boolean operationsPending() {
 		if(tAdded.isEmpty() && tRemoved.isEmpty())
 			return false;
-		else return true;
+		else
+			return true;
 	}
 
 }
