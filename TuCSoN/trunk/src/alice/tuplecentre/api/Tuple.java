@@ -17,7 +17,6 @@
  */
 package alice.tuplecentre.api;
 
-
 /**
  * 
  * Flag interface representing tuples.

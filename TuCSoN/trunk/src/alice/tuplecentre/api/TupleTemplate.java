@@ -19,7 +19,6 @@ package alice.tuplecentre.api;
 
 import alice.tuprolog.Prolog;
 
-
 /**
  *
  *
@@ -46,4 +45,5 @@ public interface TupleTemplate extends Tuple{
      * @param t a tuple matching the template
      */
     boolean propagate(Prolog p, Tuple t);
+    
 }
