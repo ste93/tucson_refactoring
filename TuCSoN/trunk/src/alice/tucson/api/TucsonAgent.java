@@ -111,7 +111,7 @@ public abstract class TucsonAgent implements TucsonOperationCompletionListener{
 	/**
 	 * Starts main execution cycle {@link alice.tucson.api.TucsonAgent@main main}
 	 */
-	final public void spawn(){
+	final public void go(){
 		new AgentThread(this).start();
 	}
 

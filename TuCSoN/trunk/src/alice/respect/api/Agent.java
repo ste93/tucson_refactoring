@@ -47,7 +47,7 @@ public abstract class Agent  {
     /**
      * Starts agent execution
      */
-    final  public void spawn() throws Exception {
+    final  public void go() throws Exception {
         execPlan("mainPlan");
     }
 
