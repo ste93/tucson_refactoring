@@ -1,31 +1,83 @@
 package alice.tucson.api;
 
-import java.util.LinkedList;
-
 import alice.logictuple.LogicTuple;
+import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
+import alice.tucson.api.exceptions.TucsonInvalidLogicTupleException;
+import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
+import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
+import alice.tucson.service.TucsonOperation;
+import alice.tucson.service.TupleCentreContainer;
+import alice.tuplecentre.core.OperationCompletionListener;
+import alice.tuplecentre.core.TupleCentreOperation;
 
-public abstract class SpawnActivity {
+public abstract class SpawnActivity implements OperationCompletionListener{
 	
-	private LinkedList<LogicTuple> params;
-	private LinkedList<LogicTuple> results;
+	private TucsonAgentId aid;
+	private TucsonTupleCentreId tcid;
 	
-	public SpawnActivity(){
-		params = new LinkedList<LogicTuple>();
-		params = new LinkedList<LogicTuple>();
+	public SpawnActivity(TucsonAgentId aid){
+		this.aid = aid;
+		tcid = null;
 	}
 	
-	protected final LogicTuple[] readParams(LogicTuple[] templates){
-		return templates;
+	public SpawnActivity(TucsonTupleCentreId tcid){
+		this.tcid = tcid;
+		aid = null;
 	}
 	
-	protected final LogicTuple[] consumeParams(LogicTuple[] templates){
-		return templates;
+	public final TucsonIdWrapper<?> getSpawnerId(){
+		if(aid == null)
+			return new TucsonIdWrapper<TucsonTupleCentreId>(tcid);
+		else
+			return new TucsonIdWrapper<TucsonAgentId>(aid);
 	}
 	
-	protected final void shareResults(LogicTuple[] tuples){
-		
+	protected final boolean out(TucsonTupleCentreId tcid, LogicTuple tuple){
+		if(this.aid != null)
+			try {
+				TupleCentreContainer.doNonBlockingOperation(TucsonOperation.outCode(), aid, tcid, tuple, this);
+			} catch (TucsonInvalidLogicTupleException e) {
+				e.printStackTrace();
+			} catch (TucsonOperationNotPossibleException e) {
+				e.printStackTrace();
+			}
+		else
+			try {
+				TupleCentreContainer.doNonBlockingOperation(TucsonOperation.outCode(), this.tcid, tcid, tuple, this);
+			} catch (TucsonInvalidLogicTupleException e) {
+				e.printStackTrace();
+			} catch (TucsonOperationNotPossibleException e) {
+				e.printStackTrace();
+			}
+		return false;
 	}
 	
 	abstract public void doActivity();
+	
+	@Override
+	public void operationCompleted(TupleCentreOperation op) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	/**
+	 * TEST METHOD, DO NOT USE
+	 */
+	public static void main(String[] args){
+		SpawnActivity sa = null;
+		try {
+			sa = new SpawnActivity(new TucsonAgentId("me")) {
+//			sa = new SpawnActivity(new TucsonTupleCentreId("default", "localhost", "20504")) {
+				@Override
+				public void doActivity() {
+					System.out.println("[me]: Doing my business...");
+				}
+			};
+		} catch (TucsonInvalidAgentIdException e) {
+			e.printStackTrace();
+		}
+		sa.doActivity();
+		System.out.println("[Main]: spawner is: <" + sa.getSpawnerId().getId() + ", " + sa.getSpawnerId().getId().getClass() + ">");
+	}
 	
 }
