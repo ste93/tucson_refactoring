@@ -17,14 +17,14 @@
  */
 package alice.tuplecentre.core;
 
-@SuppressWarnings("serial")
-public class ObservableEventExt extends InspectableEvent
-{
-	public static final int TYPE_REACTIONOK = 100;
-	public static final int TYPE_REACTIONFAIL = 101;
+public class ObservableEventExt extends InspectableEvent{
+	
+	private static final long serialVersionUID = -2903815349443988799L;
+	public static final int TYPE_REACTIONOK = 1000;
+	public static final int TYPE_REACTIONFAIL = 1001;
 
-	public ObservableEventExt(Object source, int code)
-	{
+	public ObservableEventExt(Object source, int code){
 		super(source, code);
 	}
+	
 }

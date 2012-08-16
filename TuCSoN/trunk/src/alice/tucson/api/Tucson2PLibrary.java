@@ -18,7 +18,7 @@
 package alice.tucson.api;
 
 import alice.logictuple.LogicTuple;
-import alice.logictuple.exception.InvalidTupleOperationException;
+import alice.logictuple.exceptions.InvalidTupleOperationException;
 
 import alice.tucson.api.exceptions.TucsonGenericException;
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
@@ -26,7 +26,7 @@ import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
 
-import alice.tuplecentre.core.OperationTimeOutException;
+import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 
 import alice.tuprolog.Library;
 import alice.tuprolog.Struct;

@@ -49,7 +49,7 @@ public class InternalOperation {
 	private static final int OPTYPE_RD_ALLR = 12;
 	private static final int OPTYPE_NO_ALLR = 13;
 
-	private static final int OPTYPE_SPAWN = 666;
+	private static final int OPTYPE_SPAWN = 66;
 	
 	private static final int OPTYPE_OUT_SR = 14; 
 	private static final int OPTYPE_IN_SR = 15;
@@ -58,8 +58,8 @@ public class InternalOperation {
 	private static final int OPTYPE_GET_S_R = 18;
 	private static final int OPTYPE_SET_S_R = 19;
 	
-	private static final int OPTYPE_GET_ENV = 333;
-	private static final int OPTYPE_SET_ENV = 334;
+	private static final int OPTYPE_GET_ENV = 77;
+	private static final int OPTYPE_SET_ENV = 78;
  	
  	private int type;
  	

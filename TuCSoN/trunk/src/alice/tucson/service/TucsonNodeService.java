@@ -19,7 +19,7 @@
 package alice.tucson.service;
 
 import alice.logictuple.*;
-import alice.logictuple.exception.InvalidTupleArgumentException;
+import alice.logictuple.exceptions.InvalidTupleArgumentException;
 
 import alice.respect.api.exceptions.InvalidTupleCentreIdException;
 import alice.tucson.api.exceptions.*;

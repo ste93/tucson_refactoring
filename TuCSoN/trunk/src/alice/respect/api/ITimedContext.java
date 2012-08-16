@@ -1,7 +1,7 @@
 package alice.respect.api;
 
 import alice.logictuple.LogicTuple;
-import alice.logictuple.exception.InvalidLogicTupleException;
+import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.respect.api.exceptions.OperationNotPossibleException;
 import alice.respect.api.exceptions.OperationTimeOutException;
 

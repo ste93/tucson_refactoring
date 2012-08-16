@@ -21,8 +21,8 @@ import java.util.List;
 
 import alice.logictuple.LogicTuple;
 import alice.logictuple.TupleArgument;
-import alice.logictuple.exception.InvalidLogicTupleException;
-import alice.logictuple.exception.InvalidTupleOperationException;
+import alice.logictuple.exceptions.InvalidLogicTupleException;
+import alice.logictuple.exceptions.InvalidTupleOperationException;
 
 import alice.respect.api.AgentId;
 import alice.respect.api.IOrdinarySynchInterface;

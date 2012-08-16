@@ -2,7 +2,7 @@ package alice.tucson.parsing;
 
 import alice.logictuple.LogicTuple;
 import alice.logictuple.TupleArgument;
-import alice.logictuple.exception.InvalidTupleOperationException;
+import alice.logictuple.exceptions.InvalidTupleOperationException;
 
 import static alice.util.Tools.removeApices;
 

@@ -3,7 +3,7 @@ package alice.respect.api;
 import java.util.List;
 
 import alice.logictuple.*;
-import alice.logictuple.exception.InvalidLogicTupleException;
+import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.respect.api.exceptions.OperationNotPossibleException;
 
 /**

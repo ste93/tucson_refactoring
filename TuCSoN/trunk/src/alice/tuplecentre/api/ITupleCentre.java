@@ -6,7 +6,7 @@
  */
 package alice.tuplecentre.api;
 
-import alice.tuplecentre.core.OperationNotPossibleException;
+import alice.tuplecentre.api.exceptions.OperationNotPossibleException;
 import alice.tuplecentre.core.TupleCentreOperation;
 
 /**

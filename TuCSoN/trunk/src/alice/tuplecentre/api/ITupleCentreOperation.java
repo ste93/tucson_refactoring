@@ -1,6 +1,6 @@
 package alice.tuplecentre.api;
 
-import alice.tuplecentre.core.OperationTimeOutException;
+import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 
 /**
  * Basic interface for tuple centre operations.

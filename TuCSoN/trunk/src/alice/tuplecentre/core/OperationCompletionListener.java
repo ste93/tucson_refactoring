@@ -24,7 +24,8 @@ package alice.tuplecentre.core;
  * @author aricci
  * 
  */
-public interface OperationCompletionListener
-{
+public interface OperationCompletionListener{
+	
 	public void operationCompleted(TupleCentreOperation op);
+
 }

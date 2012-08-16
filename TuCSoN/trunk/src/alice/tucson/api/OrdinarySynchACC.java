@@ -22,7 +22,7 @@ import alice.logictuple.LogicTuple;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
 
-import alice.tuplecentre.core.OperationTimeOutException;
+import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 
 /**
  * Agent Coordination Context enabling interaction with the Ordinary Tuple Space (basic Linda-like

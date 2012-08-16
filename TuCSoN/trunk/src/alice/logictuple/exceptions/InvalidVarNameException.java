@@ -1,5 +1,5 @@
 /*
- * Tuple Centre media - Copyright (C) 2001-2002  aliCE team at deis.unibo.it
+ * Logic Tuple Communication Language - Copyright (C) 2001-2002  aliCE team at deis.unibo.it
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -15,13 +15,24 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-package alice.tuplecentre.core;
+package alice.logictuple.exceptions;
+
+import alice.logictuple.TupleArgument;
+import alice.logictuple.Var;
 
 /**
- * Exceptions thrown when a timeout occurs.
+ * Exception thrown when a not valid name for Variable is used
  *
- * @author  aricci
- */
-@SuppressWarnings("serial")
-public class OperationTimeOutException extends Exception {
+ * @see Var
+ * @see TupleArgument
+ * @version 1.0
+ * @author aricci
+*/
+public class InvalidVarNameException extends LogicTupleException {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 }
+

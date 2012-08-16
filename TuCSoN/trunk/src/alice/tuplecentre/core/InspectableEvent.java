@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 package alice.tuplecentre.core;
+
 import java.util.*;
 
 /**
@@ -29,14 +30,12 @@ import java.util.*;
  *
  * @version 1.0
  */
-@SuppressWarnings("serial")
 public class InspectableEvent extends EventObject {
 
-    public static final int TYPE_NEWSTATE = 1;
-
+    private static final long serialVersionUID = 5564085406606810969L;
+	public static final int TYPE_NEWSTATE = 1;
     /** virtual machine time at which the event has been observed */
     private long time;
-
     /** observable event type */
     private int type;
 
@@ -60,4 +59,5 @@ public class InspectableEvent extends EventObject {
     public int getType(){
         return type;
     }
+    
 }

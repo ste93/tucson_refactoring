@@ -21,10 +21,11 @@ import java.util.*;
 
 import alice.logictuple.LogicTuple;
 import alice.logictuple.Value;
-import alice.logictuple.exception.InvalidLogicTupleException;
+import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.respect.api.RespectSpecification;
 import alice.respect.core.RespectVMContext;
 import alice.tuplecentre.api.Tuple;
+import alice.tuplecentre.api.exceptions.InvalidOperationException;
 import alice.tuplecentre.core.TCCycleResult.Outcome;
 
 /**
@@ -86,12 +87,6 @@ public class SpeakingState extends TupleCentreVMState {
 		        		op.setOpResult(Outcome.SUCCESS);
 			            op.setTupleResult(tuple);
 			            foundSatisfied = true;
-		            } else if (op.isOutAll()){
-		            	tuple = op.getTupleArgument();
-		        		List<Tuple> list = vm.addListTuple(tuple);
-		        		op.setOpResult(Outcome.SUCCESS);
-			            op.setTupleListResult(list);
-			            foundSatisfied = true;
 		            } else if (op.isIn()){
 		                tuple = vm.removeMatchingTuple(op.getTemplateArgument());
 						if (tuple!=null){
@@ -143,54 +138,64 @@ public class SpeakingState extends TupleCentreVMState {
 	            			op.setTupleResult(tuple);
 	            		}
 	            		foundSatisfied=true;
-					}
-//		            my personal updates
-		            else if (op.isInAll()){
+					} else if (op.isGet()){
+						tupleList = new LinkedList<Tuple>();
+						tupleList = vm.getAllTuples();
+						op.setOpResult(Outcome.SUCCESS);
+						op.setTupleListResult(tupleList);
+						foundSatisfied=true;
+					} else if (op.isSet()){
+		            	tupleList = op.getTupleListArgument();
+		            	vm.setAllTuples(tupleList);
+		            	op.setOpResult(Outcome.SUCCESS);
+		            	op.setTupleListResult(tupleList);
+		            	foundSatisfied=true;
+					} else if (op.isOutAll()){
+		            	tuple = op.getTupleArgument();
+		        		List<Tuple> list = vm.addListTuple(tuple);
+		        		op.setOpResult(Outcome.SUCCESS);
+			            op.setTupleListResult(list);
+			            foundSatisfied = true;
+		            } else if (op.isInAll()){
 		            	List<Tuple> tuples = new LinkedList<Tuple>();
 		            	tuples = vm.inAllTuples(op.getTemplateArgument());
 		            	op.setOpResult(Outcome.SUCCESS);
 		            	op.setTupleListResult(tuples);
 	            		foundSatisfied=true;
-		            }
-		            else if (op.isRdAll()){
+		            } else if (op.isRdAll()){
 		            	List<Tuple> tuples = new LinkedList<Tuple>();
 		                tuples = vm.readAllTuples(op.getTemplateArgument());
 		                op.setOpResult(Outcome.SUCCESS);
 		                op.setTupleListResult(tuples);
 	            		foundSatisfied=true;
-		            }
-		            else if (op.isNoAll()){
+		            } else if (op.isNoAll()){
 		            	List<Tuple> tuples = new LinkedList<Tuple>();
 		                tuples = vm.readAllTuples(op.getTemplateArgument());
 		                op.setOpResult(Outcome.SUCCESS);
 		                op.setTupleListResult(tuples);
 	            		foundSatisfied=true;
-		            }
-		            else if (op.isUrd()){
+		            } else if (op.isUrd()){
 		                tuple = vm.readUniformTuple(op.getTemplateArgument());
 		                if (tuple!=null){
 							op.setOpResult(Outcome.SUCCESS);
 				            op.setTupleResult(tuple);
 							foundSatisfied=true;
 						}// we do nothing: urd is suspensive hence we cannot conclude FAILURE yet!
-		            }
-		            else if (op.isUno()){
-		                tuple = vm.readUniformTuple(op.getTemplateArgument());
-		                if (tuple==null){
-							op.setOpResult(Outcome.SUCCESS);
-				            op.setTupleResult(op.getTemplateArgument());
-							foundSatisfied=true;
-						}// we do nothing: urd is suspensive hence we cannot conclude FAILURE yet!
-		            }
-		            else if (op.isUin()){
+		            } else if (op.isUin()){
 		                tuple = vm.removeUniformTuple(op.getTemplateArgument());
 		                if (tuple!=null){
 							op.setOpResult(Outcome.SUCCESS);
 				            op.setTupleResult(tuple);
 							foundSatisfied=true;
 						}// we do nothing: uin is suspensive hence we cannot conclude FAILURE yet!
-		            }
-		            else if (op.isUrdp()){
+		            } else if (op.isUno()){
+		                tuple = vm.readUniformTuple(op.getTemplateArgument());
+		                if (tuple==null){
+							op.setOpResult(Outcome.SUCCESS);
+				            op.setTupleResult(op.getTemplateArgument());
+							foundSatisfied=true;
+						}// we do nothing: urd is suspensive hence we cannot conclude FAILURE yet!
+		            } else if (op.isUrdp()){
 		                tuple = vm.readUniformTuple(op.getTemplateArgument());
 		                if(tuple!=null){
 	            			op.setOpResult(Outcome.SUCCESS);
@@ -200,8 +205,17 @@ public class SpeakingState extends TupleCentreVMState {
 	            			op.setTupleResult(op.getTemplateArgument());
 	            		}
 	            		foundSatisfied=true;
-		            }
-		            else if (op.isUnop()){
+		            } else if (op.isUinp()){
+		                tuple = vm.removeUniformTuple(op.getTemplateArgument());
+		                if(tuple!=null){
+	            			op.setOpResult(Outcome.SUCCESS);
+	            			op.setTupleResult(tuple);
+	            		}else{
+	            			op.setOpResult(Outcome.FAILURE);
+	            			op.setTupleResult(op.getTemplateArgument());
+	            		}
+	            		foundSatisfied=true;
+		            } else if (op.isUnop()){
 		            	tuple = vm.readUniformTuple(op.getTemplateArgument());
 		                if(tuple==null){
 	            			op.setOpResult(Outcome.SUCCESS);
@@ -211,20 +225,7 @@ public class SpeakingState extends TupleCentreVMState {
 	            			op.setTupleResult(tuple);
 	            		}
 	            		foundSatisfied=true;
-		            }
-		            else if (op.isUinp()){
-		                tuple = vm.removeUniformTuple(op.getTemplateArgument());
-		                if(tuple!=null){
-	            			op.setOpResult(Outcome.SUCCESS);
-	            			op.setTupleResult(tuple);
-	            		}else{
-	            			op.setOpResult(Outcome.FAILURE);
-	            			op.setTupleResult(op.getTemplateArgument());
-	            		}
-	            		foundSatisfied=true;
-		            }	            
-//		            *********************
-					else if (op.isOut_s()){
+		            } else if (op.isOut_s()){
 						tuple = op.getTupleArgument();
 						vm.addSpecTuple(tuple);
 						op.setOpResult(Outcome.SUCCESS);
@@ -281,15 +282,7 @@ public class SpeakingState extends TupleCentreVMState {
 	            			op.setTupleResult(tuple);
 	            		}
 	            		foundSatisfied=true;
-					}
-					
-					else if (op.isGet()){
-						tupleList = new LinkedList<Tuple>();
-						tupleList = vm.getAllTuples();
-						op.setOpResult(Outcome.SUCCESS);
-						op.setTupleListResult(tupleList);
-						foundSatisfied=true;
-					}else if(op.isGet_s()){
+					} else if(op.isGet_s()){
 						Iterator<Tuple> rit = vm.getSpecTupleSetIterator();
 						LinkedList<Tuple> reactionList = new LinkedList<Tuple>();
 						while(rit.hasNext())
@@ -297,13 +290,7 @@ public class SpeakingState extends TupleCentreVMState {
 						op.setOpResult(Outcome.SUCCESS);
 						op.setTupleListResult(reactionList);
 						foundSatisfied = true;
-		            }else if (op.isSet()){
-		            	tupleList = op.getTupleListArgument();
-		            	vm.setAllTuples(tupleList);
-		            	op.setOpResult(Outcome.SUCCESS);
-		            	op.setTupleListResult(tupleList);
-		            	foundSatisfied=true;
-					}else if(op.isSet_s()){
+		            } else if(op.isSet_s()){
 						tupleList = op.getTupleListArgument();
 						vm.setAllSpecTuples(tupleList);
 						op.setOpResult(Outcome.SUCCESS);
@@ -318,7 +305,6 @@ public class SpeakingState extends TupleCentreVMState {
 	            }
 	            
             } catch(InvalidOperationException ex){
-            	vm.spy("ERROR: "+ev.getOperation().getType()+"");
             	vm.notifyException(ex);
             	it.remove();
             }
@@ -331,7 +317,6 @@ public class SpeakingState extends TupleCentreVMState {
 			
 			if(!ev.isLinking()){
 				vm.notifyOutputEvent(out_ev);
-//				System.out.println("[SpeakingState]: out_ev = " + out_ev.toString());
 				if (((RespectVMContext)vm).getRespectVM().getObservers().size()>0)
 					((RespectVMContext)vm).getRespectVM().notifyObservableEvent(out_ev);
 			}

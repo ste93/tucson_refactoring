@@ -17,14 +17,14 @@
  */
 package alice.tuplecentre.core;
 
-@SuppressWarnings("serial")
-public class ObservableEventReactionOK extends ObservableEventExt
-{
+public class ObservableEventReactionOK extends ObservableEventExt{
+	
+	private static final long serialVersionUID = -6829467452199043774L;
 	public TriggeredReaction z;
 
-	public ObservableEventReactionOK(Object source, TriggeredReaction z)
-	{
+	public ObservableEventReactionOK(Object source, TriggeredReaction z){
 		super(source, ObservableEventExt.TYPE_REACTIONOK);
 		this.z = z;
 	}
+	
 }

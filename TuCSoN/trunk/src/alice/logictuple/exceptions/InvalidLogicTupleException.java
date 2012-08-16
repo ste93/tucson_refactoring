@@ -15,20 +15,22 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-package alice.logictuple.exception;
+package alice.logictuple.exceptions;
 
 import alice.logictuple.LogicTuple;
 
 
 /**
- * Logic Tuple root base Exception class
- *
- * @see LogicTuple
+ * Exception thrown when a malformed logic logic tuple
+ * is created or used
  *
  * @author aricci
+ * 
+ * @see LogicTuple
+ *
  * @version 1.0
  */
-public abstract class LogicTupleException extends Exception{
+public class InvalidLogicTupleException extends LogicTupleException{
 
 	/**
 	 * 

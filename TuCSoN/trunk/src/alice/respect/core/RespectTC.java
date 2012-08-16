@@ -18,7 +18,7 @@
 package alice.respect.core;
 
 import alice.logictuple.*;
-import alice.logictuple.exception.InvalidLogicTupleException;
+import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.respect.api.IEnvironmentContext;
 import alice.respect.api.ILinkContext;
 import alice.respect.api.IManagementContext;

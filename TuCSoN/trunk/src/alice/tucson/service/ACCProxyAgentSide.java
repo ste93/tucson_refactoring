@@ -18,8 +18,8 @@
 package alice.tucson.service;
 
 import alice.logictuple.*;
-import alice.logictuple.exception.InvalidLogicTupleException;
-import alice.logictuple.exception.InvalidTupleOperationException;
+import alice.logictuple.exceptions.InvalidLogicTupleException;
+import alice.logictuple.exceptions.InvalidTupleOperationException;
 
 import alice.tucson.api.EnhancedACC;
 import alice.tucson.api.ITucsonOperation;
@@ -36,7 +36,7 @@ import alice.tucson.parsing.MyOpManager;
 
 import alice.tuplecentre.api.Tuple;
 import alice.tuplecentre.api.TupleTemplate;
-import alice.tuplecentre.core.OperationTimeOutException;
+import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 import alice.tuplecentre.core.TCCycleResult.Outcome;
 
 import alice.tuprolog.Parser;

@@ -32,11 +32,10 @@ public class ListeningState extends TupleCentreVMState {
     }
     
     public TupleCentreVMState getNextState(){
-        if (vm.triggeredReaction() || vm.time_triggeredReaction()){
+        if (vm.triggeredReaction() || vm.time_triggeredReaction())
             return reactingState;
-        } else {
+        else
             return speakingState;
-        }
     }
     
     public void resolveLinks(){
@@ -47,19 +46,11 @@ public class ListeningState extends TupleCentreVMState {
     public void execute(){
 		vm.fetchPendingEvent();
         InputEvent ev=vm.getCurrentEvent();
-        //TupleCentreOperation op=ev.getOperation();
-        /*if (op.isOut()){
-            vm.addTuple(op.getTupleArgument());
-            op.notifyCompletion();
-        } else {*/
-        // 18 is TIME_OP in alice.respect.core.RespectOperation
         if( ev.getOperation().getType()!=18){
         	vm.addPendingQueryEvent(ev);
         	vm.fetchTriggeredReactions(ev);
-        }
-        //}
-        else{
+        }else
         	vm.fetchTimedReactions(ev);
-        }
     }
+    
 }

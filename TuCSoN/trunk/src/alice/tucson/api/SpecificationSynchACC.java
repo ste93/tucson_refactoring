@@ -18,12 +18,12 @@
 package alice.tucson.api;
 
 import alice.logictuple.LogicTuple;
-import alice.logictuple.exception.InvalidTupleOperationException;
+import alice.logictuple.exceptions.InvalidTupleOperationException;
 
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
 
-import alice.tuplecentre.core.OperationTimeOutException;
+import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 
 /**
  * Agent Coordination Context enabling interaction with the Specification Tuple Space (storing ReSpecT

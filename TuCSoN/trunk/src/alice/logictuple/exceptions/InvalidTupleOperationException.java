@@ -1,7 +1,5 @@
 /*
- * Created on Oct 10, 2003
- * 
- * Copyright (C)aliCE team at deis.unibo.it
+ * Logic Tuple Communication Language - Copyright (C) 2001-2002  aliCE team at deis.unibo.it
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,14 +14,24 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
  */
-package alice.tuplecentre.core;
+package alice.logictuple.exceptions;
+
+import alice.logictuple.TupleArgument;
+import alice.logictuple.Var;
 
 /**
+ * Exception thrown when a not valid tuple argument value is used
  * @author aricci
- *
- */
-@SuppressWarnings("serial")
-public class InvalidOperationException extends Exception {
+ * @see Var
+ * @see TupleArgument
+ * @version 1.0
+*/
+public class InvalidTupleOperationException extends LogicTupleException {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 }
+

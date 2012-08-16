@@ -28,10 +28,12 @@ package alice.tuplecentre.core;
  * @author aricci
  */
 public interface OutputEventListener {
-    /**
+    
+	/**
      * This service is invoked (by a tuple centre virtual machine
      * able to dispatch output events) when a new output communication
      * is produced
      */
     public void notify(OutputEvent ev);
+    
 }

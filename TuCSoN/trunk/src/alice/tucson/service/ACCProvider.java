@@ -21,7 +21,7 @@ import alice.logictuple.LogicTuple;
 import alice.logictuple.Value;
 import alice.logictuple.Var;
 import alice.logictuple.TupleArgument;
-import alice.logictuple.exception.InvalidTupleOperationException;
+import alice.logictuple.exceptions.InvalidTupleOperationException;
 
 import alice.tucson.api.*;
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;

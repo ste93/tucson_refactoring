@@ -1,8 +1,8 @@
 package alice.respect.core;
 
 import alice.logictuple.LogicTuple;
-import alice.logictuple.exception.InvalidLogicTupleException;
-import alice.logictuple.exception.InvalidTupleOperationException;
+import alice.logictuple.exceptions.InvalidLogicTupleException;
+import alice.logictuple.exceptions.InvalidTupleOperationException;
 
 import alice.respect.api.IOrdinaryAsynchInterface;
 import alice.respect.api.IRespectOperation;

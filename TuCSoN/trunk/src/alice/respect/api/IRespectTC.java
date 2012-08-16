@@ -18,7 +18,7 @@
 package alice.respect.api;
 
 import alice.logictuple.*;
-import alice.logictuple.exception.InvalidLogicTupleException;
+import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.respect.api.exceptions.InvalidSpecificationException;
 import alice.respect.api.exceptions.OperationNotPossibleException;
 import alice.respect.core.RespectVM;

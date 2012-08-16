@@ -17,7 +17,6 @@
  */
 package alice.tuplecentre.core;
 
-
 /**
  * This is the reacting state of the TCVM
  *
@@ -33,11 +32,10 @@ public class ReactingState extends TupleCentreVMState {
     }
     
     public TupleCentreVMState getNextState(){
-        if (vm.triggeredReaction() || vm.time_triggeredReaction()){
+        if (vm.triggeredReaction() || vm.time_triggeredReaction())
             return this;
-        }else if (vm.pendingEnvEvents()){
+        else if (vm.pendingEnvEvents())
             return fetchEnvState;
-        }
         return speakingState;
     }
     
@@ -51,7 +49,6 @@ public class ReactingState extends TupleCentreVMState {
         if (tr!=null){
             vm.evalReaction(tr);
         }else if(vm.time_triggeredReaction()){
-        	
         	tr = vm.removeTimeTriggeredReaction();
         	if (tr!=null){
         		vm.evalReaction(tr);
@@ -59,4 +56,5 @@ public class ReactingState extends TupleCentreVMState {
         	}
         }
     }
+    
 }

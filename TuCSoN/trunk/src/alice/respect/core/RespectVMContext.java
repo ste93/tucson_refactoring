@@ -31,8 +31,8 @@ import alice.tuplecentre.core.*;
 import alice.tuprolog.*;
 import alice.tuprolog.Var;
 import alice.logictuple.*;
-import alice.logictuple.exception.InvalidLogicTupleException;
-import alice.logictuple.exception.InvalidTupleOperationException;
+import alice.logictuple.exceptions.InvalidLogicTupleException;
+import alice.logictuple.exceptions.InvalidTupleOperationException;
 
 /**
  * This class defines a ReSpecT Context

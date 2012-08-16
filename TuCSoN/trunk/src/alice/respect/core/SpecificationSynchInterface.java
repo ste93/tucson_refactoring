@@ -21,7 +21,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import alice.logictuple.*;
-import alice.logictuple.exception.InvalidLogicTupleException;
+import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.respect.api.AgentId;
 import alice.respect.api.ISpecificationSynchInterface;
 import alice.respect.api.IRespectTC;

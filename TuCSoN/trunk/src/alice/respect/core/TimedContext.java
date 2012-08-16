@@ -18,7 +18,7 @@
 package alice.respect.core;
 
 import alice.logictuple.*;
-import alice.logictuple.exception.InvalidLogicTupleException;
+import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.respect.api.AgentId;
 import alice.respect.api.IRespectTC;
 import alice.respect.api.IRespectOperation;
@@ -45,7 +45,7 @@ public class TimedContext extends RootInterface implements ITimedContext  {
 		IRespectOperation op = getCore().out(id,t);
 		try {
 			op.waitForOperationCompletion(ms);
-		} catch (alice.tuplecentre.core.OperationTimeOutException  ex){
+		} catch (alice.tuplecentre.api.exceptions.OperationTimeOutException  ex){
 			throw new OperationTimeOutException(op);
 		}
     }
@@ -68,7 +68,7 @@ public class TimedContext extends RootInterface implements ITimedContext  {
 		IRespectOperation op = getCore().rd(id,t);
 		try {
 			op.waitForOperationCompletion(ms);
-		} catch (alice.tuplecentre.core.OperationTimeOutException ex){
+		} catch (alice.tuplecentre.api.exceptions.OperationTimeOutException ex){
 			throw new OperationTimeOutException(op);
 		}
 		return unify(t,op.getLogicTupleResult());
@@ -80,7 +80,7 @@ public class TimedContext extends RootInterface implements ITimedContext  {
 		IRespectOperation op = getCore().inp(id,t);
 		try {
 			op.waitForOperationCompletion(ms);
-		} catch (alice.tuplecentre.core.OperationTimeOutException  ex){
+		} catch (alice.tuplecentre.api.exceptions.OperationTimeOutException  ex){
 			throw new OperationTimeOutException(op);
 		}
 		LogicTuple result = op.getLogicTupleResult();
@@ -96,7 +96,7 @@ public class TimedContext extends RootInterface implements ITimedContext  {
 		IRespectOperation op = getCore().rdp(id,t);
 		try {
 			op.waitForOperationCompletion(ms);
-		} catch (alice.tuplecentre.core.OperationTimeOutException  ex){
+		} catch (alice.tuplecentre.api.exceptions.OperationTimeOutException  ex){
 			throw new OperationTimeOutException(op);
 		}
 		LogicTuple result = op.getLogicTupleResult();

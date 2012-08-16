@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 package alice.tuplecentre.core;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,27 +32,19 @@ import alice.tuplecentre.api.TupleCentreId;
  * 
  * @author aricci
  */
-@SuppressWarnings("serial")
 abstract public class Event implements java.io.Serializable {
 
-	
-
-	
+	private static final long serialVersionUID = 5233628097824741218L;
 	/** the entitiy executing the operation**/
 	private IId aid;
-    
 	/** the operation associated with this event */
 	private TupleCentreOperation		 operation;
-	
 	/** the current tuple centre (VM) where this event is managed**/
 	private TupleCentreId c;
-	
 	/** represent the target entity that could be an agent or a TC **/
 	private IId target;
-	
 	/** time at which this event occurs*/
 	private long time;
-	
 	private HashMap<String, String> ev_prop;
 	
 	public Event(IId aid, TupleCentreOperation op, TupleCentreId c, long time){
@@ -69,9 +62,7 @@ abstract public class Event implements java.io.Serializable {
 	}
 	
 	public long getTime(){
-		
 		return this.time;
-		
 	}
 	
 	/**
@@ -95,47 +86,38 @@ abstract public class Event implements java.io.Serializable {
 	}
 	
 	public TupleCentreId getReactingTC(){
-		
 		return this.c;
-		
 	}
 	
 	public void setReactingTC(TupleCentreId c){
-		
 		this.c = c;
-		
 	}
 	
-	
 	public IId getSource(){
-		
 		return this.aid;
 	}
 	
 	public void setSource(IId source){
-		
 		this.aid = source;
 	}
 	
-	
 	public IId getTarget(){
-		
 		return this.target;
 	}
 	
 	public void setTarget(IId target){
-		
 		this.target = target;
 	}
 	
 	public Tuple getTuple(){
-		
 		return this.operation.getTupleArgument();
 		
 	}
+
 	public String getEventProp(String key){
 		return ev_prop.get(key);
 	}
+	
 	/**
 	 * Tests if it is an input event
 	 * 
