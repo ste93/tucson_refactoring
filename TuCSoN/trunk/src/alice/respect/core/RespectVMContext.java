@@ -23,6 +23,7 @@ import alice.respect.api.ILinkContext;
 import alice.respect.api.RespectSpecification;
 import alice.respect.api.TupleCentreId;
 import alice.respect.api.exceptions.OperationNotPossibleException;
+import alice.tucson.api.SpawnActivity;
 import alice.tucson.parsing.MyOpManager;
 import alice.tuplecentre.core.BehaviourSpecification;
 import alice.tuplecentre.api.Tuple;
@@ -702,7 +703,26 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
     
     @Override
 	public boolean spawnActivity(Tuple t) {
-		// TODO Auto-generated method stub
+    	log("spawnActivity.tuple = " + t.toString());
+		try {
+			Class toSpawn = ClassLoader.getSystemClassLoader().loadClass(t.toString());
+			if(SpawnActivity.class.isAssignableFrom(toSpawn)){
+				new Thread((Runnable) toSpawn.newInstance()).start();
+			}else
+				return false;
+		} catch (ClassNotFoundException e) {
+			System.err.println("[RespectVMContext]: " + e);
+			e.printStackTrace();
+			return false;
+		} catch (InstantiationException e) {
+			System.err.println("[RespectVMContext]: " + e);
+			e.printStackTrace();
+			return false;
+		} catch (IllegalAccessException e) {
+			System.err.println("[RespectVMContext]: " + e);
+			e.printStackTrace();
+			return false;
+		}
 		return false;
 	}
 

@@ -25,7 +25,7 @@ import alice.tuplecentre.api.exceptions.OperationTimeOutException;
  * 
  * @author s.mariani@unibo.it
  */
-public abstract class SpawnActivity implements Serializable{
+public abstract class SpawnActivity implements Serializable, Runnable{
 	
 	private static final long serialVersionUID = -6354837455366449916L;
 	private TucsonAgentId aid;
@@ -59,6 +59,10 @@ public abstract class SpawnActivity implements Serializable{
 	 * To be overridden by user
 	 */
 	abstract public void doActivity();
+	
+	public void run(){
+		doActivity();
+	}
 	
 	/**
 	 * We try to enforce a "core" set of Linda-like primitives to be used inside a spawn()
