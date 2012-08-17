@@ -33,6 +33,10 @@ import alice.tuplecentre.core.OperationCompletionListener;
  */
 public interface IRespectTC  {
 	
+	IRespectOperation spawn(IId id, LogicTuple t, OperationCompletionListener l) throws OperationNotPossibleException;
+	
+	IRespectOperation spawn(IId id, LogicTuple t) throws OperationNotPossibleException;
+	
 	/**
 	 * 
 	 * @param id

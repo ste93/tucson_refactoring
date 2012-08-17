@@ -699,6 +699,12 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
         timeSet.empty();
         setBootTime();
     }
+    
+    @Override
+	public boolean spawnActivity(Tuple t) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
     public void addTuple(Tuple t){
         tSet.add((alice.logictuple.LogicTuple)t);

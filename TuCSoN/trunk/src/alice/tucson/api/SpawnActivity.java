@@ -3,13 +3,17 @@ package alice.tucson.api;
 import java.io.Serializable;
 
 import alice.logictuple.LogicTuple;
+import alice.logictuple.exceptions.InvalidLogicTupleException;
 
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonInvalidLogicTupleException;
+import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
+import alice.tucson.api.exceptions.UnreachableNodeException;
 
 import alice.tucson.service.TucsonOperation;
 import alice.tucson.service.TupleCentreContainer;
+import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 
 /**
  * The "purely algorithmic computation" to be carried out by the spawn() primitive.
@@ -218,6 +222,12 @@ public abstract class SpawnActivity implements Serializable{
 		}
 		sa.doActivity();
 		System.out.println("[Main]: spawner is: <" + sa.getSpawnerId().getId() + ", " + sa.getSpawnerId().getId().getClass() + ">");
+		try {
+			LogicTuple tuple = LogicTuple.parse("'pcd.lab.mine.MyActivity'");
+			System.out.println("[Main]: tuple = " + tuple);
+		} catch (InvalidLogicTupleException e) {
+			e.printStackTrace();
+		}
 	}
 	
 }

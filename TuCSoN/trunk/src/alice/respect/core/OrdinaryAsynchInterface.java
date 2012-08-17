@@ -182,5 +182,14 @@ public class OrdinaryAsynchInterface extends RootInterface implements IOrdinaryA
 	        throw new InvalidLogicTupleException();
 		return getCore().unop(id,t,l);
 	}
+
+	@Override
+	public IRespectOperation spawn(IId aid, LogicTuple t,
+			OperationCompletionListener l) throws InvalidLogicTupleException,
+			OperationNotPossibleException {
+		if (t==null)
+			throw new InvalidLogicTupleException();
+		return getCore().spawn(aid, t, l);
+	}
 	
 }

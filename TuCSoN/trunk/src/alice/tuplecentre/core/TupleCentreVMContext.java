@@ -278,6 +278,8 @@ public abstract class TupleCentreVMContext implements ITupleCentreManagement, IT
     
     public abstract boolean  time_triggeredReaction();
     
+    public abstract boolean spawnActivity(Tuple t);
+    
     /**
      *  Adds a tuple to the tuple set (T)
      *

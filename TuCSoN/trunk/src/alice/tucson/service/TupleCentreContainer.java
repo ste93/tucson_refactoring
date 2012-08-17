@@ -193,12 +193,26 @@ public class TupleCentreContainer{
 		try{
 //			log("(TupleCentreId) tid.getInternalTupleCentreId() = " + ((TupleCentreId) tid.getInternalTupleCentreId()));
 			context = (RespectTCContainer.getRespectTCContainer()).getOrdinaryAsynchInterface((TupleCentreId) tid.getInternalTupleCentreId());
+			if(type == TucsonOperation.spawnCode())
+				return context.spawn((AgentId) aid.getLocalAgentId(), t, l);
+			if(type == TucsonOperation.outCode())
+				return context.out((AgentId) aid.getLocalAgentId(), t, l);
+			if(type == TucsonOperation.inCode())
+				return context.in((AgentId) aid.getLocalAgentId(), t, l);
+			if(type == TucsonOperation.inpCode())
+				return context.inp((AgentId) aid.getLocalAgentId(), t, l);
+			if(type == TucsonOperation.rdCode())
+				return context.rd((AgentId) aid.getLocalAgentId(), t, l);
+			if(type == TucsonOperation.rdpCode())
+				return context.rdp((AgentId) aid.getLocalAgentId(), t, l);
 			if(type == TucsonOperation.noCode())
 				return context.no((AgentId) aid.getLocalAgentId(), t, l);
 			if(type == TucsonOperation.nopCode())
 				return context.nop((AgentId) aid.getLocalAgentId(), t, l);
-			if(type == TucsonOperation.outCode())
-				return context.out((AgentId) aid.getLocalAgentId(), t, l);
+			if(type == TucsonOperation.get_Code())
+				return context.get((AgentId) aid.getLocalAgentId(), l);
+			if(type == TucsonOperation.set_Code())
+				return context.set((AgentId) aid.getLocalAgentId(), t, l);
 			if(type == TucsonOperation.out_allCode())
 				return context.out_all((AgentId) aid.getLocalAgentId(), t, l);
 			if(type == TucsonOperation.in_allCode())
@@ -213,24 +227,12 @@ public class TupleCentreContainer{
 				return context.uinp((AgentId) aid.getLocalAgentId(), t, l);
 			if(type == TucsonOperation.urdCode())
 				return context.urd((AgentId) aid.getLocalAgentId(), t, l);
-			if(type == TucsonOperation.unoCode())
-				return context.uno((AgentId) aid.getLocalAgentId(), t, l);
 			if(type == TucsonOperation.urdpCode())
 				return context.urdp((AgentId) aid.getLocalAgentId(), t, l);
+			if(type == TucsonOperation.unoCode())
+				return context.uno((AgentId) aid.getLocalAgentId(), t, l);
 			if(type == TucsonOperation.unopCode())
 				return context.unop((AgentId) aid.getLocalAgentId(), t, l);
-			if(type == TucsonOperation.inCode())
-				return context.in((AgentId) aid.getLocalAgentId(), t, l);
-			if(type == TucsonOperation.inpCode())
-				return context.inp((AgentId) aid.getLocalAgentId(), t, l);
-			if(type == TucsonOperation.rdCode())
-				return context.rd((AgentId) aid.getLocalAgentId(), t, l);
-			if(type == TucsonOperation.rdpCode())
-				return context.rdp((AgentId) aid.getLocalAgentId(), t, l);
-			if(type == TucsonOperation.get_Code())
-				return context.get((AgentId) aid.getLocalAgentId(), l);
-			if(type == TucsonOperation.set_Code())
-				return context.set((AgentId) aid.getLocalAgentId(), t, l);
 		}catch(InvalidLogicTupleException e){
 			throw new TucsonInvalidLogicTupleException();
 		}catch(OperationNotPossibleException e){
@@ -295,22 +297,8 @@ public class TupleCentreContainer{
 		IOrdinarySynchInterface context = null;
 		try{
 			context = (IOrdinarySynchInterface) (RespectTCContainer.getRespectTCContainer()).getOrdinarySynchInterface((TupleCentreId) tid.getInternalTupleCentreId());			
-			if(type == TucsonOperation.outCode()){
-				context.out((AgentId) aid.getLocalAgentId(), (LogicTuple) o);
-				return o;
-			}
-			if(type == TucsonOperation.inCode())
-				return context.in((AgentId) aid.getLocalAgentId(), (LogicTuple) o);
-			if(type == TucsonOperation.inpCode())
-				return context.inp((AgentId) aid.getLocalAgentId(), (LogicTuple) o);
-			if(type == TucsonOperation.rdCode())
-				return context.rd((AgentId) aid.getLocalAgentId(), (LogicTuple) o);
-			if(type == TucsonOperation.rdpCode())
-				return context.rdp((AgentId) aid.getLocalAgentId(), (LogicTuple) o);
-			if(type == TucsonOperation.noCode())
-				return context.no((AgentId) aid.getLocalAgentId(), (LogicTuple) o);
-			if(type == TucsonOperation.nopCode())
-				return context.nop((AgentId) aid.getLocalAgentId(), (LogicTuple) o);
+//			if(type == TucsonOperation.spawnCode())
+//				context.spawn((AgentId) aid.getLocalAgentId(), (LogicTuple) o);
 			if(type == TucsonOperation.get_Code())
 				return context.get((AgentId) aid.getLocalAgentId());
 			if(type == TucsonOperation.set_Code()){
@@ -383,22 +371,6 @@ public class TupleCentreContainer{
 		ISpecificationSynchInterface context = null;
 		try{
 			context = (ISpecificationSynchInterface) (RespectTCContainer.getRespectTCContainer()).getSpecificationSynchInterface((TupleCentreId) tid.getInternalTupleCentreId());
-			if(type == TucsonOperation.out_sCode()){
-				context.out_s((AgentId) aid.getLocalAgentId(), (LogicTuple) t);
-				return res;
-			}
-			if(type == TucsonOperation.in_sCode())
-				return context.in_s((AgentId) aid.getLocalAgentId(), (LogicTuple) t);
-			if(type == TucsonOperation.inp_sCode())
-				return context.inp_s((AgentId) aid.getLocalAgentId(), (LogicTuple) t);
-			if(type == TucsonOperation.rd_sCode())
-				return context.rd_s((AgentId) aid.getLocalAgentId(), (LogicTuple) t);
-			if(type == TucsonOperation.rdp_sCode())
-				return context.rdp_s((AgentId) aid.getLocalAgentId(), (LogicTuple) t);
-			if(type == TucsonOperation.no_sCode())
-				return context.no_s((AgentId) aid.getLocalAgentId(), (LogicTuple) t);
-			if(type == TucsonOperation.nop_sCode())
-				return context.nop_s((AgentId) aid.getLocalAgentId(), (LogicTuple) t);
 			if(type == TucsonOperation.set_sCode()){
 //				if(aid.toString().equals("node_agent") || aid.toString().startsWith("inspector_edit_spec_")){
 				if(t.getName().equals("spec")){
@@ -410,8 +382,6 @@ public class TupleCentreContainer{
 			if(type == TucsonOperation.get_sCode()){
 				return ((SpecificationSynchInterface)context).get_s((AgentId) aid.getLocalAgentId());
 			}
-		}catch(InvalidLogicTupleException e){
-			throw new TucsonInvalidLogicTupleException();
 		}catch(OperationNotPossibleException e){
 			throw new TucsonOperationNotPossibleException();
 		}catch(InvalidSpecificationException e){

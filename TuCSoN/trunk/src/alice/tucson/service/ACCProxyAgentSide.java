@@ -1659,7 +1659,7 @@ public class ACCProxyAgentSide implements EnhancedACC{
 			TucsonOperation op = null;					
 			if((type == TucsonOperation.outCode()) || (type == TucsonOperation.out_sCode())
 					|| (type == TucsonOperation.set_sCode()) || (type == TucsonOperation.set_Code())
-					|| type == TucsonOperation.out_allCode())
+					|| type == TucsonOperation.out_allCode() || type == TucsonOperation.spawnCode())
 				op = new TucsonOperation(type, (Tuple) t, l, this);
 			else
 				op = new TucsonOperation(type, (TupleTemplate) t, l, this);
@@ -1902,7 +1902,7 @@ public class ACCProxyAgentSide implements EnhancedACC{
 						
 					}else if(type == TucsonOperation.set_Code() || type == TucsonOperation.set_sCode()
 							|| type == TucsonOperation.outCode() || type == TucsonOperation.out_sCode()
-							|| type == TucsonOperation.out_allCode()){
+							|| type == TucsonOperation.out_allCode() || type == TucsonOperation.spawnCode()){
 						ev = new TucsonOpCompletionEvent(new TucsonOpId(msg.getId()), ok, msg.isSuccess());
 					}else if(type == TucsonOperation.in_allCode() || type == TucsonOperation.rd_allCode()
 							|| type == TucsonOperation.no_allCode()
