@@ -17,17 +17,16 @@
  */
 package alice.tuplecentre.core;
 
-
 /**
  * Represents output events of the tuple centre virtual machine
  *
  *
  * @author aricci
  */
-@SuppressWarnings("serial")
 public class OutputEvent extends Event {
 
-    private InputEvent inputEvent;
+    private static final long serialVersionUID = -5521129200850527503L;
+	private InputEvent inputEvent;
     private boolean isLinking;
     
     public OutputEvent(InputEvent ev){
@@ -37,14 +36,11 @@ public class OutputEvent extends Event {
     }
         
     public void setIsLinking(boolean flag){
-    	
     	isLinking = flag;
     }
 
 	public boolean isLinking(){
-		
 		return isLinking;
-		
 	}
     
     public InputEvent getInputEvent(){
@@ -62,9 +58,6 @@ public class OutputEvent extends Event {
 	public boolean isInternal(){
 		return false;
 	}
-	
-	
-
 	
 	public String toString(){
 		return "output_event(agentId("+getId()+"),operation("+(this.getOperation().isResultDefined() ? getOperation().getTupleResult(): getOperation())+"))";

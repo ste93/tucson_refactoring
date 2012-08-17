@@ -17,8 +17,8 @@
  */
 package alice.tucson.introspection.tools;
 
-import alice.logictuple.InvalidTupleOperationException;
 import alice.logictuple.LogicTuple;
+import alice.logictuple.exceptions.InvalidTupleOperationException;
 
 import alice.tucson.api.EnhancedACC;
 import alice.tucson.api.TucsonAgentId;
@@ -28,7 +28,7 @@ import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
 
-import alice.tuplecentre.core.OperationTimeOutException;
+import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

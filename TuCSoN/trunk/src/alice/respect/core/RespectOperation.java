@@ -29,6 +29,8 @@ import alice.tuprolog.Prolog;
 import alice.tuprolog.Struct;
 import alice.tuprolog.Term;
 import alice.logictuple.*;
+import alice.logictuple.exceptions.InvalidLogicTupleException;
+import alice.logictuple.exceptions.InvalidTupleOperationException;
 
 /**
  * This class represents a ReSpecT operation.
@@ -37,10 +39,10 @@ import alice.logictuple.*;
  */
 public class RespectOperation extends TupleCentreOperation implements IRespectOperation {
 	
-	public static final int OPTYPE_TIME = 18;
-	public static final int OPTYPE_GET_ENV = 19;
-	public static final int OPTYPE_SET_ENV = 20;
-	public static final int OPTYPE_ENV = 21;
+	public static final int OPTYPE_TIME = 100;
+	public static final int OPTYPE_GET_ENV = 101;
+	public static final int OPTYPE_SET_ENV = 102;
+	public static final int OPTYPE_ENV = 103;
 	
 	protected RespectOperation(Prolog p, int type, Tuple t, OperationCompletionListener l){
 		super(p, type,t,l);
@@ -72,7 +74,6 @@ public class RespectOperation extends TupleCentreOperation implements IRespectOp
 		for(Tuple t :tl){
 			tll.add((LogicTuple)t);
 		}
-		
 		return tll;
 	}
 	
@@ -131,7 +132,44 @@ public class RespectOperation extends TupleCentreOperation implements IRespectOp
 		return new RespectOperation(p, TupleCentreOperation.OPTYPE_NOP,(TupleTemplate)t,l);
 	}
 	
-//	my personal updates
+	public static RespectOperation makeGet(Prolog p, LogicTuple t, OperationCompletionListener l){
+		RespectOperation temp=new RespectOperation(p, RespectOperation.OPTYPE_GET, (Tuple)t, l);
+		return temp;
+	}
+	
+	public static RespectOperation makeSet(Prolog p, LogicTuple logicTuple, OperationCompletionListener l) throws InvalidLogicTupleException{
+		if(logicTuple.toString().equals("[]"))
+			return new RespectOperation(p, RespectOperation.OPTYPE_SET, new LinkedList<Tuple>(), l);
+		List<Tuple> list = new LinkedList<Tuple>();
+		LogicTuple cpy = null;
+		try {
+			cpy = LogicTuple.parse(logicTuple.toString());
+		} catch (InvalidLogicTupleException e) {
+			e.printStackTrace();
+		}
+		TupleArgument arg;
+		try {
+			arg = cpy.getArg(0);
+			while(arg != null){
+				if(!arg.isList()){
+					LogicTuple t1 = new LogicTuple(arg);
+					list.add(t1);
+					arg = cpy.getArg(1);
+				}else{
+					LogicTuple t2 = new LogicTuple(arg);
+					cpy = t2;
+					if(!cpy.toString().equals("[]"))
+						arg = cpy.getArg(0);
+					else
+						arg = null;
+				}
+			}
+		} catch (InvalidTupleOperationException e) {
+			e.printStackTrace();
+		}
+		RespectOperation temp=new RespectOperation(p, RespectOperation.OPTYPE_SET, list, l);
+		return temp;
+	}
 	
 	public static RespectOperation makeOutAll(Prolog p, LogicTuple t,OperationCompletionListener l){
 		return new RespectOperation(p, TupleCentreOperation.OPTYPE_OUT_ALL,(Tuple)t,l);
@@ -173,12 +211,6 @@ public class RespectOperation extends TupleCentreOperation implements IRespectOp
 		return new RespectOperation(p, TupleCentreOperation.OPTYPE_UNOP,(TupleTemplate)t,l);
 	}
 	
-//	*******************
-	
-	public static RespectOperation makeTime(Prolog p, LogicTuple t,OperationCompletionListener l){
-		return new RespectOperation(p, RespectOperation.OPTYPE_TIME,(TupleTemplate)t,l);
-	}
-	
 	public static RespectOperation makeOut_s(Prolog p, LogicTuple t, OperationCompletionListener l){
 		return new RespectOperation(p, RespectOperation.OPTYPE_OUT_S, (Tuple)t, l);
 	}
@@ -207,54 +239,15 @@ public class RespectOperation extends TupleCentreOperation implements IRespectOp
 		return new RespectOperation(p, TupleCentreOperation.OPTYPE_NOP_S,(TupleTemplate)t,l);
 	}
 	
-	public static RespectOperation makeGet(Prolog p, LogicTuple t, OperationCompletionListener l){
-		RespectOperation temp=new RespectOperation(p, RespectOperation.OPTYPE_GET, (Tuple)t, l);
-		return temp;
-	}
-	
 	public static RespectOperation makeGet_s(Prolog p, LogicTuple t, OperationCompletionListener l){
-		RespectOperation temp=new RespectOperation(p, RespectOperation.OPTYPE_GET_SPEC, (Tuple)t, l);
-		return temp;
-	}
-	
-	public static RespectOperation makeSet(Prolog p, LogicTuple logicTuple, OperationCompletionListener l) throws InvalidLogicTupleException{
-		if(logicTuple.toString().equals("[]"))
-			return new RespectOperation(p, RespectOperation.OPTYPE_SET, new LinkedList<Tuple>(), l);
-		List<Tuple> list = new LinkedList<Tuple>();
-		LogicTuple cpy = null;
-		try {
-			cpy = LogicTuple.parse(logicTuple.toString());
-		} catch (InvalidLogicTupleException e) {
-			e.printStackTrace();
-		}
-		TupleArgument arg;
-		try {
-			arg = cpy.getArg(0);
-			while(arg != null){
-				if(!arg.isList()){
-					LogicTuple t1 = new LogicTuple(arg);
-					list.add(t1);
-					arg = cpy.getArg(1);
-				}else{
-					LogicTuple t2 = new LogicTuple(arg);
-					cpy = t2;
-					if(!cpy.toString().equals("[]"))
-						arg = cpy.getArg(0);
-					else
-						arg = null;
-				}
-			}
-		} catch (InvalidTupleOperationException e) {
-			e.printStackTrace();
-		}
-		RespectOperation temp=new RespectOperation(p, RespectOperation.OPTYPE_SET, list, l);
+		RespectOperation temp=new RespectOperation(p, RespectOperation.OPTYPE_GET_S, (Tuple)t, l);
 		return temp;
 	}
 	
 	public static RespectOperation makeSet_s(Prolog p, LogicTuple logicTuple,
 			OperationCompletionListener l) {
 		if(logicTuple.toString().equals("[]"))
-			return new RespectOperation(p, RespectOperation.OPTYPE_SET_SPEC, new LinkedList<Tuple>(), l);
+			return new RespectOperation(p, RespectOperation.OPTYPE_SET_S, new LinkedList<Tuple>(), l);
 		List<Tuple> list = new LinkedList<Tuple>();
 		LogicTuple cpy = null;
 		try {
@@ -282,27 +275,27 @@ public class RespectOperation extends TupleCentreOperation implements IRespectOp
 		} catch (InvalidTupleOperationException e) {
 			e.printStackTrace();
 		}
-		RespectOperation temp=new RespectOperation(p, RespectOperation.OPTYPE_SET_SPEC, list, l);
+		RespectOperation temp=new RespectOperation(p, RespectOperation.OPTYPE_SET_S, list, l);
 		return temp;
 	}
 	
 	public static RespectOperation makeSet_s(Prolog p, RespectSpecification spec, OperationCompletionListener l){
-		System.out.println("[RespectOperation]: "+spec.toString());
 		RespectOperation temp = null;
 		try {
-			temp = new RespectOperation(p, RespectOperation.OPTYPE_SET_SPEC, (Tuple)LogicTuple.parse(spec.toString()), l);
+			temp = new RespectOperation(p, RespectOperation.OPTYPE_SET_S, (Tuple)LogicTuple.parse(spec.toString()), l);
 		} catch (InvalidLogicTupleException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return temp;
 	}
 	
 	public static RespectOperation makeSet_s(Prolog p, OperationCompletionListener l){
-		return new RespectOperation(p, OPTYPE_SET_SPEC, new LogicTuple(), l);
+		return new RespectOperation(p, OPTYPE_SET_S, new LogicTuple(), l);
 	}
 	
-	
+	public static RespectOperation makeTime(Prolog p, LogicTuple t,OperationCompletionListener l){
+		return new RespectOperation(p, RespectOperation.OPTYPE_TIME,(TupleTemplate)t,l);
+	}
 	
 	public static RespectOperation makeGetEnv(Prolog p, LogicTuple t, OperationCompletionListener l){
 		RespectOperation temp=new RespectOperation(p, RespectOperation.OPTYPE_GET_ENV, (TupleTemplate)t, l);
@@ -316,10 +309,6 @@ public class RespectOperation extends TupleCentreOperation implements IRespectOp
 		return temp;
 	}
 	
-	
-	/*
-	 * Modifica Semantica
-	 */
 	public LogicTuple toTuple(){
 		LogicTuple t=null;
 		Term[] tl=null;
@@ -328,7 +317,6 @@ public class RespectOperation extends TupleCentreOperation implements IRespectOp
 		} else {
 			t = getLogicTupleArgument();
 		}
-//		System.out.println("[RespectOperation]: t = " + t);
 		String opName;
 		if (isOut()){
 			opName = "out";

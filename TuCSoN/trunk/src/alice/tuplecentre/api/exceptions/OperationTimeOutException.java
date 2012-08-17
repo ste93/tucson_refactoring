@@ -1,5 +1,5 @@
 /*
- * ReSpecT - Copyright (C) aliCE team at deis.unibo.it
+ * Tuple Centre media - Copyright (C) 2001-2002  aliCE team at deis.unibo.it
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -15,12 +15,15 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-package alice.respect.api;
-
+package alice.tuplecentre.api.exceptions;
 
 /**
- * @author aricci
- * @version 1.0
+ * Exceptions thrown when a timeout occurs.
+ *
+ * @author  aricci
  */
-@SuppressWarnings("serial")
-public class InvalidSpecificationException extends RespectException {}
+public class OperationTimeOutException extends Exception {
+
+	private static final long serialVersionUID = -8964988995107906719L;
+
+}

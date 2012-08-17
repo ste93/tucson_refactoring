@@ -24,10 +24,11 @@ import alice.tuplecentre.core.OutputEvent;
  * @author aricci
  *
  */
-@SuppressWarnings("serial")
 public class RespectOutputEvent extends OutputEvent {
 
+	private static final long serialVersionUID = -3368404448915090722L;
 	private InternalOperation operation;
+	
 	/**
 	 * @param ev
 	 */
@@ -39,4 +40,5 @@ public class RespectOutputEvent extends OutputEvent {
 	public InternalOperation getRespectOperation(){
 		return operation;
 	}
+	
 }

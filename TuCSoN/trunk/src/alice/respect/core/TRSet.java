@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 package alice.respect.core;
+
 import java.util.*;
 
 import alice.tuplecentre.core.TriggeredReaction;
@@ -28,7 +29,6 @@ import alice.tuplecentre.core.TriggeredReaction;
 public class TRSet {
 
     private LinkedList trigs;
-    // to manage transactions
     private LinkedList tAdded;
     private LinkedList tRemoved;
     private boolean transaction;
@@ -42,16 +42,14 @@ public class TRSet {
 
     public void add(TriggeredReaction t){
         trigs.add(t);
-        if (transaction){
+        if (transaction)
             tAdded.add(t);
-        }
     }
 
     public void remove(TriggeredReaction t){
         trigs.remove(t);
-        if (transaction){
+        if (transaction)
             tRemoved.add(t);
-        }
     }
 
     public boolean isEmpty(){
@@ -61,9 +59,8 @@ public class TRSet {
     public void empty(){
         trigs.clear();
     }
-    // not-deterministic get + remove
+
     public TriggeredReaction get(){
-        //return (TriggeredReaction)trigs.remove(trigs.size()-1);
         return (TriggeredReaction)trigs.removeFirst();
     }
 
@@ -74,9 +71,8 @@ public class TRSet {
     public TriggeredReaction[] toArray(){
     	int size = trigs.size();
     	TriggeredReaction[] trArray = new TriggeredReaction[size];
-    	for (int i = 0; i < size; i++){
+    	for (int i = 0; i < size; i++)
     		trArray[i] = (TriggeredReaction) trigs.get(i);
-    	}
     	return trArray;
     }
 
@@ -88,20 +84,17 @@ public class TRSet {
 
     public void endTransaction(boolean commit){
         if (!commit){
-            //System.out.println("[ tspace ] roll back!");
             Iterator it = tAdded.listIterator();
-            while (it.hasNext()) {
+            while (it.hasNext())
             	   trigs.remove(it.next());
-            }
             it=tRemoved.listIterator();
-			while (it.hasNext()) {
-                //System.out.println("[tspace] adding "+(Tuple)list[i]);
+			while (it.hasNext())
                 trigs.add(it.next());
-            }
         }
         transaction=false;
         tAdded.clear();
         tRemoved.clear();
     }
+
 }
 

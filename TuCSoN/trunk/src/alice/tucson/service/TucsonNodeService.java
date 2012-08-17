@@ -19,8 +19,9 @@
 package alice.tucson.service;
 
 import alice.logictuple.*;
+import alice.logictuple.exceptions.InvalidTupleArgumentException;
 
-import alice.respect.api.InvalidTupleCentreIdException;
+import alice.respect.api.exceptions.InvalidTupleCentreIdException;
 import alice.tucson.api.exceptions.*;
 import alice.tucson.api.NodeServiceListener;
 import alice.tucson.api.TucsonAgentId;

@@ -1,20 +1,20 @@
 package alice.respect.core;
 
-import alice.logictuple.InvalidLogicTupleException;
-import alice.logictuple.InvalidTupleOperationException;
 import alice.logictuple.LogicTuple;
+import alice.logictuple.exceptions.InvalidLogicTupleException;
+import alice.logictuple.exceptions.InvalidTupleOperationException;
 
-import alice.respect.api.INonBlockingContext;
+import alice.respect.api.IOrdinaryAsynchInterface;
 import alice.respect.api.IRespectOperation;
 import alice.respect.api.IRespectTC;
-import alice.respect.api.OperationNotPossibleException;
+import alice.respect.api.exceptions.OperationNotPossibleException;
 
 import alice.tuplecentre.api.IId;
 import alice.tuplecentre.core.OperationCompletionListener;
 
-public class NonBlockingContext extends AbstractContext implements INonBlockingContext {
+public class OrdinaryAsynchInterface extends RootInterface implements IOrdinaryAsynchInterface {
     
-    public NonBlockingContext(IRespectTC core_){
+    public OrdinaryAsynchInterface(IRespectTC core_){
         super(core_);
     }
 
@@ -23,13 +23,6 @@ public class NonBlockingContext extends AbstractContext implements INonBlockingC
 		if (t==null)
             throw new InvalidLogicTupleException();
 		return getCore().out(id,t,l);
-	}
-    
-    public IRespectOperation out_all(IId id, LogicTuple t, OperationCompletionListener l)
-			throws InvalidLogicTupleException, OperationNotPossibleException {
-		if (t==null)
-            throw new InvalidLogicTupleException();
-		return getCore().out_all(id,t,l);
 	}
     
 	public IRespectOperation in(IId id, LogicTuple t,
@@ -80,21 +73,24 @@ public class NonBlockingContext extends AbstractContext implements INonBlockingC
 		return getCore().nop(id,t,l);
 	}
 
-
-	@Override
 	public IRespectOperation get(IId aid, OperationCompletionListener l)
 			throws InvalidLogicTupleException, OperationNotPossibleException {
 		return getCore().get(aid, l);
 	}
 
-
-	@Override
 	public IRespectOperation set(IId aid, LogicTuple t,
 			OperationCompletionListener l) throws InvalidLogicTupleException,
 			OperationNotPossibleException {
 		if (t==null)
             throw new InvalidLogicTupleException();
 		return getCore().set(aid,t,l);
+	}
+	
+	public IRespectOperation out_all(IId id, LogicTuple t, OperationCompletionListener l)
+			throws InvalidLogicTupleException, OperationNotPossibleException {
+		if (t==null)
+            throw new InvalidLogicTupleException();
+		return getCore().out_all(id,t,l);
 	}
 	
 	public IRespectOperation in_all(IId aid, LogicTuple t,

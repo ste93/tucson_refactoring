@@ -1,5 +1,5 @@
 /*
- * Logic Tuple Communication Language - Copyright (C) 2001-2002  aliCE team at deis.unibo.it
+ * ReSpecT - Copyright (C) aliCE team at deis.unibo.it
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -15,23 +15,18 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-package alice.logictuple;
-
+package alice.respect.api.exceptions;
 
 /**
- * Exception thrown when a malformed tuple argument
- * is created or used
+ * This exception is thrown when an invalid agent identifier
+ * is used
  *
+ * Agent identifier must be ground logic term.
+ * 
  * @author aricci
- *
- * @see LogicTuple
- *
- *
- * @version 1.0
  */
-public class InvalidTupleArgumentException extends LogicTupleException{
+public class InvalidAgentIdException extends RespectException {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;}
+	private static final long serialVersionUID = 7316848513690643990L;
+	
+}

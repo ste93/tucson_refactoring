@@ -17,6 +17,7 @@
  */
 package alice.logictuple;
 
+import alice.logictuple.exceptions.InvalidVarNameException;
 import alice.tuprolog.InvalidTermException;
 
 /**

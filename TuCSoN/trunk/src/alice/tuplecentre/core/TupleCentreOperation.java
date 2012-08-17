@@ -22,6 +22,7 @@ import java.util.List;
 import alice.tuplecentre.api.ITupleCentreOperation;
 import alice.tuplecentre.api.Tuple;
 import alice.tuplecentre.api.TupleTemplate;
+import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 import alice.tuplecentre.core.TCCycleResult.Outcome;
 import alice.tuprolog.Prolog;
 
@@ -31,84 +32,73 @@ import alice.tuprolog.Prolog;
  * @author aricci
  * 
  */
-public abstract class TupleCentreOperation implements ITupleCentreOperation
-{
-	protected static final int OPTYPE_IN = 1;
-	protected static final int OPTYPE_RD = 2;
-	protected static final int OPTYPE_OUT = 3;
+public abstract class TupleCentreOperation implements ITupleCentreOperation{
+	
+	protected static final int OPTYPE_OUT = 1;
+	protected static final int OPTYPE_IN = 2;
+	protected static final int OPTYPE_RD = 3;
 	protected static final int OPTYPE_INP = 4;
 	protected static final int OPTYPE_RDP = 5;
 	protected static final int OPTYPE_NO = 6;
-	protected static final int OPTYPE_NOP = 666;
-	protected static final int OPTYPE_GET = 7;
-	protected static final int OPTYPE_SET = 8;
+	protected static final int OPTYPE_NOP = 7;
+	protected static final int OPTYPE_GET = 8;
+	protected static final int OPTYPE_SET = 9;
 	
-	protected static final int OPTYPE_NO_S = 66;
-	protected static final int OPTYPE_NOP_S = 67;
-
-	protected static final int OPTYPE_IN_S = 11;
-	protected static final int OPTYPE_RD_S = 12;
-	protected static final int OPTYPE_OUT_S = 13;
-	protected static final int OPTYPE_INP_S = 14;
-	protected static final int OPTYPE_RDP_S = 15;
-
-	public static final int OPTYPE_SET_SPEC = 16;
-	public static final int OPTYPE_GET_SPEC = 17;
+	public static final int OPTYPE_OUT_ALL = 10;
+	public static final int OPTYPE_IN_ALL = 11;
+	public static final int OPTYPE_RD_ALL = 12;
+	public static final int OPTYPE_NO_ALL = 13;
+	public static final int OPTYPE_URD = 14;
+	public static final int OPTYPE_UIN = 15;
+	public static final int OPTYPE_UNO = 16;
+	public static final int OPTYPE_URDP = 17;
+	public static final int OPTYPE_UINP = 18;
+	public static final int OPTYPE_UNOP = 19;
 	
-	// da 18 a 21 in RespectOperation
+	protected static final int OPTYPE_OUT_S = 20;
+	protected static final int OPTYPE_IN_S = 21;
+	protected static final int OPTYPE_RD_S = 22;
+	protected static final int OPTYPE_INP_S = 23;
+	protected static final int OPTYPE_RDP_S = 24;
+	protected static final int OPTYPE_NO_S = 25;
+	protected static final int OPTYPE_NOP_S = 26;
+	public static final int OPTYPE_SET_S = 27;
+	public static final int OPTYPE_GET_S = 28;
 	
-	public static final int OPTYPE_ABORT_OP = 22;
-	public static final int OPTYPE_SET_MNG_MODE = 23;
-	public static final int OPTYPE_STOP_CMD = 24;
-	public static final int OPTYPE_GO_CMD = 25;
-	public static final int OPTYPE_NEXT_STEP = 26;
-	public static final int OPTYPE_SET_SPY = 27;
-	public static final int OPTYPE_GET_TSET = 28;
-	public static final int OPTYPE_GET_WSET = 29;	
-	public static final int OPTYPE_GET_TRSET = 30;
-	// 31 = OPTYPE_EXIT in TucsonOperation
-	public static final int OPTYPE_ADD_OBS = 32;
-	public static final int OPTYPE_RMV_OBS = 33;
-	public static final int OPTYPE_HAS_OBS = 34;
-	public static final int OPTYPE_ADD_INSP = 35;
-	public static final int OPTYPE_RMV_INSP = 36;
-	public static final int OPTYPE_HAS_INSP = 37;
-	public static final int OPTYPE_SET_WSET = 38;
-	public static final int RESET = 39;
-		
-	public static final int OPTYPE_OUT_ALL = 333;
-	public static final int OPTYPE_IN_ALL = 40;
-	public static final int OPTYPE_RD_ALL = 41;
-	public static final int OPTYPE_NO_ALL = 410;
-	public static final int OPTYPE_URD = 44;
-	public static final int OPTYPE_UNO = 440;
-	public static final int OPTYPE_UIN = 45;
-	public static final int OPTYPE_URDP = 46;
-	public static final int OPTYPE_UNOP = 460;
-	public static final int OPTYPE_UINP = 47;
+	public static final int OPTYPE_ABORT_OP = 58;
+	public static final int OPTYPE_SET_MNG_MODE = 59;
+	public static final int OPTYPE_STOP_CMD = 60;
+	public static final int OPTYPE_GO_CMD = 61;
+	public static final int OPTYPE_NEXT_STEP = 62;
+	public static final int OPTYPE_SET_SPY = 63;
+	public static final int OPTYPE_GET_TSET = 64;
+	public static final int OPTYPE_GET_WSET = 65;	
+	public static final int OPTYPE_GET_TRSET = 66;
+	public static final int OPTYPE_ADD_OBS = 67;
+	public static final int OPTYPE_RMV_OBS = 68;
+	public static final int OPTYPE_HAS_OBS = 69;
+	public static final int OPTYPE_ADD_INSP = 70;
+	public static final int OPTYPE_RMV_INSP = 71;
+	public static final int OPTYPE_HAS_INSP = 72;
+	public static final int OPTYPE_SET_WSET = 73;
+	public static final int RESET = 74;
 		
 	protected boolean operationCompleted;
 	protected OperationCompletionListener listener;
-
 	private Tuple tupleArgument;
 	private List<Tuple> tupleListArgument;
 	private TupleTemplate templateArgument;
 	private TCCycleResult result;	
-	
 	private int type;
-
 	// internal identifier of the operation
 	private long id;
 	// shared id counter
 	private static long idCounter = 0;
-
 	// used for possible synchronisation
 	protected Object token;
-	
 	private Prolog p;
 
-	private TupleCentreOperation(Prolog p, int type)
-	{
+	private TupleCentreOperation(Prolog p, int type){
 		operationCompleted = false;
 		this.result = new TCCycleResult();
 		this.type = type;
@@ -118,65 +108,52 @@ public abstract class TupleCentreOperation implements ITupleCentreOperation
 		this.p = p;
 	}
 
-	protected TupleCentreOperation(Prolog p, int type, Tuple t)
-	{
+	protected TupleCentreOperation(Prolog p, int type, Tuple t){
 		this(p, type);
 		listener = null;
 		this.tupleArgument = t;
 	}
 
-	protected TupleCentreOperation(Prolog p, int type, TupleTemplate t)
-	{
+	protected TupleCentreOperation(Prolog p, int type, TupleTemplate t){
 		this(p, type);
 		listener = null;
 		this.templateArgument = t;
 	}
 	
-	// Aggiunta per la set
-	protected TupleCentreOperation(Prolog p, int type, List<Tuple> tupleList)
-	{
+	protected TupleCentreOperation(Prolog p, int type, List<Tuple> tupleList){
 		this(p, type);
 		listener = null;
 		this.tupleListArgument = tupleList;
 	}
 
-	protected TupleCentreOperation(Prolog p, int type, Tuple t, OperationCompletionListener l)
-	{
+	protected TupleCentreOperation(Prolog p, int type, Tuple t, OperationCompletionListener l){
 		this(p, type, t);
 		listener = l;
 	}
 
-	protected TupleCentreOperation(Prolog p, int type, TupleTemplate t, OperationCompletionListener l)
-	{
+	protected TupleCentreOperation(Prolog p, int type, TupleTemplate t, OperationCompletionListener l){
 		this(p, type, t);
 		listener = l;
 	}
 	
-	// Aggiunta per la set
-	protected TupleCentreOperation(Prolog p, int type, List<Tuple> tupleList, OperationCompletionListener l)
-	{
+	protected TupleCentreOperation(Prolog p, int type, List<Tuple> tupleList, OperationCompletionListener l){
 		this(p, type, tupleList);
 		listener = l;
 	}
 
-	public void setListener(OperationCompletionListener l)
-	{
+	public void setListener(OperationCompletionListener l){
 		this.listener = l;
 	}
 	
-	public TupleTemplate getTemplateArgument()
-	{
+	public TupleTemplate getTemplateArgument(){
 		return templateArgument;
 	}
 
-	public Tuple getTupleArgument()
-	{
+	public Tuple getTupleArgument(){
 		return tupleArgument;
 	}
 	
-	// Aggiunta per la set
-	public List<Tuple> getTupleListArgument()
-	{
+	public List<Tuple> getTupleListArgument(){
 		return tupleListArgument;
 	}
 	
@@ -222,16 +199,16 @@ public abstract class TupleCentreOperation implements ITupleCentreOperation
 		return this.result.isResultFailure();
 	}
 
+	public boolean isOut(){
+		return type == OPTYPE_OUT;
+	}
+	
 	public boolean isIn(){
 		return type == OPTYPE_IN;
 	}
 
 	public boolean isRd(){
 		return type == OPTYPE_RD;
-	}
-
-	public boolean isOut(){
-		return type == OPTYPE_OUT;
 	}
 
 	public boolean isInp(){
@@ -242,14 +219,6 @@ public abstract class TupleCentreOperation implements ITupleCentreOperation
 		return type == OPTYPE_RDP;
 	}
 	
-	public boolean isGet(){
-		return type == TupleCentreOperation.OPTYPE_GET;
-	}
-	
-	public boolean isSet(){
-		return type == TupleCentreOperation.OPTYPE_SET;
-	}
-	
 	public boolean isNo(){
 		return type == TupleCentreOperation.OPTYPE_NO;
 	}
@@ -258,7 +227,13 @@ public abstract class TupleCentreOperation implements ITupleCentreOperation
 		return type == TupleCentreOperation.OPTYPE_NOP;
 	}
 	
-//	my personal update
+	public boolean isGet(){
+		return type == TupleCentreOperation.OPTYPE_GET;
+	}
+	
+	public boolean isSet(){
+		return type == TupleCentreOperation.OPTYPE_SET;
+	}
 	
 	public boolean isOutAll(){
 		return type == TupleCentreOperation.OPTYPE_OUT_ALL;
@@ -280,38 +255,36 @@ public abstract class TupleCentreOperation implements ITupleCentreOperation
 		return type == TupleCentreOperation.OPTYPE_URD;
 	}
 	
-	public boolean isUno(){
-		return type == TupleCentreOperation.OPTYPE_UNO;
-	}
-	
 	public boolean isUin(){
 		return type == TupleCentreOperation.OPTYPE_UIN;
+	}
+	
+	public boolean isUno(){
+		return type == TupleCentreOperation.OPTYPE_UNO;
 	}
 	
 	public boolean isUrdp(){
 		return type == TupleCentreOperation.OPTYPE_URDP;
 	}
 	
-	public boolean isUnop(){
-		return type == TupleCentreOperation.OPTYPE_UNOP;
-	}
-	
 	public boolean isUinp(){
 		return type == TupleCentreOperation.OPTYPE_UINP;
 	}
 	
-//	*******************
-
+	public boolean isUnop(){
+		return type == TupleCentreOperation.OPTYPE_UNOP;
+	}
+	
+	public boolean isOut_s(){
+		return type == TupleCentreOperation.OPTYPE_OUT_S;
+	}
+	
 	public boolean isIn_s(){
 		return type == TupleCentreOperation.OPTYPE_IN_S;
 	}
 
 	public boolean isRd_s(){
 		return type == TupleCentreOperation.OPTYPE_RD_S;
-	}
-
-	public boolean isOut_s(){
-		return type == TupleCentreOperation.OPTYPE_OUT_S;
 	}
 
 	public boolean isInp_s(){
@@ -322,14 +295,6 @@ public abstract class TupleCentreOperation implements ITupleCentreOperation
 		return type == TupleCentreOperation.OPTYPE_RDP_S;
 	}
 	
-	public boolean isSet_s(){
-		return type == OPTYPE_SET_SPEC;
-	}
-
-	public boolean isGet_s(){
-		return type == OPTYPE_GET_SPEC;
-	}
-	
 	public boolean isNo_s(){
 		return type == TupleCentreOperation.OPTYPE_NO_S;
 	}
@@ -338,18 +303,24 @@ public abstract class TupleCentreOperation implements ITupleCentreOperation
 		return type == TupleCentreOperation.OPTYPE_NOP_S;
 	}
 	
+	public boolean isSet_s(){
+		return type == OPTYPE_SET_S;
+	}
+
+	public boolean isGet_s(){
+		return type == OPTYPE_GET_S;
+	}
+	
 	/**
 	 * Tests if the operation is completed
 	 * 
 	 * @return true if the operation is completed
 	 */
-	public boolean isOperationCompleted()
-	{
+	public boolean isOperationCompleted(){
 		return operationCompleted;
 	}
 
-	public int getType()
-	{
+	public int getType(){
 		return this.type;
 	}
 
@@ -378,20 +349,13 @@ public abstract class TupleCentreOperation implements ITupleCentreOperation
 	 * 
 	 * Current execution flow is blocked until the operation is completed
 	 */
-	public void waitForOperationCompletion()
-	{
-		try
-		{
-			synchronized (token)
-			{
+	public void waitForOperationCompletion(){
+		try{
+			synchronized (token){
 				while (!operationCompleted)
-				{
 					token.wait();
-				}
 			}
-		}
-		catch (Exception ex)
-		{
+		}catch(Exception ex){
 			ex.printStackTrace();
 		}
 	}
@@ -406,35 +370,24 @@ public abstract class TupleCentreOperation implements ITupleCentreOperation
 	 *            maximum waiting time
 	 * @throws OperationTimeOutException
 	 */
-	public void waitForOperationCompletion(long ms) throws OperationTimeOutException
-	{
-		try
-		{
-			synchronized (token)
-			{
+	public void waitForOperationCompletion(long ms) throws OperationTimeOutException{
+		try{
+			synchronized (token){
 				if (!operationCompleted)
-				{
 					token.wait(ms);
-				}
 				if (!operationCompleted)
-				{
 					throw new OperationTimeOutException();
-				}
 			}
-		}
-		catch (Exception ex)
-		{
+		}catch(Exception ex){
 			ex.printStackTrace();
 		}
 	}
 
-	public void removeListener()
-	{
+	public void removeListener(){
 		this.listener = null;
 	}
 
-	public void addListener(OperationCompletionListener listener)
-	{
+	public void addListener(OperationCompletionListener listener){
 		this.listener = listener;
 	}
 
@@ -443,8 +396,8 @@ public abstract class TupleCentreOperation implements ITupleCentreOperation
 	 * 
 	 * @return Operation identifier
 	 */
-	public long getId()
-	{
+	public long getId(){
 		return id;
 	}
+	
 }

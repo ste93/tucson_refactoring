@@ -28,9 +28,9 @@ import alice.tuplecentre.api.TupleCentreId;
  *
  * @author aricci
  */
-@SuppressWarnings("serial")
 public class InputEvent extends Event {
 
+	private static final long serialVersionUID = -6321543805920861915L;
 	private boolean isLinking;
     
     public InputEvent(IId aid, TupleCentreOperation op, TupleCentreId c,long time){
@@ -42,6 +42,7 @@ public class InputEvent extends Event {
     	super(aid,op,c,time,prop);
         this.isLinking = false;
     }
+    
     public String toString(){
     	return "input_event(agentId("+getId()+"),operation("+getOperation()+"))";
     }
@@ -59,15 +60,11 @@ public class InputEvent extends Event {
 	}
 	
 	public void setIsLinking(boolean flag){
-    	
     	isLinking = flag;
     }
 
 	public boolean isLinking(){
-		
 		return isLinking;
-		
 	}
-
 
 }

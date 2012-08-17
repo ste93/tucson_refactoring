@@ -22,7 +22,7 @@ import alice.logictuple.LogicTuple;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
 
-import alice.tuplecentre.core.OperationTimeOutException;
+import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 
 public interface UniformSynchACC extends RootACC{
 

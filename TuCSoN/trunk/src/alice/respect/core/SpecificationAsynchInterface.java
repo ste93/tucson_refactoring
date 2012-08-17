@@ -1,20 +1,20 @@
 package alice.respect.core;
 
-import alice.logictuple.InvalidLogicTupleException;
 import alice.logictuple.LogicTuple;
-import alice.respect.api.INonBlockingSpecContext;
+import alice.logictuple.exceptions.InvalidLogicTupleException;
+import alice.respect.api.ISpecificationAsynchInterface;
 import alice.respect.api.IRespectOperation;
 import alice.respect.api.IRespectTC;
-import alice.respect.api.OperationNotPossibleException;
 import alice.respect.api.RespectSpecification;
+import alice.respect.api.exceptions.OperationNotPossibleException;
 import alice.tuplecentre.api.IId;
 import alice.tuplecentre.core.OperationCompletionListener;
 
-public class NonBlockingSpecContext implements INonBlockingSpecContext {
+public class SpecificationAsynchInterface implements ISpecificationAsynchInterface {
 
 	private IRespectTC core;
     
-    public NonBlockingSpecContext(IRespectTC core_){
+    public SpecificationAsynchInterface(IRespectTC core_){
         core=core_;
     }
 
@@ -23,8 +23,7 @@ public class NonBlockingSpecContext implements INonBlockingSpecContext {
 		if (t==null){
             throw new InvalidLogicTupleException();
         }
-		IRespectOperation op = core.out_s(id,t,l);
-		return op;
+		return core.out_s(id,t,l);
 	}
     
 	public IRespectOperation in_s(IId id, LogicTuple t,
@@ -33,8 +32,7 @@ public class NonBlockingSpecContext implements INonBlockingSpecContext {
 		if (t==null){
             throw new InvalidLogicTupleException();
         }
-		IRespectOperation op = core.in_s(id,t,l);
-		return op;
+		return core.in_s(id,t,l);
 	}
 
 	public IRespectOperation inp_s(IId id, LogicTuple t,
@@ -43,8 +41,7 @@ public class NonBlockingSpecContext implements INonBlockingSpecContext {
 		if (t==null){
             throw new InvalidLogicTupleException();
         }
-		IRespectOperation op = core.inp_s(id,t,l);
-		return op;
+		return core.inp_s(id,t,l);
 	}
 
 	public IRespectOperation rd_s(IId id, LogicTuple t,
@@ -53,8 +50,7 @@ public class NonBlockingSpecContext implements INonBlockingSpecContext {
 		if (t==null){
             throw new InvalidLogicTupleException();
         }
-		IRespectOperation op = core.rd_s(id,t,l);
-		return op;
+		return core.rd_s(id,t,l);
 	}
 
 	public IRespectOperation rdp_s(IId id, LogicTuple t,
@@ -63,51 +59,39 @@ public class NonBlockingSpecContext implements INonBlockingSpecContext {
 		if (t==null){
             throw new InvalidLogicTupleException();
         }
-		IRespectOperation op = core.rdp_s(id,t,l);
-		return op;
+		return core.rdp_s(id,t,l);
 	}
 
-
-	@Override
 	public IRespectOperation no_s(IId aid, LogicTuple t,
 			OperationCompletionListener l) throws InvalidLogicTupleException,
 			OperationNotPossibleException {
 		if (t==null){
             throw new InvalidLogicTupleException();
         }
-		IRespectOperation op = core.no_s(aid,t,l);
-		return op;
+		return core.no_s(aid,t,l);
 	}
 	
-	@Override
 	public IRespectOperation nop_s(IId aid, LogicTuple t,
 			OperationCompletionListener l) throws InvalidLogicTupleException,
 			OperationNotPossibleException {
 		if (t==null){
             throw new InvalidLogicTupleException();
         }
-		IRespectOperation op = core.nop_s(aid,t,l);
-		return op;
+		return core.nop_s(aid,t,l);
 	}
 
-
-	@Override
 	public IRespectOperation get_s(IId aid, OperationCompletionListener l)
 			throws InvalidLogicTupleException, OperationNotPossibleException {
-		IRespectOperation op = core.get(aid, l);
-		return op;
+		return core.get(aid, l);
 	}
 
-
-	@Override
 	public IRespectOperation set_s(IId aid, RespectSpecification spec,
 			OperationCompletionListener l) throws InvalidLogicTupleException,
 			OperationNotPossibleException {
 		if (spec==null){
             throw new InvalidLogicTupleException();
         }
-		IRespectOperation op = core.set_s(aid,spec,l);
-		return op;
+		return core.set_s(aid,spec,l);
 	}
 
 }

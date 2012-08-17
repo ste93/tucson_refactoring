@@ -1,5 +1,7 @@
 /*
- * Logic Tuple Communication Language - Copyright (C) 2001-2002  aliCE team at deis.unibo.it
+ * Created on Oct 10, 2003
+ * 
+ * Copyright (C)aliCE team at deis.unibo.it
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -14,21 +16,16 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
  */
-package alice.logictuple;
-
+package alice.tuplecentre.api.exceptions;
 
 /**
- * Logic Tuple root base Exception class
- *
- * @see LogicTuple
- *
  * @author aricci
- * @version 1.0
+ *
  */
-public abstract class LogicTupleException extends Exception{
+public class InvalidOperationException extends Exception {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;}
+	private static final long serialVersionUID = 2834213882766578233L;
+
+}

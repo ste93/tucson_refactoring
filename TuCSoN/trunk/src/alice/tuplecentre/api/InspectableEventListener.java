@@ -31,8 +31,8 @@ import alice.tuplecentre.core.InspectableEvent;
  * 
  * @version 1.0
  */
-public interface InspectableEventListener extends EventListener
-{
+public interface InspectableEventListener extends EventListener{
+	
 	/**
 	 * Method triggered by the tuple centre virtual machine when an observable
 	 * event is observed inside the VM
@@ -41,4 +41,5 @@ public interface InspectableEventListener extends EventListener
 	 *            the observed event
 	 */
 	public abstract void onInspectableEvent(InspectableEvent e);
+	
 }

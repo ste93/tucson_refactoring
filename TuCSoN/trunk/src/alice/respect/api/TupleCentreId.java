@@ -17,6 +17,7 @@
  */
 package alice.respect.api;
 
+import alice.respect.api.exceptions.InvalidTupleCentreIdException;
 import alice.respect.core.TupleCentreIdOperatorManager;
 import alice.tuprolog.*;
 
@@ -46,19 +47,14 @@ public class TupleCentreId implements alice.tuplecentre.api.TupleCentreId, java.
 	 */
 	public TupleCentreId(String name) throws InvalidTupleCentreIdException{
 		if(name.indexOf("@")<0)
-			name +="@localhost";
-//		if(name.indexOf(":")<0)
-//			name +=":20504";
-		
+			name +="@localhost";		
 		try{
 			id = Term.createTerm(name, opManager);
 		}catch (Exception ex){
 			throw new InvalidTupleCentreIdException();
 		}
-		
 		if (!id.isGround())
 			throw new InvalidTupleCentreIdException();
-//		System.out.println("[TupleCentreId]: id = " + id);
 	}
 
 	/**
@@ -80,18 +76,14 @@ public class TupleCentreId implements alice.tuplecentre.api.TupleCentreId, java.
 		String tc = tcName.trim();
 		String host = hostName.trim();
 		String port = portName.trim();
-//		System.out.println("[TupleCentreId]: "+tc+"@"+host+":"+port);
 		try{
 			id = Term.createTerm(tc+"@"+host+":"+port, opManager);
 		}catch (InvalidTermException e){
-//			e.printStackTrace();
 			throw new InvalidTupleCentreIdException();
 		}
 		
 		if (!id.isGround())
 			throw new InvalidTupleCentreIdException();
-
-//		System.out.println("[TupleCentreId]: id = " + id);
 	}
 
 	/**
@@ -137,10 +129,8 @@ public class TupleCentreId implements alice.tuplecentre.api.TupleCentreId, java.
 	public String getNode(){
 		if (id instanceof alice.tuprolog.Struct){
 			Struct sid = (Struct) id;
-//			System.out.println("[TupleCentreId]: sid = " + sid);
 			if (sid.getArity() == 2 && sid.getName().equals("@")){
 				Struct t = (Struct) sid.getArg(1);
-//				System.out.println("[TupleCentreId]: t = " + t);
 				if(!t.getArg(0).isCompound()){
 					return t.getArg(0).getTerm().toString();
 				}else{

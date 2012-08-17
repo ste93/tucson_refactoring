@@ -1,23 +1,23 @@
 package alice.tucson.service;
 
-import alice.logictuple.InvalidLogicTupleException;
-import alice.logictuple.InvalidTupleOperationException;
 import alice.logictuple.LogicTuple;
+import alice.logictuple.exceptions.InvalidLogicTupleException;
+import alice.logictuple.exceptions.InvalidTupleOperationException;
 
 import alice.respect.api.AgentId;
-import alice.respect.api.IBlockingContext;
-import alice.respect.api.IBlockingSpecContext;
+import alice.respect.api.IOrdinarySynchInterface;
+import alice.respect.api.ISpecificationSynchInterface;
 import alice.respect.api.IManagementContext;
-import alice.respect.api.INonBlockingContext;
-import alice.respect.api.INonBlockingSpecContext;
-import alice.respect.api.InstantiationNotPossibleException;
-import alice.respect.api.InvalidSpecificationException;
-import alice.respect.api.InvalidTupleCentreIdException;
-import alice.respect.api.OperationNotPossibleException;
+import alice.respect.api.IOrdinaryAsynchInterface;
+import alice.respect.api.ISpecificationAsynchInterface;
 import alice.respect.api.RespectSpecification;
 import alice.respect.api.TupleCentreId;
+import alice.respect.api.exceptions.InstantiationNotPossibleException;
+import alice.respect.api.exceptions.InvalidSpecificationException;
+import alice.respect.api.exceptions.InvalidTupleCentreIdException;
+import alice.respect.api.exceptions.OperationNotPossibleException;
 
-import alice.respect.core.BlockingSpecContext;
+import alice.respect.core.SpecificationSynchInterface;
 import alice.respect.core.RespectTCContainer;
 
 import alice.tucson.api.TucsonAgentId;
@@ -60,22 +60,6 @@ public class TupleCentreContainer{
 			throw new InvalidTupleCentreIdException();
 		}
 	}
-	
-	/**
-	 * 
-	 * @param id
-	 * @return
-	 */
-//	if we follow @deprecated instructions we should get a <...>Context insted of a RespectTC,
-//	but how to decide which? who decides? based upon what?
-	public static Object getTC(TucsonTupleCentreId id){ 	
-		try{
-			return (RespectTCContainer.getRespectTCContainer()).getTC((TupleCentreId)id.getInternalTupleCentreId());
-		}catch (InstantiationNotPossibleException e){
-			System.err.println("[TupleCentreContainer]: " + e);
-			return null;
-		}
-	 }	 
 	
 	/**
 	 * 
@@ -161,10 +145,6 @@ public class TupleCentreContainer{
 			context.setManagementMode((Boolean)obj);
 			return true;
 		}
-		if(type == TucsonOperation.setSpyCode()){
-			context.setSpy((Boolean)obj);
-			return true;
-		}
 		
 		if(type == TucsonOperation.addObsCode()){
 			context.addObserver((ObservableEventListener)obj);
@@ -209,7 +189,7 @@ public class TupleCentreContainer{
 	 */
 	public static ITupleCentreOperation doNonBlockingOperation(int type, TucsonAgentId aid, TucsonTupleCentreId tid, LogicTuple t, OperationCompletionListener l) throws TucsonInvalidLogicTupleException, TucsonOperationNotPossibleException{			
 		ITupleCentreOperation res = null;
-		INonBlockingContext context = null;
+		IOrdinaryAsynchInterface context = null;
 		try{
 //			log("(TupleCentreId) tid.getInternalTupleCentreId() = " + ((TupleCentreId) tid.getInternalTupleCentreId()));
 			context = (RespectTCContainer.getRespectTCContainer()).getNonBlockingContext((TupleCentreId) tid.getInternalTupleCentreId());
@@ -272,7 +252,7 @@ public class TupleCentreContainer{
 	 */
 	public static ITupleCentreOperation doNonBlockingSpecOperation(int type, TucsonAgentId aid, TucsonTupleCentreId tid, LogicTuple t, OperationCompletionListener l) throws TucsonInvalidLogicTupleException, TucsonOperationNotPossibleException{
 		ITupleCentreOperation res = null;
-		INonBlockingSpecContext context = null;
+		ISpecificationAsynchInterface context = null;
 		try{
 			context = (RespectTCContainer.getRespectTCContainer()).getNonBlockingSpecContext((TupleCentreId) tid.getInternalTupleCentreId());			
 			if(type == TucsonOperation.no_sCode())
@@ -312,9 +292,9 @@ public class TupleCentreContainer{
 	 * @throws TucsonOperationNotPossibleException
 	 */
 	public static Object doBlockingOperation(int type, TucsonAgentId aid, TucsonTupleCentreId tid, Object o) throws TucsonInvalidLogicTupleException, TucsonOperationNotPossibleException{
-		IBlockingContext context = null;
+		IOrdinarySynchInterface context = null;
 		try{
-			context = (IBlockingContext) (RespectTCContainer.getRespectTCContainer()).getBlockingContext((TupleCentreId) tid.getInternalTupleCentreId());			
+			context = (IOrdinarySynchInterface) (RespectTCContainer.getRespectTCContainer()).getBlockingContext((TupleCentreId) tid.getInternalTupleCentreId());			
 			if(type == TucsonOperation.outCode()){
 				context.out((AgentId) aid.getLocalAgentId(), (LogicTuple) o);
 				return o;
@@ -357,9 +337,9 @@ public class TupleCentreContainer{
 	 */
 	public static Object doBlockingSpecOperation(int type, TucsonAgentId aid, TucsonTupleCentreId tid, LogicTuple t) throws TucsonInvalidLogicTupleException, TucsonOperationNotPossibleException, TucsonInvalidSpecificationException{
 		LogicTuple res = null;		
-		IBlockingSpecContext context = null;
+		ISpecificationSynchInterface context = null;
 		try{
-			context = (IBlockingSpecContext) (RespectTCContainer.getRespectTCContainer()).getBlockingSpecContext((TupleCentreId) tid.getInternalTupleCentreId());
+			context = (ISpecificationSynchInterface) (RespectTCContainer.getRespectTCContainer()).getBlockingSpecContext((TupleCentreId) tid.getInternalTupleCentreId());
 			if(type == TucsonOperation.out_sCode()){
 				context.out_s((AgentId) aid.getLocalAgentId(), (LogicTuple) t);
 				return res;
@@ -380,12 +360,12 @@ public class TupleCentreContainer{
 //				if(aid.toString().equals("node_agent") || aid.toString().startsWith("inspector_edit_spec_")){
 				if(t.getName().equals("spec")){
 					log("t = " + t);
-					return ((BlockingSpecContext)context).set_s((AgentId) aid.getLocalAgentId(), new RespectSpecification(((LogicTuple) t).getArg(0).getName()));
+					return ((SpecificationSynchInterface)context).set_s((AgentId) aid.getLocalAgentId(), new RespectSpecification(((LogicTuple) t).getArg(0).getName()));
 				}
-				return ((BlockingSpecContext)context).set_s((AgentId) aid.getLocalAgentId(), t);
+				return ((SpecificationSynchInterface)context).set_s((AgentId) aid.getLocalAgentId(), t);
 			}
 			if(type == TucsonOperation.get_sCode()){
-				return ((BlockingSpecContext)context).get_s((AgentId) aid.getLocalAgentId());
+				return ((SpecificationSynchInterface)context).get_s((AgentId) aid.getLocalAgentId());
 			}
 		}catch(InvalidLogicTupleException e){
 			throw new TucsonInvalidLogicTupleException();

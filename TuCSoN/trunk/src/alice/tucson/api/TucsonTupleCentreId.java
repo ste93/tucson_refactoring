@@ -17,8 +17,8 @@
  */
 package alice.tucson.api;
 
-import alice.respect.api.InvalidTupleCentreIdException;
 import alice.respect.api.TupleCentreId;
+import alice.respect.api.exceptions.InvalidTupleCentreIdException;
 
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 

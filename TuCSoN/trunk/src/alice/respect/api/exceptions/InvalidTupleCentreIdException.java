@@ -15,16 +15,18 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-package alice.respect.api;
-
+package alice.respect.api.exceptions;
 
 /**
- * This exception is thrown when an invalid agent identifier
+ * This exception is thrown when an invalid tuple centre identifier
  * is used
  *
- * Agent identifier must be ground logic term.
+ * Tuple centre identifier must be ground logic term
  * 
  * @author aricci
  */
-@SuppressWarnings("serial")
-public class InvalidAgentIdException extends RespectException {}
+public class InvalidTupleCentreIdException extends RespectException {
+
+	private static final long serialVersionUID = 2253131762919089633L;
+	
+}

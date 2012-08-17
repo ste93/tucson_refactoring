@@ -16,9 +16,10 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 package alice.tuplecentre.core;
+
 import java.util.*;
 
-import alice.respect.api.RespectTC;
+import alice.respect.core.RespectTC;
 import alice.tuplecentre.api.AgentId;
 import alice.tuplecentre.api.IId;
 import alice.tuplecentre.api.ITupleCentre;
@@ -27,6 +28,7 @@ import alice.tuplecentre.api.ITupleCentreManagement;
 import alice.tuplecentre.api.Tuple;
 import alice.tuplecentre.api.TupleCentreId;
 import alice.tuplecentre.api.TupleTemplate;
+import alice.tuplecentre.api.exceptions.OperationNotPossibleException;
 
 /**
  * Defines the core abstract behaviour of a tuple centre virtual machine.
@@ -46,27 +48,18 @@ import alice.tuplecentre.api.TupleTemplate;
 public abstract class TupleCentreVMContext implements ITupleCentreManagement, ITupleCentre {
 
     private long bootTime;
-    
     private LinkedList inputEvents;
     private LinkedList inputEnvEvents;
-    
     private TupleCentreVMState currentState;
-    
     private InputEvent currentEvent;
-    
     private int maxPendingInputEventNumber; 
-    
     private TupleCentreId tid;
-
     private boolean isSpy = false;
     private boolean isDebugging = false;
-    
     private boolean management;
     private boolean stop;
     private boolean do_step;
-    
     private HashMap states;
-    
     private RespectTC respectTC;
     
     /**
@@ -77,7 +70,6 @@ public abstract class TupleCentreVMContext implements ITupleCentreManagement, IT
      */
     public TupleCentreVMContext(TupleCentreId tid, int ieSize, RespectTC respectTC){
         
-       // bootTime=System.currentTimeMillis();        
     	management = false;
     	    
         inputEvents=new LinkedList();
@@ -104,33 +96,27 @@ public abstract class TupleCentreVMContext implements ITupleCentreManagement, IT
         states.put("SpeakingState", speakingState);
         
         Iterator it = states.values().iterator();
-        while (it.hasNext()){
+        while (it.hasNext())
             ((TupleCentreVMState)it.next()).resolveLinks();
-        }
-        
         currentState = resetState;
         
         this.respectTC = respectTC;
+        
     }
 
-    //-------------------------------------------------------------------------
-    
 	/**
 	 * Executes a new Operation.
 	 */
 	public void doOperation(IId who, TupleCentreOperation op) throws OperationNotPossibleException  {
-//		System.out.println("[TupleCentreVMContext]: op = " + op);
 		InputEvent ev = new InputEvent(who,op,this.tid,this.getCurrentTime());
 		synchronized(inputEvents){
-			if (inputEvents.size()>this.maxPendingInputEventNumber){
+			if (inputEvents.size()>this.maxPendingInputEventNumber)
 				throw new OperationNotPossibleException();
-			}
-			//spy("Accepting new event " + ev);
 			inputEvents.add(ev);
 		}
 	}	 
+
 	public void addInputEvent(InputEvent in){
-		
 		synchronized(inputEvents){
 			inputEvents.add(in);
 		}
@@ -150,47 +136,30 @@ public abstract class TupleCentreVMContext implements ITupleCentreManagement, IT
 		try {
 			if (management){
 				if (stop){
-					if (!do_step) {
-						spy("VM is stopped");
+					if (!do_step)
 						return;
-					} else {
+					else
 						do_step = false;
-					}
 				}
 			}
-			
-			spy("Starting the execution cycle.");
-
 			while (!currentState.isIdle()) {
-
-				spy("Executing: " + currentState.getClass().getName());
 				currentState.execute();
 				currentState = currentState.getNextState();
-
-				//System.out.println("==> "+management+" "+stop);
 				if (management){
 					if (stop){
-						if (!do_step) {
-							spy("VM is stopped");
+						if (!do_step)
 							break;
-						} else {
+						else
 							do_step = false;
-						}
 					}
 				}
 			}
-
-			spy("Ending the execution cycle.");
-			spyState();
-			
 		} catch (Exception ex) {
 			notifyException(ex);
 		}
 
 	}
 
-    //-------------------------
-    
     /**
      * Tests if there are pending input events
      *
@@ -207,6 +176,7 @@ public abstract class TupleCentreVMContext implements ITupleCentreManagement, IT
             return false;
         }
     }
+
     public boolean pendingEnvEvents(){
         try {
             synchronized(inputEnvEvents){
@@ -234,6 +204,7 @@ public abstract class TupleCentreVMContext implements ITupleCentreManagement, IT
             notifyException(ex);
         }
     }
+    
     public void fetchPendingEnvEvent(){
     	if (pendingEnvEvents()){
     		try {
@@ -251,89 +222,68 @@ public abstract class TupleCentreVMContext implements ITupleCentreManagement, IT
      */
     public abstract void reset();
     
-    
-    //-------------------------
-    
     public abstract void linkOperation(OutputEvent out);
-    
     
     /**
      * Specifies how to notify an output event.
      */
     protected void notifyOutputEvent(OutputEvent ev){
-//		spy("notify event "+ev);
     	ev.getOperation().notifyCompletion();
-    	
     }
     
-    //-------------------------
-
-    /*
-     * Interface related to tuple centre reactive behaviour
-     */
-
     /**
      * Evaluates a triggered reaction, changing the state
      * of the VM accordingly.
      *
      * @param z the triggered reaction to be evaluated
      */
-    public abstract void      evalReaction(TriggeredReaction z);
+    public abstract void evalReaction(TriggeredReaction z);
 
     /**
      * Collects the reactions that are triggered by an event
      *
      * @param ev the event triggering reactions
      */
-    public abstract void            fetchTriggeredReactions(Event ev);
+    public abstract void fetchTriggeredReactions(Event ev);
 
     /**
      * Collects the time-triggered reactions
      *
      * @param ev the event triggering reactions
      */
-    public abstract void            fetchTimedReactions(Event ev);
+    public abstract void fetchTimedReactions(Event ev);
     
     /**
      * Removes a triggered reaction, previously fetched
      *
      * @return the triggered reaction
      */
-    public abstract TriggeredReaction   removeTriggeredReaction();
+    public abstract TriggeredReaction removeTriggeredReaction();
 
     /**
      * Removes a time-triggered reaction, previously fetched
      *
      * @return the time-triggered reaction
      */
-    public abstract TriggeredReaction   removeTimeTriggeredReaction();
+    public abstract TriggeredReaction removeTimeTriggeredReaction();
     
     /**
      * Gets an iterator over the set of triggered reactions
      *
      * @return the iterator
      */
-    public abstract Iterator            getTriggeredReactionSetIterator();
-
+    public abstract Iterator getTriggeredReactionSetIterator();
     
     public abstract boolean  triggeredReaction();
     
     public abstract boolean  time_triggeredReaction();
     
-   
-    //----------------------
-    
-
-    /*
-     * Interface related to tuple set (T) management
-     */
-
     /**
      *  Adds a tuple to the tuple set (T)
      *
      *  @param t the tuple to be addedd
      */
-    public abstract void        addTuple(Tuple t);
+    public abstract void addTuple(Tuple t);
     
     public abstract List<Tuple> addListTuple(Tuple t);
 
@@ -344,43 +294,39 @@ public abstract class TupleCentreVMContext implements ITupleCentreManagement, IT
      * @param t the tuple template that must be matched by the tuple
      * @return a tuple matching the tuple template
      */
-    public abstract Tuple       removeMatchingTuple(TupleTemplate t);
-
-//  my personal updates
+    public abstract Tuple removeMatchingTuple(TupleTemplate t);
     
-  /**
-   * Gets all the tuples of the tuple centre matching the TupleTemplate t
-   *
-   * @param 
-   * @return matching tuple
-   */
-  public abstract List<Tuple>        inAllTuples(TupleTemplate t);
-  
-  /**
-   * Gets all the tuples of the tuple centre matching the TupleTemplate t without removing them
-   *
-   * @param 
-   * @return matching tuple
-   */
-  public abstract List<Tuple>       readAllTuples(TupleTemplate t);
-  
-  /**
-   * Gets a tuple from tuple space in a non deterministic way
-   *
-   * @param 
-   * @return matching tuple
-   */
-  public abstract Tuple       removeUniformTuple(TupleTemplate t);
-  
-  /**
-   * Gets a tuple from tuple space in a non deterministic way
-   *
-   * @param 
-   * @return matching tuple
-   */
-  public abstract Tuple       readUniformTuple(TupleTemplate t);
-  
-//  *******************
+	  /**
+	   * Gets all the tuples of the tuple centre matching the TupleTemplate t
+	   *
+	   * @param 
+	   * @return matching tuple
+	   */
+	  public abstract List<Tuple> inAllTuples(TupleTemplate t);
+	  
+	  /**
+	   * Gets all the tuples of the tuple centre matching the TupleTemplate t without removing them
+	   *
+	   * @param 
+	   * @return matching tuple
+	   */
+	  public abstract List<Tuple> readAllTuples(TupleTemplate t);
+	  
+	  /**
+	   * Gets a tuple from tuple space in a non deterministic way
+	   *
+	   * @param 
+	   * @return matching tuple
+	   */
+	  public abstract Tuple removeUniformTuple(TupleTemplate t);
+	  
+	  /**
+	   * Gets a tuple from tuple space in a non deterministic way
+	   *
+	   * @param 
+	   * @return matching tuple
+	   */
+	  public abstract Tuple readUniformTuple(TupleTemplate t);
     
     /**
      * Gets all the tuples of the tuple centre
@@ -388,7 +334,7 @@ public abstract class TupleCentreVMContext implements ITupleCentreManagement, IT
      * @param 
      * @return the whole tuple set
      */
-    public abstract List<Tuple>       getAllTuples();
+    public abstract List<Tuple> getAllTuples();
     
     /**
      * Gets all the tuples of the tuple centre
@@ -396,9 +342,9 @@ public abstract class TupleCentreVMContext implements ITupleCentreManagement, IT
      * @param 
      * @return the whole tuple set
      */
-    public abstract void       setAllTuples(List<Tuple> tupleList);
+    public abstract void setAllTuples(List<Tuple> tupleList);
     
-    public abstract void       setAllSpecTuples(List<Tuple> tupleList);
+    public abstract void setAllSpecTuples(List<Tuple> tupleList);
     
     /**
      * Gets (not deterministically) without removing from the tuple set  a tuple
@@ -407,21 +353,21 @@ public abstract class TupleCentreVMContext implements ITupleCentreManagement, IT
      * @param t the tuple template that must be matched by the tuple
      * @return a tuple matching the tuple template
      */
-    public abstract Tuple       readMatchingTuple(TupleTemplate t);
+    public abstract Tuple readMatchingTuple(TupleTemplate t);
     
     /**
      *  Adds a tuple to the specification tuple set 
      *
      *  @param t the tuple to be added
      */
-    public abstract void        addSpecTuple(Tuple t);
+    public abstract void addSpecTuple(Tuple t);
 
     /**
      * Gets an iterator over the tuple set (T)
      *
      * @return the iterator
      */
-    public abstract Iterator    getTupleSetIterator();
+    public abstract Iterator getTupleSetIterator();
     
     public abstract Iterator getSpecTupleSetIterator();
 
@@ -430,39 +376,31 @@ public abstract class TupleCentreVMContext implements ITupleCentreManagement, IT
      */
     public abstract void emptyTupleSet();
 
-    // ---------------------------
-
-    /*
-     * Interface related to pending query set (W) management
-     */
-
     /**
      * Adds a query to the pending query set (W) of the tuple centre
      *
      * @param w the pending query to be added
      */
-    public abstract void        addPendingQueryEvent(InputEvent w);
+    public abstract void addPendingQueryEvent(InputEvent w);
 
     /**
      * Gets an iterator over the pending query set (W)
      *
      * @return the iterator
      */
-    public abstract Iterator    getPendingQuerySetIterator();
+    public abstract Iterator getPendingQuerySetIterator();
 
 	/**
 	 * Removes the pending queries related to an agent
 	 * 
 	 * @param id is the agent identifies
 	 */    
-    public abstract void        removePendingQueryEventsOf(AgentId id);
+    public abstract void removePendingQueryEventsOf(AgentId id);
 
 	public abstract Tuple removeMatchingSpecTuple(TupleTemplate templateArgument);
 	
 	public abstract Tuple readMatchingSpecTuple(TupleTemplate templateArgument);
     
-    // ------------------------------
-
     /**
      * Gets the boot time of the Tuple Centre VM
      *
@@ -475,7 +413,6 @@ public abstract class TupleCentreVMContext implements ITupleCentreManagement, IT
     
     protected void setBootTime(){
     	this.bootTime = System.currentTimeMillis();
-    	spy("Current ReSpecT VM time is: "+this.getCurrentTime());
     }
     
     /**
@@ -487,7 +424,6 @@ public abstract class TupleCentreVMContext implements ITupleCentreManagement, IT
     public long getCurrentTime(){
         return System.currentTimeMillis()-bootTime;
     }
-
 
     /** 
      * Gets the identifier of this tuple centre
@@ -515,62 +451,6 @@ public abstract class TupleCentreVMContext implements ITupleCentreManagement, IT
         return (TupleCentreVMState)(states.get(stateName));
     }
     
-    
-    // --------------------------------------------------------------------------
-
-	/**
-	 * Activates the production of spy information
-	 */
-    public void setSpy(boolean spy){
-        isSpy=spy;
-    }
-
-	/**
-	 * Tests if the spy information are active
-	 * @return
-	 */
-    public boolean isSpy(){
-        return isSpy;
-    }
-
-    public void spy(String m){
-        if (isSpy){
-            //System.out.println("[TCVM-"+this.getId()+"]["+currentState.getClass().getName()+"]"+m);
-        }
-    }
-
-
-    public void spyState(){
-        if (isSpy){
-            spy("-----------STATE--------------------");
-            spy("input events");
-            Iterator l=inputEvents.listIterator();
-            while (l.hasNext())
-                spy("[ev]"+(Event)l.next());
-            spy("TSET");
-            l=getTupleSetIterator();
-            while (l.hasNext())
-                spy("[tuple]"+(Tuple)l.next());
-            spy("WSET");
-            l=getPendingQuerySetIterator();
-            while (l.hasNext())
-                spy("[event]"+(Event)l.next());
-            spy("ZSET");
-            l=getTriggeredReactionSetIterator();
-            while (l.hasNext()){
-                TriggeredReaction tr=(TriggeredReaction)l.next();
-                spy("[reaction]"+tr+" "+tr.getReaction());
-            }
-            spy("SIGMASET");
-            l=getSpecTupleSetIterator();
-            while (l.hasNext())
-                spy("[tuple]"+(Tuple)l.next());
-            spy("Behaviour Specification");
-            spy(getReactionSpec().toString());
-            spy("------------------------------------");
-        }
-    }
-
     public void notifyException(Exception ex){
         ex.printStackTrace();
     }
@@ -580,32 +460,25 @@ public abstract class TupleCentreVMContext implements ITupleCentreManagement, IT
     }
 
 	
-	//-------------------------
-	
-	// MAnagement / Debugging COMMANDS
-	
 	public void setManagementMode(boolean activate){
 		management = activate;
 	}
 	
 	public void stopCommand() throws OperationNotPossibleException {
-		if (!management){
+		if (!management)
 			throw new OperationNotPossibleException();
-		}
 		stop = true;
 	}
 
 	public void goCommand() throws OperationNotPossibleException {
-		if (!management){
+		if (!management)
 			throw new OperationNotPossibleException();
-		}
 		stop = false;
 	}
 
 	public void nextStepCommand() throws OperationNotPossibleException {
-		if (!management){
+		if (!management)
 			throw new OperationNotPossibleException();
-		}
 		do_step = true;
 	}
 

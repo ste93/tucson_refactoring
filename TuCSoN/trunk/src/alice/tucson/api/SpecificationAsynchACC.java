@@ -17,9 +17,9 @@
  */
 package alice.tucson.api;
 
-import alice.logictuple.InvalidLogicTupleException;
-import alice.logictuple.InvalidTupleOperationException;
 import alice.logictuple.LogicTuple;
+import alice.logictuple.exceptions.InvalidLogicTupleException;
+import alice.logictuple.exceptions.InvalidTupleOperationException;
 
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;

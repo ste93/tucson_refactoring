@@ -17,8 +17,8 @@
  */
 package alice.tucson.api;
 
-import alice.logictuple.InvalidTupleOperationException;
 import alice.logictuple.LogicTuple;
+import alice.logictuple.exceptions.InvalidTupleOperationException;
 
 import alice.tuplecentre.api.ITupleCentreOperation;
 

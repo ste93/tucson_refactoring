@@ -3,14 +3,17 @@ package alice.respect.api;
 import java.util.List;
 
 import alice.logictuple.*;
+import alice.logictuple.exceptions.InvalidLogicTupleException;
+import alice.respect.api.exceptions.OperationNotPossibleException;
 
 /**
- * A ReSpecT Tuple Centre Interface with blocking operations.
+ * A ReSpecT Tuple Centre Interface to issue ReSpecT ordinary primitives using a synchronous
+ * semantics.
  * 
  * @author aricci
  *
  */
-public interface IBlockingContext {
+public interface IOrdinarySynchInterface {
     
 	void out(AgentId aid, LogicTuple t) throws InvalidLogicTupleException, OperationNotPossibleException;
 
@@ -25,8 +28,6 @@ public interface IBlockingContext {
 	LogicTuple no(AgentId aid, LogicTuple t) throws InvalidLogicTupleException, OperationNotPossibleException;
 
 	LogicTuple nop(AgentId aid, LogicTuple t) throws InvalidLogicTupleException, OperationNotPossibleException;
-	
-//	my personal updates
 	
 	void out_all(AgentId aid, LogicTuple t) throws InvalidLogicTupleException, OperationNotPossibleException;
 	
@@ -47,8 +48,6 @@ public interface IBlockingContext {
 	LogicTuple uinp(AgentId aid, LogicTuple t) throws InvalidLogicTupleException, OperationNotPossibleException;
 	
 	LogicTuple unop(AgentId aid, LogicTuple t) throws InvalidLogicTupleException, OperationNotPossibleException;
-	
-//  *******************
 	
 	List<LogicTuple> get(AgentId aid) throws OperationNotPossibleException;
 	

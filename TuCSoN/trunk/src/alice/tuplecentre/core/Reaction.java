@@ -29,4 +29,5 @@ package alice.tuplecentre.core;
  * @author aricci
  */
 public interface Reaction {
+	
 }

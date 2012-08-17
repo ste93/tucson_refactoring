@@ -33,11 +33,10 @@ public class IdleState extends TupleCentreVMState {
     }
     
     public TupleCentreVMState getNextState(){
-        if (vm.pendingEvents()){
+        if (vm.pendingEvents())
         	return listeningState;
-        }else if(vm.pendingEnvEvents()){
+        else if(vm.pendingEnvEvents())
         	return fetchEnvState;
-        }
         return this;
     }
     
@@ -53,4 +52,5 @@ public class IdleState extends TupleCentreVMState {
     public boolean isIdle(){
         return (!vm.pendingEvents()) && (!vm.pendingEnvEvents());
     }
+    
 }

@@ -1,11 +1,13 @@
 package alice.tucson.service;
 
 import alice.logictuple.*;
+import alice.logictuple.exceptions.InvalidTupleOperationException;
 
 import alice.tucson.api.*;
 
 import alice.tuplecentre.api.Tuple;
 import alice.tuplecentre.api.TupleTemplate;
+import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 import alice.tuplecentre.core.*;
 
 import java.util.LinkedList;
@@ -16,7 +18,7 @@ import java.util.List;
  */
 public class TucsonOperation extends TupleCentreOperation implements ITucsonOperation{
 	
-	private static final int OPTYPE_EXIT = 31;
+	private static final int OPTYPE_EXIT = 310;
 	private boolean successed;
 	private boolean allowed;
 	private ACCProxyAgentSide context = null;
@@ -134,11 +136,11 @@ public class TucsonOperation extends TupleCentreOperation implements ITucsonOper
 	}
 	
 	public static int set_sCode(){
-		return OPTYPE_SET_SPEC;
+		return OPTYPE_SET_S;
 	}
 	
 	public static int get_sCode(){
-		return OPTYPE_GET_SPEC;
+		return OPTYPE_GET_S;
 	}	
 	
 	public static int no_sCode(){

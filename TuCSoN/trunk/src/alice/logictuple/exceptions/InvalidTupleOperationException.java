@@ -15,22 +15,23 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-package alice.logictuple;
+package alice.logictuple.exceptions;
 
+import alice.logictuple.TupleArgument;
+import alice.logictuple.Var;
 
 /**
- * Exception thrown when a malformed logic logic tuple
- * is created or used
- *
+ * Exception thrown when a not valid tuple argument value is used
  * @author aricci
- * 
- * @see LogicTuple
- *
+ * @see Var
+ * @see TupleArgument
  * @version 1.0
- */
-public class InvalidLogicTupleException extends LogicTupleException{
+*/
+public class InvalidTupleOperationException extends LogicTupleException {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;}
+	private static final long serialVersionUID = 1L;
+}
+

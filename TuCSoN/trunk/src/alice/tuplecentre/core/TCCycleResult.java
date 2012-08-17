@@ -18,7 +18,6 @@ public class TCCycleResult implements ITCCycleResult {
 	public TCCycleResult(){
 		this.opResult = Outcome.UNDEFINED;
 		this.tupleResult = null;
-//		oppure null?
 		this.tupleListResult = new LinkedList<Tuple>();
 		this.startTime = System.currentTimeMillis();
 	}
@@ -35,32 +34,26 @@ public class TCCycleResult implements ITCCycleResult {
 		return this.opResult == Outcome.FAILURE;
 	}
 	
-	@Override
 	public void setOpResult(Outcome o) {
 		opResult = o;
 	}
 
-	@Override
 	public Outcome getOpResult() {
 		return opResult;
 	}
 	
-	@Override
 	public void setTupleResult(Tuple res) {
 		this.tupleResult = res;
 	}
 	
-	@Override
 	public Tuple getTupleResult() {
 		return this.tupleResult;
 	}
 	
-	@Override
 	public void setTupleListResult(List<Tuple> res) {
 		this.tupleListResult = res;
 	}
 
-	@Override
 	public List<Tuple> getTupleListResult() {
 		return this.tupleListResult;
 	}

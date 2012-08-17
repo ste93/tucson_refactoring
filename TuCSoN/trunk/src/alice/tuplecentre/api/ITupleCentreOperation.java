@@ -1,7 +1,6 @@
 package alice.tuplecentre.api;
 
-import alice.tuplecentre.core.OperationTimeOutException;
-
+import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 
 /**
  * Basic interface for tuple centre operations.
@@ -24,16 +23,10 @@ public interface ITupleCentreOperation{
 	
 	boolean isNop();
 	
-	boolean isSet_s();
-	
-	boolean isGet_s();
-	
 	boolean isGet();
 	
 	boolean isSet();		
 
-//	my personal update
-	
 	boolean isOutAll();
 	
 	boolean isInAll();
@@ -47,6 +40,10 @@ public interface ITupleCentreOperation{
 	boolean isUinp();
 	
 	boolean isUrdp();
+	
+	boolean isSet_s();
+	
+	boolean isGet_s();
 	
 	/**
 	 * Tests if the operation is completed

@@ -15,7 +15,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-package alice.respect.core;
+package alice.respect.api;
 
 import java.util.AbstractMap;
 import java.util.Iterator;
@@ -23,15 +23,19 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 
-import alice.respect.api.EnvId;
-import alice.respect.api.InvalidTupleCentreIdException;
-import alice.respect.api.TupleCentreId;
+import alice.respect.api.exceptions.InvalidTupleCentreIdException;
+import alice.respect.core.InternalEvent;
+import alice.respect.core.InternalOperation;
+import alice.respect.core.RespectOperation;
+import alice.respect.core.RespectVMContext;
 
 import alice.tucson.parsing.MyOpManager;
 import  alice.tuprolog.*;
 import alice.tuprolog.Var;
 
 import  alice.logictuple.*;
+import alice.logictuple.exceptions.InvalidLogicTupleException;
+import alice.logictuple.exceptions.InvalidTupleOperationException;
 
 import alice.tuplecentre.api.IId;
 import alice.tuplecentre.api.Tuple;
@@ -43,10 +47,10 @@ import alice.tuplecentre.core.*;
  * 
  * @author aricci
  */
-@SuppressWarnings("serial")
-public class Library extends alice.tuprolog.Library {
+public class Respect2PLibrary extends alice.tuprolog.Library {
 
-    RespectVMContext vm;
+    private static final long serialVersionUID = 7865604500315298959L;
+	RespectVMContext vm;
     
     public String getTheory(){
         
@@ -97,31 +101,32 @@ public class Library extends alice.tuprolog.Library {
 		"set_s(E,G,R):-set_s(E,G,R,this@localhost). \n"+
 		"get_s(T):-get_s(T,this@localhost). \n"+
         
-		// my personal updates
 		"TC ? uin(T) :- uin(T,TC). \n"+
 		"TC ? uinp(T) :- uinp(T,TC). \n"+
 		"TC ? urd(T) :- urd(T,TC). \n"+
 		"TC ? urdp(T) :- urdp(T,TC). \n"+
+		"TC ? uno(T) :- uno(T,TC). \n"+
+		"TC ? unop(T) :- unop(T,TC). \n"+
 		"TC ? out_all(L) :- out_all(L,TC). \n"+
 		"TC ? in_all(T,L) :- in_all(T,L,TC). \n"+
 		"TC ? rd_all(T,L) :- rd_all(T,L,TC). \n"+
+		"TC ? no_all(T,L) :- no_all(T,L,TC). \n"+
 		
 		"urd(T):-urd(T,this@localhost). \n"+
 		"urdp(T):-urdp(T,this@localhost). \n"+
 		"uin(T):-uin(T,this@localhost). \n"+
 		"uinp(T):-uinp(T,this@localhost). \n"+
+		"uno(T):-uno(T,this@localhost). \n"+
+		"unop(T):-unop(T,this@localhost). \n"+
 		"out_all(L):-out_all(L,this@localhost). \n"+
 		"in_all(T,L):-in_all(T,L,this@localhost). \n"+
 		"rd_all(T,L):-rd_all(T,L,this@localhost). \n"+
-		//***********************
-        
-//        "TC ? out_tc(T) :- out_tc(TC,T). \n"+
+		"no_all(T,L):-no_all(T,L,this@localhost). \n"+
         
         "Env ? getEnv(Key,Value) :- getEnv(Env,Key,Value). \n" +
         "Env ? setEnv(Key,Value) :- setEnv(Env,Key,Value). \n" +
         "prolog(Term):- Term. \n" +
         
-        //GUARD ALIASES
         "completion :- response. \n"+
         "compl :- response. \n"+
         "resp :- response. \n"+
@@ -176,6 +181,7 @@ public class Library extends alice.tuprolog.Library {
 			vm.addTemporaryOutputEvent(out_ev);
 			return true;
 	    }
+    	
     }
     
     public boolean out_all_2(Term arg0,Term arg1){
@@ -212,6 +218,7 @@ public class Library extends alice.tuprolog.Library {
 			vm.addTemporaryOutputEvent(out_ev);
 			return true;
 	    }
+    	
     }
 
     public boolean in_2(Term arg0, Term arg1){
@@ -253,6 +260,7 @@ public class Library extends alice.tuprolog.Library {
 			vm.addTemporaryOutputEvent(out_ev);
 			return true;
 	    }
+    	
     }
     
     public boolean uin_2(Term arg0, Term arg1){
@@ -294,6 +302,7 @@ public class Library extends alice.tuprolog.Library {
 			vm.addTemporaryOutputEvent(out_ev);
 			return true;
 		}
+	  	
     }
     
     public boolean in_all_3(Term arg0, Term arg1, Term arg2){
@@ -317,18 +326,6 @@ public class Library extends alice.tuprolog.Library {
 	        if (tuples!=null){
 	            Term term = list2tuple(tuples);
 	            unify(arg1,term.copyGoal(v,0));
-//	            InputEvent ce=vm.getCurrentEvent();
-//	            String tupleStr = arg0.toString()+","+arg1.copyGoal(v,0);
-//	            LogicTuple resultArg = null;
-//				try {
-//					resultArg = LogicTuple.parse(tupleStr);
-//				} catch (InvalidLogicTupleException e) {
-//					e.printStackTrace();
-//				}
-//				InternalEvent ev=new InternalEvent(ce,InternalOperation.makeRdAllR(resultArg)); 
-//				ev.setSource(ce.getReactingTC());
-//	            ev.setTarget(ce.getReactingTC());
-//				vm.fetchTriggeredReactions(ev);
 	            return true;
 	        } else {
 	            return false;
@@ -349,6 +346,7 @@ public class Library extends alice.tuprolog.Library {
 			vm.addTemporaryOutputEvent(out_ev);
 			return true;
 	    }
+	  	
     }
 
     public boolean inp_2(Term arg0, Term arg1){
@@ -391,6 +389,7 @@ public class Library extends alice.tuprolog.Library {
 			vm.addTemporaryOutputEvent(out_ev);
 			return true;
 	    }
+    	
     }
     
     public boolean uinp_2(Term arg0, Term arg1){
@@ -433,6 +432,7 @@ public class Library extends alice.tuprolog.Library {
 			vm.addTemporaryOutputEvent(out_ev);
 			return true;
 	    }
+	  	
     }
     
     public boolean rd_2(Term arg0, Term arg1){
@@ -474,6 +474,7 @@ public class Library extends alice.tuprolog.Library {
 			vm.addTemporaryOutputEvent(out_ev);
             return true;
 	    }
+    	
     }
     
     public boolean urd_2(Term arg0, Term arg1){
@@ -515,6 +516,7 @@ public class Library extends alice.tuprolog.Library {
 			vm.addTemporaryOutputEvent(out_ev);
 			return true;
 	    }
+	  	
     }
     
     public boolean rd_all_3(Term arg0, Term arg1, Term arg2){
@@ -538,18 +540,6 @@ public class Library extends alice.tuprolog.Library {
 	        if (tuples!=null){
 	            Term term = list2tuple(tuples);
 	            unify(arg1,term.copyGoal(v,0));
-//	            InputEvent ce=vm.getCurrentEvent();
-//	            String tupleStr = arg0.toString()+","+arg1.copyGoal(v,0);
-//	            LogicTuple resultArg = null;
-//				try {
-//					resultArg = LogicTuple.parse(tupleStr);
-//				} catch (InvalidLogicTupleException e) {
-//					e.printStackTrace();
-//				}
-//				InternalEvent ev=new InternalEvent(ce,InternalOperation.makeRdAllR(resultArg)); 
-//				ev.setSource(ce.getReactingTC());
-//	            ev.setTarget(ce.getReactingTC());
-//				vm.fetchTriggeredReactions(ev);
 	            return true;
 	        } else {
 	            return false;
@@ -570,6 +560,7 @@ public class Library extends alice.tuprolog.Library {
 			vm.addTemporaryOutputEvent(out_ev);
 			return true;
 	    }
+	  	
     }
         	
     public boolean rdp_2(Term arg0, Term arg1){
@@ -611,6 +602,7 @@ public class Library extends alice.tuprolog.Library {
 			vm.addTemporaryOutputEvent(out_ev);
             return true;
 	    }
+    	
     }
     
     public boolean urdp_2(Term arg0, Term arg1){
@@ -652,6 +644,7 @@ public class Library extends alice.tuprolog.Library {
 			vm.addTemporaryOutputEvent(out_ev);
 			return true;
 	    }
+	  	
     }
     
     public boolean no_2(Term arg0, Term arg1){
@@ -673,7 +666,7 @@ public class Library extends alice.tuprolog.Library {
     		log("Local no triggered...");
 	        alice.tuplecentre.api.Tuple tuple=vm.readMatchingTuple(tuArg);
 	        if (tuple==null){
-	        	System.out.println("[Library]: no success");
+	        	log("no success");
 	        	InputEvent ce=vm.getCurrentEvent();
 				InternalEvent ev=new InternalEvent(ce,InternalOperation.makeNoR(new LogicTuple(arg0.copyGoal(v,0)))); 
 				ev.setSource(ce.getReactingTC());
@@ -682,11 +675,6 @@ public class Library extends alice.tuprolog.Library {
 	            return true;
 	        } else {
 	        	log("no failure");
-//	            InputEvent ce=vm.getCurrentEvent();
-//	            InternalEvent ev=new InternalEvent(ce,InternalOperation.makeNoR(new LogicTuple(arg0.copyGoal(v,0)))); 
-//				ev.setSource(ce.getReactingTC());
-//	            ev.setTarget(ce.getReactingTC());
-//				vm.fetchTriggeredReactions(ev);
 	            return false;
 	        }
     	}else{
@@ -698,6 +686,93 @@ public class Library extends alice.tuprolog.Library {
 			vm.addTemporaryOutputEvent(out_ev);
             return true;
 	    }
+    	
+    }
+    
+    public boolean no_all_3(Term arg0, Term arg1, Term arg2){
+        
+	  	String tcName = null;
+	  	TupleCentreId tid = null;
+	  	try{
+	  		tid=new TupleCentreId(arg2);
+	  	}catch(Exception e){
+	  		e.printStackTrace();
+	  		return false;
+	  	}
+	  	tcName = tid.getName();
+	  	
+	  	LogicTuple tuArg=new LogicTuple(arg0);
+	  	AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
+	  	
+	  	if(tcName.equals("this")){
+	  		log("Local no_all triggered...");
+	        List<alice.tuplecentre.api.Tuple> tuples = vm.readAllTuples(tuArg);
+	        if (tuples==null){
+	            Term term = list2tuple(tuples);
+	            unify(arg1,term.copyGoal(v,0));
+	            return true;
+	        } else {
+	            return false;
+	        }
+	    }else{
+	    	log("Remote no_all triggered...");
+	    	InputEvent ce=vm.getCurrentEvent();
+	    	String tuple = arg0.toString()+","+arg1.copyGoal(v,0);
+	    	LogicTuple resultArg = null;
+			try {
+				resultArg = LogicTuple.parse(tuple);
+			} catch (InvalidLogicTupleException e) {
+				e.printStackTrace();
+			}
+			InputEvent out_ev = new InputEvent(ce.getReactingTC(),RespectOperation.makeNoAll(getProlog(),resultArg,null),tid,vm.getCurrentTime());
+			out_ev.setIsLinking(true);
+			out_ev.setTarget(tid);
+			vm.addTemporaryOutputEvent(out_ev);
+			return true;
+	    }
+	  	
+    }
+    
+    public boolean uno_2(Term arg0, Term arg1){
+
+    	String tcName = null;
+    	TupleCentreId tid = null;
+    	try{
+    		tid=new TupleCentreId(arg1);
+    	}catch(Exception e){
+    		e.printStackTrace();
+    		return false;
+    	}
+    	tcName = tid.getName();
+    	
+    	LogicTuple tuArg=new LogicTuple(arg0);
+    	AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
+
+    	if(tcName.equals("this")){
+    		log("Local uno triggered...");
+	        alice.tuplecentre.api.Tuple tuple=vm.readUniformTuple(tuArg);
+	        if (tuple==null){
+	        	log("uno success");
+	        	InputEvent ce=vm.getCurrentEvent();
+				InternalEvent ev=new InternalEvent(ce,InternalOperation.makeUnoR(new LogicTuple(arg0.copyGoal(v,0)))); 
+				ev.setSource(ce.getReactingTC());
+	            ev.setTarget(ce.getReactingTC());
+				vm.fetchTriggeredReactions(ev);
+	            return true;
+	        } else {
+	        	log("uno failure");
+	            return false;
+	        }
+    	}else{
+    		log("Remote uno triggered...");
+	    	InputEvent ce=vm.getCurrentEvent();
+			InputEvent out_ev = new InputEvent(ce.getReactingTC(),RespectOperation.makeUno(getProlog(), new LogicTuple(arg0.copyGoal(v,0)),null),tid,vm.getCurrentTime());
+			out_ev.setIsLinking(true);
+			out_ev.setTarget(tid);
+			vm.addTemporaryOutputEvent(out_ev);
+            return true;
+	    }
+    	
     }
     
     public boolean nop_2(Term arg0, Term arg1){
@@ -719,7 +794,7 @@ public class Library extends alice.tuprolog.Library {
     		log("Local nop triggered...");
 	        alice.tuplecentre.api.Tuple tuple=vm.readMatchingTuple(tuArg);
 	        if (tuple==null){
-	        	System.out.println("[Library]: nop success");
+	        	log("nop success");
 	        	InputEvent ce=vm.getCurrentEvent();
 				InternalEvent ev=new InternalEvent(ce,InternalOperation.makeNoR(new LogicTuple(arg0.copyGoal(v,0)))); 
 				ev.setSource(ce.getReactingTC());
@@ -728,11 +803,6 @@ public class Library extends alice.tuprolog.Library {
 	            return true;
 	        } else {
 	        	log("nop failure");
-//	            InputEvent ce=vm.getCurrentEvent();
-//	            InternalEvent ev=new InternalEvent(ce,InternalOperation.makeNoR(new LogicTuple(arg0.copyGoal(v,0)))); 
-//				ev.setSource(ce.getReactingTC());
-//	            ev.setTarget(ce.getReactingTC());
-//				vm.fetchTriggeredReactions(ev);
 	            return false;
 	        }
     	}else{
@@ -744,6 +814,49 @@ public class Library extends alice.tuprolog.Library {
 			vm.addTemporaryOutputEvent(out_ev);
             return true;
 	    }
+    	
+    }
+    
+    public boolean unop_2(Term arg0, Term arg1){
+
+    	String tcName = null;
+    	TupleCentreId tid = null;
+    	try{
+    		tid=new TupleCentreId(arg1);
+    	}catch(Exception e){
+    		e.printStackTrace();
+    		return false;
+    	}
+    	tcName = tid.getName();
+    	
+    	LogicTuple tuArg=new LogicTuple(arg0);
+    	AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
+
+    	if(tcName.equals("this")){
+    		log("Local unop triggered...");
+	        alice.tuplecentre.api.Tuple tuple=vm.readUniformTuple(tuArg);
+	        if (tuple==null){
+	        	log("unop success");
+	        	InputEvent ce=vm.getCurrentEvent();
+				InternalEvent ev=new InternalEvent(ce,InternalOperation.makeUnoR(new LogicTuple(arg0.copyGoal(v,0)))); 
+				ev.setSource(ce.getReactingTC());
+	            ev.setTarget(ce.getReactingTC());
+				vm.fetchTriggeredReactions(ev);
+	            return true;
+	        } else {
+	        	log("unop failure");
+	            return false;
+	        }
+    	}else{
+    		log("Remote unop triggered...");
+	    	InputEvent ce=vm.getCurrentEvent();
+			InputEvent out_ev = new InputEvent(ce.getReactingTC(),RespectOperation.makeUnop(getProlog(), new LogicTuple(arg0.copyGoal(v,0)),null),tid,vm.getCurrentTime());
+			out_ev.setIsLinking(true);
+			out_ev.setTarget(tid);
+			vm.addTemporaryOutputEvent(out_ev);
+            return true;
+	    }
+    	
     }
     
     public boolean get_2(Term arg0, Term arg1){
@@ -841,6 +954,7 @@ public class Library extends alice.tuprolog.Library {
 			vm.addTemporaryOutputEvent(out_ev);
 			return true;
 	    }
+    	
     }
     
     public boolean in_s_4(Term e, Term g, Term r, Term tc){
@@ -890,6 +1004,7 @@ public class Library extends alice.tuprolog.Library {
 			vm.addTemporaryOutputEvent(out_ev);
             return true;
 	    }
+    	
     }
     
     public boolean rd_s_4(Term e, Term g, Term r, Term tc){
@@ -939,6 +1054,7 @@ public class Library extends alice.tuprolog.Library {
 			vm.addTemporaryOutputEvent(out_ev);
             return true;
 	    }
+    	
     }
     
     public boolean inp_s_4(Term e, Term g, Term r, Term tc){
@@ -988,6 +1104,7 @@ public class Library extends alice.tuprolog.Library {
 			vm.addTemporaryOutputEvent(out_ev);
             return true;
 	    }
+    	
     }
     
     public boolean rdp_s_4(Term e, Term g, Term r, Term tc){
@@ -1037,6 +1154,7 @@ public class Library extends alice.tuprolog.Library {
 			vm.addTemporaryOutputEvent(out_ev);
             return true;
 	    }
+    	
     }
     
     public boolean no_s_4(Term e, Term g, Term r, Term tc){
@@ -1075,8 +1193,6 @@ public class Library extends alice.tuprolog.Library {
 	            return true;
 	        } else {
 	        	log("no_s failure");
-//	        	Term term=((LogicTuple)tuple).toTerm();
-//	            unify(goal,term.copyGoal(v,0));
 	            return false;
 	        }
     	}else{
@@ -1088,6 +1204,7 @@ public class Library extends alice.tuprolog.Library {
 			vm.addTemporaryOutputEvent(out_ev);
             return true;
 	    }
+    	
     }
     
     public boolean nop_s_4(Term e, Term g, Term r, Term tc){
@@ -1126,8 +1243,6 @@ public class Library extends alice.tuprolog.Library {
 	            return true;
 	        } else {
 	        	log("nop_s failure");
-//	        	Term term=((LogicTuple)tuple).toTerm();
-//	            unify(goal,term.copyGoal(v,0));
 	            return false;
 	        }
     	}else{
@@ -1139,6 +1254,7 @@ public class Library extends alice.tuprolog.Library {
 			vm.addTemporaryOutputEvent(out_ev);
             return true;
 	    }
+    	
     }
     
     public boolean get_s_2(Term arg0, Term arg1){
@@ -1198,6 +1314,23 @@ public class Library extends alice.tuprolog.Library {
     }
 
 //    MANCA SET_S
+    
+//	public boolean spawn_3(Term agentId, Term agentType, Term arg){
+//	    if (arg.isList()){
+//	        Struct args = (Struct)arg;
+//	        Struct sp_arg = new Struct("spawn",agentId.getRenamedCopy(),
+//											 agentType.getRenamedCopy(),
+//											(Struct)args.getRenamedCopy());
+//			
+//	        InternalOperation spop = InternalOperation.makeSpawn(new LogicTuple(sp_arg));
+//	        alice.tuplecentre.core.OutputEvent ev= new RespectOutputEvent(vm.getCurrentEvent(),spop);
+//	        vm.addOutputEvent(ev);
+//	        return true;
+//	    } else {
+//	        return false;
+//	    }
+//	
+//	}
     
     public boolean current_agent_1(Term arg0){
         Term term=new Struct(vm.getCurrentReactionEvent().getId().toString());
@@ -1262,8 +1395,8 @@ public class Library extends alice.tuprolog.Library {
     public boolean env_2(Term key, Term value){
     	if (value instanceof alice.tuprolog.Var){
     		String res=vm.getCurrentReactionEvent().getEventProp(key.getTerm().toString());
-    		//The specified value doesn't exists.
-    		if (res==null)return false;
+    		if (res==null)
+    			return false;
     		return unify(value, new Struct(res));
     	}
     	return false;
@@ -1295,20 +1428,6 @@ public class Library extends alice.tuprolog.Library {
     	Event ev = vm.getCurrentReactionEvent();
         TupleCentreOperation op = ev.getOperation();
         return op.isResultDefined();
-//        if(op.isResultDefined()){
-//        	System.out.println("[Library-response]: isOutputEv = " + (ev instanceof OutputEvent));
-//        	if(ev instanceof OutputEvent){
-//        		System.out.println("[Library-response]: isLinking = " + ((OutputEvent)ev).isLinking());
-//        		if(((OutputEvent)ev).isLinking())
-//        			return false;
-//        		else{
-//        			System.out.println("[Library-response]: returning TRUE");
-//        			return true;
-//        		}
-//        	}else
-//        		return true;
-//        }
-//        return false;
     }
     
     public boolean completion_0(){
@@ -1428,8 +1547,7 @@ public class Library extends alice.tuprolog.Library {
     	InputEvent ev=vm.getCurrentEvent();
     	InternalEvent ie=new InternalEvent(ev,InternalOperation.makeGetEnv(lt));
     	ie.setTarget(new EnvId((Struct)env));
-    	ie.setSource(vm.getId());
-    	
+    	ie.setSource(vm.getId());    	
 //    	if (vm.getTransducerManager().notifyOutputEnv(ie)){
 //    		vm.fetchTriggeredReactions(ie);
 //    		return true;
@@ -1444,8 +1562,7 @@ public class Library extends alice.tuprolog.Library {
     	InputEvent ev=vm.getCurrentEvent();
     	InternalEvent ie=new InternalEvent(ev,InternalOperation.makeSetEnv(lt));
     	ie.setTarget(new EnvId((Struct)env));
-    	ie.setSource(vm.getId());
-    	
+    	ie.setSource(vm.getId());   	
 //    	if (vm.getTransducerManager().notifyOutputEnv(ie)){
 //    		vm.fetchTriggeredReactions(ie);
 //    		return true;
@@ -1456,102 +1573,6 @@ public class Library extends alice.tuprolog.Library {
     private Prolog getProlog(){
     	return vm.getPrologCore();
     }
-
-//    public boolean out_tc_2(Struct stid, Term tuple){
-//        LogicTuple tid=new LogicTuple(stid);
-//        AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
-//        // get a renamed copy
-//        Term newTuple=tuple.copyGoal(v,0);
-//
-//		Struct outTc = new Struct("out_tc",tid.toTerm(),tuple);
-//        InternalOperation outTCop = InternalOperation.makeOutTC(new LogicTuple(outTc));
-//        													
-//        alice.tuplecentre.core.OutputEvent ev=new RespectOutputEvent(vm.getCurrentEvent(), outTCop);
-//        
-//      //  vm.addOutputEvent(ev);
-//        
-//        AgentId aid;
-//        try {
-//                aid = new AgentId("outTcAgent");
-//                TucsonTupleCentreId tcid = new TucsonTupleCentreId(stid.toString()); //OCCHIOOOOOOOOOOO!
-//                DefaultACC cnt = TucsonMetaACC.getContext(aid);
-//
-//                LogicTuple tuple2 = new LogicTuple(newTuple);
-//
-//                cnt.out(tcid, tuple2, (java.lang.Long) null);
-//        
-//                cnt.exit();
-//
-//                return true;
-//
-//        } catch (InvalidAgentIdException e) {
-//                // TODO Auto-generated catch block
-//                e.printStackTrace();
-//        } catch (TucsonInvalidTupleCentreIdException e) {
-//                // TODO Auto-generated catch block
-//                e.printStackTrace();
-//        } catch (TucsonOperationNotPossibleException e) {
-//                // TODO Auto-generated catch block
-//                e.printStackTrace();
-//        } catch (UnreachableNodeException e) {
-//                // TODO Auto-generated catch block
-//                e.printStackTrace();
-//        } catch (OperationTimeOutException e) {
-//                // TODO Auto-generated catch block
-//                e.printStackTrace();
-//        }
-//        return false;
-//    }
-    
-    /** public boolean success_0(){
-    Event ev = vm.getCurrentReactionEvent();
-    if (!ev.isOutput()){
-        return true;
-    } else {
-    	RespectOperation op = (RespectOperation)ev.getOperation();
-		if (op.isInp() && op.getLogicTupleResult()==null){
-			return false;
-		} else if (op.isRdp() && op.getLogicTupleResult()==null){
-			return false;
-		} else {
-			return true;
-		}
-    }
-}
-
-public boolean failure_0(){
-    Event ev = vm.getCurrentReactionEvent();
-	if (!ev.isOutput()){
-		return false;
-	} else {
-		RespectOperation op = (RespectOperation)ev.getOperation();
-		if (op.isInp() && op.getLogicTupleResult()==null){
-			return true;
-		} else if (op.isRdp() && op.getLogicTupleResult()==null){
-			return true;
-		} else {
-			return false;
-		}
-	}
-}
-
-
-public boolean spawn_3(Term agentId, Term agentType, Term arg){
-    if (arg.isList()){
-        Struct args = (Struct)arg;
-        Struct sp_arg = new Struct("spawn",agentId.getRenamedCopy(),
-										 agentType.getRenamedCopy(),
-										(Struct)args.getRenamedCopy());
-		
-        InternalOperation spop = InternalOperation.makeSpawn(new LogicTuple(sp_arg));
-        alice.tuplecentre.core.OutputEvent ev= new RespectOutputEvent(vm.getCurrentEvent(),spop);
-        vm.addOutputEvent(ev);
-        return true;
-    } else {
-        return false;
-    }
-
-}*/
     
     private Term list2tuple(List<Tuple> list){
 		Term [] termArray = new Term[list.size()];

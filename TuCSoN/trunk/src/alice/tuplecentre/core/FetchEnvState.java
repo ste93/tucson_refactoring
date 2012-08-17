@@ -32,11 +32,10 @@ public class FetchEnvState extends TupleCentreVMState {
     }
     
     public TupleCentreVMState getNextState(){
-        if (vm.triggeredReaction()){
+        if (vm.triggeredReaction())
             return reactingState;
-        } else {
+        else
             return speakingState;
-        }
     }
     
     public void resolveLinks(){
@@ -49,4 +48,5 @@ public class FetchEnvState extends TupleCentreVMState {
         InputEvent ev=vm.getCurrentEvent();
         vm.fetchTriggeredReactions(ev);
     }
+    
 }

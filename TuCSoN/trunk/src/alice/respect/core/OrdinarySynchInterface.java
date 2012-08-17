@@ -19,16 +19,16 @@ package alice.respect.core;
 
 import java.util.List;
 
-import alice.logictuple.InvalidLogicTupleException;
-import alice.logictuple.InvalidTupleOperationException;
 import alice.logictuple.LogicTuple;
 import alice.logictuple.TupleArgument;
+import alice.logictuple.exceptions.InvalidLogicTupleException;
+import alice.logictuple.exceptions.InvalidTupleOperationException;
 
 import alice.respect.api.AgentId;
-import alice.respect.api.IBlockingContext;
+import alice.respect.api.IOrdinarySynchInterface;
 import alice.respect.api.IRespectTC;
 import alice.respect.api.IRespectOperation;
-import alice.respect.api.OperationNotPossibleException;
+import alice.respect.api.exceptions.OperationNotPossibleException;
 
 /**
  *
@@ -37,9 +37,9 @@ import alice.respect.api.OperationNotPossibleException;
  * 
  * @author aricci
  */
-public class BlockingContext extends AbstractContext implements IBlockingContext {
+public class OrdinarySynchInterface extends RootInterface implements IOrdinarySynchInterface {
     
-    public BlockingContext(IRespectTC core){
+    public OrdinarySynchInterface(IRespectTC core){
         super(core);
     }
     
@@ -60,15 +60,6 @@ public class BlockingContext extends AbstractContext implements IBlockingContext
         return unify(t,op.getLogicTupleResult());
     }
     
-    public LogicTuple no(AgentId id, LogicTuple t) throws InvalidLogicTupleException,
-    	OperationNotPossibleException {
-        if (t==null)
-            throw new InvalidLogicTupleException();
-		IRespectOperation op = getCore().no(id,t);
-		op.waitForOperationCompletion();
-        return unify(t,op.getLogicTupleResult());
-    }
-    
 	public LogicTuple rd(AgentId id, LogicTuple t) throws InvalidLogicTupleException,
 		OperationNotPossibleException {
 		if (t==null)
@@ -77,12 +68,30 @@ public class BlockingContext extends AbstractContext implements IBlockingContext
 		op.waitForOperationCompletion();
 		return unify(t,op.getLogicTupleResult());
 	}
+	
+	public LogicTuple no(AgentId id, LogicTuple t) throws InvalidLogicTupleException,
+		OperationNotPossibleException {
+	    if (t==null)
+	        throw new InvalidLogicTupleException();
+		IRespectOperation op = getCore().no(id,t);
+		op.waitForOperationCompletion();
+	    return unify(t,op.getLogicTupleResult());
+	}
 
 	public LogicTuple inp(AgentId id, LogicTuple t) throws InvalidLogicTupleException,
 		OperationNotPossibleException {
 		if (t==null)
 			throw new InvalidLogicTupleException();
 		IRespectOperation op = getCore().inp(id,t);
+		op.waitForOperationCompletion();
+		return unify(t,op.getLogicTupleResult());
+	}
+	
+	public LogicTuple rdp(AgentId id, LogicTuple t) throws InvalidLogicTupleException,
+		OperationNotPossibleException {
+		if (t==null)
+			throw new InvalidLogicTupleException();
+		IRespectOperation op = getCore().rdp(id,t);
 		op.waitForOperationCompletion();
 		return unify(t,op.getLogicTupleResult());
 	}
@@ -95,16 +104,7 @@ public class BlockingContext extends AbstractContext implements IBlockingContext
 		op.waitForOperationCompletion();
 		return unify(t,op.getLogicTupleResult());
 	}
-    
-	public LogicTuple rdp(AgentId id, LogicTuple t) throws InvalidLogicTupleException,
-		OperationNotPossibleException {
-		if (t==null)
-			throw new InvalidLogicTupleException();
-		IRespectOperation op = getCore().rdp(id,t);
-		op.waitForOperationCompletion();
-		return unify(t,op.getLogicTupleResult());
-	}
-  	
+ 	
 	public List<LogicTuple> set(AgentId aid, LogicTuple tuple) throws OperationNotPossibleException,
 		InvalidLogicTupleException {		
 		IRespectOperation op = getCore().set(aid, tuple);

@@ -24,5 +24,8 @@ package alice.tuplecentre.core;
  *
  * @version 1.0
  */
-@SuppressWarnings("serial")
-public class InvalidTupleException extends Exception {}
+public class InvalidTupleException extends Exception {
+
+	private static final long serialVersionUID = -3585492012733336883L;
+	
+}

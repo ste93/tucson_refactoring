@@ -1,16 +1,19 @@
 package alice.respect.api;
 
 import alice.logictuple.*;
+import alice.logictuple.exceptions.InvalidLogicTupleException;
+import alice.respect.api.exceptions.OperationNotPossibleException;
 import alice.tuplecentre.api.IId;
 import alice.tuplecentre.core.OperationCompletionListener;
 
 /**
- * A ReSpecT Tuple Centre Interface with blocking operations.
+ * A ReSpecT Tuple Centre Interface to issue ReSpecT ordinary primitives using an
+ * asynchronous semantics.
  * 
  * @author aricci
  *
  */
-public interface INonBlockingContext {
+public interface IOrdinaryAsynchInterface {
     
 	IRespectOperation out(IId aid, LogicTuple t, OperationCompletionListener l) throws InvalidLogicTupleException, OperationNotPossibleException;
 
@@ -30,8 +33,6 @@ public interface INonBlockingContext {
 	
 	IRespectOperation set(IId aid, LogicTuple t, OperationCompletionListener l) throws InvalidLogicTupleException, OperationNotPossibleException;
 
-//	my personal updates
-	
 	IRespectOperation out_all(IId aid, LogicTuple t, OperationCompletionListener l) throws InvalidLogicTupleException, OperationNotPossibleException;
 	
 	IRespectOperation in_all(IId aid, LogicTuple t, OperationCompletionListener l) throws InvalidLogicTupleException, OperationNotPossibleException;
@@ -51,6 +52,5 @@ public interface INonBlockingContext {
 	IRespectOperation uinp(IId aid, LogicTuple t, OperationCompletionListener l) throws InvalidLogicTupleException, OperationNotPossibleException;
 	
 	IRespectOperation unop(IId aid, LogicTuple t, OperationCompletionListener l) throws InvalidLogicTupleException, OperationNotPossibleException;
-//	*******************
 	
 }

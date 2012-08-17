@@ -33,4 +33,5 @@ public interface ObservableEventListener {
 	void setSpec_completed(TupleCentreId tid, IId id);
 	void getSpec_requested(TupleCentreId tid, IId id);
 	void getSpec_completed(TupleCentreId tid, IId id, String spec);
+	
 }

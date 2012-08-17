@@ -18,8 +18,9 @@
 package alice.respect.api;
 
 import java.util.List;
-
 import alice.logictuple.*;
+import alice.respect.api.exceptions.InvalidSpecificationException;
+import alice.respect.api.exceptions.OperationNotPossibleException;
 import alice.tuplecentre.api.InspectableEventListener;
 import alice.tuplecentre.api.ObservableEventListener;
 
@@ -58,9 +59,6 @@ public interface IManagementContext  {
 	 */
 	boolean abortOperation(long opId);
 	
-
-	//
-	
 	/**
      * Enables/Disables the management mode
      * 
@@ -92,15 +90,6 @@ public interface IManagementContext  {
 	 */
 	void nextStepCommand() throws OperationNotPossibleException;
 
-	/**
-	 * Enables spying information about VM state and dynamics
-	 * 
-	 * @param what true to enable 
-	 */
-	void setSpy(boolean what);
-	
-	//
-	
 	/**
 	 * Gets current content of the tuple set 
 	 * 
@@ -142,5 +131,3 @@ public interface IManagementContext  {
     public boolean hasInspectors();
 
 }
-
-

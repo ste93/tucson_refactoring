@@ -18,7 +18,7 @@
 package alice.tucson.api;
 
 import alice.respect.api.AgentId;
-import alice.respect.api.InvalidAgentIdException;
+import alice.respect.api.exceptions.InvalidAgentIdException;
 
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 

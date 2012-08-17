@@ -1,5 +1,7 @@
 /*
- * Tuple Centre media - Copyright (C) 2001-2002  aliCE team at deis.unibo.it
+ * Created on Dec 31, 2003
+ * 
+ * Copyright (C)aliCE team at deis.unibo.it
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -14,13 +16,27 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
  */
-package alice.tuplecentre.core;
+package alice.respect.api.exceptions;
+
+import alice.respect.api.IRespectOperation;
 
 /**
- * Exception thrown when the operation execution is not allowed.
- * @author  aricci
+ * @author aricci
+ *
  */
-@SuppressWarnings("serial")
-public class OperationNotPossibleException extends Exception {
+public class OperationTimeOutException extends RespectException {
+	
+	private static final long serialVersionUID = 582402145982163993L;
+	private IRespectOperation op;
+	
+	public OperationTimeOutException(IRespectOperation op){
+		this.op=op;			
+	}
+	
+	public IRespectOperation getOperation(){
+		return op;
+	}
+	
 }

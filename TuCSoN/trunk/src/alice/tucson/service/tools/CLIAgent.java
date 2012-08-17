@@ -18,6 +18,8 @@
 package alice.tucson.service.tools;
 
 import alice.logictuple.*;
+import alice.logictuple.exceptions.InvalidLogicTupleException;
+import alice.logictuple.exceptions.InvalidTupleOperationException;
 
 import alice.tucson.api.*;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
@@ -27,7 +29,7 @@ import alice.tucson.parsing.MyOpManager;
 import alice.tucson.parsing.TucsonOpParser;
 import alice.tucson.service.TucsonCmd;
 
-import alice.tuplecentre.core.OperationTimeOutException;
+import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 import alice.tuprolog.Parser;
 
 import java.io.*;

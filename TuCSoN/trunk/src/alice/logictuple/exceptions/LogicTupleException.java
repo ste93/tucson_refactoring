@@ -1,5 +1,5 @@
 /*
- * ReSpecT - Copyright (C) aliCE team at deis.unibo.it
+ * Logic Tuple Communication Language - Copyright (C) 2001-2002  aliCE team at deis.unibo.it
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -15,16 +15,22 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-package alice.respect.api;
+package alice.logictuple.exceptions;
+
+import alice.logictuple.LogicTuple;
 
 
 /**
- * This exception is thrown when an invalid tuple centre identifier
- * is used
+ * Logic Tuple root base Exception class
  *
- * Tuple centre identifier must be ground logic term
- * 
+ * @see LogicTuple
+ *
  * @author aricci
+ * @version 1.0
  */
-@SuppressWarnings("serial")
-public class InvalidTupleCentreIdException extends RespectException {}
+public abstract class LogicTupleException extends Exception{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;}

@@ -16,17 +16,19 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 package alice.respect.core;
+
 import java.util.LinkedList;
 import java.util.List;
 
 import alice.logictuple.*;
+import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.respect.api.AgentId;
-import alice.respect.api.IBlockingSpecContext;
+import alice.respect.api.ISpecificationSynchInterface;
 import alice.respect.api.IRespectTC;
 import alice.respect.api.IRespectOperation;
-import alice.respect.api.InvalidSpecificationException;
-import alice.respect.api.OperationNotPossibleException;
 import alice.respect.api.RespectSpecification;
+import alice.respect.api.exceptions.InvalidSpecificationException;
+import alice.respect.api.exceptions.OperationNotPossibleException;
 
 /**
  *
@@ -35,12 +37,9 @@ import alice.respect.api.RespectSpecification;
  * 
  * @author aricci
  */
-public class BlockingSpecContext extends AbstractContext implements IBlockingSpecContext {
+public class SpecificationSynchInterface extends RootInterface implements ISpecificationSynchInterface {
     
-    //private IRespectTC core;
-    
-    public BlockingSpecContext(IRespectTC core){
-    	
+    public SpecificationSynchInterface(IRespectTC core){
     	super(core);
     }
     
@@ -61,15 +60,6 @@ public class BlockingSpecContext extends AbstractContext implements IBlockingSpe
         return unify(t,op.getLogicTupleResult());
     }
     
-    public LogicTuple no_s(AgentId id, LogicTuple t) throws InvalidLogicTupleException, OperationNotPossibleException {
-        if (t==null){
-            throw new InvalidLogicTupleException();
-        }
-		IRespectOperation op = getCore().no_s(id,t);
-		op.waitForOperationCompletion();
-        return unify(t,op.getLogicTupleResult());
-    }
-    
 	public LogicTuple rd_s(AgentId id, LogicTuple t) throws InvalidLogicTupleException, OperationNotPossibleException {
 		if (t==null){
 			throw new InvalidLogicTupleException();
@@ -79,30 +69,22 @@ public class BlockingSpecContext extends AbstractContext implements IBlockingSpe
 		return unify(t,op.getLogicTupleResult());
 	}
 
+	public LogicTuple no_s(AgentId id, LogicTuple t) throws InvalidLogicTupleException, OperationNotPossibleException {
+        if (t==null){
+            throw new InvalidLogicTupleException();
+        }
+		IRespectOperation op = getCore().no_s(id,t);
+		op.waitForOperationCompletion();
+        return unify(t,op.getLogicTupleResult());
+    }
+	
 	public LogicTuple inp_s(AgentId id, LogicTuple t) throws InvalidLogicTupleException, OperationNotPossibleException {
 		if (t==null){
 			throw new InvalidLogicTupleException();
 		}
 		IRespectOperation op = getCore().inp_s(id,t);
 		op.waitForOperationCompletion();
-//		LogicTuple result = op.getLogicTupleResult();
-//		if (result==null)
-//			return null;
-//		else
-			return unify(t,op.getLogicTupleResult());
-	}
-	
-	public LogicTuple nop_s(AgentId id, LogicTuple t) throws InvalidLogicTupleException, OperationNotPossibleException {
-		if (t==null){
-			throw new InvalidLogicTupleException();
-		}
-		IRespectOperation op = getCore().nop_s(id,t);
-		op.waitForOperationCompletion();
-//		LogicTuple result = op.getLogicTupleResult();
-//		if (result==null)
-//			return null;
-//		else
-			return unify(t,op.getLogicTupleResult());
+		return unify(t,op.getLogicTupleResult());
 	}
     
 	public LogicTuple rdp_s(AgentId id, LogicTuple t) throws InvalidLogicTupleException, OperationNotPossibleException {
@@ -111,19 +93,22 @@ public class BlockingSpecContext extends AbstractContext implements IBlockingSpe
 		}
 		IRespectOperation op = getCore().rdp_s(id,t);
 		op.waitForOperationCompletion();
-//		LogicTuple result = op.getLogicTupleResult();
-//		if (result==null)
-//			return null;
-//		else
-			return unify(t,op.getLogicTupleResult());
+		return unify(t,op.getLogicTupleResult());
+	}
+	
+	public LogicTuple nop_s(AgentId id, LogicTuple t) throws InvalidLogicTupleException, OperationNotPossibleException {
+		if (t==null){
+			throw new InvalidLogicTupleException();
+		}
+		IRespectOperation op = getCore().nop_s(id,t);
+		op.waitForOperationCompletion();
+		return unify(t,op.getLogicTupleResult());
 	}
   	
 	public List<LogicTuple> set_s(AgentId aid, RespectSpecification spec) throws OperationNotPossibleException, InvalidSpecificationException {
 		IRespectOperation op = getCore().set_s(aid, spec);
-		System.out.println("aid = " + aid);
 		if(aid.toString().equals("node_agent") || aid.toString().startsWith("':'(inspector_edit_spec_"))
 			return new LinkedList<LogicTuple>();
-		System.out.println("here");
 		op.waitForOperationCompletion();
 		return op.getLogicTupleListResult();
 	}

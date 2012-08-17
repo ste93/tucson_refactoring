@@ -1,16 +1,19 @@
 package alice.respect.api;
 
 import alice.logictuple.*;
+import alice.logictuple.exceptions.InvalidLogicTupleException;
+import alice.respect.api.exceptions.OperationNotPossibleException;
 import alice.tuplecentre.api.IId;
 import alice.tuplecentre.core.OperationCompletionListener;
 
 /**
- * A ReSpecT Tuple Centre Interface with non blocking specification operations.
+ * A ReSpecT Tuple Centre Interface to issue ReSpecT specification primitives using an
+ * asynchronous semantics.
  * 
  * @author aricci
  *
  */
-public interface INonBlockingSpecContext {
+public interface ISpecificationAsynchInterface {
     
 	IRespectOperation no_s(IId aid, LogicTuple t, OperationCompletionListener l) throws InvalidLogicTupleException, OperationNotPossibleException;
 	
@@ -29,9 +32,5 @@ public interface INonBlockingSpecContext {
 	IRespectOperation get_s(IId aid, OperationCompletionListener l) throws InvalidLogicTupleException, OperationNotPossibleException;
 	
 	IRespectOperation set_s(IId aid, RespectSpecification spec, OperationCompletionListener l) throws InvalidLogicTupleException, OperationNotPossibleException;
-
-	/*void setSpec(IId aid, RespectSpecification spec) throws InvalidSpecificationException;
-	
-	RespectSpecification getSpec(IId aid); */  
 
 }

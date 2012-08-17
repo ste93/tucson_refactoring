@@ -10,12 +10,11 @@ import alice.tuplecentre.api.TupleTemplate;
  * 
  * A new abstract class for the context
  */
-
-public abstract class AbstractContext {
+public abstract class RootInterface {
 	
 	private IRespectTC core;
 	
-	public AbstractContext(IRespectTC core){
+	public RootInterface(IRespectTC core){
 		this.core = core;
 	}
 	
@@ -24,9 +23,6 @@ public abstract class AbstractContext {
 	}
 	
 	protected LogicTuple unify(TupleTemplate template, Tuple tuple){
-		
-//		System.out.println("[AbstractContext] unify: ci entro");
-		
 		boolean res = template.propagate(core.getVM().getRespectVMContext().getPrologCore(), tuple);
 		if(res){
 			return (LogicTuple) template;

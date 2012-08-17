@@ -28,12 +28,11 @@ package alice.tuplecentre.core;
  *
  * @author aricci
  */
-@SuppressWarnings("serial")
 public class TriggeredReaction implements java.io.Serializable {
 
-    /** the event triggering the reaction */
+    private static final long serialVersionUID = -2906772411975529805L;
+	/** the event triggering the reaction */
     private Event      event;
-
     /** the reaction triggered */
     private Reaction   reaction;
 

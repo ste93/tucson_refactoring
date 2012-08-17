@@ -1,14 +1,17 @@
 package alice.respect.api;
 
 import alice.logictuple.*;
+import alice.logictuple.exceptions.InvalidLogicTupleException;
+import alice.respect.api.exceptions.OperationNotPossibleException;
 
 /**
- * A ReSpecT Tuple Centre Interface with blocking specification operations.
+ * A ReSpecT Tuple Centre Interface to issue ReSpecT specification primitives using a
+ * synchronous semantics.
  * 
  * @author aricci
  *
  */
-public interface IBlockingSpecContext {
+public interface ISpecificationSynchInterface {
     
 	void out_s(AgentId aid, LogicTuple t) throws InvalidLogicTupleException, OperationNotPossibleException;
 
