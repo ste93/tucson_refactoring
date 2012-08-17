@@ -51,23 +51,23 @@ public class RespectTCContainer{
 		return true;
 	}
 
-	public IOrdinarySynchInterface getBlockingContext(TupleCentreId id) throws OperationNotPossibleException{
+	public IOrdinarySynchInterface getOrdinarySynchInterface(TupleCentreId id) throws OperationNotPossibleException{
 		try{
-			return ((RespectTC) registry.getTC(id)).getBlockingContext();
+			return ((RespectTC) registry.getTC(id)).getOrdinarySynchInterface();
 		}catch (Exception e){
 			RespectTC tc = new RespectTC(id, this, QUEUE_SIZE);
 			this.registry.addTC(tc);
-			return tc.getBlockingContext();
+			return tc.getOrdinarySynchInterface();
 		}
 	}
 
-	public IOrdinaryAsynchInterface getNonBlockingContext(TupleCentreId id){
+	public IOrdinaryAsynchInterface getOrdinaryAsynchInterface(TupleCentreId id){
 		try{
-			return ((RespectTC) registry.getTC(id)).getNonBlockingContext();
+			return ((RespectTC) registry.getTC(id)).getOrdinaryAsynchInterface();
 		}catch (Exception e){
 			RespectTC tc = new RespectTC(id, this, QUEUE_SIZE);
 			this.registry.addTC(tc);
-			return tc.getNonBlockingContext();
+			return tc.getOrdinaryAsynchInterface();
 		}
 	}
 
@@ -98,23 +98,23 @@ public class RespectTCContainer{
 			this.stub = stub;
 	}
 
-	public ISpecificationAsynchInterface getNonBlockingSpecContext(TupleCentreId id) throws OperationNotPossibleException{
+	public ISpecificationAsynchInterface getSpecificationAsynchInterface(TupleCentreId id) throws OperationNotPossibleException{
 		try{
-			return ((RespectTC) registry.getTC(id)).getNonBlockingSpecContext();
+			return ((RespectTC) registry.getTC(id)).getSpecificationAsynchInterface();
 		}catch (Exception e){
 			RespectTC tc = new RespectTC(id, this, QUEUE_SIZE);
 			this.registry.addTC(tc);
-			return tc.getNonBlockingSpecContext();
+			return tc.getSpecificationAsynchInterface();
 		}
 	}
 
-	public ISpecificationSynchInterface getBlockingSpecContext(TupleCentreId id) throws OperationNotPossibleException{
+	public ISpecificationSynchInterface getSpecificationSynchInterface(TupleCentreId id) throws OperationNotPossibleException{
 		try{
-			return ((RespectTC) registry.getTC(id)).getBlockingSpecContext();
+			return ((RespectTC) registry.getTC(id)).getSpecificationSynchInterface();
 		}catch (Exception e){
 			RespectTC tc = new RespectTC(id, this, QUEUE_SIZE);
 			this.registry.addTC(tc);
-			return tc.getBlockingSpecContext();
+			return tc.getSpecificationSynchInterface();
 		}
 	}
 

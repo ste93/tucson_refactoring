@@ -271,4 +271,7 @@ public interface OrdinaryAsynchACC extends RootACC{
 	ITucsonOperation get(Object tid, TucsonOperationCompletionListener l)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException;
 	
+	ITucsonOperation spawn(Object tid, LogicTuple tuple, TucsonOperationCompletionListener l)
+			throws TucsonOperationNotPossibleException, UnreachableNodeException;
+	
 }

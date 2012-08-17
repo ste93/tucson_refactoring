@@ -24,11 +24,11 @@ import alice.logictuple.TupleArgument;
 import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.logictuple.exceptions.InvalidTupleOperationException;
 
-import alice.respect.api.AgentId;
 import alice.respect.api.IOrdinarySynchInterface;
 import alice.respect.api.IRespectTC;
 import alice.respect.api.IRespectOperation;
 import alice.respect.api.exceptions.OperationNotPossibleException;
+import alice.tuplecentre.api.IId;
 
 /**
  *
@@ -43,7 +43,7 @@ public class OrdinarySynchInterface extends RootInterface implements IOrdinarySy
         super(core);
     }
     
-    public void out(AgentId id, LogicTuple t) throws InvalidLogicTupleException,
+    public void out(IId id, LogicTuple t) throws InvalidLogicTupleException,
     	OperationNotPossibleException {
         if (t==null)
             throw new InvalidLogicTupleException();
@@ -51,7 +51,7 @@ public class OrdinarySynchInterface extends RootInterface implements IOrdinarySy
 		op.waitForOperationCompletion();
     }
     
-    public LogicTuple in(AgentId id, LogicTuple t) throws InvalidLogicTupleException,
+    public LogicTuple in(IId id, LogicTuple t) throws InvalidLogicTupleException,
     	OperationNotPossibleException {
         if (t==null)
             throw new InvalidLogicTupleException();
@@ -60,7 +60,7 @@ public class OrdinarySynchInterface extends RootInterface implements IOrdinarySy
         return unify(t,op.getLogicTupleResult());
     }
     
-	public LogicTuple rd(AgentId id, LogicTuple t) throws InvalidLogicTupleException,
+	public LogicTuple rd(IId id, LogicTuple t) throws InvalidLogicTupleException,
 		OperationNotPossibleException {
 		if (t==null)
 			throw new InvalidLogicTupleException();
@@ -69,7 +69,7 @@ public class OrdinarySynchInterface extends RootInterface implements IOrdinarySy
 		return unify(t,op.getLogicTupleResult());
 	}
 	
-	public LogicTuple no(AgentId id, LogicTuple t) throws InvalidLogicTupleException,
+	public LogicTuple no(IId id, LogicTuple t) throws InvalidLogicTupleException,
 		OperationNotPossibleException {
 	    if (t==null)
 	        throw new InvalidLogicTupleException();
@@ -78,7 +78,7 @@ public class OrdinarySynchInterface extends RootInterface implements IOrdinarySy
 	    return unify(t,op.getLogicTupleResult());
 	}
 
-	public LogicTuple inp(AgentId id, LogicTuple t) throws InvalidLogicTupleException,
+	public LogicTuple inp(IId id, LogicTuple t) throws InvalidLogicTupleException,
 		OperationNotPossibleException {
 		if (t==null)
 			throw new InvalidLogicTupleException();
@@ -87,7 +87,7 @@ public class OrdinarySynchInterface extends RootInterface implements IOrdinarySy
 		return unify(t,op.getLogicTupleResult());
 	}
 	
-	public LogicTuple rdp(AgentId id, LogicTuple t) throws InvalidLogicTupleException,
+	public LogicTuple rdp(IId id, LogicTuple t) throws InvalidLogicTupleException,
 		OperationNotPossibleException {
 		if (t==null)
 			throw new InvalidLogicTupleException();
@@ -96,7 +96,7 @@ public class OrdinarySynchInterface extends RootInterface implements IOrdinarySy
 		return unify(t,op.getLogicTupleResult());
 	}
 	
-	public LogicTuple nop(AgentId id, LogicTuple t) throws InvalidLogicTupleException,
+	public LogicTuple nop(IId id, LogicTuple t) throws InvalidLogicTupleException,
 		OperationNotPossibleException {
 		if (t==null)
 			throw new InvalidLogicTupleException();
@@ -105,20 +105,20 @@ public class OrdinarySynchInterface extends RootInterface implements IOrdinarySy
 		return unify(t,op.getLogicTupleResult());
 	}
  	
-	public List<LogicTuple> set(AgentId aid, LogicTuple tuple) throws OperationNotPossibleException,
+	public List<LogicTuple> set(IId aid, LogicTuple tuple) throws OperationNotPossibleException,
 		InvalidLogicTupleException {		
 		IRespectOperation op = getCore().set(aid, tuple);
 		op.waitForOperationCompletion();
 		return op.getLogicTupleListResult();
 	}
 	
-	public List<LogicTuple> get(AgentId aid) throws OperationNotPossibleException {
+	public List<LogicTuple> get(IId aid) throws OperationNotPossibleException {
 		IRespectOperation op = getCore().get(aid);
 		op.waitForOperationCompletion();
 		return op.getLogicTupleListResult();
 	}
 	
-	public void out_all(AgentId id, LogicTuple t) throws InvalidLogicTupleException,
+	public void out_all(IId id, LogicTuple t) throws InvalidLogicTupleException,
 		OperationNotPossibleException {
 	    if (t==null)
 	        throw new InvalidLogicTupleException();
@@ -126,7 +126,7 @@ public class OrdinarySynchInterface extends RootInterface implements IOrdinarySy
 		op.waitForOperationCompletion();
 	}
 	
-	public LogicTuple in_all(AgentId id, LogicTuple t) throws InvalidLogicTupleException,
+	public LogicTuple in_all(IId id, LogicTuple t) throws InvalidLogicTupleException,
 		OperationNotPossibleException {
 		IRespectOperation op = null;
 		TupleArgument arg = null;
@@ -142,7 +142,7 @@ public class OrdinarySynchInterface extends RootInterface implements IOrdinarySy
 		return unify(new LogicTuple(new TupleArgument(arg.toTerm())),op.getLogicTupleResult());
 	}
 
-	public LogicTuple rd_all(AgentId id, LogicTuple t) throws InvalidLogicTupleException,
+	public LogicTuple rd_all(IId id, LogicTuple t) throws InvalidLogicTupleException,
 		OperationNotPossibleException {
 		IRespectOperation op = null;
 		TupleArgument arg = null;
@@ -158,7 +158,7 @@ public class OrdinarySynchInterface extends RootInterface implements IOrdinarySy
 		return unify(new LogicTuple(new TupleArgument(arg.toTerm())),op.getLogicTupleResult());
 	}
 	
-	public LogicTuple no_all(AgentId id, LogicTuple t) throws InvalidLogicTupleException,
+	public LogicTuple no_all(IId id, LogicTuple t) throws InvalidLogicTupleException,
 		OperationNotPossibleException {
 		IRespectOperation op = null;
 		TupleArgument arg = null;
@@ -174,7 +174,7 @@ public class OrdinarySynchInterface extends RootInterface implements IOrdinarySy
 		return unify(new LogicTuple(new TupleArgument(arg.toTerm())),op.getLogicTupleResult());
 	}
 	
-    public LogicTuple urd(AgentId id, LogicTuple t) throws InvalidLogicTupleException,
+    public LogicTuple urd(IId id, LogicTuple t) throws InvalidLogicTupleException,
     	OperationNotPossibleException {
         if (t==null)
             throw new InvalidLogicTupleException();
@@ -183,7 +183,7 @@ public class OrdinarySynchInterface extends RootInterface implements IOrdinarySy
         return unify(t,op.getLogicTupleResult());
     }
     
-    public LogicTuple uin(AgentId id, LogicTuple t) throws InvalidLogicTupleException,
+    public LogicTuple uin(IId id, LogicTuple t) throws InvalidLogicTupleException,
     	OperationNotPossibleException {
         if (t==null)
             throw new InvalidLogicTupleException();
@@ -192,7 +192,7 @@ public class OrdinarySynchInterface extends RootInterface implements IOrdinarySy
         return unify(t,op.getLogicTupleResult());
     }
     
-    public LogicTuple uno(AgentId id, LogicTuple t) throws InvalidLogicTupleException,
+    public LogicTuple uno(IId id, LogicTuple t) throws InvalidLogicTupleException,
 		OperationNotPossibleException {
 	    if (t==null)
 	        throw new InvalidLogicTupleException();
@@ -201,7 +201,7 @@ public class OrdinarySynchInterface extends RootInterface implements IOrdinarySy
 	    return unify(t,op.getLogicTupleResult());
 	}
     
-    public LogicTuple urdp(AgentId id, LogicTuple t) throws InvalidLogicTupleException,
+    public LogicTuple urdp(IId id, LogicTuple t) throws InvalidLogicTupleException,
     	OperationNotPossibleException {
         if (t==null)
             throw new InvalidLogicTupleException();
@@ -211,7 +211,7 @@ public class OrdinarySynchInterface extends RootInterface implements IOrdinarySy
 		return unify(t,result);
     }
     
-    public LogicTuple uinp(AgentId id, LogicTuple t) throws InvalidLogicTupleException,
+    public LogicTuple uinp(IId id, LogicTuple t) throws InvalidLogicTupleException,
     	OperationNotPossibleException {
         if (t==null)
             throw new InvalidLogicTupleException();
@@ -221,7 +221,7 @@ public class OrdinarySynchInterface extends RootInterface implements IOrdinarySy
 		return unify(t,result);
     }
     
-    public LogicTuple unop(AgentId id, LogicTuple t) throws InvalidLogicTupleException,
+    public LogicTuple unop(IId id, LogicTuple t) throws InvalidLogicTupleException,
 		OperationNotPossibleException {
 	    if (t==null)
 	        throw new InvalidLogicTupleException();

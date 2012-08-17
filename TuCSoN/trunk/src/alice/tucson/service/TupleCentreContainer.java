@@ -192,7 +192,7 @@ public class TupleCentreContainer{
 		IOrdinaryAsynchInterface context = null;
 		try{
 //			log("(TupleCentreId) tid.getInternalTupleCentreId() = " + ((TupleCentreId) tid.getInternalTupleCentreId()));
-			context = (RespectTCContainer.getRespectTCContainer()).getNonBlockingContext((TupleCentreId) tid.getInternalTupleCentreId());
+			context = (RespectTCContainer.getRespectTCContainer()).getOrdinaryAsynchInterface((TupleCentreId) tid.getInternalTupleCentreId());
 			if(type == TucsonOperation.noCode())
 				return context.no((AgentId) aid.getLocalAgentId(), t, l);
 			if(type == TucsonOperation.nopCode())
@@ -254,7 +254,7 @@ public class TupleCentreContainer{
 		ITupleCentreOperation res = null;
 		ISpecificationAsynchInterface context = null;
 		try{
-			context = (RespectTCContainer.getRespectTCContainer()).getNonBlockingSpecContext((TupleCentreId) tid.getInternalTupleCentreId());			
+			context = (RespectTCContainer.getRespectTCContainer()).getSpecificationAsynchInterface((TupleCentreId) tid.getInternalTupleCentreId());			
 			if(type == TucsonOperation.no_sCode())
 				return context.no_s((AgentId) aid.getLocalAgentId(), t, l);
 			if(type == TucsonOperation.nop_sCode())
@@ -294,7 +294,7 @@ public class TupleCentreContainer{
 	public static Object doBlockingOperation(int type, TucsonAgentId aid, TucsonTupleCentreId tid, Object o) throws TucsonInvalidLogicTupleException, TucsonOperationNotPossibleException{
 		IOrdinarySynchInterface context = null;
 		try{
-			context = (IOrdinarySynchInterface) (RespectTCContainer.getRespectTCContainer()).getBlockingContext((TupleCentreId) tid.getInternalTupleCentreId());			
+			context = (IOrdinarySynchInterface) (RespectTCContainer.getRespectTCContainer()).getOrdinarySynchInterface((TupleCentreId) tid.getInternalTupleCentreId());			
 			if(type == TucsonOperation.outCode()){
 				context.out((AgentId) aid.getLocalAgentId(), (LogicTuple) o);
 				return o;
@@ -323,6 +323,49 @@ public class TupleCentreContainer{
 		}
 		return null;
 	}
+	
+	/**
+	 * SPAWN ADDITION
+	 * 
+	 * @param type
+	 * @param aid
+	 * @param tid
+	 * @param t
+	 * 
+	 * @return
+	 * 
+	 * @throws TucsonInvalidLogicTupleException
+	 * @throws TucsonOperationNotPossibleException
+	 */
+	public static LogicTuple doBlockingOperation(int type,
+			TucsonTupleCentreId aid, TucsonTupleCentreId tid, LogicTuple t)
+					throws TucsonInvalidLogicTupleException,
+					TucsonOperationNotPossibleException{			
+		IOrdinarySynchInterface context = null;
+		try{
+			context = RespectTCContainer.getRespectTCContainer().getOrdinarySynchInterface((TupleCentreId) tid.getInternalTupleCentreId());
+			if(type == TucsonOperation.outCode()){
+				context.out((TupleCentreId) aid.getInternalTupleCentreId(), t);
+				return t;
+			}if(type == TucsonOperation.inCode())
+				return context.in((TupleCentreId) aid.getInternalTupleCentreId(), t);
+			if(type == TucsonOperation.rdCode())
+				return context.rd((TupleCentreId) aid.getInternalTupleCentreId(), t);
+			if(type == TucsonOperation.noCode())
+				return context.no((TupleCentreId) aid.getInternalTupleCentreId(), t);
+			if(type == TucsonOperation.inpCode())
+				return context.inp((TupleCentreId) aid.getInternalTupleCentreId(), t);
+			if(type == TucsonOperation.rdpCode())
+				return context.rdp((TupleCentreId) aid.getInternalTupleCentreId(), t);
+			if(type == TucsonOperation.nopCode())
+				return context.nop((TupleCentreId) aid.getInternalTupleCentreId(), t);
+		}catch(InvalidLogicTupleException e){
+			throw new TucsonInvalidLogicTupleException();
+		}catch(OperationNotPossibleException e){
+			throw new TucsonOperationNotPossibleException();
+		}
+		return null;
+	}
 
 	/**
 	 * 
@@ -339,7 +382,7 @@ public class TupleCentreContainer{
 		LogicTuple res = null;		
 		ISpecificationSynchInterface context = null;
 		try{
-			context = (ISpecificationSynchInterface) (RespectTCContainer.getRespectTCContainer()).getBlockingSpecContext((TupleCentreId) tid.getInternalTupleCentreId());
+			context = (ISpecificationSynchInterface) (RespectTCContainer.getRespectTCContainer()).getSpecificationSynchInterface((TupleCentreId) tid.getInternalTupleCentreId());
 			if(type == TucsonOperation.out_sCode()){
 				context.out_s((AgentId) aid.getLocalAgentId(), (LogicTuple) t);
 				return res;

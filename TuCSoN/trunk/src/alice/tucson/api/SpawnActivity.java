@@ -1,17 +1,29 @@
 package alice.tucson.api;
 
+import java.io.Serializable;
+
 import alice.logictuple.LogicTuple;
+
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonInvalidLogicTupleException;
-import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
+
 import alice.tucson.service.TucsonOperation;
 import alice.tucson.service.TupleCentreContainer;
-import alice.tuplecentre.core.OperationCompletionListener;
-import alice.tuplecentre.core.TupleCentreOperation;
 
-public abstract class SpawnActivity implements OperationCompletionListener{
+/**
+ * The "purely algorithmic computation" to be carried out by the spawn() primitive.
+ * For a good engineering discipline, there should be no interaction, no communication,
+ * no waitings for external stimuli inside <code> doActivity() </code> method: just plain,
+ * simple, "old-fashioned" computation.
+ * Unique exceptions are a core set of Linda-like primitives allowed to acquire inputs and
+ * share outputs.
+ * 
+ * @author s.mariani@unibo.it
+ */
+public abstract class SpawnActivity implements Serializable{
 	
+	private static final long serialVersionUID = -6354837455366449916L;
 	private TucsonAgentId aid;
 	private TucsonTupleCentreId tcid;
 	
@@ -25,6 +37,13 @@ public abstract class SpawnActivity implements OperationCompletionListener{
 		aid = null;
 	}
 	
+	/**
+	 * Both agents and the coordination medium itself can spawn() a computation, hence we
+	 * need to handle both.
+	 * 
+	 * @return the "spawner" id (actually, a generic wrapper hosting either a TucsonAgentId
+	 * or a TucsonTupleCentreId, accessible with method <code> getId() </code>)
+	 */
 	public final TucsonIdWrapper<?> getSpawnerId(){
 		if(aid == null)
 			return new TucsonIdWrapper<TucsonTupleCentreId>(tcid);
@@ -32,10 +51,19 @@ public abstract class SpawnActivity implements OperationCompletionListener{
 			return new TucsonIdWrapper<TucsonAgentId>(aid);
 	}
 	
-	protected final boolean out(TucsonTupleCentreId tcid, LogicTuple tuple){
-		if(this.aid != null)
+	/**
+	 * To be overridden by user
+	 */
+	abstract public void doActivity();
+	
+	/**
+	 * We try to enforce a "core" set of Linda-like primitives to be used inside a spawn()
+	 */
+	
+	protected final LogicTuple out(TucsonTupleCentreId tcid, LogicTuple tuple){
+		if(aid != null)
 			try {
-				TupleCentreContainer.doNonBlockingOperation(TucsonOperation.outCode(), aid, tcid, tuple, this);
+				return (LogicTuple) TupleCentreContainer.doBlockingOperation(TucsonOperation.outCode(), aid, tcid, tuple);
 			} catch (TucsonInvalidLogicTupleException e) {
 				e.printStackTrace();
 			} catch (TucsonOperationNotPossibleException e) {
@@ -43,21 +71,133 @@ public abstract class SpawnActivity implements OperationCompletionListener{
 			}
 		else
 			try {
-				TupleCentreContainer.doNonBlockingOperation(TucsonOperation.outCode(), this.tcid, tcid, tuple, this);
+				return TupleCentreContainer.doBlockingOperation(TucsonOperation.outCode(), this.tcid, tcid, tuple);
 			} catch (TucsonInvalidLogicTupleException e) {
 				e.printStackTrace();
 			} catch (TucsonOperationNotPossibleException e) {
 				e.printStackTrace();
 			}
-		return false;
+		return null;
 	}
 	
-	abstract public void doActivity();
+	protected final LogicTuple in(TucsonTupleCentreId tcid, LogicTuple tuple){
+		if(aid != null)
+			try {
+				return (LogicTuple) TupleCentreContainer.doBlockingOperation(TucsonOperation.inCode(), aid, tcid, tuple);
+			} catch (TucsonInvalidLogicTupleException e) {
+				e.printStackTrace();
+			} catch (TucsonOperationNotPossibleException e) {
+				e.printStackTrace();
+			}
+		else
+			try {
+				TupleCentreContainer.doBlockingOperation(TucsonOperation.inCode(), this.tcid, tcid, tuple);
+			} catch (TucsonInvalidLogicTupleException e) {
+				e.printStackTrace();
+			} catch (TucsonOperationNotPossibleException e) {
+				e.printStackTrace();
+			}
+		return null;
+	}
 	
-	@Override
-	public void operationCompleted(TupleCentreOperation op) {
-		// TODO Auto-generated method stub
-		
+	protected final LogicTuple rd(TucsonTupleCentreId tcid, LogicTuple tuple){
+		if(aid != null)
+			try {
+				return (LogicTuple) TupleCentreContainer.doBlockingOperation(TucsonOperation.rdCode(), aid, tcid, tuple);
+			} catch (TucsonInvalidLogicTupleException e) {
+				e.printStackTrace();
+			} catch (TucsonOperationNotPossibleException e) {
+				e.printStackTrace();
+			}
+		else
+			try {
+				TupleCentreContainer.doBlockingOperation(TucsonOperation.rdCode(), this.tcid, tcid, tuple);
+			} catch (TucsonInvalidLogicTupleException e) {
+				e.printStackTrace();
+			} catch (TucsonOperationNotPossibleException e) {
+				e.printStackTrace();
+			}
+		return null;
+	}
+	
+	protected final LogicTuple no(TucsonTupleCentreId tcid, LogicTuple tuple){
+		if(aid != null)
+			try {
+				return (LogicTuple) TupleCentreContainer.doBlockingOperation(TucsonOperation.noCode(), aid, tcid, tuple);
+			} catch (TucsonInvalidLogicTupleException e) {
+				e.printStackTrace();
+			} catch (TucsonOperationNotPossibleException e) {
+				e.printStackTrace();
+			}
+		else
+			try {
+				TupleCentreContainer.doBlockingOperation(TucsonOperation.noCode(), this.tcid, tcid, tuple);
+			} catch (TucsonInvalidLogicTupleException e) {
+				e.printStackTrace();
+			} catch (TucsonOperationNotPossibleException e) {
+				e.printStackTrace();
+			}
+		return null;
+	}
+	
+	protected final LogicTuple inp(TucsonTupleCentreId tcid, LogicTuple tuple){
+		if(aid != null)
+			try {
+				return (LogicTuple) TupleCentreContainer.doBlockingOperation(TucsonOperation.inpCode(), aid, tcid, tuple);
+			} catch (TucsonInvalidLogicTupleException e) {
+				e.printStackTrace();
+			} catch (TucsonOperationNotPossibleException e) {
+				e.printStackTrace();
+			}
+		else
+			try {
+				TupleCentreContainer.doBlockingOperation(TucsonOperation.inpCode(), this.tcid, tcid, tuple);
+			} catch (TucsonInvalidLogicTupleException e) {
+				e.printStackTrace();
+			} catch (TucsonOperationNotPossibleException e) {
+				e.printStackTrace();
+			}
+		return null;
+	}
+	
+	protected final LogicTuple rdp(TucsonTupleCentreId tcid, LogicTuple tuple){
+		if(aid != null)
+			try {
+				return (LogicTuple) TupleCentreContainer.doBlockingOperation(TucsonOperation.rdpCode(), aid, tcid, tuple);
+			} catch (TucsonInvalidLogicTupleException e) {
+				e.printStackTrace();
+			} catch (TucsonOperationNotPossibleException e) {
+				e.printStackTrace();
+			}
+		else
+			try {
+				TupleCentreContainer.doBlockingOperation(TucsonOperation.rdpCode(), this.tcid, tcid, tuple);
+			} catch (TucsonInvalidLogicTupleException e) {
+				e.printStackTrace();
+			} catch (TucsonOperationNotPossibleException e) {
+				e.printStackTrace();
+			}
+		return null;
+	}
+	
+	protected final LogicTuple nop(TucsonTupleCentreId tcid, LogicTuple tuple){
+		if(aid != null)
+			try {
+				return (LogicTuple) TupleCentreContainer.doBlockingOperation(TucsonOperation.nopCode(), aid, tcid, tuple);
+			} catch (TucsonInvalidLogicTupleException e) {
+				e.printStackTrace();
+			} catch (TucsonOperationNotPossibleException e) {
+				e.printStackTrace();
+			}
+		else
+			try {
+				TupleCentreContainer.doBlockingOperation(TucsonOperation.nopCode(), this.tcid, tcid, tuple);
+			} catch (TucsonInvalidLogicTupleException e) {
+				e.printStackTrace();
+			} catch (TucsonOperationNotPossibleException e) {
+				e.printStackTrace();
+			}
+		return null;
 	}
 	
 	/**

@@ -39,6 +39,10 @@ public class TucsonOperation extends TupleCentreOperation implements ITucsonOper
 	 * NEW PRIMITIVES CODES
 	 */
 	
+	public static int spawnCode(){
+		return OPTYPE_SPAWN;
+	}
+	
 	public static int uinCode(){
 		return OPTYPE_UIN;
 	}

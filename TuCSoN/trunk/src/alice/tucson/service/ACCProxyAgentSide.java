@@ -445,6 +445,16 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	
 	
 	
+	/**
+	 * SPAWN
+	 */
+	public ITucsonOperation spawn(Object tid, LogicTuple tuple, TucsonOperationCompletionListener l)
+			throws TucsonOperationNotPossibleException, UnreachableNodeException{
+		return doNonBlockingOperation(TucsonOperation.spawnCode(), tid, tuple, l);
+	}
+	
+	
+	
 	public ITucsonOperation uin(Object tid, LogicTuple tuple,
 			TucsonOperationCompletionListener l)
 			throws TucsonOperationNotPossibleException,
@@ -1130,6 +1140,16 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	public ITucsonOperation set(Object tid, LogicTuple tuple, Long ms)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException{
 		return doBlockingOperation(TucsonOperation.set_Code(), tid, tuple, ms);
+	}
+	
+	
+	
+	/**
+	 * SPAWN
+	 */
+	public ITucsonOperation spawn(Object tid, LogicTuple tuple)
+			throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException{
+		return doBlockingOperation(TucsonOperation.spawnCode(), tid, tuple, null);
 	}
 	
 	

@@ -392,7 +392,7 @@ public class RespectTC implements IRespectTC {
 	 * 
 	 * @return
 	 */
-	public IOrdinarySynchInterface getBlockingContext(){
+	public IOrdinarySynchInterface getOrdinarySynchInterface(){
 		return new OrdinarySynchInterface(this);
 	}
 	
@@ -410,7 +410,7 @@ public class RespectTC implements IRespectTC {
 	 * 
 	 * @return
 	 */
-	public IOrdinaryAsynchInterface getNonBlockingContext(){
+	public IOrdinaryAsynchInterface getOrdinaryAsynchInterface(){
 		return new OrdinaryAsynchInterface(this);
 	}
 	
@@ -428,11 +428,11 @@ public class RespectTC implements IRespectTC {
 	 * 
 	 * @return
 	 */
-	public ISpecificationSynchInterface getBlockingSpecContext() {
+	public ISpecificationSynchInterface getSpecificationSynchInterface() {
 		return new SpecificationSynchInterface(this);
 	}
 	
-	public ISpecificationAsynchInterface getNonBlockingSpecContext() {
+	public ISpecificationAsynchInterface getSpecificationAsynchInterface() {
 		return new SpecificationAsynchInterface(this);
 	}
 
