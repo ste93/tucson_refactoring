@@ -705,7 +705,7 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
     }
     
     public List<Tuple> addListTuple(Tuple t){
-    	List<Tuple> list = new LinkedList<>();
+    	List<Tuple> list = new LinkedList<Tuple>();
     	LogicTuple tuple = (LogicTuple)t;
     	while(!(tuple.toString().equals("[]"))){
 			try {
