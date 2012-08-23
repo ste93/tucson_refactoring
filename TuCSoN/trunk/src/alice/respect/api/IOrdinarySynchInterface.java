@@ -53,5 +53,8 @@ public interface IOrdinarySynchInterface {
 	List<LogicTuple> get(IId aid) throws OperationNotPossibleException;
 	
 	List<LogicTuple> set(IId aid, LogicTuple tupleList) throws OperationNotPossibleException, InvalidLogicTupleException;
+
+	LogicTuple spawn(IId aid, LogicTuple t) throws InvalidLogicTupleException,
+			OperationNotPossibleException;
 	
 }

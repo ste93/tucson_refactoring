@@ -9,11 +9,9 @@ import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonInvalidLogicTupleException;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
-import alice.tucson.api.exceptions.UnreachableNodeException;
 
 import alice.tucson.service.TucsonOperation;
 import alice.tucson.service.TupleCentreContainer;
-import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 
 /**
  * The "purely algorithmic computation" to be carried out by the spawn() primitive.
@@ -30,15 +28,34 @@ public abstract class SpawnActivity implements Serializable, Runnable{
 	private static final long serialVersionUID = -6354837455366449916L;
 	private TucsonAgentId aid;
 	private TucsonTupleCentreId tcid;
+	private TucsonTupleCentreId target;
 	
-	public SpawnActivity(TucsonAgentId aid){
+//	public SpawnActivity(TucsonAgentId aid){
+//		this.aid = aid;
+//		tcid = null;
+//	}
+//	
+//	public SpawnActivity(TucsonTupleCentreId tcid){
+//		this.tcid = tcid;
+//		aid = null;
+//	}
+	
+	public final void setSpawnerId(TucsonAgentId aid){
 		this.aid = aid;
 		tcid = null;
 	}
 	
-	public SpawnActivity(TucsonTupleCentreId tcid){
-		this.tcid = tcid;
+	public final void setSpawnerId(TucsonTupleCentreId tcid){
 		aid = null;
+		this.tcid = tcid;
+	}
+	
+	public final void setTargetTC(TucsonTupleCentreId tcid){
+		target = tcid;
+	}
+	
+	public final TucsonTupleCentreId getTargetTC(){
+		return target;
 	}
 	
 	/**
@@ -60,18 +77,19 @@ public abstract class SpawnActivity implements Serializable, Runnable{
 	 */
 	abstract public void doActivity();
 	
-	public void run(){
-		doActivity();
+	public final void run(){
+		if(checkInstantiation())
+			doActivity();
 	}
 	
 	/**
 	 * We try to enforce a "core" set of Linda-like primitives to be used inside a spawn()
 	 */
 	
-	protected final LogicTuple out(TucsonTupleCentreId tcid, LogicTuple tuple){
+	protected final LogicTuple out(LogicTuple tuple){
 		if(aid != null)
 			try {
-				return (LogicTuple) TupleCentreContainer.doBlockingOperation(TucsonOperation.outCode(), aid, tcid, tuple);
+				return (LogicTuple) TupleCentreContainer.doBlockingOperation(TucsonOperation.outCode(), aid, target, tuple);
 			} catch (TucsonInvalidLogicTupleException e) {
 				e.printStackTrace();
 			} catch (TucsonOperationNotPossibleException e) {
@@ -79,7 +97,7 @@ public abstract class SpawnActivity implements Serializable, Runnable{
 			}
 		else
 			try {
-				return TupleCentreContainer.doBlockingOperation(TucsonOperation.outCode(), this.tcid, tcid, tuple);
+				return TupleCentreContainer.doBlockingOperation(TucsonOperation.outCode(), this.tcid, target, tuple);
 			} catch (TucsonInvalidLogicTupleException e) {
 				e.printStackTrace();
 			} catch (TucsonOperationNotPossibleException e) {
@@ -88,10 +106,10 @@ public abstract class SpawnActivity implements Serializable, Runnable{
 		return null;
 	}
 	
-	protected final LogicTuple in(TucsonTupleCentreId tcid, LogicTuple tuple){
+	protected final LogicTuple in(LogicTuple tuple){
 		if(aid != null)
 			try {
-				return (LogicTuple) TupleCentreContainer.doBlockingOperation(TucsonOperation.inCode(), aid, tcid, tuple);
+				return (LogicTuple) TupleCentreContainer.doBlockingOperation(TucsonOperation.inCode(), aid, target, tuple);
 			} catch (TucsonInvalidLogicTupleException e) {
 				e.printStackTrace();
 			} catch (TucsonOperationNotPossibleException e) {
@@ -99,7 +117,7 @@ public abstract class SpawnActivity implements Serializable, Runnable{
 			}
 		else
 			try {
-				TupleCentreContainer.doBlockingOperation(TucsonOperation.inCode(), this.tcid, tcid, tuple);
+				TupleCentreContainer.doBlockingOperation(TucsonOperation.inCode(), this.tcid, target, tuple);
 			} catch (TucsonInvalidLogicTupleException e) {
 				e.printStackTrace();
 			} catch (TucsonOperationNotPossibleException e) {
@@ -108,10 +126,10 @@ public abstract class SpawnActivity implements Serializable, Runnable{
 		return null;
 	}
 	
-	protected final LogicTuple rd(TucsonTupleCentreId tcid, LogicTuple tuple){
+	protected final LogicTuple rd(LogicTuple tuple){
 		if(aid != null)
 			try {
-				return (LogicTuple) TupleCentreContainer.doBlockingOperation(TucsonOperation.rdCode(), aid, tcid, tuple);
+				return (LogicTuple) TupleCentreContainer.doBlockingOperation(TucsonOperation.rdCode(), aid, target, tuple);
 			} catch (TucsonInvalidLogicTupleException e) {
 				e.printStackTrace();
 			} catch (TucsonOperationNotPossibleException e) {
@@ -119,7 +137,7 @@ public abstract class SpawnActivity implements Serializable, Runnable{
 			}
 		else
 			try {
-				TupleCentreContainer.doBlockingOperation(TucsonOperation.rdCode(), this.tcid, tcid, tuple);
+				TupleCentreContainer.doBlockingOperation(TucsonOperation.rdCode(), this.tcid, target, tuple);
 			} catch (TucsonInvalidLogicTupleException e) {
 				e.printStackTrace();
 			} catch (TucsonOperationNotPossibleException e) {
@@ -128,10 +146,10 @@ public abstract class SpawnActivity implements Serializable, Runnable{
 		return null;
 	}
 	
-	protected final LogicTuple no(TucsonTupleCentreId tcid, LogicTuple tuple){
+	protected final LogicTuple no(LogicTuple tuple){
 		if(aid != null)
 			try {
-				return (LogicTuple) TupleCentreContainer.doBlockingOperation(TucsonOperation.noCode(), aid, tcid, tuple);
+				return (LogicTuple) TupleCentreContainer.doBlockingOperation(TucsonOperation.noCode(), aid, target, tuple);
 			} catch (TucsonInvalidLogicTupleException e) {
 				e.printStackTrace();
 			} catch (TucsonOperationNotPossibleException e) {
@@ -139,7 +157,7 @@ public abstract class SpawnActivity implements Serializable, Runnable{
 			}
 		else
 			try {
-				TupleCentreContainer.doBlockingOperation(TucsonOperation.noCode(), this.tcid, tcid, tuple);
+				TupleCentreContainer.doBlockingOperation(TucsonOperation.noCode(), this.tcid, target, tuple);
 			} catch (TucsonInvalidLogicTupleException e) {
 				e.printStackTrace();
 			} catch (TucsonOperationNotPossibleException e) {
@@ -148,10 +166,10 @@ public abstract class SpawnActivity implements Serializable, Runnable{
 		return null;
 	}
 	
-	protected final LogicTuple inp(TucsonTupleCentreId tcid, LogicTuple tuple){
+	protected final LogicTuple inp(LogicTuple tuple){
 		if(aid != null)
 			try {
-				return (LogicTuple) TupleCentreContainer.doBlockingOperation(TucsonOperation.inpCode(), aid, tcid, tuple);
+				return (LogicTuple) TupleCentreContainer.doBlockingOperation(TucsonOperation.inpCode(), aid, target, tuple);
 			} catch (TucsonInvalidLogicTupleException e) {
 				e.printStackTrace();
 			} catch (TucsonOperationNotPossibleException e) {
@@ -159,7 +177,7 @@ public abstract class SpawnActivity implements Serializable, Runnable{
 			}
 		else
 			try {
-				TupleCentreContainer.doBlockingOperation(TucsonOperation.inpCode(), this.tcid, tcid, tuple);
+				TupleCentreContainer.doBlockingOperation(TucsonOperation.inpCode(), this.tcid, target, tuple);
 			} catch (TucsonInvalidLogicTupleException e) {
 				e.printStackTrace();
 			} catch (TucsonOperationNotPossibleException e) {
@@ -168,10 +186,10 @@ public abstract class SpawnActivity implements Serializable, Runnable{
 		return null;
 	}
 	
-	protected final LogicTuple rdp(TucsonTupleCentreId tcid, LogicTuple tuple){
+	protected final LogicTuple rdp(LogicTuple tuple){
 		if(aid != null)
 			try {
-				return (LogicTuple) TupleCentreContainer.doBlockingOperation(TucsonOperation.rdpCode(), aid, tcid, tuple);
+				return (LogicTuple) TupleCentreContainer.doBlockingOperation(TucsonOperation.rdpCode(), aid, target, tuple);
 			} catch (TucsonInvalidLogicTupleException e) {
 				e.printStackTrace();
 			} catch (TucsonOperationNotPossibleException e) {
@@ -179,7 +197,7 @@ public abstract class SpawnActivity implements Serializable, Runnable{
 			}
 		else
 			try {
-				TupleCentreContainer.doBlockingOperation(TucsonOperation.rdpCode(), this.tcid, tcid, tuple);
+				TupleCentreContainer.doBlockingOperation(TucsonOperation.rdpCode(), this.tcid, target, tuple);
 			} catch (TucsonInvalidLogicTupleException e) {
 				e.printStackTrace();
 			} catch (TucsonOperationNotPossibleException e) {
@@ -188,10 +206,10 @@ public abstract class SpawnActivity implements Serializable, Runnable{
 		return null;
 	}
 	
-	protected final LogicTuple nop(TucsonTupleCentreId tcid, LogicTuple tuple){
+	protected final LogicTuple nop(LogicTuple tuple){
 		if(aid != null)
 			try {
-				return (LogicTuple) TupleCentreContainer.doBlockingOperation(TucsonOperation.nopCode(), aid, tcid, tuple);
+				return (LogicTuple) TupleCentreContainer.doBlockingOperation(TucsonOperation.nopCode(), aid, target, tuple);
 			} catch (TucsonInvalidLogicTupleException e) {
 				e.printStackTrace();
 			} catch (TucsonOperationNotPossibleException e) {
@@ -199,13 +217,20 @@ public abstract class SpawnActivity implements Serializable, Runnable{
 			}
 		else
 			try {
-				TupleCentreContainer.doBlockingOperation(TucsonOperation.nopCode(), this.tcid, tcid, tuple);
+				TupleCentreContainer.doBlockingOperation(TucsonOperation.nopCode(), this.tcid, target, tuple);
 			} catch (TucsonInvalidLogicTupleException e) {
 				e.printStackTrace();
 			} catch (TucsonOperationNotPossibleException e) {
 				e.printStackTrace();
 			}
 		return null;
+	}
+	
+	public final boolean checkInstantiation(){
+		if(aid != null || tcid != null)
+			if(target != null)
+				return true;
+		return false;
 	}
 	
 	/**
@@ -214,14 +239,18 @@ public abstract class SpawnActivity implements Serializable, Runnable{
 	public static void main(String[] args){
 		SpawnActivity sa = null;
 		try {
-			sa = new SpawnActivity(new TucsonAgentId("me")) {
-//			sa = new SpawnActivity(new TucsonTupleCentreId("default", "localhost", "20504")) {
+			sa = new SpawnActivity() {
 				@Override
 				public void doActivity() {
 					System.out.println("[me]: Doing my business...");
 				}
 			};
-		} catch (TucsonInvalidAgentIdException e) {
+			sa.setSpawnerId(new TucsonAgentId("me"));
+//			sa.setSpawnerId(new TucsonTupleCentreId("default", "localhost", "20504"));
+			sa.setTargetTC(new TucsonTupleCentreId("default", "localhost", "20504"));
+		}catch(TucsonInvalidAgentIdException e){
+			e.printStackTrace();
+		} catch (TucsonInvalidTupleCentreIdException e) {
 			e.printStackTrace();
 		}
 		sa.doActivity();

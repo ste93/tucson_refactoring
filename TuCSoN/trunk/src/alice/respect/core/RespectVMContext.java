@@ -24,6 +24,9 @@ import alice.respect.api.RespectSpecification;
 import alice.respect.api.TupleCentreId;
 import alice.respect.api.exceptions.OperationNotPossibleException;
 import alice.tucson.api.SpawnActivity;
+import alice.tucson.api.TucsonAgentId;
+import alice.tucson.api.TucsonIdWrapper;
+import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.parsing.MyOpManager;
 import alice.tuplecentre.core.BehaviourSpecification;
 import alice.tuplecentre.api.Tuple;
@@ -702,14 +705,22 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
     }
     
     @Override
-	public boolean spawnActivity(Tuple t) {
+	public boolean spawnActivity(Tuple t, TucsonIdWrapper owner, TucsonTupleCentreId target) {
     	log("spawnActivity.tuple = " + t.toString());
 		try {
 			Class toSpawn = ClassLoader.getSystemClassLoader().loadClass(t.toString());
 			if(SpawnActivity.class.isAssignableFrom(toSpawn)){
-				new Thread((Runnable) toSpawn.newInstance()).start();
-			}else
-				return false;
+				SpawnActivity instance = (SpawnActivity) toSpawn.newInstance();
+				if(owner.getId() instanceof TucsonAgentId)
+					instance.setSpawnerId((TucsonAgentId) owner.getId());
+				else
+					instance.setSpawnerId((TucsonAgentId) owner.getId());
+				instance.setTargetTC(target);
+				if(instance.checkInstantiation()){
+					new Thread(instance).start();
+					return true;
+				}
+			}
 		} catch (ClassNotFoundException e) {
 			System.err.println("[RespectVMContext]: " + e);
 			e.printStackTrace();

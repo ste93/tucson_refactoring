@@ -230,5 +230,15 @@ public class OrdinarySynchInterface extends RootInterface implements IOrdinarySy
 		LogicTuple result = op.getLogicTupleResult(); 
 		return unify(t,result);
 	}
+    
+    @Override
+	public LogicTuple spawn(IId aid, LogicTuple t)
+			throws InvalidLogicTupleException, OperationNotPossibleException {
+		if (t==null)
+			throw new InvalidLogicTupleException();
+		IRespectOperation op = getCore().spawn(aid, t);
+		op.waitForOperationCompletion();
+		return t;
+	}
 	
 }

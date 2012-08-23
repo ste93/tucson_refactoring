@@ -20,6 +20,8 @@ package alice.tuplecentre.core;
 import java.util.*;
 
 import alice.respect.core.RespectTC;
+import alice.tucson.api.TucsonIdWrapper;
+import alice.tucson.api.TucsonTupleCentreId;
 import alice.tuplecentre.api.AgentId;
 import alice.tuplecentre.api.IId;
 import alice.tuplecentre.api.ITupleCentre;
@@ -278,7 +280,7 @@ public abstract class TupleCentreVMContext implements ITupleCentreManagement, IT
     
     public abstract boolean  time_triggeredReaction();
     
-    public abstract boolean spawnActivity(Tuple t);
+    public abstract boolean spawnActivity(Tuple t, TucsonIdWrapper owner, TucsonTupleCentreId target);
     
     /**
      *  Adds a tuple to the tuple set (T)
