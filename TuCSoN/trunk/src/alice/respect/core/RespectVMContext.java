@@ -25,8 +25,9 @@ import alice.respect.api.TupleCentreId;
 import alice.respect.api.exceptions.OperationNotPossibleException;
 import alice.tucson.api.SpawnActivity;
 import alice.tucson.api.TucsonAgentId;
-import alice.tucson.api.TucsonIdWrapper;
 import alice.tucson.api.TucsonTupleCentreId;
+import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
+import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.parsing.MyOpManager;
 import alice.tuplecentre.core.BehaviourSpecification;
 import alice.tuplecentre.api.Tuple;
@@ -106,7 +107,7 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 			core.loadLibrary("alice.tuprolog.lib.BasicLibrary");
 			core.loadLibrary("alice.tuprolog.lib.ISOLibrary");
 			core.loadLibrary("alice.tuprolog.lib.JavaLibrary");
-			((alice.respect.api.Respect2PLibrary)core.loadLibrary("alice.respect.core.Library")).init(this);
+			((alice.respect.api.Respect2PLibrary)core.loadLibrary("alice.respect.api.Respect2PLibrary")).init(this);
         }catch(Exception ex){
             ex.printStackTrace();
         }
@@ -116,7 +117,7 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 			trigCore.loadLibrary("alice.tuprolog.lib.JavaLibrary");
 			trigCore.loadLibrary("alice.tuprolog.lib.ISOLibrary");
             trigCore.loadLibrary("alice.respect.core.Library");
-            ((alice.respect.api.Respect2PLibrary)trigCore.getLibrary("alice.respect.core.Library")).init(this);
+            ((alice.respect.api.Respect2PLibrary)trigCore.getLibrary("alice.respect.api.Respect2PLibrary")).init(this);
         }catch (Exception ex){
             ex.printStackTrace();
         }
@@ -705,17 +706,21 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
     }
     
     @Override
-	public boolean spawnActivity(Tuple t, TucsonIdWrapper owner, TucsonTupleCentreId target) {
+	public boolean spawnActivity(Tuple t) {
     	log("spawnActivity.tuple = " + t.toString());
+    	LogicTuple tuple = (LogicTuple)t;
 		try {
-			Class toSpawn = ClassLoader.getSystemClassLoader().loadClass(t.toString());
+			String className = tuple.getArg(0).toString();
+			String ownerName = tuple.getArg(1).toString();
+	    	String targetName = tuple.getArg(2).toString();
+			Class toSpawn = ClassLoader.getSystemClassLoader().loadClass(className);
 			if(SpawnActivity.class.isAssignableFrom(toSpawn)){
 				SpawnActivity instance = (SpawnActivity) toSpawn.newInstance();
-				if(owner.getId() instanceof TucsonAgentId)
-					instance.setSpawnerId((TucsonAgentId) owner.getId());
+				if(ownerName.startsWith("@"))
+					instance.setSpawnerId(new TucsonTupleCentreId(ownerName));
 				else
-					instance.setSpawnerId((TucsonAgentId) owner.getId());
-				instance.setTargetTC(target);
+					instance.setSpawnerId(new TucsonAgentId(ownerName));
+				instance.setTargetTC(new TucsonTupleCentreId(targetName));
 				if(instance.checkInstantiation()){
 					new Thread(instance).start();
 					return true;
@@ -733,6 +738,18 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 			System.err.println("[RespectVMContext]: " + e);
 			e.printStackTrace();
 			return false;
+		} catch (InvalidTupleOperationException e) {
+			System.err.println("[RespectVMContext]: " + e);
+			e.printStackTrace();
+			return false;
+		} catch (TucsonInvalidTupleCentreIdException e) {
+			System.err.println("[RespectVMContext]: " + e);
+			e.printStackTrace();
+			return false;
+		} catch (TucsonInvalidAgentIdException e) {
+			System.err.println("[RespectVMContext]: " + e);
+			e.printStackTrace();
+			return false;
 		}
 		return false;
 	}
@@ -742,7 +759,7 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
     }
     
     public List<Tuple> addListTuple(Tuple t){
-    	List<Tuple> list = new LinkedList<>();
+    	List<Tuple> list = new LinkedList<Tuple>();
     	LogicTuple tuple = (LogicTuple)t;
     	while(!(tuple.toString().equals("[]"))){
 			try {
