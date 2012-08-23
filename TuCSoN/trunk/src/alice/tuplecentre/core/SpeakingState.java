@@ -79,7 +79,7 @@ public class SpeakingState extends TupleCentreVMState {
 
 	            	if (op.isSpawn()){
 	            		tuple = op.getTupleArgument();
-	            		if(vm.spawnActivity(tuple))
+	            		if(vm.spawnActivity(tuple, ev.getSource(), ev.getTarget()))
 	            			op.setOpResult(Outcome.SUCCESS);
 	            		else
 	            			op.setOpResult(Outcome.FAILURE);

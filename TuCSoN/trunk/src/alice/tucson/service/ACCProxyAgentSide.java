@@ -448,16 +448,9 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	/**
 	 * SPAWN
 	 */
-	public ITucsonOperation spawn(Object tid, LogicTuple toSpawn, LogicTuple owner, LogicTuple targetTC,
-			TucsonOperationCompletionListener l) throws TucsonOperationNotPossibleException, UnreachableNodeException{
-		LogicTuple tuple = null;
-		try {
-			tuple = new LogicTuple("toSpawn", toSpawn.getArg(0), owner.getArg(0), targetTC.getArg(0));
-			return doNonBlockingOperation(TucsonOperation.spawnCode(), tid, tuple, l);
-		} catch (InvalidTupleOperationException e) {
-			e.printStackTrace();
-		}
-		return new TucsonOperation(TucsonOperation.spawnCode(), tuple, l, this);
+	public ITucsonOperation spawn(Object tid, LogicTuple toSpawn, TucsonOperationCompletionListener l)
+			throws TucsonOperationNotPossibleException, UnreachableNodeException{
+		return doNonBlockingOperation(TucsonOperation.spawnCode(), tid, toSpawn, l);
 	}
 	
 	
@@ -1152,18 +1145,11 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	
 	
 	/**
-	 * SPAWN
+	 * SPAWN: BEWARE THE TRICK: this is the synch ACC, but I do a NONBLOCKING call!!
 	 */
-	public ITucsonOperation spawn(Object tid, LogicTuple toSpawn, LogicTuple owner, LogicTuple targetTC)
+	public ITucsonOperation spawn(Object tid, LogicTuple toSpawn, Long ms)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException{
-		LogicTuple tuple = null;
-		try {
-			tuple = new LogicTuple("toSpawn", toSpawn.getArg(0), owner.getArg(0), targetTC.getArg(0));
-			return doBlockingOperation(TucsonOperation.spawnCode(), tid, tuple, null);
-		} catch (InvalidTupleOperationException e) {
-			e.printStackTrace();
-		}
-		return new TucsonOperation(TucsonOperation.spawnCode(), tuple, null, this);
+		return doNonBlockingOperation(TucsonOperation.spawnCode(), tid, toSpawn, null);
 	}
 	
 	

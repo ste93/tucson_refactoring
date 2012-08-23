@@ -117,10 +117,9 @@ public class CLIAgent extends alice.util.Automaton{
 				 */
 //				what about timeout? it returns null too...how to discriminate inp/rdp failure?
 				if(methodName.equals("spawn")){
-					LogicTuple t = new LogicTuple(Parser.parseSingleTerm("toSpawn("+tuple+")", new MyOpManager()));
+					LogicTuple t = LogicTuple.parse(tuple);
 					busy();
-					ITucsonOperation op = context.spawn(tid, new LogicTuple(t.getArg(0)),
-							new LogicTuple(t.getArg(1)), new LogicTuple(t.getArg(2)));
+					ITucsonOperation op = context.spawn(tid, t, Long.MAX_VALUE);
 					if(op.isResultSuccess())
 						prompt("success");
 					else

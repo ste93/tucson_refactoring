@@ -30,6 +30,8 @@ import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.parsing.MyOpManager;
 import alice.tuplecentre.core.BehaviourSpecification;
+import alice.tuplecentre.api.AgentId;
+import alice.tuplecentre.api.IId;
 import alice.tuplecentre.api.Tuple;
 import alice.tuplecentre.api.TupleTemplate;
 import alice.tuplecentre.core.*;
@@ -706,21 +708,30 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
     }
     
     @Override
-	public boolean spawnActivity(Tuple t) {
+	public boolean spawnActivity(Tuple t, IId owner, IId targetTC) {
     	log("spawnActivity.tuple = " + t.toString());
-    	LogicTuple tuple = (LogicTuple)t;
-		try {
-			String className = tuple.getArg(0).toString();
-			String ownerName = tuple.getArg(1).toString();
-	    	String targetName = tuple.getArg(2).toString();
-			Class toSpawn = ClassLoader.getSystemClassLoader().loadClass(className);
+    	try {
+			Class toSpawn = ClassLoader.getSystemClassLoader().loadClass(t.toString());
 			if(SpawnActivity.class.isAssignableFrom(toSpawn)){
 				SpawnActivity instance = (SpawnActivity) toSpawn.newInstance();
-				if(ownerName.startsWith("@"))
-					instance.setSpawnerId(new TucsonTupleCentreId(ownerName));
-				else
-					instance.setSpawnerId(new TucsonAgentId(ownerName));
-				instance.setTargetTC(new TucsonTupleCentreId(targetName));
+				if(owner.isAgent()){
+					TucsonAgentId aid = new TucsonAgentId(((AgentId)owner).toString());
+					log("spawnActivity.aid = " + aid);
+					instance.setSpawnerId(aid);
+				}else{
+					TucsonTupleCentreId tcid = new TucsonTupleCentreId(
+							((TupleCentreId)owner).getName(),
+							((TupleCentreId)owner).getNode(),
+							""+((TupleCentreId)owner).getPort());
+					log("spawnActivity.tcid = " + tcid);
+					instance.setSpawnerId(tcid);
+				}
+				TucsonTupleCentreId target = new TucsonTupleCentreId(
+						((TupleCentreId)targetTC).getName(),
+						((TupleCentreId)targetTC).getNode(),
+						""+((TupleCentreId)targetTC).getPort());
+				log("spawnActivity.target = " + target);
+				instance.setTargetTC(target);
 				if(instance.checkInstantiation()){
 					new Thread(instance).start();
 					return true;
@@ -735,10 +746,6 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 			e.printStackTrace();
 			return false;
 		} catch (IllegalAccessException e) {
-			System.err.println("[RespectVMContext]: " + e);
-			e.printStackTrace();
-			return false;
-		} catch (InvalidTupleOperationException e) {
 			System.err.println("[RespectVMContext]: " + e);
 			e.printStackTrace();
 			return false;
