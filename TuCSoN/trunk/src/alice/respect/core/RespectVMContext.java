@@ -102,7 +102,7 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 			core.loadLibrary("alice.tuprolog.lib.BasicLibrary");
 			core.loadLibrary("alice.tuprolog.lib.ISOLibrary");
 			core.loadLibrary("alice.tuprolog.lib.JavaLibrary");
-			((alice.respect.api.Respect2PLibrary)core.loadLibrary("alice.respect.core.Library")).init(this);
+			((alice.respect.api.Respect2PLibrary)core.loadLibrary("alice.respect.api.Respect2PLibrary")).init(this);
         }catch(Exception ex){
             ex.printStackTrace();
         }
@@ -111,8 +111,8 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 			trigCore.loadLibrary("alice.tuprolog.lib.BasicLibrary");
 			trigCore.loadLibrary("alice.tuprolog.lib.JavaLibrary");
 			trigCore.loadLibrary("alice.tuprolog.lib.ISOLibrary");
-            trigCore.loadLibrary("alice.respect.core.Library");
-            ((alice.respect.api.Respect2PLibrary)trigCore.getLibrary("alice.respect.core.Library")).init(this);
+            trigCore.loadLibrary("alice.respect.api.Respect2PLibrary");
+            ((alice.respect.api.Respect2PLibrary)trigCore.getLibrary("alice.respect.api.Respect2PLibrary")).init(this);
         }catch (Exception ex){
             ex.printStackTrace();
         }
