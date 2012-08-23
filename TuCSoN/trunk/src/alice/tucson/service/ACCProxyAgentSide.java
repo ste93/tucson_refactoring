@@ -1654,9 +1654,9 @@ public class ACCProxyAgentSide implements EnhancedACC{
 				exception = true;
 				throw new UnreachableNodeException();
 			}
-			ObjectOutputStream outStream = session.getOutputStream();		
+			ObjectOutputStream outStream = session.getOutputStream();
 
-			TucsonOperation op = null;					
+			TucsonOperation op = null;
 			if((type == TucsonOperation.outCode()) || (type == TucsonOperation.out_sCode())
 					|| (type == TucsonOperation.set_sCode()) || (type == TucsonOperation.set_Code())
 					|| type == TucsonOperation.out_allCode() || type == TucsonOperation.spawnCode())
@@ -1664,10 +1664,9 @@ public class ACCProxyAgentSide implements EnhancedACC{
 			else
 				op = new TucsonOperation(type, (TupleTemplate) t, l, this);
 			operations.put(op.getId(), op);
-			
 			TucsonMsgRequest msg = new TucsonMsgRequest(op.getId(), op.getType(), tcid.toString(),
 					op.getLogicTupleArgument());
-//			log("requesting op " + msg.getType() + ", " + msg.getTuple() + ", " + msg.getTid());
+			log("requesting op " + msg.getType() + ", " + msg.getTuple() + ", " + msg.getTid());
 			
 			try{
 				TucsonMsgRequest.write(outStream, msg);
@@ -1903,6 +1902,7 @@ public class ACCProxyAgentSide implements EnhancedACC{
 					}else if(type == TucsonOperation.set_Code() || type == TucsonOperation.set_sCode()
 							|| type == TucsonOperation.outCode() || type == TucsonOperation.out_sCode()
 							|| type == TucsonOperation.out_allCode() || type == TucsonOperation.spawnCode()){
+						log("msg.isSuccess() = " + msg.isSuccess());
 						ev = new TucsonOpCompletionEvent(new TucsonOpId(msg.getId()), ok, msg.isSuccess());
 					}else if(type == TucsonOperation.in_allCode() || type == TucsonOperation.rd_allCode()
 							|| type == TucsonOperation.no_allCode()
@@ -1925,9 +1925,10 @@ public class ACCProxyAgentSide implements EnhancedACC{
 				}else{
 					op.setTupleResult((LogicTuple) msg.getTupleResult());
 				}
-				if(msg.isResultSuccess())
+				if(msg.isResultSuccess()){
+					log("msg.isResultSuccess() = " + msg.isResultSuccess());
 					op.setOpResult(Outcome.SUCCESS);
-				else
+				}else
 					op.setOpResult(Outcome.FAILURE);
 				op.notifyCompletion(ev.operationSucceeded(), msg.isAllowed());
 				postEvent(ev);

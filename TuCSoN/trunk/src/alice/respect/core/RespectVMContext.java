@@ -118,7 +118,7 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 			trigCore.loadLibrary("alice.tuprolog.lib.BasicLibrary");
 			trigCore.loadLibrary("alice.tuprolog.lib.JavaLibrary");
 			trigCore.loadLibrary("alice.tuprolog.lib.ISOLibrary");
-            trigCore.loadLibrary("alice.respect.core.Library");
+            trigCore.loadLibrary("alice.respect.api.Respect2PLibrary");
             ((alice.respect.api.Respect2PLibrary)trigCore.getLibrary("alice.respect.api.Respect2PLibrary")).init(this);
         }catch (Exception ex){
             ex.printStackTrace();
@@ -711,7 +711,7 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 	public boolean spawnActivity(Tuple t, IId owner, IId targetTC) {
     	log("spawnActivity.tuple = " + t.toString());
     	try {
-			Class toSpawn = ClassLoader.getSystemClassLoader().loadClass(t.toString());
+			Class toSpawn = ClassLoader.getSystemClassLoader().loadClass(alice.util.Tools.removeApices(t.toString()));
 			if(SpawnActivity.class.isAssignableFrom(toSpawn)){
 				SpawnActivity instance = (SpawnActivity) toSpawn.newInstance();
 				if(owner.isAgent()){

@@ -245,11 +245,11 @@ public abstract class SpawnActivity implements Serializable, Runnable{
 					System.out.println("[me]: Doing my business...");
 				}
 			};
-			sa.setSpawnerId(new TucsonAgentId("me"));
-//			sa.setSpawnerId(new TucsonTupleCentreId("default", "localhost", "20504"));
+//			sa.setSpawnerId(new TucsonAgentId("me"));
+			sa.setSpawnerId(new TucsonTupleCentreId("default", "localhost", "20504"));
 			sa.setTargetTC(new TucsonTupleCentreId("default", "localhost", "20504"));
-		}catch(TucsonInvalidAgentIdException e){
-			e.printStackTrace();
+//		}catch(TucsonInvalidAgentIdException e){
+//			e.printStackTrace();
 		} catch (TucsonInvalidTupleCentreIdException e) {
 			e.printStackTrace();
 		}

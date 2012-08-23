@@ -346,9 +346,9 @@ public class ACCProxyNodeSide extends ACCAbstractProxyNodeSide{
 		TucsonMsgReply reply = null;
 		
 		if(op.isOut() || op.isOut_s() || op.isSpawn()){
-			if(op.isResultSuccess())
+			if(op.isResultSuccess()){
 				reply = new TucsonMsgReply(msg.getId(), op.getType(), true, true, true, msg.getTuple(), (LogicTuple) op.getTupleResult());
-			else
+			}else
 				reply = new TucsonMsgReply(msg.getId(), op.getType(), true, true, false, msg.getTuple(), (LogicTuple) op.getTupleResult());
 		}else if(op.isNo() || op.isNo_s() || op.isIn() || op.isIn_s() || op.isRd() || op.isRd_s() || op.isUin() || op.isUrd() || op.isUno()){
 			if(op.isResultSuccess()){
