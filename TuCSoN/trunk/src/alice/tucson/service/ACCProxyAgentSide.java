@@ -1149,7 +1149,7 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	 */
 	public ITucsonOperation spawn(Object tid, LogicTuple toSpawn, Long ms)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException{
-		return doNonBlockingOperation(TucsonOperation.spawnCode(), tid, toSpawn, null);
+		return doBlockingOperation(TucsonOperation.spawnCode(), tid, toSpawn, ms);
 	}
 	
 	
@@ -1902,7 +1902,6 @@ public class ACCProxyAgentSide implements EnhancedACC{
 					}else if(type == TucsonOperation.set_Code() || type == TucsonOperation.set_sCode()
 							|| type == TucsonOperation.outCode() || type == TucsonOperation.out_sCode()
 							|| type == TucsonOperation.out_allCode() || type == TucsonOperation.spawnCode()){
-						log("msg.isSuccess() = " + msg.isSuccess());
 						ev = new TucsonOpCompletionEvent(new TucsonOpId(msg.getId()), ok, msg.isSuccess());
 					}else if(type == TucsonOperation.in_allCode() || type == TucsonOperation.rd_allCode()
 							|| type == TucsonOperation.no_allCode()
@@ -1926,7 +1925,6 @@ public class ACCProxyAgentSide implements EnhancedACC{
 					op.setTupleResult((LogicTuple) msg.getTupleResult());
 				}
 				if(msg.isResultSuccess()){
-					log("msg.isResultSuccess() = " + msg.isResultSuccess());
 					op.setOpResult(Outcome.SUCCESS);
 				}else
 					op.setOpResult(Outcome.FAILURE);

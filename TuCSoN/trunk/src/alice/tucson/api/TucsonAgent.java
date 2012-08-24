@@ -19,6 +19,7 @@ package alice.tucson.api;
 
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
+import alice.tuplecentre.core.TupleCentreOperation;
 
 /**
  * Base class to extend to implement TuCSoN Agents.
@@ -154,6 +155,9 @@ public abstract class TucsonAgent implements TucsonOperationCompletionListener{
 	
 	public abstract void operationCompleted(ITucsonOperation op);
 
+	@Override
+	public final void operationCompleted(TupleCentreOperation op) {}
+	
 	/**
 	 * Internal Thread responsible for ACC acquisition and main cycle execution.
 	 * Notice that the ACC is demanded to the TuCSoN Node Service hosted at the

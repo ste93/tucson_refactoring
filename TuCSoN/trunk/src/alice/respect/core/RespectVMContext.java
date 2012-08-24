@@ -17,6 +17,8 @@
  */
 package alice.respect.core;
 
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.*;
 
 import alice.respect.api.ILinkContext;
@@ -711,6 +713,14 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 	public boolean spawnActivity(Tuple t, IId owner, IId targetTC) {
     	log("spawnActivity.tuple = " + t.toString());
     	try {
+    		ClassLoader cl = ClassLoader.getSystemClassLoader();
+            URL[] urls = ((URLClassLoader)cl).getURLs();
+            log("Known paths:");
+            for(URL url: urls)
+            	System.out.println("	" + url.getFile());
+//            Quando si lancia il nodo TuCSoN occorre aggiungere al classpath il path dove
+//            trovare la classe TuCSoN (suppongo anche la teoria Prolog) da lanciare con la
+//            spawn()!!
 			Class toSpawn = ClassLoader.getSystemClassLoader().loadClass(alice.util.Tools.removeApices(t.toString()));
 			if(SpawnActivity.class.isAssignableFrom(toSpawn)){
 				SpawnActivity instance = (SpawnActivity) toSpawn.newInstance();
