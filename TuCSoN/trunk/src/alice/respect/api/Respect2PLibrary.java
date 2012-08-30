@@ -71,6 +71,8 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         "TC ? set(T) :- set(T,TC). \n"+
         "TC ? get(T) :- get(T,TC). \n"+
         
+        "TC ? spawn(T) :- spawn(T,TC). \n"+
+        
         "TC ? out_s(E,G,R) :- out_s(E,G,R,TC). \n"+
         "TC ? in_s(E,G,R) :- in_s(E,G,R,TC). \n"+
         "TC ? rd_s(E,G,R) :- rd_s(E,G,R,TC). \n"+
@@ -90,6 +92,8 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
 		"nop(T):-nop(T,this@localhost). \n"+
 		"set(T):-set(T,this@localhost). \n"+
 		"get(T):-get(T,this@localhost). \n"+
+		
+		"spawn(T):-spawn(T,this@localhost). \n"+
 		
 		"out_s(E,G,R):-out_s(E,G,R,this@localhost). \n" +
 		"in_s(E,G,R):-in_s(E,G,R,this@localhost). \n"+
@@ -1315,22 +1319,46 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
 
 //    MANCA SET_S
     
-//	public boolean spawn_3(Term agentId, Term agentType, Term arg){
-//	    if (arg.isList()){
-//	        Struct args = (Struct)arg;
-//	        Struct sp_arg = new Struct("spawn",agentId.getRenamedCopy(),
-//											 agentType.getRenamedCopy(),
-//											(Struct)args.getRenamedCopy());
-//			
-//	        InternalOperation spop = InternalOperation.makeSpawn(new LogicTuple(sp_arg));
-//	        alice.tuplecentre.core.OutputEvent ev= new RespectOutputEvent(vm.getCurrentEvent(),spop);
-//	        vm.addOutputEvent(ev);
-//	        return true;
-//	    } else {
-//	        return false;
-//	    }
-//	
-//	}
+    public boolean spawn_2(Term arg0, Term arg1){
+    	
+    	String tcName = null;
+    	TupleCentreId tid = null;
+    	try{
+    		tid=new TupleCentreId(arg1);
+    	}catch(Exception e){
+    		e.printStackTrace();
+    		return false;
+    	}
+    	tcName = tid.getName();
+    	
+        AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
+
+    	if(tcName.equals("this")){
+    		log("Local spawn triggered...");
+	        Term newArg=arg0.copyGoal(v,0);
+	        LogicTuple tuArg=new LogicTuple(newArg);
+	        InputEvent ce=vm.getCurrentEvent();
+//	        AS A FIRST IMPL, CONSIDER THE OWNER AS THE REACTING TC (WHICH IS ALSO TARGET)
+	        log("ce.getReactingTC() = " + ce.getReactingTC());
+	        vm.spawnActivity(tuArg, ce.getReactingTC(), ce.getReactingTC());
+//	        vm.spawnActivity(tuArg, ce.getReactingTC(), tid);
+//	        vm.spawnActivity(tuArg, ce.getSource(), tid);
+			InternalEvent ev=new InternalEvent(ce,InternalOperation.makeSpawnR(new LogicTuple(arg0.copyGoal(v,0))));
+			ev.setSource(ce.getReactingTC());
+	        ev.setTarget(ce.getReactingTC());
+			vm.fetchTriggeredReactions(ev);
+	        return true;
+    	}else{
+    		log("Remote spawn triggered...");
+	    	InputEvent ce=vm.getCurrentEvent();
+			InputEvent out_ev = new InputEvent(ce.getReactingTC(),RespectOperation.makeSpawn(getProlog(), new LogicTuple(arg0.copyGoal(v,0)),null),tid,vm.getCurrentTime());
+			out_ev.setIsLinking(true);
+			out_ev.setTarget(tid);
+			vm.addTemporaryOutputEvent(out_ev);
+			return true;
+	    }
+    	
+    }
     
     public boolean current_agent_1(Term arg0){
         Term term=new Struct(vm.getCurrentReactionEvent().getId().toString());

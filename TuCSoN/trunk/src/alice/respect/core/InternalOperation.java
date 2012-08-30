@@ -49,7 +49,7 @@ public class InternalOperation {
 	private static final int OPTYPE_RD_ALLR = 12;
 	private static final int OPTYPE_NO_ALLR = 13;
 
-	private static final int OPTYPE_SPAWN = 66;
+	private static final int OPTYPE_SPAWN_R = 66;
 	
 	private static final int OPTYPE_OUT_SR = 14; 
 	private static final int OPTYPE_IN_SR = 15;
@@ -164,8 +164,8 @@ public class InternalOperation {
 		return type==OPTYPE_SET_ENV;
 	}
 	
-	public boolean isSpawn(){
-		return type == OPTYPE_SPAWN;
+	public boolean isSpawnR(){
+		return type == OPTYPE_SPAWN_R;
 	}
 	
 	static public InternalOperation makeOutR(LogicTuple t){
@@ -244,8 +244,8 @@ public class InternalOperation {
 		return new InternalOperation(OPTYPE_SET_S_R, t);
 	}
 	
-	static public InternalOperation makeSpawn(LogicTuple t){
-		return new InternalOperation(OPTYPE_SPAWN,t);
+	static public InternalOperation makeSpawnR(LogicTuple t){
+		return new InternalOperation(OPTYPE_SPAWN_R,t);
 	}
 
 	static public InternalOperation makeGetEnv(LogicTuple t){

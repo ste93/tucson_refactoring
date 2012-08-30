@@ -147,8 +147,11 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 	            	log("input phase");
 	                InputEvent ie = (InputEvent)ev;
 					RespectOperation op=(RespectOperation)ev.getOperation();
-	                
-					if (op.isOut()){
+					log("op.getLogicTupleArgument() = " + op.getLogicTupleArgument());
+					
+					if (op.isSpawn()){
+						currentReactionTerm=new Struct("spawn",op.getLogicTupleArgument().toTerm());
+					}else if (op.isOut()){
 	                    currentReactionTerm=new Struct("out",op.getLogicTupleArgument().toTerm());
 	                }else if (op.isIn()){
 		                currentReactionTerm=new Struct("in",op.getLogicTupleArgument().toTerm());
@@ -211,7 +214,9 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 					if(((OutputEvent)ev).isLinking()){
 						log("linking event processing");
 						
-						if (op.isOut()){
+						if(op.isSpawn()){
+							currentReactionTerm=new Struct("spawn",op.getLogicTupleArgument().toTerm());
+						}else if (op.isOut()){
 		                    currentReactionTerm=new Struct("out",op.getLogicTupleArgument().toTerm());
 		                }else if (op.isIn()){
 			                currentReactionTerm=new Struct("in",op.getLogicTupleArgument().toTerm());
@@ -264,7 +269,9 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 						
 						log("output phase");
 						
-						if (op.isOut()){
+						if (op.isSpawn()){
+							currentReactionTerm=new Struct("spawn",op.getLogicTupleResult().toTerm());
+						}else if (op.isOut()){
 		                    currentReactionTerm=new Struct("out",op.getLogicTupleResult().toTerm());
 		                }else if (op.isIn()){
 		                    currentReactionTerm=new Struct("in",op.getLogicTupleResult().toTerm());
@@ -366,7 +373,9 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 	                InternalEvent ev1=(InternalEvent)ev;
 	                InternalOperation rop=ev1.getInternalOperation();
 	                
-	                if (rop.isOutR()){
+	                if (rop.isSpawnR()){
+	                	currentReactionTerm=new Struct("spawn",rop.getArgument().toTerm());
+	                }else if (rop.isOutR()){
 	                    currentReactionTerm=new Struct("out",rop.getArgument().toTerm());
 	                }else if (rop.isInR()){
 	                    currentReactionTerm=new Struct("in",rop.getArgument().toTerm());
@@ -428,7 +437,7 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 	            }
 	            
 	        }catch (Exception ex){
-	            notifyException("INTERNAL ERROR: fetchTriggeredReactions "+ev);
+//	            notifyException("INTERNAL ERROR: fetchTriggeredReactions "+ev);
 				ex.printStackTrace();
 	            trigCore.solveEnd();
 	        }

@@ -97,7 +97,7 @@ public class RespectOperation extends TupleCentreOperation implements IRespectOp
 	 * @return
 	 */
 	public LogicTuple getLogicTupleArgument(){
-		if (isOut() || isOut_s() || isOutAll()){
+		if (isOut() || isOut_s() || isOutAll() || isSpawn()){
 			return (LogicTuple)getTupleArgument();
 		} else {
 			return (LogicTuple)getTemplateArgument();
