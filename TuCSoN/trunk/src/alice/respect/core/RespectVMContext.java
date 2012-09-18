@@ -727,8 +727,8 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
             log("Known paths:");
             for(URL url: urls)
             	System.out.println("	" + url.getFile());
-//            Quando si lancia il nodo TuCSoN occorre aggiungere al classpath il path dove
-//            trovare la classe TuCSoN (suppongo anche la teoria Prolog) da lanciare con la
+//            When starting the TuCSoN Node it is necessary to properly add the classpath where to
+//            find the Java class (or the Prolog theory) to be executed with the
 //            spawn()!!
 			Class toSpawn = ClassLoader.getSystemClassLoader().loadClass(alice.util.Tools.removeApices(t.toString()));
 			if(SpawnActivity.class.isAssignableFrom(toSpawn)){

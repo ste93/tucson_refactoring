@@ -236,31 +236,7 @@ public class ACCProxyNodeSide extends ACCAbstractProxyNodeSide{
 					e.printStackTrace();
 					break;
 				}
-			
-//			}else if(msg_type == TucsonOperation.spawnCode()){
-//				
-//				node.resolveCore(tid.getName());
-//				node.addTCAgent(agentId, tid);
-//				try {
-//					res = (LogicTuple) TupleCentreContainer.doBlockingOperation(msg_type, agentId, tid, msg.getTuple());
-//				} catch (TucsonInvalidLogicTupleException
-//						| TucsonOperationNotPossibleException e) {
-//					System.err.println("[ACCProxyNodeSide]: " + e);
-//					e.printStackTrace();
-//					break;
-//				}
-//				
-//				reply = new TucsonMsgReply(msg.getId(), msg_type, true, true, true, res, res);
-//				
-//				try{
-//					TucsonMsgReply.write(outStream, reply);
-//					outStream.flush();
-//				}catch(IOException e){
-//					System.err.println("[ACCProxyNodeSide]: " + e);
-//					e.printStackTrace();
-//					break;
-//				}
-				
+							
 			}else if(msg_type == TucsonOperation.noCode() || msg_type == TucsonOperation.nopCode()
 					|| msg_type == TucsonOperation.outCode() || msg_type == TucsonOperation.out_allCode()
 					|| msg_type == TucsonOperation.inCode() || msg_type == TucsonOperation.inpCode()

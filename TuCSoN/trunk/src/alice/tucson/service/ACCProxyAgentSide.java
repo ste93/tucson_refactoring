@@ -1145,7 +1145,7 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	
 	
 	/**
-	 * SPAWN: BEWARE THE TRICK: this is the synch ACC, but I do a NONBLOCKING call!!
+	 * SPAWN
 	 */
 	public ITucsonOperation spawn(Object tid, LogicTuple toSpawn, Long ms)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException{

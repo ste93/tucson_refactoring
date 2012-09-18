@@ -1341,7 +1341,6 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
 //	        AS A FIRST IMPL, CONSIDER THE OWNER AS THE REACTING TC (WHICH IS ALSO TARGET)
 	        log("ce.getReactingTC() = " + ce.getReactingTC());
 	        vm.spawnActivity(tuArg, ce.getReactingTC(), ce.getReactingTC());
-//	        vm.spawnActivity(tuArg, ce.getReactingTC(), tid);
 //	        vm.spawnActivity(tuArg, ce.getSource(), tid);
 			InternalEvent ev=new InternalEvent(ce,InternalOperation.makeSpawnR(new LogicTuple(arg0.copyGoal(v,0))));
 			ev.setSource(ce.getReactingTC());

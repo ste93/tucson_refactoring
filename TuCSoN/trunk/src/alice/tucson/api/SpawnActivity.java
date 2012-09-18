@@ -30,16 +30,6 @@ public abstract class SpawnActivity implements Serializable, Runnable{
 	private TucsonTupleCentreId tcid;
 	private TucsonTupleCentreId target;
 	
-//	public SpawnActivity(TucsonAgentId aid){
-//		this.aid = aid;
-//		tcid = null;
-//	}
-//	
-//	public SpawnActivity(TucsonTupleCentreId tcid){
-//		this.tcid = tcid;
-//		aid = null;
-//	}
-	
 	public final void setSpawnerId(TucsonAgentId aid){
 		this.aid = aid;
 		tcid = null;
@@ -231,36 +221,6 @@ public abstract class SpawnActivity implements Serializable, Runnable{
 			if(target != null)
 				return true;
 		return false;
-	}
-	
-	/**
-	 * TEST METHOD, DO NOT USE
-	 */
-	public static void main(String[] args){
-		SpawnActivity sa = null;
-		try {
-			sa = new SpawnActivity() {
-				@Override
-				public void doActivity() {
-					System.out.println("[me]: Doing my business...");
-				}
-			};
-//			sa.setSpawnerId(new TucsonAgentId("me"));
-			sa.setSpawnerId(new TucsonTupleCentreId("default", "localhost", "20504"));
-			sa.setTargetTC(new TucsonTupleCentreId("default", "localhost", "20504"));
-//		}catch(TucsonInvalidAgentIdException e){
-//			e.printStackTrace();
-		} catch (TucsonInvalidTupleCentreIdException e) {
-			e.printStackTrace();
-		}
-		sa.doActivity();
-		System.out.println("[Main]: spawner is: <" + sa.getSpawnerId().getId() + ", " + sa.getSpawnerId().getId().getClass() + ">");
-		try {
-			LogicTuple tuple = LogicTuple.parse("'pcd.lab.mine.MyActivity'");
-			System.out.println("[Main]: tuple = " + tuple);
-		} catch (InvalidLogicTupleException e) {
-			e.printStackTrace();
-		}
 	}
 	
 }
