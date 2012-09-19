@@ -3,11 +3,8 @@ package alice.tucson.api;
 import java.io.Serializable;
 
 import alice.logictuple.LogicTuple;
-import alice.logictuple.exceptions.InvalidLogicTupleException;
 
-import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonInvalidLogicTupleException;
-import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 
 import alice.tucson.service.TucsonOperation;
@@ -73,7 +70,7 @@ public abstract class SpawnActivity implements Serializable, Runnable{
 	}
 	
 	/**
-	 * We try to enforce a "core" set of Linda-like primitives to be used inside a spawn()
+	 * We try to enforce a "core" set of Linda primitives to be used inside a spawn()
 	 */
 	
 	protected final LogicTuple out(LogicTuple tuple){

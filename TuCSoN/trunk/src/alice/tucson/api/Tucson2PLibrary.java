@@ -54,6 +54,7 @@ public class Tucson2PLibrary extends Library{
 				+ ":- op(549, xfx, ':'). \n"
 				+ ":- op(548, xfx, '.'). \n"
 				
+				+ "spawn(T) :- spawn(T, default@localhost:20504). \n"
 				+ "out(T) :- out(T, default@localhost:20504). \n"
 				+ "in(T) :- in(T, default@localhost:20504). \n"
 				+ "inp(T) :- inp(T, default@localhost:20504). \n"
@@ -85,6 +86,7 @@ public class Tucson2PLibrary extends Library{
 				+ "get_s(L) :- get_s(L, default@localhost:20504). \n"
 				+ "set_s(L) :- set_s(L, default@localhost:20504). \n"
 				
+				+ "TC@Netid:Port ? spawn(T) :- !, spawn(T, TC@Netid:Port). \n"
 				+ "TC@Netid:Port ? out(T) :- !, out(T, TC@Netid:Port). \n"
 				+ "TC@Netid:Port ? in(T) :- !, in(T, TC@Netid:Port). \n"
 				+ "TC@Netid:Port ? inp(T) :- !, inp(T, TC@Netid:Port). \n"
@@ -115,6 +117,36 @@ public class Tucson2PLibrary extends Library{
 				+ "TC@Netid:Port ? nop_s(E,G,R) :- !, nop_s(E,G,R, TC@Netid:Port). \n"
 				+ "TC@Netid:Port ? get_s(L) :- !, get_s(L, TC@Netid:Port). \n"
 				+ "TC@Netid:Port ? set_s(L) :- !, set_s(L, TC@Netid:Port). \n";
+	}
+	
+	public boolean spawn_2(Term arg0, Term arg1){
+		if(context == null)
+			return false;
+		TucsonTupleCentreId tid;
+		try{
+			tid = new TucsonTupleCentreId(arg1.toString());
+		}catch(TucsonInvalidTupleCentreIdException e){
+			System.err.println("[Tucson2PLibrary]: " + e);
+			e.printStackTrace();
+			return false;
+		}
+		ITucsonOperation op;
+		try{
+			op = context.spawn(tid, new LogicTuple(arg0), (Long)null);
+		}catch(TucsonOperationNotPossibleException e){
+			System.err.println("[Tucson2PLibrary]: " + e);
+			e.printStackTrace();
+			return false;
+		}catch(UnreachableNodeException e){
+			System.err.println("[Tucson2PLibrary]: " + e);
+			e.printStackTrace();
+			return false;
+		} catch (OperationTimeOutException e) {
+			System.err.println("[Tucson2PLibrary]: " + e);
+			e.printStackTrace();
+			return false;
+		}
+		return op.isResultSuccess();
 	}
 
 	public boolean out_2(Term arg0, Term arg1){

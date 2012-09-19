@@ -17,6 +17,9 @@
  */
 package alice.respect.core;
 
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.*;
@@ -719,8 +722,8 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
     }
     
     @Override
-	public boolean spawnActivity(Tuple t, IId owner, IId targetTC) {
-    	log("spawnActivity.tuple = " + t.toString());
+	public boolean spawnActivity(Tuple tuple, IId owner, IId targetTC) {
+    	log("spawnActivity.tuple = " + tuple.toString());
     	try {
     		ClassLoader cl = ClassLoader.getSystemClassLoader();
             URL[] urls = ((URLClassLoader)cl).getURLs();
@@ -730,32 +733,64 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 //            When starting the TuCSoN Node it is necessary to properly add the classpath where to
 //            find the Java class (or the Prolog theory) to be executed with the
 //            spawn()!!
-			Class toSpawn = ClassLoader.getSystemClassLoader().loadClass(alice.util.Tools.removeApices(t.toString()));
-			if(SpawnActivity.class.isAssignableFrom(toSpawn)){
-				SpawnActivity instance = (SpawnActivity) toSpawn.newInstance();
-				if(owner.isAgent()){
-					TucsonAgentId aid = new TucsonAgentId(((AgentId)owner).toString());
-					log("spawnActivity.aid = " + aid);
-					instance.setSpawnerId(aid);
-				}else{
-					TucsonTupleCentreId tcid = new TucsonTupleCentreId(
-							((TupleCentreId)owner).getName(),
-							((TupleCentreId)owner).getNode(),
-							""+((TupleCentreId)owner).getPort());
-					log("spawnActivity.tcid = " + tcid);
-					instance.setSpawnerId(tcid);
-				}
-				TucsonTupleCentreId target = new TucsonTupleCentreId(
-						((TupleCentreId)targetTC).getName(),
-						((TupleCentreId)targetTC).getNode(),
-						""+((TupleCentreId)targetTC).getPort());
-				log("spawnActivity.target = " + target);
-				instance.setTargetTC(target);
-				if(instance.checkInstantiation()){
-					new Thread(instance).start();
-					return true;
-				}
-			}
+            LogicTuple t = (LogicTuple)tuple;
+            if(t.getArity() == 2){
+            	String theoryPath = t.getArg(0).toString();
+            	Term goal = t.getArg(1).toTerm();
+	            if(theoryPath.endsWith(".pl")){
+	            	Prolog solver = new Prolog(new String[]{"alice.tucson.api.Spawn2PLibrary", "alice.respect.api.Respect2PLibrary"});
+	            	InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream(theoryPath);
+					Theory toSpawn = new Theory(new BufferedInputStream(is));
+	            	solver.setTheory(toSpawn);
+	            	solver.solve(goal);
+	            	do{
+	            		solver.solveNext();
+	            	}while(solver.hasOpenAlternatives());
+	            	solver.solveEnd();
+	            	return true;
+	            }else{
+	            	log("Prolog theory file must end with .pl extension");
+	            	return false;
+	            }
+            }else if(t.getArity() == 1){
+            	if(t.toString().endsWith(".class")){
+					Class toSpawn = ClassLoader.getSystemClassLoader().loadClass(alice.util.Tools.removeApices(t.toString()));
+					if(SpawnActivity.class.isAssignableFrom(toSpawn)){
+						SpawnActivity instance = (SpawnActivity) toSpawn.newInstance();
+						if(owner.isAgent()){
+							TucsonAgentId aid = new TucsonAgentId(((AgentId)owner).toString());
+							log("spawnActivity.aid = " + aid);
+							instance.setSpawnerId(aid);
+						}else{
+							TucsonTupleCentreId tcid = new TucsonTupleCentreId(
+									((TupleCentreId)owner).getName(),
+									((TupleCentreId)owner).getNode(),
+									""+((TupleCentreId)owner).getPort());
+							log("spawnActivity.tcid = " + tcid);
+							instance.setSpawnerId(tcid);
+						}
+						TucsonTupleCentreId target = new TucsonTupleCentreId(
+								((TupleCentreId)targetTC).getName(),
+								((TupleCentreId)targetTC).getNode(),
+								""+((TupleCentreId)targetTC).getPort());
+						log("spawnActivity.target = " + target);
+						instance.setTargetTC(target);
+						if(instance.checkInstantiation()){
+							new Thread(instance).start();
+							return true;
+						}
+					}else{
+						log("Java class to spawn must be assignable from SpawnActivity.class");
+		            	return false;
+					}
+            	}else{
+            		log("Java class file must end with .class extension");
+                	return false;
+            	}
+            }else{
+            	log("Prolog predicate arity must be 1 (Java class name) or 2 (Prolog theory filepath, goal to solve)");
+            	return false;
+            }
 		} catch (ClassNotFoundException e) {
 			System.err.println("[RespectVMContext]: " + e);
 			e.printStackTrace();
@@ -776,6 +811,24 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 			System.err.println("[RespectVMContext]: " + e);
 			e.printStackTrace();
 			return false;
+		} catch (InvalidLibraryException e) {
+			System.err.println("[RespectVMContext]: " + e);
+			e.printStackTrace();
+			return false;
+		} catch (IOException e) {
+			System.err.println("[RespectVMContext]: " + e);
+			e.printStackTrace();
+			return false;
+		} catch (InvalidTheoryException e) {
+			System.err.println("[RespectVMContext]: " + e);
+			e.printStackTrace();
+			return false;
+		} catch (InvalidTupleOperationException e) {
+			System.err.println("[RespectVMContext]: " + e);
+			e.printStackTrace();
+			return false;
+		} catch (NoMoreSolutionException e) {
+			return true;
 		}
 		return false;
 	}
