@@ -1613,7 +1613,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
 	}
     
     private void log(String s){
-    	System.out.println("....[Library]: " + s);
+    	System.out.println("....[Respect2PLibrary]: " + s);
     }
     
 }

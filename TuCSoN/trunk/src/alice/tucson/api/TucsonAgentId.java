@@ -22,12 +22,10 @@ import alice.respect.api.exceptions.InvalidAgentIdException;
 
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 
-import java.io.Serializable;
 import java.util.UUID;
 
 public class TucsonAgentId implements alice.tuplecentre.api.AgentId{
 	
-	private static final long serialVersionUID = -1027439718598689379L;
 	private Object aid;
 	private UUID uuid;
 	
