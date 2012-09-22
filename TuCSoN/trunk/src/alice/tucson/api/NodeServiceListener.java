@@ -19,14 +19,41 @@ package alice.tucson.api;
 
 import alice.tuplecentre.api.ObservableEventListener;
 
+/**
+ * Listener interface reacting to TuCSoN node service events.
+ * 
+ * @see alice.tuplecentre.api.ObservableEventListener ObservableEventListener
+ * 
+ * @author ste (mailto: s.mariani@unibo.it)
+ */
 public interface NodeServiceListener extends ObservableEventListener{
 	
+	/**
+	 * Reacts to ACC release from node to agent.
+	 * 
+	 * @param aid the agent identifier
+	 */
 	void accEntered(TucsonAgentId aid);
 
+	/**
+	 * Reacts to ACC release by agent.
+	 * 
+	 * @param aid the agent identifier
+	 */
 	void accQuit(TucsonAgentId aid);
 
+	/**
+	 * Reacts to tuplecentre creation.
+	 * 
+	 * @param tid the created tuplecentre identifier
+	 */
 	void tcCreated(TucsonTupleCentreId tid);
 
+	/**
+	 * Reacts to tuplecentre destruction.
+	 * 
+	 * @param tid the destroyed tuplecentre identifier
+	 */
 	void tcDestroyed(TucsonTupleCentreId tid);
 	
 }

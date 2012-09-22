@@ -19,8 +19,19 @@ package alice.tucson.api;
 
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 
+/**
+ * Root ACC, no Linda nor TuCSoN operations available, only ACC release back to TuCSoN node
+ * is possible.
+ * 
+ * @author ste (mailto: s.mariani@unibo.it)
+ */
 public interface RootACC {
 	
+	/**
+	 * Release of the ACC and exit from the TuCSoN system.
+	 * 
+	 * @throws TucsonOperationNotPossibleException
+	 */
 	void exit() throws TucsonOperationNotPossibleException;
 
 }

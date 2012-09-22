@@ -18,7 +18,6 @@
 package alice.tucson.api;
 
 import alice.logictuple.LogicTuple;
-import alice.logictuple.exceptions.InvalidTupleOperationException;
 
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
@@ -26,270 +25,309 @@ import alice.tucson.api.exceptions.UnreachableNodeException;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 
 /**
- * Agent Coordination Context enabling interaction with the Specification Tuple Space (storing ReSpecT
- * reactions that is the coordination laws) and enacting a BLOCKING behavior from the agent's
- * perspective.
- * This means that whichever is the operation invoked (either suspensive or predicative) the
- * agent stub will block waiting for its completion (communicated by the node side).
+ * Agent Coordination Context enabling interaction with the ReSpecT Specification Tuple Space
+ * and enacting a BLOCKING behavior from the agent's perspective.
+ * This means that whichever is the TuCSoN operation invoked (either suspensive or predicative)
+ * the agent proxy WILL block waiting for its completion (either success or failure).
+ * 
+ * @see alice.tucson.service.ACCProxyAgentSide ACCProxyAgentSide
+ * @see alice.tucson.service.ACCProxyNodeSide ACCProxyNodeSide
+ * 
+ * @author ste (mailto: s.mariani@unibo.it)
  */
 public interface SpecificationSynchACC extends RootACC{
 	
 	/**
-	 * Out_s Specification primitive, synchronous version. Adds the specified Reaction
-	 * Specification (wrapped in a Logic Tuple) in the given target tuplecentre,
-	 * waiting the completion answer from the TuCSoN node for a maximum time
-	 * specified in ms timeunit.
+	 * <code>out_s</code> specification primitive, adds the ReSpecT Reaction
+	 * Specification in the given target tuplecentre specification space.
 	 * 
-	 * Again, this TuCSoN out_s primitive assumes the ORDERED semantics,
+	 * This TuCSoN <code>out_s</code> primitive assumes the ORDERED semantics,
 	 * hence the reaction specification is SUDDENLY injected in the target space
-	 * (if the primitive successfully completes)
+	 * (if the primitive successfully completes).
 	 * 
-	 * @param tid Target TuCSoN tuplecentre id {@link alice.tucson.api.TucsonTupleCentreId tid}
-	 * @param event 
-	 * @param guards 
-	 * @param reactionBody
-	 * @param ms Maximum waiting time tolerated by the callee TuCSoN Agent
+	 * @param tid the target TuCSoN tuplecentre id {@link alice.tucson.api.TucsonTupleCentreId tid}
+	 * @param event the TuCSoN primitive to react to
+	 * @param guards the guard predicates to be checked for satisfaction so to actually
+	 * trigger the body of the ReSpecT reaction
+	 * @param reactionBody the computation to be done in response to the <code>event</code>
+	 * @param ms the maximum waiting time for completion tolerated by the TuCSoN agent
+	 * behind this ACC. Notice that reaching the timeout just unblocks the agent, but
+	 * the request IS NOT REMOVED from TuCSoN node pending requests (will still be served
+	 * at sometime in the future).
 	 * 
-	 * @return The Logic Tuple resulting from the completion of the primitive
+	 * @return the interface to access the data about TuCSoN operations outcome.
 	 * 
 	 * @throws TucsonOperationNotPossibleException
 	 * @throws UnreachableNodeException
 	 * @throws OperationTimeOutException
 	 * 
 	 * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
-	 * @see alice.respect.api.RespectSpecification RespectSpecification
+	 * @see alice.tucson.api.ITucsonOperation ITucsonOperation
 	 */
 	ITucsonOperation out_s(Object tid, LogicTuple event, LogicTuple guards, LogicTuple reactionBody,
 			Long ms) throws TucsonOperationNotPossibleException, UnreachableNodeException,
 			OperationTimeOutException;
 	
 	/**
-	 * In_s Specification primitive, synchronous version. Retrieves the specified Reaction
-	 * Specification (wrapped in a Logic Tuple) in the given target tuplecentre,
-	 * waiting the completion answer from the TuCSoN node for a maximum time
-	 * specified in ms timeunit.
+	 * <code>in_s</code> specification primitive, retrieves a ReSpecT Reaction
+	 * Specification from the given target tuplecentre specification space.
 	 * 
-	 * @param tid Target TuCSoN tuplecentre id {@link alice.tucson.api.TucsonTupleCentreId tid}
-	 * @param event 
-	 * @param guards 
-	 * @param reactionBody
-	 * @param ms Maximum waiting time tolerated by the callee TuCSoN Agent
+	 * Notice that the primitive semantics is SUSPENSIVE: until no ReSpecT specification
+	 * is found to match the given template, no success completion answer is forwarded to
+	 * the TuCSoN Agent exploiting this ACC, which then is blocked waiting.
 	 * 
-	 * @return The Logic Tuple resulting from the completion of the primitive
+	 * @param tid the target TuCSoN tuplecentre id {@link alice.tucson.api.TucsonTupleCentreId tid}
+	 * @param event the template for the TuCSoN primitive to react to
+	 * @param guards the template for the guard predicates to be checked for satisfaction so to actually
+	 * trigger the body of the ReSpecT reaction
+	 * @param reactionBody the template for the computation to be done in response to the <code>event</code>
+	 * @param ms the maximum waiting time for completion tolerated by the TuCSoN agent
+	 * behind this ACC. Notice that reaching the timeout just unblocks the agent, but
+	 * the request IS NOT REMOVED from TuCSoN node pending requests (will still be served
+	 * at sometime in the future).
+	 * 
+	 * @return the interface to access the data about TuCSoN operations outcome.
 	 * 
 	 * @throws TucsonOperationNotPossibleException
 	 * @throws UnreachableNodeException
 	 * @throws OperationTimeOutException
 	 * 
 	 * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
-	 * @see alice.respect.api.RespectSpecification RespectSpecification
+	 * @see alice.tucson.api.ITucsonOperation ITucsonOperation
 	 */
 	ITucsonOperation in_s(Object tid, LogicTuple event, LogicTuple guards, LogicTuple reactionBody,
 			Long ms) throws TucsonOperationNotPossibleException, UnreachableNodeException,
 			OperationTimeOutException;
 	
 	/**
-	 * Rd_s Specification primitive, synchronous version. Reads (w/o removing) the specified Reaction
-	 * Specification (wrapped in a Logic Tuple) in the given target tuplecentre,
-	 * waiting the completion answer from the TuCSoN node for a maximum time
-	 * specified in ms timeunit.
+	 * <code>in_s</code> specification primitive, reads (w/o removing) a ReSpecT Reaction
+	 * Specification from the given target tuplecentre specification space.
 	 * 
-	 * @param tid Target TuCSoN tuplecentre id {@link alice.tucson.api.TucsonTupleCentreId tid}
-	 * @param event 
-	 * @param guards 
-	 * @param reactionBody
-	 * @param ms Maximum waiting time tolerated by the callee TuCSoN Agent
+	 * Notice that the primitive semantics is SUSPENSIVE: until no ReSpecT specification
+	 * is found to match the given template, no success completion answer is forwarded to
+	 * the TuCSoN Agent exploiting this ACC, which then is blocked waiting.
 	 * 
-	 * @return The Logic Tuple resulting from the completion of the primitive
+	 * @param tid the target TuCSoN tuplecentre id {@link alice.tucson.api.TucsonTupleCentreId tid}
+	 * @param event the template for the TuCSoN primitive to react to
+	 * @param guards the template for the guard predicates to be checked for satisfaction so to actually
+	 * trigger the body of the ReSpecT reaction
+	 * @param reactionBody the template for the computation to be done in response to the <code>event</code>
+	 * @param ms the maximum waiting time for completion tolerated by the TuCSoN agent
+	 * behind this ACC. Notice that reaching the timeout just unblocks the agent, but
+	 * the request IS NOT REMOVED from TuCSoN node pending requests (will still be served
+	 * at sometime in the future).
+	 * 
+	 * @return the interface to access the data about TuCSoN operations outcome.
 	 * 
 	 * @throws TucsonOperationNotPossibleException
 	 * @throws UnreachableNodeException
 	 * @throws OperationTimeOutException
 	 * 
 	 * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
-	 * @see alice.respect.api.RespectSpecification RespectSpecification
+	 * @see alice.tucson.api.ITucsonOperation ITucsonOperation
 	 */
 	ITucsonOperation rd_s(Object tid, LogicTuple event, LogicTuple guards, LogicTuple reactionBody,
 			Long ms) throws TucsonOperationNotPossibleException, UnreachableNodeException,
 			OperationTimeOutException;
 	
 	/**
-	 * Inp_s Specification primitive, synchronous version. Retrieves the specified Reaction
-	 * Specification (wrapped in a Logic Tuple) in the given target tuplecentre,
-	 * waiting the completion answer from the TuCSoN node for a maximum time
-	 * specified in ms timeunit.
+	 * <code>inp_s</code> specification primitive, retrieves a ReSpecT Reaction
+	 * Specification from the given target tuplecentre specification space.
 	 * 
-	 * This time the primitive semantics is NOT SUSPENSIVE: if no Reaction Specification is found
+	 * This time the primitive semantics is NOT SUSPENSIVE: if no ReSpecT specification is found
 	 * to match the given template, a failure completion answer is forwarded to
-	 * the TuCSoN Agent exploiting this proxy
+	 * the TuCSoN Agent exploiting this ACC.
 	 * 
-	 * @param tid Target TuCSoN tuplecentre id {@link alice.tucson.api.TucsonTupleCentreId tid}
-	 * @param event 
-	 * @param guards 
-	 * @param reactionBody
-	 * @param ms Maximum waiting time tolerated by the callee TuCSoN Agent
+	 * @param tid the target TuCSoN tuplecentre id {@link alice.tucson.api.TucsonTupleCentreId tid}
+	 * @param event the template for the TuCSoN primitive to react to
+	 * @param guards the template for the guard predicates to be checked for satisfaction so to actually
+	 * trigger the body of the ReSpecT reaction
+	 * @param reactionBody the template for the computation to be done in response to the <code>event</code>
+	 * @param ms the maximum waiting time for completion tolerated by the TuCSoN agent
+	 * behind this ACC. Notice that reaching the timeout just unblocks the agent, but
+	 * the request IS NOT REMOVED from TuCSoN node pending requests (will still be served
+	 * at sometime in the future).
 	 * 
-	 * @return The Logic Tuple resulting from the completion of the primitive
+	 * @return the interface to access the data about TuCSoN operations outcome.
 	 * 
 	 * @throws TucsonOperationNotPossibleException
 	 * @throws UnreachableNodeException
 	 * @throws OperationTimeOutException
 	 * 
 	 * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
-	 * @see alice.respect.api.RespectSpecification RespectSpecification
+	 * @see alice.tucson.api.ITucsonOperation ITucsonOperation
 	 */
 	ITucsonOperation inp_s(Object tid, LogicTuple event, LogicTuple guards, LogicTuple reactionBody,
 			Long ms) throws TucsonOperationNotPossibleException, UnreachableNodeException,
 			OperationTimeOutException;
 	
 	/**
-	 * Rdp_s Specification primitive, synchronous version. Reads (w/o removing) the specified Reaction
-	 * Specification (wrapped in a Logic Tuple) in the given target tuplecentre,
-	 * waiting the completion answer from the TuCSoN node for a maximum time
-	 * specified in ms timeunit.
+	 * <code>rdp_s</code> specification primitive, reads (w/o removing) a ReSpecT Reaction
+	 * Specification from the given target tuplecentre specification space.
 	 * 
-	 * Semantics is NOT SUSPENSIVE: if no Reaction Specification is found
+	 * This time the primitive semantics is NOT SUSPENSIVE: if no ReSpecT specification is found
 	 * to match the given template, a failure completion answer is forwarded to
-	 * the TuCSoN Agent exploiting this proxy
+	 * the TuCSoN Agent exploiting this ACC.
 	 * 
-	 * @param tid Target TuCSoN tuplecentre id {@link alice.tucson.api.TucsonTupleCentreId tid}
-	 * @param event 
-	 * @param guards 
-	 * @param reactionBody
-	 * @param ms Maximum waiting time tolerated by the callee TuCSoN Agent
+	 * @param tid the target TuCSoN tuplecentre id {@link alice.tucson.api.TucsonTupleCentreId tid}
+	 * @param event the template for the TuCSoN primitive to react to
+	 * @param guards the template for the guard predicates to be checked for satisfaction so to actually
+	 * trigger the body of the ReSpecT reaction
+	 * @param reactionBody the template for the computation to be done in response to the <code>event</code>
+	 * @param ms the maximum waiting time for completion tolerated by the TuCSoN agent
+	 * behind this ACC. Notice that reaching the timeout just unblocks the agent, but
+	 * the request IS NOT REMOVED from TuCSoN node pending requests (will still be served
+	 * at sometime in the future).
 	 * 
-	 * @return The Logic Tuple resulting from the completion of the primitive
+	 * @return the interface to access the data about TuCSoN operations outcome.
 	 * 
 	 * @throws TucsonOperationNotPossibleException
 	 * @throws UnreachableNodeException
 	 * @throws OperationTimeOutException
 	 * 
 	 * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
-	 * @see alice.respect.api.RespectSpecification RespectSpecification
+	 * @see alice.tucson.api.ITucsonOperation ITucsonOperation
 	 */
 	ITucsonOperation rdp_s(Object tid, LogicTuple event, LogicTuple guards, LogicTuple reactionBody,
 			Long ms) throws TucsonOperationNotPossibleException, UnreachableNodeException,
 			OperationTimeOutException;
 	
 	/**
-	 * No_s Specification primitive, synchronous version. Checks absence of the
-	 * specified Reaction Specification (wrapped in a Logic Tuple)
-	 * in the given target tuplecentre, waiting the completion answer from
-	 * the TuCSoN node for a maximum time specified in ms timeunit.
+	 * <code>no_s</code> specification primitive, checks absence of the a ReSpecT Reaction
+	 * in the given target tuplecentre specification space.
 	 * 
-	 * @param tid Target TuCSoN tuplecentre id {@link alice.tucson.api.TucsonTupleCentreId tid}
-	 * @param event 
-	 * @param guards 
-	 * @param reactionBody
-	 * @param ms Maximum waiting time tolerated by the callee TuCSoN Agent
+	 * Notice that the primitive semantics is SUSPENSIVE: until any ReSpecT specification is found
+	 * to match the given template, no success completion answer is forwarded to
+	 * the TuCSoN Agent exploiting this ACC, which then is blocked waiting.
 	 * 
-	 * @return The Logic Tuple resulting from the completion of the primitive
+	 * @param tid the target TuCSoN tuplecentre id {@link alice.tucson.api.TucsonTupleCentreId tid}
+	 * @param event the template for the TuCSoN primitive to react to
+	 * @param guards the template for the guard predicates to be checked for satisfaction so to actually
+	 * trigger the body of the ReSpecT reaction
+	 * @param reactionBody the template for the computation to be done in response to the <code>event</code>
+	 * @param ms the maximum waiting time for completion tolerated by the TuCSoN agent
+	 * behind this ACC. Notice that reaching the timeout just unblocks the agent, but
+	 * the request IS NOT REMOVED from TuCSoN node pending requests (will still be served
+	 * at sometime in the future).
+	 * 
+	 * @return the interface to access the data about TuCSoN operations outcome.
 	 * 
 	 * @throws TucsonOperationNotPossibleException
 	 * @throws UnreachableNodeException
 	 * @throws OperationTimeOutException
 	 * 
 	 * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
-	 * @see alice.respect.api.RespectSpecification RespectSpecification
+	 * @see alice.tucson.api.ITucsonOperation ITucsonOperation
 	 */
 	ITucsonOperation no_s(Object tid, LogicTuple event, LogicTuple guards, LogicTuple reactionBody,
 			Long ms) throws TucsonOperationNotPossibleException, UnreachableNodeException,
 			OperationTimeOutException;
 	
 	/**
-	 * Nop_s Specification primitive, synchronous version. Checks absence of the
-	 * specified Reaction Specification (wrapped in a Logic Tuple)
-	 * in the given target tuplecentre, waiting the completion answer from
-	 * the TuCSoN node for a maximum time specified in ms timeunit.
+	 * <code>nop_s</code> specification primitive, checks absence of the a ReSpecT Reaction
+	 * in the given target tuplecentre specification space.
 	 * 
-	 * Semantics is NOT SUSPENSIVE: if a Reaction Specification is found
+	 * This time the primitive semantics is NOT SUSPENSIVE: if any ReSpecT specification is found
 	 * to match the given template, a failure completion answer is forwarded to
-	 * the TuCSoN Agent exploiting this proxy
+	 * the TuCSoN Agent exploiting this ACC.
 	 * 
-	 * @param tid Target TuCSoN tuplecentre id {@link alice.tucson.api.TucsonTupleCentreId tid}
-	 * @param event 
-	 * @param guards 
-	 * @param reactionBody
-	 * @param ms Maximum waiting time tolerated by the callee TuCSoN Agent
+	 * @param tid the target TuCSoN tuplecentre id {@link alice.tucson.api.TucsonTupleCentreId tid}
+	 * @param event the template for the TuCSoN primitive to react to
+	 * @param guards the template for the guard predicates to be checked for satisfaction so to actually
+	 * trigger the body of the ReSpecT reaction
+	 * @param reactionBody the template for the computation to be done in response to the <code>event</code>
+	 * @param ms the maximum waiting time for completion tolerated by the TuCSoN agent
+	 * behind this ACC. Notice that reaching the timeout just unblocks the agent, but
+	 * the request IS NOT REMOVED from TuCSoN node pending requests (will still be served
+	 * at sometime in the future).
 	 * 
-	 * @return The Logic Tuple resulting from the completion of the primitive
+	 * @return the interface to access the data about TuCSoN operations outcome.
 	 * 
 	 * @throws TucsonOperationNotPossibleException
 	 * @throws UnreachableNodeException
 	 * @throws OperationTimeOutException
 	 * 
 	 * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
-	 * @see alice.respect.api.RespectSpecification RespectSpecification
+	 * @see alice.tucson.api.ITucsonOperation ITucsonOperation
 	 */
 	ITucsonOperation nop_s(Object tid, LogicTuple event, LogicTuple guards, LogicTuple reactionBody,
 			Long ms) throws TucsonOperationNotPossibleException, UnreachableNodeException,
 			OperationTimeOutException;
 	
 	/**
-	 * Set_s TuCSoN primitive, synchronous version. Replace the specification space
-	 * with the newly specified (in the form of a string) in the given target
-	 * tuplecentre, waiting the completion answer from
-	 * the TuCSoN node for a maximum time specified in ms timeunit.
+	 * <code>set_s</code> specification primitive, to replace all the ReSpecT specification tuples in the
+	 * given target tuplecentre specification space with that specified in the given String.
+	 * The ReSpecT specification string should be formatted according to Prolog theory syntax.
 	 * 
-	 * @param tid Target TuCSoN tuplecentre id {@link alice.tucson.api.TucsonTupleCentreId tid}
-	 * @param spec The new specification space to replace the current one
-	 * @param ms Maximum waiting time tolerated by the callee TuCSoN Agent
+	 * @param tid the target TuCSoN tuplecentre id {@link alice.tucson.api.TucsonTupleCentreId tid}
+	 * @param spec the new ReSpecT specification to replace the current specification space
+	 * @param ms the maximum waiting time for completion tolerated by the TuCSoN agent
+	 * behind this ACC. Notice that reaching the timeout just unblocks the agent, but
+	 * the request IS NOT REMOVED from TuCSoN node pending requests (will still be served
+	 * at sometime in the future).
 	 * 
-	 * @return The Logic Tuple resulting from the completion of the primitive
+	 * @return the interface to access the data about TuCSoN operations outcome.
 	 * 
 	 * @throws TucsonOperationNotPossibleException
 	 * @throws UnreachableNodeException
 	 * @throws OperationTimeOutException
 	 * 
 	 * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
-	 * @see alice.respect.api.RespectSpecification RespectSpecification
+	 * @see alice.tucson.api.ITucsonOperation ITucsonOperation
+	 * @see alice.tuprolog.Theory Theory
 	 */
 	ITucsonOperation set_s(Object tid, String spec, Long ms) throws TucsonOperationNotPossibleException,
 	UnreachableNodeException, OperationTimeOutException;
 	
 	/**
-	 * Set_s TuCSoN primitive, synchronous version. Replace the specification space
-	 * with the newly specified (in the form of a string) in the given target
-	 * tuplecentre, waiting the completion answer from
-	 * the TuCSoN node for a maximum time specified in ms timeunit.
+	 * <code>set_s</code> specification primitive, to replace all the ReSpecT specification tuples in the
+	 * given target tuplecentre specification space with that specified in the given tuple.
+	 * The ReSpecT specification tuple should be formatted as a Prolog list of the kind
+	 * [(E1,G1,R1), ..., (En,Gn,Rn)] where <code>E = events</code>, <code>G = guards</code>,
+	 * <code>R = reactionBody</code>.
 	 * 
-	 * @param tid Target TuCSoN tuplecentre id {@link alice.tucson.api.TucsonTupleCentreId tid}
-	 * @param spec The new specification space to replace the current one
-	 * @param ms Maximum waiting time tolerated by the callee TuCSoN Agent
+	 * @param tid the target TuCSoN tuplecentre id {@link alice.tucson.api.TucsonTupleCentreId tid}
+	 * @param spec the new ReSpecT specification to replace the current specification space
+	 * @param ms the maximum waiting time for completion tolerated by the TuCSoN agent
+	 * behind this ACC. Notice that reaching the timeout just unblocks the agent, but
+	 * the request IS NOT REMOVED from TuCSoN node pending requests (will still be served
+	 * at sometime in the future).
 	 * 
-	 * @return The Logic Tuple resulting from the completion of the primitive
+	 * @return the interface to access the data about TuCSoN operations outcome.
 	 * 
 	 * @throws TucsonOperationNotPossibleException
 	 * @throws UnreachableNodeException
 	 * @throws OperationTimeOutException
 	 * 
 	 * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
-	 * @see alice.respect.api.RespectSpecification RespectSpecification
+	 * @see alice.tucson.api.ITucsonOperation ITucsonOperation
 	 */
 	ITucsonOperation set_s(Object tid, LogicTuple spec, Long ms)
 		throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException;
 	
 	/**
-	 * Get_s TuCSoN primitive, synchronous version. Reads (w/o removing) all the Reaction Specifications
-	 * in the given target tuplecentre, waiting the completion answer from
-	 * the TuCSoN node for a maximum time specified in ms timeunit.
+	 * <code>get_s</code> specification primitive, reads (w/o removing) all the ReSpecT specification tuples
+	 * from the given target tuplecentre specification space.
 	 * 
-	 * Semantics is NOT SUSPENSIVE: if the specification space is empty, a failure
-	 * completion answer is forwarded to the TuCSoN Agent exploiting this proxy
+	 * Semantics is NOT SUSPENSIVE: if the specification space is empty, an empty list
+	 * is returned to the TuCSoN Agent exploiting this ACC.
 	 * 
-	 * @param tid Target TuCSoN tuplecentre id {@link alice.tucson.api.TucsonTupleCentreId tid}
-	 * @param ms Maximum waiting time tolerated by the callee TuCSoN Agent
+	 * @param tid the target TuCSoN tuplecentre id {@link alice.tucson.api.TucsonTupleCentreId tid}
+	 * @param ms the maximum waiting time for completion tolerated by the TuCSoN agent
+	 * behind this ACC. Notice that reaching the timeout just unblocks the agent, but
+	 * the request IS NOT REMOVED from TuCSoN node pending requests (will still be served
+	 * at sometime in the future).
 	 * 
-	 * @return The String representing the obtained Reaction Specification space
+	 * @return the interface to access the data about TuCSoN operations outcome.
 	 * 
 	 * @throws TucsonOperationNotPossibleException
 	 * @throws UnreachableNodeException
 	 * @throws OperationTimeOutException
 	 * 
 	 * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
-	 * @see alice.respect.api.RespectSpecification RespectSpecification
+	 * @see alice.tucson.api.ITucsonOperation ITucsonOperation
 	 */
 	ITucsonOperation get_s(Object tid, Long ms) throws TucsonOperationNotPossibleException,
-	UnreachableNodeException, OperationTimeOutException, InvalidTupleOperationException;
+	UnreachableNodeException, OperationTimeOutException;
 	
 }

@@ -18,7 +18,6 @@
 package alice.tucson.api;
 
 import alice.logictuple.LogicTuple;
-import alice.logictuple.exceptions.InvalidTupleOperationException;
 
 import alice.tucson.api.exceptions.TucsonGenericException;
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
@@ -35,6 +34,11 @@ import alice.tuprolog.Term;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * 
+ * 
+ * @author ste (mailto: s.mariani@unibo.it)
+ */
 public class Tucson2PLibrary extends Library{
 	
 	private static final long serialVersionUID = 6716779172091533171L;
@@ -681,10 +685,6 @@ public class Tucson2PLibrary extends Library{
 			e.printStackTrace();
 			return false;
 		} catch (OperationTimeOutException e) {
-			System.err.println("[Tucson2PLibrary]: " + e);
-			e.printStackTrace();
-			return false;
-		} catch (InvalidTupleOperationException e) {
 			System.err.println("[Tucson2PLibrary]: " + e);
 			e.printStackTrace();
 			return false;

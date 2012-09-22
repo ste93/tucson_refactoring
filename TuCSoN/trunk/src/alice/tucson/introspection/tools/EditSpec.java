@@ -264,9 +264,6 @@ public class EditSpec extends javax.swing.JFrame{
 		}catch (TucsonOperationNotPossibleException e){
 			outputState.setText("Specification not available.");
 			e.printStackTrace();
-		} catch (InvalidTupleOperationException e) {
-			outputState.setText("Specification not available.");
-			e.printStackTrace();
 		} catch (UnreachableNodeException e) {
 			outputState.setText("Specification not available.");
 			e.printStackTrace();
@@ -282,9 +279,6 @@ public class EditSpec extends javax.swing.JFrame{
 			inputSpec.setText(spec);
 			outputState.setText("Specification read.");
 		}catch (TucsonOperationNotPossibleException e){
-			outputState.setText("Specification not available.");
-			e.printStackTrace();
-		} catch (InvalidTupleOperationException e) {
 			outputState.setText("Specification not available.");
 			e.printStackTrace();
 		} catch (UnreachableNodeException e) {

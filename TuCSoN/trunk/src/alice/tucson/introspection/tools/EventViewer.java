@@ -47,7 +47,6 @@ public class EventViewer extends javax.swing.JFrame{
 	}
 
 	public void setText(String st){
-		System.out.println("textarea" + st);
 		outputArea.setText(st);
 	}
 

@@ -11,14 +11,14 @@ import alice.tucson.service.TucsonOperation;
 import alice.tucson.service.TupleCentreContainer;
 
 /**
- * The "purely algorithmic computation" to be carried out by the spawn() primitive.
- * For a good engineering discipline, there should be no interaction, no communication,
- * no waitings for external stimuli inside <code> doActivity() </code> method: just plain,
- * simple, "old-fashioned" computation.
- * Unique exceptions are a core set of Linda-like primitives allowed to acquire inputs and
- * share outputs.
+ * The "parallel computation" to be started with a <code>spawn</code> primitive.
+ * The spawned activity should be a PURELY COMPUTATIONAL (algorithmic) process, with
+ * the purpose to delegate computations to the coordination medium. For this reason,
+ * a set of "constrained" Linda primitives are provided: they CANNOT access a remote
+ * space. Furthermore, the programmer is strongly encouraged not to put communications,
+ * locks or other potentially "extra-algorithmic" features in its SpawnActivity.
  * 
- * @author s.mariani@unibo.it
+ * @author ste (mailto: s.mariani@unibo.it)
  */
 public abstract class SpawnActivity implements Serializable, Runnable{
 	
@@ -27,30 +27,55 @@ public abstract class SpawnActivity implements Serializable, Runnable{
 	private TucsonTupleCentreId tcid;
 	private TucsonTupleCentreId target;
 	
+	/**
+	 * Linda operations used in the spawned activity are performed ON BEHALF of the
+	 * agent who issued the <code>spawn</code> (its "owner").
+	 * 
+	 * @param aid the identifier of the agent "owner" of the spawned activity.
+	 */
 	public final void setSpawnerId(TucsonAgentId aid){
 		this.aid = aid;
 		tcid = null;
 	}
 	
+	/**
+	 * Linda operations used in the spawned activity are performed ON BEHALF of the
+	 * tuplecentre who issued the <code>spawn</code> (its "owner").
+	 * 
+	 * @param tcid the identifier of the tuplecentre "owner" of the spawned activity.
+	 */
 	public final void setSpawnerId(TucsonTupleCentreId tcid){
 		aid = null;
 		this.tcid = tcid;
 	}
 	
+	/**
+	 * The tuplecentre target, which will "host" the spawned computation. It is
+	 * automagically set by the ReSpecT engine.
+	 * 
+	 * @param tcid the identifier of the tuplecentre target of the spawned activity.
+	 */
 	public final void setTargetTC(TucsonTupleCentreId tcid){
 		target = tcid;
 	}
 	
+	/**
+	 * Gets the tuplecentre identifier hosting the spawned activity. 
+	 * 
+	 * @return the identifier of the tuplecentre hosting the spawned activity.
+	 */
 	public final TucsonTupleCentreId getTargetTC(){
 		return target;
 	}
 	
 	/**
-	 * Both agents and the coordination medium itself can spawn() a computation, hence we
-	 * need to handle both.
+	 * Both agents and the coordination medium itself can <code>spawn</code> a computation,
+	 * hence we need to handle both.
 	 * 
 	 * @return the "spawner" id (actually, a generic wrapper hosting either a TucsonAgentId
-	 * or a TucsonTupleCentreId, accessible with method <code> getId() </code>)
+	 * or a TucsonTupleCentreId, accessible with method <code>getId()</code>)
+	 * 
+	 * @see alice.tucson.api.TucsonIdWrapper TucsonIdWrapper
 	 */
 	public final TucsonIdWrapper<?> getSpawnerId(){
 		if(aid == null)
@@ -64,15 +89,17 @@ public abstract class SpawnActivity implements Serializable, Runnable{
 	 */
 	abstract public void doActivity();
 	
+	/**
+	 * Called by the ReSpecT engine.
+	 */
 	public final void run(){
 		if(checkInstantiation())
 			doActivity();
 	}
 	
 	/**
-	 * We try to enforce a "core" set of Linda primitives to be used inside a spawn()
+	 * @see alice.tucson.api.OrdinarySynchACC OrdinarySynchACC
 	 */
-	
 	protected final LogicTuple out(LogicTuple tuple){
 		if(aid != null)
 			try {
@@ -93,6 +120,9 @@ public abstract class SpawnActivity implements Serializable, Runnable{
 		return null;
 	}
 	
+	/**
+	 * @see alice.tucson.api.OrdinarySynchACC OrdinarySynchACC
+	 */
 	protected final LogicTuple in(LogicTuple tuple){
 		if(aid != null)
 			try {
@@ -113,6 +143,9 @@ public abstract class SpawnActivity implements Serializable, Runnable{
 		return null;
 	}
 	
+	/**
+	 * @see alice.tucson.api.OrdinarySynchACC OrdinarySynchACC
+	 */
 	protected final LogicTuple rd(LogicTuple tuple){
 		if(aid != null)
 			try {
@@ -133,6 +166,9 @@ public abstract class SpawnActivity implements Serializable, Runnable{
 		return null;
 	}
 	
+	/**
+	 * @see alice.tucson.api.OrdinarySynchACC OrdinarySynchACC
+	 */
 	protected final LogicTuple no(LogicTuple tuple){
 		if(aid != null)
 			try {
@@ -153,6 +189,9 @@ public abstract class SpawnActivity implements Serializable, Runnable{
 		return null;
 	}
 	
+	/**
+	 * @see alice.tucson.api.OrdinarySynchACC OrdinarySynchACC
+	 */
 	protected final LogicTuple inp(LogicTuple tuple){
 		if(aid != null)
 			try {
@@ -173,6 +212,9 @@ public abstract class SpawnActivity implements Serializable, Runnable{
 		return null;
 	}
 	
+	/**
+	 * @see alice.tucson.api.OrdinarySynchACC OrdinarySynchACC
+	 */
 	protected final LogicTuple rdp(LogicTuple tuple){
 		if(aid != null)
 			try {
@@ -193,6 +235,9 @@ public abstract class SpawnActivity implements Serializable, Runnable{
 		return null;
 	}
 	
+	/**
+	 * @see alice.tucson.api.OrdinarySynchACC OrdinarySynchACC
+	 */
 	protected final LogicTuple nop(LogicTuple tuple){
 		if(aid != null)
 			try {
@@ -213,6 +258,11 @@ public abstract class SpawnActivity implements Serializable, Runnable{
 		return null;
 	}
 	
+	/**
+	 * Checks if the activity to spawn has been correctly instantiated.
+	 * 
+	 * @return true if instantiation is complete, false otherwise.
+	 */
 	public final boolean checkInstantiation(){
 		if(aid != null || tcid != null)
 			if(target != null)

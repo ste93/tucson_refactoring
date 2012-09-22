@@ -1,1 +1,1 @@
-doOut:- in(t(hi)).
+doOut:- out(t(hi)).

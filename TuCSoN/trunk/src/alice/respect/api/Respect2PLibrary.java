@@ -1329,6 +1329,8 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     		e.printStackTrace();
     		return false;
     	}
+    	log("tid = " + tid);
+    	log("arg0 = " + arg0);
     	tcName = tid.getName();
     	
         AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();

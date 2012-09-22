@@ -811,7 +811,7 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	 * @see alice.respect.api.RespectSpecification RespectSpecification
 	 */
 	public ITucsonOperation get_s(Object tid, TucsonOperationCompletionListener l)
-			throws TucsonOperationNotPossibleException, UnreachableNodeException, InvalidTupleOperationException{
+			throws TucsonOperationNotPossibleException, UnreachableNodeException{
 		LogicTuple spec = new LogicTuple("spec");		
 		return doNonBlockingOperation(TucsonOperation.get_sCode(), tid, spec, l);
 //		return tupleRes.getArg(0).getName().replace('\'', ' ').trim();
@@ -845,7 +845,7 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	 * @see alice.respect.api.RespectSpecification RespectSpecification
 	 */
 	public ITucsonOperation set_s(Object tid, String spec, TucsonOperationCompletionListener l)
-			throws TucsonOperationNotPossibleException, UnreachableNodeException, InvalidLogicTupleException{
+			throws TucsonOperationNotPossibleException, UnreachableNodeException{
 		LogicTuple specT = new LogicTuple("spec", new Value(spec));
 		return doNonBlockingOperation(TucsonOperation.set_sCode(), tid, specT, l);
 	}
@@ -1457,7 +1457,7 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	 * @see alice.respect.api.RespectSpecification RespectSpecification
 	 */
 	public ITucsonOperation get_s(Object tid, Long ms)
-			throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException, InvalidTupleOperationException{		
+			throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException{		
 		LogicTuple spec = new LogicTuple("spec", new Var("S"));
 		return doBlockingOperation(TucsonOperation.get_sCode(), tid, spec, ms);
 //		LogicTuple tupleRes = (LogicTuple) doBlockingOperation(TucsonOperation.get_sCode(), tid, spec, ms);
