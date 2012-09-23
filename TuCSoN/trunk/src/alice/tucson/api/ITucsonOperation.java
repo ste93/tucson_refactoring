@@ -36,7 +36,8 @@ public interface ITucsonOperation extends ITupleCentreOperation{
 	/**
 	 * Checks success of operation execution.
 	 * 
-	 * @return true if the operation succeeded, false otherwise (failure or undefined)
+	 * @return <code>true</code> if the operation succeeded, <code>false</code> otherwise
+	 * (failure or undefined)
 	 */
 	boolean isResultSuccess();
 	

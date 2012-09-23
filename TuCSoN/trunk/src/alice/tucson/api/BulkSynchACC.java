@@ -36,7 +36,10 @@ public interface BulkSynchACC extends RootACC{
 	 * 
 	 * @param tid the TucsonTupleCentreId of the target tuple centre
 	 * @param tuple the list of tuples to inject (must be a Prolog list)
-	 * @param l who to notify upon operation completion
+	 * @param ms the maximum waiting time for completion tolerated by the TuCSoN agent
+	 * behind this ACC. Notice that reaching the timeout just unblocks the agent, but
+	 * the request IS NOT REMOVED from TuCSoN node pending requests (will still be served
+	 * at sometime in the future).
 	 * 
 	 * @return the ITucsonOperation object storing the outcome of the execution. Notice due to
 	 * synchronous semantics, it is guaranteed to store the result of the operation.
@@ -58,7 +61,10 @@ public interface BulkSynchACC extends RootACC{
 	 * 
 	 * @param tid the TucsonTupleCentreId of the target tuple centre
 	 * @param tuple the tuple template to be used to retrieve tuples
-	 * @param l who to notify upon operation completion
+	 * @param ms the maximum waiting time for completion tolerated by the TuCSoN agent
+	 * behind this ACC. Notice that reaching the timeout just unblocks the agent, but
+	 * the request IS NOT REMOVED from TuCSoN node pending requests (will still be served
+	 * at sometime in the future).
 	 * 
 	 * @return the ITucsonOperation object storing the outcome of the execution. Notice due to
 	 * synchronous semantics, it is guaranteed to store the result of the operation.
@@ -80,7 +86,10 @@ public interface BulkSynchACC extends RootACC{
 	 * 
 	 * @param tid the TucsonTupleCentreId of the target tuple centre
 	 * @param tuple the tuple template to be used to observe tuples
-	 * @param l who to notify upon operation completion
+	 * @param ms the maximum waiting time for completion tolerated by the TuCSoN agent
+	 * behind this ACC. Notice that reaching the timeout just unblocks the agent, but
+	 * the request IS NOT REMOVED from TuCSoN node pending requests (will still be served
+	 * at sometime in the future).
 	 * 
 	 * @return the ITucsonOperation object storing the outcome of the execution. Notice due to
 	 * synchronous semantics, it is guaranteed to store the result of the operation.
@@ -104,7 +113,10 @@ public interface BulkSynchACC extends RootACC{
 	 * 
 	 * @param tid the TucsonTupleCentreId of the target tuple centre
 	 * @param tuple the tuple template to be used to check absence
-	 * @param l who to notify upon operation completion
+	 * @param ms the maximum waiting time for completion tolerated by the TuCSoN agent
+	 * behind this ACC. Notice that reaching the timeout just unblocks the agent, but
+	 * the request IS NOT REMOVED from TuCSoN node pending requests (will still be served
+	 * at sometime in the future).
 	 * 
 	 * @return the ITucsonOperation object storing the outcome of the execution. Notice due to
 	 * synchronous semantics, it is guaranteed to store the result of the operation.
