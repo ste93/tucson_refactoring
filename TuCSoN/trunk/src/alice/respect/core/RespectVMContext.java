@@ -736,7 +736,9 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 //            find the Java class (or the Prolog theory) to be executed with the
 //            spawn()!!
             LogicTuple t = (LogicTuple)tuple;
+            log("---> " + t.getArity());
             if(t.getArity() == 2){
+            	log("Prolog theory expected");
             	String theoryPath = alice.util.Tools.removeApices(t.getArg(0).toString());
             	Term goal = t.getArg(1).toTerm();
             	if(theoryPath.endsWith(".pl")){
@@ -780,9 +782,12 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 	            	log("Prolog theory file must end with .pl extension");
 	            	return false;
 	            }
-            }else if(t.getArity() == 1){
-            	if(t.toString().endsWith(".class")){
-					Class toSpawn = ClassLoader.getSystemClassLoader().loadClass(alice.util.Tools.removeApices(t.toString()));
+            }else if(t.getArity() == 0){
+//            	log("Java class expected");
+            	String className = alice.util.Tools.removeApices(t.toString());
+//            	log("---> "+className);
+            	if(className.endsWith(".class")){
+					Class toSpawn = ClassLoader.getSystemClassLoader().loadClass(className.substring(0, className.length()-6));
 					if(SpawnActivity.class.isAssignableFrom(toSpawn)){
 						SpawnActivity instance = (SpawnActivity) toSpawn.newInstance();
 						if(owner.isAgent()){
