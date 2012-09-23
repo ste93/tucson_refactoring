@@ -1,1 +1,0 @@
-doOut:- out(t(hi)).
