@@ -5,7 +5,6 @@ import alice.respect.api.exceptions.OperationNotPossibleException;
 
 import alice.respect.core.RespectOperation;
 
-import alice.tucson.api.InterTupleCentreACC;
 import alice.tucson.api.TucsonOpId;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;

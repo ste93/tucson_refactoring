@@ -18,28 +18,50 @@
 package alice.tucson.api;
 
 import alice.logictuple.LogicTuple;
-import alice.logictuple.exceptions.InvalidTupleOperationException;
 
 import alice.tuplecentre.api.ITupleCentreOperation;
 
 import java.util.List;
 
+/**
+ * TucsonOperation interface, to access the data about TuCSoN operations outcome.
+ * 
+ * @see alice.tucson.service.TucsonOperation TucsonOperation
+ * @see alice.tuplecentre.api.ITupleCentreOperation ITupleCentreOperation
+ * 
+ * @author ste (mailto: s.mariani@unibo.it)
+ */
 public interface ITucsonOperation extends ITupleCentreOperation{
-
-	boolean isAllowed();
 	
-	boolean isSuccessed();
-	
+	/**
+	 * Checks success of operation execution.
+	 * 
+	 * @return <code>true</code> if the operation succeeded, <code>false</code> otherwise
+	 * (failure or undefined)
+	 */
 	boolean isResultSuccess();
 	
+	/**
+	 * Gets the tuple argument used in the operation.
+	 * 
+	 * @return the tuple argument used in the operation.
+	 */
 	LogicTuple getLogicTupleArgument();
 	
+	/**
+	 * Gets the tuple returned as the result of the requested operation.
+	 * 
+	 * @return the tuple result of the requested operation.
+	 */
 	LogicTuple getLogicTupleResult();
 	
-	void setLogicTupleListResult(List<LogicTuple> tl);
-	
+	/**
+	 * Gets the list of tuples returned as the result of the requested operation.
+	 * 
+	 * @return the list of tuples result of the requested operation.
+	 */
 	List<LogicTuple> getLogicTupleListResult();
 	
-	String getSpecResult() throws InvalidTupleOperationException;
+//	void setLogicTupleListResult(List<LogicTuple> tl);
 
 }

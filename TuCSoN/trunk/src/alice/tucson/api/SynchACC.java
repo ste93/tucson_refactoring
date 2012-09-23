@@ -17,6 +17,15 @@
  */
 package alice.tucson.api;
 
+/**
+ * Synchronous ACC. Can act both on the ordinary tuple space and on the specification tuple
+ * space. Bulk and uniform primitives are NOT included.
+ * 
+ * @see alice.tucson.api.OrdinaryAsynchACC OrdinarySynchACC
+ * @see alice.tucson.api.SpecificationAsynchACC SpecificationSynchACC
+ * 
+ * @author ste (mailto: s.mariani@unibo.it)
+ */
 public interface SynchACC extends OrdinarySynchACC, SpecificationSynchACC{
 	
 }

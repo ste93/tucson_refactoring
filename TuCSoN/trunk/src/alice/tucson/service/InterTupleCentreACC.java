@@ -15,18 +15,50 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
-package alice.tucson.api;
+package alice.tucson.service;
 
+import alice.tucson.api.TucsonOpId;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
-import alice.tucson.service.TucsonOpCompletionEvent;
 
+/**
+ * 
+ * 
+ * @author ste (mailto: s.mariani@unibo.it)
+ */
 public interface InterTupleCentreACC{
 	
+	/**
+	 * 
+	 * 
+	 * @param id
+	 * @param timeout
+	 * 
+	 * @return
+	 */
 	TucsonOpCompletionEvent waitForCompletion(TucsonOpId id, int timeout);
 
+	/**
+	 * 
+	 * 
+	 * @param id
+	 * 
+	 * @return
+	 */
 	TucsonOpCompletionEvent waitForCompletion(TucsonOpId id);
 
+	/**
+	 * 
+	 * 
+	 * @param tid
+	 * @param type
+	 * @param t
+	 * 
+	 * @return
+	 * 
+	 * @throws TucsonOperationNotPossibleException
+	 * @throws UnreachableNodeException
+	 */
 	TucsonOpId doOperation(Object tid, int type, Object t) throws TucsonOperationNotPossibleException, UnreachableNodeException;
 
 }

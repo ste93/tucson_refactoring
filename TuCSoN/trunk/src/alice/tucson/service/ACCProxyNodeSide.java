@@ -22,7 +22,9 @@ import alice.logictuple.*;
 import alice.tucson.api.TucsonAgentId;
 import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
+import alice.tucson.api.exceptions.TucsonInvalidLogicTupleException;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
+import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 
 
 import alice.tucson.network.*;
@@ -234,7 +236,7 @@ public class ACCProxyNodeSide extends ACCAbstractProxyNodeSide{
 					e.printStackTrace();
 					break;
 				}
-				
+							
 			}else if(msg_type == TucsonOperation.noCode() || msg_type == TucsonOperation.nopCode()
 					|| msg_type == TucsonOperation.outCode() || msg_type == TucsonOperation.out_allCode()
 					|| msg_type == TucsonOperation.inCode() || msg_type == TucsonOperation.inpCode()
@@ -243,7 +245,7 @@ public class ACCProxyNodeSide extends ACCAbstractProxyNodeSide{
 					|| msg_type == TucsonOperation.urdCode() || msg_type == TucsonOperation.urdpCode()
 					|| msg_type == TucsonOperation.unoCode() || msg_type == TucsonOperation.unopCode()
 					|| msg_type == TucsonOperation.in_allCode() || msg_type == TucsonOperation.rd_allCode()
-					|| msg_type == TucsonOperation.no_allCode()){
+					|| msg_type == TucsonOperation.no_allCode() || msg_type == TucsonOperation.spawnCode()){
 
 				node.resolveCore(tid.getName());
 				node.addTCAgent(agentId, tid);
@@ -319,10 +321,10 @@ public class ACCProxyNodeSide extends ACCAbstractProxyNodeSide{
 		
 		TucsonMsgReply reply = null;
 		
-		if(op.isOut() || op.isOut_s()){
-			if(op.isResultSuccess())
+		if(op.isOut() || op.isOut_s() || op.isSpawn()){
+			if(op.isResultSuccess()){
 				reply = new TucsonMsgReply(msg.getId(), op.getType(), true, true, true, msg.getTuple(), (LogicTuple) op.getTupleResult());
-			else
+			}else
 				reply = new TucsonMsgReply(msg.getId(), op.getType(), true, true, false, msg.getTuple(), (LogicTuple) op.getTupleResult());
 		}else if(op.isNo() || op.isNo_s() || op.isIn() || op.isIn_s() || op.isRd() || op.isRd_s() || op.isUin() || op.isUrd() || op.isUno()){
 			if(op.isResultSuccess()){

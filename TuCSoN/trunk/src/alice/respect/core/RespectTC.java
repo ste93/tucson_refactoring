@@ -56,6 +56,20 @@ public class RespectTC implements IRespectTC {
 		vmThread.start();
 	}
 	
+	@Override
+	public IRespectOperation spawn(IId id, LogicTuple t,
+			OperationCompletionListener l) throws OperationNotPossibleException {
+		RespectOperation op = RespectOperation.makeSpawn(getProlog(), t, l);
+		vm.doOperation(id, op);
+		return op;
+	}
+
+	@Override
+	public IRespectOperation spawn(IId id, LogicTuple t)
+			throws OperationNotPossibleException {
+		return this.spawn(id, t, null);
+	}
+	
 	/**
 	 * ORDINARY primitives ASYNCH semantics
 	 */
@@ -392,7 +406,7 @@ public class RespectTC implements IRespectTC {
 	 * 
 	 * @return
 	 */
-	public IOrdinarySynchInterface getBlockingContext(){
+	public IOrdinarySynchInterface getOrdinarySynchInterface(){
 		return new OrdinarySynchInterface(this);
 	}
 	
@@ -410,7 +424,7 @@ public class RespectTC implements IRespectTC {
 	 * 
 	 * @return
 	 */
-	public IOrdinaryAsynchInterface getNonBlockingContext(){
+	public IOrdinaryAsynchInterface getOrdinaryAsynchInterface(){
 		return new OrdinaryAsynchInterface(this);
 	}
 	
@@ -428,11 +442,11 @@ public class RespectTC implements IRespectTC {
 	 * 
 	 * @return
 	 */
-	public ISpecificationSynchInterface getBlockingSpecContext() {
+	public ISpecificationSynchInterface getSpecificationSynchInterface() {
 		return new SpecificationSynchInterface(this);
 	}
 	
-	public ISpecificationAsynchInterface getNonBlockingSpecContext() {
+	public ISpecificationAsynchInterface getSpecificationAsynchInterface() {
 		return new SpecificationAsynchInterface(this);
 	}
 

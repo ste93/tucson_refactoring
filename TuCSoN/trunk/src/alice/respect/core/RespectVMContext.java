@@ -17,14 +17,29 @@
  */
 package alice.respect.core;
 
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.*;
 
 import alice.respect.api.ILinkContext;
 import alice.respect.api.RespectSpecification;
 import alice.respect.api.TupleCentreId;
 import alice.respect.api.exceptions.OperationNotPossibleException;
+import alice.tucson.api.SpawnActivity;
+import alice.tucson.api.TucsonAgentId;
+import alice.tucson.api.TucsonTupleCentreId;
+import alice.tucson.api.exceptions.TucsonGenericException;
+import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
+import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.parsing.MyOpManager;
+import alice.tucson.service.Spawn2PLibrary;
+import alice.tucson.service.Spawn2PSolver;
 import alice.tuplecentre.core.BehaviourSpecification;
+import alice.tuplecentre.api.AgentId;
+import alice.tuplecentre.api.IId;
 import alice.tuplecentre.api.Tuple;
 import alice.tuplecentre.api.TupleTemplate;
 import alice.tuplecentre.core.*;
@@ -138,8 +153,11 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 	            	log("input phase");
 	                InputEvent ie = (InputEvent)ev;
 					RespectOperation op=(RespectOperation)ev.getOperation();
-	                
-					if (op.isOut()){
+					log("op.getLogicTupleArgument() = " + op.getLogicTupleArgument());
+					
+					if (op.isSpawn()){
+						currentReactionTerm=new Struct("spawn",op.getLogicTupleArgument().toTerm());
+					}else if (op.isOut()){
 	                    currentReactionTerm=new Struct("out",op.getLogicTupleArgument().toTerm());
 	                }else if (op.isIn()){
 		                currentReactionTerm=new Struct("in",op.getLogicTupleArgument().toTerm());
@@ -202,7 +220,9 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 					if(((OutputEvent)ev).isLinking()){
 						log("linking event processing");
 						
-						if (op.isOut()){
+						if(op.isSpawn()){
+							currentReactionTerm=new Struct("spawn",op.getLogicTupleArgument().toTerm());
+						}else if (op.isOut()){
 		                    currentReactionTerm=new Struct("out",op.getLogicTupleArgument().toTerm());
 		                }else if (op.isIn()){
 			                currentReactionTerm=new Struct("in",op.getLogicTupleArgument().toTerm());
@@ -255,7 +275,9 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 						
 						log("output phase");
 						
-						if (op.isOut()){
+						if (op.isSpawn()){
+							currentReactionTerm=new Struct("spawn",op.getLogicTupleResult().toTerm());
+						}else if (op.isOut()){
 		                    currentReactionTerm=new Struct("out",op.getLogicTupleResult().toTerm());
 		                }else if (op.isIn()){
 		                    currentReactionTerm=new Struct("in",op.getLogicTupleResult().toTerm());
@@ -357,7 +379,9 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 	                InternalEvent ev1=(InternalEvent)ev;
 	                InternalOperation rop=ev1.getInternalOperation();
 	                
-	                if (rop.isOutR()){
+	                if (rop.isSpawnR()){
+	                	currentReactionTerm=new Struct("spawn",rop.getArgument().toTerm());
+	                }else if (rop.isOutR()){
 	                    currentReactionTerm=new Struct("out",rop.getArgument().toTerm());
 	                }else if (rop.isInR()){
 	                    currentReactionTerm=new Struct("in",rop.getArgument().toTerm());
@@ -419,7 +443,7 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 	            }
 	            
 	        }catch (Exception ex){
-	            notifyException("INTERNAL ERROR: fetchTriggeredReactions "+ev);
+//	            notifyException("INTERNAL ERROR: fetchTriggeredReactions "+ev);
 				ex.printStackTrace();
 	            trigCore.solveEnd();
 	        }
@@ -699,6 +723,155 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
         timeSet.empty();
         setBootTime();
     }
+    
+    @Override
+	public boolean spawnActivity(Tuple tuple, IId owner, IId targetTC) {
+    	try {
+    		ClassLoader cl = ClassLoader.getSystemClassLoader();
+            URL[] urls = ((URLClassLoader)cl).getURLs();
+            log("Known paths:");
+            for(URL url: urls)
+            	System.out.println("	" + url.getFile());
+//            When starting the TuCSoN Node it is necessary to properly add the classpath where to
+//            find the Java class (or the Prolog theory) to be executed with the
+//            spawn()!!
+            LogicTuple t = (LogicTuple)tuple;
+            log("---> " + t.getArity());
+            if(t.getArity() == 2){
+            	log("Prolog theory expected");
+            	String theoryPath = alice.util.Tools.removeApices(t.getArg(0).toString());
+            	Term goal = t.getArg(1).toTerm();
+            	if(theoryPath.endsWith(".pl")){
+	            	Prolog solver = new Prolog(new String[]{});
+	            	Spawn2PLibrary s2pLib = new Spawn2PLibrary();
+	            	if(owner.isAgent()){
+						TucsonAgentId aid = new TucsonAgentId(((AgentId)owner).toString());
+						log("spawnActivity.aid = " + aid);
+						s2pLib.setSpawnerId(aid);
+					}else{
+						TucsonTupleCentreId tcid = new TucsonTupleCentreId(
+								((TupleCentreId)owner).getName(),
+								((TupleCentreId)owner).getNode(),
+								""+((TupleCentreId)owner).getPort());
+						log("spawnActivity.tcid = " + tcid);
+						s2pLib.setSpawnerId(tcid);
+					}
+					TucsonTupleCentreId target = new TucsonTupleCentreId(
+							((TupleCentreId)targetTC).getName(),
+							((TupleCentreId)targetTC).getNode(),
+							""+((TupleCentreId)targetTC).getPort());
+					log("spawnActivity.target = " + target);
+					s2pLib.setTargetTC(target);
+	            	solver.loadLibrary(s2pLib);
+	            	solver.loadLibrary("alice.tuprolog.lib.BasicLibrary");
+	    			solver.loadLibrary("alice.tuprolog.lib.JavaLibrary");
+	    			solver.loadLibrary("alice.tuprolog.lib.ISOLibrary");
+//	                solver.loadLibrary("alice.respect.api.Respect2PLibrary");
+//	                ((alice.respect.api.Respect2PLibrary)solver.getLibrary("alice.respect.api.Respect2PLibrary")).init(this);
+//	            	theoryPath should be a pathname but it is not now!!
+	            	InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream(theoryPath);
+					Theory toSpawn = new Theory(new BufferedInputStream(is));
+	            	solver.setTheory(toSpawn);
+	            	String[] libs = solver.getCurrentLibraries();
+	            	log("Known libs:");
+	            	for(String lib: libs)
+	            		System.out.println("	" + lib);
+	            	new Spawn2PSolver(solver, goal).start();
+	            	return true;
+	            }else{
+	            	log("Prolog theory file must end with .pl extension");
+	            	return false;
+	            }
+            }else if(t.getArity() == 0){
+//            	log("Java class expected");
+            	String className = alice.util.Tools.removeApices(t.toString());
+//            	log("---> "+className);
+            	if(className.endsWith(".class")){
+					Class toSpawn = ClassLoader.getSystemClassLoader().loadClass(className.substring(0, className.length()-6));
+					if(SpawnActivity.class.isAssignableFrom(toSpawn)){
+						SpawnActivity instance = (SpawnActivity) toSpawn.newInstance();
+						if(owner.isAgent()){
+							TucsonAgentId aid = new TucsonAgentId(((AgentId)owner).toString());
+							log("spawnActivity.aid = " + aid);
+							instance.setSpawnerId(aid);
+						}else{
+							TucsonTupleCentreId tcid = new TucsonTupleCentreId(
+									((TupleCentreId)owner).getName(),
+									((TupleCentreId)owner).getNode(),
+									""+((TupleCentreId)owner).getPort());
+							log("spawnActivity.tcid = " + tcid);
+							instance.setSpawnerId(tcid);
+						}
+						TucsonTupleCentreId target = new TucsonTupleCentreId(
+								((TupleCentreId)targetTC).getName(),
+								((TupleCentreId)targetTC).getNode(),
+								""+((TupleCentreId)targetTC).getPort());
+						log("spawnActivity.target = " + target);
+						instance.setTargetTC(target);
+						if(instance.checkInstantiation()){
+							new Thread(instance).start();
+							return true;
+						}
+					}else{
+						log("Java class to spawn must be assignable from SpawnActivity.class");
+		            	return false;
+					}
+            	}else{
+            		log("Java class file must end with .class extension");
+                	return false;
+            	}
+            }else{
+            	log("Prolog predicate arity must be 1 (Java class name) or 2 (Prolog theory filepath, goal to solve)");
+            	return false;
+            }
+		} catch (ClassNotFoundException e) {
+			System.err.println("[RespectVMContext]: " + e);
+			e.printStackTrace();
+			return false;
+		} catch (InstantiationException e) {
+			System.err.println("[RespectVMContext]: " + e);
+			e.printStackTrace();
+			return false;
+		} catch (IllegalAccessException e) {
+			System.err.println("[RespectVMContext]: " + e);
+			e.printStackTrace();
+			return false;
+		} catch (TucsonInvalidTupleCentreIdException e) {
+			System.err.println("[RespectVMContext]: " + e);
+			e.printStackTrace();
+			return false;
+		} catch (TucsonInvalidAgentIdException e) {
+			System.err.println("[RespectVMContext]: " + e);
+			e.printStackTrace();
+			return false;
+		} catch (InvalidLibraryException e) {
+			System.err.println("[RespectVMContext]: " + e);
+			e.printStackTrace();
+			return false;
+		} catch (IOException e) {
+			System.err.println("[RespectVMContext]: " + e);
+			e.printStackTrace();
+			return false;
+		} catch (InvalidTheoryException e) {
+			System.err.println("[RespectVMContext]: " + e);
+			System.err.println("[RespectVMContext]: " + e.clause);
+			System.err.println("[RespectVMContext]: " + e.line);
+			System.err.println("[RespectVMContext]: " + e.pos);
+			e.printStackTrace();
+			return false;
+		} catch (InvalidTupleOperationException e) {
+			System.err.println("[RespectVMContext]: " + e);
+			e.printStackTrace();
+			return false;
+//		} catch (NoMoreSolutionException e) {
+//			return true;
+		} catch (TucsonGenericException e) {
+			System.err.println("[RespectVMContext]: " + e);
+			e.printStackTrace();
+			return false;
+		}
+		return false;
+	}
 
     public void addTuple(Tuple t){
         tSet.add((alice.logictuple.LogicTuple)t);

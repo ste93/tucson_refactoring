@@ -19,10 +19,6 @@ package alice.tuplecentre.core;
 
 import java.util.*;
 
-import alice.logictuple.LogicTuple;
-import alice.logictuple.Value;
-import alice.logictuple.exceptions.InvalidLogicTupleException;
-import alice.respect.api.RespectSpecification;
 import alice.respect.core.RespectVMContext;
 import alice.tuplecentre.api.Tuple;
 import alice.tuplecentre.api.exceptions.InvalidOperationException;
@@ -81,7 +77,15 @@ public class SpeakingState extends TupleCentreVMState {
 	            	foundSatisfied = true;
 	            }else{
 
-	            	if (op.isOut()){
+	            	if (op.isSpawn()){
+	            		tuple = op.getTupleArgument();
+	            		if(vm.spawnActivity(tuple, ev.getSource(), ev.getTarget())){
+	            			op.setOpResult(Outcome.SUCCESS);
+	            		}else
+	            			op.setOpResult(Outcome.FAILURE);
+	            		op.setTupleResult(tuple);
+	            		foundSatisfied = true;
+	            	}else if (op.isOut()){
 		            	tuple = op.getTupleArgument();
 		        		vm.addTuple(tuple);
 		        		op.setOpResult(Outcome.SUCCESS);

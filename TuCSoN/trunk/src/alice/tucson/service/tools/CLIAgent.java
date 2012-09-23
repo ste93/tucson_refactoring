@@ -17,11 +17,17 @@
  */
 package alice.tucson.service.tools;
 
-import alice.logictuple.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+import alice.logictuple.LogicTuple;
 import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.logictuple.exceptions.InvalidTupleOperationException;
 
-import alice.tucson.api.*;
+import alice.tucson.api.EnhancedACC;
+import alice.tucson.api.ITucsonOperation;
+import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
@@ -31,8 +37,6 @@ import alice.tucson.service.TucsonCmd;
 
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 import alice.tuprolog.Parser;
-
-import java.io.*;
 
 /* MODIFIED BY <s.mariani@unibo.it> */
 
@@ -116,7 +120,15 @@ public class CLIAgent extends alice.util.Automaton{
 				 * Admissible Ordinary primitives
 				 */
 //				what about timeout? it returns null too...how to discriminate inp/rdp failure?
-				if(methodName.equals("out")){
+				if(methodName.equals("spawn")){
+					LogicTuple t = LogicTuple.parse(tuple);
+					busy();
+					ITucsonOperation op = context.spawn(tid, t, Long.MAX_VALUE);
+					if(op.isResultSuccess())
+						prompt("success");
+					else
+						prompt("failure");
+				}else if(methodName.equals("out")){
 					LogicTuple t = LogicTuple.parse(tuple);
 					busy();
 					ITucsonOperation op = context.out(tid, t, Long.MAX_VALUE);

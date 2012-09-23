@@ -18,7 +18,6 @@
 package alice.tucson.api;
 
 import alice.logictuple.LogicTuple;
-import alice.logictuple.exceptions.InvalidTupleOperationException;
 
 import alice.tucson.api.exceptions.TucsonGenericException;
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
@@ -35,6 +34,16 @@ import alice.tuprolog.Term;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * TuCSoN library for tuProlog agents. By loading this library tuProlog agents are
+ * enabled to interact with a TuCSoN system. All the TuCSoN primitives available to
+ * Java agents and human agents (through the CLI tool) are thus made available to
+ * tuProlog agents too.
+ * 
+ * @see alice.tuprolog.Agent Agent
+ * 
+ * @author ste (mailto: s.mariani@unibo.it)
+ */
 public class Tucson2PLibrary extends Library{
 	
 	private static final long serialVersionUID = 6716779172091533171L;
@@ -44,16 +53,22 @@ public class Tucson2PLibrary extends Library{
 	public Tucson2PLibrary() throws TucsonGenericException{		
 	}
 
-	public void setContext(EnhancedACC context){
-		this.context = context;
-	}
-
+	/**
+	 * Gets the Prolog theory defining all operators and predicates available.
+	 * If only a tuple is specified as argument of a TuCSoN primitive, the default tuplecentre
+	 * is targeted, otherwise the tuProlog agent must specify the full name of the
+	 * target tuplecentre.
+	 * 
+	 * @see alice.tuprolog.Theory Theory
+	 * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
+	 */
 	public String getTheory(){
 		return ":- op(551, xfx, '?'). \n"
 				+ ":- op(550, xfx, '@'). \n"
 				+ ":- op(549, xfx, ':'). \n"
 				+ ":- op(548, xfx, '.'). \n"
 				
+				+ "spawn(T) :- spawn(T, default@localhost:20504). \n"
 				+ "out(T) :- out(T, default@localhost:20504). \n"
 				+ "in(T) :- in(T, default@localhost:20504). \n"
 				+ "inp(T) :- inp(T, default@localhost:20504). \n"
@@ -85,6 +100,7 @@ public class Tucson2PLibrary extends Library{
 				+ "get_s(L) :- get_s(L, default@localhost:20504). \n"
 				+ "set_s(L) :- set_s(L, default@localhost:20504). \n"
 				
+				+ "TC@Netid:Port ? spawn(T) :- !, spawn(T, TC@Netid:Port). \n"
 				+ "TC@Netid:Port ? out(T) :- !, out(T, TC@Netid:Port). \n"
 				+ "TC@Netid:Port ? in(T) :- !, in(T, TC@Netid:Port). \n"
 				+ "TC@Netid:Port ? inp(T) :- !, inp(T, TC@Netid:Port). \n"
@@ -116,7 +132,59 @@ public class Tucson2PLibrary extends Library{
 				+ "TC@Netid:Port ? get_s(L) :- !, get_s(L, TC@Netid:Port). \n"
 				+ "TC@Netid:Port ? set_s(L) :- !, set_s(L, TC@Netid:Port). \n";
 	}
+	
+	/**
+	 * <code>spawn</code> TuCSoN primitive.
+	 * 
+	 * @param arg0 the activity to spawn
+	 * @param arg1 the tuplecentre target
+	 * 
+	 * @return <code>true</code> if the operation succeed, <code>false</code> otherwise
+	 * 
+	 * @see alice.tucson.api.OrdinaryAsynchACC OrdinaryAsynchACC
+	 * @see alice.tucson.api.OrdinarySynchACC OrdinarySynchACC
+	 */
+	public boolean spawn_2(Term arg0, Term arg1){
+		if(context == null)
+			return false;
+		TucsonTupleCentreId tid;
+		try{
+			tid = new TucsonTupleCentreId(arg1.toString());
+		}catch(TucsonInvalidTupleCentreIdException e){
+			System.err.println("[Tucson2PLibrary]: " + e);
+			e.printStackTrace();
+			return false;
+		}
+		ITucsonOperation op;
+		try{
+			op = context.spawn(tid, new LogicTuple(arg0), (Long)null);
+		}catch(TucsonOperationNotPossibleException e){
+			System.err.println("[Tucson2PLibrary]: " + e);
+			e.printStackTrace();
+			return false;
+		}catch(UnreachableNodeException e){
+			System.err.println("[Tucson2PLibrary]: " + e);
+			e.printStackTrace();
+			return false;
+		} catch (OperationTimeOutException e) {
+			System.err.println("[Tucson2PLibrary]: " + e);
+			e.printStackTrace();
+			return false;
+		}
+		return op.isResultSuccess();
+	}
 
+	/**
+	 * <code>out</code> TuCSoN primitive.
+	 * 
+	 * @param arg0 the tuple to insert
+	 * @param arg1 the tuplecentre target
+	 * 
+	 * @return <code>true</code> if the operation succeed, <code>false</code> otherwise
+	 * 
+	 * @see alice.tucson.api.OrdinaryAsynchACC OrdinaryAsynchACC
+	 * @see alice.tucson.api.OrdinarySynchACC OrdinarySynchACC
+	 */
 	public boolean out_2(Term arg0, Term arg1){
 		if(context == null)
 			return false;
@@ -147,6 +215,17 @@ public class Tucson2PLibrary extends Library{
 		return op.isResultSuccess();
 	}
 
+	/**
+	 * <code>in</code> TuCSoN primitive.
+	 * 
+	 * @param arg0 the tuple to retrieve
+	 * @param arg1 the tuplecentre target
+	 * 
+	 * @return <code>true</code> if the operation succeed, <code>false</code> otherwise
+	 * 
+	 * @see alice.tucson.api.OrdinaryAsynchACC OrdinaryAsynchACC
+	 * @see alice.tucson.api.OrdinarySynchACC OrdinarySynchACC
+	 */
 	public boolean in_2(Term arg0, Term arg1){
 		if(context == null)
 			return false;
@@ -179,6 +258,17 @@ public class Tucson2PLibrary extends Library{
 		return op.isResultSuccess();
 	}
 
+	/**
+	 * <code>rd</code> TuCSoN primitive.
+	 * 
+	 * @param arg0 the tuple to read (w/o removing)
+	 * @param arg1 the tuplecentre target
+	 * 
+	 * @return <code>true</code> if the operation succeed, <code>false</code> otherwise
+	 * 
+	 * @see alice.tucson.api.OrdinaryAsynchACC OrdinaryAsynchACC
+	 * @see alice.tucson.api.OrdinarySynchACC OrdinarySynchACC
+	 */
 	public boolean rd_2(Term arg0, Term arg1){
 		if(context == null)
 			return false;
@@ -211,6 +301,17 @@ public class Tucson2PLibrary extends Library{
 		return op.isResultSuccess();
 	}
 
+	/**
+	 * <code>inp</code> TuCSoN primitive.
+	 * 
+	 * @param arg0 the tuple to retrieve
+	 * @param arg1 the tuplecentre target
+	 * 
+	 * @return <code>true</code> if the operation succeed, <code>false</code> otherwise
+	 * 
+	 * @see alice.tucson.api.OrdinaryAsynchACC OrdinaryAsynchACC
+	 * @see alice.tucson.api.OrdinarySynchACC OrdinarySynchACC
+	 */
 	public boolean inp_2(Term arg0, Term arg1){
 		if(context == null)
 			return false;
@@ -243,6 +344,17 @@ public class Tucson2PLibrary extends Library{
 		return op.isResultSuccess();
 	}
 
+	/**
+	 * <code>rdp</code> TuCSoN primitive.
+	 * 
+	 * @param arg0 the tuple to read (w/o removing)
+	 * @param arg1 the tuplecentre target
+	 * 
+	 * @return <code>true</code> if the operation succeed, <code>false</code> otherwise
+	 * 
+	 * @see alice.tucson.api.OrdinaryAsynchACC OrdinaryAsynchACC
+	 * @see alice.tucson.api.OrdinarySynchACC OrdinarySynchACC
+	 */
 	public boolean rdp_2(Term arg0, Term arg1){
 		if(context == null)
 			return false;
@@ -275,6 +387,17 @@ public class Tucson2PLibrary extends Library{
 		return op.isResultSuccess();
 	}
 	
+	/**
+	 * <code>no</code> TuCSoN primitive.
+	 * 
+	 * @param arg0 the tuple to check for absence
+	 * @param arg1 the tuplecentre target
+	 * 
+	 * @return <code>true</code> if the operation succeed, <code>false</code> otherwise
+	 * 
+	 * @see alice.tucson.api.OrdinaryAsynchACC OrdinaryAsynchACC
+	 * @see alice.tucson.api.OrdinarySynchACC OrdinarySynchACC
+	 */
 	public boolean no_2(Term arg0, Term arg1){
 		if(context == null)
 			return false;
@@ -307,6 +430,17 @@ public class Tucson2PLibrary extends Library{
 		return op.isResultSuccess();
 	}
 	
+	/**
+	 * <code>nop</code> TuCSoN primitive.
+	 * 
+	 * @param arg0 the tuple to check for absence
+	 * @param arg1 the tuplecentre target
+	 * 
+	 * @return <code>true</code> if the operation succeed, <code>false</code> otherwise
+	 * 
+	 * @see alice.tucson.api.OrdinaryAsynchACC OrdinaryAsynchACC
+	 * @see alice.tucson.api.OrdinarySynchACC OrdinarySynchACC
+	 */
 	public boolean nop_2(Term arg0, Term arg1){
 		if(context == null)
 			return false;
@@ -339,6 +473,17 @@ public class Tucson2PLibrary extends Library{
 		return op.isResultSuccess();
 	}
 
+	/**
+	 * <code>get</code> TuCSoN primitive.
+	 * 
+	 * @param arg0 the tuple to store the result
+	 * @param arg1 the tuplecentre target
+	 * 
+	 * @return <code>true</code> if the operation succeed, <code>false</code> otherwise
+	 * 
+	 * @see alice.tucson.api.OrdinaryAsynchACC OrdinaryAsynchACC
+	 * @see alice.tucson.api.OrdinarySynchACC OrdinarySynchACC
+	 */
 	public boolean get_2(Term arg0, Term arg1){
 		if(context == null)
 			return false;
@@ -372,6 +517,17 @@ public class Tucson2PLibrary extends Library{
 		return op.isResultSuccess();
 	}
 	
+	/**
+	 * <code>set</code> TuCSoN primitive.
+	 * 
+	 * @param arg0 the tuple list of tuples to overwrite the space
+	 * @param arg1 the tuplecentre target
+	 * 
+	 * @return <code>true</code> if the operation succeed, <code>false</code> otherwise
+	 * 
+	 * @see alice.tucson.api.OrdinaryAsynchACC OrdinaryAsynchACC
+	 * @see alice.tucson.api.OrdinarySynchACC OrdinarySynchACC
+	 */
 	public boolean set_2(Term arg0, Term arg1){
 		if(context == null)
 			return false;
@@ -404,7 +560,21 @@ public class Tucson2PLibrary extends Library{
 	
 	
 	
-	public boolean out_s_4(Term arg0, Term arg1, Term arg2, Term arg3){
+	/**
+	 * <code>out_s</code> TuCSoN primitive.
+	 * 
+	 * @param event the TuCSoN primitive to react to
+	 * @param guards the guard predicates to be checked for satisfaction so to actually
+	 * trigger the body of the ReSpecT reaction
+	 * @param reactionBody the computation to be done in response to the <code>event</code>
+	 * @param arg3 the tuplecentre target
+	 * 
+	 * @return <code>true</code> if the operation succeed, <code>false</code> otherwise
+	 * 
+	 * @see alice.tucson.api.SpecificationAsynchACC SpecificationAsynchACC
+	 * @see alice.tucson.api.SpecificationSynchACC SpecificationSynchACC
+	 */
+	public boolean out_s_4(Term event, Term guards, Term reactionBody, Term arg3){
 		if(context == null)
 			return false;
 		TucsonTupleCentreId tid;
@@ -417,7 +587,7 @@ public class Tucson2PLibrary extends Library{
 		}
 		ITucsonOperation op;
 		try{
-			op = context.out_s(tid, new LogicTuple(arg0), new LogicTuple(arg1), new LogicTuple(arg2), (Long)null);
+			op = context.out_s(tid, new LogicTuple(event), new LogicTuple(guards), new LogicTuple(reactionBody), (Long)null);
 		}catch(TucsonOperationNotPossibleException e){
 			System.err.println("[Tucson2PLibrary]: " + e);
 			e.printStackTrace();
@@ -434,7 +604,21 @@ public class Tucson2PLibrary extends Library{
 		return op.isResultSuccess();
 	}
 
-	public boolean in_s_4(Term arg0, Term arg1, Term arg2, Term arg3){
+	/**
+	 * <code>in_s</code> TuCSoN primitive.
+	 * 
+	 * @param event the template for the TuCSoN primitive to react to
+	 * @param guards the template for the guard predicates to be checked for satisfaction so to actually
+	 * trigger the body of the ReSpecT reaction
+	 * @param reactionBody the template for the computation to be done in response to the <code>event</code>
+	 * @param arg3 the tuplecentre target
+	 * 
+	 * @return <code>true</code> if the operation succeed, <code>false</code> otherwise
+	 * 
+	 * @see alice.tucson.api.SpecificationAsynchACC SpecificationAsynchACC
+	 * @see alice.tucson.api.SpecificationSynchACC SpecificationSynchACC
+	 */
+	public boolean in_s_4(Term event, Term guards, Term reactionBody, Term arg3){
 		if(context == null)
 			return false;
 		TucsonTupleCentreId tid;
@@ -447,7 +631,7 @@ public class Tucson2PLibrary extends Library{
 		}
 		ITucsonOperation op;
 		try{
-			op = context.in_s(tid, new LogicTuple(arg0), new LogicTuple(arg1), new LogicTuple(arg2), (Long)null);
+			op = context.in_s(tid, new LogicTuple(event), new LogicTuple(guards), new LogicTuple(reactionBody), (Long)null);
 		}catch(TucsonOperationNotPossibleException e){
 			System.err.println("[Tucson2PLibrary]: " + e);
 			e.printStackTrace();
@@ -462,11 +646,25 @@ public class Tucson2PLibrary extends Library{
 			return false;
 		}
 		if(op.isResultSuccess())
-			unify(arg0, op.getLogicTupleResult().toTerm());
+			unify(event, op.getLogicTupleResult().toTerm());
 		return op.isResultSuccess();
 	}
 
-	public boolean rd_s_4(Term arg0, Term arg1, Term arg2, Term arg3){
+	/**
+	 * <code>rd_s</code> TuCSoN primitive.
+	 * 
+	 * @param event the template for the TuCSoN primitive to react to
+	 * @param guards the template for the guard predicates to be checked for satisfaction so to actually
+	 * trigger the body of the ReSpecT reaction
+	 * @param reactionBody the template for the computation to be done in response to the <code>event</code>
+	 * @param arg3 the tuplecentre target
+	 * 
+	 * @return <code>true</code> if the operation succeed, <code>false</code> otherwise
+	 * 
+	 * @see alice.tucson.api.SpecificationAsynchACC SpecificationAsynchACC
+	 * @see alice.tucson.api.SpecificationSynchACC SpecificationSynchACC
+	 */
+	public boolean rd_s_4(Term event, Term guards, Term reactionBody, Term arg3){
 		if(context == null)
 			return false;
 		TucsonTupleCentreId tid;
@@ -479,7 +677,7 @@ public class Tucson2PLibrary extends Library{
 		}
 		ITucsonOperation op;
 		try{
-			op = context.rd_s(tid, new LogicTuple(arg0), new LogicTuple(arg1), new LogicTuple(arg2), (Long)null);
+			op = context.rd_s(tid, new LogicTuple(event), new LogicTuple(guards), new LogicTuple(reactionBody), (Long)null);
 		}catch(TucsonOperationNotPossibleException e){
 			System.err.println("[Tucson2PLibrary]: " + e);
 			e.printStackTrace();
@@ -494,11 +692,25 @@ public class Tucson2PLibrary extends Library{
 			return false;
 		}
 		if(op.isResultSuccess())
-			unify(arg0, op.getLogicTupleResult().toTerm());
+			unify(event, op.getLogicTupleResult().toTerm());
 		return op.isResultSuccess();
 	}
 
-	public boolean inp_s_4(Term arg0, Term arg1, Term arg2, Term arg3){
+	/**
+	 * <code>inp_s</code> TuCSoN primitive.
+	 * 
+	 * @param event the template for the TuCSoN primitive to react to
+	 * @param guards the template for the guard predicates to be checked for satisfaction so to actually
+	 * trigger the body of the ReSpecT reaction
+	 * @param reactionBody the template for the computation to be done in response to the <code>event</code>
+	 * @param arg3 the tuplecentre target
+	 * 
+	 * @return <code>true</code> if the operation succeed, <code>false</code> otherwise
+	 * 
+	 * @see alice.tucson.api.SpecificationAsynchACC SpecificationAsynchACC
+	 * @see alice.tucson.api.SpecificationSynchACC SpecificationSynchACC
+	 */
+	public boolean inp_s_4(Term event, Term guards, Term reactionBody, Term arg3){
 		if(context == null)
 			return false;
 		TucsonTupleCentreId tid;
@@ -511,7 +723,7 @@ public class Tucson2PLibrary extends Library{
 		}
 		ITucsonOperation op;
 		try{
-			op = context.inp_s(tid, new LogicTuple(arg0), new LogicTuple(arg1), new LogicTuple(arg2), (Long)null);
+			op = context.inp_s(tid, new LogicTuple(event), new LogicTuple(guards), new LogicTuple(reactionBody), (Long)null);
 		}catch(TucsonOperationNotPossibleException e){
 			System.err.println("[Tucson2PLibrary]: " + e);
 			e.printStackTrace();
@@ -526,11 +738,25 @@ public class Tucson2PLibrary extends Library{
 			return false;
 		}
 		if(op.isResultSuccess())
-			unify(arg0, op.getLogicTupleResult().toTerm());
+			unify(event, op.getLogicTupleResult().toTerm());
 		return op.isResultSuccess();
 	}
 
-	public boolean rdp_s_4(Term arg0, Term arg1, Term arg2, Term arg3){
+	/**
+	 * <code>rdp_s</code> TuCSoN primitive.
+	 * 
+	 * @param event the template for the TuCSoN primitive to react to
+	 * @param guards the template for the guard predicates to be checked for satisfaction so to actually
+	 * trigger the body of the ReSpecT reaction
+	 * @param reactionBody the template for the computation to be done in response to the <code>event</code>
+	 * @param arg3 the tuplecentre target
+	 * 
+	 * @return <code>true</code> if the operation succeed, <code>false</code> otherwise
+	 * 
+	 * @see alice.tucson.api.SpecificationAsynchACC SpecificationAsynchACC
+	 * @see alice.tucson.api.SpecificationSynchACC SpecificationSynchACC
+	 */
+	public boolean rdp_s_4(Term event, Term guards, Term reactionBody, Term arg3){
 		if(context == null)
 			return false;
 		TucsonTupleCentreId tid;
@@ -543,7 +769,7 @@ public class Tucson2PLibrary extends Library{
 		}
 		ITucsonOperation op;
 		try{
-			op = context.rdp_s(tid, new LogicTuple(arg0), new LogicTuple(arg1), new LogicTuple(arg2), (Long)null);
+			op = context.rdp_s(tid, new LogicTuple(event), new LogicTuple(guards), new LogicTuple(reactionBody), (Long)null);
 		}catch(TucsonOperationNotPossibleException e) {
 			System.err.println("[Tucson2PLibrary]: " + e);
 			e.printStackTrace();
@@ -558,11 +784,25 @@ public class Tucson2PLibrary extends Library{
 			return false;
 		}
 		if(op.isResultSuccess())
-			unify(arg0, op.getLogicTupleResult().toTerm());
+			unify(event, op.getLogicTupleResult().toTerm());
 		return op.isResultSuccess();
 	}
 	
-	public boolean no_s_4(Term arg0, Term arg1, Term arg2, Term arg3){
+	/**
+	 * <code>no_s</code> TuCSoN primitive.
+	 * 
+	 * @param event the template for the TuCSoN primitive to react to
+	 * @param guards the template for the guard predicates to be checked for satisfaction so to actually
+	 * trigger the body of the ReSpecT reaction
+	 * @param reactionBody the template for the computation to be done in response to the <code>event</code>
+	 * @param arg3 the tuplecentre target
+	 * 
+	 * @return <code>true</code> if the operation succeed, <code>false</code> otherwise
+	 * 
+	 * @see alice.tucson.api.SpecificationAsynchACC SpecificationAsynchACC
+	 * @see alice.tucson.api.SpecificationSynchACC SpecificationSynchACC
+	 */
+	public boolean no_s_4(Term event, Term guards, Term reactionBody, Term arg3){
 		if(context == null)
 			return false;
 		TucsonTupleCentreId tid;
@@ -575,7 +815,7 @@ public class Tucson2PLibrary extends Library{
 		}
 		ITucsonOperation op;
 		try{
-			op = context.no_s(tid, new LogicTuple(arg0), new LogicTuple(arg1), new LogicTuple(arg2), (Long)null);
+			op = context.no_s(tid, new LogicTuple(event), new LogicTuple(guards), new LogicTuple(reactionBody), (Long)null);
 		}catch(TucsonOperationNotPossibleException e) {
 			System.err.println("[Tucson2PLibrary]: " + e);
 			e.printStackTrace();
@@ -590,11 +830,25 @@ public class Tucson2PLibrary extends Library{
 			return false;
 		}
 		if(!op.isResultSuccess())
-			unify(arg0, op.getLogicTupleResult().toTerm());
+			unify(event, op.getLogicTupleResult().toTerm());
 		return op.isResultSuccess();
 	}
 	
-	public boolean nop_s_4(Term arg0, Term arg1, Term arg2, Term arg3){
+	/**
+	 * <code>nop_s</code> TuCSoN primitive.
+	 * 
+	 * @param event the template for the TuCSoN primitive to react to
+	 * @param guards the template for the guard predicates to be checked for satisfaction so to actually
+	 * trigger the body of the ReSpecT reaction
+	 * @param reactionBody the template for the computation to be done in response to the <code>event</code>
+	 * @param arg3 the tuplecentre target
+	 * 
+	 * @return <code>true</code> if the operation succeed, <code>false</code> otherwise
+	 * 
+	 * @see alice.tucson.api.SpecificationAsynchACC SpecificationAsynchACC
+	 * @see alice.tucson.api.SpecificationSynchACC SpecificationSynchACC
+	 */
+	public boolean nop_s_4(Term event, Term guards, Term reactionBody, Term arg3){
 		if(context == null)
 			return false;
 		TucsonTupleCentreId tid;
@@ -607,7 +861,7 @@ public class Tucson2PLibrary extends Library{
 		}
 		ITucsonOperation op;
 		try{
-			op = context.nop_s(tid, new LogicTuple(arg0), new LogicTuple(arg1), new LogicTuple(arg2), (Long)null);
+			op = context.nop_s(tid, new LogicTuple(event), new LogicTuple(guards), new LogicTuple(reactionBody), (Long)null);
 		}catch(TucsonOperationNotPossibleException e) {
 			System.err.println("[Tucson2PLibrary]: " + e);
 			e.printStackTrace();
@@ -622,10 +876,21 @@ public class Tucson2PLibrary extends Library{
 			return false;
 		}
 		if(!op.isResultSuccess())
-			unify(arg0, op.getLogicTupleResult().toTerm());
+			unify(event, op.getLogicTupleResult().toTerm());
 		return op.isResultSuccess();
 	}
 
+	/**
+	 * <code>get_s</code> TuCSoN primitive.
+	 * 
+	 * @param arg0 the tuple to store the specification result
+	 * @param arg1 the tuplecentre target
+	 * 
+	 * @return <code>true</code> if the operation succeed, <code>false</code> otherwise
+	 * 
+	 * @see alice.tucson.api.SpecificationAsynchACC SpecificationAsynchACC
+	 * @see alice.tucson.api.SpecificationSynchACC SpecificationSynchACC
+	 */
 	public boolean get_s_2(Term arg0, Term arg1){
 		if(context == null)
 			return false;
@@ -652,10 +917,6 @@ public class Tucson2PLibrary extends Library{
 			System.err.println("[Tucson2PLibrary]: " + e);
 			e.printStackTrace();
 			return false;
-		} catch (InvalidTupleOperationException e) {
-			System.err.println("[Tucson2PLibrary]: " + e);
-			e.printStackTrace();
-			return false;
 		}
 		if(op.isResultSuccess()){
 			unify(arg0, list2tuple(op.getLogicTupleListResult()));
@@ -663,6 +924,17 @@ public class Tucson2PLibrary extends Library{
 		return op.isResultSuccess();
 	}
 	
+	/**
+	 * <code>set_s</code> TuCSoN primitive.
+	 * 
+	 * @param arg0 the tuple list of ReSpecT specification tuples to overwrite the specification space
+	 * @param arg1 the tuplecentre target
+	 * 
+	 * @return <code>true</code> if the operation succeed, <code>false</code> otherwise
+	 * 
+	 * @see alice.tucson.api.SpecificationAsynchACC SpecificationAsynchACC
+	 * @see alice.tucson.api.SpecificationSynchACC SpecificationSynchACC
+	 */
 	public boolean set_s_2(Term arg0, Term arg1){
 		if(context == null)
 			return false;
@@ -695,6 +967,17 @@ public class Tucson2PLibrary extends Library{
 	
 	
 	
+	/**
+	 * <code>uin</code> TuCSoN primitive.
+	 * 
+	 * @param arg0 the tuple to probabilistically retrieve
+	 * @param arg1 the tuplecentre target
+	 * 
+	 * @return <code>true</code> if the operation succeed, <code>false</code> otherwise
+	 * 
+	 * @see alice.tucson.api.UniformAsynchACC UniformAsynchACC
+	 * @see alice.tucson.api.UniformSynchACC UniformSynchACC
+	 */
 	public boolean uin_2(Term arg0, Term arg1){
 		if(context == null)
 			return false;
@@ -727,6 +1010,17 @@ public class Tucson2PLibrary extends Library{
 		return op.isResultSuccess();
 	}
 
+	/**
+	 * <code>urd</code> TuCSoN primitive.
+	 * 
+	 * @param arg0 the tuple to probabilistically read (w/o removing)
+	 * @param arg1 the tuplecentre target
+	 * 
+	 * @return <code>true</code> if the operation succeed, <code>false</code> otherwise
+	 * 
+	 * @see alice.tucson.api.UniformAsynchACC UniformAsynchACC
+	 * @see alice.tucson.api.UniformSynchACC UniformSynchACC
+	 */
 	public boolean urd_2(Term arg0, Term arg1){
 		if(context == null)
 			return false;
@@ -759,6 +1053,17 @@ public class Tucson2PLibrary extends Library{
 		return op.isResultSuccess();
 	}
 
+	/**
+	 * <code>uinp</code> TuCSoN primitive.
+	 * 
+	 * @param arg0 the tuple to probabilistically retrieve
+	 * @param arg1 the tuplecentre target
+	 * 
+	 * @return <code>true</code> if the operation succeed, <code>false</code> otherwise
+	 * 
+	 * @see alice.tucson.api.UniformAsynchACC UniformAsynchACC
+	 * @see alice.tucson.api.UniformSynchACC UniformSynchACC
+	 */
 	public boolean uinp_2(Term arg0, Term arg1){
 		if(context == null)
 			return false;
@@ -791,6 +1096,17 @@ public class Tucson2PLibrary extends Library{
 		return op.isResultSuccess();
 	}
 
+	/**
+	 * <code>urdp</code> TuCSoN primitive.
+	 * 
+	 * @param arg0 the tuple to probabilistically read (w/o removing)
+	 * @param arg1 the tuplecentre target
+	 * 
+	 * @return <code>true</code> if the operation succeed, <code>false</code> otherwise
+	 * 
+	 * @see alice.tucson.api.UniformAsynchACC UniformAsynchACC
+	 * @see alice.tucson.api.UniformSynchACC UniformSynchACC
+	 */
 	public boolean urdp_2(Term arg0, Term arg1){
 		if(context == null)
 			return false;
@@ -823,6 +1139,17 @@ public class Tucson2PLibrary extends Library{
 		return op.isResultSuccess();
 	}
 	
+	/**
+	 * <code>uno</code> TuCSoN primitive.
+	 * 
+	 * @param arg0 the tuple to probabilistically check for absence
+	 * @param arg1 the tuplecentre target
+	 * 
+	 * @return <code>true</code> if the operation succeed, <code>false</code> otherwise
+	 * 
+	 * @see alice.tucson.api.UniformAsynchACC UniformAsynchACC
+	 * @see alice.tucson.api.UniformSynchACC UniformSynchACC
+	 */
 	public boolean uno_2(Term arg0, Term arg1){
 		if(context == null)
 			return false;
@@ -855,6 +1182,17 @@ public class Tucson2PLibrary extends Library{
 		return op.isResultSuccess();
 	}
 	
+	/**
+	 * <code>unop</code> TuCSoN primitive.
+	 * 
+	 * @param arg0 the tuple to probabilistically check for absence
+	 * @param arg1 the tuplecentre target
+	 * 
+	 * @return <code>true</code> if the operation succeed, <code>false</code> otherwise
+	 * 
+	 * @see alice.tucson.api.UniformAsynchACC UniformAsynchACC
+	 * @see alice.tucson.api.UniformSynchACC UniformSynchACC
+	 */
 	public boolean unop_2(Term arg0, Term arg1){
 		if(context == null)
 			return false;
@@ -887,6 +1225,19 @@ public class Tucson2PLibrary extends Library{
 		return op.isResultSuccess();
 	}
 	
+	
+	
+	/**
+	 * <code>out_all</code> TuCSoN primitive.
+	 * 
+	 * @param arg0 the tuple list of tuples to insert
+	 * @param arg1 the tuplecentre target
+	 * 
+	 * @return <code>true</code> if the operation succeed, <code>false</code> otherwise
+	 * 
+	 * @see alice.tucson.api.BulkAsynchACC BulkAsynchACC
+	 * @see alice.tucson.api.BulkSynchACC BulkSynchACC
+	 */
 	public boolean out_all_2(Term arg0, Term arg1){
 		if(context == null)
 			return false;
@@ -917,6 +1268,18 @@ public class Tucson2PLibrary extends Library{
 		return op.isResultSuccess();
 	}
 	
+	/**
+	 * <code>in_all</code> TuCSoN primitive.
+	 * 
+	 * @param arg0 the tuple to retrieve
+	 * @param arg1 the tuple to store the result
+	 * @param arg2 the tuplecentre target
+	 * 
+	 * @return <code>true</code> if the operation succeed, <code>false</code> otherwise
+	 * 
+	 * @see alice.tucson.api.BulkAsynchACC BulkAsynchACC
+	 * @see alice.tucson.api.BulkSynchACC BulkSynchACC
+	 */
 	public boolean in_all_3(Term arg0, Term arg1, Term arg2){
 		if(context == null)
 			return false;
@@ -950,6 +1313,18 @@ public class Tucson2PLibrary extends Library{
 		return op.isResultSuccess();
 	}
 	
+	/**
+	 * <code>rd_all</code> TuCSoN primitive.
+	 * 
+	 * @param arg0 the tuple to read (w/o removing)
+	 * @param arg1 the tuple to store the result
+	 * @param arg2 the tuplecentre target
+	 * 
+	 * @return <code>true</code> if the operation succeed, <code>false</code> otherwise
+	 * 
+	 * @see alice.tucson.api.BulkAsynchACC BulkAsynchACC
+	 * @see alice.tucson.api.BulkSynchACC BulkSynchACC
+	 */
 	public boolean rd_all_3(Term arg0, Term arg1, Term arg2){
 		if(context == null)
 			return false;
@@ -983,6 +1358,18 @@ public class Tucson2PLibrary extends Library{
 		return op.isResultSuccess();
 	}
 	
+	/**
+	 * <code>no_all</code> TuCSoN primitive.
+	 * 
+	 * @param arg0 the tuple to check for absence
+	 * @param arg1 the tuple to store the result
+	 * @param arg2 the tuplecentre target
+	 * 
+	 * @return <code>true</code> if the operation succeed, <code>false</code> otherwise
+	 * 
+	 * @see alice.tucson.api.BulkAsynchACC BulkAsynchACC
+	 * @see alice.tucson.api.BulkSynchACC BulkSynchACC
+	 */
 	public boolean no_all_3(Term arg0, Term arg1, Term arg2){
 		if(context == null)
 			return false;
@@ -1018,6 +1405,16 @@ public class Tucson2PLibrary extends Library{
 	
 	
 
+	/**
+	 * To be enabled to interact with any TuCSoN system, an ACC must be acquired first.
+	 * 
+	 * @param id the TucsonAgentId of the tuProlog agent willing to interact with TuCSoN
+	 * 
+	 * @return <code>true</code> if the operation succeed, <code>false</code> otherwise
+	 * 
+	 * @see alice.tucson.api.EnhancedACC EnhancedACC
+	 * @see alice.tucson.api.TucsonAgentId TucsonAgentId
+	 */
 	public boolean get_context_1(Struct id){
 		if(context != null){
 			try{
@@ -1039,6 +1436,11 @@ public class Tucson2PLibrary extends Library{
 		return true;
 	}
 	
+	/**
+	 * When leaving the TuCSoN system, any agent is kindly requested to release its ACC.
+	 * 
+	 * @return <code>true</code> if the operation succeed, <code>false</code> otherwise
+	 */
 	public boolean exit_0(){
 		try{
 			context.exit();
@@ -1052,6 +1454,13 @@ public class Tucson2PLibrary extends Library{
 	
 	
 	
+	/**
+	 * Utility to convert a list of tuple into a tuple list of tuples
+	 * 
+	 * @param list the list of tuples to convert
+	 * 
+	 * @return the tuple list of tuples result of the conversion
+	 */
 	private Term list2tuple(List<LogicTuple> list){
 		Term [] termArray = new Term[list.size()];
 		Iterator<LogicTuple> it = list.iterator();

@@ -25,9 +25,9 @@ import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import java.io.Serializable;
 import java.util.UUID;
 
-public class TucsonAgentId implements Serializable{
+public class TucsonAgentId implements alice.tuplecentre.api.AgentId, Serializable{
 	
-	private static final long serialVersionUID = -1027439718598689379L;
+	private static final long serialVersionUID = -5788843633820003843L;
 	private Object aid;
 	private UUID uuid;
 	
@@ -93,6 +93,11 @@ public class TucsonAgentId implements Serializable{
 		}
 		res += uuids.substring(j, uuids.length());
 		return res;
+	}
+
+	@Override
+	public boolean isEnv() {
+		return false;
 	}
 		
 }

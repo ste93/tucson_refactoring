@@ -97,13 +97,17 @@ public class RespectOperation extends TupleCentreOperation implements IRespectOp
 	 * @return
 	 */
 	public LogicTuple getLogicTupleArgument(){
-		if (isOut() || isOut_s() || isOutAll()){
+		if (isOut() || isOut_s() || isOutAll() || isSpawn()){
 			return (LogicTuple)getTupleArgument();
 		} else {
 			return (LogicTuple)getTemplateArgument();
 		} 
 	}
 
+	public static RespectOperation makeSpawn(Prolog p, LogicTuple t, OperationCompletionListener l){
+		return new RespectOperation(p, TupleCentreOperation.OPTYPE_SPAWN,(Tuple)t, l);
+	}
+	
 	public static RespectOperation makeOut(Prolog p, LogicTuple t, OperationCompletionListener l){
 		return new RespectOperation(p, TupleCentreOperation.OPTYPE_OUT,(Tuple)t, l);
 	}		
@@ -318,7 +322,9 @@ public class RespectOperation extends TupleCentreOperation implements IRespectOp
 			t = getLogicTupleArgument();
 		}
 		String opName;
-		if (isOut()){
+		if (isSpawn())
+			opName = "spawn";
+		else if (isOut()){
 			opName = "out";
 		}else if (isIn()){
 			opName = "in";

@@ -15,6 +15,8 @@ import alice.tuplecentre.core.OperationCompletionListener;
  */
 public interface IOrdinaryAsynchInterface {
     
+	IRespectOperation spawn(IId aid, LogicTuple t, OperationCompletionListener l) throws InvalidLogicTupleException, OperationNotPossibleException;
+	
 	IRespectOperation out(IId aid, LogicTuple t, OperationCompletionListener l) throws InvalidLogicTupleException, OperationNotPossibleException;
 
 	IRespectOperation in(IId aid, LogicTuple t, OperationCompletionListener l) throws InvalidLogicTupleException, OperationNotPossibleException;

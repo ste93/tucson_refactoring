@@ -21,8 +21,14 @@ import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 
 import java.io.Serializable;
-import java.lang.reflect.*;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
+/**
+ * FSA-like TuCSoN agent.
+ * 
+ * @author unknown
+ */
 public abstract class Automaton extends TucsonAgent implements Serializable{
 
 	private static final long serialVersionUID = -8327090817152965357L;
@@ -30,10 +36,22 @@ public abstract class Automaton extends TucsonAgent implements Serializable{
 	protected Object[] arguments = null;
 	static protected Class<?>[] argType;
 
+	/**
+	 * @param aid name of the agent (must be a valid Prolog term)
+	 * 
+	 * @throws TucsonInvalidAgentIdException
+	 * 
+	 * @see alice.tuprolog.Term Term
+	 */
 	public Automaton(String aid) throws TucsonInvalidAgentIdException{
 		super(aid);
 	}
 
+	/**
+	 * To change state.
+	 * 
+	 * @param s the string representing the state to become
+	 */
 	protected void become(String s){
 		if(!state.equals("end")){
 			state = s;
@@ -41,6 +59,12 @@ public abstract class Automaton extends TucsonAgent implements Serializable{
 		}
 	}
 
+	/**
+	 * To change state
+	 * 
+	 * @param s the string representing the state to become
+	 * @param args arguments to be used in the target state
+	 */
 	protected void become(String s, Object[] args){
 		if(!state.equals("end")){
 			state = s;
@@ -48,13 +72,19 @@ public abstract class Automaton extends TucsonAgent implements Serializable{
 		}
 	}
 
+	/**
+	 * Init state.
+	 */
 	protected abstract void boot();
 
+	/**
+	 * Main FSA cycle.
+	 */
 	final protected void main(){
 		
 //		I don't think  the string is correct...
 		try{
-			argType = new Class[] { Class.forName("[Ljava.lang.Object;") };
+			argType = new Class[] { Class.forName("java.lang.Object") };
 		}catch(ClassNotFoundException e){
 			System.err.println("[Automaton]: " + e);
 			e.printStackTrace();
@@ -132,10 +162,18 @@ public abstract class Automaton extends TucsonAgent implements Serializable{
 		
 	}
 
+	/**
+	 * End state.
+	 * 
+	 * @throws TucsonOperationNotPossibleException
+	 */
 	protected void end() throws TucsonOperationNotPossibleException{
 		getContext().exit();
 	}
 
+	/**
+	 * Error state.
+	 */
 	protected void error(){
 		become("end");
 	}
