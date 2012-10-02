@@ -286,9 +286,11 @@ public interface OrdinarySynchACC extends RootACC{
 	 * 
 	 * @param tid the target TuCSoN tuplecentre id {@link alice.tucson.api.TucsonTupleCentreId tid}
 	 * @param toSpawn the tuple storing the activity to spawn as a parallel computation.
-	 * Could be a single Prolog term storing a Java qualified class name (packages too)
-	 * or a compound term of the kind 'toSpawn(TH,G)' where TH is a filepath to a valid
-	 * Prolog theory and G is a valid Prolog goal to be checked.
+	 * Must be a Prolog term with functor name <code>solve</code>, storing either a Java
+	 * qualified class name (dotted-list of packages and <code>.class</code> extension too)
+	 * or the filepath to a valid Prolog theory and a valid Prolog goal to be checked.
+	 * E.g.: <code>solve('list.of.packages.YourClass.class')</code> OR
+	 * <code>solve('path/to/Prolog/Theory.pl', yourGoal)</code>
 	 * @param ms the maximum waiting time for completion tolerated by the TuCSoN agent
 	 * behind this ACC. Notice that reaching the timeout just unblocks the agent, but
 	 * the request IS NOT REMOVED from TuCSoN node pending requests (will still be served
