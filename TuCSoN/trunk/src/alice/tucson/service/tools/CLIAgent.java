@@ -382,7 +382,7 @@ public class CLIAgent extends alice.util.Automaton{
 					log("\t\tnop(TupleTemplate)");
 					log("\t\tget()");
 					log("\t\tset([Tuple1, ..., TupleN])");
-					log("\t\tspawn(solve(Path.To.Java.Class.class)) | spawn(solve(Path/To/Prolog/Theory.pl, Goal))");
+					log("\t\tspawn(exec('Path.To.Java.Class.class')) | spawn(solve('Path/To/Prolog/Theory.pl', Goal))");
 					log("\t\tin_all(TupleTemplate, TupleList)");
 					log("\t\trd_all(TupleTemplate, TupleList)");
 					log("\t\tno_all(TupleTemplate, TupleList)");

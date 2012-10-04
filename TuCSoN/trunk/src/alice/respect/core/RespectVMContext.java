@@ -736,13 +736,17 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 //            find the Java class (or the Prolog theory) to be executed with the
 //            spawn()!!
             LogicTuple t = (LogicTuple)tuple;
-            if(!t.getName().equals("solve")){
-            	log("spawn argument must be a tuple with functor name 'solve'");
+            if(!(t.getName().equals("exec") || t.getName().equals("solve"))){
+            	log("spawn argument must be a tuple with functor name 'exec' or 'solve'");
             	return false;
             }
             log("---> " + t.getArity());
             if(t.getArity() == 2){
             	log("Prolog theory expected");
+            	if(!t.getName().equals("solve")){
+                	log("Prolog spawn argument must be a tuple with functor name 'solve'");
+                	return false;
+                }
             	String theoryPath = alice.util.Tools.removeApices(t.getArg(0).toString());
             	Term goal = t.getArg(1).toTerm();
             	if(theoryPath.endsWith(".pl")){
@@ -787,7 +791,11 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 	            	return false;
 	            }
             }else if(t.getArity() == 1){
-//            	log("Java class expected");
+            	log("Java class expected");
+            	if(!t.getName().equals("exec")){
+                	log("Java spawn argument must be a tuple with functor name 'exec'");
+                	return false;
+                }
             	String className = alice.util.Tools.removeApices(t.getArg(0).toString());
 //            	log("---> "+className);
             	if(className.endsWith(".class")){

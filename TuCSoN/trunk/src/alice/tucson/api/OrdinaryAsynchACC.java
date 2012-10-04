@@ -258,10 +258,10 @@ public interface OrdinaryAsynchACC extends RootACC{
 	 * 
 	 * @param tid the target TuCSoN tuplecentre id {@link alice.tucson.api.TucsonTupleCentreId tid}
 	 * @param toSpawn the tuple storing the activity to spawn as a parallel computation.
-	 * Must be a Prolog term with functor name <code>solve</code>, storing either a Java
+	 * Must be a Prolog term with functor name <code>exec/solve</code>, storing either a Java
 	 * qualified class name (dotted-list of packages and <code>.class</code> extension too)
 	 * or the filepath to a valid Prolog theory and a valid Prolog goal to be checked.
-	 * E.g.: <code>solve('list.of.packages.YourClass.class')</code> OR
+	 * E.g.: <code>exec('list.of.packages.YourClass.class')</code> OR
 	 * <code>solve('path/to/Prolog/Theory.pl', yourGoal)</code>
 	 * @param l the listener who should be notified upon operation completion
 	 * 
