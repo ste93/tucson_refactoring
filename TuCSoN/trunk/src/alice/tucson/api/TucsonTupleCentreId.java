@@ -31,22 +31,22 @@ public class TucsonTupleCentreId implements alice.tuplecentre.api.TupleCentreId,
 	private static final long serialVersionUID = -4503481713163088789L;
 	private Object tid;
 	
-	public TucsonTupleCentreId(Object id) throws TucsonInvalidTupleCentreIdException{		
-		if(id.getClass().getName().equals("alice.respect.api.TupleCentreId"))
-			tid = id;
+	public TucsonTupleCentreId(Object tid) throws TucsonInvalidTupleCentreIdException{		
+		if(tid.getClass().getName().equals("alice.respect.api.TupleCentreId"))
+			this.tid = tid;
 		else{
 			try{
-				tid = new TupleCentreId((String) id);
+				this.tid = new TupleCentreId((String) tid);
 			}catch(InvalidTupleCentreIdException e){
 				throw new TucsonInvalidTupleCentreIdException();
 			}
 		}
 	}
 
-	public TucsonTupleCentreId(String tcName, String hostName, String portName)
+	public TucsonTupleCentreId(String tcName, String netid, String portno)
 			throws TucsonInvalidTupleCentreIdException{
 		try{
-			tid = new TupleCentreId(tcName, hostName, portName);
+			tid = new TupleCentreId(tcName, netid, portno);
 		}catch(InvalidTupleCentreIdException e){
 			e.printStackTrace();
 			throw new TucsonInvalidTupleCentreIdException();

@@ -31,13 +31,13 @@ public class TucsonAgentId implements alice.tuplecentre.api.AgentId, Serializabl
 	private Object aid;
 	private UUID uuid;
 	
-	public TucsonAgentId(Object id) throws TucsonInvalidAgentIdException{
-		if(id.getClass().getName().equals("alice.respect.api.AgentId")){
-			aid = id;
+	public TucsonAgentId(Object aid) throws TucsonInvalidAgentIdException{
+		if(aid.getClass().getName().equals("alice.respect.api.AgentId")){
+			this.aid = aid;
 			uuid = null;
 		}else{
 			try{
-				aid = new AgentId((String) id);
+				this.aid = new AgentId((String) aid);
 				uuid = null;
 			}catch(InvalidAgentIdException e){
 				throw new TucsonInvalidAgentIdException();
@@ -45,16 +45,16 @@ public class TucsonAgentId implements alice.tuplecentre.api.AgentId, Serializabl
 		}
 	}
 	
+	public Object getLocalAgentId(){
+		return aid;
+	}
+	
 	public String getAgentName(){
-		return ((AgentId) aid).toString();
+		return ((AgentId) aid).getLocalName();
 	}
 	
 	public String getAgentUUID(){
 		return uuid.toString();
-	}
-
-	public Object getLocalAgentId(){
-		return aid;
 	}
 
 	public String toString(){
@@ -73,11 +73,18 @@ public class TucsonAgentId implements alice.tuplecentre.api.AgentId, Serializabl
 		return true;
 	}
 
+	@Override
 	public boolean isAgent(){
 		return true;
 	}
 
+	@Override
 	public boolean isTC(){
+		return false;
+	}
+	
+	@Override
+	public boolean isEnv() {
 		return false;
 	}
 	
@@ -93,11 +100,6 @@ public class TucsonAgentId implements alice.tuplecentre.api.AgentId, Serializabl
 		}
 		res += uuids.substring(j, uuids.length());
 		return res;
-	}
-
-	@Override
-	public boolean isEnv() {
-		return false;
 	}
 		
 }

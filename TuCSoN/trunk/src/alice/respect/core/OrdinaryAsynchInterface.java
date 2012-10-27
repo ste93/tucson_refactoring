@@ -98,9 +98,12 @@ public class OrdinaryAsynchInterface extends RootInterface implements IOrdinaryA
 			OperationNotPossibleException {
 		IRespectOperation op = null;
 		try {
-			if (t==null || t.getArity()!=2)
+			if (t==null)
 				throw new InvalidLogicTupleException();
-			op = getCore().in_all(aid, new LogicTuple(t.getArg(0)), l);
+			else if (t.getArity()==2)
+				op = getCore().in_all(aid, new LogicTuple(t.getArg(0)), l);
+			else if (t.getArity()==1)
+				op = getCore().in_all(aid,t,l);
 		} catch (InvalidTupleOperationException e2) {
 			e2.printStackTrace();
 		}
@@ -112,9 +115,12 @@ public class OrdinaryAsynchInterface extends RootInterface implements IOrdinaryA
 			OperationNotPossibleException {
 		IRespectOperation op = null;
 		try {
-			if (t==null || t.getArity()!=2)
+			if (t==null)
 				throw new InvalidLogicTupleException();
-			op = getCore().rd_all(aid, new LogicTuple(t.getArg(0)), l);
+			else if (t.getArity()==2)
+				op = getCore().rd_all(aid, new LogicTuple(t.getArg(0)), l);
+			else if (t.getArity()==1)
+				op = getCore().rd_all(aid,t,l);
 		} catch (InvalidTupleOperationException e2) {
 			e2.printStackTrace();
 		}
@@ -126,9 +132,12 @@ public class OrdinaryAsynchInterface extends RootInterface implements IOrdinaryA
 			OperationNotPossibleException {
 		IRespectOperation op = null;
 		try {
-			if (t==null || t.getArity()!=2)
+			if (t==null)
 				throw new InvalidLogicTupleException();
-			op = getCore().no_all(id,new LogicTuple(t.getArg(0)), l);
+			else if (t.getArity()==2)
+				op = getCore().no_all(id, new LogicTuple(t.getArg(0)), l);
+			else if (t.getArity()==1)
+				op = getCore().no_all(id,t,l);
 		} catch (InvalidTupleOperationException e2) {
 			throw new OperationNotPossibleException();
 		}

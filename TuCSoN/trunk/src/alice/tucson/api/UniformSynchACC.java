@@ -26,27 +26,27 @@ import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 
 public interface UniformSynchACC extends RootACC{
 
-	ITucsonOperation uin(Object tid, LogicTuple tuple, Long ms)
+	ITucsonOperation uin(Object tid, LogicTuple tuple, Long timeout)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException,
 			OperationTimeOutException;
 	
-	ITucsonOperation urd(Object tid, LogicTuple tuple, Long ms)
+	ITucsonOperation urd(Object tid, LogicTuple tuple, Long timeout)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException,
 			OperationTimeOutException;
 	
-	ITucsonOperation uno(Object tid, LogicTuple tuple, Long ms)
+	ITucsonOperation uno(Object tid, LogicTuple tuple, Long timeout)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException,
 			OperationTimeOutException;
 	
-	ITucsonOperation uinp(Object tid, LogicTuple tuple, Long ms)
+	ITucsonOperation uinp(Object tid, LogicTuple tuple, Long timeout)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException,
 			OperationTimeOutException;
 	
-	ITucsonOperation urdp(Object tid, LogicTuple tuple, Long ms)
+	ITucsonOperation urdp(Object tid, LogicTuple tuple, Long timeout)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException,
 			OperationTimeOutException;
 	
-	ITucsonOperation unop(Object tid, LogicTuple tuple, Long ms)
+	ITucsonOperation unop(Object tid, LogicTuple tuple, Long timeout)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException,
 			OperationTimeOutException;
 	

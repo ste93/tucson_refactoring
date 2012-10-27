@@ -131,31 +131,43 @@ public class OrdinarySynchInterface extends RootInterface implements IOrdinarySy
 		IRespectOperation op = null;
 		TupleArgument arg = null;
 		try {
-			if (t==null || t.getArity()!=2)
+			if (t==null)
 				throw new InvalidLogicTupleException();
-			op = getCore().in_all(id,new LogicTuple(t.getArg(0)));
+			else if (t.getArity()==2)
+				op = getCore().in_all(id,new LogicTuple(t.getArg(0)));
+			else if (t.getArity()==1)
+				op = getCore().in_all(id,t);
 			op.waitForOperationCompletion();
-			arg = t.getArg(1);
+			if (t.getArity()==2){
+				arg = t.getArg(1);
+				return unify(new LogicTuple(new TupleArgument(arg.toTerm())),op.getLogicTupleResult());
+			}
 		} catch (InvalidTupleOperationException e2) {
 			throw new OperationNotPossibleException();
 		}
-		return unify(new LogicTuple(new TupleArgument(arg.toTerm())),op.getLogicTupleResult());
+		return op.getLogicTupleResult();
 	}
-
+	
 	public LogicTuple rd_all(IId id, LogicTuple t) throws InvalidLogicTupleException,
 		OperationNotPossibleException {
 		IRespectOperation op = null;
 		TupleArgument arg = null;
 		try {
-			if (t==null || t.getArity()!=2)
+			if (t==null)
 				throw new InvalidLogicTupleException();
-			op = getCore().rd_all(id,new LogicTuple(t.getArg(0)));
+			else if (t.getArity()==2)
+				op = getCore().rd_all(id,new LogicTuple(t.getArg(0)));
+			else if (t.getArity()==1)
+				op = getCore().rd_all(id,t);
 			op.waitForOperationCompletion();
-			arg = t.getArg(1);
+			if (t.getArity()==2){
+				arg = t.getArg(1);
+				return unify(new LogicTuple(new TupleArgument(arg.toTerm())),op.getLogicTupleResult());
+			}
 		} catch (InvalidTupleOperationException e2) {
 			throw new OperationNotPossibleException();
 		}
-		return unify(new LogicTuple(new TupleArgument(arg.toTerm())),op.getLogicTupleResult());
+		return op.getLogicTupleResult();
 	}
 	
 	public LogicTuple no_all(IId id, LogicTuple t) throws InvalidLogicTupleException,
@@ -163,15 +175,21 @@ public class OrdinarySynchInterface extends RootInterface implements IOrdinarySy
 		IRespectOperation op = null;
 		TupleArgument arg = null;
 		try {
-			if (t==null || t.getArity()!=2)
+			if (t==null)
 				throw new InvalidLogicTupleException();
-			op = getCore().no_all(id,new LogicTuple(t.getArg(0)));
+			else if (t.getArity()==2)
+				op = getCore().no_all(id,new LogicTuple(t.getArg(0)));
+			else if (t.getArity()==1)
+				op = getCore().no_all(id,t);
 			op.waitForOperationCompletion();
-			arg = t.getArg(1);
+			if (t.getArity()==2){
+				arg = t.getArg(1);
+				return unify(new LogicTuple(new TupleArgument(arg.toTerm())),op.getLogicTupleResult());
+			}
 		} catch (InvalidTupleOperationException e2) {
 			throw new OperationNotPossibleException();
 		}
-		return unify(new LogicTuple(new TupleArgument(arg.toTerm())),op.getLogicTupleResult());
+		return op.getLogicTupleResult();
 	}
 	
     public LogicTuple urd(IId id, LogicTuple t) throws InvalidLogicTupleException,

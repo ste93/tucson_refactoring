@@ -47,7 +47,7 @@ public interface OrdinarySynchACC extends RootACC{
 	 * 
 	 * @param tid the target TuCSoN tuplecentre id {@link alice.tucson.api.TucsonTupleCentreId tid}
 	 * @param tuple the tuple to be emitted in the target tuplecentre
-	 * @param ms the maximum waiting time for completion tolerated by the TuCSoN agent
+	 * @param timeout the maximum waiting time for completion tolerated by the TuCSoN agent
 	 * behind this ACC. Notice that reaching the timeout just unblocks the agent, but
 	 * the request IS NOT REMOVED from TuCSoN node pending requests (will still be served
 	 * at sometime in the future).
@@ -61,7 +61,7 @@ public interface OrdinarySynchACC extends RootACC{
 	 * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
 	 * @see alice.tucson.api.ITucsonOperation ITucsonOperation
 	 */
-	ITucsonOperation out(Object tid, LogicTuple tuple, Long ms)
+	ITucsonOperation out(Object tid, LogicTuple tuple, Long timeout)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException;
 
 	/**
@@ -74,7 +74,7 @@ public interface OrdinarySynchACC extends RootACC{
 	 * 
 	 * @param tid the target TuCSoN tuplecentre id {@link alice.tucson.api.TucsonTupleCentreId tid}
 	 * @param tuple the tuple to be retrieved from the target tuplecentre
-	 * @param ms the maximum waiting time for completion tolerated by the TuCSoN agent
+	 * @param timeout the maximum waiting time for completion tolerated by the TuCSoN agent
 	 * behind this ACC. Notice that reaching the timeout just unblocks the agent, but
 	 * the request IS NOT REMOVED from TuCSoN node pending requests (will still be served
 	 * at sometime in the future).
@@ -88,7 +88,7 @@ public interface OrdinarySynchACC extends RootACC{
 	 * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
 	 * @see alice.tucson.api.ITucsonOperation ITucsonOperation
 	 */
-	ITucsonOperation in(Object tid, LogicTuple tuple, Long ms)
+	ITucsonOperation in(Object tid, LogicTuple tuple, Long timeout)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException;
 
 	/**
@@ -101,7 +101,7 @@ public interface OrdinarySynchACC extends RootACC{
 	 * 
 	 * @param tid the target TuCSoN tuplecentre id {@link alice.tucson.api.TucsonTupleCentreId tid}
 	 * @param tuple the tuple to be read from the target tuplecentre
-	 * @param ms the maximum waiting time for completion tolerated by the TuCSoN agent
+	 * @param timeout the maximum waiting time for completion tolerated by the TuCSoN agent
 	 * behind this ACC. Notice that reaching the timeout just unblocks the agent, but
 	 * the request IS NOT REMOVED from TuCSoN node pending requests (will still be served
 	 * at sometime in the future).
@@ -115,7 +115,7 @@ public interface OrdinarySynchACC extends RootACC{
 	 * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
 	 * @see alice.tucson.api.ITucsonOperation ITucsonOperation
 	 */
-	ITucsonOperation rd(Object tid, LogicTuple tuple, Long ms)
+	ITucsonOperation rd(Object tid, LogicTuple tuple, Long timeout)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException;
 	
 	/**
@@ -128,7 +128,7 @@ public interface OrdinarySynchACC extends RootACC{
 	 * 
 	 * @param tid the target TuCSoN tuplecentre id {@link alice.tucson.api.TucsonTupleCentreId tid}
 	 * @param tuple the tuple to be retrieved from the target tuplecentre
-	 * @param ms the maximum waiting time for completion tolerated by the TuCSoN agent
+	 * @param timeout the maximum waiting time for completion tolerated by the TuCSoN agent
 	 * behind this ACC. Notice that reaching the timeout just unblocks the agent, but
 	 * the request IS NOT REMOVED from TuCSoN node pending requests (will still be served
 	 * at sometime in the future).
@@ -142,7 +142,7 @@ public interface OrdinarySynchACC extends RootACC{
 	 * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
 	 * @see alice.tucson.api.ITucsonOperation ITucsonOperation
 	 */
-	ITucsonOperation inp(Object tid, LogicTuple tuple, Long ms)
+	ITucsonOperation inp(Object tid, LogicTuple tuple, Long timeout)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException;
 	
 	/**
@@ -155,7 +155,7 @@ public interface OrdinarySynchACC extends RootACC{
 	 * 
 	 * @param tid the target TuCSoN tuplecentre id {@link alice.tucson.api.TucsonTupleCentreId tid}
 	 * @param tuple the tuple to be read from the target tuplecentre
-	 * @param ms the maximum waiting time for completion tolerated by the TuCSoN agent
+	 * @param timeout the maximum waiting time for completion tolerated by the TuCSoN agent
 	 * behind this ACC. Notice that reaching the timeout just unblocks the agent, but
 	 * the request IS NOT REMOVED from TuCSoN node pending requests (will still be served
 	 * at sometime in the future).
@@ -169,7 +169,7 @@ public interface OrdinarySynchACC extends RootACC{
 	 * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
 	 * @see alice.tucson.api.ITucsonOperation ITucsonOperation
 	 */
-	ITucsonOperation rdp(Object tid, LogicTuple tuple, Long ms)
+	ITucsonOperation rdp(Object tid, LogicTuple tuple, Long timeout)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException;
 	
 	/**
@@ -182,7 +182,7 @@ public interface OrdinarySynchACC extends RootACC{
 	 * 
 	 * @param tid the target TuCSoN tuplecentre id {@link alice.tucson.api.TucsonTupleCentreId tid}
 	 * @param tuple the tuple to be checked for absence from the target tuplecentre
-	 * @param ms the maximum waiting time for completion tolerated by the TuCSoN agent
+	 * @param timeout the maximum waiting time for completion tolerated by the TuCSoN agent
 	 * behind this ACC. Notice that reaching the timeout just unblocks the agent, but
 	 * the request IS NOT REMOVED from TuCSoN node pending requests (will still be served
 	 * at sometime in the future).
@@ -196,7 +196,7 @@ public interface OrdinarySynchACC extends RootACC{
 	 * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
 	 * @see alice.tucson.api.ITucsonOperation ITucsonOperation
 	 */
-	ITucsonOperation no(Object tid, LogicTuple tuple, Long ms)
+	ITucsonOperation no(Object tid, LogicTuple tuple, Long timeout)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException;
 	
 	/**
@@ -209,7 +209,7 @@ public interface OrdinarySynchACC extends RootACC{
 	 * 
 	 * @param tid the target TuCSoN tuplecentre id {@link alice.tucson.api.TucsonTupleCentreId tid}
 	 * @param tuple the tuple to be checked for absence from the target tuplecentre
-	 * @param ms the maximum waiting time for completion tolerated by the TuCSoN agent
+	 * @param timeout the maximum waiting time for completion tolerated by the TuCSoN agent
 	 * behind this ACC. Notice that reaching the timeout just unblocks the agent, but
 	 * the request IS NOT REMOVED from TuCSoN node pending requests (will still be served
 	 * at sometime in the future).
@@ -223,7 +223,7 @@ public interface OrdinarySynchACC extends RootACC{
 	 * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
 	 * @see alice.tucson.api.ITucsonOperation ITucsonOperation
 	 */
-	ITucsonOperation nop(Object tid, LogicTuple tuple, Long ms)
+	ITucsonOperation nop(Object tid, LogicTuple tuple, Long timeout)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException;
 	
 	/**
@@ -232,7 +232,7 @@ public interface OrdinarySynchACC extends RootACC{
 	 * 
 	 * @param tid the target TuCSoN tuplecentre id {@link alice.tucson.api.TucsonTupleCentreId tid}
 	 * @param tuple the Prolog list of all the tuples to be injected (overwriting space)
-	 * @param ms the maximum waiting time for completion tolerated by the TuCSoN agent
+	 * @param timeout the maximum waiting time for completion tolerated by the TuCSoN agent
 	 * behind this ACC. Notice that reaching the timeout just unblocks the agent, but
 	 * the request IS NOT REMOVED from TuCSoN node pending requests (will still be served
 	 * at sometime in the future).
@@ -246,7 +246,7 @@ public interface OrdinarySynchACC extends RootACC{
 	 * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
 	 * @see alice.tucson.api.ITucsonOperation ITucsonOperation
 	 */
-	ITucsonOperation set(Object tid, LogicTuple tuple, Long ms)
+	ITucsonOperation set(Object tid, LogicTuple tuple, Long timeout)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException;
 	
 	/**
@@ -257,7 +257,7 @@ public interface OrdinarySynchACC extends RootACC{
 	 * is returned to the TuCSoN Agent exploiting this ACC.
 	 * 
 	 * @param tid the target TuCSoN tuplecentre id {@link alice.tucson.api.TucsonTupleCentreId tid}
-	 * @param ms the maximum waiting time for completion tolerated by the TuCSoN agent
+	 * @param timeout the maximum waiting time for completion tolerated by the TuCSoN agent
 	 * behind this ACC. Notice that reaching the timeout just unblocks the agent, but
 	 * the request IS NOT REMOVED from TuCSoN node pending requests (will still be served
 	 * at sometime in the future).
@@ -271,7 +271,7 @@ public interface OrdinarySynchACC extends RootACC{
 	 * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
 	 * @see alice.tucson.api.ITucsonOperation ITucsonOperation
 	 */
-	ITucsonOperation get(Object tid, Long ms)
+	ITucsonOperation get(Object tid, Long timeout)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException;
 	
 	/**
@@ -291,7 +291,7 @@ public interface OrdinarySynchACC extends RootACC{
 	 * or the filepath to a valid Prolog theory and a valid Prolog goal to be checked.
 	 * E.g.: <code>exec('list.of.packages.YourClass.class')</code> OR
 	 * <code>solve('path/to/Prolog/Theory.pl', yourGoal)</code>
-	 * @param ms the maximum waiting time for completion tolerated by the TuCSoN agent
+	 * @param timeout the maximum waiting time for completion tolerated by the TuCSoN agent
 	 * behind this ACC. Notice that reaching the timeout just unblocks the agent, but
 	 * the request IS NOT REMOVED from TuCSoN node pending requests (will still be served
 	 * at sometime in the future).
@@ -305,7 +305,7 @@ public interface OrdinarySynchACC extends RootACC{
 	 * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
 	 * @see alice.tucson.api.ITucsonOperation ITucsonOperation
 	 */
-	ITucsonOperation spawn(Object tid, LogicTuple toSpawn, Long ms)
+	ITucsonOperation spawn(Object tid, LogicTuple toSpawn, Long timeout)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException;
 
 }

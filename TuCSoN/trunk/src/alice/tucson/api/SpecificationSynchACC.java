@@ -50,7 +50,7 @@ public interface SpecificationSynchACC extends RootACC{
 	 * @param guards the guard predicates to be checked for satisfaction so to actually
 	 * trigger the body of the ReSpecT reaction
 	 * @param reactionBody the computation to be done in response to the <code>event</code>
-	 * @param ms the maximum waiting time for completion tolerated by the TuCSoN agent
+	 * @param timeout the maximum waiting time for completion tolerated by the TuCSoN agent
 	 * behind this ACC. Notice that reaching the timeout just unblocks the agent, but
 	 * the request IS NOT REMOVED from TuCSoN node pending requests (will still be served
 	 * at sometime in the future).
@@ -65,7 +65,7 @@ public interface SpecificationSynchACC extends RootACC{
 	 * @see alice.tucson.api.ITucsonOperation ITucsonOperation
 	 */
 	ITucsonOperation out_s(Object tid, LogicTuple event, LogicTuple guards, LogicTuple reactionBody,
-			Long ms) throws TucsonOperationNotPossibleException, UnreachableNodeException,
+			Long timeout) throws TucsonOperationNotPossibleException, UnreachableNodeException,
 			OperationTimeOutException;
 	
 	/**
@@ -81,7 +81,7 @@ public interface SpecificationSynchACC extends RootACC{
 	 * @param guards the template for the guard predicates to be checked for satisfaction so to actually
 	 * trigger the body of the ReSpecT reaction
 	 * @param reactionBody the template for the computation to be done in response to the <code>event</code>
-	 * @param ms the maximum waiting time for completion tolerated by the TuCSoN agent
+	 * @param timeout the maximum waiting time for completion tolerated by the TuCSoN agent
 	 * behind this ACC. Notice that reaching the timeout just unblocks the agent, but
 	 * the request IS NOT REMOVED from TuCSoN node pending requests (will still be served
 	 * at sometime in the future).
@@ -96,7 +96,7 @@ public interface SpecificationSynchACC extends RootACC{
 	 * @see alice.tucson.api.ITucsonOperation ITucsonOperation
 	 */
 	ITucsonOperation in_s(Object tid, LogicTuple event, LogicTuple guards, LogicTuple reactionBody,
-			Long ms) throws TucsonOperationNotPossibleException, UnreachableNodeException,
+			Long timeout) throws TucsonOperationNotPossibleException, UnreachableNodeException,
 			OperationTimeOutException;
 	
 	/**
@@ -112,7 +112,7 @@ public interface SpecificationSynchACC extends RootACC{
 	 * @param guards the template for the guard predicates to be checked for satisfaction so to actually
 	 * trigger the body of the ReSpecT reaction
 	 * @param reactionBody the template for the computation to be done in response to the <code>event</code>
-	 * @param ms the maximum waiting time for completion tolerated by the TuCSoN agent
+	 * @param timeout the maximum waiting time for completion tolerated by the TuCSoN agent
 	 * behind this ACC. Notice that reaching the timeout just unblocks the agent, but
 	 * the request IS NOT REMOVED from TuCSoN node pending requests (will still be served
 	 * at sometime in the future).
@@ -127,7 +127,7 @@ public interface SpecificationSynchACC extends RootACC{
 	 * @see alice.tucson.api.ITucsonOperation ITucsonOperation
 	 */
 	ITucsonOperation rd_s(Object tid, LogicTuple event, LogicTuple guards, LogicTuple reactionBody,
-			Long ms) throws TucsonOperationNotPossibleException, UnreachableNodeException,
+			Long timeout) throws TucsonOperationNotPossibleException, UnreachableNodeException,
 			OperationTimeOutException;
 	
 	/**
@@ -143,7 +143,7 @@ public interface SpecificationSynchACC extends RootACC{
 	 * @param guards the template for the guard predicates to be checked for satisfaction so to actually
 	 * trigger the body of the ReSpecT reaction
 	 * @param reactionBody the template for the computation to be done in response to the <code>event</code>
-	 * @param ms the maximum waiting time for completion tolerated by the TuCSoN agent
+	 * @param timeout the maximum waiting time for completion tolerated by the TuCSoN agent
 	 * behind this ACC. Notice that reaching the timeout just unblocks the agent, but
 	 * the request IS NOT REMOVED from TuCSoN node pending requests (will still be served
 	 * at sometime in the future).
@@ -158,7 +158,7 @@ public interface SpecificationSynchACC extends RootACC{
 	 * @see alice.tucson.api.ITucsonOperation ITucsonOperation
 	 */
 	ITucsonOperation inp_s(Object tid, LogicTuple event, LogicTuple guards, LogicTuple reactionBody,
-			Long ms) throws TucsonOperationNotPossibleException, UnreachableNodeException,
+			Long timeout) throws TucsonOperationNotPossibleException, UnreachableNodeException,
 			OperationTimeOutException;
 	
 	/**
@@ -174,7 +174,7 @@ public interface SpecificationSynchACC extends RootACC{
 	 * @param guards the template for the guard predicates to be checked for satisfaction so to actually
 	 * trigger the body of the ReSpecT reaction
 	 * @param reactionBody the template for the computation to be done in response to the <code>event</code>
-	 * @param ms the maximum waiting time for completion tolerated by the TuCSoN agent
+	 * @param timeout the maximum waiting time for completion tolerated by the TuCSoN agent
 	 * behind this ACC. Notice that reaching the timeout just unblocks the agent, but
 	 * the request IS NOT REMOVED from TuCSoN node pending requests (will still be served
 	 * at sometime in the future).
@@ -189,7 +189,7 @@ public interface SpecificationSynchACC extends RootACC{
 	 * @see alice.tucson.api.ITucsonOperation ITucsonOperation
 	 */
 	ITucsonOperation rdp_s(Object tid, LogicTuple event, LogicTuple guards, LogicTuple reactionBody,
-			Long ms) throws TucsonOperationNotPossibleException, UnreachableNodeException,
+			Long timeout) throws TucsonOperationNotPossibleException, UnreachableNodeException,
 			OperationTimeOutException;
 	
 	/**
@@ -205,7 +205,7 @@ public interface SpecificationSynchACC extends RootACC{
 	 * @param guards the template for the guard predicates to be checked for satisfaction so to actually
 	 * trigger the body of the ReSpecT reaction
 	 * @param reactionBody the template for the computation to be done in response to the <code>event</code>
-	 * @param ms the maximum waiting time for completion tolerated by the TuCSoN agent
+	 * @param timeout the maximum waiting time for completion tolerated by the TuCSoN agent
 	 * behind this ACC. Notice that reaching the timeout just unblocks the agent, but
 	 * the request IS NOT REMOVED from TuCSoN node pending requests (will still be served
 	 * at sometime in the future).
@@ -220,7 +220,7 @@ public interface SpecificationSynchACC extends RootACC{
 	 * @see alice.tucson.api.ITucsonOperation ITucsonOperation
 	 */
 	ITucsonOperation no_s(Object tid, LogicTuple event, LogicTuple guards, LogicTuple reactionBody,
-			Long ms) throws TucsonOperationNotPossibleException, UnreachableNodeException,
+			Long timeout) throws TucsonOperationNotPossibleException, UnreachableNodeException,
 			OperationTimeOutException;
 	
 	/**
@@ -236,7 +236,7 @@ public interface SpecificationSynchACC extends RootACC{
 	 * @param guards the template for the guard predicates to be checked for satisfaction so to actually
 	 * trigger the body of the ReSpecT reaction
 	 * @param reactionBody the template for the computation to be done in response to the <code>event</code>
-	 * @param ms the maximum waiting time for completion tolerated by the TuCSoN agent
+	 * @param timeout the maximum waiting time for completion tolerated by the TuCSoN agent
 	 * behind this ACC. Notice that reaching the timeout just unblocks the agent, but
 	 * the request IS NOT REMOVED from TuCSoN node pending requests (will still be served
 	 * at sometime in the future).
@@ -251,7 +251,7 @@ public interface SpecificationSynchACC extends RootACC{
 	 * @see alice.tucson.api.ITucsonOperation ITucsonOperation
 	 */
 	ITucsonOperation nop_s(Object tid, LogicTuple event, LogicTuple guards, LogicTuple reactionBody,
-			Long ms) throws TucsonOperationNotPossibleException, UnreachableNodeException,
+			Long timeout) throws TucsonOperationNotPossibleException, UnreachableNodeException,
 			OperationTimeOutException;
 	
 	/**
@@ -261,7 +261,7 @@ public interface SpecificationSynchACC extends RootACC{
 	 * 
 	 * @param tid the target TuCSoN tuplecentre id {@link alice.tucson.api.TucsonTupleCentreId tid}
 	 * @param spec the new ReSpecT specification to replace the current specification space
-	 * @param ms the maximum waiting time for completion tolerated by the TuCSoN agent
+	 * @param timeout the maximum waiting time for completion tolerated by the TuCSoN agent
 	 * behind this ACC. Notice that reaching the timeout just unblocks the agent, but
 	 * the request IS NOT REMOVED from TuCSoN node pending requests (will still be served
 	 * at sometime in the future).
@@ -276,7 +276,7 @@ public interface SpecificationSynchACC extends RootACC{
 	 * @see alice.tucson.api.ITucsonOperation ITucsonOperation
 	 * @see alice.tuprolog.Theory Theory
 	 */
-	ITucsonOperation set_s(Object tid, String spec, Long ms) throws TucsonOperationNotPossibleException,
+	ITucsonOperation set_s(Object tid, String spec, Long timeout) throws TucsonOperationNotPossibleException,
 	UnreachableNodeException, OperationTimeOutException;
 	
 	/**
@@ -288,7 +288,7 @@ public interface SpecificationSynchACC extends RootACC{
 	 * 
 	 * @param tid the target TuCSoN tuplecentre id {@link alice.tucson.api.TucsonTupleCentreId tid}
 	 * @param spec the new ReSpecT specification to replace the current specification space
-	 * @param ms the maximum waiting time for completion tolerated by the TuCSoN agent
+	 * @param timeout the maximum waiting time for completion tolerated by the TuCSoN agent
 	 * behind this ACC. Notice that reaching the timeout just unblocks the agent, but
 	 * the request IS NOT REMOVED from TuCSoN node pending requests (will still be served
 	 * at sometime in the future).
@@ -302,7 +302,7 @@ public interface SpecificationSynchACC extends RootACC{
 	 * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
 	 * @see alice.tucson.api.ITucsonOperation ITucsonOperation
 	 */
-	ITucsonOperation set_s(Object tid, LogicTuple spec, Long ms)
+	ITucsonOperation set_s(Object tid, LogicTuple spec, Long timeout)
 		throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException;
 	
 	/**
@@ -313,7 +313,7 @@ public interface SpecificationSynchACC extends RootACC{
 	 * is returned to the TuCSoN Agent exploiting this ACC.
 	 * 
 	 * @param tid the target TuCSoN tuplecentre id {@link alice.tucson.api.TucsonTupleCentreId tid}
-	 * @param ms the maximum waiting time for completion tolerated by the TuCSoN agent
+	 * @param timeout the maximum waiting time for completion tolerated by the TuCSoN agent
 	 * behind this ACC. Notice that reaching the timeout just unblocks the agent, but
 	 * the request IS NOT REMOVED from TuCSoN node pending requests (will still be served
 	 * at sometime in the future).
@@ -327,7 +327,7 @@ public interface SpecificationSynchACC extends RootACC{
 	 * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
 	 * @see alice.tucson.api.ITucsonOperation ITucsonOperation
 	 */
-	ITucsonOperation get_s(Object tid, Long ms) throws TucsonOperationNotPossibleException,
+	ITucsonOperation get_s(Object tid, Long timeout) throws TucsonOperationNotPossibleException,
 	UnreachableNodeException, OperationTimeOutException;
 	
 }

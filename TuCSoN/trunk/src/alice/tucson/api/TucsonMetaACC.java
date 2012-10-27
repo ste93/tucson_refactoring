@@ -32,18 +32,18 @@ public class TucsonMetaACC{
 	 * Gets the available most-comprehensive ACC from the TuCSoN Node Service
 	 * active on the specified pair node:port where node is the ip address.
 	 * 
-	 * @param agentId Who demand for the ACC
-	 * @param node The ip address of the target TuCSoN Node Service
-	 * @param port The listening port of the target TuCSoN Node Service
+	 * @param aid Who demand for the ACC
+	 * @param netid The ip address of the target TuCSoN Node Service
+	 * @param portno The listening port of the target TuCSoN Node Service
 	 * 
 	 * @return The DefaultACC (which is the most powerful at the moment)
 	 * @throws UnknownACCException 
 	 */
-	public static EnhancedACC getContext(Object agentId, String node, int port){
+	public static EnhancedACC getContext(Object aid, String netid, int portno){
 		EnhancedACC acc = null;
 		try {
-			acc = new ACCProxyAgentSide(agentId, node, port);
-			((TucsonAgentId)agentId).assignUUID();
+			acc = new ACCProxyAgentSide(aid, netid, portno);
+			((TucsonAgentId)aid).assignUUID();
 		} catch (TucsonInvalidAgentIdException e) {
 			System.err.println("[Tucson-MetaACC]: " + e);
 			e.printStackTrace();
@@ -56,13 +56,13 @@ public class TucsonMetaACC{
 	 * Gets the available most-comprehensive ACC from the TuCSoN Node Service
 	 * active on the default host ("localhost") on the default port (20504).
 	 * 
-	 * @param agentId Who demand for the ACC
+	 * @param aid Who demand for the ACC
 	 * 
 	 * @return The DefaultACC (which is the most powerful at the moment)
 	 * @throws UnknownACCException 
 	 */
-	public static EnhancedACC getContext(Object agentId){
-		return getContext(agentId, "localhost", 20504);
+	public static EnhancedACC getContext(Object aid){
+		return getContext(aid, "localhost", 20504);
 	}
 
 	public static String getVersion(){

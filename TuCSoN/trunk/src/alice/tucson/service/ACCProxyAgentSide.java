@@ -918,7 +918,7 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	 * 
 	 * @param tid Target TuCSoN tuplecentre id {@link alice.tucson.api.TucsonTupleCentreId tid}
 	 * @param tuple Tuple to be emitted in the target tuplecentre
-	 * @param ms Maximum waiting time tolerated by the callee TuCSoN Agent
+	 * @param timeout Maximum waiting time tolerated by the callee TuCSoN Agent
 	 * 
 	 * @return The Logic Tuple resulting from the completion of the primitive
 	 * 
@@ -928,9 +928,9 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	 * 
 	 * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
 	 */
-	public ITucsonOperation out(Object tid, LogicTuple tuple, Long ms)
+	public ITucsonOperation out(Object tid, LogicTuple tuple, Long timeout)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException{
-		return doBlockingOperation(TucsonOperation.outCode(), tid, tuple, ms);
+		return doBlockingOperation(TucsonOperation.outCode(), tid, tuple, timeout);
 	}
 	
 	/**
@@ -943,7 +943,7 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	 * 
 	 * @param tid Target TuCSoN tuplecentre id {@link alice.tucson.api.TucsonTupleCentreId tid}
 	 * @param tuple Tuple to be retrieved from the target tuplecentre
-	 * @param ms Maximum waiting time tolerated by the callee TuCSoN Agent
+	 * @param timeout Maximum waiting time tolerated by the callee TuCSoN Agent
 	 * 
 	 * @return The Logic Tuple resulting from the completion of the primitive
 	 * 
@@ -953,9 +953,9 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	 * 
 	 * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
 	 */
-	public ITucsonOperation in(Object tid, LogicTuple tuple, Long ms)
+	public ITucsonOperation in(Object tid, LogicTuple tuple, Long timeout)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException{
-		return doBlockingOperation(TucsonOperation.inCode(), tid, tuple, ms);
+		return doBlockingOperation(TucsonOperation.inCode(), tid, tuple, timeout);
 	}
 	
 	/**
@@ -968,7 +968,7 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	 * 
 	 * @param tid Target TuCSoN tuplecentre id {@link alice.tucson.api.TucsonTupleCentreId tid}
 	 * @param tuple Tuple to be read from the target tuplecentre
-	 * @param ms Maximum waiting time tolerated by the callee TuCSoN Agent
+	 * @param timeout Maximum waiting time tolerated by the callee TuCSoN Agent
 	 * 
 	 * @return The Logic Tuple resulting from the completion of the primitive
 	 * 
@@ -978,9 +978,9 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	 * 
 	 * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
 	 */
-	public ITucsonOperation rd(Object tid, LogicTuple tuple, Long ms)
+	public ITucsonOperation rd(Object tid, LogicTuple tuple, Long timeout)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException{
-		return doBlockingOperation(TucsonOperation.rdCode(), tid, tuple, ms);
+		return doBlockingOperation(TucsonOperation.rdCode(), tid, tuple, timeout);
 	}
 	
 	/**
@@ -993,7 +993,7 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	 * 
 	 * @param tid Target TuCSoN tuplecentre id {@link alice.tucson.api.TucsonTupleCentreId tid}
 	 * @param tuple Tuple to be retrieved from the target tuplecentre
-	 * @param ms Maximum waiting time tolerated by the callee TuCSoN Agent
+	 * @param timeout Maximum waiting time tolerated by the callee TuCSoN Agent
 	 * 
 	 * @return The Logic Tuple resulting from the completion of the primitive
 	 * 
@@ -1003,9 +1003,9 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	 * 
 	 * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
 	 */
-	public ITucsonOperation inp(Object tid, LogicTuple tuple, Long ms)
+	public ITucsonOperation inp(Object tid, LogicTuple tuple, Long timeout)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException{
-		return doBlockingOperation(TucsonOperation.inpCode(), tid, tuple, ms);
+		return doBlockingOperation(TucsonOperation.inpCode(), tid, tuple, timeout);
 	}
 	
 	/**
@@ -1018,7 +1018,7 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	 * 
 	 * @param tid Target TuCSoN tuplecentre id {@link alice.tucson.api.TucsonTupleCentreId tid}
 	 * @param tuple Tuple to be read from the target tuplecentre
-	 * @param ms Maximum waiting time tolerated by the callee TuCSoN Agent
+	 * @param timeout Maximum waiting time tolerated by the callee TuCSoN Agent
 	 * 
 	 * @return The Logic Tuple resulting from the completion of the primitive
 	 * 
@@ -1028,9 +1028,9 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	 * 
 	 * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
 	 */
-	public ITucsonOperation rdp(Object tid, LogicTuple tuple, Long ms)
+	public ITucsonOperation rdp(Object tid, LogicTuple tuple, Long timeout)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException{
-		return doBlockingOperation(TucsonOperation.rdpCode(), tid, tuple, ms);
+		return doBlockingOperation(TucsonOperation.rdpCode(), tid, tuple, timeout);
 	}
 	
 	/**
@@ -1046,7 +1046,7 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	 * 
 	 * @param tid Target TuCSoN tuplecentre id {@link alice.tucson.api.TucsonTupleCentreId tid}
 	 * @param tuple Tuple to be checked for absence from the target tuplecentre
-	 * @param ms Maximum waiting time tolerated by the callee TuCSoN Agent
+	 * @param timeout Maximum waiting time tolerated by the callee TuCSoN Agent
 	 * 
 	 * @return The Logic Tuple resulting from the completion of the primitive
 	 * 
@@ -1056,9 +1056,9 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	 * 
 	 * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
 	 */
-	public ITucsonOperation no(Object tid, LogicTuple tuple, Long ms)
+	public ITucsonOperation no(Object tid, LogicTuple tuple, Long timeout)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException{
-		return doBlockingOperation(TucsonOperation.noCode(), tid, tuple, ms);
+		return doBlockingOperation(TucsonOperation.noCode(), tid, tuple, timeout);
 	}
 	
 	/**
@@ -1074,7 +1074,7 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	 * 
 	 * @param tid Target TuCSoN tuplecentre id {@link alice.tucson.api.TucsonTupleCentreId tid}
 	 * @param tuple Tuple to be checked for absence from the target tuplecentre
-	 * @param ms Maximum waiting time tolerated by the callee TuCSoN Agent
+	 * @param timeout Maximum waiting time tolerated by the callee TuCSoN Agent
 	 * 
 	 * @return The Logic Tuple resulting from the completion of the primitive
 	 * 
@@ -1084,9 +1084,9 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	 * 
 	 * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
 	 */
-	public ITucsonOperation nop(Object tid, LogicTuple tuple, Long ms)
+	public ITucsonOperation nop(Object tid, LogicTuple tuple, Long timeout)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException{
-		return doBlockingOperation(TucsonOperation.nopCode(), tid, tuple, ms);
+		return doBlockingOperation(TucsonOperation.nopCode(), tid, tuple, timeout);
 	}
 	
 	/**
@@ -1102,7 +1102,7 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	 * to send it to the TuCSoN Node Service for processing
 	 * 
 	 * @param tid Target TuCSoN tuplecentre id {@link alice.tucson.api.TucsonTupleCentreId tid}
-	 * @param ms Maximum waiting time tolerated by the callee TuCSoN Agent
+	 * @param timeout Maximum waiting time tolerated by the callee TuCSoN Agent
 	 * 
 	 * @return The list of Logic Tuples resulting from the completion of the primitive
 	 * 
@@ -1112,9 +1112,9 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	 * 
 	 * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
 	 */
-	public ITucsonOperation get(Object tid, Long ms)
+	public ITucsonOperation get(Object tid, Long timeout)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException{
-		return doBlockingOperation(TucsonOperation.get_Code(), tid, null, ms);
+		return doBlockingOperation(TucsonOperation.get_Code(), tid, null, timeout);
 	}
 	
 	/**
@@ -1127,7 +1127,7 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	 * 
 	 * @param tid Target TuCSoN tuplecentre id {@link alice.tucson.api.TucsonTupleCentreId tid}
 	 * @param tuple The logic tuple containing the list of all the tuples to be injected
-	 * @param ms Maximum waiting time tolerated by the callee TuCSoN Agent
+	 * @param timeout Maximum waiting time tolerated by the callee TuCSoN Agent
 	 * 
 	 * @return The Logic Tuple resulting from the completion of the primitive
 	 * 
@@ -1137,9 +1137,9 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	 * 
 	 * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
 	 */
-	public ITucsonOperation set(Object tid, LogicTuple tuple, Long ms)
+	public ITucsonOperation set(Object tid, LogicTuple tuple, Long timeout)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException{
-		return doBlockingOperation(TucsonOperation.set_Code(), tid, tuple, ms);
+		return doBlockingOperation(TucsonOperation.set_Code(), tid, tuple, timeout);
 	}
 	
 	
@@ -1147,71 +1147,71 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	/**
 	 * SPAWN
 	 */
-	public ITucsonOperation spawn(Object tid, LogicTuple toSpawn, Long ms)
+	public ITucsonOperation spawn(Object tid, LogicTuple toSpawn, Long timeout)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException{
-		return doBlockingOperation(TucsonOperation.spawnCode(), tid, toSpawn, ms);
+		return doBlockingOperation(TucsonOperation.spawnCode(), tid, toSpawn, timeout);
 	}
 	
 	
 	
-	public ITucsonOperation uin(Object tid, LogicTuple tuple, Long ms)
+	public ITucsonOperation uin(Object tid, LogicTuple tuple, Long timeout)
 			throws TucsonOperationNotPossibleException,
 			UnreachableNodeException, OperationTimeOutException {
-		return doBlockingOperation(TucsonOperation.uinCode(), tid, tuple, ms);
+		return doBlockingOperation(TucsonOperation.uinCode(), tid, tuple, timeout);
 	}
 
-	public ITucsonOperation urd(Object tid, LogicTuple tuple, Long ms)
+	public ITucsonOperation urd(Object tid, LogicTuple tuple, Long timeout)
 			throws TucsonOperationNotPossibleException,
 			UnreachableNodeException, OperationTimeOutException {
-		return doBlockingOperation(TucsonOperation.urdCode(), tid, tuple, ms);
+		return doBlockingOperation(TucsonOperation.urdCode(), tid, tuple, timeout);
 	}
 	
-	public ITucsonOperation uno(Object tid, LogicTuple tuple, Long ms)
+	public ITucsonOperation uno(Object tid, LogicTuple tuple, Long timeout)
 			throws TucsonOperationNotPossibleException,
 			UnreachableNodeException, OperationTimeOutException {
-		return doBlockingOperation(TucsonOperation.unoCode(), tid, tuple, ms);
+		return doBlockingOperation(TucsonOperation.unoCode(), tid, tuple, timeout);
 	}
 
-	public ITucsonOperation uinp(Object tid, LogicTuple tuple, Long ms)
+	public ITucsonOperation uinp(Object tid, LogicTuple tuple, Long timeout)
 			throws TucsonOperationNotPossibleException,
 			UnreachableNodeException, OperationTimeOutException {
-		return doBlockingOperation(TucsonOperation.uinpCode(), tid, tuple, ms);
+		return doBlockingOperation(TucsonOperation.uinpCode(), tid, tuple, timeout);
 	}
 
-	public ITucsonOperation urdp(Object tid, LogicTuple tuple, Long ms)
+	public ITucsonOperation urdp(Object tid, LogicTuple tuple, Long timeout)
 			throws TucsonOperationNotPossibleException,
 			UnreachableNodeException, OperationTimeOutException {
-		return doBlockingOperation(TucsonOperation.urdpCode(), tid, tuple, ms);
+		return doBlockingOperation(TucsonOperation.urdpCode(), tid, tuple, timeout);
 	}
 	
-	public ITucsonOperation unop(Object tid, LogicTuple tuple, Long ms)
+	public ITucsonOperation unop(Object tid, LogicTuple tuple, Long timeout)
 			throws TucsonOperationNotPossibleException,
 			UnreachableNodeException, OperationTimeOutException {
-		return doBlockingOperation(TucsonOperation.unopCode(), tid, tuple, ms);
+		return doBlockingOperation(TucsonOperation.unopCode(), tid, tuple, timeout);
 	}
 	
-	public ITucsonOperation out_all(Object tid, LogicTuple tuple, Long ms)
+	public ITucsonOperation out_all(Object tid, LogicTuple tuple, Long timeout)
 			throws TucsonOperationNotPossibleException,
 			UnreachableNodeException, OperationTimeOutException {
-		return doBlockingOperation(TucsonOperation.out_allCode(), tid, tuple, ms);
+		return doBlockingOperation(TucsonOperation.out_allCode(), tid, tuple, timeout);
 	}
 
-	public ITucsonOperation in_all(Object tid, LogicTuple tuple, Long ms)
+	public ITucsonOperation in_all(Object tid, LogicTuple tuple, Long timeout)
 			throws TucsonOperationNotPossibleException,
 			UnreachableNodeException, OperationTimeOutException {
-		return doBlockingOperation(TucsonOperation.in_allCode(), tid, tuple, ms);
+		return doBlockingOperation(TucsonOperation.in_allCode(), tid, tuple, timeout);
 	}
 
-	public ITucsonOperation rd_all(Object tid, LogicTuple tuple, Long ms)
+	public ITucsonOperation rd_all(Object tid, LogicTuple tuple, Long timeout)
 			throws TucsonOperationNotPossibleException,
 			UnreachableNodeException, OperationTimeOutException {
-		return doBlockingOperation(TucsonOperation.rd_allCode(), tid, tuple, ms);
+		return doBlockingOperation(TucsonOperation.rd_allCode(), tid, tuple, timeout);
 	}
 	
-	public ITucsonOperation no_all(Object tid, LogicTuple tuple, Long ms)
+	public ITucsonOperation no_all(Object tid, LogicTuple tuple, Long timeout)
 			throws TucsonOperationNotPossibleException,
 			UnreachableNodeException, OperationTimeOutException {
-		return doBlockingOperation(TucsonOperation.no_allCode(), tid, tuple, ms);
+		return doBlockingOperation(TucsonOperation.no_allCode(), tid, tuple, timeout);
 	}
 	
 	
@@ -1231,7 +1231,7 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	 * 
 	 * @param tid Target TuCSoN tuplecentre id {@link alice.tucson.api.TucsonTupleCentreId tid}
 	 * @param tuple Reaction Specification to be emitted in the target tuplecentre
-	 * @param ms Maximum waiting time tolerated by the callee TuCSoN Agent
+	 * @param timeout Maximum waiting time tolerated by the callee TuCSoN Agent
 	 * 
 	 * @return The Logic Tuple resulting from the completion of the primitive
 	 * 
@@ -1242,10 +1242,10 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	 * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
 	 * @see alice.respect.api.RespectSpecification RespectSpecification
 	 */
-	public ITucsonOperation out_s(Object tid, LogicTuple event, LogicTuple guards, LogicTuple reactionBody, Long ms)
+	public ITucsonOperation out_s(Object tid, LogicTuple event, LogicTuple guards, LogicTuple reactionBody, Long timeout)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException{
 		LogicTuple tuple = new LogicTuple(Parser.parseSingleTerm("reaction("+event+","+guards+","+reactionBody+")", new MyOpManager()));
-		return doBlockingOperation(TucsonOperation.out_sCode(), tid, tuple, ms);
+		return doBlockingOperation(TucsonOperation.out_sCode(), tid, tuple, timeout);
 	}
 	
 	/**
@@ -1259,7 +1259,7 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	 * 
 	 * @param tid Target TuCSoN tuplecentre id {@link alice.tucson.api.TucsonTupleCentreId tid}
 	 * @param tuple Reaction Specification to be retrieved from the target tuplecentre
-	 * @param ms Maximum waiting time tolerated by the callee TuCSoN Agent
+	 * @param timeout Maximum waiting time tolerated by the callee TuCSoN Agent
 	 * 
 	 * @return The Logic Tuple resulting from the completion of the primitive
 	 * 
@@ -1270,10 +1270,10 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	 * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
 	 * @see alice.respect.api.RespectSpecification RespectSpecification
 	 */
-	public ITucsonOperation in_s(Object tid, LogicTuple event, LogicTuple guards, LogicTuple reactionBody, Long ms)
+	public ITucsonOperation in_s(Object tid, LogicTuple event, LogicTuple guards, LogicTuple reactionBody, Long timeout)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException{
 		LogicTuple tuple = new LogicTuple(Parser.parseSingleTerm("reaction("+event+","+guards+","+reactionBody+")", new MyOpManager()));
-		return doBlockingOperation(TucsonOperation.in_sCode(), tid, tuple, ms);
+		return doBlockingOperation(TucsonOperation.in_sCode(), tid, tuple, timeout);
 	}
 	
 	/**
@@ -1287,7 +1287,7 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	 * 
 	 * @param tid Target TuCSoN tuplecentre id {@link alice.tucson.api.TucsonTupleCentreId tid}
 	 * @param tuple Reaction Specification to be read from the target tuplecentre
-	 * @param ms Maximum waiting time tolerated by the callee TuCSoN Agent
+	 * @param timeout Maximum waiting time tolerated by the callee TuCSoN Agent
 	 * 
 	 * @return The Logic Tuple resulting from the completion of the primitive
 	 * 
@@ -1298,10 +1298,10 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	 * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
 	 * @see alice.respect.api.RespectSpecification RespectSpecification
 	 */
-	public ITucsonOperation rd_s(Object tid, LogicTuple event, LogicTuple guards, LogicTuple reactionBody, Long ms)
+	public ITucsonOperation rd_s(Object tid, LogicTuple event, LogicTuple guards, LogicTuple reactionBody, Long timeout)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException{
 		LogicTuple tuple = new LogicTuple(Parser.parseSingleTerm("reaction("+event+","+guards+","+reactionBody+")", new MyOpManager()));
-		return doBlockingOperation(TucsonOperation.rd_sCode(), tid, tuple, ms);
+		return doBlockingOperation(TucsonOperation.rd_sCode(), tid, tuple, timeout);
 	}
 	
 	/**
@@ -1319,7 +1319,7 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	 * 
 	 * @param tid Target TuCSoN tuplecentre id {@link alice.tucson.api.TucsonTupleCentreId tid}
 	 * @param tuple Reaction Specification to be retrieved from the target tuplecentre
-	 * @param ms Maximum waiting time tolerated by the callee TuCSoN Agent
+	 * @param timeout Maximum waiting time tolerated by the callee TuCSoN Agent
 	 * 
 	 * @return The Logic Tuple resulting from the completion of the primitive
 	 * 
@@ -1330,10 +1330,10 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	 * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
 	 * @see alice.respect.api.RespectSpecification RespectSpecification
 	 */
-	public ITucsonOperation inp_s(Object tid, LogicTuple event, LogicTuple guards, LogicTuple reactionBody, Long ms)
+	public ITucsonOperation inp_s(Object tid, LogicTuple event, LogicTuple guards, LogicTuple reactionBody, Long timeout)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException{
 		LogicTuple tuple = new LogicTuple(Parser.parseSingleTerm("reaction("+event+","+guards+","+reactionBody+")", new MyOpManager()));
-		return doBlockingOperation(TucsonOperation.inp_sCode(), tid, tuple, ms);
+		return doBlockingOperation(TucsonOperation.inp_sCode(), tid, tuple, timeout);
 	}
 	
 	/**
@@ -1352,7 +1352,7 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	 * 
 	 * @param tid Target TuCSoN tuplecentre id {@link alice.tucson.api.TucsonTupleCentreId tid}
 	 * @param tuple Reaction Specification to be read from the target tuplecentre
-	 * @param ms Maximum waiting time tolerated by the callee TuCSoN Agent
+	 * @param timeout Maximum waiting time tolerated by the callee TuCSoN Agent
 	 * 
 	 * @return The Logic Tuple resulting from the completion of the primitive
 	 * 
@@ -1363,10 +1363,10 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	 * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
 	 * @see alice.respect.api.RespectSpecification RespectSpecification
 	 */
-	public ITucsonOperation rdp_s(Object tid, LogicTuple event, LogicTuple guards, LogicTuple reactionBody, Long ms)
+	public ITucsonOperation rdp_s(Object tid, LogicTuple event, LogicTuple guards, LogicTuple reactionBody, Long timeout)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException{
 		LogicTuple tuple = new LogicTuple(Parser.parseSingleTerm("reaction("+event+","+guards+","+reactionBody+")", new MyOpManager()));
-		return doBlockingOperation(TucsonOperation.rdp_sCode(), tid, tuple, ms);
+		return doBlockingOperation(TucsonOperation.rdp_sCode(), tid, tuple, timeout);
 	}
 	
 	/**
@@ -1384,7 +1384,7 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	 * 
 	 * @param tid Target TuCSoN tuplecentre id {@link alice.tucson.api.TucsonTupleCentreId tid}
 	 * @param tuple Reaction Specification to be checked for absence from the target tuplecentre
-	 * @param ms Maximum waiting time tolerated by the callee TuCSoN Agent
+	 * @param timeout Maximum waiting time tolerated by the callee TuCSoN Agent
 	 * 
 	 * @return The Logic Tuple resulting from the completion of the primitive
 	 * 
@@ -1395,10 +1395,10 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	 * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
 	 * @see alice.respect.api.RespectSpecification RespectSpecification
 	 */
-	public ITucsonOperation no_s(Object tid, LogicTuple event, LogicTuple guards, LogicTuple reactionBody, Long ms)
+	public ITucsonOperation no_s(Object tid, LogicTuple event, LogicTuple guards, LogicTuple reactionBody, Long timeout)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException{
 		LogicTuple tuple = new LogicTuple(Parser.parseSingleTerm("reaction("+event+","+guards+","+reactionBody+")", new MyOpManager()));
-		return doBlockingOperation(TucsonOperation.no_sCode(), tid, tuple, ms);
+		return doBlockingOperation(TucsonOperation.no_sCode(), tid, tuple, timeout);
 	}
 	
 	/**
@@ -1416,7 +1416,7 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	 * 
 	 * @param tid Target TuCSoN tuplecentre id {@link alice.tucson.api.TucsonTupleCentreId tid}
 	 * @param tuple Reaction Specification to be checked for absence from the target tuplecentre
-	 * @param ms Maximum waiting time tolerated by the callee TuCSoN Agent
+	 * @param timeout Maximum waiting time tolerated by the callee TuCSoN Agent
 	 * 
 	 * @return The Logic Tuple resulting from the completion of the primitive
 	 * 
@@ -1427,10 +1427,10 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	 * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
 	 * @see alice.respect.api.RespectSpecification RespectSpecification
 	 */
-	public ITucsonOperation nop_s(Object tid, LogicTuple event, LogicTuple guards, LogicTuple reactionBody, Long ms)
+	public ITucsonOperation nop_s(Object tid, LogicTuple event, LogicTuple guards, LogicTuple reactionBody, Long timeout)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException{
 		LogicTuple tuple = new LogicTuple(Parser.parseSingleTerm("reaction("+event+","+guards+","+reactionBody+")", new MyOpManager()));
-		return doBlockingOperation(TucsonOperation.nop_sCode(), tid, tuple, ms);
+		return doBlockingOperation(TucsonOperation.nop_sCode(), tid, tuple, timeout);
 	}
 	
 	/**
@@ -1445,7 +1445,7 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	 * blocking} which maps it on a TucsonMsgRequest to send it to the TuCSoN Node Service for processing
 	 * 
 	 * @param tid Target TuCSoN tuplecentre id {@link alice.tucson.api.TucsonTupleCentreId tid}
-	 * @param ms Maximum waiting time tolerated by the callee TuCSoN Agent
+	 * @param timeout Maximum waiting time tolerated by the callee TuCSoN Agent
 	 * 
 	 * @return The String representing the obtained Reaction Specification space
 	 * 
@@ -1456,10 +1456,10 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	 * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
 	 * @see alice.respect.api.RespectSpecification RespectSpecification
 	 */
-	public ITucsonOperation get_s(Object tid, Long ms)
+	public ITucsonOperation get_s(Object tid, Long timeout)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException{		
 		LogicTuple spec = new LogicTuple("spec", new Var("S"));
-		return doBlockingOperation(TucsonOperation.get_sCode(), tid, spec, ms);
+		return doBlockingOperation(TucsonOperation.get_sCode(), tid, spec, timeout);
 //		LogicTuple tupleRes = (LogicTuple) doBlockingOperation(TucsonOperation.get_sCode(), tid, spec, ms);
 //		return tupleRes.getArg(0).getName().replace('\'', ' ').trim();
 	}
@@ -1475,7 +1475,7 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	 * 
 	 * @param tid Target TuCSoN tuplecentre id {@link alice.tucson.api.TucsonTupleCentreId tid}
 	 * @param spec The new specification space to replace the current one
-	 * @param ms Maximum waiting time tolerated by the callee TuCSoN Agent
+	 * @param timeout Maximum waiting time tolerated by the callee TuCSoN Agent
 	 * 
 	 * @return The Logic Tuple resulting from the completion of the primitive
 	 * 
@@ -1486,12 +1486,12 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	 * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
 	 * @see alice.respect.api.RespectSpecification RespectSpecification
 	 */
-	public ITucsonOperation set_s(Object tid, String spec, Long ms)
+	public ITucsonOperation set_s(Object tid, String spec, Long timeout)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException{		
 		if(spec.equals("") || spec.equals("''") || spec.equals("'.'"))
 			throw new TucsonOperationNotPossibleException();
 		LogicTuple specT = new LogicTuple("spec", new Value(spec));
-		return doBlockingOperation(TucsonOperation.set_sCode(), tid, specT, ms);
+		return doBlockingOperation(TucsonOperation.set_sCode(), tid, specT, timeout);
 	}
 	
 	/**
@@ -1505,7 +1505,7 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	 * 
 	 * @param tid Target TuCSoN tuplecentre id {@link alice.tucson.api.TucsonTupleCentreId tid}
 	 * @param spec The new specification space to replace the current one
-	 * @param ms Maximum waiting time tolerated by the callee TuCSoN Agent
+	 * @param timeout Maximum waiting time tolerated by the callee TuCSoN Agent
 	 * 
 	 * @return The Logic Tuple resulting from the completion of the primitive
 	 * 
@@ -1516,12 +1516,12 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	 * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
 	 * @see alice.respect.api.RespectSpecification RespectSpecification
 	 */
-	public ITucsonOperation set_s(Object tid, LogicTuple spec, Long ms)
+	public ITucsonOperation set_s(Object tid, LogicTuple spec, Long timeout)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException{		
 //		if(spec.equals("") || spec.equals("''") || spec.equals("'.'"))
 //			throw new TucsonOperationNotPossibleException();
 //		LogicTuple specT = new LogicTuple("spec", new Value(spec));
-		return doBlockingOperation(TucsonOperation.set_sCode(), tid, spec, ms);
+		return doBlockingOperation(TucsonOperation.set_sCode(), tid, spec, timeout);
 	}
 	
 	/**

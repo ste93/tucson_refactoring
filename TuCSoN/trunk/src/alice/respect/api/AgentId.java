@@ -30,6 +30,7 @@ public class AgentId implements alice.tuplecentre.api.AgentId, java.io.Serializa
 
     private static AgentIdOperatorManager opManager = new AgentIdOperatorManager();
     protected Term id;
+    private String localName;
 
     /**
      * Constructs an agent identifier
@@ -40,6 +41,9 @@ public class AgentId implements alice.tuplecentre.api.AgentId, java.io.Serializa
      * @throws InvalidAgentIdException if it is not a valid identifier
      */
     public AgentId(String sid) throws InvalidAgentIdException {
+    	localName = sid;
+    	if(sid.indexOf(":")!=-1)
+    		localName = sid.substring(0, sid.indexOf(":"));
         try{
             id=Term.createTerm(sid,opManager);
         } catch (InvalidTermException e){
@@ -69,6 +73,10 @@ public class AgentId implements alice.tuplecentre.api.AgentId, java.io.Serializa
             throw new InvalidAgentIdException();
         }
     }
+    
+    public String getLocalName(){
+    	return localName;
+    }
 
     /**
      * Provides the logic term representation of the identifier
@@ -83,14 +91,17 @@ public class AgentId implements alice.tuplecentre.api.AgentId, java.io.Serializa
         return id.toString();
     }
 
+    @Override
 	public boolean isAgent() {
 		return true;
 	}
 
+    @Override
 	public boolean isTC() {
 		return false;
 	}
 	
+    @Override
 	public boolean isEnv(){
 		return false;
 	}

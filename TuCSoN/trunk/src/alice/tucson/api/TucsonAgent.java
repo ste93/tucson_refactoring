@@ -45,7 +45,7 @@ public abstract class TucsonAgent implements TucsonOperationCompletionListener{
 	 * @param netid The ip address of the TuCSoN Node to contact
 	 * @param port The listening port of the TuCSoN Node to contact
 	 */
-	protected TucsonAgent(TucsonAgentId aid, String netid, int port){
+	private TucsonAgent(TucsonAgentId aid, String netid, int port){
 		this.aid = aid;
 		this.node = netid;
 		this.port = port;
@@ -66,16 +66,6 @@ public abstract class TucsonAgent implements TucsonOperationCompletionListener{
 	}
 	
 	/**
-	 * Now we assume default port (which is 20504), so we skip that parameter.
-	 * 
-	 * @param aid The TucsonAgent Identifier
-	 * @param netid The ip address of the TuCSoN Node to contact
-	 */
-	protected TucsonAgent(TucsonAgentId aid, String netid){
-		this(aid, netid, 20504);
-	}
-	
-	/**
 	 * Again we assume default port (which is 20504), so we skip that parameter
 	 * (String aid version).
 	 * 
@@ -86,16 +76,6 @@ public abstract class TucsonAgent implements TucsonOperationCompletionListener{
 	 */
 	protected TucsonAgent(String aid, String netid) throws TucsonInvalidAgentIdException{
 		this(new TucsonAgentId(aid), netid, 20504);
-	}
-	
-	/**
-	 * Finally we assume both the default port and the default ip address (which
-	 * is "localhost")
-	 * 
-	 * @param aid The TucsonAgent Identifier
-	 */
-	protected TucsonAgent(TucsonAgentId aid){
-		this(aid, "localhost", 20504);
 	}
 	
 	/**

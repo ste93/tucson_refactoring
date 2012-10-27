@@ -36,7 +36,7 @@ public interface BulkSynchACC extends RootACC{
 	 * 
 	 * @param tid the TucsonTupleCentreId of the target tuple centre
 	 * @param tuple the list of tuples to inject (must be a Prolog list)
-	 * @param ms the maximum waiting time for completion tolerated by the TuCSoN agent
+	 * @param timeout the maximum waiting time for completion tolerated by the TuCSoN agent
 	 * behind this ACC. Notice that reaching the timeout just unblocks the agent, but
 	 * the request IS NOT REMOVED from TuCSoN node pending requests (will still be served
 	 * at sometime in the future).
@@ -52,7 +52,7 @@ public interface BulkSynchACC extends RootACC{
 	 * @see alice.tucson.api.ITucsonOperation ITucsonOperation
 	 * @see alice.tuprolog.Struct Struct
 	 */
-	ITucsonOperation out_all(Object tid, LogicTuple tuple, Long ms) throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException;
+	ITucsonOperation out_all(Object tid, LogicTuple tuple, Long timeout) throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException;
 	
 	/**
 	 * Withdraws from the space all the tuples matching the given template in one shot
@@ -61,7 +61,7 @@ public interface BulkSynchACC extends RootACC{
 	 * 
 	 * @param tid the TucsonTupleCentreId of the target tuple centre
 	 * @param tuple the tuple template to be used to retrieve tuples
-	 * @param ms the maximum waiting time for completion tolerated by the TuCSoN agent
+	 * @param timeout the maximum waiting time for completion tolerated by the TuCSoN agent
 	 * behind this ACC. Notice that reaching the timeout just unblocks the agent, but
 	 * the request IS NOT REMOVED from TuCSoN node pending requests (will still be served
 	 * at sometime in the future).
@@ -77,7 +77,7 @@ public interface BulkSynchACC extends RootACC{
 	 * @see alice.tucson.api.ITucsonOperation ITucsonOperation
 	 * @see alice.tuprolog.Struct Struct
 	 */
-	ITucsonOperation in_all(Object tid, LogicTuple tuple, Long ms) throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException;
+	ITucsonOperation in_all(Object tid, LogicTuple tuple, Long timeout) throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException;
 	
 	/**
 	 * Reads from the space all the tuples matching the given template in one shot
@@ -86,7 +86,7 @@ public interface BulkSynchACC extends RootACC{
 	 * 
 	 * @param tid the TucsonTupleCentreId of the target tuple centre
 	 * @param tuple the tuple template to be used to observe tuples
-	 * @param ms the maximum waiting time for completion tolerated by the TuCSoN agent
+	 * @param timeout the maximum waiting time for completion tolerated by the TuCSoN agent
 	 * behind this ACC. Notice that reaching the timeout just unblocks the agent, but
 	 * the request IS NOT REMOVED from TuCSoN node pending requests (will still be served
 	 * at sometime in the future).
@@ -102,7 +102,7 @@ public interface BulkSynchACC extends RootACC{
 	 * @see alice.tucson.api.ITucsonOperation ITucsonOperation
 	 * @see alice.tuprolog.Struct Struct
 	 */
-	ITucsonOperation rd_all(Object tid, LogicTuple tuple, Long ms) throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException;
+	ITucsonOperation rd_all(Object tid, LogicTuple tuple, Long timeout) throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException;
 	
 	/**
 	 * Checks absence from the space of any tuples matching the given template in one shot
@@ -113,7 +113,7 @@ public interface BulkSynchACC extends RootACC{
 	 * 
 	 * @param tid the TucsonTupleCentreId of the target tuple centre
 	 * @param tuple the tuple template to be used to check absence
-	 * @param ms the maximum waiting time for completion tolerated by the TuCSoN agent
+	 * @param timeout the maximum waiting time for completion tolerated by the TuCSoN agent
 	 * behind this ACC. Notice that reaching the timeout just unblocks the agent, but
 	 * the request IS NOT REMOVED from TuCSoN node pending requests (will still be served
 	 * at sometime in the future).
@@ -129,6 +129,6 @@ public interface BulkSynchACC extends RootACC{
 	 * @see alice.tucson.api.ITucsonOperation ITucsonOperation
 	 * @see alice.tuprolog.Struct Struct
 	 */
-	ITucsonOperation no_all(Object tid, LogicTuple tuple, Long ms) throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException;
+	ITucsonOperation no_all(Object tid, LogicTuple tuple, Long timeout) throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException;
 	
 }

@@ -100,6 +100,10 @@ public class TucsonNodeService{
 		agents = new ArrayList<TucsonAgentId>();
 		
 	}
+	
+	public TucsonNodeService(int portno) throws TucsonGenericException{
+		this(null, portno, null);
+	}
 
 	public TucsonNodeService() throws TucsonGenericException{
 		this(null, DEFAULT_TCP_PORT, null);
