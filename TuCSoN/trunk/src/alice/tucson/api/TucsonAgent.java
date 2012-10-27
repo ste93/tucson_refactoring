@@ -168,7 +168,7 @@ public abstract class TucsonAgent implements TucsonOperationCompletionListener{
 	 * @param msg The message to print
 	 */
 	protected void say(String msg){
-		System.out.println("["+getTucsonAgentId().toString()+"]: " + msg);
+		System.out.println("["+getTucsonAgentId().getAgentName()+"]: " + msg);
 	}
 	
 }
