@@ -153,7 +153,7 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 	            	log("input phase");
 	                InputEvent ie = (InputEvent)ev;
 					RespectOperation op=(RespectOperation)ev.getOperation();
-					log("op.getLogicTupleArgument() = " + op.getLogicTupleArgument());
+//					log("op.getLogicTupleArgument() = " + op.getLogicTupleArgument());
 					
 					if (op.isSpawn()){
 						currentReactionTerm=new Struct("spawn",op.getLogicTupleArgument().toTerm());
@@ -634,11 +634,11 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
     		engine.solveEnd();
     		Parser parser = new Parser(new MyOpManager(), spec.toString());
     		Term term = parser.nextTerm(true);
-    		log("term = " + term);
+//    		log("term = " + term);
     		while(term!=null){
     			engine.solve("assert("+term+").");
     			term = parser.nextTerm(true);
-    			log("term = " + term);
+//    			log("term = " + term);
     		}
     		engine.solveEnd();
     		noReactionTh = engine.getTheory();
@@ -665,7 +665,7 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
     	}
     	
     	this.isExternalSetSpec = false;
-    	log("result = " + result);
+//    	log("result = " + result);
 		return result;
 		
     }

@@ -124,10 +124,10 @@ public class TucsonNodeService{
 		
 		configManager = new Prolog();
 		cores = new HashMap<String, TucsonTCUsers>();
-		if(configFile != null)
-			log("User-provided configuration file chosen is < " + configFile + " >");
-		else
-			log("Default configuration file chosen");
+//		if(configFile != null)
+//			log("User-provided configuration file chosen is < " + configFile + " >");
+//		else
+//			log("Default configuration file chosen");
 		
 		log("Configuring TuCSoN Node Service...");
 		try{
@@ -147,7 +147,7 @@ public class TucsonNodeService{
 		setupObsTupleCentre();
 		log("Setting up Management Service...");
 		setupConfigTupleCentre();
-		log("Check Persistency service...");
+//		log("Check Persistency service...");
 		checkPersistentTupleCentres(PERSISTENCY_PATH);
 
 		installationDate = new Date();

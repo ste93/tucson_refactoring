@@ -38,7 +38,7 @@ import java.util.concurrent.Executors;
  */
 public class ACCProvider{
 	
-	protected final static int threadsNumber = Runtime.getRuntime().availableProcessors()+1;
+//	protected final static int threadsNumber = Runtime.getRuntime().availableProcessors()+1;
 	protected TucsonTupleCentreId config;
 	protected TucsonAgentId aid;
 	protected TucsonNodeService node;
@@ -58,7 +58,8 @@ public class ACCProvider{
 		}
 		this.node = node;
 		this.config = tid;
-		exec = Executors.newFixedThreadPool(threadsNumber);
+//		exec = Executors.newFixedThreadPool(threadsNumber);
+		exec = Executors.newCachedThreadPool();
 		log("Listening to incoming ACC requests...");
 	}
 
