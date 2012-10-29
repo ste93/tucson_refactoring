@@ -17,8 +17,11 @@
  */
 package alice.tucson.api;
 
+import java.util.HashMap;
+
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
+import alice.tucson.service.TucsonOpCompletionEvent;
 
 import alice.tuplecentre.core.TupleCentreOperation;
 
@@ -35,7 +38,7 @@ public abstract class TucsonAgent implements TucsonOperationCompletionListener{
 	private TucsonAgentId aid;
 	private String node;
 	private int port;
-//	private HashMap <TucsonOpId, TucsonOpCompletionEvent> events = null;
+	protected HashMap <TucsonOpId, TucsonOpCompletionEvent> events = null;
 
 	/**
 	 * Most complete constructor, allows to specify the ip address where the TuCSoN
@@ -61,7 +64,7 @@ public abstract class TucsonAgent implements TucsonOperationCompletionListener{
 	 * 
 	 * @throws TucsonInvalidAgentIdException
 	 */
-	protected TucsonAgent(String aid, String netid, int port) throws TucsonInvalidAgentIdException{
+	public TucsonAgent(String aid, String netid, int port) throws TucsonInvalidAgentIdException{
 		this(new TucsonAgentId(aid), netid, port);
 	}
 	
@@ -74,7 +77,7 @@ public abstract class TucsonAgent implements TucsonOperationCompletionListener{
 	 * 
 	 * @throws TucsonInvalidAgentIdException
 	 */
-	protected TucsonAgent(String aid, String netid) throws TucsonInvalidAgentIdException{
+	public TucsonAgent(String aid, String netid) throws TucsonInvalidAgentIdException{
 		this(new TucsonAgentId(aid), netid, 20504);
 	}
 	
@@ -86,7 +89,7 @@ public abstract class TucsonAgent implements TucsonOperationCompletionListener{
 	 * 
 	 * @throws TucsonInvalidAgentIdException
 	 */
-	protected TucsonAgent(String aid) throws TucsonInvalidAgentIdException{
+	public TucsonAgent(String aid) throws TucsonInvalidAgentIdException{
 		this(new TucsonAgentId(aid), "localhost", 20504);
 	}
 	
@@ -109,6 +112,15 @@ public abstract class TucsonAgent implements TucsonOperationCompletionListener{
 	 */
 	public final TucsonAgentId getTucsonAgentId(){
 		return aid;
+	}
+	
+	/**
+	 * Returns local agent name
+	 * 
+	 * @return The String name of the agent
+	 */
+	public final String myName(){
+		return aid.getAgentName();
 	}
 	
 	/**
