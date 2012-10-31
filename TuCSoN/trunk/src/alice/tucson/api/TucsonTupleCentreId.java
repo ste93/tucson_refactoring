@@ -48,7 +48,7 @@ public class TucsonTupleCentreId implements alice.tuplecentre.api.TupleCentreId,
 		try{
 			tid = new TupleCentreId(tcName, netid, portno);
 		}catch(InvalidTupleCentreIdException e){
-			e.printStackTrace();
+//			e.printStackTrace();
 			throw new TucsonInvalidTupleCentreIdException();
 		}
 	}

@@ -105,7 +105,7 @@ public class InspectorContextSkel extends ACCAbstractProxyNodeSide implements In
 
 	public void run(){
 		
-		log("I'm on.");
+//		log("I'm on.");
 		try{
 			TupleCentreContainer.doManagementOperation(TucsonOperation.addInspCode(), tcId, this);
 			while (!shutdown){
@@ -141,7 +141,7 @@ public class InspectorContextSkel extends ACCAbstractProxyNodeSide implements In
 		}
 		
 		manager.shutdownContext(ctxId, agentId);
-		log("I'm off, bye :)");
+//		log("I'm off, bye :)");
 		
 	}
 

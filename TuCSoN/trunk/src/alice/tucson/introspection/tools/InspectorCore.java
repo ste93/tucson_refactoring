@@ -19,6 +19,7 @@ package alice.tucson.introspection.tools;
 
 import java.io.FileWriter;
 import java.io.IOException;
+
 import java.util.Iterator;
 
 import alice.logictuple.LogicTuple;
@@ -26,22 +27,37 @@ import alice.tucson.api.TucsonAgentId;
 import alice.tucson.api.TucsonTupleCentreId;
 import alice.tuplecentre.core.TriggeredReaction;
 
+/**
+ * 
+ * 
+ * @author s.mariani@unibo.it
+ */
 public class InspectorCore extends alice.tucson.introspection.Inspector{
-	Inspector form;
+	
+	private Inspector form;
 
-	boolean loggingTuples = false;
-	String logTupleFilename;
-	FileWriter logTupleWriter;
-	LogicTuple logTupleFilter;
+	protected boolean loggingTuples = false;
+	protected String logTupleFilename;
+	protected FileWriter logTupleWriter;
+	protected LogicTuple logTupleFilter;
 
-	boolean loggingQueries = false;
-	String logQueryFilename;
-	FileWriter logQueryWriter;
+	protected boolean loggingQueries = false;
+	protected String logQueryFilename;
+	protected FileWriter logQueryWriter;
 
-	boolean loggingReactions = false;
-	String logReactionFilename;
-	FileWriter logReactionWriter;
+	protected boolean loggingReactions = false;
+	protected String logReactionFilename;
+	protected FileWriter logReactionWriter;
 
+	/**
+	 * 
+	 * 
+	 * @param f
+	 * @param id_
+	 * @param tid_
+	 * 
+	 * @throws Exception
+	 */
 	public InspectorCore(Inspector f, TucsonAgentId id_, TucsonTupleCentreId tid_) throws Exception{
 		super(id_, tid_);
 		form = f;
