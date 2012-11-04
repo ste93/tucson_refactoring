@@ -78,9 +78,9 @@ public class InspectorCore extends alice.tucson.introspection.Inspector{
 		if (msg.tuples != null){
 			
 			TupleViewer viewer = form.getTupleForm();
-			viewer.setVMTime(msg.vmTime);
-			msg.localTime = System.currentTimeMillis();
-			viewer.setLocalTime(msg.localTime);
+//			viewer.setVMTime(msg.vmTime);
+//			msg.localTime = System.currentTimeMillis();
+//			viewer.setLocalTime(msg.localTime);
 			String st = "";
 			Iterator it = msg.tuples.iterator();
 			int n = 0;
@@ -97,16 +97,17 @@ public class InspectorCore extends alice.tucson.introspection.Inspector{
 				try{
 					
 					st = "";
-					logTupleWriter.write("snapshot( \n" + "    time_vm(" + msg.vmTime + "),\n" + "    time_local("
-							+ msg.localTime + "),\n" + "    tuple_filter(" + form.protocol.tsetFilter + "),\n"
-							+ "    tuple_log_filter(" + logTupleFilter + "),\n" + "    tuple_list([ \n");
+//					logTupleWriter.write("snapshot(\n" + "    time_vm(" + msg.vmTime + "),\n" + "    time_local("
+//							+ msg.localTime + "),\n" + "    tuple_filter(" + form.protocol.tsetFilter + "),\n"
+//							+ "    tuple_log_filter(" + logTupleFilter + "),\n" + "    tuple_list([ \n");
+					logTupleWriter.write("snapshot(\n    tuple_list([ \n");
 
 					it = msg.tuples.iterator();
 					if (logTupleFilter == null){
 						if (it.hasNext()){
 							st = st + "        " + it.next().toString();
 							while (it.hasNext())
-								st = st + ",\n        " + it.next().toString() + "\n";
+								st = st + ",\n        " + it.next().toString();
 						}
 					}else{
 						if (it.hasNext()){

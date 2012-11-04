@@ -631,13 +631,14 @@ public class TupleViewer extends javax.swing.JFrame{
 			String st = inputFilterView.getText();
 			LogicTuple t = LogicTuple.parse(st);
 			if (t == null)
-				outputState.setText("filter (tuple) not valid.");
+				outputState.setText("Given template is not an admissible Prolog term.");
 			else{
 				mainForm.protocol.tsetFilter = t;
 				context.setProtocol(mainForm.protocol);
 			}
+			buttonGetActionPerformed(null);
 		}catch (InvalidLogicTupleException e){
-			outputState.setText(""+e);
+			outputState.setText("Given template is not an admissible Prolog term.");
 		} catch (Exception e) {
 			outputState.setText(""+e);
 		}
