@@ -22,6 +22,7 @@ import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.tucson.introspection.GetSnapshotMsg;
 import alice.tucson.introspection.InspectorProtocol;
 
+import java.awt.Color;
 import java.util.ArrayList;
 
 public class EventViewer extends javax.swing.JFrame{
@@ -36,7 +37,8 @@ public class EventViewer extends javax.swing.JFrame{
 		pack();
 		mainForm = mainForm_;
 		context = mainForm.agent.getContext();
-		setTitle("Pending Query Set of " + mainForm.tid.getName() + "@" + mainForm.tid.getNode() + ":" + mainForm.tid.getPort());
+		setTitle("Pending TuCSoN operations set of tuplecentre < " + mainForm.tid.getName() + 
+				"@" + mainForm.tid.getNode() + ":" + mainForm.tid.getPort() + " >");
 		setSize(520, 460);
 		radioProactive.setSelected(true);
 		radioReactive.setSelected(false);
@@ -44,6 +46,7 @@ public class EventViewer extends javax.swing.JFrame{
 		buttonAcceptPattern.setEnabled(false);
 		buttonAcceptFilterLog.setEnabled(false);
 		inputFileLog.setText(mainForm.agent.logQueryFilename);
+		outputState.setText("Ready for pending operations inspection.");
 	}
 
 	public void setText(String st){
@@ -131,7 +134,7 @@ public class EventViewer extends javax.swing.JFrame{
 		jPanel2.setBorder(new javax.swing.border.TitledBorder(new javax.swing.border.EtchedBorder(), "type"));
 		jPanel2.setFont(new java.awt.Font("Arial", 0, 11));
 		radioReactive.setFont(new java.awt.Font("Arial", 0, 11));
-		radioReactive.setText("get only when update requested");
+		radioReactive.setText("REACTIVE: update observations only upon request.");
 		radioReactive.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
 		radioReactive.addActionListener(new java.awt.event.ActionListener(){
 			public void actionPerformed(java.awt.event.ActionEvent evt){
@@ -147,7 +150,7 @@ public class EventViewer extends javax.swing.JFrame{
 		jPanel2.add(radioReactive, gridBagConstraints);
 
 		radioProactive.setFont(new java.awt.Font("Arial", 0, 11));
-		radioProactive.setText("get any new observation");
+		radioProactive.setText("PROACTIVE: update observations as soon as events happen.");
 		radioProactive.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
 		radioProactive.addActionListener(new java.awt.event.ActionListener(){
 			public void actionPerformed(java.awt.event.ActionEvent evt){
@@ -164,7 +167,7 @@ public class EventViewer extends javax.swing.JFrame{
 		jPanel2.add(radioProactive, gridBagConstraints);
 
 		buttonGet.setFont(new java.awt.Font("Arial", 0, 11));
-		buttonGet.setText("update");
+		buttonGet.setText("Observe!");
 		buttonGet.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 		buttonGet.addActionListener(new java.awt.event.ActionListener(){
 			public void actionPerformed(java.awt.event.ActionEvent evt){
@@ -193,7 +196,7 @@ public class EventViewer extends javax.swing.JFrame{
 		jPanel4.setLayout(new java.awt.GridBagLayout());
 		jPanel4.setBorder(new javax.swing.border.TitledBorder(new javax.swing.border.EtchedBorder(), "filtering"));
 		checkFilterView.setFont(new java.awt.Font("Arial", 0, 11));
-		checkFilterView.setText("enable filtering with pattern:");
+		checkFilterView.setText("Filter observed tuples using the following template:");
 		checkFilterView.addActionListener(new java.awt.event.ActionListener(){
 			public void actionPerformed(java.awt.event.ActionEvent evt){
 				checkFilterViewActionPerformed(evt);
@@ -209,7 +212,7 @@ public class EventViewer extends javax.swing.JFrame{
 		jPanel4.add(checkFilterView, gridBagConstraints);
 
 		buttonAcceptPattern.setFont(new java.awt.Font("Arial", 0, 11));
-		buttonAcceptPattern.setText("apply");
+		buttonAcceptPattern.setText("Match!");
 		buttonAcceptPattern.addActionListener(new java.awt.event.ActionListener(){
 			public void actionPerformed(java.awt.event.ActionEvent evt){
 				buttonAcceptPatternActionPerformed(evt);
@@ -239,7 +242,7 @@ public class EventViewer extends javax.swing.JFrame{
 		gridBagConstraints.weighty = 100.0;
 		jPanel3.add(jPanel4, gridBagConstraints);
 
-		jTabbedPane1.addTab("View", null, jPanel3, "");
+		jTabbedPane1.addTab("Filter", null, jPanel3, "");
 
 		jPanel5.setLayout(new java.awt.GridBagLayout());
 
@@ -247,7 +250,7 @@ public class EventViewer extends javax.swing.JFrame{
 		jPanel6.setBorder(new javax.swing.border.TitledBorder(new javax.swing.border.EtchedBorder(), "filtering"));
 		jPanel6.setFont(new java.awt.Font("Arial", 0, 11));
 		checkFilterLog.setFont(new java.awt.Font("Arial", 0, 11));
-		checkFilterLog.setText("enable filtering with pattern:");
+		checkFilterLog.setText("Filter observed tuples using the following template:");
 		checkFilterLog.addActionListener(new java.awt.event.ActionListener(){
 			public void actionPerformed(java.awt.event.ActionEvent evt){
 				checkFilterLogActionPerformed(evt);
@@ -263,7 +266,7 @@ public class EventViewer extends javax.swing.JFrame{
 		jPanel6.add(checkFilterLog, gridBagConstraints);
 
 		buttonAcceptFilterLog.setFont(new java.awt.Font("Arial", 0, 11));
-		buttonAcceptFilterLog.setText("apply");
+		buttonAcceptFilterLog.setText("Match!");
 		buttonAcceptFilterLog.addActionListener(new java.awt.event.ActionListener(){
 			public void actionPerformed(java.awt.event.ActionEvent evt){
 				buttonAcceptFilterLogActionPerformed(evt);
@@ -298,7 +301,7 @@ public class EventViewer extends javax.swing.JFrame{
 		jPanel8.setFont(new java.awt.Font("Arial", 0, 11));
 		jLabel3.setFont(new java.awt.Font("Arial", 0, 11));
 		jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-		jLabel3.setText("log file   ");
+		jLabel3.setText("dump observations on file: ");
 		gridBagConstraints = new java.awt.GridBagConstraints();
 		gridBagConstraints.gridx = 3;
 		gridBagConstraints.gridy = 1;
@@ -319,7 +322,7 @@ public class EventViewer extends javax.swing.JFrame{
 		gridBagConstraints.weightx = 100.0;
 		jPanel8.add(inputFileLog, gridBagConstraints);
 		buttonBrowse.setFont(new java.awt.Font("Arial", 0, 11));
-		buttonBrowse.setText("browse");
+		buttonBrowse.setText("Browse");
 		buttonBrowse.addActionListener(new java.awt.event.ActionListener(){
 			public void actionPerformed(java.awt.event.ActionEvent evt){
 				buttonBrowseActionPerformed(evt);
@@ -352,46 +355,46 @@ public class EventViewer extends javax.swing.JFrame{
 
 		jTabbedPane1.addTab("Log", null, jPanel5, "");
 
-		jPanel7.setLayout(new java.awt.GridBagLayout());
-		jPanel7.setToolTipText("enforce");
-		
-		jPanel11.setLayout(new java.awt.GridBagLayout());
-		jPanel11.setBorder(new javax.swing.border.EtchedBorder());
-		jPanel11.setPreferredSize(new java.awt.Dimension(53, 40));
-		jButton1.setText("apply");
-		jButton1.setMaximumSize(new java.awt.Dimension(80, 27));
-		jButton1.setMinimumSize(new java.awt.Dimension(80, 27));
-		jButton1.setPreferredSize(new java.awt.Dimension(80, 26));
-		jButton1.addActionListener(new java.awt.event.ActionListener(){
-			public void actionPerformed(java.awt.event.ActionEvent evt){
-				jButton1ActionPerformed(evt);
-			}
-		});
-
-		gridBagConstraints = new java.awt.GridBagConstraints();
-		gridBagConstraints.gridx = 1;
-		gridBagConstraints.gridy = 0;
-		gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 20);
-		jPanel11.add(jButton1, gridBagConstraints);
-
-		jLabel5.setText("Enforce pending query set");
-		gridBagConstraints = new java.awt.GridBagConstraints();
-		gridBagConstraints.gridx = 0;
-		gridBagConstraints.gridy = 0;
-		gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-		gridBagConstraints.weightx = 1.0;
-		gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 0);
-		jPanel11.add(jLabel5, gridBagConstraints);
-
-		gridBagConstraints = new java.awt.GridBagConstraints();
-		gridBagConstraints.gridx = 0;
-		gridBagConstraints.gridy = 1;
-		gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-		gridBagConstraints.weightx = 1.0;
-		gridBagConstraints.weighty = 1.0;
-		jPanel7.add(jPanel11, gridBagConstraints);
-
-		jTabbedPane1.addTab("Action", null, jPanel7, "");
+//		jPanel7.setLayout(new java.awt.GridBagLayout());
+//		jPanel7.setToolTipText("enforce");
+//		
+//		jPanel11.setLayout(new java.awt.GridBagLayout());
+//		jPanel11.setBorder(new javax.swing.border.EtchedBorder());
+//		jPanel11.setPreferredSize(new java.awt.Dimension(53, 40));
+//		jButton1.setText("apply");
+//		jButton1.setMaximumSize(new java.awt.Dimension(80, 27));
+//		jButton1.setMinimumSize(new java.awt.Dimension(80, 27));
+//		jButton1.setPreferredSize(new java.awt.Dimension(80, 26));
+//		jButton1.addActionListener(new java.awt.event.ActionListener(){
+//			public void actionPerformed(java.awt.event.ActionEvent evt){
+//				jButton1ActionPerformed(evt);
+//			}
+//		});
+//
+//		gridBagConstraints = new java.awt.GridBagConstraints();
+//		gridBagConstraints.gridx = 1;
+//		gridBagConstraints.gridy = 0;
+//		gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 20);
+//		jPanel11.add(jButton1, gridBagConstraints);
+//
+//		jLabel5.setText("Enforce pending query set");
+//		gridBagConstraints = new java.awt.GridBagConstraints();
+//		gridBagConstraints.gridx = 0;
+//		gridBagConstraints.gridy = 0;
+//		gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+//		gridBagConstraints.weightx = 1.0;
+//		gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 0);
+//		jPanel11.add(jLabel5, gridBagConstraints);
+//
+//		gridBagConstraints = new java.awt.GridBagConstraints();
+//		gridBagConstraints.gridx = 0;
+//		gridBagConstraints.gridy = 1;
+//		gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+//		gridBagConstraints.weightx = 1.0;
+//		gridBagConstraints.weighty = 1.0;
+//		jPanel7.add(jPanel11, gridBagConstraints);
+//
+//		jTabbedPane1.addTab("Action", null, jPanel7, "");
 
 		gridBagConstraints = new java.awt.GridBagConstraints();
 		gridBagConstraints.gridx = 1;
@@ -404,7 +407,7 @@ public class EventViewer extends javax.swing.JFrame{
 
 		jPanel10.setLayout(new java.awt.GridBagLayout());
 
-		outputState.setBackground(new java.awt.Color(224, 214, 163));
+		outputState.setBackground(Color.CYAN);
 		outputState.setEditable(false);
 		outputState.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0)));
 		gridBagConstraints = new java.awt.GridBagConstraints();
@@ -425,27 +428,27 @@ public class EventViewer extends javax.swing.JFrame{
 
 		jPanel9.setLayout(new java.awt.GridBagLayout());
 
-		jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-		jLabel1.setText("local time");
-		gridBagConstraints = new java.awt.GridBagConstraints();
-		gridBagConstraints.gridx = 3;
-		gridBagConstraints.gridy = 1;
-		gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-		gridBagConstraints.weightx = 20.0;
-		jPanel9.add(jLabel1, gridBagConstraints);
-
-		outputTime.setEditable(false);
-		outputTime.setFont(new java.awt.Font("Courier New", 0, 12));
-		outputTime.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-		gridBagConstraints = new java.awt.GridBagConstraints();
-		gridBagConstraints.gridx = 4;
-		gridBagConstraints.gridy = 1;
-		gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-		gridBagConstraints.weightx = 40.0;
-		jPanel9.add(outputTime, gridBagConstraints);
+//		jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+//		jLabel1.setText("local time");
+//		gridBagConstraints = new java.awt.GridBagConstraints();
+//		gridBagConstraints.gridx = 3;
+//		gridBagConstraints.gridy = 1;
+//		gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+//		gridBagConstraints.weightx = 20.0;
+//		jPanel9.add(jLabel1, gridBagConstraints);
+//
+//		outputTime.setEditable(false);
+//		outputTime.setFont(new java.awt.Font("Courier New", 0, 12));
+//		outputTime.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+//		gridBagConstraints = new java.awt.GridBagConstraints();
+//		gridBagConstraints.gridx = 4;
+//		gridBagConstraints.gridy = 1;
+//		gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+//		gridBagConstraints.weightx = 40.0;
+//		jPanel9.add(outputTime, gridBagConstraints);
 
 		jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-		jLabel2.setText(" items");
+		jLabel2.setText("# observations: ");
 		gridBagConstraints = new java.awt.GridBagConstraints();
 		gridBagConstraints.gridx = 5;
 		gridBagConstraints.gridy = 1;
@@ -463,24 +466,24 @@ public class EventViewer extends javax.swing.JFrame{
 		gridBagConstraints.weightx = 20.0;
 		jPanel9.add(outputNoItems, gridBagConstraints);
 
-		jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-		jLabel4.setText("vm time");
-		gridBagConstraints = new java.awt.GridBagConstraints();
-		gridBagConstraints.gridx = 1;
-		gridBagConstraints.gridy = 1;
-		gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-		gridBagConstraints.weightx = 20.0;
-		jPanel9.add(jLabel4, gridBagConstraints);
-
-		outputVmTime.setEditable(false);
-		outputVmTime.setFont(new java.awt.Font("Courier New", 0, 12));
-		outputVmTime.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-		gridBagConstraints = new java.awt.GridBagConstraints();
-		gridBagConstraints.gridx = 2;
-		gridBagConstraints.gridy = 1;
-		gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-		gridBagConstraints.weightx = 40.0;
-		jPanel9.add(outputVmTime, gridBagConstraints);
+//		jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+//		jLabel4.setText("vm time");
+//		gridBagConstraints = new java.awt.GridBagConstraints();
+//		gridBagConstraints.gridx = 1;
+//		gridBagConstraints.gridy = 1;
+//		gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+//		gridBagConstraints.weightx = 20.0;
+//		jPanel9.add(jLabel4, gridBagConstraints);
+//
+//		outputVmTime.setEditable(false);
+//		outputVmTime.setFont(new java.awt.Font("Courier New", 0, 12));
+//		outputVmTime.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+//		gridBagConstraints = new java.awt.GridBagConstraints();
+//		gridBagConstraints.gridx = 2;
+//		gridBagConstraints.gridy = 1;
+//		gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+//		gridBagConstraints.weightx = 40.0;
+//		jPanel9.add(outputVmTime, gridBagConstraints);
 
 		gridBagConstraints = new java.awt.GridBagConstraints();
 		gridBagConstraints.gridx = 1;
@@ -539,9 +542,10 @@ public class EventViewer extends javax.swing.JFrame{
 	}
 
 	private void checkLogEnableActionPerformed(java.awt.event.ActionEvent evt){
-		if (checkLogEnable.isSelected())
+		if (checkLogEnable.isSelected()){
 			mainForm.agent.loggingQueries = true;
-		else
+			outputState.setText("Please choose the output log file...");
+		}else
 			mainForm.agent.loggingQueries = false;
 	}
 
@@ -551,13 +555,14 @@ public class EventViewer extends javax.swing.JFrame{
 		try{
 			t = LogicTuple.parse(st);
 		}catch (InvalidLogicTupleException e){
-			e.printStackTrace();
+			outputState.setText("Please input an admissible tuple template...");
 		}
 		if(t == null)
-			outputState.setText("filter (tuple) not valid."); 
-		else 
-			mainForm.agent.logTupleFilter = t; 
-		 
+			outputState.setText("Please input an admissible tuple template..."); 
+		else{ 
+			mainForm.agent.logTupleFilter = t;
+			buttonGetActionPerformed(null);
+		}
 	}
 
 	private void buttonBrowseActionPerformed(java.awt.event.ActionEvent evt){
@@ -578,101 +583,82 @@ public class EventViewer extends javax.swing.JFrame{
 	}
 
 	private void checkFilterLogActionPerformed(java.awt.event.ActionEvent evt){
-		if (checkFilterLog.isSelected())
-			buttonAcceptFilterLog.setEnabled(true); 
-		else 
+		if (checkFilterLog.isSelected()){
+			buttonAcceptFilterLog.setEnabled(true);
+			outputState.setText("Please input an admissible tuple template...");
+		}else 
 			buttonAcceptFilterLog.setEnabled(false); 		 
 	}
 
 	private void buttonAcceptPatternActionPerformed(java.awt.event.ActionEvent evt){
-		
 		try{ 
 			String st = inputFilterView.getText(); 
 			LogicTuple t = LogicTuple.parse(st);
-			 
 			if (t == null)
-			{ 
-				outputState.setText("filter (tuple) not valid."); 
-			}
-			else 
-			{ 
+				outputState.setText("Given template is not an admissible Prolog term."); 
+			else{ 
 				mainForm.protocol.wsetFilter = t;
 				context.setProtocol(mainForm.protocol); 
 			} 
-		}
-		catch (Exception ex)
-		{ 
-			ex.printStackTrace();
-		}
-		 
-	}// GEN-LAST:event_buttonAcceptPatternActionPerformed
+			buttonGetActionPerformed(null);
+		}catch (InvalidLogicTupleException e){
+			outputState.setText("Given template is not an admissible Prolog term.");
+		} catch (Exception e) {
+			outputState.setText(""+e);
+		}	 
+	}
 
-	private void checkFilterViewActionPerformed(java.awt.event.ActionEvent evt)
-	{// GEN-FIRST:event_checkFilterViewActionPerformed
-		try
-		{
-			if (checkFilterView.isSelected())
-			{
+	private void checkFilterViewActionPerformed(java.awt.event.ActionEvent evt){
+		try{
+			if (checkFilterView.isSelected()){
 				buttonAcceptPattern.setEnabled(true);
-			}
-			else
-			{
+				outputState.setText("Please input an admissible tuple template...");
+			}else{
 				buttonAcceptPattern.setEnabled(false);
-				// da sistemare
-				// anche per le tuple e per il log delle tuple: da differenziare
 				mainForm.protocol.tsetFilter = null;
 				context.setProtocol(mainForm.protocol);
 			}
+		}catch (Exception e){
+			outputState.setText(""+e);
 		}
-		catch (Exception ex)
-		{
-		}
-	}// GEN-LAST:event_checkFilterViewActionPerformed
+	}
 
-	private void buttonGetActionPerformed(java.awt.event.ActionEvent evt)
-	{// GEN-FIRST:event_buttonGetActionPerformed
-		try
-		{
-			//System.out.println("update");
+	private void buttonGetActionPerformed(java.awt.event.ActionEvent evt){
+		try{
 			context.getSnapshot(GetSnapshotMsg.WSET);
+			outputState.setText("Observation done.");
+		}catch (Exception e){
+			outputState.setText(""+e);
 		}
-		catch (Exception ex)
-		{
-		}
-	}// GEN-LAST:event_buttonGetActionPerformed
+	}
 
-	private void radioReactiveActionPerformed(java.awt.event.ActionEvent evt)
-	{// GEN-FIRST:event_radioReactiveActionPerformed
-		try
-		{
+	private void radioReactiveActionPerformed(java.awt.event.ActionEvent evt){
+		try{
 			mainForm.protocol.pendingQueryObservType = InspectorProtocol.REACTIVE_OBSERVATION;
 			context.setProtocol(mainForm.protocol);
 			buttonGet.setEnabled(true);
 			radioProactive.setSelected(false);
+			outputState.setText("REACTIVE observation selected, push button 'Observe!' to update.");
+		}catch (Exception e){
+			outputState.setText(""+e);
 		}
-		catch (Exception ex)
-		{
-		}
-	}// GEN-LAST:event_radioReactiveActionPerformed
+	}
 
-	private void radioProactiveActionPerformed(java.awt.event.ActionEvent evt)
-	{// GEN-FIRST:event_radioProactiveActionPerformed
-		try
-		{
+	private void radioProactiveActionPerformed(java.awt.event.ActionEvent evt){
+		try{
 			mainForm.protocol.pendingQueryObservType = InspectorProtocol.PROACTIVE_OBSERVATION;
 			context.setProtocol(mainForm.protocol);
 			buttonGet.setEnabled(false);
 			radioReactive.setSelected(false);
+			outputState.setText("PROACTIVE observation selected.");
+		}catch (Exception e){
+			outputState.setText(""+e);
 		}
-		catch (Exception ex)
-		{
-		}
-	}// GEN-LAST:event_radioProactiveActionPerformed
+	}
 
-	private void exitForm(java.awt.event.WindowEvent evt)
-	{// GEN-FIRST:event_exitForm
+	private void exitForm(java.awt.event.WindowEvent evt){
 		mainForm.onEventViewerExit();
-	}// GEN-LAST:event_exitForm
+	}
 
 	// Variables declaration - do not modify//GEN-BEGIN:variables
 	private javax.swing.JPanel jPanel9;

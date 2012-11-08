@@ -84,7 +84,7 @@ public class TupleViewer extends javax.swing.JFrame{
 		buttonAcceptPattern.setEnabled(false);
 		buttonAcceptFilterLog.setEnabled(false);
 		inputFileLog.setText(mainForm.agent.logTupleFilename);
-		outputState.setText("Ready.");
+		outputState.setText("Ready for tuples inspection.");
 	}
 
 	public void setText(String st){
@@ -586,9 +586,10 @@ public class TupleViewer extends javax.swing.JFrame{
 	}
 
 	private void checkLogEnableActionPerformed(java.awt.event.ActionEvent evt){
-		if (checkLogEnable.isSelected())
+		if (checkLogEnable.isSelected()){
 			mainForm.agent.loggingTuples = true;
-		else
+			outputState.setText("Please choose the output log file...");
+		}else
 			mainForm.agent.loggingTuples = false;
 	}
 
@@ -596,9 +597,9 @@ public class TupleViewer extends javax.swing.JFrame{
 		String st = inputFilterLog.getText();
 		try{
 			mainForm.agent.logTupleFilter = LogicTuple.parse(st);
-			outputState.setText("filter accepted.");
+			buttonGetActionPerformed(null);
 		}catch (InvalidLogicTupleException e){
-			outputState.setText("filter (tuple) not valid.");
+			outputState.setText("Please input an admissible tuple template...");
 		}
 	}
 
@@ -620,9 +621,10 @@ public class TupleViewer extends javax.swing.JFrame{
 	}
 
 	private void checkFilterLogActionPerformed(java.awt.event.ActionEvent evt){
-		if (checkFilterLog.isSelected())
+		if (checkFilterLog.isSelected()){
 			buttonAcceptFilterLog.setEnabled(true);
-		else
+			outputState.setText("Please input an admissible tuple template...");
+		}else
 			buttonAcceptFilterLog.setEnabled(false);
 	}
 
@@ -646,9 +648,10 @@ public class TupleViewer extends javax.swing.JFrame{
 
 	private void checkFilterViewActionPerformed(java.awt.event.ActionEvent evt){
 		try{
-			if (checkFilterView.isSelected())
+			if (checkFilterView.isSelected()){
 				buttonAcceptPattern.setEnabled(true);
-			else{
+				outputState.setText("Please input an admissible tuple template...");
+			}else{
 				buttonAcceptPattern.setEnabled(false);
 				mainForm.protocol.tsetFilter = null;
 				context.setProtocol(mainForm.protocol);
@@ -661,6 +664,7 @@ public class TupleViewer extends javax.swing.JFrame{
 	private void buttonGetActionPerformed(java.awt.event.ActionEvent evt){
 		try{
 			context.getSnapshot(GetSnapshotMsg.TSET);
+			outputState.setText("Observation done.");
 		}catch (Exception e){
 			outputState.setText(""+e);
 		}
@@ -672,6 +676,7 @@ public class TupleViewer extends javax.swing.JFrame{
 			context.setProtocol(mainForm.protocol);
 			buttonGet.setEnabled(true);
 			radioProactive.setSelected(false);
+			outputState.setText("REACTIVE observation selected, push button 'Observe!' to update.");
 		}catch (Exception e){
 			outputState.setText(""+e);
 		}
@@ -683,6 +688,7 @@ public class TupleViewer extends javax.swing.JFrame{
 			context.setProtocol(mainForm.protocol);
 			buttonGet.setEnabled(false);
 			radioReactive.setSelected(false);
+			outputState.setText("PROACTIVE observation selected.");
 		}catch (Exception e){
 			outputState.setText(""+e);
 		}

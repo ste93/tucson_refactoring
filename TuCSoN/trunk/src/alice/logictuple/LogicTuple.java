@@ -395,7 +395,6 @@ public class LogicTuple implements alice.tuplecentre.api.Tuple, alice.tuplecentr
 		}
 		catch (Exception ex)
 		{
-			ex.printStackTrace();
 			throw new InvalidLogicTupleException();
 		}
 	}
