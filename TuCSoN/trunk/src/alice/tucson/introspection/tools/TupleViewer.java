@@ -594,12 +594,18 @@ public class TupleViewer extends javax.swing.JFrame{
 	}
 
 	private void buttonAcceptFilterLogActionPerformed(java.awt.event.ActionEvent evt){
-		String st = inputFilterLog.getText();
+		String st = inputFilterLog.getText(); 
+		LogicTuple t = null;
 		try{
-			mainForm.agent.logTupleFilter = LogicTuple.parse(st);
-			buttonGetActionPerformed(null);
+			t = LogicTuple.parse(st);
 		}catch (InvalidLogicTupleException e){
 			outputState.setText("Please input an admissible tuple template...");
+		}
+		if(t == null)
+			outputState.setText("Please input an admissible tuple template..."); 
+		else{ 
+			mainForm.agent.logTupleFilter = t;
+			buttonGetActionPerformed(null);
 		}
 	}
 

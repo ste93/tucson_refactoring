@@ -37,7 +37,7 @@ public class ReactionViewer extends javax.swing.JFrame{
 		initComponents();
 		pack();
 		mainForm = mainForm_;
-		setTitle("Triggered Reaction Set of " + mainForm.tid.getName() + "@" + mainForm.tid.getNode() + ":" + mainForm.tid.getPort());
+		setTitle("Triggered ReSpecT reaction set of tuplecentre < " + mainForm.tid.getName() + "@" + mainForm.tid.getNode() + ":" + mainForm.tid.getPort() + " >");
 		setSize(520, 460);
 		inputFileLog.setText(mainForm.agent.logReactionFilename);
 	}
@@ -91,7 +91,7 @@ public class ReactionViewer extends javax.swing.JFrame{
 		
 		jLabel1.setFont(new java.awt.Font("Arial", 0, 11));
 		jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-		jLabel1.setText("log file   ");
+		jLabel1.setText("dump observations on file: ");
 		
 		gridBagConstraints = new java.awt.GridBagConstraints();
 		gridBagConstraints.gridx = 3;
@@ -114,7 +114,7 @@ public class ReactionViewer extends javax.swing.JFrame{
 		jPanel7.add(inputFileLog, gridBagConstraints);
 
 		buttonBrowse.setFont(new java.awt.Font("Arial", 0, 11));
-		buttonBrowse.setText("browse");
+		buttonBrowse.setText("Browse");
 		buttonBrowse.addActionListener(new java.awt.event.ActionListener(){
 			public void actionPerformed(java.awt.event.ActionEvent evt){
 				buttonBrowseActionPerformed(evt);
@@ -177,9 +177,10 @@ public class ReactionViewer extends javax.swing.JFrame{
 	}
 
 	private void checkLogEnableActionPerformed(java.awt.event.ActionEvent evt){
-		if (checkLogEnable.isSelected())
+		if (checkLogEnable.isSelected()){
 			mainForm.agent.loggingReactions = true;
-		else
+//			outputState.setText("Please choose the output log file...");
+		}else
 			mainForm.agent.loggingReactions = false;
 	}
 

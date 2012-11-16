@@ -615,7 +615,7 @@ public class EventViewer extends javax.swing.JFrame{
 				outputState.setText("Please input an admissible tuple template...");
 			}else{
 				buttonAcceptPattern.setEnabled(false);
-				mainForm.protocol.tsetFilter = null;
+				mainForm.protocol.wsetFilter = null;
 				context.setProtocol(mainForm.protocol);
 			}
 		}catch (Exception e){

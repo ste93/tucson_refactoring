@@ -136,9 +136,9 @@ public class InspectorCore extends alice.tucson.introspection.Inspector{
 		if (msg.wnEvents != null){
 			
 			EventViewer viewer = form.getQueryForm();
-			msg.localTime = System.currentTimeMillis();
-			viewer.setVMTime(msg.vmTime);
-			viewer.setLocalTime(msg.localTime);
+//			msg.localTime = System.currentTimeMillis();
+//			viewer.setVMTime(msg.vmTime);
+//			viewer.setLocalTime(msg.localTime);
 			String st = "";
 			Iterator it = msg.wnEvents.iterator();
 			int n = 0;
@@ -153,13 +153,27 @@ public class InspectorCore extends alice.tucson.introspection.Inspector{
 			if (loggingQueries){
 				try{
 					st = "";
-					logQueryWriter.write("snapshot( \n" + "    time_vm(" + msg.vmTime + "),\n" + "    time_local("
-							+ msg.localTime + "),\n" + "    query_list([ \n");
+//					logQueryWriter.write("snapshot( \n" + "    time_vm(" + msg.vmTime + "),\n" + "    time_local("
+//							+ msg.localTime + "),\n" + "    query_list([ \n");
+					logQueryWriter.write("snapshot(\n    query_list([ \n");
 					it = msg.wnEvents.iterator();
-					if (it.hasNext()){
-						st = st + "        " + it.next();
-						while (it.hasNext())
-							st = st + ",\n        " + it.next();
+					if (logTupleFilter == null){
+						if (it.hasNext()){
+							st = st + "        " + it.next().toString();
+							while (it.hasNext())
+								st = st + ",\n        " + it.next().toString();
+						}
+					}else{
+						if (it.hasNext()){
+							LogicTuple tuple = (LogicTuple) it.next();
+							if (logTupleFilter.match(tuple))
+								st = st + "        " + tuple.toString();
+							while (it.hasNext()){
+								tuple = (LogicTuple) it.next();
+								if (logTupleFilter.match(tuple))
+									st = st + ",\n        " + tuple.toString();
+							}
+						}
 					}
 					logQueryWriter.write(st + "])).\n");
 					logQueryWriter.flush();
@@ -174,10 +188,12 @@ public class InspectorCore extends alice.tucson.introspection.Inspector{
 			
 			ReactionViewer viewer = form.getReactionForm();
 			TriggeredReaction tr = msg.reactionOk;
-			viewer.appendText("time: " + msg.vmTime + "\n" + tr.getReaction() + " OK\n");
+//			viewer.appendText("time: " + msg.vmTime + "\n" + tr.getReaction() + " OK\n");
+			viewer.appendText("reaction < " + tr.getReaction() + " > SUCCEEDED.\n");
 			if (loggingReactions){
 				try{
-					logReactionWriter.write("succeed-reaction( time(" + msg.vmTime + "), " + tr.getReaction() + ").\n");
+//					logReactionWriter.write("succeed-reaction( time(" + msg.vmTime + "), " + tr.getReaction() + ").\n");
+					logReactionWriter.write("succeeded( " + tr.getReaction() + " ).\n");
 					logReactionWriter.flush();
 				}catch (IOException e){
 					e.printStackTrace();
@@ -188,10 +204,12 @@ public class InspectorCore extends alice.tucson.introspection.Inspector{
 			
 			ReactionViewer viewer = form.getReactionForm();
 			TriggeredReaction tr = msg.reactionFailed;
-			viewer.appendText("time: " + msg.vmTime + "\n" + tr.getReaction() + " FAILED\n");
+//			viewer.appendText("time: " + msg.vmTime + "\n" + tr.getReaction() + " FAILED\n");
+			viewer.appendText("reaction < " + tr.getReaction() + " > FAILED.\n");
 			if (loggingReactions){
 				try{
-					logReactionWriter.write("failed-reaction( time(" + msg.vmTime + "), " + tr.getReaction() + ").\n");
+//					logReactionWriter.write("failed-reaction( time(" + msg.vmTime + "), " + tr.getReaction() + ").\n");
+					logReactionWriter.write("failed( " + tr.getReaction() + " ).\n");
 					logReactionWriter.flush();
 				}catch (IOException e){
 					e.printStackTrace();
