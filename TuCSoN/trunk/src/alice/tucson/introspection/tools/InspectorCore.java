@@ -20,6 +20,8 @@ package alice.tucson.introspection.tools;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Iterator;
 
 import alice.logictuple.LogicTuple;
@@ -96,11 +98,19 @@ public class InspectorCore extends alice.tucson.introspection.Inspector{
 				
 				try{
 					
+					Calendar cal = Calendar.getInstance();
 					st = "";
 //					logTupleWriter.write("snapshot(\n" + "    time_vm(" + msg.vmTime + "),\n" + "    time_local("
 //							+ msg.localTime + "),\n" + "    tuple_filter(" + form.protocol.tsetFilter + "),\n"
 //							+ "    tuple_log_filter(" + logTupleFilter + "),\n" + "    tuple_list([ \n");
-					logTupleWriter.write("snapshot(\n    tuple_list([ \n");
+					logTupleWriter.write("snapshot(\n    " +
+							"time("+cal.get(Calendar.DAY_OF_MONTH)+"-"+
+									cal.get(Calendar.MONTH)+"-"+
+									cal.get(Calendar.YEAR)+" "+
+									cal.get(Calendar.HOUR_OF_DAY)+":"+
+									cal.get(Calendar.MINUTE)+":"+
+									cal.get(Calendar.SECOND)+
+							"),\n    tuple_list([ \n");
 
 					it = msg.tuples.iterator();
 					if (logTupleFilter == null){

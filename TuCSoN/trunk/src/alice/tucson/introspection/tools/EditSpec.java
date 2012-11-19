@@ -18,6 +18,7 @@
 package alice.tucson.introspection.tools;
 
 import alice.logictuple.LogicTuple;
+import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.logictuple.exceptions.InvalidTupleOperationException;
 
 import alice.tucson.api.EnhancedACC;
@@ -30,10 +31,12 @@ import alice.tucson.api.exceptions.UnreachableNodeException;
 
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 
+import java.awt.Color;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
 
 public class EditSpec extends javax.swing.JFrame{
 	
@@ -58,10 +61,10 @@ public class EditSpec extends javax.swing.JFrame{
 	public EditSpec(TucsonTupleCentreId tid_){
 		
 		initComponents();
-		setTitle("Specification Tuples in tuple centre " + tid_.getName() + "@" + tid_.getNode() + ":" + tid_.getPort());
+		setTitle("ReSpecT specification tuples of tuplecentre < " + tid_.getName() + "@" + tid_.getNode() + ":" + tid_.getPort() + " >");
 		inputSpec = new alice.util.jedit.JEditTextArea(new SpecificationTextArea());
 		inputSpec.setTokenMarker(new SpecificationTokenMarker());
-		inputSpec.setPreferredSize(new java.awt.Dimension(400, 600));
+		inputSpec.setPreferredSize(new java.awt.Dimension(800, 600));
 		
 		java.awt.GridBagConstraints gridBagConstraints1 = new java.awt.GridBagConstraints();
 		
@@ -121,7 +124,7 @@ public class EditSpec extends javax.swing.JFrame{
 			}
 		});
 
-		outputState.setBackground(new java.awt.Color(224, 214, 163));
+		outputState.setBackground(Color.CYAN);
 		outputState.setEditable(false);
 		outputState.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0)));
 		outputState.setMinimumSize(new java.awt.Dimension(2, 20));
@@ -139,7 +142,7 @@ public class EditSpec extends javax.swing.JFrame{
 
 		bLoad.setFont(new java.awt.Font("Arial", 0, 11));
 		bLoad.setText("Load");
-		bLoad.setToolTipText("load the specification from a file");
+		bLoad.setToolTipText("Load the specification from the chosen file");
 		bLoad.setFocusPainted(false);
 		bLoad.setPreferredSize(new java.awt.Dimension(80, 30));
 		bLoad.addActionListener(new java.awt.event.ActionListener(){
@@ -155,7 +158,7 @@ public class EditSpec extends javax.swing.JFrame{
 
 		bSave.setFont(new java.awt.Font("Arial", 0, 11));
 		bSave.setText("Save");
-		bSave.setToolTipText("save the specification to current specification file");
+		bSave.setToolTipText("Save the specification to the previously (default) chosen file");
 		bSave.setFocusPainted(false);
 		bSave.setPreferredSize(new java.awt.Dimension(80, 30));
 		bSave.addActionListener(new java.awt.event.ActionListener(){
@@ -171,7 +174,7 @@ public class EditSpec extends javax.swing.JFrame{
 
 		bSaveAs.setFont(new java.awt.Font("Arial", 0, 11));
 		bSaveAs.setText("Save As");
-		bSaveAs.setToolTipText("save the specification to a file");
+		bSaveAs.setToolTipText("Save the specification to the chosen file");
 		bSaveAs.setFocusPainted(false);
 		bSaveAs.setPreferredSize(new java.awt.Dimension(80, 30));
 		bSaveAs.addActionListener(new java.awt.event.ActionListener(){
@@ -194,10 +197,10 @@ public class EditSpec extends javax.swing.JFrame{
 		jPanel3.setLayout(new java.awt.GridBagLayout());
 
 		bOk.setFont(new java.awt.Font("Arial", 0, 11));
-		bOk.setText("Set");
-		bOk.setToolTipText("set the specification to the tuple centre");
+		bOk.setText("< set_s >");
+		bOk.setToolTipText("Sets the specification space of the tuplecentre");
 		bOk.setFocusPainted(false);
-		bOk.setPreferredSize(new java.awt.Dimension(60, 30));
+		bOk.setPreferredSize(new java.awt.Dimension(70, 30));
 		bOk.addActionListener(new java.awt.event.ActionListener(){
 			public void actionPerformed(java.awt.event.ActionEvent evt){
 				bOkActionPerformed(evt);
@@ -210,12 +213,10 @@ public class EditSpec extends javax.swing.JFrame{
 		jPanel3.add(bOk, gridBagConstraints);
 
 		bGet.setFont(new java.awt.Font("Arial", 0, 11));
-		bGet.setText("Get");
-		bGet.setToolTipText("get the specification from the tuple centre");
+		bGet.setText("< get_s >");
+		bGet.setToolTipText("Gets the specification space of the tuplecentre");
 		bGet.setActionCommand("bRefresh");
-		bGet.setMaximumSize(new java.awt.Dimension(50, 30));
-		bGet.setMinimumSize(new java.awt.Dimension(50, 30));
-		bGet.setPreferredSize(new java.awt.Dimension(60, 30));
+		bGet.setPreferredSize(new java.awt.Dimension(70, 30));
 		bGet.addActionListener(new java.awt.event.ActionListener(){
 			public void actionPerformed(java.awt.event.ActionEvent evt){
 				bGetActionPerformed(evt);
@@ -242,7 +243,7 @@ public class EditSpec extends javax.swing.JFrame{
 		gridBagConstraints.weighty = 10.0;
 		getContentPane().add(jPanel2, gridBagConstraints);
 
-		caretPosition.setBackground(new java.awt.Color(228, 214, 188));
+		caretPosition.setBackground(Color.CYAN);
 		caretPosition.setEditable(false);
 		caretPosition.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0)));
 		caretPosition.setMinimumSize(new java.awt.Dimension(80, 20));
@@ -258,7 +259,11 @@ public class EditSpec extends javax.swing.JFrame{
 
 	private void bGetActionPerformed(java.awt.event.ActionEvent evt){
 		try{
-			String spec = ""+context.get_s(tid, (Long) null).getLogicTupleListResult();
+//			String spec = ""+context.get_s(tid, (Long) null).getLogicTupleListResult();
+			String spec = "";
+			List<LogicTuple> list = context.get_s(tid, (Long) null).getLogicTupleListResult();
+			for(LogicTuple t: list)
+				spec += format(t);
 			inputSpec.setText(spec);
 			outputState.setText("Specification read.");
 		}catch (TucsonOperationNotPossibleException e){
@@ -271,6 +276,43 @@ public class EditSpec extends javax.swing.JFrame{
 			outputState.setText("Specification not available.");
 			e.printStackTrace();
 		}
+	}
+
+	private void bOkActionPerformed(java.awt.event.ActionEvent evt){
+		try{
+			String spec = inputSpec.getText();
+			if(spec.isEmpty())
+				context.set_s(tid, LogicTuple.parse("[]"), (Long) null);
+			else
+				context.set_s(tid, spec, (Long) null);
+			outputState.setText("Specification set.");
+		}catch (TucsonOperationNotPossibleException e){
+			outputState.setText("Specification set failure (invalid specification).");
+			e.printStackTrace();
+		} catch (UnreachableNodeException e) {
+			outputState.setText("Specification set failure (invalid specification).");
+			e.printStackTrace();
+		} catch (OperationTimeOutException e) {
+			outputState.setText("Specification set failure (invalid specification).");
+			e.printStackTrace();
+		} catch (InvalidLogicTupleException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	private String format(LogicTuple t) {
+		String res = "";
+		try{
+			res = t.getName()+"(\n";
+			res += "	"+t.getArg(0)+",\n";
+			res += "	"+t.getArg(1)+",\n";
+			res += "	"+t.getArg(2)+"\n";
+			res += ").\n";
+		}catch(InvalidTupleOperationException e){
+			e.printStackTrace();
+		}
+		return res;
 	}
 
 	private void formComponentShown(java.awt.event.ComponentEvent evt){
@@ -368,23 +410,6 @@ public class EditSpec extends javax.swing.JFrame{
 			}
 		}
 		
-	}
-
-	private void bOkActionPerformed(java.awt.event.ActionEvent evt){
-		try{
-			String spec = inputSpec.getText();
-			context.set_s(tid, spec, (Long) null);
-			outputState.setText("Specification set.");
-		}catch (TucsonOperationNotPossibleException e){
-			outputState.setText("Specification set failure (invalid specification).");
-			e.printStackTrace();
-		} catch (UnreachableNodeException e) {
-			outputState.setText("Specification set failure (invalid specification).");
-			e.printStackTrace();
-		} catch (OperationTimeOutException e) {
-			outputState.setText("Specification set failure (invalid specification).");
-			e.printStackTrace();
-		}
 	}
 	
 }
