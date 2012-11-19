@@ -50,6 +50,11 @@ public class InspectorCore extends alice.tucson.introspection.Inspector{
 	protected boolean loggingReactions = false;
 	protected String logReactionFilename;
 	protected FileWriter logReactionWriter;
+	
+	/*
+	 * Used when logging tuples/operations/reactions.
+	 */
+	Calendar cal;
 
 	/**
 	 * 
@@ -73,6 +78,7 @@ public class InspectorCore extends alice.tucson.introspection.Inspector{
 		}catch (IOException e){
 			e.printStackTrace();
 		}
+		cal = Calendar.getInstance();
 	}
 
 	public void onContextEvent(alice.tucson.introspection.InspectorContextEvent msg){
@@ -98,19 +104,19 @@ public class InspectorCore extends alice.tucson.introspection.Inspector{
 				
 				try{
 					
-					Calendar cal = Calendar.getInstance();
+//					Calendar cal = Calendar.getInstance();
 					st = "";
 //					logTupleWriter.write("snapshot(\n" + "    time_vm(" + msg.vmTime + "),\n" + "    time_local("
 //							+ msg.localTime + "),\n" + "    tuple_filter(" + form.protocol.tsetFilter + "),\n"
 //							+ "    tuple_log_filter(" + logTupleFilter + "),\n" + "    tuple_list([ \n");
 					logTupleWriter.write("snapshot(\n    " +
-							"time("+cal.get(Calendar.DAY_OF_MONTH)+"-"+
+							"localtime(date("+cal.get(Calendar.DAY_OF_MONTH)+"-"+
 									cal.get(Calendar.MONTH)+"-"+
-									cal.get(Calendar.YEAR)+" "+
+									cal.get(Calendar.YEAR)+"), time("+
 									cal.get(Calendar.HOUR_OF_DAY)+":"+
 									cal.get(Calendar.MINUTE)+":"+
-									cal.get(Calendar.SECOND)+
-							"),\n    tuple_list([ \n");
+									cal.get(Calendar.SECOND)+")"+
+							"),\n    tuples([ \n");
 
 					it = msg.tuples.iterator();
 					if (logTupleFilter == null){
@@ -132,7 +138,7 @@ public class InspectorCore extends alice.tucson.introspection.Inspector{
 						}
 					}
 					
-					logTupleWriter.write(st + "])).\n");
+					logTupleWriter.write(st + "\n	])\n).\n");
 					logTupleWriter.flush();
 					
 				}catch(IOException e){
@@ -165,7 +171,14 @@ public class InspectorCore extends alice.tucson.introspection.Inspector{
 					st = "";
 //					logQueryWriter.write("snapshot( \n" + "    time_vm(" + msg.vmTime + "),\n" + "    time_local("
 //							+ msg.localTime + "),\n" + "    query_list([ \n");
-					logQueryWriter.write("snapshot(\n    query_list([ \n");
+					logQueryWriter.write("snapshot(\n    " +
+							"localtime(date("+cal.get(Calendar.DAY_OF_MONTH)+"-"+
+									cal.get(Calendar.MONTH)+"-"+
+									cal.get(Calendar.YEAR)+"), time("+
+									cal.get(Calendar.HOUR_OF_DAY)+":"+
+									cal.get(Calendar.MINUTE)+":"+
+									cal.get(Calendar.SECOND)+"))"+
+							"),\n    operations([ \n");
 					it = msg.wnEvents.iterator();
 					if (logTupleFilter == null){
 						if (it.hasNext()){
@@ -185,7 +198,7 @@ public class InspectorCore extends alice.tucson.introspection.Inspector{
 							}
 						}
 					}
-					logQueryWriter.write(st + "])).\n");
+					logQueryWriter.write(st + "\n	])\n).\n");
 					logQueryWriter.flush();
 				}catch (IOException e){
 					e.printStackTrace();
@@ -199,11 +212,22 @@ public class InspectorCore extends alice.tucson.introspection.Inspector{
 			ReactionViewer viewer = form.getReactionForm();
 			TriggeredReaction tr = msg.reactionOk;
 //			viewer.appendText("time: " + msg.vmTime + "\n" + tr.getReaction() + " OK\n");
-			viewer.appendText("reaction < " + tr.getReaction() + " > SUCCEEDED.\n");
+			viewer.appendText("reaction < " + tr.getReaction() + " > SUCCEEDED @ "+
+					cal.get(Calendar.HOUR_OF_DAY)+":"+
+					cal.get(Calendar.MINUTE)+":"+
+					cal.get(Calendar.SECOND)
+			+".\n");
 			if (loggingReactions){
 				try{
 //					logReactionWriter.write("succeed-reaction( time(" + msg.vmTime + "), " + tr.getReaction() + ").\n");
-					logReactionWriter.write("succeeded( " + tr.getReaction() + " ).\n");
+					logReactionWriter.write("snapshot(\n    " +
+							"localtime(date("+cal.get(Calendar.DAY_OF_MONTH)+"-"+
+									cal.get(Calendar.MONTH)+"-"+
+									cal.get(Calendar.YEAR)+"), time("+
+									cal.get(Calendar.HOUR_OF_DAY)+":"+
+									cal.get(Calendar.MINUTE)+":"+
+									cal.get(Calendar.SECOND)+")"+
+							"),\n    succeeded( " + tr.getReaction() + " ).\n");
 					logReactionWriter.flush();
 				}catch (IOException e){
 					e.printStackTrace();
@@ -215,11 +239,22 @@ public class InspectorCore extends alice.tucson.introspection.Inspector{
 			ReactionViewer viewer = form.getReactionForm();
 			TriggeredReaction tr = msg.reactionFailed;
 //			viewer.appendText("time: " + msg.vmTime + "\n" + tr.getReaction() + " FAILED\n");
-			viewer.appendText("reaction < " + tr.getReaction() + " > FAILED.\n");
+			viewer.appendText("reaction < " + tr.getReaction() + " > FAILED @ "+
+					cal.get(Calendar.HOUR_OF_DAY)+":"+
+					cal.get(Calendar.MINUTE)+":"+
+					cal.get(Calendar.SECOND)
+			+".\n");
 			if (loggingReactions){
 				try{
 //					logReactionWriter.write("failed-reaction( time(" + msg.vmTime + "), " + tr.getReaction() + ").\n");
-					logReactionWriter.write("failed( " + tr.getReaction() + " ).\n");
+					logReactionWriter.write("snapshot(\n    " +
+							"localtime(date("+cal.get(Calendar.DAY_OF_MONTH)+"-"+
+									cal.get(Calendar.MONTH)+"-"+
+									cal.get(Calendar.YEAR)+"), time("+
+									cal.get(Calendar.HOUR_OF_DAY)+":"+
+									cal.get(Calendar.MINUTE)+":"+
+									cal.get(Calendar.SECOND)+")"+
+							"),\n    failed( " + tr.getReaction() + " ).\n");
 					logReactionWriter.flush();
 				}catch (IOException e){
 					e.printStackTrace();
