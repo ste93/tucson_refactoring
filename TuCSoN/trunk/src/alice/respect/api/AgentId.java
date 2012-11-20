@@ -75,7 +75,11 @@ public class AgentId implements alice.tuplecentre.api.AgentId, java.io.Serializa
     }
     
     public String getLocalName(){
-    	return localName;
+    	if(id.isCompound())
+    		return ((Struct)id).getArg(0).toString();
+    	else
+    		return id.toString();
+//    	return localName;
     }
 
     /**

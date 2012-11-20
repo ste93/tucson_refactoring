@@ -21,8 +21,10 @@ import java.util.List;
 import alice.logictuple.*;
 import alice.respect.api.exceptions.InvalidSpecificationException;
 import alice.respect.api.exceptions.OperationNotPossibleException;
+import alice.tucson.introspection.WSetEvent;
 import alice.tuplecentre.api.InspectableEventListener;
 import alice.tuplecentre.api.ObservableEventListener;
+import alice.tuplecentre.core.Event;
 
 /**
  * Basic Management Interface for a RespecT Tuple Centre.
@@ -102,7 +104,7 @@ public interface IManagementContext  {
 	 * 
 	 * @param filter tuple filtering tuples to be retrieved
 	 */
-	LogicTuple[] getWSet(LogicTuple filter);
+	WSetEvent[] getWSet(LogicTuple filter);
 	
 	/**
 	 * Sets current content of the query set in terms of logic tuples 

@@ -21,12 +21,13 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Iterator;
 
 import alice.logictuple.LogicTuple;
+import alice.respect.api.AgentId;
 import alice.tucson.api.TucsonAgentId;
 import alice.tucson.api.TucsonTupleCentreId;
+import alice.tucson.introspection.WSetEvent;
 import alice.tuplecentre.core.TriggeredReaction;
 
 /**
@@ -78,7 +79,7 @@ public class InspectorCore extends alice.tucson.introspection.Inspector{
 		}catch (IOException e){
 			e.printStackTrace();
 		}
-		cal = Calendar.getInstance();
+//		cal = Calendar.getInstance();
 	}
 
 	public void onContextEvent(alice.tucson.introspection.InspectorContextEvent msg){
@@ -104,7 +105,7 @@ public class InspectorCore extends alice.tucson.introspection.Inspector{
 				
 				try{
 					
-//					Calendar cal = Calendar.getInstance();
+					cal = Calendar.getInstance();
 					st = "";
 //					logTupleWriter.write("snapshot(\n" + "    time_vm(" + msg.vmTime + "),\n" + "    time_local("
 //							+ msg.localTime + "),\n" + "    tuple_filter(" + form.protocol.tsetFilter + "),\n"
@@ -158,9 +159,13 @@ public class InspectorCore extends alice.tucson.introspection.Inspector{
 			String st = "";
 			Iterator it = msg.wnEvents.iterator();
 			int n = 0;
+			WSetEvent ev;
 
 			while (it.hasNext()){
-				st = st + it.next() + "\n";				
+				ev = (WSetEvent)it.next();
+				st = st + ev.getOp() + 
+						" from <" + ((AgentId)ev.getSource()).getLocalName() + 
+						"> to <" + ev.getTarget() + ">\n";				
 				n++;
 			}
 			viewer.setNItems(n);
@@ -168,6 +173,7 @@ public class InspectorCore extends alice.tucson.introspection.Inspector{
 			
 			if (loggingQueries){
 				try{
+					cal = Calendar.getInstance();
 					st = "";
 //					logQueryWriter.write("snapshot( \n" + "    time_vm(" + msg.vmTime + "),\n" + "    time_local("
 //							+ msg.localTime + "),\n" + "    query_list([ \n");
@@ -180,25 +186,32 @@ public class InspectorCore extends alice.tucson.introspection.Inspector{
 									cal.get(Calendar.SECOND)+"))"+
 							"),\n    operations([ \n");
 					it = msg.wnEvents.iterator();
-					if (logTupleFilter == null){
+//					if (logTupleFilter == null){
 						if (it.hasNext()){
-							st = st + "        " + it.next().toString();
-							while (it.hasNext())
-								st = st + ",\n        " + it.next().toString();
-						}
-					}else{
-						if (it.hasNext()){
-							LogicTuple tuple = (LogicTuple) it.next();
-							if (logTupleFilter.match(tuple))
-								st = st + "        " + tuple.toString();
+							ev = (WSetEvent)it.next();
+							st = st + "\t\top(what(" + ev.getOp()
+									+ "),\n\t\t\twho(" + ((AgentId)ev.getSource()).getLocalName() + 
+									"),\n\t\t\twhere(" + ev.getTarget() + ")\n\t\t)";
 							while (it.hasNext()){
-								tuple = (LogicTuple) it.next();
-								if (logTupleFilter.match(tuple))
-									st = st + ",\n        " + tuple.toString();
+								ev = (WSetEvent)it.next();
+								st = st + ",\n\t\top(what(" + ev.getOp()
+										+ "),\n\t\t\twho(" + ((AgentId)ev.getSource()).getLocalName() + 
+										"),\n\t\t\twhere(" + ev.getTarget() + ")\n\t\t)";
 							}
 						}
-					}
-					logQueryWriter.write(st + "\n	])\n).\n");
+//					}else{
+//						if (it.hasNext()){
+//							LogicTuple tuple = (LogicTuple) it.next();
+//							if (logTupleFilter.match(tuple))
+//								st = st + "        " + tuple.toString();
+//							while (it.hasNext()){
+//								tuple = (LogicTuple) it.next();
+//								if (logTupleFilter.match(tuple))
+//									st = st + ",\n        " + tuple.toString();
+//							}
+//						}
+//					}
+					logQueryWriter.write(st + "\n\t])\n).\n");
 					logQueryWriter.flush();
 				}catch (IOException e){
 					e.printStackTrace();
@@ -209,6 +222,7 @@ public class InspectorCore extends alice.tucson.introspection.Inspector{
 
 		if (msg.reactionOk != null){
 			
+			cal = Calendar.getInstance();
 			ReactionViewer viewer = form.getReactionForm();
 			TriggeredReaction tr = msg.reactionOk;
 //			viewer.appendText("time: " + msg.vmTime + "\n" + tr.getReaction() + " OK\n");
@@ -236,6 +250,7 @@ public class InspectorCore extends alice.tucson.introspection.Inspector{
 
 		}else if (msg.reactionFailed != null){
 			
+			cal = Calendar.getInstance();
 			ReactionViewer viewer = form.getReactionForm();
 			TriggeredReaction tr = msg.reactionFailed;
 //			viewer.appendText("time: " + msg.vmTime + "\n" + tr.getReaction() + " FAILED\n");

@@ -627,11 +627,19 @@ public class TupleViewer extends javax.swing.JFrame{
 	}
 
 	private void checkFilterLogActionPerformed(java.awt.event.ActionEvent evt){
-		if (checkFilterLog.isSelected()){
-			buttonAcceptFilterLog.setEnabled(true);
-			outputState.setText("Please input an admissible tuple template...");
-		}else
-			buttonAcceptFilterLog.setEnabled(false);
+		try{
+			if (checkFilterLog.isSelected()){
+				buttonAcceptFilterLog.setEnabled(true);
+				outputState.setText("Please input an admissible tuple template...");
+			}else{
+				buttonAcceptFilterLog.setEnabled(false);
+				mainForm.protocol.tsetFilter = null;
+				inputFilterLog.setText("");
+				context.setProtocol(mainForm.protocol);
+			}
+		}catch (Exception e){
+			outputState.setText(""+e);
+		}
 	}
 
 	private void buttonAcceptPatternActionPerformed(java.awt.event.ActionEvent evt){
@@ -660,6 +668,7 @@ public class TupleViewer extends javax.swing.JFrame{
 			}else{
 				buttonAcceptPattern.setEnabled(false);
 				mainForm.protocol.tsetFilter = null;
+				inputFilterView.setText("");
 				context.setProtocol(mainForm.protocol);
 			}
 		}catch (Exception e){

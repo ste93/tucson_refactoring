@@ -6,8 +6,10 @@ import alice.respect.api.IManagementContext;
 import alice.respect.api.RespectSpecification;
 import alice.respect.api.exceptions.InvalidSpecificationException;
 import alice.respect.api.exceptions.OperationNotPossibleException;
+import alice.tucson.introspection.WSetEvent;
 import alice.tuplecentre.api.InspectableEventListener;
 import alice.tuplecentre.api.ObservableEventListener;
+import alice.tuplecentre.core.Event;
 
 public class ManagementContext implements IManagementContext {
 
@@ -66,7 +68,7 @@ public class ManagementContext implements IManagementContext {
 		return vm.getTSet(t);
 	}
 	
-	public LogicTuple[] getWSet(LogicTuple t){
+	public WSetEvent[] getWSet(LogicTuple t){
 		return vm.getWSet(t);
 	}
 	

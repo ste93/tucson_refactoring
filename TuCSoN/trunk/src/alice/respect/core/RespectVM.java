@@ -22,6 +22,7 @@ import java.util.Iterator;
 import java.util.List;
 import alice.respect.api.TupleCentreId;
 import alice.respect.api.exceptions.OperationNotPossibleException;
+import alice.tucson.introspection.WSetEvent;
 import alice.tuplecentre.core.BehaviourSpecification;
 import alice.tuplecentre.api.IId;
 import alice.tuplecentre.api.InspectableEventListener;
@@ -261,7 +262,7 @@ public class RespectVM implements Runnable {
 		return context.getTSet(filter);
 	}
 
-	public LogicTuple[] getWSet(LogicTuple filter){
+	public WSetEvent[] getWSet(LogicTuple filter){
 		return context.getWSet(filter);
 	}
 	

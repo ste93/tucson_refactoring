@@ -36,6 +36,7 @@ import alice.tucson.service.TucsonTCUsers;
 import alice.tucson.service.TupleCentreContainer;
 
 import alice.tuplecentre.api.InspectableEventListener;
+import alice.tuplecentre.core.Event;
 import alice.tuplecentre.core.InspectableEvent;
 import alice.tuplecentre.core.ObservableEventExt;
 import alice.tuplecentre.core.ObservableEventReactionFail;
@@ -169,10 +170,10 @@ public class InspectorContextSkel extends ACCAbstractProxyNodeSide implements In
 				}
 				
 				if (protocol.pendingQueryObservType == InspectorProtocol.PROACTIVE_OBSERVATION){			
-					LogicTuple[] ltSet = (LogicTuple[]) TupleCentreContainer.doManagementOperation(TucsonOperation.getWSetCode(), tcId, protocol.wsetFilter);
-					msg.wnEvents = new LinkedList<LogicTuple>();					
+					WSetEvent[] ltSet = (WSetEvent[]) TupleCentreContainer.doManagementOperation(TucsonOperation.getWSetCode(), tcId, protocol.wsetFilter);
+					msg.wnEvents = new LinkedList<Event>();					
 					if(ltSet != null){
-						for(LogicTuple lt: ltSet)
+						for(WSetEvent lt: ltSet)
 							msg.wnEvents.add(lt);
 					}
 				}
@@ -245,16 +246,16 @@ public class InspectorContextSkel extends ACCAbstractProxyNodeSide implements In
 			
 		}else if (m.what == GetSnapshotMsg.WSET){
 			
-			LogicTuple[] ltSet = null;
+			WSetEvent[] ltSet = null;
 			try{
-				ltSet = (LogicTuple[]) TupleCentreContainer.doManagementOperation(TucsonOperation.getWSetCode(), tcId, protocol.wsetFilter);
+				ltSet = (WSetEvent[]) TupleCentreContainer.doManagementOperation(TucsonOperation.getWSetCode(), tcId, protocol.wsetFilter);
 			}catch (TucsonOperationNotPossibleException e){
 				e.printStackTrace();
 			}catch (TucsonInvalidLogicTupleException e){
 				e.printStackTrace();
 			}
-			msg.wnEvents = new LinkedList<LogicTuple>();
-			for(LogicTuple lt: ltSet)
+			msg.wnEvents = new LinkedList<Event>();
+			for(WSetEvent lt: ltSet)
 				msg.wnEvents.add(lt);
 
 		}

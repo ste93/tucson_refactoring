@@ -34,6 +34,7 @@ import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.api.exceptions.TucsonGenericException;
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
+import alice.tucson.introspection.WSetEvent;
 import alice.tucson.parsing.MyOpManager;
 import alice.tucson.service.Spawn2PLibrary;
 import alice.tucson.service.Spawn2PSolver;
@@ -1016,19 +1017,27 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 		return supportList.toArray(new LogicTuple[0]);
 	}
 	
-	public LogicTuple[] getWSet(LogicTuple filter){
-		LogicTuple[] tuples = new LogicTuple[this.wSet.size()];
-		ArrayList<LogicTuple> supportList = new ArrayList<LogicTuple>();				
+	public WSetEvent[] getWSet(LogicTuple filter){
 		Event[] ev = wSet.toArray();
+		ArrayList<WSetEvent> events = new ArrayList<WSetEvent>();
+		if (filter == null){
+			for(Event e: ev){
+				events.add(new WSetEvent(((RespectOperation)e.getOperation()).toTuple(), e.getSource(), e.getTarget()));
+			}
+			return events.toArray(new WSetEvent[0]);
+		}
+		LogicTuple[] tuples = new LogicTuple[this.wSet.size()];
+//		ArrayList<Event> supportList = new ArrayList<Event>();				
 		for(int i=0;i<tuples.length;i++){			
 			tuples[i] = ((RespectOperation)ev[i].getOperation()).toTuple();
 		}
-		if (filter == null)
-			return tuples;
-		for(LogicTuple tuple : tuples)
+		int i = 0;
+		for(LogicTuple tuple : tuples){
 			if (filter.match(tuple))
-				supportList.add(tuple);		
-		return supportList.toArray(new LogicTuple[0]);		
+				events.add(new WSetEvent(((RespectOperation)ev[i].getOperation()).toTuple(), ev[i].getSource(), ev[i].getTarget()));
+			i++;
+		}
+		return events.toArray(new WSetEvent[0]);		
 	}
 	
 	public void setWSet(List<LogicTuple> wSet){
