@@ -115,6 +115,7 @@ public class EventViewer extends javax.swing.JFrame{
 			}
 		});
 
+		outputArea.setEditable(false);
 		outputArea.setFont(new java.awt.Font("Courier New", 0, 12));
 		jScrollPane1.setViewportView(outputArea);
 

@@ -739,8 +739,8 @@ public class Inspector extends javax.swing.JFrame{
 			netid = alice.util.Tools.getOpt(args, "-netid");
 //		String port = "20504";
 		String port = "";
-		if (alice.util.Tools.isOpt(args, "-port"))
-			port = alice.util.Tools.getOpt(args, "-port");
+		if (alice.util.Tools.isOpt(args, "-portno"))
+			port = alice.util.Tools.getOpt(args, "-portno");
 
 		TucsonAgentId aid = null;
 		TucsonTupleCentreId tid = null;

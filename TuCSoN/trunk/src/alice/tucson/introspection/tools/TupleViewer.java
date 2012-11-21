@@ -153,6 +153,7 @@ public class TupleViewer extends javax.swing.JFrame{
 			}
 		});
 
+		tupleArea.setEditable(false);
 		tupleArea.setFont(new java.awt.Font("Courier New", 0, 12));
 		jScrollPane1.setViewportView(tupleArea);
 
