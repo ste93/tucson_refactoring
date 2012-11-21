@@ -100,10 +100,11 @@ public class OrdinaryAsynchInterface extends RootInterface implements IOrdinaryA
 		try {
 			if (t==null)
 				throw new InvalidLogicTupleException();
-			else if (t.getArity()==2)
+			else if (t.getName().equals(",") && t.getArity()==2){
 				op = getCore().in_all(aid, new LogicTuple(t.getArg(0)), l);
-			else if (t.getArity()==1)
+			}else{
 				op = getCore().in_all(aid,t,l);
+			}
 		} catch (InvalidTupleOperationException e2) {
 			e2.printStackTrace();
 		}
