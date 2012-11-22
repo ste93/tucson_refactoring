@@ -900,6 +900,7 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 				tuple = new LogicTuple(tuple.getArg(1));
 			} catch (InvalidTupleOperationException e) {
 				e.printStackTrace();
+				System.exit(-1);
 			}
     	}
     	return list;

@@ -118,27 +118,29 @@ public class OrdinaryAsynchInterface extends RootInterface implements IOrdinaryA
 		try {
 			if (t==null)
 				throw new InvalidLogicTupleException();
-			else if (t.getArity()==2)
+			else if (t.getName().equals(",") && t.getArity()==2){
 				op = getCore().rd_all(aid, new LogicTuple(t.getArg(0)), l);
-			else if (t.getArity()==1)
+			}else{
 				op = getCore().rd_all(aid,t,l);
+			}
 		} catch (InvalidTupleOperationException e2) {
 			e2.printStackTrace();
 		}
 		return op;
 	}
 	
-	public IRespectOperation no_all(IId id, LogicTuple t,
+	public IRespectOperation no_all(IId aid, LogicTuple t,
 			OperationCompletionListener l) throws InvalidLogicTupleException,
 			OperationNotPossibleException {
 		IRespectOperation op = null;
 		try {
 			if (t==null)
 				throw new InvalidLogicTupleException();
-			else if (t.getArity()==2)
-				op = getCore().no_all(id, new LogicTuple(t.getArg(0)), l);
-			else if (t.getArity()==1)
-				op = getCore().no_all(id,t,l);
+			else if (t.getName().equals(",") && t.getArity()==2){
+				op = getCore().no_all(aid, new LogicTuple(t.getArg(0)), l);
+			}else{
+				op = getCore().no_all(aid,t,l);
+			}
 		} catch (InvalidTupleOperationException e2) {
 			throw new OperationNotPossibleException();
 		}

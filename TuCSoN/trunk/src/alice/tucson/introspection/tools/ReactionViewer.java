@@ -17,6 +17,8 @@
  */
 package alice.tucson.introspection.tools;
 
+import java.awt.Color;
+
 public class ReactionViewer extends javax.swing.JFrame{
 	
 	private static final long serialVersionUID = -8708893837692939114L;
@@ -31,6 +33,8 @@ public class ReactionViewer extends javax.swing.JFrame{
 	private javax.swing.JButton buttonBrowse;
 	private javax.swing.JTabbedPane jTabbedPane1;
 	private javax.swing.JLabel jLabel1;
+	private javax.swing.JTextField outputState;
+	private javax.swing.JPanel jPanel10;
 	
 	/** Creates new form TupleForm */
 	public ReactionViewer(Inspector mainForm_){
@@ -40,6 +44,7 @@ public class ReactionViewer extends javax.swing.JFrame{
 		setTitle("Triggered ReSpecT reaction set of tuplecentre < " + mainForm.tid.getName() + "@" + mainForm.tid.getNode() + ":" + mainForm.tid.getPort() + " >");
 		setSize(520, 460);
 		inputFileLog.setText(mainForm.agent.logReactionFilename);
+		outputState.setText("Ready for ReSpecT reactions triggering notification.");
 	}
 
 	public void appendText(String st){
@@ -59,6 +64,8 @@ public class ReactionViewer extends javax.swing.JFrame{
 		inputFileLog = new javax.swing.JTextField();
 		buttonBrowse = new javax.swing.JButton();
 		checkLogEnable = new javax.swing.JCheckBox();
+		outputState = new javax.swing.JTextField();
+		jPanel10 = new javax.swing.JPanel();
 
 		getContentPane().setLayout(new java.awt.GridBagLayout());
 
@@ -157,6 +164,27 @@ public class ReactionViewer extends javax.swing.JFrame{
 		gridBagConstraints.weightx = 100.0;
 		gridBagConstraints.weighty = 10.0;
 		getContentPane().add(jTabbedPane1, gridBagConstraints);
+		
+		jPanel10.setLayout(new java.awt.GridBagLayout());
+
+		outputState.setBackground(Color.CYAN);
+		outputState.setEditable(false);
+		outputState.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0)));
+		gridBagConstraints = new java.awt.GridBagConstraints();
+		gridBagConstraints.gridx = 1;
+		gridBagConstraints.gridy = 1;
+		gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+		gridBagConstraints.weightx = 100.0;
+		gridBagConstraints.weighty = 100.0;
+		jPanel10.add(outputState, gridBagConstraints);
+
+		gridBagConstraints = new java.awt.GridBagConstraints();
+		gridBagConstraints.gridx = 1;
+		gridBagConstraints.gridy = 3;
+		gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+		gridBagConstraints.weightx = 100.0;
+		gridBagConstraints.weighty = 5.0;
+		getContentPane().add(jPanel10, gridBagConstraints);
 
 	}
 
@@ -180,7 +208,7 @@ public class ReactionViewer extends javax.swing.JFrame{
 	private void checkLogEnableActionPerformed(java.awt.event.ActionEvent evt){
 		if (checkLogEnable.isSelected()){
 			mainForm.agent.loggingReactions = true;
-//			outputState.setText("Please choose the output log file...");
+			outputState.setText("Please choose the output log file...");
 		}else
 			mainForm.agent.loggingReactions = false;
 	}

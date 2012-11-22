@@ -127,8 +127,8 @@ public class EditSpec extends javax.swing.JFrame{
 		outputState.setBackground(Color.CYAN);
 		outputState.setEditable(false);
 		outputState.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0)));
-		outputState.setMinimumSize(new java.awt.Dimension(2, 20));
-		outputState.setPreferredSize(new java.awt.Dimension(2, 20));
+//		outputState.setMinimumSize(new java.awt.Dimension(2, 20));
+//		outputState.setPreferredSize(new java.awt.Dimension(2, 20));
 		gridBagConstraints = new java.awt.GridBagConstraints();
 		gridBagConstraints.gridx = 0;
 		gridBagConstraints.gridy = 2;
@@ -265,16 +265,13 @@ public class EditSpec extends javax.swing.JFrame{
 			for(LogicTuple t: list)
 				spec += format(t);
 			inputSpec.setText(spec);
-			outputState.setText("Specification read.");
+			outputState.setText("ReSpecT specification read.");
 		}catch (TucsonOperationNotPossibleException e){
-			outputState.setText("Specification not available.");
-			e.printStackTrace();
+			outputState.setText(""+e);
 		} catch (UnreachableNodeException e) {
-			outputState.setText("Specification not available.");
-			e.printStackTrace();
+			outputState.setText("TuCSoN Node is unreachable.");
 		} catch (OperationTimeOutException e) {
-			outputState.setText("Specification not available.");
-			e.printStackTrace();
+			outputState.setText("TuCSoN operation timeout exceeded.");
 		}
 	}
 
@@ -285,19 +282,15 @@ public class EditSpec extends javax.swing.JFrame{
 				context.set_s(tid, LogicTuple.parse("[]"), (Long) null);
 			else
 				context.set_s(tid, spec, (Long) null);
-			outputState.setText("Specification set.");
+			outputState.setText("ReSpecT specification set.");
 		}catch (TucsonOperationNotPossibleException e){
-			outputState.setText("Specification set failure (invalid specification).");
-			e.printStackTrace();
+			outputState.setText(""+e);
 		} catch (UnreachableNodeException e) {
-			outputState.setText("Specification set failure (invalid specification).");
-			e.printStackTrace();
+			outputState.setText("TuCSoN Node is unreachable.");
 		} catch (OperationTimeOutException e) {
-			outputState.setText("Specification set failure (invalid specification).");
-			e.printStackTrace();
+			outputState.setText("TuCSoN operation timeout exceeded.");
 		} catch (InvalidLogicTupleException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			outputState.setText("Invalid ReSpecT specification given.");
 		}
 	}
 	
@@ -319,16 +312,13 @@ public class EditSpec extends javax.swing.JFrame{
 		try{
 			String spec = ""+context.get_s(tid, (Long) null).getLogicTupleListResult();
 			inputSpec.setText(spec);
-			outputState.setText("Specification read.");
+			outputState.setText("ReSpecT specification read.");
 		}catch (TucsonOperationNotPossibleException e){
-			outputState.setText("Specification not available.");
-			e.printStackTrace();
+			outputState.setText(""+e);
 		} catch (UnreachableNodeException e) {
-			outputState.setText("Specification not available.");
-			e.printStackTrace();
+			outputState.setText("TuCSoN Node is unreachable.");
 		} catch (OperationTimeOutException e) {
-			outputState.setText("Specification not available.");
-			e.printStackTrace();
+			outputState.setText("TuCSoN operation timeout exceeded.");
 		}
 
 	}
@@ -357,14 +347,12 @@ public class EditSpec extends javax.swing.JFrame{
 				try{
 					FileOutputStream out = new FileOutputStream(name);
 					out.write(inputSpec.getText().getBytes());
-					outputState.setText("Specification saved (file " + name + ").");
+					outputState.setText("ReSpecT specification saved on file '" + name + "'.");
 					specFileName = name;
 				}catch (FileNotFoundException e){
-					outputState.setText("Specification save failure (file " + name + ").");
-					e.printStackTrace();
+					outputState.setText("File '" + name + "' not found.");
 				} catch (IOException e) {
-					outputState.setText("Specification save failure (file " + name + ").");
-					e.printStackTrace();
+					outputState.setText(""+e);
 				}
 			}
 		}
@@ -375,13 +363,11 @@ public class EditSpec extends javax.swing.JFrame{
 		try{
 			FileOutputStream out = new FileOutputStream(specFileName);
 			out.write(inputSpec.getText().getBytes());
-			outputState.setText("Specification saved (file " + specFileName + ").");
+			outputState.setText("ReSpecT specification saved on file '" + specFileName + "'.");
 		}catch (FileNotFoundException e){
-			outputState.setText("Specification save failure (file " + specFileName + " ).");
-			e.printStackTrace();
+			outputState.setText("File '" + specFileName + "' not found.");
 		} catch (IOException e) {
-			outputState.setText("Specification save failure (file " + specFileName + " ).");
-			e.printStackTrace();
+			outputState.setText(""+e);
 		}
 	}
 
@@ -398,14 +384,12 @@ public class EditSpec extends javax.swing.JFrame{
 					byte[] text = new byte[in.available()];
 					in.read(text);
 					inputSpec.setText(new String(text));
-					outputState.setText("Specification loaded (file " + name + ").");
+					outputState.setText("ReSpecT specification loaded from file '" + name + "'.");
 					specFileName = name;
 				}catch (FileNotFoundException e){
-					outputState.setText("Specificatioon load failure (file " + name + ").");
-					e.printStackTrace();
+					outputState.setText("File '" + name + "' not found.");
 				} catch (IOException e) {
-					outputState.setText("Specificatioon load failure (file " + name + ").");
-					e.printStackTrace();
+					outputState.setText(""+e);
 				}
 			}
 		}
