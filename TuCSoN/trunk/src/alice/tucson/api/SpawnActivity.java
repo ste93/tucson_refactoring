@@ -259,6 +259,236 @@ public abstract class SpawnActivity implements Serializable, Runnable{
 	}
 	
 	/**
+	 * @see alice.tucson.api.BulkSynchACC BulkSynchACC
+	 */
+	protected final LogicTuple out_all(LogicTuple tuple){
+		if(aid != null)
+			try {
+				return (LogicTuple) TupleCentreContainer.doBlockingOperation(TucsonOperation.out_allCode(), aid, target, tuple);
+			} catch (TucsonInvalidLogicTupleException e) {
+				e.printStackTrace();
+			} catch (TucsonOperationNotPossibleException e) {
+				e.printStackTrace();
+			}
+		else
+			try {
+				return TupleCentreContainer.doBlockingOperation(TucsonOperation.out_allCode(), this.tcid, target, tuple);
+			} catch (TucsonInvalidLogicTupleException e) {
+				e.printStackTrace();
+			} catch (TucsonOperationNotPossibleException e) {
+				e.printStackTrace();
+			}
+		return null;
+	}
+	
+	/**
+	 * @see alice.tucson.api.BulkSynchACC BulkSynchACC
+	 */
+	protected final LogicTuple in_all(LogicTuple tuple){
+		if(aid != null)
+			try {
+				return (LogicTuple) TupleCentreContainer.doBlockingOperation(TucsonOperation.in_allCode(), aid, target, tuple);
+			} catch (TucsonInvalidLogicTupleException e) {
+				e.printStackTrace();
+			} catch (TucsonOperationNotPossibleException e) {
+				e.printStackTrace();
+			}
+		else
+			try {
+				return TupleCentreContainer.doBlockingOperation(TucsonOperation.in_allCode(), this.tcid, target, tuple);
+			} catch (TucsonInvalidLogicTupleException e) {
+				e.printStackTrace();
+			} catch (TucsonOperationNotPossibleException e) {
+				e.printStackTrace();
+			}
+		return null;
+	}
+	
+	/**
+	 * @see alice.tucson.api.BulkSynchACC BulkSynchACC
+	 */
+	protected final LogicTuple rd_all(LogicTuple tuple){
+		if(aid != null)
+			try {
+				return (LogicTuple) TupleCentreContainer.doBlockingOperation(TucsonOperation.rd_allCode(), aid, target, tuple);
+			} catch (TucsonInvalidLogicTupleException e) {
+				e.printStackTrace();
+			} catch (TucsonOperationNotPossibleException e) {
+				e.printStackTrace();
+			}
+		else
+			try {
+				return TupleCentreContainer.doBlockingOperation(TucsonOperation.rd_allCode(), this.tcid, target, tuple);
+			} catch (TucsonInvalidLogicTupleException e) {
+				e.printStackTrace();
+			} catch (TucsonOperationNotPossibleException e) {
+				e.printStackTrace();
+			}
+		return null;
+	}
+	
+	/**
+	 * @see alice.tucson.api.BulkSynchACC BulkSynchACC
+	 */
+	protected final LogicTuple no_all(LogicTuple tuple){
+		if(aid != null)
+			try {
+				return (LogicTuple) TupleCentreContainer.doBlockingOperation(TucsonOperation.no_allCode(), aid, target, tuple);
+			} catch (TucsonInvalidLogicTupleException e) {
+				e.printStackTrace();
+			} catch (TucsonOperationNotPossibleException e) {
+				e.printStackTrace();
+			}
+		else
+			try {
+				return TupleCentreContainer.doBlockingOperation(TucsonOperation.no_allCode(), this.tcid, target, tuple);
+			} catch (TucsonInvalidLogicTupleException e) {
+				e.printStackTrace();
+			} catch (TucsonOperationNotPossibleException e) {
+				e.printStackTrace();
+			}
+		return null;
+	}
+	
+	/**
+	 * @see alice.tucson.api.UniformSynchACC UniformSynchACC
+	 */
+	protected final LogicTuple uin(LogicTuple tuple){
+		if(aid != null)
+			try {
+				return (LogicTuple) TupleCentreContainer.doBlockingOperation(TucsonOperation.uinCode(), aid, target, tuple);
+			} catch (TucsonInvalidLogicTupleException e) {
+				e.printStackTrace();
+			} catch (TucsonOperationNotPossibleException e) {
+				e.printStackTrace();
+			}
+		else
+			try {
+				return TupleCentreContainer.doBlockingOperation(TucsonOperation.uinCode(), this.tcid, target, tuple);
+			} catch (TucsonInvalidLogicTupleException e) {
+				e.printStackTrace();
+			} catch (TucsonOperationNotPossibleException e) {
+				e.printStackTrace();
+			}
+		return null;
+	}
+	
+	/**
+	 * @see alice.tucson.api.UniformSynchACC UniformSynchACC
+	 */
+	protected final LogicTuple urd(LogicTuple tuple){
+		if(aid != null)
+			try {
+				return (LogicTuple) TupleCentreContainer.doBlockingOperation(TucsonOperation.urdCode(), aid, target, tuple);
+			} catch (TucsonInvalidLogicTupleException e) {
+				e.printStackTrace();
+			} catch (TucsonOperationNotPossibleException e) {
+				e.printStackTrace();
+			}
+		else
+			try {
+				return TupleCentreContainer.doBlockingOperation(TucsonOperation.urdCode(), this.tcid, target, tuple);
+			} catch (TucsonInvalidLogicTupleException e) {
+				e.printStackTrace();
+			} catch (TucsonOperationNotPossibleException e) {
+				e.printStackTrace();
+			}
+		return null;
+	}
+	
+	/**
+	 * @see alice.tucson.api.UniformSynchACC UniformSynchACC
+	 */
+	protected final LogicTuple uno(LogicTuple tuple){
+		if(aid != null)
+			try {
+				return (LogicTuple) TupleCentreContainer.doBlockingOperation(TucsonOperation.unoCode(), aid, target, tuple);
+			} catch (TucsonInvalidLogicTupleException e) {
+				e.printStackTrace();
+			} catch (TucsonOperationNotPossibleException e) {
+				e.printStackTrace();
+			}
+		else
+			try {
+				return TupleCentreContainer.doBlockingOperation(TucsonOperation.unoCode(), this.tcid, target, tuple);
+			} catch (TucsonInvalidLogicTupleException e) {
+				e.printStackTrace();
+			} catch (TucsonOperationNotPossibleException e) {
+				e.printStackTrace();
+			}
+		return null;
+	}
+	
+	/**
+	 * @see alice.tucson.api.UniformSynchACC UniformSynchACC
+	 */
+	protected final LogicTuple uinp(LogicTuple tuple){
+		if(aid != null)
+			try {
+				return (LogicTuple) TupleCentreContainer.doBlockingOperation(TucsonOperation.uinpCode(), aid, target, tuple);
+			} catch (TucsonInvalidLogicTupleException e) {
+				e.printStackTrace();
+			} catch (TucsonOperationNotPossibleException e) {
+				e.printStackTrace();
+			}
+		else
+			try {
+				return TupleCentreContainer.doBlockingOperation(TucsonOperation.uinpCode(), this.tcid, target, tuple);
+			} catch (TucsonInvalidLogicTupleException e) {
+				e.printStackTrace();
+			} catch (TucsonOperationNotPossibleException e) {
+				e.printStackTrace();
+			}
+		return null;
+	}
+	
+	/**
+	 * @see alice.tucson.api.UniformSynchACC UniformSynchACC
+	 */
+	protected final LogicTuple urdp(LogicTuple tuple){
+		if(aid != null)
+			try {
+				return (LogicTuple) TupleCentreContainer.doBlockingOperation(TucsonOperation.urdpCode(), aid, target, tuple);
+			} catch (TucsonInvalidLogicTupleException e) {
+				e.printStackTrace();
+			} catch (TucsonOperationNotPossibleException e) {
+				e.printStackTrace();
+			}
+		else
+			try {
+				return TupleCentreContainer.doBlockingOperation(TucsonOperation.urdpCode(), this.tcid, target, tuple);
+			} catch (TucsonInvalidLogicTupleException e) {
+				e.printStackTrace();
+			} catch (TucsonOperationNotPossibleException e) {
+				e.printStackTrace();
+			}
+		return null;
+	}
+	
+	/**
+	 * @see alice.tucson.api.UniformSynchACC UniformSynchACC
+	 */
+	protected final LogicTuple unop(LogicTuple tuple){
+		if(aid != null)
+			try {
+				return (LogicTuple) TupleCentreContainer.doBlockingOperation(TucsonOperation.unopCode(), aid, target, tuple);
+			} catch (TucsonInvalidLogicTupleException e) {
+				e.printStackTrace();
+			} catch (TucsonOperationNotPossibleException e) {
+				e.printStackTrace();
+			}
+		else
+			try {
+				return TupleCentreContainer.doBlockingOperation(TucsonOperation.unopCode(), this.tcid, target, tuple);
+			} catch (TucsonInvalidLogicTupleException e) {
+				e.printStackTrace();
+			} catch (TucsonOperationNotPossibleException e) {
+				e.printStackTrace();
+			}
+		return null;
+	}
+	
+	/**
 	 * Checks if the activity to spawn has been correctly instantiated.
 	 * 
 	 * @return true if instantiation is complete, false otherwise.
@@ -268,6 +498,18 @@ public abstract class SpawnActivity implements Serializable, Runnable{
 			if(target != null)
 				return true;
 		return false;
+	}
+	
+	/**
+	 * Standard output log utility.
+	 * 
+	 * @param msg the message to log on standard output.
+	 */
+	protected void log(String msg){
+		if(aid != null)
+			System.out.println("["+aid.getAgentName()+"-spawned]: " + msg);
+		else
+			System.out.println("["+tcid.toString()+"-spawned]: " + msg);
 	}
 	
 }

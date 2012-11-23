@@ -561,7 +561,7 @@ public class EventViewer extends javax.swing.JFrame{
 		if(t == null)
 			outputState.setText("Please input an admissible tuple template..."); 
 		else{ 
-			mainForm.agent.logTupleFilter = t;
+			mainForm.agent.logOpFilter = t;
 			buttonGetActionPerformed(null);
 		}
 	}
@@ -590,9 +590,9 @@ public class EventViewer extends javax.swing.JFrame{
 				outputState.setText("Please input an admissible tuple template...");
 			}else{
 				buttonAcceptFilterLog.setEnabled(false);
-				mainForm.protocol.wsetFilter = null;
-				inputFilterLog.setText("");
-				context.setProtocol(mainForm.protocol);
+				mainForm.agent.logOpFilter = null;
+//				inputFilterLog.setText("");
+//				context.setProtocol(mainForm.protocol);
 			}
 		}catch (Exception e){
 			outputState.setText(""+e);
@@ -625,7 +625,7 @@ public class EventViewer extends javax.swing.JFrame{
 			}else{
 				buttonAcceptPattern.setEnabled(false);
 				mainForm.protocol.wsetFilter = null;
-				inputFilterView.setText("");
+//				inputFilterView.setText("");
 				context.setProtocol(mainForm.protocol);
 			}
 		}catch (Exception e){

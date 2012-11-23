@@ -43,6 +43,7 @@ public class InspectorCore extends alice.tucson.introspection.Inspector{
 	protected String logTupleFilename;
 	protected FileWriter logTupleWriter;
 	protected LogicTuple logTupleFilter;
+	protected LogicTuple logOpFilter;
 
 	protected boolean loggingQueries = false;
 	protected String logQueryFilename;
@@ -110,36 +111,39 @@ public class InspectorCore extends alice.tucson.introspection.Inspector{
 //					logTupleWriter.write("snapshot(\n" + "    time_vm(" + msg.vmTime + "),\n" + "    time_local("
 //							+ msg.localTime + "),\n" + "    tuple_filter(" + form.protocol.tsetFilter + "),\n"
 //							+ "    tuple_log_filter(" + logTupleFilter + "),\n" + "    tuple_list([ \n");
-					logTupleWriter.write("snapshot(\n    " +
+					logTupleWriter.write("snapshot(\n" +
 							"localtime(date("+cal.get(Calendar.DAY_OF_MONTH)+"-"+
 									cal.get(Calendar.MONTH)+"-"+
 									cal.get(Calendar.YEAR)+"), time("+
 									cal.get(Calendar.HOUR_OF_DAY)+":"+
 									cal.get(Calendar.MINUTE)+":"+
 									cal.get(Calendar.SECOND)+")"+
-							"),\n    tuples([ \n");
+							"),\n\ttuples([\n");
 
 					it = msg.tuples.iterator();
 					if (logTupleFilter == null){
 						if (it.hasNext()){
-							st = st + "        " + it.next().toString();
+							st = st + "\t\t" + it.next().toString() + ",\n";
 							while (it.hasNext())
-								st = st + ",\n        " + it.next().toString();
+								st = st + "\t\t" + it.next().toString() + ",\n";
+							st = st.substring(0, st.length()-2);
 						}
 					}else{
 						if (it.hasNext()){
 							LogicTuple tuple = (LogicTuple) it.next();
 							if (logTupleFilter.match(tuple))
-								st = st + "        " + tuple.toString();
+								st = st + "\t\t" + tuple.toString() + ",\n";
 							while (it.hasNext()){
 								tuple = (LogicTuple) it.next();
 								if (logTupleFilter.match(tuple))
-									st = st + ",\n        " + tuple.toString();
+									st = st + "\t\t" + tuple.toString() + ",\n";
 							}
+							if(!st.isEmpty())
+								st = st.substring(0, st.length()-2);
 						}
 					}
 					
-					logTupleWriter.write(st + "\n	])\n).\n");
+					logTupleWriter.write(st + "\n\t])\n).\n");
 					logTupleWriter.flush();
 					
 				}catch(IOException e){
@@ -177,40 +181,51 @@ public class InspectorCore extends alice.tucson.introspection.Inspector{
 					st = "";
 //					logQueryWriter.write("snapshot( \n" + "    time_vm(" + msg.vmTime + "),\n" + "    time_local("
 //							+ msg.localTime + "),\n" + "    query_list([ \n");
-					logQueryWriter.write("snapshot(\n    " +
+					logQueryWriter.write("snapshot(\n" +
 							"localtime(date("+cal.get(Calendar.DAY_OF_MONTH)+"-"+
 									cal.get(Calendar.MONTH)+"-"+
 									cal.get(Calendar.YEAR)+"), time("+
 									cal.get(Calendar.HOUR_OF_DAY)+":"+
 									cal.get(Calendar.MINUTE)+":"+
 									cal.get(Calendar.SECOND)+"))"+
-							"),\n    operations([ \n");
+							"),\n\toperations([\n");
 					it = msg.wnEvents.iterator();
-//					if (logTupleFilter == null){
+					if (logOpFilter == null){
 						if (it.hasNext()){
 							ev = (WSetEvent)it.next();
 							st = st + "\t\top(what(" + ev.getOp()
 									+ "),\n\t\t\twho(" + ((AgentId)ev.getSource()).getLocalName() + 
-									"),\n\t\t\twhere(" + ev.getTarget() + ")\n\t\t)";
+									"),\n\t\t\twhere(" + ev.getTarget() + ")\n\t\t),\n";
 							while (it.hasNext()){
 								ev = (WSetEvent)it.next();
-								st = st + ",\n\t\top(what(" + ev.getOp()
+								st = st + "\t\top(what(" + ev.getOp()
 										+ "),\n\t\t\twho(" + ((AgentId)ev.getSource()).getLocalName() + 
-										"),\n\t\t\twhere(" + ev.getTarget() + ")\n\t\t)";
+										"),\n\t\t\twhere(" + ev.getTarget() + ")\n\t\t),\n";
 							}
+							st = st.substring(0, st.length()-2);
 						}
-//					}else{
-//						if (it.hasNext()){
-//							LogicTuple tuple = (LogicTuple) it.next();
-//							if (logTupleFilter.match(tuple))
-//								st = st + "        " + tuple.toString();
-//							while (it.hasNext()){
-//								tuple = (LogicTuple) it.next();
-//								if (logTupleFilter.match(tuple))
-//									st = st + ",\n        " + tuple.toString();
-//							}
-//						}
-//					}
+					}else{
+						if (it.hasNext()){
+							ev = (WSetEvent)it.next();
+							LogicTuple tuple = ev.getOp();
+							if (logOpFilter.match(tuple)){
+								st = st + "\t\top(what(" + ev.getOp()
+										+ "),\n\t\t\twho(" + ((AgentId)ev.getSource()).getLocalName() + 
+										"),\n\t\t\twhere(" + ev.getTarget() + ")\n\t\t),\n";
+							}
+							while (it.hasNext()){
+								ev = (WSetEvent)it.next();
+								tuple = ev.getOp();
+								if (logOpFilter.match(tuple)){
+									st = st + "\t\top(what(" + ev.getOp()
+											+ "),\n\t\t\twho(" + ((AgentId)ev.getSource()).getLocalName() + 
+											"),\n\t\t\twhere(" + ev.getTarget() + ")\n\t\t),\n";
+								}
+							}
+							if(!st.isEmpty())
+								st = st.substring(0, st.length()-2);
+						}
+					}
 					logQueryWriter.write(st + "\n\t])\n).\n");
 					logQueryWriter.flush();
 				}catch (IOException e){
@@ -234,14 +249,14 @@ public class InspectorCore extends alice.tucson.introspection.Inspector{
 			if (loggingReactions){
 				try{
 //					logReactionWriter.write("succeed-reaction( time(" + msg.vmTime + "), " + tr.getReaction() + ").\n");
-					logReactionWriter.write("snapshot(\n    " +
+					logReactionWriter.write("snapshot(\n" +
 							"localtime(date("+cal.get(Calendar.DAY_OF_MONTH)+"-"+
 									cal.get(Calendar.MONTH)+"-"+
 									cal.get(Calendar.YEAR)+"), time("+
 									cal.get(Calendar.HOUR_OF_DAY)+":"+
 									cal.get(Calendar.MINUTE)+":"+
 									cal.get(Calendar.SECOND)+")"+
-							"),\n    succeeded( " + tr.getReaction() + " ).\n");
+							"),\n\tsucceeded( " + tr.getReaction() + " ).\n");
 					logReactionWriter.flush();
 				}catch (IOException e){
 					e.printStackTrace();
@@ -262,14 +277,14 @@ public class InspectorCore extends alice.tucson.introspection.Inspector{
 			if (loggingReactions){
 				try{
 //					logReactionWriter.write("failed-reaction( time(" + msg.vmTime + "), " + tr.getReaction() + ").\n");
-					logReactionWriter.write("snapshot(\n    " +
+					logReactionWriter.write("snapshot(\n" +
 							"localtime(date("+cal.get(Calendar.DAY_OF_MONTH)+"-"+
 									cal.get(Calendar.MONTH)+"-"+
 									cal.get(Calendar.YEAR)+"), time("+
 									cal.get(Calendar.HOUR_OF_DAY)+":"+
 									cal.get(Calendar.MINUTE)+":"+
 									cal.get(Calendar.SECOND)+")"+
-							"),\n    failed( " + tr.getReaction() + " ).\n");
+							"),\n\tfailed( " + tr.getReaction() + " ).\n");
 					logReactionWriter.flush();
 				}catch (IOException e){
 					e.printStackTrace();
