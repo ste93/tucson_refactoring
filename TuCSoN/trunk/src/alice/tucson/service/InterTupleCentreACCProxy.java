@@ -32,7 +32,6 @@ import alice.tucson.network.TucsonProtocolTCP;
 import alice.tucson.service.TucsonOperation;
 import alice.tuplecentre.api.Tuple;
 import alice.tuplecentre.api.TupleTemplate;
-import alice.tuplecentre.core.TCCycleResult.Outcome;
 import alice.tuprolog.Prolog;
 import alice.tuprolog.lib.InvalidObjectIdException;
 
@@ -356,7 +355,6 @@ public class InterTupleCentreACCProxy implements InterTupleCentreACC{
 				}else
 					op.setOpResult(Outcome.FAILURE);
 				op.notifyCompletion(ev.operationSucceeded(), msg.isAllowed());
-				postEvent(ev);
 				*/
 				
 				postEvent(ev);

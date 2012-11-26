@@ -699,11 +699,11 @@ public class TucsonNodeService{
 	public static void main(String args[]){
 		
 		if(alice.util.Tools.isOpt(args, "-help") || alice.util.Tools.isOpt(args, "-?")){
-			log("Arguments: -port {portNumber} {-? | -help}");
+			log("Arguments: -portno {portNumber} {-? | -help}");
 //			log("Arguments: -port {portNumber} -config {configFile} -persistency {persistencyTemplate} {-? | -help}");
 		}else{
 						
-			String portInfo = alice.util.Tools.getOpt(args, "-port");
+			String portInfo = alice.util.Tools.getOpt(args, "-portno");
 			String configInfo = alice.util.Tools.getOpt(args, "-config");
 			String persistencyInfo = alice.util.Tools.getOpt(args, "-persistency");
 			
