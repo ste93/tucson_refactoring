@@ -44,6 +44,7 @@ public class ACCProxyNodeSide extends ACCAbstractProxyNodeSide{
 	
 	private boolean exit = false;
 	private TucsonAgentId agentId;
+	private TucsonTupleCentreId tcId;
 	TucsonProtocol dialog;
 	ObjectInputStream inStream;
 	ObjectOutputStream outStream;
@@ -65,11 +66,25 @@ public class ACCProxyNodeSide extends ACCAbstractProxyNodeSide{
 		ctxId = Integer.parseInt(p.getProperty("context-id"));
 
 		String name = p.getProperty("agent-identity");
-		try{
-			agentId = new TucsonAgentId(name);
-		}catch(TucsonInvalidAgentIdException e){
-			System.err.println("[ACCProxyNodeSide]: " + e);
-			e.printStackTrace();
+		if(name == null){
+			name = p.getProperty("tc-identity");
+			try {
+				tcId = new TucsonTupleCentreId(name);
+				agentId = new TucsonAgentId("tcAgent-"+name);
+			} catch (TucsonInvalidTupleCentreIdException e) {
+				System.err.println("[ACCProxyNodeSide]: " + e);
+				e.printStackTrace();
+			} catch (TucsonInvalidAgentIdException e) {
+				System.err.println("[ACCProxyNodeSide]: " + e);
+				e.printStackTrace();
+			}
+		}else{
+			try{
+				agentId = new TucsonAgentId(name);
+			}catch(TucsonInvalidAgentIdException e){
+				System.err.println("[ACCProxyNodeSide]: " + e);
+				e.printStackTrace();
+			}
 		}
 
 		this.dialog = dialog;
@@ -145,8 +160,11 @@ public class ACCProxyNodeSide extends ACCAbstractProxyNodeSide{
 				node.resolveCore(tid.getName());
 				node.addTCAgent(agentId, tid);
 				try{
-					resList= (List<LogicTuple>) TupleCentreContainer.doBlockingSpecOperation(msg_type, agentId, tid, msg.getTuple());
-					log("resList = " + resList);
+					if(tcId == null)
+						resList= (List<LogicTuple>) TupleCentreContainer.doBlockingSpecOperation(msg_type, agentId, tid, msg.getTuple());
+					else
+						resList= (List<LogicTuple>) TupleCentreContainer.doBlockingSpecOperation(msg_type, tcId, tid, msg.getTuple());
+//					log("resList = " + resList);
 				}catch(Exception e){
 					System.err.println("[ACCProxyNodeSide]: " + e);
 					e.printStackTrace();
@@ -170,7 +188,10 @@ public class ACCProxyNodeSide extends ACCAbstractProxyNodeSide{
 				node.addTCAgent(agentId, tid);
 				try{
 //					log("msg.getTuple = " + msg.getTuple());
-					resList = (List<LogicTuple>) TupleCentreContainer.doBlockingOperation(msg_type, agentId, tid, msg.getTuple());
+					if(tcId == null)
+						resList = (List<LogicTuple>) TupleCentreContainer.doBlockingOperation(msg_type, agentId, tid, msg.getTuple());
+					else
+						resList = (List<LogicTuple>) TupleCentreContainer.doBlockingOperation(msg_type, tcId, tid, msg.getTuple());
 				}catch(Exception e){
 					System.err.println("[ACCProxyNodeSide]: " + e);
 					e.printStackTrace();
@@ -193,7 +214,10 @@ public class ACCProxyNodeSide extends ACCAbstractProxyNodeSide{
 				node.resolveCore(tid.getName());
 				node.addTCAgent(agentId, tid);
 				try{
-					resList = (List<LogicTuple>) TupleCentreContainer.doBlockingOperation(msg_type, agentId, tid, null);
+					if(tcId == null)
+						resList = (List<LogicTuple>) TupleCentreContainer.doBlockingOperation(msg_type, agentId, tid, null);
+					else
+						resList = (List<LogicTuple>) TupleCentreContainer.doBlockingOperation(msg_type, tcId, tid, null);
 				}catch(Exception e){
 					System.err.println("[ACCProxyNodeSide]: " + e);
 					e.printStackTrace();
@@ -216,7 +240,10 @@ public class ACCProxyNodeSide extends ACCAbstractProxyNodeSide{
 				node.resolveCore(tid.getName());
 				node.addTCAgent(agentId, tid);
 				try{
-					resList = (List<LogicTuple>) TupleCentreContainer.doBlockingSpecOperation(msg_type, agentId, tid, null);
+					if(tcId == null)
+						resList = (List<LogicTuple>) TupleCentreContainer.doBlockingSpecOperation(msg_type, agentId, tid, null);
+					else
+						resList = (List<LogicTuple>) TupleCentreContainer.doBlockingSpecOperation(msg_type, tcId, tid, null);
 					if(resList==null)
 						resList = new LinkedList<LogicTuple>();
 //					log("res = " + res);
@@ -254,7 +281,10 @@ public class ACCProxyNodeSide extends ACCAbstractProxyNodeSide{
 				synchronized(requests){
 					try{
 //						log("doing op " + msg.getType() + ", " + msg.getTuple() + ", " + msg.getTid());
-						op = TupleCentreContainer.doNonBlockingOperation(msg_type, agentId, tid, msg.getTuple(), this);
+						if(tcId == null)
+							op = TupleCentreContainer.doNonBlockingOperation(msg_type, agentId, tid, msg.getTuple(), this);
+						else
+							op = TupleCentreContainer.doNonBlockingOperation(msg_type, tcId, tid, msg.getTuple(), this);
 					}catch(Exception e){
 						System.err.println("[ACCProxyNodeSide]: " + e);
 						e.printStackTrace();
@@ -275,7 +305,10 @@ public class ACCProxyNodeSide extends ACCAbstractProxyNodeSide{
 				
 				synchronized(requests){
 					try{
-						op = TupleCentreContainer.doNonBlockingSpecOperation(msg_type, agentId, tid, msg.getTuple(), this);
+						if(tcId == null)
+							op = TupleCentreContainer.doNonBlockingSpecOperation(msg_type, agentId, tid, msg.getTuple(), this);
+						else
+							op = TupleCentreContainer.doNonBlockingSpecOperation(msg_type, tcId, tid, msg.getTuple(), this);
 					}catch(Exception e){
 						System.err.println("[ACCProxyNodeSide]: " + e);
 						e.printStackTrace();

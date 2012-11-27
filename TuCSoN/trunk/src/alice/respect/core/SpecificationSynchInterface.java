@@ -29,6 +29,7 @@ import alice.respect.api.IRespectOperation;
 import alice.respect.api.RespectSpecification;
 import alice.respect.api.exceptions.InvalidSpecificationException;
 import alice.respect.api.exceptions.OperationNotPossibleException;
+import alice.tuplecentre.api.IId;
 
 /**
  *
@@ -105,7 +106,7 @@ public class SpecificationSynchInterface extends RootInterface implements ISpeci
 		return unify(t,op.getLogicTupleResult());
 	}
   	
-	public List<LogicTuple> set_s(AgentId aid, RespectSpecification spec) throws OperationNotPossibleException, InvalidSpecificationException {
+	public List<LogicTuple> set_s(IId aid, RespectSpecification spec) throws OperationNotPossibleException, InvalidSpecificationException {
 		IRespectOperation op = getCore().set_s(aid, spec);
 		if(aid.toString().equals("node_agent") || aid.toString().startsWith("':'(inspector_edit_spec_"))
 			return new LinkedList<LogicTuple>();
@@ -113,13 +114,13 @@ public class SpecificationSynchInterface extends RootInterface implements ISpeci
 		return op.getLogicTupleListResult();
 	}
 	
-	public List<LogicTuple> set_s(AgentId aid, LogicTuple t) throws OperationNotPossibleException {
+	public List<LogicTuple> set_s(IId aid, LogicTuple t) throws OperationNotPossibleException {
 		IRespectOperation op = getCore().set_s(aid, t);
 		op.waitForOperationCompletion();
 		return op.getLogicTupleListResult();
 	}
 	
-	public List<LogicTuple> get_s(AgentId aid) throws OperationNotPossibleException {
+	public List<LogicTuple> get_s(IId aid) throws OperationNotPossibleException {
 		IRespectOperation op = getCore().get_s(aid);
 		op.waitForOperationCompletion();
 		return op.getLogicTupleListResult();

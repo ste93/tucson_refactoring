@@ -67,8 +67,11 @@ public abstract class TucsonProtocol implements java.io.Serializable{
 		send(REQ_ENTERCONTEXT);
 
 		String agentName = context.getProperty("agent-identity");
-		if(agentName == null)
-			agentName = "anonymous";
+		if(agentName == null){
+			agentName = context.getProperty("tc-identity");
+			if(agentName == null)
+				agentName = "anonymous";
+		}
 		send(agentName);
 
 		String agentProfile = context.getProperty("agent-role");
@@ -99,10 +102,14 @@ public abstract class TucsonProtocol implements java.io.Serializable{
 
 	public void receiveEnterRequest() throws Exception{
 		String agentName = receiveString();
+		System.out.println("[TucsonProtocol]: agentName = " + agentName);
 		String agentRole = receiveString();
 		String tcName = receiveString();
 		Properties profile = new Properties();
-		profile.setProperty("agent-identity", agentName);
+		if(agentName.startsWith("'@'"))
+			profile.setProperty("tc-identity", agentName);
+		else
+			profile.setProperty("agent-identity", agentName);
 		profile.setProperty("agent-role", agentRole);
 		profile.setProperty("tuple-centre", tcName);
 		context = new ACCDescription(profile);

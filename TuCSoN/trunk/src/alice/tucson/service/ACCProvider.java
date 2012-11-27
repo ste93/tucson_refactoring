@@ -81,6 +81,8 @@ public class ACCProvider{
 		try{
 			
 			String agentName = profile.getProperty("agent-identity");
+			if(agentName == null)
+				agentName = profile.getProperty("tc-identity");
 			LogicTuple req = new LogicTuple("context_request", new Value(agentName), new Var("CtxId"));
 			LogicTuple result = (LogicTuple) TupleCentreContainer.doBlockingOperation(TucsonOperation.inpCode(), aid, config, req);
 			

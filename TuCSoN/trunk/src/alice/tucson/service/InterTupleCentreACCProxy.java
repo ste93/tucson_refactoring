@@ -195,7 +195,7 @@ public class InterTupleCentreACCProxy implements InterTupleCentreACC{
 				return tc.getSession();
 		}
 //		log("New connection to setup toward node " + opNode+":"+port);	
-		profile.setProperty("agent-identity", aid.toString());
+		profile.setProperty("tc-identity", aid.toString());
 		profile.setProperty("agent-role", "user");
 
 		TucsonProtocol dialog = null;

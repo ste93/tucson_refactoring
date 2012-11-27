@@ -1527,6 +1527,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     	IId source = ev.getSource();
     	log("\tfrom_tc) source = "+source.toString());
     	if(source.isTC()){
+    		log("\t\tsource.isTC() is TRUE!");
     		return true;    		
     	}else{
     		log("\t\tsource.isTC() is FALSE!");
