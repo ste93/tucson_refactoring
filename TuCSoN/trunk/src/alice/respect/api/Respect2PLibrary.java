@@ -1450,6 +1450,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     	Event ev = vm.getCurrentReactionEvent();
     	IId target = ev.getTarget();
     	IId current_tc = this.vm.getId();
+//    	IId current_tc = ev.getReactingTC();
     	log("\tintra) target = "+target.toString()+", current_tc = "+current_tc.toString());
     	if(current_tc.toString().equals(target.toString()))
     		return true;
@@ -1457,12 +1458,6 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     		return false;
     }
     
-    /*
-     * BUG: it doesn't trigger when it should. Maybe TuCSoN gives the operation
-     * to the target ReSpecT tc whereas TuCSoN should give the operation to
-     * ReSpecT VM (whatever this means) and this one should forward it to the
-     * target tc. 
-     */
     public boolean inter_0(){
     	return !intra_0();
     }
@@ -1475,6 +1470,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     	Event ev = vm.getCurrentReactionEvent();
     	IId source = ev.getSource();
     	IId current_tc = this.vm.getId();
+//    	IId current_tc = ev.getReactingTC();
     	log("\texo) source = "+source.toString()+", current_tc = "+current_tc.toString());
     	if(!current_tc.toString().equals(source.toString()))
     		return true;
@@ -1594,9 +1590,6 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     	return from_tc_0() && to_tc_0() && exo_0() && intra_0();
     }
     
-    /*
-     * BUG: it doesn't trigger when it should due to 'inter_0()'.
-     */
     public boolean link_out_0(){
     	return from_tc_0() && to_tc_0() && endo_0() && inter_0();
     }
