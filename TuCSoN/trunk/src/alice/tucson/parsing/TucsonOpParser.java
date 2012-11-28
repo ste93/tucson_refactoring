@@ -46,7 +46,10 @@ public class TucsonOpParser {
 		int iOp = input.indexOf('?');
 		int iBra = input.indexOf('(');
 		if(iOp != -1){
-			if(iBra == -1 || iOp < iBra){
+			if(iBra != -1 && iBra < iOp){
+				cmd = input.substring(iOp + 1, input.length()).trim();
+				tc = input.substring(0, iOp).trim();
+			}else if(iBra == -1 || iOp < iBra){
 				cmd = input.substring(iOp + 1, input.length()).trim();
 				tc = input.substring(0, iOp).trim();
 			}
