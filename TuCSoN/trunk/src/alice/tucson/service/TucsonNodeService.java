@@ -85,7 +85,7 @@ public class TucsonNodeService{
 		persistencyTemplate = persistTempl;
 		
 		try{
-			nodeAid = new TucsonAgentId("node_agent");
+			nodeAid = new TucsonAgentId("'$TucsonNodeService-Agent'");
 			idConfigTC = new TucsonTupleCentreId("'$ORG'", "localhost", ""+portNumber);
 			idObsTC = new TucsonTupleCentreId("'$OBS'", "localhost", ""+portNumber);
 		}catch(TucsonInvalidAgentIdException e){
