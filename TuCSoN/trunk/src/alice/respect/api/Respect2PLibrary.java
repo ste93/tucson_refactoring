@@ -59,8 +59,12 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         
     	return 
         
-    	":- op(600, xfx, '?'). \n"+
-        ":- op(550, xfx, '@'). \n"+
+//    	":- op(600, xfx, '?'). \n"+
+//      ":- op(550, xfx, '@'). \n"+
+		":- op(551, xfx, '?'). \n"
+		+ ":- op(550, xfx, '@'). \n"
+		+ ":- op(549, xfx, ':'). \n"
+		+ ":- op(548, xfx, '.'). \n" +
 
         "TC ? Op :- not(TC = Name @ Host), TC@localhost ? Op, !. \n"+
         
@@ -1523,10 +1527,10 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     	IId source = ev.getSource();
     	log("\tfrom_tc) source = "+source.toString());
     	if(source.isTC()){
-    		log("\t\tsource.isTC() is TRUE!");
+    		log("\t\tsource.isTC() is true");
     		return true;    		
     	}else{
-    		log("\t\tsource.isTC() is FALSE!");
+    		log("\t\tsource.isTC() is false");
     		return false;
     	}
     }
@@ -1579,18 +1583,22 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      ********************************************************************/
     
     public boolean operation_0(){
+    	log("operation ->");
     	return from_agent_0() && to_tc_0();
     }
     
     public boolean internal_0(){
+    	log("internal ->");
     	return from_tc_0() && to_tc_0() && endo_0() && intra_0();
     }
     
     public boolean link_in_0(){
+    	log("link_in ->");
     	return from_tc_0() && to_tc_0() && exo_0() && intra_0();
     }
     
     public boolean link_out_0(){
+    	log("link_out ->");
     	return from_tc_0() && to_tc_0() && endo_0() && inter_0();
     }
     
@@ -1607,8 +1615,9 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      * process.
      */
     public boolean current_predicate_1(Term predicate){
-    	log("\tcurrent_predicate) " + vm.getCurrentReactionTerm());
-    	return unify(predicate, vm.getCurrentReactionTerm());
+//    	log("\tcurrent_predicate) " + vm.getCurrentReactionTerm());
+//    	return unify(predicate, vm.getCurrentReactionTerm());
+    	return unify(predicate, new Struct("current_predicate"));
     }
     
     /*
@@ -1616,7 +1625,9 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      */
     public boolean event_predicate_1(Term predicate){
 //    	return unify(predicate, (Term)vm.getCurrentReactionEvent().getTuple());
-    	return false;
+//    	return false;
+    	log("\tevent_predicate) " + vm.getCurrentReactionTerm());
+    	return unify(predicate, vm.getCurrentReactionTerm());
     }
     
     /*
@@ -1635,9 +1646,9 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      * started the current ReSpecT computation.
      */
     public boolean current_tuple_1(Term tuple){
-    	AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
-    	log("\tcurrent_tuple) " + vm.getCurrentReactionTerm().getArg(0));
-    	return unify(tuple, vm.getCurrentReactionTerm().getArg(0).copyGoal(v,0));
+//    	AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
+//    	log("\tcurrent_tuple) " + vm.getCurrentReactionTerm().getArg(0));
+    	return unify(tuple, new Var());
     }
     
     /**
@@ -1668,9 +1679,9 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      * reaction.
      */
     public boolean current_source_1(Term source){
-    	log("\tcurrent_source) " + vm.getId());
-    	return unify(source, 
-        		new Struct(vm.getId().toString()) );
+//    	log("\tcurrent_source) " + vm.getId());
+    	Term t = ((TupleCentreId)vm.getId()).toTerm();
+    	return unify(source, t);
     }
     
     /**
@@ -1700,9 +1711,11 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      * @return
      */
     public boolean current_target_1(Term target){
-    	log("\tcurrent_target) " + vm.getId());
-    	return unify(target, 
-        		new Struct(vm.getId().toString()) );
+    	log("\tcurrent_target) " + vm.getId().toString());
+    	Term t = ((TupleCentreId)vm.getId()).toTerm();
+//    	log("\t\tterm = " + t.toString());
+//    	log("\t\ttarget = " + target.toString());
+    	return unify(target, t);
     }
     
     /*

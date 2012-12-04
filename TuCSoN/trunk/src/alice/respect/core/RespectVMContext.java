@@ -151,7 +151,7 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 	            
 	            if (ev.isInput()){
 	            	
-	            	log("input phase");
+	            	log("INVOCATION phase");
 	                InputEvent ie = (InputEvent)ev;
 					RespectOperation op=(RespectOperation)ev.getOperation();
 //					log("op.getLogicTupleArgument() = " + op.getLogicTupleArgument());
@@ -274,7 +274,7 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 
 					}else{
 						
-						log("output phase");
+						log("COMPLETION phase");
 						
 						if (op.isSpawn()){
 							currentReactionTerm=new Struct("spawn",op.getLogicTupleResult().toTerm());
@@ -469,7 +469,7 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 
         SolveInfo info=core.solve(goalList);
         core.solveEnd();
-        log("Prolog evaluation success = "+info.isSuccess());
+        log("Reaction evaluation success = "+info.isSuccess());
         if (info.isSuccess()){
             if (vm.hasInspectors())
             	vm.notifyInspectableEvent(new ObservableEventReactionOK(this,z));            
@@ -507,8 +507,10 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
     }
     
     private boolean evalGuard(Term g){
+    	log("guard = " + g);
         SolveInfo info=core.solve(g);
         core.solveEnd();
+        log("evaluation = " + info.isSuccess());
         return info.isSuccess();
     }
     
@@ -530,6 +532,9 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
             if (co.isAtom()){
                 alice.tuprolog.Theory thspec=new alice.tuprolog.Theory(co.getName());
                 core.setTheory(thspec);
+//                for(Operator op : core.getCurrentOperatorList()){
+//                	log("op = " + op.name + ", " + op.prio);
+//                }
                 trigCore.setTheory(thspec);
             }else if (co.isList()){
                 alice.tuprolog.Theory thspec=new alice.tuprolog.Theory(co);
