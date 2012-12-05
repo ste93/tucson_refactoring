@@ -563,7 +563,9 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
             		delay = timeValue - currLocalTime;
             	else
             		delay = 0;
-            	currTimer.schedule(new RespectTimerTask(this,RespectOperation.makeTime(getPrologCore(),new LogicTuple("time",new TupleArgument(current)), null)),delay);
+            	currTimer.schedule(new RespectTimerTask(this,
+            			RespectOperation.makeTime(getPrologCore(),
+            					new LogicTuple("time",new TupleArgument(current)), null)),delay);
             }
             return true;
 
@@ -614,7 +616,9 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
             		delay = timeValue - currLocalTime;
             	else
             		delay = 0;
-            	currTimer.schedule(new RespectTimerTask(this,RespectOperation.makeTime(getPrologCore(), new LogicTuple("time",new TupleArgument(current)), null)),delay);
+            	currTimer.schedule(new RespectTimerTask(this,
+            			RespectOperation.makeTime(getPrologCore(), 
+            					new LogicTuple("time",new TupleArgument(current)), null)),delay);
             }
             return true;
 

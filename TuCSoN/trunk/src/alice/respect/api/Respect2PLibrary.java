@@ -1740,7 +1740,8 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      * @return true if the actual time is the expected time we're at.
      */
     public boolean current_time_1(Term time){
-	    long vmTime = vm.getCurrentTime();
+    	long vmTime = vm.getCurrentTime();
+    	log("\t### current_time = " + vmTime + ", given time = " + time + " ###");
 	    return unify(time, new alice.tuprolog.Long(vmTime));
 	}
     

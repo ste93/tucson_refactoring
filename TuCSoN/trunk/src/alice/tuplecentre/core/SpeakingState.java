@@ -19,6 +19,8 @@ package alice.tuplecentre.core;
 
 import java.util.*;
 
+import alice.logictuple.LogicTuple;
+import alice.respect.core.RespectOperation;
 import alice.respect.core.RespectVMContext;
 import alice.tuplecentre.api.Tuple;
 import alice.tuplecentre.api.exceptions.InvalidOperationException;
@@ -300,6 +302,11 @@ public class SpeakingState extends TupleCentreVMState {
 						op.setOpResult(Outcome.SUCCESS);
 		            	op.setTupleListResult(tupleList);
 		            	foundSatisfied=true;
+					} else if(((RespectOperation)op).isTime()){
+						System.out.println("---> CLOCK: " + op.getTemplateArgument());
+						op.setOpResult(Outcome.SUCCESS);
+						op.setTupleResult(op.getTemplateArgument());
+						foundSatisfied=true;
 					}
 		            
 					else throw new InvalidOperationException();

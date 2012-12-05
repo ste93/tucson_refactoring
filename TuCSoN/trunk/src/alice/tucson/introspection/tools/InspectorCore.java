@@ -250,13 +250,13 @@ public class InspectorCore extends alice.tucson.introspection.Inspector{
 				try{
 //					logReactionWriter.write("succeed-reaction( time(" + msg.vmTime + "), " + tr.getReaction() + ").\n");
 					logReactionWriter.write("snapshot(\n" +
-							"localtime(date("+cal.get(Calendar.DAY_OF_MONTH)+"-"+
+							"\tlocaltime(date("+cal.get(Calendar.DAY_OF_MONTH)+"-"+
 									cal.get(Calendar.MONTH)+"-"+
 									cal.get(Calendar.YEAR)+"), time("+
 									cal.get(Calendar.HOUR_OF_DAY)+":"+
 									cal.get(Calendar.MINUTE)+":"+
 									cal.get(Calendar.SECOND)+")"+
-							"),\n\tsucceeded( " + tr.getReaction() + " ).\n");
+							"),\n\t\tsucceeded( " + tr.getReaction() + " ).\n");
 					logReactionWriter.flush();
 				}catch (IOException e){
 					e.printStackTrace();
@@ -278,13 +278,13 @@ public class InspectorCore extends alice.tucson.introspection.Inspector{
 				try{
 //					logReactionWriter.write("failed-reaction( time(" + msg.vmTime + "), " + tr.getReaction() + ").\n");
 					logReactionWriter.write("snapshot(\n" +
-							"localtime(date("+cal.get(Calendar.DAY_OF_MONTH)+"-"+
+							"\tlocaltime(date("+cal.get(Calendar.DAY_OF_MONTH)+"-"+
 									cal.get(Calendar.MONTH)+"-"+
 									cal.get(Calendar.YEAR)+"), time("+
 									cal.get(Calendar.HOUR_OF_DAY)+":"+
 									cal.get(Calendar.MINUTE)+":"+
 									cal.get(Calendar.SECOND)+")"+
-							"),\n\tfailed( " + tr.getReaction() + " ).\n");
+							"),\n\t\tfailed( " + tr.getReaction() + " ).\n");
 					logReactionWriter.flush();
 				}catch (IOException e){
 					e.printStackTrace();
