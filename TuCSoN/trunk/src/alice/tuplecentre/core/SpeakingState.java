@@ -337,6 +337,7 @@ public class SpeakingState extends TupleCentreVMState {
 				vm.linkOperation(out_ev);
 			}
 			
+			vm.fetchTimedReactions(out_ev);
 			vm.fetchTriggeredReactions(out_ev);			
 			noMoreSatisfiablePendingQuery=false;
 			it.remove();
