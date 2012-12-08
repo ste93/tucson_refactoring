@@ -1455,7 +1455,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     	IId target = ev.getTarget();
     	IId current_tc = this.vm.getId();
 //    	IId current_tc = ev.getReactingTC();
-    	log("\tintra) target = "+target.toString()+", current_tc = "+current_tc.toString());
+//    	log("\tintra) target = "+target.toString()+", current_tc = "+current_tc.toString());
     	if(current_tc.toString().equals(target.toString()))
     		return true;
     	else
@@ -1475,7 +1475,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     	IId source = ev.getSource();
     	IId current_tc = this.vm.getId();
 //    	IId current_tc = ev.getReactingTC();
-    	log("\texo) source = "+source.toString()+", current_tc = "+current_tc.toString());
+//    	log("\texo) source = "+source.toString()+", current_tc = "+current_tc.toString());
     	if(!current_tc.toString().equals(source.toString()))
     		return true;
     	else
@@ -1493,7 +1493,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     public boolean from_agent_0(){
     	Event ev = vm.getCurrentReactionEvent();
     	IId source = ev.getSource();
-    	log("\tfrom_agent) source = "+source.toString());
+//    	log("\tfrom_agent) source = "+source.toString());
     	if(source.isAgent())
     		return true;
     	else
@@ -1511,7 +1511,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     public boolean to_agent_0(){
     	Event ev = vm.getCurrentReactionEvent();
     	IId target = ev.getTarget();
-    	log("\tto_agent) target = "+target.toString());
+//    	log("\tto_agent) target = "+target.toString());
     	if(target.isAgent())
     		return true;    		
     	else
@@ -1525,12 +1525,12 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     public boolean from_tc_0(){
     	Event ev = vm.getCurrentReactionEvent();
     	IId source = ev.getSource();
-    	log("\tfrom_tc) source = "+source.toString());
+//    	log("\tfrom_tc) source = "+source.toString());
     	if(source.isTC()){
-    		log("\t\tsource.isTC() is true");
+//    		log("\t\tsource.isTC() is true");
     		return true;    		
     	}else{
-    		log("\t\tsource.isTC() is false");
+//    		log("\t\tsource.isTC() is false");
     		return false;
     	}
     }
@@ -1546,7 +1546,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     public boolean to_tc_0(){
     	Event ev = vm.getCurrentReactionEvent();
     	IId target = ev.getTarget();
-    	log("\tto_tc) target = "+target.toString());
+//    	log("\tto_tc) target = "+target.toString());
     	if(target.isTC())
     		return true;
     	else
@@ -1568,6 +1568,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     	}catch(Exception e){
     		return false;
     	}
+//    	log("\t before) event = " + evtTime + ", compare = " + compareTime);
     	if(evtTime <= compareTime)
     		return true;
     	else
@@ -1583,23 +1584,28 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      ********************************************************************/
     
     public boolean operation_0(){
-    	log("operation ->");
+//    	log("operation ->");
     	return from_agent_0() && to_tc_0();
     }
     
     public boolean internal_0(){
-    	log("internal ->");
+//    	log("internal ->");
     	return from_tc_0() && to_tc_0() && endo_0() && intra_0();
     }
     
     public boolean link_in_0(){
-    	log("link_in ->");
+//    	log("link_in ->");
     	return from_tc_0() && to_tc_0() && exo_0() && intra_0();
     }
     
     public boolean link_out_0(){
-    	log("link_out ->");
+//    	log("link_out ->");
     	return from_tc_0() && to_tc_0() && endo_0() && inter_0();
+    }
+    
+    public boolean between_2(Term time1, Term time2){
+//    	log("between ->");
+    	return after_1(time1) && before_1(time2);
     }
     
     /********************************************************************
@@ -1741,7 +1747,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      */
     public boolean current_time_1(Term time){
     	long vmTime = vm.getCurrentTime();
-    	log("\t### current_time = " + vmTime + ", given time = " + time + " ###");
+//    	log("\t### current_time = " + vmTime + " ###");
 	    return unify(time, new alice.tuprolog.Long(vmTime));
 	}
     
@@ -1764,17 +1770,6 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     public boolean start_time_1(Term time){
 	    return false;
 	}
-    
-//    /**
-//     * @param target the expected final target of the ReSpecT operation.
-//     * 
-//     * @return true if the given target is the actual final target of the
-//     * ReSpecT operation.
-//     */
-//    public boolean current_target_1(Term target){
-//        return unify(target,
-//        		new Struct( (vm.getCurrentReactionEvent().getReactingTC()).toString()) );
-//    }
 
     /********************************************************************
      * Situated ReSpecT extension: still to test.

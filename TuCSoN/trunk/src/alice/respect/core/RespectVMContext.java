@@ -1158,10 +1158,19 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
         		trigCore.solveEnd();
             }
     
-		}catch (Exception ex){
-            notifyException("INTERNAL ERROR: fetchTimedReactions "+ev);
-            trigCore.solveEnd();
-        }
+//		}catch (Exception ex){
+//            notifyException("INTERNAL ERROR: fetchTimedReactions "+ev);
+//            trigCore.solveEnd();
+//        }
+            
+		} catch(NoMoreSolutionException e){
+			trigCore.solveEnd();
+		} catch(NoSolutionException e){
+			trigCore.solveEnd();
+		} catch (MalformedGoalException e) {
+			notifyException("INTERNAL ERROR: fetchTimedReactions "+ev);
+			trigCore.solveEnd();
+		}
 		
 	}
 
@@ -1249,7 +1258,7 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 		List<Tuple> tl = new LinkedList<Tuple>();
 		TupleTemplate t2=t;
         Tuple tuple=removeMatchingTuple(t2);
-        if(tuple ==null) return null;
+//        if(tuple ==null) return null;
 		while(tuple!=null){
 			t2=t;
 			tl.add((Tuple)tuple);
@@ -1262,7 +1271,7 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 		List<Tuple> tl = new LinkedList<Tuple>();
 		TupleTemplate t2=t;
         Tuple tuple=removeMatchingTuple(t2);
-        if(tuple==null) return null;
+//        if(tuple==null) return null;
         while(tuple!=null){
 			t2=t;
 			tl.add((Tuple)tuple);

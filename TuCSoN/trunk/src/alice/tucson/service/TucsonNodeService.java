@@ -553,7 +553,7 @@ public class TucsonNodeService{
 		
 		try{
 			bootTupleCentre(idObsTC.getName());
-			InputStream is = ClassLoader.getSystemResourceAsStream(DEFAULT_OBS_SPEC_FILE);
+			InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream(DEFAULT_OBS_SPEC_FILE);
 			String spec = alice.util.Tools.loadText(new BufferedInputStream(is));
 			LogicTuple specTuple = new LogicTuple("spec", new Value(spec));
 			TupleCentreContainer.doBlockingSpecOperation(TucsonOperation.set_sCode(), nodeAid, idObsTC, specTuple);

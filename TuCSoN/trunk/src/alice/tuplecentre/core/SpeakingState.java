@@ -303,10 +303,11 @@ public class SpeakingState extends TupleCentreVMState {
 		            	op.setTupleListResult(tupleList);
 		            	foundSatisfied=true;
 					} else if(((RespectOperation)op).isTime()){
-						System.out.println("---> CLOCK: " + op.getTemplateArgument());
 						op.setOpResult(Outcome.SUCCESS);
 						op.setTupleResult(op.getTemplateArgument());
 						foundSatisfied=true;
+						out_ev = new OutputEvent(ev);
+						vm.fetchTimedReactions(out_ev);
 					}
 		            
 					else throw new InvalidOperationException();
@@ -337,7 +338,6 @@ public class SpeakingState extends TupleCentreVMState {
 				vm.linkOperation(out_ev);
 			}
 			
-			vm.fetchTimedReactions(out_ev);
 			vm.fetchTriggeredReactions(out_ev);			
 			noMoreSatisfiablePendingQuery=false;
 			it.remove();
