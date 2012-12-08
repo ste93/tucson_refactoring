@@ -81,6 +81,9 @@ abstract public class Event implements java.io.Serializable {
 	 * 
 	 * @return the id of the executor  
 	 */
+	/*
+	 * Same as getSource() -.-
+	 */
 	public IId getId(){
 		return aid;
 	}

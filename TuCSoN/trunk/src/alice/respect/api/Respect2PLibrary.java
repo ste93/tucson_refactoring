@@ -1622,7 +1622,6 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      */
     public boolean current_predicate_1(Term predicate){
 //    	log("\tcurrent_predicate) " + vm.getCurrentReactionTerm());
-//    	return unify(predicate, vm.getCurrentReactionTerm());
     	return unify(predicate, new Struct("current_predicate"));
     }
     
@@ -1630,10 +1629,8 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      * What is it supposed to unify with?
      */
     public boolean event_predicate_1(Term predicate){
-//    	return unify(predicate, (Term)vm.getCurrentReactionEvent().getTuple());
-//    	return false;
-    	log("\tevent_predicate) " + vm.getCurrentReactionTerm());
-    	return unify(predicate, vm.getCurrentReactionTerm());
+//    	log("\tevent_predicate) " + vm.getCurrentReactionTerm().getTerm());
+    	return unify(predicate, vm.getCurrentReactionTerm().getTerm());
     }
     
     /*
@@ -1652,7 +1649,6 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      * started the current ReSpecT computation.
      */
     public boolean current_tuple_1(Term tuple){
-//    	AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
 //    	log("\tcurrent_tuple) " + vm.getCurrentReactionTerm().getArg(0));
     	return unify(tuple, new Var());
     }
@@ -1665,8 +1661,8 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     public boolean event_tuple_1(Term tuple){
     	AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
     	Event e = vm.getCurrentReactionEvent();
-    	log("\tevent_tuple) " + (Term)e.getTuple());
-    	return unify(tuple, ((Term)e.getTuple()).copyGoal(v,0));
+//    	log("\tevent_tuple) " + e.getTuple());
+    	return unify(tuple, Term.createTerm(""+e.getTuple()));
     }
     
     /*
@@ -1685,7 +1681,6 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      * reaction.
      */
     public boolean current_source_1(Term source){
-//    	log("\tcurrent_source) " + vm.getId());
     	Term t = ((TupleCentreId)vm.getId()).toTerm();
     	return unify(source, t);
     }
@@ -1696,19 +1691,16 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      * @return
      */
     public boolean event_source_1(Term source){
-    	log("\tevent_source) " + vm.getCurrentReactionEvent().getSource());
+//    	log("\tevent_source) " + vm.getCurrentReactionEvent().getSource());
     	return unify(source,
     			new Struct(vm.getCurrentReactionEvent().getSource().toString()));
     }
     
     /*
-     * Do not know which one among 'event_source/1' and 'start_source/1' is
-     * returned by 'vm.getCurrentReactionEvent().getId()'.
+     * NO MEANS TO DO IT!
      */
     public boolean start_source_1(Term source){
-    	log("\tstart_source) " + vm.getCurrentReactionEvent().getId());
-    	return unify(source,
-    			new Struct(vm.getCurrentReactionEvent().getId().toString()));
+    	return false;
     }
     
     /**
@@ -1717,10 +1709,8 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      * @return
      */
     public boolean current_target_1(Term target){
-    	log("\tcurrent_target) " + vm.getId().toString());
+//    	log("\tcurrent_target) " + vm.getId().toString());
     	Term t = ((TupleCentreId)vm.getId()).toTerm();
-//    	log("\t\tterm = " + t.toString());
-//    	log("\t\ttarget = " + target.toString());
     	return unify(target, t);
     }
     
@@ -1728,7 +1718,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      * What is it supposed to unify with?
      */
     public boolean event_target_1(Term target){
-    	log("\tevent_target) " + vm.getCurrentReactionEvent().getTarget());
+//    	log("\tevent_target) " + vm.getCurrentReactionEvent().getTarget());
     	return unify(target, 
     			new Struct(vm.getCurrentReactionEvent().getTarget().toString()));
     }
