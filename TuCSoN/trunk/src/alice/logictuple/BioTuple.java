@@ -1,5 +1,6 @@
 package alice.logictuple;
 
+import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.tuprolog.Term;
 
 /**
@@ -236,7 +237,29 @@ public class BioTuple extends LogicTuple{
 	}
 	
 	
-	
+	/**
+	 * Static service to get a bio tuple from a textual representation and the multiplicity
+	 * 
+	 * @param st
+	 *            the text representing the tuple
+	 * @param multiplicity
+	 *            the multiplicity of the tuple
+	 * @return the bio tuple interpreted from the text
+	 * @exception InvalidLogicTupleException
+	 *                if the text does not represent a valid logic tuple
+	 */
+	public static LogicTuple parse(String st, int multiplicity) throws InvalidLogicTupleException
+	{
+		try
+		{
+			Term t = alice.tuprolog.Term.createTerm(st);
+			return new BioTuple(new TupleArgument(t),multiplicity);
+		}
+		catch (Exception ex)
+		{
+			throw new InvalidLogicTupleException();
+		}
+	}
 	
 	
 }
