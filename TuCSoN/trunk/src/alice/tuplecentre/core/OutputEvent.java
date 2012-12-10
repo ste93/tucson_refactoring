@@ -19,7 +19,7 @@ package alice.tuplecentre.core;
 
 /**
  * Represents output events of the tuple centre virtual machine
- *
+ * (stores the "connected" InputEvent)
  *
  * @author aricci
  */
@@ -30,8 +30,8 @@ public class OutputEvent extends Event {
     private boolean isLinking;
     
     public OutputEvent(InputEvent ev){
-    	super(ev.getId(),ev.getOperation(),ev.getReactingTC(),ev.getTime());
-        inputEvent=ev;
+    	super(ev.getSource(), ev.getSimpleTCEvent(), ev.getReactingTC(), ev.getTime());
+        inputEvent = ev;
         isLinking = ev.isLinking();
     }
         
@@ -60,7 +60,7 @@ public class OutputEvent extends Event {
 	}
 	
 	public String toString(){
-		return "output_event(agentId("+getId()+"),operation("+(this.getOperation().isResultDefined() ? getOperation().getTupleResult(): getOperation())+"))";
+		return "output_event(agentId("+getSource()+"),operation("+(this.getSimpleTCEvent().isResultDefined() ? getSimpleTCEvent().getTupleResult(): getSimpleTCEvent())+"))";
 	}
     
 }

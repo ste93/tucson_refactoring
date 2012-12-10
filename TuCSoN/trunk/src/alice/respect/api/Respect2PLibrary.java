@@ -1383,7 +1383,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      */
     public boolean response_0(){
     	Event ev = vm.getCurrentReactionEvent();
-        TupleCentreOperation op = ev.getOperation();
+        TupleCentreOperation op = ev.getSimpleTCEvent();
         return op.isResultDefined();
     }
     
@@ -1408,7 +1408,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      */
     public boolean request_0(){
     	Event ev = vm.getCurrentReactionEvent();
-        TupleCentreOperation op = ev.getOperation();
+        TupleCentreOperation op = ev.getSimpleTCEvent();
         return !op.isResultDefined();
     }
     
@@ -1433,7 +1433,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      */
     public boolean success_0(){
         Event ev = vm.getCurrentReactionEvent();
-        TupleCentreOperation op = ev.getOperation();
+        TupleCentreOperation op = ev.getSimpleTCEvent();
         return op.isResultSuccess();
     }
     
@@ -1442,7 +1442,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      */
     public boolean failure_0(){
     	Event ev = vm.getCurrentReactionEvent();
-    	TupleCentreOperation op = ev.getOperation();
+    	TupleCentreOperation op = ev.getSimpleTCEvent();
         return op.isResultFailure();
     }
     
@@ -1621,8 +1621,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      * process.
      */
     public boolean current_predicate_1(Term predicate){
-//    	log("\tcurrent_predicate) " + vm.getCurrentReactionTerm());
-    	return unify(predicate, new Struct("current_predicate"));
+    	return unify(predicate, new Struct("current_predicate("+predicate+")"));
     }
     
     /*
@@ -1637,7 +1636,16 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      * NO MEANS TO DO IT!
      */
     public boolean start_predicate_1(Term predicate){
-    	return false;
+//    	Event e = vm.getCurrentReactionEvent();
+//    	if(e.isInternal()){
+//    		InternalEvent ie = (InternalEvent)e;
+//    		return unify(predicate, ie.getInputEvent().getSimpleTCEvent());
+//    	}
+//    	if(e.isOutput()){
+//    		OutputEvent oe = (OutputEvent)e;
+//    		return unify(predicate, oe.getInputEvent().getSimpleTCEvent());
+//    	}
+    	return unify(predicate, vm.getCurrentReactionTerm().getTerm());
     }
     
     /**
@@ -1649,7 +1657,6 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      * started the current ReSpecT computation.
      */
     public boolean current_tuple_1(Term tuple){
-//    	log("\tcurrent_tuple) " + vm.getCurrentReactionTerm().getArg(0));
     	return unify(tuple, new Var());
     }
     
@@ -1659,7 +1666,6 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      * @return
      */
     public boolean event_tuple_1(Term tuple){
-    	AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
     	Event e = vm.getCurrentReactionEvent();
 //    	log("\tevent_tuple) " + e.getTuple());
     	return unify(tuple, Term.createTerm(""+e.getTuple()));
@@ -1669,7 +1675,16 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      * NO MEANS TO DO IT!
      */
     public boolean start_tuple_1(Term tuple){
-    	return false;
+    	Event e = vm.getCurrentReactionEvent();
+    	if(e.isInternal()){
+    		InternalEvent ie = (InternalEvent)e;
+    		return unify(tuple, Term.createTerm(""+ie.getInputEvent().getTuple()));
+    	}
+    	if(e.isOutput()){
+    		OutputEvent oe = (OutputEvent)e;
+    		return unify(tuple, Term.createTerm(""+oe.getInputEvent().getTuple()));
+    	}
+    	return unify(tuple, Term.createTerm(""+e.getTuple()));
     }
     
     /**
@@ -1700,7 +1715,19 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      * NO MEANS TO DO IT!
      */
     public boolean start_source_1(Term source){
-    	return false;
+    	Event e = vm.getCurrentReactionEvent();
+    	if(e.isInternal()){
+    		InternalEvent ie = (InternalEvent)e;
+    		return unify(source,
+        			new Struct(ie.getInputEvent().getSource().toString()));
+    	}
+    	if(e.isOutput()){
+    		OutputEvent oe = (OutputEvent)e;
+    		return unify(source,
+        			new Struct(oe.getInputEvent().getSource().toString()));
+    	}
+    	return unify(source,
+    			new Struct(e.getSource().toString()));
     }
     
     /**
@@ -1727,7 +1754,19 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      * NO MEANS TO DO IT!
      */
     public boolean start_target_1(Term target){
-    	return false;
+    	Event e = vm.getCurrentReactionEvent();
+    	if(e.isInternal()){
+    		InternalEvent ie = (InternalEvent)e;
+    		return unify(target, 
+        			new Struct(ie.getInputEvent().getTarget().toString()));
+    	}
+    	if(e.isOutput()){
+    		OutputEvent oe = (OutputEvent)e;
+    		return unify(target, 
+        			new Struct(oe.getInputEvent().getTarget().toString()));
+    	}
+    	return unify(target, 
+    			new Struct(e.getTarget().toString()));
     }
     
     /**
@@ -1758,7 +1797,16 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      * NO MEANS TO DO IT!
      */
     public boolean start_time_1(Term time){
-	    return false;
+    	Event e = vm.getCurrentReactionEvent();
+    	if(e.isInternal()){
+    		InternalEvent ie = (InternalEvent)e;
+    		return unify(time, new alice.tuprolog.Long(ie.getInputEvent().getTime()));
+    	}
+    	if(e.isOutput()){
+    		OutputEvent oe = (OutputEvent)e;
+    		return unify(time, new alice.tuprolog.Long(oe.getInputEvent().getTime()));
+    	}
+    	return unify(time, new alice.tuprolog.Long(e.getTime()));
 	}
 
     /********************************************************************

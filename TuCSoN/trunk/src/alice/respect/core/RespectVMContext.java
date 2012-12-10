@@ -153,7 +153,7 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 	            	
 	            	log("INVOCATION phase");
 	                InputEvent ie = (InputEvent)ev;
-					RespectOperation op=(RespectOperation)ev.getOperation();
+					RespectOperation op=(RespectOperation)ev.getSimpleTCEvent();
 //					log("op.getLogicTupleArgument() = " + op.getLogicTupleArgument());
 					
 					if (op.isSpawn()){
@@ -216,7 +216,7 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 	            }else if (ev.isOutput()){
 	            	
 	                alice.tuplecentre.core.OutputEvent oe = (alice.tuplecentre.core.OutputEvent)ev;
-					RespectOperation op=(RespectOperation)ev.getOperation();
+					RespectOperation op=(RespectOperation)ev.getSimpleTCEvent();
 				
 					if(((OutputEvent)ev).isLinking()){
 						log("linking event processing");
@@ -1032,19 +1032,19 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 		ArrayList<WSetEvent> events = new ArrayList<WSetEvent>();
 		if (filter == null){
 			for(Event e: ev){
-				events.add(new WSetEvent(((RespectOperation)e.getOperation()).toTuple(), e.getSource(), e.getTarget()));
+				events.add(new WSetEvent(((RespectOperation)e.getSimpleTCEvent()).toTuple(), e.getSource(), e.getTarget()));
 			}
 			return events.toArray(new WSetEvent[0]);
 		}
 		LogicTuple[] tuples = new LogicTuple[this.wSet.size()];
 //		ArrayList<Event> supportList = new ArrayList<Event>();				
 		for(int i=0;i<tuples.length;i++){			
-			tuples[i] = ((RespectOperation)ev[i].getOperation()).toTuple();
+			tuples[i] = ((RespectOperation)ev[i].getSimpleTCEvent()).toTuple();
 		}
 		int i = 0;
 		for(LogicTuple tuple : tuples){
 			if (filter.match(tuple))
-				events.add(new WSetEvent(((RespectOperation)ev[i].getOperation()).toTuple(), ev[i].getSource(), ev[i].getTarget()));
+				events.add(new WSetEvent(((RespectOperation)ev[i].getSimpleTCEvent()).toTuple(), ev[i].getSource(), ev[i].getTarget()));
 			i++;
 		}
 		return events.toArray(new WSetEvent[0]);		
@@ -1133,7 +1133,7 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 		try {
             
      		boolean timedReaction = false;
-        	Term timed = (((RespectOperation)ev.getOperation()).getLogicTupleArgument().toTerm());
+        	Term timed = (((RespectOperation)ev.getSimpleTCEvent()).getLogicTupleArgument().toTerm());
         	Struct tev=new Struct("reaction",timed,new alice.tuprolog.Var("G"),new alice.tuprolog.Var("R"));
         	SolveInfo info = trigCore.solve(tev);
             alice.tuprolog.Term guard=null;
@@ -1199,7 +1199,7 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 	public void linkOperation(OutputEvent oe) {
 		TupleCentreId target = (TupleCentreId)oe.getTarget();
 		try{
-			TupleCentreOperation op = oe.getOperation();
+			TupleCentreOperation op = oe.getSimpleTCEvent();
 			op.addListener(new CompletionListener(oe,target));
 			ILinkContext link = RespectTCContainer.getRespectTCContainer().getLinkContext(target);
 			link.doOperation((TupleCentreId)oe.getSource(), op);

@@ -230,7 +230,7 @@ public abstract class TupleCentreVMContext implements ITupleCentreManagement, IT
      * Specifies how to notify an output event.
      */
     protected void notifyOutputEvent(OutputEvent ev){
-    	ev.getOperation().notifyCompletion();
+    	ev.getSimpleTCEvent().notifyCompletion();
     }
     
     /**

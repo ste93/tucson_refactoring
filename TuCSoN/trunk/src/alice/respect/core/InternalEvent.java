@@ -21,6 +21,7 @@ import alice.tuplecentre.core.*;
 
 /**
  * Represents an internal event of the ReSpecT VM
+ * (stores the "connected" InputEvent)
  *  
  * @author aricci
  * @version 1.0
@@ -32,9 +33,9 @@ public class InternalEvent extends alice.tuplecentre.core.Event {
     private InternalOperation internalOperation; 
     
 	public InternalEvent(InputEvent ev, InternalOperation op){
-		super(ev.getId(),ev.getOperation(),ev.getReactingTC(),ev.getTime());
-		inputEvent=ev;
-		internalOperation=op;
+		super(ev.getSource(), ev.getSimpleTCEvent(), ev.getReactingTC(), ev.getTime());
+		inputEvent = ev;
+		internalOperation = op;
 	}
 
 	public boolean isInput(){
@@ -52,5 +53,9 @@ public class InternalEvent extends alice.tuplecentre.core.Event {
 	public InternalOperation getInternalOperation(){
 		return internalOperation;
 	}
+	
+	public InputEvent getInputEvent(){
+        return inputEvent;
+    }
 
 }

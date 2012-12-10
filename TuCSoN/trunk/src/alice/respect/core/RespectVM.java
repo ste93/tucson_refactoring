@@ -161,47 +161,47 @@ public class RespectVM implements Runnable {
     	int size = observers.size();
     	InputEvent e = (InputEvent)ev;
 		if (ev.isInput()){
-			if (e.getOperation().isIn()){
+			if (e.getSimpleTCEvent().isIn()){
 				for (int i=0; i<size; i++)
-					observers.get(i).in_requested(this.getId(),ev.getSource(),((TupleTemplate)((RespectOperation)ev.getOperation()).getLogicTupleArgument()));
-			}else if (e.getOperation().isInp())
+					observers.get(i).in_requested(this.getId(),ev.getSource(),((TupleTemplate)((RespectOperation)ev.getSimpleTCEvent()).getLogicTupleArgument()));
+			}else if (e.getSimpleTCEvent().isInp())
 				for (int i=0; i<size; i++){
-					observers.get(i).inp_requested(this.getId(),ev.getSource(),((TupleTemplate)((RespectOperation)ev.getOperation()).getLogicTupleArgument()));
-			}else if (e.getOperation().isRd()){
+					observers.get(i).inp_requested(this.getId(),ev.getSource(),((TupleTemplate)((RespectOperation)ev.getSimpleTCEvent()).getLogicTupleArgument()));
+			}else if (e.getSimpleTCEvent().isRd()){
 				for (int i=0; i<size; i++)
-					observers.get(i).rd_requested(this.getId(),ev.getSource(),((TupleTemplate)((RespectOperation)ev.getOperation()).getLogicTupleArgument()));
-			}else if (e.getOperation().isRdp()){
+					observers.get(i).rd_requested(this.getId(),ev.getSource(),((TupleTemplate)((RespectOperation)ev.getSimpleTCEvent()).getLogicTupleArgument()));
+			}else if (e.getSimpleTCEvent().isRdp()){
 				for (int i=0; i<size; i++)
-					observers.get(i).rdp_requested(this.getId(),ev.getSource(),((TupleTemplate)((RespectOperation)ev.getOperation()).getLogicTupleArgument()));
-			}else if (e.getOperation().isOut()){
+					observers.get(i).rdp_requested(this.getId(),ev.getSource(),((TupleTemplate)((RespectOperation)ev.getSimpleTCEvent()).getLogicTupleArgument()));
+			}else if (e.getSimpleTCEvent().isOut()){
 				for (int i=0; i<size; i++)
-					observers.get(i).out_requested(this.getId(),ev.getSource(),((Tuple)((RespectOperation)ev.getOperation()).getLogicTupleArgument()));
-			}else if (e.getOperation().isSet_s()){
+					observers.get(i).out_requested(this.getId(),ev.getSource(),((Tuple)((RespectOperation)ev.getSimpleTCEvent()).getLogicTupleArgument()));
+			}else if (e.getSimpleTCEvent().isSet_s()){
 				for (int i=0; i<size; i++)
-					observers.get(i).setSpec_requested(this.getId(),ev.getSource(),((Tuple)((RespectOperation)ev.getOperation()).getLogicTupleArgument()).toString());
-			}else if (e.getOperation().isGet_s()){
+					observers.get(i).setSpec_requested(this.getId(),ev.getSource(),((Tuple)((RespectOperation)ev.getSimpleTCEvent()).getLogicTupleArgument()).toString());
+			}else if (e.getSimpleTCEvent().isGet_s()){
 				for (int i=0; i<size; i++)
 					observers.get(i).getSpec_requested(this.getId(),ev.getSource());
 			}
 		}else{
-			if (e.getOperation().isIn()){
+			if (e.getSimpleTCEvent().isIn()){
 				for (int i=0; i<size; i++)
-					observers.get(i).in_completed(this.getId(),ev.getSource(),((Tuple)((RespectOperation)ev.getOperation()).getLogicTupleArgument()));
-			}else if (e.getOperation().isInp()){
+					observers.get(i).in_completed(this.getId(),ev.getSource(),((Tuple)((RespectOperation)ev.getSimpleTCEvent()).getLogicTupleArgument()));
+			}else if (e.getSimpleTCEvent().isInp()){
 				for (int i=0; i<size; i++)
-					observers.get(i).inp_completed(this.getId(),ev.getSource(),((Tuple)((RespectOperation)ev.getOperation()).getLogicTupleArgument()));
-			}else if (e.getOperation().isRd()){
+					observers.get(i).inp_completed(this.getId(),ev.getSource(),((Tuple)((RespectOperation)ev.getSimpleTCEvent()).getLogicTupleArgument()));
+			}else if (e.getSimpleTCEvent().isRd()){
 				for (int i=0; i<size; i++)
-					observers.get(i).rd_completed(this.getId(),ev.getSource(),((Tuple)((RespectOperation)ev.getOperation()).getLogicTupleArgument()));
-			}else if (e.getOperation().isRdp()){
+					observers.get(i).rd_completed(this.getId(),ev.getSource(),((Tuple)((RespectOperation)ev.getSimpleTCEvent()).getLogicTupleArgument()));
+			}else if (e.getSimpleTCEvent().isRdp()){
 				for (int i=0; i<size; i++)
-					observers.get(i).rdp_completed(this.getId(),ev.getSource(),((Tuple)((RespectOperation)ev.getOperation()).getLogicTupleArgument()));
-			}else if (e.getOperation().isSet_s()){
+					observers.get(i).rdp_completed(this.getId(),ev.getSource(),((Tuple)((RespectOperation)ev.getSimpleTCEvent()).getLogicTupleArgument()));
+			}else if (e.getSimpleTCEvent().isSet_s()){
 				for (int i=0; i<size; i++)
 					observers.get(i).setSpec_completed(this.getId(),ev.getSource());
-			}else if (e.getOperation().isGet_s()){
+			}else if (e.getSimpleTCEvent().isGet_s()){
 				for (int i=0; i<size; i++)
-					observers.get(i).getSpec_completed(this.getId(),ev.getSource(),((Tuple)((RespectOperation)ev.getOperation()).getLogicTupleArgument()).toString());
+					observers.get(i).getSpec_completed(this.getId(),ev.getSource(),((Tuple)((RespectOperation)ev.getSimpleTCEvent()).getLogicTupleArgument()).toString());
 			}
 		}
 

@@ -35,85 +35,82 @@ import alice.tuplecentre.api.TupleCentreId;
 abstract public class Event implements java.io.Serializable {
 
 	private static final long serialVersionUID = 5233628097824741218L;
-	/** the entitiy executing the operation**/
-	private IId aid;
-	/** the operation associated with this event */
-	private TupleCentreOperation		 operation;
-	/** the current tuple centre (VM) where this event is managed**/
-	private TupleCentreId c;
+	
+	/** the entitiy executing the operation **/
+	private IId source;
+	/** the operation (primitive + tuple) associated with this event **/
+	private TupleCentreOperation simpleTCEvent;
+	/** the current tuple centre (VM) where this event is managed **/
+	private TupleCentreId reactingTC;
 	/** represent the target entity that could be an agent or a TC **/
 	private IId target;
 	/** time at which this event occurs*/
 	private long time;
+	
 	private HashMap<String, String> ev_prop;
 	
-	public Event(IId aid, TupleCentreOperation op, TupleCentreId c, long time){
-		this.aid=aid;
-		operation=op;
-		this.target=c;
-		this.c = c;
-		this.time = time;
-		ev_prop=new HashMap<String, String>();
+	public Event(IId s, TupleCentreOperation op, TupleCentreId tc, long t){
+		source = s;
+		simpleTCEvent = op;
+		target = tc;
+		reactingTC = tc;
+		time = t;
+		ev_prop = new HashMap<String, String>();
 	}
 
-	public Event(IId aid, TupleCentreOperation op, TupleCentreId c, long time, Map<String, String> prop){
-		this(aid,op,c,time);
+	public Event(IId s, TupleCentreOperation op, TupleCentreId tc, long t, 
+			Map<String, String> prop){
+		this(s, op, tc, t);
 		ev_prop.putAll(prop);
 	}
 	
 	public long getTime(){
-		return this.time;
+		return time;
 	}
 	
 	/**
-	 * Gets the the operation which directly or not caused the event
+	 * Gets the operation which directly or not caused the event
 	 */
-	public TupleCentreOperation getOperation(){
-		return operation;
+	public TupleCentreOperation getSimpleTCEvent(){
+		return simpleTCEvent;
 	}
 	
-	public void setOperation(TupleCentreOperation op){
-		operation = op;
-	}
-
-	/**
-	 * Gets the executor of the operation which caused directly or indirectly this event.
-	 * 
-	 * @return the id of the executor  
-	 */
-	/*
-	 * Same as getSource() -.-
-	 */
-	public IId getId(){
-		return aid;
+	public void setSimpleTCEvent(TupleCentreOperation op){
+		simpleTCEvent = op;
 	}
 	
 	public TupleCentreId getReactingTC(){
-		return this.c;
+		return reactingTC;
 	}
 	
-	public void setReactingTC(TupleCentreId c){
-		this.c = c;
+	public void setReactingTC(TupleCentreId tc){
+		reactingTC = tc;
 	}
 	
+	/**
+	 * Gets the executor of the operation which caused directly or indirectly
+	 * this event.
+	 * 
+	 * @return the id of the executor  
+	 */
 	public IId getSource(){
-		return this.aid;
+		return source;
 	}
 	
-	public void setSource(IId source){
-		this.aid = source;
+	public void setSource(IId s){
+		source = s;
 	}
 	
 	public IId getTarget(){
-		return this.target;
+		return target;
 	}
 	
-	public void setTarget(IId target){
-		this.target = target;
+	public void setTarget(IId t){
+		target = t;
 	}
 	
 	public Tuple getTuple(){
-		return this.operation.getTupleArgument();
+		return simpleTCEvent.getTupleArgument();
 		
 	}
 
