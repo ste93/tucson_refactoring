@@ -175,31 +175,60 @@ loop:	for(int i = offset; i < length; i++){
 			
 			respectKeywords.add("spawn",Token.KEYWORD2);
 			
-			respectKeywords.add("current_op",Token.KEYWORD2);
+			respectKeywords.add("current_predicate",Token.KEYWORD2);
 			respectKeywords.add("current_tuple",Token.KEYWORD2);
-			respectKeywords.add("current_agent",Token.KEYWORD2);
-			respectKeywords.add("current_tc",Token.KEYWORD2);
+			respectKeywords.add("current_source",Token.KEYWORD2);
+			respectKeywords.add("current_target",Token.KEYWORD2);
+			respectKeywords.add("current_time",Token.KEYWORD2);
+			respectKeywords.add("event_predicate",Token.KEYWORD2);
+			respectKeywords.add("event_tuple",Token.KEYWORD2);
+			respectKeywords.add("event_source",Token.KEYWORD2);
+			respectKeywords.add("event_target",Token.KEYWORD2);
+			respectKeywords.add("event_time",Token.KEYWORD2);
+			respectKeywords.add("start_predicate",Token.KEYWORD2);
+			respectKeywords.add("start_tuple",Token.KEYWORD2);
+			respectKeywords.add("start_source",Token.KEYWORD2);
+			respectKeywords.add("start_target",Token.KEYWORD2);
+			respectKeywords.add("start_time",Token.KEYWORD2);
 			
 			respectKeywords.add("pre",Token.KEYWORD2);
 			respectKeywords.add("req",Token.KEYWORD2);
 			respectKeywords.add("request",Token.KEYWORD2);
+			respectKeywords.add("inv",Token.KEYWORD2);
 			respectKeywords.add("invocation",Token.KEYWORD2);
+			
 			respectKeywords.add("post",Token.KEYWORD2);
 			respectKeywords.add("resp",Token.KEYWORD2);
 			respectKeywords.add("response",Token.KEYWORD2);
+			respectKeywords.add("compl",Token.KEYWORD2);
 			respectKeywords.add("completion",Token.KEYWORD2);
+			
 			respectKeywords.add("success",Token.KEYWORD2);
 			respectKeywords.add("failure",Token.KEYWORD2);
+			respectKeywords.add("intra",Token.KEYWORD2);
+			respectKeywords.add("inter",Token.KEYWORD2);
 			respectKeywords.add("from_tc",Token.KEYWORD2);
+			respectKeywords.add("to_tc",Token.KEYWORD2);
 			respectKeywords.add("from_agent",Token.KEYWORD2);
+			respectKeywords.add("to_agent",Token.KEYWORD2);
 			respectKeywords.add("endo",Token.KEYWORD2);
 			respectKeywords.add("exo",Token.KEYWORD2);
+			respectKeywords.add("before",Token.KEYWORD2);
+			respectKeywords.add("after",Token.KEYWORD2);
+			
+			respectKeywords.add("operation",Token.KEYWORD2);
+			respectKeywords.add("internal",Token.KEYWORD2);
+			respectKeywords.add("link_in",Token.KEYWORD2);
+			respectKeywords.add("link_out",Token.KEYWORD2);
+			respectKeywords.add("between",Token.KEYWORD2);
 
-//			respectKeywords.add("current_time",Token.KEYWORD2);
-//			respectKeywords.add("is",Token.KEYWORD2);
+			respectKeywords.add("is",Token.KEYWORD2);
+			
+			respectKeywords.add("exec",Token.LITERAL1);
+			respectKeywords.add("solve",Token.LITERAL1);
+			
 //			respectKeywords.add("java",Token.LITERAL1);
 //			respectKeywords.add("prolog",Token.LITERAL1);
-//			respectKeywords.add("out_tc",Token.KEYWORD2);
 //			respectKeywords.add("new_trap",Token.KEYWORD2);
 //			respectKeywords.add("kill_trap",Token.KEYWORD2);
 //			respectKeywords.add("trap",Token.KEYWORD3);			
