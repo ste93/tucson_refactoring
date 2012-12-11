@@ -19,12 +19,15 @@ package alice.tuplecentre.core;
 
 import java.util.List;
 
+import alice.logictuple.LogicTuple;
+import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.tuplecentre.api.ITupleCentreOperation;
 import alice.tuplecentre.api.Tuple;
 import alice.tuplecentre.api.TupleTemplate;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 import alice.tuplecentre.core.TCCycleResult.Outcome;
 import alice.tuprolog.Prolog;
+import alice.tuprolog.Struct;
 
 /**
  * This class represents an Operation on a tuple centre.
@@ -145,6 +148,53 @@ public abstract class TupleCentreOperation implements ITupleCentreOperation{
 
 	public void setListener(OperationCompletionListener l){
 		this.listener = l;
+	}
+	
+	public LogicTuple getPrimitive(){
+		switch(type){
+		case OPTYPE_OUT: return new LogicTuple("out");
+		case OPTYPE_IN: return new LogicTuple("in");
+		case OPTYPE_RD: return new LogicTuple("rd");
+		case OPTYPE_INP: return new LogicTuple("inp");
+		case OPTYPE_RDP: return new LogicTuple("rdp");
+		case OPTYPE_NO: return new LogicTuple("no");
+		case OPTYPE_NOP: return new LogicTuple("nop");
+		case OPTYPE_GET: return new LogicTuple("get");
+		case OPTYPE_SET: return new LogicTuple("set");
+		case OPTYPE_SPAWN: return new LogicTuple("spawn");
+		case OPTYPE_OUT_ALL: return new LogicTuple("out_all");
+		case OPTYPE_IN_ALL: return new LogicTuple("in_all");
+		case OPTYPE_RD_ALL: return new LogicTuple("rd_all");
+		case OPTYPE_NO_ALL: return new LogicTuple("no_all");
+		case OPTYPE_URD: return new LogicTuple("urd");
+		case OPTYPE_UIN: return new LogicTuple("uin");
+		case OPTYPE_UNO: return new LogicTuple("uno");
+		case OPTYPE_URDP: return new LogicTuple("urdp");
+		case OPTYPE_UINP: return new LogicTuple("uinp");
+		case OPTYPE_UNOP: return new LogicTuple("unop");
+		case OPTYPE_OUT_S: return new LogicTuple("out_s");
+		case OPTYPE_IN_S: return new LogicTuple("in_s");
+		case OPTYPE_RD_S: return new LogicTuple("rd_s");
+		case OPTYPE_INP_S: return new LogicTuple("inp_s");
+		case OPTYPE_RDP_S: return new LogicTuple("rdp_s");
+		case OPTYPE_NO_S: return new LogicTuple("no_s");
+		case OPTYPE_NOP_S: return new LogicTuple("nop_s");
+		case OPTYPE_SET_S: return new LogicTuple("set_s");
+		case OPTYPE_GET_S: return new LogicTuple("get_s");
+		default: return null;
+		}
+	}
+	
+	public LogicTuple getPredicate(){
+		try{
+			if(isOut() || isOut_s() || isOutAll() || isSpawn() || isSet() || isSet_s())
+				return LogicTuple.parse(""+getPrimitive()+"("+tupleArgument+")");
+			else
+				return LogicTuple.parse(""+getPrimitive()+"("+templateArgument+")");
+		}catch(InvalidLogicTupleException e){
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 	public TupleTemplate getTemplateArgument(){
