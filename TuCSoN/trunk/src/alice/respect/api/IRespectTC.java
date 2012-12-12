@@ -50,6 +50,13 @@ public interface IRespectTC  {
 	IRespectOperation out(IId id, LogicTuple t) throws OperationNotPossibleException;
 	
 	/**
+	 * Bio primitive out
+	 */
+	//IRespectOperation out(IId id, BioTuple t, OperationCompletionListener l) throws OperationNotPossibleException; //TODO: is it useful?
+	
+	IRespectOperation out(IId id, BioTuple t) throws OperationNotPossibleException;
+	
+	/**
 	 * Retrieves a tuple in the tuple centre
 	 * 
 	 * @param id agent identifier

@@ -21,6 +21,8 @@ import alice.logictuple.*;
 import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.logictuple.exceptions.InvalidTupleOperationException;
 
+import alice.respect.api.IBioSynchInterface;
+import alice.respect.api.exceptions.OperationNotPossibleException;
 import alice.tucson.api.EnhancedACC;
 import alice.tucson.api.ITucsonOperation;
 import alice.tucson.api.TucsonAgentId;
@@ -34,6 +36,7 @@ import alice.tucson.api.exceptions.UnreachableNodeException;
 import alice.tucson.network.*;
 import alice.tucson.parsing.MyOpManager;
 
+import alice.tuplecentre.api.IId;
 import alice.tuplecentre.api.Tuple;
 import alice.tuplecentre.api.TupleTemplate;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
@@ -75,7 +78,7 @@ import java.util.*;
  * @see alice.tucson.network.TucsonMsgReply TucsonMsgReply
  * @see alice.tucson.api.TucsonMetaACC TucsonMetaACC
  */
-public class ACCProxyAgentSide implements EnhancedACC{
+public class ACCProxyAgentSide implements EnhancedACC, IBioSynchInterface{
 	
 	/**
 	 * TuCSoN Agent Identifier
@@ -1657,7 +1660,7 @@ public class ACCProxyAgentSide implements EnhancedACC{
 			ObjectOutputStream outStream = session.getOutputStream();
 
 			TucsonOperation op = null;
-			if((type == TucsonOperation.outCode()) || (type == TucsonOperation.out_sCode())
+			if((type == TucsonOperation.outCode()) || (type == TucsonOperation.out_sCode()) || type == TucsonOperation.bioOutCode()
 					|| (type == TucsonOperation.set_sCode()) || (type == TucsonOperation.set_Code())
 					|| type == TucsonOperation.out_allCode() || type == TucsonOperation.spawnCode())
 				op = new TucsonOperation(type, (Tuple) t, l, this);
@@ -2001,6 +2004,41 @@ public class ACCProxyAgentSide implements EnhancedACC{
 			return session;
 		}
 		
+	}
+
+	@Override
+	public void out(IId aid, BioTuple t) throws InvalidLogicTupleException,
+			OperationNotPossibleException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public BioTuple inv(IId aid, BioTuple t) throws InvalidLogicTupleException,
+			OperationNotPossibleException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public BioTuple in(IId aid, BioTuple t) throws InvalidLogicTupleException,
+			OperationNotPossibleException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public BioTuple rdv(IId aid, BioTuple t) throws InvalidLogicTupleException,
+			OperationNotPossibleException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public BioTuple rd(IId aid, BioTuple t) throws InvalidLogicTupleException,
+			OperationNotPossibleException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

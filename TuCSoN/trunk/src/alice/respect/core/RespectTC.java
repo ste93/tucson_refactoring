@@ -465,5 +465,29 @@ public class RespectTC implements IRespectTC {
 	private Prolog getProlog(){
 		return vm.getRespectVMContext().getPrologCore();
 	}
+
+	
+	
+	/**
+	 * BIO primitives ASYNCH semantics
+	 */
+	/*
+	@Override
+	public IRespectOperation out(IId id, BioTuple t, OperationCompletionListener l) throws OperationNotPossibleException {
+		RespectOperation op = RespectOperation.makeOut(getProlog(), t, l);
+		vm.doOperation(id, op);
+		return op;
+	}
+	*/
+	/**
+	 * BIO primitives SYNCH semantics
+	 */
+	@Override
+	public IRespectOperation out(IId id, BioTuple t) throws OperationNotPossibleException {
+		//return this.out(id, t,null);
+		RespectOperation op = RespectOperation.makeBioOut(getProlog(), t, null);
+		vm.doOperation(id, op);
+		return op;
+	}
 	
 }

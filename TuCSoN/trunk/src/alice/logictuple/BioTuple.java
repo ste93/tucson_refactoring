@@ -228,14 +228,47 @@ public class BioTuple extends LogicTuple{
 		mult = multiplicity;
 	}
 
+	/**
+	 * Empty constructor
+	 */
 	public BioTuple(){
 	}
 	
+	/**
+	 * Gets the multiplicity of the tuple 
+	 * 
+	 * @return the multiplicity of the tuple
+	 */
 	
 	public long getMultiplicity(){
 		return mult;
 	}
 	
+	/**
+	 * Sets the multiplicity of the tuple
+	 * @param the multiplicity value
+	 */
+	public void setMultiplicity(long m){
+		mult = m;
+	}
+	
+	/**
+	 * Gets the string representation of the bio tuple
+	 * 
+	 * @return the string representing the bio tuple
+	 */
+	public String toString()
+	{
+		try
+		{
+			String tupla = info.toString();
+			return "biotuple("+tupla+","+mult+")";
+		}
+		catch (Exception ex)
+		{
+			return null;
+		}
+	}
 	
 	/**
 	 * Static service to get a bio tuple from a textual representation and the multiplicity

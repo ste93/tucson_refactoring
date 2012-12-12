@@ -141,6 +141,30 @@ public class RespectOperation extends TupleCentreOperation implements IRespectOp
 		return temp;
 	}
 	
+	//Bio primitives
+	
+	public static RespectOperation makeBioOut(Prolog prolog, BioTuple t, OperationCompletionListener l) {
+		return new RespectOperation(prolog, TupleCentreOperation.OPTYPE_BIO_OUT,(Tuple)t, l);
+	}
+	
+	public static RespectOperation makeBioInv(Prolog prolog, BioTuple t, OperationCompletionListener l) {
+		return new RespectOperation(prolog, TupleCentreOperation.OPTYPE_BIO_INV,(Tuple)t, l);
+	}
+	
+	public static RespectOperation makeBioIn(Prolog prolog, BioTuple t, OperationCompletionListener l) {
+		return new RespectOperation(prolog, TupleCentreOperation.OPTYPE_BIO_IN,(Tuple)t, l);
+	}
+	
+	public static RespectOperation makeBioRdv(Prolog prolog, BioTuple t, OperationCompletionListener l) {
+		return new RespectOperation(prolog, TupleCentreOperation.OPTYPE_BIO_RDV,(Tuple)t, l);
+	}
+	
+	public static RespectOperation makeBioRd(Prolog prolog, BioTuple t, OperationCompletionListener l) {
+		return new RespectOperation(prolog, TupleCentreOperation.OPTYPE_BIO_RD,(Tuple)t, l);
+	}
+	
+	//end Bio primitives
+	
 	public static RespectOperation makeSet(Prolog p, LogicTuple logicTuple, OperationCompletionListener l) throws InvalidLogicTupleException{
 		if(logicTuple.toString().equals("[]"))
 			return new RespectOperation(p, RespectOperation.OPTYPE_SET, new LinkedList<Tuple>(), l);

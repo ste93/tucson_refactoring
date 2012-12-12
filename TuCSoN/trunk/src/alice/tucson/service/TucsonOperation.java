@@ -103,6 +103,29 @@ public class TucsonOperation extends TupleCentreOperation implements ITucsonOper
 		return OPTYPE_RDP;
 	}
 
+	
+	//BIO primitives
+	
+	public static int bioOutCode(){
+		return OPTYPE_BIO_OUT;
+	}
+	
+	public static int bioInvCode(){
+		return OPTYPE_BIO_INV;
+	}
+	
+	public static int bioInCode(){
+		return OPTYPE_BIO_IN;
+	}
+	
+	public static int bioRdvCode(){
+		return OPTYPE_BIO_RDV;
+	}
+	
+	public static int bioRdCode(){
+		return OPTYPE_BIO_RD;
+	}
+	
 	public static int set_Code(){
 		return OPTYPE_SET;
 	}

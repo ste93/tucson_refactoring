@@ -42,7 +42,7 @@ public class LogicTuple implements alice.tuplecentre.api.Tuple, alice.tuplecentr
 	 */
 	private static final long serialVersionUID = 1L;
 	/** the information content of logic tuple */
-	private TupleArgument info;
+	protected TupleArgument info;
 
 	/**
 	 * Constructs a logic tuple providing the tuple name and argument list

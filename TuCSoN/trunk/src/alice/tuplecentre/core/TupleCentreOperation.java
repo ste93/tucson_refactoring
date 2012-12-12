@@ -46,6 +46,12 @@ public abstract class TupleCentreOperation implements ITupleCentreOperation{
 	
 	protected static final int OPTYPE_SPAWN = 666;
 	
+	public static final int OPTYPE_BIO_OUT = 111;
+	public static final int OPTYPE_BIO_INV = 112;
+	public static final int OPTYPE_BIO_IN = 113;
+	public static final int OPTYPE_BIO_RDV = 114;
+	public static final int OPTYPE_BIO_RD = 115;
+	
 	protected static final int OPTYPE_OUT_ALL = 10;
 	protected static final int OPTYPE_IN_ALL = 11;
 	protected static final int OPTYPE_RD_ALL = 12;
@@ -84,6 +90,7 @@ public abstract class TupleCentreOperation implements ITupleCentreOperation{
 	protected static final int OPTYPE_HAS_INSP = 72;
 	protected static final int OPTYPE_SET_WSET = 73;
 	protected static final int RESET = 74;
+	
 		
 	protected boolean operationCompleted;
 	protected OperationCompletionListener listener;
@@ -239,6 +246,28 @@ public abstract class TupleCentreOperation implements ITupleCentreOperation{
 	
 	public boolean isSpawn(){
 		return type == TupleCentreOperation.OPTYPE_SPAWN;
+	}
+	
+	//BIO primitives
+	
+	public boolean isBioOut(){
+		return type == TupleCentreOperation.OPTYPE_BIO_OUT;
+	}
+	
+	public boolean isBioInv(){
+		return type == TupleCentreOperation.OPTYPE_BIO_INV;
+	}
+	
+	public boolean isBioIn(){
+		return type == TupleCentreOperation.OPTYPE_BIO_IN;
+	}
+	
+	public boolean isBioRdv(){
+		return type == TupleCentreOperation.OPTYPE_BIO_RDV;
+	}
+	
+	public boolean isBioRd(){
+		return type == TupleCentreOperation.OPTYPE_BIO_RD;
 	}
 	
 	public boolean isOutAll(){
