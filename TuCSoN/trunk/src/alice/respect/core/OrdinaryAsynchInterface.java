@@ -1,5 +1,6 @@
 package alice.respect.core;
 
+import alice.logictuple.BioTuple;
 import alice.logictuple.LogicTuple;
 import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.logictuple.exceptions.InvalidTupleOperationException;
@@ -202,6 +203,51 @@ public class OrdinaryAsynchInterface extends RootInterface implements IOrdinaryA
 		if (t==null)
 			throw new InvalidLogicTupleException();
 		return getCore().spawn(aid, t, l);
+	}
+
+	@Override
+	public IRespectOperation out(IId aid, BioTuple t,
+			OperationCompletionListener l) throws InvalidLogicTupleException,
+			OperationNotPossibleException {
+		if (t==null)
+			throw new InvalidLogicTupleException();
+		return getCore().out(aid, t, l);
+	}
+
+	@Override
+	public IRespectOperation inv(IId aid, BioTuple t,
+			OperationCompletionListener l) throws InvalidLogicTupleException,
+			OperationNotPossibleException {
+		if (t==null)
+			throw new InvalidLogicTupleException();
+		return getCore().inv(aid, t, l);
+	}
+
+	@Override
+	public IRespectOperation in(IId aid, BioTuple t,
+			OperationCompletionListener l) throws InvalidLogicTupleException,
+			OperationNotPossibleException {
+		if (t==null)
+			throw new InvalidLogicTupleException();
+		return getCore().in(aid, t, l);
+	}
+
+	@Override
+	public IRespectOperation rdv(IId aid, BioTuple t,
+			OperationCompletionListener l) throws InvalidLogicTupleException,
+			OperationNotPossibleException {
+		if (t==null)
+			throw new InvalidLogicTupleException();
+		return getCore().rdv(aid, t, l);
+	}
+
+	@Override
+	public IRespectOperation rd(IId aid, BioTuple t,
+			OperationCompletionListener l) throws InvalidLogicTupleException,
+			OperationNotPossibleException {
+		if (t==null)
+			throw new InvalidLogicTupleException();
+		return getCore().rd(aid, t, l);
 	}
 	
 }

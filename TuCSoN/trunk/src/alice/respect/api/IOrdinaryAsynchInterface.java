@@ -14,7 +14,7 @@ import alice.tuplecentre.core.OperationCompletionListener;
  *
  */
 public interface IOrdinaryAsynchInterface {
-    
+	
 	IRespectOperation spawn(IId aid, LogicTuple t, OperationCompletionListener l) throws InvalidLogicTupleException, OperationNotPossibleException;
 	
 	IRespectOperation out(IId aid, LogicTuple t, OperationCompletionListener l) throws InvalidLogicTupleException, OperationNotPossibleException;
@@ -54,5 +54,19 @@ public interface IOrdinaryAsynchInterface {
 	IRespectOperation uinp(IId aid, LogicTuple t, OperationCompletionListener l) throws InvalidLogicTupleException, OperationNotPossibleException;
 	
 	IRespectOperation unop(IId aid, LogicTuple t, OperationCompletionListener l) throws InvalidLogicTupleException, OperationNotPossibleException;
+	
+	//BIO primitives
+	
+	IRespectOperation out(IId aid, BioTuple t, OperationCompletionListener l) throws InvalidLogicTupleException, OperationNotPossibleException;
+	
+	IRespectOperation inv(IId aid, BioTuple t, OperationCompletionListener l) throws InvalidLogicTupleException, OperationNotPossibleException;
+	
+	IRespectOperation in(IId aid, BioTuple t, OperationCompletionListener l) throws InvalidLogicTupleException, OperationNotPossibleException;
+	
+	IRespectOperation rdv(IId aid, BioTuple t, OperationCompletionListener l) throws InvalidLogicTupleException, OperationNotPossibleException;
+	
+	IRespectOperation rd(IId aid, BioTuple t, OperationCompletionListener l) throws InvalidLogicTupleException, OperationNotPossibleException;
+    
+	//end BIO primitives
 	
 }

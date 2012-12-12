@@ -471,23 +471,81 @@ public class RespectTC implements IRespectTC {
 	/**
 	 * BIO primitives ASYNCH semantics
 	 */
-	/*
+	
 	@Override
 	public IRespectOperation out(IId id, BioTuple t, OperationCompletionListener l) throws OperationNotPossibleException {
-		RespectOperation op = RespectOperation.makeOut(getProlog(), t, l);
+		RespectOperation op = RespectOperation.makeBioOut(getProlog(), t, l);
 		vm.doOperation(id, op);
 		return op;
 	}
-	*/
+	
+	@Override
+	public IRespectOperation inv(IId id, BioTuple t,
+			OperationCompletionListener l) throws OperationNotPossibleException {
+		RespectOperation op = RespectOperation.makeBioInv(getProlog(), t, l);
+		vm.doOperation(id, op);
+		return op;
+	}
+	
+	@Override
+	public IRespectOperation in(IId id, BioTuple t,
+			OperationCompletionListener l) throws OperationNotPossibleException {
+		RespectOperation op = RespectOperation.makeBioIn(getProlog(), t, l);
+		vm.doOperation(id, op);
+		return op;
+	}
+	
+	@Override
+	public IRespectOperation rdv(IId id, BioTuple t,
+			OperationCompletionListener l) throws OperationNotPossibleException {
+		RespectOperation op = RespectOperation.makeBioRdv(getProlog(), t, l);
+		vm.doOperation(id, op);
+		return op;
+	}
+	
+	@Override
+	public IRespectOperation rd(IId id, BioTuple t,
+			OperationCompletionListener l) throws OperationNotPossibleException {
+		RespectOperation op = RespectOperation.makeBioRd(getProlog(), t, l);
+		vm.doOperation(id, op);
+		return op;
+	}
+	
+	
 	/**
 	 * BIO primitives SYNCH semantics
 	 */
 	@Override
 	public IRespectOperation out(IId id, BioTuple t) throws OperationNotPossibleException {
-		//return this.out(id, t,null);
-		RespectOperation op = RespectOperation.makeBioOut(getProlog(), t, null);
-		vm.doOperation(id, op);
-		return op;
+		return this.out(id, t,null);
+	}
+
+	
+	@Override
+	public IRespectOperation inv(IId id, BioTuple t)
+			throws OperationNotPossibleException {
+		return this.inv(id, t,null);
+	}
+
+
+	@Override
+	public IRespectOperation in(IId id, BioTuple t)
+			throws OperationNotPossibleException {
+		return this.in(id, t,null);
+	}
+
+
+	@Override
+	public IRespectOperation rdv(IId id, BioTuple t)
+			throws OperationNotPossibleException {
+		return this.rdv(id, t,null);
+	}
+
+
+	@Override
+	public IRespectOperation rd(IId id, BioTuple t)
+			throws OperationNotPossibleException {
+		return this.rd(id, t,null);
 	}
 	
 }

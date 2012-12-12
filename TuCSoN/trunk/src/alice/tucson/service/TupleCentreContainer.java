@@ -1,5 +1,6 @@
 package alice.tucson.service;
 
+import alice.logictuple.BioTuple;
 import alice.logictuple.LogicTuple;
 import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.logictuple.exceptions.InvalidTupleOperationException;
@@ -192,6 +193,11 @@ public class TupleCentreContainer{
 		try{
 //			log("(TupleCentreId) tid.getInternalTupleCentreId() = " + ((TupleCentreId) tid.getInternalTupleCentreId()));
 			context = (RespectTCContainer.getRespectTCContainer()).getOrdinaryAsynchInterface((TupleCentreId) tid.getInternalTupleCentreId());
+			//BIO primitives
+			if(type == TucsonOperation.bioOutCode()){
+				return context.out((AgentId) aid.getLocalAgentId(), (BioTuple)t, l);
+			}
+			//end BIO primitives
 			if(type == TucsonOperation.spawnCode()){
 				return context.spawn((AgentId) aid.getLocalAgentId(), t, l);
 			}if(type == TucsonOperation.outCode())

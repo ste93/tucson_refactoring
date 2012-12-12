@@ -57,4 +57,18 @@ public interface IOrdinarySynchInterface {
 	LogicTuple spawn(IId aid, LogicTuple t) throws InvalidLogicTupleException,
 			OperationNotPossibleException;
 	
+	//BIO primitives
+	
+	void out(IId aid, BioTuple t) throws InvalidLogicTupleException, OperationNotPossibleException;
+
+	BioTuple inv(IId aid, BioTuple t) throws InvalidLogicTupleException, OperationNotPossibleException;
+	
+	BioTuple in(IId aid, BioTuple t) throws InvalidLogicTupleException, OperationNotPossibleException;
+		
+	BioTuple rdv(IId aid, BioTuple t) throws InvalidLogicTupleException, OperationNotPossibleException;
+	
+	BioTuple rd(IId aid, BioTuple t) throws InvalidLogicTupleException, OperationNotPossibleException;
+	
+	//end BIO primitives
+	
 }

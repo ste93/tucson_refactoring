@@ -21,7 +21,6 @@ import alice.logictuple.*;
 import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.logictuple.exceptions.InvalidTupleOperationException;
 
-import alice.respect.api.IBioSynchInterface;
 import alice.respect.api.exceptions.OperationNotPossibleException;
 import alice.tucson.api.EnhancedACC;
 import alice.tucson.api.ITucsonOperation;
@@ -78,7 +77,7 @@ import java.util.*;
  * @see alice.tucson.network.TucsonMsgReply TucsonMsgReply
  * @see alice.tucson.api.TucsonMetaACC TucsonMetaACC
  */
-public class ACCProxyAgentSide implements EnhancedACC, IBioSynchInterface{
+public class ACCProxyAgentSide implements EnhancedACC{
 	
 	/**
 	 * TuCSoN Agent Identifier
@@ -2004,41 +2003,6 @@ public class ACCProxyAgentSide implements EnhancedACC, IBioSynchInterface{
 			return session;
 		}
 		
-	}
-
-	@Override
-	public void out(IId aid, BioTuple t) throws InvalidLogicTupleException,
-			OperationNotPossibleException {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public BioTuple inv(IId aid, BioTuple t) throws InvalidLogicTupleException,
-			OperationNotPossibleException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public BioTuple in(IId aid, BioTuple t) throws InvalidLogicTupleException,
-			OperationNotPossibleException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public BioTuple rdv(IId aid, BioTuple t) throws InvalidLogicTupleException,
-			OperationNotPossibleException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public BioTuple rd(IId aid, BioTuple t) throws InvalidLogicTupleException,
-			OperationNotPossibleException {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }

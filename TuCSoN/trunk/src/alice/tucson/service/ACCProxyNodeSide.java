@@ -272,7 +272,10 @@ public class ACCProxyNodeSide extends ACCAbstractProxyNodeSide{
 					|| msg_type == TucsonOperation.urdCode() || msg_type == TucsonOperation.urdpCode()
 					|| msg_type == TucsonOperation.unoCode() || msg_type == TucsonOperation.unopCode()
 					|| msg_type == TucsonOperation.in_allCode() || msg_type == TucsonOperation.rd_allCode()
-					|| msg_type == TucsonOperation.no_allCode() || msg_type == TucsonOperation.spawnCode()){
+					|| msg_type == TucsonOperation.no_allCode() || msg_type == TucsonOperation.spawnCode()
+					|| msg_type == TucsonOperation.bioOutCode() || msg_type == TucsonOperation.bioInvCode()
+					|| msg_type == TucsonOperation.bioInCode() || msg_type == TucsonOperation.bioRdvCode()
+					|| msg_type == TucsonOperation.bioRdCode()){
 				
 				node.resolveCore(tid.getName());
 				node.addTCAgent(agentId, tid);

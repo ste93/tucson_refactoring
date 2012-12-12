@@ -19,6 +19,7 @@ package alice.respect.core;
 
 import java.util.List;
 
+import alice.logictuple.BioTuple;
 import alice.logictuple.LogicTuple;
 import alice.logictuple.TupleArgument;
 import alice.logictuple.exceptions.InvalidLogicTupleException;
@@ -260,6 +261,44 @@ public class OrdinarySynchInterface extends RootInterface implements IOrdinarySy
 		IRespectOperation op = getCore().spawn(aid, t);
 		op.waitForOperationCompletion();
 		return t;
+	}
+
+	@Override
+	public void out(IId aid, BioTuple t) throws InvalidLogicTupleException,
+			OperationNotPossibleException {
+		if (t==null)
+            throw new InvalidLogicTupleException();
+		IRespectOperation op = getCore().out(aid,t);
+		op.waitForOperationCompletion();
+		
+	}
+
+	@Override
+	public BioTuple inv(IId aid, BioTuple t) throws InvalidLogicTupleException,
+			OperationNotPossibleException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public BioTuple in(IId aid, BioTuple t) throws InvalidLogicTupleException,
+			OperationNotPossibleException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public BioTuple rdv(IId aid, BioTuple t) throws InvalidLogicTupleException,
+			OperationNotPossibleException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public BioTuple rd(IId aid, BioTuple t) throws InvalidLogicTupleException,
+			OperationNotPossibleException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }
