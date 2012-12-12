@@ -173,23 +173,23 @@ loop:	for(int i = offset; i < length; i++){
 			respectKeywords.add("rd_all",Token.KEYWORD3);
 			respectKeywords.add("no_all",Token.KEYWORD3);
 			
-			respectKeywords.add("spawn",Token.KEYWORD2);
+			respectKeywords.add("spawn",Token.KEYWORD3);
 			
-			respectKeywords.add("current_predicate",Token.KEYWORD2);
-			respectKeywords.add("current_tuple",Token.KEYWORD2);
-			respectKeywords.add("current_source",Token.KEYWORD2);
-			respectKeywords.add("current_target",Token.KEYWORD2);
-			respectKeywords.add("current_time",Token.KEYWORD2);
-			respectKeywords.add("event_predicate",Token.KEYWORD2);
-			respectKeywords.add("event_tuple",Token.KEYWORD2);
-			respectKeywords.add("event_source",Token.KEYWORD2);
-			respectKeywords.add("event_target",Token.KEYWORD2);
-			respectKeywords.add("event_time",Token.KEYWORD2);
-			respectKeywords.add("start_predicate",Token.KEYWORD2);
-			respectKeywords.add("start_tuple",Token.KEYWORD2);
-			respectKeywords.add("start_source",Token.KEYWORD2);
-			respectKeywords.add("start_target",Token.KEYWORD2);
-			respectKeywords.add("start_time",Token.KEYWORD2);
+			respectKeywords.add("current_predicate",Token.KEYWORD3);
+			respectKeywords.add("current_tuple",Token.KEYWORD3);
+			respectKeywords.add("current_source",Token.KEYWORD3);
+			respectKeywords.add("current_target",Token.KEYWORD3);
+			respectKeywords.add("current_time",Token.KEYWORD3);
+			respectKeywords.add("event_predicate",Token.KEYWORD3);
+			respectKeywords.add("event_tuple",Token.KEYWORD3);
+			respectKeywords.add("event_source",Token.KEYWORD3);
+			respectKeywords.add("event_target",Token.KEYWORD3);
+			respectKeywords.add("event_time",Token.KEYWORD3);
+			respectKeywords.add("start_predicate",Token.KEYWORD3);
+			respectKeywords.add("start_tuple",Token.KEYWORD3);
+			respectKeywords.add("start_source",Token.KEYWORD3);
+			respectKeywords.add("start_target",Token.KEYWORD3);
+			respectKeywords.add("start_time",Token.KEYWORD3);
 			
 			respectKeywords.add("pre",Token.KEYWORD2);
 			respectKeywords.add("req",Token.KEYWORD2);
@@ -222,7 +222,7 @@ loop:	for(int i = offset; i < length; i++){
 			respectKeywords.add("link_out",Token.KEYWORD2);
 			respectKeywords.add("between",Token.KEYWORD2);
 
-			respectKeywords.add("is",Token.KEYWORD2);
+			respectKeywords.add("is",Token.KEYWORD3);
 			
 			respectKeywords.add("exec",Token.LITERAL1);
 			respectKeywords.add("solve",Token.LITERAL1);
