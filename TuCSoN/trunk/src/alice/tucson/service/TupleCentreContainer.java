@@ -196,6 +196,14 @@ public class TupleCentreContainer{
 			//BIO primitives
 			if(type == TucsonOperation.bioOutCode()){
 				return context.out((AgentId) aid.getLocalAgentId(), (BioTuple)t, l);
+			}if(type == TucsonOperation.bioInvCode()){
+				return context.inv((AgentId) aid.getLocalAgentId(), (BioTuple)t, l);
+			}if(type == TucsonOperation.bioInCode()){
+				return context.in((AgentId) aid.getLocalAgentId(), (BioTuple)t, l);
+			}if(type == TucsonOperation.bioRdvCode()){
+				return context.rdv((AgentId) aid.getLocalAgentId(), (BioTuple)t, l);
+			}if(type == TucsonOperation.bioRdCode()){
+				return context.rd((AgentId) aid.getLocalAgentId(), (BioTuple)t, l);
 			}
 			//end BIO primitives
 			if(type == TucsonOperation.spawnCode()){

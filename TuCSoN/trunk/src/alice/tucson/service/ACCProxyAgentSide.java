@@ -2004,5 +2004,44 @@ public class ACCProxyAgentSide implements EnhancedACC{
 		}
 		
 	}
+	
+	
+	//BIO primitives SYNCH
+
+	@Override
+	public ITucsonOperation out(Object tid, BioTuple tuple, Long timeout)
+			throws TucsonOperationNotPossibleException,
+			UnreachableNodeException, OperationTimeOutException {
+		return doBlockingOperation(TucsonOperation.bioOutCode(), tid, tuple, timeout);
+	}
+
+	@Override
+	public ITucsonOperation inv(Object tid, BioTuple tuple, Long timeout)
+			throws TucsonOperationNotPossibleException,
+			UnreachableNodeException, OperationTimeOutException {
+		return doBlockingOperation(TucsonOperation.bioInvCode(), tid, tuple, timeout);
+	}
+
+	@Override
+	public ITucsonOperation in(Object tid, BioTuple tuple, Long timeout)
+			throws TucsonOperationNotPossibleException,
+			UnreachableNodeException, OperationTimeOutException {
+		return doBlockingOperation(TucsonOperation.bioInCode(), tid, tuple, timeout);
+	}
+
+	@Override
+	public ITucsonOperation rdv(Object tid, BioTuple tuple, Long timeout)
+			throws TucsonOperationNotPossibleException,
+			UnreachableNodeException, OperationTimeOutException {
+		return doBlockingOperation(TucsonOperation.bioRdvCode(), tid, tuple, timeout);
+	}
+
+	
+	@Override
+	public ITucsonOperation rd(Object tid, BioTuple tuple, Long timeout)
+			throws TucsonOperationNotPossibleException,
+			UnreachableNodeException, OperationTimeOutException {
+		return doBlockingOperation(TucsonOperation.bioRdCode(), tid, tuple, timeout);
+	}
 
 }

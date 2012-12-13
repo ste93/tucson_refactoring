@@ -263,6 +263,9 @@ public class OrdinarySynchInterface extends RootInterface implements IOrdinarySy
 		return t;
 	}
 
+    
+    //BIO primitives
+    
 	@Override
 	public void out(IId aid, BioTuple t) throws InvalidLogicTupleException,
 			OperationNotPossibleException {

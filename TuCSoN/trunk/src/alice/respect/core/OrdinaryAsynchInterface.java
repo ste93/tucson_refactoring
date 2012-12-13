@@ -205,6 +205,9 @@ public class OrdinaryAsynchInterface extends RootInterface implements IOrdinaryA
 		return getCore().spawn(aid, t, l);
 	}
 
+	
+	//BIO primitives
+	
 	@Override
 	public IRespectOperation out(IId aid, BioTuple t,
 			OperationCompletionListener l) throws InvalidLogicTupleException,
