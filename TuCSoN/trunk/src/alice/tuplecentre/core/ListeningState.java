@@ -46,7 +46,7 @@ public class ListeningState extends TupleCentreVMState {
     public void execute(){
 		vm.fetchPendingEvent();
         InputEvent ev=vm.getCurrentEvent();
-        if( ev.getSimpleTCEvent().getType()!=18){
+        if( ev.getSimpleTCEvent().getType()!=100){
         	vm.addPendingQueryEvent(ev);
         	vm.fetchTriggeredReactions(ev);
         }else

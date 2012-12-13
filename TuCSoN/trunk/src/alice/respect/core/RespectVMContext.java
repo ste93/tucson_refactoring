@@ -1288,7 +1288,7 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 	public Tuple readUniformTuple(TupleTemplate t){
 		List<Tuple> tl = new LinkedList<Tuple>();
 		tl = readAllTuples(t);
-		if(tl==null)
+		if(tl==null || tl.isEmpty())
 			return null;
 		else{
 			int extracted = new Random().nextInt(tl.size());
@@ -1299,7 +1299,7 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 	public Tuple removeUniformTuple(TupleTemplate t){
 		List<Tuple> tl = new LinkedList<Tuple>();
 		tl = readAllTuples(t);
-		if(tl == null)
+		if(tl == null || tl.isEmpty())
 			return null;
 		else{
 			int extracted = new Random().nextInt(tl.size());
