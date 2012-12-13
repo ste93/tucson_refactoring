@@ -76,7 +76,15 @@ public class SpeakingState extends TupleCentreVMState {
 	            if(op.isResultDefined() || ev.isLinking()){
 	            	foundSatisfied = true;
 	            }else{
-
+	            	//BIO primitives
+	            	if (op.isBioOut()){
+		            	tuple = op.getTupleArgument();
+		        		vm.addTuple(tuple);
+		        		op.setOpResult(Outcome.SUCCESS);
+			            op.setTupleResult(tuple);
+			            foundSatisfied = true;
+		            }
+	            	//end BIO primitives
 	            	if (op.isSpawn()){
 	            		tuple = op.getTupleArgument();
 	            		if(vm.spawnActivity(tuple, ev.getSource(), ev.getTarget())){

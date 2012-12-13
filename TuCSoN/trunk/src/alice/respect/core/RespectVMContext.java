@@ -155,7 +155,7 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 	                InputEvent ie = (InputEvent)ev;
 					RespectOperation op=(RespectOperation)ev.getOperation();
 //					log("op.getLogicTupleArgument() = " + op.getLogicTupleArgument());
-					
+				
 					if (op.isSpawn()){
 						currentReactionTerm=new Struct("spawn",op.getLogicTupleArgument().toTerm());
 					}else if (op.isOut()){
