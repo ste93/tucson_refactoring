@@ -18,44 +18,92 @@
 package alice.respect.core;
 
 import java.util.*;
+
+import alice.logictuple.BioTuple;
 import alice.logictuple.LogicTuple;
 import alice.tuprolog.Var;
 
 /**
- * Class representing a Tuple Set.
+ * Class representing a Tuple Set: it is composed by a multiset of LogicTuple and a multiset of BioTuple. 
  */
 public class TupleSet  {
 
+	//LogicTuple multiset
     private LinkedList<LogicTuple> tuples;
     private LinkedList<LogicTuple> tAdded;
     private LinkedList<LogicTuple> tRemoved;
+    
+    //BioTuple multiset
+    private LinkedList<BioTuple> bioTuples;
+    private LinkedList<BioTuple> bioTAdded;
+    private LinkedList<BioTuple> bioTRemoved;
+    
     private boolean transaction;
 
     public TupleSet(){
+    	//LogicTuple
 		tuples=new LinkedList<LogicTuple>();
 		tAdded=new LinkedList<LogicTuple>();
 		tRemoved=new LinkedList<LogicTuple>();
+		
+		//BioTuple
+		bioTuples = new LinkedList<BioTuple>();
+		bioTAdded = new LinkedList<BioTuple>();
+		bioTRemoved = new LinkedList<BioTuple>();
+		
 		transaction=false;
     }
 
     public void add(LogicTuple t){
-        tuples.add(t);
-        if (transaction)
-            tAdded.add(t);
+    	//bio changes
+    	if(t instanceof BioTuple){
+    		bioTuples.add((BioTuple)t);
+    		if (transaction)
+                bioTAdded.add((BioTuple)t);
+    	}else{
+	        tuples.add(t);
+	        if (transaction)
+	            tAdded.add(t);
+    	}
     }
 
     public void remove(LogicTuple t){
-        tuples.remove(t);
-        if (transaction)
-            tRemoved.add(t);
+    	//bio changes
+    	if(t instanceof BioTuple){
+    		bioTuples.remove((BioTuple)t);
+	        if (transaction)
+	            bioTRemoved.add((BioTuple)t);
+    	}else{
+	        tuples.remove(t);
+	        if (transaction)
+	            tRemoved.add(t);
+    	}
     }
 
+    //bio changes
     public boolean isEmpty(){
-        return tuples.isEmpty();
+        return (tuples.isEmpty() && bioTuples.isEmpty());
+    }
+    
+    //bio added
+    public boolean isEmptyLogicSet(){
+    	return tuples.isEmpty();
+    }
+    public boolean isEmptyBioSet(){
+    	return bioTuples.isEmpty();
     }
 
+    //bio changes
     public int size(){
-        return tuples.size();
+        return tuples.size() + bioTuples.size();
+    }
+    
+    //bio added
+    public int sizeLogicSet(){
+    	return tuples.size();
+    }
+    public int sizeBioSet(){
+    	return bioTuples.size();
     }
 
     /**
@@ -91,8 +139,18 @@ public class TupleSet  {
         tRemoved.clear();
     }
 
+    //bio changes
     public void empty(){
         tuples.clear();
+        bioTuples.clear();
+    }
+    
+    //bio added
+    public void emptyLogicSet(){
+        tuples.clear();
+    }
+    public void emptyBioSet(){
+        bioTuples.clear();
     }
 
     public LogicTuple getMatchingTuple(LogicTuple templ){
