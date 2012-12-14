@@ -1342,8 +1342,8 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     		e.printStackTrace();
     		return false;
     	}
-    	log("tid = " + tid);
-    	log("arg0 = " + arg0);
+//    	log("tid = " + tid);
+//    	log("arg0 = " + arg0);
     	tcName = tid.getName();
     	
         AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
@@ -1354,7 +1354,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
 	        LogicTuple tuArg=new LogicTuple(newArg);
 	        InputEvent ce=vm.getCurrentEvent();
 //	        AS A FIRST IMPL, CONSIDER THE OWNER AS THE REACTING TC (WHICH IS ALSO TARGET)
-	        log("ce.getReactingTC() = " + ce.getReactingTC());
+//	        log("ce.getReactingTC() = " + ce.getReactingTC());
 	        vm.spawnActivity(tuArg, ce.getReactingTC(), ce.getReactingTC());
 //	        vm.spawnActivity(tuArg, ce.getSource(), tid);
 			InternalEvent ev=new InternalEvent(ce,InternalOperation.makeSpawnR(new LogicTuple(arg0.copyGoal(v,0))));

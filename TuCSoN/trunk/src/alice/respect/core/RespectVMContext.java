@@ -737,20 +737,18 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
     @Override
 	public boolean spawnActivity(Tuple tuple, IId owner, IId targetTC) {
     	try {
-    		ClassLoader cl = ClassLoader.getSystemClassLoader();
+    		ClassLoader cl = Thread.currentThread().getContextClassLoader();
+//    		ClassLoader cl = ClassLoader.getSystemClassLoader();
             URL[] urls = ((URLClassLoader)cl).getURLs();
             log("Known paths:");
             for(URL url: urls)
             	System.out.println("	" + url.getFile());
-//            When starting the TuCSoN Node it is necessary to properly add the classpath where to
-//            find the Java class (or the Prolog theory) to be executed with the
-//            spawn()!!
             LogicTuple t = (LogicTuple)tuple;
             if(!(t.getName().equals("exec") || t.getName().equals("solve"))){
             	log("spawn argument must be a tuple with functor name 'exec' or 'solve'");
             	return false;
             }
-            log("---> " + t.getArity());
+//            log("---> " + t.getArity());
             if(t.getArity() == 2){
             	log("Prolog theory expected");
             	if(!t.getName().equals("solve")){
@@ -787,7 +785,7 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 //	                solver.loadLibrary("alice.respect.api.Respect2PLibrary");
 //	                ((alice.respect.api.Respect2PLibrary)solver.getLibrary("alice.respect.api.Respect2PLibrary")).init(this);
 //	            	theoryPath should be a pathname but it is not now!!
-	            	InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream(theoryPath);
+	            	InputStream is = cl.getResourceAsStream(theoryPath);
 					Theory toSpawn = new Theory(new BufferedInputStream(is));
 	            	solver.setTheory(toSpawn);
 	            	String[] libs = solver.getCurrentLibraries();
@@ -809,7 +807,7 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
             	String className = alice.util.Tools.removeApices(t.getArg(0).toString());
 //            	log("---> "+className);
             	if(className.endsWith(".class")){
-					Class toSpawn = ClassLoader.getSystemClassLoader().loadClass(className.substring(0, className.length()-6));
+					Class<?> toSpawn = cl.loadClass(className.substring(0, className.length()-6));
 					if(SpawnActivity.class.isAssignableFrom(toSpawn)){
 						SpawnActivity instance = (SpawnActivity) toSpawn.newInstance();
 						if(owner.isAgent()){
