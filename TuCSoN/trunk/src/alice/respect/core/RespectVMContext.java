@@ -906,13 +906,26 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
     	return list;
     }
 
+    //in & bio inv
     public  Tuple removeMatchingTuple(TupleTemplate t){
         Tuple tuple=tSet.getMatchingTuple((alice.logictuple.LogicTuple)t);
         return tuple;
     }
+    
+    //bio added - bio in
+    public  Tuple removeMatchingTupleGround(TupleTemplate t){
+        Tuple tuple=tSet.getMatchingTupleGround((alice.logictuple.BioTuple)t);
+        return tuple;
+    }
 
+    //rd & bio rdv
     public Tuple readMatchingTuple(TupleTemplate t){
         return tSet.readMatchingTuple((alice.logictuple.LogicTuple)t);
+    }
+    
+    //bio added - bio rd
+    public Tuple readMatchingTupleGround(TupleTemplate t){
+        return tSet.readMatchingTupleGround((alice.logictuple.BioTuple)t);
     }
     
     public void addSpecTuple(Tuple t){

@@ -153,37 +153,112 @@ public class TupleSet  {
         bioTuples.clear();
     }
 
+    //in & bio inv
     public LogicTuple getMatchingTuple(LogicTuple templ){
         if (templ==null)
             return null;
-        ListIterator<LogicTuple> l=tuples.listIterator();
-        while (l.hasNext()){
-            LogicTuple tu=l.next();
-            if (templ.match(tu)){
-                l.remove();
-                if (transaction)
-                    tRemoved.add(tu);
-                AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
-                return new LogicTuple(tu.toTerm().copyGoal(v, 0));
+        //bio changes
+        if(templ instanceof BioTuple){
+        	ListIterator<BioTuple> l=bioTuples.listIterator();
+            while (l.hasNext()){
+                BioTuple tu=l.next();
+                if (templ.match(tu)){
+                    l.remove();
+                    if (transaction)
+                        bioTRemoved.add(tu);
+                    AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
+                    return new BioTuple(tu.toTerm().copyGoal(v, 0),tu.getMultiplicity());
+                }
             }
+        }else{
+	        ListIterator<LogicTuple> l=tuples.listIterator();
+	        while (l.hasNext()){
+	            LogicTuple tu=l.next();
+	            if (templ.match(tu)){
+	                l.remove();
+	                if (transaction)
+	                    tRemoved.add(tu);
+	                AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
+	                return new LogicTuple(tu.toTerm().copyGoal(v, 0));
+	            }
+	        }
         }
         return null;
     }
 
+    //rd & bio rdv
     public LogicTuple readMatchingTuple(LogicTuple templ){
         if (templ==null)
             return null;
-        ListIterator<LogicTuple> l=tuples.listIterator();
-        while (l.hasNext()){
-            LogicTuple tu=l.next();
-            if (templ.match(tu)){
-            	AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
-                return new LogicTuple(tu.toTerm().copyGoal(v, 0));
+        //bio changes
+        if(templ instanceof BioTuple){
+        	ListIterator<BioTuple> l=bioTuples.listIterator();
+            while (l.hasNext()){
+                BioTuple tu=l.next();
+                if (templ.match(tu)){
+                	AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
+                    return new BioTuple(tu.toTerm().copyGoal(v, 0),tu.getMultiplicity());
+                }
+            }
+        }else{
+        	ListIterator<LogicTuple> l=tuples.listIterator();
+            while (l.hasNext()){
+                LogicTuple tu=l.next();
+                if (templ.match(tu)){
+                	AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
+                    return new LogicTuple(tu.toTerm().copyGoal(v, 0));
+                }
             }
         }
         return null;
     }
 
+    //bio added
+    //bio in
+    public LogicTuple getMatchingTupleGround(BioTuple templ){
+        if (templ==null)
+            return null;
+        
+    	ListIterator<BioTuple> l=bioTuples.listIterator();
+    	long multTempl = ((BioTuple)templ).getMultiplicity();
+        while (l.hasNext()){
+            BioTuple tu=l.next();
+            if (templ.match(tu)){
+            	long multTu = tu.getMultiplicity();
+            	if(multTempl==multTu){//if multTempl>multTu this function is not invoked
+            		l.remove();
+            	}else{
+            		tu.setMultiplicity(multTu-multTempl);
+            	}
+            	/* TODO : consider how to do for transaction
+                if (transaction)
+                	bioTRemoved.add(tu);
+                */
+                AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
+                return new BioTuple(tu.toTerm().copyGoal(v, 0),multTempl);
+            }
+        }
+        
+        return null;
+    }
+
+    //bio rd
+    public LogicTuple readMatchingTupleGround(BioTuple templ){
+        if (templ==null)
+            return null;
+       
+    	ListIterator<BioTuple> l=bioTuples.listIterator();
+        while (l.hasNext()){
+            BioTuple tu=l.next();
+            if (templ.match(tu)){
+            	AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
+                return new BioTuple(tu.toTerm().copyGoal(v, 0),templ.getMultiplicity());
+            }
+        }
+        
+        return null;
+    }
+    
     public Iterator<LogicTuple> getIterator(){
         return tuples.listIterator();
     }

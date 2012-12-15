@@ -76,15 +76,6 @@ public class SpeakingState extends TupleCentreVMState {
 	            if(op.isResultDefined() || ev.isLinking()){
 	            	foundSatisfied = true;
 	            }else{
-	            	//BIO primitives
-	            	if (op.isBioOut()){
-		            	tuple = op.getTupleArgument();
-		        		vm.addTuple(tuple);
-		        		op.setOpResult(Outcome.SUCCESS);
-			            op.setTupleResult(tuple);
-			            foundSatisfied = true;
-		            }
-	            	//end BIO primitives
 	            	if (op.isSpawn()){
 	            		tuple = op.getTupleArgument();
 	            		if(vm.spawnActivity(tuple, ev.getSource(), ev.getTarget())){
@@ -93,27 +84,29 @@ public class SpeakingState extends TupleCentreVMState {
 	            			op.setOpResult(Outcome.FAILURE);
 	            		op.setTupleResult(tuple);
 	            		foundSatisfied = true;
-	            	}else if (op.isOut()){
+	            	}else if (op.isOut() || op.isBioOut()){
 		            	tuple = op.getTupleArgument();
 		        		vm.addTuple(tuple);
 		        		op.setOpResult(Outcome.SUCCESS);
 			            op.setTupleResult(tuple);
 			            foundSatisfied = true;
-		            } else if (op.isIn()){
+		            } else if (op.isIn() || op.isBioInv()){
 		                tuple = vm.removeMatchingTuple(op.getTemplateArgument());
 						if (tuple!=null){
 							op.setOpResult(Outcome.SUCCESS);
 				            op.setTupleResult(tuple);
 							foundSatisfied=true;
 						}// we do nothing: in is suspensive hence we cannot conclude FAILURE yet!
-		            } else if (op.isRd()){
+		            } else if (op.isRd() || op.isBioRdv()){
 						tuple = vm.readMatchingTuple(op.getTemplateArgument());
 						if (tuple!=null){
 							op.setOpResult(Outcome.SUCCESS);
 				            op.setTupleResult(tuple);
 							foundSatisfied=true;
 						}// we do nothing: rd is suspensive hence we cannot conclude FAILURE yet!
-					} else if (op.isInp()){
+					}else if(op.isBioIn()){
+						tuple = vm.removeMathingTupleGround(op.getTemplateArgument());
+					}else if (op.isInp()){
 	            		tuple = vm.removeMatchingTuple(op.getTemplateArgument());
 	            		if(tuple!=null){
 	            			op.setOpResult(Outcome.SUCCESS);

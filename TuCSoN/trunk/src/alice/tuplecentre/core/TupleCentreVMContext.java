@@ -300,6 +300,18 @@ public abstract class TupleCentreVMContext implements ITupleCentreManagement, IT
      */
     public abstract Tuple removeMatchingTuple(TupleTemplate t);
     
+    
+    /**
+     * Removes from the tuple set a tuple
+     * that matches with the provided tuple template.
+     * If two ore more tuples match the template, one is returned
+     * with probability given by its multiplicity.
+     *
+     * @param t the tuple template that must be matched by the tuple
+     * @return a tuple matching the tuple template
+     */
+    public abstract Tuple removeMatchingTupleGround(TupleTemplate t);
+    
 	  /**
 	   * Gets all the tuples of the tuple centre matching the TupleTemplate t
 	   *
@@ -358,6 +370,17 @@ public abstract class TupleCentreVMContext implements ITupleCentreManagement, IT
      * @return a tuple matching the tuple template
      */
     public abstract Tuple readMatchingTuple(TupleTemplate t);
+    
+    /**
+     * Gets without removing from the tuple set  a tuple
+     * that matches with the provided tuple template.
+     * If two ore more tuples match the template, one is returned
+     * with probability given by its multiplicity.
+     *
+     * @param t the tuple template that must be matched by the tuple
+     * @return a tuple matching the tuple template
+     */
+    public abstract Tuple readMatchingTupleGround(TupleTemplate t);
     
     /**
      *  Adds a tuple to the specification tuple set 
