@@ -84,34 +84,34 @@ public class SpeakingState extends TupleCentreVMState {
 	            			op.setOpResult(Outcome.FAILURE);
 	            		op.setTupleResult(tuple);
 	            		foundSatisfied = true;
-	            	}else if (op.isOut() || op.isBioOut()){
+	            	}else if (op.isOut() || op.isBioOut()){		//BIO changes
 		            	tuple = op.getTupleArgument();
 		        		vm.addTuple(tuple);
 		        		op.setOpResult(Outcome.SUCCESS);
 			            op.setTupleResult(tuple);
 			            foundSatisfied = true;
-		            } else if (op.isIn() || op.isBioInv()){
+		            } else if (op.isIn() || op.isBioInv()){		//BIO changes
 		                tuple = vm.removeMatchingTuple(op.getTemplateArgument());
 						if (tuple!=null){
 							op.setOpResult(Outcome.SUCCESS);
 				            op.setTupleResult(tuple);
 							foundSatisfied=true;
 						}// we do nothing: in is suspensive hence we cannot conclude FAILURE yet!
-		            } else if (op.isRd() || op.isBioRdv()){
+		            } else if (op.isRd() || op.isBioRdv()){		//BIO changes
 						tuple = vm.readMatchingTuple(op.getTemplateArgument());
 						if (tuple!=null){
 							op.setOpResult(Outcome.SUCCESS);
 				            op.setTupleResult(tuple);
 							foundSatisfied=true;
 						}// we do nothing: rd is suspensive hence we cannot conclude FAILURE yet!
-					}else if(op.isBioIn()){
+					}else if(op.isBioIn()){		//BIO added
 						tuple = vm.removeMatchingTupleGround(op.getTemplateArgument());
 						if (tuple!=null){
 							op.setOpResult(Outcome.SUCCESS);
 				            op.setTupleResult(tuple);
 							foundSatisfied=true;
 						}// we do nothing: in is suspensive hence we cannot conclude FAILURE yet!
-					}else if(op.isBioRd()){
+					}else if(op.isBioRd()){		//BIO added
 						tuple = vm.readMatchingTupleGround(op.getTemplateArgument());
 						if (tuple!=null){
 							op.setOpResult(Outcome.SUCCESS);
