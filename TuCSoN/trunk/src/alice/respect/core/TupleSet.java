@@ -246,20 +246,68 @@ public class TupleSet  {
     public LogicTuple readMatchingTupleGround(BioTuple templ){
         if (templ==null)
             return null;
-       
+        long multTempl = templ.getMultiplicity();
     	ListIterator<BioTuple> l=bioTuples.listIterator();
-        while (l.hasNext()){
+    	LinkedList<BioTuple> tmp = new LinkedList<BioTuple>();
+        long multTot = 0;
+        
+        //find matching tuples
+    	while (l.hasNext()){
             BioTuple tu=l.next();
             if (templ.match(tu)){
-            	AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
-                return new BioTuple(tu.toTerm().copyGoal(v, 0),templ.getMultiplicity());
+            	multTot += tu.getMultiplicity();
+            	tmp.add(tu);
             }
         }
-        
+    	
+    	//check list size of matching tuples
+        if(tmp.size() == 0) return null;
+        else if(tmp.size() == 1){
+        	BioTuple t = tmp.getFirst();
+        	AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
+            return new LogicTuple(t.toTerm().copyGoal(v, 0));
+        }else if(tmp.size()>1){	//if two or more tuples match the template
+        	long r = (long) Math.random() * multTot;
+        	LinkedList<BioTuple> tmp2 = sortBio(tmp);
+        	long counter = 0;
+        	int i = 0;
+        	BioTuple tuple;
+            for(BioTuple t : tmp2){
+            	tuple = tmp2.get(i);
+            	counter += tuple.getMultiplicity(); 
+            	if(counter >= r){
+            		AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
+                    return new BioTuple(tuple.toTerm().copyGoal(v, 0),multTempl);
+            	}
+            }
+        }
         return null;
     }
     
-    public Iterator<LogicTuple> getIterator(){
+    //BIO added
+    private LinkedList<BioTuple> sortBio(LinkedList<BioTuple> tmp) {
+		if(tmp.size()<=1){ 
+			return tmp;
+		}else{
+			BioTuple pivot = tmp.getFirst();
+			LinkedList<BioTuple> less = new LinkedList<BioTuple>();
+			LinkedList<BioTuple> greater = new LinkedList<BioTuple>();
+			for(BioTuple t : tmp){
+				if(t.getMultiplicity() <= pivot.getMultiplicity()){
+					less.add(t);
+				}else{
+					greater.add(t);
+				}
+			}
+			LinkedList<BioTuple> a1 = sortBio(less);
+			LinkedList<BioTuple> a2 = sortBio(greater);
+			a1.add(pivot);
+			a1.addAll(a2);
+			return a1;
+		}
+	}
+
+	public Iterator<LogicTuple> getIterator(){
         return tuples.listIterator();
     }
 

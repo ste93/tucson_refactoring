@@ -105,7 +105,19 @@ public class SpeakingState extends TupleCentreVMState {
 							foundSatisfied=true;
 						}// we do nothing: rd is suspensive hence we cannot conclude FAILURE yet!
 					}else if(op.isBioIn()){
-						tuple = vm.removeMathingTupleGround(op.getTemplateArgument());
+						tuple = vm.removeMatchingTupleGround(op.getTemplateArgument());
+						if (tuple!=null){
+							op.setOpResult(Outcome.SUCCESS);
+				            op.setTupleResult(tuple);
+							foundSatisfied=true;
+						}// we do nothing: in is suspensive hence we cannot conclude FAILURE yet!
+					}else if(op.isBioRd()){
+						tuple = vm.readMatchingTupleGround(op.getTemplateArgument());
+						if (tuple!=null){
+							op.setOpResult(Outcome.SUCCESS);
+				            op.setTupleResult(tuple);
+							foundSatisfied=true;
+						}// we do nothing: in is suspensive hence we cannot conclude FAILURE yet!
 					}else if (op.isInp()){
 	            		tuple = vm.removeMatchingTuple(op.getTemplateArgument());
 	            		if(tuple!=null){
