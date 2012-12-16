@@ -17,14 +17,18 @@
  */
 package alice.respect.core;
 
+import java.util.List;
+
 import alice.logictuple.*;
 import alice.logictuple.exceptions.InvalidLogicTupleException;
+import alice.logictuple.exceptions.InvalidTupleOperationException;
 import alice.respect.api.AgentId;
 import alice.respect.api.IRespectTC;
 import alice.respect.api.IRespectOperation;
 import alice.respect.api.ITimedContext;
 import alice.respect.api.exceptions.OperationNotPossibleException;
 import alice.respect.api.exceptions.OperationTimeOutException;
+import alice.tuplecentre.api.IId;
 
 /**
  *
@@ -39,30 +43,36 @@ public class TimedContext extends RootInterface implements ITimedContext  {
         super(core);
     }
     
-    public void out(AgentId id, LogicTuple t,long ms) throws InvalidLogicTupleException, OperationNotPossibleException, OperationTimeOutException {
+    public void out(IId id, LogicTuple t, long ms) 
+    		throws InvalidLogicTupleException, OperationNotPossibleException, 
+    		OperationTimeOutException {
         if (t==null)
             throw new InvalidLogicTupleException();
 		IRespectOperation op = getCore().out(id,t);
 		try {
 			op.waitForOperationCompletion(ms);
-		} catch (alice.tuplecentre.api.exceptions.OperationTimeOutException  ex){
+		} catch (alice.tuplecentre.api.exceptions.OperationTimeOutException ex){
 			throw new OperationTimeOutException(op);
 		}
     }
     
-    public LogicTuple in(AgentId id, LogicTuple t,long ms) throws InvalidLogicTupleException, OperationNotPossibleException, alice.respect.api.exceptions.OperationTimeOutException {
+    public LogicTuple in(IId id, LogicTuple t, long ms) 
+    		throws InvalidLogicTupleException, OperationNotPossibleException, 
+    		OperationTimeOutException {
         if (t==null)
             throw new InvalidLogicTupleException();
 		IRespectOperation op = getCore().in(id,t);
 		try {
 			op.waitForOperationCompletion(ms);
-		} catch (Exception  ex){
-			throw new alice.respect.api.exceptions.OperationTimeOutException(op);
+		} catch (alice.tuplecentre.api.exceptions.OperationTimeOutException ex){
+			throw new OperationTimeOutException(op);
 		}
-		return unify(t,op.getLogicTupleResult());
+		return unify(t, op.getLogicTupleResult());
     }
     
-	public LogicTuple rd(AgentId id, LogicTuple t, long ms) throws InvalidLogicTupleException, OperationNotPossibleException, OperationTimeOutException {
+	public LogicTuple rd(IId id, LogicTuple t, long ms) 
+			throws InvalidLogicTupleException, OperationNotPossibleException, 
+			OperationTimeOutException {
 		if (t==null)
 			throw new InvalidLogicTupleException();
 		IRespectOperation op = getCore().rd(id,t);
@@ -71,26 +81,40 @@ public class TimedContext extends RootInterface implements ITimedContext  {
 		} catch (alice.tuplecentre.api.exceptions.OperationTimeOutException ex){
 			throw new OperationTimeOutException(op);
 		}
-		return unify(t,op.getLogicTupleResult());
+		return unify(t, op.getLogicTupleResult());
+	}
+	
+	public LogicTuple no(IId id, LogicTuple t, long ms) 
+			throws InvalidLogicTupleException, OperationNotPossibleException, 
+			OperationTimeOutException {
+		if (t==null)
+			throw new InvalidLogicTupleException();
+		IRespectOperation op = getCore().no(id,t);
+		try {
+			op.waitForOperationCompletion(ms);
+		} catch (alice.tuplecentre.api.exceptions.OperationTimeOutException ex){
+			throw new OperationTimeOutException(op);
+		}
+		return unify(t, op.getLogicTupleResult());
 	}
 
-	public LogicTuple inp(AgentId id, LogicTuple t, long ms) throws InvalidLogicTupleException, OperationNotPossibleException, OperationTimeOutException {
+	public LogicTuple inp(IId id, LogicTuple t, long ms) 
+			throws InvalidLogicTupleException, OperationNotPossibleException, 
+			OperationTimeOutException {
 		if (t==null)
 			throw new InvalidLogicTupleException();
 		IRespectOperation op = getCore().inp(id,t);
 		try {
 			op.waitForOperationCompletion(ms);
-		} catch (alice.tuplecentre.api.exceptions.OperationTimeOutException  ex){
+		} catch (alice.tuplecentre.api.exceptions.OperationTimeOutException ex){
 			throw new OperationTimeOutException(op);
 		}
-		LogicTuple result = op.getLogicTupleResult();
-		if (result==null)
-			return null;
-		else
-			return unify(t,op.getLogicTupleResult());
+		return unify(t, op.getLogicTupleResult());
 	}
     
-	public LogicTuple rdp(AgentId id, LogicTuple t,long ms) throws InvalidLogicTupleException, OperationNotPossibleException, OperationTimeOutException {
+	public LogicTuple rdp(IId id, LogicTuple t, long ms) 
+			throws InvalidLogicTupleException, OperationNotPossibleException, 
+			OperationTimeOutException {
 		if (t==null)
 			throw new InvalidLogicTupleException();
 		IRespectOperation op = getCore().rdp(id,t);
@@ -99,12 +123,246 @@ public class TimedContext extends RootInterface implements ITimedContext  {
 		} catch (alice.tuplecentre.api.exceptions.OperationTimeOutException  ex){
 			throw new OperationTimeOutException(op);
 		}
-		LogicTuple result = op.getLogicTupleResult();
-		if (result==null)
-			return null;
-		else
-			return unify(t,op.getLogicTupleResult());
+		return unify(t, op.getLogicTupleResult());
+	}
+	
+	public LogicTuple nop(IId id, LogicTuple t, long ms) 
+			throws InvalidLogicTupleException, OperationNotPossibleException, 
+			OperationTimeOutException {
+		if (t==null)
+			throw new InvalidLogicTupleException();
+		IRespectOperation op = getCore().nop(id,t);
+		try {
+			op.waitForOperationCompletion(ms);
+		} catch (alice.tuplecentre.api.exceptions.OperationTimeOutException  ex){
+			throw new OperationTimeOutException(op);
+		}
+		return unify(t, op.getLogicTupleResult());
+	}
+	
+	public List<LogicTuple> set(IId aid, LogicTuple tuple, long ms) 
+			throws OperationNotPossibleException, InvalidLogicTupleException,
+			OperationTimeOutException{
+		IRespectOperation op = getCore().set(aid, tuple);
+		try {
+			op.waitForOperationCompletion(ms);
+		} catch (alice.tuplecentre.api.exceptions.OperationTimeOutException  ex){
+			throw new OperationTimeOutException(op);
+		}
+		return op.getLogicTupleListResult();
+	}
+	
+	public List<LogicTuple> get(IId aid, long ms) 
+			throws OperationNotPossibleException, OperationTimeOutException {
+		IRespectOperation op = getCore().get(aid);
+		try {
+			op.waitForOperationCompletion(ms);
+		} catch (alice.tuplecentre.api.exceptions.OperationTimeOutException  ex){
+			throw new OperationTimeOutException(op);
+		}
+		return op.getLogicTupleListResult();
+	}
+	
+	public void out_all(IId id, LogicTuple t, long ms) 
+			throws InvalidLogicTupleException, OperationNotPossibleException, 
+			OperationTimeOutException {
+	    if (t==null)
+	        throw new InvalidLogicTupleException();
+		IRespectOperation op = getCore().out_all(id,t);
+		try {
+			op.waitForOperationCompletion(ms);
+		} catch (alice.tuplecentre.api.exceptions.OperationTimeOutException  ex){
+			throw new OperationTimeOutException(op);
+		}
+	}
+	
+	public LogicTuple in_all(IId aid, LogicTuple t, long ms) 
+			throws InvalidLogicTupleException, OperationNotPossibleException,
+			OperationTimeOutException {
+		IRespectOperation op = null;
+		TupleArgument arg = null;
+		try {
+			if (t==null)
+				throw new InvalidLogicTupleException();
+			else if (t.getName().equals(",") && t.getArity()==2){
+				op = getCore().in_all(aid, new LogicTuple(t.getArg(0)));
+			}else{
+				op = getCore().in_all(aid,t);
+			}
+			try {
+				op.waitForOperationCompletion(ms);
+			} catch (alice.tuplecentre.api.exceptions.OperationTimeOutException  ex){
+				throw new OperationTimeOutException(op);
+			}
+			if (t.getName().equals(",") && t.getArity()==2){
+				arg = t.getArg(1);
+				return unify(new LogicTuple(new TupleArgument(arg.toTerm())),
+						op.getLogicTupleResult());
+			}
+		} catch (InvalidTupleOperationException e2) {
+			throw new OperationNotPossibleException();
+		}
+		return op.getLogicTupleResult();
+	}
+	
+	public LogicTuple rd_all(IId aid, LogicTuple t, long ms) 
+			throws InvalidLogicTupleException, OperationNotPossibleException,
+			OperationTimeOutException {
+		IRespectOperation op = null;
+		TupleArgument arg = null;
+		try {
+			if (t==null)
+				throw new InvalidLogicTupleException();
+			else if (t.getName().equals(",") && t.getArity()==2){
+				op = getCore().rd_all(aid, new LogicTuple(t.getArg(0)));
+			}else{
+				op = getCore().rd_all(aid,t);
+			}
+			try {
+				op.waitForOperationCompletion(ms);
+			} catch (alice.tuplecentre.api.exceptions.OperationTimeOutException  ex){
+				throw new OperationTimeOutException(op);
+			}
+			if (t.getName().equals(",") && t.getArity()==2){
+				arg = t.getArg(1);
+				return unify(new LogicTuple(new TupleArgument(arg.toTerm())),
+						op.getLogicTupleResult());
+			}
+		} catch (InvalidTupleOperationException e2) {
+			throw new OperationNotPossibleException();
+		}
+		return op.getLogicTupleResult();
+	}
+	
+	public LogicTuple no_all(IId aid, LogicTuple t, long ms)
+			throws InvalidLogicTupleException, OperationNotPossibleException,
+			OperationTimeOutException {
+		IRespectOperation op = null;
+		TupleArgument arg = null;
+		try {
+			if (t==null)
+				throw new InvalidLogicTupleException();
+			else if (t.getName().equals(",") && t.getArity()==2){
+				op = getCore().no_all(aid, new LogicTuple(t.getArg(0)));
+			}else{
+				op = getCore().no_all(aid,t);
+			}
+			try {
+				op.waitForOperationCompletion(ms);
+			} catch (alice.tuplecentre.api.exceptions.OperationTimeOutException  ex){
+				throw new OperationTimeOutException(op);
+			}
+			if (t.getName().equals(",") && t.getArity()==2){
+				arg = t.getArg(1);
+				return unify(new LogicTuple(new TupleArgument(arg.toTerm())),
+						op.getLogicTupleResult());
+			}
+		} catch (InvalidTupleOperationException e2) {
+			throw new OperationNotPossibleException();
+		}
+		return op.getLogicTupleResult();
+	}
+	
+	public LogicTuple urd(IId id, LogicTuple t, long ms) 
+			throws InvalidLogicTupleException, OperationNotPossibleException,
+			OperationTimeOutException {
+	    if (t==null)
+	        throw new InvalidLogicTupleException();
+		IRespectOperation op = getCore().urd(id,t);
+		try {
+			op.waitForOperationCompletion(ms);
+		} catch (alice.tuplecentre.api.exceptions.OperationTimeOutException  ex){
+			throw new OperationTimeOutException(op);
+		}
+	    return unify(t, op.getLogicTupleResult());
+	}
+	
+	public LogicTuple uin(IId id, LogicTuple t, long ms) 
+			throws InvalidLogicTupleException, OperationNotPossibleException,
+			OperationTimeOutException {
+	    if (t==null)
+	        throw new InvalidLogicTupleException();
+		IRespectOperation op = getCore().uin(id,t);
+		try {
+			op.waitForOperationCompletion(ms);
+		} catch (alice.tuplecentre.api.exceptions.OperationTimeOutException  ex){
+			throw new OperationTimeOutException(op);
+		}
+	    return unify(t, op.getLogicTupleResult());
+	}
+	
+	public LogicTuple uno(IId id, LogicTuple t, long ms) 
+			throws InvalidLogicTupleException, OperationNotPossibleException,
+			OperationTimeOutException {
+	    if (t==null)
+	        throw new InvalidLogicTupleException();
+		IRespectOperation op = getCore().uno(id,t);
+		try {
+			op.waitForOperationCompletion(ms);
+		} catch (alice.tuplecentre.api.exceptions.OperationTimeOutException  ex){
+			throw new OperationTimeOutException(op);
+		}
+	    return unify(t, op.getLogicTupleResult());
+	}
+	
+	public LogicTuple urdp(IId id, LogicTuple t, long ms) 
+			throws InvalidLogicTupleException, OperationNotPossibleException,
+			OperationTimeOutException {
+	    if (t==null)
+	        throw new InvalidLogicTupleException();
+		IRespectOperation op = getCore().urdp(id,t);
+		try {
+			op.waitForOperationCompletion(ms);
+		} catch (alice.tuplecentre.api.exceptions.OperationTimeOutException  ex){
+			throw new OperationTimeOutException(op);
+		}
+		LogicTuple result = op.getLogicTupleResult(); 
+		return unify(t, result);
+	}
+	
+	public LogicTuple uinp(IId id, LogicTuple t, long ms) 
+			throws InvalidLogicTupleException, OperationNotPossibleException,
+			OperationTimeOutException {
+	    if (t==null)
+	        throw new InvalidLogicTupleException();
+		IRespectOperation op = getCore().uinp(id,t);
+		try {
+			op.waitForOperationCompletion(ms);
+		} catch (alice.tuplecentre.api.exceptions.OperationTimeOutException  ex){
+			throw new OperationTimeOutException(op);
+		}
+		LogicTuple result = op.getLogicTupleResult(); 
+		return unify(t, result);
+	}
+	
+	public LogicTuple unop(IId id, LogicTuple t, long ms) 
+			throws InvalidLogicTupleException, OperationNotPossibleException,
+			OperationTimeOutException {
+	    if (t==null)
+	        throw new InvalidLogicTupleException();
+		IRespectOperation op = getCore().unop(id,t);
+		try {
+			op.waitForOperationCompletion(ms);
+		} catch (alice.tuplecentre.api.exceptions.OperationTimeOutException  ex){
+			throw new OperationTimeOutException(op);
+		}
+		LogicTuple result = op.getLogicTupleResult(); 
+		return unify(t, result);
+	}
+	
+	@Override
+	public LogicTuple spawn(IId aid, LogicTuple t, long ms)
+			throws InvalidLogicTupleException, OperationNotPossibleException,
+			OperationTimeOutException {
+		if (t==null)
+			throw new InvalidLogicTupleException();
+		IRespectOperation op = getCore().spawn(aid, t);
+		try {
+			op.waitForOperationCompletion(ms);
+		} catch (alice.tuplecentre.api.exceptions.OperationTimeOutException  ex){
+			throw new OperationTimeOutException(op);
+		}
+		return t;
 	}
 	
 }
-
