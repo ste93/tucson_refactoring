@@ -281,7 +281,7 @@ public class BioTuple extends LogicTuple{
 	 * @exception InvalidLogicTupleException
 	 *                if the text does not represent a valid logic tuple
 	 */
-	public static LogicTuple parse(String st, int multiplicity) throws InvalidLogicTupleException
+	public static BioTuple parse(String st, long multiplicity) throws InvalidLogicTupleException
 	{
 		try
 		{

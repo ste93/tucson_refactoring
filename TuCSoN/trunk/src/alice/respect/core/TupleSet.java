@@ -216,7 +216,7 @@ public class TupleSet  {
 
     //bio added
     //bio in
-    public LogicTuple getMatchingTupleGround(BioTuple templ){
+    public BioTuple getMatchingTupleGround(BioTuple templ){
         if (templ==null)
             return null;
         long multTempl = templ.getMultiplicity();
@@ -292,7 +292,7 @@ public class TupleSet  {
     }
 
     //bio rd
-    public LogicTuple readMatchingTupleGround(BioTuple templ){
+    public BioTuple readMatchingTupleGround(BioTuple templ){
         if (templ==null)
             return null;
         long multTempl = templ.getMultiplicity();
