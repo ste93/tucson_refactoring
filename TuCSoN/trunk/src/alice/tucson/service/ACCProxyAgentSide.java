@@ -1886,7 +1886,10 @@ public class ACCProxyAgentSide implements EnhancedACC{
 							|| type == TucsonOperation.inCode() || type == TucsonOperation.rdCode()
 							|| type == TucsonOperation.inpCode() || type == TucsonOperation.rdpCode()
 							|| type == TucsonOperation.in_sCode() || type == TucsonOperation.rd_sCode()
-							|| type == TucsonOperation.inp_sCode() || type == TucsonOperation.rdp_sCode()){
+							|| type == TucsonOperation.inp_sCode() || type == TucsonOperation.rdp_sCode()
+							|| type == TucsonOperation.bioInCode() || type == TucsonOperation.bioInvCode()
+							|| type == TucsonOperation.bioOutCode() || type == TucsonOperation.bioRdCode()
+							|| type == TucsonOperation.bioRdvCode()){
 
 						boolean succeeded = msg.isSuccess();
 						if(succeeded){
@@ -1897,6 +1900,21 @@ public class ACCProxyAgentSide implements EnhancedACC{
 							LogicTuple res = unify(tupleReq, tupleRes);
 							ev = new TucsonOpCompletionEvent(new TucsonOpId(msg.getId()), ok, true, res);
 							
+							/* Maybe it is not necessary because the constructor TucsonCompletionEvent want a LogicTuple as argument
+							if(msg.getTupleRequested() instanceof LogicTuple){
+								LogicTuple tupleReq = msg.getTupleRequested();
+								LogicTuple tupleRes = (LogicTuple) msg.getTupleResult();
+	//							log("tupleReq="+tupleReq+", tupleRes="+tupleRes);
+								LogicTuple res = unify(tupleReq, tupleRes);
+								ev = new TucsonOpCompletionEvent(new TucsonOpId(msg.getId()), ok, true, res);
+							}else if(msg.getTupleRequested() instanceof BioTuple){
+								BioTuple tupleReq = (BioTuple)msg.getTupleRequested();
+								BioTuple tupleRes = (BioTuple) msg.getTupleResult();
+	//							log("tupleReq="+tupleReq+", tupleRes="+tupleRes);
+								BioTuple res = (BioTuple)unify(tupleReq, tupleRes);
+								ev = new TucsonOpCompletionEvent(new TucsonOpId(msg.getId()), ok, true, res);
+							}
+							*/
 						}else{
 							ev = new TucsonOpCompletionEvent(new TucsonOpId(msg.getId()), ok, false);
 						}

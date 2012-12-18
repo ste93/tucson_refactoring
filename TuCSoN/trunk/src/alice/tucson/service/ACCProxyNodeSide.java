@@ -356,8 +356,20 @@ public class ACCProxyNodeSide extends ACCAbstractProxyNodeSide{
 		}
 		
 		TucsonMsgReply reply = null;
-		
-		if(op.isOut() || op.isOut_s() || op.isSpawn()){
+		//BIO primitives
+		if(op.isBioOut()){
+			if(op.isResultSuccess()){
+				reply = new TucsonMsgReply(msg.getId(), op.getType(), true, true, true, msg.getTuple(), (BioTuple) op.getTupleResult());
+			}else{
+				reply = new TucsonMsgReply(msg.getId(), op.getType(), true, true, false, msg.getTuple(), (BioTuple) op.getTupleResult());
+			}
+		}else if(op.isBioIn() || op.isBioInv() || op.isBioRd() || op.isBioRdv()){
+			if(op.isResultSuccess()){
+				reply = new TucsonMsgReply(msg.getId(), op.getType(), true, true, true, msg.getTuple(), (BioTuple) op.getTupleResult());
+			}else
+				reply = new TucsonMsgReply(msg.getId(), op.getType(), true, true, false, msg.getTuple(), (BioTuple) op.getTupleResult());
+		//end BIO primitives
+		}else if(op.isOut() || op.isOut_s() || op.isSpawn()){
 			if(op.isResultSuccess()){
 				reply = new TucsonMsgReply(msg.getId(), op.getType(), true, true, true, msg.getTuple(), (LogicTuple) op.getTupleResult());
 			}else
