@@ -41,7 +41,7 @@ import java.util.*;
  */
 public class TucsonNodeService{
 	
-	private static TucsonNodeService instance = null;
+//	private static TucsonNodeService instance = null;
 	private Date installationDate;
 	private HashMap<String, TucsonTCUsers> cores;
 
@@ -110,7 +110,7 @@ public class TucsonNodeService{
 	}
 
 	public synchronized void install(){
-		install(null);		
+		install(null);
 	}
 
 	/**
@@ -151,7 +151,7 @@ public class TucsonNodeService{
 		checkPersistentTupleCentres(PERSISTENCY_PATH);
 
 		installationDate = new Date();
-		instance = this;
+//		instance = this;
 
 		log("Spawning management agents...");
 		bootManagementAgents();
@@ -159,18 +159,26 @@ public class TucsonNodeService{
 		if(repo != null)
 			repo.setReport(true, "Installed", installationDate);
 		
-		synchronized(this){
-			try{
-				wait();
-			}catch(InterruptedException e){
-				if(repo != null)
-					repo.setReport(false, "Failed", null);
-				System.err.println("[TucsonNodeService]: " + e);
-				e.printStackTrace();
-			}
-		}
+//		synchronized(this){
+//			try{
+//				wait();
+//			}catch(InterruptedException e){
+//				if(repo != null)
+//					repo.setReport(false, "Failed", null);
+//				System.err.println("[TucsonNodeService]: " + e);
+//				e.printStackTrace();
+//			}
+//		}
 			
 	}
+	
+	/*
+	 * Caller too is killed -.-
+	 */
+//	public void shutdown(){
+//		log("Node is shutting down, bye!");
+//		System.exit(0);
+//	}
 
 	public static String getVersion(){
 		return "TuCSoN-1.10.2.0205";
@@ -622,17 +630,17 @@ public class TucsonNodeService{
 		
 	}
 
-	public static boolean isInstalled(){
-		return instance != null;
-	}
-
-	public static TucsonNodeService getInstance(){
-		return instance;
-	}
-	
-	public static Prolog getEngineProlog(){
-		return TucsonNodeService.getInstance().configManager;
-	}
+//	public static boolean isInstalled(){
+//		return instance != null;
+//	}
+//
+//	public static TucsonNodeService getInstance(){
+//		return instance;
+//	}
+//	
+//	public static Prolog getEngineProlog(){
+//		return TucsonNodeService.getInstance().configManager;
+//	}
 
 	/**
 	 * 
