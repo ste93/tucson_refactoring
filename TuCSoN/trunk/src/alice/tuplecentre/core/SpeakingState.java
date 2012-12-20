@@ -177,7 +177,10 @@ public class SpeakingState extends TupleCentreVMState {
 		            } else if (op.isNoAll()){
 		            	List<Tuple> tuples = new LinkedList<Tuple>();
 		                tuples = vm.readAllTuples(op.getTemplateArgument());
-		                op.setOpResult(Outcome.SUCCESS);
+		                if(tuples.isEmpty() || tuples == null)
+		                	op.setOpResult(Outcome.SUCCESS);
+		                else
+		                	op.setOpResult(Outcome.FAILURE);
 		                op.setTupleListResult(tuples);
 	            		foundSatisfied=true;
 		            } else if (op.isUrd()){

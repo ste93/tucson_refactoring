@@ -354,31 +354,18 @@ public class ACCProxyNodeSide extends ACCAbstractProxyNodeSide{
 		
 		TucsonMsgReply reply = null;
 		
-		if(op.isOut() || op.isOut_s() || op.isSpawn()){
-			if(op.isResultSuccess()){
-				reply = new TucsonMsgReply(msg.getId(), op.getType(), true, true, true, msg.getTuple(), (LogicTuple) op.getTupleResult());
-			}else
-				reply = new TucsonMsgReply(msg.getId(), op.getType(), true, true, false, msg.getTuple(), (LogicTuple) op.getTupleResult());
-		}else if(op.isNo() || op.isNo_s() || op.isIn() || op.isIn_s() || op.isRd() || op.isRd_s() || op.isUin() || op.isUrd() || op.isUno()){
-			if(op.isResultSuccess()){
-				reply = new TucsonMsgReply(msg.getId(), op.getType(), true, true, true, msg.getTuple(), (LogicTuple) op.getTupleResult());
-			}else{
-				reply = new TucsonMsgReply(msg.getId(), op.getType(), true, true, false, msg.getTuple(), (LogicTuple) op.getTupleResult());
-			}
-		}else if(op.isNop() || op.isNop_s() || op.isInp() || op.isInp_s() || op.isRdp() || op.isRdp_s() || op.isUinp() || op.isUrdp() || op.isUnop()){
-			if(op.isResultSuccess()){
-				reply = new TucsonMsgReply(msg.getId(), op.getType(), true, true, true, msg.getTuple(), (LogicTuple) op.getTupleResult());
-			}else{
-				reply = new TucsonMsgReply(msg.getId(), op.getType(), true, false, false, msg.getTuple(), (LogicTuple) op.getTupleResult());
-			}
-		}else if(op.isInAll() || op.isRdAll() || op.isNoAll() || op.isOutAll()){
+		if(op.isInAll() || op.isRdAll() || op.isNoAll() || op.isOutAll()){
 			if(op.getTupleListResult()==null)
 				op.setTupleListResult(new LinkedList<Tuple>());
-			if(op.isResultSuccess()){
+			if(op.isResultSuccess())
 				reply = new TucsonMsgReply(msg.getId(), op.getType(), true, true, true, msg.getTuple(), (List<Tuple>) op.getTupleListResult());
-			}else{
-				reply = new TucsonMsgReply(msg.getId(), op.getType(), true, false, false, msg.getTuple(), (List<Tuple>) op.getTupleListResult());
-			}
+			else
+				reply = new TucsonMsgReply(msg.getId(), op.getType(), true, true, false, msg.getTuple(), (List<Tuple>) op.getTupleListResult());
+		}else{
+			if(op.isResultSuccess())
+				reply = new TucsonMsgReply(msg.getId(), op.getType(), true, true, true, msg.getTuple(), (LogicTuple) op.getTupleResult());
+			else
+				reply = new TucsonMsgReply(msg.getId(), op.getType(), true, true, false, msg.getTuple(), (LogicTuple) op.getTupleResult());
 		}
 		
 		try{

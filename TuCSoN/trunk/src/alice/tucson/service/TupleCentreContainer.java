@@ -403,6 +403,28 @@ public class TupleCentreContainer{
 				return context.no((AgentId) aid.getLocalAgentId(), (LogicTuple)o);
 			if(type == TucsonOperation.nopCode())
 				return context.nop((AgentId) aid.getLocalAgentId(), (LogicTuple)o);
+			if(type == TucsonOperation.out_allCode()){
+				context.out_all((AgentId) aid.getLocalAgentId(), (LogicTuple)o);
+				return (LogicTuple)o;
+			}
+			if(type == TucsonOperation.in_allCode())
+				return context.in_all((AgentId) aid.getLocalAgentId(), (LogicTuple)o);
+			if(type == TucsonOperation.rd_allCode())
+				return context.in_all((AgentId) aid.getLocalAgentId(), (LogicTuple)o);
+			if(type == TucsonOperation.no_allCode())
+				return context.in_all((AgentId) aid.getLocalAgentId(), (LogicTuple)o);
+			if(type == TucsonOperation.uinCode())
+				return context.uin((AgentId) aid.getLocalAgentId(), (LogicTuple)o);
+			if(type == TucsonOperation.urdCode())
+				return context.uin((AgentId) aid.getLocalAgentId(), (LogicTuple)o);
+			if(type == TucsonOperation.unoCode())
+				return context.uin((AgentId) aid.getLocalAgentId(), (LogicTuple)o);
+			if(type == TucsonOperation.uinpCode())
+				return context.uin((AgentId) aid.getLocalAgentId(), (LogicTuple)o);
+			if(type == TucsonOperation.urdpCode())
+				return context.uin((AgentId) aid.getLocalAgentId(), (LogicTuple)o);
+			if(type == TucsonOperation.unopCode())
+				return context.uin((AgentId) aid.getLocalAgentId(), (LogicTuple)o);
 		}catch(InvalidLogicTupleException e){
 			throw new TucsonInvalidLogicTupleException();
 		}catch(OperationNotPossibleException e){
