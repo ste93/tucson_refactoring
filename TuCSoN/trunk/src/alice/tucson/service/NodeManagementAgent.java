@@ -52,9 +52,14 @@ public class NodeManagementAgent extends Thread{
 		}catch(InvalidTermException e){
 			System.err.println("[NodeManagementAgent]: " + e);
 			e.printStackTrace();
+			node.removeNodeAgent(this);
+		}catch(InterruptedException e){
+			log("Shutdown interrupt received, shutting down...");
+			node.removeNodeAgent(this);
 		}catch(Exception e){
 			System.err.println("[NodeManagementAgent]: " + e);
 			e.printStackTrace();
+			node.removeNodeAgent(this);
 		}
 	}
 

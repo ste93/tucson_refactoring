@@ -76,6 +76,9 @@ public class WelcomeAgent extends Thread{
 				}
 	
 			}
+		}catch(InterruptedException e){
+			log("Shutdown interrupt received, shutting down...");
+			node.removeNodeAgent(this);
 		}catch(Exception e){
 			exception = true;
 			System.err.println("[WelcomeAgent]: " + e);
@@ -89,6 +92,7 @@ public class WelcomeAgent extends Thread{
 				System.err.println("[WelcomeAgent]: " + e);
 				e.printStackTrace();
 			}
+			node.removeNodeAgent(this);
 		}
 			
 	}

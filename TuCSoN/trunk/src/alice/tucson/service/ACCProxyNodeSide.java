@@ -22,10 +22,7 @@ import alice.logictuple.*;
 import alice.tucson.api.TucsonAgentId;
 import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
-import alice.tucson.api.exceptions.TucsonInvalidLogicTupleException;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
-import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
-
 
 import alice.tucson.network.*;
 import alice.tucson.service.TucsonNodeService;
@@ -332,6 +329,7 @@ public class ACCProxyNodeSide extends ACCAbstractProxyNodeSide{
 		log("Releasing ACC < " + ctxId + " > held by TuCSoN agent < " + agentId.toString() + " >");
 		node.removeAgent(agentId);
 		manager.shutdownContext(ctxId, agentId);
+		node.removeNodeAgent(this);
 
 	}
 

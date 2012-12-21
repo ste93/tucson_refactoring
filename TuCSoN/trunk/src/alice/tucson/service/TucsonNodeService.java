@@ -41,6 +41,9 @@ import java.util.*;
  */
 public class TucsonNodeService{
 	
+	private ArrayList<Thread> nodeAgents;
+	private ACCProvider ctxman;
+	
 //	private static TucsonNodeService instance = null;
 	private Date installationDate;
 	private HashMap<String, TucsonTCUsers> cores;
@@ -98,6 +101,7 @@ public class TucsonNodeService{
 		
 		observed = false;
 		agents = new ArrayList<TucsonAgentId>();
+		nodeAgents = new ArrayList<Thread>();
 		
 	}
 	
@@ -175,10 +179,25 @@ public class TucsonNodeService{
 	/*
 	 * Caller too is killed -.-
 	 */
-//	public void shutdown(){
-//		log("Node is shutting down, bye!");
-//		System.exit(0);
-//	}
+	public void shutdown(){
+		log("Node is shutting down management agents and proxies...");
+		for(Thread t: nodeAgents){
+			if(t.isAlive()){
+				log("  shutting down <" + t.getName() + ">");
+				t.interrupt();
+			}else{
+				log("  <" + t.getName() + "> is already dead");
+//				t = null; nodeAgents.remove(t);
+			}
+		}
+		try {
+			ctxman.shutdown();
+		} catch (InterruptedException e) {
+			log("ACCProvider may still have tasks executing...");
+		}
+		nodeAgents.clear();
+		log("...TuCSoN Node shutdown completed, see you :)");
+	}
 
 	public static String getVersion(){
 		return "TuCSoN-1.10.2.0205";
@@ -589,15 +608,22 @@ public class TucsonNodeService{
 	private void bootManagementAgents(){
 		
 		log("Spawning Node Management Agent...");
-		new NodeManagementAgent(idConfigTC, this);
+		nodeAgents.add(new NodeManagementAgent(idConfigTC, this));
 
 		log("--------------------------------------------------------------------------------");
 		log("Spawning ACC Provider Agent...");
-		ACCProvider ctxman = new ACCProvider(this, idConfigTC);
+		ctxman = new ACCProvider(this, idConfigTC);
 		
 		log("Spawning Welcome Agent...");
-		new WelcomeAgent(tcp_port, this, ctxman);
+		nodeAgents.add(new WelcomeAgent(tcp_port, this, ctxman));
 		
+	}
+	
+	synchronized public void addNodeAgent(Thread t){
+		nodeAgents.add(t);
+	}
+	synchronized public void removeNodeAgent(Thread t){
+		nodeAgents.remove(t);
 	}
 
 	synchronized public void addAgent(TucsonAgentId aid){
