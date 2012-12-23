@@ -57,6 +57,7 @@ public class TupleSet  {
 
     public void add(LogicTuple t){
     	//bio changes
+    	/*
     	if(t instanceof BioTuple){
     		bioTuples.add((BioTuple)t);
     		if (transaction)
@@ -65,6 +66,15 @@ public class TupleSet  {
 	        tuples.add(t);
 	        if (transaction)
 	            tAdded.add(t);
+    	}*/
+    	if(t instanceof LogicTuple){
+	        tuples.add(t);
+	        if (transaction)
+	            tAdded.add(t);
+    	}else{
+    		bioTuples.add((BioTuple)t);
+    		if (transaction)
+                bioTAdded.add((BioTuple)t);
     	}
     }
 
