@@ -164,7 +164,10 @@ public class ACCProvider{
 	public void shutdown() throws InterruptedException{
 		log("Shutdown interrupt received, shutting down...");
 		exec.shutdownNow();
-		exec.awaitTermination(1, TimeUnit.SECONDS);
+		if(exec.awaitTermination(5, TimeUnit.SECONDS))
+			log("Executors correctly stopped");
+		else
+			log("Executors may be still running");
 	}
 	
 }

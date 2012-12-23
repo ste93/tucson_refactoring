@@ -36,7 +36,6 @@ import alice.respect.api.RespectSpecification;
 import alice.respect.api.TupleCentreId;
 import alice.respect.api.exceptions.InvalidSpecificationException;
 import alice.respect.api.exceptions.OperationNotPossibleException;
-import alice.respect.core.*;
 import alice.tuplecentre.api.IId;
 import alice.tuplecentre.api.Tuple;
 import alice.tuplecentre.core.OperationCompletionListener;
@@ -463,8 +462,8 @@ public class RespectTC implements IRespectTC {
 		return new SpecificationAsynchInterface(this);
 	}
 
-	public RespectVM getRespectVM() {
-		return vm;
+	public Thread getVMThread() {
+		return vmThread;
 	}
 	
 	public IEnvironmentContext getEnvironmentContext(){

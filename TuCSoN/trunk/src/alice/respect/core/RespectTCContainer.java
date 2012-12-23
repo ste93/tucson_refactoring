@@ -46,9 +46,10 @@ public class RespectTCContainer{
 		return defaultport;
 	}
 	
-	public boolean createRespectTC(TupleCentreId id, Integer q) throws InstantiationNotPossibleException{
-		registry.addTC(new RespectTC(id, this, q));
-		return true;
+	public RespectTC createRespectTC(TupleCentreId id, Integer q) throws InstantiationNotPossibleException{
+		RespectTC rtc = new RespectTC(id, this, q);
+		registry.addTC(rtc);
+		return rtc;
 	}
 
 	public IOrdinarySynchInterface getOrdinarySynchInterface(TupleCentreId id) throws OperationNotPossibleException{

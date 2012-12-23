@@ -17,6 +17,7 @@ import alice.respect.api.exceptions.InvalidSpecificationException;
 import alice.respect.api.exceptions.InvalidTupleCentreIdException;
 import alice.respect.api.exceptions.OperationNotPossibleException;
 
+import alice.respect.core.RespectTC;
 import alice.respect.core.SpecificationSynchInterface;
 import alice.respect.core.RespectTCContainer;
 
@@ -45,7 +46,7 @@ public class TupleCentreContainer{
 	public static final int RESPECTQUEUE = 10;
 	private static int defaultport;
 		
-	public static boolean createTC(TucsonTupleCentreId id, int q, int def_port) throws TCInstantiationNotPossibleException, InvalidTupleCentreIdException{
+	public static RespectTC createTC(TucsonTupleCentreId id, int q, int def_port) throws TCInstantiationNotPossibleException, InvalidTupleCentreIdException{
 		defaultport = def_port;
 		try{
 			RespectTCContainer rtcc = RespectTCContainer.getRespectTCContainer();

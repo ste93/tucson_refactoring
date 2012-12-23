@@ -50,7 +50,7 @@ public class TucsonProtocolTCP extends TucsonProtocol{
 		}
 	}
 
-	private TucsonProtocolTCP(Socket socket) throws Exception{
+	private TucsonProtocolTCP(Socket socket) throws IOException{
 		this.socket = socket;
 		outStream = new ObjectOutputStream(socket.getOutputStream());
 		inStream = new ObjectInputStream(socket.getInputStream());
@@ -64,7 +64,8 @@ public class TucsonProtocolTCP extends TucsonProtocol{
 		return outStream;
 	}
 
-	public TucsonProtocol acceptNewDialog() throws Exception{
+	public TucsonProtocol acceptNewDialog() throws IOException, SocketTimeoutException{
+		mainSocket.setSoTimeout(5000);
 		return new TucsonProtocolTCP(mainSocket.accept());
 	}
 

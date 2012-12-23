@@ -27,7 +27,6 @@ import alice.tuplecentre.api.TupleTemplate;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 import alice.tuplecentre.core.TCCycleResult.Outcome;
 import alice.tuprolog.Prolog;
-import alice.tuprolog.Struct;
 
 /**
  * This class represents an Operation on a tuple centre.
@@ -411,7 +410,10 @@ public abstract class TupleCentreOperation implements ITupleCentreOperation{
 				while (!operationCompleted)
 					token.wait();
 			}
-		}catch(Exception ex){
+		}catch(InterruptedException e){
+//			System.out.println("\t[TupleCentreOperation]: Wait for operation completion interrupted");
+		}
+		catch(Exception ex){
 			ex.printStackTrace();
 		}
 	}

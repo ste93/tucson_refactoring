@@ -22,6 +22,7 @@ import alice.logictuple.*;
 import alice.logictuple.exceptions.InvalidTupleArgumentException;
 
 import alice.respect.api.exceptions.InvalidTupleCentreIdException;
+import alice.respect.core.RespectTC;
 import alice.tucson.api.exceptions.*;
 import alice.tucson.api.NodeServiceListener;
 import alice.tucson.api.TucsonAgentId;
@@ -43,6 +44,8 @@ public class TucsonNodeService{
 	
 	private ArrayList<Thread> nodeAgents;
 	private ACCProvider ctxman;
+	private WelcomeAgent welcome;
+	private ArrayList<RespectTC> tcs;
 	
 //	private static TucsonNodeService instance = null;
 	private Date installationDate;
@@ -102,6 +105,7 @@ public class TucsonNodeService{
 		observed = false;
 		agents = new ArrayList<TucsonAgentId>();
 		nodeAgents = new ArrayList<Thread>();
+		tcs = new ArrayList<RespectTC>();
 		
 	}
 	
@@ -183,20 +187,32 @@ public class TucsonNodeService{
 		log("Node is shutting down management agents and proxies...");
 		for(Thread t: nodeAgents){
 			if(t.isAlive()){
-				log("  shutting down <" + t.getName() + ">");
+				log("  ...shutting down <" + t.getName() + ">");
 				t.interrupt();
 			}else{
-				log("  <" + t.getName() + "> is already dead");
+				log("  ...<" + t.getName() + "> is already dead");
 //				t = null; nodeAgents.remove(t);
 			}
 		}
+		welcome.shutdown();
 		try {
 			ctxman.shutdown();
 		} catch (InterruptedException e) {
 			log("ACCProvider may still have tasks executing...");
 		}
-		nodeAgents.clear();
-		log("...TuCSoN Node shutdown completed, see you :)");
+//		nodeAgents.clear();
+//		agents.clear();
+		log("Node is shutting down ReSpecT VMs...");
+		for(RespectTC tc: tcs){
+			Thread t = tc.getVMThread();
+			if(t.isAlive()){
+				log("  ...shutting down <" + tc.getId() + ">");
+				t.interrupt();
+			}else{
+				log("  ...<" + tc.getId() + "> is already dead");
+			}
+		}
+		log("TuCSoN Node shutdown completed, see you :)");
 	}
 
 	public static String getVersion(){
@@ -263,7 +279,7 @@ public class TucsonNodeService{
 		
 		TucsonTupleCentreId id = new TucsonTupleCentreId(name);
 		try {
-			TupleCentreContainer.createTC(id, MAX_EVENT_QUEUE_SIZE, tcp_port);
+			tcs.add(TupleCentreContainer.createTC(id, MAX_EVENT_QUEUE_SIZE, tcp_port));
 		} catch (InvalidTupleCentreIdException e1) {
 			log("TupleCentreContainer.createTC(...) error");
 			e1.printStackTrace();
@@ -615,7 +631,7 @@ public class TucsonNodeService{
 		ctxman = new ACCProvider(this, idConfigTC);
 		
 		log("Spawning Welcome Agent...");
-		nodeAgents.add(new WelcomeAgent(tcp_port, this, ctxman));
+		welcome = new WelcomeAgent(tcp_port, this, ctxman);
 		
 	}
 	

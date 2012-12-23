@@ -139,10 +139,14 @@ public class RespectVM implements Runnable {
 	                	news.wait();
 	                }
                 }
-            } catch (Exception ex){
+            }catch(InterruptedException e){
+            	System.out.println("[RespectVM]: Shutdown interrupt received, shutting down...");
+            	break;
+            }catch (Exception ex){
                 context.notifyException(ex);
             }
         }
+        System.out.println("[RespectVM]: Actually shutting down...");
     }
 
     public void notifyInspectableEvent(InspectableEvent e){
