@@ -66,7 +66,7 @@ public class TucsonMetaACC{
 	}
 
 	public static String getVersion(){
-		return "TuCSoN-1.10.2.0205";
+		return "TuCSoN-1.10.3.0206";
 	}
 
 }
