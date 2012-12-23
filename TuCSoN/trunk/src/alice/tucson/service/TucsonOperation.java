@@ -285,7 +285,7 @@ public class TucsonOperation extends TupleCentreOperation implements ITucsonOper
 	}
 
 	public LogicTuple getLogicTupleArgument(){
-		if(isOut() || isOut_s() || isSet_s() || isSet() || isOutAll() || isSpawn())
+		if(isOut() || isBioOut() || isOut_s() || isSet_s() || isSet() || isOutAll() || isSpawn())
 			return (LogicTuple) getTupleArgument();
 		else
 			return (LogicTuple) getTemplateArgument();
