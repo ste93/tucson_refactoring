@@ -148,19 +148,19 @@ public class RespectOperation extends TupleCentreOperation implements IRespectOp
 	}
 	
 	public static RespectOperation makeBioInv(Prolog prolog, BioTuple t, OperationCompletionListener l) {
-		return new RespectOperation(prolog, TupleCentreOperation.OPTYPE_BIO_INV,(Tuple)t, l);
+		return new RespectOperation(prolog, TupleCentreOperation.OPTYPE_BIO_INV,(TupleTemplate)t, l);
 	}
 	
 	public static RespectOperation makeBioIn(Prolog prolog, BioTuple t, OperationCompletionListener l) {
-		return new RespectOperation(prolog, TupleCentreOperation.OPTYPE_BIO_IN,(Tuple)t, l);
+		return new RespectOperation(prolog, TupleCentreOperation.OPTYPE_BIO_IN,(TupleTemplate)t, l);
 	}
 	
 	public static RespectOperation makeBioRdv(Prolog prolog, BioTuple t, OperationCompletionListener l) {
-		return new RespectOperation(prolog, TupleCentreOperation.OPTYPE_BIO_RDV,(Tuple)t, l);
+		return new RespectOperation(prolog, TupleCentreOperation.OPTYPE_BIO_RDV,(TupleTemplate)t, l);
 	}
 	
 	public static RespectOperation makeBioRd(Prolog prolog, BioTuple t, OperationCompletionListener l) {
-		return new RespectOperation(prolog, TupleCentreOperation.OPTYPE_BIO_RD,(Tuple)t, l);
+		return new RespectOperation(prolog, TupleCentreOperation.OPTYPE_BIO_RD,(TupleTemplate)t, l);
 	}
 	
 	//end Bio primitives
@@ -428,8 +428,7 @@ public class RespectOperation extends TupleCentreOperation implements IRespectOp
 		} else {
 			opName = "unknownOp";
 		}
-		return new LogicTuple(opName, 
-				new TupleArgument(tl!=null ? new Struct(tl) : t.toTerm()));
+		return new LogicTuple(opName, new TupleArgument(tl!=null ? new Struct(tl) : t.toTerm()));
 	}
 
 	public String toString(){

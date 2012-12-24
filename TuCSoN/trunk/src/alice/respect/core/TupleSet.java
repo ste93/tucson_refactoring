@@ -167,7 +167,7 @@ public class TupleSet  {
     //in & bio inv
     public LogicTuple getMatchingTuple(LogicTuple templ){
         if (templ==null)
-            return null;
+        	return null;
         //bio changes
         if(templ instanceof BioTuple){
         	ListIterator<BioTuple> l=bioTuples.listIterator();
