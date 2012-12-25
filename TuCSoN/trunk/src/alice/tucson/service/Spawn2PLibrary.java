@@ -1,5 +1,8 @@
 package alice.tucson.service;
 
+import java.util.Iterator;
+import java.util.List;
+
 import alice.logictuple.LogicTuple;
 import alice.tucson.api.TucsonAgentId;
 import alice.tucson.api.TucsonIdWrapper;
@@ -8,6 +11,7 @@ import alice.tucson.api.exceptions.TucsonGenericException;
 import alice.tucson.api.exceptions.TucsonInvalidLogicTupleException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tuprolog.Library;
+import alice.tuprolog.Struct;
 import alice.tuprolog.Term;
 
 /**
@@ -66,7 +70,17 @@ public class Spawn2PLibrary extends Library{
 				+ "rd(T). \n"
 				+ "rdp(T). \n"
 				+ "no(T). \n"
-				+ "nop(T). \n";
+				+ "nop(T). \n"
+				+ "out_all(L). \n"
+				+ "in_all(T,L). \n"
+				+ "rd_all(T,L). \n"
+				+ "no_all(T,L). \n"
+				+ "uin(T). \n"
+				+ "uinp(T). \n"
+				+ "urd(T). \n"
+				+ "urdp(T). \n"
+				+ "uno(T). \n"
+				+ "unop(T). \n";
 	}
 	
 	public boolean out_1(Term arg0){
@@ -96,8 +110,7 @@ public class Spawn2PLibrary extends Library{
 				e.printStackTrace();
 				return false;
 			}
-		System.out.println("[Spawn2PLibrary]: returning");
-		return (res != null);
+		return unify(arg0, res.toTerm());
 	}
 
 	public boolean in_1(Term arg0){
@@ -127,7 +140,7 @@ public class Spawn2PLibrary extends Library{
 				e.printStackTrace();
 				return false;
 			}
-		return (!res.toString().equals(arg.toString()));
+		return unify(arg0, res.toTerm());
 	}
 
 	public boolean rd_1(Term arg0){
@@ -157,7 +170,7 @@ public class Spawn2PLibrary extends Library{
 				e.printStackTrace();
 				return false;
 			}
-		return (!res.toString().equals(arg.toString()));
+		return unify(arg0, res.toTerm());
 	}
 
 	public boolean inp_1(Term arg0){
@@ -187,7 +200,7 @@ public class Spawn2PLibrary extends Library{
 				e.printStackTrace();
 				return false;
 			}
-		return (!res.toString().equals(arg.toString()));
+		return unify(arg0, res.toTerm());
 	}
 
 	public boolean rdp_1(Term arg0){
@@ -217,7 +230,7 @@ public class Spawn2PLibrary extends Library{
 				e.printStackTrace();
 				return false;
 			}
-		return (!res.toString().equals(arg.toString()));
+		return unify(arg0, res.toTerm());
 	}
 	
 	public boolean no_1(Term arg0){
@@ -247,7 +260,7 @@ public class Spawn2PLibrary extends Library{
 				e.printStackTrace();
 				return false;
 			}
-		return (res.toString().equals(arg.toString()));
+		return unify(arg0, res.toTerm());
 	}
 	
 	public boolean nop_1(Term arg0){
@@ -277,7 +290,325 @@ public class Spawn2PLibrary extends Library{
 				e.printStackTrace();
 				return false;
 			}
-		return (res.toString().equals(arg.toString()));
+		return unify(arg0, res.toTerm());
+	}
+	
+	public boolean out_all_1(Term arg0){
+		List<LogicTuple> res = null;
+		LogicTuple arg = new LogicTuple(arg0);
+		if(aid != null)
+			try {
+				res = (List<LogicTuple>) TupleCentreContainer.doBlockingOperation(TucsonOperation.out_allCode(), aid, target, arg);
+			} catch (TucsonInvalidLogicTupleException e) {
+				System.err.println("[Spawn2PLibrary]: " + e);
+				e.printStackTrace();
+				return false;
+			} catch (TucsonOperationNotPossibleException e) {
+				System.err.println("[Spawn2PLibrary]: " + e);
+				e.printStackTrace();
+				return false;
+			}
+		else
+			try {
+				res = (List<LogicTuple>) TupleCentreContainer.doBlockingOperation(TucsonOperation.out_allCode(), tcid, target, arg);
+			} catch (TucsonInvalidLogicTupleException e) {
+				System.err.println("[Spawn2PLibrary]: " + e);
+				e.printStackTrace();
+				return false;
+			} catch (TucsonOperationNotPossibleException e) {
+				System.err.println("[Spawn2PLibrary]: " + e);
+				e.printStackTrace();
+				return false;
+			}
+		return unify(arg0, list2tuple(res));
+	}
+	
+	public boolean in_all_2(Term arg0, Term arg1){
+		List<LogicTuple> res = null;
+		LogicTuple arg = new LogicTuple(arg0);
+		if(aid != null)
+			try {
+				res = (List<LogicTuple>) TupleCentreContainer.doBlockingOperation(TucsonOperation.in_allCode(), aid, target, arg);
+			} catch (TucsonInvalidLogicTupleException e) {
+				System.err.println("[Spawn2PLibrary]: " + e);
+				e.printStackTrace();
+				return false;
+			} catch (TucsonOperationNotPossibleException e) {
+				System.err.println("[Spawn2PLibrary]: " + e);
+				e.printStackTrace();
+				return false;
+			}
+		else
+			try {
+				res = (List<LogicTuple>) TupleCentreContainer.doBlockingOperation(TucsonOperation.in_allCode(), tcid, target, arg);
+			} catch (TucsonInvalidLogicTupleException e) {
+				System.err.println("[Spawn2PLibrary]: " + e);
+				e.printStackTrace();
+				return false;
+			} catch (TucsonOperationNotPossibleException e) {
+				System.err.println("[Spawn2PLibrary]: " + e);
+				e.printStackTrace();
+				return false;
+			}
+		return unify(arg1, list2tuple(res));
+	}
+	
+	public boolean rd_all_2(Term arg0, Term arg1){
+		List<LogicTuple> res = null;
+		LogicTuple arg = new LogicTuple(arg0);
+		if(aid != null)
+			try {
+				res = (List<LogicTuple>) TupleCentreContainer.doBlockingOperation(TucsonOperation.rd_allCode(), aid, target, arg);
+			} catch (TucsonInvalidLogicTupleException e) {
+				System.err.println("[Spawn2PLibrary]: " + e);
+				e.printStackTrace();
+				return false;
+			} catch (TucsonOperationNotPossibleException e) {
+				System.err.println("[Spawn2PLibrary]: " + e);
+				e.printStackTrace();
+				return false;
+			}
+		else
+			try {
+				res = (List<LogicTuple>) TupleCentreContainer.doBlockingOperation(TucsonOperation.rd_allCode(), tcid, target, arg);
+			} catch (TucsonInvalidLogicTupleException e) {
+				System.err.println("[Spawn2PLibrary]: " + e);
+				e.printStackTrace();
+				return false;
+			} catch (TucsonOperationNotPossibleException e) {
+				System.err.println("[Spawn2PLibrary]: " + e);
+				e.printStackTrace();
+				return false;
+			}
+		return unify(arg1, list2tuple(res));
+	}
+	
+	public boolean no_all_2(Term arg0, Term arg1){
+		List<LogicTuple> res = null;
+		LogicTuple arg = new LogicTuple(arg0);
+		if(aid != null)
+			try {
+				res = (List<LogicTuple>) TupleCentreContainer.doBlockingOperation(TucsonOperation.no_allCode(), aid, target, arg);
+			} catch (TucsonInvalidLogicTupleException e) {
+				System.err.println("[Spawn2PLibrary]: " + e);
+				e.printStackTrace();
+				return false;
+			} catch (TucsonOperationNotPossibleException e) {
+				System.err.println("[Spawn2PLibrary]: " + e);
+				e.printStackTrace();
+				return false;
+			}
+		else
+			try {
+				res = (List<LogicTuple>) TupleCentreContainer.doBlockingOperation(TucsonOperation.no_allCode(), tcid, target, arg);
+			} catch (TucsonInvalidLogicTupleException e) {
+				System.err.println("[Spawn2PLibrary]: " + e);
+				e.printStackTrace();
+				return false;
+			} catch (TucsonOperationNotPossibleException e) {
+				System.err.println("[Spawn2PLibrary]: " + e);
+				e.printStackTrace();
+				return false;
+			}
+		return unify(arg1, list2tuple(res));
+	}
+	
+	public boolean uin_1(Term arg0){
+		LogicTuple res = null;
+		LogicTuple arg = new LogicTuple(arg0);
+		if(aid != null)
+			try {
+				res = (LogicTuple) TupleCentreContainer.doBlockingOperation(TucsonOperation.uinCode(), aid, target, arg);
+			} catch (TucsonInvalidLogicTupleException e) {
+				System.err.println("[Spawn2PLibrary]: " + e);
+				e.printStackTrace();
+				return false;
+			} catch (TucsonOperationNotPossibleException e) {
+				System.err.println("[Spawn2PLibrary]: " + e);
+				e.printStackTrace();
+				return false;
+			}
+		else
+			try {
+				res = (LogicTuple) TupleCentreContainer.doBlockingOperation(TucsonOperation.uinCode(), tcid, target, arg);
+			} catch (TucsonInvalidLogicTupleException e) {
+				System.err.println("[Spawn2PLibrary]: " + e);
+				e.printStackTrace();
+				return false;
+			} catch (TucsonOperationNotPossibleException e) {
+				System.err.println("[Spawn2PLibrary]: " + e);
+				e.printStackTrace();
+				return false;
+			}
+		return unify(arg0, res.toTerm());
+	}
+
+	public boolean urd_1(Term arg0){
+		LogicTuple res = null;
+		LogicTuple arg = new LogicTuple(arg0);
+		if(aid != null)
+			try {
+				res = (LogicTuple) TupleCentreContainer.doBlockingOperation(TucsonOperation.urdCode(), aid, target, arg);
+			} catch (TucsonInvalidLogicTupleException e) {
+				System.err.println("[Spawn2PLibrary]: " + e);
+				e.printStackTrace();
+				return false;
+			} catch (TucsonOperationNotPossibleException e) {
+				System.err.println("[Spawn2PLibrary]: " + e);
+				e.printStackTrace();
+				return false;
+			}
+		else
+			try {
+				res = (LogicTuple) TupleCentreContainer.doBlockingOperation(TucsonOperation.urdCode(), tcid, target, arg);
+			} catch (TucsonInvalidLogicTupleException e) {
+				System.err.println("[Spawn2PLibrary]: " + e);
+				e.printStackTrace();
+				return false;
+			} catch (TucsonOperationNotPossibleException e) {
+				System.err.println("[Spawn2PLibrary]: " + e);
+				e.printStackTrace();
+				return false;
+			}
+		return unify(arg0, res.toTerm());
+	}
+
+	public boolean uinp_1(Term arg0){
+		LogicTuple res = null;
+		LogicTuple arg = new LogicTuple(arg0);
+		if(aid != null)
+			try {
+				res = (LogicTuple) TupleCentreContainer.doBlockingOperation(TucsonOperation.uinpCode(), aid, target, arg);
+			} catch (TucsonInvalidLogicTupleException e) {
+				System.err.println("[Spawn2PLibrary]: " + e);
+				e.printStackTrace();
+				return false;
+			} catch (TucsonOperationNotPossibleException e) {
+				System.err.println("[Spawn2PLibrary]: " + e);
+				e.printStackTrace();
+				return false;
+			}
+		else
+			try {
+				res = (LogicTuple) TupleCentreContainer.doBlockingOperation(TucsonOperation.uinpCode(), tcid, target, arg);
+			} catch (TucsonInvalidLogicTupleException e) {
+				System.err.println("[Spawn2PLibrary]: " + e);
+				e.printStackTrace();
+				return false;
+			} catch (TucsonOperationNotPossibleException e) {
+				System.err.println("[Spawn2PLibrary]: " + e);
+				e.printStackTrace();
+				return false;
+			}
+		return unify(arg0, res.toTerm());
+	}
+
+	public boolean urdp_1(Term arg0){
+		LogicTuple res = null;
+		LogicTuple arg = new LogicTuple(arg0);
+		if(aid != null)
+			try {
+				res = (LogicTuple) TupleCentreContainer.doBlockingOperation(TucsonOperation.urdpCode(), aid, target, arg);
+			} catch (TucsonInvalidLogicTupleException e) {
+				System.err.println("[Spawn2PLibrary]: " + e);
+				e.printStackTrace();
+				return false;
+			} catch (TucsonOperationNotPossibleException e) {
+				System.err.println("[Spawn2PLibrary]: " + e);
+				e.printStackTrace();
+				return false;
+			}
+		else
+			try {
+				res = (LogicTuple) TupleCentreContainer.doBlockingOperation(TucsonOperation.urdpCode(), tcid, target, arg);
+			} catch (TucsonInvalidLogicTupleException e) {
+				System.err.println("[Spawn2PLibrary]: " + e);
+				e.printStackTrace();
+				return false;
+			} catch (TucsonOperationNotPossibleException e) {
+				System.err.println("[Spawn2PLibrary]: " + e);
+				e.printStackTrace();
+				return false;
+			}
+		return unify(arg0, res.toTerm());
+	}
+	
+	public boolean uno_1(Term arg0){
+		LogicTuple res = null;
+		LogicTuple arg = new LogicTuple(arg0);
+		if(aid != null)
+			try {
+				res = (LogicTuple) TupleCentreContainer.doBlockingOperation(TucsonOperation.unoCode(), aid, target, arg);
+			} catch (TucsonInvalidLogicTupleException e) {
+				System.err.println("[Spawn2PLibrary]: " + e);
+				e.printStackTrace();
+				return false;
+			} catch (TucsonOperationNotPossibleException e) {
+				System.err.println("[Spawn2PLibrary]: " + e);
+				e.printStackTrace();
+				return false;
+			}
+		else
+			try {
+				res = (LogicTuple) TupleCentreContainer.doBlockingOperation(TucsonOperation.unoCode(), tcid, target, arg);
+			} catch (TucsonInvalidLogicTupleException e) {
+				System.err.println("[Spawn2PLibrary]: " + e);
+				e.printStackTrace();
+				return false;
+			} catch (TucsonOperationNotPossibleException e) {
+				System.err.println("[Spawn2PLibrary]: " + e);
+				e.printStackTrace();
+				return false;
+			}
+		return unify(arg0, res.toTerm());
+	}
+	
+	public boolean unop_1(Term arg0){
+		LogicTuple res = null;
+		LogicTuple arg = new LogicTuple(arg0);
+		if(aid != null)
+			try {
+				res = (LogicTuple) TupleCentreContainer.doBlockingOperation(TucsonOperation.unopCode(), aid, target, arg);
+			} catch (TucsonInvalidLogicTupleException e) {
+				System.err.println("[Spawn2PLibrary]: " + e);
+				e.printStackTrace();
+				return false;
+			} catch (TucsonOperationNotPossibleException e) {
+				System.err.println("[Spawn2PLibrary]: " + e);
+				e.printStackTrace();
+				return false;
+			}
+		else
+			try {
+				res = (LogicTuple) TupleCentreContainer.doBlockingOperation(TucsonOperation.unopCode(), tcid, target, arg);
+			} catch (TucsonInvalidLogicTupleException e) {
+				System.err.println("[Spawn2PLibrary]: " + e);
+				e.printStackTrace();
+				return false;
+			} catch (TucsonOperationNotPossibleException e) {
+				System.err.println("[Spawn2PLibrary]: " + e);
+				e.printStackTrace();
+				return false;
+			}
+		return unify(arg0, res.toTerm());
+	}
+	
+	/**
+	 * Utility to convert a list of tuple into a tuple list of tuples
+	 * 
+	 * @param list the list of tuples to convert
+	 * 
+	 * @return the tuple list of tuples result of the conversion
+	 */
+	private Term list2tuple(List<LogicTuple> list){
+		Term [] termArray = new Term[list.size()];
+		Iterator<LogicTuple> it = list.iterator();
+		int i=0;
+		while(it.hasNext()){
+			termArray[i] = ((LogicTuple)it.next()).toTerm();
+			i++;
+		}
+		return new Struct(termArray);
 	}
 
 }
