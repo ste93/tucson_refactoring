@@ -30,13 +30,13 @@ public interface IOrdinarySynchInterface {
 
 	LogicTuple nop(IId aid, LogicTuple t) throws InvalidLogicTupleException, OperationNotPossibleException;
 	
-	void out_all(IId aid, LogicTuple t) throws InvalidLogicTupleException, OperationNotPossibleException;
+	List<LogicTuple> out_all(IId aid, LogicTuple t) throws InvalidLogicTupleException, OperationNotPossibleException;
 	
-	LogicTuple in_all(IId aid, LogicTuple t) throws InvalidLogicTupleException, OperationNotPossibleException;
+	List<LogicTuple> in_all(IId aid, LogicTuple t) throws InvalidLogicTupleException, OperationNotPossibleException;
 	
-	LogicTuple rd_all(IId aid, LogicTuple t) throws InvalidLogicTupleException, OperationNotPossibleException;
+	List<LogicTuple> rd_all(IId aid, LogicTuple t) throws InvalidLogicTupleException, OperationNotPossibleException;
 	
-	LogicTuple no_all(IId aid, LogicTuple t) throws InvalidLogicTupleException, OperationNotPossibleException;
+	List<LogicTuple> no_all(IId aid, LogicTuple t) throws InvalidLogicTupleException, OperationNotPossibleException;
 
 	LogicTuple urd(IId aid, LogicTuple t) throws InvalidLogicTupleException, OperationNotPossibleException;
 

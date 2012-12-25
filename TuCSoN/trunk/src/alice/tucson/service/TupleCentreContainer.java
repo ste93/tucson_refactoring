@@ -404,16 +404,14 @@ public class TupleCentreContainer{
 				return context.no((AgentId) aid.getLocalAgentId(), (LogicTuple)o);
 			if(type == TucsonOperation.nopCode())
 				return context.nop((AgentId) aid.getLocalAgentId(), (LogicTuple)o);
-			if(type == TucsonOperation.out_allCode()){
-				context.out_all((AgentId) aid.getLocalAgentId(), (LogicTuple)o);
-				return (LogicTuple)o;
-			}
+			if(type == TucsonOperation.out_allCode())
+				return context.out_all((AgentId) aid.getLocalAgentId(), (LogicTuple)o);
 			if(type == TucsonOperation.in_allCode())
 				return context.in_all((AgentId) aid.getLocalAgentId(), (LogicTuple)o);
 			if(type == TucsonOperation.rd_allCode())
-				return context.in_all((AgentId) aid.getLocalAgentId(), (LogicTuple)o);
+				return context.rd_all((AgentId) aid.getLocalAgentId(), (LogicTuple)o);
 			if(type == TucsonOperation.no_allCode())
-				return context.in_all((AgentId) aid.getLocalAgentId(), (LogicTuple)o);
+				return context.no_all((AgentId) aid.getLocalAgentId(), (LogicTuple)o);
 			if(type == TucsonOperation.uinCode())
 				return context.uin((AgentId) aid.getLocalAgentId(), (LogicTuple)o);
 			if(type == TucsonOperation.urdCode())
@@ -447,7 +445,7 @@ public class TupleCentreContainer{
 	 * @throws TucsonInvalidLogicTupleException
 	 * @throws TucsonOperationNotPossibleException
 	 */
-	public static LogicTuple doBlockingOperation(int type,
+	public static Object doBlockingOperation(int type,
 			TucsonTupleCentreId aid, TucsonTupleCentreId tid, LogicTuple t)
 					throws TucsonInvalidLogicTupleException,
 					TucsonOperationNotPossibleException{			
@@ -469,16 +467,14 @@ public class TupleCentreContainer{
 				return context.rdp((TupleCentreId) aid.getInternalTupleCentreId(), t);
 			if(type == TucsonOperation.nopCode())
 				return context.nop((TupleCentreId) aid.getInternalTupleCentreId(), t);
-			if(type == TucsonOperation.out_allCode()){
-				context.out_all((TupleCentreId) aid.getInternalTupleCentreId(), t);
-				return t;
-			}
+			if(type == TucsonOperation.out_allCode())
+				return context.out_all((TupleCentreId) aid.getInternalTupleCentreId(), t);
 			if(type == TucsonOperation.in_allCode())
 				return context.in_all((TupleCentreId) aid.getInternalTupleCentreId(), t);
 			if(type == TucsonOperation.rd_allCode())
-				return context.in_all((TupleCentreId) aid.getInternalTupleCentreId(), t);
+				return context.rd_all((TupleCentreId) aid.getInternalTupleCentreId(), t);
 			if(type == TucsonOperation.no_allCode())
-				return context.in_all((TupleCentreId) aid.getInternalTupleCentreId(), t);
+				return context.no_all((TupleCentreId) aid.getInternalTupleCentreId(), t);
 			if(type == TucsonOperation.uinCode())
 				return context.uin((TupleCentreId) aid.getInternalTupleCentreId(), t);
 			if(type == TucsonOperation.urdCode())
