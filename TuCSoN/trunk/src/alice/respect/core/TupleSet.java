@@ -57,24 +57,32 @@ public class TupleSet  {
 
     public void add(LogicTuple t){
     	//bio changes
-    	/*
+    	
     	if(t instanceof BioTuple){
-    		bioTuples.add((BioTuple)t);
-    		if (transaction)
-                bioTAdded.add((BioTuple)t);
+    		
+        	if(bioTuples.size()==0)
+        		bioTuples.add((BioTuple)t);
+        	
+        	else{
+	    		ListIterator<BioTuple> l=bioTuples.listIterator();
+	            while (l.hasNext()){
+	                BioTuple tu=l.next();
+	                if (t.match(tu)){
+	                    l.remove();
+	                    long oldValue = tu.getMultiplicity();
+	                    tu.setMultiplicity(oldValue + ((BioTuple) t).getMultiplicity());
+	                    l.add(tu);
+	                    return;
+	                }
+	            }
+	    		bioTuples.add((BioTuple)t);
+	    		if (transaction)
+	                bioTAdded.add((BioTuple)t);
+        	}
     	}else{
 	        tuples.add(t);
 	        if (transaction)
 	            tAdded.add(t);
-    	}*/
-    	if(t instanceof LogicTuple){
-	        tuples.add(t);
-	        if (transaction)
-	            tAdded.add(t);
-    	}else{
-    		bioTuples.add((BioTuple)t);
-    		if (transaction)
-                bioTAdded.add((BioTuple)t);
     	}
     }
 
@@ -237,9 +245,12 @@ public class TupleSet  {
         //find matching tuples
     	while (l.hasNext()){
             BioTuple tu=l.next();
-            if (templ.match(tu)){
-            	multTot += tu.getMultiplicity();
-            	tmp.add(tu);
+            long multTu = tu.getMultiplicity();
+            if(multTempl<=multTu){
+	            if (templ.match(tu)){
+	            	multTot += tu.getMultiplicity();
+	            	tmp.add(tu);
+	            }
             }
         }
     	
@@ -249,51 +260,46 @@ public class TupleSet  {
         	BioTuple t = tmp.getFirst();
         	while(l.hasPrevious()){		//find that tuple into the ListIterator (backward navigation)	
         		BioTuple tr = l.previous();
-        		try {
-					if(t.getName().equals(tr.getName())){
-						long multTr = tr.getMultiplicity();
-						if(multTr == multTempl){	//if it's required the entire tuple multiplicity
-							l.remove();
-						}else if(multTr > multTempl){	//if it's required a part of tuple multiplicity
-							l.remove();
-							tr.setMultiplicity(multTr-multTempl);
-							l.add(tr);
-						}
-						AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
-		                return new BioTuple(tr.toTerm().copyGoal(v, 0),multTempl);
+        		
+				if(t.toString().equals(tr.toString())){
+					long multTr = tr.getMultiplicity();
+					if(multTr == multTempl){	//if it's required the entire tuple multiplicity
+						l.remove();
+					}else if(multTr > multTempl){	//if it's required a part of tuple multiplicity
+						l.remove();
+						tr.setMultiplicity(multTr-multTempl);
+						l.add(tr);
 					}
-				} catch (InvalidTupleOperationException e) {
-					e.printStackTrace();
+					AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
+	                return new BioTuple(tr.toTerm().copyGoal(v, 0),multTempl);
 				}
         	}
         }else if(tmp.size()>1){	//if two or more tuples match the template
-        	long r = (long) Math.random() * multTot;
+        	long r = (long) (Math.random() * multTot);
         	//LinkedList<BioTuple> tmp2 = sortBio(tmp);	//matching list sorting - unnecessary!!
         	long counter = 0;
         	int i = 0;
         	BioTuple tuple;
             for(BioTuple t : tmp){
             	tuple = tmp.get(i);
+            	i++;
             	counter += tuple.getMultiplicity(); 
             	if(counter >= r){
             		while(l.hasPrevious()){		//find that tuple into the ListIterator (backward navigation)	
                 		BioTuple tr = l.previous();
-                		try {
-        					if(tuple.getName().equals(tr.getName())){
-        						long multTr = tr.getMultiplicity();
-        						if(multTr == multTempl){	//if it's required the entire tuple multiplicity
-        							l.remove();
-        						}else if(multTr > multTempl){	//if it's required a part of tuple multiplicity
-        							l.remove();
-        							tr.setMultiplicity(multTr-multTempl);
-        							l.add(tr);
-        						}
-        						AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
-        		                return new BioTuple(tr.toTerm().copyGoal(v, 0),multTempl);
-        					}
-        				} catch (InvalidTupleOperationException e) {
-        					e.printStackTrace();
-        				}
+                		
+    					if(tuple.toString().equals(tr.toString())){
+    						long multTr = tr.getMultiplicity();
+    						if(multTr == multTempl){	//if it's required the entire tuple multiplicity
+    							l.remove();
+    						}else if(multTr > multTempl){	//if it's required a part of tuple multiplicity
+    							l.remove();
+    							tr.setMultiplicity(multTr-multTempl);
+    							l.add(tr);
+    						}
+    						AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
+    		                return new BioTuple(tr.toTerm().copyGoal(v, 0),multTempl);
+    					}
                 	}
             	}
             }
@@ -326,13 +332,14 @@ public class TupleSet  {
         	AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
             return new BioTuple(t.toTerm().copyGoal(v, 0),multTempl);
         }else if(tmp.size()>1){	//if two or more tuples match the template
-        	long r = (long) Math.random() * multTot;
+        	long r = (long)(Math.random() * multTot);
         	//LinkedList<BioTuple> tmp2 = sortBio(tmp);	//matching list sorting - unnecessary!!
         	long counter = 0;
         	int i = 0;
         	BioTuple tuple;
             for(BioTuple t : tmp){
             	tuple = tmp.get(i);
+            	i++;
             	counter += tuple.getMultiplicity(); 
             	if(counter >= r){
             		AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();

@@ -1,6 +1,6 @@
 package alice.logictuple;
 
-import alice.logictuple.exceptions.InvalidLogicTupleException;
+import alice.logictuple.exceptions.*;
 import alice.tuprolog.Term;
 
 /**
@@ -23,7 +23,7 @@ public class BioTuple extends LogicTuple{
 	 *@param multiplicity
 	 *            the multiplicity of the tuple              
 	 */
-	public BioTuple(String name, TupleArgument[] list, long multiplicity)
+	public BioTuple(String name, TupleArgument[] list, long multiplicity) throws InvalidMultiplicityException
 	{
 		super(name, list);
 		mult = multiplicity;
@@ -233,6 +233,14 @@ public class BioTuple extends LogicTuple{
 	 */
 	public BioTuple(){
 	}
+
+	//Added to allow to specify null value of multiplicity
+	public BioTuple(TupleArgument t, Long multiplicity){
+		super(t);
+		if(multiplicity!=null)
+			mult = multiplicity;
+	}
+	
 	
 	/**
 	 * Gets the multiplicity of the tuple 
@@ -286,7 +294,7 @@ public class BioTuple extends LogicTuple{
 		try
 		{
 			Term t = alice.tuprolog.Term.createTerm(st);
-			return new BioTuple(new TupleArgument(t),multiplicity);
+			return new BioTuple(new TupleArgument(t), new Long(multiplicity));
 		}
 		catch (Exception ex)
 		{
@@ -294,5 +302,17 @@ public class BioTuple extends LogicTuple{
 		}
 	}
 	
+	public static BioTuple parse(String st) throws InvalidLogicTupleException
+	{
+		try
+		{
+			Term t = alice.tuprolog.Term.createTerm(st);
+			return new BioTuple(new TupleArgument(t), null);
+		}
+		catch (Exception ex)
+		{
+			throw new InvalidLogicTupleException();
+		}
+	}
 	
 }
