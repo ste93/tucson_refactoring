@@ -26,6 +26,8 @@ public class BioTuple extends LogicTuple{
 	public BioTuple(String name, TupleArgument[] list, long multiplicity) throws InvalidMultiplicityException
 	{
 		super(name, list);
+		if(multiplicity<=0)
+			throw new InvalidMultiplicityException();
 		mult = multiplicity;
 	}
 	
@@ -36,11 +38,14 @@ public class BioTuple extends LogicTuple{
 	 *            the name of the tuple (the functor)
 	 * @param multiplicity
 	 *            the multiplicity of the tuple           
+	 * @throws InvalidMultiplicityException 
 	 *            
 	 */
-	public BioTuple(String name, long multiplicity)
+	public BioTuple(String name, long multiplicity) throws InvalidMultiplicityException
 	{
 		super(name);
+		if(multiplicity<=0)
+			throw new InvalidMultiplicityException();
 		mult = multiplicity;
 	}
 	
@@ -53,10 +58,13 @@ public class BioTuple extends LogicTuple{
 	 *            the tuple argument
 	 * @param multiplicity
 	 *            the multiplicity of the tuple 
+	 * @throws InvalidMultiplicityException 
 	 */
-	public BioTuple(String name, TupleArgument t1, long multiplicity)
+	public BioTuple(String name, TupleArgument t1, long multiplicity) throws InvalidMultiplicityException
 	{
 		super(name,t1);
+		if(multiplicity<=0)
+			throw new InvalidMultiplicityException();
 		mult = multiplicity;
 	}
 
@@ -71,10 +79,13 @@ public class BioTuple extends LogicTuple{
 	 *            the second tuple argument
 	 * @param multiplicity
 	 *            the multiplicity of the tuple
+	 * @throws InvalidMultiplicityException 
 	 */
-	public BioTuple(String name, TupleArgument t1, TupleArgument t2, long multiplicity)
+	public BioTuple(String name, TupleArgument t1, TupleArgument t2, long multiplicity) throws InvalidMultiplicityException
 	{
 		super(name,t1,t2);
+		if(multiplicity<=0)
+			throw new InvalidMultiplicityException();
 		mult = multiplicity;
 	}
 
@@ -91,10 +102,13 @@ public class BioTuple extends LogicTuple{
 	 *            the third tuple argument
 	 * @param multiplicity
 	 *            the multiplicity of the tuple           
+	 * @throws InvalidMultiplicityException 
 	 */
-	public BioTuple(String name, TupleArgument t1, TupleArgument t2, TupleArgument t3, long multiplicity)
+	public BioTuple(String name, TupleArgument t1, TupleArgument t2, TupleArgument t3, long multiplicity) throws InvalidMultiplicityException
 	{
 		super(name, t1, t2, t3);
+		if(multiplicity<=0)
+			throw new InvalidMultiplicityException();
 		mult = multiplicity;
 	}
 
@@ -113,10 +127,13 @@ public class BioTuple extends LogicTuple{
 	 *            the fourth tuple argument
 	 * @param multiplicity
 	 *            the multiplicity of the tuple
+	 * @throws InvalidMultiplicityException 
 	 */
-	public BioTuple(String name, TupleArgument t1, TupleArgument t2, TupleArgument t3, TupleArgument t4, long multiplicity)
+	public BioTuple(String name, TupleArgument t1, TupleArgument t2, TupleArgument t3, TupleArgument t4, long multiplicity) throws InvalidMultiplicityException
 	{
 		super(name, t1, t2, t3, t4);
+		if(multiplicity<=0)
+			throw new InvalidMultiplicityException();
 		mult = multiplicity;
 	}
 
@@ -137,10 +154,13 @@ public class BioTuple extends LogicTuple{
 	 *            the fifth tuple argument
 	 * @param multiplicity
 	 *            the multiplicity of the tuple
+	 * @throws InvalidMultiplicityException 
 	 */
-	public BioTuple(String name, TupleArgument t1, TupleArgument t2, TupleArgument t3, TupleArgument t4, TupleArgument t5, long multiplicity)
+	public BioTuple(String name, TupleArgument t1, TupleArgument t2, TupleArgument t3, TupleArgument t4, TupleArgument t5, long multiplicity) throws InvalidMultiplicityException
 	{
 		super(name, t1, t2, t3, t4, t5);
+		if(multiplicity<=0)
+			throw new InvalidMultiplicityException();
 		mult = multiplicity;
 	}
 
@@ -163,11 +183,14 @@ public class BioTuple extends LogicTuple{
 	 *            the sixth tuple argument
 	 * @param multiplicity
 	 *            the multiplicity of the tuple
+	 * @throws InvalidMultiplicityException 
 	 */
 	public BioTuple(String name, TupleArgument t1, TupleArgument t2, TupleArgument t3, TupleArgument t4, TupleArgument t5,
-			TupleArgument t6, long multiplicity)
+			TupleArgument t6, long multiplicity) throws InvalidMultiplicityException
 	{
 		super(name, t1, t2, t3, t4, t5, t6);
+		if(multiplicity<=0)
+			throw new InvalidMultiplicityException();
 		mult = multiplicity;
 	}
 
@@ -192,11 +215,14 @@ public class BioTuple extends LogicTuple{
 	 *            the seventh tuple argument
 	 * @param multiplicity
 	 *            the multiplicity of the tuple
+	 * @throws InvalidMultiplicityException 
 	 */
 	public BioTuple(String name, TupleArgument t1, TupleArgument t2, TupleArgument t3, TupleArgument t4, TupleArgument t5,
-			TupleArgument t6, TupleArgument t7, long multiplicity)
+			TupleArgument t6, TupleArgument t7, long multiplicity) throws InvalidMultiplicityException
 	{
 		super(name, t1, t2, t3, t4, t5, t6, t7);
+		if(multiplicity<=0)
+			throw new InvalidMultiplicityException();
 		mult = multiplicity;
 	}
 
@@ -207,10 +233,13 @@ public class BioTuple extends LogicTuple{
 	 *            the tuple argument
 	 * @param multiplicity
 	 *            the multiplicity of the tuple
+	 * @throws InvalidMultiplicityException 
 	 */
-	public BioTuple(TupleArgument t, long multiplicity)
+	public BioTuple(TupleArgument t, long multiplicity) throws InvalidMultiplicityException
 	{
 		super(t);
+		if(multiplicity<=0)
+			throw new InvalidMultiplicityException();
 		mult = multiplicity;
 	}
 	
@@ -221,10 +250,13 @@ public class BioTuple extends LogicTuple{
 	 *            the tuprolog term
 	 * @param multiplicity
 	 *            the multiplicity of the tuple
+	 * @throws InvalidMultiplicityException 
 	 */
-	public BioTuple(Term t, long multiplicity)
+	public BioTuple(Term t, long multiplicity) throws InvalidMultiplicityException
 	{
 		super(t);
+		if(multiplicity<=0)
+			throw new InvalidMultiplicityException();
 		mult = multiplicity;
 	}
 
@@ -235,10 +267,13 @@ public class BioTuple extends LogicTuple{
 	}
 
 	//Added to allow to specify null value of multiplicity
-	public BioTuple(TupleArgument t, Long multiplicity){
+	public BioTuple(TupleArgument t, Long multiplicity) throws InvalidMultiplicityException{
 		super(t);
-		if(multiplicity!=null)
+		if(multiplicity!=null){
+			if(multiplicity<=0)
+				throw new InvalidMultiplicityException();
 			mult = multiplicity;
+		}
 	}
 	
 	
@@ -289,16 +324,16 @@ public class BioTuple extends LogicTuple{
 	 * @exception InvalidLogicTupleException
 	 *                if the text does not represent a valid logic tuple
 	 */
-	public static BioTuple parse(String st, long multiplicity) throws InvalidLogicTupleException
+	public static BioTuple parse(String st, long multiplicity) throws InvalidMultiplicityException
 	{
 		try
 		{
 			Term t = alice.tuprolog.Term.createTerm(st);
 			return new BioTuple(new TupleArgument(t), new Long(multiplicity));
 		}
-		catch (Exception ex)
+		catch (InvalidMultiplicityException ex)
 		{
-			throw new InvalidLogicTupleException();
+			throw new InvalidMultiplicityException();
 		}
 	}
 	

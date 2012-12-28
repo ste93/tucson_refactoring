@@ -21,6 +21,7 @@ import java.util.*;
 
 import alice.logictuple.BioTuple;
 import alice.logictuple.LogicTuple;
+import alice.logictuple.exceptions.InvalidMultiplicityException;
 import alice.logictuple.exceptions.InvalidTupleOperationException;
 import alice.tuprolog.Var;
 
@@ -186,7 +187,12 @@ public class TupleSet  {
                     if (transaction)
                         bioTRemoved.add(tu);
                     AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
-                    return new BioTuple(tu.toTerm().copyGoal(v, 0),tu.getMultiplicity());
+                    try {
+						return new BioTuple(tu.toTerm().copyGoal(v, 0),tu.getMultiplicity());
+					} catch (InvalidMultiplicityException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
                 }
             }
         }else{
@@ -216,7 +222,12 @@ public class TupleSet  {
                 BioTuple tu=l.next();
                 if (templ.match(tu)){
                 	AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
-                    return new BioTuple(tu.toTerm().copyGoal(v, 0),tu.getMultiplicity());
+                    try {
+						return new BioTuple(tu.toTerm().copyGoal(v, 0),tu.getMultiplicity());
+					} catch (InvalidMultiplicityException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
                 }
             }
         }else{
@@ -271,7 +282,12 @@ public class TupleSet  {
 						l.add(tr);
 					}
 					AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
-	                return new BioTuple(tr.toTerm().copyGoal(v, 0),multTempl);
+	                try {
+						return new BioTuple(tr.toTerm().copyGoal(v, 0),multTempl);
+					} catch (InvalidMultiplicityException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
         	}
         }else if(tmp.size()>1){	//if two or more tuples match the template
@@ -298,7 +314,12 @@ public class TupleSet  {
     							l.add(tr);
     						}
     						AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
-    		                return new BioTuple(tr.toTerm().copyGoal(v, 0),multTempl);
+    		                try {
+								return new BioTuple(tr.toTerm().copyGoal(v, 0),multTempl);
+							} catch (InvalidMultiplicityException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
     					}
                 	}
             	}
@@ -330,7 +351,12 @@ public class TupleSet  {
         else if(tmp.size() == 1){
         	BioTuple t = tmp.getFirst();
         	AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
-            return new BioTuple(t.toTerm().copyGoal(v, 0),multTempl);
+            try {
+				return new BioTuple(t.toTerm().copyGoal(v, 0),multTempl);
+			} catch (InvalidMultiplicityException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
         }else if(tmp.size()>1){	//if two or more tuples match the template
         	long r = (long)(Math.random() * multTot);
         	//LinkedList<BioTuple> tmp2 = sortBio(tmp);	//matching list sorting - unnecessary!!
@@ -343,7 +369,12 @@ public class TupleSet  {
             	counter += tuple.getMultiplicity(); 
             	if(counter >= r){
             		AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
-                    return new BioTuple(tuple.toTerm().copyGoal(v, 0),multTempl);
+                    try {
+						return new BioTuple(tuple.toTerm().copyGoal(v, 0),multTempl);
+					} catch (InvalidMultiplicityException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
             	}
             }
         }
