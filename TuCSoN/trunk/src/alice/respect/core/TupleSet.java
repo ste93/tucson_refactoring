@@ -179,6 +179,70 @@ public class TupleSet  {
         	return null;
         //bio changes
         if(templ instanceof BioTuple){
+        	
+        	ListIterator<BioTuple> l=bioTuples.listIterator();
+        	LinkedList<BioTuple> tmp = new LinkedList<BioTuple>();
+            long multTot = 0;
+            
+            //find matching tuples
+        	while (l.hasNext()){
+                BioTuple tu=l.next();
+	            if (templ.match(tu)){
+	            	multTot += tu.getMultiplicity();
+	            	tmp.add(tu);
+                }
+            }
+        	
+        	//check list size of matching tuples
+            if(tmp.size() == 0) return null;
+            else if(tmp.size() == 1){	//if only one tuple matches the template
+            	BioTuple t = tmp.getFirst();
+            	while(l.hasPrevious()){		//find that tuple into the ListIterator (backward navigation)	
+            		BioTuple tr = l.previous();
+    				if(t.toString().equals(tr.toString())){
+    					long multTr = tr.getMultiplicity();
+    					l.remove();
+    					AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
+    	                try {
+    						return new BioTuple(tr.toTerm().copyGoal(v, 0),multTr);
+    					} catch (InvalidMultiplicityException e) {
+    						// TODO Auto-generated catch block
+    						e.printStackTrace();
+    					}
+    				}
+            	}
+            	
+            }else if(tmp.size()>1){	//if two or more tuples match the template
+            	long r = (long) (Math.random() * multTot);
+            	//LinkedList<BioTuple> tmp2 = sortBio(tmp);	//matching list sorting - unnecessary!!
+            	long counter = 0;
+            	int i = 0;
+            	BioTuple tuple;
+                for(BioTuple t : tmp){
+                	tuple = tmp.get(i);
+                	i++;
+                	counter += tuple.getMultiplicity(); 
+                	if(counter >= r){
+                		while(l.hasPrevious()){		//find that tuple into the ListIterator (backward navigation)	
+                    		BioTuple tr = l.previous();
+                    		
+        					if(tuple.toString().equals(tr.toString())){
+        						long multTr = tr.getMultiplicity();
+        						l.remove();
+        						AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
+        		                try {
+    								return new BioTuple(tr.toTerm().copyGoal(v, 0),multTr);
+    							} catch (InvalidMultiplicityException e) {
+    								// TODO Auto-generated catch block
+    								e.printStackTrace();
+    							}
+        					}
+                    	}
+                	}
+                }
+            }
+        	/*
+        	 * not probabilistic version
         	ListIterator<BioTuple> l=bioTuples.listIterator();
             while (l.hasNext()){
                 BioTuple tu=l.next();
@@ -194,7 +258,7 @@ public class TupleSet  {
 						e.printStackTrace();
 					}
                 }
-            }
+            }*/
         }else{
 	        ListIterator<LogicTuple> l=tuples.listIterator();
 	        while (l.hasNext()){
@@ -217,6 +281,70 @@ public class TupleSet  {
             return null;
         //bio changes
         if(templ instanceof BioTuple){
+        	
+        	ListIterator<BioTuple> l=bioTuples.listIterator();
+        	LinkedList<BioTuple> tmp = new LinkedList<BioTuple>();
+            long multTot = 0;
+            
+            //find matching tuples
+        	while (l.hasNext()){
+                BioTuple tu=l.next();
+	            if (templ.match(tu)){
+	            	multTot += tu.getMultiplicity();
+	            	tmp.add(tu);
+                }
+            }
+        	
+        	//check list size of matching tuples
+            if(tmp.size() == 0) return null;
+            else if(tmp.size() == 1){	//if only one tuple matches the template
+            	BioTuple t = tmp.getFirst();
+            	while(l.hasPrevious()){		//find that tuple into the ListIterator (backward navigation)	
+            		BioTuple tr = l.previous();
+    				if(t.toString().equals(tr.toString())){
+    					long multTr = tr.getMultiplicity();
+    					AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
+    	                try {
+    						return new BioTuple(tr.toTerm().copyGoal(v, 0),multTr);
+    					} catch (InvalidMultiplicityException e) {
+    						// TODO Auto-generated catch block
+    						e.printStackTrace();
+    					}
+    				}
+            	}
+            	
+            }else if(tmp.size()>1){	//if two or more tuples match the template
+            	long r = (long) (Math.random() * multTot);
+            	//LinkedList<BioTuple> tmp2 = sortBio(tmp);	//matching list sorting - unnecessary!!
+            	long counter = 0;
+            	int i = 0;
+            	BioTuple tuple;
+                for(BioTuple t : tmp){
+                	tuple = tmp.get(i);
+                	i++;
+                	counter += tuple.getMultiplicity(); 
+                	if(counter >= r){
+                		while(l.hasPrevious()){		//find that tuple into the ListIterator (backward navigation)	
+                    		BioTuple tr = l.previous();
+                    		
+        					if(tuple.toString().equals(tr.toString())){
+        						long multTr = tr.getMultiplicity();
+        						AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
+        		                try {
+    								return new BioTuple(tr.toTerm().copyGoal(v, 0),multTr);
+    							} catch (InvalidMultiplicityException e) {
+    								// TODO Auto-generated catch block
+    								e.printStackTrace();
+    							}
+        					}
+                    	}
+                	}
+                }
+            }
+        	
+        	
+        	/*
+        	 *  Not probabilistic version
         	ListIterator<BioTuple> l=bioTuples.listIterator();
             while (l.hasNext()){
                 BioTuple tu=l.next();
@@ -230,6 +358,7 @@ public class TupleSet  {
 					}
                 }
             }
+            */
         }else{
         	ListIterator<LogicTuple> l=tuples.listIterator();
             while (l.hasNext()){
