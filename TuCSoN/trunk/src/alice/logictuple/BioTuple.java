@@ -290,8 +290,11 @@ public class BioTuple extends LogicTuple{
 	/**
 	 * Sets the multiplicity of the tuple
 	 * @param the multiplicity value
+	 * @throws InvalidMultiplicityException 
 	 */
-	public void setMultiplicity(long m){
+	public void setMultiplicity(long m) throws InvalidMultiplicityException{
+		if(m<=0)
+			throw new InvalidMultiplicityException();
 		mult = m;
 	}
 	

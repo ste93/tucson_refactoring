@@ -122,7 +122,9 @@ public class ACCProxyNodeSide extends ACCAbstractProxyNodeSide{
 			log("Listening to incoming TuCSoN agents/nodes requests...");
 
 			try{
+				//System.out.println("---------------------------------------------------------->Prima del read");
 				msg = TucsonMsgRequest.read(inStream);
+				//System.out.println("---------------------------------------------------------->Letto "+msg);
 			}catch(EOFException e){
 				log("Agent " + agentId + " quitted");
 				break;

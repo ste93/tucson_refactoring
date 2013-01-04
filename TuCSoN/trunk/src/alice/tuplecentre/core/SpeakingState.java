@@ -65,11 +65,10 @@ public class SpeakingState extends TupleCentreVMState {
 		Tuple tuple = null;
 		List<Tuple> tupleList = null;
 		TupleCentreOperation op = null;
-
+		
         while (it.hasNext() && !foundSatisfied) {
             
         	try {
-            	
 	            ev = (InputEvent) (it.next());
 	            op = ev.getOperation();
 	            

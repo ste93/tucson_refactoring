@@ -71,7 +71,12 @@ public class TupleSet  {
 	                if (t.match(tu)){
 	                    l.remove();
 	                    long oldValue = tu.getMultiplicity();
-	                    tu.setMultiplicity(oldValue + ((BioTuple) t).getMultiplicity());
+	                    try {
+							tu.setMultiplicity(oldValue + ((BioTuple) t).getMultiplicity());
+						} catch (InvalidMultiplicityException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 	                    l.add(tu);
 	                    return;
 	                }
@@ -407,7 +412,12 @@ public class TupleSet  {
 						l.remove();
 					}else if(multTr > multTempl){	//if it's required a part of tuple multiplicity
 						l.remove();
-						tr.setMultiplicity(multTr-multTempl);
+						try {
+							tr.setMultiplicity(multTr-multTempl);
+						} catch (InvalidMultiplicityException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 						l.add(tr);
 					}
 					AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
@@ -439,7 +449,12 @@ public class TupleSet  {
     							l.remove();
     						}else if(multTr > multTempl){	//if it's required a part of tuple multiplicity
     							l.remove();
-    							tr.setMultiplicity(multTr-multTempl);
+    							try {
+									tr.setMultiplicity(multTr-multTempl);
+								} catch (InvalidMultiplicityException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
     							l.add(tr);
     						}
     						AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
