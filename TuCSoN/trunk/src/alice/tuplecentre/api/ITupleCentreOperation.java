@@ -45,6 +45,16 @@ public interface ITupleCentreOperation{
 	
 	boolean isGet_s();
 	
+	//Bio primitives
+	
+	boolean isBioOut();
+	boolean isBioInv();
+	boolean isBioIn();
+	boolean isBioRdv();
+	boolean isBioRd();
+	
+	//END bio primitives
+	
 	/**
 	 * Tests if the operation is completed
 	 * 
