@@ -20,6 +20,7 @@ package alice.logictuple;
 //import alice.tuprolog.*;
 import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.logictuple.exceptions.InvalidTupleOperationException;
+import alice.tucson.parsing.MyOpManager;
 import alice.tuprolog.Prolog;
 import alice.tuprolog.Term;
 
@@ -390,7 +391,7 @@ public class LogicTuple implements alice.tuplecentre.api.Tuple, alice.tuplecentr
 	{
 		try
 		{
-			Term t = alice.tuprolog.Term.createTerm(st);
+			Term t = alice.tuprolog.Term.createTerm(st, new MyOpManager());
 			return new LogicTuple(new TupleArgument(t));
 		}
 		catch (Exception ex)

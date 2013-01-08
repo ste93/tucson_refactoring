@@ -35,6 +35,9 @@ import alice.tuprolog.Theory;
 import alice.tuprolog.lib.InvalidObjectIdException;
 
 import java.io.*;
+import java.net.InetSocketAddress;
+import java.net.Socket;
+import java.net.SocketAddress;
 import java.util.*;
 
 /**
@@ -672,10 +675,19 @@ public class TucsonNodeService{
 		
 	}
 
-//	public static boolean isInstalled(){
-//		return instance != null;
-//	}
-//
+	public static boolean isInstalled(int port) throws IOException{
+		SocketAddress addr = new InetSocketAddress(port);
+		Socket sock = new Socket();
+		try {
+			sock.bind(addr);
+		} catch (IOException e) {
+			return true;
+		} finally {
+			sock.close();
+		}
+		return false;
+	}
+
 //	public static TucsonNodeService getInstance(){
 //		return instance;
 //	}
