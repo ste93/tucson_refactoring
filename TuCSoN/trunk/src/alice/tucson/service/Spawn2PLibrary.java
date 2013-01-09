@@ -5,7 +5,6 @@ import java.util.List;
 
 import alice.logictuple.LogicTuple;
 import alice.tucson.api.TucsonAgentId;
-import alice.tucson.api.TucsonIdWrapper;
 import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.api.exceptions.TucsonGenericException;
 import alice.tucson.api.exceptions.TucsonInvalidLogicTupleException;

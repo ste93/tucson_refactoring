@@ -8,6 +8,7 @@ import alice.logictuple.LogicTuple;
 import alice.tucson.api.exceptions.TucsonInvalidLogicTupleException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 
+import alice.tucson.service.TucsonIdWrapper;
 import alice.tucson.service.TucsonOperation;
 import alice.tucson.service.TupleCentreContainer;
 
@@ -76,7 +77,7 @@ public abstract class SpawnActivity implements Serializable, Runnable{
 	 * @return the "spawner" id (actually, a generic wrapper hosting either a TucsonAgentId
 	 * or a TucsonTupleCentreId, accessible with method <code>getId()</code>)
 	 * 
-	 * @see alice.tucson.api.TucsonIdWrapper TucsonIdWrapper
+	 * @see alice.tucson.service.TucsonIdWrapper TucsonIdWrapper
 	 */
 	public final TucsonIdWrapper<?> getSpawnerId(){
 		if(aid == null)

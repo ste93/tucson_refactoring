@@ -39,10 +39,10 @@ public class TucsonMetaACC{
 	 * @return The DefaultACC (which is the most powerful at the moment)
 	 * @throws UnknownACCException 
 	 */
-	public static EnhancedACC getContext(Object aid, String netid, int portno){
+	public static EnhancedACC getContext(TucsonAgentId aid, String netid, int portno){
 		EnhancedACC acc = null;
 		try {
-			acc = new ACCProxyAgentSide(aid, netid, portno);
+			acc = new ACCProxyAgentSide(aid.toString(), netid, portno);
 			((TucsonAgentId)aid).assignUUID();
 		} catch (TucsonInvalidAgentIdException e) {
 			System.err.println("[Tucson-MetaACC]: " + e);
@@ -61,7 +61,7 @@ public class TucsonMetaACC{
 	 * @return The DefaultACC (which is the most powerful at the moment)
 	 * @throws UnknownACCException 
 	 */
-	public static EnhancedACC getContext(Object aid){
+	public static EnhancedACC getContext(TucsonAgentId aid){
 		return getContext(aid, "localhost", 20504);
 	}
 

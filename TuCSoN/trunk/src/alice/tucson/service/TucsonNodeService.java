@@ -24,7 +24,6 @@ import alice.logictuple.exceptions.InvalidTupleArgumentException;
 import alice.respect.api.exceptions.InvalidTupleCentreIdException;
 import alice.respect.core.RespectTC;
 import alice.tucson.api.exceptions.*;
-import alice.tucson.api.NodeServiceListener;
 import alice.tucson.api.TucsonAgentId;
 import alice.tucson.api.TucsonTupleCentreId;
 

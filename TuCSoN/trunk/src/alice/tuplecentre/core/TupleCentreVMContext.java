@@ -20,8 +20,8 @@ package alice.tuplecentre.core;
 import java.util.*;
 
 import alice.respect.core.RespectTC;
-import alice.tucson.api.TucsonIdWrapper;
 import alice.tucson.api.TucsonTupleCentreId;
+import alice.tucson.service.TucsonIdWrapper;
 import alice.tuplecentre.api.AgentId;
 import alice.tuplecentre.api.IId;
 import alice.tuplecentre.api.ITupleCentre;
