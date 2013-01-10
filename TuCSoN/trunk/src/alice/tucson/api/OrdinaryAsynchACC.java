@@ -36,6 +36,7 @@ import alice.tucson.api.exceptions.UnreachableNodeException;
  */
 public interface OrdinaryAsynchACC extends RootACC{
 
+	
 	/**
 	 * <code>out</code> Linda primitive, inserts the specified tuple in the given target
 	 * tuplecentre.
@@ -278,5 +279,6 @@ public interface OrdinaryAsynchACC extends RootACC{
 	 */
 	ITucsonOperation spawn(Object tid, LogicTuple toSpawn, TucsonOperationCompletionListener l)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException;
+	
 	
 }

@@ -152,6 +152,8 @@ public class ACCProxyAgentSide implements EnhancedACC{
 		this(aid, "localhost", 20504);
 	}
 	
+	//START asynchronous versions
+	
 	/**
 	 * Out Linda primitive, asynchronous version. Inserts the specified tuple
 	 * in the given target tuplecentre, WITHOUT waiting the completion answer from
@@ -906,10 +908,17 @@ public class ACCProxyAgentSide implements EnhancedACC{
 		
 	}
 	
+	//END asynchronous versions
+	
+	//START synchrounous versions
+	
 	/**
-	 * Out Linda primitive, synchronous version. Inserts the specified tuple
+	 * Out Linda primitive, synchronous version. Inserts the specified bio tuple
 	 * in the given target tuplecentre, waiting the completion answer from
 	 * the TuCSoN node for a maximum time specified in ms timeunit.
+	 * 
+	 * If the inserted tuple matches one or more tuples in the space, 
+	 * they are merged, summing up their multiplicity.
 	 * 
 	 * Such operation is delegated to a private method {@link alice.tucson.api.doBlockingOperation
 	 * blocking} which maps it on a TucsonMsgRequest to send it to the TuCSoN Node Service for processing
@@ -930,9 +939,12 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	 * 
 	 * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
 	 */
-	public ITucsonOperation out(Object tid, LogicTuple tuple, Long timeout)
+	public ITucsonOperation out(Object tid, BioTuple tuple, Long timeout)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException{
-		return doBlockingOperation(TucsonOperation.outCode(), tid, tuple, timeout);
+		if(!tuple.isMultGround()) 
+			throw new TucsonOperationNotPossibleException();
+		else
+			return doBlockingOperation(TucsonOperation.outCode(), tid, tuple, timeout);
 	}
 	
 	/**
@@ -955,7 +967,7 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	 * 
 	 * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
 	 */
-	public ITucsonOperation in(Object tid, LogicTuple tuple, Long timeout)
+	public ITucsonOperation in(Object tid, BioTuple tuple, Long timeout)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException{
 		return doBlockingOperation(TucsonOperation.inCode(), tid, tuple, timeout);
 	}
@@ -980,7 +992,7 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	 * 
 	 * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
 	 */
-	public ITucsonOperation rd(Object tid, LogicTuple tuple, Long timeout)
+	public ITucsonOperation rd(Object tid, BioTuple tuple, Long timeout)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException{
 		return doBlockingOperation(TucsonOperation.rdCode(), tid, tuple, timeout);
 	}
@@ -1156,13 +1168,13 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	
 	
 	
-	public ITucsonOperation uin(Object tid, LogicTuple tuple, Long timeout)
+	public ITucsonOperation uin(Object tid, BioTuple tuple, Long timeout)
 			throws TucsonOperationNotPossibleException,
 			UnreachableNodeException, OperationTimeOutException {
 		return doBlockingOperation(TucsonOperation.uinCode(), tid, tuple, timeout);
 	}
 
-	public ITucsonOperation urd(Object tid, LogicTuple tuple, Long timeout)
+	public ITucsonOperation urd(Object tid, BioTuple tuple, Long timeout)
 			throws TucsonOperationNotPossibleException,
 			UnreachableNodeException, OperationTimeOutException {
 		return doBlockingOperation(TucsonOperation.urdCode(), tid, tuple, timeout);
@@ -1659,7 +1671,7 @@ public class ACCProxyAgentSide implements EnhancedACC{
 			ObjectOutputStream outStream = session.getOutputStream();
 
 			TucsonOperation op = null;
-			if((type == TucsonOperation.outCode()) || (type == TucsonOperation.out_sCode()) || type == TucsonOperation.bioOutCode()
+			if((type == TucsonOperation.outCode()) || (type == TucsonOperation.out_sCode())
 					|| (type == TucsonOperation.set_sCode()) || (type == TucsonOperation.set_Code())
 					|| type == TucsonOperation.out_allCode() || type == TucsonOperation.spawnCode())
 				op = new TucsonOperation(type, (Tuple) t, l, this);
@@ -1886,10 +1898,7 @@ public class ACCProxyAgentSide implements EnhancedACC{
 							|| type == TucsonOperation.inCode() || type == TucsonOperation.rdCode()
 							|| type == TucsonOperation.inpCode() || type == TucsonOperation.rdpCode()
 							|| type == TucsonOperation.in_sCode() || type == TucsonOperation.rd_sCode()
-							|| type == TucsonOperation.inp_sCode() || type == TucsonOperation.rdp_sCode()
-							|| type == TucsonOperation.bioInCode() || type == TucsonOperation.bioInvCode()
-							|| type == TucsonOperation.bioOutCode() || type == TucsonOperation.bioRdCode()
-							|| type == TucsonOperation.bioRdvCode()){
+							|| type == TucsonOperation.inp_sCode() || type == TucsonOperation.rdp_sCode()){
 
 						boolean succeeded = msg.isSuccess();
 						if(succeeded){
@@ -2021,45 +2030,6 @@ public class ACCProxyAgentSide implements EnhancedACC{
 			return session;
 		}
 		
-	}
-	
-	
-	//BIO primitives SYNCH
-
-	@Override
-	public ITucsonOperation out(Object tid, BioTuple tuple, Long timeout)
-			throws TucsonOperationNotPossibleException,
-			UnreachableNodeException, OperationTimeOutException {
-		return doBlockingOperation(TucsonOperation.bioOutCode(), tid, tuple, timeout);
-	}
-
-	@Override
-	public ITucsonOperation inv(Object tid, BioTuple tuple, Long timeout)
-			throws TucsonOperationNotPossibleException,
-			UnreachableNodeException, OperationTimeOutException {
-		return doBlockingOperation(TucsonOperation.bioInvCode(), tid, tuple, timeout);
-	}
-
-	@Override
-	public ITucsonOperation in(Object tid, BioTuple tuple, Long timeout)
-			throws TucsonOperationNotPossibleException,
-			UnreachableNodeException, OperationTimeOutException {
-		return doBlockingOperation(TucsonOperation.bioInCode(), tid, tuple, timeout);
-	}
-
-	@Override
-	public ITucsonOperation rdv(Object tid, BioTuple tuple, Long timeout)
-			throws TucsonOperationNotPossibleException,
-			UnreachableNodeException, OperationTimeOutException {
-		return doBlockingOperation(TucsonOperation.bioRdvCode(), tid, tuple, timeout);
-	}
-
-	
-	@Override
-	public ITucsonOperation rd(Object tid, BioTuple tuple, Long timeout)
-			throws TucsonOperationNotPossibleException,
-			UnreachableNodeException, OperationTimeOutException {
-		return doBlockingOperation(TucsonOperation.bioRdCode(), tid, tuple, timeout);
 	}
 
 }

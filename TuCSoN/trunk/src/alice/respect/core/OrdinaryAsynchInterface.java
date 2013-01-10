@@ -204,53 +204,5 @@ public class OrdinaryAsynchInterface extends RootInterface implements IOrdinaryA
 			throw new InvalidLogicTupleException();
 		return getCore().spawn(aid, t, l);
 	}
-
-	
-	//BIO primitives
-	
-	@Override
-	public IRespectOperation out(IId aid, BioTuple t,
-			OperationCompletionListener l) throws InvalidLogicTupleException,
-			OperationNotPossibleException {
-		if (t==null)
-			throw new InvalidLogicTupleException();
-		return getCore().out(aid, t, l);
-	}
-
-	@Override
-	public IRespectOperation inv(IId aid, BioTuple t,
-			OperationCompletionListener l) throws InvalidLogicTupleException,
-			OperationNotPossibleException {
-		if (t==null)
-			throw new InvalidLogicTupleException();
-		return getCore().inv(aid, t, l);
-	}
-
-	@Override
-	public IRespectOperation in(IId aid, BioTuple t,
-			OperationCompletionListener l) throws InvalidLogicTupleException,
-			OperationNotPossibleException {
-		if (t==null)
-			throw new InvalidLogicTupleException();
-		return getCore().in(aid, t, l);
-	}
-
-	@Override
-	public IRespectOperation rdv(IId aid, BioTuple t,
-			OperationCompletionListener l) throws InvalidLogicTupleException,
-			OperationNotPossibleException {
-		if (t==null)
-			throw new InvalidLogicTupleException();
-		return getCore().rdv(aid, t, l);
-	}
-
-	@Override
-	public IRespectOperation rd(IId aid, BioTuple t,
-			OperationCompletionListener l) throws InvalidLogicTupleException,
-			OperationNotPossibleException {
-		if (t==null)
-			throw new InvalidLogicTupleException();
-		return getCore().rd(aid, t, l);
-	}
 	
 }

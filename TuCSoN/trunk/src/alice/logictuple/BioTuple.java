@@ -259,6 +259,19 @@ public class BioTuple extends LogicTuple{
 			throw new InvalidMultiplicityException();
 		mult = multiplicity;
 	}
+	
+	/**
+	 * Constructs the bio tuple from a tuprolog term. Multiplicty auto-set to 1
+	 * 
+	 * @param t
+	 *            the tuprolog term
+	 * @throws InvalidMultiplicityException 
+	 */
+	public BioTuple(Term t)
+	{
+		super(t);
+		mult = 1;
+	}
 
 	/**
 	 * Empty constructor
@@ -351,6 +364,13 @@ public class BioTuple extends LogicTuple{
 		{
 			throw new InvalidLogicTupleException();
 		}
+	}
+	
+	public boolean isMultGround(){
+		if(mult == 0)
+			return false;
+		else
+			return true;		
 	}
 	
 }

@@ -49,29 +49,6 @@ public interface IRespectTC  {
 	
 	IRespectOperation out(IId id, LogicTuple t) throws OperationNotPossibleException;
 	
-	/**
-	 * Bio primitive out
-	 */
-	IRespectOperation out(IId id, BioTuple t, OperationCompletionListener l) throws OperationNotPossibleException;
-	
-	IRespectOperation out(IId id, BioTuple t) throws OperationNotPossibleException;
-	
-	IRespectOperation inv(IId id, BioTuple t, OperationCompletionListener l) throws OperationNotPossibleException;
-	
-	IRespectOperation inv(IId id, BioTuple t) throws OperationNotPossibleException;
-	
-	IRespectOperation in(IId id, BioTuple t, OperationCompletionListener l) throws OperationNotPossibleException;
-	
-	IRespectOperation in(IId id, BioTuple t) throws OperationNotPossibleException;
-	
-	IRespectOperation rdv(IId id, BioTuple t, OperationCompletionListener l) throws OperationNotPossibleException;
-	
-	IRespectOperation rdv(IId id, BioTuple t) throws OperationNotPossibleException;
-	
-	IRespectOperation rd(IId id, BioTuple t, OperationCompletionListener l) throws OperationNotPossibleException;
-	
-	IRespectOperation rd(IId id, BioTuple t) throws OperationNotPossibleException;
-	
 	
 	/**
 	 * Retrieves a tuple in the tuple centre

@@ -38,16 +38,21 @@ import alice.tuplecentre.api.exceptions.OperationTimeOutException;
  */
 public interface OrdinarySynchACC extends RootACC{
 	
+	//BIO version
+	
 	/**
-	 * <code>out</code> Linda primitive, inserts the specified tuple in the given target
+	 * <code>out</code> Linda primitive, inserts the specified bio tuple in the given target
 	 * tuplecentre.
 	 * 
+	 * If the inserted tuple matches one or more tuples in the space, 
+	 * they are merged, summing up their multiplicity.
+	 * 
 	 * Notice that TuCSoN out primitive assumes the ORDERED version of this primitive,
-	 * hence the tuple is SUDDENLY injected in the target space (if the primitive
+	 * hence the bio tuple is SUDDENLY injected in the target space (if the primitive
 	 * successfully completes)
 	 * 
 	 * @param tid the target TuCSoN tuplecentre id {@link alice.tucson.api.TucsonTupleCentreId tid}
-	 * @param tuple the tuple to be emitted in the target tuplecentre
+	 * @param tuple the bio tuple to be emitted in the target tuplecentre
 	 * @param timeout the maximum waiting time for completion tolerated by the TuCSoN agent
 	 * behind this ACC. Notice that reaching the timeout just unblocks the agent, but
 	 * the request IS NOT REMOVED from TuCSoN node pending requests (will still be served
@@ -62,19 +67,21 @@ public interface OrdinarySynchACC extends RootACC{
 	 * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
 	 * @see alice.tucson.api.ITucsonOperation ITucsonOperation
 	 */
-	ITucsonOperation out(Object tid, LogicTuple tuple, Long timeout)
+	ITucsonOperation out(Object tid, BioTuple tuple, Long timeout)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException;
 
 	/**
-	 * <code>in</code> Linda primitive, retrieves the specified tuple from the given target
-	 * tuplecentre.
+	 * <code>in</code> Linda primitive, retrieves the specified bio tuple from the given target
+	 * tuplecentre. If the bio template specified a value of multiplicity(m), this primitive retrieves
+	 * an amount equal to m of a tuple that matches the template, otherwise retrieves a tuple that matches 
+	 * the template for the entire.
 	 * 
-	 * Notice that the primitive semantics is SUSPENSIVE: until no tuple is found
+	 * Notice that the primitive semantics is SUSPENSIVE: until no bio tuple is found
 	 * to match the given template, no success completion answer is forwarded to
 	 * the TuCSoN Agent exploiting this ACC, which then is blocked waiting.
 	 * 
 	 * @param tid the target TuCSoN tuplecentre id {@link alice.tucson.api.TucsonTupleCentreId tid}
-	 * @param tuple the tuple to be retrieved from the target tuplecentre
+	 * @param tuple the bio template that indicates what tuple has to be retrieved from the target tuplecentre
 	 * @param timeout the maximum waiting time for completion tolerated by the TuCSoN agent
 	 * behind this ACC. Notice that reaching the timeout just unblocks the agent, but
 	 * the request IS NOT REMOVED from TuCSoN node pending requests (will still be served
@@ -89,19 +96,21 @@ public interface OrdinarySynchACC extends RootACC{
 	 * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
 	 * @see alice.tucson.api.ITucsonOperation ITucsonOperation
 	 */
-	ITucsonOperation in(Object tid, LogicTuple tuple, Long timeout)
+	ITucsonOperation in(Object tid, BioTuple tuple, Long timeout)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException;
 
 	/**
 	 * <code>rd</code> Linda primitive, reads (w/o removing) the specified tuple
-	 * from the given target tuplecentre.
+	 * from the given target tuplecentre. If the bio template specified a value of 
+	 * multiplicity(m), this primitive reads an amount equal to m of a tuple that 
+	 * matches the template, otherwise reads a tuple that matches the template for the entire.
 	 * 
 	 * Notice that the primitive semantics is SUSPENSIVE: until no tuple is found
 	 * to match the given template, no success completion answer is forwarded to
 	 * the TuCSoN Agent exploiting this ACC, which then is blocked waiting.
 	 * 
 	 * @param tid the target TuCSoN tuplecentre id {@link alice.tucson.api.TucsonTupleCentreId tid}
-	 * @param tuple the tuple to be read from the target tuplecentre
+	 * @param tuple the bio template that indicates what tuple has to be read from the target tuplecentre
 	 * @param timeout the maximum waiting time for completion tolerated by the TuCSoN agent
 	 * behind this ACC. Notice that reaching the timeout just unblocks the agent, but
 	 * the request IS NOT REMOVED from TuCSoN node pending requests (will still be served
@@ -116,8 +125,12 @@ public interface OrdinarySynchACC extends RootACC{
 	 * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
 	 * @see alice.tucson.api.ITucsonOperation ITucsonOperation
 	 */
-	ITucsonOperation rd(Object tid, LogicTuple tuple, Long timeout)
+	ITucsonOperation rd(Object tid, BioTuple tuple, Long timeout)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException;
+	
+	
+	
+	//not yet Bio version
 	
 	/**
 	 * <code>inp</code> Linda primitive, retrieves the specified tuple
@@ -309,151 +322,4 @@ public interface OrdinarySynchACC extends RootACC{
 	ITucsonOperation spawn(Object tid, LogicTuple toSpawn, Long timeout)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException;
 	
-	
-	//BIO primitives
-	
-	/**
-	 * <code>out</code> Linda primitive, inserts the specified bio tuple in the given target
-	 * tuplecentre.
-	 * 
-	 * Notice that TuCSoN out primitive assumes the ORDERED version of this primitive,
-	 * hence the bio tuple is SUDDENLY injected in the target space (if the primitive
-	 * successfully completes)
-	 * 
-	 * @param tid the target TuCSoN tuplecentre id {@link alice.tucson.api.TucsonTupleCentreId tid}
-	 * @param tuple the bio tuple to be emitted in the target tuplecentre
-	 * @param timeout the maximum waiting time for completion tolerated by the TuCSoN agent
-	 * behind this ACC. Notice that reaching the timeout just unblocks the agent, but
-	 * the request IS NOT REMOVED from TuCSoN node pending requests (will still be served
-	 * at sometime in the future).
-	 * 
-	 * @return the interface to access the data about TuCSoN operations outcome.
-	 * 
-	 * @throws TucsonOperationNotPossibleException
-	 * @throws UnreachableNodeException
-	 * @throws OperationTimeOutException
-	 * 
-	 * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
-	 * @see alice.tucson.api.ITucsonOperation ITucsonOperation
-	 */
-	ITucsonOperation out(Object tid, BioTuple tuple, Long timeout)
-			throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException;
-
-	/**
-	 * <code>inv</code> Linda primitive, retrieves the specified bio tuple from the given target
-	 * tuplecentre. The internal multiplicity value of the bio tuple is a variable that matches any value.
-	 * 
-	 * 
-	 * Notice that the primitive semantics is SUSPENSIVE: until no bio tuple is found
-	 * to match the given template, no success completion answer is forwarded to
-	 * the TuCSoN Agent exploiting this ACC, which then is blocked waiting.
-	 * 
-	 * @param tid the target TuCSoN tuplecentre id {@link alice.tucson.api.TucsonTupleCentreId tid}
-	 * @param tuple the bio tuple to be retrieved from the target tuplecentre
-	 * @param timeout the maximum waiting time for completion tolerated by the TuCSoN agent
-	 * behind this ACC. Notice that reaching the timeout just unblocks the agent, but
-	 * the request IS NOT REMOVED from TuCSoN node pending requests (will still be served
-	 * at sometime in the future).
-	 * 
-	 * @return the interface to access the data about TuCSoN operations outcome.
-	 * 
-	 * @throws TucsonOperationNotPossibleException
-	 * @throws UnreachableNodeException
-	 * @throws OperationTimeOutException
-	 * 
-	 * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
-	 * @see alice.tucson.api.ITucsonOperation ITucsonOperation
-	 */
-	ITucsonOperation inv(Object tid, BioTuple tuple, Long timeout)
-			throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException;
-	
-	/**
-	 * <code>in</code> Linda primitive, retrieves the specified bio tuple from the given target
-	 * tuplecentre. The internal multiplicity value of the bio tuple is a constant.
-	 * 
-	 * If two or more tuples match the specified template, one is removed and returned with 
-	 * probability given by its multiplicity. 
-	 * 
-	 * Notice that the primitive semantics is SUSPENSIVE: until no bio tuple is found
-	 * to match the given template, no success completion answer is forwarded to
-	 * the TuCSoN Agent exploiting this ACC, which then is blocked waiting.
-	 * 
-	 * @param tid the target TuCSoN tuplecentre id {@link alice.tucson.api.TucsonTupleCentreId tid}
-	 * @param tuple the bio tuple to be retrieved from the target tuplecentre
-	 * @param timeout the maximum waiting time for completion tolerated by the TuCSoN agent
-	 * behind this ACC. Notice that reaching the timeout just unblocks the agent, but
-	 * the request IS NOT REMOVED from TuCSoN node pending requests (will still be served
-	 * at sometime in the future).
-	 * 
-	 * @return the interface to access the data about TuCSoN operations outcome.
-	 * 
-	 * @throws TucsonOperationNotPossibleException
-	 * @throws UnreachableNodeException
-	 * @throws OperationTimeOutException
-	 * 
-	 * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
-	 * @see alice.tucson.api.ITucsonOperation ITucsonOperation
-	 */
-	ITucsonOperation in(Object tid, BioTuple tuple, Long timeout)
-			throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException;
-
-	/**
-	 * <code>rdv</code> Linda primitive, reads (w/o removing) the specified bio tuple
-	 * from the given target tuplecentre. The internal multiplicity value of the bio tuple
-	 * is a variable that matches any value.
-	 * 
-	 * 
-	 * Notice that the primitive semantics is SUSPENSIVE: until no bio tuple is found
-	 * to match the given template, no success completion answer is forwarded to
-	 * the TuCSoN Agent exploiting this ACC, which then is blocked waiting.
-	 * 
-	 * @param tid the target TuCSoN tuplecentre id {@link alice.tucson.api.TucsonTupleCentreId tid}
-	 * @param tuple the bio tuple to be read from the target tuplecentre
-	 * @param timeout the maximum waiting time for completion tolerated by the TuCSoN agent
-	 * behind this ACC. Notice that reaching the timeout just unblocks the agent, but
-	 * the request IS NOT REMOVED from TuCSoN node pending requests (will still be served
-	 * at sometime in the future).
-	 * 
-	 * @return the interface to access the data about TuCSoN operations outcome.
-	 * 
-	 * @throws TucsonOperationNotPossibleException
-	 * @throws UnreachableNodeException
-	 * @throws OperationTimeOutException
-	 * 
-	 * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
-	 * @see alice.tucson.api.ITucsonOperation ITucsonOperation
-	 */
-	ITucsonOperation rdv(Object tid, BioTuple tuple, Long timeout)
-			throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException;
-	
-	/**
-	 * <code>rd</code> Linda primitive, reads (w/o removing) the specified bio tuple
-	 * from the given target tuplecentre. The internal multiplicity value of the bio tuple is a constant.
-	 * 
-	 * If two or more tuples match the specified template, one is returned (w/o removing) with 
-	 * probability given by its multiplicity. 
-	 * 
-	 * Notice that the primitive semantics is SUSPENSIVE: until no bio tuple is found
-	 * to match the given template, no success completion answer is forwarded to
-	 * the TuCSoN Agent exploiting this ACC, which then is blocked waiting.
-	 * 
-	 * @param tid the target TuCSoN tuplecentre id {@link alice.tucson.api.TucsonTupleCentreId tid}
-	 * @param tuple the bio tuple to be read from the target tuplecentre
-	 * @param timeout the maximum waiting time for completion tolerated by the TuCSoN agent
-	 * behind this ACC. Notice that reaching the timeout just unblocks the agent, but
-	 * the request IS NOT REMOVED from TuCSoN node pending requests (will still be served
-	 * at sometime in the future).
-	 * 
-	 * @return the interface to access the data about TuCSoN operations outcome.
-	 * 
-	 * @throws TucsonOperationNotPossibleException
-	 * @throws UnreachableNodeException
-	 * @throws OperationTimeOutException
-	 * 
-	 * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
-	 * @see alice.tucson.api.ITucsonOperation ITucsonOperation
-	 */
-	ITucsonOperation rd(Object tid, BioTuple tuple, Long timeout)
-			throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException;
-
 }

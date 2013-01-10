@@ -17,6 +17,7 @@
  */
 package alice.tucson.api;
 
+import alice.logictuple.BioTuple;
 import alice.logictuple.LogicTuple;
 
 import alice.tuplecentre.api.ITupleCentreOperation;
@@ -54,6 +55,13 @@ public interface ITucsonOperation extends ITupleCentreOperation{
 	 * @return the tuple result of the requested operation.
 	 */
 	LogicTuple getLogicTupleResult();
+	
+	/**
+	 * Only for BioTuCSoN: gets the bio tuple returned as the result of the requested operation.
+	 * 
+	 * @return the bio tuple result of the requested operation.
+	 */
+	BioTuple getBioTupleResult();
 	
 	/**
 	 * Gets the list of tuples returned as the result of the requested operation.

@@ -21,8 +21,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import alice.logictuple.BioTuple;
 import alice.logictuple.LogicTuple;
 import alice.logictuple.exceptions.InvalidLogicTupleException;
+import alice.logictuple.exceptions.InvalidMultiplicityException;
 import alice.logictuple.exceptions.InvalidTupleOperationException;
 
 import alice.tucson.api.EnhancedACC;
@@ -129,7 +131,13 @@ public class CLIAgent extends alice.util.Automaton{
 					else
 						prompt("failure");
 				}else if(methodName.equals("out")){
-					LogicTuple t = LogicTuple.parse(tuple);
+					BioTuple t=null;
+					try {
+						t = BioTuple.parse(tuple,1);
+					} catch (InvalidMultiplicityException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 					busy();
 					ITucsonOperation op = context.out(tid, t, Long.MAX_VALUE);
 					if(op.isResultSuccess())
@@ -137,7 +145,7 @@ public class CLIAgent extends alice.util.Automaton{
 					else
 						prompt("failure: " + op.getLogicTupleResult());
 				}else if(methodName.equals("in")){
-					LogicTuple templ = LogicTuple.parse(tuple);
+					BioTuple templ = BioTuple.parse(tuple);
 					busy();
 					ITucsonOperation op = context.in(tid, templ, Long.MAX_VALUE);
 					if(op.isResultSuccess())
@@ -145,7 +153,7 @@ public class CLIAgent extends alice.util.Automaton{
 					else
 						prompt("failure: " + op.getLogicTupleResult());
 				}else if(methodName.equals("rd")){
-					LogicTuple templ = LogicTuple.parse(tuple);
+					BioTuple templ = BioTuple.parse(tuple);
 					busy();
 					ITucsonOperation op = context.rd(tid, templ, Long.MAX_VALUE);
 					if(op.isResultSuccess())
@@ -236,7 +244,7 @@ public class CLIAgent extends alice.util.Automaton{
 					else
 						prompt("failure: " + op.getLogicTupleListResult());
 				}else if(methodName.equals("urd")){
-					LogicTuple templ = LogicTuple.parse(tuple);
+					BioTuple templ = BioTuple.parse(tuple);
 					busy();
 					ITucsonOperation op = context.urd(tid, templ, (Long) null);
 					if(op.isResultSuccess())
@@ -270,7 +278,7 @@ public class CLIAgent extends alice.util.Automaton{
 						prompt("failure: " + op.getLogicTupleResult());
 				}
 				else if(methodName.equals("uin")){
-					LogicTuple templ = LogicTuple.parse(tuple);
+					BioTuple templ = BioTuple.parse(tuple);
 					busy();
 					ITucsonOperation op = context.uin(tid, templ, (Long) null);
 					if(op.isResultSuccess())

@@ -274,10 +274,7 @@ public class ACCProxyNodeSide extends ACCAbstractProxyNodeSide{
 					|| msg_type == TucsonOperation.urdCode() || msg_type == TucsonOperation.urdpCode()
 					|| msg_type == TucsonOperation.unoCode() || msg_type == TucsonOperation.unopCode()
 					|| msg_type == TucsonOperation.in_allCode() || msg_type == TucsonOperation.rd_allCode()
-					|| msg_type == TucsonOperation.no_allCode() || msg_type == TucsonOperation.spawnCode()
-					|| msg_type == TucsonOperation.bioOutCode() || msg_type == TucsonOperation.bioInvCode()
-					|| msg_type == TucsonOperation.bioInCode() || msg_type == TucsonOperation.bioRdvCode()
-					|| msg_type == TucsonOperation.bioRdCode()){
+					|| msg_type == TucsonOperation.no_allCode() || msg_type == TucsonOperation.spawnCode()){
 				
 				node.resolveCore(tid.getName());
 				node.addTCAgent(agentId, tid);
@@ -358,20 +355,8 @@ public class ACCProxyNodeSide extends ACCAbstractProxyNodeSide{
 		}
 		
 		TucsonMsgReply reply = null;
-		//BIO primitives
-		if(op.isBioOut()){
-			if(op.isResultSuccess()){
-				reply = new TucsonMsgReply(msg.getId(), op.getType(), true, true, true, msg.getTuple(), (BioTuple) op.getTupleResult());
-			}else{
-				reply = new TucsonMsgReply(msg.getId(), op.getType(), true, true, false, msg.getTuple(), (BioTuple) op.getTupleResult());
-			}
-		}else if(op.isBioIn() || op.isBioInv() || op.isBioRd() || op.isBioRdv()){
-			if(op.isResultSuccess()){
-				reply = new TucsonMsgReply(msg.getId(), op.getType(), true, true, true, msg.getTuple(), (BioTuple) op.getTupleResult());
-			}else
-				reply = new TucsonMsgReply(msg.getId(), op.getType(), true, true, false, msg.getTuple(), (BioTuple) op.getTupleResult());
-		//end BIO primitives
-		}else if(op.isOut() || op.isOut_s() || op.isSpawn()){
+		
+		if(op.isOut() || op.isOut_s() || op.isSpawn()){
 			if(op.isResultSuccess()){
 				reply = new TucsonMsgReply(msg.getId(), op.getType(), true, true, true, msg.getTuple(), (LogicTuple) op.getTupleResult());
 			}else

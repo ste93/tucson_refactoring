@@ -906,26 +906,37 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
     	return list;
     }
 
-    //in & bio inv
+    //in
     public  Tuple removeMatchingTuple(TupleTemplate t){
         Tuple tuple=tSet.getMatchingTuple((alice.logictuple.LogicTuple)t);
         return tuple;
     }
     
-    //bio added - bio in
-    public  Tuple removeMatchingTupleGround(TupleTemplate t){
-        Tuple tuple=tSet.getMatchingTupleGround((alice.logictuple.BioTuple)t);
+    //uin
+    public  Tuple removeUniformTuple(TupleTemplate t){
+    	BioTuple bioT = (BioTuple) t;
+    	Tuple tuple = null;
+    	if(bioT.isMultGround())
+    		tuple=tSet.getUniformMatchingTupleGround(bioT);
+    	else
+    		tuple=tSet.getUniformMatchingTuple(bioT);
         return tuple;
     }
 
-    //rd & bio rdv
+    //rd
     public Tuple readMatchingTuple(TupleTemplate t){
         return tSet.readMatchingTuple((alice.logictuple.LogicTuple)t);
     }
     
-    //bio added - bio rd
-    public Tuple readMatchingTupleGround(TupleTemplate t){
-        return tSet.readMatchingTupleGround((alice.logictuple.BioTuple)t);
+    //urd
+    public Tuple readUniformTuple(TupleTemplate t){
+    	BioTuple bioT = (BioTuple) t;
+    	Tuple tuple = null;
+    	if(bioT.isMultGround())
+    		tuple=tSet.readUniformMatchingTupleGround(bioT);
+    	else
+    		tuple=tSet.readUniformMatchingTuple(bioT);
+        return tuple;
     }
     
     public void addSpecTuple(Tuple t){
@@ -1223,7 +1234,7 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 
 	public List<Tuple> getAllTuples() {
 		List<Tuple> tl = new LinkedList<Tuple>();
-		Iterator<LogicTuple> it = this.tSet.getIterator();
+		Iterator<BioTuple> it = this.tSet.getIterator();
 		while(it.hasNext())
 			tl.add((Tuple)it.next());
 		return tl;
@@ -1280,6 +1291,7 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 		return tl;
 	}
 	
+	/*uniform rd - original version of TuCSoN
 	public Tuple readUniformTuple(TupleTemplate t){
 		List<Tuple> tl = new LinkedList<Tuple>();
 		tl = readAllTuples(t);
@@ -1290,7 +1302,9 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 			return tl.get(extracted);
 		}
 	}
+	*/
 	
+	/*uniform in - original version of TuCSoN
 	public Tuple removeUniformTuple(TupleTemplate t){
 		List<Tuple> tl = new LinkedList<Tuple>();
 		tl = readAllTuples(t);
@@ -1303,6 +1317,7 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 			return toRemove;
 		}
 	}
+	*/
 	
 	private void log(String s){
 		System.out.println("..[RespectVMContext]: " + s);

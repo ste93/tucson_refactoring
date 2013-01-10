@@ -83,35 +83,35 @@ public class SpeakingState extends TupleCentreVMState {
 	            			op.setOpResult(Outcome.FAILURE);
 	            		op.setTupleResult(tuple);
 	            		foundSatisfied = true;
-	            	}else if (op.isOut() || op.isBioOut()){		//BIO changes
+	            	}else if (op.isOut()){
 		            	tuple = op.getTupleArgument();
 		        		vm.addTuple(tuple);
 		        		op.setOpResult(Outcome.SUCCESS);
 			            op.setTupleResult(tuple);
 			            foundSatisfied = true;
-		            } else if (op.isIn() || op.isBioInv()){		//BIO changes
+		            } else if (op.isIn()){
 		                tuple = vm.removeMatchingTuple(op.getTemplateArgument());
 						if (tuple!=null){
 							op.setOpResult(Outcome.SUCCESS);
 				            op.setTupleResult(tuple);
 							foundSatisfied=true;
 						}// we do nothing: in is suspensive hence we cannot conclude FAILURE yet!
-		            } else if (op.isRd() || op.isBioRdv()){		//BIO changes
+		            } else if (op.isRd()){
 						tuple = vm.readMatchingTuple(op.getTemplateArgument());
 						if (tuple!=null){
 							op.setOpResult(Outcome.SUCCESS);
 				            op.setTupleResult(tuple);
 							foundSatisfied=true;
 						}// we do nothing: rd is suspensive hence we cannot conclude FAILURE yet!
-					}else if(op.isBioIn()){		//BIO added
-						tuple = vm.removeMatchingTupleGround(op.getTemplateArgument());
+					}else if(op.isUin()){	
+						tuple = vm.removeUniformTuple(op.getTemplateArgument());
 						if (tuple!=null){
 							op.setOpResult(Outcome.SUCCESS);
 				            op.setTupleResult(tuple);
 							foundSatisfied=true;
 						}// we do nothing: in is suspensive hence we cannot conclude FAILURE yet!
-					}else if(op.isBioRd()){		//BIO added
-						tuple = vm.readMatchingTupleGround(op.getTemplateArgument());
+					}else if(op.isUrd()){
+						tuple = vm.readUniformTuple(op.getTemplateArgument());
 						if (tuple!=null){
 							op.setOpResult(Outcome.SUCCESS);
 				            op.setTupleResult(tuple);
@@ -190,20 +190,6 @@ public class SpeakingState extends TupleCentreVMState {
 		                op.setOpResult(Outcome.SUCCESS);
 		                op.setTupleListResult(tuples);
 	            		foundSatisfied=true;
-		            } else if (op.isUrd()){
-		                tuple = vm.readUniformTuple(op.getTemplateArgument());
-		                if (tuple!=null){
-							op.setOpResult(Outcome.SUCCESS);
-				            op.setTupleResult(tuple);
-							foundSatisfied=true;
-						}// we do nothing: urd is suspensive hence we cannot conclude FAILURE yet!
-		            } else if (op.isUin()){
-		                tuple = vm.removeUniformTuple(op.getTemplateArgument());
-		                if (tuple!=null){
-							op.setOpResult(Outcome.SUCCESS);
-				            op.setTupleResult(tuple);
-							foundSatisfied=true;
-						}// we do nothing: uin is suspensive hence we cannot conclude FAILURE yet!
 		            } else if (op.isUno()){
 		                tuple = vm.readUniformTuple(op.getTemplateArgument());
 		                if (tuple==null){

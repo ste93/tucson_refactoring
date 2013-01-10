@@ -17,6 +17,7 @@
  */
 package alice.tucson.api;
 
+import alice.logictuple.BioTuple;
 import alice.logictuple.LogicTuple;
 
 import alice.tucson.api.exceptions.TucsonGenericException;
@@ -35,7 +36,7 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * TuCSoN library for tuProlog agents. By loading this library tuProlog agents are
+ *   By loading this library tuProlog agents are
  * enabled to interact with a TuCSoN system. All the TuCSoN primitives available to
  * Java agents and human agents (through the CLI tool) are thus made available to
  * tuProlog agents too.
@@ -198,7 +199,7 @@ public class Tucson2PLibrary extends Library{
 		}
 		ITucsonOperation op;
 		try{
-			op = context.out(tid, new LogicTuple(arg0), (Long)null);
+			op = context.out(tid, new BioTuple(arg0), (Long)null);
 		}catch(TucsonOperationNotPossibleException e){
 			System.err.println("[Tucson2PLibrary]: " + e);
 			e.printStackTrace();
@@ -239,7 +240,7 @@ public class Tucson2PLibrary extends Library{
 		}
 		ITucsonOperation op;
 		try{
-			op = context.in(tid, new LogicTuple(arg0), (Long)null);
+			op = context.in(tid, new BioTuple(arg0), (Long)null);
 		}catch(TucsonOperationNotPossibleException e){
 			System.err.println("[Tucson2PLibrary]: " + e);
 			e.printStackTrace();
@@ -282,7 +283,7 @@ public class Tucson2PLibrary extends Library{
 		}
 		ITucsonOperation op;
 		try{
-			op = context.rd(tid, new LogicTuple(arg0), (Long)null);
+			op = context.rd(tid, new BioTuple(arg0), (Long)null);
 		}catch(TucsonOperationNotPossibleException e){
 			System.err.println("[Tucson2PLibrary]: " + e);
 			e.printStackTrace();
@@ -991,7 +992,7 @@ public class Tucson2PLibrary extends Library{
 		}
 		ITucsonOperation op;
 		try{
-			op = context.uin(tid, new LogicTuple(arg0), (Long)null);
+			op = context.uin(tid, new BioTuple(arg0), (Long)null);
 		}catch(TucsonOperationNotPossibleException e){
 			System.err.println("[Tucson2PLibrary]: " + e);
 			e.printStackTrace();
@@ -1034,7 +1035,7 @@ public class Tucson2PLibrary extends Library{
 		}
 		ITucsonOperation op;
 		try{
-			op = context.urd(tid, new LogicTuple(arg0), (Long)null);
+			op = context.urd(tid, new BioTuple(arg0), (Long)null);
 		}catch(TucsonOperationNotPossibleException e){
 			System.err.println("[Tucson2PLibrary]: " + e);
 			e.printStackTrace();
@@ -1120,7 +1121,7 @@ public class Tucson2PLibrary extends Library{
 		}
 		ITucsonOperation op;
 		try{
-			op = context.urdp(tid, new LogicTuple(arg0), (Long)null);
+			op = context.urdp(tid, new BioTuple(arg0), (Long)null);
 		}catch(TucsonOperationNotPossibleException e) {
 			System.err.println("[Tucson2PLibrary]: " + e);
 			e.printStackTrace();
@@ -1163,7 +1164,7 @@ public class Tucson2PLibrary extends Library{
 		}
 		ITucsonOperation op;
 		try{
-			op = context.uno(tid, new LogicTuple(arg0), (Long)null);
+			op = context.uno(tid, new BioTuple(arg0), (Long)null);
 		}catch(TucsonOperationNotPossibleException e) {
 			System.err.println("[Tucson2PLibrary]: " + e);
 			e.printStackTrace();
@@ -1206,7 +1207,7 @@ public class Tucson2PLibrary extends Library{
 		}
 		ITucsonOperation op;
 		try{
-			op = context.unop(tid, new LogicTuple(arg0), (Long)null);
+			op = context.unop(tid, new BioTuple(arg0), (Long)null);
 		}catch(TucsonOperationNotPossibleException e) {
 			System.err.println("[Tucson2PLibrary]: " + e);
 			e.printStackTrace();

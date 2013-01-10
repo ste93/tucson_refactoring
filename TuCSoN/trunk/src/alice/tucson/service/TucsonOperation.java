@@ -102,29 +102,6 @@ public class TucsonOperation extends TupleCentreOperation implements ITucsonOper
 	public static int rdpCode(){
 		return OPTYPE_RDP;
 	}
-
-	
-	//BIO primitives
-	
-	public static int bioOutCode(){
-		return OPTYPE_BIO_OUT;
-	}
-	
-	public static int bioInvCode(){
-		return OPTYPE_BIO_INV;
-	}
-	
-	public static int bioInCode(){
-		return OPTYPE_BIO_IN;
-	}
-	
-	public static int bioRdvCode(){
-		return OPTYPE_BIO_RDV;
-	}
-	
-	public static int bioRdCode(){
-		return OPTYPE_BIO_RD;
-	}
 	
 	public static int set_Code(){
 		return OPTYPE_SET;
@@ -283,9 +260,14 @@ public class TucsonOperation extends TupleCentreOperation implements ITucsonOper
 	public LogicTuple getLogicTupleResult(){
 		return (LogicTuple) getTupleResult();
 	}
+	
+	//bio changes
+	public BioTuple getBioTupleResult(){
+		return (BioTuple) getTupleResult();
+	}
 
 	public LogicTuple getLogicTupleArgument(){
-		if(isOut() || isBioOut() || isOut_s() || isSet_s() || isSet() || isOutAll() || isSpawn())
+		if(isOut() || isOut_s() || isSet_s() || isSet() || isOutAll() || isSpawn())
 			return (LogicTuple) getTupleArgument();
 		else
 			return (LogicTuple) getTemplateArgument();
