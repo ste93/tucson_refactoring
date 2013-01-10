@@ -350,7 +350,8 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
 	    }else{
 	    	log("Remote in_all triggered...");
 	    	InputEvent ce=vm.getCurrentEvent();
-	    	String tuple = arg0.toString()+","+arg1.copyGoal(v, 0);
+//	    	String tuple = arg0.getTerm().toString()+","+arg1.copyGoal(v,0);
+	    	String tuple = arg0.getTerm().toString()+","+arg1;
 	    	LogicTuple resultArg = null;
 			try {
 				resultArg = LogicTuple.parse(tuple);
@@ -564,10 +565,13 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
 	    }else{
 	    	log("Remote rd_all triggered...");
 	    	InputEvent ce=vm.getCurrentEvent();
-	    	String tuple = arg0.toString()+","+arg1.copyGoal(v,0);
+//	    	String tuple = arg0.getTerm().toString()+","+arg1.copyGoal(v,0);
+	    	String tuple = arg0.getTerm().toString()+","+arg1;
 	    	LogicTuple resultArg = null;
 			try {
+//				log("tuple = " + tuple);
 				resultArg = LogicTuple.parse(tuple);
+//				log("resultArg = " + resultArg);
 			} catch (InvalidLogicTupleException e) {
 				e.printStackTrace();
 			}
@@ -734,7 +738,8 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
 	    }else{
 	    	log("Remote no_all triggered...");
 	    	InputEvent ce=vm.getCurrentEvent();
-	    	String tuple = arg0.toString()+","+arg1.copyGoal(v,0);
+//	    	String tuple = arg0.getTerm().toString()+","+arg1.copyGoal(v,0);
+	    	String tuple = arg0.getTerm().toString()+","+arg1;
 	    	LogicTuple resultArg = null;
 			try {
 				resultArg = LogicTuple.parse(tuple);
