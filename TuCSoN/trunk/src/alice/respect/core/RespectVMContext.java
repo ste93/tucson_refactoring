@@ -1195,7 +1195,9 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 	}
 
 	public void linkOperation(OutputEvent oe) {
+		log("oe.getTarget = " + oe.getTarget());
 		TupleCentreId target = (TupleCentreId)oe.getTarget();
+		log("target = " + target);
 		try{
 			TupleCentreOperation op = oe.getSimpleTCEvent();
 			op.addListener(new CompletionListener(oe,target));

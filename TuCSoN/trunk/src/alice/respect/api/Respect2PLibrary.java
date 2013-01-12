@@ -59,8 +59,6 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         
     	return 
         
-//    	":- op(600, xfx, '?'). \n"+
-//      ":- op(550, xfx, '@'). \n"+
 		":- op(551, xfx, '?'). \n"
 		+ ":- op(550, xfx, '@'). \n"
 		+ ":- op(549, xfx, ':'). \n"
@@ -249,6 +247,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     		return false;
     	}
     	tcName = tid.getName();
+    	log("tid = " + tid);
     	
     	LogicTuple tuArg=new LogicTuple(arg0);
     	AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();

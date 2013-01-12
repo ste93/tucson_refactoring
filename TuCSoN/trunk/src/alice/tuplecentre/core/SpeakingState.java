@@ -73,6 +73,7 @@ public class SpeakingState extends TupleCentreVMState {
         	try {
             	
 	            ev = (InputEvent) (it.next());
+	            System.out.println("ev = " + ev);
 	            op = ev.getSimpleTCEvent();
 	            
 	            if(op.isResultDefined() || ev.isLinking()){

@@ -63,17 +63,21 @@ public class ACCProxyNodeSide extends ACCAbstractProxyNodeSide{
 		ctxId = Integer.parseInt(p.getProperty("context-id"));
 
 		String name = p.getProperty("agent-identity");
+		if(name != null)
+			System.out.println("name agent = " + name);
 		if(name == null){
 			name = p.getProperty("tc-identity");
+			if(name != null)
+				System.out.println("name tc = " + name);
 			try {
 				tcId = new TucsonTupleCentreId(name);
-				agentId = new TucsonAgentId("tcAgent-"+name);
+				agentId = new TucsonAgentId("tcAgent", tcId);
 			} catch (TucsonInvalidTupleCentreIdException e) {
 				System.err.println("[ACCProxyNodeSide]: " + e);
 				e.printStackTrace();
-			} catch (TucsonInvalidAgentIdException e) {
-				System.err.println("[ACCProxyNodeSide]: " + e);
-				e.printStackTrace();
+//			} catch (TucsonInvalidAgentIdException e) {
+//				System.err.println("[ACCProxyNodeSide]: " + e);
+//				e.printStackTrace();
 			}
 		}else{
 			try{
@@ -96,7 +100,7 @@ public class ACCProxyNodeSide extends ACCAbstractProxyNodeSide{
 		
 	}
 
-	protected void log(String st){
+	private void log(String st){
 		System.out.println("[ACCProxyNodeSide (port=" + node.getTCPPort() + ", acc=" + ctxId + ")]: " + st);
 	}
 

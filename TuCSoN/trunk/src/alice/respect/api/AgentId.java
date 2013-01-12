@@ -19,6 +19,7 @@ package alice.respect.api;
 
 import alice.respect.api.exceptions.InvalidAgentIdException;
 import alice.respect.core.AgentIdOperatorManager;
+import alice.tucson.api.TucsonTupleCentreId;
 import alice.tuprolog.*;
 
 /**
@@ -74,7 +75,12 @@ public class AgentId implements alice.tuplecentre.api.AgentId, java.io.Serializa
         }
     }
     
-    public String getLocalName(){
+    public AgentId(String name, TucsonTupleCentreId tcId) {
+		id = new Struct(name, tcId.toTerm());
+		System.out.println("id = " + id);
+	}
+
+	public String getLocalName(){
     	if(id.isCompound())
     		return ((Struct)id).getArg(0).toString();
     	else
