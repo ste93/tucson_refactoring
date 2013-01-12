@@ -68,7 +68,7 @@ public class CLIAgent extends alice.util.Automaton{
 		become("goalRequest");
 	}
 
-	/**
+	/** 
 	 * Main reasoning cycle
 	 */
 	public void goalRequest(){
@@ -132,6 +132,7 @@ public class CLIAgent extends alice.util.Automaton{
 						prompt("failure");
 				}else if(methodName.equals("out")){
 					BioTuple t=null;
+					tuple.t
 					try {
 						t = BioTuple.parse(tuple,1);
 					} catch (InvalidMultiplicityException e) {
@@ -468,6 +469,33 @@ public class CLIAgent extends alice.util.Automaton{
 	
 	private void debug(String s){
 		System.out.println("--- " + s + " ---");
+	}
+	
+	//add for bio primitives
+	private static BioTuple bioParser(String tuple) {
+		
+		String s1 = tuple.substring(9);
+		String s2 = s1.replace(')', ' ');
+		String s3 = s2.trim();
+		
+		String[] elem = (s3.toString()).split(",");
+		
+		if(elem.length == 1){
+			try {
+				return BioTuple.parse(elem[0]);
+			} catch (InvalidLogicTupleException e) {
+				e.printStackTrace();
+			}
+		}else if(elem.length == 2){
+			String name = elem[0];
+			long mult = Long.parseLong(elem[1]);
+			try {
+				return BioTuple.parse(name,mult);
+			} catch (InvalidMultiplicityException e) {
+				e.printStackTrace();
+			}
+		}	
+		return null;
 	}
 
 }

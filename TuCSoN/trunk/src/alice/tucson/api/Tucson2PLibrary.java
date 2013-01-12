@@ -19,6 +19,7 @@ package alice.tucson.api;
 
 import alice.logictuple.BioTuple;
 import alice.logictuple.LogicTuple;
+import alice.logictuple.exceptions.InvalidMultiplicityException;
 
 import alice.tucson.api.exceptions.TucsonGenericException;
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
@@ -31,6 +32,7 @@ import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 import alice.tuprolog.Library;
 import alice.tuprolog.Struct;
 import alice.tuprolog.Term;
+import alice.tuprolog.Number;
 
 import java.util.Iterator;
 import java.util.List;
@@ -64,28 +66,46 @@ public class Tucson2PLibrary extends Library{
 	 * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
 	 */
 	public String getTheory(){
+		/*
+		 * Bio version of primitive: out, in, inp, rd, rdp, no, nop, uin, uinp, urd, urdp, uno, unop
+		 * TODO: implment bio version of the other primitives
+		 * 
+		 * biotuple(T,M)
+		 * T LogicTuple
+		 * M long that indicate multiplicity
+		 * 
+		 * biotuple(T) if multiplicity is not specified
+		 * 
+		 */
+		
 		return ":- op(551, xfx, '?'). \n"
 				+ ":- op(550, xfx, '@'). \n"
 				+ ":- op(549, xfx, ':'). \n"
 				+ ":- op(548, xfx, '.'). \n"
 				
 				+ "spawn(T) :- spawn(T, default@localhost:20504). \n"
-				+ "out(T) :- out(T, default@localhost:20504). \n"
-				+ "in(T) :- in(T, default@localhost:20504). \n"
-				+ "inp(T) :- inp(T, default@localhost:20504). \n"
-				+ "rd(T) :- rd(T, default@localhost:20504). \n"
-				+ "rdp(T) :- rdp(T, default@localhost:20504). \n"
-				+ "no(T) :- no(T, default@localhost:20504). \n"
-				+ "nop(T) :- nop(T, default@localhost:20504). \n"
+				+ "out(biotuple(T,M)) :- out(T, M, default@localhost:20504). \n"
+				+ "in(biotuple(T)) :- in(T, default@localhost:20504). \n"
+				+ "in(biotuple(T,M)) :- in(T, M, default@localhost:20504). \n"
+				+ "inp(biotuple(T,M)) :- inp(T, M, default@localhost:20504). \n"
+				+ "inp(biotuple(T)) :- inp(T, default@localhost:20504). \n"
+				+ "rd(biotuple(T)) :- rd(T, default@localhost:20504). \n"
+				+ "rd(biotuple(T,M)) :- rd(T, M, default@localhost:20504). \n"
+				+ "rdp(biotuple(T)) :- rdp(T, default@localhost:20504). \n"
+				+ "rdp(biotuple(T,M)) :- rdp(T, M, default@localhost:20504). \n"
+				+ "no(biotuple(T)) :- no(T, default@localhost:20504). \n"
+				+ "no(biotuple(T,M)) :- no(T, M, default@localhost:20504). \n"
+				+ "nop(biotuple(T)) :- nop(T, default@localhost:20504). \n"
+				+ "nop(biotuple(T,M)) :- nop(T, M, default@localhost:20504). \n"
 				+ "get(T) :- get(T, default@localhost:20504). \n"
 				+ "set(T) :- set(T, default@localhost:20504). \n"
 				
-				+ "uin(T) :- uin(T, default@localhost:20504). \n"
-				+ "uinp(T) :- uinp(T, default@localhost:20504). \n"
-				+ "urd(T) :- urd(T, default@localhost:20504). \n"
-				+ "urdp(T) :- urdp(T, default@localhost:20504). \n"
-				+ "uno(T) :- uno(T, default@localhost:20504). \n"
-				+ "unop(T) :- unop(T, default@localhost:20504). \n"
+				+ "uin(biotuple(T,M)) :- uin(T, M, default@localhost:20504). \n"
+				+ "uinp(biotuple(T,M)) :- uinp(T, M, default@localhost:20504). \n"
+				+ "urd(biotuple(T,M)) :- urd(T, M, default@localhost:20504). \n"
+				+ "urdp(biotuple(T,M)) :- urdp(T, M, default@localhost:20504). \n"
+				+ "uno(biotuple(T,M)) :- uno(T, M, default@localhost:20504). \n"
+				+ "unop(biotuple(T,M)) :- unop(T, M, default@localhost:20504). \n"
 				+ "out_all(L) :- out_all(L, default@localhost:20504). \n"
 				+ "in_all(T,L) :- in_all(T, L, default@localhost:20504). \n"
 				+ "rd_all(T,L) :- rd_all(T, L, default@localhost:20504). \n"
@@ -102,22 +122,22 @@ public class Tucson2PLibrary extends Library{
 				+ "set_s(L) :- set_s(L, default@localhost:20504). \n"
 				
 				+ "TC@Netid:Port ? spawn(T) :- !, spawn(T, TC@Netid:Port). \n"
-				+ "TC@Netid:Port ? out(T) :- !, out(T, TC@Netid:Port). \n"
-				+ "TC@Netid:Port ? in(T) :- !, in(T, TC@Netid:Port). \n"
-				+ "TC@Netid:Port ? inp(T) :- !, inp(T, TC@Netid:Port). \n"
-				+ "TC@Netid:Port ? rd(T) :- !, rd(T, TC@Netid:Port). \n"
-				+ "TC@Netid:Port ? rdp(T) :- !, rdp(T, TC@Netid:Port). \n"
-				+ "TC@Netid:Port ? no(T) :- !, no(T, TC@Netid:Port). \n"
-				+ "TC@Netid:Port ? nop(T) :- !, nop(T, TC@Netid:Port). \n"
+				+ "TC@Netid:Port ? out(biotuple(T,M)) :- !, out(T, M, TC@Netid:Port). \n"
+				+ "TC@Netid:Port ? in(biotuple(T,M)) :- !, in(T, M, TC@Netid:Port). \n"
+				+ "TC@Netid:Port ? inp(biotuple(T,M)) :- !, inp(T, M, TC@Netid:Port). \n"
+				+ "TC@Netid:Port ? rd(biotuple(T,M)) :- !, rd(T, M, TC@Netid:Port). \n"
+				+ "TC@Netid:Port ? rdp(biotuple(T,M)) :- !, rdp(T, M, TC@Netid:Port). \n"
+				+ "TC@Netid:Port ? no(biotuple(T,M)) :- !, no(T, M, TC@Netid:Port). \n"
+				+ "TC@Netid:Port ? nop(biotuple(T,M)) :- !, nop(T, M, TC@Netid:Port). \n"
 				+ "TC@Netid:Port ? get(L) :- !, get(L, TC@Netid:Port). \n"
 				+ "TC@Netid:Port ? set(L) :- !, set(L, TC@Netid:Port). \n"
 				
-				+ "TC@Netid:Port ? uin(T) :- uin(T, TC@Netid:Port). \n"
-				+ "TC@Netid:Port ? uinp(T) :- uinp(T, TC@Netid:Port). \n"
-				+ "TC@Netid:Port ? urd(T) :- urd(T, TC@Netid:Port). \n"
-				+ "TC@Netid:Port ? urdp(T) :- urdp(T, TC@Netid:Port). \n"
-				+ "TC@Netid:Port ? uno(T) :- uno(T, TC@Netid:Port). \n"
-				+ "TC@Netid:Port ? unop(T) :- unop(T, TC@Netid:Port). \n"
+				+ "TC@Netid:Port ? uin(biotuple(T,M)) :- uin(T, M, TC@Netid:Port). \n"
+				+ "TC@Netid:Port ? uinp(biotuple(T,M)) :- uinp(T, M, TC@Netid:Port). \n"
+				+ "TC@Netid:Port ? urd(biotuple(T,M)) :- urd(T, M, TC@Netid:Port). \n"
+				+ "TC@Netid:Port ? urdp(biotuple(T,M)) :- urdp(T, M, TC@Netid:Port). \n"
+				+ "TC@Netid:Port ? uno(biotuple(T,M)) :- uno(T, M, TC@Netid:Port). \n"
+				+ "TC@Netid:Port ? unop(biotuple(T,M)) :- unop(T, M, TC@Netid:Port). \n"
 				+ "TC@Netid:Port ? out_all(L) :- out_all(L, TC@Netid:Port). \n"
 				+ "TC@Netid:Port ? in_all(T,L) :- in_all(T, L, TC@Netid:Port). \n"
 				+ "TC@Netid:Port ? rd_all(T,L) :- rd_all(T, L, TC@Netid:Port). \n"
@@ -178,20 +198,21 @@ public class Tucson2PLibrary extends Library{
 	/**
 	 * <code>out</code> TuCSoN primitive.
 	 * 
-	 * @param arg0 the tuple to insert
-	 * @param arg1 the tuplecentre target
+	 * @param arg0 the bio tuple to insert
+	 * @param arg1 the multiplicity of the bio tuple to insert
+	 * @param arg2 the tuplecentre target
 	 * 
 	 * @return <code>true</code> if the operation succeed, <code>false</code> otherwise
 	 * 
 	 * @see alice.tucson.api.OrdinaryAsynchACC OrdinaryAsynchACC
 	 * @see alice.tucson.api.OrdinarySynchACC OrdinarySynchACC
 	 */
-	public boolean out_2(Term arg0, Term arg1){
+	public boolean out_3(Term arg0, Term arg1, Term arg2){
 		if(context == null)
 			return false;
 		TucsonTupleCentreId tid;
 		try{
-			tid = new TucsonTupleCentreId(arg1.toString());
+			tid = new TucsonTupleCentreId(arg2.toString());
 		}catch(TucsonInvalidTupleCentreIdException e){
 			System.err.println("[Tucson2PLibrary]: " + e);
 			e.printStackTrace();
@@ -199,7 +220,12 @@ public class Tucson2PLibrary extends Library{
 		}
 		ITucsonOperation op;
 		try{
-			op = context.out(tid, new BioTuple(arg0), (Long)null);
+			long mult = ((Number)arg1.getTerm()).longValue();
+			op = context.out(tid, new BioTuple(arg0, mult), (Long)null);
+		}catch(InvalidMultiplicityException e){
+			System.err.println("[Tucson2PLibrary]: " + e);
+			e.printStackTrace();
+			return false;
 		}catch(TucsonOperationNotPossibleException e){
 			System.err.println("[Tucson2PLibrary]: " + e);
 			e.printStackTrace();
@@ -219,7 +245,7 @@ public class Tucson2PLibrary extends Library{
 	/**
 	 * <code>in</code> TuCSoN primitive.
 	 * 
-	 * @param arg0 the tuple to retrieve
+	 * @param arg0 the bio tuple to retrieve
 	 * @param arg1 the tuplecentre target
 	 * 
 	 * @return <code>true</code> if the operation succeed, <code>false</code> otherwise
@@ -258,11 +284,60 @@ public class Tucson2PLibrary extends Library{
 			unify(arg0, op.getLogicTupleResult().toTerm());
 		return op.isResultSuccess();
 	}
+	
+	/**
+	 * <code>in</code> TuCSoN primitive.
+	 * 
+	 * @param arg0 the bio tuple to retrieve
+	 * @param arg1 the multiplicity of the bio tuple to retrieve
+	 * @param arg2 the tuplecentre target
+	 * 
+	 * @return <code>true</code> if the operation succeed, <code>false</code> otherwise
+	 * 
+	 * @see alice.tucson.api.OrdinaryAsynchACC OrdinaryAsynchACC
+	 * @see alice.tucson.api.OrdinarySynchACC OrdinarySynchACC
+	 */
+	public boolean in_3(Term arg0, Term arg1, Term arg2){
+		if(context == null)
+			return false;
+		TucsonTupleCentreId tid;
+		try{
+			tid = new TucsonTupleCentreId(arg2.toString());
+		}catch(TucsonInvalidTupleCentreIdException e){
+			System.err.println("[Tucson2PLibrary]: " + e);
+			e.printStackTrace();
+			return false;
+		}
+		ITucsonOperation op;
+		try{
+			long mult = ((Number)arg1.getTerm()).longValue();
+			op = context.in(tid, new BioTuple(arg0,mult), (Long)null);
+		}catch(InvalidMultiplicityException e){
+			System.err.println("[Tucson2PLibrary]: " + e);
+			e.printStackTrace();
+			return false;
+		}catch(TucsonOperationNotPossibleException e){
+			System.err.println("[Tucson2PLibrary]: " + e);
+			e.printStackTrace();
+			return false;
+		}catch(UnreachableNodeException e){
+			System.err.println("[Tucson2PLibrary]: " + e);
+			e.printStackTrace();
+			return false;
+		}catch(OperationTimeOutException e){
+			System.err.println("[Tucson2PLibrary]: " + e);
+			e.printStackTrace();
+			return false;
+		}
+		if(op.isResultSuccess())
+			unify(arg0, op.getLogicTupleResult().toTerm());
+		return op.isResultSuccess();
+	}
 
 	/**
 	 * <code>rd</code> TuCSoN primitive.
 	 * 
-	 * @param arg0 the tuple to read (w/o removing)
+	 * @param arg0 the bio tuple to read (w/o removing)
 	 * @param arg1 the tuplecentre target
 	 * 
 	 * @return <code>true</code> if the operation succeed, <code>false</code> otherwise
@@ -303,9 +378,58 @@ public class Tucson2PLibrary extends Library{
 	}
 
 	/**
+	 * <code>rd</code> TuCSoN primitive.
+	 * 
+	 * @param arg0 the bio tuple to read (w/o removing)
+	 * @param arg1 the multiplcity of the bio tuple to read 
+	 * @param arg2 the tuplecentre target
+	 * 
+	 * @return <code>true</code> if the operation succeed, <code>false</code> otherwise
+	 * 
+	 * @see alice.tucson.api.OrdinaryAsynchACC OrdinaryAsynchACC
+	 * @see alice.tucson.api.OrdinarySynchACC OrdinarySynchACC
+	 */
+	public boolean rd_3(Term arg0, Term arg1, Term arg2){
+		if(context == null)
+			return false;
+		TucsonTupleCentreId tid;
+		try{
+			tid = new TucsonTupleCentreId(arg2.toString());
+		}catch(TucsonInvalidTupleCentreIdException e){
+			System.err.println("[Tucson2PLibrary]: " + e);
+			e.printStackTrace();
+			return false;
+		}
+		ITucsonOperation op;
+		try{
+			long mult = ((Number)arg1.getTerm()).longValue();
+			op = context.rd(tid, new BioTuple(arg0,mult), (Long)null);
+		}catch(InvalidMultiplicityException e){
+			System.err.println("[Tucson2PLibrary]: " + e);
+			e.printStackTrace();
+			return false;
+		}catch(TucsonOperationNotPossibleException e){
+			System.err.println("[Tucson2PLibrary]: " + e);
+			e.printStackTrace();
+			return false;
+		}catch(UnreachableNodeException e){
+			System.err.println("[Tucson2PLibrary]: " + e);
+			e.printStackTrace();
+			return false;
+		}catch(OperationTimeOutException e){
+			System.err.println("[Tucson2PLibrary]: " + e);
+			e.printStackTrace();
+			return false;
+		}
+		if(op.isResultSuccess())
+			unify(arg0, op.getLogicTupleResult().toTerm());
+		return op.isResultSuccess();
+	}
+	
+	/**
 	 * <code>inp</code> TuCSoN primitive.
 	 * 
-	 * @param arg0 the tuple to retrieve
+	 * @param arg0 the bio tuple to retrieve
 	 * @param arg1 the tuplecentre target
 	 * 
 	 * @return <code>true</code> if the operation succeed, <code>false</code> otherwise
@@ -326,7 +450,56 @@ public class Tucson2PLibrary extends Library{
 		}
 		ITucsonOperation op;
 		try{
-			op = context.inp(tid, new LogicTuple(arg0), (Long)null);
+			op = context.inp(tid, new BioTuple(arg0), (Long)null);
+		}catch(TucsonOperationNotPossibleException e){
+			System.err.println("[Tucson2PLibrary]: " + e);
+			e.printStackTrace();
+			return false;
+		}catch(UnreachableNodeException e){
+			System.err.println("[Tucson2PLibrary]: " + e);
+			e.printStackTrace();
+			return false;
+		} catch (OperationTimeOutException e) {
+			System.err.println("[Tucson2PLibrary]: " + e);
+			e.printStackTrace();
+			return false;
+		}
+		if(op.isResultSuccess())
+			unify(arg0, op.getLogicTupleResult().toTerm());
+		return op.isResultSuccess();
+	}
+	
+	/**
+	 * <code>inp</code> TuCSoN primitive.
+	 * 
+	 * @param arg0 the bio tuple to retrieve
+	 * @param arg1 the multiplicity of the bio tuple to retrieve
+	 * @param arg2 the tuplecentre target
+	 * 
+	 * @return <code>true</code> if the operation succeed, <code>false</code> otherwise
+	 * 
+	 * @see alice.tucson.api.OrdinaryAsynchACC OrdinaryAsynchACC
+	 * @see alice.tucson.api.OrdinarySynchACC OrdinarySynchACC
+	 */
+	public boolean inp_3(Term arg0, Term arg1, Term arg2){
+		if(context == null)
+			return false;
+		TucsonTupleCentreId tid;
+		try{
+			tid = new TucsonTupleCentreId(arg2.toString());
+		}catch(TucsonInvalidTupleCentreIdException e){
+			System.err.println("[Tucson2PLibrary]: " + e);
+			e.printStackTrace();
+			return false;
+		}
+		ITucsonOperation op;
+		try{
+			long mult = ((Number)arg1.getTerm()).longValue();
+			op = context.inp(tid, new BioTuple(arg0,mult), (Long)null);
+		}catch(InvalidMultiplicityException e){
+			System.err.println("[Tucson2PLibrary]: " + e);
+			e.printStackTrace();
+			return false;
 		}catch(TucsonOperationNotPossibleException e){
 			System.err.println("[Tucson2PLibrary]: " + e);
 			e.printStackTrace();
@@ -348,7 +521,7 @@ public class Tucson2PLibrary extends Library{
 	/**
 	 * <code>rdp</code> TuCSoN primitive.
 	 * 
-	 * @param arg0 the tuple to read (w/o removing)
+	 * @param arg0 the bio tuple to read (w/o removing)
 	 * @param arg1 the tuplecentre target
 	 * 
 	 * @return <code>true</code> if the operation succeed, <code>false</code> otherwise
@@ -369,7 +542,56 @@ public class Tucson2PLibrary extends Library{
 		}
 		ITucsonOperation op;
 		try{
-			op = context.rdp(tid, new LogicTuple(arg0), (Long)null);
+			op = context.rdp(tid, new BioTuple(arg0), (Long)null);
+		}catch(TucsonOperationNotPossibleException e) {
+			System.err.println("[Tucson2PLibrary]: " + e);
+			e.printStackTrace();
+			return false;
+		}catch(UnreachableNodeException e){
+			System.err.println("[Tucson2PLibrary]: " + e);
+			e.printStackTrace();
+			return false;
+		} catch (OperationTimeOutException e) {
+			System.err.println("[Tucson2PLibrary]: " + e);
+			e.printStackTrace();
+			return false;
+		}
+		if(op.isResultSuccess())
+			unify(arg0, op.getLogicTupleResult().toTerm());
+		return op.isResultSuccess();
+	}
+	
+	/**
+	 * <code>rdp</code> TuCSoN primitive.
+	 * 
+	 * @param arg0 the bio tuple to read (w/o removing)
+	 * @param arg1 the multiplicity of the bio tuple to read
+	 * @param arg2 the tuplecentre target
+	 * 
+	 * @return <code>true</code> if the operation succeed, <code>false</code> otherwise
+	 * 
+	 * @see alice.tucson.api.OrdinaryAsynchACC OrdinaryAsynchACC
+	 * @see alice.tucson.api.OrdinarySynchACC OrdinarySynchACC
+	 */
+	public boolean rdp_3(Term arg0, Term arg1, Term arg2){
+		if(context == null)
+			return false;
+		TucsonTupleCentreId tid;
+		try{
+			tid = new TucsonTupleCentreId(arg2.toString());
+		}catch(TucsonInvalidTupleCentreIdException e){
+			System.err.println("[Tucson2PLibrary]: " + e);
+			e.printStackTrace();
+			return false;
+		}
+		ITucsonOperation op;
+		try{
+			long mult = ((Number)arg1.getTerm()).longValue();
+			op = context.rdp(tid, new BioTuple(arg0,mult), (Long)null);
+		}catch(InvalidMultiplicityException e){
+			System.err.println("[Tucson2PLibrary]: " + e);
+			e.printStackTrace();
+			return false;
 		}catch(TucsonOperationNotPossibleException e) {
 			System.err.println("[Tucson2PLibrary]: " + e);
 			e.printStackTrace();
@@ -391,7 +613,7 @@ public class Tucson2PLibrary extends Library{
 	/**
 	 * <code>no</code> TuCSoN primitive.
 	 * 
-	 * @param arg0 the tuple to check for absence
+	 * @param arg0 the bio tuple to check for absence
 	 * @param arg1 the tuplecentre target
 	 * 
 	 * @return <code>true</code> if the operation succeed, <code>false</code> otherwise
@@ -412,7 +634,56 @@ public class Tucson2PLibrary extends Library{
 		}
 		ITucsonOperation op;
 		try{
-			op = context.no(tid, new LogicTuple(arg0), (Long)null);
+			op = context.no(tid, new BioTuple(arg0), (Long)null);
+		}catch(TucsonOperationNotPossibleException e) {
+			System.err.println("[Tucson2PLibrary]: " + e);
+			e.printStackTrace();
+			return false;
+		}catch(UnreachableNodeException e){
+			System.err.println("[Tucson2PLibrary]: " + e);
+			e.printStackTrace();
+			return false;
+		} catch (OperationTimeOutException e) {
+			System.err.println("[Tucson2PLibrary]: " + e);
+			e.printStackTrace();
+			return false;
+		}
+		if(!op.isResultSuccess())
+			unify(arg0, op.getLogicTupleResult().toTerm());
+		return op.isResultSuccess();
+	}
+	
+	/**
+	 * <code>no</code> TuCSoN primitive.
+	 * 
+	 * @param arg0 the bio tuple to check for absence
+	 * @param arg1 the multiplicity of the bio tuple
+	 * @param arg2 the tuplecentre target
+	 * 
+	 * @return <code>true</code> if the operation succeed, <code>false</code> otherwise
+	 * 
+	 * @see alice.tucson.api.OrdinaryAsynchACC OrdinaryAsynchACC
+	 * @see alice.tucson.api.OrdinarySynchACC OrdinarySynchACC
+	 */
+	public boolean no_3(Term arg0, Term arg1, Term arg2){
+		if(context == null)
+			return false;
+		TucsonTupleCentreId tid;
+		try{
+			tid = new TucsonTupleCentreId(arg2.toString());
+		}catch(TucsonInvalidTupleCentreIdException e){
+			System.err.println("[Tucson2PLibrary]: " + e);
+			e.printStackTrace();
+			return false;
+		}
+		ITucsonOperation op;
+		try{
+			long mult = ((Number)arg1.getTerm()).longValue();
+			op = context.no(tid, new BioTuple(arg0,mult), (Long)null);
+		}catch(InvalidMultiplicityException e) {
+			System.err.println("[Tucson2PLibrary]: " + e);
+			e.printStackTrace();
+			return false;
 		}catch(TucsonOperationNotPossibleException e) {
 			System.err.println("[Tucson2PLibrary]: " + e);
 			e.printStackTrace();
@@ -434,7 +705,7 @@ public class Tucson2PLibrary extends Library{
 	/**
 	 * <code>nop</code> TuCSoN primitive.
 	 * 
-	 * @param arg0 the tuple to check for absence
+	 * @param arg0 the bio tuple to check for absence
 	 * @param arg1 the tuplecentre target
 	 * 
 	 * @return <code>true</code> if the operation succeed, <code>false</code> otherwise
@@ -455,7 +726,56 @@ public class Tucson2PLibrary extends Library{
 		}
 		ITucsonOperation op;
 		try{
-			op = context.nop(tid, new LogicTuple(arg0), (Long)null);
+			op = context.nop(tid, new BioTuple(arg0), (Long)null);
+		}catch(TucsonOperationNotPossibleException e) {
+			System.err.println("[Tucson2PLibrary]: " + e);
+			e.printStackTrace();
+			return false;
+		}catch(UnreachableNodeException e){
+			System.err.println("[Tucson2PLibrary]: " + e);
+			e.printStackTrace();
+			return false;
+		} catch (OperationTimeOutException e) {
+			System.err.println("[Tucson2PLibrary]: " + e);
+			e.printStackTrace();
+			return false;
+		}
+		if(!op.isResultSuccess())
+			unify(arg0, op.getLogicTupleResult().toTerm());
+		return op.isResultSuccess();
+	}
+	
+	/**
+	 * <code>nop</code> TuCSoN primitive.
+	 * 
+	 * @param arg0 the bio tuple to check for absence
+	 * @param arg1 the multiplicity of the bio tuple
+	 * @param arg2 the tuplecentre target
+	 * 
+	 * @return <code>true</code> if the operation succeed, <code>false</code> otherwise
+	 * 
+	 * @see alice.tucson.api.OrdinaryAsynchACC OrdinaryAsynchACC
+	 * @see alice.tucson.api.OrdinarySynchACC OrdinarySynchACC
+	 */
+	public boolean nop_3(Term arg0, Term arg1, Term arg2){
+		if(context == null)
+			return false;
+		TucsonTupleCentreId tid;
+		try{
+			tid = new TucsonTupleCentreId(arg2.toString());
+		}catch(TucsonInvalidTupleCentreIdException e){
+			System.err.println("[Tucson2PLibrary]: " + e);
+			e.printStackTrace();
+			return false;
+		}
+		ITucsonOperation op;
+		try{
+			long mult = ((Number)arg1.getTerm()).longValue();
+			op = context.nop(tid, new BioTuple(arg0,mult), (Long)null);
+		}catch(InvalidMultiplicityException e) {
+			System.err.println("[Tucson2PLibrary]: " + e);
+			e.printStackTrace();
+			return false;
 		}catch(TucsonOperationNotPossibleException e) {
 			System.err.println("[Tucson2PLibrary]: " + e);
 			e.printStackTrace();
@@ -971,7 +1291,7 @@ public class Tucson2PLibrary extends Library{
 	/**
 	 * <code>uin</code> TuCSoN primitive.
 	 * 
-	 * @param arg0 the tuple to probabilistically retrieve
+	 * @param arg0 the bio tuple to probabilistically retrieve
 	 * @param arg1 the tuplecentre target
 	 * 
 	 * @return <code>true</code> if the operation succeed, <code>false</code> otherwise
@@ -1010,11 +1330,60 @@ public class Tucson2PLibrary extends Library{
 			unify(arg0, op.getLogicTupleResult().toTerm());
 		return op.isResultSuccess();
 	}
+	
+	/**
+	 * <code>uin</code> TuCSoN primitive.
+	 * 
+	 * @param arg0 the bio tuple to probabilistically retrieve
+	 * @param arg1 the multiplicty of the bio tuple
+	 * @param arg2 the tuplecentre target
+	 * 
+	 * @return <code>true</code> if the operation succeed, <code>false</code> otherwise
+	 * 
+	 * @see alice.tucson.api.UniformAsynchACC UniformAsynchACC
+	 * @see alice.tucson.api.UniformSynchACC UniformSynchACC
+	 */
+	public boolean uin_3(Term arg0, Term arg1, Term arg2){
+		if(context == null)
+			return false;
+		TucsonTupleCentreId tid;
+		try{
+			tid = new TucsonTupleCentreId(arg2.toString());
+		}catch(TucsonInvalidTupleCentreIdException e){
+			System.err.println("[Tucson2PLibrary]: " + e);
+			e.printStackTrace();
+			return false;
+		}
+		ITucsonOperation op;
+		try{
+			long mult = ((Number)arg1.getTerm()).longValue();
+			op = context.uin(tid, new BioTuple(arg0,mult), (Long)null);
+		}catch(InvalidMultiplicityException e){
+			System.err.println("[Tucson2PLibrary]: " + e);
+			e.printStackTrace();
+			return false;
+		}catch(TucsonOperationNotPossibleException e){
+			System.err.println("[Tucson2PLibrary]: " + e);
+			e.printStackTrace();
+			return false;
+		}catch(UnreachableNodeException e){
+			System.err.println("[Tucson2PLibrary]: " + e);
+			e.printStackTrace();
+			return false;
+		}catch(OperationTimeOutException e){
+			System.err.println("[Tucson2PLibrary]: " + e);
+			e.printStackTrace();
+			return false;
+		}
+		if(op.isResultSuccess())
+			unify(arg0, op.getLogicTupleResult().toTerm());
+		return op.isResultSuccess();
+	}
 
 	/**
 	 * <code>urd</code> TuCSoN primitive.
 	 * 
-	 * @param arg0 the tuple to probabilistically read (w/o removing)
+	 * @param arg0 the bio tuple to probabilistically read (w/o removing)
 	 * @param arg1 the tuplecentre target
 	 * 
 	 * @return <code>true</code> if the operation succeed, <code>false</code> otherwise
@@ -1053,11 +1422,60 @@ public class Tucson2PLibrary extends Library{
 			unify(arg0, op.getLogicTupleResult().toTerm());
 		return op.isResultSuccess();
 	}
+	
+	/**
+	 * <code>urd</code> TuCSoN primitive.
+	 * 
+	 * @param arg0 the bio tuple to probabilistically read (w/o removing)
+	 * @param arg1 the multiplcity of the biotuple
+	 * @param arg2 the tuplecentre target
+	 * 
+	 * @return <code>true</code> if the operation succeed, <code>false</code> otherwise
+	 * 
+	 * @see alice.tucson.api.UniformAsynchACC UniformAsynchACC
+	 * @see alice.tucson.api.UniformSynchACC UniformSynchACC
+	 */
+	public boolean urd_3(Term arg0, Term arg1, Term arg2){
+		if(context == null)
+			return false;
+		TucsonTupleCentreId tid;
+		try{
+			tid = new TucsonTupleCentreId(arg2.toString());
+		}catch(TucsonInvalidTupleCentreIdException e){
+			System.err.println("[Tucson2PLibrary]: " + e);
+			e.printStackTrace();
+			return false;
+		}
+		ITucsonOperation op;
+		try{
+			long mult = ((Number)arg1.getTerm()).longValue();
+			op = context.urd(tid, new BioTuple(arg0,mult), (Long)null);
+		}catch(InvalidMultiplicityException e){
+			System.err.println("[Tucson2PLibrary]: " + e);
+			e.printStackTrace();
+			return false;
+		}catch(TucsonOperationNotPossibleException e){
+			System.err.println("[Tucson2PLibrary]: " + e);
+			e.printStackTrace();
+			return false;
+		}catch(UnreachableNodeException e){
+			System.err.println("[Tucson2PLibrary]: " + e);
+			e.printStackTrace();
+			return false;
+		}catch(OperationTimeOutException e){
+			System.err.println("[Tucson2PLibrary]: " + e);
+			e.printStackTrace();
+			return false;
+		}
+		if(op.isResultSuccess())
+			unify(arg0, op.getLogicTupleResult().toTerm());
+		return op.isResultSuccess();
+	}
 
 	/**
 	 * <code>uinp</code> TuCSoN primitive.
 	 * 
-	 * @param arg0 the tuple to probabilistically retrieve
+	 * @param arg0 the bio tuple to probabilistically retrieve
 	 * @param arg1 the tuplecentre target
 	 * 
 	 * @return <code>true</code> if the operation succeed, <code>false</code> otherwise
@@ -1078,7 +1496,56 @@ public class Tucson2PLibrary extends Library{
 		}
 		ITucsonOperation op;
 		try{
-			op = context.uinp(tid, new LogicTuple(arg0), (Long)null);
+			op = context.uinp(tid, new BioTuple(arg0), (Long)null);
+		}catch(TucsonOperationNotPossibleException e){
+			System.err.println("[Tucson2PLibrary]: " + e);
+			e.printStackTrace();
+			return false;
+		}catch(UnreachableNodeException e){
+			System.err.println("[Tucson2PLibrary]: " + e);
+			e.printStackTrace();
+			return false;
+		} catch (OperationTimeOutException e) {
+			System.err.println("[Tucson2PLibrary]: " + e);
+			e.printStackTrace();
+			return false;
+		}
+		if(op.isResultSuccess())
+			unify(arg0, op.getLogicTupleResult().toTerm());
+		return op.isResultSuccess();
+	}
+	
+	/**
+	 * <code>uinp</code> TuCSoN primitive.
+	 * 
+	 * @param arg0 the bio tuple to probabilistically retrieve
+	 * @param arg1 the multiplicity of the biotuple
+	 * @param arg2 the tuplecentre target
+	 * 
+	 * @return <code>true</code> if the operation succeed, <code>false</code> otherwise
+	 * 
+	 * @see alice.tucson.api.UniformAsynchACC UniformAsynchACC
+	 * @see alice.tucson.api.UniformSynchACC UniformSynchACC
+	 */
+	public boolean uinp_3(Term arg0, Term arg1, Term arg2){
+		if(context == null)
+			return false;
+		TucsonTupleCentreId tid;
+		try{
+			tid = new TucsonTupleCentreId(arg2.toString());
+		}catch(TucsonInvalidTupleCentreIdException e){
+			System.err.println("[Tucson2PLibrary]: " + e);
+			e.printStackTrace();
+			return false;
+		}
+		ITucsonOperation op;
+		try{
+			long mult = ((Number)arg1.getTerm()).longValue();
+			op = context.uinp(tid, new BioTuple(arg0,mult), (Long)null);
+		}catch(InvalidMultiplicityException e){
+			System.err.println("[Tucson2PLibrary]: " + e);
+			e.printStackTrace();
+			return false;
 		}catch(TucsonOperationNotPossibleException e){
 			System.err.println("[Tucson2PLibrary]: " + e);
 			e.printStackTrace();
@@ -1100,7 +1567,7 @@ public class Tucson2PLibrary extends Library{
 	/**
 	 * <code>urdp</code> TuCSoN primitive.
 	 * 
-	 * @param arg0 the tuple to probabilistically read (w/o removing)
+	 * @param arg0 the bio tuple to probabilistically read (w/o removing)
 	 * @param arg1 the tuplecentre target
 	 * 
 	 * @return <code>true</code> if the operation succeed, <code>false</code> otherwise
@@ -1141,9 +1608,58 @@ public class Tucson2PLibrary extends Library{
 	}
 	
 	/**
+	 * <code>urdp</code> TuCSoN primitive.
+	 * 
+	 * @param arg0 the bio tuple to probabilistically read (w/o removing)
+	 * @param arg1 the multiplicity of the biotuple
+	 * @param arg2 the tuplecentre target
+	 * 
+	 * @return <code>true</code> if the operation succeed, <code>false</code> otherwise
+	 * 
+	 * @see alice.tucson.api.UniformAsynchACC UniformAsynchACC
+	 * @see alice.tucson.api.UniformSynchACC UniformSynchACC
+	 */
+	public boolean urdp_3(Term arg0, Term arg1, Term arg2){
+		if(context == null)
+			return false;
+		TucsonTupleCentreId tid;
+		try{
+			tid = new TucsonTupleCentreId(arg2.toString());
+		}catch(TucsonInvalidTupleCentreIdException e){
+			System.err.println("[Tucson2PLibrary]: " + e);
+			e.printStackTrace();
+			return false;
+		}
+		ITucsonOperation op;
+		try{
+			long mult = ((Number)arg1.getTerm()).longValue();
+			op = context.urdp(tid, new BioTuple(arg0,mult), (Long)null);
+		}catch(InvalidMultiplicityException e) {
+			System.err.println("[Tucson2PLibrary]: " + e);
+			e.printStackTrace();
+			return false;
+		}catch(TucsonOperationNotPossibleException e) {
+			System.err.println("[Tucson2PLibrary]: " + e);
+			e.printStackTrace();
+			return false;
+		}catch(UnreachableNodeException e){
+			System.err.println("[Tucson2PLibrary]: " + e);
+			e.printStackTrace();
+			return false;
+		} catch (OperationTimeOutException e) {
+			System.err.println("[Tucson2PLibrary]: " + e);
+			e.printStackTrace();
+			return false;
+		}
+		if(op.isResultSuccess())
+			unify(arg0, op.getLogicTupleResult().toTerm());
+		return op.isResultSuccess();
+	}
+	
+	/**
 	 * <code>uno</code> TuCSoN primitive.
 	 * 
-	 * @param arg0 the tuple to probabilistically check for absence
+	 * @param arg0 the bio tuple to probabilistically check for absence
 	 * @param arg1 the tuplecentre target
 	 * 
 	 * @return <code>true</code> if the operation succeed, <code>false</code> otherwise
@@ -1184,9 +1700,58 @@ public class Tucson2PLibrary extends Library{
 	}
 	
 	/**
+	 * <code>uno</code> TuCSoN primitive.
+	 * 
+	 * @param arg0 the bio tuple to probabilistically check for absence
+	 * @param arg1 the multiplicity of the biotuple
+	 * @param arg2 the tuplecentre target
+	 * 
+	 * @return <code>true</code> if the operation succeed, <code>false</code> otherwise
+	 * 
+	 * @see alice.tucson.api.UniformAsynchACC UniformAsynchACC
+	 * @see alice.tucson.api.UniformSynchACC UniformSynchACC
+	 */
+	public boolean uno_3(Term arg0, Term arg1, Term arg2){
+		if(context == null)
+			return false;
+		TucsonTupleCentreId tid;
+		try{
+			tid = new TucsonTupleCentreId(arg2.toString());
+		}catch(TucsonInvalidTupleCentreIdException e){
+			System.err.println("[Tucson2PLibrary]: " + e);
+			e.printStackTrace();
+			return false;
+		}
+		ITucsonOperation op;
+		try{
+			long mult = ((Number)arg1.getTerm()).longValue();
+			op = context.uno(tid, new BioTuple(arg0,mult), (Long)null);
+		}catch(InvalidMultiplicityException e) {
+			System.err.println("[Tucson2PLibrary]: " + e);
+			e.printStackTrace();
+			return false;
+		}catch(TucsonOperationNotPossibleException e) {
+			System.err.println("[Tucson2PLibrary]: " + e);
+			e.printStackTrace();
+			return false;
+		}catch(UnreachableNodeException e){
+			System.err.println("[Tucson2PLibrary]: " + e);
+			e.printStackTrace();
+			return false;
+		} catch (OperationTimeOutException e) {
+			System.err.println("[Tucson2PLibrary]: " + e);
+			e.printStackTrace();
+			return false;
+		}
+		if(!op.isResultSuccess())
+			unify(arg0, op.getLogicTupleResult().toTerm());
+		return op.isResultSuccess();
+	}
+	
+	/**
 	 * <code>unop</code> TuCSoN primitive.
 	 * 
-	 * @param arg0 the tuple to probabilistically check for absence
+	 * @param arg0 the bio tuple to probabilistically check for absence
 	 * @param arg1 the tuplecentre target
 	 * 
 	 * @return <code>true</code> if the operation succeed, <code>false</code> otherwise
@@ -1226,7 +1791,54 @@ public class Tucson2PLibrary extends Library{
 		return op.isResultSuccess();
 	}
 	
-	
+	/**
+	 * <code>unop</code> TuCSoN primitive.
+	 * 
+	 * @param arg0 the bio tuple to probabilistically check for absence
+	 * @param arg1 the multiplicity of the bio tuple
+	 * @param arg2 the tuplecentre target
+	 * 
+	 * @return <code>true</code> if the operation succeed, <code>false</code> otherwise
+	 * 
+	 * @see alice.tucson.api.UniformAsynchACC UniformAsynchACC
+	 * @see alice.tucson.api.UniformSynchACC UniformSynchACC
+	 */
+	public boolean unop_3(Term arg0, Term arg1, Term arg2){
+		if(context == null)
+			return false;
+		TucsonTupleCentreId tid;
+		try{
+			tid = new TucsonTupleCentreId(arg2.toString());
+		}catch(TucsonInvalidTupleCentreIdException e){
+			System.err.println("[Tucson2PLibrary]: " + e);
+			e.printStackTrace();
+			return false;
+		}
+		ITucsonOperation op;
+		try{
+			long mult = ((Number)arg1.getTerm()).longValue();
+			op = context.unop(tid, new BioTuple(arg0,mult), (Long)null);
+		}catch(InvalidMultiplicityException e) {
+			System.err.println("[Tucson2PLibrary]: " + e);
+			e.printStackTrace();
+			return false;
+		}catch(TucsonOperationNotPossibleException e) {
+			System.err.println("[Tucson2PLibrary]: " + e);
+			e.printStackTrace();
+			return false;
+		}catch(UnreachableNodeException e){
+			System.err.println("[Tucson2PLibrary]: " + e);
+			e.printStackTrace();
+			return false;
+		} catch (OperationTimeOutException e) {
+			System.err.println("[Tucson2PLibrary]: " + e);
+			e.printStackTrace();
+			return false;
+		}
+		if(!op.isResultSuccess())
+			unify(arg0, op.getLogicTupleResult().toTerm());
+		return op.isResultSuccess();
+	}
 	
 	/**
 	 * <code>out_all</code> TuCSoN primitive.

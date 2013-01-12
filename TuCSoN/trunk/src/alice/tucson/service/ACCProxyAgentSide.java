@@ -1017,7 +1017,7 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	 * 
 	 * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
 	 */
-	public ITucsonOperation inp(Object tid, LogicTuple tuple, Long timeout)
+	public ITucsonOperation inp(Object tid, BioTuple tuple, Long timeout)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException{
 		return doBlockingOperation(TucsonOperation.inpCode(), tid, tuple, timeout);
 	}
@@ -1042,7 +1042,7 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	 * 
 	 * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
 	 */
-	public ITucsonOperation rdp(Object tid, LogicTuple tuple, Long timeout)
+	public ITucsonOperation rdp(Object tid, BioTuple tuple, Long timeout)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException{
 		return doBlockingOperation(TucsonOperation.rdpCode(), tid, tuple, timeout);
 	}
@@ -1070,7 +1070,7 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	 * 
 	 * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
 	 */
-	public ITucsonOperation no(Object tid, LogicTuple tuple, Long timeout)
+	public ITucsonOperation no(Object tid, BioTuple tuple, Long timeout)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException{
 		return doBlockingOperation(TucsonOperation.noCode(), tid, tuple, timeout);
 	}
@@ -1098,7 +1098,7 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	 * 
 	 * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
 	 */
-	public ITucsonOperation nop(Object tid, LogicTuple tuple, Long timeout)
+	public ITucsonOperation nop(Object tid, BioTuple tuple, Long timeout)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException{
 		return doBlockingOperation(TucsonOperation.nopCode(), tid, tuple, timeout);
 	}
@@ -1180,25 +1180,25 @@ public class ACCProxyAgentSide implements EnhancedACC{
 		return doBlockingOperation(TucsonOperation.urdCode(), tid, tuple, timeout);
 	}
 	
-	public ITucsonOperation uno(Object tid, LogicTuple tuple, Long timeout)
+	public ITucsonOperation uno(Object tid, BioTuple tuple, Long timeout)
 			throws TucsonOperationNotPossibleException,
 			UnreachableNodeException, OperationTimeOutException {
 		return doBlockingOperation(TucsonOperation.unoCode(), tid, tuple, timeout);
 	}
 
-	public ITucsonOperation uinp(Object tid, LogicTuple tuple, Long timeout)
+	public ITucsonOperation uinp(Object tid, BioTuple tuple, Long timeout)
 			throws TucsonOperationNotPossibleException,
 			UnreachableNodeException, OperationTimeOutException {
 		return doBlockingOperation(TucsonOperation.uinpCode(), tid, tuple, timeout);
 	}
 
-	public ITucsonOperation urdp(Object tid, LogicTuple tuple, Long timeout)
+	public ITucsonOperation urdp(Object tid, BioTuple tuple, Long timeout)
 			throws TucsonOperationNotPossibleException,
 			UnreachableNodeException, OperationTimeOutException {
 		return doBlockingOperation(TucsonOperation.urdpCode(), tid, tuple, timeout);
 	}
 	
-	public ITucsonOperation unop(Object tid, LogicTuple tuple, Long timeout)
+	public ITucsonOperation unop(Object tid, BioTuple tuple, Long timeout)
 			throws TucsonOperationNotPossibleException,
 			UnreachableNodeException, OperationTimeOutException {
 		return doBlockingOperation(TucsonOperation.unopCode(), tid, tuple, timeout);
@@ -2031,5 +2031,6 @@ public class ACCProxyAgentSide implements EnhancedACC{
 		}
 		
 	}
+
 
 }

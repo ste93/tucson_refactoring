@@ -156,7 +156,7 @@ public interface OrdinarySynchACC extends RootACC{
 	 * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
 	 * @see alice.tucson.api.ITucsonOperation ITucsonOperation
 	 */
-	ITucsonOperation inp(Object tid, LogicTuple tuple, Long timeout)
+	ITucsonOperation inp(Object tid, BioTuple tuple, Long timeout)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException;
 	
 	/**
@@ -183,7 +183,7 @@ public interface OrdinarySynchACC extends RootACC{
 	 * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
 	 * @see alice.tucson.api.ITucsonOperation ITucsonOperation
 	 */
-	ITucsonOperation rdp(Object tid, LogicTuple tuple, Long timeout)
+	ITucsonOperation rdp(Object tid, BioTuple tuple, Long timeout)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException;
 	
 	/**
@@ -210,7 +210,7 @@ public interface OrdinarySynchACC extends RootACC{
 	 * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
 	 * @see alice.tucson.api.ITucsonOperation ITucsonOperation
 	 */
-	ITucsonOperation no(Object tid, LogicTuple tuple, Long timeout)
+	ITucsonOperation no(Object tid, BioTuple tuple, Long timeout)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException;
 	
 	/**
@@ -237,7 +237,7 @@ public interface OrdinarySynchACC extends RootACC{
 	 * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
 	 * @see alice.tucson.api.ITucsonOperation ITucsonOperation
 	 */
-	ITucsonOperation nop(Object tid, LogicTuple tuple, Long timeout)
+	ITucsonOperation nop(Object tid, BioTuple tuple, Long timeout)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException;
 	
 	/**

@@ -96,19 +96,19 @@ public interface UniformSynchACC extends RootACC{
 
 //TODO: not yet Bio version
 	
-	ITucsonOperation uno(Object tid, LogicTuple tuple, Long timeout)
+	ITucsonOperation uno(Object tid, BioTuple tuple, Long timeout)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException,
 			OperationTimeOutException;
 	
-	ITucsonOperation uinp(Object tid, LogicTuple tuple, Long timeout)
+	ITucsonOperation uinp(Object tid, BioTuple tuple, Long timeout)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException,
 			OperationTimeOutException;
 	
-	ITucsonOperation urdp(Object tid, LogicTuple tuple, Long timeout)
+	ITucsonOperation urdp(Object tid, BioTuple tuple, Long timeout)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException,
 			OperationTimeOutException;
 	
-	ITucsonOperation unop(Object tid, LogicTuple tuple, Long timeout)
+	ITucsonOperation unop(Object tid, BioTuple tuple, Long timeout)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException,
 			OperationTimeOutException;
 		
