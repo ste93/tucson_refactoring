@@ -118,8 +118,6 @@ public class ACCProxyNodeSide extends ACCAbstractProxyNodeSide{
 		List<LogicTuple> resList;
 
 		while(!exit){
-			
-			log("Listening to incoming TuCSoN agents/nodes requests...");
 
 			try{
 				//System.out.println("---------------------------------------------------------->Prima del read");

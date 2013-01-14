@@ -131,68 +131,63 @@ public class CLIAgent extends alice.util.Automaton{
 					else
 						prompt("failure");
 				}else if(methodName.equals("out")){
-					BioTuple t=null;
-					tuple.t
-					try {
-						t = BioTuple.parse(tuple,1);
-					} catch (InvalidMultiplicityException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+				//start bio changes
+					BioTuple t = BioTuple.parseCLI(tuple);
 					busy();
 					ITucsonOperation op = context.out(tid, t, Long.MAX_VALUE);
 					if(op.isResultSuccess())
-						prompt("success: " + op.getLogicTupleResult());
+						prompt("success: " + op.getBioTupleResult());
 					else
-						prompt("failure: " + op.getLogicTupleResult());
+						prompt("failure: " + op.getBioTupleResult());
 				}else if(methodName.equals("in")){
-					BioTuple templ = BioTuple.parse(tuple);
+					BioTuple templ = BioTuple.parseCLI(tuple);
 					busy();
 					ITucsonOperation op = context.in(tid, templ, Long.MAX_VALUE);
 					if(op.isResultSuccess())
-						prompt("success: " + op.getLogicTupleResult());
+						prompt("success: " + op.getBioTupleResult());
 					else
-						prompt("failure: " + op.getLogicTupleResult());
+						prompt("failure: " + op.getBioTupleResult());
 				}else if(methodName.equals("rd")){
-					BioTuple templ = BioTuple.parse(tuple);
+					BioTuple templ = BioTuple.parseCLI(tuple);
 					busy();
 					ITucsonOperation op = context.rd(tid, templ, Long.MAX_VALUE);
 					if(op.isResultSuccess())
-						prompt("success: " + op.getLogicTupleResult());
+						prompt("success: " + op.getBioTupleResult());
 					else
-						prompt("failure: " + op.getLogicTupleResult());
+						prompt("failure: " + op.getBioTupleResult());
 				}else if(methodName.equals("inp")){
-					LogicTuple templ = LogicTuple.parse(tuple);
+					BioTuple templ = BioTuple.parseCLI(tuple);
 					busy();
 					ITucsonOperation op = context.inp(tid, templ, Long.MAX_VALUE);
 					if(op.isResultSuccess())
-						prompt("success: " + op.getLogicTupleResult());
+						prompt("success: " + op.getBioTupleResult());
 					else
-						prompt("failure: " + op.getLogicTupleResult());
+						prompt("failure: " + op.getBioTupleResult());
 				}else if(methodName.equals("rdp")){
-					LogicTuple templ = LogicTuple.parse(tuple);
+					BioTuple templ = BioTuple.parseCLI(tuple);
 					busy();
 					ITucsonOperation op = context.rdp(tid, templ, Long.MAX_VALUE);
 					if(op.isResultSuccess())
-						prompt("success: " + op.getLogicTupleResult());
+						prompt("success: " + op.getBioTupleResult());
 					else
-						prompt("failure: " + op.getLogicTupleResult());
+						prompt("failure: " + op.getBioTupleResult());
 				}else if(methodName.equals("no")){
-					LogicTuple templ = LogicTuple.parse(tuple);
+					BioTuple templ = BioTuple.parseCLI(tuple);
 					busy();
 					ITucsonOperation op = context.no(tid, templ, Long.MAX_VALUE);
 					if(op.isResultSuccess())
-						prompt("success: " + op.getLogicTupleResult());
+						prompt("success: " + op.getBioTupleResult());
 					else
-						prompt("failure: " + op.getLogicTupleResult());
+						prompt("failure: " + op.getBioTupleResult());
 				}else if(methodName.equals("nop")){
-					LogicTuple templ = LogicTuple.parse(tuple);
+					BioTuple templ = BioTuple.parseCLI(tuple);
 					busy();
 					ITucsonOperation op = context.nop(tid, templ, Long.MAX_VALUE);
 					if(op.isResultSuccess())
-						prompt("success: " + op.getLogicTupleResult());
+						prompt("success: " + op.getBioTupleResult());
 					else
-						prompt("failure: " + op.getLogicTupleResult());
+						prompt("failure: " + op.getBioTupleResult());
+				//end bio changes	
 				}else if(methodName.equals("set")){
 					LogicTuple templ = LogicTuple.parse(tuple);
 					busy();
@@ -245,55 +240,57 @@ public class CLIAgent extends alice.util.Automaton{
 					else
 						prompt("failure: " + op.getLogicTupleListResult());
 				}else if(methodName.equals("urd")){
-					BioTuple templ = BioTuple.parse(tuple);
+				//bio changes
+					BioTuple templ = BioTuple.parseCLI(tuple);
 					busy();
 					ITucsonOperation op = context.urd(tid, templ, (Long) null);
 					if(op.isResultSuccess())
-						prompt("success: " + op.getLogicTupleResult());
+						prompt("success: " + op.getBioTupleResult());
 					else
-						prompt("failure: " + op.getLogicTupleResult());
+						prompt("failure: " + op.getBioTupleResult());
 				}else if(methodName.equals("uno")){
-					LogicTuple templ = LogicTuple.parse(tuple);
+					BioTuple templ = BioTuple.parseCLI(tuple);
 					busy();
 					ITucsonOperation op = context.uno(tid, templ, (Long) null);
 					if(op.isResultSuccess())
-						prompt("success: " + op.getLogicTupleResult());
+						prompt("success: " + op.getBioTupleResult());
 					else
-						prompt("failure: " + op.getLogicTupleResult());
+						prompt("failure: " + op.getBioTupleResult());
 				}
 				else if(methodName.equals("urdp")){
-					LogicTuple templ = LogicTuple.parse(tuple);
+					BioTuple templ = BioTuple.parseCLI(tuple);
 					busy();
 					ITucsonOperation op = context.urdp(tid, templ, (Long) null);
 					if(op.isResultSuccess())
-						prompt("success: " + op.getLogicTupleResult());
+						prompt("success: " + op.getBioTupleResult());
 					else
-						prompt("failure: " + op.getLogicTupleResult());
+						prompt("failure: " + op.getBioTupleResult());
 				}else if(methodName.equals("unop")){
-					LogicTuple templ = LogicTuple.parse(tuple);
+					BioTuple templ = BioTuple.parseCLI(tuple);
 					busy();
 					ITucsonOperation op = context.unop(tid, templ, (Long) null);
 					if(op.isResultSuccess())
-						prompt("success: " + op.getLogicTupleResult());
+						prompt("success: " + op.getBioTupleResult());
 					else
-						prompt("failure: " + op.getLogicTupleResult());
+						prompt("failure: " + op.getBioTupleResult());
 				}
 				else if(methodName.equals("uin")){
-					BioTuple templ = BioTuple.parse(tuple);
+					BioTuple templ = BioTuple.parseCLI(tuple);
 					busy();
 					ITucsonOperation op = context.uin(tid, templ, (Long) null);
 					if(op.isResultSuccess())
-						prompt("success: " + op.getLogicTupleResult());
+						prompt("success: " + op.getBioTupleResult());
 					else
-						prompt("failure: " + op.getLogicTupleResult());
+						prompt("failure: " + op.getBioTupleResult());
 				}else if(methodName.equals("uinp")){
-					LogicTuple templ = LogicTuple.parse(tuple);
+					BioTuple templ = BioTuple.parseCLI(tuple);
 					busy();
 					ITucsonOperation op = context.uinp(tid, templ, (Long) null);
 					if(op.isResultSuccess())
-						prompt("success: " + op.getLogicTupleResult());
+						prompt("success: " + op.getBioTupleResult());
 					else
-						prompt("failure: " + op.getLogicTupleResult());
+						prompt("failure: " + op.getBioTupleResult());
+				//end bio changes
 				}
 				
 				/**
@@ -469,33 +466,6 @@ public class CLIAgent extends alice.util.Automaton{
 	
 	private void debug(String s){
 		System.out.println("--- " + s + " ---");
-	}
-	
-	//add for bio primitives
-	private static BioTuple bioParser(String tuple) {
-		
-		String s1 = tuple.substring(9);
-		String s2 = s1.replace(')', ' ');
-		String s3 = s2.trim();
-		
-		String[] elem = (s3.toString()).split(",");
-		
-		if(elem.length == 1){
-			try {
-				return BioTuple.parse(elem[0]);
-			} catch (InvalidLogicTupleException e) {
-				e.printStackTrace();
-			}
-		}else if(elem.length == 2){
-			String name = elem[0];
-			long mult = Long.parseLong(elem[1]);
-			try {
-				return BioTuple.parse(name,mult);
-			} catch (InvalidMultiplicityException e) {
-				e.printStackTrace();
-			}
-		}	
-		return null;
 	}
 
 }

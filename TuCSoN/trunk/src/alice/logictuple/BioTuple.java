@@ -26,7 +26,7 @@ public class BioTuple extends LogicTuple{
 	public BioTuple(String name, TupleArgument[] list, long multiplicity) throws InvalidMultiplicityException
 	{
 		super(name, list);
-		if(multiplicity<=0)
+		if(!(multiplicity>0))
 			throw new InvalidMultiplicityException();
 		mult = multiplicity;
 	}
@@ -44,7 +44,7 @@ public class BioTuple extends LogicTuple{
 	public BioTuple(String name, long multiplicity) throws InvalidMultiplicityException
 	{
 		super(name);
-		if(multiplicity<=0)
+		if(!(multiplicity>0))
 			throw new InvalidMultiplicityException();
 		mult = multiplicity;
 	}
@@ -63,7 +63,7 @@ public class BioTuple extends LogicTuple{
 	public BioTuple(String name, TupleArgument t1, long multiplicity) throws InvalidMultiplicityException
 	{
 		super(name,t1);
-		if(multiplicity<=0)
+		if(!(multiplicity>0))
 			throw new InvalidMultiplicityException();
 		mult = multiplicity;
 	}
@@ -84,7 +84,7 @@ public class BioTuple extends LogicTuple{
 	public BioTuple(String name, TupleArgument t1, TupleArgument t2, long multiplicity) throws InvalidMultiplicityException
 	{
 		super(name,t1,t2);
-		if(multiplicity<=0)
+		if(!(multiplicity>0))
 			throw new InvalidMultiplicityException();
 		mult = multiplicity;
 	}
@@ -107,7 +107,7 @@ public class BioTuple extends LogicTuple{
 	public BioTuple(String name, TupleArgument t1, TupleArgument t2, TupleArgument t3, long multiplicity) throws InvalidMultiplicityException
 	{
 		super(name, t1, t2, t3);
-		if(multiplicity<=0)
+		if(!(multiplicity>0))
 			throw new InvalidMultiplicityException();
 		mult = multiplicity;
 	}
@@ -132,7 +132,7 @@ public class BioTuple extends LogicTuple{
 	public BioTuple(String name, TupleArgument t1, TupleArgument t2, TupleArgument t3, TupleArgument t4, long multiplicity) throws InvalidMultiplicityException
 	{
 		super(name, t1, t2, t3, t4);
-		if(multiplicity<=0)
+		if(!(multiplicity>0))
 			throw new InvalidMultiplicityException();
 		mult = multiplicity;
 	}
@@ -159,7 +159,7 @@ public class BioTuple extends LogicTuple{
 	public BioTuple(String name, TupleArgument t1, TupleArgument t2, TupleArgument t3, TupleArgument t4, TupleArgument t5, long multiplicity) throws InvalidMultiplicityException
 	{
 		super(name, t1, t2, t3, t4, t5);
-		if(multiplicity<=0)
+		if(!(multiplicity>0))
 			throw new InvalidMultiplicityException();
 		mult = multiplicity;
 	}
@@ -189,7 +189,7 @@ public class BioTuple extends LogicTuple{
 			TupleArgument t6, long multiplicity) throws InvalidMultiplicityException
 	{
 		super(name, t1, t2, t3, t4, t5, t6);
-		if(multiplicity<=0)
+		if(!(multiplicity>0))
 			throw new InvalidMultiplicityException();
 		mult = multiplicity;
 	}
@@ -221,7 +221,7 @@ public class BioTuple extends LogicTuple{
 			TupleArgument t6, TupleArgument t7, long multiplicity) throws InvalidMultiplicityException
 	{
 		super(name, t1, t2, t3, t4, t5, t6, t7);
-		if(multiplicity<=0)
+		if(!(multiplicity>0))
 			throw new InvalidMultiplicityException();
 		mult = multiplicity;
 	}
@@ -364,6 +364,33 @@ public class BioTuple extends LogicTuple{
 		{
 			throw new InvalidLogicTupleException();
 		}
+	}
+	
+	//add for bio primitives
+	public static BioTuple parseCLI(String tuple) {
+		
+		String s1 = tuple.substring(9);
+		String s2 = s1.replace(')', ' ');
+		String s3 = s2.trim();
+		
+		String[] elem = (s3.toString()).split(",");
+		
+		if(elem.length == 1){
+			try {
+				return BioTuple.parse(elem[0]);
+			} catch (InvalidLogicTupleException e) {
+				e.printStackTrace();
+			}
+		}else if(elem.length == 2){
+			String name = elem[0];
+			long mult = Long.parseLong(elem[1]);
+			try {
+				return BioTuple.parse(name,mult);
+			} catch (InvalidMultiplicityException e) {
+				e.printStackTrace();
+			}
+		}	
+		return null;
 	}
 	
 	public boolean isMultGround(){

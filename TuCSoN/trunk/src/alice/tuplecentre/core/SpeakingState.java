@@ -72,6 +72,7 @@ public class SpeakingState extends TupleCentreVMState {
 	            ev = (InputEvent) (it.next());
 	            op = ev.getOperation();
 	            
+	            
 	            if(op.isResultDefined() || ev.isLinking()){
 	            	foundSatisfied = true;
 	            }else{
