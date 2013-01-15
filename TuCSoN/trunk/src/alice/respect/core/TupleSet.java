@@ -143,6 +143,9 @@ public class TupleSet  {
         transaction=true;
         tAdded.clear();
         tRemoved.clear();
+        
+        bioTAdded.clear();
+        bioTRemoved.clear();
     }
 
     /**
@@ -154,6 +157,7 @@ public class TupleSet  {
      *               state before the <code>beginTransaction</code> invocation
      */
     public void endTransaction(boolean commit){
+    	
         if (!commit){
             Iterator<LogicTuple> it = tAdded.listIterator();
             while (it.hasNext())
@@ -162,9 +166,23 @@ public class TupleSet  {
 			while (it.hasNext())
                 tuples.add(it.next());
         }
+        
+        if (!commit){
+            Iterator<BioTuple> it = bioTAdded.listIterator();
+            while (it.hasNext())
+                bioTuples.remove(it.next());
+            it=bioTRemoved.listIterator();
+			while (it.hasNext())
+				bioTuples.add(it.next());
+        }
+        
         transaction=false;
+        
         tAdded.clear();
         tRemoved.clear();
+        
+        bioTAdded.clear();
+        bioTRemoved.clear();
     }
 
     //bio changes
@@ -201,16 +219,23 @@ public class TupleSet  {
 			        BioTuple tu=l.next();
 			        long multTu = tu.getMultiplicity();
 			        if (templ.match(tu) && multTu >= multTempl){
-			        	if(multTu==multTempl)
+			        	if(multTu==multTempl){
 			        		l.remove();
+			        		if(transaction)
+			        			bioTRemoved.add(tu);
+			        	}
 			        	else{
 			        		l.remove();
+			        		if(transaction)
+			        			bioTRemoved.add(tu);
 			        		try {
 								tu.setMultiplicity(multTu-multTempl);
 							} catch (InvalidMultiplicityException e) {
 								e.printStackTrace();
 							}
 			        		l.add(tu);
+			        		if(transaction)
+			        			bioTAdded.add(tu);
 			        	}
 			            AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
 			            try {
@@ -226,6 +251,8 @@ public class TupleSet  {
 			        BioTuple tu=l.next();
 			        if (templ.match(tu)){
 			            l.remove();
+			            if(transaction)
+		        			bioTRemoved.add(tu);
 			            AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
 			            try {
 							return new BioTuple(tu.toTerm().copyGoal(v, 0),tu.getMultiplicity());
@@ -336,6 +363,8 @@ public class TupleSet  {
 				if(t.toString().equals(tr.toString())){
 					long multTr = tr.getMultiplicity();
 					l.remove();
+					if(transaction)
+	        			bioTRemoved.add(tr);
 					AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
 	                try {
 						return new BioTuple(tr.toTerm().copyGoal(v, 0),multTr);
@@ -363,6 +392,8 @@ public class TupleSet  {
     					if(tuple.toString().equals(tr.toString())){
     						long multTr = tr.getMultiplicity();
     						l.remove();
+    						if(transaction)
+			        			bioTRemoved.add(tr);
     						AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
     		                try {
 								return new BioTuple(tr.toTerm().copyGoal(v, 0),multTr);
@@ -413,8 +444,12 @@ public class TupleSet  {
 					long multTr = tr.getMultiplicity();
 					if(multTr == multTempl){	//if it's required the entire tuple multiplicity
 						l.remove();
+						if(transaction)
+		        			bioTRemoved.add(tr);
 					}else if(multTr > multTempl){	//if it's required a part of tuple multiplicity
 						l.remove();
+						if(transaction)
+		        			bioTRemoved.add(tr);
 						try {
 							tr.setMultiplicity(multTr-multTempl);
 						} catch (InvalidMultiplicityException e) {
@@ -422,6 +457,8 @@ public class TupleSet  {
 							e.printStackTrace();
 						}
 						l.add(tr);
+						if(transaction)
+		        			bioTAdded.add(tr);
 					}
 					AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
 	                try {
@@ -450,8 +487,12 @@ public class TupleSet  {
     						long multTr = tr.getMultiplicity();
     						if(multTr == multTempl){	//if it's required the entire tuple multiplicity
     							l.remove();
+    							if(transaction)
+    			        			bioTRemoved.add(tr);
     						}else if(multTr > multTempl){	//if it's required a part of tuple multiplicity
     							l.remove();
+    							if(transaction)
+    			        			bioTRemoved.add(tr);
     							try {
 									tr.setMultiplicity(multTr-multTempl);
 								} catch (InvalidMultiplicityException e) {
@@ -459,6 +500,8 @@ public class TupleSet  {
 									e.printStackTrace();
 								}
     							l.add(tr);
+    							if(transaction)
+    			        			bioTAdded.add(tr);
     						}
     						AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
     		                try {

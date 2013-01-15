@@ -179,7 +179,7 @@ public class RespectTC implements IRespectTC {
 	public IRespectOperation uinp(IId id, LogicTuple t, OperationCompletionListener l) throws OperationNotPossibleException {
 		RespectOperation op = RespectOperation.makeUinp(getProlog(),t,l);
 		vm.doOperation(id,op);
-		return op;
+ 		return op;
 	}
 	
 	public IRespectOperation unop(IId id, LogicTuple t, OperationCompletionListener l) throws OperationNotPossibleException {
