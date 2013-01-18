@@ -88,13 +88,13 @@ public class TupleSet  {
 	                bioTAdded.add(bioT);
 	    	}
     	}else{
-    		 tuples.add(t);
-    		 if (transaction)
- 	            tAdded.add(t);
+			tuples.add(t);
+			if (transaction)
+	           tAdded.add(t);
     	}
     }
 
-    public void remove(BioTuple t){
+    public void remove(LogicTuple t){
     	//bio changes
     	if(t instanceof BioTuple){
     		bioTuples.remove((BioTuple)t);
@@ -639,11 +639,19 @@ public class TupleSet  {
     
    
 
-	public Iterator<BioTuple> getIterator(){
+    public Iterator<LogicTuple> getIterator(){
+        return tuples.listIterator();
+    }
+    
+	public Iterator<BioTuple> getBioIterator(){
         return bioTuples.listIterator();
     }
 
-    public LogicTuple[] toArray() {
+	public LogicTuple[] toArray() {
+    	return tuples.toArray(new LogicTuple[tuples.size()]);
+    }
+	
+    public BioTuple[] toArrayBio() {
     	return bioTuples.toArray(new BioTuple[bioTuples.size()]);
     }
     
@@ -654,17 +662,43 @@ public class TupleSet  {
      */
     public String toString() {
     	String str = "";
+    	for(LogicTuple t: tuples)
+    		str += t.toString() + ".\n";
+    	return str;
+    }
+    
+    
+    /**
+     * Provides a representation of the bio tuple multi-set in
+     * the form of a String containing a prolog theory.
+     * @return a textual representation in the form of a prolog theory.    
+     */
+    public String toStringBio() {
+    	String str = "";
     	for(BioTuple t: bioTuples)
     		str += t.toString() + ".\n";
     	return str;
     }
 
-	/**
+    
+    /**
 	 * Tells whether there are changes in the tuple multi-set during a transaction  
 	 * 
 	 * @return true if the ongoing transaction made any changes to the tuple multi-set
 	 */
     public boolean operationsPending() {
+		if(tAdded.isEmpty() && tRemoved.isEmpty())
+			return false;
+		else
+			return true;
+	}
+    
+	/**
+	 * Tells whether there are changes in the bio tuple multi-set during a transaction  
+	 * 
+	 * @return true if the ongoing transaction made any changes to the tuple multi-set
+	 */
+    public boolean operationsPendingBio() {
 		if(bioTAdded.isEmpty() && bioTRemoved.isEmpty())
 			return false;
 		else

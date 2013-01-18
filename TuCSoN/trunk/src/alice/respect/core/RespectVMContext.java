@@ -421,14 +421,16 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 	            
 	            if (currentReactionTerm!=null){
 	            	AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
+	            	
 	            	currentReactionTerm = (Struct)currentReactionTerm.copyGoal(v, 0);
 	            	Struct tev=new Struct("reaction",currentReactionTerm,new alice.tuprolog.Var("G"),new alice.tuprolog.Var("R"));
+	            	
 	                SolveInfo info = trigCore.solve(tev);
 	                alice.tuprolog.Term guard=null;
 	                while (info.isSuccess()){
 	                	guard = info.getVarValue("G");
 	                	this.currentReactionEvent = ev;
-	                	if( this.evalGuard(guard)){
+	                	if(this.evalGuard(guard)){
 	                		Struct trigReaction = new Struct("reaction",currentReactionTerm,info.getVarValue("R"));
 	                		TriggeredReaction tr=new TriggeredReaction(ev,new LogicReaction(trigReaction));
 	                		zSet.add(tr);
@@ -1234,7 +1236,7 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 
 	public List<Tuple> getAllTuples() {
 		List<Tuple> tl = new LinkedList<Tuple>();
-		Iterator<BioTuple> it = this.tSet.getIterator();
+		Iterator<BioTuple> it = this.tSet.getBioIterator();
 		while(it.hasNext())
 			tl.add((Tuple)it.next());
 		return tl;

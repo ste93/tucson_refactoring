@@ -1,6 +1,7 @@
 package alice.logictuple;
 
 import alice.logictuple.exceptions.*;
+import alice.tuprolog.Struct;
 import alice.tuprolog.Term;
 
 /**
@@ -327,6 +328,24 @@ public class BioTuple extends LogicTuple{
 		{
 			return null;
 		}
+	}
+	
+	/**
+	 * Gets the Term representation of the bio tuple
+	 * 
+	 * @return the bio tuple as a term
+	 */
+	public Term toTerm()
+	{
+		Term tuple = info.toTerm();
+		Term multTerm = null;
+		
+		if(mult==0)
+			multTerm = new alice.tuprolog.Var("X");
+		else	
+			multTerm = new alice.tuprolog.Long(mult);
+		
+		return new Struct("biotuple", tuple, multTerm);
 	}
 	
 	/**
