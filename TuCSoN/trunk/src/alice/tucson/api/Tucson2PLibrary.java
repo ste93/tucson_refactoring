@@ -279,6 +279,10 @@ public class Tucson2PLibrary extends Library{
 			System.err.println("[Tucson2PLibrary]: " + e);
 			e.printStackTrace();
 			return false;
+		}catch(InvalidMultiplicityException e){
+			System.err.println("[Tucson2PLibrary]: " + e);
+			e.printStackTrace();
+			return false;
 		}
 		if(op.isResultSuccess())
 			unify(arg0, op.getLogicTupleResult().toTerm());
@@ -368,6 +372,10 @@ public class Tucson2PLibrary extends Library{
 			e.printStackTrace();
 			return false;
 		}catch(OperationTimeOutException e){
+			System.err.println("[Tucson2PLibrary]: " + e);
+			e.printStackTrace();
+			return false;
+		}catch(InvalidMultiplicityException e){
 			System.err.println("[Tucson2PLibrary]: " + e);
 			e.printStackTrace();
 			return false;
@@ -463,6 +471,10 @@ public class Tucson2PLibrary extends Library{
 			System.err.println("[Tucson2PLibrary]: " + e);
 			e.printStackTrace();
 			return false;
+		}catch(InvalidMultiplicityException e){
+			System.err.println("[Tucson2PLibrary]: " + e);
+			e.printStackTrace();
+			return false;
 		}
 		if(op.isResultSuccess())
 			unify(arg0, op.getLogicTupleResult().toTerm());
@@ -552,6 +564,10 @@ public class Tucson2PLibrary extends Library{
 			e.printStackTrace();
 			return false;
 		} catch (OperationTimeOutException e) {
+			System.err.println("[Tucson2PLibrary]: " + e);
+			e.printStackTrace();
+			return false;
+		}catch(InvalidMultiplicityException e){
 			System.err.println("[Tucson2PLibrary]: " + e);
 			e.printStackTrace();
 			return false;
@@ -647,6 +663,10 @@ public class Tucson2PLibrary extends Library{
 			System.err.println("[Tucson2PLibrary]: " + e);
 			e.printStackTrace();
 			return false;
+		}catch(InvalidMultiplicityException e){
+			System.err.println("[Tucson2PLibrary]: " + e);
+			e.printStackTrace();
+			return false;
 		}
 		if(!op.isResultSuccess())
 			unify(arg0, op.getLogicTupleResult().toTerm());
@@ -736,6 +756,10 @@ public class Tucson2PLibrary extends Library{
 			e.printStackTrace();
 			return false;
 		} catch (OperationTimeOutException e) {
+			System.err.println("[Tucson2PLibrary]: " + e);
+			e.printStackTrace();
+			return false;
+		}catch(InvalidMultiplicityException e){
 			System.err.println("[Tucson2PLibrary]: " + e);
 			e.printStackTrace();
 			return false;
@@ -1325,6 +1349,10 @@ public class Tucson2PLibrary extends Library{
 			System.err.println("[Tucson2PLibrary]: " + e);
 			e.printStackTrace();
 			return false;
+		}catch(InvalidMultiplicityException e){
+			System.err.println("[Tucson2PLibrary]: " + e);
+			e.printStackTrace();
+			return false;
 		}
 		if(op.isResultSuccess())
 			unify(arg0, op.getLogicTupleResult().toTerm());
@@ -1414,6 +1442,10 @@ public class Tucson2PLibrary extends Library{
 			e.printStackTrace();
 			return false;
 		}catch(OperationTimeOutException e){
+			System.err.println("[Tucson2PLibrary]: " + e);
+			e.printStackTrace();
+			return false;
+		}catch(InvalidMultiplicityException e){
 			System.err.println("[Tucson2PLibrary]: " + e);
 			e.printStackTrace();
 			return false;
@@ -1509,6 +1541,10 @@ public class Tucson2PLibrary extends Library{
 			System.err.println("[Tucson2PLibrary]: " + e);
 			e.printStackTrace();
 			return false;
+		} catch(InvalidMultiplicityException e){
+			System.err.println("[Tucson2PLibrary]: " + e);
+			e.printStackTrace();
+			return false;
 		}
 		if(op.isResultSuccess())
 			unify(arg0, op.getLogicTupleResult().toTerm());
@@ -1598,6 +1634,10 @@ public class Tucson2PLibrary extends Library{
 			e.printStackTrace();
 			return false;
 		} catch (OperationTimeOutException e) {
+			System.err.println("[Tucson2PLibrary]: " + e);
+			e.printStackTrace();
+			return false;
+		} catch(InvalidMultiplicityException e){
 			System.err.println("[Tucson2PLibrary]: " + e);
 			e.printStackTrace();
 			return false;
@@ -1693,6 +1733,10 @@ public class Tucson2PLibrary extends Library{
 			System.err.println("[Tucson2PLibrary]: " + e);
 			e.printStackTrace();
 			return false;
+		} catch(InvalidMultiplicityException e){
+			System.err.println("[Tucson2PLibrary]: " + e);
+			e.printStackTrace();
+			return false;
 		}
 		if(!op.isResultSuccess())
 			unify(arg0, op.getLogicTupleResult().toTerm());
@@ -1782,6 +1826,10 @@ public class Tucson2PLibrary extends Library{
 			e.printStackTrace();
 			return false;
 		} catch (OperationTimeOutException e) {
+			System.err.println("[Tucson2PLibrary]: " + e);
+			e.printStackTrace();
+			return false;
+		} catch(InvalidMultiplicityException e){
 			System.err.println("[Tucson2PLibrary]: " + e);
 			e.printStackTrace();
 			return false;

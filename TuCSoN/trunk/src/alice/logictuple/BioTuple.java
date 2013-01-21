@@ -1,8 +1,13 @@
 package alice.logictuple;
 
+import java.util.AbstractMap;
+import java.util.LinkedHashMap;
+
 import alice.logictuple.exceptions.*;
+import alice.tuprolog.Number;
 import alice.tuprolog.Struct;
 import alice.tuprolog.Term;
+import alice.tuprolog.Var;
 
 /**
  * Class representing a BioTuple as extension of LogicTuple, to add the multiplicity
@@ -262,16 +267,32 @@ public class BioTuple extends LogicTuple{
 	}
 	
 	/**
-	 * Constructs the bio tuple from a tuprolog term. Multiplicty auto-set to 1
+	 * Constructs the bio tuple from a tuprolog bio term.
+	 * Term t has to represent a bio tuple
 	 * 
 	 * @param t
-	 *            the tuprolog term
+	 *            the tuprolog term that represent a bio tuple
+	 *            
 	 * @throws InvalidMultiplicityException 
 	 */
-	public BioTuple(Term t)
+	public BioTuple(Term t) throws InvalidMultiplicityException
 	{
-		super(t);
-		mult = 1;
+		Struct s_t = (Struct)t.getTerm();
+		
+		if(s_t.getName().equals("biotuple") && s_t.getArity()==2){
+			/*
+			AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
+			Term t_tuple = (s_t.getArg(0)).copyGoal(v,0);
+			*/
+			info = new TupleArgument(s_t.getArg(0));
+			long m = ((Number)s_t.getArg(1).getTerm()).longValue();
+			if(m<=0)
+				throw new InvalidMultiplicityException();
+			mult = m;
+			
+		}else{
+			throw new InvalidMultiplicityException();	//maybe it should be changed in InvalidBioTupleException (to create)
+		}
 	}
 
 	/**
@@ -344,6 +365,23 @@ public class BioTuple extends LogicTuple{
 			multTerm = new alice.tuprolog.Var("X");
 		else	
 			multTerm = new alice.tuprolog.Long(mult);
+		
+		return new Struct("biotuple", tuple, multTerm);
+	}
+	
+	/**
+	 * Gets the Term representation of the bio tuple with the specified multiplicity
+	 * 
+	 * @param multiplicity 
+	 * 						multiplicity value to set
+	 * 
+	 * @return the bio tuple as a term
+	 */
+	public Term toTerm(long multiplicity)
+	{
+		Term tuple = info.toTerm();
+			
+		Term multTerm = new alice.tuprolog.Long(multiplicity);
 		
 		return new Struct("biotuple", tuple, multTerm);
 	}

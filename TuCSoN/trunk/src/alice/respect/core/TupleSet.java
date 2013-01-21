@@ -21,6 +21,7 @@ import java.util.*;
 
 import alice.logictuple.BioTuple;
 import alice.logictuple.LogicTuple;
+import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.logictuple.exceptions.InvalidMultiplicityException;
 import alice.logictuple.exceptions.InvalidTupleOperationException;
 import alice.tuprolog.Var;
@@ -239,7 +240,7 @@ public class TupleSet  {
 			        	}
 			            AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
 			            try {
-							return new BioTuple(tu.toTerm().copyGoal(v, 0),multTempl);
+							return new BioTuple(tu.toTerm(multTempl).copyGoal(v, 0));
 						} catch (InvalidMultiplicityException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -255,7 +256,7 @@ public class TupleSet  {
 		        			bioTRemoved.add(tu);
 			            AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
 			            try {
-							return new BioTuple(tu.toTerm().copyGoal(v, 0),tu.getMultiplicity());
+							return new BioTuple(tu.toTerm().copyGoal(v, 0));
 						} catch (InvalidMultiplicityException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -301,7 +302,7 @@ public class TupleSet  {
 			        	
 			            AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
 			            try {
-							return new BioTuple(tu.toTerm().copyGoal(v, 0),multTempl);
+							return new BioTuple(tu.toTerm(multTempl).copyGoal(v, 0));
 						} catch (InvalidMultiplicityException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -314,7 +315,7 @@ public class TupleSet  {
 			        if (templ.match(tu)){
 			            AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
 			            try {
-							return new BioTuple(tu.toTerm().copyGoal(v, 0),tu.getMultiplicity());
+							return new BioTuple(tu.toTerm().copyGoal(v, 0));
 						} catch (InvalidMultiplicityException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -361,13 +362,12 @@ public class TupleSet  {
         	while(l.hasPrevious()){		//find that tuple into the ListIterator (backward navigation)	
         		BioTuple tr = l.previous();
 				if(t.toString().equals(tr.toString())){
-					long multTr = tr.getMultiplicity();
 					l.remove();
 					if(transaction)
 	        			bioTRemoved.add(tr);
 					AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
 	                try {
-						return new BioTuple(tr.toTerm().copyGoal(v, 0),multTr);
+						return new BioTuple(tr.toTerm().copyGoal(v, 0));
 					} catch (InvalidMultiplicityException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -390,13 +390,12 @@ public class TupleSet  {
                 		BioTuple tr = l.previous();
                 		
     					if(tuple.toString().equals(tr.toString())){
-    						long multTr = tr.getMultiplicity();
     						l.remove();
     						if(transaction)
 			        			bioTRemoved.add(tr);
     						AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
     		                try {
-								return new BioTuple(tr.toTerm().copyGoal(v, 0),multTr);
+								return new BioTuple(tr.toTerm().copyGoal(v, 0));
 							} catch (InvalidMultiplicityException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
@@ -462,7 +461,7 @@ public class TupleSet  {
 					}
 					AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
 	                try {
-						return new BioTuple(tr.toTerm().copyGoal(v, 0),multTempl);
+						return new BioTuple(tr.toTerm(multTempl).copyGoal(v, 0));
 					} catch (InvalidMultiplicityException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -505,7 +504,7 @@ public class TupleSet  {
     						}
     						AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
     		                try {
-								return new BioTuple(tr.toTerm().copyGoal(v, 0),multTempl);
+								return new BioTuple(tr.toTerm(multTempl).copyGoal(v, 0));
 							} catch (InvalidMultiplicityException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
@@ -546,7 +545,7 @@ public class TupleSet  {
  					long multTr = tr.getMultiplicity();
  					AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
  	                try {
- 						return new BioTuple(tr.toTerm().copyGoal(v, 0),multTr);
+ 						return new BioTuple(tr.toTerm().copyGoal(v, 0));
  					} catch (InvalidMultiplicityException e) {
  						// TODO Auto-generated catch block
  						e.printStackTrace();
@@ -571,7 +570,7 @@ public class TupleSet  {
             				 long multTr = tr.getMultiplicity();
             				 AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
             				 try {
-            					 return new BioTuple(tr.toTerm().copyGoal(v, 0),multTr);
+            					 return new BioTuple(tr.toTerm().copyGoal(v, 0));
             				 } catch (InvalidMultiplicityException e) {
             					 e.printStackTrace();
             				 }
@@ -608,7 +607,7 @@ public class TupleSet  {
         	BioTuple t = tmp.getFirst();
         	AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
             try {
-				return new BioTuple(t.toTerm().copyGoal(v, 0),multTempl);
+				return new BioTuple(t.toTerm(multTempl).copyGoal(v, 0));
 			} catch (InvalidMultiplicityException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -626,7 +625,7 @@ public class TupleSet  {
             	if(counter >= r){
             		AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
                     try {
-						return new BioTuple(tuple.toTerm().copyGoal(v, 0),multTempl);
+						return new BioTuple(tuple.toTerm(multTempl).copyGoal(v, 0));
 					} catch (InvalidMultiplicityException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();

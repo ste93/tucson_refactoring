@@ -31,10 +31,13 @@ import alice.respect.core.RespectVMContext;
 
 import alice.tucson.parsing.MyOpManager;
 import  alice.tuprolog.*;
+import alice.tuprolog.Long;
+import alice.tuprolog.Number;
 import alice.tuprolog.Var;
 
 import  alice.logictuple.*;
 import alice.logictuple.exceptions.InvalidLogicTupleException;
+import alice.logictuple.exceptions.InvalidMultiplicityException;
 import alice.logictuple.exceptions.InvalidTupleOperationException;
 
 import alice.tuplecentre.api.IId;
@@ -161,7 +164,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      ********************************************************************/
     
     public boolean out_2(Term arg0,Term arg1){
-
+    	
     	String tcName = null;
     	TupleCentreId tid = null;
     	try{
@@ -173,14 +176,28 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     	tcName = tid.getName();
     	
         AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
-
+        LogicTuple tuArg = null;
+        
+        Struct s_tuple = (Struct) arg0.getTerm();
+		
+        if(bioTupleWellFormed(s_tuple)){
+			Term newArg = (s_tuple.getArg(0)).copyGoal(v, 0);
+			long mult = ((Number)s_tuple.getArg(1).getTerm()).longValue();
+			try {
+				tuArg = new BioTuple(newArg,mult);
+			} catch (InvalidMultiplicityException e) {
+				e.printStackTrace();
+			}
+        }else{
+			Term newArg=arg0.copyGoal(v,0);
+	        tuArg=new LogicTuple(newArg);
+        }
+        
     	if(tcName.equals("this")){
     		log("Local out triggered...");
-	        Term newArg=arg0.copyGoal(v,0);
-	        LogicTuple tuArg=new LogicTuple(newArg);
 	        vm.addTuple(tuArg);
 	        InputEvent ce=vm.getCurrentEvent();
-			InternalEvent ev=new InternalEvent(ce,InternalOperation.makeOutR(new LogicTuple(arg0.copyGoal(v,0))));
+			InternalEvent ev=new InternalEvent(ce,InternalOperation.makeOutR(tuArg));
 			ev.setSource(ce.getReactingTC());
 	        ev.setTarget(ce.getReactingTC());
 			vm.fetchTriggeredReactions(ev);
@@ -188,7 +205,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     	}else{
     		log("Remote out triggered...");
 	    	InputEvent ce=vm.getCurrentEvent();
-			InputEvent out_ev = new InputEvent(ce.getReactingTC(),RespectOperation.makeOut(getProlog(), new LogicTuple(arg0.copyGoal(v,0)),null),tid,vm.getCurrentTime());
+			InputEvent out_ev = new InputEvent(ce.getReactingTC(),RespectOperation.makeOut(getProlog(), tuArg,null),tid,vm.getCurrentTime());
 			out_ev.setIsLinking(true);
 			out_ev.setTarget(tid);
 			vm.addTemporaryOutputEvent(out_ev);
@@ -196,8 +213,8 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
 	    }
     	
     }
-    
-    public boolean out_all_2(Term arg0,Term arg1){
+
+	public boolean out_all_2(Term arg0,Term arg1){
 
     	String tcName = null;
     	TupleCentreId tid = null;
@@ -235,7 +252,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     }
 
     public boolean in_2(Term arg0, Term arg1){
-        
+    	
     	String tcName = null;
     	TupleCentreId tid = null;
     	try{
@@ -246,17 +263,33 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     	}
     	tcName = tid.getName();
     	
-    	LogicTuple tuArg=new LogicTuple(arg0);
-    	AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
+    	LogicTuple tuArg = null;
     	
+    	Struct s_tuple = (Struct) arg0.getTerm();
+    	AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
+		
+        if(bioTupleWellFormed(s_tuple)){
+			Term newArg = (s_tuple.getArg(0)).copyGoal(v, 0);
+			long mult = ((Number)s_tuple.getArg(1).getTerm()).longValue();
+			try {
+				tuArg = new BioTuple(newArg,mult);
+			} catch (InvalidMultiplicityException e) {
+				e.printStackTrace();
+			}
+        }else{
+			Term newArg=arg0.copyGoal(v,0);
+	        tuArg=new LogicTuple(newArg);
+        }
+        
     	if(tcName.equals("this")){
     		log("Local in triggered...");
 	        alice.tuplecentre.api.Tuple tuple=vm.removeMatchingTuple(tuArg);
 	        if (tuple!=null){
+	        	//Ask to Stefano
 	            Term term=((LogicTuple)tuple).toTerm();
 	            unify(arg0,term.copyGoal(v,0));
 	            InputEvent ce=vm.getCurrentEvent();
-				InternalEvent ev=new InternalEvent(ce,InternalOperation.makeInR(new LogicTuple(arg0.copyGoal(v,0)))); 
+				InternalEvent ev=new InternalEvent(ce,InternalOperation.makeInR((LogicTuple)tuple)); 
 				ev.setSource(ce.getReactingTC());
 	            ev.setTarget(ce.getReactingTC());
 				vm.fetchTriggeredReactions(ev);
@@ -267,7 +300,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
 	    }else{
 	    	log("Remote in triggered...");
 	    	InputEvent ce=vm.getCurrentEvent();
-			InputEvent out_ev = new InputEvent(ce.getReactingTC(),RespectOperation.makeIn(getProlog(), new LogicTuple(arg0.copyGoal(v,0)),null),tid,vm.getCurrentTime());
+			InputEvent out_ev = new InputEvent(ce.getReactingTC(),RespectOperation.makeIn(getProlog(), tuArg, null),tid,vm.getCurrentTime());
 			out_ev.setIsLinking(true);
 			out_ev.setTarget(tid);
 			vm.addTemporaryOutputEvent(out_ev);
@@ -1842,5 +1875,10 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     private void log(String s){
     	System.out.println("....[Respect2PLibrary]: " + s);
     }
+    
+    private boolean bioTupleWellFormed(Struct s_tuple) {
+		return s_tuple.getName().equals("biotuple") &&
+				s_tuple.getArity() == 2;
+	}
     
 }
