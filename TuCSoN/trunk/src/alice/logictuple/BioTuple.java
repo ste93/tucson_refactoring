@@ -279,7 +279,7 @@ public class BioTuple extends LogicTuple{
 	{
 		Struct s_t = (Struct)t.getTerm();
 		
-		if(s_t.getName().equals("biotuple") && s_t.getArity()==2){
+		if(s_t.getName().equals("biotuple") && s_t.getArity()==2 && s_t.getArg(1).isGround()){
 			/*
 			AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
 			Term t_tuple = (s_t.getArg(0)).copyGoal(v,0);
@@ -290,6 +290,8 @@ public class BioTuple extends LogicTuple{
 				throw new InvalidMultiplicityException();
 			mult = m;
 			
+		}else if(s_t.getName().equals("biotuple") && s_t.getArity()==2 && !s_t.getArg(1).isGround()){
+			info = new TupleArgument(s_t.getArg(0));
 		}else{
 			throw new InvalidMultiplicityException();	//maybe it should be changed in InvalidBioTupleException (to create)
 		}
