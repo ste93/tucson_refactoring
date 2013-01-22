@@ -455,7 +455,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
 	            Term term=((LogicTuple)tuple).toTerm();
 	            unify(arg0,term.copyGoal(v,0));
 	            InputEvent ce=vm.getCurrentEvent();
-				InternalEvent ev=new InternalEvent(ce,InternalOperation.makeInR((LogicTuple)tuple)); 
+				InternalEvent ev=new InternalEvent(ce,InternalOperation.makeInR((LogicTuple)tuple));
 				ev.setSource(ce.getReactingTC());
 	            ev.setTarget(ce.getReactingTC());
 				vm.fetchTriggeredReactions(ev);
