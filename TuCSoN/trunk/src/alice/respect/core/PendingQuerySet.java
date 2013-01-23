@@ -107,7 +107,7 @@ public class PendingQuerySet  {
         Iterator it=events.listIterator();
         while (it.hasNext()){
         	alice.tuplecentre.core.Event ev=(alice.tuplecentre.core.Event)it.next();
-            if (ev.getOperation().getId()==opId){
+            if (ev.getSimpleTCEvent().getId()==opId){
                 it.remove();
                 return true;
             }
@@ -119,7 +119,7 @@ public class PendingQuerySet  {
 		Iterator it=events.listIterator();
 		while (it.hasNext()){
 			alice.tuplecentre.core.Event ev=(alice.tuplecentre.core.Event)it.next();
-			if (ev.getId().toString().equals(id.toString())){
+			if (ev.getSource().toString().equals(id.toString())){
 				it.remove();
 			}
 		}

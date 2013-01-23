@@ -18,6 +18,7 @@ import alice.respect.api.exceptions.InvalidSpecificationException;
 import alice.respect.api.exceptions.InvalidTupleCentreIdException;
 import alice.respect.api.exceptions.OperationNotPossibleException;
 
+import alice.respect.core.RespectTC;
 import alice.respect.core.SpecificationSynchInterface;
 import alice.respect.core.RespectTCContainer;
 
@@ -46,7 +47,7 @@ public class TupleCentreContainer{
 	public static final int RESPECTQUEUE = 10;
 	private static int defaultport;
 		
-	public static boolean createTC(TucsonTupleCentreId id, int q, int def_port) throws TCInstantiationNotPossibleException, InvalidTupleCentreIdException{
+	public static RespectTC createTC(TucsonTupleCentreId id, int q, int def_port) throws TCInstantiationNotPossibleException, InvalidTupleCentreIdException{
 		defaultport = def_port;
 		try{
 			RespectTCContainer rtcc = RespectTCContainer.getRespectTCContainer();
@@ -194,45 +195,45 @@ public class TupleCentreContainer{
 //			log("(TupleCentreId) tid.getInternalTupleCentreId() = " + ((TupleCentreId) tid.getInternalTupleCentreId()));
 			context = (RespectTCContainer.getRespectTCContainer()).getOrdinaryAsynchInterface((TupleCentreId) tid.getInternalTupleCentreId());
 			if(type == TucsonOperation.spawnCode()){
-				return context.spawn((AgentId) aid.getLocalAgentId(), t, l);
+				return context.spawn((AgentId) aid.getAgentId(), t, l);
 			}if(type == TucsonOperation.outCode())
-				return context.out((AgentId) aid.getLocalAgentId(), t, l);
+				return context.out((AgentId) aid.getAgentId(), t, l);
 			if(type == TucsonOperation.inCode())
-				return context.in((AgentId) aid.getLocalAgentId(), t, l);
+				return context.in((AgentId) aid.getAgentId(), t, l);
 			if(type == TucsonOperation.inpCode())
-				return context.inp((AgentId) aid.getLocalAgentId(), t, l);
+				return context.inp((AgentId) aid.getAgentId(), t, l);
 			if(type == TucsonOperation.rdCode())
-				return context.rd((AgentId) aid.getLocalAgentId(), t, l);
+				return context.rd((AgentId) aid.getAgentId(), t, l);
 			if(type == TucsonOperation.rdpCode())
-				return context.rdp((AgentId) aid.getLocalAgentId(), t, l);
+				return context.rdp((AgentId) aid.getAgentId(), t, l);
 			if(type == TucsonOperation.noCode())
-				return context.no((AgentId) aid.getLocalAgentId(), t, l);
+				return context.no((AgentId) aid.getAgentId(), t, l);
 			if(type == TucsonOperation.nopCode())
-				return context.nop((AgentId) aid.getLocalAgentId(), t, l);
+				return context.nop((AgentId) aid.getAgentId(), t, l);
 			if(type == TucsonOperation.get_Code())
-				return context.get((AgentId) aid.getLocalAgentId(), l);
+				return context.get((AgentId) aid.getAgentId(), l);
 			if(type == TucsonOperation.set_Code())
-				return context.set((AgentId) aid.getLocalAgentId(), t, l);
+				return context.set((AgentId) aid.getAgentId(), t, l);
 			if(type == TucsonOperation.out_allCode())
-				return context.out_all((AgentId) aid.getLocalAgentId(), t, l);
+				return context.out_all((AgentId) aid.getAgentId(), t, l);
 			if(type == TucsonOperation.in_allCode())
-				return context.in_all((AgentId) aid.getLocalAgentId(), t, l);
+				return context.in_all((AgentId) aid.getAgentId(), t, l);
 			if(type == TucsonOperation.rd_allCode())
-				return context.rd_all((AgentId) aid.getLocalAgentId(), t, l);
+				return context.rd_all((AgentId) aid.getAgentId(), t, l);
 			if(type == TucsonOperation.no_allCode())
-				return context.no_all((AgentId) aid.getLocalAgentId(), t, l);
+				return context.no_all((AgentId) aid.getAgentId(), t, l);
 			if(type == TucsonOperation.uinCode())
-				return context.uin((AgentId) aid.getLocalAgentId(), t, l);
+				return context.uin((AgentId) aid.getAgentId(), t, l);
 			if(type == TucsonOperation.uinpCode())
-				return context.uinp((AgentId) aid.getLocalAgentId(), t, l);
+				return context.uinp((AgentId) aid.getAgentId(), t, l);
 			if(type == TucsonOperation.urdCode())
-				return context.urd((AgentId) aid.getLocalAgentId(), t, l);
+				return context.urd((AgentId) aid.getAgentId(), t, l);
 			if(type == TucsonOperation.urdpCode())
-				return context.urdp((AgentId) aid.getLocalAgentId(), t, l);
+				return context.urdp((AgentId) aid.getAgentId(), t, l);
 			if(type == TucsonOperation.unoCode())
-				return context.uno((AgentId) aid.getLocalAgentId(), t, l);
+				return context.uno((AgentId) aid.getAgentId(), t, l);
 			if(type == TucsonOperation.unopCode())
-				return context.unop((AgentId) aid.getLocalAgentId(), t, l);
+				return context.unop((AgentId) aid.getAgentId(), t, l);
 		}catch(InvalidLogicTupleException e){
 			throw new TucsonInvalidLogicTupleException();
 		}catch(OperationNotPossibleException e){
@@ -312,23 +313,23 @@ public class TupleCentreContainer{
 		try{
 			context = (RespectTCContainer.getRespectTCContainer()).getSpecificationAsynchInterface((TupleCentreId) tid.getInternalTupleCentreId());			
 			if(type == TucsonOperation.no_sCode())
-				return context.no_s((AgentId) aid.getLocalAgentId(), t, l);
+				return context.no_s((AgentId) aid.getAgentId(), t, l);
 			if(type == TucsonOperation.nop_sCode())
-				return context.nop_s((AgentId) aid.getLocalAgentId(), t, l);
+				return context.nop_s((AgentId) aid.getAgentId(), t, l);
 			if(type == TucsonOperation.out_sCode())
-				return context.out_s((AgentId) aid.getLocalAgentId(), t, l);
+				return context.out_s((AgentId) aid.getAgentId(), t, l);
 			if(type == TucsonOperation.in_sCode())
-				return context.in_s((AgentId) aid.getLocalAgentId(), t, l);
+				return context.in_s((AgentId) aid.getAgentId(), t, l);
 			if(type == TucsonOperation.inp_sCode())
-				return context.inp_s((AgentId) aid.getLocalAgentId(), t, l);
+				return context.inp_s((AgentId) aid.getAgentId(), t, l);
 			if(type == TucsonOperation.rd_sCode())
-				return context.rd_s((AgentId) aid.getLocalAgentId(), t, l);
+				return context.rd_s((AgentId) aid.getAgentId(), t, l);
 			if(type == TucsonOperation.rdp_sCode())
-				return context.rdp_s((AgentId) aid.getLocalAgentId(), t, l);
+				return context.rdp_s((AgentId) aid.getAgentId(), t, l);
 			if(type == TucsonOperation.get_sCode())
-				return context.get_s((AgentId) aid.getLocalAgentId(), l);
+				return context.get_s((AgentId) aid.getAgentId(), l);
 			if(type == TucsonOperation.set_sCode())
-				return context.set_s((AgentId) aid.getLocalAgentId(), new RespectSpecification(t.toString()), l);
+				return context.set_s((AgentId) aid.getAgentId(), new RespectSpecification(t.toString()), l);
 		}catch(InvalidLogicTupleException e){
 			throw new TucsonInvalidLogicTupleException();
 		}catch(OperationNotPossibleException e){
@@ -385,25 +386,45 @@ public class TupleCentreContainer{
 //			if(type == TucsonOperation.spawnCode())
 //				context.spawn((AgentId) aid.getLocalAgentId(), (LogicTuple) o);
 			if(type == TucsonOperation.get_Code())
-				return context.get((AgentId) aid.getLocalAgentId());
+				return context.get((AgentId) aid.getAgentId());
 			if(type == TucsonOperation.set_Code()){
-				return context.set((AgentId) aid.getLocalAgentId(), (LogicTuple) o);
+				return context.set((AgentId) aid.getAgentId(), (LogicTuple) o);
 			}
 			if(type == TucsonOperation.outCode()){
-				context.out((AgentId) aid.getLocalAgentId(), (LogicTuple)o);
+				context.out((AgentId) aid.getAgentId(), (LogicTuple)o);
 				return o;
 			}if(type == TucsonOperation.inCode())
-				return context.in((AgentId) aid.getLocalAgentId(), (LogicTuple)o);
+				return context.in((AgentId) aid.getAgentId(), (LogicTuple)o);
 			if(type == TucsonOperation.inpCode())
-				return context.inp((AgentId) aid.getLocalAgentId(), (LogicTuple)o);
+				return context.inp((AgentId) aid.getAgentId(), (LogicTuple)o);
 			if(type == TucsonOperation.rdCode())
-				return context.rd((AgentId) aid.getLocalAgentId(), (LogicTuple)o);
+				return context.rd((AgentId) aid.getAgentId(), (LogicTuple)o);
 			if(type == TucsonOperation.rdpCode())
-				return context.rdp((AgentId) aid.getLocalAgentId(), (LogicTuple)o);
+				return context.rdp((AgentId) aid.getAgentId(), (LogicTuple)o);
 			if(type == TucsonOperation.noCode())
-				return context.no((AgentId) aid.getLocalAgentId(), (LogicTuple)o);
+				return context.no((AgentId) aid.getAgentId(), (LogicTuple)o);
 			if(type == TucsonOperation.nopCode())
-				return context.nop((AgentId) aid.getLocalAgentId(), (LogicTuple)o);
+				return context.nop((AgentId) aid.getAgentId(), (LogicTuple)o);
+			if(type == TucsonOperation.out_allCode())
+				return context.out_all((AgentId) aid.getAgentId(), (LogicTuple)o);
+			if(type == TucsonOperation.in_allCode())
+				return context.in_all((AgentId) aid.getAgentId(), (LogicTuple)o);
+			if(type == TucsonOperation.rd_allCode())
+				return context.rd_all((AgentId) aid.getAgentId(), (LogicTuple)o);
+			if(type == TucsonOperation.no_allCode())
+				return context.no_all((AgentId) aid.getAgentId(), (LogicTuple)o);
+			if(type == TucsonOperation.uinCode())
+				return context.uin((AgentId) aid.getAgentId(), (LogicTuple)o);
+			if(type == TucsonOperation.urdCode())
+				return context.uin((AgentId) aid.getAgentId(), (LogicTuple)o);
+			if(type == TucsonOperation.unoCode())
+				return context.uin((AgentId) aid.getAgentId(), (LogicTuple)o);
+			if(type == TucsonOperation.uinpCode())
+				return context.uin((AgentId) aid.getAgentId(), (LogicTuple)o);
+			if(type == TucsonOperation.urdpCode())
+				return context.uin((AgentId) aid.getAgentId(), (LogicTuple)o);
+			if(type == TucsonOperation.unopCode())
+				return context.uin((AgentId) aid.getAgentId(), (LogicTuple)o);
 		}catch(InvalidLogicTupleException e){
 			throw new TucsonInvalidLogicTupleException();
 		}catch(OperationNotPossibleException e){
@@ -425,7 +446,7 @@ public class TupleCentreContainer{
 	 * @throws TucsonInvalidLogicTupleException
 	 * @throws TucsonOperationNotPossibleException
 	 */
-	public static LogicTuple doBlockingOperation(int type,
+	public static Object doBlockingOperation(int type,
 			TucsonTupleCentreId aid, TucsonTupleCentreId tid, LogicTuple t)
 					throws TucsonInvalidLogicTupleException,
 					TucsonOperationNotPossibleException{			
@@ -447,16 +468,14 @@ public class TupleCentreContainer{
 				return context.rdp((TupleCentreId) aid.getInternalTupleCentreId(), t);
 			if(type == TucsonOperation.nopCode())
 				return context.nop((TupleCentreId) aid.getInternalTupleCentreId(), t);
-			if(type == TucsonOperation.out_allCode()){
-				context.out_all((TupleCentreId) aid.getInternalTupleCentreId(), t);
-				return t;
-			}
+			if(type == TucsonOperation.out_allCode())
+				return context.out_all((TupleCentreId) aid.getInternalTupleCentreId(), t);
 			if(type == TucsonOperation.in_allCode())
 				return context.in_all((TupleCentreId) aid.getInternalTupleCentreId(), t);
 			if(type == TucsonOperation.rd_allCode())
-				return context.in_all((TupleCentreId) aid.getInternalTupleCentreId(), t);
+				return context.rd_all((TupleCentreId) aid.getInternalTupleCentreId(), t);
 			if(type == TucsonOperation.no_allCode())
-				return context.in_all((TupleCentreId) aid.getInternalTupleCentreId(), t);
+				return context.no_all((TupleCentreId) aid.getInternalTupleCentreId(), t);
 			if(type == TucsonOperation.uinCode())
 				return context.uin((TupleCentreId) aid.getInternalTupleCentreId(), t);
 			if(type == TucsonOperation.urdCode())
@@ -497,12 +516,12 @@ public class TupleCentreContainer{
 //				if(aid.toString().equals("node_agent") || aid.toString().startsWith("inspector_edit_spec_")){
 				if(t.getName().equals("spec")){
 //					log("t = " + t);
-					return ((SpecificationSynchInterface)context).set_s((AgentId) aid.getLocalAgentId(), new RespectSpecification(((LogicTuple) t).getArg(0).getName()));
+					return ((SpecificationSynchInterface)context).set_s((AgentId) aid.getAgentId(), new RespectSpecification(((LogicTuple) t).getArg(0).getName()));
 				}
-				return ((SpecificationSynchInterface)context).set_s((AgentId) aid.getLocalAgentId(), t);
+				return ((SpecificationSynchInterface)context).set_s((AgentId) aid.getAgentId(), t);
 			}
 			if(type == TucsonOperation.get_sCode()){
-				return ((SpecificationSynchInterface)context).get_s((AgentId) aid.getLocalAgentId());
+				return ((SpecificationSynchInterface)context).get_s((AgentId) aid.getAgentId());
 			}
 		}catch(OperationNotPossibleException e){
 			throw new TucsonOperationNotPossibleException();

@@ -62,8 +62,10 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         
     	return 
         
-    	":- op(600, xfx, '?'). \n"+
-        ":- op(550, xfx, '@'). \n"+
+		":- op(551, xfx, '?'). \n"
+		+ ":- op(550, xfx, '@'). \n"
+		+ ":- op(549, xfx, ':'). \n"
+		+ ":- op(548, xfx, '.'). \n" +
 
         "TC ? Op :- not(TC = Name @ Host), TC@localhost ? Op, !. \n"+
         
@@ -262,6 +264,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     		return false;
     	}
     	tcName = tid.getName();
+    	log("tid = " + tid);
     	
     	LogicTuple tuArg = null;
     	
@@ -402,7 +405,8 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
 	    }else{
 	    	log("Remote in_all triggered...");
 	    	InputEvent ce=vm.getCurrentEvent();
-	    	String tuple = arg0.toString()+","+arg1.copyGoal(v, 0);
+//	    	String tuple = arg0.getTerm().toString()+","+arg1.copyGoal(v,0);
+	    	String tuple = arg0.getTerm().toString()+","+arg1;
 	    	LogicTuple resultArg = null;
 			try {
 				resultArg = LogicTuple.parse(tuple);
@@ -672,10 +676,13 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
 	    }else{
 	    	log("Remote rd_all triggered...");
 	    	InputEvent ce=vm.getCurrentEvent();
-	    	String tuple = arg0.toString()+","+arg1.copyGoal(v,0);
+//	    	String tuple = arg0.getTerm().toString()+","+arg1.copyGoal(v,0);
+	    	String tuple = arg0.getTerm().toString()+","+arg1;
 	    	LogicTuple resultArg = null;
 			try {
+//				log("tuple = " + tuple);
 				resultArg = LogicTuple.parse(tuple);
+//				log("resultArg = " + resultArg);
 			} catch (InvalidLogicTupleException e) {
 				e.printStackTrace();
 			}
@@ -884,7 +891,8 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
 	    }else{
 	    	log("Remote no_all triggered...");
 	    	InputEvent ce=vm.getCurrentEvent();
-	    	String tuple = arg0.toString()+","+arg1.copyGoal(v,0);
+//	    	String tuple = arg0.getTerm().toString()+","+arg1.copyGoal(v,0);
+	    	String tuple = arg0.getTerm().toString()+","+arg1;
 	    	LogicTuple resultArg = null;
 			try {
 				resultArg = LogicTuple.parse(tuple);
@@ -1534,8 +1542,8 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     		e.printStackTrace();
     		return false;
     	}
-    	log("tid = " + tid);
-    	log("arg0 = " + arg0);
+//    	log("tid = " + tid);
+//    	log("arg0 = " + arg0);
     	tcName = tid.getName();
     	
         AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
@@ -1546,7 +1554,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
 	        LogicTuple tuArg=new LogicTuple(newArg);
 	        InputEvent ce=vm.getCurrentEvent();
 //	        AS A FIRST IMPL, CONSIDER THE OWNER AS THE REACTING TC (WHICH IS ALSO TARGET)
-	        log("ce.getReactingTC() = " + ce.getReactingTC());
+//	        log("ce.getReactingTC() = " + ce.getReactingTC());
 	        vm.spawnActivity(tuArg, ce.getReactingTC(), ce.getReactingTC());
 //	        vm.spawnActivity(tuArg, ce.getSource(), tid);
 			InternalEvent ev=new InternalEvent(ce,InternalOperation.makeSpawnR(new LogicTuple(arg0.copyGoal(v,0))));
@@ -1575,7 +1583,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      */
     public boolean response_0(){
     	Event ev = vm.getCurrentReactionEvent();
-        TupleCentreOperation op = ev.getOperation();
+        TupleCentreOperation op = ev.getSimpleTCEvent();
         return op.isResultDefined();
     }
     
@@ -1600,7 +1608,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      */
     public boolean request_0(){
     	Event ev = vm.getCurrentReactionEvent();
-        TupleCentreOperation op = ev.getOperation();
+        TupleCentreOperation op = ev.getSimpleTCEvent();
         return !op.isResultDefined();
     }
     
@@ -1625,7 +1633,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      */
     public boolean success_0(){
         Event ev = vm.getCurrentReactionEvent();
-        TupleCentreOperation op = ev.getOperation();
+        TupleCentreOperation op = ev.getSimpleTCEvent();
         return op.isResultSuccess();
     }
     
@@ -1634,7 +1642,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      */
     public boolean failure_0(){
     	Event ev = vm.getCurrentReactionEvent();
-    	TupleCentreOperation op = ev.getOperation();
+    	TupleCentreOperation op = ev.getSimpleTCEvent();
         return op.isResultFailure();
     }
     
@@ -1646,19 +1654,14 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     	Event ev = vm.getCurrentReactionEvent();
     	IId target = ev.getTarget();
     	IId current_tc = this.vm.getId();
-    	log("\tintra) target = "+target.toString()+", current_tc = "+current_tc.toString());
+//    	IId current_tc = ev.getReactingTC();
+//    	log("\tintra) target = "+target.toString()+", current_tc = "+current_tc.toString());
     	if(current_tc.toString().equals(target.toString()))
     		return true;
     	else
     		return false;
     }
     
-    /*
-     * BUG: it doesn't trigger when it should. Maybe TuCSoN gives the operation
-     * to the target ReSpecT tc whereas TuCSoN should give the operation to
-     * ReSpecT VM (whatever this means) and this one should forward it to the
-     * target tc. 
-     */
     public boolean inter_0(){
     	return !intra_0();
     }
@@ -1671,7 +1674,8 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     	Event ev = vm.getCurrentReactionEvent();
     	IId source = ev.getSource();
     	IId current_tc = this.vm.getId();
-    	log("\texo) source = "+source.toString()+", current_tc = "+current_tc.toString());
+//    	IId current_tc = ev.getReactingTC();
+//    	log("\texo) source = "+source.toString()+", current_tc = "+current_tc.toString());
     	if(!current_tc.toString().equals(source.toString()))
     		return true;
     	else
@@ -1689,7 +1693,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     public boolean from_agent_0(){
     	Event ev = vm.getCurrentReactionEvent();
     	IId source = ev.getSource();
-    	log("\tfrom_agent) source = "+source.toString());
+//    	log("\tfrom_agent) source = "+source.toString());
     	if(source.isAgent())
     		return true;
     	else
@@ -1707,7 +1711,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     public boolean to_agent_0(){
     	Event ev = vm.getCurrentReactionEvent();
     	IId target = ev.getTarget();
-    	log("\tto_agent) target = "+target.toString());
+//    	log("\tto_agent) target = "+target.toString());
     	if(target.isAgent())
     		return true;    		
     	else
@@ -1721,12 +1725,12 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     public boolean from_tc_0(){
     	Event ev = vm.getCurrentReactionEvent();
     	IId source = ev.getSource();
-    	log("\tfrom_tc) source = "+source.toString());
+//    	log("\tfrom_tc) source = "+source.toString());
     	if(source.isTC()){
-    		log("\t\tsource.isTC() is TRUE!");
+//    		log("\t\tsource.isTC() is true");
     		return true;    		
     	}else{
-    		log("\t\tsource.isTC() is FALSE!");
+//    		log("\t\tsource.isTC() is false");
     		return false;
     	}
     }
@@ -1742,7 +1746,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     public boolean to_tc_0(){
     	Event ev = vm.getCurrentReactionEvent();
     	IId target = ev.getTarget();
-    	log("\tto_tc) target = "+target.toString());
+//    	log("\tto_tc) target = "+target.toString());
     	if(target.isTC())
     		return true;
     	else
@@ -1764,6 +1768,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     	}catch(Exception e){
     		return false;
     	}
+//    	log("\t before) event = " + evtTime + ", compare = " + compareTime);
     	if(evtTime <= compareTime)
     		return true;
     	else
@@ -1779,22 +1784,28 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      ********************************************************************/
     
     public boolean operation_0(){
+//    	log("operation ->");
     	return from_agent_0() && to_tc_0();
     }
     
     public boolean internal_0(){
+//    	log("internal ->");
     	return from_tc_0() && to_tc_0() && endo_0() && intra_0();
     }
     
     public boolean link_in_0(){
+//    	log("link_in ->");
     	return from_tc_0() && to_tc_0() && exo_0() && intra_0();
     }
     
-    /*
-     * BUG: it doesn't trigger when it should due to 'inter_0()'.
-     */
     public boolean link_out_0(){
+//    	log("link_out ->");
     	return from_tc_0() && to_tc_0() && endo_0() && inter_0();
+    }
+    
+    public boolean between_2(Term time1, Term time2){
+//    	log("between ->");
+    	return after_1(time1) && before_1(time2);
     }
     
     /********************************************************************
@@ -1810,23 +1821,28 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      * process.
      */
     public boolean current_predicate_1(Term predicate){
-    	log("\tcurrent_predicate) " + vm.getCurrentReactionTerm());
-    	return unify(predicate, vm.getCurrentReactionTerm());
+    	return unify(predicate, new Struct("current_predicate("+predicate+")"));
     }
     
-    /*
-     * What is it supposed to unify with?
-     */
     public boolean event_predicate_1(Term predicate){
-//    	return unify(predicate, (Term)vm.getCurrentReactionEvent().getTuple());
-    	return false;
+//    	log("\tevent_predicate) " + vm.getCurrentReactionTerm().getTerm());
+    	return unify(predicate, vm.getCurrentReactionTerm().getTerm());
     }
     
-    /*
-     * NO MEANS TO DO IT!
-     */
     public boolean start_predicate_1(Term predicate){
-    	return false;
+    	Event e = vm.getCurrentReactionEvent();
+    	if(e.isInternal()){
+    		InternalEvent ie = (InternalEvent)e;
+//    		log("\tstart_predicate) IE: " + ie.getInputEvent().getSimpleTCEvent().getPredicate());
+    		return unify(predicate, ie.getInputEvent().getSimpleTCEvent().getPredicate().toTerm());
+    	}
+    	if(e.isOutput()){
+    		OutputEvent oe = (OutputEvent)e;
+//    		log("\tstart_predicate) OE: " + oe.getInputEvent().getSimpleTCEvent().getPredicate());
+    		return unify(predicate, oe.getInputEvent().getSimpleTCEvent().getPredicate().toTerm());
+    	}
+//    	log("\tstart_predicate) E: " + vm.getCurrentReactionTerm().getTerm());
+    	return unify(predicate, vm.getCurrentReactionTerm().getTerm());
     }
     
     /**
@@ -1838,9 +1854,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      * started the current ReSpecT computation.
      */
     public boolean current_tuple_1(Term tuple){
-    	AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
-    	log("\tcurrent_tuple) " + vm.getCurrentReactionTerm().getArg(0));
-    	return unify(tuple, vm.getCurrentReactionTerm().getArg(0).copyGoal(v,0));
+    	return unify(tuple, new Var());
     }
     
     /**
@@ -1849,17 +1863,25 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      * @return
      */
     public boolean event_tuple_1(Term tuple){
-    	AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
-    	Event e = vm.getCurrentReactionEvent();
-    	log("\tevent_tuple) " + (Term)e.getTuple());
-    	return unify(tuple, ((Term)e.getTuple()).copyGoal(v,0));
+    	Term t = vm.getCurrentReactionTerm().getArg(0);
+//    	log("\tevent_tuple) " + t);
+    	return unify(tuple, t);
     }
     
-    /*
-     * NO MEANS TO DO IT!
-     */
     public boolean start_tuple_1(Term tuple){
-    	return false;
+    	Event e = vm.getCurrentReactionEvent();
+    	if(e.isInternal()){
+    		InternalEvent ie = (InternalEvent)e;
+//    		log("\tstart_tuple) IE: " + ie.getInputEvent().getTuple());
+    		return unify(tuple, Term.createTerm(""+ie.getInputEvent().getTuple()));
+    	}
+    	if(e.isOutput()){
+    		OutputEvent oe = (OutputEvent)e;
+//    		log("\tstart_tuple) OE: " + oe.getInputEvent().getTuple());
+    		return unify(tuple, Term.createTerm(""+oe.getInputEvent().getTuple()));
+    	}
+//    	log("\tstart_tuple) E: " + e.getTuple());
+    	return unify(tuple, Term.createTerm(""+e.getTuple()));
     }
     
     /**
@@ -1871,9 +1893,8 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      * reaction.
      */
     public boolean current_source_1(Term source){
-    	log("\tcurrent_source) " + vm.getId());
-    	return unify(source, 
-        		new Struct(vm.getId().toString()) );
+    	Term t = ((TupleCentreId)vm.getId()).toTerm();
+    	return unify(source, t);
     }
     
     /**
@@ -1882,19 +1903,28 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      * @return
      */
     public boolean event_source_1(Term source){
-    	log("\tevent_source) " + vm.getCurrentReactionEvent().getSource());
+//    	log("\tevent_source) " + vm.getCurrentReactionEvent().getSource());
     	return unify(source,
     			new Struct(vm.getCurrentReactionEvent().getSource().toString()));
     }
     
-    /*
-     * Do not know which one among 'event_source/1' and 'start_source/1' is
-     * returned by 'vm.getCurrentReactionEvent().getId()'.
-     */
     public boolean start_source_1(Term source){
-    	log("\tstart_source) " + vm.getCurrentReactionEvent().getId());
+    	Event e = vm.getCurrentReactionEvent();
+    	if(e.isInternal()){
+    		InternalEvent ie = (InternalEvent)e;
+//    		log("\tstart_source) IE: " + ie.getInputEvent().getSource());
+    		return unify(source,
+        			new Struct(ie.getInputEvent().getSource().toString()));
+    	}
+    	if(e.isOutput()){
+    		OutputEvent oe = (OutputEvent)e;
+//    		log("\tstart_source) OE: " + oe.getInputEvent().getSource());
+    		return unify(source,
+        			new Struct(oe.getInputEvent().getSource().toString()));
+    	}
+//    	log("\tstart_source) E: " + e.getSource());
     	return unify(source,
-    			new Struct(vm.getCurrentReactionEvent().getId().toString()));
+    			new Struct(e.getSource().toString()));
     }
     
     /**
@@ -1903,25 +1933,34 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      * @return
      */
     public boolean current_target_1(Term target){
-    	log("\tcurrent_target) " + vm.getId());
-    	return unify(target, 
-        		new Struct(vm.getId().toString()) );
+//    	log("\tcurrent_target) " + vm.getId().toString());
+    	Term t = ((TupleCentreId)vm.getId()).toTerm();
+    	return unify(target, t);
     }
     
-    /*
-     * What is it supposed to unify with?
-     */
     public boolean event_target_1(Term target){
-    	log("\tevent_target) " + vm.getCurrentReactionEvent().getTarget());
+//    	log("\tevent_target) " + vm.getCurrentReactionEvent().getTarget());
     	return unify(target, 
     			new Struct(vm.getCurrentReactionEvent().getTarget().toString()));
     }
     
-    /*
-     * NO MEANS TO DO IT!
-     */
     public boolean start_target_1(Term target){
-    	return false;
+    	Event e = vm.getCurrentReactionEvent();
+    	if(e.isInternal()){
+    		InternalEvent ie = (InternalEvent)e;
+//    		log("\tstart_target) IE: " + ie.getInputEvent().getTarget());
+    		return unify(target, 
+        			new Struct(ie.getInputEvent().getTarget().toString()));
+    	}
+    	if(e.isOutput()){
+    		OutputEvent oe = (OutputEvent)e;
+//    		log("\tstart_target) OE: " + oe.getInputEvent().getTarget());
+    		return unify(target, 
+        			new Struct(oe.getInputEvent().getTarget().toString()));
+    	}
+//    	log("\tstart_target) E: " + e.getTarget());
+    	return unify(target, 
+    			new Struct(e.getTarget().toString()));
     }
     
     /**
@@ -1930,7 +1969,8 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      * @return true if the actual time is the expected time we're at.
      */
     public boolean current_time_1(Term time){
-	    long vmTime = vm.getCurrentTime();
+    	long vmTime = vm.getCurrentTime();
+//    	log("\t### current_time = " + vmTime + " ###");
 	    return unify(time, new alice.tuprolog.Long(vmTime));
 	}
     
@@ -1944,26 +1984,25 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      */
     public boolean event_time_1(Term time){
 	    long reTime = vm.getCurrentReactionEvent().getTime();
+//	    log("\tevent_time) " + reTime);
 	    return unify(time, new alice.tuprolog.Long(reTime));
 	}
     
-    /*
-     * NO MEANS TO DO IT!
-     */
     public boolean start_time_1(Term time){
-	    return false;
+    	Event e = vm.getCurrentReactionEvent();
+    	if(e.isInternal()){
+    		InternalEvent ie = (InternalEvent)e;
+//    		log("\tstart_time) IE: " + ie.getInputEvent().getTime());
+    		return unify(time, new alice.tuprolog.Long(ie.getInputEvent().getTime()));
+    	}
+    	if(e.isOutput()){
+    		OutputEvent oe = (OutputEvent)e;
+//    		log("\tstart_time) OE: " + oe.getInputEvent().getTime());
+    		return unify(time, new alice.tuprolog.Long(oe.getInputEvent().getTime()));
+    	}
+//    	log("\tstart_time) E: " + e.getTime());
+    	return unify(time, new alice.tuprolog.Long(e.getTime()));
 	}
-    
-//    /**
-//     * @param target the expected final target of the ReSpecT operation.
-//     * 
-//     * @return true if the given target is the actual final target of the
-//     * ReSpecT operation.
-//     */
-//    public boolean current_target_1(Term target){
-//        return unify(target,
-//        		new Struct( (vm.getCurrentReactionEvent().getReactingTC()).toString()) );
-//    }
 
     /********************************************************************
      * Situated ReSpecT extension: still to test.

@@ -1,4 +1,4 @@
-package alice.tucson.api;
+package alice.tucson.service;
 
 public class TucsonIdWrapper<I> {
 

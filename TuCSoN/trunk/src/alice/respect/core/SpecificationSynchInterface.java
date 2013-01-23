@@ -108,9 +108,10 @@ public class SpecificationSynchInterface extends RootInterface implements ISpeci
   	
 	public List<LogicTuple> set_s(IId aid, RespectSpecification spec) throws OperationNotPossibleException, InvalidSpecificationException {
 		IRespectOperation op = getCore().set_s(aid, spec);
-		if(aid.toString().equals("node_agent") || aid.toString().startsWith("':'(inspector_edit_spec_"))
+		if(aid.toString().equals("'$TucsonNodeService-Agent'") ||
+				aid.toString().startsWith("'$Inspector-'"))
 			return new LinkedList<LogicTuple>();
-		op.waitForOperationCompletion();
+//		op.waitForOperationCompletion();
 		return op.getLogicTupleListResult();
 	}
 	

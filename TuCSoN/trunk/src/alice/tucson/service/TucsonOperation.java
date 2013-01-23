@@ -22,6 +22,7 @@ public class TucsonOperation extends TupleCentreOperation implements ITucsonOper
 	private boolean successed;
 	private boolean allowed;
 	private ACCProxyAgentSide context = null;
+	private InterTupleCentreACCProxy interContext = null;
 	
 	public TucsonOperation(int type, Tuple t, OperationCompletionListener l, ACCProxyAgentSide context){
 		super(null, type, t, l);
@@ -32,6 +33,18 @@ public class TucsonOperation extends TupleCentreOperation implements ITucsonOper
 	public TucsonOperation(int type, TupleTemplate t, OperationCompletionListener l, ACCProxyAgentSide context){
 		super(null, type, t, l);
 		this.context = context;
+		successed = false;
+	}
+	
+	public TucsonOperation(int type, Tuple t, OperationCompletionListener l, InterTupleCentreACCProxy context){
+		super(null, type, t, l);
+		this.interContext = context;
+		successed = false;
+	}
+
+	public TucsonOperation(int type, TupleTemplate t, OperationCompletionListener l, InterTupleCentreACCProxy context){
+		super(null, type, t, l);
+		this.interContext = context;
 		successed = false;
 	}
 	

@@ -22,10 +22,7 @@ import alice.logictuple.*;
 import alice.tucson.api.TucsonAgentId;
 import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
-import alice.tucson.api.exceptions.TucsonInvalidLogicTupleException;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
-import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
-
 
 import alice.tucson.network.*;
 import alice.tucson.service.TucsonNodeService;
@@ -66,17 +63,21 @@ public class ACCProxyNodeSide extends ACCAbstractProxyNodeSide{
 		ctxId = Integer.parseInt(p.getProperty("context-id"));
 
 		String name = p.getProperty("agent-identity");
+		if(name != null)
+			System.out.println("name agent = " + name);
 		if(name == null){
 			name = p.getProperty("tc-identity");
+			if(name != null)
+				System.out.println("name tc = " + name);
 			try {
 				tcId = new TucsonTupleCentreId(name);
-				agentId = new TucsonAgentId("tcAgent-"+name);
+				agentId = new TucsonAgentId("tcAgent", tcId);
 			} catch (TucsonInvalidTupleCentreIdException e) {
 				System.err.println("[ACCProxyNodeSide]: " + e);
 				e.printStackTrace();
-			} catch (TucsonInvalidAgentIdException e) {
-				System.err.println("[ACCProxyNodeSide]: " + e);
-				e.printStackTrace();
+//			} catch (TucsonInvalidAgentIdException e) {
+//				System.err.println("[ACCProxyNodeSide]: " + e);
+//				e.printStackTrace();
 			}
 		}else{
 			try{
@@ -99,7 +100,7 @@ public class ACCProxyNodeSide extends ACCAbstractProxyNodeSide{
 		
 	}
 
-	protected void log(String st){
+	private void log(String st){
 		System.out.println("[ACCProxyNodeSide (port=" + node.getTCPPort() + ", acc=" + ctxId + ")]: " + st);
 	}
 
@@ -330,6 +331,7 @@ public class ACCProxyNodeSide extends ACCAbstractProxyNodeSide{
 		log("Releasing ACC < " + ctxId + " > held by TuCSoN agent < " + agentId.toString() + " >");
 		node.removeAgent(agentId);
 		manager.shutdownContext(ctxId, agentId);
+		node.removeNodeAgent(this);
 
 	}
 
@@ -352,31 +354,18 @@ public class ACCProxyNodeSide extends ACCAbstractProxyNodeSide{
 		
 		TucsonMsgReply reply = null;
 		
-		if(op.isOut() || op.isOut_s() || op.isSpawn()){
-			if(op.isResultSuccess()){
-				reply = new TucsonMsgReply(msg.getId(), op.getType(), true, true, true, msg.getTuple(), (LogicTuple) op.getTupleResult());
-			}else
-				reply = new TucsonMsgReply(msg.getId(), op.getType(), true, true, false, msg.getTuple(), (LogicTuple) op.getTupleResult());
-		}else if(op.isNo() || op.isNo_s() || op.isIn() || op.isIn_s() || op.isRd() || op.isRd_s() || op.isUin() || op.isUrd() || op.isUno()){
-			if(op.isResultSuccess()){
-				reply = new TucsonMsgReply(msg.getId(), op.getType(), true, true, true, msg.getTuple(), (LogicTuple) op.getTupleResult());
-			}else{
-				reply = new TucsonMsgReply(msg.getId(), op.getType(), true, true, false, msg.getTuple(), (LogicTuple) op.getTupleResult());
-			}
-		}else if(op.isNop() || op.isNop_s() || op.isInp() || op.isInp_s() || op.isRdp() || op.isRdp_s() || op.isUinp() || op.isUrdp() || op.isUnop()){
-			if(op.isResultSuccess()){
-				reply = new TucsonMsgReply(msg.getId(), op.getType(), true, true, true, msg.getTuple(), (LogicTuple) op.getTupleResult());
-			}else{
-				reply = new TucsonMsgReply(msg.getId(), op.getType(), true, false, false, msg.getTuple(), (LogicTuple) op.getTupleResult());
-			}
-		}else if(op.isInAll() || op.isRdAll() || op.isNoAll() || op.isOutAll()){
+		if(op.isInAll() || op.isRdAll() || op.isNoAll() || op.isOutAll()){
 			if(op.getTupleListResult()==null)
 				op.setTupleListResult(new LinkedList<Tuple>());
-			if(op.isResultSuccess()){
+			if(op.isResultSuccess())
 				reply = new TucsonMsgReply(msg.getId(), op.getType(), true, true, true, msg.getTuple(), (List<Tuple>) op.getTupleListResult());
-			}else{
-				reply = new TucsonMsgReply(msg.getId(), op.getType(), true, false, false, msg.getTuple(), (List<Tuple>) op.getTupleListResult());
-			}
+			else
+				reply = new TucsonMsgReply(msg.getId(), op.getType(), true, true, false, msg.getTuple(), (List<Tuple>) op.getTupleListResult());
+		}else{
+			if(op.isResultSuccess())
+				reply = new TucsonMsgReply(msg.getId(), op.getType(), true, true, true, msg.getTuple(), (LogicTuple) op.getTupleResult());
+			else
+				reply = new TucsonMsgReply(msg.getId(), op.getType(), true, true, false, msg.getTuple(), (LogicTuple) op.getTupleResult());
 		}
 		
 		try{

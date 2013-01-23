@@ -123,11 +123,11 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	 * 
 	 * @throws TucsonInvalidAgentIdException
 	 */
-	public ACCProxyAgentSide(Object aid, String node, int port) throws TucsonInvalidAgentIdException{
+	public ACCProxyAgentSide(String aid, String node, int port) throws TucsonInvalidAgentIdException{
 	
-		if(aid.getClass().getName().equals("alice.tucson.api.TucsonAgentId"))
-			this.aid = (TucsonAgentId) aid;
-		else
+//		if(aid.getClass().getName().equals("alice.tucson.api.TucsonAgentId"))
+//			this.aid = (TucsonAgentId) aid;
+//		else
 			this.aid = new TucsonAgentId(aid);
 		this.node = node;
 		this.port = port;
@@ -148,7 +148,7 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	 * 
 	 * @throws TucsonInvalidAgentIdException
 	 */
-	public ACCProxyAgentSide(Object aid) throws TucsonInvalidAgentIdException{
+	public ACCProxyAgentSide(String aid) throws TucsonInvalidAgentIdException{
 		this(aid, "localhost", 20504);
 	}
 	

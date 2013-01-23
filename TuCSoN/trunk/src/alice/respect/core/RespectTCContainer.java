@@ -46,9 +46,10 @@ public class RespectTCContainer{
 		return defaultport;
 	}
 	
-	public boolean createRespectTC(TupleCentreId id, Integer q) throws InstantiationNotPossibleException{
-		registry.addTC(new RespectTC(id, this, q));
-		return true;
+	public RespectTC createRespectTC(TupleCentreId id, Integer q) throws InstantiationNotPossibleException{
+		RespectTC rtc = new RespectTC(id, this, q);
+		registry.addTC(rtc);
+		return rtc;
 	}
 
 	public IOrdinarySynchInterface getOrdinarySynchInterface(TupleCentreId id) throws OperationNotPossibleException{
@@ -79,6 +80,7 @@ public class RespectTCContainer{
 	 * @throws OperationNotPossibleException
 	 */
 	public ILinkContext getLinkContext(TupleCentreId id) throws OperationNotPossibleException{
+		System.out.println("id = " + id);
 		if ( (id.getNode().equals("localhost") || id.getNode().equals("127.0.0.1")) && id.getPort() == defaultport ){
 			try{
 				return ((RespectTC) registry.getTC(id)).getLinkContext();

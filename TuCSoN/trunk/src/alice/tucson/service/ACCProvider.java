@@ -32,6 +32,7 @@ import alice.tucson.network.TucsonProtocol;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 
@@ -108,10 +109,12 @@ public class ACCProvider{
 			
 			if(agentRole.equals("$inspector")){
 				ACCAbstractProxyNodeSide skel = new InspectorContextSkel(this, dialog, node, profile);
+				node.addNodeAgent(skel);
 				skel.start();
 			}else{
 //				should I pass here the TuCSoN node port?
 				ACCAbstractProxyNodeSide skel = new ACCProxyNodeSide(this, dialog, node, profile);
+				node.addNodeAgent(skel);
 				exec.execute(skel);
 			}
 			
@@ -156,6 +159,15 @@ public class ACCProvider{
 			return false;
 		}
 
+	}
+	
+	public void shutdown() throws InterruptedException{
+		log("Shutdown interrupt received, shutting down...");
+		exec.shutdownNow();
+		if(exec.awaitTermination(5, TimeUnit.SECONDS))
+			log("Executors correctly stopped");
+		else
+			log("Executors may be still running");
 	}
 	
 }

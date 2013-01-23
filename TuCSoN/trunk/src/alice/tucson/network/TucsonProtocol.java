@@ -20,6 +20,7 @@ package alice.tucson.network;
 import alice.tucson.service.ACCDescription;
 
 import java.io.*;
+import java.net.SocketTimeoutException;
 
 import java.util.*;
 
@@ -33,7 +34,7 @@ public abstract class TucsonProtocol implements java.io.Serializable{
 
 	abstract public ObjectOutputStream getOutputStream();
 
-	abstract public TucsonProtocol acceptNewDialog() throws Exception;
+	abstract public TucsonProtocol acceptNewDialog() throws IOException, SocketTimeoutException;
 
 	abstract public void end() throws Exception;
 

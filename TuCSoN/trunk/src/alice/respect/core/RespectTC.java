@@ -17,6 +17,9 @@
  */
 package alice.respect.core;
 
+import java.util.Iterator;
+import java.util.LinkedList;
+
 import alice.logictuple.*;
 import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.respect.api.IEnvironmentContext;
@@ -33,9 +36,10 @@ import alice.respect.api.RespectSpecification;
 import alice.respect.api.TupleCentreId;
 import alice.respect.api.exceptions.InvalidSpecificationException;
 import alice.respect.api.exceptions.OperationNotPossibleException;
-import alice.respect.core.*;
 import alice.tuplecentre.api.IId;
+import alice.tuplecentre.api.Tuple;
 import alice.tuplecentre.core.OperationCompletionListener;
+import alice.tuplecentre.core.TCCycleResult.Outcome;
 import alice.tuprolog.Prolog;
 
 /**
@@ -372,8 +376,16 @@ public class RespectTC implements IRespectTC {
 		boolean accepted = vm.setReactionSpec(spec);
 		if (!accepted){
 			throw new InvalidSpecificationException();
-		}else
-			return RespectOperation.makeSet_s(getProlog(), null);
+		}else{
+			RespectOperation op = RespectOperation.makeSet_s(getProlog(), null);
+			Iterator<Tuple> rit = vm.getRespectVMContext().getSpecTupleSetIterator();
+			LinkedList<Tuple> reactionList = new LinkedList<Tuple>();
+			while(rit.hasNext())
+				reactionList.add(rit.next());
+			op.setOpResult(Outcome.SUCCESS);
+			op.setTupleListResult(reactionList);
+			return op;
+		}
 	}
 	
 	public IRespectOperation set_s(IId aid, LogicTuple t)
@@ -450,8 +462,8 @@ public class RespectTC implements IRespectTC {
 		return new SpecificationAsynchInterface(this);
 	}
 
-	public RespectVM getRespectVM() {
-		return vm;
+	public Thread getVMThread() {
+		return vmThread;
 	}
 	
 	public IEnvironmentContext getEnvironmentContext(){

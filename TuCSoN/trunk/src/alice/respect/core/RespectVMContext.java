@@ -151,9 +151,9 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 	            
 	            if (ev.isInput()){
 	            	
-	            	log("input phase");
+	            	log("INVOCATION phase");
 	                InputEvent ie = (InputEvent)ev;
-					RespectOperation op=(RespectOperation)ev.getOperation();
+					RespectOperation op=(RespectOperation)ev.getSimpleTCEvent();
 //					log("op.getLogicTupleArgument() = " + op.getLogicTupleArgument());
 				
 					if (op.isSpawn()){
@@ -216,7 +216,7 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 	            }else if (ev.isOutput()){
 	            	
 	                alice.tuplecentre.core.OutputEvent oe = (alice.tuplecentre.core.OutputEvent)ev;
-					RespectOperation op=(RespectOperation)ev.getOperation();
+					RespectOperation op=(RespectOperation)ev.getSimpleTCEvent();
 				
 					if(((OutputEvent)ev).isLinking()){
 						log("linking event processing");
@@ -274,7 +274,7 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 
 					}else{
 						
-						log("output phase");
+						log("COMPLETION phase");
 						
 						if (op.isSpawn()){
 							currentReactionTerm=new Struct("spawn",op.getLogicTupleResult().toTerm());
@@ -471,7 +471,7 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 
         SolveInfo info=core.solve(goalList);
         core.solveEnd();
-        log("Prolog evaluation success = "+info.isSuccess());
+        log("Reaction evaluation success = "+info.isSuccess());
         if (info.isSuccess()){
             if (vm.hasInspectors())
             	vm.notifyInspectableEvent(new ObservableEventReactionOK(this,z));            
@@ -509,8 +509,10 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
     }
     
     private boolean evalGuard(Term g){
+    	log("guard = " + g);
         SolveInfo info=core.solve(g);
         core.solveEnd();
+        log("evaluation = " + info.isSuccess());
         return info.isSuccess();
     }
     
@@ -532,6 +534,9 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
             if (co.isAtom()){
                 alice.tuprolog.Theory thspec=new alice.tuprolog.Theory(co.getName());
                 core.setTheory(thspec);
+//                for(Operator op : core.getCurrentOperatorList()){
+//                	log("op = " + op.name + ", " + op.prio);
+//                }
                 trigCore.setTheory(thspec);
             }else if (co.isList()){
                 alice.tuprolog.Theory thspec=new alice.tuprolog.Theory(co);
@@ -560,7 +565,9 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
             		delay = timeValue - currLocalTime;
             	else
             		delay = 0;
-            	currTimer.schedule(new RespectTimerTask(this,RespectOperation.makeTime(getPrologCore(),new LogicTuple("time",new TupleArgument(current)), null)),delay);
+            	currTimer.schedule(new RespectTimerTask(this,
+            			RespectOperation.makeTime(getPrologCore(),
+            					new LogicTuple("time",new TupleArgument(current)), null)),delay);
             }
             return true;
 
@@ -611,7 +618,9 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
             		delay = timeValue - currLocalTime;
             	else
             		delay = 0;
-            	currTimer.schedule(new RespectTimerTask(this,RespectOperation.makeTime(getPrologCore(), new LogicTuple("time",new TupleArgument(current)), null)),delay);
+            	currTimer.schedule(new RespectTimerTask(this,
+            			RespectOperation.makeTime(getPrologCore(), 
+            					new LogicTuple("time",new TupleArgument(current)), null)),delay);
             }
             return true;
 
@@ -730,20 +739,18 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
     @Override
 	public boolean spawnActivity(Tuple tuple, IId owner, IId targetTC) {
     	try {
-    		ClassLoader cl = ClassLoader.getSystemClassLoader();
+    		ClassLoader cl = Thread.currentThread().getContextClassLoader();
+//    		ClassLoader cl = ClassLoader.getSystemClassLoader();
             URL[] urls = ((URLClassLoader)cl).getURLs();
             log("Known paths:");
             for(URL url: urls)
             	System.out.println("	" + url.getFile());
-//            When starting the TuCSoN Node it is necessary to properly add the classpath where to
-//            find the Java class (or the Prolog theory) to be executed with the
-//            spawn()!!
             LogicTuple t = (LogicTuple)tuple;
             if(!(t.getName().equals("exec") || t.getName().equals("solve"))){
             	log("spawn argument must be a tuple with functor name 'exec' or 'solve'");
             	return false;
             }
-            log("---> " + t.getArity());
+//            log("---> " + t.getArity());
             if(t.getArity() == 2){
             	log("Prolog theory expected");
             	if(!t.getName().equals("solve")){
@@ -780,7 +787,7 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 //	                solver.loadLibrary("alice.respect.api.Respect2PLibrary");
 //	                ((alice.respect.api.Respect2PLibrary)solver.getLibrary("alice.respect.api.Respect2PLibrary")).init(this);
 //	            	theoryPath should be a pathname but it is not now!!
-	            	InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream(theoryPath);
+	            	InputStream is = cl.getResourceAsStream(theoryPath);
 					Theory toSpawn = new Theory(new BufferedInputStream(is));
 	            	solver.setTheory(toSpawn);
 	            	String[] libs = solver.getCurrentLibraries();
@@ -802,7 +809,7 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
             	String className = alice.util.Tools.removeApices(t.getArg(0).toString());
 //            	log("---> "+className);
             	if(className.endsWith(".class")){
-					Class toSpawn = ClassLoader.getSystemClassLoader().loadClass(className.substring(0, className.length()-6));
+					Class<?> toSpawn = cl.loadClass(className.substring(0, className.length()-6));
 					if(SpawnActivity.class.isAssignableFrom(toSpawn)){
 						SpawnActivity instance = (SpawnActivity) toSpawn.newInstance();
 						if(owner.isAgent()){
@@ -1049,19 +1056,19 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 		ArrayList<WSetEvent> events = new ArrayList<WSetEvent>();
 		if (filter == null){
 			for(Event e: ev){
-				events.add(new WSetEvent(((RespectOperation)e.getOperation()).toTuple(), e.getSource(), e.getTarget()));
+				events.add(new WSetEvent(((RespectOperation)e.getSimpleTCEvent()).toTuple(), e.getSource(), e.getTarget()));
 			}
 			return events.toArray(new WSetEvent[0]);
 		}
 		LogicTuple[] tuples = new LogicTuple[this.wSet.size()];
 //		ArrayList<Event> supportList = new ArrayList<Event>();				
 		for(int i=0;i<tuples.length;i++){			
-			tuples[i] = ((RespectOperation)ev[i].getOperation()).toTuple();
+			tuples[i] = ((RespectOperation)ev[i].getSimpleTCEvent()).toTuple();
 		}
 		int i = 0;
 		for(LogicTuple tuple : tuples){
 			if (filter.match(tuple))
-				events.add(new WSetEvent(((RespectOperation)ev[i].getOperation()).toTuple(), ev[i].getSource(), ev[i].getTarget()));
+				events.add(new WSetEvent(((RespectOperation)ev[i].getSimpleTCEvent()).toTuple(), ev[i].getSource(), ev[i].getTarget()));
 			i++;
 		}
 		return events.toArray(new WSetEvent[0]);		
@@ -1150,7 +1157,7 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 		try {
             
      		boolean timedReaction = false;
-        	Term timed = (((RespectOperation)ev.getOperation()).getLogicTupleArgument().toTerm());
+        	Term timed = (((RespectOperation)ev.getSimpleTCEvent()).getLogicTupleArgument().toTerm());
         	Struct tev=new Struct("reaction",timed,new alice.tuprolog.Var("G"),new alice.tuprolog.Var("R"));
         	SolveInfo info = trigCore.solve(tev);
             alice.tuprolog.Term guard=null;
@@ -1175,10 +1182,19 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
         		trigCore.solveEnd();
             }
     
-		}catch (Exception ex){
-            notifyException("INTERNAL ERROR: fetchTimedReactions "+ev);
-            trigCore.solveEnd();
-        }
+//		}catch (Exception ex){
+//            notifyException("INTERNAL ERROR: fetchTimedReactions "+ev);
+//            trigCore.solveEnd();
+//        }
+            
+		} catch(NoMoreSolutionException e){
+			trigCore.solveEnd();
+		} catch(NoSolutionException e){
+			trigCore.solveEnd();
+		} catch (MalformedGoalException e) {
+			notifyException("INTERNAL ERROR: fetchTimedReactions "+ev);
+			trigCore.solveEnd();
+		}
 		
 	}
 
@@ -1205,9 +1221,11 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 	}
 
 	public void linkOperation(OutputEvent oe) {
+		log("oe.getTarget = " + oe.getTarget());
 		TupleCentreId target = (TupleCentreId)oe.getTarget();
+		log("target = " + target);
 		try{
-			TupleCentreOperation op = oe.getOperation();
+			TupleCentreOperation op = oe.getSimpleTCEvent();
 			op.addListener(new CompletionListener(oe,target));
 			ILinkContext link = RespectTCContainer.getRespectTCContainer().getLinkContext(target);
 			link.doOperation((TupleCentreId)oe.getSource(), op);
@@ -1266,7 +1284,7 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 		List<Tuple> tl = new LinkedList<Tuple>();
 		TupleTemplate t2=t;
         Tuple tuple=removeMatchingTuple(t2);
-        if(tuple ==null) return null;
+//        if(tuple ==null) return null;
 		while(tuple!=null){
 			t2=t;
 			tl.add((Tuple)tuple);
@@ -1279,7 +1297,7 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 		List<Tuple> tl = new LinkedList<Tuple>();
 		TupleTemplate t2=t;
         Tuple tuple=removeMatchingTuple(t2);
-        if(tuple==null) return null;
+//        if(tuple==null) return null;
         while(tuple!=null){
 			t2=t;
 			tl.add((Tuple)tuple);
@@ -1297,7 +1315,7 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 	public Tuple readUniformTuple(TupleTemplate t){
 		List<Tuple> tl = new LinkedList<Tuple>();
 		tl = readAllTuples(t);
-		if(tl==null)
+		if(tl==null || tl.isEmpty())
 			return null;
 		else{
 			int extracted = new Random().nextInt(tl.size());
@@ -1310,7 +1328,7 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 	public Tuple removeUniformTuple(TupleTemplate t){
 		List<Tuple> tl = new LinkedList<Tuple>();
 		tl = readAllTuples(t);
-		if(tl == null)
+		if(tl == null || tl.isEmpty())
 			return null;
 		else{
 			int extracted = new Random().nextInt(tl.size());

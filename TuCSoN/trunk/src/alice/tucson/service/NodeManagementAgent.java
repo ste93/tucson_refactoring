@@ -47,15 +47,24 @@ public class NodeManagementAgent extends Thread{
 			while(true){
 				LogicTuple cmd;
 				cmd = (LogicTuple) TupleCentreContainer.doBlockingOperation(TucsonOperation.inCode(), nodeManAid, config, new LogicTuple("cmd", new Var("X")));
-				execCmd(cmd.getArg(0));
+				if(cmd != null)
+					execCmd(cmd.getArg(0));
+				else
+					throw new InterruptedException();
 			}
 		}catch(InvalidTermException e){
 			System.err.println("[NodeManagementAgent]: " + e);
 			e.printStackTrace();
+			node.removeNodeAgent(this);
+		}catch(InterruptedException e){
+			log("Shutdown interrupt received, shutting down...");
+			node.removeNodeAgent(this);
 		}catch(Exception e){
 			System.err.println("[NodeManagementAgent]: " + e);
 			e.printStackTrace();
+			node.removeNodeAgent(this);
 		}
+//		log("Actually shutting down...");
 	}
 
 	/**

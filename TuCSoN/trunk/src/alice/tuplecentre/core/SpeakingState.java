@@ -19,6 +19,8 @@ package alice.tuplecentre.core;
 
 import java.util.*;
 
+import alice.logictuple.LogicTuple;
+import alice.respect.core.RespectOperation;
 import alice.respect.core.RespectVMContext;
 import alice.tuplecentre.api.Tuple;
 import alice.tuplecentre.api.exceptions.InvalidOperationException;
@@ -70,7 +72,8 @@ public class SpeakingState extends TupleCentreVMState {
             
         	try {
 	            ev = (InputEvent) (it.next());
-	            op = ev.getOperation();
+	            System.out.println("ev = " + ev);
+	            op = ev.getSimpleTCEvent();
 	            
 	            
 	            if(op.isResultDefined() || ev.isLinking()){
@@ -188,7 +191,10 @@ public class SpeakingState extends TupleCentreVMState {
 		            } else if (op.isNoAll()){
 		            	List<Tuple> tuples = new LinkedList<Tuple>();
 		                tuples = vm.readAllTuples(op.getTemplateArgument());
-		                op.setOpResult(Outcome.SUCCESS);
+		                if(tuples.isEmpty() || tuples == null)
+		                	op.setOpResult(Outcome.SUCCESS);
+		                else
+		                	op.setOpResult(Outcome.FAILURE);
 		                op.setTupleListResult(tuples);
 	            		foundSatisfied=true;
 		            } else if (op.isUno()){
@@ -299,6 +305,12 @@ public class SpeakingState extends TupleCentreVMState {
 						op.setOpResult(Outcome.SUCCESS);
 		            	op.setTupleListResult(tupleList);
 		            	foundSatisfied=true;
+					} else if(((RespectOperation)op).isTime()){
+						op.setOpResult(Outcome.SUCCESS);
+						op.setTupleResult(op.getTemplateArgument());
+						foundSatisfied=true;
+						out_ev = new OutputEvent(ev);
+						vm.fetchTimedReactions(out_ev);
 					}
 		            
 					else throw new InvalidOperationException();

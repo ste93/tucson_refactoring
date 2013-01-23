@@ -20,8 +20,8 @@ package alice.tuplecentre.core;
 import java.util.*;
 
 import alice.respect.core.RespectTC;
-import alice.tucson.api.TucsonIdWrapper;
 import alice.tucson.api.TucsonTupleCentreId;
+import alice.tucson.service.TucsonIdWrapper;
 import alice.tuplecentre.api.AgentId;
 import alice.tuplecentre.api.IId;
 import alice.tuplecentre.api.ITupleCentre;
@@ -230,7 +230,7 @@ public abstract class TupleCentreVMContext implements ITupleCentreManagement, IT
      * Specifies how to notify an output event.
      */
     protected void notifyOutputEvent(OutputEvent ev){
-    	ev.getOperation().notifyCompletion();
+    	ev.getSimpleTCEvent().notifyCompletion();
     }
     
     /**

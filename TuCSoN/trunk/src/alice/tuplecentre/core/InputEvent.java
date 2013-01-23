@@ -24,7 +24,7 @@ import alice.tuplecentre.api.TupleCentreId;
 
 /**
  * Represents input events of the tuple centre virtual machine
- *
+ * (only difference w.r.t. Event is the <code>isLinking</code> field)
  *
  * @author aricci
  */
@@ -33,18 +33,19 @@ public class InputEvent extends Event {
 	private static final long serialVersionUID = -6321543805920861915L;
 	private boolean isLinking;
     
-    public InputEvent(IId aid, TupleCentreOperation op, TupleCentreId c,long time){
-        super(aid,op,c,time);
-        this.isLinking = false;
+    public InputEvent(IId source, TupleCentreOperation op, TupleCentreId tc, long time){
+        super(source, op, tc, time);
+        isLinking = false;
     }
 
-    public InputEvent(IId aid, TupleCentreOperation op, TupleCentreId c,long time, Map<String, String> prop){
-    	super(aid,op,c,time,prop);
-        this.isLinking = false;
+    public InputEvent(IId source, TupleCentreOperation op, TupleCentreId tc, long time, 
+    		Map<String, String> prop){
+    	super(source, op, tc, time, prop);
+        isLinking = false;
     }
     
     public String toString(){
-    	return "input_event(agentId("+getId()+"),operation("+getOperation()+"))";
+    	return "input_event(agentId("+getSource()+"),operation("+getSimpleTCEvent()+"))";
     }
     
 	public boolean isInput(){

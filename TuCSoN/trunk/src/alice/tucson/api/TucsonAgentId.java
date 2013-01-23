@@ -31,21 +31,25 @@ public class TucsonAgentId implements alice.tuplecentre.api.AgentId, Serializabl
 	private Object aid;
 	private UUID uuid;
 	
-	public TucsonAgentId(Object aid) throws TucsonInvalidAgentIdException{
-		if(aid.getClass().getName().equals("alice.respect.api.AgentId")){
-			this.aid = aid;
-			uuid = null;
-		}else{
+	public TucsonAgentId(String aid) throws TucsonInvalidAgentIdException{
+//		if(aid.getClass().getName().equals("alice.respect.api.AgentId")){
+//			this.aid = aid;
+//			uuid = null;
+//		}else{
 			try{
 				this.aid = new AgentId((String) aid);
 				uuid = null;
 			}catch(InvalidAgentIdException e){
 				throw new TucsonInvalidAgentIdException();
 			}
-		}
+//		}
 	}
 	
-	public Object getLocalAgentId(){
+	public TucsonAgentId(String name, TucsonTupleCentreId tcId) {
+		this.aid = new AgentId(name, tcId);
+	}
+
+	public Object getAgentId(){
 		return aid;
 	}
 	
@@ -61,7 +65,7 @@ public class TucsonAgentId implements alice.tuplecentre.api.AgentId, Serializabl
 		return ((AgentId) aid).toString();
 	}
 	
-	public boolean assignUUID() throws TucsonInvalidAgentIdException{
+	boolean assignUUID() throws TucsonInvalidAgentIdException{
 		if(this.uuid == null){
 			this.uuid = UUID.randomUUID();
 			try {

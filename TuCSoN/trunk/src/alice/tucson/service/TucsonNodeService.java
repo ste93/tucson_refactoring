@@ -22,8 +22,8 @@ import alice.logictuple.*;
 import alice.logictuple.exceptions.InvalidTupleArgumentException;
 
 import alice.respect.api.exceptions.InvalidTupleCentreIdException;
+import alice.respect.core.RespectTC;
 import alice.tucson.api.exceptions.*;
-import alice.tucson.api.NodeServiceListener;
 import alice.tucson.api.TucsonAgentId;
 import alice.tucson.api.TucsonTupleCentreId;
 
@@ -34,6 +34,9 @@ import alice.tuprolog.Theory;
 import alice.tuprolog.lib.InvalidObjectIdException;
 
 import java.io.*;
+import java.net.InetSocketAddress;
+import java.net.Socket;
+import java.net.SocketAddress;
 import java.util.*;
 
 /**
@@ -41,7 +44,12 @@ import java.util.*;
  */
 public class TucsonNodeService{
 	
-	private static TucsonNodeService instance = null;
+	private ArrayList<Thread> nodeAgents;
+	private ACCProvider ctxman;
+	private WelcomeAgent welcome;
+	private ArrayList<RespectTC> tcs;
+	
+//	private static TucsonNodeService instance = null;
 	private Date installationDate;
 	private HashMap<String, TucsonTCUsers> cores;
 
@@ -85,7 +93,7 @@ public class TucsonNodeService{
 		persistencyTemplate = persistTempl;
 		
 		try{
-			nodeAid = new TucsonAgentId("node_agent");
+			nodeAid = new TucsonAgentId("'$TucsonNodeService-Agent'");
 			idConfigTC = new TucsonTupleCentreId("'$ORG'", "localhost", ""+portNumber);
 			idObsTC = new TucsonTupleCentreId("'$OBS'", "localhost", ""+portNumber);
 		}catch(TucsonInvalidAgentIdException e){
@@ -98,6 +106,8 @@ public class TucsonNodeService{
 		
 		observed = false;
 		agents = new ArrayList<TucsonAgentId>();
+		nodeAgents = new ArrayList<Thread>();
+		tcs = new ArrayList<RespectTC>();
 		
 	}
 	
@@ -110,7 +120,7 @@ public class TucsonNodeService{
 	}
 
 	public synchronized void install(){
-		install(null);		
+		install(null);
 	}
 
 	/**
@@ -151,7 +161,7 @@ public class TucsonNodeService{
 		checkPersistentTupleCentres(PERSISTENCY_PATH);
 
 		installationDate = new Date();
-		instance = this;
+//		instance = this;
 
 		log("Spawning management agents...");
 		bootManagementAgents();
@@ -159,21 +169,56 @@ public class TucsonNodeService{
 		if(repo != null)
 			repo.setReport(true, "Installed", installationDate);
 		
-		synchronized(this){
-			try{
-				wait();
-			}catch(InterruptedException e){
-				if(repo != null)
-					repo.setReport(false, "Failed", null);
-				System.err.println("[TucsonNodeService]: " + e);
-				e.printStackTrace();
+//		synchronized(this){
+//			try{
+//				wait();
+//			}catch(InterruptedException e){
+//				if(repo != null)
+//					repo.setReport(false, "Failed", null);
+//				System.err.println("[TucsonNodeService]: " + e);
+//				e.printStackTrace();
+//			}
+//		}
+			
+	}
+	
+	/*
+	 * Caller too is killed -.-
+	 */
+	public void shutdown(){
+		log("Node is shutting down management agents and proxies...");
+		for(Thread t: nodeAgents){
+			if(t.isAlive()){
+				log("  ...shutting down <" + t.getName() + ">");
+				t.interrupt();
+			}else{
+				log("  ...<" + t.getName() + "> is already dead");
+//				t = null; nodeAgents.remove(t);
 			}
 		}
-			
+		welcome.shutdown();
+		try {
+			ctxman.shutdown();
+		} catch (InterruptedException e) {
+			log("ACCProvider may still have tasks executing...");
+		}
+//		nodeAgents.clear();
+//		agents.clear();
+		log("Node is shutting down ReSpecT VMs...");
+		for(RespectTC tc: tcs){
+			Thread t = tc.getVMThread();
+			if(t.isAlive()){
+				log("  ...shutting down <" + tc.getId() + ">");
+				t.interrupt();
+			}else{
+				log("  ...<" + tc.getId() + "> is already dead");
+			}
+		}
+		log("TuCSoN Node shutdown completed, see you :)");
 	}
 
 	public static String getVersion(){
-		return "TuCSoN-1.10.2.0205";
+		return "TuCSoN-1.10.3.0206";
 	}
 
 	/**
@@ -236,7 +281,7 @@ public class TucsonNodeService{
 		
 		TucsonTupleCentreId id = new TucsonTupleCentreId(name);
 		try {
-			TupleCentreContainer.createTC(id, MAX_EVENT_QUEUE_SIZE, tcp_port);
+			tcs.add(TupleCentreContainer.createTC(id, MAX_EVENT_QUEUE_SIZE, tcp_port));
 		} catch (InvalidTupleCentreIdException e1) {
 			log("TupleCentreContainer.createTC(...) error");
 			e1.printStackTrace();
@@ -553,7 +598,7 @@ public class TucsonNodeService{
 		
 		try{
 			bootTupleCentre(idObsTC.getName());
-			InputStream is = ClassLoader.getSystemResourceAsStream(DEFAULT_OBS_SPEC_FILE);
+			InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream(DEFAULT_OBS_SPEC_FILE);
 			String spec = alice.util.Tools.loadText(new BufferedInputStream(is));
 			LogicTuple specTuple = new LogicTuple("spec", new Value(spec));
 			TupleCentreContainer.doBlockingSpecOperation(TucsonOperation.set_sCode(), nodeAid, idObsTC, specTuple);
@@ -581,15 +626,22 @@ public class TucsonNodeService{
 	private void bootManagementAgents(){
 		
 		log("Spawning Node Management Agent...");
-		new NodeManagementAgent(idConfigTC, this);
+		nodeAgents.add(new NodeManagementAgent(idConfigTC, this));
 
 		log("--------------------------------------------------------------------------------");
 		log("Spawning ACC Provider Agent...");
-		ACCProvider ctxman = new ACCProvider(this, idConfigTC);
+		ctxman = new ACCProvider(this, idConfigTC);
 		
 		log("Spawning Welcome Agent...");
-		new WelcomeAgent(tcp_port, this, ctxman);
+		welcome = new WelcomeAgent(tcp_port, this, ctxman);
 		
+	}
+	
+	synchronized public void addNodeAgent(Thread t){
+		nodeAgents.add(t);
+	}
+	synchronized public void removeNodeAgent(Thread t){
+		nodeAgents.remove(t);
 	}
 
 	synchronized public void addAgent(TucsonAgentId aid){
@@ -622,17 +674,26 @@ public class TucsonNodeService{
 		
 	}
 
-	public static boolean isInstalled(){
-		return instance != null;
+	public static boolean isInstalled(int port) throws IOException{
+		SocketAddress addr = new InetSocketAddress(port);
+		Socket sock = new Socket();
+		try {
+			sock.bind(addr);
+		} catch (IOException e) {
+			return true;
+		} finally {
+			sock.close();
+		}
+		return false;
 	}
 
-	public static TucsonNodeService getInstance(){
-		return instance;
-	}
-	
-	public static Prolog getEngineProlog(){
-		return TucsonNodeService.getInstance().configManager;
-	}
+//	public static TucsonNodeService getInstance(){
+//		return instance;
+//	}
+//	
+//	public static Prolog getEngineProlog(){
+//		return TucsonNodeService.getInstance().configManager;
+//	}
 
 	/**
 	 * 

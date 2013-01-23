@@ -85,7 +85,7 @@ public class EditSpec extends javax.swing.JFrame{
 		
 		tid = tid_;
 		try{
-			context = TucsonMetaACC.getContext(new TucsonAgentId("inspector_edit_spec_" + System.currentTimeMillis()));
+			context = TucsonMetaACC.getContext(new TucsonAgentId("'$Inspector-" + System.currentTimeMillis() + "'"));
 		}catch(TucsonInvalidAgentIdException e){
 			e.printStackTrace();
 		}
