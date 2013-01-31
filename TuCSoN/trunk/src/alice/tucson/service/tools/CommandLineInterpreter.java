@@ -39,7 +39,7 @@ public class CommandLineInterpreter{
 		log("Booting TuCSoN Command Line Intepreter...");
 		
 		if(alice.util.Tools.isOpt(args, "-?") || alice.util.Tools.isOpt(args, "-help")){
-			log("Arguments: {-aid <agent_identifier>} {-netid <node_address>} {-port <port>} {-? | -help}");
+			log("Arguments: {-aid <agent_identifier>} {-netid <node_address>} {-portno <portno>} {-? | -help}");
 		}else{
 			
 			String aid = null;
@@ -56,8 +56,8 @@ public class CommandLineInterpreter{
 			else
 				node = "localhost";
 			
-			if(alice.util.Tools.isOpt(args, "-port"))
-				port = Integer.parseInt(alice.util.Tools.getOpt(args, "-port"));
+			if(alice.util.Tools.isOpt(args, "-portno"))
+				port = Integer.parseInt(alice.util.Tools.getOpt(args, "-portno"));
 			else
 				port = 20504;
 			
