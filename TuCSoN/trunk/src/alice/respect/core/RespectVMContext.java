@@ -1308,7 +1308,7 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 	}
 	
 	private void log(String s){
-		System.out.println("..[RespectVMContext]: " + s);
+		System.out.println("..[RespectVMContext (" + getId() + ")]: " + s);
 	}
 	
 }

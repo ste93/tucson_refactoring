@@ -60,13 +60,19 @@ public class WelcomeAgent extends Thread{
 
 		TucsonProtocol dialog = null;
 		boolean exception = false;
+		boolean timeout = false;
 		try{
-			log("Listening on port " + port + " for incoming ACC requests...");
 			while(true){
+				
+				if(!timeout)
+					log("Listening on port " + port + " for incoming ACC requests...");
+				else
+					timeout = false;
 				
 				try{
 					dialog = mainDialog.acceptNewDialog();
 				}catch(SocketTimeoutException e){
+					timeout = true;
 					if(shutdown){
 						exception = true;
 						log("Shutdown interrupt received, shutting down...");

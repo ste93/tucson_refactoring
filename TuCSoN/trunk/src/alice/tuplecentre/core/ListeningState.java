@@ -32,10 +32,13 @@ public class ListeningState extends TupleCentreVMState {
     }
     
     public TupleCentreVMState getNextState(){
-        if (vm.triggeredReaction() || vm.time_triggeredReaction())
+        if (vm.triggeredReaction() || vm.time_triggeredReaction()){
+        	System.out.println("\t\t\t### [ListeningState] ===> [ReactingState] ###");
             return reactingState;
-        else
+        }else{
+        	System.out.println("\t\t\t### [ListeningState] ===> [SpeakingState] ###");
             return speakingState;
+        }
     }
     
     public void resolveLinks(){

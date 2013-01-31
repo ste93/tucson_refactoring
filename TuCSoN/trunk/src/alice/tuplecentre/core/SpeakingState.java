@@ -19,7 +19,6 @@ package alice.tuplecentre.core;
 
 import java.util.*;
 
-import alice.logictuple.LogicTuple;
 import alice.respect.core.RespectOperation;
 import alice.respect.core.RespectVMContext;
 import alice.tuplecentre.api.Tuple;
@@ -42,12 +41,16 @@ public class SpeakingState extends TupleCentreVMState {
     }
     
     public TupleCentreVMState getNextState(){
-        if (vm.triggeredReaction())
+        if (vm.triggeredReaction()){
+        	System.out.println("\t\t\t### [SpeakingState] ===> [ReactingState] ###");
             return reactingState;
-        else if (noMoreSatisfiablePendingQuery)
+        }else if (noMoreSatisfiablePendingQuery){
+        	System.out.println("\t\t\t### [SpeakingState] ===> [IdleState] ###");
             return idleState;
-        else
-        	return this;  
+        }else{
+        	System.out.println("\t\t\t### [SpeakingState] ===> [SpeakingState ###]");
+        	return this;
+        }
     }
     
     public void resolveLinks(){
@@ -57,12 +60,12 @@ public class SpeakingState extends TupleCentreVMState {
     
     public void execute(){
     	
-        Iterator it = vm.getPendingQuerySetIterator();
+        Iterator<?> it = vm.getPendingQuerySetIterator();
         InputEvent ev = null;
         OutputEvent out_ev = null;
 		noMoreSatisfiablePendingQuery=true;
 		boolean foundSatisfied = false;
-		boolean operationNotPossible = false;
+//		boolean operationNotPossible = false;
 		
 		Tuple tuple = null;
 		List<Tuple> tupleList = null;
