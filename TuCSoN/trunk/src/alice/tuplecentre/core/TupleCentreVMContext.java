@@ -456,6 +456,10 @@ public abstract class TupleCentreVMContext implements ITupleCentreManagement, IT
         return (TupleCentreVMState)(states.get(stateName));
     }
     
+    public String getCurrentState(){
+    	return currentState.getClass().getSimpleName();
+    }
+    
     public void notifyException(Exception ex){
         ex.printStackTrace();
     }

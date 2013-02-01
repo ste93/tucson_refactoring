@@ -1234,9 +1234,10 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 			arg0.removeListener();
 			// oe.getTarget() == oeTarget by construction (loc 1201)!
 			// 3rd arg is the target of the event,
+			log("completion op = " + arg0 + ", from = " + oe.getSource() + ", to = " + oe.getTarget() + ", arg = " + arg0.getTupleResult());
 //			InputEvent res = new InputEvent(oe.getTarget(),arg0,oeTarget,getCurrentTime());
-			log("completion op = " + arg0 + ", from = " + oe.getTarget() + ", to = " + oe.getSource() + ", arg = " + arg0.getTupleResult());
-			InputEvent res = new InputEvent(oe.getTarget(),arg0,(TupleCentreId)oe.getSource(),getCurrentTime());
+//			InputEvent res = new InputEvent(oe.getTarget(),arg0,(TupleCentreId)oe.getSource(),getCurrentTime());
+			InputEvent res = new InputEvent(oe.getSource(),arg0,(TupleCentreId)oe.getTarget(),getCurrentTime());
 			notifyInputEvent(res);
 		}
     	
