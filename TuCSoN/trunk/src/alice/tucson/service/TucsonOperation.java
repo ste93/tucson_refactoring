@@ -246,6 +246,7 @@ public class TucsonOperation extends TupleCentreOperation implements ITucsonOper
 		this.allowed = allowed;
 		
 		if(listener != null){
+			System.out.println("......[TucsonOperation]: listener is " + listener.getClass().getSimpleName());
 			operationCompleted = true;
 			listener.operationCompleted(this);
 		}else{

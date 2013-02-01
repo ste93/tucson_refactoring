@@ -77,7 +77,7 @@ public class InterTupleCentreACCProvider implements ILinkContext{
 
 			TucsonOpId opId = null;
 			try {
-				opId = helper.doOperation(toId, op.getType(), ((RespectOperation) op).getLogicTupleArgument());
+				opId = helper.doOperation(toId, op);
 			} catch (TucsonOperationNotPossibleException e) {
 				System.err.println("[RespectInterTupleCentreContextProxy] Executor: " + e);
 				e.printStackTrace();
@@ -85,8 +85,8 @@ public class InterTupleCentreACCProvider implements ILinkContext{
 				System.err.println("[RespectInterTupleCentreContextProxy] Executor: " + e);
 				e.printStackTrace();
 			}
-			TucsonOpCompletionEvent ev = helper.waitForCompletion(opId);
-			op.setTupleResult(ev.getTuple());
+//			TucsonOpCompletionEvent ev = helper.waitForCompletion(opId);
+//			op.setTupleResult(ev.getTuple());
 		
 		}
 

@@ -45,6 +45,10 @@ public class TucsonAgentId implements alice.tuplecentre.api.AgentId, Serializabl
 //		}
 	}
 	
+	public TucsonAgentId(String name, TucsonTupleCentreId tcId) {
+		this.aid = new AgentId(name, tcId);
+	}
+	
 	public Object getAgentId(){
 		return aid;
 	}
