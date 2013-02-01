@@ -1391,7 +1391,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     	Event ev = vm.getCurrentReactionEvent();
         TupleCentreOperation op = ev.getSimpleTCEvent();
 //        return op.isResultDefined();
-        return op.isResultDefined() && "SpeakingState".equals(vm.getCurrentState());
+        return op.isResultDefined() && !"ListeningState".equals(vm.getCurrentState());
     }
     
     public boolean completion_0(){
