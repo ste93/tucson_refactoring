@@ -120,6 +120,7 @@ public abstract class TupleCentreVMContext implements ITupleCentreManagement, IT
 
 	public void addInputEvent(InputEvent in){
 		synchronized(inputEvents){
+			System.out.println("..[TupleCentreVMContext]: in = " + in);
 			inputEvents.add(in);
 		}
 	}

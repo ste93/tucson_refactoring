@@ -1600,7 +1600,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     }
     
     public boolean link_in_0(){
-//    	log("link_in ->");
+    	log("link_in ->");
     	return from_tc_0() && to_tc_0() && exo_0() && intra_0();
     }
     

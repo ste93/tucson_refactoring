@@ -80,6 +80,7 @@ public class RespectTCContainer{
 	 * @throws OperationNotPossibleException
 	 */
 	public ILinkContext getLinkContext(TupleCentreId id) throws OperationNotPossibleException{
+		System.out.println("..[RespectTCContainer]: id = " + id);
 		if ( (id.getNode().equals("localhost") || id.getNode().equals("127.0.0.1")) && id.getPort() == defaultport ){
 			try{
 				return ((RespectTC) registry.getTC(id)).getLinkContext();
