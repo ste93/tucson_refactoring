@@ -390,8 +390,20 @@ public class RespectOperation extends TupleCentreOperation implements IRespectOp
 			opName = "nop_s";
 		}else if (isGet_s()){
 			opName = "get_s";
+			LogicTuple[] tupleL=new LogicTuple[]{};
+			tupleL=this.getLogicTupleListResult().toArray(tupleL);
+			tl = new Term[tupleL.length];
+			for(int i=0;i<tupleL.length;i++){
+				tl[i]=(tupleL[i]).toTerm();
+			}
 		}else if (isSet_s()){
 			opName = "set_s";
+			LogicTuple[] tupleL=new LogicTuple[]{};
+			tupleL=this.getTupleListArgument().toArray(tupleL);
+			tl = new Term[tupleL.length];
+			for(int i=0;i<tupleL.length;i++){
+				tl[i]=(tupleL[i]).toTerm();
+			}
 		}
 		else if (isGetEnv()){
 			return t;
