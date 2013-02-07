@@ -294,6 +294,14 @@ public class TucsonOperation extends TupleCentreOperation implements ITucsonOper
 		return tll;
 	}
 	
+	public List<BioTuple> getBioTupleListResult(){
+		List<Tuple> tl = this.getTupleListResult();
+		List<BioTuple> tll = new LinkedList<BioTuple>();
+		for(Tuple t : tl)
+			tll.add((BioTuple) t);
+		return tll;
+	}
+	
 	public void setLogicTupleListResult(List<LogicTuple> tl){
 		List<Tuple> t = new LinkedList<Tuple>();
 		for(LogicTuple logicTuple : tl)

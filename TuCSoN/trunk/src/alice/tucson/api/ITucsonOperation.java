@@ -70,6 +70,13 @@ public interface ITucsonOperation extends ITupleCentreOperation{
 	 */
 	List<LogicTuple> getLogicTupleListResult();
 	
+	/**
+	 * Gets the list of bio tuples returned as the result of the requested operation.
+	 * 
+	 * @return the list of bio tuples result of the requested operation.
+	 */
+	List<BioTuple> getBioTupleListResult();
+	
 //	void setLogicTupleListResult(List<LogicTuple> tl);
 
 }

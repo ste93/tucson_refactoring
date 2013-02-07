@@ -178,13 +178,14 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     	tcName = tid.getName();
     	
         AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
+        AbstractMap<Var,Var> v2 = new LinkedHashMap<Var,Var>();
         LogicTuple tuArg = null;
         
         Struct s_tuple = (Struct) arg0.getTerm();
-		
         if(bioTupleWellFormed(s_tuple)){
 			Term newArg = (s_tuple.getArg(0)).copyGoal(v, 0);
-			long mult = ((Number)s_tuple.getArg(1).getTerm()).longValue();
+			Term newMult = (s_tuple.getArg(1)).copyGoal(v2,0);
+			long mult = ((Number)newMult).longValue();
 			try {
 				tuArg = new BioTuple(newArg,mult);
 			} catch (InvalidMultiplicityException e) {
@@ -1854,7 +1855,22 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      * started the current ReSpecT computation.
      */
     public boolean current_tuple_1(Term tuple){
-    	return unify(tuple, new Var());
+    	AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
+        AbstractMap<Var,Var> v2 = new LinkedHashMap<Var,Var>();
+    	Struct s_tuple = (Struct) tuple.getTerm();
+    	Term newArg = (s_tuple.getArg(0)).copyGoal(v, 0);
+		Term newMult = (s_tuple.getArg(1)).copyGoal(v2,0);
+    	if(bioTupleWellFormed(s_tuple)){
+    		System.out.println("-----------------------------> newArg = " + newArg);
+    		System.out.println("-----------------------------> newMult = " + newMult);
+    		boolean argOk = unify(newArg, new Var());
+    		boolean multOk = unify(newMult, new Var());
+    		System.out.println("-----------------------------> argOk = " + argOk);
+    		System.out.println("-----------------------------> multOk = " + multOk);
+    		return (argOk && multOk);
+    	}else{
+    		return unify(tuple, new Var());
+    	}
     }
     
     /**
