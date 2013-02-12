@@ -1254,7 +1254,7 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 
 	public List<Tuple> getAllTuples() {
 		List<Tuple> tl = new LinkedList<Tuple>();
-		Iterator<BioTuple> it = this.tSet.getBioIterator();
+		Iterator<BioTuple> it = tSet.getBioIterator();
 		while(it.hasNext())
 			tl.add((Tuple)it.next());
 		return tl;

@@ -222,10 +222,10 @@ public class ACCProxyNodeSide extends ACCAbstractProxyNodeSide{
 					e.printStackTrace();
 					break;
 				}
-				
 				reply = new TucsonMsgReply(msg.getId(), msg_type, true, true, true, null, resList);
 				
 				try{
+					System.out.println("----------------------------------------> resList = "+resList);
 					TucsonMsgReply.write(outStream, reply);
 					outStream.flush();
 				}catch(IOException e){

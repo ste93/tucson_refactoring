@@ -100,6 +100,9 @@ public class TucsonMsgReply implements Serializable{
 		boolean res = din.readBoolean();
 		LogicTuple treq = (LogicTuple) din.readObject();
 		Object tres = din.readObject();
+		
+		System.out.println("------------------------------>tres " + tres);
+		
 		TucsonMsgReply msg = new TucsonMsgReply();
 		msg.id = id;
 		msg.type = type;

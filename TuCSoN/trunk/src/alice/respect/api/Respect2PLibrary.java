@@ -186,6 +186,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
 			Term newArg = (s_tuple.getArg(0)).copyGoal(v, 0);
 			Term newMult = (s_tuple.getArg(1)).copyGoal(v2,0);
 			long mult = ((Number)newMult).longValue();
+			//long mult = ((Number)s_tuple.getArg(1)).longValue();
 			try {
 				tuArg = new BioTuple(newArg,mult);
 			} catch (InvalidMultiplicityException e) {
