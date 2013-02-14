@@ -83,6 +83,9 @@ public class TucsonMsgReply implements Serializable{
 		dout.writeBoolean(msg.isSuccess());
 		dout.writeBoolean(msg.isResultSuccess());
 		dout.writeObject(msg.getTupleRequested());
+		
+		System.out.println("----------------------------------------> type = "+msg.getType()+" send result = "+msg.getTupleResult());
+		
 		dout.writeObject(msg.getTupleResult());
 	}
 
@@ -101,7 +104,7 @@ public class TucsonMsgReply implements Serializable{
 		LogicTuple treq = (LogicTuple) din.readObject();
 		Object tres = din.readObject();
 		
-		System.out.println("------------------------------>tres " + tres);
+		System.out.println("----------------------------------------> type = "+ type +" got result = " + tres);
 		
 		TucsonMsgReply msg = new TucsonMsgReply();
 		msg.id = id;
