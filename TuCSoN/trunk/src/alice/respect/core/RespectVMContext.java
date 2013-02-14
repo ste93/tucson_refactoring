@@ -553,11 +553,11 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
                 return false;
             }
 
-            if((noReactionTh != null) && !this.isExternalSetSpec){
-            	core.addTheory(noReactionTh);
-            	trigCore.addTheory(noReactionTh);
-            	log("set->trigCore = " + trigCore.getTheory());
-            }
+//            if((noReactionTh != null) && !this.isExternalSetSpec){
+//            	core.addTheory(noReactionTh);
+//            	trigCore.addTheory(noReactionTh);
+//            	log("set->trigCore = " + trigCore.getTheory());
+//            }
             reactionSpec=(RespectSpecification)spec;
             Iterator<Term> it;
             it = this.foundTimeReactions();
