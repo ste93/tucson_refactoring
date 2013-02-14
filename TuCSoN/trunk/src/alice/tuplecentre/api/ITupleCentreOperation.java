@@ -1,5 +1,7 @@
 package alice.tuplecentre.api;
 
+import java.util.List;
+
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 
 /**
@@ -51,6 +53,10 @@ public interface ITupleCentreOperation{
 	 * @return true if the operation is completed
 	 */
 	boolean isOperationCompleted();
+	
+	boolean isResultSuccess();
+	
+	boolean isResultFailure();
 
 	/**
 	 * Wait for operation completion
@@ -76,5 +82,15 @@ public interface ITupleCentreOperation{
 	 * @return Operation identifier
 	 */
 	long getId();
+
+	Tuple getTupleResult();
+
+	List<Tuple> getTupleListResult();
+
+	List<Tuple> getTupleListArgument();
+
+	Tuple getTupleArgument();
+
+	TupleTemplate getTemplateArgument();
 
 }

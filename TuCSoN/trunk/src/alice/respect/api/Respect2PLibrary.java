@@ -38,6 +38,7 @@ import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.logictuple.exceptions.InvalidTupleOperationException;
 
 import alice.tuplecentre.api.IId;
+import alice.tuplecentre.api.ITupleCentreOperation;
 import alice.tuplecentre.api.Tuple;
 import alice.tuplecentre.core.*;
 
@@ -1440,7 +1441,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      */
     public boolean success_0(){
         Event ev = vm.getCurrentReactionEvent();
-        TupleCentreOperation op = ev.getSimpleTCEvent();
+        ITupleCentreOperation op = ev.getSimpleTCEvent();
         return op.isResultSuccess();
     }
     
@@ -1449,7 +1450,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      */
     public boolean failure_0(){
     	Event ev = vm.getCurrentReactionEvent();
-    	TupleCentreOperation op = ev.getSimpleTCEvent();
+    	ITupleCentreOperation op = ev.getSimpleTCEvent();
         return op.isResultFailure();
     }
     
