@@ -1462,7 +1462,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     	IId target = ev.getTarget();
     	IId current_tc = this.vm.getId();
 //    	IId current_tc = ev.getReactingTC();
-    	log("  intra) target = "+target.toString()+", current_tc = "+current_tc.toString());
+//    	log("  intra) target = "+target.toString()+", current_tc = "+current_tc.toString());
     	if(current_tc.toString().equals(target.toString()))
     		return true;
     	else
@@ -1482,7 +1482,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     	IId source = ev.getSource();
     	IId current_tc = this.vm.getId();
 //    	IId current_tc = ev.getReactingTC();
-    	log("  exo) source = "+source.toString()+", current_tc = "+current_tc.toString());
+//    	log("  exo) source = "+source.toString()+", current_tc = "+current_tc.toString());
     	if(!current_tc.toString().equals(source.toString()))
     		return true;
     	else
@@ -1532,12 +1532,12 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     public boolean from_tc_0(){
     	Event ev = vm.getCurrentReactionEvent();
     	IId source = ev.getSource();
-    	log("  from_tc) source = "+source.toString());
+//    	log("  from_tc) source = "+source.toString());
     	if(source.isTC()){
-    		log("    source.isTC() is true");
+//    		log("    source.isTC() is true");
     		return true;    		
     	}else{
-    		log("    source.isTC() is false");
+//    		log("    source.isTC() is false");
     		return false;
     	}
     }
@@ -1553,7 +1553,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     public boolean to_tc_0(){
     	Event ev = vm.getCurrentReactionEvent();
     	IId target = ev.getTarget();
-    	log("  to_tc) target = "+target.toString());
+//    	log("  to_tc) target = "+target.toString());
     	if(target.isTC())
     		return true;
     	else
@@ -1601,12 +1601,12 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     }
     
     public boolean link_in_0(){
-    	log("link_in ->");
+//    	log("link_in ->");
     	return from_tc_0() && to_tc_0() && exo_0() && intra_0();
     }
     
     public boolean link_out_0(){
-    	log("link_out ->");
+//    	log("link_out ->");
     	return from_tc_0() && to_tc_0() && endo_0() && inter_0();
     }
     

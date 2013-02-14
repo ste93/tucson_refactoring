@@ -155,12 +155,6 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 	                InputEvent ie = (InputEvent)ev;
 	                log("ie = " + ie);
 					RespectOperation op=(RespectOperation)ev.getSimpleTCEvent();
-					if(op.getLogicTupleArgument() != null)
-						log("logicArg = " + op.getLogicTupleArgument().toTerm());
-                	log("arg = " + op.getTupleArgument());
-                	if(op.getLogicTupleResult() != null)
-                		log("logicRes = " + op.getLogicTupleResult().toTerm());
-                	log("res = " + op.getTupleResult());
 					
 					if (op.isSpawn()){
 						currentReactionTerm=new Struct("spawn",op.getLogicTupleArgument().toTerm());
@@ -549,6 +543,7 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 //                	log("op = " + op.name + ", " + op.prio);
 //                }
                 trigCore.setTheory(thspec);
+                log("set->atom->trigCore = " + trigCore.getTheory());
             }else if (co.isList()){
                 alice.tuprolog.Theory thspec=new alice.tuprolog.Theory(co);
                 core.setTheory(thspec);
@@ -561,6 +556,7 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
             if((noReactionTh != null) && !this.isExternalSetSpec){
             	core.addTheory(noReactionTh);
             	trigCore.addTheory(noReactionTh);
+            	log("set->trigCore = " + trigCore.getTheory());
             }
             reactionSpec=(RespectSpecification)spec;
             Iterator<Term> it;
