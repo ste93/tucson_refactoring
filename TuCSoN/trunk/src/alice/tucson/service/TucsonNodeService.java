@@ -67,7 +67,7 @@ public class TucsonNodeService{
 	private static final int DEFAULT_TCP_PORT = 20504; 
 	
 //	how to set a "proper" number?
-	private static final int MAX_EVENT_QUEUE_SIZE = 10;
+	private static final int MAX_EVENT_QUEUE_SIZE = 1000;
 	
 	private int tcp_port = DEFAULT_TCP_PORT;
 	private TupleArgument persistencyTemplate;

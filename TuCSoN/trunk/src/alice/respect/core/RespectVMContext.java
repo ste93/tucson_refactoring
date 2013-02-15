@@ -543,7 +543,7 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 //                	log("op = " + op.name + ", " + op.prio);
 //                }
                 trigCore.setTheory(thspec);
-                log("set->atom->trigCore = " + trigCore.getTheory());
+//                log("set->atom->trigCore = " + trigCore.getTheory());
             }else if (co.isList()){
                 alice.tuprolog.Theory thspec=new alice.tuprolog.Theory(co);
                 core.setTheory(thspec);
