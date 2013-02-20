@@ -573,7 +573,7 @@ public class TucsonNodeService{
 			String spec = alice.util.Tools.loadText(new BufferedInputStream(is));
 			LogicTuple specTuple = new LogicTuple("spec", new Value(spec));
 			TupleCentreContainer.doBlockingSpecOperation(TucsonOperation.set_sCode(), nodeAid, idConfigTC, specTuple);
-			TupleCentreContainer.doBlockingOperation(TucsonOperation.outCode(), nodeAid, idConfigTC, new LogicTuple("boot"));
+			TupleCentreContainer.doNonBlockingOperation(TucsonOperation.outCode(), nodeAid, idConfigTC, new LogicTuple("boot"), null);
 			addAgent(nodeAid);
 		}catch(TucsonInvalidTupleCentreIdException e){
 			System.err.println("[TucsonNodeService]: " + e);
@@ -602,7 +602,7 @@ public class TucsonNodeService{
 			String spec = alice.util.Tools.loadText(new BufferedInputStream(is));
 			LogicTuple specTuple = new LogicTuple("spec", new Value(spec));
 			TupleCentreContainer.doBlockingSpecOperation(TucsonOperation.set_sCode(), nodeAid, idObsTC, specTuple);
-			TupleCentreContainer.doBlockingOperation(TucsonOperation.outCode(), nodeAid, idObsTC, new LogicTuple("boot"));
+			TupleCentreContainer.doNonBlockingOperation(TucsonOperation.outCode(), nodeAid, idObsTC, new LogicTuple("boot"), null);
 			obsService = new ObservationService(idObsTC);
 		}catch(TucsonInvalidTupleCentreIdException e){
 			System.err.println("[TucsonNodeService]: " + e);
