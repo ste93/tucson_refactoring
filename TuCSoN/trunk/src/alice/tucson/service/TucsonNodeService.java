@@ -67,7 +67,7 @@ public class TucsonNodeService{
 	private static final int DEFAULT_TCP_PORT = 20504; 
 	
 //	how to set a "proper" number?
-	private static final int MAX_EVENT_QUEUE_SIZE = 10;
+	private static final int MAX_EVENT_QUEUE_SIZE = 1000;
 	
 	private int tcp_port = DEFAULT_TCP_PORT;
 	private TupleArgument persistencyTemplate;
@@ -573,7 +573,7 @@ public class TucsonNodeService{
 			String spec = alice.util.Tools.loadText(new BufferedInputStream(is));
 			LogicTuple specTuple = new LogicTuple("spec", new Value(spec));
 			TupleCentreContainer.doBlockingSpecOperation(TucsonOperation.set_sCode(), nodeAid, idConfigTC, specTuple);
-			TupleCentreContainer.doBlockingOperation(TucsonOperation.outCode(), nodeAid, idConfigTC, new LogicTuple("boot"));
+			TupleCentreContainer.doNonBlockingOperation(TucsonOperation.outCode(), nodeAid, idConfigTC, new LogicTuple("boot"), null);
 			addAgent(nodeAid);
 		}catch(TucsonInvalidTupleCentreIdException e){
 			System.err.println("[TucsonNodeService]: " + e);
@@ -602,7 +602,7 @@ public class TucsonNodeService{
 			String spec = alice.util.Tools.loadText(new BufferedInputStream(is));
 			LogicTuple specTuple = new LogicTuple("spec", new Value(spec));
 			TupleCentreContainer.doBlockingSpecOperation(TucsonOperation.set_sCode(), nodeAid, idObsTC, specTuple);
-			TupleCentreContainer.doBlockingOperation(TucsonOperation.outCode(), nodeAid, idObsTC, new LogicTuple("boot"));
+			TupleCentreContainer.doNonBlockingOperation(TucsonOperation.outCode(), nodeAid, idObsTC, new LogicTuple("boot"), null);
 			obsService = new ObservationService(idObsTC);
 		}catch(TucsonInvalidTupleCentreIdException e){
 			System.err.println("[TucsonNodeService]: " + e);

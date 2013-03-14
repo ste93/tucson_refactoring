@@ -19,7 +19,6 @@ package alice.tuplecentre.core;
 
 import java.util.*;
 
-import alice.logictuple.LogicTuple;
 import alice.respect.core.RespectOperation;
 import alice.respect.core.RespectVMContext;
 import alice.tuplecentre.api.Tuple;
@@ -42,12 +41,16 @@ public class SpeakingState extends TupleCentreVMState {
     }
     
     public TupleCentreVMState getNextState(){
-        if (vm.triggeredReaction())
+        if (vm.triggeredReaction()){
+        	System.out.println("\t\t\t### [SpeakingState] ===> [ReactingState] ###");
             return reactingState;
-        else if (noMoreSatisfiablePendingQuery)
+        }else if (noMoreSatisfiablePendingQuery){
+        	System.out.println("\t\t\t### [SpeakingState] ===> [IdleState] ###");
             return idleState;
-        else
-        	return this;  
+        }else{
+        	System.out.println("\t\t\t### [SpeakingState] ===> [SpeakingState] ###");
+        	return this;
+        }
     }
     
     public void resolveLinks(){
@@ -57,22 +60,22 @@ public class SpeakingState extends TupleCentreVMState {
     
     public void execute(){
     	
-        Iterator it = vm.getPendingQuerySetIterator();
+        Iterator<?> it = vm.getPendingQuerySetIterator();
         InputEvent ev = null;
         OutputEvent out_ev = null;
 		noMoreSatisfiablePendingQuery=true;
 		boolean foundSatisfied = false;
-		boolean operationNotPossible = false;
+//		boolean operationNotPossible = false;
 		
 		Tuple tuple = null;
 		List<Tuple> tupleList = null;
 		TupleCentreOperation op = null;
 		
         while (it.hasNext() && !foundSatisfied) {
-            
+        	
         	try {
 	            ev = (InputEvent) (it.next());
-	            System.out.println("ev = " + ev);
+	            System.out.println("....[SpeakingState]: ev = " + ev);
 	            op = ev.getSimpleTCEvent();
 	            
 	            
@@ -338,6 +341,7 @@ public class SpeakingState extends TupleCentreVMState {
 			
 			if(ev.isLinking() && !op.isResultDefined()){
 				out_ev.setTarget(ev.getTarget());
+				System.out.println("....[SpeakingState]: out_env = " + out_ev);
 				vm.linkOperation(out_ev);
 			}
 			

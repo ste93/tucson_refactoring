@@ -101,7 +101,7 @@ public class ACCProxyNodeSide extends ACCAbstractProxyNodeSide{
 	}
 
 	private void log(String st){
-		System.out.println("[ACCProxyNodeSide (port=" + node.getTCPPort() + ", acc=" + ctxId + ")]: " + st);
+		System.out.println("[ACCProxyNodeSide (thread=" + getName() + ", port=" + node.getTCPPort() + ", acc=" + ctxId + ")]: " + st);
 	}
 
 	/**

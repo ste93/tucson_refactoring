@@ -124,6 +124,24 @@ public abstract class TucsonAgent implements TucsonOperationCompletionListener{
 	}
 	
 	/**
+	 * Returns agent default node.
+	 * 
+	 * @return The default node of the agent
+	 */
+	public final String myNode(){
+		return this.node;
+	}
+	
+	/**
+	 * Returns agent default port
+	 * 
+	 * @return The default port of the agent
+	 */
+	public final int myport(){
+		return this.port;
+	}
+	
+	/**
 	 * Getter for the ACC.
 	 * At the moment the TucsonAgent base class always ask for the most
 	 * comprehensive ACC (that is the DefaultACC): it's up to the user agent

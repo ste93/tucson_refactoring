@@ -52,7 +52,13 @@ public class WelcomeAgent extends Thread{
 					
 		TucsonProtocol mainDialog = null;
 		try{
-			mainDialog = new TucsonProtocolTCP(new ServerSocket(port));
+			ServerSocket mainSocket = new ServerSocket();
+			mainSocket.setReuseAddress(true);
+			mainSocket.bind(new InetSocketAddress(port));
+			mainDialog = new TucsonProtocolTCP(mainSocket);
+		}catch(SocketException e2){
+			System.err.println("[WelcomeAgent]: " + e2);
+			e2.printStackTrace();
 		}catch(IOException e1){
 			System.err.println("[WelcomeAgent]: " + e1);
 			e1.printStackTrace();
@@ -60,13 +66,19 @@ public class WelcomeAgent extends Thread{
 
 		TucsonProtocol dialog = null;
 		boolean exception = false;
+		boolean timeout = false;
 		try{
 			while(true){
 				
-				log("Listening on port " + port + " for incoming ACC requests...");
+				if(!timeout)
+					log("Listening on port " + port + " for incoming ACC requests...");
+				else
+					timeout = false;
+				
 				try{
 					dialog = mainDialog.acceptNewDialog();
 				}catch(SocketTimeoutException e){
+					timeout = true;
 					if(shutdown){
 						exception = true;
 						log("Shutdown interrupt received, shutting down...");

@@ -18,8 +18,10 @@
 package alice.tucson.service;
 
 import alice.tucson.api.TucsonOpId;
+import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
+import alice.tuplecentre.core.TupleCentreOperation;
 
 /**
  * 
@@ -59,6 +61,6 @@ public interface InterTupleCentreACC{
 	 * @throws TucsonOperationNotPossibleException
 	 * @throws UnreachableNodeException
 	 */
-	TucsonOpId doOperation(Object tid, int type, Object t) throws TucsonOperationNotPossibleException, UnreachableNodeException;
+	TucsonOpId doOperation(Object tid, TupleCentreOperation op) throws TucsonOperationNotPossibleException, UnreachableNodeException;
 
 }

@@ -42,12 +42,6 @@ public class TucsonProtocolTCP extends TucsonProtocol{
 
 	public TucsonProtocolTCP(ServerSocket socket){
 		this.mainSocket = socket;
-		try{
-			mainSocket.setReuseAddress(true);
-		}catch(Exception ex){
-			System.err.println("[TucsonProtocolTCP]: " + ex);
-			ex.printStackTrace();
-		}
 	}
 
 	private TucsonProtocolTCP(Socket socket) throws IOException{

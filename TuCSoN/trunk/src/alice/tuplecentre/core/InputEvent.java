@@ -45,7 +45,10 @@ public class InputEvent extends Event {
     }
     
     public String toString(){
-    	return "input_event(agentId("+getSource()+"),operation("+getSimpleTCEvent()+"))";
+    	return "input_event(agentId("+getSource()+")," +
+    			"operation("+getSimpleTCEvent()+")," +
+    			"target("+getTarget()+")," +
+    			"reactingTC("+getReactingTC()+"))";
     }
     
 	public boolean isInput(){

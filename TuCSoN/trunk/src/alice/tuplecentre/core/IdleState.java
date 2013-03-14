@@ -33,10 +33,13 @@ public class IdleState extends TupleCentreVMState {
     }
     
     public TupleCentreVMState getNextState(){
-        if (vm.pendingEvents())
+        if (vm.pendingEvents()){
+        	System.out.println("\t\t\t### [IdleState] ===> [ListeningState] ###");
         	return listeningState;
-        else if(vm.pendingEnvEvents())
+        }else if(vm.pendingEnvEvents()){
         	return fetchEnvState;
+        }
+        System.out.println("\t\t\t### [IdleState] ===> [IdleState] ###");
         return this;
     }
     

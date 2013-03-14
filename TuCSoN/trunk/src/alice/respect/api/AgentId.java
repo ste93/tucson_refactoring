@@ -77,10 +77,9 @@ public class AgentId implements alice.tuplecentre.api.AgentId, java.io.Serializa
     
     public AgentId(String name, TucsonTupleCentreId tcId) {
 		id = new Struct(name, tcId.toTerm());
-		System.out.println("id = " + id);
 	}
-
-	public String getLocalName(){
+    
+    public String getLocalName(){
     	if(id.isCompound())
     		return ((Struct)id).getArg(0).toString();
     	else

@@ -120,6 +120,7 @@ public abstract class TupleCentreVMContext implements ITupleCentreManagement, IT
 
 	public void addInputEvent(InputEvent in){
 		synchronized(inputEvents){
+			System.out.println("..[TupleCentreVMContext]: in = " + in);
 			inputEvents.add(in);
 		}
 	}
@@ -453,6 +454,10 @@ public abstract class TupleCentreVMContext implements ITupleCentreManagement, IT
      */
     public TupleCentreVMState getState(String stateName){
         return (TupleCentreVMState)(states.get(stateName));
+    }
+    
+    public String getCurrentState(){
+    	return currentState.getClass().getSimpleName();
     }
     
     public void notifyException(Exception ex){

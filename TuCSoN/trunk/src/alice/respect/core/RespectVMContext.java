@@ -153,9 +153,9 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 	            	
 	            	log("INVOCATION phase");
 	                InputEvent ie = (InputEvent)ev;
+	                log("ie = " + ie);
 					RespectOperation op=(RespectOperation)ev.getSimpleTCEvent();
-//					log("op.getLogicTupleArgument() = " + op.getLogicTupleArgument());
-				
+					
 					if (op.isSpawn()){
 						currentReactionTerm=new Struct("spawn",op.getLogicTupleArgument().toTerm());
 					}else if (op.isOut()){
@@ -226,6 +226,12 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 						}else if (op.isOut()){
 		                    currentReactionTerm=new Struct("out",op.getLogicTupleArgument().toTerm());
 		                }else if (op.isIn()){
+		                	if(op.getLogicTupleArgument() != null)
+		                		log("logicArg = " + op.getLogicTupleArgument().toTerm());
+		                	log("arg = " + op.getTupleArgument());
+		                	if(op.getLogicTupleResult() != null)
+		                		log("logicRes = " + op.getLogicTupleResult().toTerm());
+		                	log("res = " + op.getTupleResult());
 			                currentReactionTerm=new Struct("in",op.getLogicTupleArgument().toTerm());
 						}else if (op.isRd()){
 							currentReactionTerm=new Struct("rd",op.getLogicTupleArgument().toTerm());
@@ -478,6 +484,7 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 			int n = temporaryOutputEventList.size();
 			for (int i=0; i<n; i++){
 				InputEvent curr = (alice.tuplecentre.core.InputEvent)temporaryOutputEventList.get(i);
+				log("temporaryOutputEventList.get(i) = " + curr);
 				this.addPendingQueryEvent(curr);
 			}
         }else {
@@ -538,6 +545,7 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 //                	log("op = " + op.name + ", " + op.prio);
 //                }
                 trigCore.setTheory(thspec);
+//                log("set->atom->trigCore = " + trigCore.getTheory());
             }else if (co.isList()){
                 alice.tuprolog.Theory thspec=new alice.tuprolog.Theory(co);
                 core.setTheory(thspec);
@@ -547,10 +555,11 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
                 return false;
             }
 
-            if((noReactionTh != null) && !this.isExternalSetSpec){
-            	core.addTheory(noReactionTh);
-            	trigCore.addTheory(noReactionTh);
-            }
+//            if((noReactionTh != null) && !this.isExternalSetSpec){
+//            	core.addTheory(noReactionTh);
+//            	trigCore.addTheory(noReactionTh);
+//            	log("set->trigCore = " + trigCore.getTheory());
+//            }
             reactionSpec=(RespectSpecification)spec;
             Iterator<Term> it;
             it = this.foundTimeReactions();
@@ -1228,6 +1237,7 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 			TupleCentreOperation op = oe.getSimpleTCEvent();
 			op.addListener(new CompletionListener(oe,target));
 			ILinkContext link = RespectTCContainer.getRespectTCContainer().getLinkContext(target);
+			log("doing link op = " + op + ", source = " + (TupleCentreId)oe.getSource());
 			link.doOperation((TupleCentreId)oe.getSource(), op);
 		}catch(Exception e){
 			e.printStackTrace();
@@ -1236,17 +1246,22 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 	
 	class CompletionListener implements OperationCompletionListener{
 
-    	private OutputEvent inter;
-    	private TupleCentreId currentTC;
+    	private OutputEvent oe;
+    	private TupleCentreId oeTarget;
     	
-    	public CompletionListener(OutputEvent inter,TupleCentreId source){
-    		this.inter = inter;
-    		this.currentTC = source;
+    	public CompletionListener(OutputEvent o,TupleCentreId t){
+    		this.oe = o;
+    		this.oeTarget = t;
     	}
     	
 		public void operationCompleted(TupleCentreOperation arg0) {
 			arg0.removeListener();
-			InputEvent res = new InputEvent(inter.getTarget(),arg0,currentTC,getCurrentTime());
+			// oe.getTarget() == oeTarget by construction (loc 1201)!
+			// 3rd arg is the target of the event,
+			log("completion op = " + arg0 + ", from = " + oe.getSource() + ", to = " + oe.getTarget() + ", arg = " + arg0.getTupleResult());
+//			InputEvent res = new InputEvent(oe.getTarget(),arg0,oeTarget,getCurrentTime());
+//			InputEvent res = new InputEvent(oe.getTarget(),arg0,(TupleCentreId)oe.getSource(),getCurrentTime());
+			InputEvent res = new InputEvent(oe.getSource(),arg0,(TupleCentreId)oe.getTarget(),getCurrentTime());
 			notifyInputEvent(res);
 		}
     	
@@ -1340,7 +1355,7 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 	*/
 	
 	private void log(String s){
-		System.out.println("..[RespectVMContext]: " + s);
+		System.out.println("..[RespectVMContext (" + getId() + ")]: " + s);
 	}
 	
 }

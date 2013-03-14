@@ -41,6 +41,7 @@ import alice.logictuple.exceptions.InvalidMultiplicityException;
 import alice.logictuple.exceptions.InvalidTupleOperationException;
 
 import alice.tuplecentre.api.IId;
+import alice.tuplecentre.api.ITupleCentreOperation;
 import alice.tuplecentre.api.Tuple;
 import alice.tuplecentre.core.*;
 
@@ -265,6 +266,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     		e.printStackTrace();
     		return false;
     	}
+    	log("tid = " + tid);
     	tcName = tid.getName();
     	log("tid = " + tid);
     	
@@ -1586,7 +1588,8 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     public boolean response_0(){
     	Event ev = vm.getCurrentReactionEvent();
         TupleCentreOperation op = ev.getSimpleTCEvent();
-        return op.isResultDefined();
+//        return op.isResultDefined();
+        return op.isResultDefined() && !"ListeningState".equals(vm.getCurrentState());
     }
     
     public boolean completion_0(){
@@ -1635,7 +1638,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      */
     public boolean success_0(){
         Event ev = vm.getCurrentReactionEvent();
-        TupleCentreOperation op = ev.getSimpleTCEvent();
+        ITupleCentreOperation op = ev.getSimpleTCEvent();
         return op.isResultSuccess();
     }
     
@@ -1644,7 +1647,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      */
     public boolean failure_0(){
     	Event ev = vm.getCurrentReactionEvent();
-    	TupleCentreOperation op = ev.getSimpleTCEvent();
+    	ITupleCentreOperation op = ev.getSimpleTCEvent();
         return op.isResultFailure();
     }
     
@@ -1657,7 +1660,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     	IId target = ev.getTarget();
     	IId current_tc = this.vm.getId();
 //    	IId current_tc = ev.getReactingTC();
-//    	log("\tintra) target = "+target.toString()+", current_tc = "+current_tc.toString());
+//    	log("  intra) target = "+target.toString()+", current_tc = "+current_tc.toString());
     	if(current_tc.toString().equals(target.toString()))
     		return true;
     	else
@@ -1677,7 +1680,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     	IId source = ev.getSource();
     	IId current_tc = this.vm.getId();
 //    	IId current_tc = ev.getReactingTC();
-//    	log("\texo) source = "+source.toString()+", current_tc = "+current_tc.toString());
+//    	log("  exo) source = "+source.toString()+", current_tc = "+current_tc.toString());
     	if(!current_tc.toString().equals(source.toString()))
     		return true;
     	else
@@ -1727,12 +1730,12 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     public boolean from_tc_0(){
     	Event ev = vm.getCurrentReactionEvent();
     	IId source = ev.getSource();
-//    	log("\tfrom_tc) source = "+source.toString());
+//    	log("  from_tc) source = "+source.toString());
     	if(source.isTC()){
-//    		log("\t\tsource.isTC() is true");
+//    		log("    source.isTC() is true");
     		return true;    		
     	}else{
-//    		log("\t\tsource.isTC() is false");
+//    		log("    source.isTC() is false");
     		return false;
     	}
     }
@@ -1748,7 +1751,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     public boolean to_tc_0(){
     	Event ev = vm.getCurrentReactionEvent();
     	IId target = ev.getTarget();
-//    	log("\tto_tc) target = "+target.toString());
+//    	log("  to_tc) target = "+target.toString());
     	if(target.isTC())
     		return true;
     	else

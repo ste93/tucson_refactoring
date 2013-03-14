@@ -197,18 +197,22 @@ public abstract class TupleCentreOperation implements ITupleCentreOperation{
 		}
 	}
 	
+	@Override
 	public TupleTemplate getTemplateArgument(){
 		return templateArgument;
 	}
 
+	@Override
 	public Tuple getTupleArgument(){
 		return tupleArgument;
 	}
 	
+	@Override
 	public List<Tuple> getTupleListArgument(){
 		return tupleListArgument;
 	}
 	
+	@Override
 	public List<Tuple> getTupleListResult(){
 		return result.getTupleListResult();
 	}
@@ -218,6 +222,7 @@ public abstract class TupleCentreOperation implements ITupleCentreOperation{
 		result.setEndTime(System.currentTimeMillis());
 	}
 	
+	@Override
 	public Tuple getTupleResult(){
 		return result.getTupleResult();
 	}
