@@ -558,11 +558,9 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
 	        if (tuples!=null){
 	            Term term = list2tuple(tuples);
 	            unify(arg1,term.copyGoal(v,0));
-	            log("..." + arg1);
 	            return true;
 	        } else {
-	        	log("...null tuples!");
-	            return false;
+	        	return false;
 	        }
 	    }else{
 	    	log("Remote rd_all triggered...");
