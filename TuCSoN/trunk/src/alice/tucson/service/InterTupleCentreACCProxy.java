@@ -129,10 +129,10 @@ public class InterTupleCentreACCProxy implements InterTupleCentreACC, OperationC
 			if((type == TucsonOperation.outCode()) || (type == TucsonOperation.out_sCode())
 					|| (type == TucsonOperation.set_sCode()) || (type == TucsonOperation.set_Code())
 					|| type == TucsonOperation.out_allCode() || type == TucsonOperation.spawnCode()){
-				log("tuple argument = " + op.getTupleArgument() + ", cast = " + (LogicTuple) op.getTupleArgument());
+//				log("tuple argument = " + op.getTupleArgument() + ", cast = " + (LogicTuple) op.getTupleArgument());
 				msg = new TucsonMsgRequest(opId, type, tcid.toString(), (LogicTuple) op.getTupleArgument());
 			}else{
-				log("template argument = " + op.getTemplateArgument() + ", cast = " + (LogicTuple) op.getTemplateArgument());
+//				log("template argument = " + op.getTemplateArgument() + ", cast = " + (LogicTuple) op.getTemplateArgument());
 				msg = new TucsonMsgRequest(opId, type, tcid.toString(), (LogicTuple) op.getTemplateArgument());
 			}
 			log("sending msg " + msg.getId() + ", op = " + msg.getType() + ", " + msg.getTuple() + ", " + msg.getTid());

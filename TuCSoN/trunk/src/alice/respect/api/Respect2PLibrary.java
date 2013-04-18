@@ -60,8 +60,6 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         
     	return 
         
-//    	":- op(600, xfx, '?'). \n"+
-//      ":- op(550, xfx, '@'). \n"+
 		":- op(551, xfx, '?'). \n"
 		+ ":- op(550, xfx, '@'). \n"
 		+ ":- op(549, xfx, ':'). \n"
@@ -249,7 +247,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     		e.printStackTrace();
     		return false;
     	}
-    	log("tid = " + tid);
+//    	log("tid = " + tid);
     	tcName = tid.getName();
     	
     	LogicTuple tuArg=new LogicTuple(arg0);
@@ -560,8 +558,10 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
 	        if (tuples!=null){
 	            Term term = list2tuple(tuples);
 	            unify(arg1,term.copyGoal(v,0));
+	            log("..." + arg1);
 	            return true;
 	        } else {
+	        	log("...null tuples!");
 	            return false;
 	        }
 	    }else{

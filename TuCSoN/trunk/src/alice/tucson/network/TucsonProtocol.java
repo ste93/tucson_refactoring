@@ -103,7 +103,7 @@ public abstract class TucsonProtocol implements java.io.Serializable{
 
 	public void receiveEnterRequest() throws Exception{
 		String agentName = receiveString();
-		System.out.println("[TucsonProtocol]: agentName = " + agentName);
+//		System.out.println("[TucsonProtocol]: agentName = " + agentName);
 		String agentRole = receiveString();
 		String tcName = receiveString();
 		Properties profile = new Properties();

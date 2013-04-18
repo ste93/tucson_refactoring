@@ -42,13 +42,13 @@ public class SpeakingState extends TupleCentreVMState {
     
     public TupleCentreVMState getNextState(){
         if (vm.triggeredReaction()){
-        	System.out.println("\t\t\t### [SpeakingState] ===> [ReactingState] ###");
+        	System.out.println("\t[SpeakingState] ===> [ReactingState]");
             return reactingState;
         }else if (noMoreSatisfiablePendingQuery){
-        	System.out.println("\t\t\t### [SpeakingState] ===> [IdleState] ###");
+        	System.out.println("\t[SpeakingState] ===> [IdleState]");
             return idleState;
         }else{
-        	System.out.println("\t\t\t### [SpeakingState] ===> [SpeakingState] ###");
+        	System.out.println("\t[SpeakingState] ===> [SpeakingState]");
         	return this;
         }
     }
@@ -76,7 +76,7 @@ public class SpeakingState extends TupleCentreVMState {
         	try {
             	
 	            ev = (InputEvent) (it.next());
-	            System.out.println("....[SpeakingState]: ev = " + ev);
+//	            System.out.println("....[SpeakingState]: ev = " + ev);
 	            op = ev.getSimpleTCEvent();
 	            
 	            if(op.isResultDefined() || ev.isLinking()){
@@ -342,7 +342,7 @@ public class SpeakingState extends TupleCentreVMState {
 			
 			if(ev.isLinking() && !op.isResultDefined()){
 				out_ev.setTarget(ev.getTarget());
-				System.out.println("....[SpeakingState]: out_env = " + out_ev);
+//				System.out.println("....[SpeakingState]: out_env = " + out_ev);
 				vm.linkOperation(out_ev);
 			}
 			

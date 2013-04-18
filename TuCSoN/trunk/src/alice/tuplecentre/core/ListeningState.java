@@ -33,10 +33,10 @@ public class ListeningState extends TupleCentreVMState {
     
     public TupleCentreVMState getNextState(){
         if (vm.triggeredReaction() || vm.time_triggeredReaction()){
-        	System.out.println("\t\t\t### [ListeningState] ===> [ReactingState] ###");
+        	System.out.println("\t[ListeningState] ===> [ReactingState]");
             return reactingState;
         }else{
-        	System.out.println("\t\t\t### [ListeningState] ===> [SpeakingState] ###");
+        	System.out.println("\t[ListeningState] ===> [SpeakingState]");
             return speakingState;
         }
     }

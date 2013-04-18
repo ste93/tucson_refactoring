@@ -33,12 +33,12 @@ public class ReactingState extends TupleCentreVMState {
     
     public TupleCentreVMState getNextState(){
         if (vm.triggeredReaction() || vm.time_triggeredReaction()){
-        	System.out.println("\t\t\t### [ReactingState] ===> [ReactingState] ###");
+        	System.out.println("\t[ReactingState] ===> [ReactingState]");
             return this;
         }else if (vm.pendingEnvEvents()){
             return fetchEnvState;
         }
-        System.out.println("\t\t\t### [ReactingState] ===> [SpeakingState] ###");
+        System.out.println("\t[ReactingState] ===> [SpeakingState]");
         return speakingState;
     }
     
