@@ -72,6 +72,8 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
     private TupleSet tSet;
     /** multiset of specification tuple Sigma */
     private TupleSet tSpecSet;
+    /** multiset of Prolog predicates */
+    private TupleSet prologPredicates;
     /** multiset of pending query set  */
     private PendingQuerySet wSet;
     /** multiset of triggered reactions Z */
@@ -101,6 +103,7 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
         semaphore = new Object();
         tSet=new TupleSet();
         tSpecSet = new TupleSet();
+        prologPredicates = new TupleSet();
         wSet=new PendingQuerySet();
         zSet=new TRSet();
         this.timeSet=new TRSet();
@@ -547,14 +550,14 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
                 return false;
             }
 
-//            if((noReactionTh != null) && !this.isExternalSetSpec){
-//            	core.addTheory(noReactionTh);
-//            	trigCore.addTheory(noReactionTh);
-//            	log("set->trigCore = " + trigCore.getTheory());
-//            }
+            if((noReactionTh != null) && !this.isExternalSetSpec){
+            	core.addTheory(noReactionTh);
+            	trigCore.addTheory(noReactionTh);
+//            	log("setReactionSpecHelper -> core = " + core.getTheory());
+//            	log("setReactionSpecHelper -> trigCore = " + trigCore.getTheory());
+            }
             reactionSpec=(RespectSpecification)spec;
-            Iterator<Term> it;
-            it = this.foundTimeReactions();
+            Iterator<Term> it = this.foundTimeReactions();
 
             while(it.hasNext()){
             	Term current = it.next();
@@ -640,6 +643,7 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
     	
     	this.isExternalSetSpec = true;
     	noReactionTh = null;
+    	prologPredicates = new TupleSet();
     	Prolog engine = new Prolog();
 
     	try{
@@ -650,11 +654,22 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 //    		log("term = " + term);
     		while(term!=null){
     			engine.solve("assert("+term+").");
+    			if (!term.match(Term.createTerm("reaction(E,G,R)"))){
+    				prologPredicates.add(new LogicTuple(term));
+//    				log("predicate = " + new LogicTuple(term));
+    			}
     			term = parser.nextTerm(true);
 //    			log("term = " + term);
     		}
     		engine.solveEnd();
-    		noReactionTh = engine.getTheory();
+    		Term[] preds = new Term[prologPredicates.size()];
+    		int i = 0;
+    		for (LogicTuple p : prologPredicates.toArray()) {
+				preds[i] = p.toTerm();
+				i++;
+			}
+    		noReactionTh = new Theory(new Struct(preds));
+//    		log("noReactionTh = " + noReactionTh);
     	}catch(Exception e){
     		e.printStackTrace();
     	}
@@ -665,17 +680,20 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
     		tSpecSet.empty();
     		try {
     			alice.tuprolog.SolveInfo info = core.solve("reaction(X,Y,Z).");
-    				while (true){
-    					alice.tuprolog.Term solution = info.getSolution();
-    					tSpecSet.add(new LogicTuple(solution));
-    					info = core.solveNext();
-    				}
+				while (true){
+					alice.tuprolog.Term solution = info.getSolution();
+					tSpecSet.add(new LogicTuple(solution));
+//					log("tSpecSet = " + new LogicTuple(solution));
+					info = core.solveNext();
+				}
     		} catch (alice.tuprolog.NoMoreSolutionException ex) {
     		} catch (alice.tuprolog.NoSolutionException ex){
     		} catch(MalformedGoalException ex) {
     			ex.printStackTrace();
     		}
     	}
+//    	log("core = " + core.getTheory());
+//    	log("trigCore = " + trigCore.getTheory());
     	
     	this.isExternalSetSpec = false;
 //    	log("result = " + result);
@@ -959,6 +977,10 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
     
     public Iterator getSpecTupleSetIterator(){
     	return tSpecSet.getIterator();
+    }
+    
+    public Iterator getPrologPredicatesIterator() {
+    	return prologPredicates.getIterator();
     }
 
     public void emptyTupleSet(){

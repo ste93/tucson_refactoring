@@ -19,6 +19,7 @@ package alice.tuplecentre.core;
 
 import java.util.*;
 
+import alice.logictuple.LogicTuple;
 import alice.respect.core.RespectOperation;
 import alice.respect.core.RespectVMContext;
 import alice.tuplecentre.api.Tuple;
@@ -300,6 +301,9 @@ public class SpeakingState extends TupleCentreVMState {
 						LinkedList<Tuple> reactionList = new LinkedList<Tuple>();
 						while(rit.hasNext())
 							reactionList.add(rit.next());
+						Iterator<Tuple> pit = ((RespectVMContext)vm).getPrologPredicatesIterator();
+						while(pit.hasNext())
+							reactionList.add(pit.next());
 						op.setOpResult(Outcome.SUCCESS);
 						op.setTupleListResult(reactionList);
 						foundSatisfied = true;

@@ -262,8 +262,13 @@ public class EditSpec extends javax.swing.JFrame{
 //			String spec = ""+context.get_s(tid, (Long) null).getLogicTupleListResult();
 			String spec = "";
 			List<LogicTuple> list = context.get_s(tid, (Long) null).getLogicTupleListResult();
-			for(LogicTuple t: list)
-				spec += format(t);
+			for (LogicTuple t: list) {
+				if ("reaction".equals(t.getName())) {
+					spec += format(t);
+				} else {
+					spec += predFormat(t);
+				}
+			}
 			inputSpec.setText(spec);
 			outputState.setText("ReSpecT specification read.");
 		}catch (TucsonOperationNotPossibleException e){
@@ -272,6 +277,8 @@ public class EditSpec extends javax.swing.JFrame{
 			outputState.setText("TuCSoN Node is unreachable.");
 		} catch (OperationTimeOutException e) {
 			outputState.setText("TuCSoN operation timeout exceeded.");
+		} catch (InvalidTupleOperationException e) {
+			outputState.setText(""+e);
 		}
 	}
 
@@ -305,6 +312,21 @@ public class EditSpec extends javax.swing.JFrame{
 		}catch(InvalidTupleOperationException e){
 			e.printStackTrace();
 		}
+		return res;
+	}
+	
+	private String predFormat(LogicTuple t) {
+		String res = "";
+		try {
+			if (!":-".equals(t.getName())) {
+				res = t.toString() + ".\n";
+			} else {
+				res = t.getArg(0) + " :-\n";
+				res += "    " + t.getArg(1) + ".\n";
+			}
+		} catch (InvalidTupleOperationException e) {
+			e.printStackTrace();
+		}		
 		return res;
 	}
 
