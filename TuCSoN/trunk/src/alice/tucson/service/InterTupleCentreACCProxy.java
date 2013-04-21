@@ -371,15 +371,16 @@ public class InterTupleCentreACCProxy implements InterTupleCentreACC, OperationC
 				TupleCentreOperation op = operations.remove(msg.getId());
 				if(op.isNoAll() || op.isInAll() || op.isRdAll() || op.isGet() ||
 						op.isSet() || op.isGet_s() || op.isSet_s() || op.isOutAll()){
+					log("received completion msg " + msg.getId() + ", op " + op.getType() + ", " + op.getTupleListResult());
 					op.setTupleListResult((List<Tuple>) msg.getTupleResult());
 				}else{
+					log("received completion msg " + msg.getId() + ", op " + op.getType() + ", " + op.getTupleResult());
 					op.setTupleResult((LogicTuple) msg.getTupleResult());
 				}
 				if(msg.isResultSuccess()){
 					op.setOpResult(Outcome.SUCCESS);
 				}else
 					op.setOpResult(Outcome.FAILURE);
-				log("received completion msg " + msg.getId() + ", op " + op.getType() + ", " + op.getTupleResult());
 				
 //				op.notifyCompletion(ev.operationSucceeded(), msg.isAllowed());
 				op.notifyCompletion();

@@ -340,13 +340,57 @@ public class RespectOperation extends TupleCentreOperation implements IRespectOp
 			opName = "nop";
 		}else if (isOutAll()){
 			opName = "out_all";
+			LogicTuple[] tupleL = new LogicTuple[]{};
+			tupleL = this.getLogicTupleListResult().toArray(tupleL);
+			tl = new Term[tupleL.length];
+			for(int i = 0; i < tupleL.length; i++){
+				tl[i] = (tupleL[i]).toTerm();
+			}
+			LogicTuple lt = new LogicTuple(opName, 
+					new TupleArgument(getLogicTupleArgument().toTerm()), 
+					new TupleArgument(new Struct(tl)));
+//			System.out.println(" lt = " + lt);
+			return lt;
 		}else if (isInAll()){
 			opName = "in_all";
+			LogicTuple[] tupleL = new LogicTuple[]{};
+			tupleL = this.getLogicTupleListResult().toArray(tupleL);
+			tl = new Term[tupleL.length];
+			for(int i = 0; i < tupleL.length; i++){
+				tl[i] = (tupleL[i]).toTerm();
+			}
+			LogicTuple lt = new LogicTuple(opName, 
+					new TupleArgument(getLogicTupleArgument().toTerm()), 
+					new TupleArgument(new Struct(tl)));
+//			System.out.println(" lt = " + lt);
+			return lt;
 		}else if (isRdAll()){
 			opName = "rd_all";
-		}else if (isNoAll())
+			LogicTuple[] tupleL = new LogicTuple[]{};
+			tupleL = this.getLogicTupleListResult().toArray(tupleL);
+			tl = new Term[tupleL.length];
+			for(int i = 0; i < tupleL.length; i++){
+				tl[i] = (tupleL[i]).toTerm();
+			}
+			LogicTuple lt = new LogicTuple(opName, 
+					new TupleArgument(getLogicTupleArgument().toTerm()), 
+					new TupleArgument(new Struct(tl)));
+//			System.out.println(" lt = " + lt);
+			return lt;
+		}else if (isNoAll()){
 			opName = "no_all";
-		else if (isUrd()){
+			LogicTuple[] tupleL = new LogicTuple[]{};
+			tupleL = this.getLogicTupleListResult().toArray(tupleL);
+			tl = new Term[tupleL.length];
+			for(int i = 0; i < tupleL.length; i++){
+				tl[i] = (tupleL[i]).toTerm();
+			}
+			LogicTuple lt = new LogicTuple(opName, 
+					new TupleArgument(getLogicTupleArgument().toTerm()), 
+					new TupleArgument(new Struct(tl)));
+//			System.out.println(" lt = " + lt);
+			return lt;
+		}else if (isUrd()){
 			opName = "urd";
 		}else if (isUin()){
 			opName = "uin";
