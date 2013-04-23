@@ -101,6 +101,8 @@ public class ACCProvider{
 				return false;
 			}
 
+			log(" ===> result = " + result + ", res = " + res);
+			
 			TupleArgument ctxId = res.getArg(0);
 			profile.setProperty("context-id", ctxId.toString());
 			log("ACC request accepted, ACC id is < " + ctxId.toString() + " >");
