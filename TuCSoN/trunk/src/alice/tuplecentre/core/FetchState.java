@@ -45,8 +45,8 @@ public class FetchState extends TupleCentreVMState {
         
     public void execute(){
 		vm.fetchPendingEvent();
-        InputEvent ev=vm.getCurrentEvent();
-//        System.out.println("[FetchState]: ev = " + ev);
+        InputEvent ev = vm.getCurrentEvent();
+        System.out.println("[FetchState]: ev = " + ev);
         vm.addPendingQueryEvent(ev);
         vm.fetchTriggeredReactions(ev);
     }

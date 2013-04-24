@@ -346,10 +346,16 @@ public class RespectOperation extends TupleCentreOperation implements IRespectOp
 			for(int i = 0; i < tupleL.length; i++){
 				tl[i] = (tupleL[i]).toTerm();
 			}
-			LogicTuple lt = new LogicTuple(opName, 
-					new TupleArgument(getLogicTupleArgument().toTerm()), 
-					new TupleArgument(new Struct(tl)));
-//			System.out.println(" lt = " + lt);
+			LogicTuple lt = null;
+			try {
+				lt = new LogicTuple(opName, 
+						new TupleArgument(getLogicTupleArgument().getArg(0).toTerm()), 
+						new TupleArgument(new Struct(tl)));
+			} catch (InvalidTupleOperationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			System.out.println(" @ lt = " + lt);
 			return lt;
 		}else if (isInAll()){
 			opName = "in_all";
@@ -359,10 +365,16 @@ public class RespectOperation extends TupleCentreOperation implements IRespectOp
 			for(int i = 0; i < tupleL.length; i++){
 				tl[i] = (tupleL[i]).toTerm();
 			}
-			LogicTuple lt = new LogicTuple(opName, 
-					new TupleArgument(getLogicTupleArgument().toTerm()), 
-					new TupleArgument(new Struct(tl)));
-//			System.out.println(" lt = " + lt);
+			LogicTuple lt = null;
+			try {
+				lt = new LogicTuple(opName, 
+						new TupleArgument(getLogicTupleArgument().getArg(0).toTerm()), 
+						new TupleArgument(new Struct(tl)));
+			} catch (InvalidTupleOperationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			System.out.println(" @ lt = " + lt);
 			return lt;
 		}else if (isRdAll()){
 			opName = "rd_all";
@@ -372,10 +384,16 @@ public class RespectOperation extends TupleCentreOperation implements IRespectOp
 			for(int i = 0; i < tupleL.length; i++){
 				tl[i] = (tupleL[i]).toTerm();
 			}
-			LogicTuple lt = new LogicTuple(opName, 
-					new TupleArgument(getLogicTupleArgument().toTerm()), 
-					new TupleArgument(new Struct(tl)));
-//			System.out.println(" lt = " + lt);
+			LogicTuple lt = null;
+			try {
+				lt = new LogicTuple(opName, 
+						new TupleArgument(getLogicTupleArgument().getArg(0).toTerm()), 
+						new TupleArgument(new Struct(tl)));
+			} catch (InvalidTupleOperationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+//			System.out.println(" @ lt = " + lt);
 			return lt;
 		}else if (isNoAll()){
 			opName = "no_all";
@@ -385,10 +403,16 @@ public class RespectOperation extends TupleCentreOperation implements IRespectOp
 			for(int i = 0; i < tupleL.length; i++){
 				tl[i] = (tupleL[i]).toTerm();
 			}
-			LogicTuple lt = new LogicTuple(opName, 
-					new TupleArgument(getLogicTupleArgument().toTerm()), 
-					new TupleArgument(new Struct(tl)));
-//			System.out.println(" lt = " + lt);
+			LogicTuple lt = null;
+			try {
+				lt = new LogicTuple(opName, 
+						new TupleArgument(getLogicTupleArgument().getArg(0).toTerm()), 
+						new TupleArgument(new Struct(tl)));
+			} catch (InvalidTupleOperationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			System.out.println(" @ lt = " + lt);
 			return lt;
 		}else if (isUrd()){
 			opName = "urd";

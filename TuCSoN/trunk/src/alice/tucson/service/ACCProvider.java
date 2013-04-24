@@ -101,7 +101,7 @@ public class ACCProvider{
 				return false;
 			}
 
-			log(" ===> result = " + result + ", res = " + res);
+			log("result = " + result + ", res = " + res);
 			
 			TupleArgument ctxId = res.getArg(0);
 			profile.setProperty("context-id", ctxId.toString());
