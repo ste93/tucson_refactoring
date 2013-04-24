@@ -167,8 +167,10 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
 
     	String tcName = null;
     	TupleCentreId tid = null;
+//    	log("arg1 = " + arg1);
+//    	log("arg1.getTerm() = " + arg1.getTerm());
     	try{
-    		tid=new TupleCentreId(arg1);
+    		tid = new TupleCentreId(arg1);
     	}catch(Exception e){
     		e.printStackTrace();
     		return false;
@@ -190,10 +192,29 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
 	        return true;
     	}else{
     		log("Remote out triggered...");
-	    	InputEvent ce=vm.getCurrentEvent();
-			InputEvent out_ev = new InputEvent(ce.getReactingTC(),RespectOperation.makeOut(getProlog(), new LogicTuple(arg0.copyGoal(v,0)),null),tid,vm.getCurrentTime());
+	    	InputEvent ce = vm.getCurrentEvent();
+//	    	log("arg(0) = " + ((Struct)arg1.getTerm()).getArg(0));
+//	    	log("arg(0).getTerm() = " + ((Struct)arg1.getTerm()).getArg(0).getTerm());
+	    	try {
+//	    		log("new tid = " + Term.createTerm(alice.util.Tools.removeApices(((Struct)arg1.getTerm()).getArg(0).getTerm().toString()), new MyOpManager()));
+	    	} catch (Exception e) {
+	    		// TODO Auto-generated catch block
+				e.printStackTrace();
+	    	}
+	    	TupleCentreId newTid = null;
+	    	try {
+				newTid = new TupleCentreId(Term.createTerm(alice.util.Tools.removeApices(((Struct)arg1.getTerm()).getArg(0).getTerm().toString()), new MyOpManager()));
+			} catch (InvalidTupleCentreIdException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			InputEvent out_ev = new InputEvent(
+					ce.getReactingTC(),
+					RespectOperation.makeOut(getProlog(), new LogicTuple(arg0.copyGoal(v,0)),null),
+					newTid,
+					vm.getCurrentTime());
 			out_ev.setIsLinking(true);
-			out_ev.setTarget(tid);
+			out_ev.setTarget(newTid);
 			vm.addTemporaryOutputEvent(out_ev);
 			return true;
 	    }
@@ -539,8 +560,9 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     
     public boolean rd_all_3(Term arg0, Term arg1, Term arg2){
         
-	  	String tcName = null;
+    	String tcName = null;
 	  	TupleCentreId tid = null;
+//	  	log("arg2.getTerm() = " + arg2.getTerm());
 	  	try{
 	  		tid=new TupleCentreId(arg2);
 	  	}catch(Exception e){
@@ -548,6 +570,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
 	  		return false;
 	  	}
 	  	tcName = tid.getName();
+//	  	log("tid = " + tid);
 	  	
 	  	LogicTuple tuArg=new LogicTuple(arg0);
 	  	AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
@@ -564,7 +587,15 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
 	        }
 	    }else{
 	    	log("Remote rd_all triggered...");
-	    	InputEvent ce=vm.getCurrentEvent();
+	    	InputEvent ce = vm.getCurrentEvent();
+//	    	log("arg(0) = " + ((Struct)arg2.getTerm()).getArg(0));
+//	    	log("arg(0).getTerm() = " + ((Struct)arg2.getTerm()).getArg(0).getTerm());
+	    	try {
+//	    		log("new tid = " + Term.createTerm(alice.util.Tools.removeApices(((Struct)arg2.getTerm()).getArg(0).getTerm().toString()), new MyOpManager()));
+	    	} catch (Exception e) {
+	    		// TODO Auto-generated catch block
+				e.printStackTrace();
+	    	}
 //	    	String tuple = arg0.getTerm().toString()+","+arg1.copyGoal(v,0);
 	    	String tuple = arg0.getTerm().toString()+","+arg1;
 	    	LogicTuple resultArg = null;
@@ -687,7 +718,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     		log("Local no triggered...");
 	        alice.tuplecentre.api.Tuple tuple=vm.readMatchingTuple(tuArg);
 	        if (tuple==null){
-	        	log("no success");
+//	        	log("no success");
 	        	InputEvent ce=vm.getCurrentEvent();
 				InternalEvent ev=new InternalEvent(ce,InternalOperation.makeNoR(new LogicTuple(arg0.copyGoal(v,0)))); 
 				ev.setSource(ce.getReactingTC());
@@ -695,7 +726,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
 				vm.fetchTriggeredReactions(ev);
 	            return true;
 	        } else {
-	        	log("no failure");
+//	        	log("no failure");
 	            return false;
 	        }
     	}else{
@@ -816,7 +847,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     		log("Local nop triggered...");
 	        alice.tuplecentre.api.Tuple tuple=vm.readMatchingTuple(tuArg);
 	        if (tuple==null){
-	        	log("nop success");
+//	        	log("nop success");
 	        	InputEvent ce=vm.getCurrentEvent();
 				InternalEvent ev=new InternalEvent(ce,InternalOperation.makeNoR(new LogicTuple(arg0.copyGoal(v,0)))); 
 				ev.setSource(ce.getReactingTC());
@@ -824,7 +855,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
 				vm.fetchTriggeredReactions(ev);
 	            return true;
 	        } else {
-	        	log("nop failure");
+//	        	log("nop failure");
 	            return false;
 	        }
     	}else{
@@ -1206,7 +1237,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
 	        LogicTuple tuArg=new LogicTuple(newArg);
 	        alice.tuplecentre.api.Tuple tuple=vm.readMatchingSpecTuple(tuArg);
 	        if (tuple==null){
-	        	log("no_s success");
+//	        	log("no_s success");
 	        	InputEvent ce=vm.getCurrentEvent();
 				InternalEvent ev=new InternalEvent(ce,InternalOperation.makeNo_sR(new LogicTuple(goal.copyGoal(v,0)))); 
 				ev.setSource(ce.getReactingTC());
@@ -1214,7 +1245,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
 				vm.fetchTriggeredReactions(ev);
 	            return true;
 	        } else {
-	        	log("no_s failure");
+//	        	log("no_s failure");
 	            return false;
 	        }
     	}else{
@@ -1256,7 +1287,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
 	        LogicTuple tuArg=new LogicTuple(newArg);
 	        alice.tuplecentre.api.Tuple tuple=vm.readMatchingSpecTuple(tuArg);
 	        if (tuple==null){
-	        	log("nop_s success");
+//	        	log("nop_s success");
 	        	InputEvent ce=vm.getCurrentEvent();
 				InternalEvent ev=new InternalEvent(ce,InternalOperation.makeNo_sR(new LogicTuple(goal.copyGoal(v,0)))); 
 				ev.setSource(ce.getReactingTC());
@@ -1264,7 +1295,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
 				vm.fetchTriggeredReactions(ev);
 	            return true;
 	        } else {
-	        	log("nop_s failure");
+//	        	log("nop_s failure");
 	            return false;
 	        }
     	}else{
@@ -1709,7 +1740,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      * @return
      */
     public boolean event_source_1(Term source){
-//    	log("\tevent_source) " + vm.getCurrentReactionEvent().getSource());
+//    	log("\tevent_source) " + 	vm.getCurrentReactionEvent().getSource());
     	return unify(source,
     			new Struct(vm.getCurrentReactionEvent().getSource().toString()));
     }
@@ -1745,7 +1776,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     }
     
     public boolean event_target_1(Term target){
-//    	log("\tevent_target) " + vm.getCurrentReactionEvent().getTarget());
+    	log("\tevent_target) " + vm.getCurrentReactionEvent().getTarget());
     	return unify(target, 
     			new Struct(vm.getCurrentReactionEvent().getTarget().toString()));
     }

@@ -154,9 +154,9 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 	            
 	            if (ev.isInput()){
 	            	
-	            	log("INVOCATION phase");
-	                InputEvent ie = (InputEvent)ev;
-	                log("ie = " + ie);
+	            	InputEvent ie = (InputEvent)ev;
+	            	log("INVOCATION phase: " + ie);
+//	                log("ie = " + ie);
 					RespectOperation op = (RespectOperation)ev.getSimpleTCEvent();
 //					log("op = " + op);
 					
@@ -250,7 +250,7 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 					RespectOperation op=(RespectOperation)ev.getSimpleTCEvent();
 				
 					if(((OutputEvent)ev).isLinking()){
-						log("linking event processing");
+						log("linking event processing: " + oe);
 						
 						if(op.isSpawn()){
 							currentReactionTerm=new Struct("spawn",op.getLogicTupleArgument().toTerm());
@@ -332,7 +332,7 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 
 					}else{
 						
-						log("COMPLETION phase");
+						log("COMPLETION phase: " + ev);
 						
 						if (op.isSpawn()){
 							currentReactionTerm=new Struct("spawn",op.getLogicTupleResult().toTerm());
@@ -460,8 +460,8 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 					
 	            }else if (ev.isInternal()){
 	            	
-	            	log("internal event processing");
-	                InternalEvent ev1=(InternalEvent)ev;
+	            	InternalEvent ev1=(InternalEvent)ev;
+	            	log("internal event processing: " + ev1);
 	                InternalOperation rop=ev1.getInternalOperation();
 	                
 	                if (rop.isSpawnR()){

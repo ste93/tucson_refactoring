@@ -34,12 +34,12 @@ public class IdleState extends TupleCentreVMState {
     
     public TupleCentreVMState getNextState(){
         if (vm.pendingEvents()){
-        	System.out.println("\t [IdleState] ===> [ListeningState]");
+//        	System.out.println("\t [IdleState] ===> [ListeningState]");
         	return listeningState;
         }else if(vm.pendingEnvEvents()){
         	return fetchEnvState;
         }
-        System.out.println("\t [IdleState] ===> [IdleState]");
+//        System.out.println("\t [IdleState] ===> [IdleState]");
         return this;
     }
     
