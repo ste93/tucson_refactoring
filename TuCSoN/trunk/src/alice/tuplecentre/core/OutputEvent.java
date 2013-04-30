@@ -60,7 +60,11 @@ public class OutputEvent extends Event {
 	}
 	
 	public String toString(){
-		return "output_event(agentId("+getSource()+"),operation("+(this.getSimpleTCEvent().isResultDefined() ? getSimpleTCEvent().getTupleResult(): getSimpleTCEvent())+"))";
+		return "[ src: " + getSource() + ", " +
+				"op: " + (this.getSimpleTCEvent().isResultDefined() ? 
+						getSimpleTCEvent().getTupleResult() : 
+							getSimpleTCEvent())+", " +
+				"trg: " + getTarget() + " ]";
 	}
     
 }

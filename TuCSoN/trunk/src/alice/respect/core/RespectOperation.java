@@ -355,7 +355,6 @@ public class RespectOperation extends TupleCentreOperation implements IRespectOp
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			System.out.println(" @ lt = " + lt);
 			return lt;
 		}else if (isInAll()){
 			opName = "in_all";
@@ -374,7 +373,6 @@ public class RespectOperation extends TupleCentreOperation implements IRespectOp
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			System.out.println(" @ lt = " + lt);
 			return lt;
 		}else if (isRdAll()){
 			opName = "rd_all";
@@ -412,7 +410,6 @@ public class RespectOperation extends TupleCentreOperation implements IRespectOp
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			System.out.println(" @ lt = " + lt);
 			return lt;
 		}else if (isUrd()){
 			opName = "urd";

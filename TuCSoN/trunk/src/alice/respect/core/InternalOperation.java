@@ -256,4 +256,67 @@ public class InternalOperation {
 		return new InternalOperation(OPTYPE_SET_ENV,t);
 	}
 	
+	public LogicTuple toTuple(){
+		LogicTuple t = null;
+		if (result != null){
+			t = getResult();
+		} else {
+			t = getArgument();
+		}
+		String opName;
+		if (isSpawnR())
+			opName = "spawn";
+		else if (isOutR()){
+			opName = "out";
+		}else if (isInR()){
+			opName = "in";
+		}else if (isRdR()){
+			opName = "rd";
+		}else if (isNoR()){
+			opName = "no";
+		}else if (isOutAllR()){
+			opName = "out_all";
+		}else if (isInAllR()){
+			opName = "in_all";
+		}else if (isRdAllR()){
+			opName = "rd_all";
+		}else if (isNoAllR()){
+			opName = "no_all";
+		}else if (isUrdR()){
+			opName = "urd";
+		}else if (isUinR()){
+			opName = "uin";
+		}else if (isUnoR())
+			opName = "uno";
+		else if (isGetR()){
+			opName = "get";
+		} else if (isSetR()){
+			opName = "set";
+		}else if (isOut_sR()){
+			opName = "out_s";
+		} else if (isIn_sR()){
+			opName = "in_s";
+		} else if (isRd_sR()){
+			opName = "rd_s";
+		} else if (isNo_sR()){
+			opName = "no_s";
+		}else if (isGet_sR()){
+			opName = "get_s";
+		}else if (isSet_sR()){
+			opName = "set_s";
+		}
+		else if (isGetEnv()){
+			return t;
+		} else if (isSetEnv()){
+			return t;
+		} else {
+			opName = "unknownOp";
+		}
+		return new LogicTuple(opName, new TupleArgument(t.toTerm()));
+	}
+
+	public String toString(){
+		return toTuple().toString();
+	}
+	
 }
