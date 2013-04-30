@@ -332,7 +332,7 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 
 					}else{
 						
-						log("COMPLETION phase: " + ev);
+						log("COMPLETION phase: " + oe);
 						
 						if (op.isSpawn()){
 							currentReactionTerm=new Struct("spawn",op.getLogicTupleResult().toTerm());

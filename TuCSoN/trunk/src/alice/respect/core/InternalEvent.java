@@ -57,5 +57,9 @@ public class InternalEvent extends alice.tuplecentre.core.Event {
 	public InputEvent getInputEvent(){
         return inputEvent;
     }
+	
+	public String toString(){
+    	return "[ op: " + internalOperation + " ]";
+    }
 
 }
