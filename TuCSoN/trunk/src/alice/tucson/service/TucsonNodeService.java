@@ -94,8 +94,8 @@ public class TucsonNodeService{
 		
 		try{
 			nodeAid = new TucsonAgentId("'$TucsonNodeService-Agent'");
-			idConfigTC = new TucsonTupleCentreId("'$ORG'", "localhost", ""+portNumber);
-			idObsTC = new TucsonTupleCentreId("'$OBS'", "localhost", ""+portNumber);
+			idConfigTC = new TucsonTupleCentreId("'$ORG'", "localhost", ""+tcp_port);
+			idObsTC = new TucsonTupleCentreId("'$OBS'", "localhost", ""+tcp_port);
 		}catch(TucsonInvalidAgentIdException e){
 			System.err.println("[TucsonNodeService]: " + e);
 			e.printStackTrace();

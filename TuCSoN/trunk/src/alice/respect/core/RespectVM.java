@@ -57,7 +57,7 @@ public class RespectVM implements Runnable {
     public RespectVM(TupleCentreId tid, RespectTCContainer container, int qSize, RespectTC respectTC){
     	this.container = container;
     	this.respectTC = respectTC;
-        context = new RespectVMContext(this,tid, qSize, respectTC);
+        context = new RespectVMContext(this, tid, qSize, respectTC);
 		news = new Object();
 		idle = new Object();
 		inspectors = new ArrayList<InspectableEventListener>();

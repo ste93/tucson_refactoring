@@ -98,7 +98,7 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
     
     public RespectVMContext(RespectVM vm, TupleCentreId tid, int queueSize, RespectTC respectTC){
         
-    	super(tid, queueSize,respectTC);
+    	super(tid, queueSize, respectTC);
         timers = new Vector<Timer>();
         semaphore = new Object();
         tSet=new TupleSet();
@@ -126,7 +126,7 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
             ex.printStackTrace();
         }
 		try {
-			trigCore=new Prolog(new String[]{});
+			trigCore = new Prolog(new String[]{});
 			trigCore.loadLibrary("alice.tuprolog.lib.BasicLibrary");
 			trigCore.loadLibrary("alice.tuprolog.lib.JavaLibrary");
 			trigCore.loadLibrary("alice.tuprolog.lib.ISOLibrary");
