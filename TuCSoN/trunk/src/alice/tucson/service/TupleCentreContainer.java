@@ -514,9 +514,10 @@ public class TupleCentreContainer{
 			if(type == TucsonOperation.set_sCode()){
 //				if(aid.toString().equals("node_agent") || aid.toString().startsWith("inspector_edit_spec_")){
 				if(t.getName().equals("spec")){
-//					log("t = " + t);
+//					log("t.name = " + ((LogicTuple) t).getArg(0).getName());
 					return ((SpecificationSynchInterface)context).set_s((AgentId) aid.getAgentId(), new RespectSpecification(((LogicTuple) t).getArg(0).getName()));
 				}
+//				log("t = " + t);
 				return ((SpecificationSynchInterface)context).set_s((AgentId) aid.getAgentId(), t);
 			}
 			if(type == TucsonOperation.get_sCode()){
@@ -525,6 +526,7 @@ public class TupleCentreContainer{
 		}catch(OperationNotPossibleException e){
 			throw new TucsonOperationNotPossibleException();
 		}catch(InvalidSpecificationException e){
+//			e.printStackTrace();
 			throw new TucsonInvalidSpecificationException();
 		}catch(InvalidTupleOperationException e){
 			throw new TucsonOperationNotPossibleException();

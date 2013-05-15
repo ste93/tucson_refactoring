@@ -660,11 +660,12 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 
         }catch(alice.tuprolog.InvalidTheoryException ex){
         	ex.printStackTrace();
-            notifyException("Invalid reaction spec. "+ex.line+" "+ex.pos);
+            notifyException("Invalid reaction spec: "+ex.line+" "+ex.pos);
             notifyException(spec.toString());
             return false;
         }catch(Exception ex){
-            notifyException("Invalid reaction spec.");
+            notifyException("Invalid reaction spec :(");
+            ex.printStackTrace();
             return false;
         }     
         
@@ -729,8 +730,8 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
     	prologPredicates = new TupleSet();
     	Prolog engine = new Prolog();
 
-    	try{
-    		engine.solve("retractall(reaction(X,Y,Z)).");
+    	try {
+			engine.solve("retractall(reaction(X,Y,Z)).");
     		engine.solveEnd();
     		Parser parser = new Parser(new MyOpManager(), spec.toString());
     		Term term = parser.nextTerm(true);
@@ -753,9 +754,13 @@ public class RespectVMContext extends alice.tuplecentre.core.TupleCentreVMContex
 			}
     		noReactionTh = new Theory(new Struct(preds));
 //    		log("noReactionTh = " + noReactionTh);
-    	}catch(Exception e){
-    		e.printStackTrace();
-    	}
+    	} catch (MalformedGoalException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvalidTheoryException e) {
+			log("clause: " + e.clause + ", l: " + e.line + ", p: " + e.pos);
+			e.printStackTrace();
+		}
     	
     	boolean result = setReactionSpecHelper(spec);
     	
