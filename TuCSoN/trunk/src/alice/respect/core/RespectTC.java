@@ -60,7 +60,6 @@ public class RespectTC implements IRespectTC {
 		vmThread.start();
 	}
 	
-	@Override
 	public IRespectOperation spawn(IId id, LogicTuple t,
 			OperationCompletionListener l) throws OperationNotPossibleException {
 		RespectOperation op = RespectOperation.makeSpawn(getProlog(), t, l);
@@ -68,7 +67,6 @@ public class RespectTC implements IRespectTC {
 		return op;
 	}
 
-	@Override
 	public IRespectOperation spawn(IId id, LogicTuple t)
 			throws OperationNotPossibleException {
 		return this.spawn(id, t, null);

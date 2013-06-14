@@ -5,7 +5,6 @@ import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 
 public class RootACCProxy implements RootACC{
 
-	@Override
 	public void exit() throws TucsonOperationNotPossibleException {
 		// TODO Auto-generated method stub
 		

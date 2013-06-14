@@ -429,7 +429,6 @@ public class InterTupleCentreACCProxy implements InterTupleCentreACC, OperationC
 		
 	}
 
-	@Override
 	public void operationCompleted(TupleCentreOperation op) {
 		// TODO Auto-generated method stub
 		

@@ -100,18 +100,15 @@ public class AgentId implements alice.tuplecentre.api.AgentId, java.io.Serializa
         return id.toString();
     }
 
-    @Override
-	public boolean isAgent() {
+    public boolean isAgent() {
 		return true;
 	}
 
-    @Override
-	public boolean isTC() {
+    public boolean isTC() {
 		return false;
 	}
 	
-    @Override
-	public boolean isEnv(){
+    public boolean isEnv(){
 		return false;
 	}
 	

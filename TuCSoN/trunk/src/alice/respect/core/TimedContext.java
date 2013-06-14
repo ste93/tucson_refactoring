@@ -350,7 +350,6 @@ public class TimedContext extends RootInterface implements ITimedContext  {
 		return unify(t, result);
 	}
 	
-	@Override
 	public LogicTuple spawn(IId aid, LogicTuple t, long ms)
 			throws InvalidLogicTupleException, OperationNotPossibleException,
 			OperationTimeOutException {

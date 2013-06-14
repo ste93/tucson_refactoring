@@ -166,7 +166,6 @@ public abstract class TucsonAgent implements TucsonOperationCompletionListener{
 	
 	public abstract void operationCompleted(ITucsonOperation op);
 
-	@Override
 	public final void operationCompleted(TupleCentreOperation op) {}
 	
 	/**

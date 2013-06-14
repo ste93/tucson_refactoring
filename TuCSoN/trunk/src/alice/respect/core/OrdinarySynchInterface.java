@@ -263,8 +263,7 @@ public class OrdinarySynchInterface extends RootInterface implements IOrdinarySy
 		return unify(t,result);
 	}
     
-    @Override
-	public LogicTuple spawn(IId aid, LogicTuple t)
+    public LogicTuple spawn(IId aid, LogicTuple t)
 			throws InvalidLogicTupleException, OperationNotPossibleException {
 		if (t==null)
 			throw new InvalidLogicTupleException();

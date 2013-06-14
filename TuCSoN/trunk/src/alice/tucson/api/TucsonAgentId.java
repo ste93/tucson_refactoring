@@ -77,17 +77,14 @@ public class TucsonAgentId implements alice.tuplecentre.api.AgentId, Serializabl
 		return true;
 	}
 
-	@Override
 	public boolean isAgent(){
 		return true;
 	}
 
-	@Override
 	public boolean isTC(){
 		return false;
 	}
 	
-	@Override
 	public boolean isEnv() {
 		return false;
 	}
