@@ -1471,7 +1471,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     public boolean success_0(){
         Event ev = vm.getCurrentReactionEvent();
         ITupleCentreOperation op = ev.getSimpleTCEvent();
-        return op.isResultSuccess();
+        return op.isResultSuccess() && !"ListeningState".equals(vm.getCurrentState());
     }
     
     /**
