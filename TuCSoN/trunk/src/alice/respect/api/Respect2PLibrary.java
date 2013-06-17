@@ -41,6 +41,7 @@ import alice.tuplecentre.api.IId;
 import alice.tuplecentre.api.ITupleCentreOperation;
 import alice.tuplecentre.api.Tuple;
 import alice.tuplecentre.core.*;
+import alice.util.Tools;
 
 /**
  * TuProlog library defining the behaviour
@@ -1740,28 +1741,68 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      * @return
      */
     public boolean event_source_1(Term source){
-//    	log("\tevent_source) " + 	vm.getCurrentReactionEvent().getSource());
-    	return unify(source,
-    			new Struct(vm.getCurrentReactionEvent().getSource().toString()));
+    	IId id = vm.getCurrentReactionEvent().getSource();
+//    	log("\tevent_source) " + id);
+    	if (id.isAgent()) {
+    		Term aid = ((AgentId)id).toTerm();
+//    		log("\taid = " + aid);
+    		return unify(source, aid);
+    	} else if (id.isTC()) {
+    		Term tcid = ((TupleCentreId)id).toTerm();
+//    		log("\ttcid = " + tcid);
+    		return unify(source, tcid);
+    	} else {
+    		return false;
+    	}
     }
     
     public boolean start_source_1(Term source){
     	Event e = vm.getCurrentReactionEvent();
     	if(e.isInternal()){
     		InternalEvent ie = (InternalEvent)e;
-//    		log("\tstart_source) IE: " + ie.getInputEvent().getSource());
-    		return unify(source,
-        			new Struct(ie.getInputEvent().getSource().toString()));
-    	}
-    	if(e.isOutput()){
+    		IId id = ie.getInputEvent().getSource();
+//        	log("\tstart_source) " + id);
+        	if (id.isAgent()) {
+        		Term aid = ((AgentId)id).toTerm();
+//        		log("\taid = " + aid);
+        		return unify(source, aid);
+        	} else if (id.isTC()) {
+        		Term tcid = ((TupleCentreId)id).toTerm();
+//        		log("\ttcid = " + tcid);
+        		return unify(source, tcid);
+        	} else {
+        		return false;
+        	}
+    	} else if(e.isOutput()){
     		OutputEvent oe = (OutputEvent)e;
-//    		log("\tstart_source) OE: " + oe.getInputEvent().getSource());
-    		return unify(source,
-        			new Struct(oe.getInputEvent().getSource().toString()));
+    		IId id = oe.getInputEvent().getSource();
+//        	log("\tstart_source) " + id);
+        	if (id.isAgent()) {
+        		Term aid = ((AgentId)id).toTerm();
+//        		log("\taid = " + aid);
+        		return unify(source, aid);
+        	} else if (id.isTC()) {
+        		Term tcid = ((TupleCentreId)id).toTerm();
+//        		log("\ttcid = " + tcid);
+        		return unify(source, tcid);
+        	} else {
+        		return false;
+        	}
+    	} else {
+	    	IId id = e.getSource();
+	//    	log("\tstart_source) " + id);
+	    	if (id.isAgent()) {
+	    		Term aid = ((AgentId)id).toTerm();
+	//    		log("\taid = " + aid);
+	    		return unify(source, aid);
+	    	} else if (id.isTC()) {
+	    		Term tcid = ((TupleCentreId)id).toTerm();
+	//    		log("\ttcid = " + tcid);
+	    		return unify(source, tcid);
+	    	} else {
+	    		return false;
+	    	}
     	}
-//    	log("\tstart_source) E: " + e.getSource());
-    	return unify(source,
-    			new Struct(e.getSource().toString()));
     }
     
     /**
@@ -1776,28 +1817,68 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     }
     
     public boolean event_target_1(Term target){
-    	log("\tevent_target) " + vm.getCurrentReactionEvent().getTarget());
-    	return unify(target, 
-    			new Struct(vm.getCurrentReactionEvent().getTarget().toString()));
+    	IId id = vm.getCurrentReactionEvent().getTarget();
+//    	log("\tevent_target) " + id);
+    	if (id.isAgent()) {
+    		Term aid = ((AgentId)id).toTerm();
+//    		log("\taid = " + aid);
+    		return unify(target, aid);
+    	} else if (id.isTC()) {
+    		Term tcid = ((TupleCentreId)id).toTerm();
+//    		log("\ttcid = " + tcid);
+    		return unify(target, tcid);
+    	} else {
+    		return false;
+    	}
     }
     
     public boolean start_target_1(Term target){
     	Event e = vm.getCurrentReactionEvent();
     	if(e.isInternal()){
     		InternalEvent ie = (InternalEvent)e;
-//    		log("\tstart_target) IE: " + ie.getInputEvent().getTarget());
-    		return unify(target, 
-        			new Struct(ie.getInputEvent().getTarget().toString()));
-    	}
-    	if(e.isOutput()){
+    		IId id = ie.getInputEvent().getTarget();
+//        	log("\tstart_target) " + id);
+        	if (id.isAgent()) {
+        		Term aid = ((AgentId)id).toTerm();
+//        		log("\taid = " + aid);
+        		return unify(target, aid);
+        	} else if (id.isTC()) {
+        		Term tcid = ((TupleCentreId)id).toTerm();
+//        		log("\ttcid = " + tcid);
+        		return unify(target, tcid);
+        	} else {
+        		return false;
+        	}
+    	} else if(e.isOutput()){
     		OutputEvent oe = (OutputEvent)e;
-//    		log("\tstart_target) OE: " + oe.getInputEvent().getTarget());
-    		return unify(target, 
-        			new Struct(oe.getInputEvent().getTarget().toString()));
+    		IId id = oe.getInputEvent().getTarget();
+//    		log("\tstart_target) " + id);
+        	if (id.isAgent()) {
+        		Term aid = ((AgentId)id).toTerm();
+//        		log("\taid = " + aid);
+        		return unify(target, aid);
+        	} else if (id.isTC()) {
+        		Term tcid = ((TupleCentreId)id).toTerm();
+//        		log("\ttcid = " + tcid);
+        		return unify(target, tcid);
+        	} else {
+        		return false;
+        	}
+    	} else {
+    		IId id = e.getTarget();
+//    		log("\tstart_target) " + id);
+        	if (id.isAgent()) {
+        		Term aid = ((AgentId)id).toTerm();
+//        		log("\taid = " + aid);
+        		return unify(target, aid);
+        	} else if (id.isTC()) {
+        		Term tcid = ((TupleCentreId)id).toTerm();
+//        		log("\ttcid = " + tcid);
+        		return unify(target, tcid);
+        	} else {
+        		return false;
+        	}
     	}
-//    	log("\tstart_target) E: " + e.getTarget());
-    	return unify(target, 
-    			new Struct(e.getTarget().toString()));
     }
     
     /**
