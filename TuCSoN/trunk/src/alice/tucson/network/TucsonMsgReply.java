@@ -1,114 +1,124 @@
 package alice.tucson.network;
 
-import alice.logictuple.*;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 
-import java.io.*;
+import alice.logictuple.LogicTuple;
 
 /**
  * 
  */
 @SuppressWarnings("serial")
-public class TucsonMsgReply implements Serializable{
-	
-	private long id;
-	private int type;
-	private LogicTuple tuple_requested;
-	private Object tuple_result;
-	private boolean allowed;
-	private boolean success;
-	private boolean resultSuccess;
+public class TucsonMsgReply implements Serializable {
 
-	protected TucsonMsgReply(){
-		
-	}
+    /**
+     * 
+     * @param din
+     * @return
+     * @throws Exception
+     */
+    public static TucsonMsgReply read(final ObjectInputStream din)
+            throws Exception {
+        final long id = din.readLong();
+        final int type = din.readInt();
+        final boolean bool = din.readBoolean();
+        final boolean succ = din.readBoolean();
+        final boolean res = din.readBoolean();
+        final LogicTuple treq = (LogicTuple) din.readObject();
+        final Object tres = din.readObject();
+        final TucsonMsgReply msg = new TucsonMsgReply();
+        msg.id = id;
+        msg.type = type;
+        msg.allowed = bool;
+        msg.success = succ;
+        msg.resultSuccess = res;
+        msg.tuple_requested = treq;
+        msg.tuple_result = tres;
+        return msg;
+    }
 
-	public TucsonMsgReply(long id, int type, boolean allowed, boolean success, boolean ok){
-		this.id = id;
-		this.type = type;
-		this.allowed = allowed;
-		this.success = success;
-		tuple_requested = null;
-		tuple_result = null;
-		resultSuccess = ok;
-	}
+    /**
+     * 
+     * @param dout
+     * @param msg
+     * @throws IOException
+     */
+    public static void write(final ObjectOutputStream dout,
+            final TucsonMsgReply msg) throws IOException {
+        dout.writeLong(msg.getId());
+        dout.writeInt(msg.getType());
+        dout.writeBoolean(msg.isAllowed());
+        dout.writeBoolean(msg.isSuccess());
+        dout.writeBoolean(msg.isResultSuccess());
+        dout.writeObject(msg.getTupleRequested());
+        dout.writeObject(msg.getTupleResult());
+    }
 
-	public TucsonMsgReply(long id, int type, boolean allowed, boolean success, boolean ok, LogicTuple req, Object res){
-		this.id = id;
-		this.type = type;
-		this.success = success;
-		this.allowed = allowed;
-		tuple_requested = req;
-		tuple_result = res;
-		resultSuccess = ok;
-	}
-	
-	public LogicTuple getTupleRequested(){
-		return tuple_requested;
-	}
+    private boolean allowed;
+    private long id;
+    private boolean resultSuccess;
+    private boolean success;
+    private LogicTuple tuple_requested;
 
-	public Object getTupleResult(){
-		return tuple_result;
-	}
-	
-	public long getId(){
-		return id;
-	}
+    private Object tuple_result;
 
-	public int getType(){
-		return type;
-	}
+    private int type;
 
-	public boolean isSuccess(){
-		return success;
-	}
+    public TucsonMsgReply(final long i, final int t, final boolean a,
+            final boolean s, final boolean ok) {
+        this.id = i;
+        this.type = t;
+        this.allowed = a;
+        this.success = s;
+        this.tuple_requested = null;
+        this.tuple_result = null;
+        this.resultSuccess = ok;
+    }
 
-	public boolean isAllowed(){
-		return allowed;
-	}
-	
-	public boolean isResultSuccess(){
-		return resultSuccess;
-	}
+    public TucsonMsgReply(final long i, final int t, final boolean a,
+            final boolean s, final boolean ok, final LogicTuple req,
+            final Object res) {
+        this.id = i;
+        this.type = t;
+        this.success = s;
+        this.allowed = a;
+        this.tuple_requested = req;
+        this.tuple_result = res;
+        this.resultSuccess = ok;
+    }
 
-	/**
-	 * 
-	 * @param dout
-	 * @param msg
-	 * @throws IOException
-	 */
-	public static void write(ObjectOutputStream dout, TucsonMsgReply msg) throws IOException{
-		dout.writeLong(msg.getId());
-		dout.writeInt(msg.getType());
-		dout.writeBoolean(msg.isAllowed());
-		dout.writeBoolean(msg.isSuccess());
-		dout.writeBoolean(msg.isResultSuccess());
-		dout.writeObject(msg.getTupleRequested());
-		dout.writeObject(msg.getTupleResult());
-	}
+    protected TucsonMsgReply() {
 
-	/**
-	 * 
-	 * @param din
-	 * @return
-	 * @throws Exception
-	 */
-	public static TucsonMsgReply read(ObjectInputStream din) throws Exception{
-		long id = din.readLong();
-		int type = din.readInt();
-		boolean bool = din.readBoolean();
-		boolean succ = din.readBoolean();
-		boolean res = din.readBoolean();
-		LogicTuple treq = (LogicTuple) din.readObject();
-		Object tres = din.readObject();
-		TucsonMsgReply msg = new TucsonMsgReply();
-		msg.id = id;
-		msg.type = type;
-		msg.allowed = bool;
-		msg.success = succ;
-		msg.resultSuccess = res;
-		msg.tuple_requested = treq;
-		msg.tuple_result = tres;
-		return msg;
-	}
-	
+    }
+
+    public long getId() {
+        return this.id;
+    }
+
+    public LogicTuple getTupleRequested() {
+        return this.tuple_requested;
+    }
+
+    public Object getTupleResult() {
+        return this.tuple_result;
+    }
+
+    public int getType() {
+        return this.type;
+    }
+
+    public boolean isAllowed() {
+        return this.allowed;
+    }
+
+    public boolean isResultSuccess() {
+        return this.resultSuccess;
+    }
+
+    public boolean isSuccess() {
+        return this.success;
+    }
+
 }

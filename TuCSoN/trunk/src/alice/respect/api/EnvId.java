@@ -4,31 +4,31 @@ import alice.tuplecentre.api.IId;
 import alice.tuprolog.Struct;
 import alice.tuprolog.Term;
 
-public class EnvId implements IId{
+public class EnvId implements IId {
 
-	private Struct id;
-	
-	public EnvId(Struct id){
-		this.id=id;
-	}
-	
-	public boolean isAgent() {
-		return false;
-	}
-	
-	public boolean isEnv() {
-		return true;
-	}
-	
-	public boolean isTC() {
-		return false;
-	}
-	
-	public Term toTerm(){
-		if (id.getName().equals("@")){
-			return id.getArg(0).getTerm();
-		}
-		return id.getTerm();
-	}
-	
+    private final Struct id;
+
+    public EnvId(final Struct i) {
+        this.id = i;
+    }
+
+    public boolean isAgent() {
+        return false;
+    }
+
+    public boolean isEnv() {
+        return true;
+    }
+
+    public boolean isTC() {
+        return false;
+    }
+
+    public Term toTerm() {
+        if (this.id.getName().equals("@")) {
+            return this.id.getArg(0).getTerm();
+        }
+        return this.id.getTerm();
+    }
+
 }

@@ -1,20 +1,24 @@
 package alice.respect.core;
 
 import java.util.TimerTask;
+
 import alice.tuplecentre.core.InputEvent;
 
 public class RespectTimerTask extends TimerTask {
-	
-	private RespectVMContext vm;
-	private RespectOperation op;
 
-	public RespectTimerTask(RespectVMContext vm,RespectOperation op){
-		this.vm = vm;
-		this.op = op;
-	}
-	
-	public void run() {
-        vm.notifyInputEvent(new InputEvent(this.vm.getId(),op,this.vm.getId(),this.vm.getCurrentTime()));
-	}
+    private final RespectOperation op;
+    private final RespectVMContext vm;
+
+    public RespectTimerTask(final RespectVMContext rvm,
+            final RespectOperation rop) {
+        this.vm = rvm;
+        this.op = rop;
+    }
+
+    @Override
+    public void run() {
+        this.vm.notifyInputEvent(new InputEvent(this.vm.getId(), this.op,
+                this.vm.getId(), this.vm.getCurrentTime()));
+    }
 
 }

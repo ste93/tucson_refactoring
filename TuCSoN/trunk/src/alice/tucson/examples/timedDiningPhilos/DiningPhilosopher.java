@@ -17,126 +17,144 @@ import alice.tuplecentre.api.exceptions.OperationTimeOutException;
  * @author s.mariani@unibo.it
  */
 public class DiningPhilosopher extends TucsonAgent {
-	
-	private TucsonTupleCentreId myTable;
-	int chop1, chop2;
-	int time, step;
-	private SynchACC acc;
 
-	public DiningPhilosopher(String aid, TucsonTupleCentreId table,
-			int left, int right, int eatingTime, int eatingStep) throws TucsonInvalidAgentIdException {
-		super(aid);
-		myTable = table;
-		chop1 = left;
-		chop2 = right;
-		time = eatingTime;
-		step = eatingStep;
-	}
+    private SynchACC acc;
+    private final TucsonTupleCentreId myTable;
+    int chop1, chop2;
+    int time, step;
 
-	@Override
-	protected void main() {
-		acc = getContext();
-		// Ugly but effective, pardon me...
-		while(true){
-			say("Now thinking...");
-			think();
-			say("I'm hungry, let's try to eat something...");
-			/*
-			 * Try to get needed chopsticks.
-			 */
-			if(acquireChops()){
-				/*
-				 * If successful eat.
-				 */
-				if(eat()){
-					say("I'm done, wonderful meal :)");
-					/*
-					 * Then release chops.
-					 */
-					releaseChops();
-				}else
-					say("OMG my chopsticks disappeared!");
-			}else{
-				say("I'm starving!");
-			}
-		}
-	}
+    public DiningPhilosopher(final String aid, final TucsonTupleCentreId table,
+            final int left, final int right, final int eatingTime,
+            final int eatingStep) throws TucsonInvalidAgentIdException {
+        super(aid);
+        this.myTable = table;
+        this.chop1 = left;
+        this.chop2 = right;
+        this.time = eatingTime;
+        this.step = eatingStep;
+    }
 
-	private boolean acquireChops() {
-		ITucsonOperation op = null;
-		try {
-			/*
-			 * NB: The 2 needed chopsticks are "perceived" as a single item by
-			 * the philosophers, while the coordination medium correctly handle
-			 * them separately.
-			 */
-			op = acc.in(myTable, LogicTuple.parse("chops("+chop1+","+chop2+")"), null);
-		} catch (InvalidLogicTupleException e) {
-			e.printStackTrace();
-		} catch (TucsonOperationNotPossibleException e) {
-			e.printStackTrace();
-		} catch (UnreachableNodeException e) {
-			e.printStackTrace();
-		} catch (OperationTimeOutException e) {
-			e.printStackTrace();
-		}
-		if(op != null)
-			return op.isResultSuccess();
-		else
-			return false;
-	}
+    @Override
+    public void operationCompleted(final ITucsonOperation arg0) {
+        /*
+         * 
+         */
+    }
 
-	private void releaseChops() {
-		try {
-			acc.out(myTable, LogicTuple.parse("chops("+chop1+","+chop2+")"), null);
-		} catch (InvalidLogicTupleException e) {
-			e.printStackTrace();
-		} catch (TucsonOperationNotPossibleException e) {
-			e.printStackTrace();
-		} catch (UnreachableNodeException e) {
-			e.printStackTrace();
-		} catch (OperationTimeOutException e) {
-			e.printStackTrace();
-		}
-	}
+    @Override
+    protected void main() {
+        this.acc = this.getContext();
+        // Ugly but effective, pardon me...
+        while (true) {
+            this.say("Now thinking...");
+            this.think();
+            this.say("I'm hungry, let's try to eat something...");
+            /*
+             * Try to get needed chopsticks.
+             */
+            if (this.acquireChops()) {
+                /*
+                 * If successful eat.
+                 */
+                if (this.eat()) {
+                    this.say("I'm done, wonderful meal :)");
+                    /*
+                     * Then release chops.
+                     */
+                    this.releaseChops();
+                } else {
+                    this.say("OMG my chopsticks disappeared!");
+                }
+            } else {
+                this.say("I'm starving!");
+            }
+        }
+    }
 
-	private void think() {
-		say("...mumble mumble...rat rat...mumble mumble...");
-		try {
-			Thread.sleep(5000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-	}
+    private boolean acquireChops() {
+        ITucsonOperation op = null;
+        try {
+            /*
+             * NB: The 2 needed chopsticks are "perceived" as a single item by
+             * the philosophers, while the coordination medium correctly handle
+             * them separately.
+             */
+            op =
+                    this.acc.in(
+                            this.myTable,
+                            LogicTuple.parse("chops(" + this.chop1 + ","
+                                    + this.chop2 + ")"), null);
+        } catch (final InvalidLogicTupleException e) {
+            e.printStackTrace();
+        } catch (final TucsonOperationNotPossibleException e) {
+            e.printStackTrace();
+        } catch (final UnreachableNodeException e) {
+            e.printStackTrace();
+        } catch (final OperationTimeOutException e) {
+            e.printStackTrace();
+        }
+        if (op != null) {
+            return op.isResultSuccess();
+        }
+        return false;
+    }
 
-	private boolean eat() {
-		say("...gnam gnam...chomp chomp...munch munch...");
-		ITucsonOperation op = null;
-		try {
-			for(int i=0; i<(time/step); i++){
-				Thread.sleep(step);
-				op = acc.rdp(myTable, LogicTuple.parse("used("+chop1+","+chop2+",_)"), null);
-				if(!op.isResultSuccess())
-					break;
-			}
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		} catch (InvalidLogicTupleException e) {
-			e.printStackTrace();
-		} catch (TucsonOperationNotPossibleException e) {
-			e.printStackTrace();
-		} catch (UnreachableNodeException e) {
-			e.printStackTrace();
-		} catch (OperationTimeOutException e) {
-			e.printStackTrace();
-		}
-		if(op != null)
-			return op.isResultSuccess();
-		else
-			return false;
-	}
+    private boolean eat() {
+        this.say("...gnam gnam...chomp chomp...munch munch...");
+        ITucsonOperation op = null;
+        try {
+            for (int i = 0; i < (this.time / this.step); i++) {
+                Thread.sleep(this.step);
+                op =
+                        this.acc.rdp(
+                                this.myTable,
+                                LogicTuple.parse("used(" + this.chop1 + ","
+                                        + this.chop2 + ",_)"), null);
+                if (!op.isResultSuccess()) {
+                    break;
+                }
+            }
+        } catch (final InterruptedException e) {
+            e.printStackTrace();
+        } catch (final InvalidLogicTupleException e) {
+            e.printStackTrace();
+        } catch (final TucsonOperationNotPossibleException e) {
+            e.printStackTrace();
+        } catch (final UnreachableNodeException e) {
+            e.printStackTrace();
+        } catch (final OperationTimeOutException e) {
+            e.printStackTrace();
+        }
+        if (op != null) {
+            return op.isResultSuccess();
+        }
+        return false;
+    }
 
-	@Override
-	public void operationCompleted(ITucsonOperation arg0) { }
+    private void releaseChops() {
+        try {
+            this.acc.out(
+                    this.myTable,
+                    LogicTuple.parse("chops(" + this.chop1 + "," + this.chop2
+                            + ")"), null);
+        } catch (final InvalidLogicTupleException e) {
+            e.printStackTrace();
+        } catch (final TucsonOperationNotPossibleException e) {
+            e.printStackTrace();
+        } catch (final UnreachableNodeException e) {
+            e.printStackTrace();
+        } catch (final OperationTimeOutException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void think() {
+        this.say("...mumble mumble...rat rat...mumble mumble...");
+        try {
+            Thread.sleep(5000);
+        } catch (final InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 
 }

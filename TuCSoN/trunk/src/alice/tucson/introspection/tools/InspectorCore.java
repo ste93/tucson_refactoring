@@ -1,25 +1,20 @@
 /*
- * TuCSoN coordination infrastructure - Copyright (C) 2001-2002  aliCE team at deis.unibo.it
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ * TuCSoN coordination infrastructure - Copyright (C) 2001-2002 aliCE team at
+ * deis.unibo.it This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation; either version 2.1 of the License,
+ * or (at your option) any later version. This library is distributed in the
+ * hope that it will be useful, but WITHOUT ANY WARRANTY; without even the
+ * implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See
+ * the GNU Lesser General Public License for more details. You should have
+ * received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple
+ * Place, Suite 330, Boston, MA 02111-1307 USA
  */
 package alice.tucson.introspection.tools;
 
 import java.io.FileWriter;
 import java.io.IOException;
-
 import java.util.Calendar;
 import java.util.Iterator;
 
@@ -28,6 +23,7 @@ import alice.respect.api.AgentId;
 import alice.tucson.api.TucsonAgentId;
 import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.introspection.WSetEvent;
+import alice.tuplecentre.api.Tuple;
 import alice.tuplecentre.core.TriggeredReaction;
 
 /**
@@ -35,309 +31,335 @@ import alice.tuplecentre.core.TriggeredReaction;
  * 
  * @author s.mariani@unibo.it
  */
-public class InspectorCore extends alice.tucson.introspection.Inspector{
-	
-	private Inspector form;
+public class InspectorCore extends alice.tucson.introspection.Inspector {
 
-	protected boolean loggingTuples = false;
-	protected String logTupleFilename;
-	protected FileWriter logTupleWriter;
-	protected LogicTuple logTupleFilter;
-	protected LogicTuple logOpFilter;
+    protected boolean loggingQueries = false;
 
-	protected boolean loggingQueries = false;
-	protected String logQueryFilename;
-	protected FileWriter logQueryWriter;
+    protected boolean loggingReactions = false;
+    protected boolean loggingTuples = false;
+    protected LogicTuple logOpFilter;
+    protected String logQueryFilename;
+    protected FileWriter logQueryWriter;
 
-	protected boolean loggingReactions = false;
-	protected String logReactionFilename;
-	protected FileWriter logReactionWriter;
-	
-	/*
-	 * Used when logging tuples/operations/reactions.
-	 */
-	Calendar cal;
+    protected String logReactionFilename;
+    protected FileWriter logReactionWriter;
+    protected String logTupleFilename;
 
-	/**
-	 * 
-	 * 
-	 * @param f
-	 * @param id_
-	 * @param tid_
-	 * 
-	 * @throws Exception
-	 */
-	public InspectorCore(Inspector f, TucsonAgentId id_, TucsonTupleCentreId tid_) throws Exception{
-		super(id_, tid_);
-		form = f;
-		logTupleFilename = "inspector-tuples.log";
-		logQueryFilename = "inspector-queries.log";
-		logReactionFilename = "inspector-reactions.log";		
-		try{
-			logTupleWriter = new FileWriter(logTupleFilename, true);
-			logQueryWriter = new FileWriter(logQueryFilename, true);
-			logReactionWriter = new FileWriter(logReactionFilename, true);
-		}catch (IOException e){
-			e.printStackTrace();
-		}
-//		cal = Calendar.getInstance();
-	}
+    protected LogicTuple logTupleFilter;
+    protected FileWriter logTupleWriter;
+    private final Inspector form;
 
-	public void onContextEvent(alice.tucson.introspection.InspectorContextEvent msg){
-		
-		if (msg.tuples != null){
-			
-			TupleViewer viewer = form.getTupleForm();
-//			viewer.setVMTime(msg.vmTime);
-//			msg.localTime = System.currentTimeMillis();
-//			viewer.setLocalTime(msg.localTime);
-			String st = "";
-			Iterator it = msg.tuples.iterator();
-			int n = 0;
-			
-			while (it.hasNext()){
-				st = st + it.next().toString() + "\n";
-				n++;
-			}
-			viewer.setNItems(n);
-			viewer.setText(st);
-			
-			if (loggingTuples){
-				
-				try{
-					
-					cal = Calendar.getInstance();
-					st = "";
-//					logTupleWriter.write("snapshot(\n" + "    time_vm(" + msg.vmTime + "),\n" + "    time_local("
-//							+ msg.localTime + "),\n" + "    tuple_filter(" + form.protocol.tsetFilter + "),\n"
-//							+ "    tuple_log_filter(" + logTupleFilter + "),\n" + "    tuple_list([ \n");
-					logTupleWriter.write("snapshot(\n" +
-							"localtime(date("+cal.get(Calendar.DAY_OF_MONTH)+"-"+
-									cal.get(Calendar.MONTH)+"-"+
-									cal.get(Calendar.YEAR)+"), time("+
-									cal.get(Calendar.HOUR_OF_DAY)+":"+
-									cal.get(Calendar.MINUTE)+":"+
-									cal.get(Calendar.SECOND)+")"+
-							"),\n\ttuples([\n");
+    /*
+     * Used when logging tuples/operations/reactions.
+     */
+    Calendar cal;
 
-					it = msg.tuples.iterator();
-					if (logTupleFilter == null){
-						if (it.hasNext()){
-							st = st + "\t\t" + it.next().toString() + ",\n";
-							while (it.hasNext())
-								st = st + "\t\t" + it.next().toString() + ",\n";
-							st = st.substring(0, st.length()-2);
-						}
-					}else{
-						if (it.hasNext()){
-							LogicTuple tuple = (LogicTuple) it.next();
-							if (logTupleFilter.match(tuple))
-								st = st + "\t\t" + tuple.toString() + ",\n";
-							while (it.hasNext()){
-								tuple = (LogicTuple) it.next();
-								if (logTupleFilter.match(tuple))
-									st = st + "\t\t" + tuple.toString() + ",\n";
-							}
-							if(!st.isEmpty())
-								st = st.substring(0, st.length()-2);
-						}
-					}
-					
-					logTupleWriter.write(st + "\n\t])\n).\n");
-					logTupleWriter.flush();
-					
-				}catch(IOException e){
-					e.printStackTrace();
-				}
-				
-			}
-			
-		}
-		
-		if (msg.wnEvents != null){
-			
-			EventViewer viewer = form.getQueryForm();
-//			msg.localTime = System.currentTimeMillis();
-//			viewer.setVMTime(msg.vmTime);
-//			viewer.setLocalTime(msg.localTime);
-			String st = "";
-			Iterator it = msg.wnEvents.iterator();
-			int n = 0;
-			WSetEvent ev;
+    /**
+     * 
+     * 
+     * @param f
+     * @param id_
+     * @param tid_
+     * 
+     * @throws Exception
+     */
+    public InspectorCore(final Inspector f, final TucsonAgentId id_,
+            final TucsonTupleCentreId tid_) throws Exception {
+        super(id_, tid_);
+        this.form = f;
+        this.logTupleFilename = "inspector-tuples.log";
+        this.logQueryFilename = "inspector-queries.log";
+        this.logReactionFilename = "inspector-reactions.log";
+        try {
+            this.logTupleWriter = new FileWriter(this.logTupleFilename, true);
+            this.logQueryWriter = new FileWriter(this.logQueryFilename, true);
+            this.logReactionWriter =
+                    new FileWriter(this.logReactionFilename, true);
+        } catch (final IOException e) {
+            e.printStackTrace();
+        }
+    }
 
-			while (it.hasNext()){
-				ev = (WSetEvent)it.next();
-				st = st + ev.getOp() + 
-						" from <" + ((AgentId)ev.getSource()).getLocalName() + 
-						"> to <" + ev.getTarget() + ">\n";				
-				n++;
-			}
-			viewer.setNItems(n);
-			viewer.setText(st);
-			
-			if (loggingQueries){
-				try{
-					cal = Calendar.getInstance();
-					st = "";
-//					logQueryWriter.write("snapshot( \n" + "    time_vm(" + msg.vmTime + "),\n" + "    time_local("
-//							+ msg.localTime + "),\n" + "    query_list([ \n");
-					logQueryWriter.write("snapshot(\n" +
-							"localtime(date("+cal.get(Calendar.DAY_OF_MONTH)+"-"+
-									cal.get(Calendar.MONTH)+"-"+
-									cal.get(Calendar.YEAR)+"), time("+
-									cal.get(Calendar.HOUR_OF_DAY)+":"+
-									cal.get(Calendar.MINUTE)+":"+
-									cal.get(Calendar.SECOND)+"))"+
-							"),\n\toperations([\n");
-					it = msg.wnEvents.iterator();
-					if (logOpFilter == null){
-						if (it.hasNext()){
-							ev = (WSetEvent)it.next();
-							st = st + "\t\top(what(" + ev.getOp()
-									+ "),\n\t\t\twho(" + ((AgentId)ev.getSource()).getLocalName() + 
-									"),\n\t\t\twhere(" + ev.getTarget() + ")\n\t\t),\n";
-							while (it.hasNext()){
-								ev = (WSetEvent)it.next();
-								st = st + "\t\top(what(" + ev.getOp()
-										+ "),\n\t\t\twho(" + ((AgentId)ev.getSource()).getLocalName() + 
-										"),\n\t\t\twhere(" + ev.getTarget() + ")\n\t\t),\n";
-							}
-							st = st.substring(0, st.length()-2);
-						}
-					}else{
-						if (it.hasNext()){
-							ev = (WSetEvent)it.next();
-							LogicTuple tuple = ev.getOp();
-							if (logOpFilter.match(tuple)){
-								st = st + "\t\top(what(" + ev.getOp()
-										+ "),\n\t\t\twho(" + ((AgentId)ev.getSource()).getLocalName() + 
-										"),\n\t\t\twhere(" + ev.getTarget() + ")\n\t\t),\n";
-							}
-							while (it.hasNext()){
-								ev = (WSetEvent)it.next();
-								tuple = ev.getOp();
-								if (logOpFilter.match(tuple)){
-									st = st + "\t\top(what(" + ev.getOp()
-											+ "),\n\t\t\twho(" + ((AgentId)ev.getSource()).getLocalName() + 
-											"),\n\t\t\twhere(" + ev.getTarget() + ")\n\t\t),\n";
-								}
-							}
-							if(!st.isEmpty())
-								st = st.substring(0, st.length()-2);
-						}
-					}
-					logQueryWriter.write(st + "\n\t])\n).\n");
-					logQueryWriter.flush();
-				}catch (IOException e){
-					e.printStackTrace();
-				}
-			}
-			
-		}
+    @Override
+    public void onContextEvent(
+            final alice.tucson.introspection.InspectorContextEvent msg) {
 
-		if (msg.reactionOk != null){
-			
-			cal = Calendar.getInstance();
-			ReactionViewer viewer = form.getReactionForm();
-			TriggeredReaction tr = msg.reactionOk;
-//			viewer.appendText("time: " + msg.vmTime + "\n" + tr.getReaction() + " OK\n");
-			viewer.appendText("reaction < " + tr.getReaction() + " > SUCCEEDED @ "+
-					cal.get(Calendar.HOUR_OF_DAY)+":"+
-					cal.get(Calendar.MINUTE)+":"+
-					cal.get(Calendar.SECOND)
-			+".\n");
-			if (loggingReactions){
-				try{
-//					logReactionWriter.write("succeed-reaction( time(" + msg.vmTime + "), " + tr.getReaction() + ").\n");
-					logReactionWriter.write("snapshot(\n" +
-							"\tlocaltime(date("+cal.get(Calendar.DAY_OF_MONTH)+"-"+
-									cal.get(Calendar.MONTH)+"-"+
-									cal.get(Calendar.YEAR)+"), time("+
-									cal.get(Calendar.HOUR_OF_DAY)+":"+
-									cal.get(Calendar.MINUTE)+":"+
-									cal.get(Calendar.SECOND)+")"+
-							"),\n\t\tsucceeded( " + tr.getReaction() + " ).\n");
-					logReactionWriter.flush();
-				}catch (IOException e){
-					e.printStackTrace();
-				}
-			}
+        if (msg.tuples != null) {
 
-		}else if (msg.reactionFailed != null){
-			
-			cal = Calendar.getInstance();
-			ReactionViewer viewer = form.getReactionForm();
-			TriggeredReaction tr = msg.reactionFailed;
-//			viewer.appendText("time: " + msg.vmTime + "\n" + tr.getReaction() + " FAILED\n");
-			viewer.appendText("reaction < " + tr.getReaction() + " > FAILED @ "+
-					cal.get(Calendar.HOUR_OF_DAY)+":"+
-					cal.get(Calendar.MINUTE)+":"+
-					cal.get(Calendar.SECOND)
-			+".\n");
-			if (loggingReactions){
-				try{
-//					logReactionWriter.write("failed-reaction( time(" + msg.vmTime + "), " + tr.getReaction() + ").\n");
-					logReactionWriter.write("snapshot(\n" +
-							"\tlocaltime(date("+cal.get(Calendar.DAY_OF_MONTH)+"-"+
-									cal.get(Calendar.MONTH)+"-"+
-									cal.get(Calendar.YEAR)+"), time("+
-									cal.get(Calendar.HOUR_OF_DAY)+":"+
-									cal.get(Calendar.MINUTE)+":"+
-									cal.get(Calendar.SECOND)+")"+
-							"),\n\t\tfailed( " + tr.getReaction() + " ).\n");
-					logReactionWriter.flush();
-				}catch (IOException e){
-					e.printStackTrace();
-				}
-			}
-			
-		}
-		
-	}
+            final TupleViewer viewer = this.form.getTupleForm();
+            String st = "";
+            Iterator<? extends Tuple> it = msg.tuples.iterator();
+            int n = 0;
 
-	void changeLogTupleFile(String name){
-		logTupleFilename = name;
-		if (logTupleWriter != null){
-			try{
-				logTupleWriter.close();
-			}catch (IOException e){
-				e.printStackTrace();
-			}
-		}try{
-			logTupleWriter = new FileWriter(logTupleFilename, true);
-		}catch (IOException e){
-			e.printStackTrace();
-		}
-	}
+            while (it.hasNext()) {
+                st = st + it.next().toString() + "\n";
+                n++;
+            }
+            viewer.setNItems(n);
+            viewer.setText(st);
 
-	void changeLogQueryFile(String name){
-		logQueryFilename = name;
-		if (logQueryWriter != null){
-			try{
-				logQueryWriter.close();
-			}catch (IOException e){
-				e.printStackTrace();
-			}
-		}try{
-			logQueryWriter = new FileWriter(logQueryFilename, true);
-		}catch (IOException e){
-			e.printStackTrace();
-		}
-	}
+            if (this.loggingTuples) {
 
-	void changeLogReactionFile(String name){
-		logReactionFilename = name;
-		if (logReactionWriter != null){
-			try{
-				logReactionWriter.close();
-			}catch (IOException e){
-				e.printStackTrace();
-			}
-		}try{
-			logReactionWriter = new FileWriter(logReactionFilename, true);
-		}catch (IOException e){
-			e.printStackTrace();
-		}
-	}
+                try {
+
+                    this.cal = Calendar.getInstance();
+                    st = "";
+                    this.logTupleWriter.write("snapshot(\n" + "localtime(date("
+                            + this.cal.get(Calendar.DAY_OF_MONTH) + "-"
+                            + this.cal.get(Calendar.MONTH) + "-"
+                            + this.cal.get(Calendar.YEAR) + "), time("
+                            + this.cal.get(Calendar.HOUR_OF_DAY) + ":"
+                            + this.cal.get(Calendar.MINUTE) + ":"
+                            + this.cal.get(Calendar.SECOND) + ")"
+                            + "),\n\ttuples([\n");
+
+                    it = msg.tuples.iterator();
+                    if (this.logTupleFilter == null) {
+                        if (it.hasNext()) {
+                            st = st + "\t\t" + it.next().toString() + ",\n";
+                            while (it.hasNext()) {
+                                st = st + "\t\t" + it.next().toString() + ",\n";
+                            }
+                            st = st.substring(0, st.length() - 2);
+                        }
+                    } else {
+                        if (it.hasNext()) {
+                            LogicTuple tuple = (LogicTuple) it.next();
+                            if (this.logTupleFilter.match(tuple)) {
+                                st = st + "\t\t" + tuple.toString() + ",\n";
+                            }
+                            while (it.hasNext()) {
+                                tuple = (LogicTuple) it.next();
+                                if (this.logTupleFilter.match(tuple)) {
+                                    st = st + "\t\t" + tuple.toString() + ",\n";
+                                }
+                            }
+                            if (!st.isEmpty()) {
+                                st = st.substring(0, st.length() - 2);
+                            }
+                        }
+                    }
+
+                    this.logTupleWriter.write(st + "\n\t])\n).\n");
+                    this.logTupleWriter.flush();
+
+                } catch (final IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+        }
+
+        if (msg.wnEvents != null) {
+
+            final EventViewer viewer = this.form.getQueryForm();
+            String st = "";
+            Iterator<WSetEvent> it = msg.wnEvents.iterator();
+            int n = 0;
+            WSetEvent ev;
+
+            while (it.hasNext()) {
+                ev = it.next();
+                st =
+                        st + ev.getOp() + " from <"
+                                + ((AgentId) ev.getSource()).getLocalName()
+                                + "> to <" + ev.getTarget() + ">\n";
+                n++;
+            }
+            viewer.setNItems(n);
+            viewer.setText(st);
+
+            if (this.loggingQueries) {
+                try {
+                    this.cal = Calendar.getInstance();
+                    st = "";
+                    this.logQueryWriter.write("snapshot(\n" + "localtime(date("
+                            + this.cal.get(Calendar.DAY_OF_MONTH) + "-"
+                            + this.cal.get(Calendar.MONTH) + "-"
+                            + this.cal.get(Calendar.YEAR) + "), time("
+                            + this.cal.get(Calendar.HOUR_OF_DAY) + ":"
+                            + this.cal.get(Calendar.MINUTE) + ":"
+                            + this.cal.get(Calendar.SECOND) + "))"
+                            + "),\n\toperations([\n");
+                    it = msg.wnEvents.iterator();
+                    if (this.logOpFilter == null) {
+                        if (it.hasNext()) {
+                            ev = it.next();
+                            st =
+                                    st
+                                            + "\t\top(what("
+                                            + ev.getOp()
+                                            + "),\n\t\t\twho("
+                                            + ((AgentId) ev.getSource())
+                                                    .getLocalName()
+                                            + "),\n\t\t\twhere("
+                                            + ev.getTarget() + ")\n\t\t),\n";
+                            while (it.hasNext()) {
+                                ev = it.next();
+                                st =
+                                        st
+                                                + "\t\top(what("
+                                                + ev.getOp()
+                                                + "),\n\t\t\twho("
+                                                + ((AgentId) ev.getSource())
+                                                        .getLocalName()
+                                                + "),\n\t\t\twhere("
+                                                + ev.getTarget()
+                                                + ")\n\t\t),\n";
+                            }
+                            st = st.substring(0, st.length() - 2);
+                        }
+                    } else {
+                        if (it.hasNext()) {
+                            ev = it.next();
+                            LogicTuple tuple = ev.getOp();
+                            if (this.logOpFilter.match(tuple)) {
+                                st =
+                                        st
+                                                + "\t\top(what("
+                                                + ev.getOp()
+                                                + "),\n\t\t\twho("
+                                                + ((AgentId) ev.getSource())
+                                                        .getLocalName()
+                                                + "),\n\t\t\twhere("
+                                                + ev.getTarget()
+                                                + ")\n\t\t),\n";
+                            }
+                            while (it.hasNext()) {
+                                ev = it.next();
+                                tuple = ev.getOp();
+                                if (this.logOpFilter.match(tuple)) {
+                                    st =
+                                            st
+                                                    + "\t\top(what("
+                                                    + ev.getOp()
+                                                    + "),\n\t\t\twho("
+                                                    + ((AgentId) ev.getSource())
+                                                            .getLocalName()
+                                                    + "),\n\t\t\twhere("
+                                                    + ev.getTarget()
+                                                    + ")\n\t\t),\n";
+                                }
+                            }
+                            if (!st.isEmpty()) {
+                                st = st.substring(0, st.length() - 2);
+                            }
+                        }
+                    }
+                    this.logQueryWriter.write(st + "\n\t])\n).\n");
+                    this.logQueryWriter.flush();
+                } catch (final IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        }
+
+        if (msg.reactionOk != null) {
+
+            this.cal = Calendar.getInstance();
+            final ReactionViewer viewer = this.form.getReactionForm();
+            final TriggeredReaction tr = msg.reactionOk;
+            viewer.appendText("reaction < " + tr.getReaction()
+                    + " > SUCCEEDED @ " + this.cal.get(Calendar.HOUR_OF_DAY)
+                    + ":" + this.cal.get(Calendar.MINUTE) + ":"
+                    + this.cal.get(Calendar.SECOND) + ".\n");
+            if (this.loggingReactions) {
+                try {
+                    this.logReactionWriter.write("snapshot(\n"
+                            + "\tlocaltime(date("
+                            + this.cal.get(Calendar.DAY_OF_MONTH) + "-"
+                            + this.cal.get(Calendar.MONTH) + "-"
+                            + this.cal.get(Calendar.YEAR) + "), time("
+                            + this.cal.get(Calendar.HOUR_OF_DAY) + ":"
+                            + this.cal.get(Calendar.MINUTE) + ":"
+                            + this.cal.get(Calendar.SECOND) + ")"
+                            + "),\n\t\tsucceeded( " + tr.getReaction()
+                            + " ).\n");
+                    this.logReactionWriter.flush();
+                } catch (final IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        } else if (msg.reactionFailed != null) {
+
+            this.cal = Calendar.getInstance();
+            final ReactionViewer viewer = this.form.getReactionForm();
+            final TriggeredReaction tr = msg.reactionFailed;
+            viewer.appendText("reaction < " + tr.getReaction() + " > FAILED @ "
+                    + this.cal.get(Calendar.HOUR_OF_DAY) + ":"
+                    + this.cal.get(Calendar.MINUTE) + ":"
+                    + this.cal.get(Calendar.SECOND) + ".\n");
+            if (this.loggingReactions) {
+                try {
+                    this.logReactionWriter.write("snapshot(\n"
+                            + "\tlocaltime(date("
+                            + this.cal.get(Calendar.DAY_OF_MONTH) + "-"
+                            + this.cal.get(Calendar.MONTH) + "-"
+                            + this.cal.get(Calendar.YEAR) + "), time("
+                            + this.cal.get(Calendar.HOUR_OF_DAY) + ":"
+                            + this.cal.get(Calendar.MINUTE) + ":"
+                            + this.cal.get(Calendar.SECOND) + ")"
+                            + "),\n\t\tfailed( " + tr.getReaction() + " ).\n");
+                    this.logReactionWriter.flush();
+                } catch (final IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        }
+
+    }
+
+    void changeLogQueryFile(final String name) {
+        this.logQueryFilename = name;
+        if (this.logQueryWriter != null) {
+            try {
+                this.logQueryWriter.close();
+            } catch (final IOException e) {
+                e.printStackTrace();
+            }
+        }
+        try {
+            this.logQueryWriter = new FileWriter(this.logQueryFilename, true);
+        } catch (final IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    void changeLogReactionFile(final String name) {
+        this.logReactionFilename = name;
+        if (this.logReactionWriter != null) {
+            try {
+                this.logReactionWriter.close();
+            } catch (final IOException e) {
+                e.printStackTrace();
+            }
+        }
+        try {
+            this.logReactionWriter =
+                    new FileWriter(this.logReactionFilename, true);
+        } catch (final IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    void changeLogTupleFile(final String name) {
+        this.logTupleFilename = name;
+        if (this.logTupleWriter != null) {
+            try {
+                this.logTupleWriter.close();
+            } catch (final IOException e) {
+                e.printStackTrace();
+            }
+        }
+        try {
+            this.logTupleWriter = new FileWriter(this.logTupleFilename, true);
+        } catch (final IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 }

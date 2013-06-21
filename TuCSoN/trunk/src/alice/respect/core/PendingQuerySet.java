@@ -1,113 +1,109 @@
 /*
- * TupleSetImpl.java
- *
- * Copyright 2000-2001-2002  aliCE team at deis.unibo.it
- *
- * This software is the proprietary information of deis.unibo.it
- * Use is subject to license terms.
- *
+ * TupleSetImpl.java Copyright 2000-2001-2002 aliCE team at deis.unibo.it This
+ * software is the proprietary information of deis.unibo.it Use is subject to
+ * license terms.
  */
 package alice.respect.core;
 
-import java.util.*;
+import java.util.Iterator;
+import java.util.LinkedList;
+
+import alice.tuplecentre.core.Event;
 
 /**
- * Pending Query Set. 
- *
+ * Pending Query Set.
+ * 
  * @author aricci
  */
-public class PendingQuerySet  {
+public class PendingQuerySet {
 
-    private LinkedList events;
-    private LinkedList evAdded;
-    private LinkedList evRemoved;
+    private final LinkedList<Event> evAdded;
+    private final LinkedList<Event> events;
+    private final LinkedList<Event> evRemoved;
     private boolean transaction;
 
-    public PendingQuerySet(){
-		events=new LinkedList();
-		evAdded=new LinkedList();
-		evRemoved=new LinkedList();
-		transaction=false;
+    public PendingQuerySet() {
+        this.events = new LinkedList<Event>();
+        this.evAdded = new LinkedList<Event>();
+        this.evRemoved = new LinkedList<Event>();
+        this.transaction = false;
     }
 
-    public void add(alice.tuplecentre.core.Event t){
-        events.add(t);
-        if (transaction){
-            evAdded.add(t);
+    public void add(final alice.tuplecentre.core.Event t) {
+        this.events.add(t);
+        if (this.transaction) {
+            this.evAdded.add(t);
         }
-    }
-
-    public void remove(alice.tuplecentre.core.Event t){
-        events.remove(t);
-        if (transaction){
-            evRemoved.add(t);
-        }
-    }
-
-    public boolean isEmpty(){
-        return events.isEmpty();
-    }
-
-    public int size(){
-        return events.size();
     }
 
     /**
      * Begins a transaction section
-     *
+     * 
      * Every operation on multiset can be undone
      */
-    public void beginTransaction(){
-        transaction=true;
-        evAdded.clear();
-        evRemoved.clear();
+    public void beginTransaction() {
+        this.transaction = true;
+        this.evAdded.clear();
+        this.evRemoved.clear();
+    }
+
+    public void empty() {
+        this.events.clear();
     }
 
     /**
-     * Ends a transaction section specifying
-     * if operations must be committed or undone
-     *
-     * @param commit if <code>true</code> the operations are committed, else
-     *               they are undone and the multiset is rolled back to the
-     *               state before the <code>beginTransaction</code> invocation
+     * Ends a transaction section specifying if operations must be committed or
+     * undone
+     * 
+     * @param commit
+     *            if <code>true</code> the operations are committed, else they
+     *            are undone and the multiset is rolled back to the state before
+     *            the <code>beginTransaction</code> invocation
      */
-    public void endTransaction(boolean commit){
-        if (!commit){
-            Iterator it = evAdded.listIterator();
+    public void endTransaction(final boolean commit) {
+        if (!commit) {
+            Iterator<? extends Event> it = this.evAdded.listIterator();
             while (it.hasNext()) {
-            	events.remove(it.next());
+                this.events.remove(it.next());
             }
-			it = evRemoved.listIterator();
-			while (it.hasNext()) {
-                events.add(it.next());
+            it = this.evRemoved.listIterator();
+            while (it.hasNext()) {
+                this.events.add(it.next());
             }
         }
-        transaction=false;
-        evAdded.clear();
-        evRemoved.clear();
+        this.transaction = false;
+        this.evAdded.clear();
+        this.evRemoved.clear();
     }
 
-    public void empty(){
-        events.clear();
-    }
-
-    public alice.tuplecentre.core.Event get(){
-        alice.tuplecentre.core.Event ev= (alice.tuplecentre.core.Event) events.removeFirst();
-        if (transaction){
-            evRemoved.add(ev);
+    public alice.tuplecentre.core.Event get() {
+        final alice.tuplecentre.core.Event ev = this.events.removeFirst();
+        if (this.transaction) {
+            this.evRemoved.add(ev);
         }
         return ev;
     }
 
-    public Iterator getIterator(){
-        return events.listIterator();
+    public Iterator<? extends Event> getIterator() {
+        return this.events.listIterator();
     }
 
-    public boolean removeEventOfOperation(long opId){
-        Iterator it=events.listIterator();
-        while (it.hasNext()){
-        	alice.tuplecentre.core.Event ev=(alice.tuplecentre.core.Event)it.next();
-            if (ev.getSimpleTCEvent().getId()==opId){
+    public boolean isEmpty() {
+        return this.events.isEmpty();
+    }
+
+    public void remove(final alice.tuplecentre.core.Event t) {
+        this.events.remove(t);
+        if (this.transaction) {
+            this.evRemoved.add(t);
+        }
+    }
+
+    public boolean removeEventOfOperation(final long opId) {
+        final Iterator<? extends Event> it = this.events.listIterator();
+        while (it.hasNext()) {
+            final alice.tuplecentre.core.Event ev = it.next();
+            if (ev.getSimpleTCEvent().getId() == opId) {
                 it.remove();
                 return true;
             }
@@ -115,24 +111,28 @@ public class PendingQuerySet  {
         return false;
     }
 
-	public void removeEventsOf(alice.tuplecentre.api.AgentId id){
-		Iterator it=events.listIterator();
-		while (it.hasNext()){
-			alice.tuplecentre.core.Event ev=(alice.tuplecentre.core.Event)it.next();
-			if (ev.getSource().toString().equals(id.toString())){
-				it.remove();
-			}
-		}
-	}
+    public void removeEventsOf(final alice.tuplecentre.api.AgentId id) {
+        final Iterator<? extends Event> it = this.events.listIterator();
+        while (it.hasNext()) {
+            final alice.tuplecentre.core.Event ev = it.next();
+            if (ev.getSource().toString().equals(id.toString())) {
+                it.remove();
+            }
+        }
+    }
 
-    public alice.tuplecentre.core.Event[] toArray(){
-    	int size = events.size();
-    	alice.tuplecentre.core.Event[] evArray = new alice.tuplecentre.core.Event[size];
-    	for(int i = 0; i < size; i++){
-    		evArray[i] = (alice.tuplecentre.core.Event) events.get(i);
-    	}
-    	return evArray;
+    public int size() {
+        return this.events.size();
+    }
+
+    public alice.tuplecentre.core.Event[] toArray() {
+        final int size = this.events.size();
+        final alice.tuplecentre.core.Event[] evArray =
+                new alice.tuplecentre.core.Event[size];
+        for (int i = 0; i < size; i++) {
+            evArray[i] = this.events.get(i);
+        }
+        return evArray;
     }
 
 }
-

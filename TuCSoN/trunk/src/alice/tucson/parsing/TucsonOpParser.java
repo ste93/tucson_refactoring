@@ -4,79 +4,83 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import alice.tucson.api.TucsonTupleCentreId;
-import alice.tucson.api.exceptions.TucsonInvalidCommandException;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.service.TucsonCmd;
 
 /**
  * 
  * @author ste
- *
+ * 
  */
 public class TucsonOpParser {
 
-	private String input;
-	private String node;
-	private String defPort; 
-	private TucsonCmd tcmd;
-	private TucsonTupleCentreId tid;
-	private TucsonPrimitiveParser cmdParser;
-	private TupleCentreIdParser tidParser;
-	
-	/**
-	 * 
-	 * @param input
-	 * @param defPort
-	 */
-	public TucsonOpParser(String input, String node, int defPort){
-		this.input = input;
-		this.node = node;
-		this.defPort = ""+defPort;
-		tcmd = null;
-		tid = null;
-		cmdParser = null;
-		tidParser = null;
-	}
-	
-	/**
-	 * 
-	 * @throws TucsonInvalidCommandException
-	 * @throws TucsonInvalidTupleCentreIdException
-	 */
-	public void parse() throws TucsonInvalidTupleCentreIdException{
-		String cmd = input.trim();
-		String tc = "default";
-		int iOp = input.indexOf('?');
-		int iBra = input.indexOf('(');
-		if(iOp != -1){
-			if(!insideReaction(input.substring(0, iOp).trim())){
-				if(iBra != -1 && iBra < iOp){
-					cmd = input.substring(iOp + 1, input.length()).trim();
-					tc = input.substring(0, iOp).trim();
-				}else if(iBra == -1 || iOp < iBra){
-					cmd = input.substring(iOp + 1, input.length()).trim();
-					tc = input.substring(0, iOp).trim();
-				}
-			}
-		}
-		cmdParser = new TucsonPrimitiveParser(cmd);
-		tidParser = new TupleCentreIdParser(tc, node, defPort);
-		tcmd = cmdParser.parse();
-		tid = tidParser.parse();
-	}
-	
-	private boolean insideReaction(String in) {
-		Pattern pattern = Pattern.compile("((out|in|rd|no|inp|rdp|nop|get|set)_s)+?");
-		Matcher matcher = pattern.matcher(in);
-		return matcher.find();
-	}
+    private TucsonPrimitiveParser cmdParser;
+    private final String defPort;
+    private final String input;
+    private final String node;
+    private TucsonCmd tcmd;
+    private TucsonTupleCentreId tid;
+    private TupleCentreIdParser tidParser;
 
-	public TucsonCmd getCmd(){
-		return tcmd;
-	}
-	
-	public TucsonTupleCentreId getTid(){
-		return tid;
-	}
-	
+    /**
+     * 
+     * @param in
+     * @param port
+     */
+    public TucsonOpParser(final String in, final String n, final int port) {
+        this.input = in;
+        this.node = n;
+        this.defPort = "" + port;
+        this.tcmd = null;
+        this.tid = null;
+        this.cmdParser = null;
+        this.tidParser = null;
+    }
+
+    public TucsonCmd getCmd() {
+        return this.tcmd;
+    }
+
+    public TucsonTupleCentreId getTid() {
+        return this.tid;
+    }
+
+    /**
+     * 
+     * @throws TucsonInvalidTupleCentreIdException
+     */
+    public void parse() throws TucsonInvalidTupleCentreIdException {
+        String cmd = this.input.trim();
+        String tc = "default";
+        final int iOp = this.input.indexOf('?');
+        final int iBra = this.input.indexOf('(');
+        if (iOp != -1) {
+            if (!TucsonOpParser.insideReaction(this.input.substring(0, iOp)
+                    .trim())) {
+                if ((iBra != -1) && (iBra < iOp)) {
+                    cmd =
+                            this.input.substring(iOp + 1, this.input.length())
+                                    .trim();
+                    tc = this.input.substring(0, iOp).trim();
+                } else if ((iBra == -1) || (iOp < iBra)) {
+                    cmd =
+                            this.input.substring(iOp + 1, this.input.length())
+                                    .trim();
+                    tc = this.input.substring(0, iOp).trim();
+                }
+            }
+        }
+        this.cmdParser = new TucsonPrimitiveParser(cmd);
+        this.tidParser = new TupleCentreIdParser(tc, this.node, this.defPort);
+        this.tcmd = this.cmdParser.parse();
+        this.tid = this.tidParser.parse();
+    }
+
+    private static boolean insideReaction(final String in) {
+        final Pattern pattern =
+                Pattern.compile("((out|in|rd|no|inp|rdp|nop|get|set)_s)+?");
+        final Matcher matcher = pattern.matcher(in);
+        return matcher.find();
+    }
+
 }

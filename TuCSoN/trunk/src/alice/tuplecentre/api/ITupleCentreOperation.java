@@ -9,88 +9,89 @@ import alice.tuplecentre.api.exceptions.OperationTimeOutException;
  * 
  * @author aricci
  */
-public interface ITupleCentreOperation{
+public interface ITupleCentreOperation {
 
-	boolean isOut();
-	
-	boolean isIn();
+    /**
+     * Get operation identifier
+     * 
+     * @return Operation identifier
+     */
+    long getId();
 
-	boolean isRd();
+    TupleTemplate getTemplateArgument();
 
-	boolean isInp();
+    Tuple getTupleArgument();
 
-	boolean isRdp();
-	
-	boolean isNo();
-	
-	boolean isNop();
-	
-	boolean isGet();
-	
-	boolean isSet();		
+    List<Tuple> getTupleListArgument();
 
-	boolean isOutAll();
-	
-	boolean isInAll();
+    List<Tuple> getTupleListResult();
 
-	boolean isRdAll();
-	
-	boolean isUrd();
-	
-	boolean isUin();
-	
-	boolean isUinp();
-	
-	boolean isUrdp();
-	
-	boolean isSet_s();
-	
-	boolean isGet_s();
-	
-	/**
-	 * Tests if the operation is completed
-	 * 
-	 * @return true if the operation is completed
-	 */
-	boolean isOperationCompleted();
-	
-	boolean isResultSuccess();
-	
-	boolean isResultFailure();
+    Tuple getTupleResult();
 
-	/**
-	 * Wait for operation completion
-	 * 
-	 * Current execution flow is blocked until the operation is completed
-	 */
-	void waitForOperationCompletion();
+    boolean isGet();
 
-	/**
-	 * Wait for operation completion, with time out
-	 * 
-	 * Current execution flow is blocked until the operation is completed
-	 * or a maximum waiting time is elapsed
-	 * 
-	 * @param ms maximum waiting time
-	 * @throws OperationTimeOutException
-	 */
-	void waitForOperationCompletion(long ms) throws OperationTimeOutException;
+    boolean isGet_s();
 
-	/**
-	 * Get operation identifier
-	 * 
-	 * @return Operation identifier
-	 */
-	long getId();
+    boolean isIn();
 
-	Tuple getTupleResult();
+    boolean isInAll();
 
-	List<Tuple> getTupleListResult();
+    boolean isInp();
 
-	List<Tuple> getTupleListArgument();
+    boolean isNo();
 
-	Tuple getTupleArgument();
+    boolean isNop();
 
-	TupleTemplate getTemplateArgument();
+    /**
+     * Tests if the operation is completed
+     * 
+     * @return true if the operation is completed
+     */
+    boolean isOperationCompleted();
+
+    boolean isOut();
+
+    boolean isOutAll();
+
+    boolean isRd();
+
+    boolean isRdAll();
+
+    boolean isRdp();
+
+    boolean isResultFailure();
+
+    boolean isResultSuccess();
+
+    boolean isSet();
+
+    boolean isSet_s();
+
+    boolean isUin();
+
+    boolean isUinp();
+
+    boolean isUrd();
+
+    boolean isUrdp();
+
+    /**
+     * Wait for operation completion
+     * 
+     * Current execution flow is blocked until the operation is completed
+     */
+    void waitForOperationCompletion();
+
+    /**
+     * Wait for operation completion, with time out
+     * 
+     * Current execution flow is blocked until the operation is completed or a
+     * maximum waiting time is elapsed
+     * 
+     * @param ms
+     *            maximum waiting time
+     * @throws OperationTimeOutException
+     */
+    void waitForOperationCompletion(long ms) throws OperationTimeOutException;
 
 }

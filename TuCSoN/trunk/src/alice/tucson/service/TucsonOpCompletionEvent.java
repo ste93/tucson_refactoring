@@ -1,74 +1,78 @@
 package alice.tucson.service;
 
-import alice.logictuple.*;
-import alice.tucson.api.TucsonOpId;
-
 import java.util.List;
+
+import alice.logictuple.LogicTuple;
+import alice.tucson.api.TucsonOpId;
 
 /* MODIFIED BY <s.mariani@unibo.it> */
 
 /**
- * Completion of a TuCSoN operation: such event stores the corresponding operation ID, its success
- * state, its result and other useful info.
+ * Completion of a TuCSoN operation: such event stores the corresponding
+ * operation ID, its success state, its result and other useful info.
  */
-public class TucsonOpCompletionEvent{
-	
-	private LogicTuple tuple;
-	private List<LogicTuple> tupleList;
-	private boolean allowed;
-	private TucsonOpId opId;
-	private String spec;
-	private boolean success;
+public class TucsonOpCompletionEvent {
 
-	public TucsonOpCompletionEvent(TucsonOpId opId, boolean allowed, boolean success){
-		this.opId = opId;
-		this.allowed = allowed;
-		this.success = success;
-	}
+    private final boolean allowed;
+    private final TucsonOpId opId;
+    private String spec;
+    private final boolean success;
+    private LogicTuple tuple;
+    private List<LogicTuple> tupleList;
 
-	public TucsonOpCompletionEvent(TucsonOpId opId, boolean allowed, boolean success, LogicTuple tuple){
-		this.opId = opId;
-		this.allowed = allowed;
-		this.success = success;
-		this.tuple = tuple;
-	}
+    public TucsonOpCompletionEvent(final TucsonOpId id, final boolean a,
+            final boolean s) {
+        this.opId = id;
+        this.allowed = a;
+        this.success = s;
+    }
 
-	public TucsonOpCompletionEvent(TucsonOpId opId, boolean allowed, boolean success, String spec){
-		this.opId = opId;
-		this.allowed = allowed;
-		this.success = success;
-		this.spec = spec;
-	}
-	
-	public TucsonOpCompletionEvent(TucsonOpId opId, boolean allowed, boolean success, List<LogicTuple> tupleList){
-		this.opId = opId;
-		this.allowed = allowed;
-		this.success = success;
-		this.tupleList = tupleList;
-	}
+    public TucsonOpCompletionEvent(final TucsonOpId id, final boolean a,
+            final boolean s, final List<LogicTuple> tl) {
+        this.opId = id;
+        this.allowed = a;
+        this.success = s;
+        this.tupleList = tl;
+    }
 
-	public boolean operationAllowed(){
-		return allowed;
-	}
+    public TucsonOpCompletionEvent(final TucsonOpId id, final boolean a,
+            final boolean s, final LogicTuple t) {
+        this.opId = id;
+        this.allowed = a;
+        this.success = s;
+        this.tuple = t;
+    }
 
-	public boolean operationSucceeded(){
-		return success;
-	}
+    public TucsonOpCompletionEvent(final TucsonOpId id, final boolean a,
+            final boolean s, final String sp) {
+        this.opId = id;
+        this.allowed = a;
+        this.success = s;
+        this.spec = sp;
+    }
 
-	public TucsonOpId getOpId(){
-		return opId;
-	}
+    public TucsonOpId getOpId() {
+        return this.opId;
+    }
 
-	public LogicTuple getTuple(){
-		return tuple;
-	}
-	
-	public List<LogicTuple> getTupleList(){
-		return tupleList;
-	}
+    public String getSpec() {
+        return this.spec;
+    }
 
-	public String getSpec(){
-		return spec;
-	}
-	
+    public LogicTuple getTuple() {
+        return this.tuple;
+    }
+
+    public List<LogicTuple> getTupleList() {
+        return this.tupleList;
+    }
+
+    public boolean operationAllowed() {
+        return this.allowed;
+    }
+
+    public boolean operationSucceeded() {
+        return this.success;
+    }
+
 }

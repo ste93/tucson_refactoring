@@ -1,110 +1,122 @@
 /*
- * Copyright (C) 2001-2002  aliCE team at deis.unibo.it
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
+ * Copyright (C) 2001-2002 aliCE team at deis.unibo.it This library is free
+ * software; you can redistribute it and/or modify it under the terms of the GNU
+ * Lesser General Public License as published by the Free Software Foundation;
+ * either version 2.1 of the License, or (at your option) any later version.
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details. You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 package alice.tucson.network;
 
-import alice.tucson.network.TucsonProtocol;
-
-import java.net.*;
-
-import java.io.*;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.net.SocketTimeoutException;
 
 /**
  * 
  */
 @SuppressWarnings("serial")
-public class TucsonProtocolTCP extends TucsonProtocol{
-	
-	private ObjectInputStream inStream;
-	private ObjectOutputStream outStream;
-	private Socket socket;
-	private ServerSocket mainSocket;
+public class TucsonProtocolTCP extends TucsonProtocol {
 
-	public TucsonProtocolTCP(String host, int port) throws Exception{
-		this.socket = new Socket(host, port);
-		outStream = new ObjectOutputStream(socket.getOutputStream());
-		inStream = new ObjectInputStream(socket.getInputStream());
-	}
+    private ObjectInputStream inStream;
+    private ServerSocket mainSocket;
+    private ObjectOutputStream outStream;
+    private Socket socket;
 
-	public TucsonProtocolTCP(ServerSocket socket){
-		this.mainSocket = socket;
-	}
+    public TucsonProtocolTCP(final ServerSocket s) {
+        this.mainSocket = s;
+    }
 
-	private TucsonProtocolTCP(Socket socket) throws IOException{
-		this.socket = socket;
-		outStream = new ObjectOutputStream(socket.getOutputStream());
-		inStream = new ObjectInputStream(socket.getInputStream());
-	}
+    public TucsonProtocolTCP(final String host, final int port)
+            throws Exception {
+        this.socket = new Socket(host, port);
+        this.outStream = new ObjectOutputStream(this.socket.getOutputStream());
+        this.inStream = new ObjectInputStream(this.socket.getInputStream());
+    }
 
-	public ObjectInputStream getInputStream(){		
-		return inStream;
-	}
+    private TucsonProtocolTCP(final Socket s) throws IOException {
+        this.socket = s;
+        this.outStream = new ObjectOutputStream(s.getOutputStream());
+        this.inStream = new ObjectInputStream(s.getInputStream());
+    }
 
-	public ObjectOutputStream getOutputStream(){
-		return outStream;
-	}
+    @Override
+    public TucsonProtocol acceptNewDialog() throws IOException,
+            SocketTimeoutException {
+        this.mainSocket.setSoTimeout(5000);
+        return new TucsonProtocolTCP(this.mainSocket.accept());
+    }
 
-	public TucsonProtocol acceptNewDialog() throws IOException, SocketTimeoutException{
-		mainSocket.setSoTimeout(5000);
-		return new TucsonProtocolTCP(mainSocket.accept());
-	}
+    @Override
+    public void end() throws Exception {
+        this.socket.close();
+    }
 
-	public void end() throws Exception{
-		socket.close();
-	}
+    @Override
+    public ObjectInputStream getInputStream() {
+        return this.inStream;
+    }
 
-	protected String receiveString() throws Exception{
-		return (String) inStream.readObject();
-	}
+    @Override
+    public ObjectOutputStream getOutputStream() {
+        return this.outStream;
+    }
 
-	protected int receiveInt() throws Exception{
-		return inStream.readInt();
-	}
+    @Override
+    protected void flush() throws Exception {
+        this.outStream.flush();
+    }
 
-	protected boolean receiveBoolean() throws Exception{
-		return inStream.readBoolean();
-	}
+    @Override
+    protected boolean receiveBoolean() throws Exception {
+        return this.inStream.readBoolean();
+    }
 
-	protected Object receiveObject() throws Exception{
-		return inStream.readObject();
-	}
+    @Override
+    protected int receiveInt() throws Exception {
+        return this.inStream.readInt();
+    }
 
-	protected void send(int value) throws Exception{
-		outStream.writeInt(value);
-	}
+    @Override
+    protected Object receiveObject() throws Exception {
+        return this.inStream.readObject();
+    }
 
-	protected void send(boolean value) throws Exception{
-		outStream.writeBoolean(value);
-	}
+    @Override
+    protected String receiveString() throws Exception {
+        return (String) this.inStream.readObject();
+    }
 
-	protected void send(String value) throws Exception{
-		outStream.writeObject(value);
-	}
+    @Override
+    protected void send(final boolean value) throws Exception {
+        this.outStream.writeBoolean(value);
+    }
 
-	protected void send(Object value) throws Exception{
-		outStream.writeObject(value);
-	}
+    @Override
+    protected void send(final byte[] value) throws Exception {
+        this.outStream.write(value);
+    }
 
-	protected void flush() throws Exception{
-		outStream.flush();
-	}
+    @Override
+    protected void send(final int value) throws Exception {
+        this.outStream.writeInt(value);
+    }
 
-	protected void send(byte[] value) throws Exception{
-		outStream.write(value);
-	}
-	
+    @Override
+    protected void send(final Object value) throws Exception {
+        this.outStream.writeObject(value);
+    }
+
+    @Override
+    protected void send(final String value) throws Exception {
+        this.outStream.writeObject(value);
+    }
+
 }

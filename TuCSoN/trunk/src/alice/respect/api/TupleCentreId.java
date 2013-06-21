@@ -1,25 +1,22 @@
 /*
- * ReSpecT - Copyright (C) aliCE team at deis.unibo.it
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
+ * ReSpecT - Copyright (C) aliCE team at deis.unibo.it This library is free
+ * software; you can redistribute it and/or modify it under the terms of the GNU
+ * Lesser General Public License as published by the Free Software Foundation;
+ * either version 2.1 of the License, or (at your option) any later version.
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details. You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 package alice.respect.api;
 
 import alice.respect.api.exceptions.InvalidTupleCentreIdException;
 import alice.respect.core.TupleCentreIdOperatorManager;
-import alice.tuprolog.*;
+import alice.tuprolog.InvalidTermException;
+import alice.tuprolog.Struct;
+import alice.tuprolog.Term;
 
 /**
  * Tuple centre identifier for ReSpecT tuple centres
@@ -28,137 +25,184 @@ import alice.tuprolog.*;
  * 
  * @author aricci
  */
-public class TupleCentreId implements alice.tuplecentre.api.TupleCentreId, java.io.Serializable{
-	
-	private static final long serialVersionUID = 1L;
-	private static TupleCentreIdOperatorManager opManager = new TupleCentreIdOperatorManager();
-	protected alice.tuprolog.Term id;
+public class TupleCentreId implements alice.tuplecentre.api.TupleCentreId,
+        java.io.Serializable {
 
-	protected TupleCentreId(){}
+    private static TupleCentreIdOperatorManager opManager =
+            new TupleCentreIdOperatorManager();
+    private static final long serialVersionUID = 1L;
+    protected alice.tuprolog.Term id;
 
-	/**
-	 * Constructs a tuple centre identifier from a string, which must represent
-	 * a well-formed ground logic term
-	 * 
-	 * @param name
-	 *            is the textual representation of the identifier
-	 * @throws InvalidTupleCentreIdException
-	 *             if name is not a well-formed ground logic term
-	 */
-	public TupleCentreId(String name) throws InvalidTupleCentreIdException{
-		if(name.indexOf("@")<0)
-			name +="@localhost";		
-		try{
-			id = Term.createTerm(name, opManager);
-		}catch (Exception ex){
-			throw new InvalidTupleCentreIdException();
-		}
-		if (!id.isGround())
-			throw new InvalidTupleCentreIdException();
-	}
+    /**
+     * Constructs a tuple centre identifier from a string, which must represent
+     * a well-formed ground logic term
+     * 
+     * @param n
+     *            is the textual representation of the identifier
+     * @throws InvalidTupleCentreIdException
+     *             if name is not a well-formed ground logic term
+     */
+    public TupleCentreId(String n) throws InvalidTupleCentreIdException {
+        String name = n;
+        if (name.indexOf("@") < 0) {
+            name += "@localhost";
+        }
+        try {
+            this.id = Term.createTerm(name, TupleCentreId.opManager);
+        } catch (final Exception ex) {
+            throw new InvalidTupleCentreIdException();
+        }
+        if (!this.id.isGround()) {
+            throw new InvalidTupleCentreIdException();
+        }
+    }
 
-	/**
-	 * Constructs a tuple centre identifier, which must be a well-formed ground
-	 * logic term
-	 * 
-	 * @param name
-	 *            is the term representing the identifier
-	 * @throws InvalidTupleCentreIdException
-	 *             if name is not a well-formed ground logic term
-	 */
-	public TupleCentreId(Term name) throws InvalidTupleCentreIdException{
-		id = name.getTerm();
-		if (!id.isGround())
-			throw new InvalidTupleCentreIdException();
-	}
+    public TupleCentreId(final String tcName, final String hostName,
+            final String portName) throws InvalidTupleCentreIdException {
+        final String tc = tcName.trim();
+        final String host = hostName.trim();
+        final String port = portName.trim();
+        try {
+            this.id =
+                    Term.createTerm(tc + "@" + host + ":" + port,
+                            TupleCentreId.opManager);
+        } catch (final InvalidTermException e) {
+            throw new InvalidTupleCentreIdException();
+        }
 
-	public TupleCentreId(String tcName, String hostName, String portName) throws InvalidTupleCentreIdException{
-		String tc = tcName.trim();
-		String host = hostName.trim();
-		String port = portName.trim();
-		try{
-			id = Term.createTerm(tc+"@"+host+":"+port, opManager);
-		}catch (InvalidTermException e){
-			throw new InvalidTupleCentreIdException();
-		}
-		
-		if (!id.isGround())
-			throw new InvalidTupleCentreIdException();
-	}
+        if (!this.id.isGround()) {
+            throw new InvalidTupleCentreIdException();
+        }
+    }
 
-	/**
-	 * Provides the logic term representation of the identifier
-	 * 
-	 * @return the term representing the identifier
-	 */
-	public Term toTerm(){
-		return id;
-	}
+    /**
+     * Constructs a tuple centre identifier, which must be a well-formed ground
+     * logic term
+     * 
+     * @param name
+     *            is the term representing the identifier
+     * @throws InvalidTupleCentreIdException
+     *             if name is not a well-formed ground logic term
+     */
+    public TupleCentreId(final Term name) throws InvalidTupleCentreIdException {
+        this.id = name.getTerm();
+        if (!this.id.isGround()) {
+            throw new InvalidTupleCentreIdException();
+        }
+    }
 
-	public String toString(){
-		return id.toString();
-	}
+    protected TupleCentreId() {
+    }
 
-	public boolean isAgent(){
-		return false;
-	}
+    /*
+     * (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((this.id == null) ? 0 : this.id.hashCode());
+        return result;
+    }
 
-	public boolean isTC(){
-		return true;
-	}
+    /*
+     * (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (!(obj instanceof TupleCentreId)) {
+            return false;
+        }
+        TupleCentreId other = (TupleCentreId) obj;
+        if (this.id == null) {
+            if (other.id != null) {
+                return false;
+            }
+        } else if (!this.id.equals(other.id)) {
+            return false;
+        }
+        return true;
+    }
 
-	/**
-	 * Gets the string representation of the tuple centre name
-	 * 
-	 * @return the ReSpecT node identifier
-	 */
-	public String getName(){
-		if (id instanceof alice.tuprolog.Struct){
-			Struct sid = (Struct) id;
-			if (sid.getArity() == 2 && sid.getName().equals("@"))
-				return sid.getArg(0).getTerm().toString();
-		}
-		return id.toString();
-	}
+    /**
+     * Gets the string representation of the tuple centre name
+     * 
+     * @return the ReSpecT node identifier
+     */
+    public String getName() {
+        if (this.id instanceof alice.tuprolog.Struct) {
+            final Struct sid = (Struct) this.id;
+            if ((sid.getArity() == 2) && sid.getName().equals("@")) {
+                return sid.getArg(0).getTerm().toString();
+            }
+        }
+        return this.id.toString();
+    }
 
-	/**
-	 * Gets localhost ReSpecT has no net infrastructure
-	 * 
-	 * @return the node identifier (localhost)
-	 */
-	public String getNode(){
-		if (id instanceof alice.tuprolog.Struct){
-			Struct sid = (Struct) id;
-			if (sid.getArity() == 2 && sid.getName().equals("@")){
-				Struct t = (Struct) sid.getArg(1);
-				if(!t.getArg(0).isCompound()){
-					return t.getArg(0).getTerm().toString();
-				}else{
-					Struct tt = (Struct) t.getArg(0);
-					return tt.getArg(0).getTerm().toString() + "." + tt.getArg(1).getTerm().toString();
-				}
-			}
-		}
-		return "localhost";
-	}
-	
-	public int getPort(){
-		if (id instanceof alice.tuprolog.Struct){
-			Struct sid = (Struct) id;
-			if (sid.getArity() == 2 && sid.getName().equals("@")){
-				Struct t = (Struct) sid.getArg(1);
-				return Integer.parseInt(t.getArg(1).getTerm().toString());
-			}
-		}
-		return 20504;
-	}
+    /**
+     * Gets localhost ReSpecT has no net infrastructure
+     * 
+     * @return the node identifier (localhost)
+     */
+    public String getNode() {
+        if (this.id instanceof alice.tuprolog.Struct) {
+            final Struct sid = (Struct) this.id;
+            if ((sid.getArity() == 2) && sid.getName().equals("@")) {
+                final Struct t = (Struct) sid.getArg(1);
+                if (!t.getArg(0).isCompound()) {
+                    return t.getArg(0).getTerm().toString();
+                }
+                final Struct tt = (Struct) t.getArg(0);
+                return tt.getArg(0).getTerm().toString() + "."
+                        + tt.getArg(1).getTerm().toString();
+            }
+        }
+        return "localhost";
+    }
 
-	public boolean equals(Object o){
-		return this.id.equals(((TupleCentreId) o).id);
-	}
+    public int getPort() {
+        if (this.id instanceof alice.tuprolog.Struct) {
+            final Struct sid = (Struct) this.id;
+            if ((sid.getArity() == 2) && sid.getName().equals("@")) {
+                final Struct t = (Struct) sid.getArg(1);
+                return Integer.parseInt(t.getArg(1).getTerm().toString());
+            }
+        }
+        return 20504;
+    }
 
-	public boolean isEnv() {
-		return false;
-	}
-	
+    public boolean isAgent() {
+        return false;
+    }
+
+    public boolean isEnv() {
+        return false;
+    }
+
+    public boolean isTC() {
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return this.id.toString();
+    }
+
+    /**
+     * Provides the logic term representation of the identifier
+     * 
+     * @return the term representing the identifier
+     */
+    public Term toTerm() {
+        return this.id;
+    }
+
 }

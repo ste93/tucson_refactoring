@@ -3,24 +3,24 @@ package alice.respect.core;
 import alice.respect.api.IEnvironmentContext;
 import alice.tuplecentre.core.InputEvent;
 
-public class EnviromentContext implements IEnvironmentContext{
+public class EnviromentContext implements IEnvironmentContext {
 
-	private RespectVMContext vm;
-	
-	public EnviromentContext(RespectVMContext vm){
-		this.vm=vm;
-	}
-	
-	public void notifyInputEnvEvent(InputEvent ev) {
-		vm.notifyInputEnvEvent(ev);
-	}
+    private final RespectVMContext vm;
 
-	public long getCurrentTime() {
-		return vm.getCurrentTime();
-	}
+    public EnviromentContext(final RespectVMContext rvm) {
+        this.vm = rvm;
+    }
 
-	public void notifyInputEvent(InputEvent ev) {
-		vm.notifyInputEvent(ev);
-	}
+    public long getCurrentTime() {
+        return this.vm.getCurrentTime();
+    }
+
+    public void notifyInputEnvEvent(final InputEvent ev) {
+        this.vm.notifyInputEnvEvent(ev);
+    }
+
+    public void notifyInputEvent(final InputEvent ev) {
+        this.vm.notifyInputEvent(ev);
+    }
 
 }

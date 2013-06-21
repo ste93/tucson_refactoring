@@ -1,12 +1,12 @@
 package alice.respect.core;
 
-import alice.respect.api.IOrdinarySynchInterface;
-import alice.respect.api.ISpecificationSynchInterface;
 import alice.respect.api.ILinkContext;
 import alice.respect.api.IManagementContext;
 import alice.respect.api.IOrdinaryAsynchInterface;
-import alice.respect.api.ISpecificationAsynchInterface;
+import alice.respect.api.IOrdinarySynchInterface;
 import alice.respect.api.IRemoteLinkProvider;
+import alice.respect.api.ISpecificationAsynchInterface;
+import alice.respect.api.ISpecificationSynchInterface;
 import alice.respect.api.ITCRegistry;
 import alice.respect.api.TupleCentreId;
 import alice.respect.api.exceptions.InstantiationNotPossibleException;
@@ -19,119 +19,140 @@ import alice.tucson.service.RemoteLinkProvider;
  * @author matteo casadei v 2.1.1
  * 
  */
-public class RespectTCContainer{
-	
-	private ITCRegistry registry;
-	private IRemoteLinkProvider stub;
-	private static RespectTCContainer container;
-	private static int defaultport;
-	public static final int QUEUE_SIZE = 10;
-	
-	private RespectTCContainer(){
-		this.registry = new RespectLocalRegistry();
-		this.stub = null;
-	}
+public class RespectTCContainer {
 
-	public static RespectTCContainer getRespectTCContainer(){
-		if (RespectTCContainer.container == null)
-			RespectTCContainer.container = new RespectTCContainer();
-		return RespectTCContainer.container;
-	}
+    public static final int QUEUE_SIZE = 10;
+    private static RespectTCContainer container;
+    private static int defaultport;
 
-	public void setDefPort(int port){
-		defaultport = port;
-	}
-	
-	public int getDefPort(){
-		return defaultport;
-	}
-	
-	public RespectTC createRespectTC(TupleCentreId id, Integer q) throws InstantiationNotPossibleException{
-		RespectTC rtc = new RespectTC(id, this, q);
-		registry.addTC(rtc);
-		return rtc;
-	}
+    public static RespectTCContainer getRespectTCContainer() {
+        if (RespectTCContainer.container == null) {
+            RespectTCContainer.container = new RespectTCContainer();
+        }
+        return RespectTCContainer.container;
+    }
 
-	public IOrdinarySynchInterface getOrdinarySynchInterface(TupleCentreId id) throws OperationNotPossibleException{
-		try{
-			return ((RespectTC) registry.getTC(id)).getOrdinarySynchInterface();
-		}catch (Exception e){
-			RespectTC tc = new RespectTC(id, this, QUEUE_SIZE);
-			this.registry.addTC(tc);
-			return tc.getOrdinarySynchInterface();
-		}
-	}
+    private final ITCRegistry registry;
 
-	public IOrdinaryAsynchInterface getOrdinaryAsynchInterface(TupleCentreId id){
-		try{
-			return ((RespectTC) registry.getTC(id)).getOrdinaryAsynchInterface();
-		}catch (Exception e){
-			RespectTC tc = new RespectTC(id, this, QUEUE_SIZE);
-			this.registry.addTC(tc);
-			return tc.getOrdinaryAsynchInterface();
-		}
-	}
+    private IRemoteLinkProvider stub;
 
-	/**
-	 * Return a LinkContext for remote/local call
-	 * 
-	 * @param id
-	 *            the identifier of the tuple centre target (local or remote)
-	 * @throws OperationNotPossibleException
-	 */
-	public ILinkContext getLinkContext(TupleCentreId id) throws OperationNotPossibleException{
-		System.out.println("..[RespectTCContainer]: id = " + id);
-		if ( (id.getNode().equals("localhost") || id.getNode().equals("127.0.0.1")) && id.getPort() == defaultport ){
-			try{
-				return ((RespectTC) registry.getTC(id)).getLinkContext();
-			}catch (InstantiationNotPossibleException e){
-				RespectTC tc = new RespectTC(id, this, QUEUE_SIZE);
-				this.registry.addTC(tc);
-				return tc.getLinkContext();
-			}
-		}
-		if (this.stub == null)
-			this.stub = new RemoteLinkProvider();
-		return stub.getRemoteLinkContext(id);
-	}
+    private RespectTCContainer() {
+        this.registry = new RespectLocalRegistry();
+        this.stub = null;
+    }
 
-	public void addStub(IRemoteLinkProvider stub){
-		if (stub == null)
-			this.stub = stub;
-	}
+    public void addStub(final IRemoteLinkProvider s) {
+        if (s == null) {
+            this.stub = s;
+        }
+    }
 
-	public ISpecificationAsynchInterface getSpecificationAsynchInterface(TupleCentreId id) throws OperationNotPossibleException{
-		try{
-			return ((RespectTC) registry.getTC(id)).getSpecificationAsynchInterface();
-		}catch (Exception e){
-			RespectTC tc = new RespectTC(id, this, QUEUE_SIZE);
-			this.registry.addTC(tc);
-			return tc.getSpecificationAsynchInterface();
-		}
-	}
+    public RespectTC createRespectTC(final TupleCentreId id, final Integer q) {
+        final RespectTC rtc = new RespectTC(id, this, q);
+        this.registry.addTC(rtc);
+        return rtc;
+    }
 
-	public ISpecificationSynchInterface getSpecificationSynchInterface(TupleCentreId id) throws OperationNotPossibleException{
-		try{
-			return ((RespectTC) registry.getTC(id)).getSpecificationSynchInterface();
-		}catch (Exception e){
-			RespectTC tc = new RespectTC(id, this, QUEUE_SIZE);
-			this.registry.addTC(tc);
-			return tc.getSpecificationSynchInterface();
-		}
-	}
+    public int getDefPort() {
+        return RespectTCContainer.defaultport;
+    }
 
-	public IManagementContext getManagementContext(TupleCentreId id) throws OperationNotPossibleException{
-		try{
-			return ((RespectTC) registry.getTC(id)).getManagementContext();
-		}catch (Exception e){
-			RespectTC tc = new RespectTC(id, this, QUEUE_SIZE);
-			this.registry.addTC(tc);
-			return tc.getManagementContext();
-		}
-	}
+    /**
+     * Return a LinkContext for remote/local call
+     * 
+     * @param id
+     *            the identifier of the tuple centre target (local or remote)
+     * @throws OperationNotPossibleException
+     */
+    public ILinkContext getLinkContext(final TupleCentreId id)
+            throws OperationNotPossibleException {
+        if ((id.getNode().equals("localhost") || id.getNode().equals(
+                "127.0.0.1"))
+                && (id.getPort() == RespectTCContainer.defaultport)) {
+            try {
+                return ((RespectTC) this.registry.getTC(id)).getLinkContext();
+            } catch (final InstantiationNotPossibleException e) {
+                final RespectTC tc =
+                        new RespectTC(id, this, RespectTCContainer.QUEUE_SIZE);
+                this.registry.addTC(tc);
+                return tc.getLinkContext();
+            }
+        }
+        if (this.stub == null) {
+            this.stub = new RemoteLinkProvider();
+        }
+        return this.stub.getRemoteLinkContext(id);
+    }
 
-	public ITCRegistry getRegistry(){
-		return registry;
-	}
-	
+    public IManagementContext getManagementContext(final TupleCentreId id) {
+        try {
+            return ((RespectTC) this.registry.getTC(id)).getManagementContext();
+        } catch (final Exception e) {
+            final RespectTC tc =
+                    new RespectTC(id, this, RespectTCContainer.QUEUE_SIZE);
+            this.registry.addTC(tc);
+            return tc.getManagementContext();
+        }
+    }
+
+    public IOrdinaryAsynchInterface getOrdinaryAsynchInterface(
+            final TupleCentreId id) {
+        try {
+            return ((RespectTC) this.registry.getTC(id))
+                    .getOrdinaryAsynchInterface();
+        } catch (final Exception e) {
+            final RespectTC tc =
+                    new RespectTC(id, this, RespectTCContainer.QUEUE_SIZE);
+            this.registry.addTC(tc);
+            return tc.getOrdinaryAsynchInterface();
+        }
+    }
+
+    public IOrdinarySynchInterface getOrdinarySynchInterface(
+            final TupleCentreId id) {
+        try {
+            return ((RespectTC) this.registry.getTC(id))
+                    .getOrdinarySynchInterface();
+        } catch (final Exception e) {
+            final RespectTC tc =
+                    new RespectTC(id, this, RespectTCContainer.QUEUE_SIZE);
+            this.registry.addTC(tc);
+            return tc.getOrdinarySynchInterface();
+        }
+    }
+
+    public ITCRegistry getRegistry() {
+        return this.registry;
+    }
+
+    public ISpecificationAsynchInterface getSpecificationAsynchInterface(
+            final TupleCentreId id) {
+        try {
+            return ((RespectTC) this.registry.getTC(id))
+                    .getSpecificationAsynchInterface();
+        } catch (final Exception e) {
+            final RespectTC tc =
+                    new RespectTC(id, this, RespectTCContainer.QUEUE_SIZE);
+            this.registry.addTC(tc);
+            return tc.getSpecificationAsynchInterface();
+        }
+    }
+
+    public ISpecificationSynchInterface getSpecificationSynchInterface(
+            final TupleCentreId id) {
+        try {
+            return ((RespectTC) this.registry.getTC(id))
+                    .getSpecificationSynchInterface();
+        } catch (final Exception e) {
+            final RespectTC tc =
+                    new RespectTC(id, this, RespectTCContainer.QUEUE_SIZE);
+            this.registry.addTC(tc);
+            return tc.getSpecificationSynchInterface();
+        }
+    }
+
+    public void setDefPort(final int port) {
+        RespectTCContainer.defaultport = port;
+    }
+
 }

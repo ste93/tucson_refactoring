@@ -5,26 +5,26 @@ import alice.tuprolog.Prolog;
 import alice.tuprolog.Term;
 
 public class Spawn2PSolver extends Thread {
-	
-	private Prolog solver;
-	private Term goal;
 
-	public Spawn2PSolver(Prolog s, Term g){
-		solver = s;
-		goal = g;
-	}
-	
-	public void run(){
-		solver.solve(goal);
-		try{
-	    	do{
-				solver.solveNext();
-//				Thread.sleep(100);
-	    	}while(solver.hasOpenAlternatives());
-	    	solver.solveEnd();
-    	} catch (NoMoreSolutionException e) {
-//			what to do?
-		}
-	}
-	
+    private final Term goal;
+    private final Prolog solver;
+
+    public Spawn2PSolver(final Prolog s, final Term g) {
+        this.solver = s;
+        this.goal = g;
+    }
+
+    @Override
+    public void run() {
+        this.solver.solve(this.goal);
+        try {
+            do {
+                this.solver.solveNext();
+            } while (this.solver.hasOpenAlternatives());
+            this.solver.solveEnd();
+        } catch (final NoMoreSolutionException e) {
+            // TODO what to do?
+        }
+    }
+
 }

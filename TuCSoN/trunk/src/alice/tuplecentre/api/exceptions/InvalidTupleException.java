@@ -11,19 +11,17 @@
  * to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
  * 02111-1307 USA
  */
-package alice.tuplecentre.core;
+package alice.tuplecentre.api.exceptions;
 
 /**
- * Represents the reaction concept of tuple centre model.
+ * Exception thrown when a not well-formed tuple is found, for instance when
+ * invoking a coordination language primitive with a null tuple.
  * 
- * Reactions are computations executed inside tuple centres, triggered by
- * external and internal communication events (which depends on the specific
- * tuple centre model).
  * 
- * @author aricci
+ * @version 1.0
  */
-public interface Reaction {
-    /*
-     * 
-     */
+public class InvalidTupleException extends Exception {
+
+    private static final long serialVersionUID = -3585492012733336883L;
+
 }

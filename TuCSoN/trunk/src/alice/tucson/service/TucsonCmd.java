@@ -2,20 +2,20 @@ package alice.tucson.service;
 
 public class TucsonCmd {
 
-	private String primitive;
-	private String arg;
-	
-	public TucsonCmd(String p, String a){
-		primitive = p;
-		arg = a;
-	}
-	
-	public String getPrimitive(){
-		return primitive;
-	}
-	
-	public String getArg(){
-		return arg;
-	}
-	
+    private final String arg;
+    private final String primitive;
+
+    public TucsonCmd(final String p, final String a) {
+        this.primitive = p;
+        this.arg = a;
+    }
+
+    public String getArg() {
+        return this.arg;
+    }
+
+    public String getPrimitive() {
+        return this.primitive;
+    }
+
 }

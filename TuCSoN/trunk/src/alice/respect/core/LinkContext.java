@@ -7,14 +7,15 @@ import alice.tuplecentre.core.TupleCentreOperation;
 
 public class LinkContext implements ILinkContext {
 
-	private RespectVM vm;
-	
-	public LinkContext(RespectVM vm){
-		this.vm = vm;
-	}
-	
-	public void doOperation(TupleCentreId id, TupleCentreOperation op) throws OperationNotPossibleException {
-		vm.doOperation(id, (RespectOperation)op);
-	}
+    private final RespectVM vm;
+
+    public LinkContext(final RespectVM rvm) {
+        this.vm = rvm;
+    }
+
+    public void doOperation(final TupleCentreId id,
+            final TupleCentreOperation op) throws OperationNotPossibleException {
+        this.vm.doOperation(id, (RespectOperation) op);
+    }
 
 }

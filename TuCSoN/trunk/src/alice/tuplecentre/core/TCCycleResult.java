@@ -7,67 +7,70 @@ import alice.tuplecentre.api.ITCCycleResult;
 import alice.tuplecentre.api.Tuple;
 
 public class TCCycleResult implements ITCCycleResult {
-	
-	public enum Outcome{SUCCESS, FAILURE, UNDEFINED};
 
-	private Outcome opResult;
-	private Tuple tupleResult;
-	private List<Tuple> tupleListResult;
-	private long startTime, endTime;
-	
-	public TCCycleResult(){
-		this.opResult = Outcome.UNDEFINED;
-		this.tupleResult = null;
-		this.tupleListResult = new LinkedList<Tuple>();
-		this.startTime = System.currentTimeMillis();
-	}
-	
-	public boolean isResultDefined() {
-		return this.opResult != Outcome.UNDEFINED;
-	}
-	
-	public boolean isResultSuccess() {
-		return this.opResult == Outcome.SUCCESS;
-	}
-	
-	public boolean isResultFailure() {
-		return this.opResult == Outcome.FAILURE;
-	}
-	
-	public void setOpResult(Outcome o) {
-		opResult = o;
-	}
+    public enum Outcome {
+        FAILURE, SUCCESS, UNDEFINED
+    }
 
-	public Outcome getOpResult() {
-		return opResult;
-	}
-	
-	public void setTupleResult(Tuple res) {
-		this.tupleResult = res;
-	}
-	
-	public Tuple getTupleResult() {
-		return this.tupleResult;
-	}
-	
-	public void setTupleListResult(List<Tuple> res) {
-		this.tupleListResult = res;
-	}
+    private long endTime;
+    private Outcome opResult;
+    private final long startTime;
+    private List<Tuple> tupleListResult;
+    private Tuple tupleResult;
 
-	public List<Tuple> getTupleListResult() {
-		return this.tupleListResult;
-	}
-	
-	public void setEndTime(long time) {
-		this.endTime = time;
-	}
-	
-	public long getEndTime() {
-		return this.endTime;
-	}
+    public TCCycleResult() {
+        this.opResult = Outcome.UNDEFINED;
+        this.tupleResult = null;
+        this.tupleListResult = new LinkedList<Tuple>();
+        this.startTime = System.currentTimeMillis();
+    }
 
-	public long getStartTime() {
-		return this.startTime;
-	}
+    public long getEndTime() {
+        return this.endTime;
+    }
+
+    public Outcome getOpResult() {
+        return this.opResult;
+    }
+
+    public long getStartTime() {
+        return this.startTime;
+    }
+
+    public List<Tuple> getTupleListResult() {
+        return this.tupleListResult;
+    }
+
+    public Tuple getTupleResult() {
+        return this.tupleResult;
+    }
+
+    public boolean isResultDefined() {
+        return this.opResult != Outcome.UNDEFINED;
+    }
+
+    public boolean isResultFailure() {
+        return this.opResult == Outcome.FAILURE;
+    }
+
+    public boolean isResultSuccess() {
+        return this.opResult == Outcome.SUCCESS;
+    }
+
+    public void setEndTime(final long time) {
+        this.endTime = time;
+    }
+
+    public void setOpResult(final Outcome o) {
+        this.opResult = o;
+    }
+
+    public void setTupleListResult(final List<Tuple> res) {
+        this.tupleListResult = res;
+    }
+
+    public void setTupleResult(final Tuple res) {
+        this.tupleResult = res;
+    }
 
 }

@@ -15,64 +15,66 @@ import alice.tucson.api.SpawnActivity;
  */
 public class SpawnedWorkingActivity extends SpawnActivity {
 
-	private static final long serialVersionUID = -4459068799410719933L;
+    private static final long serialVersionUID = -4459068799410719933L;
 
-	/*
+    /*
 	 * 
 	 */
-	@Override
-	public void doActivity() {
-		try{
-			/*
-			 * Jobs collection phase.
-			 */
-			LogicTuple templ = LogicTuple.parse("fact(master(M),num(N),reqID(R))");
-			log("Waiting for jobs...");
-			/*
-			 * Watch out: it's a suspensive primitive! If no jobs are available
-			 * we are stuck!
-			 */
-			LogicTuple job = in(templ);
-			log("Found job: "+job.toString());
-			/*
-			 * Computation phase.
-			 */
-			BigInteger bigNum = computeFactorial(job.getArg("num").getArg(0));
-			/*
-			 * Result submission phase.
-			 */
-			LogicTuple res = LogicTuple.parse("res(" +
-					"master("+job.getArg("master").getArg(0)+")," +
-					"fact("+bigNum.toString()+")," +
-					"reqID("+job.getArg("reqID").getArg(0)+")" +
-				")");
-			log("Putting result: "+res.toString());
-			out(res);
-		}catch(InvalidLogicTupleException e){
-			log("ERROR: Tuple is not an admissible Prolog term!");
-			e.printStackTrace();
-		} catch (InvalidTupleOperationException e) {
-			log("ERROR: No tuple arguments to retrieve!");
-			e.printStackTrace();
-		}
-	}
+    @Override
+    public void doActivity() {
+        try {
+            /*
+             * Jobs collection phase.
+             */
+            final LogicTuple templ =
+                    LogicTuple.parse("fact(master(M),num(N),reqID(R))");
+            this.log("Waiting for jobs...");
+            /*
+             * Watch out: it's a suspensive primitive! If no jobs are available
+             * we are stuck!
+             */
+            final LogicTuple job = this.in(templ);
+            this.log("Found job: " + job.toString());
+            /*
+             * Computation phase.
+             */
+            final BigInteger bigNum =
+                    this.computeFactorial(job.getArg("num").getArg(0));
+            /*
+             * Result submission phase.
+             */
+            final LogicTuple res =
+                    LogicTuple.parse("res(" + "master("
+                            + job.getArg("master").getArg(0) + ")," + "fact("
+                            + bigNum.toString() + ")," + "reqID("
+                            + job.getArg("reqID").getArg(0) + ")" + ")");
+            this.log("Putting result: " + res.toString());
+            this.out(res);
+        } catch (final InvalidLogicTupleException e) {
+            this.log("ERROR: Tuple is not an admissible Prolog term!");
+            e.printStackTrace();
+        } catch (final InvalidTupleOperationException e) {
+            this.log("ERROR: No tuple arguments to retrieve!");
+            e.printStackTrace();
+        }
+    }
 
-	private BigInteger computeFactorial(TupleArgument varValue) {
-		try {
-			int num = varValue.intValue();
-			log("Computing factorial for: "+num+"...");
-			return factorial(num);
-		} catch (InvalidTupleOperationException e) {
-			log("Not an Integer value, killing myself...");
-			return new BigInteger("-1");
-		}
-	}
+    private BigInteger computeFactorial(final TupleArgument varValue) {
+        try {
+            final int num = varValue.intValue();
+            this.log("Computing factorial for: " + num + "...");
+            return this.factorial(num);
+        } catch (final InvalidTupleOperationException e) {
+            this.log("Not an Integer value, killing myself...");
+            return new BigInteger("-1");
+        }
+    }
 
-	private BigInteger factorial(int num) {
-		if(num == 0)
-			return BigInteger.ONE;
-		else
-			return new BigInteger(""+num).multiply(factorial(num-1));
-	}
+    private BigInteger factorial(final int num) {
+        if (num == 0) {
+            return BigInteger.ONE;
+        }
+        return new BigInteger("" + num).multiply(this.factorial(num - 1));
+    }
 
 }

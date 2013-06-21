@@ -1,37 +1,32 @@
 /*
- * TuCSoN coordination infrastructure - Copyright (C) 2001-2002  aliCE team at deis.unibo.it
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ * TuCSoN coordination infrastructure - Copyright (C) 2001-2002 aliCE team at
+ * deis.unibo.it This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation; either version 2.1 of the License,
+ * or (at your option) any later version. This library is distributed in the
+ * hope that it will be useful, but WITHOUT ANY WARRANTY; without even the
+ * implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See
+ * the GNU Lesser General Public License for more details. You should have
+ * received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple
+ * Place, Suite 330, Boston, MA 02111-1307 USA
  */
 package alice.tucson.service;
 
 import java.io.Serializable;
-
 import java.util.Properties;
 
 /**
  * Agent Coordination Context Description class.
  * 
- * It is meant to store information about the current ACC "session" held by a TuCSoN
- * Agent (such as its identity, role, etc.) toward the TuCSoN Node Service.
- * It is responsible to establish the connection between the user
- * agent proxy {@link alice.tucson.service.ACCProxyAgentSide agent} and the TuCSoN Node
- * Service proxy {@link alice.tucson.service.ACCProxyNodeSide node}.
- * It actually triggers the latter proxy creation by the ACC Provider
- * {@link alice.tucson.service.ACCProvider provider} spawned by the
- * Tucson Node Service {@link alice.tucson.service.TucsonNodeService TuCSoN}
+ * It is meant to store information about the current ACC "session" held by a
+ * TuCSoN Agent (such as its identity, role, etc.) toward the TuCSoN Node
+ * Service. It is responsible to establish the connection between the user agent
+ * proxy {@link alice.tucson.service.ACCProxyAgentSide agent} and the TuCSoN
+ * Node Service proxy {@link alice.tucson.service.ACCProxyNodeSide node}. It
+ * actually triggers the latter proxy creation by the ACC Provider
+ * {@link alice.tucson.service.ACCProvider provider} spawned by the Tucson Node
+ * Service {@link alice.tucson.service.TucsonNodeService TuCSoN}
  * 
  * @see alice.tucson.service.ACCProxyAgentSide ACCProxyAgentSide
  * @see alice.tucson.service.ACCProxyNodeSide ACCProxyNodeSide
@@ -41,56 +36,52 @@ import java.util.Properties;
 public class ACCDescription implements Serializable {
 
     private static final long serialVersionUID = -8231854077657631541L;
-	
+
     private java.util.Properties properties;
-    @SuppressWarnings("unused")
-	private String theory;
 
     /**
      * Creates an ACCDescription as a Java Properties empty map.
+     * 
      * @see java.util.Properties Properties
      */
-    public ACCDescription(){
-        properties = new Properties();
+    public ACCDescription() {
+        this.properties = new Properties();
     }
-    
+
     /**
      * Creates an ACCDescription using the Java Properties instance passed.
-     * @param p Java Properties map to be used for initialization
+     * 
+     * @param p
+     *            Java Properties map to be used for initialization
      * @see java.util.Properties Properties
      */
-    public ACCDescription(Properties p){
-        properties = p;
-    }
-    
-    /**
-     * Creates an ACCDescription using the String instance passed.
-     * This is meant to store properties as Prolog theories
-     * @param t String to be used for initialization
-     * @see alice.tuprolog.Theory Theory
-     */
-    public ACCDescription(String t){
-        theory = t;
+    public ACCDescription(final Properties p) {
+        this.properties = p;
     }
 
     /**
      * Gets the named property from the Java Properties map
-     * @param name Named property to be retrieved
+     * 
+     * @param name
+     *            Named property to be retrieved
      * @return Value of the property retrieved
      * @see java.util.Properties Properties
      */
-    public String getProperty(String name){
-        return properties.getProperty(name);
+    public String getProperty(final String name) {
+        return this.properties.getProperty(name);
     }
 
     /**
      * Sets a new Java Property map entry using the Strings passed
-     * @param name Name of the property to store
-     * @param value Value of the property to store
+     * 
+     * @param name
+     *            Name of the property to store
+     * @param value
+     *            Value of the property to store
      * @see java.util.Properties Properties
      */
-    public void setProperty(String name, String value){
-        properties.setProperty(name, value);
+    public void setProperty(final String name, final String value) {
+        this.properties.setProperty(name, value);
     }
-       
+
 }

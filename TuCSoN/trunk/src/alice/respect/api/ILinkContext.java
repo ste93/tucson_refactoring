@@ -5,6 +5,7 @@ import alice.tuplecentre.core.TupleCentreOperation;
 
 public interface ILinkContext {
 
-	public void doOperation(TupleCentreId id, TupleCentreOperation op)throws OperationNotPossibleException;
+    public void doOperation(TupleCentreId id, TupleCentreOperation op)
+            throws OperationNotPossibleException;
 
 }

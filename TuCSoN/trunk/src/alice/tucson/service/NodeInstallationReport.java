@@ -1,48 +1,49 @@
 package alice.tucson.service;
 
-import java.util.*;
+import java.util.Date;
 
 /**
  * 
  */
-public class NodeInstallationReport{
-	
-	private boolean succeeded;
-	private Date date;
-	private String descr;
-	private Object synch;
+public class NodeInstallationReport {
 
-	public NodeInstallationReport(){
-		descr = "";
-		succeeded = false;
-		synch = new Object();
-	}
+    private Date date;
+    private String descr;
+    private boolean succeeded;
+    private final Object synch;
 
-	public synchronized void setReport(boolean success, String descr, Date date){
-		succeeded = success;
-		this.descr = descr;
-		this.date = date;
-		synchronized(synch){
-			synch.notifyAll();
-		}
-	}
+    public NodeInstallationReport() {
+        this.descr = "";
+        this.succeeded = false;
+        this.synch = new Object();
+    }
 
-	public void waitForReport() throws InterruptedException{
-		synchronized(synch){
-			synch.wait();
-		}
-	}
+    public synchronized Date getDate() {
+        return this.date;
+    }
 
-	public synchronized boolean isSucceeded(){
-		return succeeded;
-	}
+    public synchronized String getDescr() {
+        return this.descr;
+    }
 
-	public synchronized String getDescr(){
-		return descr;
-	}
+    public synchronized boolean isSucceeded() {
+        return this.succeeded;
+    }
 
-	public synchronized Date getDate(){
-		return date;
-	}
-	
+    public synchronized void setReport(final boolean success,
+            final String d, final Date da) {
+        this.succeeded = success;
+        this.descr = d;
+        this.date = da;
+        synchronized (this.synch) {
+            this.synch.notifyAll();
+        }
+    }
+
+    public void waitForReport() throws InterruptedException {
+        synchronized (this.synch) {
+            this.synch.wait();
+        }
+    }
+
 }
