@@ -17,26 +17,41 @@
  */
 package alice.tucson.network;
 
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.Properties;
+
+import alice.tucson.network.exceptions.DialogException;
 import alice.tucson.service.ACCDescription;
 
-import java.io.*;
-import java.net.SocketTimeoutException;
-
-import java.util.*;
-
 /**
- * 
+ * This is an abstract representation of Tucson Protocol. This protocol allows
+ * to start a new dialog and then the exchange of messages between Tucson nodes
+ * and agents.
  */
-@SuppressWarnings("serial")
-public abstract class TucsonProtocol implements java.io.Serializable{
+public abstract class TucsonProtocol {
 	
+	@Deprecated
 	abstract public ObjectInputStream getInputStream();
 
+	@Deprecated
 	abstract public ObjectOutputStream getOutputStream();
 
-	abstract public TucsonProtocol acceptNewDialog() throws IOException, SocketTimeoutException;
+	abstract public TucsonProtocol acceptNewDialog() throws DialogException;
 
-	abstract public void end() throws Exception;
+	abstract public void end() throws DialogException;
+
+	abstract public void sendMsg(TucsonMsg msg) throws DialogException;
+	
+	abstract public TucsonMsg receiveMsg() throws DialogException;
+
+	abstract public void sendMsgRequest(TucsonMsgRequest request) throws DialogException;
+
+	abstract public TucsonMsgRequest receiveMsgRequest() throws DialogException;
+
+	abstract public void sendMsgReply(TucsonMsgReply reply) throws DialogException;
+
+	abstract public TucsonMsgReply receiveMsgReply() throws DialogException;
 
 	abstract protected String receiveString() throws Exception;
 
@@ -63,51 +78,51 @@ public abstract class TucsonProtocol implements java.io.Serializable{
 	 * @param context
 	 * @throws Exception
 	 */
-	public void sendEnterRequest(ACCDescription context) throws Exception{
-		
+	public void sendEnterRequest(ACCDescription context) throws Exception {
+
 		send(REQ_ENTERCONTEXT);
 
 		String agentName = context.getProperty("agent-identity");
-		if(agentName == null){
+		if (agentName == null) {
 			agentName = context.getProperty("tc-identity");
-			if(agentName == null)
+			if (agentName == null)
 				agentName = "anonymous";
 		}
 		send(agentName);
 
 		String agentProfile = context.getProperty("agent-role");
-		if(agentProfile == null)
+		if (agentProfile == null)
 			agentProfile = "default";
 		send(agentProfile);
 
 		String tcName = context.getProperty("tuple-centre");
-		if(tcName == null)
+		if (tcName == null)
 			tcName = "_";
 		send(tcName);
-		
+
 		flush();
-		
+
 	}
 
-	public void receiveEnterRequestAnswer() throws Exception{
+	public void receiveEnterRequestAnswer() throws Exception {
 		request_allowed = receiveBoolean();
 	}
 
-	public boolean isEnterRequestAccepted() throws Exception{
+	public boolean isEnterRequestAccepted() throws Exception {
 		return request_allowed;
 	}
 
-	public void receiveFirstRequest() throws Exception{
+	public void receiveFirstRequest() throws Exception {
 		request_type = receiveInt();
 	}
 
-	public void receiveEnterRequest() throws Exception{
+	public void receiveEnterRequest() throws Exception {
 		String agentName = receiveString();
-//		System.out.println("[TucsonProtocol]: agentName = " + agentName);
+		// System.out.println("[TucsonProtocol]: agentName = " + agentName);
 		String agentRole = receiveString();
 		String tcName = receiveString();
 		Properties profile = new Properties();
-		if(agentName.startsWith("'@'"))
+		if (agentName.startsWith("'@'"))
 			profile.setProperty("tc-identity", agentName);
 		else
 			profile.setProperty("agent-identity", agentName);
@@ -116,34 +131,34 @@ public abstract class TucsonProtocol implements java.io.Serializable{
 		context = new ACCDescription(profile);
 	}
 
-	public void sendEnterRequestRefused(ACCDescription context) throws Exception{
+	public void sendEnterRequestRefused(ACCDescription context) throws Exception {
 		send(false);
 		flush();
 	}
 
-	public void sendEnterRequestAccepted(ACCDescription context) throws Exception{
+	public void sendEnterRequestAccepted(ACCDescription context) throws Exception {
 		send(true);
 		flush();
 	}
 
-	public ACCDescription getContextDescription(){
+	public ACCDescription getContextDescription() {
 		return context;
 	}
 
-	public boolean isEnterRequest(){
+	public boolean isEnterRequest() {
 		return request_type == REQ_ENTERCONTEXT;
 	}
-	
+
 	/* MODIFIED BY <s.mariani@unibo.it> */
-	public boolean isTelnet(){
+	public boolean isTelnet() {
 		return request_type == REQ_TELNET;
 	}
-	
+
 	private int request_type;
 	private boolean request_allowed;
 
-//	private static final int TUCSON_MARK = 303;
-//	is this the value sent when I do a telnet via command line?
+	// private static final int TUCSON_MARK = 303;
+	// is this the value sent when I do a telnet via command line?
 	private static final int REQ_TELNET = 0;
 	private static final int REQ_ENTERCONTEXT = 1;
 	private ACCDescription context;
