@@ -17,23 +17,24 @@
  */
 package alice.tucson.service;
 
+import java.io.IOException;
+
 import alice.tucson.network.TucsonProtocol;
 import alice.tucson.network.TucsonProtocolTCP;
-
-import java.io.IOException;
-import java.net.*;
+import alice.tucson.network.exceptions.DialogExceptionTcp;
+import alice.tucson.network.exceptions.DialogExceptionTimeout;
 
 /**
  * 
  */
-public class WelcomeAgent extends Thread{
-	
+public class WelcomeAgent extends Thread {
+
 	ACCProvider contextManager;
 	TucsonNodeService node;
 	int port;
 	boolean shutdown;
 
-	public WelcomeAgent(int port, TucsonNodeService node, ACCProvider cm){
+	public WelcomeAgent(int port, TucsonNodeService node, ACCProvider cm) {
 		contextManager = cm;
 		this.port = port;
 		this.node = node;
@@ -41,93 +42,96 @@ public class WelcomeAgent extends Thread{
 		start();
 	}
 
-	private void log(String st){
+	private void log(String st) {
 		System.out.println("[WelcomeAgent]: " + st);
+	}
+
+	private void logErr(String error) {
+		System.err.println("[WelcomeAgent]: " + error);
 	}
 
 	/**
 	 * 
 	 */
-	public void run(){
-					
+	public void run() {
+
 		TucsonProtocol mainDialog = null;
-		try{
-			ServerSocket mainSocket = new ServerSocket();
-			mainSocket.setReuseAddress(true);
-			mainSocket.bind(new InetSocketAddress(port));
-			mainDialog = new TucsonProtocolTCP(mainSocket);
-		}catch(SocketException e2){
-			System.err.println("[WelcomeAgent]: " + e2);
-			e2.printStackTrace();
-		}catch(IOException e1){
-			System.err.println("[WelcomeAgent]: " + e1);
-			e1.printStackTrace();
+		try {
+			mainDialog = new TucsonProtocolTCP(port);
+		} catch (DialogExceptionTcp e) {
+			// TODO BEHAVIOR: what is the correct behavior when a port is alredy
+			// used?
+			logErr("");
+			logErr("");
+			logErr("An error occurred on creation of MainDialog");
+			logErr("... WelcomAgent shutdown ... ");
+			return;
 		}
 
 		TucsonProtocol dialog = null;
 		boolean exception = false;
 		boolean timeout = false;
-		try{
-			while(true){
-				
-				if(!timeout)
+		try {
+			while (true) {
+
+				if (!timeout)
 					log("Listening on port " + port + " for incoming ACC requests...");
 				else
 					timeout = false;
-				
-				try{
+
+				try {
 					dialog = mainDialog.acceptNewDialog();
-				}catch(SocketTimeoutException e){
+				} catch (DialogExceptionTimeout e) {
 					timeout = true;
-					if(shutdown){
+					if (shutdown) {
 						exception = true;
 						log("Shutdown interrupt received, shutting down...");
 						break;
-					}else
+					} else
 						continue;
 				}
 				dialog.receiveFirstRequest();
-				
-				if(dialog.isEnterRequest()){
+
+				if (dialog.isEnterRequest()) {
 					dialog.receiveEnterRequest();
 					ACCDescription desc = dialog.getContextDescription();
 					log("Delegating ACCProvider received enter request...");
 					contextManager.processContextRequest(desc, dialog);
-				}else if(dialog.isTelnet()){
-//					TO DO
+				} else if (dialog.isTelnet()) {
+					// TO DO
 					log("Welcome to the Tucson Service Node " + TucsonNodeService.getVersion());
 				}
-	
+
 			}
-		}catch(InterruptedException e){
+		} catch (InterruptedException e) {
 			exception = true;
 			log("Shutdown interrupt received, shutting down...");
-		}catch(IOException e){
+		} catch (IOException e) {
 			exception = true;
 			System.err.println("[WelcomeAgent]: " + e);
 			e.printStackTrace();
-		}catch(Exception e){
+		} catch (Exception e) {
 			exception = true;
 			System.err.println("[WelcomeAgent]: " + e);
 			e.printStackTrace();
 		}
-		
-		if(exception && !shutdown){
-			try{
+
+		if (exception && !shutdown) {
+			try {
 				dialog.end();
-			}catch(Exception e){
+			} catch (Exception e) {
 				System.err.println("[WelcomeAgent]: " + e);
 				e.printStackTrace();
 			}
 			node.removeNodeAgent(this);
 		}
-		
-//		log("Actually shutting down...");
-			
+
+		// log("Actually shutting down...");
+
 	}
-	
-	public void shutdown(){
+
+	public void shutdown() {
 		shutdown = true;
 	}
-	
+
 }

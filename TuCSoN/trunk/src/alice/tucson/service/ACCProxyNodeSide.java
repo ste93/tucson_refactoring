@@ -18,20 +18,17 @@
 package alice.tucson.service;
 
 import alice.logictuple.*;
-
 import alice.tucson.api.TucsonAgentId;
 import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
-
 import alice.tucson.network.*;
+import alice.tucson.network.exceptions.DialogException;
 import alice.tucson.service.TucsonNodeService;
-
 import alice.tuplecentre.api.ITupleCentreOperation;
 import alice.tuplecentre.api.Tuple;
 import alice.tuplecentre.core.TupleCentreOperation;
 
-import java.io.*;
 import java.util.*;
 
 /**
@@ -43,8 +40,6 @@ public class ACCProxyNodeSide extends ACCAbstractProxyNodeSide{
 	private TucsonAgentId agentId;
 	private TucsonTupleCentreId tcId;
 	TucsonProtocol dialog;
-	ObjectInputStream inStream;
-	ObjectOutputStream outStream;
 	TucsonNodeService node;
 	HashMap<Long, TucsonMsgRequest> requests;
 	HashMap<Long, Long> opVsReq;
@@ -85,8 +80,6 @@ public class ACCProxyNodeSide extends ACCAbstractProxyNodeSide{
 		}
 
 		this.dialog = dialog;
-		inStream = dialog.getInputStream();
-		outStream = dialog.getOutputStream();
 
 		requests = new HashMap<Long, TucsonMsgRequest>();
 		opVsReq = new HashMap<Long, Long>();
@@ -98,6 +91,10 @@ public class ACCProxyNodeSide extends ACCAbstractProxyNodeSide{
 
 	private void log(String st){
 		System.out.println("[ACCProxyNodeSide (" + node.getTCPPort() + ", " + ctxId + ")]: " + st);
+	}
+	
+	private void logErr(String st){
+		System.err.println("[ACCProxyNodeSide (" + node.getTCPPort() + ", " + ctxId + ")]: " + st);
 	}
 
 	/**
@@ -119,12 +116,10 @@ public class ACCProxyNodeSide extends ACCAbstractProxyNodeSide{
 			log("Listening to incoming TuCSoN agents/nodes requests...");
 
 			try{
-				msg = TucsonMsgRequest.read(inStream);
-			}catch(EOFException e){
-				log("Agent " + agentId + " quitted");
-				break;
-			}catch(Exception e){
-				System.err.println("[ACCProxyNodeSide]: " + e);
+				msg = dialog.receiveMsgRequest();
+			}catch(DialogException e){
+				// TODO behavior
+				logErr("Unable to receive message request");
 				e.printStackTrace();
 				break;
 			}
@@ -133,10 +128,9 @@ public class ACCProxyNodeSide extends ACCAbstractProxyNodeSide{
 			if(msg_type == TucsonOperation.exitCode()){
 				reply = new TucsonMsgReply(msg.getId(), TucsonOperation.exitCode(), true, true, true);
 				try{
-					TucsonMsgReply.write(outStream, reply);
-					outStream.flush();
-				}catch(IOException e){
-					System.err.println("[ACCProxyNodeSide]: " + e);
+					dialog.sendMsgReply(reply);
+				}catch(DialogException e){
+					logErr("Unable to send message. Request: EXIT \t id: " + msg.getId());
 					e.printStackTrace();
 				}finally{
 					break;
@@ -146,7 +140,7 @@ public class ACCProxyNodeSide extends ACCAbstractProxyNodeSide{
 			try{
 				tid = new TucsonTupleCentreId((Object) msg.getTid());  
 			}catch(TucsonInvalidTupleCentreIdException e){
-				System.err.println("[ACCProxyNodeSide]: " + e);
+				logErr("" + e);
 				e.printStackTrace();
 				break;
 			}
@@ -163,7 +157,7 @@ public class ACCProxyNodeSide extends ACCAbstractProxyNodeSide{
 						resList = (List<LogicTuple>) TupleCentreContainer.doBlockingSpecOperation(msg_type, tcId, tid, msg.getTuple());
 //					log("resList = " + resList);
 				}catch(Exception e){
-					System.err.println("[ACCProxyNodeSide]: " + e);
+					logErr("" + e);
 					e.printStackTrace();
 					break;
 				}
@@ -171,10 +165,9 @@ public class ACCProxyNodeSide extends ACCAbstractProxyNodeSide{
 				reply = new TucsonMsgReply(msg.getId(), msg_type, true, true, true, msg.getTuple(), resList);
 				
 				try{
-					TucsonMsgReply.write(outStream, reply);
-					outStream.flush();
-				}catch(IOException e){
-					System.err.println("[ACCProxyNodeSide]: " + e);
+					dialog.sendMsgReply(reply);
+				}catch(DialogException e){
+					logErr("Unable to send message.");
 					e.printStackTrace();
 					break;
 				}
@@ -190,7 +183,7 @@ public class ACCProxyNodeSide extends ACCAbstractProxyNodeSide{
 					else
 						resList = (List<LogicTuple>) TupleCentreContainer.doBlockingOperation(msg_type, tcId, tid, msg.getTuple());
 				}catch(Exception e){
-					System.err.println("[ACCProxyNodeSide]: " + e);
+					logErr("" + e);
 					e.printStackTrace();
 					break;
 				}
@@ -198,10 +191,9 @@ public class ACCProxyNodeSide extends ACCAbstractProxyNodeSide{
 				reply = new TucsonMsgReply(msg.getId(), msg_type, true, true, true, res, resList);
 				
 				try{
-					TucsonMsgReply.write(outStream, reply);
-					outStream.flush();
-				}catch(IOException e){
-					System.err.println("[ACCProxyNodeSide]: " + e);
+					dialog.sendMsgReply(reply);
+				}catch(DialogException e){
+					logErr("Unable to send message.");
 					e.printStackTrace();
 					break;
 				}
@@ -224,10 +216,9 @@ public class ACCProxyNodeSide extends ACCAbstractProxyNodeSide{
 				reply = new TucsonMsgReply(msg.getId(), msg_type, true, true, true, null, resList);
 				
 				try{
-					TucsonMsgReply.write(outStream, reply);
-					outStream.flush();
-				}catch(IOException e){
-					System.err.println("[ACCProxyNodeSide]: " + e);
+					dialog.sendMsgReply(reply);
+				}catch(DialogException e){
+					logErr("Unable to send message.");
 					e.printStackTrace();
 					break;
 				}
@@ -253,10 +244,9 @@ public class ACCProxyNodeSide extends ACCAbstractProxyNodeSide{
 				reply = new TucsonMsgReply(msg.getId(), msg_type, true, true, true, null, resList);
 				
 				try{
-					TucsonMsgReply.write(outStream, reply);
-					outStream.flush();
-				}catch(IOException e){
-					System.err.println("[ACCProxyNodeSide]: " + e);
+					dialog.sendMsgReply(reply);
+				}catch(DialogException e){
+					logErr("Unable to send message.");
 					e.printStackTrace();
 					break;
 				}
@@ -321,8 +311,8 @@ public class ACCProxyNodeSide extends ACCAbstractProxyNodeSide{
 
 		try{
 			dialog.end();
-		}catch(Exception ex){
-			System.err.println("[ACCProxyNodeSide]: " + ex);
+		}catch(DialogException ex){
+			logErr("Unable to close a dialog.");
 			ex.printStackTrace();
 		}
 
@@ -338,9 +328,6 @@ public class ACCProxyNodeSide extends ACCAbstractProxyNodeSide{
 		notify();
 	}
 
-	/**
-	 * 
-	 */
 	public void operationCompleted(TupleCentreOperation op){
 		
 		Long reqId;
@@ -367,10 +354,9 @@ public class ACCProxyNodeSide extends ACCAbstractProxyNodeSide{
 		}
 		
 		try{
-			TucsonMsgReply.write(outStream, reply);
-			outStream.flush();
-		}catch(IOException ex){
-			System.err.println("[ACCProxyNodeSide]: " + ex);
+			dialog.sendMsgReply(reply);
+		}catch(DialogException ex){
+			logErr("Unable to send message.");
 			ex.printStackTrace();
 		}
 

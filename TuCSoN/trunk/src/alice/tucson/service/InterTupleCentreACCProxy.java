@@ -18,17 +18,16 @@
 package alice.tucson.service;
 
 import alice.logictuple.*;
-
 import alice.tucson.api.*;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
 import alice.tucson.api.TucsonTupleCentreId;
-
 import alice.tucson.network.TucsonMsgReply;
 import alice.tucson.network.TucsonMsgRequest;
 import alice.tucson.network.TucsonProtocol;
 import alice.tucson.network.TucsonProtocolTCP;
+import alice.tucson.network.exceptions.DialogException;
 import alice.tucson.service.TucsonOperation;
 import alice.tuplecentre.api.Tuple;
 import alice.tuplecentre.api.TupleTemplate;
@@ -37,8 +36,6 @@ import alice.tuplecentre.core.TCCycleResult.Outcome;
 import alice.tuplecentre.core.TupleCentreOperation;
 import alice.tuprolog.Prolog;
 import alice.tuprolog.lib.InvalidObjectIdException;
-
-import java.io.*;
 
 import java.util.*;
 
@@ -113,7 +110,6 @@ public class InterTupleCentreACCProxy implements InterTupleCentreACC, OperationC
 				exception = true;
 				throw new UnreachableNodeException();
 			}
-			ObjectOutputStream outStream = session.getOutputStream();
 			
 //			TucsonOperation op = null;
 //			if((type == TucsonOperation.outCode()) || (type == TucsonOperation.out_sCode())
@@ -137,11 +133,10 @@ public class InterTupleCentreACCProxy implements InterTupleCentreACC, OperationC
 			}
 			log("sending msg " + msg.getId() + ", op = " + msg.getType() + ", " + msg.getTuple() + ", " + msg.getTid());
 			try{
-				TucsonMsgRequest.write(outStream, msg);
-				outStream.flush();
-			}catch(IOException ex){
+				session.sendMsgRequest(msg);
+			}catch(DialogException ex){
 				exception = true;
-				System.err.println("[InterTupleCentreACCProxy]: " + ex);
+				logErr("Unable to send message");
 				ex.printStackTrace();
 			}
 			
@@ -237,8 +232,7 @@ public class InterTupleCentreACCProxy implements InterTupleCentreACC, OperationC
 		}								
 
 		if(isEnterReqAcpt){
-			ObjectInputStream din = dialog.getInputStream();
-			Controller contr = new Controller(din);
+			Controller contr = new Controller(dialog);
 			ControllerSession cs = new ControllerSession(contr, dialog);
 			controllerSessions.put(opNode+":"+port, cs);
 			contr.start();
@@ -276,6 +270,10 @@ public class InterTupleCentreACCProxy implements InterTupleCentreACC, OperationC
 	private void log(String msg){
 		System.out.println("[InterTupleCentreACCProxy]: " + msg);
 	}
+	
+	private void logErr(String msg){
+		System.err.println("[InterTupleCentreACCProxy]: " + msg);
+	}
 
 	/**
 	 * 
@@ -283,16 +281,16 @@ public class InterTupleCentreACCProxy implements InterTupleCentreACC, OperationC
 	class Controller extends Thread{
 
 		private boolean stop;
-		private ObjectInputStream in;
+		private TucsonProtocol dialog;
 		private final Prolog p = new Prolog();
 
 		/**
 		 * 
-		 * @param in
+		 * @param dlg
 		 */
-		Controller(ObjectInputStream in){
+		Controller(TucsonProtocol dlg){
 			
-			this.in = in;
+			this.dialog = dlg;
 			stop = false;
 			this.setDaemon(true);
 			
@@ -314,14 +312,12 @@ public class InterTupleCentreACCProxy implements InterTupleCentreACC, OperationC
 				
 				TucsonMsgReply msg = null;
 				try{
-					msg = TucsonMsgReply.read(in);
-				}catch(EOFException e){
-					log("TuCSoN node service unavailable, nothing I can do");
+					msg = dialog.receiveMsgReply();
+				}catch(DialogException e){
+					// TODO behavior
+					logErr("TuCSoN node service unavailable, nothing I can do");
 					setStop();
 					break;
-				}catch(Exception ex){
-					setStop();
-					System.err.println("[InterTupleCentreACCProxy] Controller: " + ex);
 				}
 				
 				boolean ok = msg.isAllowed();

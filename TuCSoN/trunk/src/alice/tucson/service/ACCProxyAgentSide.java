@@ -20,7 +20,6 @@ package alice.tucson.service;
 import alice.logictuple.*;
 import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.logictuple.exceptions.InvalidTupleOperationException;
-
 import alice.tucson.api.EnhancedACC;
 import alice.tucson.api.ITucsonOperation;
 import alice.tucson.api.TucsonAgentId;
@@ -32,18 +31,16 @@ import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
 import alice.tucson.network.*;
+import alice.tucson.network.exceptions.DialogException;
 import alice.tucson.parsing.MyOpManager;
-
 import alice.tuplecentre.api.Tuple;
 import alice.tuplecentre.api.TupleTemplate;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 import alice.tuplecentre.core.TCCycleResult.Outcome;
-
 import alice.tuprolog.Parser;
 import alice.tuprolog.Prolog;
 import alice.tuprolog.lib.InvalidObjectIdException;
 
-import java.io.*;
 import java.util.*;
 
 /**
@@ -1654,7 +1651,6 @@ public class ACCProxyAgentSide implements EnhancedACC{
 				exception = true;
 				throw new UnreachableNodeException();
 			}
-			ObjectOutputStream outStream = session.getOutputStream();
 
 			TucsonOperation op = null;
 			if((type == TucsonOperation.outCode()) || (type == TucsonOperation.out_sCode())
@@ -1669,9 +1665,8 @@ public class ACCProxyAgentSide implements EnhancedACC{
 			log("requesting op " + msg.getType() + ", " + msg.getTuple() + ", " + msg.getTid());
 			
 			try{
-				TucsonMsgRequest.write(outStream, msg);
-				outStream.flush();
-			}catch(IOException ex){
+				session.sendMsgRequest(msg);
+			}catch(DialogException ex){
 				exception = true;
 				System.err.println("[ACCProxyAgentSide]: " + ex);
 			}
@@ -1699,7 +1694,6 @@ public class ACCProxyAgentSide implements EnhancedACC{
 		ControllerSession cs;
 		TucsonProtocol info;
 		Controller contr;
-		ObjectOutputStream outStream;
 		TucsonOperation op;
 		TucsonMsgRequest exit;
 		
@@ -1709,17 +1703,14 @@ public class ACCProxyAgentSide implements EnhancedACC{
 			info = cs.getSession();
 			contr = cs.getController();
 			contr.setStop();
-			outStream = info.getOutputStream();
 			
 			op = new TucsonOperation(TucsonOperation.exitCode(), (TupleTemplate) null, null, this);				
 			operations.put(op.getId(), op);
 			
-			exit = new TucsonMsgRequest((int) op.getId(), op.getType(), null,
-					op.getLogicTupleArgument());
+			exit = new TucsonMsgRequest((int) op.getId(), op.getType(), null, op.getLogicTupleArgument());
 			try{
-				TucsonMsgRequest.write(outStream, exit);
-				outStream.flush();
-			}catch(IOException ex){
+				info.sendMsgRequest(exit);
+			}catch(DialogException ex){
 				System.err.println("[ACCProxyAgentSide]: " + ex);
 			}
 			
@@ -1784,8 +1775,7 @@ public class ACCProxyAgentSide implements EnhancedACC{
 		}								
 
 		if(isEnterReqAcpt){
-			ObjectInputStream din = dialog.getInputStream();
-			Controller contr = new Controller(din);
+			Controller contr = new Controller(dialog);
 			ControllerSession cs = new ControllerSession(contr, dialog);
 			controllerSessions.put(opNode+":"+port, cs);
 			contr.start();
@@ -1825,16 +1815,16 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	protected class Controller extends Thread{
 		
 		private boolean stop;
-		private ObjectInputStream in;
+		private TucsonProtocol dialog;
 		private final Prolog p = new Prolog();
 
 		/**
 		 * 
 		 * @param in
 		 */
-		Controller(ObjectInputStream in){
+		Controller(TucsonProtocol dialog){
 			
-			this.in = in;
+			this.dialog = dialog;
 			stop = false;
 			this.setDaemon(true);
 			
@@ -1862,14 +1852,11 @@ public class ACCProxyAgentSide implements EnhancedACC{
 				
 				TucsonMsgReply msg = null;
 				try{
-					msg = TucsonMsgReply.read(in);
-				}catch(EOFException e){
+					msg = dialog.receiveMsgReply();
+				}catch(DialogException e){
 					log("TuCSoN node service unavailable, nothing I can do");
 					setStop();
 					break;
-				}catch(Exception ex){
-					setStop();
-					System.err.println("[ACCProxyAgentSide] Controller: " + ex);
 				}
 
 				boolean ok = msg.isAllowed();
