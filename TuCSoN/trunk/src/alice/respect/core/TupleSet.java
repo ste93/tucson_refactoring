@@ -16,6 +16,7 @@ import java.util.AbstractMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.ListIterator;
 
 import alice.logictuple.LogicTuple;
@@ -26,10 +27,10 @@ import alice.tuprolog.Var;
  */
 public class TupleSet {
 
-    private final LinkedList<LogicTuple> tAdded;
+    private final List<LogicTuple> tAdded;
     private boolean transaction;
-    private final LinkedList<LogicTuple> tRemoved;
-    private final LinkedList<LogicTuple> tuples;
+    private final List<LogicTuple> tRemoved;
+    private final List<LogicTuple> tuples;
 
     public TupleSet() {
         this.tuples = new LinkedList<LogicTuple>();
@@ -166,7 +167,7 @@ public class TupleSet {
     public String toString() {
         String str = "";
         for (final LogicTuple t : this.tuples) {
-            str += t.toString() + ".\n";
+            str = str.concat(t.toString()).concat(".\n");
         }
         return str;
     }

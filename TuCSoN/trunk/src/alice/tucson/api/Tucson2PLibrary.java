@@ -58,12 +58,7 @@ public class Tucson2PLibrary extends Library {
         return new Struct(termArray);
     }
 
-    private TucsonAgentId agentId;
-
     private EnhancedACC context;
-
-    public Tucson2PLibrary() {
-    }
 
     /**
      * When leaving the TuCSoN system, any agent is kindly requested to release
@@ -77,7 +72,7 @@ public class Tucson2PLibrary extends Library {
             this.context.exit();
         } catch (final TucsonOperationNotPossibleException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
         return true;
@@ -106,7 +101,7 @@ public class Tucson2PLibrary extends Library {
             tid = new TucsonTupleCentreId(arg1.toString());
         } catch (final TucsonInvalidTupleCentreIdException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
         ITucsonOperation op;
@@ -114,15 +109,15 @@ public class Tucson2PLibrary extends Library {
             op = this.context.get(tid, (Long) null);
         } catch (final TucsonOperationNotPossibleException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         } catch (final UnreachableNodeException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         } catch (final OperationTimeOutException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
         if (op.isResultSuccess()) {
@@ -147,23 +142,24 @@ public class Tucson2PLibrary extends Library {
      * @see alice.tucson.api.TucsonAgentId TucsonAgentId
      */
     public boolean get_context_1(final Struct id) {
+        TucsonAgentId agentId;
         if (this.context != null) {
             try {
                 this.context.exit();
             } catch (final TucsonOperationNotPossibleException e) {
                 System.err.println("[Tucson2PLibrary]: " + e);
-                e.printStackTrace();
+                // TODO Properly handle Exception
                 return false;
             }
         }
         try {
-            this.agentId = new TucsonAgentId(id.toString());
+            agentId = new TucsonAgentId(id.toString());
         } catch (final TucsonInvalidAgentIdException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
-        this.context = TucsonMetaACC.getContext(this.agentId);
+        this.context = TucsonMetaACC.getContext(agentId);
         return true;
     }
 
@@ -190,7 +186,7 @@ public class Tucson2PLibrary extends Library {
             tid = new TucsonTupleCentreId(arg1.toString());
         } catch (final TucsonInvalidTupleCentreIdException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
         ITucsonOperation op;
@@ -198,15 +194,15 @@ public class Tucson2PLibrary extends Library {
             op = this.context.get_s(tid, (Long) null);
         } catch (final TucsonOperationNotPossibleException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         } catch (final UnreachableNodeException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         } catch (final OperationTimeOutException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
         if (op.isResultSuccess()) {
@@ -320,7 +316,7 @@ public class Tucson2PLibrary extends Library {
             tid = new TucsonTupleCentreId(arg1.toString());
         } catch (final TucsonInvalidTupleCentreIdException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
         ITucsonOperation op;
@@ -328,15 +324,15 @@ public class Tucson2PLibrary extends Library {
             op = this.context.in(tid, new LogicTuple(arg0), (Long) null);
         } catch (final TucsonOperationNotPossibleException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         } catch (final UnreachableNodeException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         } catch (final OperationTimeOutException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
         if (op.isResultSuccess()) {
@@ -370,7 +366,7 @@ public class Tucson2PLibrary extends Library {
             tid = new TucsonTupleCentreId(arg2.toString());
         } catch (final TucsonInvalidTupleCentreIdException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
         ITucsonOperation op;
@@ -378,15 +374,15 @@ public class Tucson2PLibrary extends Library {
             op = this.context.in_all(tid, new LogicTuple(arg0), (Long) null);
         } catch (final TucsonOperationNotPossibleException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         } catch (final UnreachableNodeException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         } catch (final OperationTimeOutException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
         if (op.isResultSuccess()) {
@@ -427,7 +423,7 @@ public class Tucson2PLibrary extends Library {
             tid = new TucsonTupleCentreId(arg3.toString());
         } catch (final TucsonInvalidTupleCentreIdException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
         ITucsonOperation op;
@@ -438,15 +434,15 @@ public class Tucson2PLibrary extends Library {
                             new LogicTuple(reactionBody), (Long) null);
         } catch (final TucsonOperationNotPossibleException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         } catch (final UnreachableNodeException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         } catch (final OperationTimeOutException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
         if (op.isResultSuccess()) {
@@ -478,7 +474,7 @@ public class Tucson2PLibrary extends Library {
             tid = new TucsonTupleCentreId(arg1.toString());
         } catch (final TucsonInvalidTupleCentreIdException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
         ITucsonOperation op;
@@ -486,15 +482,15 @@ public class Tucson2PLibrary extends Library {
             op = this.context.inp(tid, new LogicTuple(arg0), (Long) null);
         } catch (final TucsonOperationNotPossibleException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         } catch (final UnreachableNodeException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         } catch (final OperationTimeOutException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
         if (op.isResultSuccess()) {
@@ -534,7 +530,7 @@ public class Tucson2PLibrary extends Library {
             tid = new TucsonTupleCentreId(arg3.toString());
         } catch (final TucsonInvalidTupleCentreIdException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
         ITucsonOperation op;
@@ -545,15 +541,15 @@ public class Tucson2PLibrary extends Library {
                             new LogicTuple(reactionBody), (Long) null);
         } catch (final TucsonOperationNotPossibleException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         } catch (final UnreachableNodeException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         } catch (final OperationTimeOutException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
         if (op.isResultSuccess()) {
@@ -585,7 +581,7 @@ public class Tucson2PLibrary extends Library {
             tid = new TucsonTupleCentreId(arg1.toString());
         } catch (final TucsonInvalidTupleCentreIdException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
         ITucsonOperation op;
@@ -593,15 +589,15 @@ public class Tucson2PLibrary extends Library {
             op = this.context.no(tid, new LogicTuple(arg0), (Long) null);
         } catch (final TucsonOperationNotPossibleException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         } catch (final UnreachableNodeException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         } catch (final OperationTimeOutException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
         if (!op.isResultSuccess()) {
@@ -635,7 +631,7 @@ public class Tucson2PLibrary extends Library {
             tid = new TucsonTupleCentreId(arg2.toString());
         } catch (final TucsonInvalidTupleCentreIdException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
         ITucsonOperation op;
@@ -643,15 +639,15 @@ public class Tucson2PLibrary extends Library {
             op = this.context.no_all(tid, new LogicTuple(arg0), (Long) null);
         } catch (final TucsonOperationNotPossibleException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         } catch (final UnreachableNodeException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         } catch (final OperationTimeOutException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
         if (op.isResultSuccess()) {
@@ -692,7 +688,7 @@ public class Tucson2PLibrary extends Library {
             tid = new TucsonTupleCentreId(arg3.toString());
         } catch (final TucsonInvalidTupleCentreIdException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
         ITucsonOperation op;
@@ -703,15 +699,15 @@ public class Tucson2PLibrary extends Library {
                             new LogicTuple(reactionBody), (Long) null);
         } catch (final TucsonOperationNotPossibleException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         } catch (final UnreachableNodeException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         } catch (final OperationTimeOutException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
         if (!op.isResultSuccess()) {
@@ -743,7 +739,7 @@ public class Tucson2PLibrary extends Library {
             tid = new TucsonTupleCentreId(arg1.toString());
         } catch (final TucsonInvalidTupleCentreIdException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
         ITucsonOperation op;
@@ -751,15 +747,15 @@ public class Tucson2PLibrary extends Library {
             op = this.context.nop(tid, new LogicTuple(arg0), (Long) null);
         } catch (final TucsonOperationNotPossibleException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         } catch (final UnreachableNodeException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         } catch (final OperationTimeOutException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
         if (!op.isResultSuccess()) {
@@ -799,7 +795,7 @@ public class Tucson2PLibrary extends Library {
             tid = new TucsonTupleCentreId(arg3.toString());
         } catch (final TucsonInvalidTupleCentreIdException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
         ITucsonOperation op;
@@ -810,15 +806,15 @@ public class Tucson2PLibrary extends Library {
                             new LogicTuple(reactionBody), (Long) null);
         } catch (final TucsonOperationNotPossibleException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         } catch (final UnreachableNodeException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         } catch (final OperationTimeOutException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
         if (!op.isResultSuccess()) {
@@ -850,7 +846,7 @@ public class Tucson2PLibrary extends Library {
             tid = new TucsonTupleCentreId(arg1.toString());
         } catch (final TucsonInvalidTupleCentreIdException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
         ITucsonOperation op;
@@ -858,15 +854,15 @@ public class Tucson2PLibrary extends Library {
             op = this.context.out(tid, new LogicTuple(arg0), (Long) null);
         } catch (final TucsonOperationNotPossibleException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         } catch (final UnreachableNodeException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         } catch (final OperationTimeOutException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
         return op.isResultSuccess();
@@ -895,7 +891,7 @@ public class Tucson2PLibrary extends Library {
             tid = new TucsonTupleCentreId(arg1.toString());
         } catch (final TucsonInvalidTupleCentreIdException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
         ITucsonOperation op;
@@ -903,15 +899,15 @@ public class Tucson2PLibrary extends Library {
             op = this.context.out_all(tid, new LogicTuple(arg0), (Long) null);
         } catch (final TucsonOperationNotPossibleException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         } catch (final UnreachableNodeException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         } catch (final OperationTimeOutException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
         return op.isResultSuccess();
@@ -947,7 +943,7 @@ public class Tucson2PLibrary extends Library {
             tid = new TucsonTupleCentreId(arg3.toString());
         } catch (final TucsonInvalidTupleCentreIdException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
         ITucsonOperation op;
@@ -958,15 +954,15 @@ public class Tucson2PLibrary extends Library {
                             new LogicTuple(reactionBody), (Long) null);
         } catch (final TucsonOperationNotPossibleException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         } catch (final UnreachableNodeException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         } catch (final OperationTimeOutException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
         return op.isResultSuccess();
@@ -995,7 +991,7 @@ public class Tucson2PLibrary extends Library {
             tid = new TucsonTupleCentreId(arg1.toString());
         } catch (final TucsonInvalidTupleCentreIdException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
         ITucsonOperation op;
@@ -1003,15 +999,15 @@ public class Tucson2PLibrary extends Library {
             op = this.context.rd(tid, new LogicTuple(arg0), (Long) null);
         } catch (final TucsonOperationNotPossibleException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         } catch (final UnreachableNodeException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         } catch (final OperationTimeOutException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
         if (op.isResultSuccess()) {
@@ -1045,7 +1041,7 @@ public class Tucson2PLibrary extends Library {
             tid = new TucsonTupleCentreId(arg2.toString());
         } catch (final TucsonInvalidTupleCentreIdException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
         ITucsonOperation op;
@@ -1053,15 +1049,15 @@ public class Tucson2PLibrary extends Library {
             op = this.context.rd_all(tid, new LogicTuple(arg0), (Long) null);
         } catch (final TucsonOperationNotPossibleException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         } catch (final UnreachableNodeException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         } catch (final OperationTimeOutException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
         if (op.isResultSuccess()) {
@@ -1102,7 +1098,7 @@ public class Tucson2PLibrary extends Library {
             tid = new TucsonTupleCentreId(arg3.toString());
         } catch (final TucsonInvalidTupleCentreIdException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
         ITucsonOperation op;
@@ -1113,15 +1109,15 @@ public class Tucson2PLibrary extends Library {
                             new LogicTuple(reactionBody), (Long) null);
         } catch (final TucsonOperationNotPossibleException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         } catch (final UnreachableNodeException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         } catch (final OperationTimeOutException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
         if (op.isResultSuccess()) {
@@ -1153,7 +1149,7 @@ public class Tucson2PLibrary extends Library {
             tid = new TucsonTupleCentreId(arg1.toString());
         } catch (final TucsonInvalidTupleCentreIdException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
         ITucsonOperation op;
@@ -1161,15 +1157,15 @@ public class Tucson2PLibrary extends Library {
             op = this.context.rdp(tid, new LogicTuple(arg0), (Long) null);
         } catch (final TucsonOperationNotPossibleException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         } catch (final UnreachableNodeException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         } catch (final OperationTimeOutException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
         if (op.isResultSuccess()) {
@@ -1209,7 +1205,7 @@ public class Tucson2PLibrary extends Library {
             tid = new TucsonTupleCentreId(arg3.toString());
         } catch (final TucsonInvalidTupleCentreIdException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
         ITucsonOperation op;
@@ -1220,15 +1216,15 @@ public class Tucson2PLibrary extends Library {
                             new LogicTuple(reactionBody), (Long) null);
         } catch (final TucsonOperationNotPossibleException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         } catch (final UnreachableNodeException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         } catch (final OperationTimeOutException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
         if (op.isResultSuccess()) {
@@ -1260,7 +1256,7 @@ public class Tucson2PLibrary extends Library {
             tid = new TucsonTupleCentreId(arg1.toString());
         } catch (final TucsonInvalidTupleCentreIdException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
         ITucsonOperation op;
@@ -1268,15 +1264,15 @@ public class Tucson2PLibrary extends Library {
             op = this.context.set(tid, new LogicTuple(arg0), (Long) null);
         } catch (final TucsonOperationNotPossibleException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         } catch (final UnreachableNodeException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         } catch (final OperationTimeOutException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
         return op.isResultSuccess();
@@ -1306,7 +1302,7 @@ public class Tucson2PLibrary extends Library {
             tid = new TucsonTupleCentreId(arg1.toString());
         } catch (final TucsonInvalidTupleCentreIdException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
         ITucsonOperation op;
@@ -1314,15 +1310,15 @@ public class Tucson2PLibrary extends Library {
             op = this.context.set_s(tid, new LogicTuple(arg0), (Long) null);
         } catch (final TucsonOperationNotPossibleException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         } catch (final UnreachableNodeException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         } catch (final OperationTimeOutException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
         return op.isResultSuccess();
@@ -1351,7 +1347,7 @@ public class Tucson2PLibrary extends Library {
             tid = new TucsonTupleCentreId(arg1.toString());
         } catch (final TucsonInvalidTupleCentreIdException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
         ITucsonOperation op;
@@ -1359,15 +1355,15 @@ public class Tucson2PLibrary extends Library {
             op = this.context.spawn(tid, new LogicTuple(arg0), (Long) null);
         } catch (final TucsonOperationNotPossibleException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         } catch (final UnreachableNodeException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         } catch (final OperationTimeOutException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
         return op.isResultSuccess();
@@ -1396,7 +1392,7 @@ public class Tucson2PLibrary extends Library {
             tid = new TucsonTupleCentreId(arg1.toString());
         } catch (final TucsonInvalidTupleCentreIdException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
         ITucsonOperation op;
@@ -1404,15 +1400,15 @@ public class Tucson2PLibrary extends Library {
             op = this.context.uin(tid, new LogicTuple(arg0), (Long) null);
         } catch (final TucsonOperationNotPossibleException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         } catch (final UnreachableNodeException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         } catch (final OperationTimeOutException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
         if (op.isResultSuccess()) {
@@ -1444,7 +1440,7 @@ public class Tucson2PLibrary extends Library {
             tid = new TucsonTupleCentreId(arg1.toString());
         } catch (final TucsonInvalidTupleCentreIdException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
         ITucsonOperation op;
@@ -1452,15 +1448,15 @@ public class Tucson2PLibrary extends Library {
             op = this.context.uinp(tid, new LogicTuple(arg0), (Long) null);
         } catch (final TucsonOperationNotPossibleException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         } catch (final UnreachableNodeException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         } catch (final OperationTimeOutException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
         if (op.isResultSuccess()) {
@@ -1492,7 +1488,7 @@ public class Tucson2PLibrary extends Library {
             tid = new TucsonTupleCentreId(arg1.toString());
         } catch (final TucsonInvalidTupleCentreIdException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
         ITucsonOperation op;
@@ -1500,15 +1496,15 @@ public class Tucson2PLibrary extends Library {
             op = this.context.uno(tid, new LogicTuple(arg0), (Long) null);
         } catch (final TucsonOperationNotPossibleException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         } catch (final UnreachableNodeException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         } catch (final OperationTimeOutException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
         if (!op.isResultSuccess()) {
@@ -1540,7 +1536,7 @@ public class Tucson2PLibrary extends Library {
             tid = new TucsonTupleCentreId(arg1.toString());
         } catch (final TucsonInvalidTupleCentreIdException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
         ITucsonOperation op;
@@ -1548,15 +1544,15 @@ public class Tucson2PLibrary extends Library {
             op = this.context.unop(tid, new LogicTuple(arg0), (Long) null);
         } catch (final TucsonOperationNotPossibleException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         } catch (final UnreachableNodeException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         } catch (final OperationTimeOutException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
         if (!op.isResultSuccess()) {
@@ -1588,7 +1584,7 @@ public class Tucson2PLibrary extends Library {
             tid = new TucsonTupleCentreId(arg1.toString());
         } catch (final TucsonInvalidTupleCentreIdException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
         ITucsonOperation op;
@@ -1596,15 +1592,15 @@ public class Tucson2PLibrary extends Library {
             op = this.context.urd(tid, new LogicTuple(arg0), (Long) null);
         } catch (final TucsonOperationNotPossibleException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         } catch (final UnreachableNodeException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         } catch (final OperationTimeOutException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
         if (op.isResultSuccess()) {
@@ -1636,7 +1632,7 @@ public class Tucson2PLibrary extends Library {
             tid = new TucsonTupleCentreId(arg1.toString());
         } catch (final TucsonInvalidTupleCentreIdException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
         ITucsonOperation op;
@@ -1644,15 +1640,15 @@ public class Tucson2PLibrary extends Library {
             op = this.context.urdp(tid, new LogicTuple(arg0), (Long) null);
         } catch (final TucsonOperationNotPossibleException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         } catch (final UnreachableNodeException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         } catch (final OperationTimeOutException e) {
             System.err.println("[Tucson2PLibrary]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
         if (op.isResultSuccess()) {

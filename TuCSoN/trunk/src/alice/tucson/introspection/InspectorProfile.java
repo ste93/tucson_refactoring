@@ -23,6 +23,7 @@ public class InspectorProfile extends ACCDescription {
 
     public InspectorProfile(final TucsonAgentId aid,
             final TucsonTupleCentreId tid) {
+        super();
         this.setProperty("context-name", "inspector");
         this.setProperty("agent-identity", aid.toString());
         this.setProperty("tuple-centre", tid.getName());

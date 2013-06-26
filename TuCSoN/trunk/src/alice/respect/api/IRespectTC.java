@@ -45,7 +45,14 @@ public interface IRespectTC {
     IRespectOperation get(IId id, OperationCompletionListener l)
             throws OperationNotPossibleException;
 
-    IRespectOperation get_s(IId aid) throws OperationNotPossibleException;
+    /**
+     * Gets the tuple centre id
+     * 
+     * @return the id
+     */
+    TupleCentreId getId();
+
+    IRespectOperation getS(IId aid) throws OperationNotPossibleException;
 
     /**
      * 
@@ -54,15 +61,8 @@ public interface IRespectTC {
      * @return
      * @throws OperationNotPossibleException
      */
-    IRespectOperation get_s(IId aid, OperationCompletionListener l)
+    IRespectOperation getS(IId aid, OperationCompletionListener l)
             throws OperationNotPossibleException;
-
-    /**
-     * Gets the tuple centre id
-     * 
-     * @return the id
-     */
-    TupleCentreId getId();
 
     RespectVM getVM();
 
@@ -98,26 +98,12 @@ public interface IRespectTC {
      *             if the operation is not possible given current state of the
      *             tuple centre
      */
-    IRespectOperation in_all(IId id, LogicTuple t)
+    IRespectOperation inAll(IId id, LogicTuple t)
             throws OperationNotPossibleException;
 
     IRespectOperation
-            in_all(IId id, LogicTuple t, OperationCompletionListener l)
+            inAll(IId id, LogicTuple t, OperationCompletionListener l)
                     throws OperationNotPossibleException;
-
-    IRespectOperation in_s(IId id, LogicTuple t)
-            throws OperationNotPossibleException;
-
-    /**
-     * 
-     * @param id
-     * @param t
-     * @param l
-     * @return
-     * @throws OperationNotPossibleException
-     */
-    IRespectOperation in_s(IId id, LogicTuple t, OperationCompletionListener l)
-            throws OperationNotPossibleException;
 
     IRespectOperation inp(IId id, LogicTuple t)
             throws OperationNotPossibleException;
@@ -139,7 +125,7 @@ public interface IRespectTC {
     IRespectOperation inp(IId id, LogicTuple t, OperationCompletionListener l)
             throws OperationNotPossibleException;
 
-    IRespectOperation inp_s(IId id, LogicTuple t)
+    IRespectOperation inpS(IId id, LogicTuple t)
             throws OperationNotPossibleException;
 
     /**
@@ -150,9 +136,22 @@ public interface IRespectTC {
      * @return
      * @throws OperationNotPossibleException
      */
-    IRespectOperation
-            inp_s(IId id, LogicTuple t, OperationCompletionListener l)
-                    throws OperationNotPossibleException;
+    IRespectOperation inpS(IId id, LogicTuple t, OperationCompletionListener l)
+            throws OperationNotPossibleException;
+
+    IRespectOperation inS(IId id, LogicTuple t)
+            throws OperationNotPossibleException;
+
+    /**
+     * 
+     * @param id
+     * @param t
+     * @param l
+     * @return
+     * @throws OperationNotPossibleException
+     */
+    IRespectOperation inS(IId id, LogicTuple t, OperationCompletionListener l)
+            throws OperationNotPossibleException;
 
     IRespectOperation no(IId id, LogicTuple t)
             throws OperationNotPossibleException;
@@ -175,26 +174,11 @@ public interface IRespectTC {
      * @return
      * @throws OperationNotPossibleException
      */
-    IRespectOperation no_all(IId id, LogicTuple t)
+    IRespectOperation noAll(IId id, LogicTuple t)
             throws OperationNotPossibleException;
 
     IRespectOperation
-            no_all(IId id, LogicTuple t, OperationCompletionListener l)
-                    throws OperationNotPossibleException;
-
-    IRespectOperation no_s(IId aid, LogicTuple t)
-            throws OperationNotPossibleException;
-
-    /**
-     * 
-     * @param aid
-     * @param t
-     * @param l
-     * @return
-     * @throws OperationNotPossibleException
-     */
-    IRespectOperation
-            no_s(IId aid, LogicTuple t, OperationCompletionListener l)
+            noAll(IId id, LogicTuple t, OperationCompletionListener l)
                     throws OperationNotPossibleException;
 
     IRespectOperation nop(IId id, LogicTuple t)
@@ -211,7 +195,7 @@ public interface IRespectTC {
     IRespectOperation nop(IId id, LogicTuple t, OperationCompletionListener l)
             throws OperationNotPossibleException;
 
-    IRespectOperation nop_s(IId aid, LogicTuple t)
+    IRespectOperation nopS(IId aid, LogicTuple t)
             throws OperationNotPossibleException;
 
     /**
@@ -223,8 +207,22 @@ public interface IRespectTC {
      * @throws OperationNotPossibleException
      */
     IRespectOperation
-            nop_s(IId aid, LogicTuple t, OperationCompletionListener l)
+            nopS(IId aid, LogicTuple t, OperationCompletionListener l)
                     throws OperationNotPossibleException;
+
+    IRespectOperation noS(IId aid, LogicTuple t)
+            throws OperationNotPossibleException;
+
+    /**
+     * 
+     * @param aid
+     * @param t
+     * @param l
+     * @return
+     * @throws OperationNotPossibleException
+     */
+    IRespectOperation noS(IId aid, LogicTuple t, OperationCompletionListener l)
+            throws OperationNotPossibleException;
 
     IRespectOperation out(IId id, LogicTuple t)
             throws OperationNotPossibleException;
@@ -240,13 +238,14 @@ public interface IRespectTC {
     IRespectOperation out(IId id, LogicTuple t, OperationCompletionListener l)
             throws OperationNotPossibleException;
 
-    IRespectOperation out_all(IId id, LogicTuple t)
+    IRespectOperation outAll(IId id, LogicTuple t)
             throws OperationNotPossibleException;
 
-    IRespectOperation out_all(IId id, LogicTuple t,
-            OperationCompletionListener l) throws OperationNotPossibleException;
+    IRespectOperation
+            outAll(IId id, LogicTuple t, OperationCompletionListener l)
+                    throws OperationNotPossibleException;
 
-    IRespectOperation out_s(IId id, LogicTuple t)
+    IRespectOperation outS(IId id, LogicTuple t)
             throws OperationNotPossibleException;
 
     /**
@@ -263,9 +262,8 @@ public interface IRespectTC {
      *             if the operation is not possible given current state of the
      *             tuple centre
      */
-    IRespectOperation
-            out_s(IId id, LogicTuple t, OperationCompletionListener l)
-                    throws OperationNotPossibleException;
+    IRespectOperation outS(IId id, LogicTuple t, OperationCompletionListener l)
+            throws OperationNotPossibleException;
 
     IRespectOperation rd(IId id, LogicTuple t)
             throws OperationNotPossibleException;
@@ -300,26 +298,12 @@ public interface IRespectTC {
      *             if the operation is not possible given current state of the
      *             tuple centre
      */
-    IRespectOperation rd_all(IId id, LogicTuple t)
+    IRespectOperation rdAll(IId id, LogicTuple t)
             throws OperationNotPossibleException;
 
     IRespectOperation
-            rd_all(IId id, LogicTuple t, OperationCompletionListener l)
+            rdAll(IId id, LogicTuple t, OperationCompletionListener l)
                     throws OperationNotPossibleException;
-
-    IRespectOperation rd_s(IId id, LogicTuple t)
-            throws OperationNotPossibleException;
-
-    /**
-     * 
-     * @param id
-     * @param t
-     * @param l
-     * @return
-     * @throws OperationNotPossibleException
-     */
-    IRespectOperation rd_s(IId id, LogicTuple t, OperationCompletionListener l)
-            throws OperationNotPossibleException;
 
     IRespectOperation rdp(IId id, LogicTuple t)
             throws OperationNotPossibleException;
@@ -341,7 +325,7 @@ public interface IRespectTC {
     IRespectOperation rdp(IId id, LogicTuple t, OperationCompletionListener l)
             throws OperationNotPossibleException;
 
-    IRespectOperation rdp_s(IId id, LogicTuple t)
+    IRespectOperation rdpS(IId id, LogicTuple t)
             throws OperationNotPossibleException;
 
     /**
@@ -352,9 +336,22 @@ public interface IRespectTC {
      * @return
      * @throws OperationNotPossibleException
      */
-    IRespectOperation
-            rdp_s(IId id, LogicTuple t, OperationCompletionListener l)
-                    throws OperationNotPossibleException;
+    IRespectOperation rdpS(IId id, LogicTuple t, OperationCompletionListener l)
+            throws OperationNotPossibleException;
+
+    IRespectOperation rdS(IId id, LogicTuple t)
+            throws OperationNotPossibleException;
+
+    /**
+     * 
+     * @param id
+     * @param t
+     * @param l
+     * @return
+     * @throws OperationNotPossibleException
+     */
+    IRespectOperation rdS(IId id, LogicTuple t, OperationCompletionListener l)
+            throws OperationNotPossibleException;
 
     IRespectOperation set(IId id, LogicTuple tuple)
             throws OperationNotPossibleException, InvalidLogicTupleException;
@@ -376,10 +373,10 @@ public interface IRespectTC {
             OperationCompletionListener l)
             throws OperationNotPossibleException, InvalidLogicTupleException;
 
-    IRespectOperation set_s(IId aid, LogicTuple t)
+    IRespectOperation setS(IId aid, LogicTuple t)
             throws OperationNotPossibleException;
 
-    IRespectOperation set_s(IId aid, RespectSpecification spec)
+    IRespectOperation setS(IId aid, RespectSpecification spec)
             throws OperationNotPossibleException, InvalidSpecificationException;
 
     /**
@@ -390,7 +387,7 @@ public interface IRespectTC {
      * @return
      * @throws OperationNotPossibleException
      */
-    IRespectOperation set_s(IId aid, RespectSpecification spec,
+    IRespectOperation setS(IId aid, RespectSpecification spec,
             OperationCompletionListener l) throws OperationNotPossibleException;
 
     IRespectOperation spawn(IId id, LogicTuple t)

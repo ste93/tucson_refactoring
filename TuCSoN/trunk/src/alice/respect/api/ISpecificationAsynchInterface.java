@@ -15,45 +15,39 @@ import alice.tuplecentre.core.OperationCompletionListener;
  */
 public interface ISpecificationAsynchInterface {
 
-    IRespectOperation get_s(IId aid, OperationCompletionListener l)
+    IRespectOperation getS(IId aid, OperationCompletionListener l)
             throws InvalidLogicTupleException, OperationNotPossibleException;
 
     IRespectOperation
-            in_s(IId aid, LogicTuple t, OperationCompletionListener l)
+            inpS(IId aid, LogicTuple t, OperationCompletionListener l)
+                    throws InvalidLogicTupleException,
+                    OperationNotPossibleException;
+
+    IRespectOperation inS(IId aid, LogicTuple t, OperationCompletionListener l)
+            throws InvalidLogicTupleException, OperationNotPossibleException;
+
+    IRespectOperation
+            nopS(IId aid, LogicTuple t, OperationCompletionListener l)
+                    throws InvalidLogicTupleException,
+                    OperationNotPossibleException;
+
+    IRespectOperation noS(IId aid, LogicTuple t, OperationCompletionListener l)
+            throws InvalidLogicTupleException, OperationNotPossibleException;
+
+    IRespectOperation
+            outS(IId aid, LogicTuple t, OperationCompletionListener l)
                     throws InvalidLogicTupleException,
                     OperationNotPossibleException;
 
     IRespectOperation
-            inp_s(IId aid, LogicTuple t, OperationCompletionListener l)
+            rdpS(IId aid, LogicTuple t, OperationCompletionListener l)
                     throws InvalidLogicTupleException,
                     OperationNotPossibleException;
 
-    IRespectOperation
-            no_s(IId aid, LogicTuple t, OperationCompletionListener l)
-                    throws InvalidLogicTupleException,
-                    OperationNotPossibleException;
+    IRespectOperation rdS(IId aid, LogicTuple t, OperationCompletionListener l)
+            throws InvalidLogicTupleException, OperationNotPossibleException;
 
-    IRespectOperation
-            nop_s(IId aid, LogicTuple t, OperationCompletionListener l)
-                    throws InvalidLogicTupleException,
-                    OperationNotPossibleException;
-
-    IRespectOperation
-            out_s(IId aid, LogicTuple t, OperationCompletionListener l)
-                    throws InvalidLogicTupleException,
-                    OperationNotPossibleException;
-
-    IRespectOperation
-            rd_s(IId aid, LogicTuple t, OperationCompletionListener l)
-                    throws InvalidLogicTupleException,
-                    OperationNotPossibleException;
-
-    IRespectOperation
-            rdp_s(IId aid, LogicTuple t, OperationCompletionListener l)
-                    throws InvalidLogicTupleException,
-                    OperationNotPossibleException;
-
-    IRespectOperation set_s(IId aid, RespectSpecification spec,
+    IRespectOperation setS(IId aid, RespectSpecification spec,
             OperationCompletionListener l) throws InvalidLogicTupleException,
             OperationNotPossibleException;
 

@@ -27,7 +27,27 @@ import alice.util.jedit.Token;
 
 public class SpecificationTextArea extends TextAreaDefaults {
 
+    private static SyntaxStyle[] getSyntaxStyles() {
+        final SyntaxStyle[] styles = new SyntaxStyle[Token.ID_COUNT];
+        styles[Token.COMMENT1] =
+                new SyntaxStyle(new Color(0x808080), true, false);
+        styles[Token.COMMENT2] =
+                new SyntaxStyle(new Color(0x990033), true, false);
+        styles[Token.KEYWORD1] = new SyntaxStyle(Color.blue, false, true);
+        styles[Token.KEYWORD2] = new SyntaxStyle(Color.green, false, true);
+        styles[Token.KEYWORD3] = new SyntaxStyle(Color.black, false, true);
+        styles[Token.LITERAL1] = new SyntaxStyle(Color.BLUE, true, false);
+        styles[Token.LITERAL2] = new SyntaxStyle(Color.BLUE, true, false);
+        styles[Token.LABEL] =
+                new SyntaxStyle(new Color(0x008000), false, false);
+        styles[Token.OPERATOR] = new SyntaxStyle(Color.black, false, true);
+        styles[Token.INVALID] = new SyntaxStyle(Color.red, false, false);
+        return styles;
+    }
+
     public SpecificationTextArea() {
+
+        super();
 
         this.inputHandler = new DefaultInputHandler();
         this.inputHandler.addDefaultKeyBindings();
@@ -51,24 +71,6 @@ public class SpecificationTextArea extends TextAreaDefaults {
         this.eolMarkers = false;
         this.paintInvalid = true;
 
-    }
-
-    private static SyntaxStyle[] getSyntaxStyles() {
-        final SyntaxStyle[] styles = new SyntaxStyle[Token.ID_COUNT];
-        styles[Token.COMMENT1] =
-                new SyntaxStyle(new Color(0x808080), true, false);
-        styles[Token.COMMENT2] =
-                new SyntaxStyle(new Color(0x990033), true, false);
-        styles[Token.KEYWORD1] = new SyntaxStyle(Color.blue, false, true);
-        styles[Token.KEYWORD2] = new SyntaxStyle(Color.green, false, true);
-        styles[Token.KEYWORD3] = new SyntaxStyle(Color.black, false, true);
-        styles[Token.LITERAL1] = new SyntaxStyle(Color.BLUE, true, false);
-        styles[Token.LITERAL2] = new SyntaxStyle(Color.BLUE, true, false);
-        styles[Token.LABEL] =
-                new SyntaxStyle(new Color(0x008000), false, false);
-        styles[Token.OPERATOR] = new SyntaxStyle(Color.black, false, true);
-        styles[Token.INVALID] = new SyntaxStyle(Color.red, false, false);
-        return styles;
     }
 
 }

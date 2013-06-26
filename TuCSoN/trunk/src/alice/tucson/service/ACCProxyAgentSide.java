@@ -17,11 +17,13 @@ import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import alice.logictuple.LogicTuple;
 import alice.logictuple.Value;
@@ -97,6 +99,8 @@ public class ACCProxyAgentSide implements EnhancedACC {
          */
         Controller(final ObjectInputStream input) {
 
+            super();
+
             this.in = input;
             this.stop = false;
             this.setDaemon(true);
@@ -108,7 +112,7 @@ public class ACCProxyAgentSide implements EnhancedACC {
                 jlib.register(new alice.tuprolog.Struct("config"), this);
             } catch (final InvalidObjectIdException ex) {
                 System.err.println("[ACCProxyAgentSide] Controller: " + ex);
-                ex.printStackTrace();
+                // TODO Properly handle Exception
             }
 
         }
@@ -239,14 +243,14 @@ public class ACCProxyAgentSide implements EnhancedACC {
          * 
          * @return
          */
-        synchronized boolean isStopped() {
+        private synchronized boolean isStopped() {
             return this.stop;
         }
 
         /**
 		 * 
 		 */
-        synchronized void setStop() {
+        private synchronized void setStop() {
             this.stop = true;
         }
 
@@ -256,7 +260,8 @@ public class ACCProxyAgentSide implements EnhancedACC {
          * @param tuple
          * @return
          */
-        LogicTuple unify(final TupleTemplate template, final Tuple tuple) {
+        private LogicTuple
+                unify(final TupleTemplate template, final Tuple tuple) {
             final boolean res = template.propagate(this.p, tuple);
             if (res) {
                 return (LogicTuple) template;
@@ -310,11 +315,11 @@ public class ACCProxyAgentSide implements EnhancedACC {
     /**
      * Active sessions toward different nodes
      */
-    protected HashMap<String, ControllerSession> controllerSessions;
+    protected Map<String, ControllerSession> controllerSessions;
     /**
      * TuCSoN requests completion events (node replies events)
      */
-    protected LinkedList<TucsonOpCompletionEvent> events;
+    protected List<TucsonOpCompletionEvent> events;
     /**
      * TuCSoN Node Service ip address
      */
@@ -322,11 +327,11 @@ public class ACCProxyAgentSide implements EnhancedACC {
     /**
      * Expired TuCSoN operations
      */
-    protected ArrayList<Long> operationExpired;
+    protected List<Long> operationExpired;
     /**
      * Requested TuCSoN operations
      */
-    protected HashMap<Long, TucsonOperation> operations;
+    protected Map<Long, TucsonOperation> operations;
 
     /**
      * TuCSoN Node Service listening port
@@ -431,6 +436,7 @@ public class ACCProxyAgentSide implements EnhancedACC {
                 TucsonMsgRequest.write(outStream, exit);
                 outStream.flush();
             } catch (final IOException ex) {
+                // TODO Properly handle Exception
                 System.err.println("[ACCProxyAgentSide]: " + ex);
             }
 
@@ -1952,7 +1958,7 @@ public class ACCProxyAgentSide implements EnhancedACC {
     public ITucsonOperation set_s(final Object tid, final String spec,
             final Long timeout) throws TucsonOperationNotPossibleException,
             UnreachableNodeException, OperationTimeOutException {
-        if (spec.equals("") || spec.equals("''") || spec.equals("'.'")) {
+        if ("".equals(spec) || "''".equals(spec) || "'.'".equals(spec)) {
             throw new TucsonOperationNotPossibleException();
         }
         final LogicTuple specT = new LogicTuple("spec", new Value(spec));
@@ -2382,11 +2388,17 @@ public class ACCProxyAgentSide implements EnhancedACC {
         if (tc != null) {
             return tc.getSession();
         }
-        if (opNode.equals("localhost")) {
-            tc = this.controllerSessions.get("127.0.0.1:" + p);
+        if (InetAddress.getLoopbackAddress().getHostName().equals(opNode)) {
+            tc =
+                    this.controllerSessions.get(InetAddress
+                            .getLoopbackAddress().getHostAddress()
+                            .concat(String.valueOf(p)));
         }
-        if (opNode.equals("127.0.0.1")) {
-            tc = this.controllerSessions.get("localhost:" + p);
+        if (InetAddress.getLoopbackAddress().getHostAddress().equals(opNode)) {
+            tc =
+                    this.controllerSessions.get(InetAddress
+                            .getLoopbackAddress().getHostName()
+                            .concat(String.valueOf(p)));
         }
         if (tc != null) {
             return tc.getSession();
@@ -2442,8 +2454,9 @@ public class ACCProxyAgentSide implements EnhancedACC {
      * @see alice.tucson.service.TucsonOpCompletionEvent TucsonOpCompletionEvent
      */
     protected void postEvent(final TucsonOpCompletionEvent ev) {
+        // FIXME Check correctness
         synchronized (this.events) {
-            this.events.addLast(ev);
+            this.events.add(this.events.size() - 1, ev);
         }
     }
 

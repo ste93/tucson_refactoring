@@ -50,9 +50,8 @@ public class RespectVM implements Runnable {
     private final Object idle;
     private final Object news;
 
-    public RespectVM(final TupleCentreId tid,
-            final RespectTCContainer c, final int qSize,
-            final RespectTC respectTC) {
+    public RespectVM(final TupleCentreId tid, final RespectTCContainer c,
+            final int qSize, final RespectTC respectTC) {
         this.container = c;
         this.context = new RespectVMContext(this, tid, qSize, respectTC);
         this.news = new Object();
@@ -164,7 +163,7 @@ public class RespectVM implements Runnable {
             try {
                 ((InspectableEventListener) it.next()).onInspectableEvent(e);
             } catch (final Exception ex) {
-                ex.printStackTrace();
+                // TODO Properly handle Exception
                 it.remove();
             }
         }
@@ -185,40 +184,40 @@ public class RespectVM implements Runnable {
                     this.observers.get(i).in_requested(
                             this.getId(),
                             ev.getSource(),
-                            (((RespectOperation) ev.getSimpleTCEvent())
-                                    .getLogicTupleArgument()));
+                            ((RespectOperation) ev.getSimpleTCEvent())
+                                    .getLogicTupleArgument());
                 }
             } else if (e.getSimpleTCEvent().isInp()) {
                 for (int i = 0; i < size; i++) {
                     this.observers.get(i).inp_requested(
                             this.getId(),
                             ev.getSource(),
-                            (((RespectOperation) ev.getSimpleTCEvent())
-                                    .getLogicTupleArgument()));
+                            ((RespectOperation) ev.getSimpleTCEvent())
+                                    .getLogicTupleArgument());
                 }
             } else if (e.getSimpleTCEvent().isRd()) {
                 for (int i = 0; i < size; i++) {
                     this.observers.get(i).rd_requested(
                             this.getId(),
                             ev.getSource(),
-                            (((RespectOperation) ev.getSimpleTCEvent())
-                                    .getLogicTupleArgument()));
+                            ((RespectOperation) ev.getSimpleTCEvent())
+                                    .getLogicTupleArgument());
                 }
             } else if (e.getSimpleTCEvent().isRdp()) {
                 for (int i = 0; i < size; i++) {
                     this.observers.get(i).rdp_requested(
                             this.getId(),
                             ev.getSource(),
-                            (((RespectOperation) ev.getSimpleTCEvent())
-                                    .getLogicTupleArgument()));
+                            ((RespectOperation) ev.getSimpleTCEvent())
+                                    .getLogicTupleArgument());
                 }
             } else if (e.getSimpleTCEvent().isOut()) {
                 for (int i = 0; i < size; i++) {
                     this.observers.get(i).out_requested(
                             this.getId(),
                             ev.getSource(),
-                            (((RespectOperation) ev.getSimpleTCEvent())
-                                    .getLogicTupleArgument()));
+                            ((RespectOperation) ev.getSimpleTCEvent())
+                                    .getLogicTupleArgument());
                 }
             } else if (e.getSimpleTCEvent().isSet_s()) {
                 for (int i = 0; i < size; i++) {
@@ -240,32 +239,32 @@ public class RespectVM implements Runnable {
                     this.observers.get(i).in_completed(
                             this.getId(),
                             ev.getSource(),
-                            (((RespectOperation) ev.getSimpleTCEvent())
-                                    .getLogicTupleArgument()));
+                            ((RespectOperation) ev.getSimpleTCEvent())
+                                    .getLogicTupleArgument());
                 }
             } else if (e.getSimpleTCEvent().isInp()) {
                 for (int i = 0; i < size; i++) {
                     this.observers.get(i).inp_completed(
                             this.getId(),
                             ev.getSource(),
-                            (((RespectOperation) ev.getSimpleTCEvent())
-                                    .getLogicTupleArgument()));
+                            ((RespectOperation) ev.getSimpleTCEvent())
+                                    .getLogicTupleArgument());
                 }
             } else if (e.getSimpleTCEvent().isRd()) {
                 for (int i = 0; i < size; i++) {
                     this.observers.get(i).rd_completed(
                             this.getId(),
                             ev.getSource(),
-                            (((RespectOperation) ev.getSimpleTCEvent())
-                                    .getLogicTupleArgument()));
+                            ((RespectOperation) ev.getSimpleTCEvent())
+                                    .getLogicTupleArgument());
                 }
             } else if (e.getSimpleTCEvent().isRdp()) {
                 for (int i = 0; i < size; i++) {
                     this.observers.get(i).rdp_completed(
                             this.getId(),
                             ev.getSource(),
-                            (((RespectOperation) ev.getSimpleTCEvent())
-                                    .getLogicTupleArgument()));
+                            ((RespectOperation) ev.getSimpleTCEvent())
+                                    .getLogicTupleArgument());
                 }
             } else if (e.getSimpleTCEvent().isSet_s()) {
                 for (int i = 0; i < size; i++) {

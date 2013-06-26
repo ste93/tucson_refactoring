@@ -31,11 +31,11 @@ public class TucsonAgentId implements alice.tuplecentre.api.AgentId,
         int j = 0;
         for (int i = 0; i < uuids.length(); i++) {
             if (uuids.charAt(i) == '-') {
-                res += uuids.substring(j, i);
+                res = res.concat(uuids.substring(j, i));
                 j = i + 1;
             }
         }
-        res += uuids.substring(j, uuids.length());
+        res = res.concat(uuids.substring(j, uuids.length()));
         return res;
     }
 
@@ -54,6 +54,20 @@ public class TucsonAgentId implements alice.tuplecentre.api.AgentId,
 
     public TucsonAgentId(final String name, final TucsonTupleCentreId tcId) {
         this.aid = new AgentId(name, tcId);
+    }
+
+    public boolean assignUUID() throws TucsonInvalidAgentIdException {
+        if (this.uuid == null) {
+            this.uuid = UUID.randomUUID();
+            try {
+                this.aid =
+                        new AgentId(this.aid + ":uuid"
+                                + TucsonAgentId.dropMinus(this.uuid));
+            } catch (final InvalidAgentIdException e) {
+                throw new TucsonInvalidAgentIdException();
+            }
+        }
+        return true;
     }
 
     public Object getAgentId() {
@@ -83,20 +97,6 @@ public class TucsonAgentId implements alice.tuplecentre.api.AgentId,
     @Override
     public String toString() {
         return ((AgentId) this.aid).toString();
-    }
-
-    boolean assignUUID() throws TucsonInvalidAgentIdException {
-        if (this.uuid == null) {
-            this.uuid = UUID.randomUUID();
-            try {
-                this.aid =
-                        new AgentId(this.aid + ":uuid"
-                                + TucsonAgentId.dropMinus(this.uuid));
-            } catch (final InvalidAgentIdException e) {
-                throw new TucsonInvalidAgentIdException();
-            }
-        }
-        return true;
     }
 
 }

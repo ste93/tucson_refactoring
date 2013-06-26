@@ -52,8 +52,8 @@ public class ACCProvider {
         try {
             this.aid = new TucsonAgentId("context_manager");
         } catch (final TucsonInvalidAgentIdException e) {
+            // TODO Properly handle Exception
             System.err.println("[ACCProvider]: " + e);
-            e.printStackTrace();
         }
         this.node = n;
         this.config = tid;
@@ -108,7 +108,7 @@ public class ACCProvider {
             dialog.sendEnterRequestAccepted();
             final String agentRole = profile.getProperty("agent-role");
 
-            if (agentRole.equals("$inspector")) {
+            if ("$inspector".equals(agentRole)) {
                 final ACCAbstractProxyNodeSide skel =
                         new InspectorContextSkel(this, dialog, this.node,
                                 profile);
@@ -125,9 +125,9 @@ public class ACCProvider {
             return true;
 
         } catch (final Exception e) {
+            // TODO Properly handle Exception
             profile.setProperty("failure", "generic");
             System.err.println("[ACCProvider]: " + e);
-            e.printStackTrace();
             return false;
         }
 
@@ -163,8 +163,8 @@ public class ACCProvider {
                             TucsonOperation.inpCode(), this.aid, this.config,
                             req);
         } catch (final Exception e) {
+            // TODO Properly handle Exception
             System.err.println("[ACCProvider]: " + e);
-            e.printStackTrace();
             return false;
         }
 
@@ -174,8 +174,8 @@ public class ACCProvider {
             }
             return false;
         } catch (final InvalidTupleOperationException e) {
+            // TODO Properly handle Exception
             System.err.println("[ACCProvider]: " + e);
-            e.printStackTrace();
             return false;
         }
 

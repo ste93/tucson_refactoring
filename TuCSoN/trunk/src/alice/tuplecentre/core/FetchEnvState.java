@@ -42,6 +42,15 @@ public class FetchEnvState extends TupleCentreVMState {
         return this.speakingState;
     }
 
+    /*
+     * (non-Javadoc)
+     * @see alice.tuplecentre.core.TupleCentreVMState#isIdle()
+     */
+    @Override
+    public boolean isIdle() {
+        return false;
+    }
+
     @Override
     public void resolveLinks() {
         this.reactingState = this.vm.getState("ReactingState");

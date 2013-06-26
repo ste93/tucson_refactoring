@@ -30,7 +30,7 @@ class ObservationService implements NodeServiceListener {
             this.obsAid = new TucsonAgentId("obs_agent");
         } catch (final TucsonInvalidAgentIdException e) {
             System.err.println("[ObservationService]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
         }
     }
 
@@ -40,9 +40,9 @@ class ObservationService implements NodeServiceListener {
                     this.obsAid, this.obsContext,
                     new LogicTuple("node_event", new Var(), new Value(
                             "new_agent", new Value(aid.toString()))));
-        } catch (final Exception ex) {
-            System.err.println("[ObservationService]: " + ex);
-            ex.printStackTrace();
+        } catch (final Exception e) {
+            // TODO Properly handle Exception
+            System.err.println("[ObservationService]: " + e);
         }
     }
 
@@ -52,9 +52,9 @@ class ObservationService implements NodeServiceListener {
                     this.obsAid, this.obsContext,
                     new LogicTuple("node_event", new Var(), new Value(
                             "exit_agent", new Value(aid.toString()))));
-        } catch (final Exception ex) {
-            System.err.println("[ObservationService]: " + ex);
-            ex.printStackTrace();
+        } catch (final Exception e) {
+            // TODO Properly handle Exception
+            System.err.println("[ObservationService]: " + e);
         }
     }
 
@@ -68,9 +68,9 @@ class ObservationService implements NodeServiceListener {
                                     ((TucsonTupleCentreId) tid).toTerm()),
                             new Value(((TucsonAgentId) id).toString()),
                             new Value(spec))));
-        } catch (final Exception ex) {
-            System.err.println("[ObservationService]: " + ex);
-            ex.printStackTrace();
+        } catch (final Exception e) {
+            // TODO Properly handle Exception
+            System.err.println("[ObservationService]: " + e);
         }
     }
 
@@ -82,9 +82,9 @@ class ObservationService implements NodeServiceListener {
                             "requested_getSpec", new TupleArgument(
                                     ((TucsonTupleCentreId) tid).toTerm()),
                             new Value(((TucsonAgentId) id).toString()))));
-        } catch (final Exception ex) {
-            System.err.println("[ObservationService]: " + ex);
-            ex.printStackTrace();
+        } catch (final Exception e) {
+            // TODO Properly handle Exception
+            System.err.println("[ObservationService]: " + e);
         }
     }
 
@@ -98,9 +98,9 @@ class ObservationService implements NodeServiceListener {
                                     ((TucsonTupleCentreId) tid).toTerm()),
                             new Value(((TucsonAgentId) id).toString()),
                             new TupleArgument(((LogicTuple) t).toTerm()))));
-        } catch (final Exception ex) {
-            System.err.println("[ObservationService]: " + ex);
-            ex.printStackTrace();
+        } catch (final Exception e) {
+            // TODO Properly handle Exception
+            System.err.println("[ObservationService]: " + e);
         }
     }
 
@@ -114,9 +114,9 @@ class ObservationService implements NodeServiceListener {
                                     ((TucsonTupleCentreId) tid).toTerm()),
                             new Value(((TucsonAgentId) id).toString()),
                             new TupleArgument(((LogicTuple) t).toTerm()))));
-        } catch (final Exception ex) {
-            System.err.println("[ObservationService]: " + ex);
-            ex.printStackTrace();
+        } catch (final Exception e) {
+            // TODO Properly handle Exception
+            System.err.println("[ObservationService]: " + e);
         }
     }
 
@@ -141,9 +141,9 @@ class ObservationService implements NodeServiceListener {
                                 new Value(((TucsonAgentId) id).toString()),
                                 new Value("failed"))));
             }
-        } catch (final Exception ex) {
-            System.err.println("[ObservationService]: " + ex);
-            ex.printStackTrace();
+        } catch (final Exception e) {
+            // TODO Properly handle Exception
+            System.err.println("[ObservationService]: " + e);
         }
     }
 
@@ -157,9 +157,9 @@ class ObservationService implements NodeServiceListener {
                                     ((TucsonTupleCentreId) tid).toTerm()),
                             new Value(((TucsonAgentId) id).toString()),
                             new TupleArgument(((LogicTuple) t).toTerm()))));
-        } catch (final Exception ex) {
-            System.err.println("[ObservationService]: " + ex);
-            ex.printStackTrace();
+        } catch (final Exception e) {
+            // TODO Properly handle Exception
+            System.err.println("[ObservationService]: " + e);
         }
     }
 
@@ -173,9 +173,9 @@ class ObservationService implements NodeServiceListener {
                                     ((TucsonTupleCentreId) tid).toTerm()),
                             new Value(((TucsonAgentId) id).toString()),
                             new TupleArgument(((LogicTuple) t).toTerm()))));
-        } catch (final Exception ex) {
-            System.err.println("[ObservationService]: " + ex);
-            ex.printStackTrace();
+        } catch (final Exception e) {
+            // TODO Properly handle Exception
+            System.err.println("[ObservationService]: " + e);
         }
     }
 
@@ -189,9 +189,9 @@ class ObservationService implements NodeServiceListener {
                                     ((TucsonTupleCentreId) tid).toTerm()),
                             new Value(((TucsonAgentId) id).toString()),
                             new TupleArgument(((LogicTuple) t).toTerm()))));
-        } catch (final Exception ex) {
-            System.err.println("[ObservationService]: " + ex);
-            ex.printStackTrace();
+        } catch (final Exception e) {
+            // TODO Properly handle Exception
+            System.err.println("[ObservationService]: " + e);
         }
     }
 
@@ -205,9 +205,9 @@ class ObservationService implements NodeServiceListener {
                                     ((TucsonTupleCentreId) tid).toTerm()),
                             new Value(((TucsonAgentId) id).toString()),
                             new TupleArgument(((LogicTuple) t).toTerm()))));
-        } catch (final Exception ex) {
-            System.err.println("[ObservationService]: " + ex);
-            ex.printStackTrace();
+        } catch (final Exception e) {
+            // TODO Properly handle Exception
+            System.err.println("[ObservationService]: " + e);
         }
     }
 
@@ -232,9 +232,9 @@ class ObservationService implements NodeServiceListener {
                                 new Value(((TucsonAgentId) id).toString()),
                                 new Value("failed"))));
             }
-        } catch (final Exception ex) {
-            System.err.println("[ObservationService]: " + ex);
-            ex.printStackTrace();
+        } catch (final Exception e) {
+            // TODO Properly handle Exception
+            System.err.println("[ObservationService]: " + e);
         }
     }
 
@@ -248,9 +248,9 @@ class ObservationService implements NodeServiceListener {
                                     ((TucsonTupleCentreId) tid).toTerm()),
                             new Value(((TucsonAgentId) id).toString()),
                             new TupleArgument(((LogicTuple) t).toTerm()))));
-        } catch (final Exception ex) {
-            System.err.println("[ObservationService]: " + ex);
-            ex.printStackTrace();
+        } catch (final Exception e) {
+            // TODO Properly handle Exception
+            System.err.println("[ObservationService]: " + e);
         }
     }
 
@@ -262,9 +262,9 @@ class ObservationService implements NodeServiceListener {
                             "completed_setSpec", new TupleArgument(
                                     ((TucsonTupleCentreId) tid).toTerm()),
                             new Value(((TucsonAgentId) id).toString()))));
-        } catch (final Exception ex) {
-            System.err.println("[ObservationService]: " + ex);
-            ex.printStackTrace();
+        } catch (final Exception e) {
+            // TODO Properly handle Exception
+            System.err.println("[ObservationService]: " + e);
         }
     }
 
@@ -278,9 +278,9 @@ class ObservationService implements NodeServiceListener {
                                     ((TucsonTupleCentreId) tid).toTerm()),
                             new Value(((TucsonAgentId) id).toString()),
                             new Value(spec))));
-        } catch (final Exception ex) {
-            System.err.println("[ObservationService]: " + ex);
-            ex.printStackTrace();
+        } catch (final Exception e) {
+            // TODO Properly handle Exception
+            System.err.println("[ObservationService]: " + e);
         }
     }
 
@@ -290,9 +290,9 @@ class ObservationService implements NodeServiceListener {
                     this.obsAid, this.obsContext, new LogicTuple("node_event",
                             new Var(), new Value("new_tc", new TupleArgument(
                                     tid.toTerm()))));
-        } catch (final Exception ex) {
-            System.err.println("[ObservationService]: " + ex);
-            ex.printStackTrace();
+        } catch (final Exception e) {
+            // TODO Properly handle Exception
+            System.err.println("[ObservationService]: " + e);
         }
     }
 
@@ -302,9 +302,9 @@ class ObservationService implements NodeServiceListener {
                     this.obsAid, this.obsContext, new LogicTuple("node_event",
                             new Var(), new Value("destoyed_tc",
                                     new TupleArgument(tid.toTerm()))));
-        } catch (final Exception ex) {
-            System.err.println("[ObservationService]: " + ex);
-            ex.printStackTrace();
+        } catch (final Exception e) {
+            // TODO Properly handle Exception
+            System.err.println("[ObservationService]: " + e);
         }
     }
 

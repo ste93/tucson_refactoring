@@ -34,14 +34,14 @@ public abstract class TucsonProtocol implements java.io.Serializable {
 
     private ACCDescription context;
 
-    private boolean request_allowed;
+    private boolean reqAllowed;
 
-    private int request_type;
+    private int reqType;
 
     abstract public TucsonProtocol acceptNewDialog() throws IOException,
             SocketTimeoutException;
 
-    abstract public void end() throws Exception;
+    abstract public void end() throws IOException;
 
     public ACCDescription getContextDescription() {
         return this.context;
@@ -52,19 +52,20 @@ public abstract class TucsonProtocol implements java.io.Serializable {
     abstract public ObjectOutputStream getOutputStream();
 
     public boolean isEnterRequest() {
-        return this.request_type == TucsonProtocol.REQ_ENTERCONTEXT;
+        return this.reqType == TucsonProtocol.REQ_ENTERCONTEXT;
     }
 
-    public boolean isEnterRequestAccepted() throws Exception {
-        return this.request_allowed;
+    public boolean isEnterRequestAccepted() {
+        return this.reqAllowed;
     }
 
     /* MODIFIED BY <s.mariani@unibo.it> */
     public boolean isTelnet() {
-        return this.request_type == TucsonProtocol.REQ_TELNET;
+        return this.reqType == TucsonProtocol.REQ_TELNET;
     }
 
-    public void receiveEnterRequest() throws Exception {
+    public void receiveEnterRequest() throws ClassNotFoundException,
+            IOException {
         final String agentName = this.receiveString();
         final String agentRole = this.receiveString();
         final String tcName = this.receiveString();
@@ -79,20 +80,20 @@ public abstract class TucsonProtocol implements java.io.Serializable {
         this.context = new ACCDescription(profile);
     }
 
-    public void receiveEnterRequestAnswer() throws Exception {
-        this.request_allowed = this.receiveBoolean();
+    public void receiveEnterRequestAnswer() throws IOException {
+        this.reqAllowed = this.receiveBoolean();
     }
 
-    public void receiveFirstRequest() throws Exception {
-        this.request_type = this.receiveInt();
+    public void receiveFirstRequest() throws IOException {
+        this.reqType = this.receiveInt();
     }
 
     /**
      * 
      * @param ctx
-     * @throws Exception
+     * @throws IOException
      */
-    public void sendEnterRequest(final ACCDescription ctx) throws Exception {
+    public void sendEnterRequest(final ACCDescription ctx) throws IOException {
 
         this.send(TucsonProtocol.REQ_ENTERCONTEXT);
 
@@ -121,36 +122,36 @@ public abstract class TucsonProtocol implements java.io.Serializable {
 
     }
 
-    public void sendEnterRequestAccepted()
-            throws Exception {
+    public void sendEnterRequestAccepted() throws IOException {
         this.send(true);
         this.flush();
     }
 
-    public void sendEnterRequestRefused()
-            throws Exception {
+    public void sendEnterRequestRefused() throws IOException {
         this.send(false);
         this.flush();
     }
 
-    abstract protected void flush() throws Exception;
+    abstract protected void flush() throws IOException;
 
-    abstract protected boolean receiveBoolean() throws Exception;
+    abstract protected boolean receiveBoolean() throws IOException;
 
-    abstract protected int receiveInt() throws Exception;
+    abstract protected int receiveInt() throws IOException;
 
-    abstract protected Object receiveObject() throws Exception;
+    abstract protected Object receiveObject() throws ClassNotFoundException,
+            IOException;
 
-    abstract protected String receiveString() throws Exception;
+    abstract protected String receiveString() throws ClassNotFoundException,
+            IOException;
 
-    abstract protected void send(boolean value) throws Exception;
+    abstract protected void send(boolean value) throws IOException;
 
-    abstract protected void send(byte[] value) throws Exception;
+    abstract protected void send(byte[] value) throws IOException;
 
-    abstract protected void send(int value) throws Exception;
+    abstract protected void send(int value) throws IOException;
 
-    abstract protected void send(Object value) throws Exception;
+    abstract protected void send(Object value) throws IOException;
 
-    abstract protected void send(String value) throws Exception;
+    abstract protected void send(String value) throws IOException;
 
 }

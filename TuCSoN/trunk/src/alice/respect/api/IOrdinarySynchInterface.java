@@ -21,7 +21,7 @@ public interface IOrdinarySynchInterface {
     LogicTuple in(IId aid, LogicTuple t) throws InvalidLogicTupleException,
             OperationNotPossibleException;
 
-    List<LogicTuple> in_all(IId aid, LogicTuple t)
+    List<LogicTuple> inAll(IId aid, LogicTuple t)
             throws InvalidLogicTupleException, OperationNotPossibleException;
 
     LogicTuple inp(IId aid, LogicTuple t) throws InvalidLogicTupleException,
@@ -30,7 +30,7 @@ public interface IOrdinarySynchInterface {
     LogicTuple no(IId aid, LogicTuple t) throws InvalidLogicTupleException,
             OperationNotPossibleException;
 
-    List<LogicTuple> no_all(IId aid, LogicTuple t)
+    List<LogicTuple> noAll(IId aid, LogicTuple t)
             throws InvalidLogicTupleException, OperationNotPossibleException;
 
     LogicTuple nop(IId aid, LogicTuple t) throws InvalidLogicTupleException,
@@ -39,13 +39,13 @@ public interface IOrdinarySynchInterface {
     void out(IId aid, LogicTuple t) throws InvalidLogicTupleException,
             OperationNotPossibleException;
 
-    List<LogicTuple> out_all(IId aid, LogicTuple t)
+    List<LogicTuple> outAll(IId aid, LogicTuple t)
             throws InvalidLogicTupleException, OperationNotPossibleException;
 
     LogicTuple rd(IId aid, LogicTuple t) throws InvalidLogicTupleException,
             OperationNotPossibleException;
 
-    List<LogicTuple> rd_all(IId aid, LogicTuple t)
+    List<LogicTuple> rdAll(IId aid, LogicTuple t)
             throws InvalidLogicTupleException, OperationNotPossibleException;
 
     LogicTuple rdp(IId aid, LogicTuple t) throws InvalidLogicTupleException,

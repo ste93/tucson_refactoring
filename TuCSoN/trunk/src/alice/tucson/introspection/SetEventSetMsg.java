@@ -13,15 +13,17 @@
  */
 package alice.tucson.introspection;
 
+import java.util.List;
+
 import alice.tucson.api.TucsonAgentId;
+import alice.tuplecentre.api.Tuple;
 
 public class SetEventSetMsg extends NodeMsg {
 
     private static final long serialVersionUID = -3946179149619833984L;
-    public java.util.ArrayList<?> eventWnSet;
+    public java.util.List<? extends Tuple> eventWnSet;
 
-    public SetEventSetMsg(final TucsonAgentId id,
-            final java.util.ArrayList<?> ts) {
+    public SetEventSetMsg(final TucsonAgentId id, final List<? extends Tuple> ts) {
         super(id, "setEventSet");
         this.eventWnSet = ts;
     }

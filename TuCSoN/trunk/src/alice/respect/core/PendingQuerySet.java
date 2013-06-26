@@ -7,6 +7,7 @@ package alice.respect.core;
 
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 
 import alice.tuplecentre.core.Event;
 
@@ -17,9 +18,9 @@ import alice.tuplecentre.core.Event;
  */
 public class PendingQuerySet {
 
-    private final LinkedList<Event> evAdded;
-    private final LinkedList<Event> events;
-    private final LinkedList<Event> evRemoved;
+    private final List<Event> evAdded;
+    private final List<Event> events;
+    private final List<Event> evRemoved;
     private boolean transaction;
 
     public PendingQuerySet() {
@@ -77,7 +78,7 @@ public class PendingQuerySet {
     }
 
     public alice.tuplecentre.core.Event get() {
-        final alice.tuplecentre.core.Event ev = this.events.removeFirst();
+        final alice.tuplecentre.core.Event ev = this.events.remove(0);
         if (this.transaction) {
             this.evRemoved.add(ev);
         }

@@ -23,13 +23,13 @@ public class OutputEvent extends Event {
 
     private static final long serialVersionUID = -5521129200850527503L;
     private final InputEvent inputEvent;
-    private boolean isLinking;
+    private boolean isLnk;
 
     public OutputEvent(final InputEvent ev) {
         super(ev.getSource(), ev.getSimpleTCEvent(), ev.getReactingTC(), ev
                 .getTime());
         this.inputEvent = ev;
-        this.isLinking = ev.isLinking();
+        this.isLnk = ev.isLinking();
     }
 
     public InputEvent getInputEvent() {
@@ -47,7 +47,7 @@ public class OutputEvent extends Event {
     }
 
     public boolean isLinking() {
-        return this.isLinking;
+        return this.isLnk;
     }
 
     @Override
@@ -56,7 +56,7 @@ public class OutputEvent extends Event {
     }
 
     public void setIsLinking(final boolean flag) {
-        this.isLinking = flag;
+        this.isLnk = flag;
     }
 
     @Override

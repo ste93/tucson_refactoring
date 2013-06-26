@@ -19,6 +19,7 @@ public class TucsonGenericException extends Exception {
     private final String msg;
 
     public TucsonGenericException(final String m) {
+        super();
         this.msg = m;
     }
 

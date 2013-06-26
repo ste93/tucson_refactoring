@@ -23,7 +23,7 @@ import alice.logictuple.TupleArgument;
  * @author aricci
  * 
  */
-public class InternalOperation {
+public final class InternalOperation {
 
     private static final int OPTYPE_GET_ENV = 77;
     private static final int OPTYPE_GET_R = 5;

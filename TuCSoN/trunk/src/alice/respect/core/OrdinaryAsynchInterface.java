@@ -32,7 +32,7 @@ public class OrdinaryAsynchInterface extends RootInterface implements
         return this.getCore().in(id, t, l);
     }
 
-    public IRespectOperation in_all(final IId aid, final LogicTuple t,
+    public IRespectOperation inAll(final IId aid, final LogicTuple t,
             final OperationCompletionListener l)
             throws InvalidLogicTupleException, OperationNotPossibleException {
         IRespectOperation op = null;
@@ -40,12 +40,12 @@ public class OrdinaryAsynchInterface extends RootInterface implements
             if (t == null) {
                 throw new InvalidLogicTupleException();
             } else if (t.getName().equals(",") && (t.getArity() == 2)) {
-                op = this.getCore().in_all(aid, new LogicTuple(t.getArg(0)), l);
+                op = this.getCore().inAll(aid, new LogicTuple(t.getArg(0)), l);
             } else {
-                op = this.getCore().in_all(aid, t, l);
+                op = this.getCore().inAll(aid, t, l);
             }
         } catch (final InvalidTupleOperationException e2) {
-            e2.printStackTrace();
+            // TODO Properly handle Exception
         }
         return op;
     }
@@ -68,7 +68,7 @@ public class OrdinaryAsynchInterface extends RootInterface implements
         return this.getCore().no(id, t, l);
     }
 
-    public IRespectOperation no_all(final IId aid, final LogicTuple t,
+    public IRespectOperation noAll(final IId aid, final LogicTuple t,
             final OperationCompletionListener l)
             throws InvalidLogicTupleException, OperationNotPossibleException {
         IRespectOperation op = null;
@@ -76,9 +76,9 @@ public class OrdinaryAsynchInterface extends RootInterface implements
             if (t == null) {
                 throw new InvalidLogicTupleException();
             } else if (t.getName().equals(",") && (t.getArity() == 2)) {
-                op = this.getCore().no_all(aid, new LogicTuple(t.getArg(0)), l);
+                op = this.getCore().noAll(aid, new LogicTuple(t.getArg(0)), l);
             } else {
-                op = this.getCore().no_all(aid, t, l);
+                op = this.getCore().noAll(aid, t, l);
             }
         } catch (final InvalidTupleOperationException e2) {
             throw new OperationNotPossibleException();
@@ -104,13 +104,13 @@ public class OrdinaryAsynchInterface extends RootInterface implements
         return this.getCore().out(id, t, l);
     }
 
-    public IRespectOperation out_all(final IId id, final LogicTuple t,
+    public IRespectOperation outAll(final IId id, final LogicTuple t,
             final OperationCompletionListener l)
             throws InvalidLogicTupleException, OperationNotPossibleException {
         if (t == null) {
             throw new InvalidLogicTupleException();
         }
-        return this.getCore().out_all(id, t, l);
+        return this.getCore().outAll(id, t, l);
     }
 
     public IRespectOperation rd(final IId id, final LogicTuple t,
@@ -122,7 +122,7 @@ public class OrdinaryAsynchInterface extends RootInterface implements
         return this.getCore().rd(id, t, l);
     }
 
-    public IRespectOperation rd_all(final IId aid, final LogicTuple t,
+    public IRespectOperation rdAll(final IId aid, final LogicTuple t,
             final OperationCompletionListener l)
             throws InvalidLogicTupleException, OperationNotPossibleException {
         IRespectOperation op = null;
@@ -130,12 +130,12 @@ public class OrdinaryAsynchInterface extends RootInterface implements
             if (t == null) {
                 throw new InvalidLogicTupleException();
             } else if (t.getName().equals(",") && (t.getArity() == 2)) {
-                op = this.getCore().rd_all(aid, new LogicTuple(t.getArg(0)), l);
+                op = this.getCore().rdAll(aid, new LogicTuple(t.getArg(0)), l);
             } else {
-                op = this.getCore().rd_all(aid, t, l);
+                op = this.getCore().rdAll(aid, t, l);
             }
-        } catch (final InvalidTupleOperationException e2) {
-            e2.printStackTrace();
+        } catch (final InvalidTupleOperationException e) {
+            // TODO Properly handle Exception
         }
         return op;
     }

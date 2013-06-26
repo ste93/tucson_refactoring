@@ -26,6 +26,7 @@ public class TupleCentreIdOperatorManager extends
     private static final long serialVersionUID = 1319340757322429430L;
 
     public TupleCentreIdOperatorManager() {
+        super();
         this.opNew("@", "xfx", 550);
         this.opNew(":", "xfx", 549);
         this.opNew(".", "xfx", 548);

@@ -30,8 +30,8 @@ public class NodeInstallationReport {
         return this.succeeded;
     }
 
-    public synchronized void setReport(final boolean success,
-            final String d, final Date da) {
+    public synchronized void setReport(final boolean success, final String d,
+            final Date da) {
         this.succeeded = success;
         this.descr = d;
         this.date = da;

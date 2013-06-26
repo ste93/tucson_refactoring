@@ -167,16 +167,19 @@ public abstract class TupleCentreOperation implements ITupleCentreOperation {
     }
 
     public LogicTuple getPredicate() {
+        final StringBuffer pred = new StringBuffer();
         try {
             if (this.isOut() || this.isOut_s() || this.isOutAll()
                     || this.isSpawn() || this.isSet() || this.isSet_s()) {
-                return LogicTuple.parse("" + this.getPrimitive() + "("
-                        + this.tupleArgument + ")");
+                pred.append(this.getPrimitive().toString()).append('(')
+                        .append(this.tupleArgument).append(')');
+                return LogicTuple.parse(pred.toString());
             }
-            return LogicTuple.parse("" + this.getPrimitive() + "("
-                    + this.templateArgument + ")");
+            pred.append(this.getPrimitive().toString()).append('(')
+                    .append(this.templateArgument).append(')');
+            return LogicTuple.parse(pred.toString());
         } catch (final InvalidLogicTupleException e) {
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return null;
         }
     }
@@ -426,8 +429,8 @@ public abstract class TupleCentreOperation implements ITupleCentreOperation {
                     this.operationCompleted = true;
                     this.token.notifyAll();
                 }
-            } catch (final Exception ex) {
-                ex.printStackTrace();
+            } catch (final Exception e) {
+                // TODO Properly handle Exception
             }
         }
     }
@@ -472,8 +475,8 @@ public abstract class TupleCentreOperation implements ITupleCentreOperation {
             }
         } catch (final InterruptedException e) {
             // TODO Properly handle Excpetion
-        } catch (final Exception ex) {
-            ex.printStackTrace();
+        } catch (final Exception e) {
+            // TODO Properly handle Exception
         }
     }
 
@@ -498,8 +501,8 @@ public abstract class TupleCentreOperation implements ITupleCentreOperation {
                     throw new OperationTimeOutException();
                 }
             }
-        } catch (final Exception ex) {
-            ex.printStackTrace();
+        } catch (final Exception e) {
+            // TODO Properly handle Exception
         }
     }
 

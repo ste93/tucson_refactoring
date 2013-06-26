@@ -30,9 +30,7 @@ public abstract class TupleCentreVMState {
 
     public abstract TupleCentreVMState getNextState();
 
-    public boolean isIdle() {
-        return false;
-    }
+    public abstract boolean isIdle();
 
     public abstract void resolveLinks();
 

@@ -15,25 +15,25 @@ package alice.tucson.introspection.tools;
 
 import java.awt.Color;
 
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
+
 public class ReactionViewer extends javax.swing.JFrame {
 
     private static final long serialVersionUID = -8708893837692939114L;
-    private javax.swing.JButton buttonBrowse;
 
     private javax.swing.JCheckBox checkLogEnable;
     private javax.swing.JTextField inputFileLog;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JPanel jPanel10;
-    private javax.swing.JPanel jPanel5;
-    private javax.swing.JPanel jPanel7;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTabbedPane jTabbedPane1;
     private final Inspector mainForm;
     private javax.swing.JTextArea outputArea;
     private javax.swing.JTextField outputState;
 
     /** Creates new form TupleForm */
     public ReactionViewer(final Inspector mainForm_) {
+        super();
         this.initComponents();
         this.pack();
         this.mainForm = mainForm_;
@@ -84,15 +84,15 @@ public class ReactionViewer extends javax.swing.JFrame {
 
         this.jScrollPane1 = new javax.swing.JScrollPane();
         this.outputArea = new javax.swing.JTextArea();
-        this.jTabbedPane1 = new javax.swing.JTabbedPane();
-        this.jPanel5 = new javax.swing.JPanel();
-        this.jPanel7 = new javax.swing.JPanel();
-        this.jLabel1 = new javax.swing.JLabel();
+        final JTabbedPane jTabbedPane1 = new JTabbedPane();
+        final JPanel jPanel5 = new JPanel();
+        final JPanel jPanel7 = new JPanel();
+        final JLabel jLabel1 = new JLabel();
         this.inputFileLog = new javax.swing.JTextField();
-        this.buttonBrowse = new javax.swing.JButton();
+        final JButton buttonBrowse = new JButton();
         this.checkLogEnable = new javax.swing.JCheckBox();
         this.outputState = new javax.swing.JTextField();
-        this.jPanel10 = new javax.swing.JPanel();
+        final JPanel jPanel10 = new JPanel();
 
         this.getContentPane().setLayout(new java.awt.GridBagLayout());
 
@@ -117,25 +117,25 @@ public class ReactionViewer extends javax.swing.JFrame {
         gridBagConstraints.weighty = 100.0;
         this.getContentPane().add(this.jScrollPane1, gridBagConstraints);
 
-        this.jTabbedPane1.setFont(new java.awt.Font("Arial", 0, 11));
+        jTabbedPane1.setFont(new java.awt.Font("Arial", 0, 11));
 
-        this.jPanel5.setLayout(new java.awt.GridBagLayout());
+        jPanel5.setLayout(new java.awt.GridBagLayout());
 
-        this.jPanel7.setLayout(new java.awt.GridBagLayout());
-        this.jPanel7.setBorder(new javax.swing.border.TitledBorder(
+        jPanel7.setLayout(new java.awt.GridBagLayout());
+        jPanel7.setBorder(new javax.swing.border.TitledBorder(
                 new javax.swing.border.EtchedBorder(), "store"));
-        this.jPanel7.setFont(new java.awt.Font("Arial", 0, 11));
+        jPanel7.setFont(new java.awt.Font("Arial", 0, 11));
 
-        this.jLabel1.setFont(new java.awt.Font("Arial", 0, 11));
-        this.jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        this.jLabel1.setText("dump observations on file: ");
+        jLabel1.setFont(new java.awt.Font("Arial", 0, 11));
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel1.setText("dump observations on file: ");
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 10.0;
-        this.jPanel7.add(this.jLabel1, gridBagConstraints);
+        jPanel7.add(jLabel1, gridBagConstraints);
 
         this.inputFileLog
                 .addActionListener(new java.awt.event.ActionListener() {
@@ -150,23 +150,21 @@ public class ReactionViewer extends javax.swing.JFrame {
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 100.0;
-        this.jPanel7.add(this.inputFileLog, gridBagConstraints);
+        jPanel7.add(this.inputFileLog, gridBagConstraints);
 
-        this.buttonBrowse.setFont(new java.awt.Font("Arial", 0, 11));
-        this.buttonBrowse.setText("Browse");
-        this.buttonBrowse
-                .addActionListener(new java.awt.event.ActionListener() {
-                    public void actionPerformed(
-                            final java.awt.event.ActionEvent evt) {
-                        ReactionViewer.this.buttonBrowseActionPerformed();
-                    }
-                });
+        buttonBrowse.setFont(new java.awt.Font("Arial", 0, 11));
+        buttonBrowse.setText("Browse");
+        buttonBrowse.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(final java.awt.event.ActionEvent evt) {
+                ReactionViewer.this.buttonBrowseActionPerformed();
+            }
+        });
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 5;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.weightx = 5.0;
-        this.jPanel7.add(this.buttonBrowse, gridBagConstraints);
+        jPanel7.add(buttonBrowse, gridBagConstraints);
 
         this.checkLogEnable
                 .addActionListener(new java.awt.event.ActionListener() {
@@ -179,7 +177,7 @@ public class ReactionViewer extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 1;
-        this.jPanel7.add(this.checkLogEnable, gridBagConstraints);
+        jPanel7.add(this.checkLogEnable, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
@@ -187,9 +185,9 @@ public class ReactionViewer extends javax.swing.JFrame {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 90.0;
         gridBagConstraints.weighty = 30.0;
-        this.jPanel5.add(this.jPanel7, gridBagConstraints);
+        jPanel5.add(jPanel7, gridBagConstraints);
 
-        this.jTabbedPane1.addTab("Log", null, this.jPanel5, "");
+        jTabbedPane1.addTab("Log", null, jPanel5, "");
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -198,9 +196,9 @@ public class ReactionViewer extends javax.swing.JFrame {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 100.0;
         gridBagConstraints.weighty = 10.0;
-        this.getContentPane().add(this.jTabbedPane1, gridBagConstraints);
+        this.getContentPane().add(jTabbedPane1, gridBagConstraints);
 
-        this.jPanel10.setLayout(new java.awt.GridBagLayout());
+        jPanel10.setLayout(new java.awt.GridBagLayout());
 
         this.outputState.setBackground(Color.CYAN);
         this.outputState.setEditable(false);
@@ -212,7 +210,7 @@ public class ReactionViewer extends javax.swing.JFrame {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 100.0;
         gridBagConstraints.weighty = 100.0;
-        this.jPanel10.add(this.outputState, gridBagConstraints);
+        jPanel10.add(this.outputState, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -220,7 +218,7 @@ public class ReactionViewer extends javax.swing.JFrame {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 100.0;
         gridBagConstraints.weighty = 5.0;
-        this.getContentPane().add(this.jPanel10, gridBagConstraints);
+        this.getContentPane().add(jPanel10, gridBagConstraints);
 
     }
 

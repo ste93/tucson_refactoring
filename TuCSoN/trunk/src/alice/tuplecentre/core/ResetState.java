@@ -36,6 +36,15 @@ public class ResetState extends TupleCentreVMState {
         return this.idleState;
     }
 
+    /*
+     * (non-Javadoc)
+     * @see alice.tuplecentre.core.TupleCentreVMState#isIdle()
+     */
+    @Override
+    public boolean isIdle() {
+        return false;
+    }
+
     @Override
     public void resolveLinks() {
         this.idleState = this.vm.getState("IdleState");

@@ -13,7 +13,7 @@
  */
 package alice.tucson.api;
 
-import java.util.HashMap;
+import java.util.Map;
 
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
@@ -22,9 +22,9 @@ import alice.tuplecentre.core.TupleCentreOperation;
 
 /**
  * Base class to extend to implement TuCSoN Agents. Once created, the method
- * {@link alice.tucson.api.TucsonAgent#go go()} gets TuCSoN Default ACC
- * (the most comprehensive at the moment) and trigger Agent's main execution
- * cyle, that is the method {@link alice.tucson.api.TucsonAgent#main main}.
+ * {@link alice.tucson.api.TucsonAgent#go go()} gets TuCSoN Default ACC (the
+ * most comprehensive at the moment) and trigger Agent's main execution cyle,
+ * that is the method {@link alice.tucson.api.TucsonAgent#main main}.
  */
 public abstract class TucsonAgent implements TucsonOperationCompletionListener {
 
@@ -35,14 +35,15 @@ public abstract class TucsonAgent implements TucsonOperationCompletionListener {
      * construction-time defined port.
      */
     final class AgentThread extends Thread {
-        TucsonAgent agent;
+        private final TucsonAgent agent;
 
         AgentThread(final TucsonAgent a) {
+            super();
             this.agent = a;
         }
 
         @Override
-        final public void run() {
+        public void run() {
             try {
                 this.agent.setContext(TucsonMetaACC.getContext(
                         this.agent.getTucsonAgentId(), TucsonAgent.this.node,
@@ -51,12 +52,12 @@ public abstract class TucsonAgent implements TucsonOperationCompletionListener {
                 this.agent.getContext().exit();
             } catch (final TucsonOperationNotPossibleException e) {
                 System.err.println("[TucsonAgent] AgentThread: " + e);
-                e.printStackTrace();
+                // TODO Properly handle Exception
             }
         }
     }
 
-    protected HashMap<TucsonOpId, TucsonOpCompletionEvent> events = null;
+    protected Map<TucsonOpId, TucsonOpCompletionEvent> events = null;
     private final TucsonAgentId aid;
     private EnhancedACC context;
     private final String node;
@@ -121,8 +122,7 @@ public abstract class TucsonAgent implements TucsonOperationCompletionListener {
      * @param p
      *            The listening port of the TuCSoN Node to contact
      */
-    private TucsonAgent(final TucsonAgentId id, final String netid,
-            final int p) {
+    private TucsonAgent(final TucsonAgentId id, final String netid, final int p) {
         this.aid = id;
         this.node = netid;
         this.port = p;
@@ -176,7 +176,7 @@ public abstract class TucsonAgent implements TucsonOperationCompletionListener {
 
     public final void operationCompleted(final TupleCentreOperation op) {
         /*
-         * FIXME Found cause of double inheritance
+         * FIXME Find cause of double inheritance
          */
     }
 

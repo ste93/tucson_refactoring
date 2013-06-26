@@ -18,7 +18,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-import java.util.Vector;
+import java.util.List;
 
 import alice.tucson.api.TucsonAgentId;
 import alice.tucson.api.TucsonTupleCentreId;
@@ -35,8 +35,8 @@ public class InspectorContextStub implements InspectorContext {
     protected TucsonTupleCentreId tid;
 
     /** listeners registrated for virtual machine output events */
-    private final Vector<InspectorContextListener> contextListeners =
-            new Vector<InspectorContextListener>();
+    private final List<InspectorContextListener> contextListeners =
+            new ArrayList<InspectorContextListener>();
 
     /** user id */
     private final TucsonAgentId id;
@@ -60,21 +60,24 @@ public class InspectorContextStub implements InspectorContext {
         try {
             this.getTupleCentreInfo(tc);
         } catch (final UnreachableNodeException e) {
-            e.printStackTrace();
+            // TODO Properly handle Exception
         } catch (final OperationNotAllowedException e) {
-            e.printStackTrace();
+            // TODO Properly handle Exception
         }
     }
 
     /**
      * waits and processes TuCSoN virtual machine events
+     * 
+     * @throws IOException
+     * @throws ClassNotFoundException
      */
-    public void acceptVMEvent() throws Exception {
+    public void acceptVMEvent() throws ClassNotFoundException, IOException {
         try {
             final InspectorContextEvent msg =
                     (InspectorContextEvent) this.inStream.readObject();
             for (int i = 0; i < this.contextListeners.size(); i++) {
-                this.contextListeners.elementAt(i).onContextEvent(msg);
+                this.contextListeners.get(i).onContextEvent(msg);
             }
         } catch (final EOFException e) {
             // TODO Properly handle Exception
@@ -88,17 +91,25 @@ public class InspectorContextStub implements InspectorContext {
      *            the listener
      */
     public void addInspectorContextListener(final InspectorContextListener l) {
-        this.contextListeners.addElement(l);
+        this.contextListeners.add(l);
     }
 
-    /** shutdown inspector */
-    public void exit() throws Exception {
+    /**
+     * shutdown inspector
+     * 
+     * @throws IOException
+     */
+    public void exit() throws IOException {
         this.outStream.writeObject(new ShutdownMsg(this.id));
         this.outStream.flush();
     }
 
-    /** get a snapshot of tuple set */
-    public void getSnapshot(final byte snapshotMsg) throws Exception {
+    /**
+     * get a snapshot of tuple set
+     * 
+     * @throws IOException
+     */
+    public void getSnapshot(final byte snapshotMsg) throws IOException {
         this.outStream.writeObject(new GetSnapshotMsg(this.id, snapshotMsg));
         this.outStream.flush();
     }
@@ -107,8 +118,12 @@ public class InspectorContextStub implements InspectorContext {
         return this.tid;
     }
 
-    /** when doing trace -> ask for a new virtual machine step */
-    public void nextStep() throws Exception {
+    /**
+     * when doing trace -> ask for a new virtual machine step
+     * 
+     * @throws IOException
+     */
+    public void nextStep() throws IOException {
         this.outStream.writeObject(new NextStepMsg(this.id));
         this.outStream.flush();
     }
@@ -118,24 +133,35 @@ public class InspectorContextStub implements InspectorContext {
      */
     public void
             removeInspectorContextListener(final InspectorContextListener l) {
-        this.contextListeners.removeElement(l);
+        this.contextListeners.remove(l);
     }
 
-    /** reset the tuple centre */
-    public void reset() throws Exception {
+    /**
+     * reset the tuple centre
+     * 
+     * @throws IOException
+     */
+    public void reset() throws IOException {
         this.outStream.writeObject(new ResetMsg(this.id));
         this.outStream.flush();
     }
 
-    /** set a new query set */
-    public void setEventSet(final ArrayList<? extends Tuple> wset)
-            throws Exception {
+    /**
+     * set a new query set
+     * 
+     * @throws IOException
+     */
+    public void setEventSet(final List<Tuple> wset) throws IOException {
         this.outStream.writeObject(new SetEventSetMsg(this.id, wset));
         this.outStream.flush();
     }
 
-    /** setting a new observation protocol */
-    public void setProtocol(final InspectorProtocol p) throws Exception {
+    /**
+     * setting a new observation protocol
+     * 
+     * @throws IOException
+     */
+    public void setProtocol(final InspectorProtocol p) throws IOException {
         final InspectorProtocol newp = new InspectorProtocol();
         newp.tsetObservType = p.tsetObservType;
         newp.tsetFilter = p.tsetFilter;
@@ -148,9 +174,12 @@ public class InspectorContextStub implements InspectorContext {
         this.protocol = p;
     }
 
-    /** set a new tuple set */
-    public void setTupleSet(final ArrayList<? extends Tuple> tset)
-            throws Exception {
+    /**
+     * set a new tuple set
+     * 
+     * @throws IOException
+     */
+    public void setTupleSet(final List<Tuple> tset) throws IOException {
         this.outStream.writeObject(new SetTupleSetMsg(this.id, tset));
         this.outStream.flush();
     }
@@ -162,9 +191,9 @@ public class InspectorContextStub implements InspectorContext {
         try {
             this.getTupleCentreInfo(titcd);
         } catch (final UnreachableNodeException e) {
-            e.printStackTrace();
+            // TODO Properly handle Exception
         } catch (final OperationNotAllowedException e) {
-            e.printStackTrace();
+            // TODO Properly handle Exception
         }
     }
 
@@ -195,7 +224,7 @@ public class InspectorContextStub implements InspectorContext {
         } catch (final IOException e) {
             throw new alice.tucson.api.exceptions.UnreachableNodeException();
         } catch (final Exception e) {
-            e.printStackTrace();
+            // TODO Properly handle Exception
         }
 
         throw new alice.tucson.api.exceptions.OperationNotAllowedException();

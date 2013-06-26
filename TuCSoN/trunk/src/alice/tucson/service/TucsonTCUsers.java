@@ -15,6 +15,7 @@ package alice.tucson.service;
 
 import java.util.Date;
 import java.util.LinkedList;
+import java.util.List;
 
 import alice.tucson.api.TucsonAgentId;
 import alice.tucson.api.TucsonTupleCentreId;
@@ -25,7 +26,7 @@ import alice.tucson.api.TucsonTupleCentreId;
 public class TucsonTCUsers {
 
     private final Date creationDate;
-    private final LinkedList<TucsonAgentId> currentAidUsers;
+    private final List<TucsonAgentId> currentAidUsers;
     private final TucsonTupleCentreId tid;
 
     public TucsonTCUsers(final TucsonTupleCentreId id) {
@@ -50,7 +51,7 @@ public class TucsonTCUsers {
         return this.tid;
     }
 
-    public LinkedList<TucsonAgentId> getUsers() {
+    public List<TucsonAgentId> getUsers() {
         synchronized (this.currentAidUsers) {
             return this.currentAidUsers;
         }
@@ -58,7 +59,7 @@ public class TucsonTCUsers {
 
     public void removeUser(final TucsonAgentId aid) {
         synchronized (this.currentAidUsers) {
-            if (this.currentAidUsers.contains(aid) == true) {
+            if (this.currentAidUsers.contains(aid)) {
                 this.currentAidUsers.remove(aid);
             }
         }

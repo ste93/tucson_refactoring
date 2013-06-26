@@ -44,7 +44,7 @@ public class DiningPhilosophersTest extends TucsonAgent {
         try {
             new DiningPhilosophersTest("boot").go();
         } catch (final TucsonInvalidAgentIdException e) {
-            e.printStackTrace();
+            // TODO Properly handle Exception
         }
     }
 
@@ -118,19 +118,19 @@ public class DiningPhilosophersTest extends TucsonAgent {
                     DiningPhilosophersTest.EATING_STEP).go();
             acc.exit();
         } catch (final TucsonInvalidTupleCentreIdException e) {
-            e.printStackTrace();
+            // TODO Properly handle Exception
         } catch (final TucsonOperationNotPossibleException e) {
-            e.printStackTrace();
+            // TODO Properly handle Exception
         } catch (final UnreachableNodeException e) {
-            e.printStackTrace();
+            // TODO Properly handle Exception
         } catch (final OperationTimeOutException e) {
-            e.printStackTrace();
+            // TODO Properly handle Exception
         } catch (final IOException e) {
-            e.printStackTrace();
+            // TODO Properly handle Exception
         } catch (final InvalidLogicTupleException e) {
-            e.printStackTrace();
+            // TODO Properly handle Exception
         } catch (final TucsonInvalidAgentIdException e) {
-            e.printStackTrace();
+            // TODO Properly handle Exception
         }
     }
 

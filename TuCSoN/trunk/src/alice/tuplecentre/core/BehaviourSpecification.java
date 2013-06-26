@@ -18,6 +18,6 @@ package alice.tuplecentre.core;
  */
 public abstract class BehaviourSpecification {
     /*
-     * 
+     * FIXME This class could probably be deleted...
      */
 }

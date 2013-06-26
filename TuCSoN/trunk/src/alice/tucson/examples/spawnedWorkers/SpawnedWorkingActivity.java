@@ -52,10 +52,10 @@ public class SpawnedWorkingActivity extends SpawnActivity {
             this.out(res);
         } catch (final InvalidLogicTupleException e) {
             this.log("ERROR: Tuple is not an admissible Prolog term!");
-            e.printStackTrace();
+            // TODO Properly handle Exception
         } catch (final InvalidTupleOperationException e) {
             this.log("ERROR: No tuple arguments to retrieve!");
-            e.printStackTrace();
+            // TODO Properly handle Exception
         }
     }
 
@@ -74,7 +74,8 @@ public class SpawnedWorkingActivity extends SpawnActivity {
         if (num == 0) {
             return BigInteger.ONE;
         }
-        return new BigInteger("" + num).multiply(this.factorial(num - 1));
+        return new BigInteger(String.valueOf(num)).multiply(this
+                .factorial(num - 1));
     }
 
 }

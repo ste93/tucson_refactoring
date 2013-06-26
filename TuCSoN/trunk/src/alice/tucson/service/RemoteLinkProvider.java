@@ -1,6 +1,7 @@
 package alice.tucson.service;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import alice.respect.api.ILinkContext;
 import alice.respect.api.IRemoteLinkProvider;
@@ -11,7 +12,8 @@ import alice.tuplecentre.api.TupleCentreId;
  */
 public class RemoteLinkProvider implements IRemoteLinkProvider {
 
-    private static HashMap<String, InterTupleCentreACCProvider> remoteRegistry;
+    // FIXME How to fix this?
+    private static Map<String, InterTupleCentreACCProvider> remoteRegistry;
 
     public RemoteLinkProvider() {
         RemoteLinkProvider.remoteRegistry =

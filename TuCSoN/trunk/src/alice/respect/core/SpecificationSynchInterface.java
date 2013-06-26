@@ -42,83 +42,83 @@ public class SpecificationSynchInterface extends RootInterface implements
 
     public List<LogicTuple> get_s(final IId aid)
             throws OperationNotPossibleException {
-        final IRespectOperation op = this.getCore().get_s(aid);
+        final IRespectOperation op = this.getCore().getS(aid);
         op.waitForOperationCompletion();
         return op.getLogicTupleListResult();
     }
 
-    public LogicTuple in_s(final AgentId id, final LogicTuple t)
+    public LogicTuple inpS(final AgentId id, final LogicTuple t)
             throws InvalidLogicTupleException, OperationNotPossibleException {
         if (t == null) {
             throw new InvalidLogicTupleException();
         }
-        final IRespectOperation op = this.getCore().in_s(id, t);
+        final IRespectOperation op = this.getCore().inpS(id, t);
         op.waitForOperationCompletion();
         return this.unify(t, op.getLogicTupleResult());
     }
 
-    public LogicTuple inp_s(final AgentId id, final LogicTuple t)
+    public LogicTuple inS(final AgentId id, final LogicTuple t)
             throws InvalidLogicTupleException, OperationNotPossibleException {
         if (t == null) {
             throw new InvalidLogicTupleException();
         }
-        final IRespectOperation op = this.getCore().inp_s(id, t);
+        final IRespectOperation op = this.getCore().inS(id, t);
         op.waitForOperationCompletion();
         return this.unify(t, op.getLogicTupleResult());
     }
 
-    public LogicTuple no_s(final AgentId id, final LogicTuple t)
+    public LogicTuple nopS(final AgentId id, final LogicTuple t)
             throws InvalidLogicTupleException, OperationNotPossibleException {
         if (t == null) {
             throw new InvalidLogicTupleException();
         }
-        final IRespectOperation op = this.getCore().no_s(id, t);
+        final IRespectOperation op = this.getCore().nopS(id, t);
         op.waitForOperationCompletion();
         return this.unify(t, op.getLogicTupleResult());
     }
 
-    public LogicTuple nop_s(final AgentId id, final LogicTuple t)
+    public LogicTuple noS(final AgentId id, final LogicTuple t)
             throws InvalidLogicTupleException, OperationNotPossibleException {
         if (t == null) {
             throw new InvalidLogicTupleException();
         }
-        final IRespectOperation op = this.getCore().nop_s(id, t);
+        final IRespectOperation op = this.getCore().noS(id, t);
         op.waitForOperationCompletion();
         return this.unify(t, op.getLogicTupleResult());
     }
 
-    public void out_s(final AgentId id, final LogicTuple t)
+    public void outS(final AgentId id, final LogicTuple t)
             throws InvalidLogicTupleException, OperationNotPossibleException {
         if (t == null) {
             throw new InvalidLogicTupleException();
         }
-        final IRespectOperation op = this.getCore().out_s(id, t);
+        final IRespectOperation op = this.getCore().outS(id, t);
         op.waitForOperationCompletion();
     }
 
-    public LogicTuple rd_s(final AgentId id, final LogicTuple t)
+    public LogicTuple rdpS(final AgentId id, final LogicTuple t)
             throws InvalidLogicTupleException, OperationNotPossibleException {
         if (t == null) {
             throw new InvalidLogicTupleException();
         }
-        final IRespectOperation op = this.getCore().rd_s(id, t);
+        final IRespectOperation op = this.getCore().rdpS(id, t);
         op.waitForOperationCompletion();
         return this.unify(t, op.getLogicTupleResult());
     }
 
-    public LogicTuple rdp_s(final AgentId id, final LogicTuple t)
+    public LogicTuple rdS(final AgentId id, final LogicTuple t)
             throws InvalidLogicTupleException, OperationNotPossibleException {
         if (t == null) {
             throw new InvalidLogicTupleException();
         }
-        final IRespectOperation op = this.getCore().rdp_s(id, t);
+        final IRespectOperation op = this.getCore().rdS(id, t);
         op.waitForOperationCompletion();
         return this.unify(t, op.getLogicTupleResult());
     }
 
     public List<LogicTuple> set_s(final IId aid, final LogicTuple t)
             throws OperationNotPossibleException {
-        final IRespectOperation op = this.getCore().set_s(aid, t);
+        final IRespectOperation op = this.getCore().setS(aid, t);
         op.waitForOperationCompletion();
         return op.getLogicTupleListResult();
     }
@@ -127,7 +127,7 @@ public class SpecificationSynchInterface extends RootInterface implements
             set_s(final IId aid, final RespectSpecification spec)
                     throws OperationNotPossibleException,
                     InvalidSpecificationException {
-        final IRespectOperation op = this.getCore().set_s(aid, spec);
+        final IRespectOperation op = this.getCore().setS(aid, spec);
         if (aid.toString().equals("'$TucsonNodeService-Agent'")
                 || aid.toString().startsWith("'$Inspector-'")) {
             return new LinkedList<LogicTuple>();

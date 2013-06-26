@@ -32,7 +32,7 @@ public class DiningPhilosophersTest extends TucsonAgent {
         try {
             new DiningPhilosophersTest("boot").go();
         } catch (final TucsonInvalidAgentIdException e) {
-            e.printStackTrace();
+            // TODO Properly handle Exception
         }
     }
 
@@ -70,7 +70,8 @@ public class DiningPhilosophersTest extends TucsonAgent {
                                         + i
                                         + ","
                                         + ((i + 1) % DiningPhilosophersTest.N_PHILOSOPHERS)
-                                        + ")", this.ip, this.port + "");
+                                        + ")", this.ip,
+                                String.valueOf(this.port));
                 this.say("Injecting 'seat' ReSpecT specification in tc < "
                         + seats[i].toString() + " >...");
                 acc.set_s(
@@ -81,7 +82,8 @@ public class DiningPhilosophersTest extends TucsonAgent {
                         null);
             }
             final TucsonTupleCentreId table =
-                    new TucsonTupleCentreId("table", this.ip, this.port + "");
+                    new TucsonTupleCentreId("table", this.ip,
+                            String.valueOf(this.port));
             this.say("Injecting 'table' ReSpecT specification in tc < "
                     + table.toString() + " >...");
             acc.set_s(
@@ -96,19 +98,19 @@ public class DiningPhilosophersTest extends TucsonAgent {
             }
             acc.exit();
         } catch (final TucsonInvalidTupleCentreIdException e) {
-            e.printStackTrace();
+            // TODO Properly handle Exception
         } catch (final TucsonOperationNotPossibleException e) {
-            e.printStackTrace();
+            // TODO Properly handle Exception
         } catch (final UnreachableNodeException e) {
-            e.printStackTrace();
+            // TODO Properly handle Exception
         } catch (final OperationTimeOutException e) {
-            e.printStackTrace();
+            // TODO Properly handle Exception
         } catch (final IOException e) {
-            e.printStackTrace();
+            // TODO Properly handle Exception
         } catch (final InvalidLogicTupleException e) {
-            e.printStackTrace();
+            // TODO Properly handle Exception
         } catch (final TucsonInvalidAgentIdException e) {
-            e.printStackTrace();
+            // TODO Properly handle Exception
         }
     }
 

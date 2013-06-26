@@ -17,10 +17,11 @@ public class TucsonMsgRequest implements Serializable {
      * 
      * @param din
      * @return
-     * @throws Exception
+     * @throws IOException
+     * @throws ClassNotFoundException
      */
     public static TucsonMsgRequest read(final ObjectInputStream din)
-            throws Exception {
+            throws IOException, ClassNotFoundException {
         final long id = din.readLong();
         final int type = din.readInt();
         final String tid = (String) din.readObject();
@@ -63,7 +64,9 @@ public class TucsonMsgRequest implements Serializable {
     }
 
     protected TucsonMsgRequest() {
-
+        /*
+         * 
+         */
     }
 
     public long getId() {

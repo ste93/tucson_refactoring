@@ -51,7 +51,7 @@ public abstract class Automaton extends TucsonAgent implements Serializable {
      *            the string representing the state to become
      */
     protected void become(final String s) {
-        if (!this.state.equals("end")) {
+        if (!"end".equals(this.state)) {
             this.state = s;
             this.arguments = null;
         }
@@ -66,9 +66,9 @@ public abstract class Automaton extends TucsonAgent implements Serializable {
      *            arguments to be used in the target state
      */
     protected void become(final String s, final Object[] args) {
-        if (!this.state.equals("end")) {
+        if (!"end".equals(this.state)) {
             this.state = s;
-            this.arguments = args;
+            this.arguments = args.clone();
         }
     }
 
@@ -104,8 +104,8 @@ public abstract class Automaton extends TucsonAgent implements Serializable {
             Automaton.argType =
                     new Class[] { Class.forName("java.lang.Object") };
         } catch (final ClassNotFoundException e) {
+            // TODO Properly handle Exception
             System.err.println("[Automaton]: " + e);
-            e.printStackTrace();
             this.error();
         }
 
@@ -120,24 +120,24 @@ public abstract class Automaton extends TucsonAgent implements Serializable {
                         m.setAccessible(true);
                         m.invoke(this, (Object[]) null);
                     } catch (final SecurityException e) {
+                        // TODO Properly handle Exception
                         System.err.println("[Automaton]: " + e);
-                        e.printStackTrace();
                         this.error();
                     } catch (final NoSuchMethodException e) {
+                        // TODO Properly handle Exception
                         System.err.println("[Automaton]: " + e);
-                        e.printStackTrace();
                         this.error();
                     } catch (final IllegalArgumentException e) {
+                        // TODO Properly handle Exception
                         System.err.println("[Automaton]: " + e);
-                        e.printStackTrace();
                         this.error();
                     } catch (final IllegalAccessException e) {
+                        // TODO Properly handle Exception
                         System.err.println("[Automaton]: " + e);
-                        e.printStackTrace();
                         this.error();
                     } catch (final InvocationTargetException e) {
+                        // TODO Properly handle Exception
                         System.err.println("[Automaton]: " + e);
-                        e.printStackTrace();
                         this.error();
                     }
                 } else {
@@ -149,24 +149,24 @@ public abstract class Automaton extends TucsonAgent implements Serializable {
                         m.setAccessible(true);
                         m.invoke(this, this.arguments);
                     } catch (final SecurityException e) {
+                        // TODO Properly handle Exception
                         System.err.println("[Automaton]: " + e);
-                        e.printStackTrace();
                         this.error();
                     } catch (final NoSuchMethodException e) {
+                        // TODO Properly handle Exception
                         System.err.println("[Automaton]: " + e);
-                        e.printStackTrace();
                         this.error();
                     } catch (final IllegalArgumentException e) {
+                        // TODO Properly handle Exception
                         System.err.println("[Automaton]: " + e);
-                        e.printStackTrace();
                         this.error();
                     } catch (final IllegalAccessException e) {
+                        // TODO Properly handle Exception
                         System.err.println("[Automaton]: " + e);
-                        e.printStackTrace();
                         this.error();
                     } catch (final InvocationTargetException e) {
+                        // TODO Properly handle Exception
                         System.err.println("[Automaton]: " + e);
-                        e.printStackTrace();
                         this.error();
                     }
                 }
@@ -174,8 +174,8 @@ public abstract class Automaton extends TucsonAgent implements Serializable {
                 try {
                     this.end();
                 } catch (final TucsonOperationNotPossibleException e) {
+                    // TODO Properly handle Exception
                     System.err.println("[Automaton]: " + e);
-                    e.printStackTrace();
                     this.error();
                 }
                 break;

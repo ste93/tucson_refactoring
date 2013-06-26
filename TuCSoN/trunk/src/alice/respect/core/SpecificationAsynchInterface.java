@@ -19,84 +19,84 @@ public class SpecificationAsynchInterface implements
         this.core = core_;
     }
 
-    public IRespectOperation get_s(final IId aid,
+    public IRespectOperation getS(final IId aid,
             final OperationCompletionListener l)
             throws InvalidLogicTupleException, OperationNotPossibleException {
         return this.core.get(aid, l);
     }
 
-    public IRespectOperation in_s(final IId id, final LogicTuple t,
+    public IRespectOperation inpS(final IId id, final LogicTuple t,
             final OperationCompletionListener l)
             throws InvalidLogicTupleException, OperationNotPossibleException {
         if (t == null) {
             throw new InvalidLogicTupleException();
         }
-        return this.core.in_s(id, t, l);
+        return this.core.inpS(id, t, l);
     }
 
-    public IRespectOperation inp_s(final IId id, final LogicTuple t,
+    public IRespectOperation inS(final IId id, final LogicTuple t,
             final OperationCompletionListener l)
             throws InvalidLogicTupleException, OperationNotPossibleException {
         if (t == null) {
             throw new InvalidLogicTupleException();
         }
-        return this.core.inp_s(id, t, l);
+        return this.core.inS(id, t, l);
     }
 
-    public IRespectOperation no_s(final IId aid, final LogicTuple t,
+    public IRespectOperation nopS(final IId aid, final LogicTuple t,
             final OperationCompletionListener l)
             throws InvalidLogicTupleException, OperationNotPossibleException {
         if (t == null) {
             throw new InvalidLogicTupleException();
         }
-        return this.core.no_s(aid, t, l);
+        return this.core.nopS(aid, t, l);
     }
 
-    public IRespectOperation nop_s(final IId aid, final LogicTuple t,
+    public IRespectOperation noS(final IId aid, final LogicTuple t,
             final OperationCompletionListener l)
             throws InvalidLogicTupleException, OperationNotPossibleException {
         if (t == null) {
             throw new InvalidLogicTupleException();
         }
-        return this.core.nop_s(aid, t, l);
+        return this.core.noS(aid, t, l);
     }
 
-    public IRespectOperation out_s(final IId id, final LogicTuple t,
+    public IRespectOperation outS(final IId id, final LogicTuple t,
             final OperationCompletionListener l)
             throws InvalidLogicTupleException, OperationNotPossibleException {
         if (t == null) {
             throw new InvalidLogicTupleException();
         }
-        return this.core.out_s(id, t, l);
+        return this.core.outS(id, t, l);
     }
 
-    public IRespectOperation rd_s(final IId id, final LogicTuple t,
+    public IRespectOperation rdpS(final IId id, final LogicTuple t,
             final OperationCompletionListener l)
             throws InvalidLogicTupleException, OperationNotPossibleException {
         if (t == null) {
             throw new InvalidLogicTupleException();
         }
-        return this.core.rd_s(id, t, l);
+        return this.core.rdpS(id, t, l);
     }
 
-    public IRespectOperation rdp_s(final IId id, final LogicTuple t,
+    public IRespectOperation rdS(final IId id, final LogicTuple t,
             final OperationCompletionListener l)
             throws InvalidLogicTupleException, OperationNotPossibleException {
         if (t == null) {
             throw new InvalidLogicTupleException();
         }
-        return this.core.rdp_s(id, t, l);
+        return this.core.rdS(id, t, l);
     }
 
     public IRespectOperation
-            set_s(final IId aid, final RespectSpecification spec,
+            setS(final IId aid, final RespectSpecification spec,
                     final OperationCompletionListener l)
                     throws InvalidLogicTupleException,
                     OperationNotPossibleException {
         if (spec == null) {
             throw new InvalidLogicTupleException();
         }
-        return this.core.set_s(aid, spec, l);
+        return this.core.setS(aid, spec, l);
     }
 
 }

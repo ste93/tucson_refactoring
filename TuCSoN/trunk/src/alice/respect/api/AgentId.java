@@ -46,13 +46,13 @@ public class AgentId implements alice.tuplecentre.api.AgentId,
      *             if it is not a valid identifier
      */
     public AgentId(final String sid) throws InvalidAgentIdException {
-        if (sid.indexOf(":") != -1) {
-            sid.substring(0, sid.indexOf(":"));
+        if (sid.indexOf(':') != -1) {
+            sid.substring(0, sid.indexOf(':'));
         }
         try {
             this.id = Term.createTerm(sid, AgentId.opManager);
         } catch (final InvalidTermException e) {
-            e.printStackTrace();
+            // TODO Properly handle Exception
             throw new InvalidAgentIdException();
         }
         if (!this.id.isGround()) {

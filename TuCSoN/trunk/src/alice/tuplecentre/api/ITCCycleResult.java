@@ -6,28 +6,28 @@ import alice.tuplecentre.core.TCCycleResult.Outcome;
 
 public interface ITCCycleResult {
 
-    public long getEndTime();
+    long getEndTime();
 
-    public Outcome getOpResult();
+    Outcome getOpResult();
 
-    public long getStartTime();
+    long getStartTime();
 
-    public List<Tuple> getTupleListResult();
+    List<Tuple> getTupleListResult();
 
-    public Tuple getTupleResult();
+    Tuple getTupleResult();
 
-    public boolean isResultDefined();
+    boolean isResultDefined();
 
-    public boolean isResultFailure();
+    boolean isResultFailure();
 
-    public boolean isResultSuccess();
+    boolean isResultSuccess();
 
-    public void setEndTime(long time);
+    void setEndTime(long time);
 
-    public void setOpResult(Outcome o);
+    void setOpResult(Outcome o);
 
-    public void setTupleListResult(List<Tuple> resList);
+    void setTupleListResult(List<Tuple> resList);
 
-    public void setTupleResult(Tuple res);
+    void setTupleResult(Tuple res);
 
 }

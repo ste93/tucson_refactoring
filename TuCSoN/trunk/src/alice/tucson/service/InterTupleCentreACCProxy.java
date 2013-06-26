@@ -17,10 +17,12 @@ import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.InetAddress;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import alice.logictuple.LogicTuple;
 import alice.tucson.api.TucsonOpId;
@@ -60,6 +62,8 @@ public class InterTupleCentreACCProxy implements InterTupleCentreACC,
          */
         Controller(final ObjectInputStream input) {
 
+            super();
+
             this.in = input;
             this.stop = false;
             this.setDaemon(true);
@@ -69,10 +73,10 @@ public class InterTupleCentreACCProxy implements InterTupleCentreACC,
                             .getLibrary("alice.tuprolog.lib.JavaLibrary");
             try {
                 jlib.register(new alice.tuprolog.Struct("config"), this);
-            } catch (final InvalidObjectIdException ex) {
+            } catch (final InvalidObjectIdException e) {
                 System.err.println("[InterTupleCentreACCProxy] Controller: "
-                        + ex);
-                ex.printStackTrace();
+                        + e);
+                // TODO Properly handle Exception
             }
 
         }
@@ -200,15 +204,16 @@ public class InterTupleCentreACCProxy implements InterTupleCentreACC,
 
         }
 
-        synchronized boolean isStopped() {
+        private synchronized boolean isStopped() {
             return this.stop;
         }
 
-        synchronized void setStop() {
+        private synchronized void setStop() {
             this.stop = true;
         }
 
-        LogicTuple unify(final TupleTemplate template, final Tuple tuple) {
+        private LogicTuple
+                unify(final TupleTemplate template, final Tuple tuple) {
             final boolean res = template.propagate(this.p, tuple);
             if (res) {
                 return (LogicTuple) template;
@@ -243,12 +248,12 @@ public class InterTupleCentreACCProxy implements InterTupleCentreACC,
         System.out.println("[InterTupleCentreACCProxy]: " + msg);
     }
 
-    protected HashMap<Long, TupleCentreOperation> operations;
+    protected Map<Long, TupleCentreOperation> operations;
     // aid è il tuplecentre source
     private TucsonTupleCentreId aid;
-    private final HashMap<String, ControllerSession> controllerSessions;
+    private final Map<String, ControllerSession> controllerSessions;
 
-    private final LinkedList<TucsonOpCompletionEvent> events;
+    private final List<TucsonOpCompletionEvent> events;
 
     private long opId;
 
@@ -268,8 +273,8 @@ public class InterTupleCentreACCProxy implements InterTupleCentreACC,
             try {
                 this.aid = new TucsonTupleCentreId(id);
             } catch (final TucsonInvalidTupleCentreIdException e) {
+                // TODO Properly handle Exception
                 System.err.println("[InterTupleCentreACCProxy]: " + e);
-                e.printStackTrace();
             }
         }
 
@@ -344,9 +349,9 @@ public class InterTupleCentreACCProxy implements InterTupleCentreACC,
                 TucsonMsgRequest.write(outStream, msg);
                 outStream.flush();
             } catch (final IOException ex) {
+                // TODO Properly handle Exception
                 exception = true;
                 System.err.println("[InterTupleCentreACCProxy]: " + ex);
-                ex.printStackTrace();
             }
 
             if (!exception) {
@@ -441,11 +446,17 @@ public class InterTupleCentreACCProxy implements InterTupleCentreACC,
         if (tc != null) {
             return tc.getSession();
         }
-        if (opNode.equals("localhost")) {
-            tc = this.controllerSessions.get("127.0.0.1:" + port);
+        if (InetAddress.getLoopbackAddress().getHostName().equals(opNode)) {
+            tc =
+                    this.controllerSessions.get(InetAddress
+                            .getLoopbackAddress().getHostAddress()
+                            .concat(String.valueOf(port)));
         }
-        if (opNode.equals("127.0.0.1")) {
-            tc = this.controllerSessions.get("localhost:" + port);
+        if (InetAddress.getLoopbackAddress().getHostAddress().equals(opNode)) {
+            tc =
+                    this.controllerSessions.get(InetAddress
+                            .getLoopbackAddress().getHostName()
+                            .concat(String.valueOf(port)));
         }
         if (tc != null) {
             return tc.getSession();
@@ -481,7 +492,7 @@ public class InterTupleCentreACCProxy implements InterTupleCentreACC,
 
     private void postEvent(final TucsonOpCompletionEvent ev) {
         synchronized (this.events) {
-            this.events.addLast(ev);
+            this.events.add(this.events.size(), ev);
             this.events.notifyAll();
         }
     }

@@ -10,6 +10,7 @@ public class Spawn2PSolver extends Thread {
     private final Prolog solver;
 
     public Spawn2PSolver(final Prolog s, final Term g) {
+        super();
         this.solver = s;
         this.goal = g;
     }

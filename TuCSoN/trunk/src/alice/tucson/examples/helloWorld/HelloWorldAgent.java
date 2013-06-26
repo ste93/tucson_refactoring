@@ -40,7 +40,7 @@ public class HelloWorldAgent extends TucsonAgent {
         try {
             new HelloWorldAgent(aid).go();
         } catch (final TucsonInvalidAgentIdException e) {
-            e.printStackTrace();
+            // TODO Properly handle Exception
         }
     }
 
@@ -116,18 +116,18 @@ public class HelloWorldAgent extends TucsonAgent {
              * ACC release is automatically done by the TucsonAgent base class.
              */
         } catch (final TucsonInvalidTupleCentreIdException e) {
-            e.printStackTrace();
+            // TODO Properly handle Exception
         } catch (final InvalidLogicTupleException e) {
             /*
              * String to be parsed is not in a valid Prolog syntax.
              */
-            e.printStackTrace();
+            // TODO Properly handle Exception
         } catch (final TucsonOperationNotPossibleException e) {
-            e.printStackTrace();
+            // TODO Properly handle Exception
         } catch (final UnreachableNodeException e) {
-            e.printStackTrace();
+            // TODO Properly handle Exception
         } catch (final OperationTimeOutException e) {
-            e.printStackTrace();
+            // TODO Properly handle Exception
         }
     }
 

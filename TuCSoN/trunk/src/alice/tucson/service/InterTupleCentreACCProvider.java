@@ -1,6 +1,7 @@
 package alice.tucson.service;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -22,13 +23,14 @@ public class InterTupleCentreACCProvider implements ILinkContext {
 
         private final TupleCentreId fromId;
         private InterTupleCentreACC helper;
-        private final HashMap<String, InterTupleCentreACC> helpers;
+        private final Map<String, InterTupleCentreACC> helpers;
         private final TupleCentreOperation op;
         private final alice.tuplecentre.api.TupleCentreId toId;
 
         public Executor(final alice.tuplecentre.api.TupleCentreId to,
                 final TupleCentreId from, final TupleCentreOperation o,
-                final HashMap<String, InterTupleCentreACC> helps) {
+                final Map<String, InterTupleCentreACC> helps) {
+            super();
             this.toId = to;
             this.fromId = from;
             this.op = o;
@@ -45,10 +47,10 @@ public class InterTupleCentreACCProvider implements ILinkContext {
                             new InterTupleCentreACCProxy(
                                     new TucsonTupleCentreId(this.fromId));
                 } catch (final TucsonInvalidTupleCentreIdException e) {
+                    // TODO Properly handle Exception
                     System.err
                             .println("[RespectInterTupleCentreContextProxy] Executor: "
                                     + e);
-                    e.printStackTrace();
                 }
                 this.helpers.put(this.fromId.getNode(), this.helper);
             }
@@ -56,25 +58,24 @@ public class InterTupleCentreACCProvider implements ILinkContext {
             try {
                 this.helper.doOperation(this.toId, this.op);
             } catch (final TucsonOperationNotPossibleException e) {
+                // TODO Properly handle Exception
                 System.err
                         .println("[RespectInterTupleCentreContextProxy] Executor: "
                                 + e);
-                e.printStackTrace();
             } catch (final UnreachableNodeException e) {
+                // TODO Properly handle Exception
                 System.err
                         .println("[RespectInterTupleCentreContextProxy] Executor: "
                                 + e);
-                e.printStackTrace();
             }
 
         }
 
     }
 
+    // FIXME How to fix this?
     private static ExecutorService exec;
-    // private final static int threadsNumber = Runtime.getRuntime()
-    // .availableProcessors() + 1;
-    private static HashMap<String, InterTupleCentreACC> helpList;
+    private static Map<String, InterTupleCentreACC> helpList;
 
     private final alice.tuplecentre.api.TupleCentreId idTo;
 

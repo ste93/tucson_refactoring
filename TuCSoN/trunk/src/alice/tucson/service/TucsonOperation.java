@@ -214,7 +214,7 @@ public class TucsonOperation extends TupleCentreOperation implements
 
     private boolean allowed;
 
-    private ACCProxyAgentSide context = null;
+    private final ACCProxyAgentSide context;
 
     private boolean successed;
 
@@ -265,11 +265,6 @@ public class TucsonOperation extends TupleCentreOperation implements
         return this.allowed;
     }
 
-    @Override
-    public boolean isResultSuccess() {
-        return super.isResultSuccess();
-    }
-
     public boolean isSuccessed() {
         return this.successed;
     }
@@ -317,7 +312,7 @@ public class TucsonOperation extends TupleCentreOperation implements
                 try {
                     this.token.wait(ms);
                 } catch (final InterruptedException e) {
-                    e.printStackTrace();
+                    // TODO Properly handle Exception
                 }
             }
             if (!this.operationCompleted) {

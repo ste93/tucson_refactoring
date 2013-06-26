@@ -10,22 +10,10 @@ public class RespectOpId {
 
     /*
      * (non-Javadoc)
-     * @see java.lang.Object#hashCode()
-     */
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + (int) (this.id ^ (this.id >>> 32));
-        return result;
-    }
-
-    /*
-     * (non-Javadoc)
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (this == obj) {
             return true;
         }
@@ -35,7 +23,7 @@ public class RespectOpId {
         if (!(obj instanceof RespectOpId)) {
             return false;
         }
-        RespectOpId other = (RespectOpId) obj;
+        final RespectOpId other = (RespectOpId) obj;
         if (this.id != other.id) {
             return false;
         }
@@ -46,9 +34,21 @@ public class RespectOpId {
         return this.id;
     }
 
+    /*
+     * (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = (prime * result) + (int) (this.id ^ (this.id >>> 32));
+        return result;
+    }
+
     @Override
     public String toString() {
-        return "" + this.id;
+        return String.valueOf(this.id);
     }
 
 }

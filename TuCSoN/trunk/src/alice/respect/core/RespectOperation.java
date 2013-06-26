@@ -170,7 +170,7 @@ public class RespectOperation extends TupleCentreOperation implements
         try {
             cpy = LogicTuple.parse(logicTuple.toString());
         } catch (final InvalidLogicTupleException e) {
-            e.printStackTrace();
+            // TODO Properly handle Exception
         }
         TupleArgument arg;
         try {
@@ -191,7 +191,7 @@ public class RespectOperation extends TupleCentreOperation implements
                 }
             }
         } catch (final InvalidTupleOperationException e) {
-            e.printStackTrace();
+            // TODO Properly handle Exception
         }
         final RespectOperation temp =
                 new RespectOperation(p, TupleCentreOperation.OPTYPE_SET, list,
@@ -210,7 +210,7 @@ public class RespectOperation extends TupleCentreOperation implements
         try {
             cpy = LogicTuple.parse(logicTuple.toString());
         } catch (final InvalidLogicTupleException e) {
-            e.printStackTrace();
+            // TODO Properly handle Exception
         }
         TupleArgument arg;
         try {
@@ -231,7 +231,7 @@ public class RespectOperation extends TupleCentreOperation implements
                 }
             }
         } catch (final InvalidTupleOperationException e) {
-            e.printStackTrace();
+            // TODO Properly handle Exception
         }
         final RespectOperation temp =
                 new RespectOperation(p, TupleCentreOperation.OPTYPE_SET_S,
@@ -254,7 +254,7 @@ public class RespectOperation extends TupleCentreOperation implements
                     new RespectOperation(p, TupleCentreOperation.OPTYPE_SET_S,
                             (Tuple) LogicTuple.parse(spec.toString()), l);
         } catch (final InvalidLogicTupleException e) {
-            e.printStackTrace();
+            // TODO Properly handle Exception
         }
         return temp;
     }
@@ -366,8 +366,7 @@ public class RespectOperation extends TupleCentreOperation implements
         for (int i = 0; i < numTuples; i++) {
             test[i] = listIn.get(i).toTerm();
         }
-        final Term result = new Struct(test);
-        return result;
+        return new Struct(test);
     }
 
     public boolean isEnv() {
@@ -422,7 +421,7 @@ public class RespectOperation extends TupleCentreOperation implements
             tupleL = this.getLogicTupleListResult().toArray(tupleL);
             tl = new Term[tupleL.length];
             for (int i = 0; i < tupleL.length; i++) {
-                tl[i] = (tupleL[i]).toTerm();
+                tl[i] = tupleL[i].toTerm();
             }
             LogicTuple lt = null;
             try {
@@ -431,8 +430,7 @@ public class RespectOperation extends TupleCentreOperation implements
                                 .getLogicTupleArgument().getArg(0).toTerm()),
                                 new TupleArgument(new Struct(tl)));
             } catch (final InvalidTupleOperationException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                // TODO Properly handle Exception
             }
             return lt;
         } else if (this.isInAll()) {
@@ -441,7 +439,7 @@ public class RespectOperation extends TupleCentreOperation implements
             tupleL = this.getLogicTupleListResult().toArray(tupleL);
             tl = new Term[tupleL.length];
             for (int i = 0; i < tupleL.length; i++) {
-                tl[i] = (tupleL[i]).toTerm();
+                tl[i] = tupleL[i].toTerm();
             }
             LogicTuple lt = null;
             try {
@@ -450,8 +448,7 @@ public class RespectOperation extends TupleCentreOperation implements
                                 .getLogicTupleArgument().getArg(0).toTerm()),
                                 new TupleArgument(new Struct(tl)));
             } catch (final InvalidTupleOperationException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                // TODO Properly handle Exception
             }
             return lt;
         } else if (this.isRdAll()) {
@@ -460,7 +457,7 @@ public class RespectOperation extends TupleCentreOperation implements
             tupleL = this.getLogicTupleListResult().toArray(tupleL);
             tl = new Term[tupleL.length];
             for (int i = 0; i < tupleL.length; i++) {
-                tl[i] = (tupleL[i]).toTerm();
+                tl[i] = tupleL[i].toTerm();
             }
             LogicTuple lt = null;
             try {
@@ -469,8 +466,7 @@ public class RespectOperation extends TupleCentreOperation implements
                                 .getLogicTupleArgument().getArg(0).toTerm()),
                                 new TupleArgument(new Struct(tl)));
             } catch (final InvalidTupleOperationException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                // TODO Properly handle Exception
             }
             return lt;
         } else if (this.isNoAll()) {
@@ -479,7 +475,7 @@ public class RespectOperation extends TupleCentreOperation implements
             tupleL = this.getLogicTupleListResult().toArray(tupleL);
             tl = new Term[tupleL.length];
             for (int i = 0; i < tupleL.length; i++) {
-                tl[i] = (tupleL[i]).toTerm();
+                tl[i] = tupleL[i].toTerm();
             }
             LogicTuple lt = null;
             try {
@@ -488,8 +484,7 @@ public class RespectOperation extends TupleCentreOperation implements
                                 .getLogicTupleArgument().getArg(0).toTerm()),
                                 new TupleArgument(new Struct(tl)));
             } catch (final InvalidTupleOperationException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                // TODO Properly handle Exception
             }
             return lt;
         } else if (this.isUrd()) {
@@ -510,7 +505,7 @@ public class RespectOperation extends TupleCentreOperation implements
             tupleL = this.getLogicTupleListResult().toArray(tupleL);
             tl = new Term[tupleL.length];
             for (int i = 0; i < tupleL.length; i++) {
-                tl[i] = (tupleL[i]).toTerm();
+                tl[i] = tupleL[i].toTerm();
             }
         } else if (this.isSet()) {
             opName = "set";
@@ -518,7 +513,7 @@ public class RespectOperation extends TupleCentreOperation implements
             tupleL = this.getTupleListArgument().toArray(tupleL);
             tl = new Term[tupleL.length];
             for (int i = 0; i < tupleL.length; i++) {
-                tl[i] = (tupleL[i]).toTerm();
+                tl[i] = tupleL[i].toTerm();
             }
         } else if (this.isOut_s()) {
             opName = "out_s";
@@ -540,7 +535,7 @@ public class RespectOperation extends TupleCentreOperation implements
             tupleL = this.getLogicTupleListResult().toArray(tupleL);
             tl = new Term[tupleL.length];
             for (int i = 0; i < tupleL.length; i++) {
-                tl[i] = (tupleL[i]).toTerm();
+                tl[i] = tupleL[i].toTerm();
             }
         } else if (this.isSet_s()) {
             opName = "set_s";
@@ -548,7 +543,7 @@ public class RespectOperation extends TupleCentreOperation implements
             tupleL = this.getTupleListArgument().toArray(tupleL);
             tl = new Term[tupleL.length];
             for (int i = 0; i < tupleL.length; i++) {
-                tl[i] = (tupleL[i]).toTerm();
+                tl[i] = tupleL[i].toTerm();
             }
         } else if (this.isGetEnv()) {
             return t;

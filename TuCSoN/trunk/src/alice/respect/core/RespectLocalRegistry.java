@@ -1,6 +1,7 @@
 package alice.respect.core;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import alice.respect.api.IRespectTC;
 import alice.respect.api.ITCRegistry;
@@ -13,7 +14,7 @@ public class RespectLocalRegistry implements ITCRegistry {
      * internal representation of the registry, keys are tuple centre id (as
      * String)
      */
-    private final HashMap<String, IRespectTC> reg;
+    private final Map<String, IRespectTC> reg;
 
     public RespectLocalRegistry() {
         this.reg = new HashMap<String, IRespectTC>();
@@ -33,7 +34,7 @@ public class RespectLocalRegistry implements ITCRegistry {
         }
     }
 
-    public HashMap<String, IRespectTC> getHashmap() {
+    public Map<String, IRespectTC> getMap() {
         return this.reg;
     }
 

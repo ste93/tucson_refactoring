@@ -20,7 +20,7 @@ import alice.tucson.service.ACCProxyAgentSide;
  * TuCSoN Meta Agent Coordination Context. It is exploited by TuCSoN agents to
  * obtain an ACC with which to interact with the TuCSoN node.
  */
-public class TucsonMetaACC {
+public final class TucsonMetaACC {
 
     /**
      * Gets the available most-comprehensive ACC from the TuCSoN Node Service
@@ -56,7 +56,7 @@ public class TucsonMetaACC {
             aid.assignUUID();
         } catch (final TucsonInvalidAgentIdException e) {
             System.err.println("[Tucson-MetaACC]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return null;
         }
         return acc;
@@ -64,6 +64,12 @@ public class TucsonMetaACC {
 
     public static String getVersion() {
         return "TuCSoN-1.10.3.0207";
+    }
+
+    private TucsonMetaACC() {
+        /*
+         * 
+         */
     }
 
 }

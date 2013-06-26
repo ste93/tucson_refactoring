@@ -1,5 +1,8 @@
 package alice.respect.core;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
 import alice.respect.api.ILinkContext;
 import alice.respect.api.IManagementContext;
 import alice.respect.api.IOrdinaryAsynchInterface;
@@ -19,11 +22,15 @@ import alice.tucson.service.RemoteLinkProvider;
  * @author matteo casadei v 2.1.1
  * 
  */
-public class RespectTCContainer {
+public final class RespectTCContainer {
 
     public static final int QUEUE_SIZE = 10;
     private static RespectTCContainer container;
     private static int defaultport;
+
+    public static int getDefPort() {
+        return RespectTCContainer.defaultport;
+    }
 
     public static RespectTCContainer getRespectTCContainer() {
         if (RespectTCContainer.container == null) {
@@ -32,6 +39,14 @@ public class RespectTCContainer {
         return RespectTCContainer.container;
     }
 
+    public static void setDefPort(final int port) {
+        RespectTCContainer.defaultport = port;
+    }
+
+    public String hostname;
+
+    public String loopback;
+
     private final ITCRegistry registry;
 
     private IRemoteLinkProvider stub;
@@ -39,6 +54,15 @@ public class RespectTCContainer {
     private RespectTCContainer() {
         this.registry = new RespectLocalRegistry();
         this.stub = null;
+        try {
+            this.loopback =
+                    InetAddress.getLocalHost().getHostAddress().toString();
+            this.hostname = InetAddress.getLocalHost().getHostName().toString();
+        } catch (final UnknownHostException e) {
+            // TODO Auto-generated catch block
+            this.loopback = null;
+            this.hostname = null;
+        }
     }
 
     public void addStub(final IRemoteLinkProvider s) {
@@ -53,10 +77,6 @@ public class RespectTCContainer {
         return rtc;
     }
 
-    public int getDefPort() {
-        return RespectTCContainer.defaultport;
-    }
-
     /**
      * Return a LinkContext for remote/local call
      * 
@@ -66,8 +86,8 @@ public class RespectTCContainer {
      */
     public ILinkContext getLinkContext(final TupleCentreId id)
             throws OperationNotPossibleException {
-        if ((id.getNode().equals("localhost") || id.getNode().equals(
-                "127.0.0.1"))
+        if ((this.hostname.equals(id.getNode()) || this.loopback.equals(id
+                .getNode()))
                 && (id.getPort() == RespectTCContainer.defaultport)) {
             try {
                 return ((RespectTC) this.registry.getTC(id)).getLinkContext();
@@ -149,10 +169,6 @@ public class RespectTCContainer {
             this.registry.addTC(tc);
             return tc.getSpecificationSynchInterface();
         }
-    }
-
-    public void setDefPort(final int port) {
-        RespectTCContainer.defaultport = port;
     }
 
 }

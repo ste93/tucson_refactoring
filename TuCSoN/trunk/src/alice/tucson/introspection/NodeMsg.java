@@ -33,6 +33,7 @@ public class NodeMsg implements Serializable {
     }
 
     protected NodeMsg() {
+        super();
     }
 
 }

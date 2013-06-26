@@ -21,9 +21,10 @@ public interface IOrdinaryAsynchInterface {
     IRespectOperation in(IId aid, LogicTuple t, OperationCompletionListener l)
             throws InvalidLogicTupleException, OperationNotPossibleException;
 
-    IRespectOperation in_all(IId aid, LogicTuple t,
-            OperationCompletionListener l) throws InvalidLogicTupleException,
-            OperationNotPossibleException;
+    IRespectOperation
+            inAll(IId aid, LogicTuple t, OperationCompletionListener l)
+                    throws InvalidLogicTupleException,
+                    OperationNotPossibleException;
 
     IRespectOperation inp(IId aid, LogicTuple t, OperationCompletionListener l)
             throws InvalidLogicTupleException, OperationNotPossibleException;
@@ -31,9 +32,10 @@ public interface IOrdinaryAsynchInterface {
     IRespectOperation no(IId aid, LogicTuple t, OperationCompletionListener l)
             throws InvalidLogicTupleException, OperationNotPossibleException;
 
-    IRespectOperation no_all(IId aid, LogicTuple t,
-            OperationCompletionListener l) throws InvalidLogicTupleException,
-            OperationNotPossibleException;
+    IRespectOperation
+            noAll(IId aid, LogicTuple t, OperationCompletionListener l)
+                    throws InvalidLogicTupleException,
+                    OperationNotPossibleException;
 
     IRespectOperation nop(IId aid, LogicTuple t, OperationCompletionListener l)
             throws InvalidLogicTupleException, OperationNotPossibleException;
@@ -41,16 +43,17 @@ public interface IOrdinaryAsynchInterface {
     IRespectOperation out(IId aid, LogicTuple t, OperationCompletionListener l)
             throws InvalidLogicTupleException, OperationNotPossibleException;
 
-    IRespectOperation out_all(IId aid, LogicTuple t,
+    IRespectOperation outAll(IId aid, LogicTuple t,
             OperationCompletionListener l) throws InvalidLogicTupleException,
             OperationNotPossibleException;
 
     IRespectOperation rd(IId aid, LogicTuple t, OperationCompletionListener l)
             throws InvalidLogicTupleException, OperationNotPossibleException;
 
-    IRespectOperation rd_all(IId aid, LogicTuple t,
-            OperationCompletionListener l) throws InvalidLogicTupleException,
-            OperationNotPossibleException;
+    IRespectOperation
+            rdAll(IId aid, LogicTuple t, OperationCompletionListener l)
+                    throws InvalidLogicTupleException,
+                    OperationNotPossibleException;
 
     IRespectOperation rdp(IId aid, LogicTuple t, OperationCompletionListener l)
             throws InvalidLogicTupleException, OperationNotPossibleException;

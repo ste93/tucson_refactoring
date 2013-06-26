@@ -14,6 +14,7 @@ package alice.respect.core;
 
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 
 import alice.tuplecentre.core.TriggeredReaction;
 
@@ -24,10 +25,10 @@ import alice.tuplecentre.core.TriggeredReaction;
  */
 public class TRSet {
 
-    private final LinkedList<TriggeredReaction> tAdded;
+    private final List<TriggeredReaction> tAdded;
     private boolean transaction;
-    private final LinkedList<TriggeredReaction> tRemoved;
-    private final LinkedList<TriggeredReaction> trigs;
+    private final List<TriggeredReaction> tRemoved;
+    private final List<TriggeredReaction> trigs;
 
     public TRSet() {
         this.trigs = new LinkedList<TriggeredReaction>();
@@ -70,7 +71,7 @@ public class TRSet {
     }
 
     public TriggeredReaction get() {
-        return this.trigs.removeFirst();
+        return this.trigs.remove(0);
     }
 
     public Iterator<? extends TriggeredReaction> getIterator() {

@@ -24,6 +24,7 @@ public class AgentIdOperatorManager extends alice.tuprolog.OperatorManager {
     private static final long serialVersionUID = 2427403369706472143L;
 
     public AgentIdOperatorManager() {
+        super();
         this.opNew(":", "xfx", 549);
     }
 

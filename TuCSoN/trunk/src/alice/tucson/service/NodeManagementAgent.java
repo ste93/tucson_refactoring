@@ -9,9 +9,12 @@ import alice.logictuple.LogicTuple;
 import alice.logictuple.TupleArgument;
 import alice.logictuple.Value;
 import alice.logictuple.Var;
+import alice.logictuple.exceptions.InvalidTupleOperationException;
 import alice.tucson.api.TucsonAgentId;
 import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
+import alice.tucson.api.exceptions.TucsonInvalidLogicTupleException;
+import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tuprolog.InvalidTermException;
 
 /**
@@ -20,17 +23,17 @@ import alice.tuprolog.InvalidTermException;
 public class NodeManagementAgent extends Thread {
 
     private final TucsonTupleCentreId config;
-    private final boolean isLogging = true;
     private final TucsonNodeService node;
     private TucsonAgentId nodeManAid;
 
     public NodeManagementAgent(final TucsonTupleCentreId conf,
             final TucsonNodeService n) {
+        super();
         try {
             this.nodeManAid = new TucsonAgentId("node_management_agent");
         } catch (final TucsonInvalidAgentIdException e) {
             System.err.println("[NodeManagementAgent]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
         }
         this.node = n;
         this.config = conf;
@@ -58,14 +61,14 @@ public class NodeManagementAgent extends Thread {
             }
         } catch (final InvalidTermException e) {
             System.err.println("[NodeManagementAgent]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             this.node.removeNodeAgent(this);
         } catch (final InterruptedException e) {
             this.log("Shutdown interrupt received, shutting down...");
             this.node.removeNodeAgent(this);
         } catch (final Exception e) {
             System.err.println("[NodeManagementAgent]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             this.node.removeNodeAgent(this);
         }
     }
@@ -73,14 +76,19 @@ public class NodeManagementAgent extends Thread {
     /**
      * 
      * @param cmd
-     * @throws Exception
+     * @throws InvalidTupleOperationException
+     * @throws TucsonOperationNotPossibleException
+     * @throws TucsonInvalidLogicTupleExceptionn
      */
-    protected void execCmd(final TupleArgument cmd) throws Exception {
+    protected void execCmd(final TupleArgument cmd)
+            throws InvalidTupleOperationException,
+            TucsonInvalidLogicTupleException,
+            TucsonOperationNotPossibleException {
 
         final String name = cmd.getName();
         this.log("Executing command " + name);
 
-        if (name.equals("destroy")) {
+        if ("destroy".equals(name)) {
 
             final String tcName = cmd.getArg(0).getName();
             final boolean result = this.node.destroyCore(tcName);
@@ -96,25 +104,25 @@ public class NodeManagementAgent extends Thread {
                                 new Value("failed")));
             }
 
-        } else if (name.equals("enable_persistency")) {
+        } else if ("enable_persistency".equals(name)) {
 
             this.node.enablePersistence(cmd.getArg(0));
             TupleCentreContainer.doBlockingOperation(TucsonOperation.outCode(),
                     this.nodeManAid, this.config, new LogicTuple("cmd_result",
                             cmd, new Value("ok")));
 
-        } else if (name.equals("disable_persistency")) {
+        } else if ("disable_persistency".equals(name)) {
 
             this.node.disablePersistence(cmd.getArg(0));
             TupleCentreContainer.doBlockingOperation(TucsonOperation.outCode(),
                     this.nodeManAid, this.config, new LogicTuple("cmd_result",
                             new Value("disable_persistency"), new Value("ok")));
 
-        } else if (name.equals("enable_observability")) {
+        } else if ("enable_observability".equals(name)) {
 
             this.node.activateObservability();
 
-        } else if (name.equals("disable_observability")) {
+        } else if ("disable_observability".equals(name)) {
 
             this.node.deactivateObservability();
 
@@ -123,9 +131,7 @@ public class NodeManagementAgent extends Thread {
     }
 
     protected void log(final String s) {
-        if (this.isLogging) {
-            System.out.println("[NodeManagementAgent]: " + s);
-        }
+        System.out.println("[NodeManagementAgent]: " + s);
     }
 
 }

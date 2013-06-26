@@ -19,12 +19,13 @@ import alice.tucson.api.TucsonTupleCentreId;
 public class Inspector extends Thread implements InspectorContextListener {
 
     protected InspectorContext context;
-    protected boolean quit;
+    protected boolean q;
 
     public Inspector(final TucsonAgentId id, final TucsonTupleCentreId tid) {
+        super();
         this.context = new InspectorContextStub(id, tid);
         this.context.addInspectorContextListener(this);
-        this.quit = false;
+        this.q = false;
     }
 
     public InspectorContext getContext() {
@@ -39,11 +40,11 @@ public class Inspector extends Thread implements InspectorContextListener {
 
     public void quit() {
         try {
-            this.quit = true;
+            this.q = true;
             this.context.exit();
             this.interrupt();
         } catch (final Exception ex) {
-            ex.printStackTrace();
+            // TODO Properly handle Exception
         }
     }
 
@@ -53,11 +54,11 @@ public class Inspector extends Thread implements InspectorContextListener {
                 + this.context.getTid().getName() + "@"
                 + this.context.getTid().getNode() + ":"
                 + this.context.getTid().getPort() + " >");
-        while (!this.quit) {
+        while (!this.q) {
             try {
                 this.context.acceptVMEvent();
             } catch (final Exception e) {
-                e.printStackTrace();
+                // TODO Properly handle Exception
                 break;
             }
         }

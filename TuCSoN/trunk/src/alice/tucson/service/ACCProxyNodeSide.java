@@ -20,6 +20,7 @@ import java.io.ObjectOutputStream;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import alice.logictuple.LogicTuple;
 import alice.tucson.api.TucsonAgentId;
@@ -39,16 +40,16 @@ import alice.tuplecentre.core.TupleCentreOperation;
 public class ACCProxyNodeSide extends ACCAbstractProxyNodeSide {
 
     private TucsonAgentId agentId;
-    private boolean exit = false;
+    private final int ctxId;
+    private final TucsonProtocol dialog;
+    private boolean ex = false;
+    private final ObjectInputStream inStream;
+    private final ACCProvider manager;
+    private final TucsonNodeService node;
+    private final Map<Long, Long> opVsReq;
+    private final ObjectOutputStream outStream;
+    private final Map<Long, TucsonMsgRequest> requests;
     private TucsonTupleCentreId tcId;
-    int ctxId;
-    TucsonProtocol dialog;
-    ObjectInputStream inStream;
-    ACCProvider manager;
-    TucsonNodeService node;
-    HashMap<Long, Long> opVsReq;
-    ObjectOutputStream outStream;
-    HashMap<Long, TucsonMsgRequest> requests;
 
     /**
      * 
@@ -60,6 +61,7 @@ public class ACCProxyNodeSide extends ACCAbstractProxyNodeSide {
     public ACCProxyNodeSide(final ACCProvider man, final TucsonProtocol d,
             final TucsonNodeService n, final ACCDescription p) {
 
+        super();
         this.ctxId = Integer.parseInt(p.getProperty("context-id"));
 
         String name = p.getProperty("agent-identity");
@@ -70,14 +72,14 @@ public class ACCProxyNodeSide extends ACCAbstractProxyNodeSide {
                 this.agentId = new TucsonAgentId("tcAgent", this.tcId);
             } catch (final TucsonInvalidTupleCentreIdException e) {
                 System.err.println("[ACCProxyNodeSide]: " + e);
-                e.printStackTrace();
+                // TODO Properly handle Exception
             }
         } else {
             try {
                 this.agentId = new TucsonAgentId(name);
             } catch (final TucsonInvalidAgentIdException e) {
                 System.err.println("[ACCProxyNodeSide]: " + e);
-                e.printStackTrace();
+                // TODO Properly handle Exception
             }
         }
 
@@ -95,7 +97,7 @@ public class ACCProxyNodeSide extends ACCAbstractProxyNodeSide {
 
     @Override
     synchronized public void exit() {
-        this.exit = true;
+        this.ex = true;
         this.notify();
     }
 
@@ -107,7 +109,7 @@ public class ACCProxyNodeSide extends ACCAbstractProxyNodeSide {
         Long reqId;
         TucsonMsgRequest msg;
         synchronized (this.requests) {
-            reqId = this.opVsReq.remove(new Long(op.getId()));
+            reqId = this.opVsReq.remove(Long.valueOf(op.getId()));
             msg = this.requests.remove(reqId);
         }
 
@@ -144,9 +146,9 @@ public class ACCProxyNodeSide extends ACCAbstractProxyNodeSide {
         try {
             TucsonMsgReply.write(this.outStream, reply);
             this.outStream.flush();
-        } catch (final IOException ex) {
-            System.err.println("[ACCProxyNodeSide]: " + ex);
-            ex.printStackTrace();
+        } catch (final IOException e) {
+            // TODO Properly handle Exception
+            System.err.println("[ACCProxyNodeSide]: " + e);
         }
 
     }
@@ -166,7 +168,7 @@ public class ACCProxyNodeSide extends ACCAbstractProxyNodeSide {
         final LogicTuple res = null;
         List<LogicTuple> resList;
 
-        while (!this.exit) {
+        while (!this.ex) {
 
             this.log("Listening to incoming TuCSoN agents/nodes requests...");
 
@@ -177,7 +179,7 @@ public class ACCProxyNodeSide extends ACCAbstractProxyNodeSide {
                 break;
             } catch (final Exception e) {
                 System.err.println("[ACCProxyNodeSide]: " + e);
-                e.printStackTrace();
+                // TODO Properly handle Exception
                 break;
             }
             final int msg_type = msg.getType();
@@ -191,7 +193,7 @@ public class ACCProxyNodeSide extends ACCAbstractProxyNodeSide {
                     this.outStream.flush();
                 } catch (final IOException e) {
                     System.err.println("[ACCProxyNodeSide]: " + e);
-                    e.printStackTrace();
+                    // TODO Properly handle Exception
                 } finally {
                     break;
                 }
@@ -201,7 +203,7 @@ public class ACCProxyNodeSide extends ACCAbstractProxyNodeSide {
                 tid = new TucsonTupleCentreId(msg.getTid());
             } catch (final TucsonInvalidTupleCentreIdException e) {
                 System.err.println("[ACCProxyNodeSide]: " + e);
-                e.printStackTrace();
+                // TODO Properly handle Exception
                 break;
             }
 
@@ -227,7 +229,7 @@ public class ACCProxyNodeSide extends ACCAbstractProxyNodeSide {
                     }
                 } catch (final Exception e) {
                     System.err.println("[ACCProxyNodeSide]: " + e);
-                    e.printStackTrace();
+                    // TODO Properly handle Exception
                     break;
                 }
 
@@ -240,7 +242,7 @@ public class ACCProxyNodeSide extends ACCAbstractProxyNodeSide {
                     this.outStream.flush();
                 } catch (final IOException e) {
                     System.err.println("[ACCProxyNodeSide]: " + e);
-                    e.printStackTrace();
+                    // TODO Properly handle Exception
                     break;
                 }
 
@@ -263,7 +265,7 @@ public class ACCProxyNodeSide extends ACCAbstractProxyNodeSide {
                     }
                 } catch (final Exception e) {
                     System.err.println("[ACCProxyNodeSide]: " + e);
-                    e.printStackTrace();
+                    // TODO Properly handle Exception
                     break;
                 }
 
@@ -276,7 +278,7 @@ public class ACCProxyNodeSide extends ACCAbstractProxyNodeSide {
                     this.outStream.flush();
                 } catch (final IOException e) {
                     System.err.println("[ACCProxyNodeSide]: " + e);
-                    e.printStackTrace();
+                    // TODO Properly handle Exception
                     break;
                 }
 
@@ -298,7 +300,7 @@ public class ACCProxyNodeSide extends ACCAbstractProxyNodeSide {
                     }
                 } catch (final Exception e) {
                     System.err.println("[ACCProxyNodeSide]: " + e);
-                    e.printStackTrace();
+                    // TODO Properly handle Exception
                     break;
                 }
 
@@ -311,7 +313,7 @@ public class ACCProxyNodeSide extends ACCAbstractProxyNodeSide {
                     this.outStream.flush();
                 } catch (final IOException e) {
                     System.err.println("[ACCProxyNodeSide]: " + e);
-                    e.printStackTrace();
+                    // TODO Properly handle Exception
                     break;
                 }
 
@@ -336,7 +338,7 @@ public class ACCProxyNodeSide extends ACCAbstractProxyNodeSide {
                     }
                 } catch (final Exception e) {
                     System.err.println("[ACCProxyNodeSide]: " + e);
-                    e.printStackTrace();
+                    // TODO Properly handle Exception
                     break;
                 }
 
@@ -349,7 +351,7 @@ public class ACCProxyNodeSide extends ACCAbstractProxyNodeSide {
                     this.outStream.flush();
                 } catch (final IOException e) {
                     System.err.println("[ACCProxyNodeSide]: " + e);
-                    e.printStackTrace();
+                    // TODO Properly handle Exception
                     break;
                 }
 
@@ -393,12 +395,12 @@ public class ACCProxyNodeSide extends ACCAbstractProxyNodeSide {
                         }
                     } catch (final Exception e) {
                         System.err.println("[ACCProxyNodeSide]: " + e);
-                        e.printStackTrace();
+                        // TODO Properly handle Exception
                         break;
                     }
-                    this.requests.put(new Long(msg.getId()), msg);
-                    this.opVsReq.put(new Long(op.getId()),
-                            new Long(msg.getId()));
+                    this.requests.put(Long.valueOf(msg.getId()), msg);
+                    this.opVsReq.put(Long.valueOf(op.getId()),
+                            Long.valueOf(msg.getId()));
                 }
 
             } else if ((msg_type == TucsonOperation.no_sCode())
@@ -430,12 +432,12 @@ public class ACCProxyNodeSide extends ACCAbstractProxyNodeSide {
                         }
                     } catch (final Exception e) {
                         System.err.println("[ACCProxyNodeSide]: " + e);
-                        e.printStackTrace();
+                        // TODO Properly handle Exception
                         break;
                     }
-                    this.requests.put(new Long(msg.getId()), msg);
-                    this.opVsReq.put(new Long(op.getId()),
-                            new Long(msg.getId()));
+                    this.requests.put(Long.valueOf(msg.getId()), msg);
+                    this.opVsReq.put(Long.valueOf(op.getId()),
+                            Long.valueOf(msg.getId()));
                 }
 
             }
@@ -444,9 +446,9 @@ public class ACCProxyNodeSide extends ACCAbstractProxyNodeSide {
 
         try {
             this.dialog.end();
-        } catch (final Exception ex) {
-            System.err.println("[ACCProxyNodeSide]: " + ex);
-            ex.printStackTrace();
+        } catch (final Exception e) {
+            // TODO Properly handle Exception
+            System.err.println("[ACCProxyNodeSide]: " + e);
         }
 
         this.log("Releasing ACC < " + this.ctxId + " > held by TuCSoN agent < "

@@ -19,9 +19,9 @@ import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 public class DiningPhilosopher extends TucsonAgent {
 
     private SynchACC acc;
+    private final int chop1, chop2;
     private final TucsonTupleCentreId myTable;
-    int chop1, chop2;
-    int time, step;
+    private final int time, step;
 
     public DiningPhilosopher(final String aid, final TucsonTupleCentreId table,
             final int left, final int right, final int eatingTime,
@@ -85,13 +85,13 @@ public class DiningPhilosopher extends TucsonAgent {
                             LogicTuple.parse("chops(" + this.chop1 + ","
                                     + this.chop2 + ")"), null);
         } catch (final InvalidLogicTupleException e) {
-            e.printStackTrace();
+            // TODO Properly handle Exception
         } catch (final TucsonOperationNotPossibleException e) {
-            e.printStackTrace();
+            // TODO Properly handle Exception
         } catch (final UnreachableNodeException e) {
-            e.printStackTrace();
+            // TODO Properly handle Exception
         } catch (final OperationTimeOutException e) {
-            e.printStackTrace();
+            // TODO Properly handle Exception
         }
         if (op != null) {
             return op.isResultSuccess();
@@ -115,15 +115,15 @@ public class DiningPhilosopher extends TucsonAgent {
                 }
             }
         } catch (final InterruptedException e) {
-            e.printStackTrace();
+            // TODO Properly handle Exception
         } catch (final InvalidLogicTupleException e) {
-            e.printStackTrace();
+            // TODO Properly handle Exception
         } catch (final TucsonOperationNotPossibleException e) {
-            e.printStackTrace();
+            // TODO Properly handle Exception
         } catch (final UnreachableNodeException e) {
-            e.printStackTrace();
+            // TODO Properly handle Exception
         } catch (final OperationTimeOutException e) {
-            e.printStackTrace();
+            // TODO Properly handle Exception
         }
         if (op != null) {
             return op.isResultSuccess();
@@ -138,13 +138,13 @@ public class DiningPhilosopher extends TucsonAgent {
                     LogicTuple.parse("chops(" + this.chop1 + "," + this.chop2
                             + ")"), null);
         } catch (final InvalidLogicTupleException e) {
-            e.printStackTrace();
+            // TODO Properly handle Exception
         } catch (final TucsonOperationNotPossibleException e) {
-            e.printStackTrace();
+            // TODO Properly handle Exception
         } catch (final UnreachableNodeException e) {
-            e.printStackTrace();
+            // TODO Properly handle Exception
         } catch (final OperationTimeOutException e) {
-            e.printStackTrace();
+            // TODO Properly handle Exception
         }
     }
 
@@ -153,7 +153,7 @@ public class DiningPhilosopher extends TucsonAgent {
         try {
             Thread.sleep(5000);
         } catch (final InterruptedException e) {
-            e.printStackTrace();
+            // TODO Properly handle Exception
         }
     }
 

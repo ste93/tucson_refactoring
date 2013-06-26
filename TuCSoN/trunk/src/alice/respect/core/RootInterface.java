@@ -8,7 +8,7 @@ import alice.tuplecentre.api.TupleTemplate;
 /*
  * Created by Enrico Romagnoli A new abstract class for the context
  */
-public abstract class RootInterface {
+public class RootInterface {
 
     private final IRespectTC core;
 

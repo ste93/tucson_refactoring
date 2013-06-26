@@ -28,18 +28,6 @@ import alice.tuplecentre.api.ObservableEventListener;
  */
 public interface IManagementContext {
 
-    public void addInspector(InspectableEventListener l);
-
-    public void addObserver(ObservableEventListener l);
-
-    public boolean hasInspectors();
-
-    public boolean hasObservers();
-
-    public void removeInspector(InspectableEventListener l);
-
-    public void removeObserver(ObservableEventListener l);
-
     /**
      * Abort a previously executed in or rd operation
      * 
@@ -50,6 +38,10 @@ public interface IManagementContext {
      * @return true if the operation has been aborted
      */
     boolean abortOperation(long opId);
+
+    void addInspector(InspectableEventListener l);
+
+    void addObserver(ObservableEventListener l);
 
     /**
      * Get current behaviour specification
@@ -91,6 +83,10 @@ public interface IManagementContext {
      */
     void goCommand() throws OperationNotPossibleException;
 
+    boolean hasInspectors();
+
+    boolean hasObservers();
+
     /**
      * Executes a single execution step (management mode)
      * 
@@ -99,6 +95,10 @@ public interface IManagementContext {
      *             state
      */
     void nextStepCommand() throws OperationNotPossibleException;
+
+    void removeInspector(InspectableEventListener l);
+
+    void removeObserver(ObservableEventListener l);
 
     void reset();
 

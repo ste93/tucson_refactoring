@@ -19,10 +19,10 @@ import alice.tuplecentre.api.Tuple;
 public class SetTupleSetMsg extends NodeMsg {
 
     private static final long serialVersionUID = 3683932175338169242L;
-    public java.util.ArrayList<? extends Tuple> tupleSet;
+    public java.util.List<? extends Tuple> tupleSet;
 
     public SetTupleSetMsg(final TucsonAgentId id,
-            final java.util.ArrayList<? extends Tuple> ts) {
+            final java.util.List<? extends Tuple> ts) {
         super(id, "setTupleSet");
         this.tupleSet = ts;
     }

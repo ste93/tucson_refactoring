@@ -37,7 +37,7 @@ public class ACCDescription implements Serializable {
 
     private static final long serialVersionUID = -8231854077657631541L;
 
-    private java.util.Properties properties;
+    private final java.util.Properties properties;
 
     /**
      * Creates an ACCDescription as a Java Properties empty map.

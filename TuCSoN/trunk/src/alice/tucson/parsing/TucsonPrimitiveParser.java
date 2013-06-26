@@ -32,8 +32,8 @@ public class TucsonPrimitiveParser {
             primitive = this.input.substring(0, iLeftBra).trim();
             if (iRightBra != -1) {
                 arg = this.input.substring(iLeftBra + 1, iRightBra).trim();
-                if ((primitive.equals("get") || primitive.equals("get_s"))
-                        && !arg.equals("")) {
+                if (("get".equals(primitive) || "get_s".equals(primitive))
+                        && !"".equals(arg)) {
                     primitive = "";
                     arg = "";
                     return null;
@@ -43,11 +43,11 @@ public class TucsonPrimitiveParser {
                 return null;
             }
         } else {
-            if (!primitive.equals("quit") && !primitive.equals("exit")
-                    && !primitive.equals("get") && !primitive.equals("get_s")
-                    && !primitive.equals("help") && !primitive.equals("man")
-                    && !primitive.equals("syntax") && !primitive.equals("o/")
-                    && !primitive.equals("\\o") && !primitive.equals("hi")) {
+            if (!"quit".equals(primitive) && !"exit".equals(primitive)
+                    && !"get".equals(primitive) && !"get_s".equals(primitive)
+                    && !"help".equals(primitive) && !"man".equals(primitive)
+                    && !"syntax".equals(primitive) && !"o/".equals(primitive)
+                    && !"\\o".equals(primitive) && !"hi".equals(primitive)) {
                 primitive = "";
                 return null;
             }

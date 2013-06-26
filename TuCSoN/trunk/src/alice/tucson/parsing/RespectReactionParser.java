@@ -12,40 +12,6 @@ import alice.util.Tools;
  */
 public class RespectReactionParser {
 
-    private int nGuards;
-    private int nTimes;
-    private String spec;
-    private final LogicTuple t;
-    boolean flag;
-
-    public RespectReactionParser(final LogicTuple lt) {
-        this.t = lt;
-        this.spec = "'reaction(";
-        this.nGuards = 0;
-        this.flag = false;
-        this.nTimes = 0;
-    }
-
-    /**
-     * 
-     * @return
-     */
-    public String parse() {
-        try {
-            if (this.t.getName().equals("[]")) {
-                return "";
-            }
-            for (int i = 0; i < this.t.getArity(); i++) {
-                this.parse(this.t.getArg(i));
-            }
-        } catch (final InvalidTupleOperationException e) {
-            e.printStackTrace();
-        }
-        RespectReactionParser.log("spec = "
-                + this.spec.substring(1, this.spec.length() - 1));
-        return this.spec.substring(1, this.spec.length() - 1);
-    }
-
     /**
      * 
      * @param arg
@@ -87,6 +53,42 @@ public class RespectReactionParser {
      */
     private static void log(final String msg) {
         System.out.println("[RespectReactionParser]: " + msg);
+    }
+
+    private boolean flag;
+    private int nGuards;
+    private int nTimes;
+
+    private String spec;
+
+    private final LogicTuple t;
+
+    public RespectReactionParser(final LogicTuple lt) {
+        this.t = lt;
+        this.spec = "'reaction(";
+        this.nGuards = 0;
+        this.flag = false;
+        this.nTimes = 0;
+    }
+
+    /**
+     * 
+     * @return
+     */
+    public String parse() {
+        try {
+            if (this.t.getName().equals("[]")) {
+                return "";
+            }
+            for (int i = 0; i < this.t.getArity(); i++) {
+                this.parse(this.t.getArg(i));
+            }
+        } catch (final InvalidTupleOperationException e) {
+            // TODO Properly handle Exception
+        }
+        RespectReactionParser.log("spec = "
+                + this.spec.substring(1, this.spec.length() - 1));
+        return this.spec.substring(1, this.spec.length() - 1);
     }
 
     /**
@@ -147,7 +149,7 @@ public class RespectReactionParser {
                 }
             }
         } catch (final InvalidTupleOperationException e) {
-            e.printStackTrace();
+            // TODO Properly handle Exception
         }
     }
 

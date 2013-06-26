@@ -12,6 +12,7 @@ public class MyOpManager extends OperatorManager {
     private static final long serialVersionUID = 1L;
 
     public MyOpManager() {
+        super();
         for (final Operator op : new Prolog().getOperatorManager()
                 .getOperators()) {
             this.opNew(op.name, op.type, op.prio);

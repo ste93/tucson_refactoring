@@ -47,9 +47,6 @@ public class Spawn2PLibrary extends Library {
 
     private TucsonTupleCentreId tcid;
 
-    public Spawn2PLibrary() {
-    }
-
     /**
      * Both agents and the coordination medium itself can spawn() a computation,
      * hence we need to handle both.
@@ -92,11 +89,11 @@ public class Spawn2PLibrary extends Library {
                                 this.target, arg, null);
             } catch (final TucsonInvalidLogicTupleException e) {
                 System.err.println("[Spawn2PLibrary]: " + e);
-                e.printStackTrace();
+                // TODO Properly handle Exception
                 return false;
             } catch (final TucsonOperationNotPossibleException e) {
                 System.err.println("[Spawn2PLibrary]: " + e);
-                e.printStackTrace();
+                // TODO Properly handle Exception
                 return false;
             }
         } else {
@@ -107,11 +104,11 @@ public class Spawn2PLibrary extends Library {
                                 this.target, arg, null);
             } catch (final TucsonInvalidLogicTupleException e) {
                 System.err.println("[Spawn2PLibrary]: " + e);
-                e.printStackTrace();
+                // TODO Properly handle Exception
                 return false;
             } catch (final TucsonOperationNotPossibleException e) {
                 System.err.println("[Spawn2PLibrary]: " + e);
-                e.printStackTrace();
+                // TODO Properly handle Exception
                 return false;
             }
         }
@@ -133,11 +130,11 @@ public class Spawn2PLibrary extends Library {
                                 this.target, arg, null);
             } catch (final TucsonInvalidLogicTupleException e) {
                 System.err.println("[Spawn2PLibrary]: " + e);
-                e.printStackTrace();
+                // TODO Properly handle Exception
                 return false;
             } catch (final TucsonOperationNotPossibleException e) {
                 System.err.println("[Spawn2PLibrary]: " + e);
-                e.printStackTrace();
+                // TODO Properly handle Exception
                 return false;
             }
         } else {
@@ -148,11 +145,11 @@ public class Spawn2PLibrary extends Library {
                                 this.target, arg, null);
             } catch (final TucsonInvalidLogicTupleException e) {
                 System.err.println("[Spawn2PLibrary]: " + e);
-                e.printStackTrace();
+                // TODO Properly handle Exception
                 return false;
             } catch (final TucsonOperationNotPossibleException e) {
                 System.err.println("[Spawn2PLibrary]: " + e);
-                e.printStackTrace();
+                // TODO Properly handle Exception
                 return false;
             }
         }
@@ -175,11 +172,11 @@ public class Spawn2PLibrary extends Library {
                                 this.target, arg, null);
             } catch (final TucsonInvalidLogicTupleException e) {
                 System.err.println("[Spawn2PLibrary]: " + e);
-                e.printStackTrace();
+                // TODO Properly handle Exception
                 return false;
             } catch (final TucsonOperationNotPossibleException e) {
                 System.err.println("[Spawn2PLibrary]: " + e);
-                e.printStackTrace();
+                // TODO Properly handle Exception
                 return false;
             }
         } else {
@@ -190,11 +187,11 @@ public class Spawn2PLibrary extends Library {
                                 this.target, arg, null);
             } catch (final TucsonInvalidLogicTupleException e) {
                 System.err.println("[Spawn2PLibrary]: " + e);
-                e.printStackTrace();
+                // TODO Properly handle Exception
                 return false;
             } catch (final TucsonOperationNotPossibleException e) {
                 System.err.println("[Spawn2PLibrary]: " + e);
-                e.printStackTrace();
+                // TODO Properly handle Exception
                 return false;
             }
         }
@@ -216,11 +213,11 @@ public class Spawn2PLibrary extends Library {
                                 this.target, arg, null);
             } catch (final TucsonInvalidLogicTupleException e) {
                 System.err.println("[Spawn2PLibrary]: " + e);
-                e.printStackTrace();
+                // TODO Properly handle Exception
                 return false;
             } catch (final TucsonOperationNotPossibleException e) {
                 System.err.println("[Spawn2PLibrary]: " + e);
-                e.printStackTrace();
+                // TODO Properly handle Exception
                 return false;
             }
         } else {
@@ -231,11 +228,11 @@ public class Spawn2PLibrary extends Library {
                                 this.target, arg, null);
             } catch (final TucsonInvalidLogicTupleException e) {
                 System.err.println("[Spawn2PLibrary]: " + e);
-                e.printStackTrace();
+                // TODO Properly handle Exception
                 return false;
             } catch (final TucsonOperationNotPossibleException e) {
                 System.err.println("[Spawn2PLibrary]: " + e);
-                e.printStackTrace();
+                // TODO Properly handle Exception
                 return false;
             }
         }
@@ -258,11 +255,11 @@ public class Spawn2PLibrary extends Library {
                                 this.target, arg, null);
             } catch (final TucsonInvalidLogicTupleException e) {
                 System.err.println("[Spawn2PLibrary]: " + e);
-                e.printStackTrace();
+                // TODO Properly handle Exception
                 return false;
             } catch (final TucsonOperationNotPossibleException e) {
                 System.err.println("[Spawn2PLibrary]: " + e);
-                e.printStackTrace();
+                // TODO Properly handle Exception
                 return false;
             }
         } else {
@@ -273,11 +270,11 @@ public class Spawn2PLibrary extends Library {
                                 this.target, arg, null);
             } catch (final TucsonInvalidLogicTupleException e) {
                 System.err.println("[Spawn2PLibrary]: " + e);
-                e.printStackTrace();
+                // TODO Properly handle Exception
                 return false;
             } catch (final TucsonOperationNotPossibleException e) {
                 System.err.println("[Spawn2PLibrary]: " + e);
-                e.printStackTrace();
+                // TODO Properly handle Exception
                 return false;
             }
         }
@@ -300,11 +297,11 @@ public class Spawn2PLibrary extends Library {
                                 this.target, arg, null);
             } catch (final TucsonInvalidLogicTupleException e) {
                 System.err.println("[Spawn2PLibrary]: " + e);
-                e.printStackTrace();
+                // TODO Properly handle Exception
                 return false;
             } catch (final TucsonOperationNotPossibleException e) {
                 System.err.println("[Spawn2PLibrary]: " + e);
-                e.printStackTrace();
+                // TODO Properly handle Exception
                 return false;
             }
         } else {
@@ -315,11 +312,11 @@ public class Spawn2PLibrary extends Library {
                                 this.target, arg, null);
             } catch (final TucsonInvalidLogicTupleException e) {
                 System.err.println("[Spawn2PLibrary]: " + e);
-                e.printStackTrace();
+                // TODO Properly handle Exception
                 return false;
             } catch (final TucsonOperationNotPossibleException e) {
                 System.err.println("[Spawn2PLibrary]: " + e);
-                e.printStackTrace();
+                // TODO Properly handle Exception
                 return false;
             }
         }
@@ -342,11 +339,11 @@ public class Spawn2PLibrary extends Library {
                                 this.target, arg, null);
             } catch (final TucsonInvalidLogicTupleException e) {
                 System.err.println("[Spawn2PLibrary]: " + e);
-                e.printStackTrace();
+                // TODO Properly handle Exception
                 return false;
             } catch (final TucsonOperationNotPossibleException e) {
                 System.err.println("[Spawn2PLibrary]: " + e);
-                e.printStackTrace();
+                // TODO Properly handle Exception
                 return false;
             }
         } else {
@@ -357,11 +354,11 @@ public class Spawn2PLibrary extends Library {
                                 this.target, arg, null);
             } catch (final TucsonInvalidLogicTupleException e) {
                 System.err.println("[Spawn2PLibrary]: " + e);
-                e.printStackTrace();
+                // TODO Properly handle Exception
                 return false;
             } catch (final TucsonOperationNotPossibleException e) {
                 System.err.println("[Spawn2PLibrary]: " + e);
-                e.printStackTrace();
+                // TODO Properly handle Exception
                 return false;
             }
         }
@@ -380,11 +377,11 @@ public class Spawn2PLibrary extends Library {
                                 this.target, arg, null);
             } catch (final TucsonInvalidLogicTupleException e) {
                 System.err.println("[Spawn2PLibrary]: " + e);
-                e.printStackTrace();
+                // TODO Properly handle Exception
                 return false;
             } catch (final TucsonOperationNotPossibleException e) {
                 System.err.println("[Spawn2PLibrary]: " + e);
-                e.printStackTrace();
+                // TODO Properly handle Exception
                 return false;
             }
         } else {
@@ -395,11 +392,11 @@ public class Spawn2PLibrary extends Library {
                                 this.target, arg, null);
             } catch (final TucsonInvalidLogicTupleException e) {
                 System.err.println("[Spawn2PLibrary]: " + e);
-                e.printStackTrace();
+                // TODO Properly handle Exception
                 return false;
             } catch (final TucsonOperationNotPossibleException e) {
                 System.err.println("[Spawn2PLibrary]: " + e);
-                e.printStackTrace();
+                // TODO Properly handle Exception
                 return false;
             }
         }
@@ -418,11 +415,11 @@ public class Spawn2PLibrary extends Library {
                                 this.target, arg, null);
             } catch (final TucsonInvalidLogicTupleException e) {
                 System.err.println("[Spawn2PLibrary]: " + e);
-                e.printStackTrace();
+                // TODO Properly handle Exception
                 return false;
             } catch (final TucsonOperationNotPossibleException e) {
                 System.err.println("[Spawn2PLibrary]: " + e);
-                e.printStackTrace();
+                // TODO Properly handle Exception
                 return false;
             }
         } else {
@@ -433,11 +430,11 @@ public class Spawn2PLibrary extends Library {
                                 this.target, arg, null);
             } catch (final TucsonInvalidLogicTupleException e) {
                 System.err.println("[Spawn2PLibrary]: " + e);
-                e.printStackTrace();
+                // TODO Properly handle Exception
                 return false;
             } catch (final TucsonOperationNotPossibleException e) {
                 System.err.println("[Spawn2PLibrary]: " + e);
-                e.printStackTrace();
+                // TODO Properly handle Exception
                 return false;
             }
         }
@@ -459,11 +456,11 @@ public class Spawn2PLibrary extends Library {
                                 this.target, arg, null);
             } catch (final TucsonInvalidLogicTupleException e) {
                 System.err.println("[Spawn2PLibrary]: " + e);
-                e.printStackTrace();
+                // TODO Properly handle Exception
                 return false;
             } catch (final TucsonOperationNotPossibleException e) {
                 System.err.println("[Spawn2PLibrary]: " + e);
-                e.printStackTrace();
+                // TODO Properly handle Exception
                 return false;
             }
         } else {
@@ -474,11 +471,11 @@ public class Spawn2PLibrary extends Library {
                                 this.target, arg, null);
             } catch (final TucsonInvalidLogicTupleException e) {
                 System.err.println("[Spawn2PLibrary]: " + e);
-                e.printStackTrace();
+                // TODO Properly handle Exception
                 return false;
             } catch (final TucsonOperationNotPossibleException e) {
                 System.err.println("[Spawn2PLibrary]: " + e);
-                e.printStackTrace();
+                // TODO Properly handle Exception
                 return false;
             }
         }
@@ -501,11 +498,11 @@ public class Spawn2PLibrary extends Library {
                                 this.target, arg, null);
             } catch (final TucsonInvalidLogicTupleException e) {
                 System.err.println("[Spawn2PLibrary]: " + e);
-                e.printStackTrace();
+                // TODO Properly handle Exception
                 return false;
             } catch (final TucsonOperationNotPossibleException e) {
                 System.err.println("[Spawn2PLibrary]: " + e);
-                e.printStackTrace();
+                // TODO Properly handle Exception
                 return false;
             }
         } else {
@@ -516,11 +513,11 @@ public class Spawn2PLibrary extends Library {
                                 this.target, arg, null);
             } catch (final TucsonInvalidLogicTupleException e) {
                 System.err.println("[Spawn2PLibrary]: " + e);
-                e.printStackTrace();
+                // TODO Properly handle Exception
                 return false;
             } catch (final TucsonOperationNotPossibleException e) {
                 System.err.println("[Spawn2PLibrary]: " + e);
-                e.printStackTrace();
+                // TODO Properly handle Exception
                 return false;
             }
         }
@@ -556,11 +553,11 @@ public class Spawn2PLibrary extends Library {
                                 this.target, arg, null);
             } catch (final TucsonInvalidLogicTupleException e) {
                 System.err.println("[Spawn2PLibrary]: " + e);
-                e.printStackTrace();
+                // TODO Properly handle Exception
                 return false;
             } catch (final TucsonOperationNotPossibleException e) {
                 System.err.println("[Spawn2PLibrary]: " + e);
-                e.printStackTrace();
+                // TODO Properly handle Exception
                 return false;
             }
         } else {
@@ -571,11 +568,11 @@ public class Spawn2PLibrary extends Library {
                                 this.target, arg, null);
             } catch (final TucsonInvalidLogicTupleException e) {
                 System.err.println("[Spawn2PLibrary]: " + e);
-                e.printStackTrace();
+                // TODO Properly handle Exception
                 return false;
             } catch (final TucsonOperationNotPossibleException e) {
                 System.err.println("[Spawn2PLibrary]: " + e);
-                e.printStackTrace();
+                // TODO Properly handle Exception
                 return false;
             }
         }
@@ -597,11 +594,11 @@ public class Spawn2PLibrary extends Library {
                                 this.target, arg, null);
             } catch (final TucsonInvalidLogicTupleException e) {
                 System.err.println("[Spawn2PLibrary]: " + e);
-                e.printStackTrace();
+                // TODO Properly handle Exception
                 return false;
             } catch (final TucsonOperationNotPossibleException e) {
                 System.err.println("[Spawn2PLibrary]: " + e);
-                e.printStackTrace();
+                // TODO Properly handle Exception
                 return false;
             }
         } else {
@@ -612,11 +609,11 @@ public class Spawn2PLibrary extends Library {
                                 this.target, arg, null);
             } catch (final TucsonInvalidLogicTupleException e) {
                 System.err.println("[Spawn2PLibrary]: " + e);
-                e.printStackTrace();
+                // TODO Properly handle Exception
                 return false;
             } catch (final TucsonOperationNotPossibleException e) {
                 System.err.println("[Spawn2PLibrary]: " + e);
-                e.printStackTrace();
+                // TODO Properly handle Exception
                 return false;
             }
         }
@@ -638,11 +635,11 @@ public class Spawn2PLibrary extends Library {
                                 this.target, arg, null);
             } catch (final TucsonInvalidLogicTupleException e) {
                 System.err.println("[Spawn2PLibrary]: " + e);
-                e.printStackTrace();
+                // TODO Properly handle Exception
                 return false;
             } catch (final TucsonOperationNotPossibleException e) {
                 System.err.println("[Spawn2PLibrary]: " + e);
-                e.printStackTrace();
+                // TODO Properly handle Exception
                 return false;
             }
         } else {
@@ -653,11 +650,11 @@ public class Spawn2PLibrary extends Library {
                                 this.target, arg, null);
             } catch (final TucsonInvalidLogicTupleException e) {
                 System.err.println("[Spawn2PLibrary]: " + e);
-                e.printStackTrace();
+                // TODO Properly handle Exception
                 return false;
             } catch (final TucsonOperationNotPossibleException e) {
                 System.err.println("[Spawn2PLibrary]: " + e);
-                e.printStackTrace();
+                // TODO Properly handle Exception
                 return false;
             }
         }
@@ -680,11 +677,11 @@ public class Spawn2PLibrary extends Library {
                                 this.target, arg, null);
             } catch (final TucsonInvalidLogicTupleException e) {
                 System.err.println("[Spawn2PLibrary]: " + e);
-                e.printStackTrace();
+                // TODO Properly handle Exception
                 return false;
             } catch (final TucsonOperationNotPossibleException e) {
                 System.err.println("[Spawn2PLibrary]: " + e);
-                e.printStackTrace();
+                // TODO Properly handle Exception
                 return false;
             }
         } else {
@@ -695,11 +692,11 @@ public class Spawn2PLibrary extends Library {
                                 this.target, arg, null);
             } catch (final TucsonInvalidLogicTupleException e) {
                 System.err.println("[Spawn2PLibrary]: " + e);
-                e.printStackTrace();
+                // TODO Properly handle Exception
                 return false;
             } catch (final TucsonOperationNotPossibleException e) {
                 System.err.println("[Spawn2PLibrary]: " + e);
-                e.printStackTrace();
+                // TODO Properly handle Exception
                 return false;
             }
         }
@@ -722,11 +719,11 @@ public class Spawn2PLibrary extends Library {
                                 this.target, arg, null);
             } catch (final TucsonInvalidLogicTupleException e) {
                 System.err.println("[Spawn2PLibrary]: " + e);
-                e.printStackTrace();
+                // TODO Properly handle Exception
                 return false;
             } catch (final TucsonOperationNotPossibleException e) {
                 System.err.println("[Spawn2PLibrary]: " + e);
-                e.printStackTrace();
+                // TODO Properly handle Exception
                 return false;
             }
         } else {
@@ -737,11 +734,11 @@ public class Spawn2PLibrary extends Library {
                                 this.target, arg, null);
             } catch (final TucsonInvalidLogicTupleException e) {
                 System.err.println("[Spawn2PLibrary]: " + e);
-                e.printStackTrace();
+                // TODO Properly handle Exception
                 return false;
             } catch (final TucsonOperationNotPossibleException e) {
                 System.err.println("[Spawn2PLibrary]: " + e);
-                e.printStackTrace();
+                // TODO Properly handle Exception
                 return false;
             }
         }
@@ -763,11 +760,11 @@ public class Spawn2PLibrary extends Library {
                                 this.target, arg, null);
             } catch (final TucsonInvalidLogicTupleException e) {
                 System.err.println("[Spawn2PLibrary]: " + e);
-                e.printStackTrace();
+                // TODO Properly handle Exception
                 return false;
             } catch (final TucsonOperationNotPossibleException e) {
                 System.err.println("[Spawn2PLibrary]: " + e);
-                e.printStackTrace();
+                // TODO Properly handle Exception
                 return false;
             }
         } else {
@@ -778,11 +775,11 @@ public class Spawn2PLibrary extends Library {
                                 this.target, arg, null);
             } catch (final TucsonInvalidLogicTupleException e) {
                 System.err.println("[Spawn2PLibrary]: " + e);
-                e.printStackTrace();
+                // TODO Properly handle Exception
                 return false;
             } catch (final TucsonOperationNotPossibleException e) {
                 System.err.println("[Spawn2PLibrary]: " + e);
-                e.printStackTrace();
+                // TODO Properly handle Exception
                 return false;
             }
         }

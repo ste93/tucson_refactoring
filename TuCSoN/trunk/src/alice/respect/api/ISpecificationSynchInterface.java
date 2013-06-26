@@ -13,25 +13,25 @@ import alice.respect.api.exceptions.OperationNotPossibleException;
  */
 public interface ISpecificationSynchInterface {
 
-    LogicTuple in_s(AgentId aid, LogicTuple t)
+    LogicTuple inpS(AgentId aid, LogicTuple t)
             throws InvalidLogicTupleException, OperationNotPossibleException;
 
-    LogicTuple inp_s(AgentId aid, LogicTuple t)
+    LogicTuple inS(AgentId aid, LogicTuple t)
             throws InvalidLogicTupleException, OperationNotPossibleException;
 
-    LogicTuple no_s(AgentId aid, LogicTuple t)
+    LogicTuple nopS(AgentId aid, LogicTuple t)
             throws InvalidLogicTupleException, OperationNotPossibleException;
 
-    LogicTuple nop_s(AgentId aid, LogicTuple t)
+    LogicTuple noS(AgentId aid, LogicTuple t)
             throws InvalidLogicTupleException, OperationNotPossibleException;
 
-    void out_s(AgentId aid, LogicTuple t) throws InvalidLogicTupleException,
+    void outS(AgentId aid, LogicTuple t) throws InvalidLogicTupleException,
             OperationNotPossibleException;
 
-    LogicTuple rd_s(AgentId aid, LogicTuple t)
+    LogicTuple rdpS(AgentId aid, LogicTuple t)
             throws InvalidLogicTupleException, OperationNotPossibleException;
 
-    LogicTuple rdp_s(AgentId aid, LogicTuple t)
+    LogicTuple rdS(AgentId aid, LogicTuple t)
             throws InvalidLogicTupleException, OperationNotPossibleException;
 
 }

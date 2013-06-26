@@ -15,6 +15,10 @@ package alice.tucson.introspection.tools;
 
 import java.awt.Color;
 
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
 import alice.tucson.api.TucsonAgentId;
 import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.api.exceptions.TucsonGenericException;
@@ -98,18 +102,14 @@ public class Inspector extends javax.swing.JFrame {
                 try {
                     form.exit.wait();
                 } catch (final InterruptedException e) {
-                    e.printStackTrace();
+                    // TODO Properly handle Exception
                 }
             }
             System.out.println("[Inspector]: I quit, see you next time :)");
             System.exit(0);
-        } catch (final InterruptedException e) {
-            System.err.println("[Inspector]: " + e);
-            e.printStackTrace();
-            System.exit(-1);
         } catch (final Exception e) {
             System.err.println("[Inspector]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
             System.exit(-1);
         }
 
@@ -141,31 +141,20 @@ public class Inspector extends javax.swing.JFrame {
     private javax.swing.JTextField inputNode;
     private javax.swing.JTextField inputPort;
     private boolean isSessionOpen;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel netid;
-    private javax.swing.JButton pendingBtn;
     private EventViewer pendingQueryForm;
-    private javax.swing.JLabel portno;
     private ReactionViewer reactionForm;
-    private javax.swing.JButton reactionsBtn;
-    private javax.swing.JPanel respectSetsPanel;
-    private javax.swing.JButton specBtn;
     private EditSpec specForm;
     private javax.swing.JTextField stateBar;
-    private javax.swing.JLabel tname;
     private TupleViewer tupleForm;
-
-    private javax.swing.JButton tuplesBtn;
 
     /**
      * Called when no default tuplecentre to monitor is given.
      * 
      * @param id
      *            the name of the Inspector agent.
-     * 
-     * @throws Exception
      */
-    public Inspector(final TucsonAgentId id) throws Exception {
+    public Inspector(final TucsonAgentId id) {
+        super();
         this.initComponents();
         this.aid = id;
         this.disableControlPanel();
@@ -180,18 +169,25 @@ public class Inspector extends javax.swing.JFrame {
      *            the name of the Inspector agent.
      * @param tc
      *            the fullname of the tuplecentre to inspect.
-     * 
-     * @throws Exception
      */
-    public Inspector(final TucsonAgentId id, final TucsonTupleCentreId tc)
-            throws Exception {
+    public Inspector(final TucsonAgentId id, final TucsonTupleCentreId tc) {
         this(id);
         this.tid = tc;
         this.inputName.setText(tc.getName());
         this.inputNode.setText(alice.util.Tools.removeApices(tc.getNode()));
-        this.inputPort
-                .setText(alice.util.Tools.removeApices("" + tc.getPort()));
+        this.inputPort.setText(alice.util.Tools.removeApices(String
+                .valueOf(this.tid.getPort())));
         this.buttonInspectActionPerformed();
+    }
+
+    public void onEventViewerExit() {
+        try {
+            this.protocol.pendingQueryObservType =
+                    InspectorProtocol.NO_OBSERVATION;
+            this.context.setProtocol(this.protocol);
+        } catch (final Exception e) {
+            // TODO Properly handle Exception
+        }
     }
 
     protected EventViewer getQueryForm() {
@@ -215,7 +211,7 @@ public class Inspector extends javax.swing.JFrame {
                     InspectorProtocol.NO_OBSERVATION;
             this.context.setProtocol(this.protocol);
         } catch (final Exception e) {
-            e.printStackTrace();
+            // TODO Properly handle Exception
         }
     }
 
@@ -227,7 +223,7 @@ public class Inspector extends javax.swing.JFrame {
             this.protocol.tsetObservType = InspectorProtocol.NO_OBSERVATION;
             this.context.setProtocol(this.protocol);
         } catch (final Exception e) {
-            e.printStackTrace();
+            // TODO Properly handle Exception
         }
     }
 
@@ -253,8 +249,8 @@ public class Inspector extends javax.swing.JFrame {
                 this.inputName.setText(this.tid.getName());
                 this.inputNode.setText(alice.util.Tools.removeApices(this.tid
                         .getNode()));
-                this.inputPort.setText(alice.util.Tools.removeApices(""
-                        + this.tid.getPort()));
+                this.inputPort.setText(alice.util.Tools.removeApices(String
+                        .valueOf(this.tid.getPort())));
                 this.checkStepExecution.setSelected(false);
                 this.buttonNextStep.setEnabled(false);
                 this.inputName.setEditable(false);
@@ -268,10 +264,10 @@ public class Inspector extends javax.swing.JFrame {
 
             } catch (final TucsonInvalidTupleCentreIdException e) {
                 this.stateBar.setText("Operation Failed: " + e);
-                e.printStackTrace();
+                // TODO Properly handle Exception
             } catch (final Exception e) {
                 this.stateBar.setText("Operation Failed: " + e);
-                e.printStackTrace();
+                // TODO Properly handle Exception
             }
 
         } else {
@@ -327,12 +323,12 @@ public class Inspector extends javax.swing.JFrame {
      * @param evt
      *            closing window event.
      */
-    private void exitForm(final java.awt.event.WindowEvent evt) {
+    private void exitForm() {
         if (this.isSessionOpen) {
             try {
                 this.context.exit();
             } catch (final Exception e) {
-                e.printStackTrace();
+                // TODO Properly handle Exception
             }
         }
         if (this.tupleForm != null) {
@@ -361,23 +357,23 @@ public class Inspector extends javax.swing.JFrame {
         java.awt.GridBagConstraints gridBagConstraints;
 
         this.controlPanel = new javax.swing.JTabbedPane();
-        this.respectSetsPanel = new javax.swing.JPanel();
-        this.tuplesBtn = new javax.swing.JButton();
-        this.pendingBtn = new javax.swing.JButton();
-        this.reactionsBtn = new javax.swing.JButton();
-        this.specBtn = new javax.swing.JButton();
+        final JPanel respectSetsPanel = new JPanel();
+        final JButton tuplesBtn = new JButton();
+        final JButton pendingBtn = new JButton();
+        final JButton reactionsBtn = new JButton();
+        final JButton specBtn = new JButton();
         this.checkStepExecution = new javax.swing.JCheckBox();
         this.buttonNextStep = new javax.swing.JButton();
         this.chooseTC = new javax.swing.JPanel();
-        this.tname = new javax.swing.JLabel();
-        this.netid = new javax.swing.JLabel();
-        this.portno = new javax.swing.JLabel();
+        final JLabel tname = new JLabel();
+        final JLabel netid = new JLabel();
+        final JLabel portno = new JLabel();
         this.inputName = new javax.swing.JTextField();
         this.inputNode = new javax.swing.JTextField();
         this.inputPort = new javax.swing.JTextField();
         this.buttonInspect = new javax.swing.JButton();
         this.imgPanel = new javax.swing.JPanel();
-        this.jLabel1 = new javax.swing.JLabel();
+        final JLabel jLabel1 = new JLabel();
         this.stateBar = new javax.swing.JTextField();
 
         this.getContentPane().setLayout(new java.awt.GridBagLayout());
@@ -387,7 +383,7 @@ public class Inspector extends javax.swing.JFrame {
         this.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosing(final java.awt.event.WindowEvent evt) {
-                Inspector.this.exitForm(evt);
+                Inspector.this.exitForm();
             }
         });
 
@@ -396,22 +392,21 @@ public class Inspector extends javax.swing.JFrame {
         this.controlPanel.setMinimumSize(new java.awt.Dimension(360, 120));
         this.controlPanel.setPreferredSize(new java.awt.Dimension(360, 120));
 
-        this.respectSetsPanel.setLayout(new java.awt.GridBagLayout());
-        this.respectSetsPanel
+        respectSetsPanel.setLayout(new java.awt.GridBagLayout());
+        respectSetsPanel
                 .setToolTipText("Now inspecting TuCSoN tuplecentre sets");
-        this.respectSetsPanel.setMinimumSize(new java.awt.Dimension(240, 100));
-        this.respectSetsPanel
-                .setPreferredSize(new java.awt.Dimension(240, 100));
+        respectSetsPanel.setMinimumSize(new java.awt.Dimension(240, 100));
+        respectSetsPanel.setPreferredSize(new java.awt.Dimension(240, 100));
 
-        this.tuplesBtn.setFont(new java.awt.Font("Arial", 0, 11));
-        this.tuplesBtn.setText("Tuple Space");
-        this.tuplesBtn.setToolTipText("Inspect logic tuples set");
-        this.tuplesBtn.setMaximumSize(new java.awt.Dimension(130, 25));
-        this.tuplesBtn.setMinimumSize(new java.awt.Dimension(130, 25));
-        this.tuplesBtn.setPreferredSize(new java.awt.Dimension(130, 25));
-        this.tuplesBtn.addActionListener(new java.awt.event.ActionListener() {
+        tuplesBtn.setFont(new java.awt.Font("Arial", 0, 11));
+        tuplesBtn.setText("Tuple Space");
+        tuplesBtn.setToolTipText("Inspect logic tuples set");
+        tuplesBtn.setMaximumSize(new java.awt.Dimension(130, 25));
+        tuplesBtn.setMinimumSize(new java.awt.Dimension(130, 25));
+        tuplesBtn.setPreferredSize(new java.awt.Dimension(130, 25));
+        tuplesBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(final java.awt.event.ActionEvent evt) {
-                Inspector.this.tuplesBtnActionPerformed(evt);
+                Inspector.this.tuplesBtnActionPerformed();
             }
         });
 
@@ -420,17 +415,17 @@ public class Inspector extends javax.swing.JFrame {
         gridBagConstraints.gridy = 1;
         gridBagConstraints.weightx = 30.0;
         gridBagConstraints.weighty = 100.0;
-        this.respectSetsPanel.add(this.tuplesBtn, gridBagConstraints);
+        respectSetsPanel.add(tuplesBtn, gridBagConstraints);
 
-        this.pendingBtn.setFont(new java.awt.Font("Arial", 0, 11));
-        this.pendingBtn.setText("Pending Ops");
-        this.pendingBtn.setToolTipText("Inspect pending TuCSoN operations set");
-        this.pendingBtn.setMaximumSize(new java.awt.Dimension(130, 25));
-        this.pendingBtn.setMinimumSize(new java.awt.Dimension(130, 25));
-        this.pendingBtn.setPreferredSize(new java.awt.Dimension(130, 25));
-        this.pendingBtn.addActionListener(new java.awt.event.ActionListener() {
+        pendingBtn.setFont(new java.awt.Font("Arial", 0, 11));
+        pendingBtn.setText("Pending Ops");
+        pendingBtn.setToolTipText("Inspect pending TuCSoN operations set");
+        pendingBtn.setMaximumSize(new java.awt.Dimension(130, 25));
+        pendingBtn.setMinimumSize(new java.awt.Dimension(130, 25));
+        pendingBtn.setPreferredSize(new java.awt.Dimension(130, 25));
+        pendingBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(final java.awt.event.ActionEvent evt) {
-                Inspector.this.pendingBtnActionPerformed(evt);
+                Inspector.this.pendingBtnActionPerformed();
             }
         });
 
@@ -439,39 +434,36 @@ public class Inspector extends javax.swing.JFrame {
         gridBagConstraints.gridy = 1;
         gridBagConstraints.weightx = 30.0;
         gridBagConstraints.weighty = 100.0;
-        this.respectSetsPanel.add(this.pendingBtn, gridBagConstraints);
+        respectSetsPanel.add(pendingBtn, gridBagConstraints);
 
-        this.reactionsBtn.setFont(new java.awt.Font("Arial", 0, 11));
-        this.reactionsBtn.setText("ReSpecT Reactions");
-        this.reactionsBtn
-                .setToolTipText("Inspect triggered ReSpecT rections set");
-        this.reactionsBtn.setMaximumSize(new java.awt.Dimension(130, 25));
-        this.reactionsBtn.setMinimumSize(new java.awt.Dimension(130, 25));
-        this.reactionsBtn.setPreferredSize(new java.awt.Dimension(130, 25));
-        this.reactionsBtn
-                .addActionListener(new java.awt.event.ActionListener() {
-                    public void actionPerformed(
-                            final java.awt.event.ActionEvent evt) {
-                        Inspector.this.trigReactsBtnActionPerformed(evt);
-                    }
-                });
+        reactionsBtn.setFont(new java.awt.Font("Arial", 0, 11));
+        reactionsBtn.setText("ReSpecT Reactions");
+        reactionsBtn.setToolTipText("Inspect triggered ReSpecT rections set");
+        reactionsBtn.setMaximumSize(new java.awt.Dimension(130, 25));
+        reactionsBtn.setMinimumSize(new java.awt.Dimension(130, 25));
+        reactionsBtn.setPreferredSize(new java.awt.Dimension(130, 25));
+        reactionsBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(final java.awt.event.ActionEvent evt) {
+                Inspector.this.trigReactsBtnActionPerformed();
+            }
+        });
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.weightx = 30.0;
         gridBagConstraints.weighty = 100.0;
-        this.respectSetsPanel.add(this.reactionsBtn, gridBagConstraints);
+        respectSetsPanel.add(reactionsBtn, gridBagConstraints);
 
-        this.specBtn.setFont(new java.awt.Font("Arial", 0, 11));
-        this.specBtn.setText("Specification Space");
-        this.specBtn.setToolTipText("Inspect ReSpecT specification tuples set");
-        this.specBtn.setMaximumSize(new java.awt.Dimension(130, 25));
-        this.specBtn.setMinimumSize(new java.awt.Dimension(130, 25));
-        this.specBtn.setPreferredSize(new java.awt.Dimension(130, 25));
-        this.specBtn.addActionListener(new java.awt.event.ActionListener() {
+        specBtn.setFont(new java.awt.Font("Arial", 0, 11));
+        specBtn.setText("Specification Space");
+        specBtn.setToolTipText("Inspect ReSpecT specification tuples set");
+        specBtn.setMaximumSize(new java.awt.Dimension(130, 25));
+        specBtn.setMinimumSize(new java.awt.Dimension(130, 25));
+        specBtn.setPreferredSize(new java.awt.Dimension(130, 25));
+        specBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(final java.awt.event.ActionEvent evt) {
-                Inspector.this.specBtnActionPerformed(evt);
+                Inspector.this.specBtnActionPerformed();
             }
         });
 
@@ -480,9 +472,9 @@ public class Inspector extends javax.swing.JFrame {
         gridBagConstraints.gridy = 2;
         gridBagConstraints.weightx = 50.0;
         gridBagConstraints.weighty = 100.0;
-        this.respectSetsPanel.add(this.specBtn, gridBagConstraints);
+        respectSetsPanel.add(specBtn, gridBagConstraints);
 
-        this.controlPanel.addTab("Sets", null, this.respectSetsPanel,
+        this.controlPanel.addTab("Sets", null, respectSetsPanel,
                 "Now inspecting TuCSoN tuplecentre sets");
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -502,38 +494,38 @@ public class Inspector extends javax.swing.JFrame {
         this.chooseTC.setMinimumSize(new java.awt.Dimension(360, 160));
         this.chooseTC.setPreferredSize(new java.awt.Dimension(360, 160));
 
-        this.tname.setText("tname");
-        this.tname.setMaximumSize(new java.awt.Dimension(60, 20));
-        this.tname.setMinimumSize(new java.awt.Dimension(60, 20));
-        this.tname.setPreferredSize(new java.awt.Dimension(60, 20));
+        tname.setText("tname");
+        tname.setMaximumSize(new java.awt.Dimension(60, 20));
+        tname.setMinimumSize(new java.awt.Dimension(60, 20));
+        tname.setPreferredSize(new java.awt.Dimension(60, 20));
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.insets = new java.awt.Insets(5, 0, 0, 0);
-        this.chooseTC.add(this.tname, gridBagConstraints);
+        this.chooseTC.add(tname, gridBagConstraints);
 
-        this.netid.setText("@netid");
-        this.netid.setMaximumSize(new java.awt.Dimension(60, 20));
-        this.netid.setMinimumSize(new java.awt.Dimension(60, 20));
-        this.netid.setPreferredSize(new java.awt.Dimension(60, 20));
+        netid.setText("@netid");
+        netid.setMaximumSize(new java.awt.Dimension(60, 20));
+        netid.setMinimumSize(new java.awt.Dimension(60, 20));
+        netid.setPreferredSize(new java.awt.Dimension(60, 20));
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.insets = new java.awt.Insets(5, 0, 0, 0);
-        this.chooseTC.add(this.netid, gridBagConstraints);
+        this.chooseTC.add(netid, gridBagConstraints);
 
-        this.portno.setText(":portno");
-        this.portno.setMaximumSize(new java.awt.Dimension(60, 20));
-        this.portno.setMinimumSize(new java.awt.Dimension(60, 20));
-        this.portno.setPreferredSize(new java.awt.Dimension(60, 20));
+        portno.setText(":portno");
+        portno.setMaximumSize(new java.awt.Dimension(60, 20));
+        portno.setMinimumSize(new java.awt.Dimension(60, 20));
+        portno.setPreferredSize(new java.awt.Dimension(60, 20));
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.insets = new java.awt.Insets(5, 0, 0, 0);
-        this.chooseTC.add(this.portno, gridBagConstraints);
+        this.chooseTC.add(portno, gridBagConstraints);
 
         this.inputName.setText("default");
         this.inputName.setToolTipText("tuple centre name");
@@ -594,15 +586,15 @@ public class Inspector extends javax.swing.JFrame {
 
         this.imgPanel.setLayout(new java.awt.GridBagLayout());
 
-        this.jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        this.jLabel1.setIcon(new javax.swing.ImageIcon(this.getClass()
-                .getResource("/alice/tucson/images/logo.gif")));
-        this.jLabel1.setPreferredSize(new java.awt.Dimension(90, 140));
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setIcon(new javax.swing.ImageIcon(this.getClass().getResource(
+                "/alice/tucson/images/logo.gif")));
+        jLabel1.setPreferredSize(new java.awt.Dimension(90, 140));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        this.imgPanel.add(this.jLabel1, gridBagConstraints);
+        this.imgPanel.add(jLabel1, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -630,15 +622,14 @@ public class Inspector extends javax.swing.JFrame {
      * @param evt
      *            'pending' button pushing event.
      */
-    private void
-            pendingBtnActionPerformed(final java.awt.event.ActionEvent evt) {
+    private void pendingBtnActionPerformed() {
         try {
             this.protocol.pendingQueryObservType =
                     InspectorProtocol.PROACTIVE_OBSERVATION;
             this.context.setProtocol(this.protocol);
             this.pendingQueryForm.setVisible(true);
         } catch (final Exception e) {
-            e.printStackTrace();
+            // TODO Properly handle Exception
         }
     }
 
@@ -648,7 +639,7 @@ public class Inspector extends javax.swing.JFrame {
      * @param evt
      *            'specification' button pushing event.
      */
-    private void specBtnActionPerformed(final java.awt.event.ActionEvent evt) {
+    private void specBtnActionPerformed() {
         this.specForm.setVisible(true);
     }
 
@@ -658,15 +649,14 @@ public class Inspector extends javax.swing.JFrame {
      * @param evt
      *            'reaction' button pushing event.
      */
-    private void trigReactsBtnActionPerformed(
-            final java.awt.event.ActionEvent evt) {
+    private void trigReactsBtnActionPerformed() {
         try {
             this.protocol.reactionsObservType =
                     InspectorProtocol.PROACTIVE_OBSERVATION;
             this.context.setProtocol(this.protocol);
             this.reactionForm.setVisible(true);
         } catch (final Exception e) {
-            e.printStackTrace();
+            // TODO Properly handle Exception
         }
     }
 
@@ -676,24 +666,14 @@ public class Inspector extends javax.swing.JFrame {
      * @param evt
      *            'tuples' button pushing event.
      */
-    private void tuplesBtnActionPerformed(final java.awt.event.ActionEvent evt) {
+    private void tuplesBtnActionPerformed() {
         try {
             this.protocol.tsetObservType =
                     InspectorProtocol.PROACTIVE_OBSERVATION;
             this.context.setProtocol(this.protocol);
             this.tupleForm.setVisible(true);
         } catch (final Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    void onEventViewerExit() {
-        try {
-            this.protocol.pendingQueryObservType =
-                    InspectorProtocol.NO_OBSERVATION;
-            this.context.setProtocol(this.protocol);
-        } catch (final Exception e) {
-            e.printStackTrace();
+            // TODO Properly handle Exception
         }
     }
 

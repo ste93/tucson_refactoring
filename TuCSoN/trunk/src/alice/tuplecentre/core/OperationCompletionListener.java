@@ -18,6 +18,6 @@ package alice.tuplecentre.core;
  */
 public interface OperationCompletionListener {
 
-    public void operationCompleted(TupleCentreOperation op);
+    void operationCompleted(TupleCentreOperation op);
 
 }

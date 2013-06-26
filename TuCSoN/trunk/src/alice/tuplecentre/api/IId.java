@@ -9,10 +9,10 @@ package alice.tuplecentre.api;
  */
 public interface IId {
 
-    public boolean isAgent();
+    boolean isAgent();
 
-    public boolean isEnv();
+    boolean isEnv();
 
-    public boolean isTC();
+    boolean isTC();
 
 }

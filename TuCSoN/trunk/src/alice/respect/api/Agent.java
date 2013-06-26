@@ -28,13 +28,14 @@ public abstract class Agent {
         private final Method activity;
         private final Agent agent;
 
-        PlanExecutor(final Agent ag, final Method m) throws Exception {
+        PlanExecutor(final Agent ag, final Method m) {
+            super();
             this.agent = ag;
             this.activity = m;
         }
 
         @Override
-        final public void run() {
+        public void run() {
             try {
                 this.activity.invoke(this.agent, Agent.ARGS);
             } catch (final Exception ex) {
@@ -73,7 +74,7 @@ public abstract class Agent {
     /**
      * Starts agent execution
      */
-    final public void go() throws Exception {
+    final public void go() {
         this.execPlan("mainPlan");
     }
 
@@ -85,9 +86,15 @@ public abstract class Agent {
         this.tc = rtc;
     }
 
-    final protected void execPlan(final String name) throws Exception {
-        final Method m =
-                this.getClass().getDeclaredMethod(name, Agent.ARGS_CLASS);
+    final protected void execPlan(final String name) {
+        Method m = null;
+        try {
+            m = this.getClass().getDeclaredMethod(name, Agent.ARGS_CLASS);
+        } catch (final NoSuchMethodException e) {
+            // TODO Auto-generated catch block
+        } catch (final SecurityException e) {
+            // TODO Auto-generated catch block
+        }
         m.setAccessible(true);
         new PlanExecutor(this, m).start();
     }

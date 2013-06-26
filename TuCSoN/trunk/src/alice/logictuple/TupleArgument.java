@@ -65,6 +65,9 @@ public class TupleArgument implements java.io.Serializable {
     protected Term value;
 
     public TupleArgument() {
+        /*
+         * 
+         */
     }
 
     /**
@@ -321,10 +324,9 @@ public class TupleArgument implements java.io.Serializable {
      */
     public boolean match(final TupleArgument t) {
         try {
-            final boolean result = this.value.match(t.value);
-            return result;
+            return this.value.match(t.value);
         } catch (final Exception ex) {
-            ex.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
     }

@@ -14,16 +14,16 @@ public interface IRespectOperation extends
         alice.tuplecentre.api.ITupleCentreOperation {
 
     /**
-     * Gets the results of a get operation
-     */
-    public List<LogicTuple> getLogicTupleListResult();
-
-    /**
      * Gets the argument of the operation
      * 
      * @return
      */
     LogicTuple getLogicTupleArgument();
+
+    /**
+     * Gets the results of a get operation
+     */
+    List<LogicTuple> getLogicTupleListResult();
 
     /**
      * Gets the result of the operation,

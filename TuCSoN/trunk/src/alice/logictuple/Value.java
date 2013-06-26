@@ -32,26 +32,31 @@ public class Value extends TupleArgument {
 
     /** Constructs a simple double tuple argument */
     public Value(final double v) {
+        super();
         this.value = new alice.tuprolog.Double(v);
     }
 
     /** Constructs a simple float tuple argument */
     public Value(final float v) {
+        super();
         this.value = new alice.tuprolog.Float(v);
     }
 
     /** Constructs a simple integer tuple argument */
     public Value(final int v) {
+        super();
         this.value = new alice.tuprolog.Int(v);
     }
 
     /** Constructs a simple long tuple argument */
     public Value(final long v) {
+        super();
         this.value = new alice.tuprolog.Long(v);
     }
 
     /** Constructs a simple string tuple argument */
     public Value(final String f) {
+        super();
         this.value = new alice.tuprolog.Struct(f);
     }
 
@@ -65,6 +70,7 @@ public class Value extends TupleArgument {
      *            the argument of the structure
      */
     public Value(final String f, final TupleArgument at0) {
+        super();
         this.value = new alice.tuprolog.Struct(f, at0.toTerm());
     }
 
@@ -81,6 +87,7 @@ public class Value extends TupleArgument {
      */
     public Value(final String f, final TupleArgument at0,
             final TupleArgument at1) {
+        super();
         this.value = new alice.tuprolog.Struct(f, at0.toTerm(), at1.toTerm());
     }
 
@@ -99,6 +106,7 @@ public class Value extends TupleArgument {
      */
     public Value(final String f, final TupleArgument at0,
             final TupleArgument at1, final TupleArgument at2) {
+        super();
         this.value =
                 new alice.tuprolog.Struct(f, at0.toTerm(), at1.toTerm(),
                         at2.toTerm());
@@ -122,6 +130,7 @@ public class Value extends TupleArgument {
     public Value(final String f, final TupleArgument at0,
             final TupleArgument at1, final TupleArgument at2,
             final TupleArgument at3) {
+        super();
         this.value =
                 new alice.tuprolog.Struct(f, at0.toTerm(), at1.toTerm(),
                         at2.toTerm(), at3.toTerm());
@@ -147,6 +156,7 @@ public class Value extends TupleArgument {
     public Value(final String f, final TupleArgument at0,
             final TupleArgument at1, final TupleArgument at2,
             final TupleArgument at3, final TupleArgument at4) {
+        super();
         this.value =
                 new alice.tuprolog.Struct(f, at0.toTerm(), at1.toTerm(),
                         at2.toTerm(), at3.toTerm(), at4.toTerm());
@@ -175,6 +185,7 @@ public class Value extends TupleArgument {
             final TupleArgument at1, final TupleArgument at2,
             final TupleArgument at3, final TupleArgument at4,
             final TupleArgument at5) {
+        super();
         this.value =
                 new alice.tuprolog.Struct(f, at0.toTerm(), at1.toTerm(),
                         at2.toTerm(), at3.toTerm(), at4.toTerm(), at5.toTerm());
@@ -205,6 +216,7 @@ public class Value extends TupleArgument {
             final TupleArgument at1, final TupleArgument at2,
             final TupleArgument at3, final TupleArgument at4,
             final TupleArgument at5, final TupleArgument at6) {
+        super();
         this.value =
                 new alice.tuprolog.Struct(f, at0.toTerm(), at1.toTerm(),
                         at2.toTerm(), at3.toTerm(), at4.toTerm(), at5.toTerm(),
@@ -221,6 +233,7 @@ public class Value extends TupleArgument {
      *            the list of the arguments
      */
     public Value(final String f, final TupleArgument[] argList) {
+        super();
         final alice.tuprolog.Term[] list =
                 new alice.tuprolog.Term[argList.length];
         for (int i = 0; i < list.length; i++) {
@@ -236,6 +249,7 @@ public class Value extends TupleArgument {
      *            the list of the arguments
      */
     public Value(final TupleArgument[] argList) {
+        super();
         final alice.tuprolog.Term[] list =
                 new alice.tuprolog.Term[argList.length];
         for (int i = 0; i < list.length; i++) {
@@ -245,6 +259,7 @@ public class Value extends TupleArgument {
     }
 
     protected Value() {
+        super();
         this.value = null;
     }
 

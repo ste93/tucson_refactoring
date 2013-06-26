@@ -33,6 +33,7 @@ public class Var extends TupleArgument {
 
     /** Constructs an anonymous variable tuple argument */
     public Var() {
+        super();
         this.value = new alice.tuprolog.Var();
     }
 
@@ -46,6 +47,7 @@ public class Var extends TupleArgument {
      *                if it is not a valid name
      */
     public Var(final String n) throws InvalidTermException {
+        super();
         try {
             this.value = new alice.tuprolog.Var(n);
         } catch (final alice.tuprolog.InvalidTermException ex) {

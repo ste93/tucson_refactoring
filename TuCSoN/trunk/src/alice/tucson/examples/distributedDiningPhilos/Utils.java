@@ -13,7 +13,7 @@ import java.io.IOException;
  * 
  * @author Danilo Pianini
  */
-public class Utils {
+public final class Utils {
 
     public static String fileToString(final String path) throws IOException {
         final BufferedInputStream br =
@@ -23,6 +23,12 @@ public class Utils {
         br.read(res);
         br.close();
         return new String(res);
+    }
+
+    private Utils() {
+        /*
+         * 
+         */
     }
 
 }

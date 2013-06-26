@@ -23,7 +23,7 @@ public interface ITimedContext {
             throws InvalidLogicTupleException, OperationNotPossibleException,
             alice.respect.api.exceptions.OperationTimeOutException;
 
-    LogicTuple in_all(IId id, LogicTuple t, long ms)
+    LogicTuple inAll(IId id, LogicTuple t, long ms)
             throws InvalidLogicTupleException, OperationNotPossibleException,
             alice.respect.api.exceptions.OperationTimeOutException;
 
@@ -35,7 +35,7 @@ public interface ITimedContext {
             throws InvalidLogicTupleException, OperationNotPossibleException,
             OperationTimeOutException;
 
-    LogicTuple no_all(IId id, LogicTuple t, long ms)
+    LogicTuple noAll(IId id, LogicTuple t, long ms)
             throws InvalidLogicTupleException, OperationNotPossibleException,
             OperationTimeOutException;
 
@@ -46,7 +46,7 @@ public interface ITimedContext {
     void out(IId id, LogicTuple t, long ms) throws InvalidLogicTupleException,
             OperationNotPossibleException, OperationTimeOutException;
 
-    void out_all(IId id, LogicTuple t, long ms)
+    void outAll(IId id, LogicTuple t, long ms)
             throws InvalidLogicTupleException, OperationNotPossibleException,
             OperationTimeOutException;
 
@@ -54,7 +54,7 @@ public interface ITimedContext {
             throws InvalidLogicTupleException, OperationNotPossibleException,
             OperationTimeOutException;
 
-    LogicTuple rd_all(IId id, LogicTuple t, long ms)
+    LogicTuple rdAll(IId id, LogicTuple t, long ms)
             throws InvalidLogicTupleException, OperationNotPossibleException,
             OperationTimeOutException;
 

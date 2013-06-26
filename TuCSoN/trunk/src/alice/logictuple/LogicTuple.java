@@ -62,6 +62,9 @@ public class LogicTuple implements alice.tuplecentre.api.TupleTemplate,
     private TupleArgument info;
 
     public LogicTuple() {
+        /*
+         * 
+         */
     }
 
     /**
@@ -323,10 +326,9 @@ public class LogicTuple implements alice.tuplecentre.api.TupleTemplate,
             final LogicTuple tu = (LogicTuple) t;
             final Term term_a = this.info.toTerm();
             final Term term_b = tu.info.toTerm();
-            final boolean result = term_a.match(term_b);
-            return result;
+            return term_a.match(term_b);
         } catch (final Exception ex) {
-            ex.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
     }

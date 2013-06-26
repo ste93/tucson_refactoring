@@ -19,7 +19,7 @@ import alice.tuplecentre.api.exceptions.OperationTimeOutException;
  * 
  * @author s.mariani@unibo.it
  */
-public class HelloWorld {
+public final class HelloWorld {
 
     /**
      * @param args
@@ -95,29 +95,35 @@ public class HelloWorld {
             /*
              * The chosen TuCSoN Agent ID is not admissible.
              */
-            e.printStackTrace();
+            // TODO Properly handle Exception
         } catch (final TucsonInvalidTupleCentreIdException e) {
             /*
              * The chosen target tuple centre is not admissible.
              */
-            e.printStackTrace();
+            // TODO Properly handle Exception
         } catch (final TucsonOperationNotPossibleException e) {
             /*
              * The requested TuCSoN operation cannot be performed.
              */
-            e.printStackTrace();
+            // TODO Properly handle Exception
         } catch (final UnreachableNodeException e) {
             /*
              * The chosen target tuple centre is not reachable.
              */
-            e.printStackTrace();
+            // TODO Properly handle Exception
         } catch (final OperationTimeOutException e) {
             /*
              * Operation timeout expired.
              */
-            e.printStackTrace();
+            // TODO Properly handle Exception
         }
 
+    }
+
+    private HelloWorld() {
+        /*
+         * 
+         */
     }
 
 }

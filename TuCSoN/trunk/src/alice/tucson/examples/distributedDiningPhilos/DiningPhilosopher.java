@@ -57,13 +57,13 @@ public class DiningPhilosopher extends TucsonAgent {
                     this.say("I'm starving!");
                 }
             } catch (final InvalidLogicTupleException e) {
-                e.printStackTrace();
+                // TODO Properly handle Exception
             } catch (final TucsonOperationNotPossibleException e) {
-                e.printStackTrace();
+                // TODO Properly handle Exception
             } catch (final UnreachableNodeException e) {
-                e.printStackTrace();
+                // TODO Properly handle Exception
             } catch (final OperationTimeOutException e) {
-                e.printStackTrace();
+                // TODO Properly handle Exception
             }
         }
     }
@@ -73,7 +73,7 @@ public class DiningPhilosopher extends TucsonAgent {
         try {
             Thread.sleep(5000);
         } catch (final InterruptedException e) {
-            e.printStackTrace();
+            // TODO Properly handle Exception
         }
     }
 
@@ -82,7 +82,7 @@ public class DiningPhilosopher extends TucsonAgent {
         try {
             Thread.sleep(5000);
         } catch (final InterruptedException e) {
-            e.printStackTrace();
+            // TODO Properly handle Exception
         }
     }
 

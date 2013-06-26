@@ -47,12 +47,12 @@ public class InspectorCore extends alice.tucson.introspection.Inspector {
 
     protected LogicTuple logTupleFilter;
     protected FileWriter logTupleWriter;
-    private final Inspector form;
-
     /*
      * Used when logging tuples/operations/reactions.
      */
-    Calendar cal;
+    private Calendar cal;
+
+    private final Inspector form;
 
     /**
      * 
@@ -60,11 +60,9 @@ public class InspectorCore extends alice.tucson.introspection.Inspector {
      * @param f
      * @param id_
      * @param tid_
-     * 
-     * @throws Exception
      */
     public InspectorCore(final Inspector f, final TucsonAgentId id_,
-            final TucsonTupleCentreId tid_) throws Exception {
+            final TucsonTupleCentreId tid_) {
         super(id_, tid_);
         this.form = f;
         this.logTupleFilename = "inspector-tuples.log";
@@ -76,7 +74,56 @@ public class InspectorCore extends alice.tucson.introspection.Inspector {
             this.logReactionWriter =
                     new FileWriter(this.logReactionFilename, true);
         } catch (final IOException e) {
-            e.printStackTrace();
+            // TODO Properly handle Exception
+        }
+    }
+
+    public void changeLogQueryFile(final String name) {
+        this.logQueryFilename = name;
+        if (this.logQueryWriter != null) {
+            try {
+                this.logQueryWriter.close();
+            } catch (final IOException e) {
+                // TODO Properly handle Exception
+            }
+        }
+        try {
+            this.logQueryWriter = new FileWriter(this.logQueryFilename, true);
+        } catch (final IOException e) {
+            // TODO Properly handle Exception
+        }
+    }
+
+    public void changeLogReactionFile(final String name) {
+        this.logReactionFilename = name;
+        if (this.logReactionWriter != null) {
+            try {
+                this.logReactionWriter.close();
+            } catch (final IOException e) {
+                // TODO Properly handle Exception
+            }
+        }
+        try {
+            this.logReactionWriter =
+                    new FileWriter(this.logReactionFilename, true);
+        } catch (final IOException e) {
+            // TODO Properly handle Exception
+        }
+    }
+
+    public void changeLogTupleFile(final String name) {
+        this.logTupleFilename = name;
+        if (this.logTupleWriter != null) {
+            try {
+                this.logTupleWriter.close();
+            } catch (final IOException e) {
+                // TODO Properly handle Exception
+            }
+        }
+        try {
+            this.logTupleWriter = new FileWriter(this.logTupleFilename, true);
+        } catch (final IOException e) {
+            // TODO Properly handle Exception
         }
     }
 
@@ -87,23 +134,23 @@ public class InspectorCore extends alice.tucson.introspection.Inspector {
         if (msg.tuples != null) {
 
             final TupleViewer viewer = this.form.getTupleForm();
-            String st = "";
+            final StringBuffer st = new StringBuffer();
             Iterator<? extends Tuple> it = msg.tuples.iterator();
             int n = 0;
 
             while (it.hasNext()) {
-                st = st + it.next().toString() + "\n";
+                st.append(it.next().toString()).append('\n');
                 n++;
             }
             viewer.setNItems(n);
-            viewer.setText(st);
+            viewer.setText(st.toString());
 
             if (this.loggingTuples) {
 
                 try {
 
                     this.cal = Calendar.getInstance();
-                    st = "";
+                    st.delete(0, st.length());
                     this.logTupleWriter.write("snapshot(\n" + "localtime(date("
                             + this.cal.get(Calendar.DAY_OF_MONTH) + "-"
                             + this.cal.get(Calendar.MONTH) + "-"
@@ -116,26 +163,30 @@ public class InspectorCore extends alice.tucson.introspection.Inspector {
                     it = msg.tuples.iterator();
                     if (this.logTupleFilter == null) {
                         if (it.hasNext()) {
-                            st = st + "\t\t" + it.next().toString() + ",\n";
+                            st.append("\t\t").append(it.next().toString())
+                                    .append(",\n");
                             while (it.hasNext()) {
-                                st = st + "\t\t" + it.next().toString() + ",\n";
+                                st.append("\t\t").append(it.next().toString())
+                                        .append(",\n");
                             }
-                            st = st.substring(0, st.length() - 2);
+                            st.substring(0, st.length() - 2);
                         }
                     } else {
                         if (it.hasNext()) {
                             LogicTuple tuple = (LogicTuple) it.next();
                             if (this.logTupleFilter.match(tuple)) {
-                                st = st + "\t\t" + tuple.toString() + ",\n";
+                                st.append("\t\t").append(tuple.toString())
+                                        .append(",\n");
                             }
                             while (it.hasNext()) {
                                 tuple = (LogicTuple) it.next();
                                 if (this.logTupleFilter.match(tuple)) {
-                                    st = st + "\t\t" + tuple.toString() + ",\n";
+                                    st.append("\t\t").append(tuple.toString())
+                                            .append(",\n");
                                 }
                             }
-                            if (!st.isEmpty()) {
-                                st = st.substring(0, st.length() - 2);
+                            if (!(st.length() == 0)) {
+                                st.substring(0, st.length() - 2);
                             }
                         }
                     }
@@ -144,7 +195,7 @@ public class InspectorCore extends alice.tucson.introspection.Inspector {
                     this.logTupleWriter.flush();
 
                 } catch (final IOException e) {
-                    e.printStackTrace();
+                    // TODO Properly handle Exception
                 }
 
             }
@@ -154,26 +205,25 @@ public class InspectorCore extends alice.tucson.introspection.Inspector {
         if (msg.wnEvents != null) {
 
             final EventViewer viewer = this.form.getQueryForm();
-            String st = "";
+            final StringBuffer st = new StringBuffer();
             Iterator<WSetEvent> it = msg.wnEvents.iterator();
             int n = 0;
             WSetEvent ev;
 
             while (it.hasNext()) {
                 ev = it.next();
-                st =
-                        st + ev.getOp() + " from <"
-                                + ((AgentId) ev.getSource()).getLocalName()
-                                + "> to <" + ev.getTarget() + ">\n";
+                st.append(ev.getOp()).append(" from <")
+                        .append(((AgentId) ev.getSource()).getLocalName())
+                        .append("> to <").append(ev.getTarget()).append(">\n");
                 n++;
             }
             viewer.setNItems(n);
-            viewer.setText(st);
+            viewer.setText(st.toString());
 
             if (this.loggingQueries) {
                 try {
                     this.cal = Calendar.getInstance();
-                    st = "";
+                    st.delete(0, st.length());
                     this.logQueryWriter.write("snapshot(\n" + "localtime(date("
                             + this.cal.get(Calendar.DAY_OF_MONTH) + "-"
                             + this.cal.get(Calendar.MONTH) + "-"
@@ -186,71 +236,64 @@ public class InspectorCore extends alice.tucson.introspection.Inspector {
                     if (this.logOpFilter == null) {
                         if (it.hasNext()) {
                             ev = it.next();
-                            st =
-                                    st
-                                            + "\t\top(what("
-                                            + ev.getOp()
-                                            + "),\n\t\t\twho("
-                                            + ((AgentId) ev.getSource())
-                                                    .getLocalName()
-                                            + "),\n\t\t\twhere("
-                                            + ev.getTarget() + ")\n\t\t),\n";
+                            st.append("\t\top(what(")
+                                    .append(ev.getOp())
+                                    .append("),\n\t\t\twho(")
+                                    .append(((AgentId) ev.getSource())
+                                            .getLocalName())
+                                    .append("),\n\t\t\twhere(")
+                                    .append(ev.getTarget())
+                                    .append(")\n\t\t),\n");
                             while (it.hasNext()) {
                                 ev = it.next();
-                                st =
-                                        st
-                                                + "\t\top(what("
-                                                + ev.getOp()
-                                                + "),\n\t\t\twho("
-                                                + ((AgentId) ev.getSource())
-                                                        .getLocalName()
-                                                + "),\n\t\t\twhere("
-                                                + ev.getTarget()
-                                                + ")\n\t\t),\n";
+                                st.append("\t\top(what(")
+                                        .append(ev.getOp())
+                                        .append("),\n\t\t\twho(")
+                                        .append(((AgentId) ev.getSource())
+                                                .getLocalName())
+                                        .append("),\n\t\t\twhere(")
+                                        .append(ev.getTarget())
+                                        .append(")\n\t\t),\n");
                             }
-                            st = st.substring(0, st.length() - 2);
+                            st.substring(0, st.length() - 2);
                         }
                     } else {
                         if (it.hasNext()) {
                             ev = it.next();
                             LogicTuple tuple = ev.getOp();
                             if (this.logOpFilter.match(tuple)) {
-                                st =
-                                        st
-                                                + "\t\top(what("
-                                                + ev.getOp()
-                                                + "),\n\t\t\twho("
-                                                + ((AgentId) ev.getSource())
-                                                        .getLocalName()
-                                                + "),\n\t\t\twhere("
-                                                + ev.getTarget()
-                                                + ")\n\t\t),\n";
+                                st.append("\t\top(what(")
+                                        .append(ev.getOp())
+                                        .append("),\n\t\t\twho(")
+                                        .append(((AgentId) ev.getSource())
+                                                .getLocalName())
+                                        .append("),\n\t\t\twhere(")
+                                        .append(ev.getTarget())
+                                        .append(")\n\t\t),\n");
                             }
                             while (it.hasNext()) {
                                 ev = it.next();
                                 tuple = ev.getOp();
                                 if (this.logOpFilter.match(tuple)) {
-                                    st =
-                                            st
-                                                    + "\t\top(what("
-                                                    + ev.getOp()
-                                                    + "),\n\t\t\twho("
-                                                    + ((AgentId) ev.getSource())
-                                                            .getLocalName()
-                                                    + "),\n\t\t\twhere("
-                                                    + ev.getTarget()
-                                                    + ")\n\t\t),\n";
+                                    st.append("\t\top(what(")
+                                            .append(ev.getOp())
+                                            .append("),\n\t\t\twho(")
+                                            .append(((AgentId) ev.getSource())
+                                                    .getLocalName())
+                                            .append("),\n\t\t\twhere(")
+                                            .append(ev.getTarget())
+                                            .append(")\n\t\t),\n");
                                 }
                             }
-                            if (!st.isEmpty()) {
-                                st = st.substring(0, st.length() - 2);
+                            if (!(st.length() == 0)) {
+                                st.substring(0, st.length() - 2);
                             }
                         }
                     }
                     this.logQueryWriter.write(st + "\n\t])\n).\n");
                     this.logQueryWriter.flush();
                 } catch (final IOException e) {
-                    e.printStackTrace();
+                    // TODO Properly handle Exception
                 }
             }
 
@@ -279,7 +322,7 @@ public class InspectorCore extends alice.tucson.introspection.Inspector {
                             + " ).\n");
                     this.logReactionWriter.flush();
                 } catch (final IOException e) {
-                    e.printStackTrace();
+                    // TODO Properly handle Exception
                 }
             }
 
@@ -305,61 +348,12 @@ public class InspectorCore extends alice.tucson.introspection.Inspector {
                             + "),\n\t\tfailed( " + tr.getReaction() + " ).\n");
                     this.logReactionWriter.flush();
                 } catch (final IOException e) {
-                    e.printStackTrace();
+                    // TODO Properly handle Exception
                 }
             }
 
         }
 
-    }
-
-    void changeLogQueryFile(final String name) {
-        this.logQueryFilename = name;
-        if (this.logQueryWriter != null) {
-            try {
-                this.logQueryWriter.close();
-            } catch (final IOException e) {
-                e.printStackTrace();
-            }
-        }
-        try {
-            this.logQueryWriter = new FileWriter(this.logQueryFilename, true);
-        } catch (final IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    void changeLogReactionFile(final String name) {
-        this.logReactionFilename = name;
-        if (this.logReactionWriter != null) {
-            try {
-                this.logReactionWriter.close();
-            } catch (final IOException e) {
-                e.printStackTrace();
-            }
-        }
-        try {
-            this.logReactionWriter =
-                    new FileWriter(this.logReactionFilename, true);
-        } catch (final IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    void changeLogTupleFile(final String name) {
-        this.logTupleFilename = name;
-        if (this.logTupleWriter != null) {
-            try {
-                this.logTupleWriter.close();
-            } catch (final IOException e) {
-                e.printStackTrace();
-            }
-        }
-        try {
-            this.logTupleWriter = new FileWriter(this.logTupleFilename, true);
-        } catch (final IOException e) {
-            e.printStackTrace();
-        }
     }
 
 }

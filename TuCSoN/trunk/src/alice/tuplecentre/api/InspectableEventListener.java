@@ -32,6 +32,6 @@ public interface InspectableEventListener extends EventListener {
      * @param e
      *            the observed event
      */
-    public abstract void onInspectableEvent(InspectableEvent e);
+    void onInspectableEvent(InspectableEvent e);
 
 }

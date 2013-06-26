@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import alice.respect.core.RespectTC;
 import alice.tuplecentre.api.AgentId;
@@ -47,13 +48,13 @@ public abstract class TupleCentreVMContext implements ITupleCentreManagement,
     private long bootTime;
     private InputEvent currentEvent;
     private TupleCentreVMState currentState;
-    private boolean do_step;
-    private final LinkedList<Event> inputEnvEvents;
-    private final LinkedList<Event> inputEvents;
+    private boolean doStep;
+    private final List<Event> inputEnvEvents;
+    private final List<Event> inputEvents;
     private boolean management;
     private final int maxPendingInputEventNumber;
     private final RespectTC respectTC;
-    private final HashMap<String, TupleCentreVMState> states;
+    private final Map<String, TupleCentreVMState> states;
     private boolean stop;
     private final TupleCentreId tid;
 
@@ -175,24 +176,20 @@ public abstract class TupleCentreVMContext implements ITupleCentreManagement,
     public void execute() {
 
         try {
-            if (this.management) {
-                if (this.stop) {
-                    if (!this.do_step) {
-                        return;
-                    }
-                    this.do_step = false;
+            if (this.management && this.stop) {
+                if (!this.doStep) {
+                    return;
                 }
+                this.doStep = false;
             }
             while (!this.currentState.isIdle()) {
                 this.currentState.execute();
                 this.currentState = this.currentState.getNextState();
-                if (this.management) {
-                    if (this.stop) {
-                        if (!this.do_step) {
-                            break;
-                        }
-                        this.do_step = false;
+                if (this.management && this.stop) {
+                    if (!this.doStep) {
+                        break;
                     }
+                    this.doStep = false;
                 }
             }
         } catch (final Exception ex) {
@@ -206,7 +203,7 @@ public abstract class TupleCentreVMContext implements ITupleCentreManagement,
             try {
                 synchronized (this.inputEnvEvents) {
                     this.currentEvent =
-                            (InputEvent) (this.inputEnvEvents.removeFirst());
+                            (InputEvent) (this.inputEnvEvents.remove(0));
                 }
             } catch (final Exception ex) {
                 this.notifyException(ex);
@@ -224,8 +221,7 @@ public abstract class TupleCentreVMContext implements ITupleCentreManagement,
     public void fetchPendingEvent() {
         try {
             synchronized (this.inputEvents) {
-                this.currentEvent =
-                        (InputEvent) (this.inputEvents.removeFirst());
+                this.currentEvent = (InputEvent) (this.inputEvents.remove(0));
             }
         } catch (final Exception ex) {
             this.notifyException(ex);
@@ -317,7 +313,7 @@ public abstract class TupleCentreVMContext implements ITupleCentreManagement,
      * @return the state
      */
     public TupleCentreVMState getState(final String stateName) {
-        return (this.states.get(stateName));
+        return this.states.get(stateName);
     }
 
     /**
@@ -355,11 +351,11 @@ public abstract class TupleCentreVMContext implements ITupleCentreManagement,
         if (!this.management) {
             throw new OperationNotPossibleException();
         }
-        this.do_step = true;
+        this.doStep = true;
     }
 
-    public void notifyException(final Exception ex) {
-        ex.printStackTrace();
+    public void notifyException(final Exception e) {
+        e.printStackTrace();
     }
 
     public void notifyException(final String ex) {

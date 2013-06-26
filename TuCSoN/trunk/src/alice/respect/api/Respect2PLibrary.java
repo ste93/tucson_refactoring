@@ -66,7 +66,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         System.out.println("....[Respect2PLibrary]: " + s);
     }
 
-    RespectVMContext vm;
+    private RespectVMContext vm;
 
     public boolean after_1(final Term time) {
         return !this.before_1(time);
@@ -309,14 +309,14 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         try {
             tid = new TupleCentreId(arg1);
         } catch (final Exception e) {
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
         tcName = tid.getName();
 
         final AbstractMap<Var, Var> v = new LinkedHashMap<Var, Var>();
 
-        if (tcName.equals("this")) {
+        if ("this".equals(tcName)) {
             Respect2PLibrary.log("Local get triggered...");
             final List<Tuple> list = this.vm.getAllTuples();
             final TupleArgument[] array = new TupleArgument[list.size()];
@@ -344,7 +344,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
                 }
                 return false;
             } catch (final InvalidTupleOperationException e) {
-                e.printStackTrace();
+                // TODO Properly handle Exception
                 return false;
             }
         }
@@ -368,14 +368,14 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         try {
             tid = new TupleCentreId(arg1);
         } catch (final Exception e) {
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
         tcName = tid.getName();
 
         final AbstractMap<Var, Var> v = new LinkedHashMap<Var, Var>();
 
-        if (tcName.equals("this")) {
+        if ("this".equals(tcName)) {
             Respect2PLibrary.log("Local get_s triggered...");
             final Iterator<LogicTuple> it = this.vm.getSpecTupleSetIterator();
             final List<Tuple> list = new LinkedList<Tuple>();
@@ -408,7 +408,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
                 }
                 return false;
             } catch (final InvalidTupleOperationException e) {
-                e.printStackTrace();
+                // TODO Properly handle Exception
                 return false;
             }
         }
@@ -540,7 +540,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         try {
             tid = new TupleCentreId(arg1);
         } catch (final Exception e) {
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
         tcName = tid.getName();
@@ -548,7 +548,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         final LogicTuple tuArg = new LogicTuple(arg0);
         final AbstractMap<Var, Var> v = new LinkedHashMap<Var, Var>();
 
-        if (tcName.equals("this")) {
+        if ("this".equals(tcName)) {
             Respect2PLibrary.log("Local in triggered...");
             final alice.tuplecentre.api.Tuple tuple =
                     this.vm.removeMatchingTuple(tuArg);
@@ -587,7 +587,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         try {
             tid = new TupleCentreId(arg2);
         } catch (final Exception e) {
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
         tcName = tid.getName();
@@ -595,7 +595,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         final LogicTuple tuArg = new LogicTuple(arg0);
         final AbstractMap<Var, Var> v = new LinkedHashMap<Var, Var>();
 
-        if (tcName.equals("this")) {
+        if ("this".equals(tcName)) {
             Respect2PLibrary.log("Local in_all triggered...");
             final List<alice.tuplecentre.api.Tuple> tuples =
                     this.vm.inAllTuples(tuArg);
@@ -613,7 +613,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         try {
             resultArg = LogicTuple.parse(tuple);
         } catch (final InvalidLogicTupleException e) {
-            e.printStackTrace();
+            // TODO Properly handle Exception
         }
         final InputEvent out_ev =
                 new InputEvent(ce.getReactingTC(), RespectOperation.makeInAll(
@@ -634,7 +634,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         try {
             tid = new TupleCentreId(tc);
         } catch (final InvalidTupleCentreIdException ex) {
-            ex.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
         tcName = tid.getName();
@@ -647,11 +647,11 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
                             "reaction(" + e.getTerm() + "," + g.getTerm() + ","
                                     + r.getTerm() + ")", new MyOpManager());
         } catch (final InvalidTermException ex) {
-            ex.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
 
-        if (tcName.equals("this")) {
+        if ("this".equals(tcName)) {
             Respect2PLibrary.log("Local in_s triggered...");
             final Term newArg = goal.copyGoal(v, 0);
             final LogicTuple tuArg = new LogicTuple(newArg);
@@ -701,7 +701,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         try {
             tid = new TupleCentreId(arg1);
         } catch (final Exception e) {
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
         tcName = tid.getName();
@@ -709,7 +709,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         final LogicTuple tuArg = new LogicTuple(arg0);
         final AbstractMap<Var, Var> v = new LinkedHashMap<Var, Var>();
 
-        if (tcName.equals("this")) {
+        if ("this".equals(tcName)) {
             Respect2PLibrary.log("Local inp triggered...");
             final alice.tuplecentre.api.Tuple tuple =
                     this.vm.removeMatchingTuple(tuArg);
@@ -749,7 +749,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         try {
             tid = new TupleCentreId(tc);
         } catch (final InvalidTupleCentreIdException ex) {
-            ex.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
         tcName = tid.getName();
@@ -762,11 +762,11 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
                             "reaction(" + e.getTerm() + "," + g.getTerm() + ","
                                     + r.getTerm() + ")", new MyOpManager());
         } catch (final InvalidTermException ex) {
-            ex.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
 
-        if (tcName.equals("this")) {
+        if ("this".equals(tcName)) {
             Respect2PLibrary.log("Local inp_s triggered...");
             final Term newArg = goal.copyGoal(v, 0);
             final LogicTuple tuArg = new LogicTuple(newArg);
@@ -848,7 +848,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         try {
             tid = new TupleCentreId(arg1);
         } catch (final Exception e) {
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
         tcName = tid.getName();
@@ -856,7 +856,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         final LogicTuple tuArg = new LogicTuple(arg0);
         final AbstractMap<Var, Var> v = new LinkedHashMap<Var, Var>();
 
-        if (tcName.equals("this")) {
+        if ("this".equals(tcName)) {
             Respect2PLibrary.log("Local no triggered...");
             final alice.tuplecentre.api.Tuple tuple =
                     this.vm.readMatchingTuple(tuArg);
@@ -893,7 +893,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         try {
             tid = new TupleCentreId(arg2);
         } catch (final Exception e) {
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
         tcName = tid.getName();
@@ -901,7 +901,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         final LogicTuple tuArg = new LogicTuple(arg0);
         final AbstractMap<Var, Var> v = new LinkedHashMap<Var, Var>();
 
-        if (tcName.equals("this")) {
+        if ("this".equals(tcName)) {
             Respect2PLibrary.log("Local no_all triggered...");
             final List<alice.tuplecentre.api.Tuple> tuples =
                     this.vm.readAllTuples(tuArg);
@@ -919,7 +919,8 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         try {
             resultArg = LogicTuple.parse(tuple);
         } catch (final InvalidLogicTupleException e) {
-            e.printStackTrace();
+            // TODO Properly handle Exception
+            return false;
         }
         final InputEvent out_ev =
                 new InputEvent(ce.getReactingTC(), RespectOperation.makeNoAll(
@@ -940,7 +941,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         try {
             tid = new TupleCentreId(tc);
         } catch (final InvalidTupleCentreIdException ex) {
-            ex.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
         tcName = tid.getName();
@@ -953,11 +954,11 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
                             "reaction(" + e.getTerm() + "," + g.getTerm() + ","
                                     + r.getTerm() + ")", new MyOpManager());
         } catch (final InvalidTermException ex) {
-            ex.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
 
-        if (tcName.equals("this")) {
+        if ("this".equals(tcName)) {
             Respect2PLibrary.log("Local no_s triggered...");
             final Term newArg = goal.copyGoal(v, 0);
             final LogicTuple tuArg = new LogicTuple(newArg);
@@ -996,7 +997,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         try {
             tid = new TupleCentreId(arg1);
         } catch (final Exception e) {
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
         tcName = tid.getName();
@@ -1004,7 +1005,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         final LogicTuple tuArg = new LogicTuple(arg0);
         final AbstractMap<Var, Var> v = new LinkedHashMap<Var, Var>();
 
-        if (tcName.equals("this")) {
+        if ("this".equals(tcName)) {
             Respect2PLibrary.log("Local nop triggered...");
             final alice.tuplecentre.api.Tuple tuple =
                     this.vm.readMatchingTuple(tuArg);
@@ -1042,7 +1043,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         try {
             tid = new TupleCentreId(tc);
         } catch (final InvalidTupleCentreIdException ex) {
-            ex.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
         tcName = tid.getName();
@@ -1055,11 +1056,11 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
                             "reaction(" + e.getTerm() + "," + g.getTerm() + ","
                                     + r.getTerm() + ")", new MyOpManager());
         } catch (final InvalidTermException ex) {
-            ex.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
 
-        if (tcName.equals("this")) {
+        if ("this".equals(tcName)) {
             Respect2PLibrary.log("Local nop_s triggered...");
             final Term newArg = goal.copyGoal(v, 0);
             final LogicTuple tuArg = new LogicTuple(newArg);
@@ -1110,14 +1111,14 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         try {
             tid = new TupleCentreId(arg1);
         } catch (final Exception e) {
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
         tcName = tid.getName();
 
         final AbstractMap<Var, Var> v = new LinkedHashMap<Var, Var>();
 
-        if (tcName.equals("this")) {
+        if ("this".equals(tcName)) {
             Respect2PLibrary.log("Local out triggered...");
             final Term newArg = arg0.copyGoal(v, 0);
             final LogicTuple tuArg = new LogicTuple(newArg);
@@ -1141,8 +1142,8 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
                             .removeApices(((Struct) arg1.getTerm()).getArg(0)
                                     .getTerm().toString()), new MyOpManager()));
         } catch (final InvalidTupleCentreIdException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            // TODO Properly handle Exception
+            return false;
         }
         final InputEvent out_ev =
                 new InputEvent(ce.getReactingTC(), RespectOperation.makeOut(
@@ -1162,14 +1163,14 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         try {
             tid = new TupleCentreId(arg1);
         } catch (final Exception e) {
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
         tcName = tid.getName();
 
         final AbstractMap<Var, Var> v = new LinkedHashMap<Var, Var>();
 
-        if (tcName.equals("this")) {
+        if ("this".equals(tcName)) {
             Respect2PLibrary.log("Local out_all triggered...");
             final Term newArg = arg0.copyGoal(v, 0);
             final LogicTuple tuArg = new LogicTuple(newArg);
@@ -1205,7 +1206,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         try {
             tid = new TupleCentreId(tc);
         } catch (final InvalidTupleCentreIdException ex) {
-            ex.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
         tcName = tid.getName();
@@ -1218,11 +1219,11 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
                             "reaction(" + e.getTerm() + "," + g.getTerm() + ","
                                     + r.getTerm() + ")", new MyOpManager());
         } catch (final InvalidTermException ex) {
-            ex.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
 
-        if (tcName.equals("this")) {
+        if ("this".equals(tcName)) {
             Respect2PLibrary.log("Local out_s triggered...");
             final Term newArg = goal.copyGoal(v, 0);
             final LogicTuple tuArg = new LogicTuple(newArg);
@@ -1265,7 +1266,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         try {
             tid = new TupleCentreId(arg1);
         } catch (final Exception e) {
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
         tcName = tid.getName();
@@ -1273,7 +1274,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         final LogicTuple tuArg = new LogicTuple(arg0);
         final AbstractMap<Var, Var> v = new LinkedHashMap<Var, Var>();
 
-        if (tcName.equals("this")) {
+        if ("this".equals(tcName)) {
             Respect2PLibrary.log("Local rd triggered...");
             final alice.tuplecentre.api.Tuple tuple =
                     this.vm.readMatchingTuple(tuArg);
@@ -1312,7 +1313,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         try {
             tid = new TupleCentreId(arg2);
         } catch (final Exception e) {
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
         tcName = tid.getName();
@@ -1320,7 +1321,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         final LogicTuple tuArg = new LogicTuple(arg0);
         final AbstractMap<Var, Var> v = new LinkedHashMap<Var, Var>();
 
-        if (tcName.equals("this")) {
+        if ("this".equals(tcName)) {
             Respect2PLibrary.log("Local rd_all triggered...");
             final List<alice.tuplecentre.api.Tuple> tuples =
                     this.vm.readAllTuples(tuArg);
@@ -1338,7 +1339,8 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         try {
             resultArg = LogicTuple.parse(tuple);
         } catch (final InvalidLogicTupleException e) {
-            e.printStackTrace();
+            // TODO Properly handle Exception
+            return false;
         }
         final InputEvent out_ev =
                 new InputEvent(ce.getReactingTC(), RespectOperation.makeRdAll(
@@ -1359,7 +1361,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         try {
             tid = new TupleCentreId(tc);
         } catch (final InvalidTupleCentreIdException ex) {
-            ex.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
         tcName = tid.getName();
@@ -1372,11 +1374,11 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
                             "reaction(" + e.getTerm() + "," + g.getTerm() + ","
                                     + r.getTerm() + ")", new MyOpManager());
         } catch (final InvalidTermException ex) {
-            ex.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
 
-        if (tcName.equals("this")) {
+        if ("this".equals(tcName)) {
             Respect2PLibrary.log("Local rd_s triggered...");
             final Term newArg = goal.copyGoal(v, 0);
             final LogicTuple tuArg = new LogicTuple(newArg);
@@ -1417,7 +1419,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         try {
             tid = new TupleCentreId(arg1);
         } catch (final Exception e) {
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
         tcName = tid.getName();
@@ -1425,7 +1427,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         final LogicTuple tuArg = new LogicTuple(arg0);
         final AbstractMap<Var, Var> v = new LinkedHashMap<Var, Var>();
 
-        if (tcName.equals("this")) {
+        if ("this".equals(tcName)) {
             Respect2PLibrary.log("Local rdp triggered...");
             final alice.tuplecentre.api.Tuple tuple =
                     this.vm.readMatchingTuple(tuArg);
@@ -1469,7 +1471,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         try {
             tid = new TupleCentreId(tc);
         } catch (final InvalidTupleCentreIdException ex) {
-            ex.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
         tcName = tid.getName();
@@ -1482,11 +1484,11 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
                             "reaction(" + e.getTerm() + "," + g.getTerm() + ","
                                     + r.getTerm() + ")", new MyOpManager());
         } catch (final InvalidTermException ex) {
-            ex.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
 
-        if (tcName.equals("this")) {
+        if ("this".equals(tcName)) {
             Respect2PLibrary.log("Local rdp_s triggered...");
             final Term newArg = goal.copyGoal(v, 0);
             final LogicTuple tuArg = new LogicTuple(newArg);
@@ -1572,14 +1574,14 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         try {
             tid = new TupleCentreId(arg1);
         } catch (final Exception e) {
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
         tcName = tid.getName();
 
         final AbstractMap<Var, Var> v = new LinkedHashMap<Var, Var>();
 
-        if (tcName.equals("this")) {
+        if ("this".equals(tcName)) {
             Respect2PLibrary.log("Local spawn triggered...");
             final Term newArg = arg0.copyGoal(v, 0);
             final LogicTuple tuArg = new LogicTuple(newArg);
@@ -1723,14 +1725,14 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         if (e.isInternal()) {
             final InternalEvent ie = (InternalEvent) e;
             return this.unify(tuple,
-                    Term.createTerm("" + ie.getInputEvent().getTuple()));
+                    Term.createTerm(ie.getInputEvent().getTuple().toString()));
         }
         if (e.isOutput()) {
             final OutputEvent oe = (OutputEvent) e;
             return this.unify(tuple,
-                    Term.createTerm("" + oe.getInputEvent().getTuple()));
+                    Term.createTerm(oe.getInputEvent().getTuple().toString()));
         }
-        return this.unify(tuple, Term.createTerm("" + e.getTuple()));
+        return this.unify(tuple, Term.createTerm(e.getTuple().toString()));
     }
 
     /**
@@ -1780,7 +1782,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         try {
             tid = new TupleCentreId(arg1);
         } catch (final Exception e) {
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
         tcName = tid.getName();
@@ -1788,7 +1790,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         final LogicTuple tuArg = new LogicTuple(arg0);
         final AbstractMap<Var, Var> v = new LinkedHashMap<Var, Var>();
 
-        if (tcName.equals("this")) {
+        if ("this".equals(tcName)) {
             Respect2PLibrary.log("Local uin triggered...");
             final alice.tuplecentre.api.Tuple tuple =
                     this.vm.removeUniformTuple(tuArg);
@@ -1827,7 +1829,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         try {
             tid = new TupleCentreId(arg1);
         } catch (final Exception e) {
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
         tcName = tid.getName();
@@ -1835,7 +1837,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         final LogicTuple tuArg = new LogicTuple(arg0);
         final AbstractMap<Var, Var> v = new LinkedHashMap<Var, Var>();
 
-        if (tcName.equals("this")) {
+        if ("this".equals(tcName)) {
             Respect2PLibrary.log("Local uinp triggered...");
             final alice.tuplecentre.api.Tuple tuple =
                     this.vm.removeUniformTuple(tuArg);
@@ -1874,7 +1876,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         try {
             tid = new TupleCentreId(arg1);
         } catch (final Exception e) {
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
         tcName = tid.getName();
@@ -1882,7 +1884,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         final LogicTuple tuArg = new LogicTuple(arg0);
         final AbstractMap<Var, Var> v = new LinkedHashMap<Var, Var>();
 
-        if (tcName.equals("this")) {
+        if ("this".equals(tcName)) {
             Respect2PLibrary.log("Local uno triggered...");
             final alice.tuplecentre.api.Tuple tuple =
                     this.vm.readUniformTuple(tuArg);
@@ -1921,7 +1923,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         try {
             tid = new TupleCentreId(arg1);
         } catch (final Exception e) {
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
         tcName = tid.getName();
@@ -1929,7 +1931,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         final LogicTuple tuArg = new LogicTuple(arg0);
         final AbstractMap<Var, Var> v = new LinkedHashMap<Var, Var>();
 
-        if (tcName.equals("this")) {
+        if ("this".equals(tcName)) {
             Respect2PLibrary.log("Local unop triggered...");
             final alice.tuplecentre.api.Tuple tuple =
                     this.vm.readUniformTuple(tuArg);
@@ -1968,7 +1970,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         try {
             tid = new TupleCentreId(arg1);
         } catch (final Exception e) {
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
         tcName = tid.getName();
@@ -1976,7 +1978,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         final LogicTuple tuArg = new LogicTuple(arg0);
         final AbstractMap<Var, Var> v = new LinkedHashMap<Var, Var>();
 
-        if (tcName.equals("this")) {
+        if ("this".equals(tcName)) {
             Respect2PLibrary.log("Local urd triggered...");
             final alice.tuplecentre.api.Tuple tuple =
                     this.vm.readUniformTuple(tuArg);
@@ -2015,7 +2017,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         try {
             tid = new TupleCentreId(arg1);
         } catch (final Exception e) {
-            e.printStackTrace();
+            // TODO Properly handle Exception
             return false;
         }
         tcName = tid.getName();
@@ -2023,7 +2025,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         final LogicTuple tuArg = new LogicTuple(arg0);
         final AbstractMap<Var, Var> v = new LinkedHashMap<Var, Var>();
 
-        if (tcName.equals("this")) {
+        if ("this".equals(tcName)) {
             Respect2PLibrary.log("Local urdp triggered...");
             final alice.tuplecentre.api.Tuple tuple =
                     this.vm.readUniformTuple(tuArg);

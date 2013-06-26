@@ -170,11 +170,12 @@ public class SpecificationTokenMarker extends TokenMarker {
     }
 
     public SpecificationTokenMarker(final KeywordMap keys) {
+        super();
         this.keywords = keys;
     }
 
     @Override
-    public byte markTokensImpl(byte token, final Segment line,
+    public byte markTokensImpl(final byte token, final Segment line,
             final int lineIndex) {
 
         final char[] array = line.array;
@@ -189,7 +190,7 @@ public class SpecificationTokenMarker extends TokenMarker {
             final int i1 = (i + 1);
             final char c = array[i];
             if (c == '\\') {
-                backslash = !backslash;
+                backslash ^= true;
                 continue;
             }
 
@@ -273,9 +274,6 @@ public class SpecificationTokenMarker extends TokenMarker {
                 break;
             case Token.KEYWORD2:
                 this.addToken(len - this.lastOffset, token);
-                if (!backslash) {
-                    // token = Token.NULL;
-                }
                 break;
             default:
                 this.addToken(len - this.lastOffset, token);

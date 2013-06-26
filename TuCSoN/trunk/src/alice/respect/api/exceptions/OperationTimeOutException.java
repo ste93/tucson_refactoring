@@ -24,6 +24,7 @@ public class OperationTimeOutException extends RespectException {
     private final IRespectOperation op;
 
     public OperationTimeOutException(final IRespectOperation rop) {
+        super();
         this.op = rop;
     }
 

@@ -27,7 +27,7 @@ import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
  * default assigned one (both passed to the CLIAgent). Gets a TuCSoN ACC from
  * TucsonMetaACC then spawns the CLIAgent who manages user input.
  */
-public class CommandLineInterpreter {
+public final class CommandLineInterpreter {
 
     public static void log(final String s) {
         System.out.println("[CommandLineInterpreter]: " + s);
@@ -73,7 +73,7 @@ public class CommandLineInterpreter {
                     + alice.tucson.api.TucsonMetaACC.getVersion());
             CommandLineInterpreter
                     .log("--------------------------------------------------------------------------------");
-            CommandLineInterpreter.log("" + new Date());
+            CommandLineInterpreter.log(new Date().toString());
             CommandLineInterpreter
                     .log("Demanding for TuCSoN default ACC on port < " + port
                             + " >...");
@@ -83,9 +83,9 @@ public class CommandLineInterpreter {
                 context =
                         TucsonMetaACC.getContext(new TucsonAgentId(aid), node,
                                 port);
-            } catch (final TucsonInvalidAgentIdException ex1) {
-                System.err.println("[CommandLineInterpreter]: " + ex1);
-                ex1.printStackTrace();
+            } catch (final TucsonInvalidAgentIdException e) {
+                System.err.println("[CommandLineInterpreter]: " + e);
+                // TODO Properly handle Exception
                 System.exit(-1);
             }
 
@@ -101,6 +101,12 @@ public class CommandLineInterpreter {
 
         }
 
+    }
+
+    private CommandLineInterpreter() {
+        /*
+         * 
+         */
     }
 
 }

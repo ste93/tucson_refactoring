@@ -17,10 +17,11 @@ public class TucsonMsgReply implements Serializable {
      * 
      * @param din
      * @return
-     * @throws Exception
+     * @throws IOException
+     * @throws ClassNotFoundException
      */
     public static TucsonMsgReply read(final ObjectInputStream din)
-            throws Exception {
+            throws IOException, ClassNotFoundException {
         final long id = din.readLong();
         final int type = din.readInt();
         final boolean bool = din.readBoolean();
@@ -34,8 +35,8 @@ public class TucsonMsgReply implements Serializable {
         msg.allowed = bool;
         msg.success = succ;
         msg.resultSuccess = res;
-        msg.tuple_requested = treq;
-        msg.tuple_result = tres;
+        msg.reqTuple = treq;
+        msg.resTuple = tres;
         return msg;
     }
 
@@ -58,11 +59,11 @@ public class TucsonMsgReply implements Serializable {
 
     private boolean allowed;
     private long id;
+    private LogicTuple reqTuple;
+    private Object resTuple;
     private boolean resultSuccess;
-    private boolean success;
-    private LogicTuple tuple_requested;
 
-    private Object tuple_result;
+    private boolean success;
 
     private int type;
 
@@ -72,8 +73,8 @@ public class TucsonMsgReply implements Serializable {
         this.type = t;
         this.allowed = a;
         this.success = s;
-        this.tuple_requested = null;
-        this.tuple_result = null;
+        this.reqTuple = null;
+        this.resTuple = null;
         this.resultSuccess = ok;
     }
 
@@ -84,13 +85,15 @@ public class TucsonMsgReply implements Serializable {
         this.type = t;
         this.success = s;
         this.allowed = a;
-        this.tuple_requested = req;
-        this.tuple_result = res;
+        this.reqTuple = req;
+        this.resTuple = res;
         this.resultSuccess = ok;
     }
 
     protected TucsonMsgReply() {
-
+        /*
+         * 
+         */
     }
 
     public long getId() {
@@ -98,11 +101,11 @@ public class TucsonMsgReply implements Serializable {
     }
 
     public LogicTuple getTupleRequested() {
-        return this.tuple_requested;
+        return this.reqTuple;
     }
 
     public Object getTupleResult() {
-        return this.tuple_result;
+        return this.resTuple;
     }
 
     public int getType() {

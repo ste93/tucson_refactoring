@@ -31,6 +31,9 @@ public class LogicReaction implements alice.tuplecentre.core.Reaction,
     private Struct reaction;
 
     public LogicReaction() {
+        /*
+         * 
+         */
     }
 
     public LogicReaction(final Struct t) {
@@ -39,7 +42,7 @@ public class LogicReaction implements alice.tuplecentre.core.Reaction,
     }
 
     public Term getReactionTerm() {
-        return (this.reaction.getArg(0));
+        return this.reaction.getArg(0);
     }
 
     public Struct getStructReaction() {

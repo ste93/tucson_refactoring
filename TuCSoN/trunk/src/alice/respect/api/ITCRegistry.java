@@ -1,16 +1,15 @@
 package alice.respect.api;
 
-import java.util.HashMap;
+import java.util.Map;
 
 import alice.respect.api.exceptions.InstantiationNotPossibleException;
 
 public interface ITCRegistry {
 
-    public void addTC(IRespectTC tc);
+    void addTC(IRespectTC tc);
 
-    public HashMap<String, ? extends IRespectTC> getHashmap();
+    Map<String, ? extends IRespectTC> getMap();
 
-    public IRespectTC getTC(TupleCentreId id)
-            throws InstantiationNotPossibleException;
+    IRespectTC getTC(TupleCentreId id) throws InstantiationNotPossibleException;
 
 }

@@ -46,7 +46,4 @@ public class InspectorContextEvent implements java.io.Serializable {
     /** events observed */
     public List<WSetEvent> wnEvents = null;
 
-    public InspectorContextEvent() {
-    }
-
 }

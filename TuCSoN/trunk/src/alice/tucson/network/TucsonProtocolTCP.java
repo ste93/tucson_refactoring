@@ -18,6 +18,7 @@ import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
+import java.net.UnknownHostException;
 
 /**
  * 
@@ -31,17 +32,20 @@ public class TucsonProtocolTCP extends TucsonProtocol {
     private Socket socket;
 
     public TucsonProtocolTCP(final ServerSocket s) {
+        super();
         this.mainSocket = s;
     }
 
     public TucsonProtocolTCP(final String host, final int port)
-            throws Exception {
+            throws UnknownHostException, IOException {
+        super();
         this.socket = new Socket(host, port);
         this.outStream = new ObjectOutputStream(this.socket.getOutputStream());
         this.inStream = new ObjectInputStream(this.socket.getInputStream());
     }
 
     private TucsonProtocolTCP(final Socket s) throws IOException {
+        super();
         this.socket = s;
         this.outStream = new ObjectOutputStream(s.getOutputStream());
         this.inStream = new ObjectInputStream(s.getInputStream());
@@ -55,7 +59,7 @@ public class TucsonProtocolTCP extends TucsonProtocol {
     }
 
     @Override
-    public void end() throws Exception {
+    public void end() throws IOException {
         this.socket.close();
     }
 
@@ -70,52 +74,52 @@ public class TucsonProtocolTCP extends TucsonProtocol {
     }
 
     @Override
-    protected void flush() throws Exception {
+    protected void flush() throws IOException {
         this.outStream.flush();
     }
 
     @Override
-    protected boolean receiveBoolean() throws Exception {
+    protected boolean receiveBoolean() throws IOException {
         return this.inStream.readBoolean();
     }
 
     @Override
-    protected int receiveInt() throws Exception {
+    protected int receiveInt() throws IOException {
         return this.inStream.readInt();
     }
 
     @Override
-    protected Object receiveObject() throws Exception {
+    protected Object receiveObject() throws ClassNotFoundException, IOException {
         return this.inStream.readObject();
     }
 
     @Override
-    protected String receiveString() throws Exception {
+    protected String receiveString() throws ClassNotFoundException, IOException {
         return (String) this.inStream.readObject();
     }
 
     @Override
-    protected void send(final boolean value) throws Exception {
+    protected void send(final boolean value) throws IOException {
         this.outStream.writeBoolean(value);
     }
 
     @Override
-    protected void send(final byte[] value) throws Exception {
+    protected void send(final byte[] value) throws IOException {
         this.outStream.write(value);
     }
 
     @Override
-    protected void send(final int value) throws Exception {
+    protected void send(final int value) throws IOException {
         this.outStream.writeInt(value);
     }
 
     @Override
-    protected void send(final Object value) throws Exception {
+    protected void send(final Object value) throws IOException {
         this.outStream.writeObject(value);
     }
 
     @Override
-    protected void send(final String value) throws Exception {
+    protected void send(final String value) throws IOException {
         this.outStream.writeObject(value);
     }
 

@@ -3,6 +3,7 @@ package alice.tucson.examples.spawnedWorkers;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import alice.logictuple.LogicTuple;
 import alice.logictuple.exceptions.InvalidLogicTupleException;
@@ -38,18 +39,17 @@ public class MasterAgent extends TucsonAgent {
             // new MasterAgent("walter", nodes, 10, 20).go();
             new MasterAgent("lloyd", nodes, 10, 10).go();
         } catch (final TucsonInvalidAgentIdException e) {
-            e.printStackTrace();
+            // TODO Properly handle Exception
         }
     }
 
-    private EnhancedSynchACC acc;
     private boolean die;
     private final int ITERs;
     private final int MAX_FACT;
-    private final HashMap<Integer, Integer> pendings;
+    private final Map<Integer, Integer> pendings;
     private int reqID;
 
-    private final LinkedList<TucsonTupleCentreId> tids;
+    private final List<TucsonTupleCentreId> tids;
 
     /**
      * @param aid
@@ -63,7 +63,7 @@ public class MasterAgent extends TucsonAgent {
      * 
      * @throws TucsonInvalidAgentIdException
      */
-    public MasterAgent(final String aid, final LinkedList<String> nodes,
+    public MasterAgent(final String aid, final List<String> nodes,
             final int iters, final int maxFact)
             throws TucsonInvalidAgentIdException {
         super(aid);
@@ -93,7 +93,7 @@ public class MasterAgent extends TucsonAgent {
     @Override
     protected void main() {
         this.say("I'm started.");
-        this.acc = this.getContext();
+        final EnhancedSynchACC acc = this.getContext();
         ITucsonOperation op;
         TucsonTupleCentreId next;
         LogicTuple job;
@@ -105,8 +105,7 @@ public class MasterAgent extends TucsonAgent {
                 this.say("Checking termination...");
                 for (int i = 0; i < this.tids.size(); i++) {
                     op =
-                            this.acc.inp(
-                                    this.tids.get(i),
+                            acc.inp(this.tids.get(i),
                                     LogicTuple.parse("die(" + this.myName()
                                             + ")"), (Long) null);
                     /*
@@ -145,7 +144,7 @@ public class MasterAgent extends TucsonAgent {
                          * Only non-reachability of target tuplecentre may cause
                          * <out> to fail, which raises a Java Exception.
                          */
-                        this.acc.out(next, job, (Long) null);
+                        acc.out(next, job, (Long) null);
                         /*
                          * We keep track of pending computations.
                          */
@@ -163,7 +162,7 @@ public class MasterAgent extends TucsonAgent {
                     next = this.tids.get(i);
                     this.say("Collecting results from: " + next.toString());
                     for (int j = 0; j < this.ITERs; j++) {
-                        this.acc.spawn(
+                        acc.spawn(
                                 next,
                                 LogicTuple
                                         .parse("exec('ds.lab.tucson.masterWorkers.spawn.SpawnedWorkingActivity.class')"),
@@ -183,7 +182,7 @@ public class MasterAgent extends TucsonAgent {
                          * No longer a suspensive primitive. We need to keep
                          * track of collected results.
                          */
-                        op = this.acc.in_all(next, templ, (Long) null);
+                        op = acc.in_all(next, templ, (Long) null);
                         /*
                          * Check needed due to suspensive semantics.
                          */
@@ -216,17 +215,17 @@ public class MasterAgent extends TucsonAgent {
             this.say("Someone killed me, bye!");
         } catch (final InvalidLogicTupleException e) {
             this.say("ERROR: Tuple is not an admissible Prolog term!");
-            e.printStackTrace();
+            // TODO Properly handle Exception
         } catch (final TucsonOperationNotPossibleException e) {
             this.say("ERROR: Never seen this happen before *_*");
         } catch (final UnreachableNodeException e) {
             this.say("ERROR: Given TuCSoN Node is unreachable!");
-            e.printStackTrace();
+            // TODO Properly handle Exception
         } catch (final OperationTimeOutException e) {
             this.say("ERROR: Endless timeout expired!");
         } catch (final InvalidTupleOperationException e) {
             this.say("ERROR: No tuple arguments to retrieve!");
-            e.printStackTrace();
+            // TODO Properly handle Exception
         } catch (final InterruptedException e) {
             this.say("ERROR: Sleep interrupted!");
         }

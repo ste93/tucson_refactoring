@@ -24,6 +24,7 @@ public class ShutdownMsg extends NodeMsg {
     }
 
     protected ShutdownMsg() {
+        super();
     }
 
 }

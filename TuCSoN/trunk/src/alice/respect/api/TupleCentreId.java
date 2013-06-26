@@ -42,10 +42,10 @@ public class TupleCentreId implements alice.tuplecentre.api.TupleCentreId,
      * @throws InvalidTupleCentreIdException
      *             if name is not a well-formed ground logic term
      */
-    public TupleCentreId(String n) throws InvalidTupleCentreIdException {
+    public TupleCentreId(final String n) throws InvalidTupleCentreIdException {
         String name = n;
-        if (name.indexOf("@") < 0) {
-            name += "@localhost";
+        if (n.indexOf('@') < 0) {
+            name = n.concat("@localhost");
         }
         try {
             this.id = Term.createTerm(name, TupleCentreId.opManager);
@@ -92,18 +92,9 @@ public class TupleCentreId implements alice.tuplecentre.api.TupleCentreId,
     }
 
     protected TupleCentreId() {
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see java.lang.Object#hashCode()
-     */
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((this.id == null) ? 0 : this.id.hashCode());
-        return result;
+        /*
+         * 
+         */
     }
 
     /*
@@ -111,7 +102,7 @@ public class TupleCentreId implements alice.tuplecentre.api.TupleCentreId,
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (this == obj) {
             return true;
         }
@@ -121,7 +112,7 @@ public class TupleCentreId implements alice.tuplecentre.api.TupleCentreId,
         if (!(obj instanceof TupleCentreId)) {
             return false;
         }
-        TupleCentreId other = (TupleCentreId) obj;
+        final TupleCentreId other = (TupleCentreId) obj;
         if (this.id == null) {
             if (other.id != null) {
                 return false;
@@ -177,6 +168,19 @@ public class TupleCentreId implements alice.tuplecentre.api.TupleCentreId,
             }
         }
         return 20504;
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result =
+                (prime * result) + ((this.id == null) ? 0 : this.id.hashCode());
+        return result;
     }
 
     public boolean isAgent() {

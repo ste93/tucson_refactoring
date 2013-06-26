@@ -15,6 +15,12 @@ package alice.tucson.introspection.tools;
 
 import java.awt.Color;
 
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
+
 import alice.logictuple.LogicTuple;
 import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.tucson.introspection.GetSnapshotMsg;
@@ -25,47 +31,15 @@ public class EventViewer extends javax.swing.JFrame {
     private static final long serialVersionUID = -9040554109345956651L;
     private javax.swing.JButton buttonAcceptFilterLog;
     private javax.swing.JButton buttonAcceptPattern;
-
-    private javax.swing.JButton buttonBrowse;
-
     private javax.swing.JButton buttonGet;
-
     private javax.swing.JCheckBox checkFilterLog;
-
     private javax.swing.JCheckBox checkFilterView;
-
     private javax.swing.JCheckBox checkLogEnable;
-
     private final alice.tucson.introspection.InspectorContext context;
-
     private javax.swing.JTextField inputFileLog;
-
     private javax.swing.JTextField inputFilterLog;
-
     private javax.swing.JTextField inputFilterView;
 
-    private javax.swing.JLabel jLabel2;
-
-    private javax.swing.JLabel jLabel3;
-
-    private javax.swing.JPanel jPanel1;
-
-    private javax.swing.JPanel jPanel10;
-
-    private javax.swing.JPanel jPanel2;
-
-    private javax.swing.JPanel jPanel3;
-
-    private javax.swing.JPanel jPanel4;
-
-    private javax.swing.JPanel jPanel5;
-
-    private javax.swing.JPanel jPanel6;
-    private javax.swing.JPanel jPanel8;
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel jPanel9;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTabbedPane jTabbedPane1;
     private final Inspector mainForm;
     private javax.swing.JTextArea outputArea;
     private javax.swing.JTextField outputNoItems;
@@ -77,6 +51,7 @@ public class EventViewer extends javax.swing.JFrame {
 
     /** Creates new form TupleForm */
     public EventViewer(final Inspector mainForm_) {
+        super();
         this.initComponents();
         this.pack();
         this.mainForm = mainForm_;
@@ -96,11 +71,11 @@ public class EventViewer extends javax.swing.JFrame {
     }
 
     public void setLocalTime(final long l) {
-        this.outputTime.setText(new Long(l).toString());
+        this.outputTime.setText(String.valueOf(l));
     }
 
     public void setNItems(final long l) {
-        this.outputNoItems.setText(new Long(l).toString());
+        this.outputNoItems.setText(String.valueOf(l));
     }
 
     public void setText(final String st) {
@@ -108,7 +83,7 @@ public class EventViewer extends javax.swing.JFrame {
     }
 
     public void setVMTime(final long l) {
-        this.outputVmTime.setText(new Long(l).toString());
+        this.outputVmTime.setText(String.valueOf(l));
     }
 
     private void buttonAcceptFilterLogActionPerformed() {
@@ -145,7 +120,7 @@ public class EventViewer extends javax.swing.JFrame {
             this.outputState
                     .setText("Given template is not an admissible Prolog term.");
         } catch (final Exception e) {
-            this.outputState.setText("" + e);
+            this.outputState.setText(e.toString());
         }
     }
 
@@ -167,7 +142,7 @@ public class EventViewer extends javax.swing.JFrame {
             this.context.getSnapshot(GetSnapshotMsg.WSET);
             this.outputState.setText("Observation done.");
         } catch (final Exception e) {
-            this.outputState.setText("" + e);
+            this.outputState.setText(e.toString());
         }
     }
 
@@ -182,7 +157,7 @@ public class EventViewer extends javax.swing.JFrame {
                 this.mainForm.agent.logOpFilter = null;
             }
         } catch (final Exception e) {
-            this.outputState.setText("" + e);
+            this.outputState.setText(e.toString());
         }
     }
 
@@ -198,7 +173,7 @@ public class EventViewer extends javax.swing.JFrame {
                 this.context.setProtocol(this.mainForm.protocol);
             }
         } catch (final Exception e) {
-            this.outputState.setText("" + e);
+            this.outputState.setText(e.toString());
         }
     }
 
@@ -219,34 +194,34 @@ public class EventViewer extends javax.swing.JFrame {
 
         java.awt.GridBagConstraints gridBagConstraints;
 
-        this.jScrollPane1 = new javax.swing.JScrollPane();
+        final JScrollPane jScrollPane1 = new JScrollPane();
         this.outputArea = new javax.swing.JTextArea();
-        this.jTabbedPane1 = new javax.swing.JTabbedPane();
-        this.jPanel1 = new javax.swing.JPanel();
-        this.jPanel2 = new javax.swing.JPanel();
+        final JTabbedPane jTabbedPane1 = new JTabbedPane();
+        final JPanel jPanel1 = new JPanel();
+        final JPanel jPanel2 = new JPanel();
         this.radioReactive = new javax.swing.JRadioButton();
         this.radioProactive = new javax.swing.JRadioButton();
         this.buttonGet = new javax.swing.JButton();
-        this.jPanel3 = new javax.swing.JPanel();
-        this.jPanel4 = new javax.swing.JPanel();
+        final JPanel jPanel3 = new javax.swing.JPanel();
+        final JPanel jPanel4 = new javax.swing.JPanel();
         this.checkFilterView = new javax.swing.JCheckBox();
         this.buttonAcceptPattern = new javax.swing.JButton();
         this.inputFilterView = new javax.swing.JTextField();
-        this.jPanel5 = new javax.swing.JPanel();
-        this.jPanel6 = new javax.swing.JPanel();
+        final JPanel jPanel5 = new javax.swing.JPanel();
+        final JPanel jPanel6 = new javax.swing.JPanel();
         this.checkFilterLog = new javax.swing.JCheckBox();
         this.buttonAcceptFilterLog = new javax.swing.JButton();
         this.inputFilterLog = new javax.swing.JTextField();
-        this.jPanel8 = new javax.swing.JPanel();
-        this.jLabel3 = new javax.swing.JLabel();
+        final JPanel jPanel8 = new javax.swing.JPanel();
+        final JLabel jLabel3 = new JLabel();
         this.inputFileLog = new javax.swing.JTextField();
-        this.buttonBrowse = new javax.swing.JButton();
+        final JButton buttonBrowse = new JButton();
         this.checkLogEnable = new javax.swing.JCheckBox();
-        this.jPanel10 = new javax.swing.JPanel();
+        final JPanel jPanel10 = new javax.swing.JPanel();
         this.outputState = new javax.swing.JTextField();
-        this.jPanel9 = new javax.swing.JPanel();
+        final JPanel jPanel9 = new javax.swing.JPanel();
         this.outputTime = new javax.swing.JTextField();
-        this.jLabel2 = new javax.swing.JLabel();
+        final JLabel jLabel2 = new javax.swing.JLabel();
         this.outputNoItems = new javax.swing.JTextField();
         this.outputVmTime = new javax.swing.JTextField();
 
@@ -262,7 +237,7 @@ public class EventViewer extends javax.swing.JFrame {
 
         this.outputArea.setEditable(false);
         this.outputArea.setFont(new java.awt.Font("Courier New", 0, 12));
-        this.jScrollPane1.setViewportView(this.outputArea);
+        jScrollPane1.setViewportView(this.outputArea);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -271,15 +246,15 @@ public class EventViewer extends javax.swing.JFrame {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 100.0;
         gridBagConstraints.weighty = 100.0;
-        this.getContentPane().add(this.jScrollPane1, gridBagConstraints);
+        this.getContentPane().add(jScrollPane1, gridBagConstraints);
 
-        this.jTabbedPane1.setFont(new java.awt.Font("Arial", 0, 11));
-        this.jPanel1.setLayout(new java.awt.GridBagLayout());
+        jTabbedPane1.setFont(new java.awt.Font("Arial", 0, 11));
+        jPanel1.setLayout(new java.awt.GridBagLayout());
 
-        this.jPanel2.setLayout(new java.awt.GridBagLayout());
-        this.jPanel2.setBorder(new javax.swing.border.TitledBorder(
+        jPanel2.setLayout(new java.awt.GridBagLayout());
+        jPanel2.setBorder(new javax.swing.border.TitledBorder(
                 new javax.swing.border.EtchedBorder(), "type"));
-        this.jPanel2.setFont(new java.awt.Font("Arial", 0, 11));
+        jPanel2.setFont(new java.awt.Font("Arial", 0, 11));
         this.radioReactive.setFont(new java.awt.Font("Arial", 0, 11));
         this.radioReactive
                 .setText("REACTIVE: update observations only upon request.");
@@ -298,7 +273,7 @@ public class EventViewer extends javax.swing.JFrame {
         gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 30.0;
-        this.jPanel2.add(this.radioReactive, gridBagConstraints);
+        jPanel2.add(this.radioReactive, gridBagConstraints);
 
         this.radioProactive.setFont(new java.awt.Font("Arial", 0, 11));
         this.radioProactive
@@ -319,7 +294,7 @@ public class EventViewer extends javax.swing.JFrame {
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 100.0;
-        this.jPanel2.add(this.radioProactive, gridBagConstraints);
+        jPanel2.add(this.radioProactive, gridBagConstraints);
 
         this.buttonGet.setFont(new java.awt.Font("Arial", 0, 11));
         this.buttonGet.setText("Observe!");
@@ -335,7 +310,7 @@ public class EventViewer extends javax.swing.JFrame {
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.weightx = 70.0;
-        this.jPanel2.add(this.buttonGet, gridBagConstraints);
+        jPanel2.add(this.buttonGet, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -343,14 +318,14 @@ public class EventViewer extends javax.swing.JFrame {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 100.0;
         gridBagConstraints.weighty = 100.0;
-        this.jPanel1.add(this.jPanel2, gridBagConstraints);
+        jPanel1.add(jPanel2, gridBagConstraints);
 
-        this.jTabbedPane1.addTab("Observation", null, this.jPanel1, "");
+        jTabbedPane1.addTab("Observation", null, jPanel1, "");
 
-        this.jPanel3.setLayout(new java.awt.GridBagLayout());
+        jPanel3.setLayout(new java.awt.GridBagLayout());
 
-        this.jPanel4.setLayout(new java.awt.GridBagLayout());
-        this.jPanel4.setBorder(new javax.swing.border.TitledBorder(
+        jPanel4.setLayout(new java.awt.GridBagLayout());
+        jPanel4.setBorder(new javax.swing.border.TitledBorder(
                 new javax.swing.border.EtchedBorder(), "filtering"));
         this.checkFilterView.setFont(new java.awt.Font("Arial", 0, 11));
         this.checkFilterView
@@ -369,7 +344,7 @@ public class EventViewer extends javax.swing.JFrame {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 100.0;
         gridBagConstraints.weighty = 10.0;
-        this.jPanel4.add(this.checkFilterView, gridBagConstraints);
+        jPanel4.add(this.checkFilterView, gridBagConstraints);
 
         this.buttonAcceptPattern.setFont(new java.awt.Font("Arial", 0, 11));
         this.buttonAcceptPattern.setText("Match!");
@@ -377,15 +352,14 @@ public class EventViewer extends javax.swing.JFrame {
                 .addActionListener(new java.awt.event.ActionListener() {
                     public void actionPerformed(
                             final java.awt.event.ActionEvent evt) {
-                        EventViewer.this
-                                .buttonAcceptPatternActionPerformed();
+                        EventViewer.this.buttonAcceptPatternActionPerformed();
                     }
                 });
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 1;
-        this.jPanel4.add(this.buttonAcceptPattern, gridBagConstraints);
+        jPanel4.add(this.buttonAcceptPattern, gridBagConstraints);
 
         this.inputFilterView.setFont(new java.awt.Font("Courier New", 0, 12));
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -395,7 +369,7 @@ public class EventViewer extends javax.swing.JFrame {
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 100.0;
         gridBagConstraints.weighty = 50.0;
-        this.jPanel4.add(this.inputFilterView, gridBagConstraints);
+        jPanel4.add(this.inputFilterView, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -403,16 +377,16 @@ public class EventViewer extends javax.swing.JFrame {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 100.0;
         gridBagConstraints.weighty = 100.0;
-        this.jPanel3.add(this.jPanel4, gridBagConstraints);
+        jPanel3.add(jPanel4, gridBagConstraints);
 
-        this.jTabbedPane1.addTab("Filter", null, this.jPanel3, "");
+        jTabbedPane1.addTab("Filter", null, jPanel3, "");
 
-        this.jPanel5.setLayout(new java.awt.GridBagLayout());
+        jPanel5.setLayout(new java.awt.GridBagLayout());
 
-        this.jPanel6.setLayout(new java.awt.GridBagLayout());
-        this.jPanel6.setBorder(new javax.swing.border.TitledBorder(
+        jPanel6.setLayout(new java.awt.GridBagLayout());
+        jPanel6.setBorder(new javax.swing.border.TitledBorder(
                 new javax.swing.border.EtchedBorder(), "filtering"));
-        this.jPanel6.setFont(new java.awt.Font("Arial", 0, 11));
+        jPanel6.setFont(new java.awt.Font("Arial", 0, 11));
         this.checkFilterLog.setFont(new java.awt.Font("Arial", 0, 11));
         this.checkFilterLog
                 .setText("Filter observed tuples using the following template:");
@@ -430,7 +404,7 @@ public class EventViewer extends javax.swing.JFrame {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 100.0;
         gridBagConstraints.weighty = 10.0;
-        this.jPanel6.add(this.checkFilterLog, gridBagConstraints);
+        jPanel6.add(this.checkFilterLog, gridBagConstraints);
 
         this.buttonAcceptFilterLog.setFont(new java.awt.Font("Arial", 0, 11));
         this.buttonAcceptFilterLog.setText("Match!");
@@ -438,15 +412,14 @@ public class EventViewer extends javax.swing.JFrame {
                 .addActionListener(new java.awt.event.ActionListener() {
                     public void actionPerformed(
                             final java.awt.event.ActionEvent evt) {
-                        EventViewer.this
-                                .buttonAcceptFilterLogActionPerformed();
+                        EventViewer.this.buttonAcceptFilterLogActionPerformed();
                     }
                 });
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 1;
-        this.jPanel6.add(this.buttonAcceptFilterLog, gridBagConstraints);
+        jPanel6.add(this.buttonAcceptFilterLog, gridBagConstraints);
 
         this.inputFilterLog.setFont(new java.awt.Font("Courier New", 0, 12));
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -455,7 +428,7 @@ public class EventViewer extends javax.swing.JFrame {
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 100.0;
-        this.jPanel6.add(this.inputFilterLog, gridBagConstraints);
+        jPanel6.add(this.inputFilterLog, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -464,21 +437,21 @@ public class EventViewer extends javax.swing.JFrame {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 100.0;
         gridBagConstraints.weighty = 70.0;
-        this.jPanel5.add(this.jPanel6, gridBagConstraints);
+        jPanel5.add(jPanel6, gridBagConstraints);
 
-        this.jPanel8.setLayout(new java.awt.GridBagLayout());
-        this.jPanel8.setBorder(new javax.swing.border.TitledBorder(
+        jPanel8.setLayout(new java.awt.GridBagLayout());
+        jPanel8.setBorder(new javax.swing.border.TitledBorder(
                 new javax.swing.border.EtchedBorder(), "store"));
-        this.jPanel8.setFont(new java.awt.Font("Arial", 0, 11));
-        this.jLabel3.setFont(new java.awt.Font("Arial", 0, 11));
-        this.jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        this.jLabel3.setText("dump observations on file: ");
+        jPanel8.setFont(new java.awt.Font("Arial", 0, 11));
+        jLabel3.setFont(new java.awt.Font("Arial", 0, 11));
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel3.setText("dump observations on file: ");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 10.0;
-        this.jPanel8.add(this.jLabel3, gridBagConstraints);
+        jPanel8.add(jLabel3, gridBagConstraints);
         this.inputFileLog.setFont(new java.awt.Font("Courier New", 0, 12));
         this.inputFileLog
                 .addActionListener(new java.awt.event.ActionListener() {
@@ -493,22 +466,20 @@ public class EventViewer extends javax.swing.JFrame {
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 100.0;
-        this.jPanel8.add(this.inputFileLog, gridBagConstraints);
-        this.buttonBrowse.setFont(new java.awt.Font("Arial", 0, 11));
-        this.buttonBrowse.setText("Browse");
-        this.buttonBrowse
-                .addActionListener(new java.awt.event.ActionListener() {
-                    public void actionPerformed(
-                            final java.awt.event.ActionEvent evt) {
-                        EventViewer.this.buttonBrowseActionPerformed();
-                    }
-                });
+        jPanel8.add(this.inputFileLog, gridBagConstraints);
+        buttonBrowse.setFont(new java.awt.Font("Arial", 0, 11));
+        buttonBrowse.setText("Browse");
+        buttonBrowse.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(final java.awt.event.ActionEvent evt) {
+                EventViewer.this.buttonBrowseActionPerformed();
+            }
+        });
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 5;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.weightx = 5.0;
-        this.jPanel8.add(this.buttonBrowse, gridBagConstraints);
+        jPanel8.add(buttonBrowse, gridBagConstraints);
         this.checkLogEnable
                 .addActionListener(new java.awt.event.ActionListener() {
                     public void actionPerformed(
@@ -520,7 +491,7 @@ public class EventViewer extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 1;
-        this.jPanel8.add(this.checkLogEnable, gridBagConstraints);
+        jPanel8.add(this.checkLogEnable, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
@@ -528,9 +499,9 @@ public class EventViewer extends javax.swing.JFrame {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 90.0;
         gridBagConstraints.weighty = 30.0;
-        this.jPanel5.add(this.jPanel8, gridBagConstraints);
+        jPanel5.add(jPanel8, gridBagConstraints);
 
-        this.jTabbedPane1.addTab("Log", null, this.jPanel5, "");
+        jTabbedPane1.addTab("Log", null, jPanel5, "");
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -539,9 +510,9 @@ public class EventViewer extends javax.swing.JFrame {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 100.0;
         gridBagConstraints.weighty = 10.0;
-        this.getContentPane().add(this.jTabbedPane1, gridBagConstraints);
+        this.getContentPane().add(jTabbedPane1, gridBagConstraints);
 
-        this.jPanel10.setLayout(new java.awt.GridBagLayout());
+        jPanel10.setLayout(new java.awt.GridBagLayout());
 
         this.outputState.setBackground(Color.CYAN);
         this.outputState.setEditable(false);
@@ -553,7 +524,7 @@ public class EventViewer extends javax.swing.JFrame {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 100.0;
         gridBagConstraints.weighty = 100.0;
-        this.jPanel10.add(this.outputState, gridBagConstraints);
+        jPanel10.add(this.outputState, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -561,18 +532,18 @@ public class EventViewer extends javax.swing.JFrame {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 100.0;
         gridBagConstraints.weighty = 5.0;
-        this.getContentPane().add(this.jPanel10, gridBagConstraints);
+        this.getContentPane().add(jPanel10, gridBagConstraints);
 
-        this.jPanel9.setLayout(new java.awt.GridBagLayout());
+        jPanel9.setLayout(new java.awt.GridBagLayout());
 
-        this.jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        this.jLabel2.setText("# observations: ");
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel2.setText("# observations: ");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 5;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 20.0;
-        this.jPanel9.add(this.jLabel2, gridBagConstraints);
+        jPanel9.add(jLabel2, gridBagConstraints);
 
         this.outputNoItems.setEditable(false);
         this.outputNoItems.setFont(new java.awt.Font("Courier New", 0, 12));
@@ -583,7 +554,7 @@ public class EventViewer extends javax.swing.JFrame {
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 20.0;
-        this.jPanel9.add(this.outputNoItems, gridBagConstraints);
+        jPanel9.add(this.outputNoItems, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -591,7 +562,7 @@ public class EventViewer extends javax.swing.JFrame {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 100.0;
         gridBagConstraints.weighty = 5.0;
-        this.getContentPane().add(this.jPanel9, gridBagConstraints);
+        this.getContentPane().add(jPanel9, gridBagConstraints);
 
     }
 
@@ -608,7 +579,7 @@ public class EventViewer extends javax.swing.JFrame {
             this.radioReactive.setSelected(false);
             this.outputState.setText("PROACTIVE observation selected.");
         } catch (final Exception e) {
-            this.outputState.setText("" + e);
+            this.outputState.setText(e.toString());
         }
     }
 
@@ -622,7 +593,7 @@ public class EventViewer extends javax.swing.JFrame {
             this.outputState
                     .setText("REACTIVE observation selected, push button 'Observe!' to update.");
         } catch (final Exception e) {
-            this.outputState.setText("" + e);
+            this.outputState.setText(e.toString());
         }
     }
 

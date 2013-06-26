@@ -31,7 +31,7 @@ abstract public class Event implements java.io.Serializable {
 
     private static final long serialVersionUID = 5233628097824741218L;
 
-    private final HashMap<String, String> ev_prop;
+    private final Map<String, String> ev_prop;
     /** the current tuple centre (VM) where this event is managed **/
     private TupleCentreId reactingTC;
     /** the operation (primitive + tuple) associated with this event **/

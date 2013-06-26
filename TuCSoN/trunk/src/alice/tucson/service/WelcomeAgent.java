@@ -31,18 +31,19 @@ public class WelcomeAgent extends Thread {
         System.out.println("[WelcomeAgent]: " + st);
     }
 
-    ACCProvider contextManager;
-    TucsonNodeService node;
-    int port;
+    private final ACCProvider contextManager;
+    private final TucsonNodeService node;
+    private final int port;
 
-    boolean shutdown;
+    private boolean shut;
 
     public WelcomeAgent(final int p, final TucsonNodeService n,
             final ACCProvider cm) {
+        super();
         this.contextManager = cm;
         this.port = p;
         this.node = n;
-        this.shutdown = false;
+        this.shut = false;
         this.start();
     }
 
@@ -58,12 +59,12 @@ public class WelcomeAgent extends Thread {
             mainSocket.setReuseAddress(true);
             mainSocket.bind(new InetSocketAddress(this.port));
             mainDialog = new TucsonProtocolTCP(mainSocket);
-        } catch (final SocketException e2) {
-            System.err.println("[WelcomeAgent]: " + e2);
-            e2.printStackTrace();
-        } catch (final IOException e1) {
-            System.err.println("[WelcomeAgent]: " + e1);
-            e1.printStackTrace();
+        } catch (final SocketException e) {
+            System.err.println("[WelcomeAgent]: " + e);
+            // TODO Properly handle Exception
+        } catch (final IOException e) {
+            System.err.println("[WelcomeAgent]: " + e);
+            // TODO Properly handle Exception
         }
 
         TucsonProtocol dialog = null;
@@ -83,7 +84,7 @@ public class WelcomeAgent extends Thread {
                     dialog = mainDialog.acceptNewDialog();
                 } catch (final SocketTimeoutException e) {
                     timeout = true;
-                    if (this.shutdown) {
+                    if (this.shut) {
                         exception = true;
                         WelcomeAgent
                                 .log("Shutdown interrupt received, shutting down...");
@@ -106,25 +107,22 @@ public class WelcomeAgent extends Thread {
                 }
 
             }
-        } catch (final InterruptedException e) {
-            exception = true;
-            WelcomeAgent.log("Shutdown interrupt received, shutting down...");
         } catch (final IOException e) {
             exception = true;
             System.err.println("[WelcomeAgent]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
         } catch (final Exception e) {
             exception = true;
             System.err.println("[WelcomeAgent]: " + e);
-            e.printStackTrace();
+            // TODO Properly handle Exception
         }
 
-        if (exception && !this.shutdown) {
+        if (exception && !this.shut) {
             try {
                 dialog.end();
             } catch (final Exception e) {
                 System.err.println("[WelcomeAgent]: " + e);
-                e.printStackTrace();
+                // TODO Properly handle Exception
             }
             this.node.removeNodeAgent(this);
         }
@@ -132,7 +130,7 @@ public class WelcomeAgent extends Thread {
     }
 
     public void shutdown() {
-        this.shutdown = true;
+        this.shut = true;
     }
 
 }
