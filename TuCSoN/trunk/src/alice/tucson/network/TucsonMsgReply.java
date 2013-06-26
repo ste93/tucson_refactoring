@@ -1,15 +1,16 @@
 package alice.tucson.network;
 
-import alice.logictuple.*;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
 
-import java.io.*;
+import alice.logictuple.LogicTuple;
 
-/**
- * 
- */
-@SuppressWarnings("serial")
-public class TucsonMsgReply implements Serializable{
-	
+public class TucsonMsgReply extends TucsonMsg implements Externalizable {
+
 	private long id;
 	private int type;
 	private LogicTuple tuple_requested;
@@ -18,11 +19,10 @@ public class TucsonMsgReply implements Serializable{
 	private boolean success;
 	private boolean resultSuccess;
 
-	protected TucsonMsgReply(){
-		
+	protected TucsonMsgReply() {
 	}
 
-	public TucsonMsgReply(long id, int type, boolean allowed, boolean success, boolean ok){
+	public TucsonMsgReply(long id, int type, boolean allowed, boolean success, boolean ok) {
 		this.id = id;
 		this.type = type;
 		this.allowed = allowed;
@@ -32,7 +32,7 @@ public class TucsonMsgReply implements Serializable{
 		resultSuccess = ok;
 	}
 
-	public TucsonMsgReply(long id, int type, boolean allowed, boolean success, boolean ok, LogicTuple req, Object res){
+	public TucsonMsgReply(long id, int type, boolean allowed, boolean success, boolean ok, LogicTuple req, Object res) {
 		this.id = id;
 		this.type = type;
 		this.success = success;
@@ -41,42 +41,60 @@ public class TucsonMsgReply implements Serializable{
 		tuple_result = res;
 		resultSuccess = ok;
 	}
-	
-	public LogicTuple getTupleRequested(){
+
+	public LogicTuple getTupleRequested() {
 		return tuple_requested;
 	}
 
-	public Object getTupleResult(){
+	public Object getTupleResult() {
 		return tuple_result;
 	}
-	
-	public long getId(){
+
+	public long getId() {
 		return id;
 	}
 
-	public int getType(){
+	public int getType() {
 		return type;
 	}
 
-	public boolean isSuccess(){
+	public boolean isSuccess() {
 		return success;
 	}
 
-	public boolean isAllowed(){
+	public boolean isAllowed() {
 		return allowed;
 	}
-	
-	public boolean isResultSuccess(){
+
+	public boolean isResultSuccess() {
 		return resultSuccess;
 	}
 
-	/**
-	 * 
-	 * @param dout
-	 * @param msg
-	 * @throws IOException
-	 */
-	public static void write(ObjectOutputStream dout, TucsonMsgReply msg) throws IOException{
+	@Override
+	public void writeExternal(ObjectOutput out) throws IOException {
+		out.writeLong(id);
+		out.writeInt(type);
+		out.writeObject(tuple_requested);
+		out.writeObject(tuple_result);
+		out.writeBoolean(allowed);
+		out.writeBoolean(success);
+		out.writeBoolean(resultSuccess);
+		out.flush();
+	}
+
+	@Override
+	public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+		this.id = in.readLong();
+		this.type = in.readInt();
+		this.tuple_requested = (LogicTuple) in.readObject();
+		this.tuple_result = in.readObject();
+		this.allowed = in.readBoolean();
+		this.success = in.readBoolean();
+		this.resultSuccess = in.readBoolean();
+	}
+
+	@Deprecated
+	public static void write(ObjectOutputStream dout, TucsonMsgReply msg) throws IOException {
 		dout.writeLong(msg.getId());
 		dout.writeInt(msg.getType());
 		dout.writeBoolean(msg.isAllowed());
@@ -86,13 +104,8 @@ public class TucsonMsgReply implements Serializable{
 		dout.writeObject(msg.getTupleResult());
 	}
 
-	/**
-	 * 
-	 * @param din
-	 * @return
-	 * @throws Exception
-	 */
-	public static TucsonMsgReply read(ObjectInputStream din) throws Exception{
+	@Deprecated
+	public static TucsonMsgReply read(ObjectInputStream din) throws Exception {
 		long id = din.readLong();
 		int type = din.readInt();
 		boolean bool = din.readBoolean();
@@ -110,5 +123,5 @@ public class TucsonMsgReply implements Serializable{
 		msg.tuple_result = tres;
 		return msg;
 	}
-	
+
 }
