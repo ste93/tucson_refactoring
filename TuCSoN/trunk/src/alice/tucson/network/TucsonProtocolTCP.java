@@ -85,7 +85,7 @@ public class TucsonProtocolTCP extends TucsonProtocol {
 			logError("The IP or port address of a host could not be determined.");
 			throw new DialogExceptionUnknownNode();
 		} catch (IOException e) {
-			logError("generic IO Error");
+			logError("generic IO Error: " + e.getMessage());
 			throw new DialogExceptionTcp();
 		}
 
@@ -98,15 +98,17 @@ public class TucsonProtocolTCP extends TucsonProtocol {
 		try {
 			// FIXME this code is temporarily commented due to a deadlock
 			// problem when exchanging messages becomes intensive
-			
-			// outStream = new ObjectOutputStream(new BufferedOutputStream(_socket.getOutputStream()));
+
+			// outStream = new ObjectOutputStream(new
+			// BufferedOutputStream(_socket.getOutputStream()));
 			// outStream.flush();
-			// inStream = new ObjectInputStream(new BufferedInputStream(_socket.getInputStream()));
+			// inStream = new ObjectInputStream(new
+			// BufferedInputStream(_socket.getInputStream()));
 			outStream = new ObjectOutputStream(_socket.getOutputStream());
 			outStream.flush();
 			inStream = new ObjectInputStream(_socket.getInputStream());
 		} catch (IOException e) {
-			logError("generic IO Error");
+			logError("generic IO Error: " + e.getMessage());
 			e.printStackTrace();
 			throw new DialogExceptionTcp();
 		}
@@ -125,7 +127,7 @@ public class TucsonProtocolTCP extends TucsonProtocol {
 			mainSocket.setReuseAddress(true);
 			mainSocket.bind(new InetSocketAddress(port));
 		} catch (Exception e) {
-			logError("An error occurs on socket creation.");
+			logError("An error occurs on socket creation: " + e.getMessage());
 			e.printStackTrace();
 			throw new DialogExceptionTcp();
 		}
@@ -150,15 +152,17 @@ public class TucsonProtocolTCP extends TucsonProtocol {
 		try {
 			// FIXME this code is temporarily commented due to a deadlock
 			// problem when exchanging messages becomes intensive
-			
-			// outStream = new ObjectOutputStream(new BufferedOutputStream(_socket.getOutputStream()));
+
+			// outStream = new ObjectOutputStream(new
+			// BufferedOutputStream(_socket.getOutputStream()));
 			// outStream.flush();
-			// inStream = new ObjectInputStream(new BufferedInputStream(_socket.getInputStream()));
+			// inStream = new ObjectInputStream(new
+			// BufferedInputStream(_socket.getInputStream()));
 			outStream = new ObjectOutputStream(_socket.getOutputStream());
 			outStream.flush();
 			inStream = new ObjectInputStream(_socket.getInputStream());
 		} catch (IOException e) {
-			logError("generic IO Error");
+			logError("generic IO Error" + e.getMessage());
 			e.printStackTrace();
 			throw new DialogExceptionTcp();
 		}
@@ -185,7 +189,7 @@ public class TucsonProtocolTCP extends TucsonProtocol {
 		} catch (SocketTimeoutException e) {
 			throw new DialogExceptionTimeout();
 		} catch (IOException e) {
-			logError("Generic IO error");
+			logError("Generic IO error " + e.getMessage());
 			throw new DialogExceptionTcp();
 		}
 
@@ -199,7 +203,10 @@ public class TucsonProtocolTCP extends TucsonProtocol {
 	 */
 	public void end() throws DialogExceptionTcp {
 		try {
-			_socket.close();
+			if (_socket != null)
+				_socket.close();
+			if (mainSocket != null)
+				mainSocket.close();
 		} catch (Exception e) {
 			logError("Generic error on closing socket");
 			e.printStackTrace();
@@ -327,7 +334,4 @@ public class TucsonProtocolTCP extends TucsonProtocol {
 		System.err.println("[TucsonProtocolTCP]: " + error);
 	}
 
-	private void log(String string) {
-		System.out.println(string);
-	}
 }
