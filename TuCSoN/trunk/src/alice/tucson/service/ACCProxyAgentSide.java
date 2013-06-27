@@ -1765,7 +1765,7 @@ public class ACCProxyAgentSide implements EnhancedACC{
 		TucsonProtocol dialog = null;
 		boolean isEnterReqAcpt = false;
 		try{
-			dialog = new TucsonProtocolTCP(opNode, port);
+			dialog = TPFactory.getDialogAgentSide(tid);
 			dialog.sendEnterRequest(profile);
 			dialog.receiveEnterRequestAnswer();
 			if(dialog.isEnterRequestAccepted())

@@ -20,13 +20,12 @@ package alice.tucson.service;
 
 import alice.logictuple.*;
 import alice.logictuple.exceptions.InvalidTupleArgumentException;
-
 import alice.respect.api.exceptions.InvalidTupleCentreIdException;
 import alice.respect.core.RespectTC;
 import alice.tucson.api.exceptions.*;
 import alice.tucson.api.TucsonAgentId;
 import alice.tucson.api.TucsonTupleCentreId;
-
+import alice.tucson.network.TPConfig;
 import alice.tuprolog.InvalidTheoryException;
 import alice.tuprolog.MalformedGoalException;
 import alice.tuprolog.Prolog;
@@ -768,15 +767,15 @@ public class TucsonNodeService{
 			String configInfo = alice.util.Tools.getOpt(args, "-config");
 			String persistencyInfo = alice.util.Tools.getOpt(args, "-persistency");
 			
-			int portNumber = TucsonNodeService.DEFAULT_TCP_PORT;
 			if(portInfo != null){
 				try{
+					int portNumber;
 					portNumber = Integer.parseInt(portInfo);
+					TPConfig.getInstance().setTcpPort(portNumber);
 				}catch(NumberFormatException e){
 					System.err.println("Invalid port number");
 					System.exit(-1);
-				}
-				if(portNumber < 0 || portNumber > 64000){
+				}catch (IllegalArgumentException e) {
 					System.err.println("Invalid port number");
 					System.exit(-1);
 				}
@@ -795,6 +794,9 @@ public class TucsonNodeService{
 			}
 			
 			try{
+				// Only for compatibility, this code should be removed.
+				// TPConfigNodeSide is a singleton
+				int portNumber = TPConfig.getInstance().getNodeTcpPort();
 				new TucsonNodeService(configInfo, portNumber, template).install();
 			}catch(TucsonGenericException e) {
 				System.err.println("Tucson Service Node installation failed: " + e.getMsg());

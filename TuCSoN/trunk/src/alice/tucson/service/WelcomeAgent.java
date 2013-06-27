@@ -20,7 +20,9 @@ package alice.tucson.service;
 import java.io.IOException;
 
 import alice.tucson.network.TucsonProtocol;
+import alice.tucson.network.TPFactory;
 import alice.tucson.network.TucsonProtocolTCP;
+import alice.tucson.network.exceptions.DialogException;
 import alice.tucson.network.exceptions.DialogExceptionTcp;
 import alice.tucson.network.exceptions.DialogExceptionTimeout;
 
@@ -31,9 +33,19 @@ public class WelcomeAgent extends Thread {
 
 	ACCProvider contextManager;
 	TucsonNodeService node;
+	// TODO remove port
 	int port;
 	boolean shutdown;
 
+	public WelcomeAgent(TucsonNodeService node, ACCProvider cm) {
+		contextManager = cm;
+		this.port = -1;
+		this.node = node;
+		shutdown = false;
+		start();
+	}
+
+	@Deprecated
 	public WelcomeAgent(int port, TucsonNodeService node, ACCProvider cm) {
 		contextManager = cm;
 		this.port = port;
@@ -57,9 +69,21 @@ public class WelcomeAgent extends Thread {
 
 		TucsonProtocol mainDialog = null;
 		try {
-			mainDialog = new TucsonProtocolTCP(port);
+			if (port > 0)
+				// TODO remove this code when the configurator is correctly implemented
+				mainDialog = new TucsonProtocolTCP(port);
+			else
+				mainDialog = TPFactory.getDialogNodeSide();
 		} catch (DialogExceptionTcp e) {
-			// TODO BEHAVIOR: what is the correct behavior when a port is alredy
+			// TODO BEHAVIOR: what is the correct behavior when a port is already
+			// used?
+			logErr("");
+			logErr("");
+			logErr("An error occurred on creation of MainDialog");
+			logErr("... WelcomAgent shutdown ... ");
+			return;
+		} catch (DialogException e) {
+			// TODO BEHAVIOR: what is the correct behavior when a port is already
 			// used?
 			logErr("");
 			logErr("");
