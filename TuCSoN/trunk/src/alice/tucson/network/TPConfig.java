@@ -10,8 +10,11 @@ package alice.tucson.network;
  */
 public class TPConfig {
 
-	private static final int DEFAULT_TCP_PORT = 20504;
+	// Generic configuration ------------------------------
 	private final int DEFAULT_PROTOCOL_TYPE = TPFactory.DIALOG_TYPE_TCP;
+
+	// TCP configuration ----------------------------------
+	private static final int DEFAULT_TCP_PORT = 20504;
 	private int TCP_PORT = -1;
 
 	private static TPConfig singletonTPConfig = null;
@@ -28,17 +31,16 @@ public class TPConfig {
 	}
 
 	/**
-	 * Set the tcp port: only one set is permitted, the second one will be
+	 * Set the TCP port: only one set is permitted, the second one will be
 	 * ignored
 	 * 
 	 * @throws IllegalArgumentException
 	 *             if the port value in already set OR parameter is outside the
 	 *             specified range of valid port values, which is between 0 and
-	 *             64000, inclusive.
+	 *             64000, inclusive. See {@link InetSocketAddress} for detail.
 	 */
 	public synchronized void setTcpPort(int portNumber) {
-		// TODO why 64000?
-		if (portNumber < 0 || portNumber > 64000 || TCP_PORT > 0) {
+		if (!TucsonProtocolTCP.checkPortValue(portNumber) || TCP_PORT > 0) {
 			throw new IllegalArgumentException();
 		}
 		TCP_PORT = portNumber;
@@ -47,7 +49,7 @@ public class TPConfig {
 	/**
 	 * Return the TCP port number
 	 * 
-	 * @return a valid tcp port number
+	 * @return a valid TCP port number
 	 */
 	public int getNodeTcpPort() {
 		if (TCP_PORT < 0)

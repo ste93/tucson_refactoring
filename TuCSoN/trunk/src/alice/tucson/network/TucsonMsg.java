@@ -5,4 +5,8 @@ import java.io.Serializable;
 public class TucsonMsg implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+
+	public String toString() {
+		return "Generic Tucson Message";
+	}
 }

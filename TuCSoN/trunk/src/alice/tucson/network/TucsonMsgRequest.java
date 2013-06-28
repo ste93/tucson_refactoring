@@ -1,15 +1,14 @@
 package alice.tucson.network;
 
-import java.io.Externalizable;
 import java.io.IOException;
-import java.io.ObjectInput;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 
 import alice.logictuple.LogicTuple;
 
-public class TucsonMsgRequest extends TucsonMsg implements Externalizable {
+public class TucsonMsgRequest extends TucsonMsg {
+
+	private static final long serialVersionUID = -3954905186850436787L;
 
 	private long id;
 	private int type;
@@ -42,21 +41,13 @@ public class TucsonMsgRequest extends TucsonMsg implements Externalizable {
 		return type;
 	}
 
-	@Override
-	public void writeExternal(ObjectOutput out) throws IOException {
-		out.writeLong(id);
-		out.writeInt(type);
-		out.writeObject(tuple);
-		out.writeUTF(tid);
-		out.flush();
-	}
+	public String toString() {
+		String s = "ID: " + id;
+		s += "; Type: " + type;
+		s += "; TID: " + tid;
+		s += "; Tuple: " + tuple;
 
-	@Override
-	public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
-		this.id = in.readLong();
-		this.type = in.readInt();
-		this.tuple = (LogicTuple) in.readObject();
-		this.tid = in.readUTF();
+		return s;
 	}
 
 	@Deprecated

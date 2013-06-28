@@ -1,6 +1,7 @@
 package alice.tucson.network;
 
 import alice.tucson.api.TucsonTupleCentreId;
+import alice.tucson.api.exceptions.UnreachableNodeException;
 import alice.tucson.network.exceptions.DialogException;
 
 /**
@@ -40,9 +41,9 @@ public class TPFactory {
 	 * @throws DialogException
 	 */
 	public static TucsonProtocol getDialogNodeSide(int tucsonProtocolType) throws DialogException {
-		
+
 		TucsonProtocol tp = null;
-		
+
 		switch (tucsonProtocolType) {
 		case DIALOG_TYPE_TCP:
 			TPConfig config = TPConfig.getInstance();
@@ -56,16 +57,20 @@ public class TPFactory {
 		return tp;
 	}
 
-	public static TucsonProtocol getDialogAgentSide(TucsonTupleCentreId tid) throws DialogException {
-		
+	public static TucsonProtocol getDialogAgentSide(TucsonTupleCentreId tid) throws DialogException, UnreachableNodeException {
+
 		TPConfig config = TPConfig.getInstance();
 		return getDialogAgentSide(config.getDefaultProtocolType(), tid);
 	}
 
-	public static TucsonProtocol getDialogAgentSide(int tucsonProtocolType, TucsonTupleCentreId tid) throws DialogException {
+	public static TucsonProtocol getDialogAgentSide(int tucsonProtocolType, TucsonTupleCentreId tid) throws DialogException, UnreachableNodeException {
 		String node = alice.util.Tools.removeApices(tid.getNode());
 		int port = tid.getPort();
 
+		// TODO il controllo su porta e address va fatto meglio, vedere come è
+		// fatto nel resto del codice
+		if (!TucsonProtocolTCP.checkPortValue(port))
+			throw new DialogException("Illegal port argument");
 		TucsonProtocol tp = null;
 		switch (tucsonProtocolType) {
 		case DIALOG_TYPE_TCP:

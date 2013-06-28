@@ -73,11 +73,6 @@ public abstract class TucsonProtocol {
 
 	abstract protected void flush() throws Exception;
 
-	/**
-	 * 
-	 * @param context
-	 * @throws Exception
-	 */
 	public void sendEnterRequest(ACCDescription context) throws Exception {
 
 		send(REQ_ENTERCONTEXT);

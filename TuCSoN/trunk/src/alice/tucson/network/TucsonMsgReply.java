@@ -1,15 +1,14 @@
 package alice.tucson.network;
 
-import java.io.Externalizable;
 import java.io.IOException;
-import java.io.ObjectInput;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 
 import alice.logictuple.LogicTuple;
 
-public class TucsonMsgReply extends TucsonMsg implements Externalizable {
+public class TucsonMsgReply extends TucsonMsg {
+
+	private static final long serialVersionUID = -3427517966813327440L;
 
 	private long id;
 	private int type;
@@ -70,27 +69,17 @@ public class TucsonMsgReply extends TucsonMsg implements Externalizable {
 		return resultSuccess;
 	}
 
-	@Override
-	public void writeExternal(ObjectOutput out) throws IOException {
-		out.writeLong(id);
-		out.writeInt(type);
-		out.writeObject(tuple_requested);
-		out.writeObject(tuple_result);
-		out.writeBoolean(allowed);
-		out.writeBoolean(success);
-		out.writeBoolean(resultSuccess);
-		out.flush();
-	}
+	public String toString() {
 
-	@Override
-	public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
-		this.id = in.readLong();
-		this.type = in.readInt();
-		this.tuple_requested = (LogicTuple) in.readObject();
-		this.tuple_result = in.readObject();
-		this.allowed = in.readBoolean();
-		this.success = in.readBoolean();
-		this.resultSuccess = in.readBoolean();
+		String s = "ID: " + id;
+		s += "; Type: " + type;
+		s += "; Tuple Requested: " + tuple_requested;
+		s += "; Tuple Result: " + tuple_result;
+		s += "; Allowed: " + allowed;
+		s += "; Success: " + success;
+		s += "; Result Success: " + resultSuccess;
+
+		return s;
 	}
 
 	@Deprecated
