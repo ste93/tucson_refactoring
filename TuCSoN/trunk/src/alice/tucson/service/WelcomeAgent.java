@@ -17,41 +17,109 @@
  */
 package alice.tucson.service;
 
-import java.io.IOException;
-
-import alice.tucson.network.TucsonProtocol;
+import alice.tucson.network.TPConfig;
 import alice.tucson.network.TPFactory;
-import alice.tucson.network.TucsonProtocolTCP;
+import alice.tucson.network.TucsonProtocol;
 import alice.tucson.network.exceptions.DialogException;
-import alice.tucson.network.exceptions.DialogExceptionTcp;
-import alice.tucson.network.exceptions.DialogExceptionTimeout;
 
 /**
  * 
  */
 public class WelcomeAgent extends Thread {
 
+	private final boolean ENABLE_STACK_TRACE = false;
+
 	ACCProvider contextManager;
 	TucsonNodeService node;
-	// TODO remove port
-	int port;
+	TucsonProtocol mainDialog;
+
 	boolean shutdown;
 
 	public WelcomeAgent(TucsonNodeService node, ACCProvider cm) {
 		contextManager = cm;
-		this.port = -1;
 		this.node = node;
 		shutdown = false;
 		start();
 	}
 
-	@Deprecated
-	public WelcomeAgent(int port, TucsonNodeService node, ACCProvider cm) {
-		contextManager = cm;
-		this.port = port;
-		this.node = node;
-		shutdown = false;
-		start();
+	public void run() {
+
+		try {
+			mainDialog = TPFactory.getDialogNodeSide(TPFactory.DIALOG_TYPE_TCP);
+		} catch (DialogException e) {
+			// TODO BEHAVIOR: what is the correct behavior when a port is
+			// already
+			// used?
+			logErr("");
+			logErr("");
+			logErr("An error occurred on creation of MainDialog", e);
+			logErr("... WelcomAgent shutdown ... ");
+			// On shutdown removing this Agent from NodeAgentList
+			node.removeNodeAgent(this);
+			return;
+		}
+
+		TucsonProtocol dialog = null;
+
+		while (!isShutdown()) {
+
+			log("Listening on port " + TPConfig.getInstance().getNodeTcpPort() + " for incoming ACC requests...");
+
+			try {
+				dialog = mainDialog.acceptNewDialog();
+			} catch (DialogException e) {
+				if (isShutdown()) {
+					log("Shutdown request received, shutting down...");
+					break;
+				}
+
+				// TODO BEHAVIOR: what is the correct behavior?
+				logErr("");
+				logErr("");
+				logErr("An error occurred on new dialog aceptiong", e);
+				logErr("... WelcomAgent shutdown ... ");
+				break;
+			}
+
+			try {
+				dialog.receiveFirstRequest();
+
+				if (dialog.isEnterRequest()) {
+					dialog.receiveEnterRequest();
+					ACCDescription desc = dialog.getContextDescription();
+					log("Delegating ACCProvider received enter request...");
+					contextManager.processContextRequest(desc, dialog);
+				} else if (dialog.isTelnet()) {
+					// TODO  ????
+					log("Welcome to the Tucson Service Node " + TucsonNodeService.getVersion());
+				}
+			} catch (DialogException e) {
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+		}
+
+		// On shutdown removing this Agent from NodeAgentList
+		node.removeNodeAgent(this);
+
+	}
+
+	private synchronized boolean isShutdown() {
+		return shutdown;
+	}
+
+	/** Method for request the shutdown of WelcomAgent */
+	public synchronized void shutdown() {
+		// is not the WelcomAgent thread to do this, but it is an acceptable
+		// compromise to avoid adding an additional thread
+		shutdown = true;
+		try {
+			if (mainDialog != null)
+				mainDialog.end();
+		} catch (DialogException e) {
+			logErr("Error on closing mainDialog");
+		}
 	}
 
 	private void log(String st) {
@@ -62,100 +130,11 @@ public class WelcomeAgent extends Thread {
 		System.err.println("[WelcomeAgent]: " + error);
 	}
 
-	/**
-	 * 
-	 */
-	public void run() {
-
-		TucsonProtocol mainDialog = null;
-		try {
-			if (port > 0)
-				// TODO remove this code when the configurator is correctly implemented
-				mainDialog = new TucsonProtocolTCP(port);
-			else
-				mainDialog = TPFactory.getDialogNodeSide();
-		} catch (DialogExceptionTcp e) {
-			// TODO BEHAVIOR: what is the correct behavior when a port is already
-			// used?
-			logErr("");
-			logErr("");
-			logErr("An error occurred on creation of MainDialog");
-			logErr("... WelcomAgent shutdown ... ");
-			return;
-		} catch (DialogException e) {
-			// TODO BEHAVIOR: what is the correct behavior when a port is already
-			// used?
-			logErr("");
-			logErr("");
-			logErr("An error occurred on creation of MainDialog");
-			logErr("... WelcomAgent shutdown ... ");
-			return;
-		}
-
-		TucsonProtocol dialog = null;
-		boolean exception = false;
-		boolean timeout = false;
-		try {
-			while (true) {
-
-				if (!timeout)
-					log("Listening on port " + port + " for incoming ACC requests...");
-				else
-					timeout = false;
-
-				try {
-					dialog = mainDialog.acceptNewDialog();
-				} catch (DialogExceptionTimeout e) {
-					timeout = true;
-					if (shutdown) {
-						exception = true;
-						log("Shutdown interrupt received, shutting down...");
-						break;
-					} else
-						continue;
-				}
-				dialog.receiveFirstRequest();
-
-				if (dialog.isEnterRequest()) {
-					dialog.receiveEnterRequest();
-					ACCDescription desc = dialog.getContextDescription();
-					log("Delegating ACCProvider received enter request...");
-					contextManager.processContextRequest(desc, dialog);
-				} else if (dialog.isTelnet()) {
-					// TO DO
-					log("Welcome to the Tucson Service Node " + TucsonNodeService.getVersion());
-				}
-
-			}
-		} catch (InterruptedException e) {
-			exception = true;
-			log("Shutdown interrupt received, shutting down...");
-		} catch (IOException e) {
-			exception = true;
-			System.err.println("[WelcomeAgent]: " + e);
+	private void logErr(String error, Exception e) {
+		System.err.println("[WelcomeAgent]:\t" + error);
+		System.err.println("\t\t\tException message is: " + e.getMessage() + "\n");
+		if (ENABLE_STACK_TRACE)
 			e.printStackTrace();
-		} catch (Exception e) {
-			exception = true;
-			System.err.println("[WelcomeAgent]: " + e);
-			e.printStackTrace();
-		}
-
-		if (exception && !shutdown) {
-			try {
-				dialog.end();
-			} catch (Exception e) {
-				System.err.println("[WelcomeAgent]: " + e);
-				e.printStackTrace();
-			}
-			node.removeNodeAgent(this);
-		}
-
-		// log("Actually shutting down...");
-
-	}
-
-	public void shutdown() {
-		shutdown = true;
 	}
 
 }

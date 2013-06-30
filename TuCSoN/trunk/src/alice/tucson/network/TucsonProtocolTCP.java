@@ -25,12 +25,10 @@ import java.net.ConnectException;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 
 import alice.tucson.api.exceptions.UnreachableNodeException;
 import alice.tucson.network.exceptions.DialogExceptionTcp;
-import alice.tucson.network.exceptions.DialogExceptionTimeout;
 
 /* TODO è necessario separare la classe usata server 
  * side e la classe usata client side anche in vista 
@@ -43,7 +41,7 @@ import alice.tucson.network.exceptions.DialogExceptionTimeout;
  */
 public class TucsonProtocolTCP extends TucsonProtocol {
 
-	private boolean ENABLE_STACK_TRACE = false;
+	private final boolean ENABLE_STACK_TRACE = false;
 
 	private ObjectInputStream inStream;
 	private ObjectOutputStream outStream;
@@ -178,23 +176,15 @@ public class TucsonProtocolTCP extends TucsonProtocol {
 	 * Listens for a new dialog request and accepts it. The method blocks until
 	 * a new dialog is made.
 	 * 
-	 * A timeout is set after 5000ms. In this case a new
-	 * <code>DialogExceptionTcpTimeout</code> is raised.
 	 * 
 	 * @return a new TucsonProtocol
-	 * @exception DialogExceptionTimeout
-	 *                - if timeout expires.
 	 * @exception DialogExceptionTcp
 	 *                -if a generic error occurs
 	 */
-	public TucsonProtocol acceptNewDialog() throws DialogExceptionTcp, DialogExceptionTimeout {
+	public TucsonProtocol acceptNewDialog() throws DialogExceptionTcp {
 
 		try {
-			mainSocket.setSoTimeout(5000);
 			return new TucsonProtocolTCP(mainSocket.accept());
-		} catch (SocketTimeoutException e) {
-//			logError("the mainSocket timeout expire while waiting for a new connection", e);
-			throw new DialogExceptionTimeout();
 		} catch (IOException e) {
 			logError("Generic IO error", e);
 			throw new DialogExceptionTcp();
@@ -337,8 +327,8 @@ public class TucsonProtocolTCP extends TucsonProtocol {
 
 	/**
 	 * Check the TCP port value return false if the parameter is outside the
-	 *             specified range of valid port values, which is between 0 and
-	 *             64000, inclusive. See {@link InetSocketAddress} for detail.
+	 * specified range of valid port values, which is between 0 and 64000,
+	 * inclusive. See {@link InetSocketAddress} for detail.
 	 */
 	protected static boolean checkPortValue(int portNumber) {
 		// TODO why 64000 and not 65535?

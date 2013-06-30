@@ -632,8 +632,8 @@ public class TucsonNodeService{
 		ctxman = new ACCProvider(this, idConfigTC);
 		
 		log("Spawning Welcome Agent...");
-		welcome = new WelcomeAgent(tcp_port, this, ctxman);
-		
+		welcome = new WelcomeAgent(this, ctxman);
+
 	}
 	
 	synchronized public void addNodeAgent(Thread t){
