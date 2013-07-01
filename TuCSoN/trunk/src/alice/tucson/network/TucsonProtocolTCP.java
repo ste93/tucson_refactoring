@@ -25,6 +25,7 @@ import java.net.ConnectException;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 import java.net.UnknownHostException;
 
 import alice.tucson.api.exceptions.UnreachableNodeException;
@@ -42,6 +43,8 @@ import alice.tucson.network.exceptions.DialogExceptionTcp;
 public class TucsonProtocolTCP extends TucsonProtocol {
 
 	private final boolean ENABLE_STACK_TRACE = false;
+
+	private boolean serverSocketClosed = false;
 
 	private ObjectInputStream inStream;
 	private ObjectOutputStream outStream;
@@ -186,7 +189,10 @@ public class TucsonProtocolTCP extends TucsonProtocol {
 		try {
 			return new TucsonProtocolTCP(mainSocket.accept());
 		} catch (IOException e) {
-			logError("Generic IO error", e);
+			if (serverSocketClosed)
+				log("SocketClosed...");
+			else
+				logError("Generic IO error", e);
 			throw new DialogExceptionTcp();
 		}
 
@@ -204,6 +210,7 @@ public class TucsonProtocolTCP extends TucsonProtocol {
 				_socket.close();
 			if (mainSocket != null)
 				mainSocket.close();
+			serverSocketClosed = true;
 		} catch (Exception e) {
 			logError("Generic error on closing socket", e);
 			throw new DialogExceptionTcp();
@@ -336,6 +343,10 @@ public class TucsonProtocolTCP extends TucsonProtocol {
 			return false;
 		else
 			return true;
+	}
+
+	private void log(String error) {
+		System.out.println("[TucsonProtocolTCP]: " + error);
 	}
 
 	private void logError(String error) {
