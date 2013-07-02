@@ -1,0 +1,76 @@
+/*
+ * ReSpecT - Copyright (C) aliCE team at deis.unibo.it
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
+package alice.respect.core;
+
+import java.util.LinkedList;
+
+import alice.logictuple.LogicTuple;
+import alice.logictuple.TupleArgument;
+import alice.logictuple.exceptions.InvalidTupleOperationException;
+import alice.respect.core.collection.BucketHashMap;
+
+/**
+ * Class representing a Tuple Set.
+ */
+public class TupleSetSpec extends AbstractTupleSet {
+
+	// TODO ha senso avere due reaction perfettamente uguali nella lista?
+	// due normali tuple devono rimanere distinte anche se sono identiche, ma
+	// per le reaction potrebbe essere un problema.
+
+	public TupleSetSpec() {
+		tuples = new BucketHashMap<String, LogicTuple>();
+		tAdded = new LinkedList<LogicTupleEntry>();
+		tRemoved = new LinkedList<LogicTupleEntry>();
+		transaction = false;
+	}
+
+	@Override
+	protected String getKey(LogicTuple t) {
+		log("");
+		log("La tupla è " + t.toString());
+		try {
+			if (!t.getName().equals("reaction")) {
+				System.err.println("Messaggio Saverio: TupleSpech ha un problema");
+				// TODO valutare se è il caso di effettuare questo controllo
+				// throw new Exception();
+			}
+			TupleArgument event = t.getArg(0);
+			String key = event.getName();
+			key += "-" + event.getArg(0).getPredicateIndicator();
+
+			log("La chiave è:" + key);
+
+			return key;
+
+		} catch (InvalidTupleOperationException e) {
+			e.printStackTrace();
+		}
+		/*
+		 * reaction( out(boot),
+		 * true,','(out(agent_list([])),','(out(tc_list([])),in(boot))) ).
+		 */
+
+		return "";
+	}
+
+	private void log(Object o) {
+		System.out.println(o.toString());
+	}
+
+}

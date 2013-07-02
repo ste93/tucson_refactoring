@@ -35,8 +35,7 @@ import alice.tuprolog.Term;
  * @author aricci
  * @version 1.0
  */
-public class LogicTuple implements alice.tuplecentre.api.Tuple, alice.tuplecentre.api.TupleTemplate, java.io.Serializable
-{
+public class LogicTuple implements alice.tuplecentre.api.Tuple, alice.tuplecentre.api.TupleTemplate, java.io.Serializable {
 
 	/**
 	 * 
@@ -53,8 +52,7 @@ public class LogicTuple implements alice.tuplecentre.api.Tuple, alice.tuplecentr
 	 * @param list
 	 *            the list of tuple argument
 	 */
-	public LogicTuple(String name, TupleArgument[] list)
-	{
+	public LogicTuple(String name, TupleArgument[] list) {
 		info = new Value(name, list);
 	}
 
@@ -64,8 +62,7 @@ public class LogicTuple implements alice.tuplecentre.api.Tuple, alice.tuplecentr
 	 * @param name
 	 *            the name of the tuple (the functor)
 	 */
-	public LogicTuple(String name)
-	{
+	public LogicTuple(String name) {
 		info = new Value(name);
 	}
 
@@ -77,8 +74,7 @@ public class LogicTuple implements alice.tuplecentre.api.Tuple, alice.tuplecentr
 	 * @param t1
 	 *            the tuple argument
 	 */
-	public LogicTuple(String name, TupleArgument t1)
-	{
+	public LogicTuple(String name, TupleArgument t1) {
 		info = new Value(name, t1);
 	}
 
@@ -92,8 +88,7 @@ public class LogicTuple implements alice.tuplecentre.api.Tuple, alice.tuplecentr
 	 * @param t2
 	 *            the second tuple argument
 	 */
-	public LogicTuple(String name, TupleArgument t1, TupleArgument t2)
-	{
+	public LogicTuple(String name, TupleArgument t1, TupleArgument t2) {
 		info = new Value(name, t1, t2);
 	}
 
@@ -109,8 +104,7 @@ public class LogicTuple implements alice.tuplecentre.api.Tuple, alice.tuplecentr
 	 * @param t3
 	 *            the third tuple argument
 	 */
-	public LogicTuple(String name, TupleArgument t1, TupleArgument t2, TupleArgument t3)
-	{
+	public LogicTuple(String name, TupleArgument t1, TupleArgument t2, TupleArgument t3) {
 		info = new Value(name, t1, t2, t3);
 	}
 
@@ -128,8 +122,7 @@ public class LogicTuple implements alice.tuplecentre.api.Tuple, alice.tuplecentr
 	 * @param t4
 	 *            the fourth tuple argument
 	 */
-	public LogicTuple(String name, TupleArgument t1, TupleArgument t2, TupleArgument t3, TupleArgument t4)
-	{
+	public LogicTuple(String name, TupleArgument t1, TupleArgument t2, TupleArgument t3, TupleArgument t4) {
 		info = new Value(name, t1, t2, t3, t4);
 	}
 
@@ -149,8 +142,7 @@ public class LogicTuple implements alice.tuplecentre.api.Tuple, alice.tuplecentr
 	 * @param t5
 	 *            the fifth tuple argument
 	 */
-	public LogicTuple(String name, TupleArgument t1, TupleArgument t2, TupleArgument t3, TupleArgument t4, TupleArgument t5)
-	{
+	public LogicTuple(String name, TupleArgument t1, TupleArgument t2, TupleArgument t3, TupleArgument t4, TupleArgument t5) {
 		info = new Value(name, t1, t2, t3, t4, t5);
 	}
 
@@ -172,9 +164,7 @@ public class LogicTuple implements alice.tuplecentre.api.Tuple, alice.tuplecentr
 	 * @param t6
 	 *            the sixth tuple argument
 	 */
-	public LogicTuple(String name, TupleArgument t1, TupleArgument t2, TupleArgument t3, TupleArgument t4, TupleArgument t5,
-			TupleArgument t6)
-	{
+	public LogicTuple(String name, TupleArgument t1, TupleArgument t2, TupleArgument t3, TupleArgument t4, TupleArgument t5, TupleArgument t6) {
 		info = new Value(name, t1, t2, t3, t4, t5, t6);
 	}
 
@@ -198,9 +188,7 @@ public class LogicTuple implements alice.tuplecentre.api.Tuple, alice.tuplecentr
 	 * @param t7
 	 *            the seventh tuple argument
 	 */
-	public LogicTuple(String name, TupleArgument t1, TupleArgument t2, TupleArgument t3, TupleArgument t4, TupleArgument t5,
-			TupleArgument t6, TupleArgument t7)
-	{
+	public LogicTuple(String name, TupleArgument t1, TupleArgument t2, TupleArgument t3, TupleArgument t4, TupleArgument t5, TupleArgument t6, TupleArgument t7) {
 		info = new Value(name, t1, t2, t3, t4, t5, t6, t7);
 	}
 
@@ -211,8 +199,7 @@ public class LogicTuple implements alice.tuplecentre.api.Tuple, alice.tuplecentr
 	 * @param t
 	 *            the tuple argument
 	 */
-	public LogicTuple(TupleArgument t)
-	{
+	public LogicTuple(TupleArgument t) {
 		info = t;
 	}
 
@@ -222,13 +209,25 @@ public class LogicTuple implements alice.tuplecentre.api.Tuple, alice.tuplecentr
 	 * @param t
 	 *            the tuprolog term
 	 */
-	public LogicTuple(Term t)
-	{
+	public LogicTuple(Term t) {
 		info = new TupleArgument(t);
 	}
 
-	public LogicTuple()
-	{
+	public LogicTuple() {
+	}
+
+	/**
+	 * Return a string that is the name and arity of the logic tuple in the
+	 * following format: {@code name/arity}. The method is applicable only if
+	 * this term is a structure.
+	 * 
+	 * @return a {@code String} in the form nome/arity.
+	 * 
+	 * @throws {@code InvalidTupleOperationException} if this argument is not a
+	 *         structure
+	 */
+	public String getPredicateIndicator() throws InvalidTupleOperationException {
+		return info.getPredicateIndicator();
 	}
 
 	/**
@@ -239,8 +238,7 @@ public class LogicTuple implements alice.tuplecentre.api.Tuple, alice.tuplecentr
 	 *             if this argument is not a structure or an out of bounds index
 	 *             error is issued
 	 */
-	public int getArity() throws InvalidTupleOperationException
-	{
+	public int getArity() throws InvalidTupleOperationException {
 		return info.getArity();
 	}
 
@@ -249,8 +247,7 @@ public class LogicTuple implements alice.tuplecentre.api.Tuple, alice.tuplecentr
 	 * 
 	 * @return the name of the logic tuple
 	 */
-	public String getName() throws InvalidTupleOperationException
-	{
+	public String getName() throws InvalidTupleOperationException {
 		return info.getName();
 	}
 
@@ -263,8 +260,7 @@ public class LogicTuple implements alice.tuplecentre.api.Tuple, alice.tuplecentr
 	 * @throws s
 	 *             InvalidTupleOperationException for out of bounds error
 	 */
-	public TupleArgument getArg(int index) throws InvalidTupleOperationException
-	{
+	public TupleArgument getArg(int index) throws InvalidTupleOperationException {
 		return info.getArg(index);
 	}
 
@@ -275,8 +271,7 @@ public class LogicTuple implements alice.tuplecentre.api.Tuple, alice.tuplecentr
 	 *            name of the argument
 	 * @return the argument (a structured Value) or null if not presemt
 	 */
-	public TupleArgument getArg(String name)
-	{
+	public TupleArgument getArg(String name) {
 		return info.getArg(name);
 	}
 
@@ -293,8 +288,7 @@ public class LogicTuple implements alice.tuplecentre.api.Tuple, alice.tuplecentr
 	 * @return the value linked to the variable, in the case tha the variable
 	 *         exits inside the tuple, null otherwise
 	 */
-	public TupleArgument getVarValue(String varName)
-	{
+	public TupleArgument getVarValue(String varName) {
 		return info.getVarValue(varName);
 	}
 
@@ -303,8 +297,7 @@ public class LogicTuple implements alice.tuplecentre.api.Tuple, alice.tuplecentr
 	 * 
 	 * @return the logictuple as a term
 	 */
-	public Term toTerm()
-	{
+	public Term toTerm() {
 		return info.toTerm();
 	}
 
@@ -313,14 +306,10 @@ public class LogicTuple implements alice.tuplecentre.api.Tuple, alice.tuplecentr
 	 * 
 	 * @return the string representing the logic tuple
 	 */
-	public String toString()
-	{
-		try
-		{
+	public String toString() {
+		try {
 			return info.toString();
-		}
-		catch (Exception ex)
-		{
+		} catch (Exception ex) {
 			return null;
 		}
 	}
@@ -334,18 +323,14 @@ public class LogicTuple implements alice.tuplecentre.api.Tuple, alice.tuplecentr
 	 * @return <code>true</code> if there is matching, <code>false</code>
 	 *         otherwise
 	 */
-	public boolean match(alice.tuplecentre.api.Tuple t)
-	{
-		try
-		{
+	public boolean match(alice.tuplecentre.api.Tuple t) {
+		try {
 			LogicTuple tu = (LogicTuple) t;
 			Term term_a = info.toTerm();
 			Term term_b = tu.info.toTerm();
 			boolean result = term_a.match(term_b);
 			return result;
-		}
-		catch (Exception ex)
-		{
+		} catch (Exception ex) {
 			ex.printStackTrace();
 			return false;
 		}
@@ -360,20 +345,16 @@ public class LogicTuple implements alice.tuplecentre.api.Tuple, alice.tuplecentr
 	 * @return <code>true</code> if the propagation was successfull,
 	 *         <code>false</code> otherwise
 	 */
-	public boolean propagate(Prolog p, alice.tuplecentre.api.Tuple t)
-	{
-		try
-		{
+	public boolean propagate(Prolog p, alice.tuplecentre.api.Tuple t) {
+		try {
 			LogicTuple tu = (LogicTuple) t;
 			Term term_a = info.toTerm();
 			Term term_b = tu.info.toTerm();
-			
+
 			boolean result = term_a.unify(p, term_b);
-			
-			return result;	//NEW FOR TUPROLOG 2.?? con null,
-		}
-		catch (Exception ex)
-		{
+
+			return result; // NEW FOR TUPROLOG 2.?? con null,
+		} catch (Exception ex) {
 			return false;
 		}
 	}
@@ -387,15 +368,11 @@ public class LogicTuple implements alice.tuplecentre.api.Tuple, alice.tuplecentr
 	 * @exception InvalidLogicTupleException
 	 *                if the text does not represent a valid logic tuple
 	 */
-	public static LogicTuple parse(String st) throws InvalidLogicTupleException
-	{
-		try
-		{
+	public static LogicTuple parse(String st) throws InvalidLogicTupleException {
+		try {
 			Term t = alice.tuprolog.Term.createTerm(st, new MyOpManager());
 			return new LogicTuple(new TupleArgument(t));
-		}
-		catch (Exception ex)
-		{
+		} catch (Exception ex) {
 			throw new InvalidLogicTupleException();
 		}
 	}
