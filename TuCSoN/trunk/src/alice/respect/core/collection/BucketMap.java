@@ -11,10 +11,6 @@ import java.util.Map;
  */
 public interface BucketMap<K, V> extends Iterable<V> {
 
-	// TODO correggere l'estenzione ITERABLE: aggiungere i metodi in questa
-	// interfaccia
-	// Valutare se è il caso di inserire come interfaccia Collections
-
 	/**
 	 * Returns the number of key-value pair in this BucketMap.
 	 * 
@@ -110,6 +106,7 @@ public interface BucketMap<K, V> extends Iterable<V> {
 	/** Remove all element from the BucketMap */
 	public void clear();
 
+	// TODO vedere se è da rimuovere
 	public List<V> values();
 
 	@Override

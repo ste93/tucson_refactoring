@@ -181,10 +181,11 @@ public abstract class AbstractTupleSet implements TupleSet2 {
 		}
 
 		/**
-		 * {@inheritDoc}
-		 * 
-		 * This method is not implemented, the value of this class can not be
+		 * <p>
+		 * NOTE: This method is not implemented, the value of this class can not be
 		 * changed after initialization.
+		 * </p>
+		 * {@inheritDoc}
 		 * 
 		 * @throws NotImplementedException
 		 *             on each invocation of method.
