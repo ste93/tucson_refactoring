@@ -26,11 +26,11 @@ import alice.tucson.service.ACCDescription;
 
 /**
  * This is an abstract representation of Tucson Protocol. This protocol allows
- * to start a new dialog and then the exchange of messages between Tucson nodes
- * and agents.
+ * to start a new dialog and in second time the exchange of messages between
+ * Tucson nodes and agents.
  */
 public abstract class TucsonProtocol {
-	
+
 	@Deprecated
 	abstract public ObjectInputStream getInputStream();
 
@@ -42,7 +42,7 @@ public abstract class TucsonProtocol {
 	abstract public void end() throws DialogException;
 
 	abstract public void sendMsg(TucsonMsg msg) throws DialogException;
-	
+
 	abstract public TucsonMsg receiveMsg() throws DialogException;
 
 	abstract public void sendMsgRequest(TucsonMsgRequest request) throws DialogException;

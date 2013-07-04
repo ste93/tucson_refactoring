@@ -31,13 +31,14 @@ public class TPConfig {
 	}
 
 	/**
+	 * TODO ...
 	 * Set the TCP port: only one set is permitted, the second one will be
 	 * ignored
 	 * 
 	 * @throws IllegalArgumentException
 	 *             if the port value in already set OR parameter is outside the
-	 *             specified range of valid port values, which is between 0 and
-	 *             64000, inclusive. See {@link InetSocketAddress} for detail.
+	 *             specified range, which is between 0 and 64000, inclusive. See
+	 *             {@link InetSocketAddress} for detail.
 	 */
 	public synchronized void setTcpPort(int portNumber) {
 		if (!TucsonProtocolTCP.checkPortValue(portNumber) || TCP_PORT > 0) {

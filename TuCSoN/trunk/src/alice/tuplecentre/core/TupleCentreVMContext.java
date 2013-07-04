@@ -19,6 +19,8 @@ package alice.tuplecentre.core;
 
 import java.util.*;
 
+import com.sun.org.apache.xerces.internal.parsers.CachingParserPool.SynchronizedGrammarPool;
+
 import alice.respect.core.RespectTC;
 import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.service.TucsonIdWrapper;
@@ -26,7 +28,6 @@ import alice.tuplecentre.api.AgentId;
 import alice.tuplecentre.api.IId;
 import alice.tuplecentre.api.ITupleCentre;
 import alice.tuplecentre.api.ITupleCentreManagement;
-
 import alice.tuplecentre.api.Tuple;
 import alice.tuplecentre.api.TupleCentreId;
 import alice.tuplecentre.api.TupleTemplate;
@@ -108,6 +109,7 @@ public abstract class TupleCentreVMContext implements ITupleCentreManagement, IT
 
 	/**
 	 * Executes a new Operation.
+	 * The method are already Synchronized
 	 */
 	public void doOperation(IId who, TupleCentreOperation op) throws OperationNotPossibleException  {
 		InputEvent ev = new InputEvent(who,op,this.tid,this.getCurrentTime());

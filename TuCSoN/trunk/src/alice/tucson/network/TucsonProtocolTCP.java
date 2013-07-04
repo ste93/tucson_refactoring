@@ -17,6 +17,8 @@
  */
 package alice.tucson.network;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -25,7 +27,6 @@ import java.net.ConnectException;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.SocketException;
 import java.net.UnknownHostException;
 
 import alice.tucson.api.exceptions.UnreachableNodeException;
@@ -67,9 +68,9 @@ public class TucsonProtocolTCP extends TucsonProtocol {
 	}
 
 	/**
-	 * Create a new dialog whit a specific host identified by host/port pair.
-	 * This constructor is typically used from external agent who want start a
-	 * new dialogue with the node.
+	 * This constructor create a new dialog whit a specific host that identified
+	 * by host/port pair. This constructor is typically used from external agent
+	 * who want start a new dialogue with the node.
 	 * 
 	 * It make a new socket and init I/O streams. The streams are bufferized.
 	 * 
@@ -103,15 +104,9 @@ public class TucsonProtocolTCP extends TucsonProtocol {
 		 * implemented.
 		 */
 		try {
-			// FIXME this code is temporarily commented due to a deadlock
-			// problem when exchanging messages becomes intensive
-
-//			outStream = new ObjectOutputStream(new BufferedOutputStream(_socket.getOutputStream()));
-//			outStream.flush();
-//			inStream = new ObjectInputStream(new BufferedInputStream(_socket.getInputStream()));
-			outStream = new ObjectOutputStream(_socket.getOutputStream());
+			outStream = new ObjectOutputStream(new BufferedOutputStream(_socket.getOutputStream()));
 			outStream.flush();
-			inStream = new ObjectInputStream(_socket.getInputStream());
+			inStream = new ObjectInputStream(new BufferedInputStream(_socket.getInputStream()));
 		} catch (IOException e) {
 			logError("An error occurs on I/O stream creation", e);
 			throw new DialogExceptionTcp();
@@ -160,15 +155,9 @@ public class TucsonProtocolTCP extends TucsonProtocol {
 		 * implemented.
 		 */
 		try {
-			// FIXME this code is temporarily commented due to a deadlock
-			// problem when exchanging messages becomes intensive
-
-//			outStream = new ObjectOutputStream(new BufferedOutputStream(_socket.getOutputStream()));
-//			outStream.flush();
-//			inStream = new ObjectInputStream(new BufferedInputStream(_socket.getInputStream()));
-			outStream = new ObjectOutputStream(_socket.getOutputStream());
+			outStream = new ObjectOutputStream(new BufferedOutputStream(_socket.getOutputStream()));
 			outStream.flush();
-			inStream = new ObjectInputStream(_socket.getInputStream());
+			inStream = new ObjectInputStream(new BufferedInputStream(_socket.getInputStream()));
 		} catch (IOException e) {
 			logError("An error occurs on I/O stream creation", e);
 			throw new DialogExceptionTcp();

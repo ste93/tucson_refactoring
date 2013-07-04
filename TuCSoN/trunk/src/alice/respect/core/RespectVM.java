@@ -48,118 +48,112 @@ public class RespectVM implements Runnable {
     private RespectVMContext context;
 	private RespectTCContainer container;
 	private RespectTC respectTC;
-	private Object news;
+	private EventMonitor news;
 	private Object idle;
 	protected List<ObservableEventListener> observers;
 	/** listener to VM inspectable events  */
     protected List<InspectableEventListener> inspectors;
     
-    public RespectVM(TupleCentreId tid, RespectTCContainer container, int qSize, RespectTC respectTC){
-    	this.container = container;
-    	this.respectTC = respectTC;
-        context = new RespectVMContext(this, tid, qSize, respectTC);
-		news = new Object();
+	public RespectVM(TupleCentreId tid, RespectTCContainer container, int qSize, RespectTC respectTC){
+		this.container = container;
+		this.respectTC = respectTC;
+		context = new RespectVMContext(this, tid, qSize, respectTC);
+		news = new EventMonitor();
 		idle = new Object();
 		inspectors = new ArrayList<InspectableEventListener>();
 		observers = new ArrayList<ObservableEventListener>();
-    }
+	}
 
-   	public void addObserver(ObservableEventListener l){
+	public void addObserver(ObservableEventListener l) {
 		observers.add(l);
 	}
-	
-	public void removeObserver(ObservableEventListener l){
+
+	public void removeObserver(ObservableEventListener l) {
 		observers.remove(l);
 	}
 
-	public boolean hasObservers(){
-		return observers.size()>0;
+	public boolean hasObservers() {
+		return observers.size() > 0;
 	}
 
-	public boolean hasInspectors(){
-		return this.inspectors.size()>0;
+	public boolean hasInspectors() {
+		return this.inspectors.size() > 0;
 	}
-	
-	public List<ObservableEventListener> getObservers(){
+
+	public List<ObservableEventListener> getObservers() {
 		return observers;
 	}
-	
-    public void addInspector(InspectableEventListener l){
-        inspectors.add(l);
-    }
 
-    public void removeInspector(InspectableEventListener l){
-        inspectors.remove(l);
-    }
-    
+	public void addInspector(InspectableEventListener l) {
+		inspectors.add(l);
+	}
+
+	public void removeInspector(InspectableEventListener l) {
+		inspectors.remove(l);
+	}
+
 	public void doOperation(IId id, RespectOperation op) throws OperationNotPossibleException {
 		try {
-			context.doOperation(id,op);
-			synchronized (news){
-				news.notifyAll();
-			}
-		} catch (Exception ex){
+			context.doOperation(id, op);
+			news.signalEvent();
+		} catch (Exception ex) {
 			throw new OperationNotPossibleException();
 		}
 	}
-		
-	public void notifyNewInputEvent(){
-		synchronized (news){
-			news.notifyAll();
-		}
+
+	public void notifyNewInputEvent() {
+		news.signalEvent();
 	}
-	
+
 	public boolean abortOperation(long opId) {
 		try {
 			boolean res;
-			synchronized (idle){
+			synchronized (idle) {
 				res = context.removePendingQueryEvent(opId);
 			}
 			return res;
-		} catch (Exception ex){
+		} catch (Exception ex) {
 			return false;
 		}
 	}
 
 		
-    public void run(){
-        while (true) {            
-        	try {
-        		synchronized(idle){
-            		context.execute();
-        		}
-			} catch (Exception ex){
+	public void run() {
+		while (true) {
+			try {
+				synchronized (idle) {
+					context.execute();
+				}
+			} catch (Exception ex) {
 				context.notifyException(ex);
 			}
-            try {
-            	if (hasInspectors())
-            		notifyInspectableEvent(new InspectableEvent(this,InspectableEvent.TYPE_NEWSTATE));
-                if(!(context.pendingEvents() || context.pendingEnvEvents())){
-	                synchronized(news){
-	                	news.wait();
-	                }
-                }
-            }catch(InterruptedException e){
-            	System.out.println("[RespectVM]: Shutdown interrupt received, shutting down...");
-            	break;
-            }catch (Exception ex){
-                context.notifyException(ex);
-            }
-        }
-        System.out.println("[RespectVM]: Actually shutting down...");
-    }
+			try {
+				if (hasInspectors())
+					notifyInspectableEvent(new InspectableEvent(this, InspectableEvent.TYPE_NEWSTATE));
+				if (!(context.pendingEvents() || context.pendingEnvEvents())) {
+					news.awaitEvent();
+				}
+			} catch (InterruptedException e) {
+				System.out.println("[RespectVM]: Shutdown interrupt received, shutting down...");
+				break;
+			} catch (Exception ex) {
+				context.notifyException(ex);
+			}
+		}
+		System.out.println("[RespectVM]: Actually shutting down...");
+	}
 
-    public void notifyInspectableEvent(InspectableEvent e){
-        Iterator it = inspectors.iterator();
-        while (it.hasNext()){
-            try {
-                ((InspectableEventListener)it.next()).onInspectableEvent(e);
-            } catch (Exception ex){
-                ex.printStackTrace();
-                it.remove();
-            }
-        }
-    }        
+	public void notifyInspectableEvent(InspectableEvent e) {
+		Iterator it = inspectors.iterator();
+		while (it.hasNext()) {
+			try {
+				((InspectableEventListener) it.next()).onInspectableEvent(e);
+			} catch (Exception ex) {
+				ex.printStackTrace();
+				it.remove();
+			}
+		}
+	}       
         
     public void notifyObservableEvent(Event ev){
     	int size = observers.size();
@@ -212,89 +206,82 @@ public class RespectVM implements Runnable {
 	}
 
 	/**
-	 * This operation can be executed only when the VM is an idle
-	 * state, waiting for I/O
+	 * This operation can be executed only when the VM is an idle state, waiting
+	 * for I/O
 	 */
-	public boolean setReactionSpec(BehaviourSpecification spec){
-		synchronized(idle){
+	public boolean setReactionSpec(BehaviourSpecification spec) {
+		synchronized (idle) {
 			context.removeReactionSpec();
 			return context.setReactionSpec(spec);
 		}
 	}
 
-	public BehaviourSpecification getReactionSpec(){
-		synchronized(idle){
+	public BehaviourSpecification getReactionSpec() {
+		synchronized (idle) {
 			return context.getReactionSpec();
 		}
 	}
-	
-	public void setManagementMode(boolean activate){
+
+	public void setManagementMode(boolean activate) {
 		context.setManagementMode(activate);
 	}
-	
+
 	public void stopCommand() throws OperationNotPossibleException {
 		try {
 			context.stopCommand();
-		} catch (Exception ex){
-			throw new OperationNotPossibleException(); 
+		} catch (Exception ex) {
+			throw new OperationNotPossibleException();
 		}
 	}
 
-	public void goCommand()throws OperationNotPossibleException {
+	public void goCommand() throws OperationNotPossibleException {
 		try {
 			context.goCommand();
-			synchronized(news){
-				news.notifyAll();
-			}
-		} catch (Exception ex){
-			throw new OperationNotPossibleException(); 
+			news.signalEvent();
+		} catch (Exception ex) {
+			throw new OperationNotPossibleException();
 		}
 	}
 
-	public void nextStepCommand()throws OperationNotPossibleException {
+	public void nextStepCommand() throws OperationNotPossibleException {
 		try {
 			context.nextStepCommand();
-			synchronized(news){
-				news.notifyAll();
-			}
-		} catch (Exception ex){
-			throw new OperationNotPossibleException(); 
+			news.signalEvent();
+		} catch (Exception ex) {
+			throw new OperationNotPossibleException();
 		}
 	}
-	
-	public LogicTuple[] getTSet(LogicTuple filter){
+
+	public LogicTuple[] getTSet(LogicTuple filter) {
 		return context.getTSet(filter);
 	}
 
-	public WSetEvent[] getWSet(LogicTuple filter){
+	public WSetEvent[] getWSet(LogicTuple filter) {
 		return context.getWSet(filter);
 	}
-	
-	public void setWSet(List<LogicTuple> wSet){
+
+	public void setWSet(List<LogicTuple> wSet) {
 		context.setWSet(wSet);
 	}
 
-	public LogicTuple[] getTRSet(LogicTuple filter){
+	public LogicTuple[] getTRSet(LogicTuple filter) {
 		return context.getTRSet(filter);
 	}
-	
-	public void reset(){
+
+	public void reset() {
 		context.reset();
 	}
 
-	public TupleCentreId getId(){
+	public TupleCentreId getId() {
 		return (TupleCentreId) context.getId();
 	}
 
 	public RespectVMContext getRespectVMContext() {
 		return context;
 	}
-	
+
 	public RespectTCContainer getContainer() {
 		return this.container;
 	}
-	
+
 }
-
-
-

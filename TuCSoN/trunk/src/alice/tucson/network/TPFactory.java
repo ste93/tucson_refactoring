@@ -19,7 +19,10 @@ import alice.tucson.network.exceptions.DialogException;
 
 public class TPFactory {
 
-	/** Constant of TucsonProtocol type: one for a possible implementation */
+	/**
+	 * Constant indentify implementated protocol type: one constant for each
+	 * implemented protocol
+	 */
 	public static final int DIALOG_TYPE_TCP = 0;
 
 	/**
