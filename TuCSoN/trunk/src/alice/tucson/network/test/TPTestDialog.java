@@ -32,8 +32,10 @@ public class TPTestDialog {
 
 			for (long i = 0; i < 1000; i++) {
 
+				LogicTuple lt = new LogicTuple("logictupletest");
+
 				long time1 = System.nanoTime();
-				agent.sendMsgRequest(new TucsonMsgRequest(i, 999, "foo", new LogicTuple("logictupletest")));
+				agent.sendMsgRequest(new TucsonMsgRequest(i, 999, "foo", lt));
 				TucsonMsgReply mr = agent.receiveMsgReply();
 				long time2 = System.nanoTime();
 
@@ -82,7 +84,7 @@ public class TPTestDialog {
 							System.out.println("Error MSG type");
 
 						dialog.sendMsgReply(new TucsonMsgReply(i, 100, true, true, true));
-						System.out.println("Ricevuto messaggio Invio " + m.getId());
+						System.out.println("Received message whit ID: " + m.getId());
 						i++;
 					}
 				} catch (Exception e) {
