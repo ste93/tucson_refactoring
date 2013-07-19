@@ -12,9 +12,11 @@ import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
-import alice.tuplecentre.core.TupleCentreOperation;
+import alice.tuplecentre.core.AbstractTupleCentreOperation;
 
 /**
+ * 
+ * @author ste (mailto: s.mariani@unibo.it) on 16/lug/2013
  * 
  */
 public class InterTupleCentreACCProvider implements ILinkContext {
@@ -24,11 +26,11 @@ public class InterTupleCentreACCProvider implements ILinkContext {
         private final TupleCentreId fromId;
         private InterTupleCentreACC helper;
         private final Map<String, InterTupleCentreACC> helpers;
-        private final TupleCentreOperation op;
+        private final AbstractTupleCentreOperation op;
         private final alice.tuplecentre.api.TupleCentreId toId;
 
         public Executor(final alice.tuplecentre.api.TupleCentreId to,
-                final TupleCentreId from, final TupleCentreOperation o,
+                final TupleCentreId from, final AbstractTupleCentreOperation o,
                 final Map<String, InterTupleCentreACC> helps) {
             super();
             this.toId = to;
@@ -47,10 +49,7 @@ public class InterTupleCentreACCProvider implements ILinkContext {
                             new InterTupleCentreACCProxy(
                                     new TucsonTupleCentreId(this.fromId));
                 } catch (final TucsonInvalidTupleCentreIdException e) {
-                    // TODO Properly handle Exception
-                    System.err
-                            .println("[RespectInterTupleCentreContextProxy] Executor: "
-                                    + e);
+                    e.printStackTrace();
                 }
                 this.helpers.put(this.fromId.getNode(), this.helper);
             }
@@ -58,15 +57,9 @@ public class InterTupleCentreACCProvider implements ILinkContext {
             try {
                 this.helper.doOperation(this.toId, this.op);
             } catch (final TucsonOperationNotPossibleException e) {
-                // TODO Properly handle Exception
-                System.err
-                        .println("[RespectInterTupleCentreContextProxy] Executor: "
-                                + e);
+                e.printStackTrace();
             } catch (final UnreachableNodeException e) {
-                // TODO Properly handle Exception
-                System.err
-                        .println("[RespectInterTupleCentreContextProxy] Executor: "
-                                + e);
+                e.printStackTrace();
             }
 
         }
@@ -79,6 +72,12 @@ public class InterTupleCentreACCProvider implements ILinkContext {
 
     private final alice.tuplecentre.api.TupleCentreId idTo;
 
+    /**
+     * 
+     * @param id
+     *            the identifier of the tuple centre target of the linking
+     *            invocation
+     */
     public InterTupleCentreACCProvider(
             final alice.tuplecentre.api.TupleCentreId id) {
         this.idTo = id;
@@ -92,7 +91,8 @@ public class InterTupleCentreACCProvider implements ILinkContext {
     }
 
     public synchronized void doOperation(final TupleCentreId id,
-            final TupleCentreOperation op) throws OperationNotPossibleException {
+            final AbstractTupleCentreOperation op)
+            throws OperationNotPossibleException {
         // id è il tuplecentre source
         final Executor ex =
                 new Executor(this.idTo, id, op,

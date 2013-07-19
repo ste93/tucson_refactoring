@@ -38,9 +38,9 @@ import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
+import alice.tucson.network.AbstractTucsonProtocol;
 import alice.tucson.network.TucsonMsgReply;
 import alice.tucson.network.TucsonMsgRequest;
-import alice.tucson.network.TucsonProtocol;
 import alice.tucson.network.TucsonProtocolTCP;
 import alice.tucson.parsing.MyOpManager;
 import alice.tuplecentre.api.Tuple;
@@ -55,11 +55,11 @@ import alice.tuprolog.lib.InvalidObjectIdException;
  * Active part of the Default Agent Coordination Context.
  * 
  * It implements the underlying behavior needed by every TuCSoN Agent
- * {@link alice.tucson.api.TucsonAgent user} to fruitfully interact with the
- * TuCSoN Node Service {@link alice.tucson.service.TucsonNodeService TuCSoN}.
- * Essentially, it implements every method exposed in the Default ACC Interface
- * {@link alice.tucson.api.DefaultACC default} offered to the agent, maps each
- * of them into TuCSoN Request Messages
+ * {@link alice.tucson.api.AbstractTucsonAgent user} to fruitfully interact with
+ * the TuCSoN Node Service {@link alice.tucson.service.TucsonNodeService TuCSoN}
+ * . Essentially, it implements every method exposed in the Default ACC
+ * Interface {@link alice.tucson.api.DefaultACC default} offered to the agent,
+ * maps each of them into TuCSoN Request Messages
  * {@link alice.tucson.network.TucsonMsgRequest req}, then waits for TuCSoN Node
  * Services replies {@link alice.tucson.network.TucsonMsgReply reply} forwarding
  * them to the agent.
@@ -75,18 +75,21 @@ import alice.tuprolog.lib.InvalidObjectIdException;
  * {@link alice.tucson.api.TucsonMetaACC metaACC}. The acquisition of such ACC
  * triggers this proxy creation and execution.
  * 
- * @see alice.tucson.api.TucsonAgent TucsonAgent
+ * @see alice.tucson.api.AbstractTucsonAgent TucsonAgent
  * @see alice.tucson.service.TucsonNodeService TucsonNodeService
  * @see alice.tucson.api.DefaultACC DefaultACC
  * @see alice.tucson.network.TucsonMsgRequest TucsonMsgRequest
  * @see alice.tucson.network.TucsonMsgReply TucsonMsgReply
  * @see alice.tucson.api.TucsonMetaACC TucsonMetaACC
+ * 
+ * @author ste (mailto: s.mariani@unibo.it) on 16/lug/2013
+ * 
  */
 public class ACCProxyAgentSide implements EnhancedACC {
 
     /**
-	 * 
-	 */
+     * 
+     */
     protected class Controller extends Thread {
 
         private final ObjectInputStream in;
@@ -110,18 +113,16 @@ public class ACCProxyAgentSide implements EnhancedACC {
                             .getLibrary("alice.tuprolog.lib.JavaLibrary");
             try {
                 jlib.register(new alice.tuprolog.Struct("config"), this);
-            } catch (final InvalidObjectIdException ex) {
-                System.err.println("[ACCProxyAgentSide] Controller: " + ex);
-                // TODO Properly handle Exception
+            } catch (final InvalidObjectIdException e) {
+                e.printStackTrace();
             }
 
         }
 
         /**
-		 * 
-		 */
+         * 
+         */
         @Override
-        @SuppressWarnings("unchecked")
         public void run() {
 
             TucsonOpCompletionEvent ev = null;
@@ -139,9 +140,14 @@ public class ACCProxyAgentSide implements EnhancedACC {
                             .log("TuCSoN node service unavailable, nothing I can do");
                     this.setStop();
                     break;
-                } catch (final Exception ex) {
+                } catch (final ClassNotFoundException e) {
                     this.setStop();
-                    System.err.println("[ACCProxyAgentSide] Controller: " + ex);
+                    e.printStackTrace();
+                    break;
+                } catch (final IOException e) {
+                    this.setStop();
+                    e.printStackTrace();
+                    break;
                 }
 
                 final boolean ok = msg.isAllowed();
@@ -155,17 +161,17 @@ public class ACCProxyAgentSide implements EnhancedACC {
                             || (type == TucsonOperation.unoCode())
                             || (type == TucsonOperation.unopCode())
                             || (type == TucsonOperation.noCode())
-                            || (type == TucsonOperation.no_sCode())
+                            || (type == TucsonOperation.noSCode())
                             || (type == TucsonOperation.nopCode())
-                            || (type == TucsonOperation.nop_sCode())
+                            || (type == TucsonOperation.nopSCode())
                             || (type == TucsonOperation.inCode())
                             || (type == TucsonOperation.rdCode())
                             || (type == TucsonOperation.inpCode())
                             || (type == TucsonOperation.rdpCode())
-                            || (type == TucsonOperation.in_sCode())
-                            || (type == TucsonOperation.rd_sCode())
-                            || (type == TucsonOperation.inp_sCode())
-                            || (type == TucsonOperation.rdp_sCode())) {
+                            || (type == TucsonOperation.inSCode())
+                            || (type == TucsonOperation.rdSCode())
+                            || (type == TucsonOperation.inpSCode())
+                            || (type == TucsonOperation.rdpSCode())) {
 
                         final boolean succeeded = msg.isSuccess();
                         if (succeeded) {
@@ -186,20 +192,20 @@ public class ACCProxyAgentSide implements EnhancedACC {
                                             msg.getId()), ok, false);
                         }
 
-                    } else if ((type == TucsonOperation.set_Code())
-                            || (type == TucsonOperation.set_sCode())
+                    } else if ((type == TucsonOperation.setCode())
+                            || (type == TucsonOperation.setSCode())
                             || (type == TucsonOperation.outCode())
-                            || (type == TucsonOperation.out_sCode())
-                            || (type == TucsonOperation.out_allCode())
+                            || (type == TucsonOperation.outSCode())
+                            || (type == TucsonOperation.outAllCode())
                             || (type == TucsonOperation.spawnCode())) {
                         ev =
                                 new TucsonOpCompletionEvent(new TucsonOpId(
                                         msg.getId()), ok, msg.isSuccess());
-                    } else if ((type == TucsonOperation.in_allCode())
-                            || (type == TucsonOperation.rd_allCode())
-                            || (type == TucsonOperation.no_allCode())
-                            || (type == TucsonOperation.get_Code())
-                            || (type == TucsonOperation.get_sCode())) {
+                    } else if ((type == TucsonOperation.inAllCode())
+                            || (type == TucsonOperation.rdAllCode())
+                            || (type == TucsonOperation.noAllCode())
+                            || (type == TucsonOperation.getCode())
+                            || (type == TucsonOperation.getSCode())) {
                         final List<LogicTuple> tupleSetRes =
                                 (List<LogicTuple>) msg.getTupleResult();
                         ev =
@@ -220,11 +226,12 @@ public class ACCProxyAgentSide implements EnhancedACC {
                 final TucsonOperation op =
                         ACCProxyAgentSide.this.operations.remove(msg.getId());
                 if (op.isNoAll() || op.isInAll() || op.isRdAll() || op.isGet()
-                        || op.isSet() || op.isGet_s() || op.isSet_s()
+                        || op.isSet() || op.isGetS() || op.isSetS()
                         || op.isOutAll()) {
                     op.setLogicTupleListResult((List<LogicTuple>) msg
                             .getTupleResult());
                 } else {
+
                     op.setTupleResult((LogicTuple) msg.getTupleResult());
                 }
                 if (msg.isResultSuccess()) {
@@ -248,8 +255,8 @@ public class ACCProxyAgentSide implements EnhancedACC {
         }
 
         /**
-		 * 
-		 */
+         * 
+         */
         private synchronized void setStop() {
             this.stop = true;
         }
@@ -273,26 +280,26 @@ public class ACCProxyAgentSide implements EnhancedACC {
     }
 
     /**
-	 * 
-	 */
+     * 
+     */
     protected class ControllerSession {
 
         private final Controller controller;
-        private final TucsonProtocol session;
+        private final AbstractTucsonProtocol session;
 
         /**
          * 
          * @param c
          * @param s
          */
-        ControllerSession(final Controller c, final TucsonProtocol s) {
+        ControllerSession(final Controller c, final AbstractTucsonProtocol s) {
             this.controller = c;
             this.session = s;
         }
 
         /**
          * 
-         * @return
+         * @return the listener to incoming messages
          */
         public Controller getController() {
             return this.controller;
@@ -300,13 +307,16 @@ public class ACCProxyAgentSide implements EnhancedACC {
 
         /**
          * 
-         * @return
+         * @return the network protocol used by this ACC
          */
-        public TucsonProtocol getSession() {
+        public AbstractTucsonProtocol getSession() {
             return this.session;
         }
 
     }
+
+    private static final int DEFAULT_PORT = 20504;
+    private static final int TRIES = 3;
 
     /**
      * TuCSoN Agent Identifier
@@ -351,10 +361,12 @@ public class ACCProxyAgentSide implements EnhancedACC {
      *            TuCSoN Agent identifier
      * 
      * @throws TucsonInvalidAgentIdException
+     *             if the String representation given is not valid TuCSoN agent
+     *             identifier
      */
     public ACCProxyAgentSide(final String id)
             throws TucsonInvalidAgentIdException {
-        this(id, "localhost", 20504);
+        this(id, "localhost", ACCProxyAgentSide.DEFAULT_PORT);
     }
 
     /**
@@ -369,6 +381,8 @@ public class ACCProxyAgentSide implements EnhancedACC {
      *            TuCSoN node listening port
      * 
      * @throws TucsonInvalidAgentIdException
+     *             if the String representation given is not valid TuCSoN agent
+     *             identifier
      */
     public ACCProxyAgentSide(final String id, final String n, final int p)
             throws TucsonInvalidAgentIdException {
@@ -396,21 +410,12 @@ public class ACCProxyAgentSide implements EnhancedACC {
         this.operationExpired.add(id);
     }
 
-    /**
-     * Method to release the current ACC held by the TuCSoN Agent behind this
-     * proxy: it takes all the opened connection (we could have been interacting
-     * with different tuplecentres on the same node, hence interfaced by the
-     * same ACC) to quit them, sending a proper message to the TuCSoN Node
-     * involved.
-     * 
-     * @throws TucsonOperationNotPossibleException
-     */
     public synchronized void exit() throws TucsonOperationNotPossibleException {
 
         final Iterator<ControllerSession> it =
                 this.controllerSessions.values().iterator();
         ControllerSession cs;
-        TucsonProtocol info;
+        AbstractTucsonProtocol info;
         Controller contr;
         ObjectOutputStream outStream;
         TucsonOperation op;
@@ -435,196 +440,46 @@ public class ACCProxyAgentSide implements EnhancedACC {
             try {
                 TucsonMsgRequest.write(outStream, exit);
                 outStream.flush();
-            } catch (final IOException ex) {
-                // TODO Properly handle Exception
-                System.err.println("[ACCProxyAgentSide]: " + ex);
+            } catch (final IOException e) {
+                e.printStackTrace();
             }
 
         }
 
     }
 
-    /**
-     * Get TuCSoN primitive, synchronous version. Reads (w/o removing) all the
-     * tuples in the given target tuplecentre, waiting the completion answer
-     * from the TuCSoN node for a maximum time specified in ms timeunit.
-     * 
-     * Semantics is NOT SUSPENSIVE: is the tuple space is empty, a failure
-     * completion answer is forwarded to the TuCSoN Agent exploiting this proxy
-     * 
-     * Such operation is delegated to a private method
-     * {@link alice.tucson.service.ACCProxyAgentSide#doBlockingOperation
-     * blocking} which maps it on a TucsonMsgRequest to send it to the TuCSoN
-     * Node Service for processing
-     * 
-     * @param tid
-     *            Target TuCSoN tuplecentre id
-     *            {@link alice.tucson.api.TucsonTupleCentreId tid}
-     * @param timeout
-     *            Maximum waiting time tolerated by the callee TuCSoN Agent
-     * 
-     * @return The list of Logic Tuples resulting from the completion of the
-     *         primitive
-     * 
-     * @throws TucsonOperationNotPossibleException
-     * @throws UnreachableNodeException
-     * @throws OperationTimeOutException
-     * 
-     * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
-     */
     public ITucsonOperation get(final Object tid, final Long timeout)
             throws TucsonOperationNotPossibleException,
             UnreachableNodeException, OperationTimeOutException {
-        return this.doBlockingOperation(TucsonOperation.get_Code(), tid, null,
+        return this.doBlockingOperation(TucsonOperation.getCode(), tid, null,
                 timeout);
     }
 
-    /**
-     * Get TuCSoN primitive, asynchronous version. Reads (w/o removing) all the
-     * tuples in the given target tuplecentre, WITHOUT waiting the completion
-     * answer from the TuCSoN node. The TuCSoN agent this proxy instance refers
-     * to will be asynchronously notified upon need (that is, when completion
-     * reply arrives).
-     * 
-     * Semantics is NOT SUSPENSIVE: is the tuple space is empty, a failure
-     * completion answer is forwarded to the TuCSoN Agent exploiting this proxy
-     * 
-     * Such operation is delegated to a private method
-     * {@link alice.tucson.service.ACCProxyAgentSide#doNonBlockingOperation
-     * nonBlocking} which maps it on a TucsonMsgRequest to send it to the TuCSoN
-     * Node Service for processing
-     * 
-     * @param tid
-     *            Target TuCSoN tuplecentre id
-     *            {@link alice.tucson.api.TucsonTupleCentreId tid}
-     * @param l
-     *            The listener who should be notified upon operation completion
-     * 
-     * @return An object representing the primitive invocation on the TuCSoN
-     *         infrastructure which will store its result
-     * 
-     * @throws TucsonOperationNotPossibleException
-     * @throws UnreachableNodeException
-     * 
-     * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
-     * @see alice.tucson.api.TucsonOperationCompletionListener
-     *      TucsonOperationCompletionListener
-     * @see alice.tucson.api.ITucsonOperation ITucsonOperation
-     */
     public ITucsonOperation get(final Object tid,
             final TucsonOperationCompletionListener l)
             throws TucsonOperationNotPossibleException,
             UnreachableNodeException {
-        return this.doNonBlockingOperation(TucsonOperation.get_Code(), tid,
+        return this.doNonBlockingOperation(TucsonOperation.getCode(), tid,
                 null, l);
     }
 
-    /**
-     * Get_s TuCSoN primitive, synchronous version. Reads (w/o removing) all the
-     * Reaction Specifications in the given target tuplecentre, waiting the
-     * completion answer from the TuCSoN node for a maximum time specified in ms
-     * timeunit.
-     * 
-     * Semantics is NOT SUSPENSIVE: if the specification space is empty, a
-     * failure completion answer is forwarded to the TuCSoN Agent exploiting
-     * this proxy
-     * 
-     * Such operation is delegated to a private method
-     * {@link alice.tucson.service.ACCProxyAgentSide#doBlockingOperation
-     * blocking} which maps it on a TucsonMsgRequest to send it to the TuCSoN
-     * Node Service for processing
-     * 
-     * @param tid
-     *            Target TuCSoN tuplecentre id
-     *            {@link alice.tucson.api.TucsonTupleCentreId tid}
-     * @param timeout
-     *            Maximum waiting time tolerated by the callee TuCSoN Agent
-     * 
-     * @return The String representing the obtained Reaction Specification space
-     * 
-     * @throws TucsonOperationNotPossibleException
-     * @throws UnreachableNodeException
-     * @throws OperationTimeOutException
-     * 
-     * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
-     * @see alice.respect.api.RespectSpecification RespectSpecification
-     */
-    public ITucsonOperation get_s(final Object tid, final Long timeout)
+    public ITucsonOperation getS(final Object tid, final Long timeout)
             throws TucsonOperationNotPossibleException,
             UnreachableNodeException, OperationTimeOutException {
         final LogicTuple spec = new LogicTuple("spec", new Var("S"));
-        return this.doBlockingOperation(TucsonOperation.get_sCode(), tid, spec,
+        return this.doBlockingOperation(TucsonOperation.getSCode(), tid, spec,
                 timeout);
     }
 
-    /**
-     * Get_s TuCSoN primitive, asynchronous version. Reads (w/o removing) all
-     * the Reaction Specifications in the given target tuplecentre, WITHOUT
-     * waiting the completion answer from the TuCSoN node. The TuCSoN agent this
-     * proxy instance refers to will be asynchronously notified upon need (that
-     * is, when completion reply arrives).
-     * 
-     * Semantics is NOT SUSPENSIVE: is the specification space is empty, a
-     * failure completion answer is forwarded to the TuCSoN Agent exploiting
-     * this proxy
-     * 
-     * Such operation is delegated to a private method
-     * {@link alice.tucson.service.ACCProxyAgentSide#doNonBlockingOperation
-     * nonBlocking} which maps it on a TucsonMsgRequest to send it to the TuCSoN
-     * Node Service for processing
-     * 
-     * @param tid
-     *            Target TuCSoN tuplecentre id
-     *            {@link alice.tucson.api.TucsonTupleCentreId tid}
-     * @param l
-     *            The listener who should be notified upon operation completion
-     * 
-     * @return An object representing the primitive invocation on the TuCSoN
-     *         infrastructure which will store its result
-     * 
-     * @throws TucsonOperationNotPossibleException
-     * @throws UnreachableNodeException
-     * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
-     * @see alice.tucson.api.TucsonOperationCompletionListener
-     *      TucsonOperationCompletionListener
-     * @see alice.tucson.api.ITucsonOperation ITucsonOperation
-     * @see alice.respect.api.RespectSpecification RespectSpecification
-     */
-    public ITucsonOperation get_s(final Object tid,
+    public ITucsonOperation getS(final Object tid,
             final TucsonOperationCompletionListener l)
             throws TucsonOperationNotPossibleException,
             UnreachableNodeException {
         final LogicTuple spec = new LogicTuple("spec");
-        return this.doNonBlockingOperation(TucsonOperation.get_sCode(), tid,
+        return this.doNonBlockingOperation(TucsonOperation.getSCode(), tid,
                 spec, l);
     }
 
-    /**
-     * In Linda primitive, synchronous version. Retrieves the specified tuple in
-     * the given target tuplecentre, waiting the completion answer from the
-     * TuCSoN node for a maximum time specified in ms timeunit.
-     * 
-     * Such operation is delegated to a private method
-     * {@link alice.tucson.service.ACCProxyAgentSide#doBlockingOperation
-     * blocking} which maps it on a TucsonMsgRequest to send it to the TuCSoN
-     * Node Service for processing
-     * 
-     * @param tid
-     *            Target TuCSoN tuplecentre id
-     *            {@link alice.tucson.api.TucsonTupleCentreId tid}
-     * @param tuple
-     *            Tuple to be retrieved from the target tuplecentre
-     * @param timeout
-     *            Maximum waiting time tolerated by the callee TuCSoN Agent
-     * 
-     * @return The Logic Tuple resulting from the completion of the primitive
-     * 
-     * @throws TucsonOperationNotPossibleException
-     * @throws UnreachableNodeException
-     * @throws OperationTimeOutException
-     * 
-     * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
-     */
     public ITucsonOperation in(final Object tid, final LogicTuple tuple,
             final Long timeout) throws TucsonOperationNotPossibleException,
             UnreachableNodeException, OperationTimeOutException {
@@ -632,43 +487,6 @@ public class ACCProxyAgentSide implements EnhancedACC {
                 timeout);
     }
 
-    /**
-     * In Linda primitive, asynchronous version. Retrieves the specified tuple
-     * in the given target tuplecentre, WITHOUT waiting the completion answer
-     * from the TuCSoN node. The TuCSoN agent this proxy instance refers to will
-     * be asynchronously notified upon need (that is, when completion reply
-     * arrives).
-     * 
-     * Notice that the primitive semantics is still SUSPENSIVE: until no tuple
-     * is found to match the given template, no success completion answer is
-     * forwarded to the TuCSoN Agent exploiting this proxy (but thanks to
-     * asynchronous behaviour, TuCSoN Agent could go something else instead of
-     * getting stuck)
-     * 
-     * Such operation is delegated to a private method
-     * {@link alice.tucson.service.ACCProxyAgentSide#doNonBlockingOperation
-     * nonBlocking} which maps it on a TucsonMsgRequest to send it to the TuCSoN
-     * Node Service for processing
-     * 
-     * @param tid
-     *            Target TuCSoN tuplecentre id
-     *            {@link alice.tucson.api.TucsonTupleCentreId tid}
-     * @param tuple
-     *            Tuple to be retrieved from the target tuplecentre
-     * @param l
-     *            The listener who should be notified upon operation completion
-     * 
-     * @return An object representing the primitive invocation on the TuCSoN
-     *         infrastructure which will store its result
-     * 
-     * @throws TucsonOperationNotPossibleException
-     * @throws UnreachableNodeException
-     * 
-     * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
-     * @see alice.tucson.api.TucsonOperationCompletionListener
-     *      TucsonOperationCompletionListener
-     * @see alice.tucson.api.ITucsonOperation ITucsonOperation
-     */
     public ITucsonOperation in(final Object tid, final LogicTuple tuple,
             final TucsonOperationCompletionListener l)
             throws TucsonOperationNotPossibleException,
@@ -677,133 +495,21 @@ public class ACCProxyAgentSide implements EnhancedACC {
                 tuple, l);
     }
 
-    public ITucsonOperation in_all(final Object tid, final LogicTuple tuple,
+    public ITucsonOperation inAll(final Object tid, final LogicTuple tuple,
             final Long timeout) throws TucsonOperationNotPossibleException,
             UnreachableNodeException, OperationTimeOutException {
-        return this.doBlockingOperation(TucsonOperation.in_allCode(), tid,
+        return this.doBlockingOperation(TucsonOperation.inAllCode(), tid,
                 tuple, timeout);
     }
 
-    public ITucsonOperation in_all(final Object tid, final LogicTuple tuple,
+    public ITucsonOperation inAll(final Object tid, final LogicTuple tuple,
             final TucsonOperationCompletionListener l)
             throws TucsonOperationNotPossibleException,
             UnreachableNodeException {
-        return this.doNonBlockingOperation(TucsonOperation.in_allCode(), tid,
+        return this.doNonBlockingOperation(TucsonOperation.inAllCode(), tid,
                 tuple, l);
     }
 
-    /**
-     * In_s Specification primitive, synchronous version. Retrieves the
-     * specified Reaction Specification (wrapped in a Logic Tuple) in the given
-     * target tuplecentre, waiting the completion answer from the TuCSoN node
-     * for a maximum time specified in ms timeunit.
-     * 
-     * Such operation is delegated to a private method
-     * {@link alice.tucson.service.ACCProxyAgentSide#doBlockingOperation
-     * blocking} which maps it on a TucsonMsgRequest to send it to the TuCSoN
-     * Node Service for processing
-     * 
-     * @param tid
-     *            Target TuCSoN tuplecentre id
-     *            {@link alice.tucson.api.TucsonTupleCentreId tid}
-     * @param timeout
-     *            Maximum waiting time tolerated by the callee TuCSoN Agent
-     * 
-     * @return The Logic Tuple resulting from the completion of the primitive
-     * 
-     * @throws TucsonOperationNotPossibleException
-     * @throws UnreachableNodeException
-     * @throws OperationTimeOutException
-     * 
-     * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
-     * @see alice.respect.api.RespectSpecification RespectSpecification
-     */
-    public ITucsonOperation in_s(final Object tid, final LogicTuple event,
-            final LogicTuple guards, final LogicTuple reactionBody,
-            final Long timeout) throws TucsonOperationNotPossibleException,
-            UnreachableNodeException, OperationTimeOutException {
-        final LogicTuple tuple =
-                new LogicTuple(Parser.parseSingleTerm("reaction(" + event + ","
-                        + guards + "," + reactionBody + ")", new MyOpManager()));
-        return this.doBlockingOperation(TucsonOperation.in_sCode(), tid, tuple,
-                timeout);
-    }
-
-    /**
-     * In_s Specification primitive, asynchronous version. Retrieves the
-     * specified Reaction Specification (wrapped in a Logic Tuple) in the given
-     * target tuplecentre, WITHOUT waiting the completion answer from the TuCSoN
-     * node. The TuCSoN agent this proxy instance refers to will be
-     * asynchronously notified upon need (that is, when completion reply
-     * arrives).
-     * 
-     * Notice that the primitive semantics is still SUSPENSIVE: until no
-     * Reaction Specification is found to match the given template, no success
-     * completion answer is forwarded to the TuCSoN Agent exploiting this proxy
-     * (but thanks to asynchronous behaviour, TuCSoN Agent could go something
-     * else instead of getting stuck)
-     * 
-     * Such operation is delegated to a private method
-     * {@link alice.tucson.service.ACCProxyAgentSide#doNonBlockingOperation
-     * nonBlocking} which maps it on a TucsonMsgRequest to send it to the TuCSoN
-     * Node Service for processing
-     * 
-     * @param tid
-     *            Target TuCSoN tuplecentre id
-     *            {@link alice.tucson.api.TucsonTupleCentreId tid}
-     * @param l
-     *            The listener who should be notified upon operation completion
-     * 
-     * @return An object representing the primitive invocation on the TuCSoN
-     *         infrastructure which will store its result
-     * 
-     * @throws TucsonOperationNotPossibleException
-     * @throws UnreachableNodeException
-     * 
-     * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
-     * @see alice.tucson.api.TucsonOperationCompletionListener
-     *      TucsonOperationCompletionListener
-     * @see alice.tucson.api.ITucsonOperation ITucsonOperation
-     * @see alice.respect.api.RespectSpecification RespectSpecification
-     */
-    public ITucsonOperation in_s(final Object tid, final LogicTuple event,
-            final LogicTuple guards, final LogicTuple reactionBody,
-            final TucsonOperationCompletionListener l)
-            throws TucsonOperationNotPossibleException,
-            UnreachableNodeException {
-        final LogicTuple tuple =
-                new LogicTuple(Parser.parseSingleTerm("reaction(" + event + ","
-                        + guards + "," + reactionBody + ")", new MyOpManager()));
-        return this.doNonBlockingOperation(TucsonOperation.in_sCode(), tid,
-                tuple, l);
-    }
-
-    /**
-     * Inp Linda primitive, synchronous version. Retrieves the specified tuple
-     * in the given target tuplecentre, waiting the completion answer from the
-     * TuCSoN node for a maximum time specified in ms timeunit.
-     * 
-     * Such operation is delegated to a private method
-     * {@link alice.tucson.service.ACCProxyAgentSide#doBlockingOperation
-     * blocking} which maps it on a TucsonMsgRequest to send it to the TuCSoN
-     * Node Service for processing
-     * 
-     * @param tid
-     *            Target TuCSoN tuplecentre id
-     *            {@link alice.tucson.api.TucsonTupleCentreId tid}
-     * @param tuple
-     *            Tuple to be retrieved from the target tuplecentre
-     * @param timeout
-     *            Maximum waiting time tolerated by the callee TuCSoN Agent
-     * 
-     * @return The Logic Tuple resulting from the completion of the primitive
-     * 
-     * @throws TucsonOperationNotPossibleException
-     * @throws UnreachableNodeException
-     * @throws OperationTimeOutException
-     * 
-     * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
-     */
     public ITucsonOperation inp(final Object tid, final LogicTuple tuple,
             final Long timeout) throws TucsonOperationNotPossibleException,
             UnreachableNodeException, OperationTimeOutException {
@@ -811,41 +517,6 @@ public class ACCProxyAgentSide implements EnhancedACC {
                 timeout);
     }
 
-    /**
-     * Inp Linda primitive, asynchronous version. Retrieves the specified tuple
-     * in the given target tuplecentre, WITHOUT waiting the completion answer
-     * from the TuCSoN node. The TuCSoN agent this proxy instance refers to will
-     * be asynchronously notified upon need (that is, when completion reply
-     * arrives).
-     * 
-     * This time the primitive semantics is NOT SUSPENSIVE: if no tuple is found
-     * to match the given template, a failure completion answer is forwarded to
-     * the TuCSoN Agent exploiting this proxy
-     * 
-     * Such operation is delegated to a private method
-     * {@link alice.tucson.service.ACCProxyAgentSide#doNonBlockingOperation
-     * nonBlocking} which maps it on a TucsonMsgRequest to send it to the TuCSoN
-     * Node Service for processing
-     * 
-     * @param tid
-     *            Target TuCSoN tuplecentre id
-     *            {@link alice.tucson.api.TucsonTupleCentreId tid}
-     * @param tuple
-     *            Tuple to be retrieved from the target tuplecentre
-     * @param l
-     *            The listener who should be notified upon operation completion
-     * 
-     * @return An object representing the primitive invocation on the TuCSoN
-     *         infrastructure which will store its result
-     * 
-     * @throws TucsonOperationNotPossibleException
-     * @throws UnreachableNodeException
-     * 
-     * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
-     * @see alice.tucson.api.TucsonOperationCompletionListener
-     *      TucsonOperationCompletionListener
-     * @see alice.tucson.api.ITucsonOperation ITucsonOperation
-     */
     public ITucsonOperation inp(final Object tid, final LogicTuple tuple,
             final TucsonOperationCompletionListener l)
             throws TucsonOperationNotPossibleException,
@@ -854,83 +525,18 @@ public class ACCProxyAgentSide implements EnhancedACC {
                 tuple, l);
     }
 
-    /**
-     * Inp_s Specification primitive, synchronous version. Retrieves the
-     * specified Reaction Specification (wrapped in a Logic Tuple) in the given
-     * target tuplecentre, waiting the completion answer from the TuCSoN node
-     * for a maximum time specified in ms timeunit.
-     * 
-     * This time the primitive semantics is NOT SUSPENSIVE: if no Reaction
-     * Specification is found to match the given template, a failure completion
-     * answer is forwarded to the TuCSoN Agent exploiting this proxy
-     * 
-     * Such operation is delegated to a private method
-     * {@link alice.tucson.service.ACCProxyAgentSide#doBlockingOperation
-     * blocking} which maps it on a TucsonMsgRequest to send it to the TuCSoN
-     * Node Service for processing
-     * 
-     * @param tid
-     *            Target TuCSoN tuplecentre id
-     *            {@link alice.tucson.api.TucsonTupleCentreId tid}
-     * @param timeout
-     *            Maximum waiting time tolerated by the callee TuCSoN Agent
-     * 
-     * @return The Logic Tuple resulting from the completion of the primitive
-     * 
-     * @throws TucsonOperationNotPossibleException
-     * @throws UnreachableNodeException
-     * @throws OperationTimeOutException
-     * 
-     * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
-     * @see alice.respect.api.RespectSpecification RespectSpecification
-     */
-    public ITucsonOperation inp_s(final Object tid, final LogicTuple event,
+    public ITucsonOperation inpS(final Object tid, final LogicTuple event,
             final LogicTuple guards, final LogicTuple reactionBody,
             final Long timeout) throws TucsonOperationNotPossibleException,
             UnreachableNodeException, OperationTimeOutException {
         final LogicTuple tuple =
                 new LogicTuple(Parser.parseSingleTerm("reaction(" + event + ","
                         + guards + "," + reactionBody + ")", new MyOpManager()));
-        return this.doBlockingOperation(TucsonOperation.inp_sCode(), tid,
-                tuple, timeout);
+        return this.doBlockingOperation(TucsonOperation.inpSCode(), tid, tuple,
+                timeout);
     }
 
-    /**
-     * Inp_s Specification primitive, asynchronous version. Retrieves the
-     * specified Reaction Specification (wrapped in a Logic Tuple) in the given
-     * target tuplecentre, WITHOUT waiting the completion answer from the TuCSoN
-     * node. The TuCSoN agent this proxy instance refers to will be
-     * asynchronously notified upon need (that is, when completion reply
-     * arrives).
-     * 
-     * This time the primitive semantics is NOT SUSPENSIVE: if no Reaction
-     * Specification is found to match the given template, a failure completion
-     * answer is forwarded to the TuCSoN Agent exploiting this proxy
-     * 
-     * Such operation is delegated to a private method
-     * {@link alice.tucson.service.ACCProxyAgentSide#doNonBlockingOperation
-     * nonBlocking} which maps it on a TucsonMsgRequest to send it to the TuCSoN
-     * Node Service for processing
-     * 
-     * @param tid
-     *            Target TuCSoN tuplecentre id
-     *            {@link alice.tucson.api.TucsonTupleCentreId tid}
-     * @param l
-     *            The listener who should be notified upon operation completion
-     * 
-     * @return An object representing the primitive invocation on the TuCSoN
-     *         infrastructure which will store its result
-     * 
-     * @throws TucsonOperationNotPossibleException
-     * @throws UnreachableNodeException
-     * 
-     * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
-     * @see alice.tucson.api.TucsonOperationCompletionListener
-     *      TucsonOperationCompletionListener
-     * @see alice.tucson.api.ITucsonOperation ITucsonOperation
-     * @see alice.respect.api.RespectSpecification RespectSpecification
-     */
-    public ITucsonOperation inp_s(final Object tid, final LogicTuple event,
+    public ITucsonOperation inpS(final Object tid, final LogicTuple event,
             final LogicTuple guards, final LogicTuple reactionBody,
             final TucsonOperationCompletionListener l)
             throws TucsonOperationNotPossibleException,
@@ -938,40 +544,33 @@ public class ACCProxyAgentSide implements EnhancedACC {
         final LogicTuple tuple =
                 new LogicTuple(Parser.parseSingleTerm("reaction(" + event + ","
                         + guards + "," + reactionBody + ")", new MyOpManager()));
-        return this.doNonBlockingOperation(TucsonOperation.inp_sCode(), tid,
+        return this.doNonBlockingOperation(TucsonOperation.inpSCode(), tid,
                 tuple, l);
     }
 
-    /**
-     * No Linda primitive, synchronous version. Checks absence of the specified
-     * tuple in the given target tuplecentre, waiting the completion answer from
-     * the TuCSoN node for a maximum time specified in ms timeunit.
-     * 
-     * Semantics is NOT SUSPENSIVE: if a tuple is found to match the given
-     * template, a failure completion answer is forwarded to the TuCSoN Agent
-     * exploiting this proxy
-     * 
-     * Such operation is delegated to a private method
-     * {@link alice.tucson.service.ACCProxyAgentSide#doBlockingOperation
-     * blocking} which maps it on a TucsonMsgRequest to send it to the TuCSoN
-     * Node Service for processing
-     * 
-     * @param tid
-     *            Target TuCSoN tuplecentre id
-     *            {@link alice.tucson.api.TucsonTupleCentreId tid}
-     * @param tuple
-     *            Tuple to be checked for absence from the target tuplecentre
-     * @param timeout
-     *            Maximum waiting time tolerated by the callee TuCSoN Agent
-     * 
-     * @return The Logic Tuple resulting from the completion of the primitive
-     * 
-     * @throws TucsonOperationNotPossibleException
-     * @throws UnreachableNodeException
-     * @throws OperationTimeOutException
-     * 
-     * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
-     */
+    public ITucsonOperation inS(final Object tid, final LogicTuple event,
+            final LogicTuple guards, final LogicTuple reactionBody,
+            final Long timeout) throws TucsonOperationNotPossibleException,
+            UnreachableNodeException, OperationTimeOutException {
+        final LogicTuple tuple =
+                new LogicTuple(Parser.parseSingleTerm("reaction(" + event + ","
+                        + guards + "," + reactionBody + ")", new MyOpManager()));
+        return this.doBlockingOperation(TucsonOperation.inSCode(), tid, tuple,
+                timeout);
+    }
+
+    public ITucsonOperation inS(final Object tid, final LogicTuple event,
+            final LogicTuple guards, final LogicTuple reactionBody,
+            final TucsonOperationCompletionListener l)
+            throws TucsonOperationNotPossibleException,
+            UnreachableNodeException {
+        final LogicTuple tuple =
+                new LogicTuple(Parser.parseSingleTerm("reaction(" + event + ","
+                        + guards + "," + reactionBody + ")", new MyOpManager()));
+        return this.doNonBlockingOperation(TucsonOperation.inSCode(), tid,
+                tuple, l);
+    }
+
     public ITucsonOperation no(final Object tid, final LogicTuple tuple,
             final Long timeout) throws TucsonOperationNotPossibleException,
             UnreachableNodeException, OperationTimeOutException {
@@ -979,41 +578,6 @@ public class ACCProxyAgentSide implements EnhancedACC {
                 timeout);
     }
 
-    /**
-     * No Linda primitive, asynchronous version. Checks absence of the specified
-     * tuple in the given target tuplecentre, WITHOUT waiting the completion
-     * answer from the TuCSoN node. The TuCSoN agent this proxy instance refers
-     * to will be asynchronously notified upon need (that is, when completion
-     * reply arrives).
-     * 
-     * This time the primitive semantics is NOT SUSPENSIVE: if a tuple is found
-     * to match the given template, a failure completion answer is forwarded to
-     * the TuCSoN Agent exploiting this proxy
-     * 
-     * Such operation is delegated to a private method
-     * {@link alice.tucson.service.ACCProxyAgentSide#doNonBlockingOperation
-     * nonBlocking} which maps it on a TucsonMsgRequest to send it to the TuCSoN
-     * Node Service for processing
-     * 
-     * @param tid
-     *            Target TuCSoN tuplecentre id
-     *            {@link alice.tucson.api.TucsonTupleCentreId tid}
-     * @param tuple
-     *            Tuple to be checked for absence from the target tuplecentre
-     * @param l
-     *            The listener who should be notified upon operation completion
-     * 
-     * @return An object representing the primitive invocation on the TuCSoN
-     *         infrastructure which will store its result
-     * 
-     * @throws TucsonOperationNotPossibleException
-     * @throws UnreachableNodeException
-     * 
-     * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
-     * @see alice.tucson.api.TucsonOperationCompletionListener
-     *      TucsonOperationCompletionListener
-     * @see alice.tucson.api.ITucsonOperation ITucsonOperation
-     */
     public ITucsonOperation no(final Object tid, final LogicTuple tuple,
             final TucsonOperationCompletionListener l)
             throws TucsonOperationNotPossibleException,
@@ -1022,139 +586,21 @@ public class ACCProxyAgentSide implements EnhancedACC {
                 tuple, l);
     }
 
-    public ITucsonOperation no_all(final Object tid, final LogicTuple tuple,
+    public ITucsonOperation noAll(final Object tid, final LogicTuple tuple,
             final Long timeout) throws TucsonOperationNotPossibleException,
             UnreachableNodeException, OperationTimeOutException {
-        return this.doBlockingOperation(TucsonOperation.no_allCode(), tid,
+        return this.doBlockingOperation(TucsonOperation.noAllCode(), tid,
                 tuple, timeout);
     }
 
-    public ITucsonOperation no_all(final Object tid, final LogicTuple tuple,
+    public ITucsonOperation noAll(final Object tid, final LogicTuple tuple,
             final TucsonOperationCompletionListener l)
             throws TucsonOperationNotPossibleException,
             UnreachableNodeException {
-        return this.doNonBlockingOperation(TucsonOperation.no_allCode(), tid,
+        return this.doNonBlockingOperation(TucsonOperation.noAllCode(), tid,
                 tuple, l);
     }
 
-    /**
-     * No_s Specification primitive, synchronous version. Checks absence of the
-     * specified Reaction Specification (wrapped in a Logic Tuple) in the given
-     * target tuplecentre, waiting the completion answer from the TuCSoN node
-     * for a maximum time specified in ms timeunit.
-     * 
-     * Semantics is NOT SUSPENSIVE: if a Reaction Specification is found to
-     * match the given template, a failure completion answer is forwarded to the
-     * TuCSoN Agent exploiting this proxy
-     * 
-     * Such operation is delegated to a private method
-     * {@link alice.tucson.service.ACCProxyAgentSide#doBlockingOperation
-     * blocking} which maps it on a TucsonMsgRequest to send it to the TuCSoN
-     * Node Service for processing
-     * 
-     * @param tid
-     *            Target TuCSoN tuplecentre id
-     *            {@link alice.tucson.api.TucsonTupleCentreId tid}
-     * @param timeout
-     *            Maximum waiting time tolerated by the callee TuCSoN Agent
-     * 
-     * @return The Logic Tuple resulting from the completion of the primitive
-     * 
-     * @throws TucsonOperationNotPossibleException
-     * @throws UnreachableNodeException
-     * @throws OperationTimeOutException
-     * 
-     * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
-     * @see alice.respect.api.RespectSpecification RespectSpecification
-     */
-    public ITucsonOperation no_s(final Object tid, final LogicTuple event,
-            final LogicTuple guards, final LogicTuple reactionBody,
-            final Long timeout) throws TucsonOperationNotPossibleException,
-            UnreachableNodeException, OperationTimeOutException {
-        final LogicTuple tuple =
-                new LogicTuple(Parser.parseSingleTerm("reaction(" + event + ","
-                        + guards + "," + reactionBody + ")", new MyOpManager()));
-        return this.doBlockingOperation(TucsonOperation.no_sCode(), tid, tuple,
-                timeout);
-    }
-
-    /**
-     * No_s Specification primitive, asynchronous version. Checks absence of the
-     * specified Reaction Specification (wrapped in a Logic Tuple) in the given
-     * target tuplecentre, WITHOUT waiting the completion answer from the TuCSoN
-     * node. The TuCSoN agent this proxy instance refers to will be
-     * asynchronously notified upon need (that is, when completion reply
-     * arrives).
-     * 
-     * Semantics is NOT SUSPENSIVE: if a Reaction Specification is found to
-     * match the given template, a failure completion answer is forwarded to the
-     * TuCSoN Agent exploiting this proxy
-     * 
-     * Such operation is delegated to a private method
-     * {@link alice.tucson.service.ACCProxyAgentSide#doNonBlockingOperation
-     * nonBlocking} which maps it on a TucsonMsgRequest to send it to the TuCSoN
-     * Node Service for processing
-     * 
-     * @param tid
-     *            Target TuCSoN tuplecentre id
-     *            {@link alice.tucson.api.TucsonTupleCentreId tid}
-     * @param l
-     *            The listener who should be notified upon operation completion
-     * 
-     * @return An object representing the primitive invocation on the TuCSoN
-     *         infrastructure which will store its result
-     * 
-     * @throws TucsonOperationNotPossibleException
-     * @throws UnreachableNodeException
-     * 
-     * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
-     * @see alice.tucson.api.TucsonOperationCompletionListener
-     *      TucsonOperationCompletionListener
-     * @see alice.tucson.api.ITucsonOperation ITucsonOperation
-     * @see alice.respect.api.RespectSpecification RespectSpecification
-     */
-    public ITucsonOperation no_s(final Object tid, final LogicTuple event,
-            final LogicTuple guards, final LogicTuple reactionBody,
-            final TucsonOperationCompletionListener l)
-            throws TucsonOperationNotPossibleException,
-            UnreachableNodeException {
-        final LogicTuple tuple =
-                new LogicTuple(Parser.parseSingleTerm("reaction(" + event + ","
-                        + guards + "," + reactionBody + ")", new MyOpManager()));
-        return this.doNonBlockingOperation(TucsonOperation.no_sCode(), tid,
-                tuple, l);
-    }
-
-    /**
-     * No Linda primitive, synchronous version. Checks absence of the specified
-     * tuple in the given target tuplecentre, waiting the completion answer from
-     * the TuCSoN node for a maximum time specified in ms timeunit.
-     * 
-     * Semantics is NOT SUSPENSIVE: if a tuple is found to match the given
-     * template, a failure completion answer is forwarded to the TuCSoN Agent
-     * exploiting this proxy
-     * 
-     * Such operation is delegated to a private method
-     * {@link alice.tucson.service.ACCProxyAgentSide#doBlockingOperation
-     * blocking} which maps it on a TucsonMsgRequest to send it to the TuCSoN
-     * Node Service for processing
-     * 
-     * @param tid
-     *            Target TuCSoN tuplecentre id
-     *            {@link alice.tucson.api.TucsonTupleCentreId tid}
-     * @param tuple
-     *            Tuple to be checked for absence from the target tuplecentre
-     * @param timeout
-     *            Maximum waiting time tolerated by the callee TuCSoN Agent
-     * 
-     * @return The Logic Tuple resulting from the completion of the primitive
-     * 
-     * @throws TucsonOperationNotPossibleException
-     * @throws UnreachableNodeException
-     * @throws OperationTimeOutException
-     * 
-     * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
-     */
     public ITucsonOperation nop(final Object tid, final LogicTuple tuple,
             final Long timeout) throws TucsonOperationNotPossibleException,
             UnreachableNodeException, OperationTimeOutException {
@@ -1162,41 +608,6 @@ public class ACCProxyAgentSide implements EnhancedACC {
                 timeout);
     }
 
-    /**
-     * No Linda primitive, asynchronous version. Checks absence of the specified
-     * tuple in the given target tuplecentre, WITHOUT waiting the completion
-     * answer from the TuCSoN node. The TuCSoN agent this proxy instance refers
-     * to will be asynchronously notified upon need (that is, when completion
-     * reply arrives).
-     * 
-     * This time the primitive semantics is NOT SUSPENSIVE: if a tuple is found
-     * to match the given template, a failure completion answer is forwarded to
-     * the TuCSoN Agent exploiting this proxy
-     * 
-     * Such operation is delegated to a private method
-     * {@link alice.tucson.service.ACCProxyAgentSide#doNonBlockingOperation
-     * nonBlocking} which maps it on a TucsonMsgRequest to send it to the TuCSoN
-     * Node Service for processing
-     * 
-     * @param tid
-     *            Target TuCSoN tuplecentre id
-     *            {@link alice.tucson.api.TucsonTupleCentreId tid}
-     * @param tuple
-     *            Tuple to be checked for absence from the target tuplecentre
-     * @param l
-     *            The listener who should be notified upon operation completion
-     * 
-     * @return An object representing the primitive invocation on the TuCSoN
-     *         infrastructure which will store its result
-     * 
-     * @throws TucsonOperationNotPossibleException
-     * @throws UnreachableNodeException
-     * 
-     * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
-     * @see alice.tucson.api.TucsonOperationCompletionListener
-     *      TucsonOperationCompletionListener
-     * @see alice.tucson.api.ITucsonOperation ITucsonOperation
-     */
     public ITucsonOperation nop(final Object tid, final LogicTuple tuple,
             final TucsonOperationCompletionListener l)
             throws TucsonOperationNotPossibleException,
@@ -1205,83 +616,18 @@ public class ACCProxyAgentSide implements EnhancedACC {
                 tuple, l);
     }
 
-    /**
-     * No_s Specification primitive, synchronous version. Checks absence of the
-     * specified Reaction Specification (wrapped in a Logic Tuple) in the given
-     * target tuplecentre, waiting the completion answer from the TuCSoN node
-     * for a maximum time specified in ms timeunit.
-     * 
-     * Semantics is NOT SUSPENSIVE: if a Reaction Specification is found to
-     * match the given template, a failure completion answer is forwarded to the
-     * TuCSoN Agent exploiting this proxy
-     * 
-     * Such operation is delegated to a private method
-     * {@link alice.tucson.service.ACCProxyAgentSide#doBlockingOperation
-     * blocking} which maps it on a TucsonMsgRequest to send it to the TuCSoN
-     * Node Service for processing
-     * 
-     * @param tid
-     *            Target TuCSoN tuplecentre id
-     *            {@link alice.tucson.api.TucsonTupleCentreId tid}
-     * @param timeout
-     *            Maximum waiting time tolerated by the callee TuCSoN Agent
-     * 
-     * @return The Logic Tuple resulting from the completion of the primitive
-     * 
-     * @throws TucsonOperationNotPossibleException
-     * @throws UnreachableNodeException
-     * @throws OperationTimeOutException
-     * 
-     * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
-     * @see alice.respect.api.RespectSpecification RespectSpecification
-     */
-    public ITucsonOperation nop_s(final Object tid, final LogicTuple event,
+    public ITucsonOperation nopS(final Object tid, final LogicTuple event,
             final LogicTuple guards, final LogicTuple reactionBody,
             final Long timeout) throws TucsonOperationNotPossibleException,
             UnreachableNodeException, OperationTimeOutException {
         final LogicTuple tuple =
                 new LogicTuple(Parser.parseSingleTerm("reaction(" + event + ","
                         + guards + "," + reactionBody + ")", new MyOpManager()));
-        return this.doBlockingOperation(TucsonOperation.nop_sCode(), tid,
-                tuple, timeout);
+        return this.doBlockingOperation(TucsonOperation.nopSCode(), tid, tuple,
+                timeout);
     }
 
-    /**
-     * No_s Specification primitive, asynchronous version. Checks absence of the
-     * specified Reaction Specification (wrapped in a Logic Tuple) in the given
-     * target tuplecentre, WITHOUT waiting the completion answer from the TuCSoN
-     * node. The TuCSoN agent this proxy instance refers to will be
-     * asynchronously notified upon need (that is, when completion reply
-     * arrives).
-     * 
-     * Semantics is NOT SUSPENSIVE: if a Reaction Specification is found to
-     * match the given template, a failure completion answer is forwarded to the
-     * TuCSoN Agent exploiting this proxy
-     * 
-     * Such operation is delegated to a private method
-     * {@link alice.tucson.service.ACCProxyAgentSide#doNonBlockingOperation
-     * nonBlocking} which maps it on a TucsonMsgRequest to send it to the TuCSoN
-     * Node Service for processing
-     * 
-     * @param tid
-     *            Target TuCSoN tuplecentre id
-     *            {@link alice.tucson.api.TucsonTupleCentreId tid}
-     * @param l
-     *            The listener who should be notified upon operation completion
-     * 
-     * @return An object representing the primitive invocation on the TuCSoN
-     *         infrastructure which will store its result
-     * 
-     * @throws TucsonOperationNotPossibleException
-     * @throws UnreachableNodeException
-     * 
-     * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
-     * @see alice.tucson.api.TucsonOperationCompletionListener
-     *      TucsonOperationCompletionListener
-     * @see alice.tucson.api.ITucsonOperation ITucsonOperation
-     * @see alice.respect.api.RespectSpecification RespectSpecification
-     */
-    public ITucsonOperation nop_s(final Object tid, final LogicTuple event,
+    public ITucsonOperation nopS(final Object tid, final LogicTuple event,
             final LogicTuple guards, final LogicTuple reactionBody,
             final TucsonOperationCompletionListener l)
             throws TucsonOperationNotPossibleException,
@@ -1289,40 +635,33 @@ public class ACCProxyAgentSide implements EnhancedACC {
         final LogicTuple tuple =
                 new LogicTuple(Parser.parseSingleTerm("reaction(" + event + ","
                         + guards + "," + reactionBody + ")", new MyOpManager()));
-        return this.doNonBlockingOperation(TucsonOperation.nop_sCode(), tid,
+        return this.doNonBlockingOperation(TucsonOperation.nopSCode(), tid,
                 tuple, l);
     }
 
-    /**
-     * Out Linda primitive, synchronous version. Inserts the specified tuple in
-     * the given target tuplecentre, waiting the completion answer from the
-     * TuCSoN node for a maximum time specified in ms timeunit.
-     * 
-     * Such operation is delegated to a private method
-     * {@link alice.tucson.service.ACCProxyAgentSide#doBlockingOperation
-     * blocking} which maps it on a TucsonMsgRequest to send it to the TuCSoN
-     * Node Service for processing
-     * 
-     * Notice that TuCSoN out primitive assumes the ORDERED version of this
-     * primitive, hence the tuple is SUDDENLY injected in the target space (if
-     * the primitive successfully completes)
-     * 
-     * @param tid
-     *            Target TuCSoN tuplecentre id
-     *            {@link alice.tucson.api.TucsonTupleCentreId tid}
-     * @param tuple
-     *            Tuple to be emitted in the target tuplecentre
-     * @param timeout
-     *            Maximum waiting time tolerated by the callee TuCSoN Agent
-     * 
-     * @return The Logic Tuple resulting from the completion of the primitive
-     * 
-     * @throws TucsonOperationNotPossibleException
-     * @throws UnreachableNodeException
-     * @throws OperationTimeOutException
-     * 
-     * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
-     */
+    public ITucsonOperation noS(final Object tid, final LogicTuple event,
+            final LogicTuple guards, final LogicTuple reactionBody,
+            final Long timeout) throws TucsonOperationNotPossibleException,
+            UnreachableNodeException, OperationTimeOutException {
+        final LogicTuple tuple =
+                new LogicTuple(Parser.parseSingleTerm("reaction(" + event + ","
+                        + guards + "," + reactionBody + ")", new MyOpManager()));
+        return this.doBlockingOperation(TucsonOperation.noSCode(), tid, tuple,
+                timeout);
+    }
+
+    public ITucsonOperation noS(final Object tid, final LogicTuple event,
+            final LogicTuple guards, final LogicTuple reactionBody,
+            final TucsonOperationCompletionListener l)
+            throws TucsonOperationNotPossibleException,
+            UnreachableNodeException {
+        final LogicTuple tuple =
+                new LogicTuple(Parser.parseSingleTerm("reaction(" + event + ","
+                        + guards + "," + reactionBody + ")", new MyOpManager()));
+        return this.doNonBlockingOperation(TucsonOperation.noSCode(), tid,
+                tuple, l);
+    }
+
     public ITucsonOperation out(final Object tid, final LogicTuple tuple,
             final Long timeout) throws TucsonOperationNotPossibleException,
             UnreachableNodeException, OperationTimeOutException {
@@ -1330,41 +669,6 @@ public class ACCProxyAgentSide implements EnhancedACC {
                 timeout);
     }
 
-    /**
-     * Out Linda primitive, asynchronous version. Inserts the specified tuple in
-     * the given target tuplecentre, WITHOUT waiting the completion answer from
-     * the TuCSoN node. The TuCSoN agent this proxy instance refers to will be
-     * asynchronously notified upon need (that is, when completion reply
-     * arrives).
-     * 
-     * Such operation is delegated to a private method
-     * {@link alice.tucson.service.ACCProxyAgentSide#doNonBlockingOperation
-     * nonBlocking} which maps it on a TucsonMsgRequest to send it to the TuCSoN
-     * Node Service for processing
-     * 
-     * Notice that TuCSoN out primitive assumes the ORDERED version of this
-     * primitive, hence the tuple is SUDDENLY injected in the target space (if
-     * the primitive successfully completes)
-     * 
-     * @param tid
-     *            Target TuCSoN tuplecentre id
-     *            {@link alice.tucson.api.TucsonTupleCentreId tid}
-     * @param tuple
-     *            Tuple to be emitted in the target tuplecentre
-     * @param l
-     *            The listener who should be notified upon operation completion
-     * 
-     * @return An object representing the primitive invocation on the TuCSoN
-     *         infrastructure which will store its result
-     * 
-     * @throws TucsonOperationNotPossibleException
-     * @throws UnreachableNodeException
-     * 
-     * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
-     * @see alice.tucson.api.TucsonOperationCompletionListener
-     *      TucsonOperationCompletionListener
-     * @see alice.tucson.api.ITucsonOperation ITucsonOperation
-     */
     public ITucsonOperation out(final Object tid, final LogicTuple tuple,
             final TucsonOperationCompletionListener l)
             throws TucsonOperationNotPossibleException,
@@ -1373,97 +677,33 @@ public class ACCProxyAgentSide implements EnhancedACC {
                 tuple, l);
     }
 
-    public ITucsonOperation out_all(final Object tid, final LogicTuple tuple,
+    public ITucsonOperation outAll(final Object tid, final LogicTuple tuple,
             final Long timeout) throws TucsonOperationNotPossibleException,
             UnreachableNodeException, OperationTimeOutException {
-        return this.doBlockingOperation(TucsonOperation.out_allCode(), tid,
+        return this.doBlockingOperation(TucsonOperation.outAllCode(), tid,
                 tuple, timeout);
     }
 
-    public ITucsonOperation out_all(final Object tid, final LogicTuple tuple,
+    public ITucsonOperation outAll(final Object tid, final LogicTuple tuple,
             final TucsonOperationCompletionListener l)
             throws TucsonOperationNotPossibleException,
             UnreachableNodeException {
-        return this.doNonBlockingOperation(TucsonOperation.out_allCode(), tid,
+        return this.doNonBlockingOperation(TucsonOperation.outAllCode(), tid,
                 tuple, l);
     }
 
-    /**
-     * Out_s Specification primitive, synchronous version. Adds the specified
-     * Reaction Specification (wrapped in a Logic Tuple) in the given target
-     * tuplecentre, waiting the completion answer from the TuCSoN node for a
-     * maximum time specified in ms timeunit.
-     * 
-     * Such operation is delegated to a private method
-     * {@link alice.tucson.service.ACCProxyAgentSide#doBlockingOperation
-     * blocking} which maps it on a TucsonMsgRequest to send it to the TuCSoN
-     * Node Service for processing
-     * 
-     * Again, this TuCSoN out_s primitive assumes the ORDERED semantics, hence
-     * the reaction specification is SUDDENLY injected in the target space (if
-     * the primitive successfully completes)
-     * 
-     * @param tid
-     *            Target TuCSoN tuplecentre id
-     *            {@link alice.tucson.api.TucsonTupleCentreId tid}
-     * @param timeout
-     *            Maximum waiting time tolerated by the callee TuCSoN Agent
-     * 
-     * @return The Logic Tuple resulting from the completion of the primitive
-     * 
-     * @throws TucsonOperationNotPossibleException
-     * @throws UnreachableNodeException
-     * @throws OperationTimeOutException
-     * 
-     * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
-     * @see alice.respect.api.RespectSpecification RespectSpecification
-     */
-    public ITucsonOperation out_s(final Object tid, final LogicTuple event,
+    public ITucsonOperation outS(final Object tid, final LogicTuple event,
             final LogicTuple guards, final LogicTuple reactionBody,
             final Long timeout) throws TucsonOperationNotPossibleException,
             UnreachableNodeException, OperationTimeOutException {
         final LogicTuple tuple =
                 new LogicTuple(Parser.parseSingleTerm("reaction(" + event + ","
                         + guards + "," + reactionBody + ")", new MyOpManager()));
-        return this.doBlockingOperation(TucsonOperation.out_sCode(), tid,
-                tuple, timeout);
+        return this.doBlockingOperation(TucsonOperation.outSCode(), tid, tuple,
+                timeout);
     }
 
-    /**
-     * Out_s Specification primitive, asynchronous version. Adds the specified
-     * Reaction Specification (wrapped in a Logic Tuple) in the given target
-     * tuplecentre, WITHOUT waiting the completion answer from the TuCSoN node.
-     * The TuCSoN agent this proxy instance refers to will be asynchronously
-     * notified upon need (that is, when completion reply arrives).
-     * 
-     * Such operation is delegated to a private method
-     * {@link alice.tucson.service.ACCProxyAgentSide#doNonBlockingOperation
-     * nonBlocking} which maps it on a TucsonMsgRequest to send it to the TuCSoN
-     * Node Service for processing
-     * 
-     * Again, this TuCSoN out_s primitive assumes the ORDERED semantics, hence
-     * the reaction specification is SUDDENLY injected in the target space (if
-     * the primitive successfully completes)
-     * 
-     * @param tid
-     *            Target TuCSoN tuplecentre id
-     *            {@link alice.tucson.api.TucsonTupleCentreId tid}
-     * @param l
-     *            The listener who should be notified upon operation completion
-     * 
-     * @return An object representing the primitive invocation on the TuCSoN
-     *         infrastructure which will store its result
-     * 
-     * @throws TucsonOperationNotPossibleException
-     * @throws UnreachableNodeException
-     * 
-     * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
-     * @see alice.tucson.api.TucsonOperationCompletionListener
-     *      TucsonOperationCompletionListener
-     * @see alice.tucson.api.ITucsonOperation ITucsonOperation
-     * @see alice.respect.api.RespectSpecification RespectSpecification
-     */
-    public ITucsonOperation out_s(final Object tid, final LogicTuple event,
+    public ITucsonOperation outS(final Object tid, final LogicTuple event,
             final LogicTuple guards, final LogicTuple reactionBody,
             final TucsonOperationCompletionListener l)
             throws TucsonOperationNotPossibleException,
@@ -1471,36 +711,10 @@ public class ACCProxyAgentSide implements EnhancedACC {
         final LogicTuple tuple =
                 new LogicTuple(Parser.parseSingleTerm("reaction(" + event + ","
                         + guards + "," + reactionBody + ")", new MyOpManager()));
-        return this.doNonBlockingOperation(TucsonOperation.out_sCode(), tid,
+        return this.doNonBlockingOperation(TucsonOperation.outSCode(), tid,
                 tuple, l);
     }
 
-    /**
-     * Rd Linda primitive, synchronous version. Reads (w/o removing) the
-     * specified tuple in the given target tuplecentre, waiting the completion
-     * answer from the TuCSoN node for a maximum time specified in ms timeunit.
-     * 
-     * Such operation is delegated to a private method
-     * {@link alice.tucson.service.ACCProxyAgentSide#doBlockingOperation
-     * blocking} which maps it on a TucsonMsgRequest to send it to the TuCSoN
-     * Node Service for processing
-     * 
-     * @param tid
-     *            Target TuCSoN tuplecentre id
-     *            {@link alice.tucson.api.TucsonTupleCentreId tid}
-     * @param tuple
-     *            Tuple to be read from the target tuplecentre
-     * @param timeout
-     *            Maximum waiting time tolerated by the callee TuCSoN Agent
-     * 
-     * @return The Logic Tuple resulting from the completion of the primitive
-     * 
-     * @throws TucsonOperationNotPossibleException
-     * @throws UnreachableNodeException
-     * @throws OperationTimeOutException
-     * 
-     * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
-     */
     public ITucsonOperation rd(final Object tid, final LogicTuple tuple,
             final Long timeout) throws TucsonOperationNotPossibleException,
             UnreachableNodeException, OperationTimeOutException {
@@ -1508,43 +722,6 @@ public class ACCProxyAgentSide implements EnhancedACC {
                 timeout);
     }
 
-    /**
-     * Rd Linda primitive, asynchronous version. Reads (w/o removing) the
-     * specified tuple in the given target tuplecentre, WITHOUT waiting the
-     * completion answer from the TuCSoN node. The TuCSoN agent this proxy
-     * instance refers to will be asynchronously notified upon need (that is,
-     * when completion reply arrives).
-     * 
-     * Notice that the primitive semantics is still SUSPENSIVE: until no tuple
-     * is found to match the given template, no success completion answer is
-     * forwarded to the TuCSoN Agent exploiting this proxy (but thanks to
-     * asynchronous behaviour, TuCSoN Agent could go something else instead of
-     * getting stuck)
-     * 
-     * Such operation is delegated to a private method
-     * {@link alice.tucson.service.ACCProxyAgentSide#doNonBlockingOperation
-     * nonBlocking} which maps it on a TucsonMsgRequest to send it to the TuCSoN
-     * Node Service for processing
-     * 
-     * @param tid
-     *            Target TuCSoN tuplecentre id
-     *            {@link alice.tucson.api.TucsonTupleCentreId tid}
-     * @param tuple
-     *            Tuple to be read from the target tuplecentre
-     * @param l
-     *            The listener who should be notified upon operation completion
-     * 
-     * @return An object representing the primitive invocation on the TuCSoN
-     *         infrastructure which will store its result
-     * 
-     * @throws TucsonOperationNotPossibleException
-     * @throws UnreachableNodeException
-     * 
-     * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
-     * @see alice.tucson.api.TucsonOperationCompletionListener
-     *      TucsonOperationCompletionListener
-     * @see alice.tucson.api.ITucsonOperation ITucsonOperation
-     */
     public ITucsonOperation rd(final Object tid, final LogicTuple tuple,
             final TucsonOperationCompletionListener l)
             throws TucsonOperationNotPossibleException,
@@ -1553,133 +730,21 @@ public class ACCProxyAgentSide implements EnhancedACC {
                 tuple, l);
     }
 
-    public ITucsonOperation rd_all(final Object tid, final LogicTuple tuple,
+    public ITucsonOperation rdAll(final Object tid, final LogicTuple tuple,
             final Long timeout) throws TucsonOperationNotPossibleException,
             UnreachableNodeException, OperationTimeOutException {
-        return this.doBlockingOperation(TucsonOperation.rd_allCode(), tid,
+        return this.doBlockingOperation(TucsonOperation.rdAllCode(), tid,
                 tuple, timeout);
     }
 
-    public ITucsonOperation rd_all(final Object tid, final LogicTuple tuple,
+    public ITucsonOperation rdAll(final Object tid, final LogicTuple tuple,
             final TucsonOperationCompletionListener l)
             throws TucsonOperationNotPossibleException,
             UnreachableNodeException {
-        return this.doNonBlockingOperation(TucsonOperation.rd_allCode(), tid,
+        return this.doNonBlockingOperation(TucsonOperation.rdAllCode(), tid,
                 tuple, l);
     }
 
-    /**
-     * Rd_s Specification primitive, synchronous version. Reads (w/o removing)
-     * the specified Reaction Specification (wrapped in a Logic Tuple) in the
-     * given target tuplecentre, waiting the completion answer from the TuCSoN
-     * node for a maximum time specified in ms timeunit.
-     * 
-     * Such operation is delegated to a private method
-     * {@link alice.tucson.service.ACCProxyAgentSide#doBlockingOperation
-     * blocking} which maps it on a TucsonMsgRequest to send it to the TuCSoN
-     * Node Service for processing
-     * 
-     * @param tid
-     *            Target TuCSoN tuplecentre id
-     *            {@link alice.tucson.api.TucsonTupleCentreId tid}
-     * @param timeout
-     *            Maximum waiting time tolerated by the callee TuCSoN Agent
-     * 
-     * @return The Logic Tuple resulting from the completion of the primitive
-     * 
-     * @throws TucsonOperationNotPossibleException
-     * @throws UnreachableNodeException
-     * @throws OperationTimeOutException
-     * 
-     * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
-     * @see alice.respect.api.RespectSpecification RespectSpecification
-     */
-    public ITucsonOperation rd_s(final Object tid, final LogicTuple event,
-            final LogicTuple guards, final LogicTuple reactionBody,
-            final Long timeout) throws TucsonOperationNotPossibleException,
-            UnreachableNodeException, OperationTimeOutException {
-        final LogicTuple tuple =
-                new LogicTuple(Parser.parseSingleTerm("reaction(" + event + ","
-                        + guards + "," + reactionBody + ")", new MyOpManager()));
-        return this.doBlockingOperation(TucsonOperation.rd_sCode(), tid, tuple,
-                timeout);
-    }
-
-    /**
-     * Rd_s Specification primitive, asynchronous version. Reads (w/o removing)
-     * the specified Reaction Specification (wrapped in a Logic Tuple) in the
-     * given target tuplecentre, WITHOUT waiting the completion answer from the
-     * TuCSoN node. The TuCSoN agent this proxy instance refers to will be
-     * asynchronously notified upon need (that is, when completion reply
-     * arrives).
-     * 
-     * Notice that the primitive semantics is still SUSPENSIVE: until no
-     * Reaction Specification is found to match the given template, no success
-     * completion answer is forwarded to the TuCSoN Agent exploiting this proxy
-     * (but thanks to asynchronous behaviour, TuCSoN Agent could go something
-     * else instead of getting stuck)
-     * 
-     * Such operation is delegated to a private method
-     * {@link alice.tucson.service.ACCProxyAgentSide#doNonBlockingOperation
-     * nonBlocking} which maps it on a TucsonMsgRequest to send it to the TuCSoN
-     * Node Service for processing
-     * 
-     * @param tid
-     *            Target TuCSoN tuplecentre id
-     *            {@link alice.tucson.api.TucsonTupleCentreId tid}
-     * @param l
-     *            The listener who should be notified upon operation completion
-     * 
-     * @return An object representing the primitive invocation on the TuCSoN
-     *         infrastructure which will store its result
-     * 
-     * @throws TucsonOperationNotPossibleException
-     * @throws UnreachableNodeException
-     * 
-     * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
-     * @see alice.tucson.api.TucsonOperationCompletionListener
-     *      TucsonOperationCompletionListener
-     * @see alice.tucson.api.ITucsonOperation ITucsonOperation
-     * @see alice.respect.api.RespectSpecification RespectSpecification
-     */
-    public ITucsonOperation rd_s(final Object tid, final LogicTuple event,
-            final LogicTuple guards, final LogicTuple reactionBody,
-            final TucsonOperationCompletionListener l)
-            throws TucsonOperationNotPossibleException,
-            UnreachableNodeException {
-        final LogicTuple tuple =
-                new LogicTuple(Parser.parseSingleTerm("reaction(" + event + ","
-                        + guards + "," + reactionBody + ")", new MyOpManager()));
-        return this.doNonBlockingOperation(TucsonOperation.rd_sCode(), tid,
-                tuple, l);
-    }
-
-    /**
-     * Rdp Linda primitive, synchronous version. Reads (w/o removing) the
-     * specified tuple in the given target tuplecentre, waiting the completion
-     * answer from the TuCSoN node for a maximum time specified in ms timeunit.
-     * 
-     * Such operation is delegated to a private method
-     * {@link alice.tucson.service.ACCProxyAgentSide#doBlockingOperation
-     * blocking} which maps it on a TucsonMsgRequest to send it to the TuCSoN
-     * Node Service for processing
-     * 
-     * @param tid
-     *            Target TuCSoN tuplecentre id
-     *            {@link alice.tucson.api.TucsonTupleCentreId tid}
-     * @param tuple
-     *            Tuple to be read from the target tuplecentre
-     * @param timeout
-     *            Maximum waiting time tolerated by the callee TuCSoN Agent
-     * 
-     * @return The Logic Tuple resulting from the completion of the primitive
-     * 
-     * @throws TucsonOperationNotPossibleException
-     * @throws UnreachableNodeException
-     * @throws OperationTimeOutException
-     * 
-     * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
-     */
     public ITucsonOperation rdp(final Object tid, final LogicTuple tuple,
             final Long timeout) throws TucsonOperationNotPossibleException,
             UnreachableNodeException, OperationTimeOutException {
@@ -1687,41 +752,6 @@ public class ACCProxyAgentSide implements EnhancedACC {
                 timeout);
     }
 
-    /**
-     * Rdp Linda primitive, asynchronous version. Reads (w/o removing) the
-     * specified tuple in the given target tuplecentre, WITHOUT waiting the
-     * completion answer from the TuCSoN node. The TuCSoN agent this proxy
-     * instance refers to will be asynchronously notified upon need (that is,
-     * when completion reply arrives).
-     * 
-     * This time the primitive semantics is NOT SUSPENSIVE: if no tuple is found
-     * to match the given template, a failure completion answer is forwarded to
-     * the TuCSoN Agent exploiting this proxy
-     * 
-     * Such operation is delegated to a private method
-     * {@link alice.tucson.service.ACCProxyAgentSide#doNonBlockingOperation
-     * nonBlocking} which maps it on a TucsonMsgRequest to send it to the TuCSoN
-     * Node Service for processing
-     * 
-     * @param tid
-     *            Target TuCSoN tuplecentre id
-     *            {@link alice.tucson.api.TucsonTupleCentreId tid}
-     * @param tuple
-     *            Tuple to be read from the target tuplecentre
-     * @param l
-     *            The listener who should be notified upon operation completion
-     * 
-     * @return An object representing the primitive invocation on the TuCSoN
-     *         infrastructure which will store its result
-     * 
-     * @throws TucsonOperationNotPossibleException
-     * @throws UnreachableNodeException
-     * 
-     * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
-     * @see alice.tucson.api.TucsonOperationCompletionListener
-     *      TucsonOperationCompletionListener
-     * @see alice.tucson.api.ITucsonOperation ITucsonOperation
-     */
     public ITucsonOperation rdp(final Object tid, final LogicTuple tuple,
             final TucsonOperationCompletionListener l)
             throws TucsonOperationNotPossibleException,
@@ -1730,83 +760,18 @@ public class ACCProxyAgentSide implements EnhancedACC {
                 tuple, l);
     }
 
-    /**
-     * Rdp_s Specification primitive, synchronous version. Reads (w/o removing)
-     * the specified Reaction Specification (wrapped in a Logic Tuple) in the
-     * given target tuplecentre, waiting the completion answer from the TuCSoN
-     * node for a maximum time specified in ms timeunit.
-     * 
-     * Semantics is NOT SUSPENSIVE: if no Reaction Specification is found to
-     * match the given template, a failure completion answer is forwarded to the
-     * TuCSoN Agent exploiting this proxy
-     * 
-     * Such operation is delegated to a private method
-     * {@link alice.tucson.service.ACCProxyAgentSide#doBlockingOperation
-     * blocking} which maps it on a TucsonMsgRequest to send it to the TuCSoN
-     * Node Service for processing
-     * 
-     * @param tid
-     *            Target TuCSoN tuplecentre id
-     *            {@link alice.tucson.api.TucsonTupleCentreId tid}
-     * @param timeout
-     *            Maximum waiting time tolerated by the callee TuCSoN Agent
-     * 
-     * @return The Logic Tuple resulting from the completion of the primitive
-     * 
-     * @throws TucsonOperationNotPossibleException
-     * @throws UnreachableNodeException
-     * @throws OperationTimeOutException
-     * 
-     * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
-     * @see alice.respect.api.RespectSpecification RespectSpecification
-     */
-    public ITucsonOperation rdp_s(final Object tid, final LogicTuple event,
+    public ITucsonOperation rdpS(final Object tid, final LogicTuple event,
             final LogicTuple guards, final LogicTuple reactionBody,
             final Long timeout) throws TucsonOperationNotPossibleException,
             UnreachableNodeException, OperationTimeOutException {
         final LogicTuple tuple =
                 new LogicTuple(Parser.parseSingleTerm("reaction(" + event + ","
                         + guards + "," + reactionBody + ")", new MyOpManager()));
-        return this.doBlockingOperation(TucsonOperation.rdp_sCode(), tid,
-                tuple, timeout);
+        return this.doBlockingOperation(TucsonOperation.rdpSCode(), tid, tuple,
+                timeout);
     }
 
-    /**
-     * Rdp_s Specification primitive, asynchronous version. Reads (w/o removing)
-     * the specified Reaction Specification (wrapped in a Logic Tuple) in the
-     * given target tuplecentre, WITHOUT waiting the completion answer from the
-     * TuCSoN node. The TuCSoN agent this proxy instance refers to will be
-     * asynchronously notified upon need (that is, when completion reply
-     * arrives).
-     * 
-     * Semantics is NOT SUSPENSIVE: if no Reaction Specification is found to
-     * match the given template, a failure completion answer is forwarded to the
-     * TuCSoN Agent exploiting this proxy
-     * 
-     * Such operation is delegated to a private method
-     * {@link alice.tucson.service.ACCProxyAgentSide#doNonBlockingOperation
-     * nonBlocking} which maps it on a TucsonMsgRequest to send it to the TuCSoN
-     * Node Service for processing
-     * 
-     * @param tid
-     *            Target TuCSoN tuplecentre id
-     *            {@link alice.tucson.api.TucsonTupleCentreId tid}
-     * @param l
-     *            The listener who should be notified upon operation completion
-     * 
-     * @return An object representing the primitive invocation on the TuCSoN
-     *         infrastructure which will store its result
-     * 
-     * @throws TucsonOperationNotPossibleException
-     * @throws UnreachableNodeException
-     * 
-     * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
-     * @see alice.tucson.api.TucsonOperationCompletionListener
-     *      TucsonOperationCompletionListener
-     * @see alice.tucson.api.ITucsonOperation ITucsonOperation
-     * @see alice.respect.api.RespectSpecification RespectSpecification
-     */
-    public ITucsonOperation rdp_s(final Object tid, final LogicTuple event,
+    public ITucsonOperation rdpS(final Object tid, final LogicTuple event,
             final LogicTuple guards, final LogicTuple reactionBody,
             final TucsonOperationCompletionListener l)
             throws TucsonOperationNotPossibleException,
@@ -1814,202 +779,75 @@ public class ACCProxyAgentSide implements EnhancedACC {
         final LogicTuple tuple =
                 new LogicTuple(Parser.parseSingleTerm("reaction(" + event + ","
                         + guards + "," + reactionBody + ")", new MyOpManager()));
-        return this.doNonBlockingOperation(TucsonOperation.rdp_sCode(), tid,
+        return this.doNonBlockingOperation(TucsonOperation.rdpSCode(), tid,
                 tuple, l);
     }
 
-    /**
-     * Set TuCSoN primitive, synchronous version. Inserts all the tuples in the
-     * specified list in the given target tuplecentre, waiting the completion
-     * answer from the TuCSoN node for a maximum time specified in ms timeunit.
-     * 
-     * Such operation is delegated to a private method
-     * {@link alice.tucson.service.ACCProxyAgentSide#doBlockingOperation
-     * blocking} which maps it on a TucsonMsgRequest to send it to the TuCSoN
-     * Node Service for processing
-     * 
-     * @param tid
-     *            Target TuCSoN tuplecentre id
-     *            {@link alice.tucson.api.TucsonTupleCentreId tid}
-     * @param tuple
-     *            The logic tuple containing the list of all the tuples to be
-     *            injected
-     * @param timeout
-     *            Maximum waiting time tolerated by the callee TuCSoN Agent
-     * 
-     * @return The Logic Tuple resulting from the completion of the primitive
-     * 
-     * @throws TucsonOperationNotPossibleException
-     * @throws UnreachableNodeException
-     * @throws OperationTimeOutException
-     * 
-     * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
-     */
-    public ITucsonOperation set(final Object tid, final LogicTuple tuple,
+    public ITucsonOperation rdS(final Object tid, final LogicTuple event,
+            final LogicTuple guards, final LogicTuple reactionBody,
             final Long timeout) throws TucsonOperationNotPossibleException,
             UnreachableNodeException, OperationTimeOutException {
-        return this.doBlockingOperation(TucsonOperation.set_Code(), tid, tuple,
+        final LogicTuple tuple =
+                new LogicTuple(Parser.parseSingleTerm("reaction(" + event + ","
+                        + guards + "," + reactionBody + ")", new MyOpManager()));
+        return this.doBlockingOperation(TucsonOperation.rdSCode(), tid, tuple,
                 timeout);
     }
 
-    /**
-     * Set TuCSoN primitive, asynchronous version. Inserts all the tuples in the
-     * specified list in the given target tuplecentre, WITHOUT waiting the
-     * completion answer from the TuCSoN node. The TuCSoN agent this proxy
-     * instance refers to will be asynchronously notified upon need (that is,
-     * when completion reply arrives).
-     * 
-     * Such operation is delegated to a private method
-     * {@link alice.tucson.service.ACCProxyAgentSide#doNonBlockingOperation
-     * nonBlocking} which maps it on a TucsonMsgRequest to send it to the TuCSoN
-     * Node Service for processing
-     * 
-     * @param tid
-     *            Target TuCSoN tuplecentre id
-     *            {@link alice.tucson.api.TucsonTupleCentreId tid}
-     * @param tuple
-     *            The logic tuple containing the list of all the tuples to be
-     *            injected
-     * @param l
-     *            The listener who should be notified upon operation completion
-     * 
-     * @return An object representing the primitive invocation on the TuCSoN
-     *         infrastructure which will store its result
-     * 
-     * @throws TucsonOperationNotPossibleException
-     * @throws UnreachableNodeException
-     * 
-     * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
-     * @see alice.tucson.api.TucsonOperationCompletionListener
-     *      TucsonOperationCompletionListener
-     * @see alice.tucson.api.ITucsonOperation ITucsonOperation
-     */
+    public ITucsonOperation rdS(final Object tid, final LogicTuple event,
+            final LogicTuple guards, final LogicTuple reactionBody,
+            final TucsonOperationCompletionListener l)
+            throws TucsonOperationNotPossibleException,
+            UnreachableNodeException {
+        final LogicTuple tuple =
+                new LogicTuple(Parser.parseSingleTerm("reaction(" + event + ","
+                        + guards + "," + reactionBody + ")", new MyOpManager()));
+        return this.doNonBlockingOperation(TucsonOperation.rdSCode(), tid,
+                tuple, l);
+    }
+
+    public ITucsonOperation set(final Object tid, final LogicTuple tuple,
+            final Long timeout) throws TucsonOperationNotPossibleException,
+            UnreachableNodeException, OperationTimeOutException {
+        return this.doBlockingOperation(TucsonOperation.setCode(), tid, tuple,
+                timeout);
+    }
+
     public ITucsonOperation set(final Object tid, final LogicTuple tuple,
             final TucsonOperationCompletionListener l)
             throws TucsonOperationNotPossibleException,
             UnreachableNodeException {
-        return this.doNonBlockingOperation(TucsonOperation.set_Code(), tid,
+        return this.doNonBlockingOperation(TucsonOperation.setCode(), tid,
                 tuple, l);
     }
 
-    /**
-     * Set_s TuCSoN primitive, synchronous version. Replace the specification
-     * space with the newly specified (in the form of a string) in the given
-     * target tuplecentre, waiting the completion answer from the TuCSoN node
-     * for a maximum time specified in ms timeunit.
-     * 
-     * Such operation is delegated to a private method
-     * {@link alice.tucson.service.ACCProxyAgentSide#doBlockingOperation
-     * blocking} which maps it on a TucsonMsgRequest to send it to the TuCSoN
-     * Node Service for processing
-     * 
-     * @param tid
-     *            Target TuCSoN tuplecentre id
-     *            {@link alice.tucson.api.TucsonTupleCentreId tid}
-     * @param spec
-     *            The new specification space to replace the current one
-     * @param timeout
-     *            Maximum waiting time tolerated by the callee TuCSoN Agent
-     * 
-     * @return The Logic Tuple resulting from the completion of the primitive
-     * 
-     * @throws TucsonOperationNotPossibleException
-     * @throws UnreachableNodeException
-     * @throws OperationTimeOutException
-     * 
-     * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
-     * @see alice.respect.api.RespectSpecification RespectSpecification
-     */
-    public ITucsonOperation set_s(final Object tid, final LogicTuple spec,
+    public ITucsonOperation setS(final Object tid, final LogicTuple spec,
             final Long timeout) throws TucsonOperationNotPossibleException,
             UnreachableNodeException, OperationTimeOutException {
-        return this.doBlockingOperation(TucsonOperation.set_sCode(), tid, spec,
+        return this.doBlockingOperation(TucsonOperation.setSCode(), tid, spec,
                 timeout);
     }
 
-    /**
-     * Set_s TuCSoN primitive, synchronous version. Replace the specification
-     * space with the newly specified (in the form of a string) in the given
-     * target tuplecentre, waiting the completion answer from the TuCSoN node
-     * for a maximum time specified in ms timeunit.
-     * 
-     * Such operation is delegated to a private method
-     * {@link alice.tucson.service.ACCProxyAgentSide#doBlockingOperation
-     * blocking} which maps it on a TucsonMsgRequest to send it to the TuCSoN
-     * Node Service for processing
-     * 
-     * @param tid
-     *            Target TuCSoN tuplecentre id
-     *            {@link alice.tucson.api.TucsonTupleCentreId tid}
-     * @param spec
-     *            The new specification space to replace the current one
-     * @param timeout
-     *            Maximum waiting time tolerated by the callee TuCSoN Agent
-     * 
-     * @return The Logic Tuple resulting from the completion of the primitive
-     * 
-     * @throws TucsonOperationNotPossibleException
-     * @throws UnreachableNodeException
-     * @throws OperationTimeOutException
-     * 
-     * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
-     * @see alice.respect.api.RespectSpecification RespectSpecification
-     */
-    public ITucsonOperation set_s(final Object tid, final String spec,
+    public ITucsonOperation setS(final Object tid, final String spec,
             final Long timeout) throws TucsonOperationNotPossibleException,
             UnreachableNodeException, OperationTimeOutException {
         if ("".equals(spec) || "''".equals(spec) || "'.'".equals(spec)) {
             throw new TucsonOperationNotPossibleException();
         }
         final LogicTuple specT = new LogicTuple("spec", new Value(spec));
-        return this.doBlockingOperation(TucsonOperation.set_sCode(), tid,
-                specT, timeout);
+        return this.doBlockingOperation(TucsonOperation.setSCode(), tid, specT,
+                timeout);
     }
 
-    /**
-     * Set_s TuCSoN primitive, asynchronous version. Replace the specification
-     * space with the newly specified (in the form of a string) in the given
-     * target tuplecentre, WITHOUT waiting the completion answer from the TuCSoN
-     * node. The TuCSoN agent this proxy instance refers to will be
-     * asynchronously notified upon need (that is, when completion reply
-     * arrives).
-     * 
-     * Such operation is delegated to a private method
-     * {@link alice.tucson.service.ACCProxyAgentSide#doNonBlockingOperation
-     * nonBlocking} which maps it on a TucsonMsgRequest to send it to the TuCSoN
-     * Node Service for processing
-     * 
-     * @param tid
-     *            Target TuCSoN tuplecentre id
-     *            {@link alice.tucson.api.TucsonTupleCentreId tid}
-     * @param spec
-     *            The new specification space to replace the current one
-     * @param l
-     *            The listener who should be notified upon operation completion
-     * 
-     * @return An object representing the primitive invocation on the TuCSoN
-     *         infrastructure which will store its result
-     * 
-     * @throws TucsonOperationNotPossibleException
-     * @throws UnreachableNodeException
-     * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
-     * @see alice.tucson.api.TucsonOperationCompletionListener
-     *      TucsonOperationCompletionListener
-     * @see alice.tucson.api.ITucsonOperation ITucsonOperation
-     * @see alice.respect.api.RespectSpecification RespectSpecification
-     */
-    public ITucsonOperation set_s(final Object tid, final String spec,
+    public ITucsonOperation setS(final Object tid, final String spec,
             final TucsonOperationCompletionListener l)
             throws TucsonOperationNotPossibleException,
             UnreachableNodeException {
         final LogicTuple specT = new LogicTuple("spec", new Value(spec));
-        return this.doNonBlockingOperation(TucsonOperation.set_sCode(), tid,
+        return this.doNonBlockingOperation(TucsonOperation.setSCode(), tid,
                 specT, l);
     }
 
-    /**
-     * SPAWN
-     */
     public ITucsonOperation spawn(final Object tid, final LogicTuple toSpawn,
             final Long timeout) throws TucsonOperationNotPossibleException,
             UnreachableNodeException, OperationTimeOutException {
@@ -2017,9 +855,6 @@ public class ACCProxyAgentSide implements EnhancedACC {
                 toSpawn, timeout);
     }
 
-    /**
-     * SPAWN
-     */
     public ITucsonOperation spawn(final Object tid, final LogicTuple toSpawn,
             final TucsonOperationCompletionListener l)
             throws TucsonOperationNotPossibleException,
@@ -2145,8 +980,12 @@ public class ACCProxyAgentSide implements EnhancedACC {
      *         infrastructure which will store its result
      * 
      * @throws TucsonOperationNotPossibleException
+     *             if the operation requested cannot be performed
      * @throws UnreachableNodeException
+     *             if the target tuple centre cannot be reached over the network
      * @throws OperationTimeOutException
+     *             if the timeout associated to the operation requested expires
+     *             prior to operation completion
      * 
      * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
      */
@@ -2156,16 +995,18 @@ public class ACCProxyAgentSide implements EnhancedACC {
             UnreachableNodeException, OperationTimeOutException {
 
         TucsonTupleCentreId tcid = null;
-        if (tid.getClass().getName()
-                .equals("alice.tucson.api.TucsonTupleCentreId")) {
+        if ("alice.tucson.api.TucsonTupleCentreId".equals(tid.getClass()
+                .getName())) {
             tcid = (TucsonTupleCentreId) tid;
-        } else {
+        } else if ("java.lang.String".equals(tid.getClass().getName())) {
             try {
-                tcid = new TucsonTupleCentreId(tid);
+                tcid = new TucsonTupleCentreId((String) tid);
             } catch (final TucsonInvalidTupleCentreIdException ex) {
                 System.err.println("[ACCProxyAgentSide]: " + ex);
                 return null;
             }
+        } else {
+            throw new TucsonOperationNotPossibleException();
         }
 
         ITucsonOperation op = null;
@@ -2211,7 +1052,9 @@ public class ACCProxyAgentSide implements EnhancedACC {
      *         infrastructure which will store its result
      * 
      * @throws TucsonOperationNotPossibleException
+     *             if the operation requested cannot be performed
      * @throws UnreachableNodeException
+     *             if the target tuple centre cannot be reached over the network
      * 
      * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
      * @see alice.tucson.api.TucsonOperationCompletionListener
@@ -2225,16 +1068,18 @@ public class ACCProxyAgentSide implements EnhancedACC {
             UnreachableNodeException {
 
         TucsonTupleCentreId tcid = null;
-        if (tid.getClass().getName()
-                .equals("alice.tucson.api.TucsonTupleCentreId")) {
+        if ("alice.tucson.api.TucsonTupleCentreId".equals(tid.getClass()
+                .getName())) {
             tcid = (TucsonTupleCentreId) tid;
-        } else {
+        } else if ("java.lang.String".equals(tid.getClass().getName())) {
             try {
-                tcid = new TucsonTupleCentreId(tid);
+                tcid = new TucsonTupleCentreId((String) tid);
             } catch (final TucsonInvalidTupleCentreIdException ex) {
                 System.err.println("[ACCProxyAgentSide]: " + ex);
                 return null;
             }
+        } else {
+            throw new TucsonOperationNotPossibleException();
         }
 
         try {
@@ -2284,7 +1129,9 @@ public class ACCProxyAgentSide implements EnhancedACC {
      *         infrastructure which will store its result
      * 
      * @throws TucsonOperationNotPossibleException
+     *             if the operation requested cannot be performed
      * @throws UnreachableNodeException
+     *             if the target tuple centre cannot be reached over the network
      * 
      * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
      * @see alice.tucson.api.TucsonOperationCompletionListener
@@ -2306,7 +1153,7 @@ public class ACCProxyAgentSide implements EnhancedACC {
             nTry++;
             exception = false;
 
-            TucsonProtocol session = null;
+            AbstractTucsonProtocol session = null;
             try {
                 session = this.getSession(tcid);
             } catch (final UnreachableNodeException ex2) {
@@ -2317,10 +1164,10 @@ public class ACCProxyAgentSide implements EnhancedACC {
 
             TucsonOperation op = null;
             if ((type == TucsonOperation.outCode())
-                    || (type == TucsonOperation.out_sCode())
-                    || (type == TucsonOperation.set_sCode())
-                    || (type == TucsonOperation.set_Code())
-                    || (type == TucsonOperation.out_allCode())
+                    || (type == TucsonOperation.outSCode())
+                    || (type == TucsonOperation.setSCode())
+                    || (type == TucsonOperation.setCode())
+                    || (type == TucsonOperation.outAllCode())
                     || (type == TucsonOperation.spawnCode())) {
                 op = new TucsonOperation(type, (Tuple) t, l, this);
             } else {
@@ -2345,7 +1192,7 @@ public class ACCProxyAgentSide implements EnhancedACC {
                 return op;
             }
 
-        } while (nTry < 3);
+        } while (nTry < ACCProxyAgentSide.TRIES);
 
         throw new UnreachableNodeException();
 
@@ -2375,11 +1222,12 @@ public class ACCProxyAgentSide implements EnhancedACC {
      * @return The open session toward the given target tuplecentre
      * 
      * @throws UnreachableNodeException
+     *             if the target tuple centre cannot be reached over the network
      * 
-     * @see alice.tucson.network.TucsonProtocol TucsonProtocol
+     * @see alice.tucson.network.AbstractTucsonProtocol TucsonProtocol
      * @see alice.tucson.service.ACCProxyNodeSide ACCProxyNodeSide
      */
-    protected TucsonProtocol getSession(final TucsonTupleCentreId tid)
+    protected AbstractTucsonProtocol getSession(final TucsonTupleCentreId tid)
             throws UnreachableNodeException {
 
         final String opNode = alice.util.Tools.removeApices(tid.getNode());
@@ -2407,7 +1255,7 @@ public class ACCProxyAgentSide implements EnhancedACC {
         this.profile.setProperty("agent-identity", this.aid.toString());
         this.profile.setProperty("agent-role", "user");
 
-        TucsonProtocol dialog = null;
+        AbstractTucsonProtocol dialog = null;
         boolean isEnterReqAcpt = false;
         try {
             dialog = new TucsonProtocolTCP(opNode, p);
@@ -2416,7 +1264,7 @@ public class ACCProxyAgentSide implements EnhancedACC {
             if (dialog.isEnterRequestAccepted()) {
                 isEnterReqAcpt = true;
             }
-        } catch (final Exception ex) {
+        } catch (final IOException e) {
             throw new UnreachableNodeException();
         }
 
@@ -2456,7 +1304,7 @@ public class ACCProxyAgentSide implements EnhancedACC {
     protected void postEvent(final TucsonOpCompletionEvent ev) {
         // FIXME Check correctness
         synchronized (this.events) {
-            this.events.add(this.events.size() - 1, ev);
+            this.events.add(this.events.size(), ev);
         }
     }
 

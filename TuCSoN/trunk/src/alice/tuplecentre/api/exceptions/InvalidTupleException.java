@@ -17,8 +17,8 @@ package alice.tuplecentre.api.exceptions;
  * Exception thrown when a not well-formed tuple is found, for instance when
  * invoking a coordination language primitive with a null tuple.
  * 
+ * @author ste (mailto: s.mariani@unibo.it) on 17/lug/2013
  * 
- * @version 1.0
  */
 public class InvalidTupleException extends Exception {
 

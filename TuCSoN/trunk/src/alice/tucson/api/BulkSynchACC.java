@@ -47,7 +47,12 @@ public interface BulkSynchACC extends RootACC {
      *         the result of the operation.
      * 
      * @throws TucsonOperationNotPossibleException
+     *             if the requested operation cannot be carried out
      * @throws UnreachableNodeException
+     *             if the target tuple centre is not reachable over the network
+     * @throws OperationTimeOutException
+     *             if the operation timeout expired prior to operation
+     *             completion
      * 
      * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
      * @see alice.tucson.api.TucsonOperationCompletionListener
@@ -55,7 +60,7 @@ public interface BulkSynchACC extends RootACC {
      * @see alice.tucson.api.ITucsonOperation ITucsonOperation
      * @see alice.tuprolog.Struct Struct
      */
-    ITucsonOperation in_all(Object tid, LogicTuple tuple, Long timeout)
+    ITucsonOperation inAll(Object tid, LogicTuple tuple, Long timeout)
             throws TucsonOperationNotPossibleException,
             UnreachableNodeException, OperationTimeOutException;
 
@@ -82,7 +87,12 @@ public interface BulkSynchACC extends RootACC {
      *         the result of the operation.
      * 
      * @throws TucsonOperationNotPossibleException
+     *             if the requested operation cannot be carried out
      * @throws UnreachableNodeException
+     *             if the target tuple centre is not reachable over the network
+     * @throws OperationTimeOutException
+     *             if the operation timeout expired prior to operation
+     *             completion
      * 
      * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
      * @see alice.tucson.api.TucsonOperationCompletionListener
@@ -90,7 +100,7 @@ public interface BulkSynchACC extends RootACC {
      * @see alice.tucson.api.ITucsonOperation ITucsonOperation
      * @see alice.tuprolog.Struct Struct
      */
-    ITucsonOperation no_all(Object tid, LogicTuple tuple, Long timeout)
+    ITucsonOperation noAll(Object tid, LogicTuple tuple, Long timeout)
             throws TucsonOperationNotPossibleException,
             UnreachableNodeException, OperationTimeOutException;
 
@@ -114,7 +124,12 @@ public interface BulkSynchACC extends RootACC {
      *         the result of the operation.
      * 
      * @throws TucsonOperationNotPossibleException
+     *             if the requested operation cannot be carried out
      * @throws UnreachableNodeException
+     *             if the target tuple centre is not reachable over the network
+     * @throws OperationTimeOutException
+     *             if the operation timeout expired prior to operation
+     *             completion
      * 
      * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
      * @see alice.tucson.api.TucsonOperationCompletionListener
@@ -122,7 +137,7 @@ public interface BulkSynchACC extends RootACC {
      * @see alice.tucson.api.ITucsonOperation ITucsonOperation
      * @see alice.tuprolog.Struct Struct
      */
-    ITucsonOperation out_all(Object tid, LogicTuple tuple, Long timeout)
+    ITucsonOperation outAll(Object tid, LogicTuple tuple, Long timeout)
             throws TucsonOperationNotPossibleException,
             UnreachableNodeException, OperationTimeOutException;
 
@@ -147,7 +162,12 @@ public interface BulkSynchACC extends RootACC {
      *         the result of the operation.
      * 
      * @throws TucsonOperationNotPossibleException
+     *             if the requested operation cannot be carried out
      * @throws UnreachableNodeException
+     *             if the target tuple centre is not reachable over the network
+     * @throws OperationTimeOutException
+     *             if the operation timeout expired prior to operation
+     *             completion
      * 
      * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
      * @see alice.tucson.api.TucsonOperationCompletionListener
@@ -155,7 +175,7 @@ public interface BulkSynchACC extends RootACC {
      * @see alice.tucson.api.ITucsonOperation ITucsonOperation
      * @see alice.tuprolog.Struct Struct
      */
-    ITucsonOperation rd_all(Object tid, LogicTuple tuple, Long timeout)
+    ITucsonOperation rdAll(Object tid, LogicTuple tuple, Long timeout)
             throws TucsonOperationNotPossibleException,
             UnreachableNodeException, OperationTimeOutException;
 

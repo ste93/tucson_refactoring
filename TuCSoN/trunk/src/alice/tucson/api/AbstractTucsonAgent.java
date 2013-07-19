@@ -18,15 +18,20 @@ import java.util.Map;
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.service.TucsonOpCompletionEvent;
-import alice.tuplecentre.core.TupleCentreOperation;
+import alice.tuplecentre.core.AbstractTupleCentreOperation;
 
 /**
  * Base class to extend to implement TuCSoN Agents. Once created, the method
- * {@link alice.tucson.api.TucsonAgent#go go()} gets TuCSoN Default ACC (the
- * most comprehensive at the moment) and trigger Agent's main execution cyle,
- * that is the method {@link alice.tucson.api.TucsonAgent#main main}.
+ * {@link alice.tucson.api.AbstractTucsonAgent#go go()} gets TuCSoN Default ACC
+ * (the most comprehensive at the moment) and trigger Agent's main execution
+ * cyle, that is the method {@link alice.tucson.api.AbstractTucsonAgent#main
+ * main}.
+ * 
+ * @author ste (mailto: s.mariani@unibo.it) on 02/lug/2013
+ * 
  */
-public abstract class TucsonAgent implements TucsonOperationCompletionListener {
+public abstract class AbstractTucsonAgent implements
+        TucsonOperationCompletionListener {
 
     /**
      * Internal Thread responsible for ACC acquisition and main cycle execution.
@@ -35,9 +40,9 @@ public abstract class TucsonAgent implements TucsonOperationCompletionListener {
      * construction-time defined port.
      */
     final class AgentThread extends Thread {
-        private final TucsonAgent agent;
+        private final AbstractTucsonAgent agent;
 
-        AgentThread(final TucsonAgent a) {
+        AgentThread(final AbstractTucsonAgent a) {
             super();
             this.agent = a;
         }
@@ -46,17 +51,22 @@ public abstract class TucsonAgent implements TucsonOperationCompletionListener {
         public void run() {
             try {
                 this.agent.setContext(TucsonMetaACC.getContext(
-                        this.agent.getTucsonAgentId(), TucsonAgent.this.node,
-                        TucsonAgent.this.port));
+                        this.agent.getTucsonAgentId(),
+                        AbstractTucsonAgent.this.node,
+                        AbstractTucsonAgent.this.port));
                 this.agent.main();
                 this.agent.getContext().exit();
             } catch (final TucsonOperationNotPossibleException e) {
-                System.err.println("[TucsonAgent] AgentThread: " + e);
-                // TODO Properly handle Exception
+                e.printStackTrace();
             }
         }
     }
 
+    private static final int DEFAULT_PORT = 20504;
+
+    /**
+     * 
+     */
     protected Map<TucsonOpId, TucsonOpCompletionEvent> events = null;
     private final TucsonAgentId aid;
     private EnhancedACC context;
@@ -72,9 +82,13 @@ public abstract class TucsonAgent implements TucsonOperationCompletionListener {
      *            The String to use to build the TucsonAgentIdentifier
      * 
      * @throws TucsonInvalidAgentIdException
+     *             if the String given is not a valid representation of a TuCSoN
+     *             agent identifier
      */
-    public TucsonAgent(final String id) throws TucsonInvalidAgentIdException {
-        this(new TucsonAgentId(id), "localhost", 20504);
+    public AbstractTucsonAgent(final String id)
+            throws TucsonInvalidAgentIdException {
+        this(new TucsonAgentId(id), "localhost",
+                AbstractTucsonAgent.DEFAULT_PORT);
     }
 
     /**
@@ -87,10 +101,12 @@ public abstract class TucsonAgent implements TucsonOperationCompletionListener {
      *            The ip address of the TuCSoN Node to contact
      * 
      * @throws TucsonInvalidAgentIdException
+     *             if the String given is not a valid representation of a TuCSoN
+     *             agent identifier
      */
-    public TucsonAgent(final String id, final String netid)
+    public AbstractTucsonAgent(final String id, final String netid)
             throws TucsonInvalidAgentIdException {
-        this(new TucsonAgentId(id), netid, 20504);
+        this(new TucsonAgentId(id), netid, AbstractTucsonAgent.DEFAULT_PORT);
     }
 
     /**
@@ -105,8 +121,10 @@ public abstract class TucsonAgent implements TucsonOperationCompletionListener {
      *            The listening port of the TuCSoN Node to contact
      * 
      * @throws TucsonInvalidAgentIdException
+     *             if the String given is not a valid representation of a TuCSoN
+     *             agent identifier
      */
-    public TucsonAgent(final String id, final String netid, final int p)
+    public AbstractTucsonAgent(final String id, final String netid, final int p)
             throws TucsonInvalidAgentIdException {
         this(new TucsonAgentId(id), netid, p);
     }
@@ -122,7 +140,8 @@ public abstract class TucsonAgent implements TucsonOperationCompletionListener {
      * @param p
      *            The listening port of the TuCSoN Node to contact
      */
-    private TucsonAgent(final TucsonAgentId id, final String netid, final int p) {
+    private AbstractTucsonAgent(final TucsonAgentId id, final String netid,
+            final int p) {
         this.aid = id;
         this.node = netid;
         this.port = p;
@@ -138,10 +157,10 @@ public abstract class TucsonAgent implements TucsonOperationCompletionListener {
     }
 
     /**
-     * Starts main execution cycle {@link alice.tucson.api.TucsonAgent#main
-     * main}
+     * Starts main execution cycle
+     * {@link alice.tucson.api.AbstractTucsonAgent#main main}
      */
-    final public void go() {
+    public final void go() {
         new AgentThread(this).start();
     }
 
@@ -172,13 +191,13 @@ public abstract class TucsonAgent implements TucsonOperationCompletionListener {
         return this.port;
     }
 
-    public abstract void operationCompleted(ITucsonOperation op);
-
-    public final void operationCompleted(final TupleCentreOperation op) {
+    public final void operationCompleted(final AbstractTupleCentreOperation op) {
         /*
          * FIXME Find cause of double inheritance
          */
     }
+
+    public abstract void operationCompleted(ITucsonOperation op);
 
     /**
      * Getter for the ACC. At the moment the TucsonAgent base class always ask
@@ -195,7 +214,7 @@ public abstract class TucsonAgent implements TucsonOperationCompletionListener {
     /**
      * Main execution cycle, user-defined.
      */
-    abstract protected void main();
+    protected abstract void main();
 
     /**
      * Utility method to print on standard output the user agent activity.

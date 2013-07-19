@@ -32,10 +32,11 @@ import alice.logictuple.Value;
 import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.logictuple.exceptions.InvalidTupleOperationException;
 import alice.respect.api.ILinkContext;
+import alice.respect.api.IRespectTC;
 import alice.respect.api.RespectSpecification;
 import alice.respect.api.TupleCentreId;
 import alice.respect.api.exceptions.OperationNotPossibleException;
-import alice.tucson.api.SpawnActivity;
+import alice.tucson.api.AbstractSpawnActivity;
 import alice.tucson.api.TucsonAgentId;
 import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
@@ -48,15 +49,15 @@ import alice.tuplecentre.api.AgentId;
 import alice.tuplecentre.api.IId;
 import alice.tuplecentre.api.Tuple;
 import alice.tuplecentre.api.TupleTemplate;
-import alice.tuplecentre.core.BehaviourSpecification;
-import alice.tuplecentre.core.Event;
+import alice.tuplecentre.core.AbstractBehaviourSpecification;
+import alice.tuplecentre.core.AbstractEvent;
+import alice.tuplecentre.core.AbstractTupleCentreOperation;
 import alice.tuplecentre.core.InputEvent;
 import alice.tuplecentre.core.ObservableEventReactionFail;
 import alice.tuplecentre.core.ObservableEventReactionOK;
 import alice.tuplecentre.core.OperationCompletionListener;
 import alice.tuplecentre.core.OutputEvent;
 import alice.tuplecentre.core.TriggeredReaction;
-import alice.tuplecentre.core.TupleCentreOperation;
 import alice.tuprolog.InvalidLibraryException;
 import alice.tuprolog.InvalidTheoryException;
 import alice.tuprolog.MalformedGoalException;
@@ -74,13 +75,13 @@ import alice.tuprolog.Var;
  * This class defines a ReSpecT Context as a specialisation of a tuple centre VM
  * context (defining VM specific structures)
  * 
- * @see alice.tuplecentre.core.TupleCentreVMContext
+ * @see alice.tuplecentre.core.AbstractTupleCentreVMContext
  * 
  * @author aricci
  * @version 1.0
  */
 public class RespectVMContext extends
-        alice.tuplecentre.core.TupleCentreVMContext {
+        alice.tuplecentre.core.AbstractTupleCentreVMContext {
 
     class CompletionListener implements OperationCompletionListener {
 
@@ -90,7 +91,7 @@ public class RespectVMContext extends
             this.oe = o;
         }
 
-        public void operationCompleted(final TupleCentreOperation arg0) {
+        public void operationCompleted(final AbstractTupleCentreOperation arg0) {
             arg0.removeListener();
             // oe.getTarget() == oeTarget by construction (loc 1201)!
             // 3rd arg is the target of the event,
@@ -111,12 +112,15 @@ public class RespectVMContext extends
      * Static services that checks if a source text contains a valid ReSpecT
      * specification
      * 
+     * @param spec
+     *            the String representation of the ReSpecT specification to
+     *            check for syntactic correctness
      * @return a logic tuple that provides information about the check: valid is
      *         the specification is OK, or invalid(L) if there are errors (at
      *         line L).
      * 
      */
-    static public LogicTuple checkReactionSpec(final String spec) {
+    public static LogicTuple checkReactionSpec(final String spec) {
         Prolog core = new Prolog();
         try {
             final Struct co = new Struct(spec);
@@ -151,8 +155,8 @@ public class RespectVMContext extends
         return new Struct(termArray);
     }
 
-    private Prolog core;
-    private Event currentReactionEvent;
+    private final Prolog core;
+    private AbstractEvent currentReactionEvent;
     private Struct currentReactionTerm;
     /** are we setting a specification from outside? */
     private boolean isExternalSetSpec;
@@ -168,7 +172,7 @@ public class RespectVMContext extends
      * added to the output queue (outputEventList only when the related reaction
      * is successfully executed
      */
-    private final List<Event> temporaryOutputEventList;
+    private final List<AbstractEvent> temporaryOutputEventList;
     /** List of timers scheduled for execution */
     private final List<Timer> timers;
     /** multiset of triggered timed reactions */
@@ -188,8 +192,19 @@ public class RespectVMContext extends
     /** multiset of triggered reactions Z */
     private final TRSet zSet;
 
+    /**
+     * 
+     * @param rvm
+     *            the ReSpecT VM this storage context is managed by
+     * @param tid
+     *            the identifier of the tuple centre managed
+     * @param queueSize
+     *            the maximum InQ size of the tuple centre
+     * @param respectTC
+     *            the ReSpecT tuple centres manager
+     */
     public RespectVMContext(final RespectVM rvm, final TupleCentreId tid,
-            final int queueSize, final RespectTC respectTC) {
+            final int queueSize, final IRespectTC respectTC) {
 
         super(tid, queueSize, respectTC);
         this.timers = new ArrayList<Timer>();
@@ -201,22 +216,22 @@ public class RespectVMContext extends
         this.zSet = new TRSet();
         this.timeSet = new TRSet();
         this.vm = rvm;
-        this.temporaryOutputEventList = new ArrayList<Event>();
+        this.temporaryOutputEventList = new ArrayList<AbstractEvent>();
+        this.core = new Prolog();
+        final alice.tuprolog.event.OutputListener l =
+                new alice.tuprolog.event.OutputListener() {
+                    public void onOutput(
+                            final alice.tuprolog.event.OutputEvent ev) {
+                        System.out.print(ev.getMsg());
+                    }
+                };
+        this.core.addOutputListener(l);
         try {
-            this.core = new Prolog();
-            final alice.tuprolog.event.OutputListener l =
-                    new alice.tuprolog.event.OutputListener() {
-                        public void onOutput(
-                                final alice.tuprolog.event.OutputEvent ev) {
-                            System.out.print(ev.getMsg());
-                        }
-                    };
-            this.core.addOutputListener(l);
             ((alice.respect.api.Respect2PLibrary) this.core
                     .loadLibrary("alice.respect.api.Respect2PLibrary"))
                     .init(this);
-        } catch (final Exception ex) {
-            // TODO Properly handle Exception
+        } catch (final InvalidLibraryException e) {
+            e.printStackTrace();
         }
         try {
             this.trigCore = new Prolog();
@@ -224,8 +239,8 @@ public class RespectVMContext extends
             ((alice.respect.api.Respect2PLibrary) this.trigCore
                     .getLibrary("alice.respect.api.Respect2PLibrary"))
                     .init(this);
-        } catch (final Exception ex) {
-            // TODO Properly handle Exception
+        } catch (final InvalidLibraryException e) {
+            e.printStackTrace();
         }
 
         this.reactionSpec = new RespectSpecification("");
@@ -238,13 +253,13 @@ public class RespectVMContext extends
     public List<Tuple> addListTuple(final Tuple t) {
         final List<Tuple> list = new LinkedList<Tuple>();
         LogicTuple tuple = (LogicTuple) t;
-        while (!(tuple.toString().equals("[]"))) {
+        while (!("[]".equals(tuple.toString()))) {
             try {
                 this.tSet.add(new LogicTuple(tuple.getArg(0)));
                 list.add(new LogicTuple(tuple.getArg(0)));
                 tuple = new LogicTuple(tuple.getArg(1));
             } catch (final InvalidTupleOperationException e) {
-                // TODO Properly handle Exception
+                e.printStackTrace();
             }
         }
         return list;
@@ -259,20 +274,25 @@ public class RespectVMContext extends
     public void addSpecTuple(final Tuple t) {
         LogicTuple tuple = null;
         try {
-            if (((LogicTuple) t).getName().equals(",")) {
+            if (",".equals(((LogicTuple) t).getName())) {
                 tuple =
                         new LogicTuple("reaction", ((LogicTuple) t).getArg(0),
                                 ((LogicTuple) t).getArg(1).getArg(0),
                                 ((LogicTuple) t).getArg(1).getArg(1));
             }
         } catch (final InvalidTupleOperationException e) {
-            // TODO Properly handle Exception
+            e.printStackTrace();
         }
         this.tSpecSet.add(tuple);
         this.setReactionSpecHelper(new alice.respect.api.RespectSpecification(
                 this.tSpecSet.toString()));
     }
 
+    /**
+     * 
+     * @param out
+     *            the out-link event to be remembered
+     */
     public void addTemporaryOutputEvent(final InputEvent out) {
         synchronized (this.temporaryOutputEventList) {
             this.temporaryOutputEventList.add(out);
@@ -347,7 +367,7 @@ public class RespectVMContext extends
     }
 
     @Override
-    public void fetchTimedReactions(final Event ev) {
+    public void fetchTimedReactions(final AbstractEvent ev) {
 
         try {
 
@@ -397,7 +417,7 @@ public class RespectVMContext extends
     }
 
     @Override
-    public void fetchTriggeredReactions(final Event ev) {
+    public void fetchTriggeredReactions(final AbstractEvent ev) {
 
         synchronized (this.semaphore) {
             try {
@@ -442,31 +462,31 @@ public class RespectVMContext extends
                         this.currentReactionTerm =
                                 new Struct("nop", op.getLogicTupleArgument()
                                         .toTerm());
-                    } else if (op.isOut_s()) {
+                    } else if (op.isOutS()) {
                         this.currentReactionTerm =
                                 new Struct("out_s", op.getLogicTupleArgument()
                                         .toTerm());
-                    } else if (op.isRd_s()) {
+                    } else if (op.isRdS()) {
                         this.currentReactionTerm =
                                 new Struct("rd_s", op.getLogicTupleArgument()
                                         .toTerm());
-                    } else if (op.isIn_s()) {
+                    } else if (op.isInS()) {
                         this.currentReactionTerm =
                                 new Struct("in_s", op.getLogicTupleArgument()
                                         .toTerm());
-                    } else if (op.isRdp_s()) {
+                    } else if (op.isRdpS()) {
                         this.currentReactionTerm =
                                 new Struct("rdp_s", op.getLogicTupleArgument()
                                         .toTerm());
-                    } else if (op.isInp_s()) {
+                    } else if (op.isInpS()) {
                         this.currentReactionTerm =
                                 new Struct("inp_s", op.getLogicTupleArgument()
                                         .toTerm());
-                    } else if (op.isNo_s()) {
+                    } else if (op.isNoS()) {
                         this.currentReactionTerm =
                                 new Struct("no_s", op.getLogicTupleArgument()
                                         .toTerm());
-                    } else if (op.isNop_s()) {
+                    } else if (op.isNopS()) {
                         this.currentReactionTerm =
                                 new Struct("nop_s", op.getLogicTupleArgument()
                                         .toTerm());
@@ -606,31 +626,31 @@ public class RespectVMContext extends
                             this.currentReactionTerm =
                                     new Struct("nop", op
                                             .getLogicTupleArgument().toTerm());
-                        } else if (op.isOut_s()) {
+                        } else if (op.isOutS()) {
                             this.currentReactionTerm =
                                     new Struct("out_s", op
                                             .getLogicTupleArgument().toTerm());
-                        } else if (op.isIn_s()) {
+                        } else if (op.isInS()) {
                             this.currentReactionTerm =
                                     new Struct("in_s", op
                                             .getLogicTupleArgument().toTerm());
-                        } else if (op.isRd_s()) {
+                        } else if (op.isRdS()) {
                             this.currentReactionTerm =
                                     new Struct("rd_s", op
                                             .getLogicTupleArgument().toTerm());
-                        } else if (op.isInp_s()) {
+                        } else if (op.isInpS()) {
                             this.currentReactionTerm =
                                     new Struct("inp_s", op
                                             .getLogicTupleArgument().toTerm());
-                        } else if (op.isRdp_s()) {
+                        } else if (op.isRdpS()) {
                             this.currentReactionTerm =
                                     new Struct("rdp_s", op
                                             .getLogicTupleArgument().toTerm());
-                        } else if (op.isNo_s()) {
+                        } else if (op.isNoS()) {
                             this.currentReactionTerm =
                                     new Struct("no_s", op
                                             .getLogicTupleArgument().toTerm());
-                        } else if (op.isNop_s()) {
+                        } else if (op.isNopS()) {
                             this.currentReactionTerm =
                                     new Struct("nop_s", op
                                             .getLogicTupleArgument().toTerm());
@@ -772,19 +792,19 @@ public class RespectVMContext extends
                                                 .getLogicTupleArgument()
                                                 .toTerm());
                             }
-                        } else if (op.isOut_s()) {
+                        } else if (op.isOutS()) {
                             this.currentReactionTerm =
                                     new Struct("out_s", op
                                             .getLogicTupleResult().toTerm());
-                        } else if (op.isIn_s()) {
+                        } else if (op.isInS()) {
                             this.currentReactionTerm =
                                     new Struct("in_s", op.getLogicTupleResult()
                                             .toTerm());
-                        } else if (op.isRd_s()) {
+                        } else if (op.isRdS()) {
                             this.currentReactionTerm =
                                     new Struct("rd_s", op.getLogicTupleResult()
                                             .toTerm());
-                        } else if (op.isInp_s()) {
+                        } else if (op.isInpS()) {
                             final LogicTuple result = op.getLogicTupleResult();
                             if (result != null) {
                                 this.currentReactionTerm =
@@ -795,7 +815,7 @@ public class RespectVMContext extends
                                                 .getLogicTupleArgument()
                                                 .toTerm());
                             }
-                        } else if (op.isRdp_s()) {
+                        } else if (op.isRdpS()) {
                             final LogicTuple result = op.getLogicTupleResult();
                             if (result != null) {
                                 this.currentReactionTerm =
@@ -806,11 +826,11 @@ public class RespectVMContext extends
                                                 .getLogicTupleArgument()
                                                 .toTerm());
                             }
-                        } else if (op.isNo_s()) {
+                        } else if (op.isNoS()) {
                             this.currentReactionTerm =
                                     new Struct("no_s", op
                                             .getLogicTupleArgument().toTerm());
-                        } else if (op.isNop_s()) {
+                        } else if (op.isNopS()) {
                             final LogicTuple result = op.getLogicTupleResult();
                             if (result != null) {
                                 this.currentReactionTerm =
@@ -945,16 +965,16 @@ public class RespectVMContext extends
                     } else if (rop.isNoR()) {
                         this.currentReactionTerm =
                                 new Struct("no", rop.getArgument().toTerm());
-                    } else if (rop.isOut_sR()) {
+                    } else if (rop.isOutSR()) {
                         this.currentReactionTerm =
                                 new Struct("out_s", rop.getArgument().toTerm());
-                    } else if (rop.isIn_sR()) {
+                    } else if (rop.isInSR()) {
                         this.currentReactionTerm =
                                 new Struct("in_s", rop.getArgument().toTerm());
-                    } else if (rop.isRd_sR()) {
+                    } else if (rop.isRdSR()) {
                         this.currentReactionTerm =
                                 new Struct("rd_s", rop.getArgument().toTerm());
-                    } else if (rop.isNo_sR()) {
+                    } else if (rop.isNoSR()) {
                         this.currentReactionTerm =
                                 new Struct("no_s", rop.getArgument().toTerm());
                     } else if (rop.isGetEnv()) {
@@ -1027,8 +1047,12 @@ public class RespectVMContext extends
                     }
                 }
 
-            } catch (final Exception ex) {
-                // TODO Properly handle Exception
+            } catch (final InvalidTupleOperationException e) {
+                e.printStackTrace();
+                this.trigCore.solveEnd();
+            } catch (final NoSolutionException e) {
+                this.trigCore.solveEnd();
+            } catch (final NoMoreSolutionException e) {
                 this.trigCore.solveEnd();
             }
 
@@ -1036,7 +1060,12 @@ public class RespectVMContext extends
 
     }
 
-    public Iterator<Term> foundTimeReactions() {
+    /**
+     * 
+     * @return a Java iterator through the list of timed reactions possibly
+     *         found
+     */
+    public Iterator<Term> findTimeReactions() {
 
         final List<Term> foundReactions = new ArrayList<Term>();
         try {
@@ -1055,7 +1084,10 @@ public class RespectVMContext extends
                 }
                 this.trigCore.solveEnd();
             }
-        } catch (final Exception ex) {
+        } catch (final NoMoreSolutionException e) {
+            this.notifyException("INTERNAL ERROR: fetchTimedReactions ");
+            this.trigCore.solveEnd();
+        } catch (final NoSolutionException e) {
             this.notifyException("INTERNAL ERROR: fetchTimedReactions ");
             this.trigCore.solveEnd();
         }
@@ -1073,31 +1105,53 @@ public class RespectVMContext extends
         return tl;
     }
 
-    public Event getCurrentReactionEvent() {
+    /**
+     * 
+     * @return the event currently under processing
+     */
+    public AbstractEvent getCurrentReactionEvent() {
         return this.currentReactionEvent;
     }
 
+    /**
+     * 
+     * @return the reaction term currently under processing
+     */
     public Struct getCurrentReactionTerm() {
         return this.currentReactionTerm;
     }
 
     @Override
-    public Iterator<? extends Event> getPendingQuerySetIterator() {
+    public Iterator<? extends AbstractEvent> getPendingQuerySetIterator() {
         return this.wSet.getIterator();
     }
 
+    /**
+     * 
+     * @return the tuProlog engine responsible for matching triggering events
+     *         with event templates
+     */
     public Prolog getPrologCore() {
         return this.matcher;
     }
 
+    /**
+     * 
+     * @return a Java iterator through tuProlog predicates used in ReSpecT
+     *         specification
+     */
     public Iterator<? extends Tuple> getPrologPredicatesIterator() {
         return this.prologPredicates.getIterator();
     }
 
-    public BehaviourSpecification getReactionSpec() {
+    public AbstractBehaviourSpecification getReactionSpec() {
         return this.reactionSpec;
     }
 
+    /**
+     * 
+     * @return the ReSpecT VM this storage context is managed by
+     */
     public RespectVM getRespectVM() {
         return this.vm;
     }
@@ -1113,6 +1167,10 @@ public class RespectVMContext extends
         return this.zSet.getIterator();
     }
 
+    /**
+     * 
+     * @return the list of tuples representing triggered reactions
+     */
     public LogicTuple[] getTRSet() {
         final TriggeredReaction[] trig = this.zSet.toArray();
         final LogicTuple[] tuples = new LogicTuple[trig.length];
@@ -1125,6 +1183,12 @@ public class RespectVMContext extends
         return tuples;
     }
 
+    /**
+     * 
+     * @param filter
+     *            the tuple template to be used in filtering stored tuples
+     * @return the list of tuples currently stored
+     */
     public LogicTuple[] getTSet(final LogicTuple filter) {
         final LogicTuple[] ltSet = this.tSet.toArray();
         final ArrayList<LogicTuple> supportList = new ArrayList<LogicTuple>();
@@ -1144,11 +1208,17 @@ public class RespectVMContext extends
         return this.tSet.getIterator();
     }
 
+    /**
+     * 
+     * @param filter
+     *            the tuple template to be used in filtering InQ events
+     * @return the list of tuples representing InQ events currently stored
+     */
     public WSetEvent[] getWSet(final LogicTuple filter) {
-        final Event[] ev = this.wSet.toArray();
+        final AbstractEvent[] ev = this.wSet.toArray();
         final ArrayList<WSetEvent> events = new ArrayList<WSetEvent>();
         if (filter == null) {
-            for (final Event e : ev) {
+            for (final AbstractEvent e : ev) {
                 events.add(new WSetEvent(((RespectOperation) e
                         .getSimpleTCEvent()).toTuple(), e.getSource(), e
                         .getTarget()));
@@ -1188,27 +1258,40 @@ public class RespectVMContext extends
     public void linkOperation(final OutputEvent oe) {
         final TupleCentreId target = (TupleCentreId) oe.getTarget();
         try {
-            final TupleCentreOperation op = oe.getSimpleTCEvent();
+            final AbstractTupleCentreOperation op = oe.getSimpleTCEvent();
             op.addListener(new CompletionListener(oe));
             final ILinkContext link =
                     RespectTCContainer.getRespectTCContainer().getLinkContext(
                             target);
             link.doOperation((TupleCentreId) oe.getSource(), op);
-        } catch (final Exception e) {
-            // TODO Properly handle Exception
+        } catch (final OperationNotPossibleException e) {
+            e.printStackTrace();
         }
     }
 
+    /**
+     * 
+     * @param in
+     *            the environmental input event to notify
+     */
     public void notifyInputEnvEvent(final InputEvent in) {
         this.addEnvInputEvent(in);
         this.vm.notifyNewInputEvent();
     }
 
+    /**
+     * 
+     * @param in
+     *            the input event to notify
+     */
     public void notifyInputEvent(final InputEvent in) {
         this.addInputEvent(in);
         this.notifyNewInputEvent();
     }
 
+    /**
+     * 
+     */
     public void notifyNewInputEvent() {
         this.vm.notifyNewInputEvent();
     }
@@ -1275,6 +1358,7 @@ public class RespectVMContext extends
      * 
      * @param operationId
      *            identifier of the operation
+     * @return wether the event has been successfully removed or not
      */
     public boolean removePendingQueryEvent(final long operationId) {
         return this.wSet.removeEventOfOperation(operationId);
@@ -1292,6 +1376,9 @@ public class RespectVMContext extends
         this.wSet.removeEventsOf(id);
     }
 
+    /**
+     * 
+     */
     public void removeReactionSpec() {
         this.core.clearTheory();
         this.trigCore.clearTheory();
@@ -1355,7 +1442,7 @@ public class RespectVMContext extends
         }
     }
 
-    public boolean setReactionSpec(final BehaviourSpecification spec) {
+    public boolean setReactionSpec(final AbstractBehaviourSpecification spec) {
 
         this.isExternalSetSpec = true;
         this.noReactionTh = null;
@@ -1384,9 +1471,9 @@ public class RespectVMContext extends
             }
             this.noReactionTh = new Theory(new Struct(preds));
         } catch (final MalformedGoalException e) {
-            // TODO Auto-generated catch block
+            e.printStackTrace();
         } catch (final InvalidTheoryException e) {
-            // TODO Properly handle Exception
+            e.printStackTrace();
             this.log("clause: " + e.clause + ", l: " + e.line + ", p: " + e.pos);
         }
 
@@ -1402,12 +1489,16 @@ public class RespectVMContext extends
                     this.tSpecSet.add(new LogicTuple(solution));
                     info = this.core.solveNext();
                 }
-            } catch (final alice.tuprolog.NoMoreSolutionException ex) {
-                // TODO Properly handle Exception
-            } catch (final alice.tuprolog.NoSolutionException ex) {
-                // TODO Properly handle Exception
-            } catch (final MalformedGoalException ex) {
-                // TODO Properly handle Exception
+            } catch (final alice.tuprolog.NoMoreSolutionException e) {
+                /*
+                 * 
+                 */
+            } catch (final alice.tuprolog.NoSolutionException e) {
+                /*
+                 * 
+                 */
+            } catch (final MalformedGoalException e) {
+                e.printStackTrace();
             }
         }
 
@@ -1416,6 +1507,12 @@ public class RespectVMContext extends
 
     }
 
+    /**
+     * 
+     * @param set
+     *            the list of tuple representing InQ events to overwrite this
+     *            InQ with
+     */
     public void setWSet(final List<LogicTuple> set) {
 
         this.wSet.empty();
@@ -1436,10 +1533,10 @@ public class RespectVMContext extends
                             RespectOperation.makeRd(this.getPrologCore(),
                                     logicTuple, null);
                     this.vm.doOperation(null, op);
-                } catch (final InvalidLogicTupleException e1) {
-                    // TODO Properly handle Exception
+                } catch (final InvalidLogicTupleException e) {
+                    e.printStackTrace();
                 } catch (final OperationNotPossibleException e) {
-                    // TODO Properly handle Exception
+                    e.printStackTrace();
                 }
 
             } else if ("in".equals(opKind)) {
@@ -1453,10 +1550,10 @@ public class RespectVMContext extends
                             RespectOperation.makeIn(this.getPrologCore(),
                                     logicTuple, null);
                     this.vm.doOperation(null, op);
-                } catch (final InvalidLogicTupleException e1) {
-                    // TODO Properly handle Exception
+                } catch (final InvalidLogicTupleException e) {
+                    e.printStackTrace();
                 } catch (final OperationNotPossibleException e) {
-                    // TODO Properly handle Exception
+                    e.printStackTrace();
                 }
 
             }
@@ -1474,16 +1571,16 @@ public class RespectVMContext extends
             final URL[] urls = ((URLClassLoader) cl).getURLs();
             this.log("Known paths:");
             for (final URL url : urls) {
-                System.out.println("	" + url.getFile());
+                System.out.println("\t" + url.getFile());
             }
             final LogicTuple t = (LogicTuple) tuple;
-            if (!(t.getName().equals("exec") || t.getName().equals("solve"))) {
+            if (!("exec".equals(t.getName()) || "solve".equals(t.getName()))) {
                 this.log("spawn argument must be a tuple with functor name 'exec' or 'solve'");
                 return false;
             }
             if (t.getArity() == 2) {
                 this.log("Prolog theory expected");
-                if (!t.getName().equals("solve")) {
+                if (!"solve".equals(t.getName())) {
                     this.log("Prolog spawn argument must be a tuple with functor name 'solve'");
                     return false;
                 }
@@ -1525,7 +1622,7 @@ public class RespectVMContext extends
                     final String[] libs = solver.getCurrentLibraries();
                     this.log("Known libs:");
                     for (final String lib : libs) {
-                        System.out.println("	" + lib);
+                        System.out.println("\t" + lib);
                     }
                     new Spawn2PSolver(solver, goal).start();
                     return true;
@@ -1534,7 +1631,7 @@ public class RespectVMContext extends
                 return false;
             } else if (t.getArity() == 1) {
                 this.log("Java class expected");
-                if (!t.getName().equals("exec")) {
+                if (!"exec".equals(t.getName())) {
                     this.log("Java spawn argument must be a tuple with functor name 'exec'");
                     return false;
                 }
@@ -1544,9 +1641,9 @@ public class RespectVMContext extends
                     final Class<?> toSpawn =
                             cl.loadClass(className.substring(0,
                                     className.length() - 6));
-                    if (SpawnActivity.class.isAssignableFrom(toSpawn)) {
-                        final SpawnActivity instance =
-                                (SpawnActivity) toSpawn.newInstance();
+                    if (AbstractSpawnActivity.class.isAssignableFrom(toSpawn)) {
+                        final AbstractSpawnActivity instance =
+                                (AbstractSpawnActivity) toSpawn.newInstance();
                         if (owner.isAgent()) {
                             final TucsonAgentId aid =
                                     new TucsonAgentId(
@@ -1588,50 +1685,41 @@ public class RespectVMContext extends
                 return false;
             }
         } catch (final ClassNotFoundException e) {
-            // TODO Properly handle Exception
-            System.err.println("[RespectVMContext]: " + e);
+            e.printStackTrace();
             return false;
         } catch (final InstantiationException e) {
-            // TODO Properly handle Exception
-            System.err.println("[RespectVMContext]: " + e);
+            e.printStackTrace();
             return false;
         } catch (final IllegalAccessException e) {
-            // TODO Properly handle Exception
-            System.err.println("[RespectVMContext]: " + e);
+            e.printStackTrace();
             return false;
         } catch (final TucsonInvalidTupleCentreIdException e) {
-            // TODO Properly handle Exception
-            System.err.println("[RespectVMContext]: " + e);
+            e.printStackTrace();
             return false;
         } catch (final TucsonInvalidAgentIdException e) {
-            // TODO Properly handle Exception
-            System.err.println("[RespectVMContext]: " + e);
+            e.printStackTrace();
             return false;
         } catch (final InvalidLibraryException e) {
-            // TODO Properly handle Exception
-            System.err.println("[RespectVMContext]: " + e);
+            e.printStackTrace();
             return false;
         } catch (final IOException e) {
-            // TODO Properly handle Exception
-            System.err.println("[RespectVMContext]: " + e);
+            e.printStackTrace();
             return false;
         } catch (final InvalidTheoryException e) {
-            // TODO Properly handle Exception
-            System.err.println("[RespectVMContext]: " + e);
             System.err.println("[RespectVMContext]: " + e.clause);
             System.err.println("[RespectVMContext]: " + e.line);
             System.err.println("[RespectVMContext]: " + e.pos);
+            e.printStackTrace();
             return false;
         } catch (final InvalidTupleOperationException e) {
-            // TODO Properly handle Exception
-            System.err.println("[RespectVMContext]: " + e);
+            e.printStackTrace();
             return false;
         }
         return false;
     }
 
     @Override
-    public boolean time_triggeredReaction() {
+    public boolean timeTriggeredReaction() {
         return !this.timeSet.isEmpty();
     }
 
@@ -1650,7 +1738,16 @@ public class RespectVMContext extends
         this.removeMatchingSpecTuple(new LogicTuple(rg));
     }
 
-    protected boolean addReactionSpecHelper(final BehaviourSpecification spec) {
+    /**
+     * 
+     * @param spec
+     *            the ReSpecT specification to be added to this ReSpecT VM
+     *            storage context
+     * @return wether the ReSpecT specification has been succesfully added or
+     *         not
+     */
+    protected boolean addReactionSpecHelper(
+            final AbstractBehaviourSpecification spec) {
 
         if (this.transaction) {
             return false;
@@ -1677,7 +1774,7 @@ public class RespectVMContext extends
 
             this.reactionSpec = (RespectSpecification) spec;
             Iterator<Term> it;
-            it = this.foundTimeReactions();
+            it = this.findTimeReactions();
             while (it.hasNext()) {
                 final Term current = it.next();
                 final Timer currTimer = new Timer();
@@ -1703,14 +1800,20 @@ public class RespectVMContext extends
                     + ex.pos);
             this.notifyException(spec.toString());
             return false;
-        } catch (final Exception ex) {
-            this.notifyException("Invalid reaction spec.");
-            return false;
         }
 
     }
 
-    protected boolean setReactionSpecHelper(final BehaviourSpecification spec) {
+    /**
+     * 
+     * @param spec
+     *            the ReSpecT specification to overwrite this ReSpecT VM one
+     *            with
+     * @return wether the ReSpecT specification has been succesfully overwritten
+     *         or not
+     */
+    protected boolean setReactionSpecHelper(
+            final AbstractBehaviourSpecification spec) {
 
         if (this.transaction) {
             return false;
@@ -1740,7 +1843,7 @@ public class RespectVMContext extends
                 this.trigCore.addTheory(this.noReactionTh);
             }
             this.reactionSpec = (RespectSpecification) spec;
-            final Iterator<Term> it = this.foundTimeReactions();
+            final Iterator<Term> it = this.findTimeReactions();
 
             while (it.hasNext()) {
                 final Term current = it.next();
@@ -1763,14 +1866,10 @@ public class RespectVMContext extends
             return true;
 
         } catch (final alice.tuprolog.InvalidTheoryException ex) {
-            // TODO Properly handle Exception
+            // FIXME Check correctness
             this.notifyException("Invalid reaction spec: " + ex.line + " "
                     + ex.pos);
             this.notifyException(spec.toString());
-            return false;
-        } catch (final Exception ex) {
-            // TODO Properly handle Exception
-            this.notifyException("Invalid reaction spec :(");
             return false;
         }
 

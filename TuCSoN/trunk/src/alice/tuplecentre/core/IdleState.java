@@ -18,12 +18,17 @@ package alice.tuplecentre.core;
  * 
  * @author aricci
  */
-public class IdleState extends TupleCentreVMState {
+public class IdleState extends AbstractTupleCentreVMState {
 
-    private TupleCentreVMState fetchEnvState;
-    private TupleCentreVMState listeningState;
+    private AbstractTupleCentreVMState fetchEnvState;
+    private AbstractTupleCentreVMState listeningState;
 
-    public IdleState(final TupleCentreVMContext tcvm) {
+    /**
+     * 
+     * @param tcvm
+     *            the tuple centre VM this state belongs to
+     */
+    public IdleState(final AbstractTupleCentreVMContext tcvm) {
         super(tcvm);
     }
 
@@ -35,7 +40,7 @@ public class IdleState extends TupleCentreVMState {
     }
 
     @Override
-    public TupleCentreVMState getNextState() {
+    public AbstractTupleCentreVMState getNextState() {
         if (this.vm.pendingEvents()) {
             return this.listeningState;
         } else if (this.vm.pendingEnvEvents()) {

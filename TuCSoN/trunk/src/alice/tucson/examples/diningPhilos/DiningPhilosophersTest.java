@@ -4,9 +4,9 @@ import java.io.IOException;
 
 import alice.logictuple.LogicTuple;
 import alice.logictuple.exceptions.InvalidLogicTupleException;
+import alice.tucson.api.AbstractTucsonAgent;
 import alice.tucson.api.ITucsonOperation;
 import alice.tucson.api.SynchACC;
-import alice.tucson.api.TucsonAgent;
 import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
@@ -21,7 +21,7 @@ import alice.tuplecentre.api.exceptions.OperationTimeOutException;
  * 
  * @author s.mariani@unibo.it
  */
-public class DiningPhilosophersTest extends TucsonAgent {
+public class DiningPhilosophersTest extends AbstractTucsonAgent {
 
     /*
      * Max number of simultaneously eating philosophers should be
@@ -38,7 +38,7 @@ public class DiningPhilosophersTest extends TucsonAgent {
         try {
             new DiningPhilosophersTest("boot").go();
         } catch (final TucsonInvalidAgentIdException e) {
-            // TODO Properly handle Exception
+            e.printStackTrace();
         }
     }
 
@@ -46,6 +46,14 @@ public class DiningPhilosophersTest extends TucsonAgent {
 
     private final String port;
 
+    /**
+     * 
+     * @param aid
+     *            the String representation of a valid TuCSoN agent identifier
+     * @throws TucsonInvalidAgentIdException
+     *             if the given String does not represent a valid TuCSoN agent
+     *             identifier
+     */
     public DiningPhilosophersTest(final String aid)
             throws TucsonInvalidAgentIdException {
         super(aid);
@@ -76,9 +84,9 @@ public class DiningPhilosophersTest extends TucsonAgent {
              * Program the tuple centre by setting a ReSpecT specification (a
              * set of ReSpecT specification tuples) in its specification space.
              */
-            acc.set_s(
+            acc.setS(
                     table,
-                    Utils.fileToString("ds/lab/tucson/respect/diningPhilosophers/table.rsp"),
+                    Utils.fileToString("alice/tucson/examples/diningPhilos/table.rsp"),
                     null);
             for (int i = 0; i < DiningPhilosophersTest.N_PHILOSOPHERS; i++) {
                 /*
@@ -96,19 +104,19 @@ public class DiningPhilosophersTest extends TucsonAgent {
             }
             acc.exit();
         } catch (final TucsonInvalidTupleCentreIdException e) {
-            // TODO Properly handle Exception
+            e.printStackTrace();
         } catch (final TucsonOperationNotPossibleException e) {
-            // TODO Properly handle Exception
+            e.printStackTrace();
         } catch (final UnreachableNodeException e) {
-            // TODO Properly handle Exception
+            e.printStackTrace();
         } catch (final OperationTimeOutException e) {
-            // TODO Properly handle Exception
+            e.printStackTrace();
         } catch (final IOException e) {
-            // TODO Properly handle Exception
+            e.printStackTrace();
         } catch (final InvalidLogicTupleException e) {
-            // TODO Properly handle Exception
+            e.printStackTrace();
         } catch (final TucsonInvalidAgentIdException e) {
-            // TODO Properly handle Exception
+            e.printStackTrace();
         }
     }
 

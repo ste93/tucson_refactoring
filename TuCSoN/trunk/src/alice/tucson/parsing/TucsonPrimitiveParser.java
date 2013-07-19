@@ -14,6 +14,7 @@ public class TucsonPrimitiveParser {
     /**
      * 
      * @param in
+     *            the String representation of the TuCSoN primitive to be parsed
      */
     public TucsonPrimitiveParser(final String in) {
         this.input = in;
@@ -21,7 +22,7 @@ public class TucsonPrimitiveParser {
 
     /**
      * 
-     * @return
+     * @return the Object representing the TuCSoN command parsed
      */
     public TucsonCmd parse() {
         String primitive = this.input.trim();

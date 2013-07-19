@@ -6,10 +6,31 @@ import java.util.List;
 import alice.tuplecentre.api.ITCCycleResult;
 import alice.tuplecentre.api.Tuple;
 
+/**
+ * 
+ * @author ste (mailto: s.mariani@unibo.it) on 17/lug/2013
+ * 
+ */
 public class TCCycleResult implements ITCCycleResult {
 
+    /**
+     * 
+     * @author ste (mailto: s.mariani@unibo.it) on 17/lug/2013
+     * 
+     */
     public enum Outcome {
-        FAILURE, SUCCESS, UNDEFINED
+        /**
+         * 
+         */
+        FAILURE,
+        /**
+         * 
+         */
+        SUCCESS,
+        /**
+         * 
+         */
+        UNDEFINED
     }
 
     private long endTime;
@@ -18,6 +39,9 @@ public class TCCycleResult implements ITCCycleResult {
     private List<Tuple> tupleListResult;
     private Tuple tupleResult;
 
+    /**
+     * 
+     */
     public TCCycleResult() {
         this.opResult = Outcome.UNDEFINED;
         this.tupleResult = null;

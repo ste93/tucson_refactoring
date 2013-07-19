@@ -95,27 +95,27 @@ public final class HelloWorld {
             /*
              * The chosen TuCSoN Agent ID is not admissible.
              */
-            // TODO Properly handle Exception
+            e.printStackTrace();
         } catch (final TucsonInvalidTupleCentreIdException e) {
             /*
              * The chosen target tuple centre is not admissible.
              */
-            // TODO Properly handle Exception
+            e.printStackTrace();
         } catch (final TucsonOperationNotPossibleException e) {
             /*
              * The requested TuCSoN operation cannot be performed.
              */
-            // TODO Properly handle Exception
+            e.printStackTrace();
         } catch (final UnreachableNodeException e) {
             /*
              * The chosen target tuple centre is not reachable.
              */
-            // TODO Properly handle Exception
+            e.printStackTrace();
         } catch (final OperationTimeOutException e) {
             /*
              * Operation timeout expired.
              */
-            // TODO Properly handle Exception
+            e.printStackTrace();
         }
 
     }

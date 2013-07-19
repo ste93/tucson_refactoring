@@ -15,6 +15,15 @@ import java.io.IOException;
  */
 public final class Utils {
 
+    /**
+     * 
+     * @param path
+     *            the filepath toward the file to be read
+     * @return the String representation of the content of the read file
+     * @throws IOException
+     *             if the file cannot be found or access permissions do not
+     *             allow reading
+     */
     public static String fileToString(final String path) throws IOException {
         final BufferedInputStream br =
                 new BufferedInputStream(ClassLoader.getSystemClassLoader()

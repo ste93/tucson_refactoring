@@ -30,7 +30,8 @@ import alice.tuprolog.Prolog;
  * @author aricci
  * 
  */
-public abstract class TupleCentreOperation implements ITupleCentreOperation {
+public abstract class AbstractTupleCentreOperation implements
+        ITupleCentreOperation {
 
     protected static final int OPTYPE_ABORT_OP = 58;
     protected static final int OPTYPE_ADD_INSP = 70;
@@ -87,7 +88,13 @@ public abstract class TupleCentreOperation implements ITupleCentreOperation {
      * shared id counter
      */
     private static long idCounter = 0;
+    /**
+     * 
+     */
     protected OperationCompletionListener listener;
+    /**
+     * 
+     */
     protected boolean operationCompleted;
     /**
      * used for possible synchronisation
@@ -104,55 +111,124 @@ public abstract class TupleCentreOperation implements ITupleCentreOperation {
     private List<Tuple> tupleListArgument;
     private final int type;
 
-    protected TupleCentreOperation(final Prolog prol, final int t,
+    /**
+     * 
+     * @param prol
+     *            the 2p engine to be used for tuples parsing
+     * @param t
+     *            the type code of the operation
+     * @param tupleList
+     *            the list of tuples argument of the operation
+     */
+    protected AbstractTupleCentreOperation(final Prolog prol, final int t,
             final List<Tuple> tupleList) {
         this(prol, t);
         this.listener = null;
         this.tupleListArgument = tupleList;
     }
 
-    protected TupleCentreOperation(final Prolog prol, final int t,
+    /**
+     * 
+     * @param prol
+     *            the 2p engine to be used for tuples parsing
+     * @param t
+     *            the type code of the operation
+     * @param tupleList
+     *            the list of tuples argument of the operation
+     * @param l
+     *            the listener for operation completion
+     */
+    protected AbstractTupleCentreOperation(final Prolog prol, final int t,
             final List<Tuple> tupleList, final OperationCompletionListener l) {
         this(prol, t, tupleList);
         this.listener = l;
     }
 
-    protected TupleCentreOperation(final Prolog prol, final int ty,
+    /**
+     * 
+     * @param prol
+     *            the 2p engine to be used for tuples parsing
+     * @param ty
+     *            the type code of the operation
+     * @param t
+     *            the tuple argument of the operation
+     */
+    protected AbstractTupleCentreOperation(final Prolog prol, final int ty,
             final Tuple t) {
         this(prol, ty);
         this.listener = null;
         this.tupleArgument = t;
     }
 
-    protected TupleCentreOperation(final Prolog prol, final int ty,
+    /**
+     * 
+     * @param prol
+     *            the 2p engine to be used for tuples parsing
+     * @param ty
+     *            the type code of the operation
+     * @param t
+     *            the tuple argument of the operation
+     * @param l
+     *            the listener for operation completion
+     */
+    protected AbstractTupleCentreOperation(final Prolog prol, final int ty,
             final Tuple t, final OperationCompletionListener l) {
         this(prol, ty, t);
         this.listener = l;
     }
 
-    protected TupleCentreOperation(final Prolog prol, final int ty,
+    /**
+     * 
+     * @param prol
+     *            the 2p engine to be used for tuples parsing
+     * @param ty
+     *            the type code of the operation
+     * @param t
+     *            the tuple template argument of the operation
+     */
+    protected AbstractTupleCentreOperation(final Prolog prol, final int ty,
             final TupleTemplate t) {
         this(prol, ty);
         this.listener = null;
         this.templateArgument = t;
     }
 
-    protected TupleCentreOperation(final Prolog prol, final int ty,
+    /**
+     * 
+     * @param prol
+     *            the 2p engine to be used for tuples parsing
+     * @param ty
+     *            the type code of the operation
+     * @param t
+     *            the tuple template argument of the operation
+     * @param l
+     *            the listener for operation completion
+     */
+    protected AbstractTupleCentreOperation(final Prolog prol, final int ty,
             final TupleTemplate t, final OperationCompletionListener l) {
         this(prol, ty, t);
         this.listener = l;
     }
 
-    private TupleCentreOperation(final Prolog prol, final int ty) {
+    private AbstractTupleCentreOperation(final Prolog prol, final int ty) {
         this.operationCompleted = false;
         this.result = new TCCycleResult();
         this.type = ty;
         this.token = new Object();
-        this.id = TupleCentreOperation.idCounter;
-        TupleCentreOperation.idCounter++;
-        this.p = prol;
+        this.id = AbstractTupleCentreOperation.idCounter;
+        AbstractTupleCentreOperation.idCounter++;
+        if (prol == null) {
+            this.p = new Prolog();
+        } else {
+            this.p = prol;
+        }
     }
 
+    /**
+     * 
+     * @param lis
+     *            the listener for operation completion to add
+     */
     public void addListener(final OperationCompletionListener lis) {
         this.listener = lis;
     }
@@ -166,11 +242,16 @@ public abstract class TupleCentreOperation implements ITupleCentreOperation {
         return this.id;
     }
 
+    /**
+     * 
+     * @return the tuple representing the whole invocation predicate (primitive
+     *         + tuple argument)
+     */
     public LogicTuple getPredicate() {
         final StringBuffer pred = new StringBuffer();
         try {
-            if (this.isOut() || this.isOut_s() || this.isOutAll()
-                    || this.isSpawn() || this.isSet() || this.isSet_s()) {
+            if (this.isOut() || this.isOutS() || this.isOutAll()
+                    || this.isSpawn() || this.isSet() || this.isSetS()) {
                 pred.append(this.getPrimitive().toString()).append('(')
                         .append(this.tupleArgument).append(')');
                 return LogicTuple.parse(pred.toString());
@@ -179,11 +260,15 @@ public abstract class TupleCentreOperation implements ITupleCentreOperation {
                     .append(this.templateArgument).append(')');
             return LogicTuple.parse(pred.toString());
         } catch (final InvalidLogicTupleException e) {
-            // TODO Properly handle Exception
+            e.printStackTrace();
             return null;
         }
     }
 
+    /**
+     * 
+     * @return the tuple representing the primitive invoked
+     */
     public LogicTuple getPrimitive() {
         switch (this.type) {
             case OPTYPE_OUT:
@@ -269,97 +354,128 @@ public abstract class TupleCentreOperation implements ITupleCentreOperation {
         return this.result.getTupleResult();
     }
 
+    /**
+     * 
+     * @return the type code of the operation
+     */
     public int getType() {
         return this.type;
     }
 
     public boolean isGet() {
-        return this.type == TupleCentreOperation.OPTYPE_GET;
+        return this.type == AbstractTupleCentreOperation.OPTYPE_GET;
     }
 
-    public boolean isGet_s() {
-        return this.type == TupleCentreOperation.OPTYPE_GET_S;
+    public boolean isGetS() {
+        return this.type == AbstractTupleCentreOperation.OPTYPE_GET_S;
     }
 
     public boolean isIn() {
-        return this.type == TupleCentreOperation.OPTYPE_IN;
-    }
-
-    public boolean isIn_s() {
-        return this.type == TupleCentreOperation.OPTYPE_IN_S;
+        return this.type == AbstractTupleCentreOperation.OPTYPE_IN;
     }
 
     public boolean isInAll() {
-        return this.type == TupleCentreOperation.OPTYPE_IN_ALL;
+        return this.type == AbstractTupleCentreOperation.OPTYPE_IN_ALL;
     }
 
     public boolean isInp() {
-        return this.type == TupleCentreOperation.OPTYPE_INP;
-    }
-
-    public boolean isInp_s() {
-        return this.type == TupleCentreOperation.OPTYPE_INP_S;
-    }
-
-    public boolean isNo() {
-        return this.type == TupleCentreOperation.OPTYPE_NO;
-    }
-
-    public boolean isNo_s() {
-        return this.type == TupleCentreOperation.OPTYPE_NO_S;
-    }
-
-    public boolean isNoAll() {
-        return this.type == TupleCentreOperation.OPTYPE_NO_ALL;
-    }
-
-    public boolean isNop() {
-        return this.type == TupleCentreOperation.OPTYPE_NOP;
-    }
-
-    public boolean isNop_s() {
-        return this.type == TupleCentreOperation.OPTYPE_NOP_S;
+        return this.type == AbstractTupleCentreOperation.OPTYPE_INP;
     }
 
     /**
-     * Tests if the operation is completed
      * 
-     * @return true if the operation is completed
+     * @return wether this operation is a <code>inp_s</code>
      */
+    public boolean isInpS() {
+        return this.type == AbstractTupleCentreOperation.OPTYPE_INP_S;
+    }
+
+    /**
+     * 
+     * @return wether this operation is a <code>in_s</code>
+     */
+    public boolean isInS() {
+        return this.type == AbstractTupleCentreOperation.OPTYPE_IN_S;
+    }
+
+    public boolean isNo() {
+        return this.type == AbstractTupleCentreOperation.OPTYPE_NO;
+    }
+
+    /**
+     * 
+     * @return wether this operation is a <code>no_all</code>
+     */
+    public boolean isNoAll() {
+        return this.type == AbstractTupleCentreOperation.OPTYPE_NO_ALL;
+    }
+
+    public boolean isNop() {
+        return this.type == AbstractTupleCentreOperation.OPTYPE_NOP;
+    }
+
+    /**
+     * 
+     * @return wether this operation is a <code>nop_s</code>
+     */
+    public boolean isNopS() {
+        return this.type == AbstractTupleCentreOperation.OPTYPE_NOP_S;
+    }
+
+    /**
+     * 
+     * @return wether this operation is a <code>no_s</code>
+     */
+    public boolean isNoS() {
+        return this.type == AbstractTupleCentreOperation.OPTYPE_NO_S;
+    }
+
     public boolean isOperationCompleted() {
         return this.operationCompleted;
     }
 
     public boolean isOut() {
-        return this.type == TupleCentreOperation.OPTYPE_OUT;
-    }
-
-    public boolean isOut_s() {
-        return this.type == TupleCentreOperation.OPTYPE_OUT_S;
+        return this.type == AbstractTupleCentreOperation.OPTYPE_OUT;
     }
 
     public boolean isOutAll() {
-        return this.type == TupleCentreOperation.OPTYPE_OUT_ALL;
+        return this.type == AbstractTupleCentreOperation.OPTYPE_OUT_ALL;
+    }
+
+    /**
+     * 
+     * @return wether this operation is a <code>out_s</code>
+     */
+    public boolean isOutS() {
+        return this.type == AbstractTupleCentreOperation.OPTYPE_OUT_S;
     }
 
     public boolean isRd() {
-        return this.type == TupleCentreOperation.OPTYPE_RD;
-    }
-
-    public boolean isRd_s() {
-        return this.type == TupleCentreOperation.OPTYPE_RD_S;
+        return this.type == AbstractTupleCentreOperation.OPTYPE_RD;
     }
 
     public boolean isRdAll() {
-        return this.type == TupleCentreOperation.OPTYPE_RD_ALL;
+        return this.type == AbstractTupleCentreOperation.OPTYPE_RD_ALL;
     }
 
     public boolean isRdp() {
-        return this.type == TupleCentreOperation.OPTYPE_RDP;
+        return this.type == AbstractTupleCentreOperation.OPTYPE_RDP;
     }
 
-    public boolean isRdp_s() {
-        return this.type == TupleCentreOperation.OPTYPE_RDP_S;
+    /**
+     * 
+     * @return wether this operation is a <code>rdp_s</code>
+     */
+    public boolean isRdpS() {
+        return this.type == AbstractTupleCentreOperation.OPTYPE_RDP_S;
+    }
+
+    /**
+     * 
+     * @return wether this operation is a <code>rd_s</code>
+     */
+    public boolean isRdS() {
+        return this.type == AbstractTupleCentreOperation.OPTYPE_RD_S;
     }
 
     /**
@@ -380,39 +496,43 @@ public abstract class TupleCentreOperation implements ITupleCentreOperation {
     }
 
     public boolean isSet() {
-        return this.type == TupleCentreOperation.OPTYPE_SET;
+        return this.type == AbstractTupleCentreOperation.OPTYPE_SET;
     }
 
-    public boolean isSet_s() {
-        return this.type == TupleCentreOperation.OPTYPE_SET_S;
+    public boolean isSetS() {
+        return this.type == AbstractTupleCentreOperation.OPTYPE_SET_S;
     }
 
+    /**
+     * 
+     * @return wether this operation is a <code>spawn</code>
+     */
     public boolean isSpawn() {
-        return this.type == TupleCentreOperation.OPTYPE_SPAWN;
+        return this.type == AbstractTupleCentreOperation.OPTYPE_SPAWN;
     }
 
     public boolean isUin() {
-        return this.type == TupleCentreOperation.OPTYPE_UIN;
+        return this.type == AbstractTupleCentreOperation.OPTYPE_UIN;
     }
 
     public boolean isUinp() {
-        return this.type == TupleCentreOperation.OPTYPE_UINP;
+        return this.type == AbstractTupleCentreOperation.OPTYPE_UINP;
     }
 
     public boolean isUno() {
-        return this.type == TupleCentreOperation.OPTYPE_UNO;
+        return this.type == AbstractTupleCentreOperation.OPTYPE_UNO;
     }
 
     public boolean isUnop() {
-        return this.type == TupleCentreOperation.OPTYPE_UNOP;
+        return this.type == AbstractTupleCentreOperation.OPTYPE_UNOP;
     }
 
     public boolean isUrd() {
-        return this.type == TupleCentreOperation.OPTYPE_URD;
+        return this.type == AbstractTupleCentreOperation.OPTYPE_URD;
     }
 
     public boolean isUrdp() {
-        return this.type == TupleCentreOperation.OPTYPE_URDP;
+        return this.type == AbstractTupleCentreOperation.OPTYPE_URDP;
     }
 
     /**
@@ -424,34 +544,53 @@ public abstract class TupleCentreOperation implements ITupleCentreOperation {
             this.operationCompleted = true;
             this.listener.operationCompleted(this);
         } else {
-            try {
-                synchronized (this.token) {
-                    this.operationCompleted = true;
-                    this.token.notifyAll();
-                }
-            } catch (final Exception e) {
-                // TODO Properly handle Exception
+            synchronized (this.token) {
+                this.operationCompleted = true;
+                this.token.notifyAll();
             }
         }
     }
 
+    /**
+     * 
+     */
     public void removeListener() {
         this.listener = null;
     }
 
+    /**
+     * 
+     * @param l
+     *            the listener for operation completion
+     */
     public void setListener(final OperationCompletionListener l) {
         this.listener = l;
     }
 
+    /**
+     * 
+     * @param o
+     *            the outcome of the operation
+     */
     public void setOpResult(final Outcome o) {
         this.result.setOpResult(o);
     }
 
+    /**
+     * 
+     * @param t
+     *            the list of tuples result of the operation
+     */
     public void setTupleListResult(final List<Tuple> t) {
         this.result.setTupleListResult(t);
         this.result.setEndTime(System.currentTimeMillis());
     }
 
+    /**
+     * 
+     * @param t
+     *            the tuple result of the operation
+     */
     public void setTupleResult(final Tuple t) {
         this.result.setTupleResult(t);
         if (this.templateArgument != null) {
@@ -461,11 +600,6 @@ public abstract class TupleCentreOperation implements ITupleCentreOperation {
         this.result.setEndTime(System.currentTimeMillis());
     }
 
-    /**
-     * Wait for operation completion
-     * 
-     * Current execution flow is blocked until the operation is completed
-     */
     public void waitForOperationCompletion() {
         try {
             synchronized (this.token) {
@@ -474,35 +608,23 @@ public abstract class TupleCentreOperation implements ITupleCentreOperation {
                 }
             }
         } catch (final InterruptedException e) {
-            // TODO Properly handle Excpetion
-        } catch (final Exception e) {
-            // TODO Properly handle Exception
+            e.printStackTrace();
         }
     }
 
-    /**
-     * Wait for operation completion, with time out
-     * 
-     * Current execution flow is blocked until the operation is completed or a
-     * maximum waiting time is elapsed
-     * 
-     * @param ms
-     *            maximum waiting time
-     * @throws OperationTimeOutException
-     */
     public void waitForOperationCompletion(final long ms)
             throws OperationTimeOutException {
-        try {
-            synchronized (this.token) {
-                if (!this.operationCompleted) {
+        synchronized (this.token) {
+            if (!this.operationCompleted) {
+                try {
                     this.token.wait(ms);
-                }
-                if (!this.operationCompleted) {
-                    throw new OperationTimeOutException();
+                } catch (final InterruptedException e) {
+                    e.printStackTrace();
                 }
             }
-        } catch (final Exception e) {
-            // TODO Properly handle Exception
+            if (!this.operationCompleted) {
+                throw new OperationTimeOutException();
+            }
         }
     }
 

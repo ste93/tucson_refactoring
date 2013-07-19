@@ -27,6 +27,7 @@ public interface RootACC {
      * Release of the ACC and exit from the TuCSoN system.
      * 
      * @throws TucsonOperationNotPossibleException
+     *             if the requested operation cannot be carried out
      */
     void exit() throws TucsonOperationNotPossibleException;
 

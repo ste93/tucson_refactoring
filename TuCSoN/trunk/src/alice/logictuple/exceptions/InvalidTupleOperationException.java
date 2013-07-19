@@ -13,15 +13,10 @@
  */
 package alice.logictuple.exceptions;
 
-import alice.logictuple.TupleArgument;
-import alice.logictuple.Var;
-
 /**
  * Exception thrown when a not valid tuple argument value is used
  * 
  * @author aricci
- * @see Var
- * @see TupleArgument
  * @version 1.0
  */
 public class InvalidTupleOperationException extends LogicTupleException {

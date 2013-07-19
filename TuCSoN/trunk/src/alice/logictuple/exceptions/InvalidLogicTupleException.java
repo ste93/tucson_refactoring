@@ -13,14 +13,10 @@
  */
 package alice.logictuple.exceptions;
 
-import alice.logictuple.LogicTuple;
-
 /**
  * Exception thrown when a malformed logic logic tuple is created or used
  * 
  * @author aricci
- * 
- * @see LogicTuple
  * 
  * @version 1.0
  */

@@ -10,13 +10,23 @@ import alice.respect.api.exceptions.OperationNotPossibleException;
 import alice.tuplecentre.api.IId;
 import alice.tuplecentre.core.OperationCompletionListener;
 
+/**
+ * 
+ * @author ste (mailto: s.mariani@unibo.it) on 02/lug/2013
+ * 
+ */
 public class SpecificationAsynchInterface implements
         ISpecificationAsynchInterface {
 
     private final IRespectTC core;
 
-    public SpecificationAsynchInterface(final IRespectTC core_) {
-        this.core = core_;
+    /**
+     * 
+     * @param c
+     *            the ReSpecT tuple centres manager this interface refers to
+     */
+    public SpecificationAsynchInterface(final IRespectTC c) {
+        this.core = c;
     }
 
     public IRespectOperation getS(final IId aid,

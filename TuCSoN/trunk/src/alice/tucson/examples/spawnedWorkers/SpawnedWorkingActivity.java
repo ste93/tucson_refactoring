@@ -6,20 +6,20 @@ import alice.logictuple.LogicTuple;
 import alice.logictuple.TupleArgument;
 import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.logictuple.exceptions.InvalidTupleOperationException;
-import alice.tucson.api.SpawnActivity;
+import alice.tucson.api.AbstractSpawnActivity;
 
 /**
  * 
  * 
  * @author s.mariani@unibo.it
  */
-public class SpawnedWorkingActivity extends SpawnActivity {
+public class SpawnedWorkingActivity extends AbstractSpawnActivity {
 
     private static final long serialVersionUID = -4459068799410719933L;
 
     /*
-	 * 
-	 */
+     * 
+     */
     @Override
     public void doActivity() {
         try {
@@ -52,10 +52,10 @@ public class SpawnedWorkingActivity extends SpawnActivity {
             this.out(res);
         } catch (final InvalidLogicTupleException e) {
             this.log("ERROR: Tuple is not an admissible Prolog term!");
-            // TODO Properly handle Exception
+            e.printStackTrace();
         } catch (final InvalidTupleOperationException e) {
             this.log("ERROR: No tuple arguments to retrieve!");
-            // TODO Properly handle Exception
+            e.printStackTrace();
         }
     }
 

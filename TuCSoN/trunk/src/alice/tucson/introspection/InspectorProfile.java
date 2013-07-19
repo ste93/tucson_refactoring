@@ -17,10 +17,22 @@ import alice.tucson.api.TucsonAgentId;
 import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.service.ACCDescription;
 
+/**
+ * 
+ * @author ste (mailto: s.mariani@unibo.it) on 03/lug/2013
+ * 
+ */
 public class InspectorProfile extends ACCDescription {
 
     private static final long serialVersionUID = 4542989407611049869L;
 
+    /**
+     * 
+     * @param aid
+     *            the agent identifier used by the inspector
+     * @param tid
+     *            the identifier of the tuple centre under inspection
+     */
     public InspectorProfile(final TucsonAgentId aid,
             final TucsonTupleCentreId tid) {
         super();

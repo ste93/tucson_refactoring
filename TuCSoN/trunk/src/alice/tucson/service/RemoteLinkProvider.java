@@ -9,12 +9,17 @@ import alice.tuplecentre.api.TupleCentreId;
 
 /**
  * 
+ * @author ste (mailto: s.mariani@unibo.it) on 17/lug/2013
+ * 
  */
 public class RemoteLinkProvider implements IRemoteLinkProvider {
 
     // FIXME How to fix this?
     private static Map<String, InterTupleCentreACCProvider> remoteRegistry;
 
+    /**
+     * 
+     */
     public RemoteLinkProvider() {
         RemoteLinkProvider.remoteRegistry =
                 new HashMap<String, InterTupleCentreACCProvider>();

@@ -15,17 +15,50 @@ package alice.tucson.introspection;
 
 import alice.tucson.api.TucsonAgentId;
 
+/**
+ * 
+ * @author ste (mailto: s.mariani@unibo.it) on 03/lug/2013
+ * 
+ */
 public class GetSnapshotMsg extends NodeMsg {
 
+    /**
+     * 
+     */
     public static final byte TSET = 1;
+    /**
+     * 
+     */
     public static final byte WSET = 2;
     private static final long serialVersionUID = -7715943663646624722L;
 
-    public byte what;
+    private byte what;
 
-    public GetSnapshotMsg(final TucsonAgentId id, final byte what_) {
+    /**
+     * 
+     * @param id
+     *            the agent identifier
+     * @param w
+     *            the set to retrieve
+     */
+    public GetSnapshotMsg(final TucsonAgentId id, final byte w) {
         super(id, "getSnapshot");
-        this.what = what_;
+        this.what = w;
+    }
+
+    /**
+     * @return the what
+     */
+    public byte getWhat() {
+        return this.what;
+    }
+
+    /**
+     * @param w
+     *            the what to set
+     */
+    public void setWhat(final byte w) {
+        this.what = w;
     }
 
 }

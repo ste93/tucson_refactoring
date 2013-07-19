@@ -30,6 +30,9 @@ public class TRSet {
     private final List<TriggeredReaction> tRemoved;
     private final List<TriggeredReaction> trigs;
 
+    /**
+     * 
+     */
     public TRSet() {
         this.trigs = new LinkedList<TriggeredReaction>();
         this.tRemoved = new LinkedList<TriggeredReaction>();
@@ -37,6 +40,12 @@ public class TRSet {
         this.transaction = false;
     }
 
+    /**
+     * 
+     * @param t
+     *            the ReSpecT triggered reaction to add to the triggered
+     *            reaction set
+     */
     public void add(final TriggeredReaction t) {
         this.trigs.add(t);
         if (this.transaction) {
@@ -44,16 +53,28 @@ public class TRSet {
         }
     }
 
+    /**
+     * 
+     */
     public void beginTransaction() {
         this.transaction = true;
         this.tAdded.clear();
         this.tRemoved.clear();
     }
 
+    /**
+     * 
+     */
     public void empty() {
         this.trigs.clear();
     }
 
+    /**
+     * 
+     * @param commit
+     *            wether the just terminated transaction has to be successfully
+     *            commited or not
+     */
     public void endTransaction(final boolean commit) {
         if (!commit) {
             Iterator<TriggeredReaction> it = this.tAdded.listIterator();
@@ -70,18 +91,35 @@ public class TRSet {
         this.tRemoved.clear();
     }
 
+    /**
+     * 
+     * @return the first triggered reaction of this list
+     */
     public TriggeredReaction get() {
         return this.trigs.remove(0);
     }
 
+    /**
+     * 
+     * @return a Java iterator through this triggered reactions list
+     */
     public Iterator<? extends TriggeredReaction> getIterator() {
         return this.trigs.listIterator();
     }
 
+    /**
+     * 
+     * @return wether this triggered reactions list is empty or not
+     */
     public boolean isEmpty() {
         return this.trigs.isEmpty();
     }
 
+    /**
+     * 
+     * @param t
+     *            the triggered reaction to remove from this list
+     */
     public void remove(final TriggeredReaction t) {
         this.trigs.remove(t);
         if (this.transaction) {
@@ -89,6 +127,10 @@ public class TRSet {
         }
     }
 
+    /**
+     * 
+     * @return the Java array representation of this triggered reaction list
+     */
     public TriggeredReaction[] toArray() {
         final int size = this.trigs.size();
         final TriggeredReaction[] trArray = new TriggeredReaction[size];

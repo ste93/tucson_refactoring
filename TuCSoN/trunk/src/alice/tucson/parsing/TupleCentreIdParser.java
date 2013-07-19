@@ -17,7 +17,11 @@ public class TupleCentreIdParser {
     /**
      * 
      * @param in
+     *            the String representation of the tuple centre id to parse
+     * @param n
+     *            the String representation of the default TuCSoN node
      * @param port
+     *            the String representation of the default TuCSoN listening port
      */
     public TupleCentreIdParser(final String in, final String n,
             final String port) {
@@ -28,8 +32,10 @@ public class TupleCentreIdParser {
 
     /**
      * 
-     * @return
+     * @return the identifier of the tuple centre parsed
      * @throws TucsonInvalidTupleCentreIdException
+     *             if the id of the tuple centre target of the operation is not
+     *             a valid TuCSoN tuple centre id
      */
     public TucsonTupleCentreId parse()
             throws TucsonInvalidTupleCentreIdException {

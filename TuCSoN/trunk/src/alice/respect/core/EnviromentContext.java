@@ -3,10 +3,20 @@ package alice.respect.core;
 import alice.respect.api.IEnvironmentContext;
 import alice.tuplecentre.core.InputEvent;
 
+/**
+ * 
+ * @author ste (mailto: s.mariani@unibo.it) on 01/lug/2013
+ * 
+ */
 public class EnviromentContext implements IEnvironmentContext {
 
     private final RespectVMContext vm;
 
+    /**
+     * 
+     * @param rvm
+     *            the ReSpecT VM this context refers to
+     */
     public EnviromentContext(final RespectVMContext rvm) {
         this.vm = rvm;
     }

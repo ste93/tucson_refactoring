@@ -15,10 +15,20 @@ package alice.tucson.introspection;
 
 import alice.tucson.api.TucsonAgentId;
 
+/**
+ * 
+ * @author ste (mailto: s.mariani@unibo.it) on 03/lug/2013
+ * 
+ */
 public class ResetMsg extends NodeMsg {
 
     private static final long serialVersionUID = 5161921319537355981L;
 
+    /**
+     * 
+     * @param id
+     *            the agent id of the sender
+     */
     public ResetMsg(final TucsonAgentId id) {
         super(id, "reset");
     }

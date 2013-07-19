@@ -23,11 +23,20 @@ public class OperationTimeOutException extends RespectException {
     private static final long serialVersionUID = 582402145982163993L;
     private final IRespectOperation op;
 
+    /**
+     * 
+     * @param rop
+     *            the operation whose timeout expired
+     */
     public OperationTimeOutException(final IRespectOperation rop) {
         super();
         this.op = rop;
     }
 
+    /**
+     * 
+     * @return the operatio whose timeout expired
+     */
     public IRespectOperation getOperation() {
         return this.op;
     }

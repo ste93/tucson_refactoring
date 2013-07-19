@@ -25,11 +25,21 @@ import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
  * 
  * @author unknown
  */
-public abstract class Automaton extends TucsonAgent implements Serializable {
+public abstract class AbstractAutomaton extends AbstractTucsonAgent implements
+        Serializable {
 
-    static protected Class<?>[] argType;
+    /**
+     * 
+     */
+    protected static Class<?>[] argType;
     private static final long serialVersionUID = -8327090817152965357L;
+    /**
+     * 
+     */
     protected Object[] arguments = null;
+    /**
+     * 
+     */
     protected String state = "boot";
 
     /**
@@ -39,8 +49,12 @@ public abstract class Automaton extends TucsonAgent implements Serializable {
      * @throws TucsonInvalidAgentIdException
      * 
      * @see alice.tuprolog.Term Term
+     * @throws TucsonInvalidAgentIdException
+     *             if the given String is not a valid representation of a
+     *             ReSpecT agent identifier
      */
-    public Automaton(final String aid) throws TucsonInvalidAgentIdException {
+    public AbstractAutomaton(final String aid)
+            throws TucsonInvalidAgentIdException {
         super(aid);
     }
 
@@ -81,6 +95,7 @@ public abstract class Automaton extends TucsonAgent implements Serializable {
      * End state.
      * 
      * @throws TucsonOperationNotPossibleException
+     *             if the requested operation cannot be carried out
      */
     protected void end() throws TucsonOperationNotPossibleException {
         this.getContext().exit();
@@ -97,15 +112,15 @@ public abstract class Automaton extends TucsonAgent implements Serializable {
      * Main FSA cycle.
      */
     @Override
-    final protected void main() {
+    protected final void main() {
 
-        // TODO I don't think the string is correct...
+        // FIXME I don't think the string is correct...
         try {
-            Automaton.argType =
+            AbstractAutomaton.argType =
                     new Class[] { Class.forName("java.lang.Object") };
         } catch (final ClassNotFoundException e) {
-            // TODO Properly handle Exception
             System.err.println("[Automaton]: " + e);
+            e.printStackTrace();
             this.error();
         }
 
@@ -120,24 +135,19 @@ public abstract class Automaton extends TucsonAgent implements Serializable {
                         m.setAccessible(true);
                         m.invoke(this, (Object[]) null);
                     } catch (final SecurityException e) {
-                        // TODO Properly handle Exception
-                        System.err.println("[Automaton]: " + e);
+                        e.printStackTrace();
                         this.error();
                     } catch (final NoSuchMethodException e) {
-                        // TODO Properly handle Exception
-                        System.err.println("[Automaton]: " + e);
+                        e.printStackTrace();
                         this.error();
                     } catch (final IllegalArgumentException e) {
-                        // TODO Properly handle Exception
-                        System.err.println("[Automaton]: " + e);
+                        e.printStackTrace();
                         this.error();
                     } catch (final IllegalAccessException e) {
-                        // TODO Properly handle Exception
-                        System.err.println("[Automaton]: " + e);
+                        e.printStackTrace();
                         this.error();
                     } catch (final InvocationTargetException e) {
-                        // TODO Properly handle Exception
-                        System.err.println("[Automaton]: " + e);
+                        e.printStackTrace();
                         this.error();
                     }
                 } else {
@@ -145,28 +155,23 @@ public abstract class Automaton extends TucsonAgent implements Serializable {
                     try {
                         m =
                                 this.getClass().getDeclaredMethod(this.state,
-                                        Automaton.argType);
+                                        AbstractAutomaton.argType);
                         m.setAccessible(true);
                         m.invoke(this, this.arguments);
                     } catch (final SecurityException e) {
-                        // TODO Properly handle Exception
-                        System.err.println("[Automaton]: " + e);
+                        e.printStackTrace();
                         this.error();
                     } catch (final NoSuchMethodException e) {
-                        // TODO Properly handle Exception
-                        System.err.println("[Automaton]: " + e);
+                        e.printStackTrace();
                         this.error();
                     } catch (final IllegalArgumentException e) {
-                        // TODO Properly handle Exception
-                        System.err.println("[Automaton]: " + e);
+                        e.printStackTrace();
                         this.error();
                     } catch (final IllegalAccessException e) {
-                        // TODO Properly handle Exception
-                        System.err.println("[Automaton]: " + e);
+                        e.printStackTrace();
                         this.error();
                     } catch (final InvocationTargetException e) {
-                        // TODO Properly handle Exception
-                        System.err.println("[Automaton]: " + e);
+                        e.printStackTrace();
                         this.error();
                     }
                 }
@@ -174,8 +179,7 @@ public abstract class Automaton extends TucsonAgent implements Serializable {
                 try {
                     this.end();
                 } catch (final TucsonOperationNotPossibleException e) {
-                    // TODO Properly handle Exception
-                    System.err.println("[Automaton]: " + e);
+                    e.printStackTrace();
                     this.error();
                 }
                 break;

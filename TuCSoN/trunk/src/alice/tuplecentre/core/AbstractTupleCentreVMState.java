@@ -18,20 +18,42 @@ package alice.tuplecentre.core;
  * 
  * @author aricci
  */
-public abstract class TupleCentreVMState {
+public abstract class AbstractTupleCentreVMState {
 
-    protected TupleCentreVMContext vm;
+    /**
+     * 
+     */
+    protected AbstractTupleCentreVMContext vm;
 
-    public TupleCentreVMState(final TupleCentreVMContext tcvm) {
+    /**
+     * 
+     * @param tcvm
+     *            the tuple centre VM this state belongs to
+     */
+    public AbstractTupleCentreVMState(final AbstractTupleCentreVMContext tcvm) {
         this.vm = tcvm;
     }
 
+    /**
+     * 
+     */
     public abstract void execute();
 
-    public abstract TupleCentreVMState getNextState();
+    /**
+     * 
+     * @return the next state in tuple centre VM execution flow
+     */
+    public abstract AbstractTupleCentreVMState getNextState();
 
+    /**
+     * 
+     * @return wether the tuple centre VM is idle
+     */
     public abstract boolean isIdle();
 
+    /**
+     * 
+     */
     public abstract void resolveLinks();
 
 }

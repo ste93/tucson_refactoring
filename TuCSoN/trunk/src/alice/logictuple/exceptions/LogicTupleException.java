@@ -13,12 +13,8 @@
  */
 package alice.logictuple.exceptions;
 
-import alice.logictuple.LogicTuple;
-
 /**
  * Logic Tuple root base Exception class
- * 
- * @see LogicTuple
  * 
  * @author aricci
  * @version 1.0

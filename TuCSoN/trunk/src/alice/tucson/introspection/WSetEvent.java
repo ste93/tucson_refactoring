@@ -5,16 +5,30 @@ import java.io.Serializable;
 import alice.logictuple.LogicTuple;
 import alice.tuplecentre.api.IId;
 
+/**
+ * 
+ * @author ste (mailto: s.mariani@unibo.it) on 03/lug/2013
+ * 
+ */
 public class WSetEvent implements Serializable {
 
     /**
-	 * 
-	 */
+     * 
+     */
     private static final long serialVersionUID = 9193318251500885501L;
     private LogicTuple op;
     private IId source;
     private IId target;
 
+    /**
+     * 
+     * @param lt
+     *            the tuple representing the event
+     * @param s
+     *            the identifier of the event source
+     * @param t
+     *            the identifier of the event target
+     */
     public WSetEvent(final LogicTuple lt, final IId s, final IId t) {
         this.op = lt;
         this.source = s;

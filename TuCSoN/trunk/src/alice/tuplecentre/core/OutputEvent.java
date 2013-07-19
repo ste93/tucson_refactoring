@@ -19,12 +19,17 @@ package alice.tuplecentre.core;
  * 
  * @author aricci
  */
-public class OutputEvent extends Event {
+public class OutputEvent extends AbstractEvent {
 
     private static final long serialVersionUID = -5521129200850527503L;
     private final InputEvent inputEvent;
     private boolean isLnk;
 
+    /**
+     * 
+     * @param ev
+     *            the input event this output event refers to
+     */
     public OutputEvent(final InputEvent ev) {
         super(ev.getSource(), ev.getSimpleTCEvent(), ev.getReactingTC(), ev
                 .getTime());
@@ -32,6 +37,10 @@ public class OutputEvent extends Event {
         this.isLnk = ev.isLinking();
     }
 
+    /**
+     * 
+     * @return the input event this output event refers to
+     */
     public InputEvent getInputEvent() {
         return this.inputEvent;
     }
@@ -46,6 +55,10 @@ public class OutputEvent extends Event {
         return false;
     }
 
+    /**
+     * 
+     * @return wether this event is a linking event
+     */
     public boolean isLinking() {
         return this.isLnk;
     }
@@ -55,6 +68,11 @@ public class OutputEvent extends Event {
         return true;
     }
 
+    /**
+     * 
+     * @param flag
+     *            wether this event is a linking event
+     */
     public void setIsLinking(final boolean flag) {
         this.isLnk = flag;
     }

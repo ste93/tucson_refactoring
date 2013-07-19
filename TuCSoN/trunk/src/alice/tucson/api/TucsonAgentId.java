@@ -20,6 +20,11 @@ import alice.respect.api.AgentId;
 import alice.respect.api.exceptions.InvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 
+/**
+ * 
+ * @author ste (mailto: s.mariani@unibo.it) on 02/lug/2013
+ * 
+ */
 public class TucsonAgentId implements alice.tuplecentre.api.AgentId,
         Serializable {
 
@@ -39,10 +44,18 @@ public class TucsonAgentId implements alice.tuplecentre.api.AgentId,
         return res;
     }
 
-    private Object aid;
+    private AgentId aid;
 
     private UUID uuid;
 
+    /**
+     * 
+     * @param id
+     *            the String representation of this TuCSoN agent identifier
+     * @throws TucsonInvalidAgentIdException
+     *             if the given String does not represent a valid TuCSoN
+     *             identifier
+     */
     public TucsonAgentId(final String id) throws TucsonInvalidAgentIdException {
         try {
             this.aid = new AgentId(id);
@@ -52,11 +65,24 @@ public class TucsonAgentId implements alice.tuplecentre.api.AgentId,
         }
     }
 
+    /**
+     * 
+     * @param name
+     *            the String representation of this TuCSoN agent identifier
+     * @param tcId
+     *            the identifier of the tuple centre the agent behind this
+     *            identifier represents
+     */
     public TucsonAgentId(final String name, final TucsonTupleCentreId tcId) {
         this.aid = new AgentId(name, tcId);
     }
 
-    public boolean assignUUID() throws TucsonInvalidAgentIdException {
+    /**
+     * 
+     * @return wether a UUID has been succesfully assigned to this agent
+     *         identifier
+     */
+    public boolean assignUUID() {
         if (this.uuid == null) {
             this.uuid = UUID.randomUUID();
             try {
@@ -64,20 +90,34 @@ public class TucsonAgentId implements alice.tuplecentre.api.AgentId,
                         new AgentId(this.aid + ":uuid"
                                 + TucsonAgentId.dropMinus(this.uuid));
             } catch (final InvalidAgentIdException e) {
-                throw new TucsonInvalidAgentIdException();
+                // FIXME This cannot happen
             }
         }
         return true;
     }
 
-    public Object getAgentId() {
+    /**
+     * 
+     * @return the local agent identifier part of the full TuCSoN agent
+     *         identifier
+     */
+    public AgentId getAgentId() {
         return this.aid;
     }
 
+    /**
+     * 
+     * @return the local name given to the agent by the programmer
+     */
     public String getAgentName() {
-        return ((AgentId) this.aid).getLocalName();
+        return this.aid.getLocalName();
     }
 
+    /**
+     * 
+     * @return the UUID assigned to the agent identifier by TuCSoN to globally,
+     *         univocally identify agents
+     */
     public String getAgentUUID() {
         return this.uuid.toString();
     }
@@ -96,7 +136,7 @@ public class TucsonAgentId implements alice.tuplecentre.api.AgentId,
 
     @Override
     public String toString() {
-        return ((AgentId) this.aid).toString();
+        return this.aid.toString();
     }
 
 }

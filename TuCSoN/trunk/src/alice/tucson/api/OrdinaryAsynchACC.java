@@ -47,7 +47,9 @@ public interface OrdinaryAsynchACC extends RootACC {
      * @return the interface to access the data about TuCSoN operations outcome.
      * 
      * @throws TucsonOperationNotPossibleException
+     *             if the requested operation cannot be carried out
      * @throws UnreachableNodeException
+     *             if the target tuple centre is not reachable over the network
      * 
      * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
      * @see alice.tucson.api.TucsonOperationCompletionListener
@@ -79,7 +81,9 @@ public interface OrdinaryAsynchACC extends RootACC {
      * @return the interface to access the data about TuCSoN operations outcome.
      * 
      * @throws TucsonOperationNotPossibleException
+     *             if the requested operation cannot be carried out
      * @throws UnreachableNodeException
+     *             if the target tuple centre is not reachable over the network
      * 
      * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
      * @see alice.tucson.api.TucsonOperationCompletionListener
@@ -110,7 +114,9 @@ public interface OrdinaryAsynchACC extends RootACC {
      * @return the interface to access the data about TuCSoN operations outcome.
      * 
      * @throws TucsonOperationNotPossibleException
+     *             if the requested operation cannot be carried out
      * @throws UnreachableNodeException
+     *             if the target tuple centre is not reachable over the network
      * 
      * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
      * @see alice.tucson.api.TucsonOperationCompletionListener
@@ -144,7 +150,9 @@ public interface OrdinaryAsynchACC extends RootACC {
      * @return the interface to access the data about TuCSoN operations outcome.
      * 
      * @throws TucsonOperationNotPossibleException
+     *             if the requested operation cannot be carried out
      * @throws UnreachableNodeException
+     *             if the target tuple centre is not reachable over the network
      * 
      * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
      * @see alice.tucson.api.TucsonOperationCompletionListener
@@ -176,7 +184,9 @@ public interface OrdinaryAsynchACC extends RootACC {
      * @return the interface to access the data about TuCSoN operations outcome.
      * 
      * @throws TucsonOperationNotPossibleException
+     *             if the requested operation cannot be carried out
      * @throws UnreachableNodeException
+     *             if the target tuple centre is not reachable over the network
      * 
      * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
      * @see alice.tucson.api.TucsonOperationCompletionListener
@@ -207,7 +217,9 @@ public interface OrdinaryAsynchACC extends RootACC {
      * @return the interface to access the data about TuCSoN operations outcome.
      * 
      * @throws TucsonOperationNotPossibleException
+     *             if the requested operation cannot be carried out
      * @throws UnreachableNodeException
+     *             if the target tuple centre is not reachable over the network
      * 
      * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
      * @see alice.tucson.api.TucsonOperationCompletionListener
@@ -240,7 +252,9 @@ public interface OrdinaryAsynchACC extends RootACC {
      * @return the interface to access the data about TuCSoN operations outcome.
      * 
      * @throws TucsonOperationNotPossibleException
+     *             if the requested operation cannot be carried out
      * @throws UnreachableNodeException
+     *             if the target tuple centre is not reachable over the network
      * 
      * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
      * @see alice.tucson.api.TucsonOperationCompletionListener
@@ -271,7 +285,9 @@ public interface OrdinaryAsynchACC extends RootACC {
      * @return the interface to access the data about TuCSoN operations outcome.
      * 
      * @throws TucsonOperationNotPossibleException
+     *             if the requested operation cannot be carried out
      * @throws UnreachableNodeException
+     *             if the target tuple centre is not reachable over the network
      * 
      * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
      * @see alice.tucson.api.TucsonOperationCompletionListener
@@ -299,7 +315,9 @@ public interface OrdinaryAsynchACC extends RootACC {
      * @return the interface to access the data about TuCSoN operations outcome.
      * 
      * @throws TucsonOperationNotPossibleException
+     *             if the requested operation cannot be carried out
      * @throws UnreachableNodeException
+     *             if the target tuple centre is not reachable over the network
      * 
      * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
      * @see alice.tucson.api.TucsonOperationCompletionListener
@@ -337,7 +355,9 @@ public interface OrdinaryAsynchACC extends RootACC {
      * @return the interface to access the data about TuCSoN operations outcome.
      * 
      * @throws TucsonOperationNotPossibleException
+     *             if the requested operation cannot be carried out
      * @throws UnreachableNodeException
+     *             if the target tuple centre is not reachable over the network
      * 
      * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
      * @see alice.tucson.api.TucsonOperationCompletionListener

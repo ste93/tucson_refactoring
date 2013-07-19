@@ -17,10 +17,15 @@ import alice.tuplecentre.core.OperationCompletionListener;
 
 /**
  * 
+ * @author ste (mailto: s.mariani@unibo.it) on 16/lug/2013
+ * 
  */
-abstract public class ACCAbstractProxyNodeSide extends Thread implements
+public abstract class AbstractACCProxyNodeSide extends Thread implements
         OperationCompletionListener {
 
-    abstract public void exit();
+    /**
+     * 
+     */
+    public abstract void exit();
 
 }

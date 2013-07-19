@@ -27,15 +27,15 @@ import alice.tuplecentre.api.TupleCentreId;
  * 
  * @author aricci
  */
-abstract public class Event implements java.io.Serializable {
+public abstract class AbstractEvent implements java.io.Serializable {
 
     private static final long serialVersionUID = 5233628097824741218L;
 
-    private final Map<String, String> ev_prop;
+    private final Map<String, String> evProp;
     /** the current tuple centre (VM) where this event is managed **/
     private TupleCentreId reactingTC;
     /** the operation (primitive + tuple) associated with this event **/
-    private TupleCentreOperation simpleTCEvent;
+    private AbstractTupleCentreOperation simpleTCEvent;
     /** the entitiy executing the operation **/
     private IId source;
     /** represent the target entity that could be an agent or a TC **/
@@ -44,34 +44,71 @@ abstract public class Event implements java.io.Serializable {
     /** time at which this event occurs */
     private final long time;
 
-    public Event(final IId s, final TupleCentreOperation op,
+    /**
+     * 
+     * @param s
+     *            the identifier of the source of the event
+     * @param op
+     *            the operation which caused the event
+     * @param tc
+     *            the identifier of the tuple centre target of the event
+     * @param t
+     *            the time at which the event was generated
+     */
+    public AbstractEvent(final IId s, final AbstractTupleCentreOperation op,
             final TupleCentreId tc, final long t) {
         this.source = s;
         this.simpleTCEvent = op;
         this.target = tc;
         this.reactingTC = tc;
         this.time = t;
-        this.ev_prop = new HashMap<String, String>();
+        this.evProp = new HashMap<String, String>();
     }
 
-    public Event(final IId s, final TupleCentreOperation op,
+    /**
+     * 
+     * @param s
+     *            the identifier of the source of the event
+     * @param op
+     *            the operation which caused the event
+     * @param tc
+     *            the identifier of the tuple centre target of the event
+     * @param t
+     *            the time at which the event was generated
+     * @param prop
+     *            some properties relatde to the event
+     */
+    public AbstractEvent(final IId s, final AbstractTupleCentreOperation op,
             final TupleCentreId tc, final long t, final Map<String, String> prop) {
         this(s, op, tc, t);
-        this.ev_prop.putAll(prop);
+        this.evProp.putAll(prop);
     }
 
+    /**
+     * 
+     * @param key
+     *            the String representation of the key of the property to
+     *            retrieve
+     * @return the String representation of the value of the property retrieved
+     */
     public String getEventProp(final String key) {
-        return this.ev_prop.get(key);
+        return this.evProp.get(key);
     }
 
+    /**
+     * 
+     * @return the identifier of the tuple centre currently reacting to the
+     *         event
+     */
     public TupleCentreId getReactingTC() {
         return this.reactingTC;
     }
 
     /**
-     * Gets the operation which directly or not caused the event
+     * 
+     * @return the operation which caused the event
      */
-    public TupleCentreOperation getSimpleTCEvent() {
+    public AbstractTupleCentreOperation getSimpleTCEvent() {
         return this.simpleTCEvent;
     }
 
@@ -85,14 +122,26 @@ abstract public class Event implements java.io.Serializable {
         return this.source;
     }
 
+    /**
+     * 
+     * @return the identifier of the target of the event
+     */
     public IId getTarget() {
         return this.target;
     }
 
+    /**
+     * 
+     * @return the time at which this event occurred
+     */
     public long getTime() {
         return this.time;
     }
 
+    /**
+     * 
+     * @return the tuple argument of the operation which caused the event
+     */
     public Tuple getTuple() {
         return this.simpleTCEvent.getTupleArgument();
 
@@ -119,18 +168,39 @@ abstract public class Event implements java.io.Serializable {
      */
     public abstract boolean isOutput();
 
+    /**
+     * 
+     * @param tc
+     *            the identifier of the tuple centre currently reacting to the
+     *            event
+     */
     public void setReactingTC(final TupleCentreId tc) {
         this.reactingTC = tc;
     }
 
-    public void setSimpleTCEvent(final TupleCentreOperation op) {
+    /**
+     * 
+     * @param op
+     *            the operation which caused the event
+     */
+    public void setSimpleTCEvent(final AbstractTupleCentreOperation op) {
         this.simpleTCEvent = op;
     }
 
+    /**
+     * 
+     * @param s
+     *            the identifier of the source of the event
+     */
     public void setSource(final IId s) {
         this.source = s;
     }
 
+    /**
+     * 
+     * @param t
+     *            the identifier of the target of the event
+     */
     public void setTarget(final IId t) {
         this.target = t;
     }

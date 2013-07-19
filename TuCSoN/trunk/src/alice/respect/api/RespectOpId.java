@@ -1,9 +1,19 @@
 package alice.respect.api;
 
+/**
+ * 
+ * @author ste (mailto: s.mariani@unibo.it) on 01/lug/2013
+ * 
+ */
 public class RespectOpId {
 
     private final long id;
 
+    /**
+     * 
+     * @param i
+     *            the progressive, unique per tuple centre, operation identifier
+     */
     public RespectOpId(final long i) {
         this.id = i;
     }
@@ -30,6 +40,10 @@ public class RespectOpId {
         return true;
     }
 
+    /**
+     * 
+     * @return the ReSpecT operation identifier
+     */
     public long getId() {
         return this.id;
     }

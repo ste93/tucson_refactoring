@@ -19,21 +19,35 @@ import alice.tuprolog.InvalidTermException;
 
 /**
  * 
+ * @author ste (mailto: s.mariani@unibo.it) on 16/lug/2013
+ * 
  */
 public class NodeManagementAgent extends Thread {
 
+    private static void log(final String s) {
+        System.out.println("[NodeManagementAgent]: " + s);
+    }
+
     private final TucsonTupleCentreId config;
     private final TucsonNodeService node;
+
     private TucsonAgentId nodeManAid;
 
+    /**
+     * 
+     * @param conf
+     *            the identifier of the tuple centre to be used for
+     *            configuration
+     * @param n
+     *            the TuCSoN node this management agent belongs to
+     */
     public NodeManagementAgent(final TucsonTupleCentreId conf,
             final TucsonNodeService n) {
         super();
         try {
             this.nodeManAid = new TucsonAgentId("node_management_agent");
         } catch (final TucsonInvalidAgentIdException e) {
-            System.err.println("[NodeManagementAgent]: " + e);
-            // TODO Properly handle Exception
+            e.printStackTrace();
         }
         this.node = n;
         this.config = conf;
@@ -41,8 +55,8 @@ public class NodeManagementAgent extends Thread {
     }
 
     /**
-	 * 
-	 */
+     * 
+     */
     @Override
     public void run() {
         try {
@@ -60,33 +74,31 @@ public class NodeManagementAgent extends Thread {
                 }
             }
         } catch (final InvalidTermException e) {
-            System.err.println("[NodeManagementAgent]: " + e);
-            // TODO Properly handle Exception
+            e.printStackTrace();
             this.node.removeNodeAgent(this);
         } catch (final InterruptedException e) {
-            this.log("Shutdown interrupt received, shutting down...");
+            NodeManagementAgent
+                    .log("Shutdown interrupt received, shutting down...");
             this.node.removeNodeAgent(this);
-        } catch (final Exception e) {
-            System.err.println("[NodeManagementAgent]: " + e);
-            // TODO Properly handle Exception
+        } catch (final TucsonInvalidLogicTupleException e) {
+            e.printStackTrace();
+            this.node.removeNodeAgent(this);
+        } catch (final TucsonOperationNotPossibleException e) {
+            e.printStackTrace();
+            this.node.removeNodeAgent(this);
+        } catch (final InvalidTupleOperationException e) {
+            e.printStackTrace();
             this.node.removeNodeAgent(this);
         }
     }
 
-    /**
-     * 
-     * @param cmd
-     * @throws InvalidTupleOperationException
-     * @throws TucsonOperationNotPossibleException
-     * @throws TucsonInvalidLogicTupleExceptionn
-     */
-    protected void execCmd(final TupleArgument cmd)
+    private void execCmd(final TupleArgument cmd)
             throws InvalidTupleOperationException,
             TucsonInvalidLogicTupleException,
             TucsonOperationNotPossibleException {
 
         final String name = cmd.getName();
-        this.log("Executing command " + name);
+        NodeManagementAgent.log("Executing command " + name);
 
         if ("destroy".equals(name)) {
 
@@ -128,10 +140,6 @@ public class NodeManagementAgent extends Thread {
 
         }
 
-    }
-
-    protected void log(final String s) {
-        System.out.println("[NodeManagementAgent]: " + s);
     }
 
 }

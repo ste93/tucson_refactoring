@@ -19,10 +19,20 @@ import alice.util.jedit.KeywordMap;
 import alice.util.jedit.Token;
 import alice.util.jedit.TokenMarker;
 
+/**
+ * 
+ * @author ste (mailto: s.mariani@unibo.it) on 03/lug/2013
+ * 
+ */
 public class SpecificationTokenMarker extends TokenMarker {
 
     private static KeywordMap respectKeywords;
 
+    /**
+     * 
+     * @return the Object representing associations between String
+     *         representation of keywords and keywords token
+     */
     public static KeywordMap getKeywords() {
 
         if (SpecificationTokenMarker.respectKeywords == null) {
@@ -165,10 +175,18 @@ public class SpecificationTokenMarker extends TokenMarker {
 
     private int lastOffset;
 
+    /**
+     * 
+     */
     public SpecificationTokenMarker() {
         this(SpecificationTokenMarker.getKeywords());
     }
 
+    /**
+     * 
+     * @param keys
+     *            the keywords to highlight
+     */
     public SpecificationTokenMarker(final KeywordMap keys) {
         super();
         this.keywords = keys;
@@ -207,7 +225,8 @@ public class SpecificationTokenMarker extends TokenMarker {
                             this.doKeyword(line, i);
                             this.addToken(i - this.lastOffset, token);
                             this.addToken(len - i, Token.COMMENT1);
-                            this.lastOffset = this.lastKeyword = len;
+                            this.lastOffset = len;
+                            this.lastKeyword = len;
                             break loop;
 
                         case '#':
@@ -219,7 +238,8 @@ public class SpecificationTokenMarker extends TokenMarker {
                                 }
                                 this.addToken(i - this.lastOffset, token);
                                 this.addToken(len - i, Token.LABEL);
-                                this.lastOffset = this.lastKeyword = len;
+                                this.lastOffset = len;
+                                this.lastKeyword = len;
                                 break loop;
                             }
                             break;
@@ -241,7 +261,8 @@ public class SpecificationTokenMarker extends TokenMarker {
                     } else if (c == '"') {
                         this.addToken(i1 - this.lastOffset, token);
                         // token = Token.NULL;
-                        this.lastOffset = this.lastKeyword = i1;
+                        this.lastOffset = i1;
+                        this.lastKeyword = i1;
                     }
                     break;
 
@@ -251,7 +272,8 @@ public class SpecificationTokenMarker extends TokenMarker {
                     } else if (c == '\'') {
                         this.addToken(i1 - this.lastOffset, Token.LITERAL1);
                         // token = Token.NULL;
-                        this.lastOffset = this.lastKeyword = i1;
+                        this.lastOffset = i1;
+                        this.lastKeyword = i1;
                     }
                     break;
 

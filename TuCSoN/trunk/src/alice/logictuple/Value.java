@@ -26,35 +26,60 @@ package alice.logictuple;
 public class Value extends TupleArgument {
 
     /**
-	 * 
-	 */
+     * 
+     */
     private static final long serialVersionUID = 1L;
 
-    /** Constructs a simple double tuple argument */
+    /**
+     * Constructs a simple double tuple argument
+     * 
+     * @param v
+     *            the double value to initialize this argument
+     */
     public Value(final double v) {
         super();
         this.value = new alice.tuprolog.Double(v);
     }
 
-    /** Constructs a simple float tuple argument */
+    /**
+     * Constructs a simple float tuple argument
+     * 
+     * @param v
+     *            the float value to initialize this argument
+     */
     public Value(final float v) {
         super();
         this.value = new alice.tuprolog.Float(v);
     }
 
-    /** Constructs a simple integer tuple argument */
+    /**
+     * Constructs a simple integer tuple argument
+     * 
+     * @param v
+     *            the int value to initialize this argument
+     */
     public Value(final int v) {
         super();
         this.value = new alice.tuprolog.Int(v);
     }
 
-    /** Constructs a simple long tuple argument */
+    /**
+     * Constructs a simple long tuple argument
+     * 
+     * @param v
+     *            the long value to initialize this argument
+     */
     public Value(final long v) {
         super();
         this.value = new alice.tuprolog.Long(v);
     }
 
-    /** Constructs a simple string tuple argument */
+    /**
+     * Constructs a simple string tuple argument
+     * 
+     * @param f
+     *            the string value to initialize this argument
+     */
     public Value(final String f) {
         super();
         this.value = new alice.tuprolog.Struct(f);
@@ -256,11 +281,6 @@ public class Value extends TupleArgument {
             list[i] = argList[i].toTerm();
         }
         this.value = new alice.tuprolog.Struct(list);
-    }
-
-    protected Value() {
-        super();
-        this.value = null;
     }
 
 }

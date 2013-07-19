@@ -8,6 +8,11 @@ import alice.respect.api.ITCRegistry;
 import alice.respect.api.TupleCentreId;
 import alice.respect.api.exceptions.InstantiationNotPossibleException;
 
+/**
+ * 
+ * @author ste (mailto: s.mariani@unibo.it) on 01/lug/2013
+ * 
+ */
 public class RespectLocalRegistry implements ITCRegistry {
 
     /**
@@ -16,18 +21,13 @@ public class RespectLocalRegistry implements ITCRegistry {
      */
     private final Map<String, IRespectTC> reg;
 
+    /**
+     * 
+     */
     public RespectLocalRegistry() {
         this.reg = new HashMap<String, IRespectTC>();
     }
 
-    /**
-     * Add a tuple centre to the registry. WARNING: If a tuple centre with the
-     * same name yet exists the specified tuple centre is not added to the
-     * registry.
-     * 
-     * @param tc
-     *            the tuple centre to be added to the registry
-     */
     public void addTC(final IRespectTC tc) {
         if (!this.reg.containsKey(tc.getId().getName())) {
             this.reg.put(tc.getId().getName(), tc);
@@ -38,6 +38,10 @@ public class RespectLocalRegistry implements ITCRegistry {
         return this.reg;
     }
 
+    /**
+     * 
+     * @return the size of the ReSpecT local registry
+     */
     public int getSize() {
         return this.reg.size();
     }

@@ -21,12 +21,19 @@ import alice.tuplecentre.core.InputEvent;
  * @author aricci
  * @version 1.0
  */
-public class InternalEvent extends alice.tuplecentre.core.Event {
+public class InternalEvent extends alice.tuplecentre.core.AbstractEvent {
 
     private static final long serialVersionUID = 8362450931717138730L;
     private final InputEvent inputEvent;
     private final InternalOperation internalOperation;
 
+    /**
+     * 
+     * @param ev
+     *            the input event direct cause of this internal event
+     * @param op
+     *            the ReSpecT operation generating this internal event
+     */
     public InternalEvent(final InputEvent ev, final InternalOperation op) {
         super(ev.getSource(), ev.getSimpleTCEvent(), ev.getReactingTC(), ev
                 .getTime());
@@ -34,10 +41,18 @@ public class InternalEvent extends alice.tuplecentre.core.Event {
         this.internalOperation = op;
     }
 
+    /**
+     * 
+     * @return the input event direct cause of this internal event
+     */
     public InputEvent getInputEvent() {
         return this.inputEvent;
     }
 
+    /**
+     * 
+     * @return the ReSpecT operation generating this internal event
+     */
     public InternalOperation getInternalOperation() {
         return this.internalOperation;
     }

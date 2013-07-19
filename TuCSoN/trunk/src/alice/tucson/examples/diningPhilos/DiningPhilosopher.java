@@ -2,9 +2,9 @@ package alice.tucson.examples.diningPhilos;
 
 import alice.logictuple.LogicTuple;
 import alice.logictuple.exceptions.InvalidLogicTupleException;
+import alice.tucson.api.AbstractTucsonAgent;
 import alice.tucson.api.ITucsonOperation;
 import alice.tucson.api.SynchACC;
-import alice.tucson.api.TucsonAgent;
 import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
@@ -16,12 +16,30 @@ import alice.tuplecentre.api.exceptions.OperationTimeOutException;
  * 
  * @author s.mariani@unibo.it
  */
-public class DiningPhilosopher extends TucsonAgent {
+public class DiningPhilosopher extends AbstractTucsonAgent {
 
+    private static final int EATING_TIME = 5000;
+    private static final int THINKING_TIME = 5000;
     private SynchACC acc;
     private final int chop1, chop2;
     private final TucsonTupleCentreId myTable;
 
+    /**
+     * 
+     * @param aid
+     *            the String representation of this philosopher's TuCSoN agent
+     *            identifier
+     * @param table
+     *            the identifier of the TuCSoN tuple centre representing the
+     *            table
+     * @param left
+     *            an integer representing the left fork
+     * @param right
+     *            an integer representing the right fork
+     * @throws TucsonInvalidAgentIdException
+     *             if the given String does not represent a valid TuCSoN agent
+     *             identifier
+     */
     public DiningPhilosopher(final String aid, final TucsonTupleCentreId table,
             final int left, final int right)
             throws TucsonInvalidAgentIdException {
@@ -79,13 +97,13 @@ public class DiningPhilosopher extends TucsonAgent {
                             LogicTuple.parse("chops(" + this.chop1 + ","
                                     + this.chop2 + ")"), null);
         } catch (final InvalidLogicTupleException e) {
-            // TODO Properly handle Exception
+            e.printStackTrace();
         } catch (final TucsonOperationNotPossibleException e) {
-            // TODO Properly handle Exception
+            e.printStackTrace();
         } catch (final UnreachableNodeException e) {
-            // TODO Properly handle Exception
+            e.printStackTrace();
         } catch (final OperationTimeOutException e) {
-            // TODO Properly handle Exception
+            e.printStackTrace();
         }
         if (op != null) {
             return op.isResultSuccess();
@@ -96,9 +114,9 @@ public class DiningPhilosopher extends TucsonAgent {
     private void eat() {
         this.say("...gnam gnam...chomp chomp...munch munch...");
         try {
-            Thread.sleep(5000);
+            Thread.sleep(DiningPhilosopher.EATING_TIME);
         } catch (final InterruptedException e) {
-            // TODO Properly handle Exception
+            e.printStackTrace();
         }
     }
 
@@ -109,22 +127,22 @@ public class DiningPhilosopher extends TucsonAgent {
                     LogicTuple.parse("chops(" + this.chop1 + "," + this.chop2
                             + ")"), null);
         } catch (final InvalidLogicTupleException e) {
-            // TODO Properly handle Exception
+            e.printStackTrace();
         } catch (final TucsonOperationNotPossibleException e) {
-            // TODO Properly handle Exception
+            e.printStackTrace();
         } catch (final UnreachableNodeException e) {
-            // TODO Properly handle Exception
+            e.printStackTrace();
         } catch (final OperationTimeOutException e) {
-            // TODO Properly handle Exception
+            e.printStackTrace();
         }
     }
 
     private void think() {
         this.say("...mumble mumble...rat rat...mumble mumble...");
         try {
-            Thread.sleep(5000);
+            Thread.sleep(DiningPhilosopher.THINKING_TIME);
         } catch (final InterruptedException e) {
-            // TODO Properly handle Exception
+            e.printStackTrace();
         }
     }
 

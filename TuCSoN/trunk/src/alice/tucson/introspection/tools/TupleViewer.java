@@ -14,6 +14,7 @@
 package alice.tucson.introspection.tools;
 
 import java.awt.Color;
+import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -26,6 +27,11 @@ import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.tucson.introspection.GetSnapshotMsg;
 import alice.tucson.introspection.InspectorProtocol;
 
+/**
+ * 
+ * @author ste (mailto: s.mariani@unibo.it) on 03/lug/2013
+ * 
+ */
 public class TupleViewer extends javax.swing.JFrame {
 
     private static final long serialVersionUID = 194179541036841578L;
@@ -40,7 +46,7 @@ public class TupleViewer extends javax.swing.JFrame {
     private javax.swing.JTextField inputFileLog;
     private javax.swing.JTextField inputFilterLog;
     private javax.swing.JTextField inputFilterView;
-    private final Inspector mainForm;
+    private final InspectorGUI mainForm;
     private javax.swing.JTextField outputNoItems;
     private javax.swing.JTextField outputState;
     private javax.swing.JTextField outputTime;
@@ -49,12 +55,17 @@ public class TupleViewer extends javax.swing.JFrame {
     private javax.swing.JRadioButton radioReactive;
     private javax.swing.JTextArea tupleArea;
 
-    /** Creates new form TupleForm */
-    public TupleViewer(final Inspector mainForm_) {
+    /**
+     * Creates new form TupleForm
+     * 
+     * @param mf
+     *            the inspector GUI
+     */
+    public TupleViewer(final InspectorGUI mf) {
         super();
         this.initComponents();
         this.pack();
-        this.mainForm = mainForm_;
+        this.mainForm = mf;
         this.context = this.mainForm.agent.getContext();
         this.setTitle("Logic tuples set of tuplecentre < "
                 + this.mainForm.tid.getName() + "@"
@@ -70,18 +81,38 @@ public class TupleViewer extends javax.swing.JFrame {
         this.outputState.setText("Ready for tuples inspection.");
     }
 
+    /**
+     * 
+     * @param l
+     *            the local time
+     */
     public void setLocalTime(final long l) {
         this.outputTime.setText(String.valueOf(l));
     }
 
+    /**
+     * 
+     * @param l
+     *            the number of items inspected
+     */
     public void setNItems(final long l) {
         this.outputNoItems.setText(String.valueOf(l));
     }
 
+    /**
+     * 
+     * @param st
+     *            the message to show
+     */
     public void setText(final String st) {
         this.tupleArea.setText(st);
     }
 
+    /**
+     * 
+     * @param l
+     *            the VM time
+     */
     public void setVMTime(final long l) {
         this.outputVmTime.setText(String.valueOf(l));
     }
@@ -112,14 +143,14 @@ public class TupleViewer extends javax.swing.JFrame {
                 this.outputState
                         .setText("Given template is not an admissible Prolog term.");
             } else {
-                this.mainForm.protocol.tsetFilter = t;
+                this.mainForm.protocol.setTsetFilter(t);
                 this.context.setProtocol(this.mainForm.protocol);
             }
             this.buttonGetActionPerformed();
         } catch (final InvalidLogicTupleException e) {
             this.outputState
                     .setText("Given template is not an admissible Prolog term.");
-        } catch (final Exception e) {
+        } catch (final IOException e) {
             this.outputState.setText(e.toString());
         }
     }
@@ -141,23 +172,19 @@ public class TupleViewer extends javax.swing.JFrame {
         try {
             this.context.getSnapshot(GetSnapshotMsg.TSET);
             this.outputState.setText("Observation done.");
-        } catch (final Exception e) {
+        } catch (final IOException e) {
             this.outputState.setText(e.toString());
         }
     }
 
     private void checkFilterLogActionPerformed() {
-        try {
-            if (this.checkFilterLog.isSelected()) {
-                this.buttonAcceptFilterLog.setEnabled(true);
-                this.outputState
-                        .setText("Please input an admissible tuple template...");
-            } else {
-                this.buttonAcceptFilterLog.setEnabled(false);
-                this.mainForm.agent.logTupleFilter = null;
-            }
-        } catch (final Exception e) {
-            this.outputState.setText(e.toString());
+        if (this.checkFilterLog.isSelected()) {
+            this.buttonAcceptFilterLog.setEnabled(true);
+            this.outputState
+                    .setText("Please input an admissible tuple template...");
+        } else {
+            this.buttonAcceptFilterLog.setEnabled(false);
+            this.mainForm.agent.logTupleFilter = null;
         }
     }
 
@@ -169,10 +196,10 @@ public class TupleViewer extends javax.swing.JFrame {
                         .setText("Please input an admissible tuple template...");
             } else {
                 this.buttonAcceptPattern.setEnabled(false);
-                this.mainForm.protocol.tsetFilter = null;
+                this.mainForm.protocol.setTsetFilter(null);
                 this.context.setProtocol(this.mainForm.protocol);
             }
-        } catch (final Exception e) {
+        } catch (final IOException e) {
             this.outputState.setText(e.toString());
         }
     }
@@ -581,28 +608,28 @@ public class TupleViewer extends javax.swing.JFrame {
     }
 
     private void radioProactiveActionPerformed() {
+        this.mainForm.protocol
+                .setTsetObservType(InspectorProtocol.PROACTIVE_OBSERVATION);
         try {
-            this.mainForm.protocol.tsetObservType =
-                    InspectorProtocol.PROACTIVE_OBSERVATION;
             this.context.setProtocol(this.mainForm.protocol);
-            this.buttonGet.setEnabled(false);
-            this.radioReactive.setSelected(false);
-            this.outputState.setText("PROACTIVE observation selected.");
-        } catch (final Exception e) {
+        } catch (final IOException e) {
             this.outputState.setText(e.toString());
         }
+        this.buttonGet.setEnabled(false);
+        this.radioReactive.setSelected(false);
+        this.outputState.setText("PROACTIVE observation selected.");
     }
 
     private void radioReactiveActionPerformed() {
         try {
-            this.mainForm.protocol.tsetObservType =
-                    InspectorProtocol.REACTIVE_OBSERVATION;
+            this.mainForm.protocol
+                    .setTsetObservType(InspectorProtocol.REACTIVE_OBSERVATION);
             this.context.setProtocol(this.mainForm.protocol);
             this.buttonGet.setEnabled(true);
             this.radioProactive.setSelected(false);
             this.outputState
                     .setText("REACTIVE observation selected, push button 'Observe!' to update.");
-        } catch (final Exception e) {
+        } catch (final IOException e) {
             this.outputState.setText(e.toString());
         }
     }

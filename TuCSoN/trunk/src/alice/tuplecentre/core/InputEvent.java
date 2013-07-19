@@ -24,18 +24,42 @@ import alice.tuplecentre.api.TupleCentreId;
  * 
  * @author aricci
  */
-public class InputEvent extends Event {
+public class InputEvent extends AbstractEvent {
 
     private static final long serialVersionUID = -6321543805920861915L;
     private boolean isLnk;
 
-    public InputEvent(final IId source, final TupleCentreOperation op,
+    /**
+     * 
+     * @param source
+     *            the identifier of the source of this event
+     * @param op
+     *            the operation which caused this event
+     * @param tc
+     *            the tuple centre target of this event
+     * @param time
+     *            the time at which this event occurred
+     */
+    public InputEvent(final IId source, final AbstractTupleCentreOperation op,
             final TupleCentreId tc, final long time) {
         super(source, op, tc, time);
         this.isLnk = false;
     }
 
-    public InputEvent(final IId source, final TupleCentreOperation op,
+    /**
+     * 
+     * @param source
+     *            the identifier of the source of this event
+     * @param op
+     *            the operation which caused this event
+     * @param tc
+     *            the tuple centre target of this event
+     * @param time
+     *            the time at which this event occurred
+     * @param prop
+     *            some properties related to the event
+     */
+    public InputEvent(final IId source, final AbstractTupleCentreOperation op,
             final TupleCentreId tc, final long time,
             final Map<String, String> prop) {
         super(source, op, tc, time, prop);
@@ -52,6 +76,10 @@ public class InputEvent extends Event {
         return false;
     }
 
+    /**
+     * 
+     * @return wether this event is a linking event
+     */
     public boolean isLinking() {
         return this.isLnk;
     }
@@ -61,6 +89,11 @@ public class InputEvent extends Event {
         return false;
     }
 
+    /**
+     * 
+     * @param flag
+     *            wether this event is a linking event
+     */
     public void setIsLinking(final boolean flag) {
         this.isLnk = flag;
     }

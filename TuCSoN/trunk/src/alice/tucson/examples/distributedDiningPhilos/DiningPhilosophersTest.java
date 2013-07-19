@@ -4,9 +4,9 @@ import java.io.IOException;
 
 import alice.logictuple.LogicTuple;
 import alice.logictuple.exceptions.InvalidLogicTupleException;
+import alice.tucson.api.AbstractTucsonAgent;
 import alice.tucson.api.ITucsonOperation;
 import alice.tucson.api.SynchACC;
-import alice.tucson.api.TucsonAgent;
 import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
@@ -19,8 +19,9 @@ import alice.tuplecentre.api.exceptions.OperationTimeOutException;
  * 
  * @author s.mariani@unibo.it
  */
-public class DiningPhilosophersTest extends TucsonAgent {
+public class DiningPhilosophersTest extends AbstractTucsonAgent {
 
+    private static final int DEF_PORT = 20504;
     private static final int N_PHILOSOPHERS = 5;
 
     /**
@@ -32,7 +33,7 @@ public class DiningPhilosophersTest extends TucsonAgent {
         try {
             new DiningPhilosophersTest("boot").go();
         } catch (final TucsonInvalidAgentIdException e) {
-            // TODO Properly handle Exception
+            e.printStackTrace();
         }
     }
 
@@ -40,11 +41,19 @@ public class DiningPhilosophersTest extends TucsonAgent {
 
     private final int port;
 
+    /**
+     * 
+     * @param aid
+     *            the String representation of a valid TuCSoN agent identifier
+     * @throws TucsonInvalidAgentIdException
+     *             if the given String does not represent a valid TuCSoN agent
+     *             identifier
+     */
     public DiningPhilosophersTest(final String aid)
             throws TucsonInvalidAgentIdException {
         super(aid);
         this.ip = "localhost";
-        this.port = 20504;
+        this.port = DiningPhilosophersTest.DEF_PORT;
     }
 
     @Override
@@ -74,7 +83,7 @@ public class DiningPhilosophersTest extends TucsonAgent {
                                 String.valueOf(this.port));
                 this.say("Injecting 'seat' ReSpecT specification in tc < "
                         + seats[i].toString() + " >...");
-                acc.set_s(
+                acc.setS(
                         seats[i],
                         Utils.fileToString("alice/tucson/examples/distributedDiningPhilos/seat.rsp"),
                         null);
@@ -86,7 +95,7 @@ public class DiningPhilosophersTest extends TucsonAgent {
                             String.valueOf(this.port));
             this.say("Injecting 'table' ReSpecT specification in tc < "
                     + table.toString() + " >...");
-            acc.set_s(
+            acc.setS(
                     table,
                     Utils.fileToString("alice/tucson/examples/distributedDiningPhilos/table.rsp"),
                     null);
@@ -98,19 +107,19 @@ public class DiningPhilosophersTest extends TucsonAgent {
             }
             acc.exit();
         } catch (final TucsonInvalidTupleCentreIdException e) {
-            // TODO Properly handle Exception
+            e.printStackTrace();
         } catch (final TucsonOperationNotPossibleException e) {
-            // TODO Properly handle Exception
+            e.printStackTrace();
         } catch (final UnreachableNodeException e) {
-            // TODO Properly handle Exception
+            e.printStackTrace();
         } catch (final OperationTimeOutException e) {
-            // TODO Properly handle Exception
+            e.printStackTrace();
         } catch (final IOException e) {
-            // TODO Properly handle Exception
+            e.printStackTrace();
         } catch (final InvalidLogicTupleException e) {
-            // TODO Properly handle Exception
+            e.printStackTrace();
         } catch (final TucsonInvalidAgentIdException e) {
-            // TODO Properly handle Exception
+            e.printStackTrace();
         }
     }
 

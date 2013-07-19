@@ -19,10 +19,12 @@ import java.net.ServerSocket;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
 
-import alice.tucson.network.TucsonProtocol;
+import alice.tucson.network.AbstractTucsonProtocol;
 import alice.tucson.network.TucsonProtocolTCP;
 
 /**
+ * 
+ * @author ste (mailto: s.mariani@unibo.it) on 17/lug/2013
  * 
  */
 public class WelcomeAgent extends Thread {
@@ -37,6 +39,16 @@ public class WelcomeAgent extends Thread {
 
     private boolean shut;
 
+    /**
+     * 
+     * @param p
+     *            the listening port to be taken as default
+     * @param n
+     *            the TuCSoN node this internal agent refers to
+     * @param cm
+     *            the ACC provider this internal agent should delegate ACC
+     *            requests to
+     */
     public WelcomeAgent(final int p, final TucsonNodeService n,
             final ACCProvider cm) {
         super();
@@ -48,26 +60,24 @@ public class WelcomeAgent extends Thread {
     }
 
     /**
-	 * 
-	 */
+     * 
+     */
     @Override
     public void run() {
 
-        TucsonProtocol mainDialog = null;
+        AbstractTucsonProtocol mainDialog = null;
         try {
             final ServerSocket mainSocket = new ServerSocket();
             mainSocket.setReuseAddress(true);
             mainSocket.bind(new InetSocketAddress(this.port));
             mainDialog = new TucsonProtocolTCP(mainSocket);
         } catch (final SocketException e) {
-            System.err.println("[WelcomeAgent]: " + e);
-            // TODO Properly handle Exception
+            e.printStackTrace();
         } catch (final IOException e) {
-            System.err.println("[WelcomeAgent]: " + e);
-            // TODO Properly handle Exception
+            e.printStackTrace();
         }
 
-        TucsonProtocol dialog = null;
+        AbstractTucsonProtocol dialog = null;
         boolean exception = false;
         boolean timeout = false;
         try {
@@ -100,35 +110,31 @@ public class WelcomeAgent extends Thread {
                     WelcomeAgent
                             .log("Delegating ACCProvider received enter request...");
                     this.contextManager.processContextRequest(desc, dialog);
-                } else if (dialog.isTelnet()) {
-                    // TODO How to implement telnet test?
-                    WelcomeAgent.log("Welcome to the Tucson Service Node "
-                            + TucsonNodeService.getVersion());
                 }
 
             }
         } catch (final IOException e) {
             exception = true;
-            System.err.println("[WelcomeAgent]: " + e);
-            // TODO Properly handle Exception
-        } catch (final Exception e) {
+            e.printStackTrace();
+        } catch (final ClassNotFoundException e) {
             exception = true;
-            System.err.println("[WelcomeAgent]: " + e);
-            // TODO Properly handle Exception
+            e.printStackTrace();
         }
 
         if (exception && !this.shut) {
             try {
                 dialog.end();
-            } catch (final Exception e) {
-                System.err.println("[WelcomeAgent]: " + e);
-                // TODO Properly handle Exception
+            } catch (final IOException e) {
+                e.printStackTrace();
             }
             this.node.removeNodeAgent(this);
         }
 
     }
 
+    /**
+     * 
+     */
     public void shutdown() {
         this.shut = true;
     }

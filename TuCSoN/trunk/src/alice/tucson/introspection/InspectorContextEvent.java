@@ -23,27 +23,119 @@ import alice.tuplecentre.core.TriggeredReaction;
  * 
  * @see alice.tucson.introspection.InspectorContext
  * 
+ * @author ste (mailto: s.mariani@unibo.it) on 03/lug/2013
+ * 
  */
 public class InspectorContextEvent implements java.io.Serializable {
 
     private static final long serialVersionUID = -5586328696570013265L;
 
     /** observer time */
-    public long localTime;
+    private long localTime;
 
     /** observed a reaction failure */
-    public TriggeredReaction reactionFailed = null;
+    private TriggeredReaction reactionFailed = null;
 
     /** observed a reaction ok */
-    public TriggeredReaction reactionOk = null;
+    private TriggeredReaction reactionOk = null;
 
     /** tuple observed or to set */
-    public List<LogicTuple> tuples = null;
+    private List<LogicTuple> tuples = null;
 
     /** virtual machine time */
-    public long vmTime;
+    private long vmTime;
 
     /** events observed */
-    public List<WSetEvent> wnEvents = null;
+    private List<WSetEvent> wnEvents = null;
+
+    /**
+     * @return the localTime
+     */
+    public long getLocalTime() {
+        return this.localTime;
+    }
+
+    /**
+     * @return the reactionFailed
+     */
+    public TriggeredReaction getReactionFailed() {
+        return this.reactionFailed;
+    }
+
+    /**
+     * @return the reactionOk
+     */
+    public TriggeredReaction getReactionOk() {
+        return this.reactionOk;
+    }
+
+    /**
+     * @return the tuples
+     */
+    public List<LogicTuple> getTuples() {
+        return this.tuples;
+    }
+
+    /**
+     * @return the vmTime
+     */
+    public long getVmTime() {
+        return this.vmTime;
+    }
+
+    /**
+     * @return the wnEvents
+     */
+    public List<WSetEvent> getWnEvents() {
+        return this.wnEvents;
+    }
+
+    /**
+     * @param lt
+     *            the localTime to set
+     */
+    public void setLocalTime(final long lt) {
+        this.localTime = lt;
+    }
+
+    /**
+     * @param rf
+     *            the reactionFailed to set
+     */
+    public void setReactionFailed(final TriggeredReaction rf) {
+        this.reactionFailed = rf;
+    }
+
+    /**
+     * @param ro
+     *            the reactionOk to set
+     */
+    public void setReactionOk(final TriggeredReaction ro) {
+        this.reactionOk = ro;
+    }
+
+    /**
+     * @param t
+     *            the tuples to set
+     */
+    public void setTuples(final List<LogicTuple> t) {
+        this.tuples = t;
+    }
+
+    /**
+     * @param vmt
+     *            the vmTime to set
+     */
+    public void setVmTime(final long vmt) {
+        this.vmTime = vmt;
+    }
+
+    /**
+     * @param wne
+     *            the wnEvents to set
+     */
+    public void setWnEvents(final List<WSetEvent> wne) {
+        this.wnEvents = wne;
+    }
 
 }

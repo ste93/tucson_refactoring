@@ -16,7 +16,7 @@ package alice.tucson.service;
 import alice.tucson.api.TucsonOpId;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
-import alice.tuplecentre.core.TupleCentreOperation;
+import alice.tuplecentre.core.AbstractTupleCentreOperation;
 
 /**
  * 
@@ -29,34 +29,37 @@ public interface InterTupleCentreACC {
      * 
      * 
      * @param tid
-     * @param type
-     * @param t
+     *            the identifier of the tuple centre target of the operation
+     *            requested
+     * @param op
+     *            the operation requested
      * 
-     * @return
+     * @return the identifier of the operation requested
      * 
      * @throws TucsonOperationNotPossibleException
+     *             if the operation requested cannot be performed
      * @throws UnreachableNodeException
+     *             if the target tuple centre cannot be reached over the network
      */
-    TucsonOpId doOperation(Object tid, TupleCentreOperation op)
+    TucsonOpId doOperation(Object tid, AbstractTupleCentreOperation op)
             throws TucsonOperationNotPossibleException,
             UnreachableNodeException;
 
     /**
      * 
-     * 
      * @param id
-     * 
-     * @return
+     *            the identifier of the operation requested
+     * @return the Object representing operation completion
      */
     TucsonOpCompletionEvent waitForCompletion(TucsonOpId id);
 
     /**
      * 
-     * 
      * @param id
+     *            the identifier of the operation requested
      * @param timeout
-     * 
-     * @return
+     *            the timeout associated to the operation
+     * @return the Object representing operation completion
      */
     TucsonOpCompletionEvent waitForCompletion(TucsonOpId id, int timeout);
 

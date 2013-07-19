@@ -18,12 +18,17 @@ package alice.tuplecentre.core;
  * 
  * @author aricci
  */
-public class ReactingState extends TupleCentreVMState {
+public class ReactingState extends AbstractTupleCentreVMState {
 
-    private TupleCentreVMState fetchEnvState;
-    private TupleCentreVMState speakingState;
+    private AbstractTupleCentreVMState fetchEnvState;
+    private AbstractTupleCentreVMState speakingState;
 
-    public ReactingState(final TupleCentreVMContext tcvm) {
+    /**
+     * 
+     * @param tcvm
+     *            the tuple centre VM this state belongs to
+     */
+    public ReactingState(final AbstractTupleCentreVMContext tcvm) {
         super(tcvm);
     }
 
@@ -32,7 +37,7 @@ public class ReactingState extends TupleCentreVMState {
         TriggeredReaction tr = this.vm.removeTriggeredReaction();
         if (tr != null) {
             this.vm.evalReaction(tr);
-        } else if (this.vm.time_triggeredReaction()) {
+        } else if (this.vm.timeTriggeredReaction()) {
             tr = this.vm.removeTimeTriggeredReaction();
             if (tr != null) {
                 this.vm.evalReaction(tr);
@@ -42,8 +47,8 @@ public class ReactingState extends TupleCentreVMState {
     }
 
     @Override
-    public TupleCentreVMState getNextState() {
-        if (this.vm.triggeredReaction() || this.vm.time_triggeredReaction()) {
+    public AbstractTupleCentreVMState getNextState() {
+        if (this.vm.triggeredReaction() || this.vm.timeTriggeredReaction()) {
             return this;
         } else if (this.vm.pendingEnvEvents()) {
             return this.fetchEnvState;

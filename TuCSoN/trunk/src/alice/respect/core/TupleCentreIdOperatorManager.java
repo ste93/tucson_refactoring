@@ -23,13 +23,20 @@ package alice.respect.core;
 public class TupleCentreIdOperatorManager extends
         alice.tuprolog.OperatorManager {
 
+    private static final int IP_DELIMITER_PRIO = 548;
+    private static final int NETID_DELIMITER_PRIO = 550;
+    private static final int PORT_DELIMITER_PRIO = 549;
     private static final long serialVersionUID = 1319340757322429430L;
 
+    /**
+     * 
+     */
     public TupleCentreIdOperatorManager() {
         super();
-        this.opNew("@", "xfx", 550);
-        this.opNew(":", "xfx", 549);
-        this.opNew(".", "xfx", 548);
+        this.opNew("@", "xfx",
+                TupleCentreIdOperatorManager.NETID_DELIMITER_PRIO);
+        this.opNew(":", "xfx", TupleCentreIdOperatorManager.PORT_DELIMITER_PRIO);
+        this.opNew(".", "xfx", TupleCentreIdOperatorManager.IP_DELIMITER_PRIO);
     }
 
 }

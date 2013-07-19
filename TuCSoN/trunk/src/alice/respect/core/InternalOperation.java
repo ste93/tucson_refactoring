@@ -52,90 +52,222 @@ public final class InternalOperation {
     private static final int OPTYPE_UNOR = 9;
     private static final int OPTYPE_URDR = 8;
 
-    static public InternalOperation makeGet_sR(final LogicTuple t) {
-        return new InternalOperation(InternalOperation.OPTYPE_GET_S_R, t);
-    }
-
-    static public InternalOperation makeGetEnv(final LogicTuple t) {
+    /**
+     * 
+     * @param t
+     *            the tuple argument of this internal operation
+     * @return the internal operation built
+     */
+    public static InternalOperation makeGetEnv(final LogicTuple t) {
         return new InternalOperation(InternalOperation.OPTYPE_GET_ENV, t);
     }
 
-    static public InternalOperation makeGetR(final LogicTuple t) {
+    /**
+     * 
+     * @param t
+     *            the tuple argument of this internal operation
+     * @return the internal operation built
+     */
+    public static InternalOperation makeGetR(final LogicTuple t) {
         return new InternalOperation(InternalOperation.OPTYPE_GET_R, t);
     }
 
-    static public InternalOperation makeIn_sR(final LogicTuple t) {
-        return new InternalOperation(InternalOperation.OPTYPE_IN_SR, t);
+    /**
+     * 
+     * @param t
+     *            the tuple argument of this internal operation
+     * @return the internal operation built
+     */
+    public static InternalOperation makeGetSR(final LogicTuple t) {
+        return new InternalOperation(InternalOperation.OPTYPE_GET_S_R, t);
     }
 
+    /**
+     * 
+     * @param t
+     *            the tuple argument of this internal operation
+     * @return the internal operation built
+     */
     public static InternalOperation makeInAllR(final LogicTuple t) {
         return new InternalOperation(InternalOperation.OPTYPE_IN_ALLR, t);
     }
 
-    static public InternalOperation makeInR(final LogicTuple t) {
+    /**
+     * 
+     * @param t
+     *            the tuple argument of this internal operation
+     * @return the internal operation built
+     */
+    public static InternalOperation makeInR(final LogicTuple t) {
         return new InternalOperation(InternalOperation.OPTYPE_INR, t);
     }
 
-    static public InternalOperation makeNo_sR(final LogicTuple t) {
-        return new InternalOperation(InternalOperation.OPTYPE_NO_SR, t);
+    /**
+     * 
+     * @param t
+     *            the tuple argument of this internal operation
+     * @return the internal operation built
+     */
+    public static InternalOperation makeInSR(final LogicTuple t) {
+        return new InternalOperation(InternalOperation.OPTYPE_IN_SR, t);
     }
 
+    /**
+     * 
+     * @param t
+     *            the tuple argument of this internal operation
+     * @return the internal operation built
+     */
     public static InternalOperation makeNoAllR(final LogicTuple t) {
         return new InternalOperation(InternalOperation.OPTYPE_NO_ALLR, t);
     }
 
-    static public InternalOperation makeNoR(final LogicTuple t) {
+    /**
+     * 
+     * @param t
+     *            the tuple argument of this internal operation
+     * @return the internal operation built
+     */
+    public static InternalOperation makeNoR(final LogicTuple t) {
         return new InternalOperation(InternalOperation.OPTYPE_NOR, t);
     }
 
-    static public InternalOperation makeOut_sR(final LogicTuple t) {
-        return new InternalOperation(InternalOperation.OPTYPE_OUT_SR, t);
+    /**
+     * 
+     * @param t
+     *            the tuple argument of this internal operation
+     * @return the internal operation built
+     */
+    public static InternalOperation makeNoSR(final LogicTuple t) {
+        return new InternalOperation(InternalOperation.OPTYPE_NO_SR, t);
     }
 
+    /**
+     * 
+     * @param t
+     *            the tuple argument of this internal operation
+     * @return the internal operation built
+     */
     public static InternalOperation makeOutAllR(final LogicTuple t) {
         return new InternalOperation(InternalOperation.OPTYPE_OUT_ALLR, t);
     }
 
-    static public InternalOperation makeOutR(final LogicTuple t) {
+    /**
+     * 
+     * @param t
+     *            the tuple argument of this internal operation
+     * @return the internal operation built
+     */
+    public static InternalOperation makeOutR(final LogicTuple t) {
         return new InternalOperation(InternalOperation.OPTYPE_OUTR, t);
     }
 
-    static public InternalOperation makeRd_sR(final LogicTuple t) {
-        return new InternalOperation(InternalOperation.OPTYPE_RD_SR, t);
+    /**
+     * 
+     * @param t
+     *            the tuple argument of this internal operation
+     * @return the internal operation built
+     */
+    public static InternalOperation makeOutSR(final LogicTuple t) {
+        return new InternalOperation(InternalOperation.OPTYPE_OUT_SR, t);
     }
 
+    /**
+     * 
+     * @param t
+     *            the tuple argument of this internal operation
+     * @return the internal operation built
+     */
     public static InternalOperation makeRdAllR(final LogicTuple t) {
         return new InternalOperation(InternalOperation.OPTYPE_RD_ALLR, t);
     }
 
-    static public InternalOperation makeRdR(final LogicTuple t) {
+    /**
+     * 
+     * @param t
+     *            the tuple argument of this internal operation
+     * @return the internal operation built
+     */
+    public static InternalOperation makeRdR(final LogicTuple t) {
         return new InternalOperation(InternalOperation.OPTYPE_RDR, t);
     }
 
-    static public InternalOperation makeSet_sR(final LogicTuple t) {
-        return new InternalOperation(InternalOperation.OPTYPE_SET_S_R, t);
+    /**
+     * 
+     * @param t
+     *            the tuple argument of this internal operation
+     * @return the internal operation built
+     */
+    public static InternalOperation makeRdSR(final LogicTuple t) {
+        return new InternalOperation(InternalOperation.OPTYPE_RD_SR, t);
     }
 
-    static public InternalOperation makeSetEnv(final LogicTuple t) {
+    /**
+     * 
+     * @param t
+     *            the tuple argument of this internal operation
+     * @return the internal operation built
+     */
+    public static InternalOperation makeSetEnv(final LogicTuple t) {
         return new InternalOperation(InternalOperation.OPTYPE_SET_ENV, t);
     }
 
-    static public InternalOperation makeSetR(final LogicTuple t) {
+    /**
+     * 
+     * @param t
+     *            the tuple argument of this internal operation
+     * @return the internal operation built
+     */
+    public static InternalOperation makeSetR(final LogicTuple t) {
         return new InternalOperation(InternalOperation.OPTYPE_SET_R, t);
     }
 
-    static public InternalOperation makeSpawnR(final LogicTuple t) {
+    /**
+     * 
+     * @param t
+     *            the tuple argument of this internal operation
+     * @return the internal operation built
+     */
+    public static InternalOperation makeSetSR(final LogicTuple t) {
+        return new InternalOperation(InternalOperation.OPTYPE_SET_S_R, t);
+    }
+
+    /**
+     * 
+     * @param t
+     *            the tuple argument of this internal operation
+     * @return the internal operation built
+     */
+    public static InternalOperation makeSpawnR(final LogicTuple t) {
         return new InternalOperation(InternalOperation.OPTYPE_SPAWN_R, t);
     }
 
+    /**
+     * 
+     * @param t
+     *            the tuple argument of this internal operation
+     * @return the internal operation built
+     */
     public static InternalOperation makeUinR(final LogicTuple t) {
         return new InternalOperation(InternalOperation.OPTYPE_UINR, t);
     }
 
+    /**
+     * 
+     * @param t
+     *            the tuple argument of this internal operation
+     * @return the internal operation built
+     */
     public static InternalOperation makeUnoR(final LogicTuple t) {
         return new InternalOperation(InternalOperation.OPTYPE_UNOR, t);
     }
 
+    /**
+     * 
+     * @param t
+     *            the tuple argument of this internal operation
+     * @return the internal operation built
+     */
     public static InternalOperation makeUrdR(final LogicTuple t) {
         return new InternalOperation(InternalOperation.OPTYPE_URDR, t);
     }
@@ -151,103 +283,204 @@ public final class InternalOperation {
         this.type = t;
     }
 
+    /**
+     * 
+     * @return the tuple argument of this internal operation
+     */
     public LogicTuple getArgument() {
         return this.arg;
     }
 
+    /**
+     * 
+     * @return the tuple result of this internal operation
+     */
     public LogicTuple getResult() {
         return this.result;
     }
 
-    public boolean isGet_sR() {
-        return this.type == InternalOperation.OPTYPE_GET_S_R;
-    }
-
+    /**
+     * 
+     * @return <code>true</code> if this is a get_env
+     */
     public boolean isGetEnv() {
         return this.type == InternalOperation.OPTYPE_GET_ENV;
     }
 
+    /**
+     * 
+     * @return <code>true</code> if this is a get
+     */
     public boolean isGetR() {
         return this.type == InternalOperation.OPTYPE_GET_R;
     }
 
-    public boolean isIn_sR() {
-        return this.type == InternalOperation.OPTYPE_IN_SR;
+    /**
+     * 
+     * @return <code>true</code> if this is a get_s
+     */
+    public boolean isGetSR() {
+        return this.type == InternalOperation.OPTYPE_GET_S_R;
     }
 
+    /**
+     * 
+     * @return <code>true</code> if this is a in_all
+     */
     public boolean isInAllR() {
         return this.type == InternalOperation.OPTYPE_IN_ALLR;
     }
 
+    /**
+     * 
+     * @return <code>true</code> if this is a in
+     */
     public boolean isInR() {
         return this.type == InternalOperation.OPTYPE_INR;
     }
 
-    public boolean isNo_sR() {
-        return this.type == InternalOperation.OPTYPE_NO_SR;
+    /**
+     * 
+     * @return <code>true</code> if this is a in_s
+     */
+    public boolean isInSR() {
+        return this.type == InternalOperation.OPTYPE_IN_SR;
     }
 
+    /**
+     * 
+     * @return <code>true</code> if this is a no_all
+     */
     public boolean isNoAllR() {
         return this.type == InternalOperation.OPTYPE_NO_ALLR;
     }
 
+    /**
+     * 
+     * @return <code>true</code> if this is a no
+     */
     public boolean isNoR() {
         return this.type == InternalOperation.OPTYPE_NOR;
     }
 
-    public boolean isOut_sR() {
-        return this.type == InternalOperation.OPTYPE_OUT_SR;
+    /**
+     * 
+     * @return <code>true</code> if this is a no_s
+     */
+    public boolean isNoSR() {
+        return this.type == InternalOperation.OPTYPE_NO_SR;
     }
 
+    /**
+     * 
+     * @return <code>true</code> if this is a out_all
+     */
     public boolean isOutAllR() {
         return this.type == InternalOperation.OPTYPE_OUT_ALLR;
     }
 
+    /**
+     * 
+     * @return <code>true</code> if this is a out
+     */
     public boolean isOutR() {
         return this.type == InternalOperation.OPTYPE_OUTR;
     }
 
-    public boolean isRd_sR() {
-        return this.type == InternalOperation.OPTYPE_RD_SR;
+    /**
+     * 
+     * @return <code>true</code> if this is a out_s
+     */
+    public boolean isOutSR() {
+        return this.type == InternalOperation.OPTYPE_OUT_SR;
     }
 
+    /**
+     * 
+     * @return <code>true</code> if this is a rd_all
+     */
     public boolean isRdAllR() {
         return this.type == InternalOperation.OPTYPE_RD_ALLR;
     }
 
+    /**
+     * 
+     * @return <code>true</code> if this is a rd
+     */
     public boolean isRdR() {
         return this.type == InternalOperation.OPTYPE_RDR;
 
     }
 
-    public boolean isSet_sR() {
-        return this.type == InternalOperation.OPTYPE_SET_S_R;
+    /**
+     * 
+     * @return <code>true</code> if this is a rd_s
+     */
+    public boolean isRdSR() {
+        return this.type == InternalOperation.OPTYPE_RD_SR;
     }
 
+    /**
+     * 
+     * @return <code>true</code> if this is a set_env
+     */
     public boolean isSetEnv() {
         return this.type == InternalOperation.OPTYPE_SET_ENV;
     }
 
+    /**
+     * 
+     * @return <code>true</code> if this is a set
+     */
     public boolean isSetR() {
         return this.type == InternalOperation.OPTYPE_SET_R;
     }
 
+    /**
+     * 
+     * @return <code>true</code> if this is a set_s
+     */
+    public boolean isSetSR() {
+        return this.type == InternalOperation.OPTYPE_SET_S_R;
+    }
+
+    /**
+     * 
+     * @return <code>true</code> if this is a spawn
+     */
     public boolean isSpawnR() {
         return this.type == InternalOperation.OPTYPE_SPAWN_R;
     }
 
+    /**
+     * 
+     * @return <code>true</code> if this is a uin
+     */
     public boolean isUinR() {
         return this.type == InternalOperation.OPTYPE_UINR;
     }
 
+    /**
+     * 
+     * @return <code>true</code> if this is a uno
+     */
     public boolean isUnoR() {
         return this.type == InternalOperation.OPTYPE_UNOR;
     }
 
+    /**
+     * 
+     * @return <code>true</code> if this is a urd
+     */
     public boolean isUrdR() {
         return this.type == InternalOperation.OPTYPE_URDR;
     }
 
+    /**
+     * 
+     * @param t
+     *            the tuple result of this internal operation
+     */
     public void setResult(final LogicTuple t) {
         this.result = t;
     }
@@ -257,6 +490,10 @@ public final class InternalOperation {
         return this.toTuple().toString();
     }
 
+    /**
+     * 
+     * @return the tuple representation of this internal operation
+     */
     public LogicTuple toTuple() {
         LogicTuple t = null;
         if (this.result != null) {
@@ -293,17 +530,17 @@ public final class InternalOperation {
             opName = "get";
         } else if (this.isSetR()) {
             opName = "set";
-        } else if (this.isOut_sR()) {
+        } else if (this.isOutSR()) {
             opName = "out_s";
-        } else if (this.isIn_sR()) {
+        } else if (this.isInSR()) {
             opName = "in_s";
-        } else if (this.isRd_sR()) {
+        } else if (this.isRdSR()) {
             opName = "rd_s";
-        } else if (this.isNo_sR()) {
+        } else if (this.isNoSR()) {
             opName = "no_s";
-        } else if (this.isGet_sR()) {
+        } else if (this.isGetSR()) {
             opName = "get_s";
-        } else if (this.isSet_sR()) {
+        } else if (this.isSetSR()) {
             opName = "set_s";
         } else if (this.isGetEnv()) {
             return t;

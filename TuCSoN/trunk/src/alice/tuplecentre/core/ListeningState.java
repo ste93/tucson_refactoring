@@ -13,17 +13,24 @@
  */
 package alice.tuplecentre.core;
 
+import alice.respect.core.RespectOperation;
+
 /**
  * This is the listening state of the TCVM
  * 
  * @author aricci
  */
-public class ListeningState extends TupleCentreVMState {
+public class ListeningState extends AbstractTupleCentreVMState {
 
-    private TupleCentreVMState reactingState;
-    private TupleCentreVMState speakingState;
+    private AbstractTupleCentreVMState reactingState;
+    private AbstractTupleCentreVMState speakingState;
 
-    public ListeningState(final TupleCentreVMContext tcvm) {
+    /**
+     * 
+     * @param tcvm
+     *            the tuple centre VM this state belongs to
+     */
+    public ListeningState(final AbstractTupleCentreVMContext tcvm) {
         super(tcvm);
     }
 
@@ -31,7 +38,7 @@ public class ListeningState extends TupleCentreVMState {
     public void execute() {
         this.vm.fetchPendingEvent();
         final InputEvent ev = this.vm.getCurrentEvent();
-        if (ev.getSimpleTCEvent().getType() != 100) {
+        if (ev.getSimpleTCEvent().getType() != RespectOperation.OPTYPE_TIME) {
             this.vm.addPendingQueryEvent(ev);
             this.vm.fetchTriggeredReactions(ev);
         } else {
@@ -40,8 +47,8 @@ public class ListeningState extends TupleCentreVMState {
     }
 
     @Override
-    public TupleCentreVMState getNextState() {
-        if (this.vm.triggeredReaction() || this.vm.time_triggeredReaction()) {
+    public AbstractTupleCentreVMState getNextState() {
+        if (this.vm.triggeredReaction() || this.vm.timeTriggeredReaction()) {
             return this.reactingState;
         }
         return this.speakingState;

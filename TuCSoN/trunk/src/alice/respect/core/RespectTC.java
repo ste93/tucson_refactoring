@@ -50,6 +50,15 @@ public class RespectTC implements IRespectTC {
     private final RespectVM vm;
     private final Thread vmThread;
 
+    /**
+     * 
+     * @param tid
+     *            the identifier of the tuple centre
+     * @param container
+     *            the ReSpecT wrapper this tuple centre refers to
+     * @param qSize
+     *            the maximum size of the input queue
+     */
     public RespectTC(final TupleCentreId tid,
             final RespectTCContainer container, final int qSize) {
         this.vm = new RespectVM(tid, container, qSize, this);
@@ -72,15 +81,14 @@ public class RespectTC implements IRespectTC {
         return op;
     }
 
+    /**
+     * 
+     * @return the environment context toward this tuple centre
+     */
     public IEnvironmentContext getEnvironmentContext() {
         return new EnviromentContext(this.vm.getRespectVMContext());
     }
 
-    /**
-     * Gets the tuple centre id
-     * 
-     * @return the id
-     */
     public TupleCentreId getId() {
         return this.vm.getId();
     }
@@ -88,7 +96,7 @@ public class RespectTC implements IRespectTC {
     /**
      * Gets a interface for linking operations
      * 
-     * @return
+     * @return the linking context toward this tuple centre
      */
     public ILinkContext getLinkContext() {
         return new LinkContext(this.vm);
@@ -97,7 +105,7 @@ public class RespectTC implements IRespectTC {
     /**
      * Gets a context for tuple centre management.
      * 
-     * @return
+     * @return the management context toward this tuple centre
      */
     public IManagementContext getManagementContext() {
         return new ManagementContext(this.vm);
@@ -106,7 +114,7 @@ public class RespectTC implements IRespectTC {
     /**
      * Gets a context with no blocking functionalities
      * 
-     * @return
+     * @return the ordinary, asynchronous context toward this tuple centre
      */
     public IOrdinaryAsynchInterface getOrdinaryAsynchInterface() {
         return new OrdinaryAsynchInterface(this);
@@ -115,7 +123,7 @@ public class RespectTC implements IRespectTC {
     /**
      * Gets a context with blocking functionalities
      * 
-     * @return
+     * @return the ordinary, synchronous context toward this tuple centre
      */
     public IOrdinarySynchInterface getOrdinarySynchInterface() {
         return new OrdinarySynchInterface(this);
@@ -130,12 +138,16 @@ public class RespectTC implements IRespectTC {
             final OperationCompletionListener l)
             throws OperationNotPossibleException {
         final RespectOperation op =
-                RespectOperation.makeGet_s(this.getProlog(), new LogicTuple(
+                RespectOperation.makeGetS(this.getProlog(), new LogicTuple(
                         "spec", new Var("S")), l);
         this.vm.doOperation(aid, op);
         return op;
     }
 
+    /**
+     * 
+     * @return the specification, asynchronous context toward this tuple centre
+     */
     public ISpecificationAsynchInterface getSpecificationAsynchInterface() {
         return new SpecificationAsynchInterface(this);
     }
@@ -143,7 +155,7 @@ public class RespectTC implements IRespectTC {
     /**
      * Gets a context with blocking specification functionalities
      * 
-     * @return
+     * @return the specification, synchronous context toward this tuple centre
      */
     public ISpecificationSynchInterface getSpecificationSynchInterface() {
         return new SpecificationSynchInterface(this);
@@ -152,7 +164,7 @@ public class RespectTC implements IRespectTC {
     /**
      * Gets a context with timing functionalities.
      * 
-     * @return
+     * @return the timed context toward this tuple centre
      */
     public ITimedContext getTimedContext() {
         return new TimedContext(this);
@@ -162,6 +174,11 @@ public class RespectTC implements IRespectTC {
         return this.vm;
     }
 
+    /**
+     * 
+     * @return the Java thread executing the ReSpecT VM managing this tuple
+     *         centre
+     */
     public Thread getVMThread() {
         return this.vmThread;
     }
@@ -217,7 +234,7 @@ public class RespectTC implements IRespectTC {
             final OperationCompletionListener l)
             throws OperationNotPossibleException {
         final RespectOperation op =
-                RespectOperation.makeInp_s(this.getProlog(), t, l);
+                RespectOperation.makeInpS(this.getProlog(), t, l);
         this.vm.doOperation(id, op);
         return op;
     }
@@ -231,7 +248,7 @@ public class RespectTC implements IRespectTC {
             final OperationCompletionListener l)
             throws OperationNotPossibleException {
         final RespectOperation op =
-                RespectOperation.makeIn_s(this.getProlog(), t, l);
+                RespectOperation.makeInS(this.getProlog(), t, l);
         this.vm.doOperation(id, op);
         return op;
     }
@@ -287,7 +304,7 @@ public class RespectTC implements IRespectTC {
             final OperationCompletionListener l)
             throws OperationNotPossibleException {
         final RespectOperation op =
-                RespectOperation.makeNop_s(this.getProlog(), t, l);
+                RespectOperation.makeNopS(this.getProlog(), t, l);
         this.vm.doOperation(id, op);
         return op;
     }
@@ -301,7 +318,7 @@ public class RespectTC implements IRespectTC {
             final OperationCompletionListener l)
             throws OperationNotPossibleException {
         final RespectOperation op =
-                RespectOperation.makeNo_s(this.getProlog(), t, l);
+                RespectOperation.makeNoS(this.getProlog(), t, l);
         this.vm.doOperation(id, op);
         return op;
     }
@@ -359,7 +376,7 @@ public class RespectTC implements IRespectTC {
             final OperationCompletionListener l)
             throws OperationNotPossibleException {
         final RespectOperation op =
-                RespectOperation.makeOut_s(this.getProlog(), t, l);
+                RespectOperation.makeOutS(this.getProlog(), t, l);
         this.vm.doOperation(id, op);
         return op;
     }
@@ -415,7 +432,7 @@ public class RespectTC implements IRespectTC {
             final OperationCompletionListener l)
             throws OperationNotPossibleException {
         final RespectOperation op =
-                RespectOperation.makeRdp_s(this.getProlog(), t, l);
+                RespectOperation.makeRdpS(this.getProlog(), t, l);
         this.vm.doOperation(id, op);
         return op;
     }
@@ -429,7 +446,7 @@ public class RespectTC implements IRespectTC {
             final OperationCompletionListener l)
             throws OperationNotPossibleException {
         final RespectOperation op =
-                RespectOperation.makeRd_s(this.getProlog(), t, l);
+                RespectOperation.makeRdS(this.getProlog(), t, l);
         this.vm.doOperation(id, op);
         return op;
     }
@@ -448,18 +465,18 @@ public class RespectTC implements IRespectTC {
         return op;
     }
 
-    public IRespectOperation set_s(final IId aid, final LogicTuple t,
+    public IRespectOperation setS(final IId aid, final LogicTuple t)
+            throws OperationNotPossibleException {
+        return this.setS(aid, t, null);
+    }
+
+    public IRespectOperation setS(final IId aid, final LogicTuple t,
             final OperationCompletionListener l)
             throws OperationNotPossibleException {
         final RespectOperation op =
-                RespectOperation.makeSet_s(this.getProlog(), t, l);
+                RespectOperation.makeSetS(this.getProlog(), t, l);
         this.vm.doOperation(aid, op);
         return op;
-    }
-
-    public IRespectOperation setS(final IId aid, final LogicTuple t)
-            throws OperationNotPossibleException {
-        return this.set_s(aid, t, null);
     }
 
     public IRespectOperation
@@ -471,7 +488,7 @@ public class RespectTC implements IRespectTC {
             throw new InvalidSpecificationException();
         }
         final RespectOperation op =
-                RespectOperation.makeSet_s(this.getProlog(), null);
+                RespectOperation.makeSetS(this.getProlog(), null);
         final Iterator<LogicTuple> rit =
                 this.vm.getRespectVMContext().getSpecTupleSetIterator();
         final LinkedList<Tuple> reactionList = new LinkedList<Tuple>();
@@ -488,7 +505,7 @@ public class RespectTC implements IRespectTC {
                     final OperationCompletionListener l)
                     throws OperationNotPossibleException {
         final RespectOperation op =
-                RespectOperation.makeSet_s(this.getProlog(), spec, l);
+                RespectOperation.makeSetS(this.getProlog(), spec, l);
         this.vm.doOperation(aid, op);
         return op;
     }

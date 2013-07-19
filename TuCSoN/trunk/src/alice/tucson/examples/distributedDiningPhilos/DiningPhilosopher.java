@@ -2,19 +2,38 @@ package alice.tucson.examples.distributedDiningPhilos;
 
 import alice.logictuple.LogicTuple;
 import alice.logictuple.exceptions.InvalidLogicTupleException;
+import alice.tucson.api.AbstractTucsonAgent;
 import alice.tucson.api.ITucsonOperation;
 import alice.tucson.api.SynchACC;
-import alice.tucson.api.TucsonAgent;
 import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 
-public class DiningPhilosopher extends TucsonAgent {
+/**
+ * 
+ * @author ste (mailto: s.mariani@unibo.it) on 03/lug/2013
+ * 
+ */
+public class DiningPhilosopher extends AbstractTucsonAgent {
 
+    private static final int EATING_TIME = 5000;
+    private static final int THINKING_TIME = 5000;
     private final TucsonTupleCentreId mySeat;
 
+    /**
+     * 
+     * @param aid
+     *            the String representation of this philosopher's TuCSoN agent
+     *            identifier
+     * @param seat
+     *            the identifier of the TuCSoN tuple centre representing the
+     *            philosopher's seat
+     * @throws TucsonInvalidAgentIdException
+     *             if the given String does not represent a valid TuCSoN agent
+     *             identifier
+     */
     public DiningPhilosopher(final String aid, final TucsonTupleCentreId seat)
             throws TucsonInvalidAgentIdException {
         super(aid);
@@ -57,13 +76,13 @@ public class DiningPhilosopher extends TucsonAgent {
                     this.say("I'm starving!");
                 }
             } catch (final InvalidLogicTupleException e) {
-                // TODO Properly handle Exception
+                e.printStackTrace();
             } catch (final TucsonOperationNotPossibleException e) {
-                // TODO Properly handle Exception
+                e.printStackTrace();
             } catch (final UnreachableNodeException e) {
-                // TODO Properly handle Exception
+                e.printStackTrace();
             } catch (final OperationTimeOutException e) {
-                // TODO Properly handle Exception
+                e.printStackTrace();
             }
         }
     }
@@ -71,18 +90,18 @@ public class DiningPhilosopher extends TucsonAgent {
     private void eating() {
         this.say("...gnam gnam...chomp chomp...munch munch...");
         try {
-            Thread.sleep(5000);
+            Thread.sleep(DiningPhilosopher.EATING_TIME);
         } catch (final InterruptedException e) {
-            // TODO Properly handle Exception
+            e.printStackTrace();
         }
     }
 
     private void think() {
         this.say("...mumble mumble...rat rat...mumble mumble...");
         try {
-            Thread.sleep(5000);
+            Thread.sleep(DiningPhilosopher.THINKING_TIME);
         } catch (final InterruptedException e) {
-            // TODO Properly handle Exception
+            e.printStackTrace();
         }
     }
 

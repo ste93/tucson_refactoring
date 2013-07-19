@@ -22,6 +22,8 @@ import alice.tucson.api.TucsonTupleCentreId;
 
 /**
  * 
+ * @author ste (mailto: s.mariani@unibo.it) on 17/lug/2013
+ * 
  */
 public class TucsonTCUsers {
 
@@ -29,12 +31,22 @@ public class TucsonTCUsers {
     private final List<TucsonAgentId> currentAidUsers;
     private final TucsonTupleCentreId tid;
 
+    /**
+     * 
+     * @param id
+     *            the identifier of the tuple centre this register refers to
+     */
     public TucsonTCUsers(final TucsonTupleCentreId id) {
         this.tid = id;
         this.creationDate = new Date();
         this.currentAidUsers = new LinkedList<TucsonAgentId>();
     }
 
+    /**
+     * 
+     * @param aid
+     *            the identifier of the agent to add to this register
+     */
     public void addUser(final TucsonAgentId aid) {
         synchronized (this.currentAidUsers) {
             if (!this.currentAidUsers.contains(aid)) {
@@ -43,20 +55,37 @@ public class TucsonTCUsers {
         }
     }
 
+    /**
+     * 
+     * @return the date this register was created
+     */
     public Date getCreationDate() {
         return this.creationDate;
     }
 
+    /**
+     * 
+     * @return the identifier of the tuple centre this register refers to
+     */
     public TucsonTupleCentreId getTucsonTupleCentreId() {
         return this.tid;
     }
 
+    /**
+     * 
+     * @return the list of user agents (their identifiers) currently registered
+     */
     public List<TucsonAgentId> getUsers() {
         synchronized (this.currentAidUsers) {
             return this.currentAidUsers;
         }
     }
 
+    /**
+     * 
+     * @param aid
+     *            the identifier of the agent to remove from this register
+     */
     public void removeUser(final TucsonAgentId aid) {
         synchronized (this.currentAidUsers) {
             if (this.currentAidUsers.contains(aid)) {

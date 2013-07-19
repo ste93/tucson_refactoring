@@ -26,13 +26,19 @@ import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
  * Command Line Interpreter. Can be booted with a TuCSoN agent ID or using a
  * default assigned one (both passed to the CLIAgent). Gets a TuCSoN ACC from
  * TucsonMetaACC then spawns the CLIAgent who manages user input.
+ * 
+ * @author ste (mailto: s.mariani@unibo.it) on 17/lug/2013
+ * 
  */
 public final class CommandLineInterpreter {
 
-    public static void log(final String s) {
-        System.out.println("[CommandLineInterpreter]: " + s);
-    }
+    private static final int DEF_PORT = 20504;
 
+    /**
+     * 
+     * @param args
+     *            the arguments to be given to the CLI
+     */
     public static void main(final String[] args) {
 
         CommandLineInterpreter
@@ -66,7 +72,7 @@ public final class CommandLineInterpreter {
                         Integer.parseInt(alice.util.Tools.getOpt(args,
                                 "-portno"));
             } else {
-                port = 20504;
+                port = CommandLineInterpreter.DEF_PORT;
             }
 
             CommandLineInterpreter.log("Version "
@@ -84,8 +90,7 @@ public final class CommandLineInterpreter {
                         TucsonMetaACC.getContext(new TucsonAgentId(aid), node,
                                 port);
             } catch (final TucsonInvalidAgentIdException e) {
-                System.err.println("[CommandLineInterpreter]: " + e);
-                // TODO Properly handle Exception
+                e.printStackTrace();
                 System.exit(-1);
             }
 
@@ -101,6 +106,10 @@ public final class CommandLineInterpreter {
 
         }
 
+    }
+
+    private static void log(final String s) {
+        System.out.println("[CommandLineInterpreter]: " + s);
     }
 
     private CommandLineInterpreter() {

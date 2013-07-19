@@ -15,14 +15,27 @@ package alice.tucson.introspection;
 
 import alice.tucson.api.TucsonAgentId;
 
+/**
+ * 
+ * @author ste (mailto: s.mariani@unibo.it) on 03/lug/2013
+ * 
+ */
 public class ShutdownMsg extends NodeMsg {
 
     private static final long serialVersionUID = -745435883778999790L;
 
+    /**
+     * 
+     * @param id
+     *            the agent id of the sender
+     */
     public ShutdownMsg(final TucsonAgentId id) {
         super(id, "exit");
     }
 
+    /**
+     * 
+     */
     protected ShutdownMsg() {
         super();
     }

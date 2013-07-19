@@ -13,14 +13,34 @@
  */
 package alice.tucson.introspection;
 
+import java.io.IOException;
+
 import alice.tucson.api.TucsonAgentId;
 import alice.tucson.api.TucsonTupleCentreId;
 
+/**
+ * 
+ * @author ste (mailto: s.mariani@unibo.it) on 03/lug/2013
+ * 
+ */
 public class Inspector extends Thread implements InspectorContextListener {
 
+    /**
+     * 
+     */
     protected InspectorContext context;
+    /**
+     * 
+     */
     protected boolean q;
 
+    /**
+     * 
+     * @param id
+     *            the agent identifier this inspector should use
+     * @param tid
+     *            the identifier of the tuple centre under inspection
+     */
     public Inspector(final TucsonAgentId id, final TucsonTupleCentreId tid) {
         super();
         this.context = new InspectorContextStub(id, tid);
@@ -28,24 +48,31 @@ public class Inspector extends Thread implements InspectorContextListener {
         this.q = false;
     }
 
+    /**
+     * 
+     * @return the inspection context used by this inspector
+     */
     public InspectorContext getContext() {
         return this.context;
     }
 
     public void onContextEvent(final InspectorContextEvent ev) {
         /*
-         * FIXME Decide what to do here
+         * FIXME What to do here?
          */
     }
 
+    /**
+     * 
+     */
     public void quit() {
+        this.q = true;
         try {
-            this.q = true;
             this.context.exit();
-            this.interrupt();
-        } catch (final Exception ex) {
-            // TODO Properly handle Exception
+        } catch (final IOException e) {
+            e.printStackTrace();
         }
+        this.interrupt();
     }
 
     @Override
@@ -57,8 +84,11 @@ public class Inspector extends Thread implements InspectorContextListener {
         while (!this.q) {
             try {
                 this.context.acceptVMEvent();
-            } catch (final Exception e) {
-                // TODO Properly handle Exception
+            } catch (final ClassNotFoundException e) {
+                e.printStackTrace();
+                break;
+            } catch (final IOException e) {
+                e.printStackTrace();
                 break;
             }
         }

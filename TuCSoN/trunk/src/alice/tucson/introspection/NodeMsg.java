@@ -17,23 +17,73 @@ import java.io.Serializable;
 
 import alice.tucson.api.TucsonAgentId;
 
+/**
+ * 
+ * @author ste (mailto: s.mariani@unibo.it) on 03/lug/2013
+ * 
+ */
 public class NodeMsg implements Serializable {
 
     private static final long serialVersionUID = -3499870079832457223L;
-    public String action;
-    public TucsonAgentId aid;
+    private String action;
+    private TucsonAgentId aid;
 
+    /**
+     * 
+     * @param id
+     *            the agent id of the sender
+     */
     public NodeMsg(final TucsonAgentId id) {
         this.aid = id;
     }
 
+    /**
+     * 
+     * @param id
+     *            the agent id of the sender
+     * @param act
+     *            the action to perform
+     */
     public NodeMsg(final TucsonAgentId id, final String act) {
         this.aid = id;
         this.action = act;
     }
 
+    /**
+     * 
+     */
     protected NodeMsg() {
         super();
+    }
+
+    /**
+     * @return the action
+     */
+    public String getAction() {
+        return this.action;
+    }
+
+    /**
+     * @return the aid
+     */
+    public TucsonAgentId getAid() {
+        return this.aid;
+    }
+
+    /**
+     * @param a
+     *            the action to set
+     */
+    public void setAction(final String a) {
+        this.action = a;
+    }
+
+    /**
+     * @param id
+     *            the aid to set
+     */
+    public void setAid(final TucsonAgentId id) {
+        this.aid = id;
     }
 
 }

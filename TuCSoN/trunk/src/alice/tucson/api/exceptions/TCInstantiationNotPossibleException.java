@@ -13,6 +13,11 @@
  */
 package alice.tucson.api.exceptions;
 
+/**
+ * 
+ * @author ste (mailto: s.mariani@unibo.it) on 03/lug/2013
+ * 
+ */
 public class TCInstantiationNotPossibleException extends Exception {
 
     private static final long serialVersionUID = 5449959463611812309L;

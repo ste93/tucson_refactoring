@@ -28,13 +28,18 @@ import alice.tuplecentre.core.TCCycleResult.Outcome;
  * 
  * @author aricci
  */
-public class SpeakingState extends TupleCentreVMState {
+public class SpeakingState extends AbstractTupleCentreVMState {
 
-    private TupleCentreVMState idleState;
+    private AbstractTupleCentreVMState idleState;
     private boolean noMoreSatisfiablePendingQuery;
-    private TupleCentreVMState reactingState;
+    private AbstractTupleCentreVMState reactingState;
 
-    public SpeakingState(final TupleCentreVMContext tcvm) {
+    /**
+     * 
+     * @param tcvm
+     *            the tuple centre VM this state belongs to
+     */
+    public SpeakingState(final AbstractTupleCentreVMContext tcvm) {
         super(tcvm);
     }
 
@@ -43,13 +48,13 @@ public class SpeakingState extends TupleCentreVMState {
 
         final Iterator<?> it = this.vm.getPendingQuerySetIterator();
         InputEvent ev = null;
-        OutputEvent out_ev = null;
+        OutputEvent outEv = null;
         this.noMoreSatisfiablePendingQuery = true;
         boolean foundSatisfied = false;
 
         Tuple tuple = null;
         List<Tuple> tupleList = null;
-        TupleCentreOperation op = null;
+        AbstractTupleCentreOperation op = null;
 
         while (it.hasNext() && !foundSatisfied) {
 
@@ -86,8 +91,8 @@ public class SpeakingState extends TupleCentreVMState {
                             op.setOpResult(Outcome.SUCCESS);
                             op.setTupleResult(tuple);
                             foundSatisfied = true;
-                        }// we do nothing: in is suspensive hence we cannot
-                         // conclude FAILURE yet!
+                        } // we do nothing: in is suspensive hence we cannot
+                          // conclude FAILURE yet!
                     } else if (op.isRd()) {
                         tuple =
                                 this.vm.readMatchingTuple(op
@@ -96,8 +101,8 @@ public class SpeakingState extends TupleCentreVMState {
                             op.setOpResult(Outcome.SUCCESS);
                             op.setTupleResult(tuple);
                             foundSatisfied = true;
-                        }// we do nothing: rd is suspensive hence we cannot
-                         // conclude FAILURE yet!
+                        } // we do nothing: rd is suspensive hence we cannot
+                          // conclude FAILURE yet!
                     } else if (op.isInp()) {
                         tuple =
                                 this.vm.removeMatchingTuple(op
@@ -130,8 +135,8 @@ public class SpeakingState extends TupleCentreVMState {
                             op.setOpResult(Outcome.SUCCESS);
                             op.setTupleResult(op.getTemplateArgument());
                             foundSatisfied = true;
-                        }// we do nothing: no is suspensive hence we cannot
-                         // conclude FAILURE yet!
+                        } // we do nothing: no is suspensive hence we cannot
+                          // conclude FAILURE yet!
                     } else if (op.isNop()) {
                         tuple =
                                 this.vm.readMatchingTuple(op
@@ -194,8 +199,8 @@ public class SpeakingState extends TupleCentreVMState {
                             op.setOpResult(Outcome.SUCCESS);
                             op.setTupleResult(tuple);
                             foundSatisfied = true;
-                        }// we do nothing: urd is suspensive hence we cannot
-                         // conclude FAILURE yet!
+                        } // we do nothing: urd is suspensive hence we cannot
+                          // conclude FAILURE yet!
                     } else if (op.isUin()) {
                         tuple =
                                 this.vm.removeUniformTuple(op
@@ -204,8 +209,8 @@ public class SpeakingState extends TupleCentreVMState {
                             op.setOpResult(Outcome.SUCCESS);
                             op.setTupleResult(tuple);
                             foundSatisfied = true;
-                        }// we do nothing: uin is suspensive hence we cannot
-                         // conclude FAILURE yet!
+                        } // we do nothing: uin is suspensive hence we cannot
+                          // conclude FAILURE yet!
                     } else if (op.isUno()) {
                         tuple =
                                 this.vm.readUniformTuple(op
@@ -214,8 +219,8 @@ public class SpeakingState extends TupleCentreVMState {
                             op.setOpResult(Outcome.SUCCESS);
                             op.setTupleResult(op.getTemplateArgument());
                             foundSatisfied = true;
-                        }// we do nothing: urd is suspensive hence we cannot
-                         // conclude FAILURE yet!
+                        } // we do nothing: urd is suspensive hence we cannot
+                          // conclude FAILURE yet!
                     } else if (op.isUrdp()) {
                         tuple =
                                 this.vm.readUniformTuple(op
@@ -252,13 +257,13 @@ public class SpeakingState extends TupleCentreVMState {
                             op.setTupleResult(tuple);
                         }
                         foundSatisfied = true;
-                    } else if (op.isOut_s()) {
+                    } else if (op.isOutS()) {
                         tuple = op.getTupleArgument();
                         this.vm.addSpecTuple(tuple);
                         op.setOpResult(Outcome.SUCCESS);
                         op.setTupleResult(tuple);
                         foundSatisfied = true;
-                    } else if (op.isIn_s()) {
+                    } else if (op.isInS()) {
                         tuple =
                                 this.vm.removeMatchingSpecTuple(op
                                         .getTemplateArgument());
@@ -266,9 +271,9 @@ public class SpeakingState extends TupleCentreVMState {
                             op.setOpResult(Outcome.SUCCESS);
                             op.setTupleResult(tuple);
                             foundSatisfied = true;
-                        }// we do nothing: in_s is suspensive hence we cannot
-                         // conclude FAILURE yet!
-                    } else if (op.isRd_s()) {
+                        } // we do nothing: in_s is suspensive hence we cannot
+                          // conclude FAILURE yet!
+                    } else if (op.isRdS()) {
                         tuple =
                                 this.vm.readMatchingSpecTuple(op
                                         .getTemplateArgument());
@@ -276,9 +281,9 @@ public class SpeakingState extends TupleCentreVMState {
                             op.setOpResult(Outcome.SUCCESS);
                             op.setTupleResult(tuple);
                             foundSatisfied = true;
-                        }// we do nothing: rd_s is suspensive hence we cannot
-                         // conclude FAILURE yet!
-                    } else if (op.isInp_s()) {
+                        } // we do nothing: rd_s is suspensive hence we cannot
+                          // conclude FAILURE yet!
+                    } else if (op.isInpS()) {
                         tuple =
                                 this.vm.removeMatchingSpecTuple(op
                                         .getTemplateArgument());
@@ -290,7 +295,7 @@ public class SpeakingState extends TupleCentreVMState {
                             op.setTupleResult(op.getTemplateArgument());
                         }
                         foundSatisfied = true;
-                    } else if (op.isRdp_s()) {
+                    } else if (op.isRdpS()) {
                         tuple =
                                 this.vm.readMatchingSpecTuple(op
                                         .getTemplateArgument());
@@ -302,7 +307,7 @@ public class SpeakingState extends TupleCentreVMState {
                             op.setTupleResult(op.getTemplateArgument());
                         }
                         foundSatisfied = true;
-                    } else if (op.isNo_s()) {
+                    } else if (op.isNoS()) {
                         tuple =
                                 this.vm.readMatchingSpecTuple(op
                                         .getTemplateArgument());
@@ -310,9 +315,9 @@ public class SpeakingState extends TupleCentreVMState {
                             op.setOpResult(Outcome.SUCCESS);
                             op.setTupleResult(op.getTemplateArgument());
                             foundSatisfied = true;
-                        }// we do nothing: no_s is suspensive hence we cannot
-                         // conclude FAILURE yet!
-                    } else if (op.isNop_s()) {
+                        } // we do nothing: no_s is suspensive hence we cannot
+                          // conclude FAILURE yet!
+                    } else if (op.isNopS()) {
                         tuple =
                                 this.vm.readMatchingSpecTuple(op
                                         .getTemplateArgument());
@@ -324,7 +329,7 @@ public class SpeakingState extends TupleCentreVMState {
                             op.setTupleResult(tuple);
                         }
                         foundSatisfied = true;
-                    } else if (op.isGet_s()) {
+                    } else if (op.isGetS()) {
                         final Iterator<? extends Tuple> rit =
                                 this.vm.getSpecTupleSetIterator();
                         final LinkedList<Tuple> reactionList =
@@ -341,7 +346,7 @@ public class SpeakingState extends TupleCentreVMState {
                         op.setOpResult(Outcome.SUCCESS);
                         op.setTupleListResult(reactionList);
                         foundSatisfied = true;
-                    } else if (op.isSet_s()) {
+                    } else if (op.isSetS()) {
                         tupleList = op.getTupleListArgument();
                         this.vm.setAllSpecTuples(tupleList);
                         op.setOpResult(Outcome.SUCCESS);
@@ -351,8 +356,8 @@ public class SpeakingState extends TupleCentreVMState {
                         op.setOpResult(Outcome.SUCCESS);
                         op.setTupleResult(op.getTemplateArgument());
                         foundSatisfied = true;
-                        out_ev = new OutputEvent(ev);
-                        this.vm.fetchTimedReactions(out_ev);
+                        outEv = new OutputEvent(ev);
+                        this.vm.fetchTimedReactions(outEv);
                     } else {
                         throw new InvalidOperationException();
                     }
@@ -373,23 +378,23 @@ public class SpeakingState extends TupleCentreVMState {
 
         if (foundSatisfied) {
 
-            out_ev = new OutputEvent(ev);
+            outEv = new OutputEvent(ev);
 
             if (!ev.isLinking()) {
-                this.vm.notifyOutputEvent(out_ev);
+                this.vm.notifyOutputEvent(outEv);
                 if (((RespectVMContext) this.vm).getRespectVM().getObservers()
                         .size() > 0) {
                     ((RespectVMContext) this.vm).getRespectVM()
-                            .notifyObservableEvent(out_ev);
+                            .notifyObservableEvent(outEv);
                 }
             }
 
             if (ev.isLinking() && !op.isResultDefined()) {
-                out_ev.setTarget(ev.getTarget());
-                this.vm.linkOperation(out_ev);
+                outEv.setTarget(ev.getTarget());
+                this.vm.linkOperation(outEv);
             }
 
-            this.vm.fetchTriggeredReactions(out_ev);
+            this.vm.fetchTriggeredReactions(outEv);
             this.noMoreSatisfiablePendingQuery = false;
             it.remove();
 
@@ -398,7 +403,7 @@ public class SpeakingState extends TupleCentreVMState {
     }
 
     @Override
-    public TupleCentreVMState getNextState() {
+    public AbstractTupleCentreVMState getNextState() {
         if (this.vm.triggeredReaction()) {
             return this.reactingState;
         } else if (this.noMoreSatisfiablePendingQuery) {

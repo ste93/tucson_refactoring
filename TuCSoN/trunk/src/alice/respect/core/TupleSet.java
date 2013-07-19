@@ -24,6 +24,9 @@ import alice.tuprolog.Var;
 
 /**
  * Class representing a Tuple Set.
+ * 
+ * @author ste (mailto: s.mariani@unibo.it) on 02/lug/2013
+ * 
  */
 public class TupleSet {
 
@@ -32,6 +35,9 @@ public class TupleSet {
     private final List<LogicTuple> tRemoved;
     private final List<LogicTuple> tuples;
 
+    /**
+     * 
+     */
     public TupleSet() {
         this.tuples = new LinkedList<LogicTuple>();
         this.tAdded = new LinkedList<LogicTuple>();
@@ -39,6 +45,11 @@ public class TupleSet {
         this.transaction = false;
     }
 
+    /**
+     * 
+     * @param t
+     *            the tuple to add to this tuple list
+     */
     public void add(final LogicTuple t) {
         this.tuples.add(t);
         if (this.transaction) {
@@ -57,6 +68,9 @@ public class TupleSet {
         this.tRemoved.clear();
     }
 
+    /**
+     * 
+     */
     public void empty() {
         this.tuples.clear();
     }
@@ -86,10 +100,22 @@ public class TupleSet {
         this.tRemoved.clear();
     }
 
+    /**
+     * 
+     * @return a Java iterator through this tuples list
+     */
     public Iterator<LogicTuple> getIterator() {
         return this.tuples.listIterator();
     }
 
+    /**
+     * 
+     * @param templ
+     *            the tuple template to be used to retrieve matching tuples from
+     *            this set
+     * @return the tuple non deterministically selected as a result of the
+     *         matching process (which is consumed)
+     */
     public LogicTuple getMatchingTuple(final LogicTuple templ) {
         if (templ == null) {
             return null;
@@ -109,6 +135,10 @@ public class TupleSet {
         return null;
     }
 
+    /**
+     * 
+     * @return wether this tuples set is empty or not
+     */
     public boolean isEmpty() {
         return this.tuples.isEmpty();
     }
@@ -127,6 +157,14 @@ public class TupleSet {
         return true;
     }
 
+    /**
+     * 
+     * @param templ
+     *            the tuple template to be used to retrieve matching tuples from
+     *            this set
+     * @return the tuple non deterministically selected as a result of the
+     *         matching process (which is NOT consumed)
+     */
     public LogicTuple readMatchingTuple(final LogicTuple templ) {
         if (templ == null) {
             return null;
@@ -142,17 +180,18 @@ public class TupleSet {
         return null;
     }
 
-    public void remove(final LogicTuple t) {
-        this.tuples.remove(t);
-        if (this.transaction) {
-            this.tRemoved.add(t);
-        }
-    }
-
+    /**
+     * 
+     * @return the length of this tuple set
+     */
     public int size() {
         return this.tuples.size();
     }
 
+    /**
+     * 
+     * @return the Java array representation of this tuple set
+     */
     public LogicTuple[] toArray() {
         return this.tuples.toArray(new LogicTuple[this.tuples.size()]);
     }

@@ -27,8 +27,8 @@ import alice.tuprolog.InvalidTermException;
 public class Var extends TupleArgument {
 
     /**
-	 * 
-	 */
+     * 
+     */
     private static final long serialVersionUID = 1L;
 
     /** Constructs an anonymous variable tuple argument */
@@ -43,10 +43,8 @@ public class Var extends TupleArgument {
      * @param n
      *            the name of the variable, which must start with an upper case
      *            letter or the underscore
-     * @exception InvalidTermException
-     *                if it is not a valid name
      */
-    public Var(final String n) throws InvalidTermException {
+    public Var(final String n) {
         super();
         try {
             this.value = new alice.tuprolog.Var(n);

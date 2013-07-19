@@ -17,6 +17,11 @@ import java.io.Serializable;
 
 import alice.logictuple.LogicTuple;
 
+/**
+ * 
+ * @author ste (mailto: s.mariani@unibo.it) on 03/lug/2013
+ * 
+ */
 public class InspectorProtocol implements Serializable {
 
     /** don't observe */
@@ -31,21 +36,111 @@ public class InspectorProtocol implements Serializable {
     private static final long serialVersionUID = -6842026459178793395L;
 
     /** defining W set observation */
-    public byte pendingQueryObservType = InspectorProtocol.NO_OBSERVATION;
+    private byte pendingQueryObservType = InspectorProtocol.NO_OBSERVATION;
 
     /** defining T set observation */
-    public byte reactionsObservType = InspectorProtocol.NO_OBSERVATION;
+    private byte reactionsObservType = InspectorProtocol.NO_OBSERVATION;
 
     /** desired tracing state for the vm */
-    public boolean tracing = false;
+    private boolean tracing = false;
 
     /** filter for tuple observed */
-    public LogicTuple tsetFilter = null;
+    private LogicTuple tsetFilter = null;
 
     /** defining T set observation */
-    public byte tsetObservType = InspectorProtocol.NO_OBSERVATION;
+    private byte tsetObservType = InspectorProtocol.NO_OBSERVATION;
 
     /** filter for query observed */
-    public LogicTuple wsetFilter = null;
+    private LogicTuple wsetFilter = null;
+
+    /**
+     * @return the pendingQueryObservType
+     */
+    public byte getPendingQueryObservType() {
+        return this.pendingQueryObservType;
+    }
+
+    /**
+     * @return the reactionsObservType
+     */
+    public byte getReactionsObservType() {
+        return this.reactionsObservType;
+    }
+
+    /**
+     * @return the tsetFilter
+     */
+    public LogicTuple getTsetFilter() {
+        return this.tsetFilter;
+    }
+
+    /**
+     * @return the tsetObservType
+     */
+    public byte getTsetObservType() {
+        return this.tsetObservType;
+    }
+
+    /**
+     * @return the wsetFilter
+     */
+    public LogicTuple getWsetFilter() {
+        return this.wsetFilter;
+    }
+
+    /**
+     * @return the tracing
+     */
+    public boolean isTracing() {
+        return this.tracing;
+    }
+
+    /**
+     * @param obstype
+     *            the pendingQueryObservType to set
+     */
+    public void setPendingQueryObservType(final byte obstype) {
+        this.pendingQueryObservType = obstype;
+    }
+
+    /**
+     * @param obstype
+     *            the reactionsObservType to set
+     */
+    public void setReactionsObservType(final byte obstype) {
+        this.reactionsObservType = obstype;
+    }
+
+    /**
+     * @param t
+     *            the tracing to set
+     */
+    public void setTracing(final boolean t) {
+        this.tracing = t;
+    }
+
+    /**
+     * @param filter
+     *            the tsetFilter to set
+     */
+    public void setTsetFilter(final LogicTuple filter) {
+        this.tsetFilter = filter;
+    }
+
+    /**
+     * @param obstype
+     *            the tsetObservType to set
+     */
+    public void setTsetObservType(final byte obstype) {
+        this.tsetObservType = obstype;
+    }
+
+    /**
+     * @param filter
+     *            the wsetFilter to set
+     */
+    public void setWsetFilter(final LogicTuple filter) {
+        this.wsetFilter = filter;
+    }
 
 }

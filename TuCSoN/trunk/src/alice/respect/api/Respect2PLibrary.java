@@ -31,10 +31,10 @@ import alice.tucson.parsing.MyOpManager;
 import alice.tuplecentre.api.IId;
 import alice.tuplecentre.api.ITupleCentreOperation;
 import alice.tuplecentre.api.Tuple;
-import alice.tuplecentre.core.Event;
+import alice.tuplecentre.core.AbstractEvent;
+import alice.tuplecentre.core.AbstractTupleCentreOperation;
 import alice.tuplecentre.core.InputEvent;
 import alice.tuplecentre.core.OutputEvent;
-import alice.tuplecentre.core.TupleCentreOperation;
 import alice.tuprolog.InvalidTermException;
 import alice.tuprolog.Prolog;
 import alice.tuprolog.Struct;
@@ -68,6 +68,12 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
 
     private RespectVMContext vm;
 
+    /**
+     * 
+     * @param time
+     *            the time that should have passed
+     * @return <code>true</code> if the given time passed
+     */
     public boolean after_1(final Term time) {
         return !this.before_1(time);
     }
@@ -80,28 +86,40 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      *         time.
      */
     public boolean before_1(final Term time) {
-        final Event ev = this.vm.getCurrentReactionEvent();
+        final AbstractEvent ev = this.vm.getCurrentReactionEvent();
         final long evtTime = ev.getTime();
         long compareTime;
-        try {
-            compareTime = ((alice.tuprolog.Number) time).longValue();
-        } catch (final Exception e) {
-            return false;
-        }
+        compareTime = ((alice.tuprolog.Number) time).longValue();
         if (evtTime <= compareTime) {
             return true;
         }
         return false;
     }
 
+    /**
+     * 
+     * @param time1
+     *            the time that should have passed
+     * @param time2
+     *            the time that should not have passed
+     * @return <code>true</code> if the time is between given values
+     */
     public boolean between_2(final Term time1, final Term time2) {
         return this.after_1(time1) && this.before_1(time2);
     }
 
+    /**
+     * 
+     * @return <code>true</code> if ReSpecT VM is in the completion phase
+     */
     public boolean compl_0() {
         return this.response_0();
     }
 
+    /**
+     * 
+     * @return <code>true</code> if ReSpecT VM is in the completion phase
+     */
     public boolean completion_0() {
         return this.response_0();
     }
@@ -136,8 +154,10 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
 
     /**
      * @param target
+     *            the expected target of the current operation
      * 
-     * @return
+     * @return <code>true</code> if the given term unifies with the current
+     *         target
      */
     public boolean current_target_1(final Term target) {
         final Term t = ((TupleCentreId) this.vm.getId()).toTerm();
@@ -148,7 +168,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      * @param time
      *            the expected time we're at.
      * 
-     * @return true if the actual time is the expected time we're at.
+     * @return <code>true</code> if the given term unifies with the current time
      */
     public boolean current_time_1(final Term time) {
         final long vmTime = this.vm.getCurrentTime();
@@ -168,10 +188,24 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         return this.unify(tuple, new Var());
     }
 
+    /**
+     * 
+     * @return <code>true</code> if the current ReSpecT event is coming from
+     *         this tuple centre
+     */
     public boolean endo_0() {
         return !this.exo_0();
     }
 
+    /**
+     * 
+     * @param key
+     *            the term representing the environmental property to be tested
+     * @param value
+     *            the term representing the value of the environmental property
+     * @return <code>true</code> if the environmental property given has the
+     *         given value
+     */
     public boolean env_2(final Term key, final Term value) {
         if (value instanceof alice.tuprolog.Var) {
             final String res =
@@ -185,6 +219,13 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         return false;
     }
 
+    /**
+     * 
+     * @param predicate
+     *            the predicate direct cause of current ReSpecT event
+     * @return <code>true</code> if the current ReSpecT event has the given
+     *         direct cause
+     */
     public boolean event_predicate_1(final Term predicate) {
         return this
                 .unify(predicate, this.vm.getCurrentReactionTerm().getTerm());
@@ -192,8 +233,10 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
 
     /**
      * @param source
+     *            the identifier of the direct cause source of the event
      * 
-     * @return
+     * @return <code>true</code> if current ReSpecT event direct cause has the
+     *         given source
      */
     public boolean event_source_1(final Term source) {
         final IId id = this.vm.getCurrentReactionEvent().getSource();
@@ -208,6 +251,13 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         }
     }
 
+    /**
+     * 
+     * @param target
+     *            the identifier of the direct cause target
+     * @return <code>true</code> if current ReSpecT event direct cause has the
+     *         given target
+     */
     public boolean event_target_1(final Term target) {
         final IId id = this.vm.getCurrentReactionEvent().getTarget();
         if (id.isAgent()) {
@@ -237,8 +287,10 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
 
     /**
      * @param tuple
+     *            the tuple argument of the direct cause predicate
      * 
-     * @return
+     * @return <code>true</code> if the direct cause tuple argument has the
+     *         given tuple
      */
     public boolean event_tuple_1(final Term tuple) {
         final Term t = this.vm.getCurrentReactionTerm().getArg(0);
@@ -250,10 +302,10 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      *         currently reacting tuplecentre.
      */
     public boolean exo_0() {
-        final Event ev = this.vm.getCurrentReactionEvent();
+        final AbstractEvent ev = this.vm.getCurrentReactionEvent();
         final IId source = ev.getSource();
-        final IId current_tc = this.vm.getId();
-        if (!current_tc.toString().equals(source.toString())) {
+        final IId currentTc = this.vm.getId();
+        if (!currentTc.toString().equals(source.toString())) {
             return true;
         }
         return false;
@@ -263,7 +315,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      * @return true if the ReSpecT operation failed.
      */
     public boolean failure_0() {
-        final Event ev = this.vm.getCurrentReactionEvent();
+        final AbstractEvent ev = this.vm.getCurrentReactionEvent();
         final ITupleCentreOperation op = ev.getSimpleTCEvent();
         return op.isResultFailure();
     }
@@ -273,7 +325,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      *         agent (either Java or tuProlog or whatever).
      */
     public boolean from_agent_0() {
-        final Event ev = this.vm.getCurrentReactionEvent();
+        final AbstractEvent ev = this.vm.getCurrentReactionEvent();
         final IId source = ev.getSource();
         if (source.isAgent()) {
             return true;
@@ -285,6 +337,11 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      * Situated ReSpecT extension: still to test.
      ********************************************************************/
 
+    /**
+     * 
+     * @return <code>true</code> if the triggering event has been generated by
+     *         the environment
+     */
     public boolean from_env_0() {
         return this.vm.getCurrentReactionEvent().getSource().isEnv();
     }
@@ -294,7 +351,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      *         ReSpecT tuplecentre.
      */
     public boolean from_tc_0() {
-        final Event ev = this.vm.getCurrentReactionEvent();
+        final AbstractEvent ev = this.vm.getCurrentReactionEvent();
         final IId source = ev.getSource();
         if (source.isTC()) {
             return true;
@@ -302,14 +359,22 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         return false;
     }
 
+    /**
+     * 
+     * @param arg0
+     *            the Prolog variable to unify the result with
+     * @param arg1
+     *            the identifier of the target tuple centre
+     * @return <code>true</code> if the operation is successfull
+     */
     public boolean get_2(final Term arg0, final Term arg1) {
 
         String tcName = null;
         TupleCentreId tid = null;
         try {
             tid = new TupleCentreId(arg1);
-        } catch (final Exception e) {
-            // TODO Properly handle Exception
+        } catch (final InvalidTupleCentreIdException e) {
+            e.printStackTrace();
             return false;
         }
         tcName = tid.getName();
@@ -344,31 +409,39 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
                 }
                 return false;
             } catch (final InvalidTupleOperationException e) {
-                // TODO Properly handle Exception
+                e.printStackTrace();
                 return false;
             }
         }
         Respect2PLibrary.log("Remote get triggered...");
         final InputEvent ce = this.vm.getCurrentEvent();
-        final InputEvent out_ev =
+        final InputEvent outEv =
                 new InputEvent(ce.getReactingTC(), RespectOperation.makeGet(
                         this.getProlog(), new LogicTuple(arg0.copyGoal(v, 0)),
                         null), tid, this.vm.getCurrentTime());
-        out_ev.setIsLinking(true);
-        out_ev.setTarget(tid);
-        this.vm.addTemporaryOutputEvent(out_ev);
+        outEv.setIsLinking(true);
+        outEv.setTarget(tid);
+        this.vm.addTemporaryOutputEvent(outEv);
         return true;
 
     }
 
+    /**
+     * 
+     * @param arg0
+     *            the Prolog variable to unify the result with
+     * @param arg1
+     *            the identifier of the target tuple centre
+     * @return <code>true</code> if the operation is successfull
+     */
     public boolean get_s_2(final Term arg0, final Term arg1) {
 
         String tcName = null;
         TupleCentreId tid = null;
         try {
             tid = new TupleCentreId(arg1);
-        } catch (final Exception e) {
-            // TODO Properly handle Exception
+        } catch (final InvalidTupleCentreIdException e) {
+            e.printStackTrace();
             return false;
         }
         tcName = tid.getName();
@@ -398,9 +471,8 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
                     final InputEvent ce = this.vm.getCurrentEvent();
                     final InternalEvent ev =
                             new InternalEvent(ce,
-                                    InternalOperation
-                                            .makeGet_sR(new LogicTuple(arg0
-                                                    .copyGoal(v, 0))));
+                                    InternalOperation.makeGetSR(new LogicTuple(
+                                            arg0.copyGoal(v, 0))));
                     ev.setSource(ce.getReactingTC());
                     ev.setTarget(ce.getReactingTC());
                     this.vm.fetchTriggeredReactions(ev);
@@ -408,23 +480,33 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
                 }
                 return false;
             } catch (final InvalidTupleOperationException e) {
-                // TODO Properly handle Exception
+                e.printStackTrace();
                 return false;
             }
         }
         Respect2PLibrary.log("Remote get_s triggered...");
         final InputEvent ce = this.vm.getCurrentEvent();
-        final InputEvent out_ev =
-                new InputEvent(ce.getReactingTC(), RespectOperation.makeGet_s(
+        final InputEvent outEv =
+                new InputEvent(ce.getReactingTC(), RespectOperation.makeGetS(
                         this.getProlog(), new LogicTuple(arg0.copyGoal(v, 0)),
                         null), tid, this.vm.getCurrentTime());
-        out_ev.setIsLinking(true);
-        out_ev.setTarget(tid);
-        this.vm.addTemporaryOutputEvent(out_ev);
+        outEv.setIsLinking(true);
+        outEv.setTarget(tid);
+        this.vm.addTemporaryOutputEvent(outEv);
         return true;
 
     }
 
+    /**
+     * 
+     * @param env
+     *            the identifier of the target environmental resource
+     * @param key
+     *            the environmental property to sense
+     * @param val
+     *            the value sensed
+     * @return <code>true</code> if the operation is successfull
+     */
     public boolean getEnv_3(final Term env, final Term key, final Term val) {
         final AbstractMap<Var, Var> v = new LinkedHashMap<Var, Var>();
         final AbstractMap<Var, Var> v1 = new LinkedHashMap<Var, Var>();
@@ -445,6 +527,9 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
 
     /**
      * ReSpecT theory to interface with Prolog.
+     * 
+     * @return the String representation of the Prolog theory usable by tuProlog
+     *         agents
      */
     @Override
     public String getTheory() {
@@ -452,20 +537,20 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         return
 
         ":- op(551, xfx, '?'). \n" + ":- op(550, xfx, '@'). \n"
-                + ":- op(549, xfx, ':'). \n" + ":- op(548, xfx, '.'). \n" +
+                + ":- op(549, xfx, ':'). \n" + ":- op(548, xfx, '.'). \n"
 
-                "TC ? Op :- not(TC = Name @ Host), TC@localhost ? Op, !. \n" +
+                + "TC ? Op :- not(TC = Name @ Host), TC@localhost ? Op, !. \n"
 
-                "TC ? out(T) :- out(T,TC). \n" + "TC ? in(T) :- in(T,TC). \n"
+                + "TC ? out(T) :- out(T,TC). \n" + "TC ? in(T) :- in(T,TC). \n"
                 + "TC ? rd(T) :- rd(T,TC). \n" + "TC ? inp(T) :- inp(T,TC). \n"
                 + "TC ? rdp(T) :- rdp(T,TC). \n" + "TC ? no(T) :- no(T,TC). \n"
                 + "TC ? nop(T) :- nop(T,TC). \n"
                 + "TC ? set(T) :- set(T,TC). \n"
-                + "TC ? get(T) :- get(T,TC). \n" +
+                + "TC ? get(T) :- get(T,TC). \n"
 
-                "TC ? spawn(T) :- spawn(T,TC). \n" +
+                + "TC ? spawn(T) :- spawn(T,TC). \n"
 
-                "TC ? out_s(E,G,R) :- out_s(E,G,R,TC). \n"
+                + "TC ? out_s(E,G,R) :- out_s(E,G,R,TC). \n"
                 + "TC ? in_s(E,G,R) :- in_s(E,G,R,TC). \n"
                 + "TC ? rd_s(E,G,R) :- rd_s(E,G,R,TC). \n"
                 + "TC ? inp_s(E,G,R) :- inp_s(E,G,R,TC). \n"
@@ -473,9 +558,9 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
                 + "TC ? no_s(E,G,R) :- no_s(E,G,R,TC). \n"
                 + "TC ? nop_s(E,G,R) :- nop_s(E,G,R,TC). \n"
                 + "TC ? set_s(E,G,R) :- set_s(E,G,R,TC). \n"
-                + "TC ? get_s(T) :- get_s(T,TC). \n" +
+                + "TC ? get_s(T) :- get_s(T,TC). \n"
 
-                "out(T):-out(T,this@localhost). \n"
+                + "out(T):-out(T,this@localhost). \n"
                 + "in(T):-in(T,this@localhost). \n"
                 + "rd(T):-rd(T,this@localhost). \n"
                 + "inp(T):-inp(T,this@localhost). \n"
@@ -483,11 +568,11 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
                 + "no(T):-no(T,this@localhost). \n"
                 + "nop(T):-nop(T,this@localhost). \n"
                 + "set(T):-set(T,this@localhost). \n"
-                + "get(T):-get(T,this@localhost). \n" +
+                + "get(T):-get(T,this@localhost). \n"
 
-                "spawn(T):-spawn(T,this@localhost). \n" +
+                + "spawn(T):-spawn(T,this@localhost). \n"
 
-                "out_s(E,G,R):-out_s(E,G,R,this@localhost). \n"
+                + "out_s(E,G,R):-out_s(E,G,R,this@localhost). \n"
                 + "in_s(E,G,R):-in_s(E,G,R,this@localhost). \n"
                 + "rd_s(E,G,R):-rd_s(E,G,R,this@localhost). \n"
                 + "inp_s(E,G,R):-inp_s(E,G,R,this@localhost). \n"
@@ -495,9 +580,9 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
                 + "no_s(E,G,R):-no_s(E,G,R,this@localhost). \n"
                 + "nop_s(E,G,R):-nop_s(E,G,R,this@localhost). \n"
                 + "set_s(E,G,R):-set_s(E,G,R,this@localhost). \n"
-                + "get_s(T):-get_s(T,this@localhost). \n" +
+                + "get_s(T):-get_s(T,this@localhost). \n"
 
-                "TC ? uin(T) :- uin(T,TC). \n"
+                + "TC ? uin(T) :- uin(T,TC). \n"
                 + "TC ? uinp(T) :- uinp(T,TC). \n"
                 + "TC ? urd(T) :- urd(T,TC). \n"
                 + "TC ? urdp(T) :- urdp(T,TC). \n"
@@ -506,9 +591,9 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
                 + "TC ? out_all(L) :- out_all(L,TC). \n"
                 + "TC ? in_all(T,L) :- in_all(T,L,TC). \n"
                 + "TC ? rd_all(T,L) :- rd_all(T,L,TC). \n"
-                + "TC ? no_all(T,L) :- no_all(T,L,TC). \n" +
+                + "TC ? no_all(T,L) :- no_all(T,L,TC). \n"
 
-                "urd(T):-urd(T,this@localhost). \n"
+                + "urd(T):-urd(T,this@localhost). \n"
                 + "urdp(T):-urdp(T,this@localhost). \n"
                 + "uin(T):-uin(T,this@localhost). \n"
                 + "uinp(T):-uinp(T,this@localhost). \n"
@@ -517,30 +602,38 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
                 + "out_all(L):-out_all(L,this@localhost). \n"
                 + "in_all(T,L):-in_all(T,L,this@localhost). \n"
                 + "rd_all(T,L):-rd_all(T,L,this@localhost). \n"
-                + "no_all(T,L):-no_all(T,L,this@localhost). \n" +
+                + "no_all(T,L):-no_all(T,L,this@localhost). \n"
 
-                "completion :- response. \n" + "compl :- response. \n"
+                + "completion :- response. \n" + "compl :- response. \n"
                 + "resp :- response. \n" + "post :- response. \n"
                 + "invocation :- request. \n" + "inv :- request. \n"
-                + "req :- request. \n" + "pre :- request. \n" +
+                + "req :- request. \n" + "pre :- request. \n"
 
-                "operation :- from_agent, to_tc. \n"
+                + "operation :- from_agent, to_tc. \n"
                 + "internal :- from_tc, to_tc, endo, intra. \n"
                 + "link_in :- from_tc, to_tc, exo, intra. \n"
-                + "link_out :- from_tc, to_tc, endo, inter. \n" +
+                + "link_out :- from_tc, to_tc, endo, inter. \n"
 
-                "between(T1,T2) :- after(T1), before(T2). \n";
+                + "between(T1,T2) :- after(T1), before(T2). \n";
 
     }
 
+    /**
+     * 
+     * @param arg0
+     *            the Prolog variable to unify the result with
+     * @param arg1
+     *            the identifier of the target tuple centre
+     * @return <code>true</code> if the operation is successfull
+     */
     public boolean in_2(final Term arg0, final Term arg1) {
 
         String tcName = null;
         TupleCentreId tid = null;
         try {
             tid = new TupleCentreId(arg1);
-        } catch (final Exception e) {
-            // TODO Properly handle Exception
+        } catch (final InvalidTupleCentreIdException e) {
+            e.printStackTrace();
             return false;
         }
         tcName = tid.getName();
@@ -569,25 +662,36 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         }
         Respect2PLibrary.log("Remote in triggered...");
         final InputEvent ce = this.vm.getCurrentEvent();
-        final InputEvent out_ev =
+        final InputEvent outEv =
                 new InputEvent(ce.getReactingTC(), RespectOperation.makeIn(
                         this.getProlog(), new LogicTuple(arg0.copyGoal(v, 0)),
                         null), tid, this.vm.getCurrentTime());
-        out_ev.setIsLinking(true);
-        out_ev.setTarget(tid);
-        this.vm.addTemporaryOutputEvent(out_ev);
+        outEv.setIsLinking(true);
+        outEv.setTarget(tid);
+        this.vm.addTemporaryOutputEvent(outEv);
         return true;
 
     }
 
+    /**
+     * 
+     * @param arg0
+     *            the tuple template to be used
+     * 
+     * @param arg1
+     *            the Prolog variable to unify the result with
+     * @param arg2
+     *            the identifier of the target tuple centre
+     * @return <code>true</code> if the operation is successfull
+     */
     public boolean in_all_3(final Term arg0, final Term arg1, final Term arg2) {
 
         String tcName = null;
         TupleCentreId tid = null;
         try {
             tid = new TupleCentreId(arg2);
-        } catch (final Exception e) {
-            // TODO Properly handle Exception
+        } catch (final InvalidTupleCentreIdException e) {
+            e.printStackTrace();
             return false;
         }
         tcName = tid.getName();
@@ -613,28 +717,41 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         try {
             resultArg = LogicTuple.parse(tuple);
         } catch (final InvalidLogicTupleException e) {
-            // TODO Properly handle Exception
+            e.printStackTrace();
+            return false;
         }
-        final InputEvent out_ev =
+        final InputEvent outEv =
                 new InputEvent(ce.getReactingTC(), RespectOperation.makeInAll(
                         this.getProlog(), resultArg, null), tid,
                         this.vm.getCurrentTime());
-        out_ev.setIsLinking(true);
-        out_ev.setTarget(tid);
-        this.vm.addTemporaryOutputEvent(out_ev);
+        outEv.setIsLinking(true);
+        outEv.setTarget(tid);
+        this.vm.addTemporaryOutputEvent(outEv);
         return true;
 
     }
 
-    public boolean in_s_4(final Term e, final Term g, final Term r,
+    /**
+     * 
+     * @param ev
+     *            the triggering event of a ReSpecT specification
+     * @param g
+     *            the guard of a ReSpecT specification
+     * @param r
+     *            the body of a ReSpecT specification
+     * @param tc
+     *            the identifier of the target tuple centre
+     * @return <code>true</code> if the operation is successfull
+     */
+    public boolean in_s_4(final Term ev, final Term g, final Term r,
             final Term tc) {
 
         String tcName = null;
         TupleCentreId tid = null;
         try {
             tid = new TupleCentreId(tc);
-        } catch (final InvalidTupleCentreIdException ex) {
-            // TODO Properly handle Exception
+        } catch (final InvalidTupleCentreIdException e) {
+            e.printStackTrace();
             return false;
         }
         tcName = tid.getName();
@@ -644,10 +761,11 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         try {
             goal =
                     Term.createTerm(
-                            "reaction(" + e.getTerm() + "," + g.getTerm() + ","
-                                    + r.getTerm() + ")", new MyOpManager());
-        } catch (final InvalidTermException ex) {
-            // TODO Properly handle Exception
+                            "reaction(" + ev.getTerm() + "," + g.getTerm()
+                                    + "," + r.getTerm() + ")",
+                            new MyOpManager());
+        } catch (final InvalidTermException e) {
+            e.printStackTrace();
             return false;
         }
 
@@ -661,26 +779,26 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
                 final Term term = ((LogicTuple) tuple).toTerm();
                 this.unify(goal, term.copyGoal(v, 0));
                 final InputEvent ce = this.vm.getCurrentEvent();
-                final InternalEvent ev =
+                final InternalEvent iev =
                         new InternalEvent(ce,
-                                InternalOperation.makeIn_sR(new LogicTuple(goal
+                                InternalOperation.makeInSR(new LogicTuple(goal
                                         .copyGoal(v, 0))));
-                ev.setSource(ce.getReactingTC());
-                ev.setTarget(ce.getReactingTC());
-                this.vm.fetchTriggeredReactions(ev);
+                iev.setSource(ce.getReactingTC());
+                iev.setTarget(ce.getReactingTC());
+                this.vm.fetchTriggeredReactions(iev);
                 return true;
             }
             return false;
         }
         Respect2PLibrary.log("Remote in_s triggered...");
         final InputEvent ce = this.vm.getCurrentEvent();
-        final InputEvent out_ev =
-                new InputEvent(ce.getReactingTC(), RespectOperation.makeIn_s(
+        final InputEvent outEv =
+                new InputEvent(ce.getReactingTC(), RespectOperation.makeInS(
                         this.getProlog(), new LogicTuple(goal.copyGoal(v, 0)),
                         null), tid, this.vm.getCurrentTime());
-        out_ev.setIsLinking(true);
-        out_ev.setTarget(tid);
-        this.vm.addTemporaryOutputEvent(out_ev);
+        outEv.setIsLinking(true);
+        outEv.setTarget(tid);
+        this.vm.addTemporaryOutputEvent(outEv);
         return true;
 
     }
@@ -689,10 +807,23 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      * ReSpecT guard predicates.
      ********************************************************************/
 
+    /**
+     * 
+     * @param m
+     *            the ReSpecT VM this tuProlog library interfaces to
+     */
     public void init(final RespectVMContext m) {
         this.vm = m;
     }
 
+    /**
+     * 
+     * @param arg0
+     *            the Prolog variable to unify the result with
+     * @param arg1
+     *            the identifier of the target tuple centre
+     * @return <code>true</code> if the operation is successfull
+     */
     public boolean inp_2(final Term arg0, final Term arg1) {
 
         String tcName = null;
@@ -700,8 +831,8 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
 
         try {
             tid = new TupleCentreId(arg1);
-        } catch (final Exception e) {
-            // TODO Properly handle Exception
+        } catch (final InvalidTupleCentreIdException e) {
+            e.printStackTrace();
             return false;
         }
         tcName = tid.getName();
@@ -730,26 +861,38 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         }
         Respect2PLibrary.log("Remote inp triggered...");
         final InputEvent ce = this.vm.getCurrentEvent();
-        final InputEvent out_ev =
+        final InputEvent outEv =
                 new InputEvent(ce.getReactingTC(), RespectOperation.makeInp(
                         this.getProlog(), new LogicTuple(arg0.copyGoal(v, 0)),
                         null), tid, this.vm.getCurrentTime());
-        out_ev.setIsLinking(true);
-        out_ev.setTarget(tid);
-        this.vm.addTemporaryOutputEvent(out_ev);
+        outEv.setIsLinking(true);
+        outEv.setTarget(tid);
+        this.vm.addTemporaryOutputEvent(outEv);
         return true;
 
     }
 
-    public boolean inp_s_4(final Term e, final Term g, final Term r,
+    /**
+     * 
+     * @param ev
+     *            the triggering event of a ReSpecT specification
+     * @param g
+     *            the guard of a ReSpecT specification
+     * @param r
+     *            the body of a ReSpecT specification
+     * @param tc
+     *            the identifier of the target tuple centre
+     * @return <code>true</code> if the operation is successfull
+     */
+    public boolean inp_s_4(final Term ev, final Term g, final Term r,
             final Term tc) {
 
         String tcName = null;
         TupleCentreId tid = null;
         try {
             tid = new TupleCentreId(tc);
-        } catch (final InvalidTupleCentreIdException ex) {
-            // TODO Properly handle Exception
+        } catch (final InvalidTupleCentreIdException e) {
+            e.printStackTrace();
             return false;
         }
         tcName = tid.getName();
@@ -759,10 +902,11 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         try {
             goal =
                     Term.createTerm(
-                            "reaction(" + e.getTerm() + "," + g.getTerm() + ","
-                                    + r.getTerm() + ")", new MyOpManager());
-        } catch (final InvalidTermException ex) {
-            // TODO Properly handle Exception
+                            "reaction(" + ev.getTerm() + "," + g.getTerm()
+                                    + "," + r.getTerm() + ")",
+                            new MyOpManager());
+        } catch (final InvalidTermException e) {
+            e.printStackTrace();
             return false;
         }
 
@@ -776,34 +920,44 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
                 final Term term = ((LogicTuple) tuple).toTerm();
                 this.unify(goal, term.copyGoal(v, 0));
                 final InputEvent ce = this.vm.getCurrentEvent();
-                final InternalEvent ev =
+                final InternalEvent iev =
                         new InternalEvent(ce,
-                                InternalOperation.makeIn_sR(new LogicTuple(goal
+                                InternalOperation.makeInSR(new LogicTuple(goal
                                         .copyGoal(v, 0))));
-                ev.setSource(ce.getReactingTC());
-                ev.setTarget(ce.getReactingTC());
-                this.vm.fetchTriggeredReactions(ev);
+                iev.setSource(ce.getReactingTC());
+                iev.setTarget(ce.getReactingTC());
+                this.vm.fetchTriggeredReactions(iev);
                 return true;
             }
             return false;
         }
         Respect2PLibrary.log("Remote inp_s triggered...");
         final InputEvent ce = this.vm.getCurrentEvent();
-        final InputEvent out_ev =
-                new InputEvent(ce.getReactingTC(), RespectOperation.makeInp_s(
+        final InputEvent outEv =
+                new InputEvent(ce.getReactingTC(), RespectOperation.makeInpS(
                         this.getProlog(), new LogicTuple(goal.copyGoal(v, 0)),
                         null), tid, this.vm.getCurrentTime());
-        out_ev.setIsLinking(true);
-        out_ev.setTarget(tid);
-        this.vm.addTemporaryOutputEvent(out_ev);
+        outEv.setIsLinking(true);
+        outEv.setTarget(tid);
+        this.vm.addTemporaryOutputEvent(outEv);
         return true;
 
     }
 
+    /**
+     * 
+     * @return <code>true</code> if the triggering event has not this tuple
+     *         centre as target
+     */
     public boolean inter_0() {
         return !this.intra_0();
     }
 
+    /**
+     * 
+     * @return <code>true</code> if the triggering event has being generated by
+     *         this tc and target to this same tc
+     */
     public boolean internal_0() {
         return this.from_tc_0() && this.to_tc_0() && this.endo_0()
                 && this.intra_0();
@@ -814,41 +968,69 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      *         currently reacting tuplecentre.
      */
     public boolean intra_0() {
-        final Event ev = this.vm.getCurrentReactionEvent();
+        final AbstractEvent ev = this.vm.getCurrentReactionEvent();
         final IId target = ev.getTarget();
-        final IId current_tc = this.vm.getId();
-        if (current_tc.toString().equals(target.toString())) {
+        final IId currentTc = this.vm.getId();
+        if (currentTc.toString().equals(target.toString())) {
             return true;
         }
         return false;
     }
 
+    /**
+     * 
+     * @return <code>true</code> if the ReSpecT VM is currently in the
+     *         invocation phase
+     */
     public boolean inv_0() {
         return this.request_0();
     }
 
+    /**
+     * 
+     * @return <code>true</code> if the ReSpecT VM is currently in the
+     *         invocation phase
+     */
     public boolean invocation_0() {
         return this.request_0();
     }
 
+    /**
+     * 
+     * @return <code>true</code> if the triggering event is coming from a
+     *         different tuple centre
+     */
     public boolean link_in_0() {
         return this.from_tc_0() && this.to_tc_0() && this.exo_0()
                 && this.intra_0();
     }
 
+    /**
+     * 
+     * @return <code>true</code> if the triggering event is originating from
+     *         this tuple centre toward a different one
+     */
     public boolean link_out_0() {
         return this.from_tc_0() && this.to_tc_0() && this.endo_0()
                 && this.inter_0();
     }
 
+    /**
+     * 
+     * @param arg0
+     *            the Prolog variable to unify the result with
+     * @param arg1
+     *            the identifier of the target tuple centre
+     * @return <code>true</code> if the operation is successfull
+     */
     public boolean no_2(final Term arg0, final Term arg1) {
 
         String tcName = null;
         TupleCentreId tid = null;
         try {
             tid = new TupleCentreId(arg1);
-        } catch (final Exception e) {
-            // TODO Properly handle Exception
+        } catch (final InvalidTupleCentreIdException e) {
+            e.printStackTrace();
             return false;
         }
         tcName = tid.getName();
@@ -875,25 +1057,36 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         }
         Respect2PLibrary.log("Remote no triggered...");
         final InputEvent ce = this.vm.getCurrentEvent();
-        final InputEvent out_ev =
+        final InputEvent outEv =
                 new InputEvent(ce.getReactingTC(), RespectOperation.makeNo(
                         this.getProlog(), new LogicTuple(arg0.copyGoal(v, 0)),
                         null), tid, this.vm.getCurrentTime());
-        out_ev.setIsLinking(true);
-        out_ev.setTarget(tid);
-        this.vm.addTemporaryOutputEvent(out_ev);
+        outEv.setIsLinking(true);
+        outEv.setTarget(tid);
+        this.vm.addTemporaryOutputEvent(outEv);
         return true;
 
     }
 
+    /**
+     * 
+     * @param arg0
+     *            the tuple template to be used
+     * 
+     * @param arg1
+     *            the Prolog variable to unify the result with
+     * @param arg2
+     *            the identifier of the target tuple centre
+     * @return <code>true</code> if the operation is successfull
+     */
     public boolean no_all_3(final Term arg0, final Term arg1, final Term arg2) {
 
         String tcName = null;
         TupleCentreId tid = null;
         try {
             tid = new TupleCentreId(arg2);
-        } catch (final Exception e) {
-            // TODO Properly handle Exception
+        } catch (final InvalidTupleCentreIdException e) {
+            e.printStackTrace();
             return false;
         }
         tcName = tid.getName();
@@ -919,29 +1112,41 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         try {
             resultArg = LogicTuple.parse(tuple);
         } catch (final InvalidLogicTupleException e) {
-            // TODO Properly handle Exception
+            e.printStackTrace();
             return false;
         }
-        final InputEvent out_ev =
+        final InputEvent outEv =
                 new InputEvent(ce.getReactingTC(), RespectOperation.makeNoAll(
                         this.getProlog(), resultArg, null), tid,
                         this.vm.getCurrentTime());
-        out_ev.setIsLinking(true);
-        out_ev.setTarget(tid);
-        this.vm.addTemporaryOutputEvent(out_ev);
+        outEv.setIsLinking(true);
+        outEv.setTarget(tid);
+        this.vm.addTemporaryOutputEvent(outEv);
         return true;
 
     }
 
-    public boolean no_s_4(final Term e, final Term g, final Term r,
+    /**
+     * 
+     * @param ev
+     *            the triggering event of a ReSpecT specification
+     * @param g
+     *            the guard of a ReSpecT specification
+     * @param r
+     *            the body of a ReSpecT specification
+     * @param tc
+     *            the identifier of the target tuple centre
+     * @return <code>true</code> if the operation is successfull
+     */
+    public boolean no_s_4(final Term ev, final Term g, final Term r,
             final Term tc) {
 
         String tcName = null;
         TupleCentreId tid = null;
         try {
             tid = new TupleCentreId(tc);
-        } catch (final InvalidTupleCentreIdException ex) {
-            // TODO Properly handle Exception
+        } catch (final InvalidTupleCentreIdException e) {
+            e.printStackTrace();
             return false;
         }
         tcName = tid.getName();
@@ -951,10 +1156,11 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         try {
             goal =
                     Term.createTerm(
-                            "reaction(" + e.getTerm() + "," + g.getTerm() + ","
-                                    + r.getTerm() + ")", new MyOpManager());
-        } catch (final InvalidTermException ex) {
-            // TODO Properly handle Exception
+                            "reaction(" + ev.getTerm() + "," + g.getTerm()
+                                    + "," + r.getTerm() + ")",
+                            new MyOpManager());
+        } catch (final InvalidTermException e) {
+            e.printStackTrace();
             return false;
         }
 
@@ -966,38 +1172,46 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
                     this.vm.readMatchingSpecTuple(tuArg);
             if (tuple == null) {
                 final InputEvent ce = this.vm.getCurrentEvent();
-                final InternalEvent ev =
+                final InternalEvent iev =
                         new InternalEvent(ce,
-                                InternalOperation.makeNo_sR(new LogicTuple(goal
+                                InternalOperation.makeNoSR(new LogicTuple(goal
                                         .copyGoal(v, 0))));
-                ev.setSource(ce.getReactingTC());
-                ev.setTarget(ce.getReactingTC());
-                this.vm.fetchTriggeredReactions(ev);
+                iev.setSource(ce.getReactingTC());
+                iev.setTarget(ce.getReactingTC());
+                this.vm.fetchTriggeredReactions(iev);
                 return true;
             }
             return false;
         }
         Respect2PLibrary.log("Remote no_s triggered...");
         final InputEvent ce = this.vm.getCurrentEvent();
-        final InputEvent out_ev =
-                new InputEvent(ce.getReactingTC(), RespectOperation.makeNo_s(
+        final InputEvent outEv =
+                new InputEvent(ce.getReactingTC(), RespectOperation.makeNoS(
                         this.getProlog(), new LogicTuple(goal.copyGoal(v, 0)),
                         null), tid, this.vm.getCurrentTime());
-        out_ev.setIsLinking(true);
-        out_ev.setTarget(tid);
-        this.vm.addTemporaryOutputEvent(out_ev);
+        outEv.setIsLinking(true);
+        outEv.setTarget(tid);
+        this.vm.addTemporaryOutputEvent(outEv);
         return true;
 
     }
 
+    /**
+     * 
+     * @param arg0
+     *            the Prolog variable to unify the result with
+     * @param arg1
+     *            the identifier of the target tuple centre
+     * @return <code>true</code> if the operation is successfull
+     */
     public boolean nop_2(final Term arg0, final Term arg1) {
 
         String tcName = null;
         TupleCentreId tid = null;
         try {
             tid = new TupleCentreId(arg1);
-        } catch (final Exception e) {
-            // TODO Properly handle Exception
+        } catch (final InvalidTupleCentreIdException e) {
+            e.printStackTrace();
             return false;
         }
         tcName = tid.getName();
@@ -1024,26 +1238,38 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         }
         Respect2PLibrary.log("Remote nop triggered...");
         final InputEvent ce = this.vm.getCurrentEvent();
-        final InputEvent out_ev =
+        final InputEvent outEv =
                 new InputEvent(ce.getReactingTC(), RespectOperation.makeNop(
                         this.getProlog(), new LogicTuple(arg0.copyGoal(v, 0)),
                         null), tid, this.vm.getCurrentTime());
-        out_ev.setIsLinking(true);
-        out_ev.setTarget(tid);
-        this.vm.addTemporaryOutputEvent(out_ev);
+        outEv.setIsLinking(true);
+        outEv.setTarget(tid);
+        this.vm.addTemporaryOutputEvent(outEv);
         return true;
 
     }
 
-    public boolean nop_s_4(final Term e, final Term g, final Term r,
+    /**
+     * 
+     * @param ev
+     *            the triggering event of a ReSpecT specification
+     * @param g
+     *            the guard of a ReSpecT specification
+     * @param r
+     *            the body of a ReSpecT specification
+     * @param tc
+     *            the identifier of the target tuple centre
+     * @return <code>true</code> if the operation is successfull
+     */
+    public boolean nop_s_4(final Term ev, final Term g, final Term r,
             final Term tc) {
 
         String tcName = null;
         TupleCentreId tid = null;
         try {
             tid = new TupleCentreId(tc);
-        } catch (final InvalidTupleCentreIdException ex) {
-            // TODO Properly handle Exception
+        } catch (final InvalidTupleCentreIdException e) {
+            e.printStackTrace();
             return false;
         }
         tcName = tid.getName();
@@ -1053,10 +1279,11 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         try {
             goal =
                     Term.createTerm(
-                            "reaction(" + e.getTerm() + "," + g.getTerm() + ","
-                                    + r.getTerm() + ")", new MyOpManager());
-        } catch (final InvalidTermException ex) {
-            // TODO Properly handle Exception
+                            "reaction(" + ev.getTerm() + "," + g.getTerm()
+                                    + "," + r.getTerm() + ")",
+                            new MyOpManager());
+        } catch (final InvalidTermException e) {
+            e.printStackTrace();
             return false;
         }
 
@@ -1068,26 +1295,26 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
                     this.vm.readMatchingSpecTuple(tuArg);
             if (tuple == null) {
                 final InputEvent ce = this.vm.getCurrentEvent();
-                final InternalEvent ev =
+                final InternalEvent iev =
                         new InternalEvent(ce,
-                                InternalOperation.makeNo_sR(new LogicTuple(goal
+                                InternalOperation.makeNoSR(new LogicTuple(goal
                                         .copyGoal(v, 0))));
-                ev.setSource(ce.getReactingTC());
-                ev.setTarget(ce.getReactingTC());
-                this.vm.fetchTriggeredReactions(ev);
+                iev.setSource(ce.getReactingTC());
+                iev.setTarget(ce.getReactingTC());
+                this.vm.fetchTriggeredReactions(iev);
                 return true;
             }
             return false;
         }
         Respect2PLibrary.log("Remote nop_s triggered...");
         final InputEvent ce = this.vm.getCurrentEvent();
-        final InputEvent out_ev =
-                new InputEvent(ce.getReactingTC(), RespectOperation.makeNop_s(
+        final InputEvent outEv =
+                new InputEvent(ce.getReactingTC(), RespectOperation.makeNopS(
                         this.getProlog(), new LogicTuple(goal.copyGoal(v, 0)),
                         null), tid, this.vm.getCurrentTime());
-        out_ev.setIsLinking(true);
-        out_ev.setTarget(tid);
-        this.vm.addTemporaryOutputEvent(out_ev);
+        outEv.setIsLinking(true);
+        outEv.setTarget(tid);
+        this.vm.addTemporaryOutputEvent(outEv);
         return true;
 
     }
@@ -1096,6 +1323,11 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      * ReSpecT composite guard predicates.
      ********************************************************************/
 
+    /**
+     * 
+     * @return <code>true</code> if the triggering event comes from an agent and
+     *         is directed toward a tuple centre
+     */
     public boolean operation_0() {
         return this.from_agent_0() && this.to_tc_0();
     }
@@ -1104,14 +1336,22 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      * ReSpecT primitives provided as Java methods.
      ********************************************************************/
 
+    /**
+     * 
+     * @param arg0
+     *            the tuple to inject in the tuple centre
+     * @param arg1
+     *            the identifier of the target tuple centre
+     * @return <code>true</code> if the operation is successfull
+     */
     public boolean out_2(final Term arg0, final Term arg1) {
 
         String tcName = null;
         TupleCentreId tid = null;
         try {
             tid = new TupleCentreId(arg1);
-        } catch (final Exception e) {
-            // TODO Properly handle Exception
+        } catch (final InvalidTupleCentreIdException e) {
+            e.printStackTrace();
             return false;
         }
         tcName = tid.getName();
@@ -1142,28 +1382,36 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
                             .removeApices(((Struct) arg1.getTerm()).getArg(0)
                                     .getTerm().toString()), new MyOpManager()));
         } catch (final InvalidTupleCentreIdException e) {
-            // TODO Properly handle Exception
+            e.printStackTrace();
             return false;
         }
-        final InputEvent out_ev =
+        final InputEvent outEv =
                 new InputEvent(ce.getReactingTC(), RespectOperation.makeOut(
                         this.getProlog(), new LogicTuple(arg0.copyGoal(v, 0)),
                         null), newTid, this.vm.getCurrentTime());
-        out_ev.setIsLinking(true);
-        out_ev.setTarget(newTid);
-        this.vm.addTemporaryOutputEvent(out_ev);
+        outEv.setIsLinking(true);
+        outEv.setTarget(newTid);
+        this.vm.addTemporaryOutputEvent(outEv);
         return true;
 
     }
 
+    /**
+     * 
+     * @param arg0
+     *            the list of tuples to injectin the tuple centre
+     * @param arg1
+     *            the identifier of the target tuple centre
+     * @return <code>true</code> if the operation is successfull
+     */
     public boolean out_all_2(final Term arg0, final Term arg1) {
 
         String tcName = null;
         TupleCentreId tid = null;
         try {
             tid = new TupleCentreId(arg1);
-        } catch (final Exception e) {
-            // TODO Properly handle Exception
+        } catch (final InvalidTupleCentreIdException e) {
+            e.printStackTrace();
             return false;
         }
         tcName = tid.getName();
@@ -1187,26 +1435,38 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         }
         Respect2PLibrary.log("Remote out_all triggered...");
         final InputEvent ce = this.vm.getCurrentEvent();
-        final InputEvent out_ev =
+        final InputEvent outEv =
                 new InputEvent(ce.getReactingTC(), RespectOperation.makeOutAll(
                         this.getProlog(), new LogicTuple(arg0.copyGoal(v, 0)),
                         null), tid, this.vm.getCurrentTime());
-        out_ev.setIsLinking(true);
-        out_ev.setTarget(tid);
-        this.vm.addTemporaryOutputEvent(out_ev);
+        outEv.setIsLinking(true);
+        outEv.setTarget(tid);
+        this.vm.addTemporaryOutputEvent(outEv);
         return true;
 
     }
 
-    public boolean out_s_4(final Term e, final Term g, final Term r,
+    /**
+     * 
+     * @param ev
+     *            the triggering event of a ReSpecT specification
+     * @param g
+     *            the guard of a ReSpecT specification
+     * @param r
+     *            the body of a ReSpecT specification
+     * @param tc
+     *            the identifier of the target tuple centre
+     * @return <code>true</code> if the operation is successfull
+     */
+    public boolean out_s_4(final Term ev, final Term g, final Term r,
             final Term tc) {
 
         String tcName = null;
         TupleCentreId tid = null;
         try {
             tid = new TupleCentreId(tc);
-        } catch (final InvalidTupleCentreIdException ex) {
-            // TODO Properly handle Exception
+        } catch (final InvalidTupleCentreIdException e) {
+            e.printStackTrace();
             return false;
         }
         tcName = tid.getName();
@@ -1216,10 +1476,11 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         try {
             goal =
                     Term.createTerm(
-                            "reaction(" + e.getTerm() + "," + g.getTerm() + ","
-                                    + r.getTerm() + ")", new MyOpManager());
-        } catch (final InvalidTermException ex) {
-            // TODO Properly handle Exception
+                            "reaction(" + ev.getTerm() + "," + g.getTerm()
+                                    + "," + r.getTerm() + ")",
+                            new MyOpManager());
+        } catch (final InvalidTermException e) {
+            e.printStackTrace();
             return false;
         }
 
@@ -1229,44 +1490,60 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
             final LogicTuple tuArg = new LogicTuple(newArg);
             this.vm.addSpecTuple(tuArg);
             final InputEvent ce = this.vm.getCurrentEvent();
-            final InternalEvent ev =
+            final InternalEvent iev =
                     new InternalEvent(ce,
-                            InternalOperation.makeOut_sR(new LogicTuple(goal
+                            InternalOperation.makeOutSR(new LogicTuple(goal
                                     .copyGoal(v, 0))));
-            ev.setSource(ce.getReactingTC());
-            ev.setTarget(ce.getReactingTC());
-            this.vm.fetchTriggeredReactions(ev);
+            iev.setSource(ce.getReactingTC());
+            iev.setTarget(ce.getReactingTC());
+            this.vm.fetchTriggeredReactions(iev);
             return true;
         }
         Respect2PLibrary.log("Remote out_s triggered...");
         final InputEvent ce = this.vm.getCurrentEvent();
-        final InputEvent out_ev =
-                new InputEvent(ce.getReactingTC(), RespectOperation.makeOut_s(
+        final InputEvent outEv =
+                new InputEvent(ce.getReactingTC(), RespectOperation.makeOutS(
                         this.getProlog(), new LogicTuple(goal.copyGoal(v, 0)),
                         null), tid, this.vm.getCurrentTime());
-        out_ev.setIsLinking(true);
-        out_ev.setTarget(tid);
-        this.vm.addTemporaryOutputEvent(out_ev);
+        outEv.setIsLinking(true);
+        outEv.setTarget(tid);
+        this.vm.addTemporaryOutputEvent(outEv);
         return true;
 
     }
 
+    /**
+     * 
+     * @return <code>true</code> if the ReSpecT VM is in the completion phase
+     */
     public boolean post_0() {
         return this.response_0();
     }
 
+    /**
+     * 
+     * @return <code>true</code> if the ReSpecT VM is in the invocation phase
+     */
     public boolean pre_0() {
         return this.request_0();
     }
 
+    /**
+     * 
+     * @param arg0
+     *            the Prolog variable to unify the result with
+     * @param arg1
+     *            the identifier of the target tuple centre
+     * @return <code>true</code> if the operation is successfull
+     */
     public boolean rd_2(final Term arg0, final Term arg1) {
 
         String tcName = null;
         TupleCentreId tid = null;
         try {
             tid = new TupleCentreId(arg1);
-        } catch (final Exception e) {
-            // TODO Properly handle Exception
+        } catch (final InvalidTupleCentreIdException e) {
+            e.printStackTrace();
             return false;
         }
         tcName = tid.getName();
@@ -1295,25 +1572,36 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         }
         Respect2PLibrary.log("Remote rd triggered...");
         final InputEvent ce = this.vm.getCurrentEvent();
-        final InputEvent out_ev =
+        final InputEvent outEv =
                 new InputEvent(ce.getReactingTC(), RespectOperation.makeRd(
                         this.getProlog(), new LogicTuple(arg0.copyGoal(v, 0)),
                         null), tid, this.vm.getCurrentTime());
-        out_ev.setIsLinking(true);
-        out_ev.setTarget(tid);
-        this.vm.addTemporaryOutputEvent(out_ev);
+        outEv.setIsLinking(true);
+        outEv.setTarget(tid);
+        this.vm.addTemporaryOutputEvent(outEv);
         return true;
 
     }
 
+    /**
+     * 
+     * @param arg0
+     *            the tuple template to be used
+     * 
+     * @param arg1
+     *            the Prolog variable to unify the result with
+     * @param arg2
+     *            the identifier of the target tuple centre
+     * @return <code>true</code> if the operation is successfull
+     */
     public boolean rd_all_3(final Term arg0, final Term arg1, final Term arg2) {
 
         String tcName = null;
         TupleCentreId tid = null;
         try {
             tid = new TupleCentreId(arg2);
-        } catch (final Exception e) {
-            // TODO Properly handle Exception
+        } catch (final InvalidTupleCentreIdException e) {
+            e.printStackTrace();
             return false;
         }
         tcName = tid.getName();
@@ -1339,29 +1627,41 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         try {
             resultArg = LogicTuple.parse(tuple);
         } catch (final InvalidLogicTupleException e) {
-            // TODO Properly handle Exception
+            e.printStackTrace();
             return false;
         }
-        final InputEvent out_ev =
+        final InputEvent outEv =
                 new InputEvent(ce.getReactingTC(), RespectOperation.makeRdAll(
                         this.getProlog(), resultArg, null), tid,
                         this.vm.getCurrentTime());
-        out_ev.setIsLinking(true);
-        out_ev.setTarget(tid);
-        this.vm.addTemporaryOutputEvent(out_ev);
+        outEv.setIsLinking(true);
+        outEv.setTarget(tid);
+        this.vm.addTemporaryOutputEvent(outEv);
         return true;
 
     }
 
-    public boolean rd_s_4(final Term e, final Term g, final Term r,
+    /**
+     * 
+     * @param ev
+     *            the triggering event of a ReSpecT specification
+     * @param g
+     *            the guard of a ReSpecT specification
+     * @param r
+     *            the body of a ReSpecT specification
+     * @param tc
+     *            the identifier of the target tuple centre
+     * @return <code>true</code> if the operation is successfull
+     */
+    public boolean rd_s_4(final Term ev, final Term g, final Term r,
             final Term tc) {
 
         String tcName = null;
         TupleCentreId tid = null;
         try {
             tid = new TupleCentreId(tc);
-        } catch (final InvalidTupleCentreIdException ex) {
-            // TODO Properly handle Exception
+        } catch (final InvalidTupleCentreIdException e) {
+            e.printStackTrace();
             return false;
         }
         tcName = tid.getName();
@@ -1371,10 +1671,11 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         try {
             goal =
                     Term.createTerm(
-                            "reaction(" + e.getTerm() + "," + g.getTerm() + ","
-                                    + r.getTerm() + ")", new MyOpManager());
-        } catch (final InvalidTermException ex) {
-            // TODO Properly handle Exception
+                            "reaction(" + ev.getTerm() + "," + g.getTerm()
+                                    + "," + r.getTerm() + ")",
+                            new MyOpManager());
+        } catch (final InvalidTermException e) {
+            e.printStackTrace();
             return false;
         }
 
@@ -1388,38 +1689,46 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
                 final Term term = ((LogicTuple) tuple).toTerm();
                 this.unify(goal, term.copyGoal(v, 0));
                 final InputEvent ce = this.vm.getCurrentEvent();
-                final InternalEvent ev =
+                final InternalEvent iev =
                         new InternalEvent(ce,
-                                InternalOperation.makeRd_sR(new LogicTuple(goal
+                                InternalOperation.makeRdSR(new LogicTuple(goal
                                         .copyGoal(v, 0))));
-                ev.setSource(ce.getReactingTC());
-                ev.setTarget(ce.getReactingTC());
-                this.vm.fetchTriggeredReactions(ev);
+                iev.setSource(ce.getReactingTC());
+                iev.setTarget(ce.getReactingTC());
+                this.vm.fetchTriggeredReactions(iev);
                 return true;
             }
             return false;
         }
         Respect2PLibrary.log("Remote rd_s triggered...");
         final InputEvent ce = this.vm.getCurrentEvent();
-        final InputEvent out_ev =
-                new InputEvent(ce.getReactingTC(), RespectOperation.makeRd_s(
+        final InputEvent outEv =
+                new InputEvent(ce.getReactingTC(), RespectOperation.makeRdS(
                         this.getProlog(), new LogicTuple(goal.copyGoal(v, 0)),
                         null), tid, this.vm.getCurrentTime());
-        out_ev.setIsLinking(true);
-        out_ev.setTarget(tid);
-        this.vm.addTemporaryOutputEvent(out_ev);
+        outEv.setIsLinking(true);
+        outEv.setTarget(tid);
+        this.vm.addTemporaryOutputEvent(outEv);
         return true;
 
     }
 
+    /**
+     * 
+     * @param arg0
+     *            the Prolog variable to unify the result with
+     * @param arg1
+     *            the identifier of the target tuple centre
+     * @return <code>true</code> if the operation is successfull
+     */
     public boolean rdp_2(final Term arg0, final Term arg1) {
 
         String tcName = null;
         TupleCentreId tid = null;
         try {
             tid = new TupleCentreId(arg1);
-        } catch (final Exception e) {
-            // TODO Properly handle Exception
+        } catch (final InvalidTupleCentreIdException e) {
+            e.printStackTrace();
             return false;
         }
         tcName = tid.getName();
@@ -1448,13 +1757,13 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         }
         Respect2PLibrary.log("Remote rdp triggered...");
         final InputEvent ce = this.vm.getCurrentEvent();
-        final InputEvent out_ev =
+        final InputEvent outEv =
                 new InputEvent(ce.getReactingTC(), RespectOperation.makeRdp(
                         this.getProlog(), new LogicTuple(arg0.copyGoal(v, 0)),
                         null), tid, this.vm.getCurrentTime());
-        out_ev.setIsLinking(true);
-        out_ev.setTarget(tid);
-        this.vm.addTemporaryOutputEvent(out_ev);
+        outEv.setIsLinking(true);
+        outEv.setTarget(tid);
+        this.vm.addTemporaryOutputEvent(outEv);
         return true;
 
     }
@@ -1463,15 +1772,27 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      * ReSpecT reaction observation predicates.
      ********************************************************************/
 
-    public boolean rdp_s_4(final Term e, final Term g, final Term r,
+    /**
+     * 
+     * @param ev
+     *            the triggering event of a ReSpecT specification
+     * @param g
+     *            the guard of a ReSpecT specification
+     * @param r
+     *            the body of a ReSpecT specification
+     * @param tc
+     *            the identifier of the target tuple centre
+     * @return <code>true</code> if the operation is successfull
+     */
+    public boolean rdp_s_4(final Term ev, final Term g, final Term r,
             final Term tc) {
 
         String tcName = null;
         TupleCentreId tid = null;
         try {
             tid = new TupleCentreId(tc);
-        } catch (final InvalidTupleCentreIdException ex) {
-            // TODO Properly handle Exception
+        } catch (final InvalidTupleCentreIdException e) {
+            e.printStackTrace();
             return false;
         }
         tcName = tid.getName();
@@ -1481,10 +1802,11 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         try {
             goal =
                     Term.createTerm(
-                            "reaction(" + e.getTerm() + "," + g.getTerm() + ","
-                                    + r.getTerm() + ")", new MyOpManager());
-        } catch (final InvalidTermException ex) {
-            // TODO Properly handle Exception
+                            "reaction(" + ev.getTerm() + "," + g.getTerm()
+                                    + "," + r.getTerm() + ")",
+                            new MyOpManager());
+        } catch (final InvalidTermException e) {
+            e.printStackTrace();
             return false;
         }
 
@@ -1498,30 +1820,34 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
                 final Term term = ((LogicTuple) tuple).toTerm();
                 this.unify(goal, term.copyGoal(v, 0));
                 final InputEvent ce = this.vm.getCurrentEvent();
-                final InternalEvent ev =
+                final InternalEvent iev =
                         new InternalEvent(ce,
-                                InternalOperation.makeRd_sR(new LogicTuple(goal
+                                InternalOperation.makeRdSR(new LogicTuple(goal
                                         .copyGoal(v, 0))));
-                ev.setSource(ce.getReactingTC());
-                ev.setTarget(ce.getReactingTC());
-                this.vm.fetchTriggeredReactions(ev);
+                iev.setSource(ce.getReactingTC());
+                iev.setTarget(ce.getReactingTC());
+                this.vm.fetchTriggeredReactions(iev);
                 return true;
             }
             return false;
         }
         Respect2PLibrary.log("Remote rdp_s triggered...");
         final InputEvent ce = this.vm.getCurrentEvent();
-        final InputEvent out_ev =
-                new InputEvent(ce.getReactingTC(), RespectOperation.makeRdp_s(
+        final InputEvent outEv =
+                new InputEvent(ce.getReactingTC(), RespectOperation.makeRdpS(
                         this.getProlog(), new LogicTuple(goal.copyGoal(v, 0)),
                         null), tid, this.vm.getCurrentTime());
-        out_ev.setIsLinking(true);
-        out_ev.setTarget(tid);
-        this.vm.addTemporaryOutputEvent(out_ev);
+        outEv.setIsLinking(true);
+        outEv.setTarget(tid);
+        this.vm.addTemporaryOutputEvent(outEv);
         return true;
 
     }
 
+    /**
+     * 
+     * @return <code>true</code> if the ReSpecT VM is in the invocation phase
+     */
     public boolean req_0() {
         return this.request_0();
     }
@@ -1530,11 +1856,15 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      * @return true if the ReSpecT VM is in the 'invocation phase'.
      */
     public boolean request_0() {
-        final Event ev = this.vm.getCurrentReactionEvent();
-        final TupleCentreOperation op = ev.getSimpleTCEvent();
+        final AbstractEvent ev = this.vm.getCurrentReactionEvent();
+        final AbstractTupleCentreOperation op = ev.getSimpleTCEvent();
         return !op.isResultDefined();
     }
 
+    /**
+     * 
+     * @return <code>true</code> if the ReSpecT VM is in the completion phase
+     */
     public boolean resp_0() {
         return this.response_0();
     }
@@ -1543,12 +1873,22 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      * @return true if the ReSpecT VM is in the 'completion phase'.
      */
     public boolean response_0() {
-        final Event ev = this.vm.getCurrentReactionEvent();
-        final TupleCentreOperation op = ev.getSimpleTCEvent();
+        final AbstractEvent ev = this.vm.getCurrentReactionEvent();
+        final AbstractTupleCentreOperation op = ev.getSimpleTCEvent();
         return op.isResultDefined()
                 && !"ListeningState".equals(this.vm.getCurrentState());
     }
 
+    /**
+     * 
+     * @param env
+     *            the identifier of the target environmental resource
+     * @param key
+     *            the environmental property to modify
+     * @param val
+     *            the value modified
+     * @return <code>true</code> if the operation is successfull
+     */
     public boolean setEnv_3(final Term env, final Term key, final Term val) {
         final AbstractMap<Var, Var> v = new LinkedHashMap<Var, Var>();
         final AbstractMap<Var, Var> v1 = new LinkedHashMap<Var, Var>();
@@ -1567,14 +1907,22 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         return false;
     }
 
+    /**
+     * 
+     * @param arg0
+     *            the Java class full name or tuProlog theory file path to spawn
+     * @param arg1
+     *            the identifier of the target tuple centre
+     * @return <code>true</code> if the operation is successfull
+     */
     public boolean spawn_2(final Term arg0, final Term arg1) {
 
         String tcName = null;
         TupleCentreId tid = null;
         try {
             tid = new TupleCentreId(arg1);
-        } catch (final Exception e) {
-            // TODO Properly handle Exception
+        } catch (final InvalidTupleCentreIdException e) {
+            e.printStackTrace();
             return false;
         }
         tcName = tid.getName();
@@ -1598,19 +1946,26 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         }
         Respect2PLibrary.log("Remote spawn triggered...");
         final InputEvent ce = this.vm.getCurrentEvent();
-        final InputEvent out_ev =
+        final InputEvent outEv =
                 new InputEvent(ce.getReactingTC(), RespectOperation.makeSpawn(
                         this.getProlog(), new LogicTuple(arg0.copyGoal(v, 0)),
                         null), tid, this.vm.getCurrentTime());
-        out_ev.setIsLinking(true);
-        out_ev.setTarget(tid);
-        this.vm.addTemporaryOutputEvent(out_ev);
+        outEv.setIsLinking(true);
+        outEv.setTarget(tid);
+        this.vm.addTemporaryOutputEvent(outEv);
         return true;
 
     }
 
+    /**
+     * 
+     * @param predicate
+     *            the predicate prime cause of current ReSpecT event
+     * @return <code>true</code> if the current ReSpecT event has the given
+     *         prime cause
+     */
     public boolean start_predicate_1(final Term predicate) {
-        final Event e = this.vm.getCurrentReactionEvent();
+        final AbstractEvent e = this.vm.getCurrentReactionEvent();
         if (e.isInternal()) {
             final InternalEvent ie = (InternalEvent) e;
             return this.unify(predicate, ie.getInputEvent().getSimpleTCEvent()
@@ -1625,8 +1980,16 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
                 .unify(predicate, this.vm.getCurrentReactionTerm().getTerm());
     }
 
+    /**
+     * 
+     * @param source
+     *            the identifier of the prime cause source of the event
+     * 
+     * @return <code>true</code> if current ReSpecT event prime cause has the
+     *         given source
+     */
     public boolean start_source_1(final Term source) {
-        final Event e = this.vm.getCurrentReactionEvent();
+        final AbstractEvent e = this.vm.getCurrentReactionEvent();
         if (e.isInternal()) {
             final InternalEvent ie = (InternalEvent) e;
             final IId id = ie.getInputEvent().getSource();
@@ -1665,8 +2028,15 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         }
     }
 
+    /**
+     * 
+     * @param target
+     *            the identifier of the prime cause target
+     * @return <code>true</code> if current ReSpecT event prime cause has the
+     *         given target
+     */
     public boolean start_target_1(final Term target) {
-        final Event e = this.vm.getCurrentReactionEvent();
+        final AbstractEvent e = this.vm.getCurrentReactionEvent();
         if (e.isInternal()) {
             final InternalEvent ie = (InternalEvent) e;
             final IId id = ie.getInputEvent().getTarget();
@@ -1705,8 +2075,18 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         }
     }
 
+    /**
+     * 
+     * @param time
+     *            the expected time at which the current ReSpecT computation has
+     *            been triggered.
+     * 
+     * @return true if the actual time at which the current ReSpecT computation
+     *         has been triggered is the expected time at which the current
+     *         ReSpecT computation has been triggered.
+     */
     public boolean start_time_1(final Term time) {
-        final Event e = this.vm.getCurrentReactionEvent();
+        final AbstractEvent e = this.vm.getCurrentReactionEvent();
         if (e.isInternal()) {
             final InternalEvent ie = (InternalEvent) e;
             return this.unify(time, new alice.tuprolog.Long(ie.getInputEvent()
@@ -1720,8 +2100,16 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         return this.unify(time, new alice.tuprolog.Long(e.getTime()));
     }
 
+    /**
+     * 
+     * @param tuple
+     *            the tuple argument of the direct cause predicate
+     * 
+     * @return <code>true</code> if the direct cause tuple argument has the
+     *         given tuple
+     */
     public boolean start_tuple_1(final Term tuple) {
-        final Event e = this.vm.getCurrentReactionEvent();
+        final AbstractEvent e = this.vm.getCurrentReactionEvent();
         if (e.isInternal()) {
             final InternalEvent ie = (InternalEvent) e;
             return this.unify(tuple,
@@ -1739,7 +2127,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      * @return true if the ReSpecT operation completed successfully.
      */
     public boolean success_0() {
-        final Event ev = this.vm.getCurrentReactionEvent();
+        final AbstractEvent ev = this.vm.getCurrentReactionEvent();
         final ITupleCentreOperation op = ev.getSimpleTCEvent();
         return op.isResultSuccess()
                 && !"ListeningState".equals(this.vm.getCurrentState());
@@ -1750,7 +2138,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      *         (either Java or tuProlog or whatever).
      */
     public boolean to_agent_0() {
-        final Event ev = this.vm.getCurrentReactionEvent();
+        final AbstractEvent ev = this.vm.getCurrentReactionEvent();
         final IId target = ev.getTarget();
         if (target.isAgent()) {
             return true;
@@ -1758,6 +2146,11 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         return false;
     }
 
+    /**
+     * 
+     * @return <code>true</code> if the triggering event was directed toward the
+     *         environment
+     */
     public boolean to_env_0() {
         return this.vm.getCurrentReactionEvent().getTarget().isEnv();
     }
@@ -1767,7 +2160,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      *         tuplecentre.
      */
     public boolean to_tc_0() {
-        final Event ev = this.vm.getCurrentReactionEvent();
+        final AbstractEvent ev = this.vm.getCurrentReactionEvent();
         final IId target = ev.getTarget();
         if (target.isTC()) {
             return true;
@@ -1775,14 +2168,22 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         return false;
     }
 
+    /**
+     * 
+     * @param arg0
+     *            the Prolog variable to unify the result with
+     * @param arg1
+     *            the identifier of the target tuple centre
+     * @return <code>true</code> if the operation is successfull
+     */
     public boolean uin_2(final Term arg0, final Term arg1) {
 
         String tcName = null;
         TupleCentreId tid = null;
         try {
             tid = new TupleCentreId(arg1);
-        } catch (final Exception e) {
-            // TODO Properly handle Exception
+        } catch (final InvalidTupleCentreIdException e) {
+            e.printStackTrace();
             return false;
         }
         tcName = tid.getName();
@@ -1811,25 +2212,33 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         }
         Respect2PLibrary.log("Remote uin triggered...");
         final InputEvent ce = this.vm.getCurrentEvent();
-        final InputEvent out_ev =
+        final InputEvent outEv =
                 new InputEvent(ce.getReactingTC(), RespectOperation.makeUin(
                         this.getProlog(), new LogicTuple(arg0.copyGoal(v, 0)),
                         null), tid, this.vm.getCurrentTime());
-        out_ev.setIsLinking(true);
-        out_ev.setTarget(tid);
-        this.vm.addTemporaryOutputEvent(out_ev);
+        outEv.setIsLinking(true);
+        outEv.setTarget(tid);
+        this.vm.addTemporaryOutputEvent(outEv);
         return true;
 
     }
 
+    /**
+     * 
+     * @param arg0
+     *            the Prolog variable to unify the result with
+     * @param arg1
+     *            the identifier of the target tuple centre
+     * @return <code>true</code> if the operation is successfull
+     */
     public boolean uinp_2(final Term arg0, final Term arg1) {
 
         String tcName = null;
         TupleCentreId tid = null;
         try {
             tid = new TupleCentreId(arg1);
-        } catch (final Exception e) {
-            // TODO Properly handle Exception
+        } catch (final InvalidTupleCentreIdException e) {
+            e.printStackTrace();
             return false;
         }
         tcName = tid.getName();
@@ -1858,25 +2267,33 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         }
         Respect2PLibrary.log("Remote uinp triggered...");
         final InputEvent ce = this.vm.getCurrentEvent();
-        final InputEvent out_ev =
+        final InputEvent outEv =
                 new InputEvent(ce.getReactingTC(), RespectOperation.makeUinp(
                         this.getProlog(), new LogicTuple(arg0.copyGoal(v, 0)),
                         null), tid, this.vm.getCurrentTime());
-        out_ev.setIsLinking(true);
-        out_ev.setTarget(tid);
-        this.vm.addTemporaryOutputEvent(out_ev);
+        outEv.setIsLinking(true);
+        outEv.setTarget(tid);
+        this.vm.addTemporaryOutputEvent(outEv);
         return true;
 
     }
 
+    /**
+     * 
+     * @param arg0
+     *            the Prolog variable to unify the result with
+     * @param arg1
+     *            the identifier of the target tuple centre
+     * @return <code>true</code> if the operation is successfull
+     */
     public boolean uno_2(final Term arg0, final Term arg1) {
 
         String tcName = null;
         TupleCentreId tid = null;
         try {
             tid = new TupleCentreId(arg1);
-        } catch (final Exception e) {
-            // TODO Properly handle Exception
+        } catch (final InvalidTupleCentreIdException e) {
+            e.printStackTrace();
             return false;
         }
         tcName = tid.getName();
@@ -1905,25 +2322,33 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         }
         Respect2PLibrary.log("Remote uno triggered...");
         final InputEvent ce = this.vm.getCurrentEvent();
-        final InputEvent out_ev =
+        final InputEvent outEv =
                 new InputEvent(ce.getReactingTC(), RespectOperation.makeUno(
                         this.getProlog(), new LogicTuple(arg0.copyGoal(v, 0)),
                         null), tid, this.vm.getCurrentTime());
-        out_ev.setIsLinking(true);
-        out_ev.setTarget(tid);
-        this.vm.addTemporaryOutputEvent(out_ev);
+        outEv.setIsLinking(true);
+        outEv.setTarget(tid);
+        this.vm.addTemporaryOutputEvent(outEv);
         return true;
 
     }
 
+    /**
+     * 
+     * @param arg0
+     *            the Prolog variable to unify the result with
+     * @param arg1
+     *            the identifier of the target tuple centre
+     * @return <code>true</code> if the operation is successfull
+     */
     public boolean unop_2(final Term arg0, final Term arg1) {
 
         String tcName = null;
         TupleCentreId tid = null;
         try {
             tid = new TupleCentreId(arg1);
-        } catch (final Exception e) {
-            // TODO Properly handle Exception
+        } catch (final InvalidTupleCentreIdException e) {
+            e.printStackTrace();
             return false;
         }
         tcName = tid.getName();
@@ -1952,25 +2377,33 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         }
         Respect2PLibrary.log("Remote unop triggered...");
         final InputEvent ce = this.vm.getCurrentEvent();
-        final InputEvent out_ev =
+        final InputEvent outEv =
                 new InputEvent(ce.getReactingTC(), RespectOperation.makeUnop(
                         this.getProlog(), new LogicTuple(arg0.copyGoal(v, 0)),
                         null), tid, this.vm.getCurrentTime());
-        out_ev.setIsLinking(true);
-        out_ev.setTarget(tid);
-        this.vm.addTemporaryOutputEvent(out_ev);
+        outEv.setIsLinking(true);
+        outEv.setTarget(tid);
+        this.vm.addTemporaryOutputEvent(outEv);
         return true;
 
     }
 
+    /**
+     * 
+     * @param arg0
+     *            the Prolog variable to unify the result with
+     * @param arg1
+     *            the identifier of the target tuple centre
+     * @return <code>true</code> if the operation is successfull
+     */
     public boolean urd_2(final Term arg0, final Term arg1) {
 
         String tcName = null;
         TupleCentreId tid = null;
         try {
             tid = new TupleCentreId(arg1);
-        } catch (final Exception e) {
-            // TODO Properly handle Exception
+        } catch (final InvalidTupleCentreIdException e) {
+            e.printStackTrace();
             return false;
         }
         tcName = tid.getName();
@@ -1999,25 +2432,33 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         }
         Respect2PLibrary.log("Remote urd triggered...");
         final InputEvent ce = this.vm.getCurrentEvent();
-        final InputEvent out_ev =
+        final InputEvent outEv =
                 new InputEvent(ce.getReactingTC(), RespectOperation.makeUrd(
                         this.getProlog(), new LogicTuple(arg0.copyGoal(v, 0)),
                         null), tid, this.vm.getCurrentTime());
-        out_ev.setIsLinking(true);
-        out_ev.setTarget(tid);
-        this.vm.addTemporaryOutputEvent(out_ev);
+        outEv.setIsLinking(true);
+        outEv.setTarget(tid);
+        this.vm.addTemporaryOutputEvent(outEv);
         return true;
 
     }
 
+    /**
+     * 
+     * @param arg0
+     *            the Prolog variable to unify the result with
+     * @param arg1
+     *            the identifier of the target tuple centre
+     * @return <code>true</code> if the operation is successfull
+     */
     public boolean urdp_2(final Term arg0, final Term arg1) {
 
         String tcName = null;
         TupleCentreId tid = null;
         try {
             tid = new TupleCentreId(arg1);
-        } catch (final Exception e) {
-            // TODO Properly handle Exception
+        } catch (final InvalidTupleCentreIdException e) {
+            e.printStackTrace();
             return false;
         }
         tcName = tid.getName();
@@ -2046,13 +2487,13 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         }
         Respect2PLibrary.log("Remote urdp triggered...");
         final InputEvent ce = this.vm.getCurrentEvent();
-        final InputEvent out_ev =
+        final InputEvent outEv =
                 new InputEvent(ce.getReactingTC(), RespectOperation.makeUrdp(
                         this.getProlog(), new LogicTuple(arg0.copyGoal(v, 0)),
                         null), tid, this.vm.getCurrentTime());
-        out_ev.setIsLinking(true);
-        out_ev.setTarget(tid);
-        this.vm.addTemporaryOutputEvent(out_ev);
+        outEv.setIsLinking(true);
+        outEv.setTarget(tid);
+        this.vm.addTemporaryOutputEvent(outEv);
         return true;
 
     }

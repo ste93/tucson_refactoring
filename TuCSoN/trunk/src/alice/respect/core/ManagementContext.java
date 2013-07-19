@@ -11,10 +11,20 @@ import alice.tucson.introspection.WSetEvent;
 import alice.tuplecentre.api.InspectableEventListener;
 import alice.tuplecentre.api.ObservableEventListener;
 
+/**
+ * 
+ * @author ste (mailto: s.mariani@unibo.it) on 01/lug/2013
+ * 
+ */
 public class ManagementContext implements IManagementContext {
 
     private final RespectVM vm;
 
+    /**
+     * 
+     * @param rvm
+     *            the ReSpecT VM this context refers to
+     */
     public ManagementContext(final RespectVM rvm) {
         this.vm = rvm;
     }
@@ -48,11 +58,7 @@ public class ManagementContext implements IManagementContext {
     }
 
     public void goCommand() throws OperationNotPossibleException {
-        try {
-            this.vm.goCommand();
-        } catch (final Exception ex) {
-            throw new OperationNotPossibleException();
-        }
+        this.vm.goCommand();
     }
 
     public boolean hasInspectors() {
@@ -64,11 +70,7 @@ public class ManagementContext implements IManagementContext {
     }
 
     public void nextStepCommand() throws OperationNotPossibleException {
-        try {
-            this.vm.nextStepCommand();
-        } catch (final Exception ex) {
-            throw new OperationNotPossibleException();
-        }
+        this.vm.nextStepCommand();
     }
 
     public void removeInspector(final InspectableEventListener l) {
@@ -100,11 +102,7 @@ public class ManagementContext implements IManagementContext {
     }
 
     public void stopCommand() throws OperationNotPossibleException {
-        try {
-            this.vm.stopCommand();
-        } catch (final Exception ex) {
-            throw new OperationNotPossibleException();
-        }
+        this.vm.stopCommand();
     }
 
 }

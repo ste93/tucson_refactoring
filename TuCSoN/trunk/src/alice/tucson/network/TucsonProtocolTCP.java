@@ -22,20 +22,40 @@ import java.net.UnknownHostException;
 
 /**
  * 
+ * @author ste (mailto: s.mariani@unibo.it) on 03/lug/2013
+ * 
  */
-@SuppressWarnings("serial")
-public class TucsonProtocolTCP extends TucsonProtocol {
+public class TucsonProtocolTCP extends AbstractTucsonProtocol {
 
+    /** serialVersionUID **/
+    private static final long serialVersionUID = 1L;
+    private static final int SOCKET_TIMEOUT = 5000;
     private ObjectInputStream inStream;
     private ServerSocket mainSocket;
     private ObjectOutputStream outStream;
     private Socket socket;
 
+    /**
+     * 
+     * @param s
+     *            the socket whose this connection is bound
+     */
     public TucsonProtocolTCP(final ServerSocket s) {
         super();
         this.mainSocket = s;
     }
 
+    /**
+     * 
+     * @param host
+     *            the host where to bound
+     * @param port
+     *            the listening port where to bound
+     * @throws UnknownHostException
+     *             if the given host is unknown
+     * @throws IOException
+     *             if some network problems arise
+     */
     public TucsonProtocolTCP(final String host, final int port)
             throws UnknownHostException, IOException {
         super();
@@ -52,9 +72,9 @@ public class TucsonProtocolTCP extends TucsonProtocol {
     }
 
     @Override
-    public TucsonProtocol acceptNewDialog() throws IOException,
+    public AbstractTucsonProtocol acceptNewDialog() throws IOException,
             SocketTimeoutException {
-        this.mainSocket.setSoTimeout(5000);
+        this.mainSocket.setSoTimeout(TucsonProtocolTCP.SOCKET_TIMEOUT);
         return new TucsonProtocolTCP(this.mainSocket.accept());
     }
 

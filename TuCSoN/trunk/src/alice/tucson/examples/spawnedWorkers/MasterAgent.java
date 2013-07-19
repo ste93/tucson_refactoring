@@ -8,9 +8,9 @@ import java.util.Map;
 import alice.logictuple.LogicTuple;
 import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.logictuple.exceptions.InvalidTupleOperationException;
+import alice.tucson.api.AbstractTucsonAgent;
 import alice.tucson.api.EnhancedSynchACC;
 import alice.tucson.api.ITucsonOperation;
-import alice.tucson.api.TucsonAgent;
 import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
@@ -25,7 +25,11 @@ import alice.tuplecentre.api.exceptions.OperationTimeOutException;
  * 
  * @author s.mariani@unibo.it
  */
-public class MasterAgent extends TucsonAgent {
+public class MasterAgent extends AbstractTucsonAgent {
+
+    private static final int ITERS = 10;
+    private static final int MAX_FACT = 10;
+    private static final int SLEEP = 1000;
 
     /**
      * @param args
@@ -37,15 +41,16 @@ public class MasterAgent extends TucsonAgent {
         // nodes.add("default@localhost:20505");
         try {
             // new MasterAgent("walter", nodes, 10, 20).go();
-            new MasterAgent("lloyd", nodes, 10, 10).go();
+            new MasterAgent("lloyd", nodes, MasterAgent.ITERS,
+                    MasterAgent.MAX_FACT).go();
         } catch (final TucsonInvalidAgentIdException e) {
-            // TODO Properly handle Exception
+            e.printStackTrace();
         }
     }
 
     private boolean die;
-    private final int ITERs;
-    private final int MAX_FACT;
+    private final int maxFactorial;
+    private final int nIters;
     private final Map<Integer, Integer> pendings;
     private int reqID;
 
@@ -62,6 +67,8 @@ public class MasterAgent extends TucsonAgent {
      *            max number for which to calculate factorial
      * 
      * @throws TucsonInvalidAgentIdException
+     *             if the given String does not represent a valid TuCSoN agent
+     *             identifier
      */
     public MasterAgent(final String aid, final List<String> nodes,
             final int iters, final int maxFact)
@@ -77,8 +84,8 @@ public class MasterAgent extends TucsonAgent {
             this.say("Invalid tid given, killing myself...");
             this.die = true;
         }
-        this.ITERs = iters;
-        this.MAX_FACT = maxFact;
+        this.nIters = iters;
+        this.maxFactorial = maxFact;
         this.reqID = 0;
         this.pendings = new HashMap<Integer, Integer>();
     }
@@ -129,7 +136,7 @@ public class MasterAgent extends TucsonAgent {
                      */
                     next = this.tids.get(i);
                     this.say("Putting jobs in: " + next.toString());
-                    for (int j = 0; j < this.ITERs; j++) {
+                    for (int j = 0; j < this.nIters; j++) {
                         /*
                          * ...to put in each <ITERs> jobs.
                          */
@@ -161,16 +168,16 @@ public class MasterAgent extends TucsonAgent {
                      */
                     next = this.tids.get(i);
                     this.say("Collecting results from: " + next.toString());
-                    for (int j = 0; j < this.ITERs; j++) {
+                    for (int j = 0; j < this.nIters; j++) {
                         acc.spawn(
                                 next,
                                 LogicTuple
-                                        .parse("exec('ds.lab.tucson.masterWorkers.spawn.SpawnedWorkingActivity.class')"),
+                                        .parse("exec('alice.tucson.examples.spawnedWorkers.SpawnedWorkingActivity.class')"),
                                 null);
                         /*
                          * Just to let you view something on the console.
                          */
-                        Thread.sleep(1000);
+                        Thread.sleep(MasterAgent.SLEEP);
                         /*
                          * ...this time to retrieve factorial results.
                          */
@@ -182,7 +189,7 @@ public class MasterAgent extends TucsonAgent {
                          * No longer a suspensive primitive. We need to keep
                          * track of collected results.
                          */
-                        op = acc.in_all(next, templ, (Long) null);
+                        op = acc.inAll(next, templ, (Long) null);
                         /*
                          * Check needed due to suspensive semantics.
                          */
@@ -215,24 +222,27 @@ public class MasterAgent extends TucsonAgent {
             this.say("Someone killed me, bye!");
         } catch (final InvalidLogicTupleException e) {
             this.say("ERROR: Tuple is not an admissible Prolog term!");
-            // TODO Properly handle Exception
+            e.printStackTrace();
         } catch (final TucsonOperationNotPossibleException e) {
             this.say("ERROR: Never seen this happen before *_*");
+            e.printStackTrace();
         } catch (final UnreachableNodeException e) {
             this.say("ERROR: Given TuCSoN Node is unreachable!");
-            // TODO Properly handle Exception
+            e.printStackTrace();
         } catch (final OperationTimeOutException e) {
             this.say("ERROR: Endless timeout expired!");
+            e.printStackTrace();
         } catch (final InvalidTupleOperationException e) {
             this.say("ERROR: No tuple arguments to retrieve!");
-            // TODO Properly handle Exception
+            e.printStackTrace();
         } catch (final InterruptedException e) {
             this.say("ERROR: Sleep interrupted!");
+            e.printStackTrace();
         }
     }
 
     private int drawRandomInt() {
-        return (int) Math.round(Math.random() * this.MAX_FACT);
+        return (int) Math.round(Math.random() * this.maxFactorial);
     }
 
 }

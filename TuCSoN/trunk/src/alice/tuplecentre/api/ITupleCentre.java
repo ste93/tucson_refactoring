@@ -5,7 +5,7 @@
 package alice.tuplecentre.api;
 
 import alice.tuplecentre.api.exceptions.OperationNotPossibleException;
-import alice.tuplecentre.core.TupleCentreOperation;
+import alice.tuplecentre.core.AbstractTupleCentreOperation;
 
 /**
  * @author aricci
@@ -13,7 +13,16 @@ import alice.tuplecentre.core.TupleCentreOperation;
  */
 public interface ITupleCentre {
 
-    void doOperation(IId who, TupleCentreOperation op)
+    /**
+     * 
+     * @param who
+     *            the identifier of the requestor of the operation
+     * @param op
+     *            the operation requested
+     * @throws OperationNotPossibleException
+     *             if the operation cannot be performed
+     */
+    void doOperation(IId who, AbstractTupleCentreOperation op)
             throws OperationNotPossibleException;
 
 }

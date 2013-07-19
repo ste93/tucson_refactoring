@@ -15,14 +15,41 @@ package alice.tucson.introspection;
 
 import alice.tucson.api.TucsonAgentId;
 
+/**
+ * 
+ * @author ste (mailto: s.mariani@unibo.it) on 03/lug/2013
+ * 
+ */
 public class SetProtocolMsg extends NodeMsg {
 
     private static final long serialVersionUID = 7284025970406889712L;
-    public InspectorProtocol info;
+    private InspectorProtocol info;
 
+    /**
+     * 
+     * @param id
+     *            the agent id of the sender
+     * @param p
+     *            the inspection protocol to be used
+     */
     public SetProtocolMsg(final TucsonAgentId id, final InspectorProtocol p) {
         super(id, "setProtocol");
         this.info = p;
+    }
+
+    /**
+     * @return the info
+     */
+    public InspectorProtocol getInfo() {
+        return this.info;
+    }
+
+    /**
+     * @param i
+     *            the info to set
+     */
+    public void setInfo(final InspectorProtocol i) {
+        this.info = i;
     }
 
 }

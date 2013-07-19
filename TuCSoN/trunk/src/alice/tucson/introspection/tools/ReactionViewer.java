@@ -20,6 +20,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
+/**
+ * 
+ * @author ste (mailto: s.mariani@unibo.it) on 03/lug/2013
+ * 
+ */
 public class ReactionViewer extends javax.swing.JFrame {
 
     private static final long serialVersionUID = -8708893837692939114L;
@@ -27,16 +32,21 @@ public class ReactionViewer extends javax.swing.JFrame {
     private javax.swing.JCheckBox checkLogEnable;
     private javax.swing.JTextField inputFileLog;
     private javax.swing.JScrollPane jScrollPane1;
-    private final Inspector mainForm;
+    private final InspectorGUI mainForm;
     private javax.swing.JTextArea outputArea;
     private javax.swing.JTextField outputState;
 
-    /** Creates new form TupleForm */
-    public ReactionViewer(final Inspector mainForm_) {
+    /**
+     * Creates new form TupleForm
+     * 
+     * @param mf
+     *            the inspector GUI
+     */
+    public ReactionViewer(final InspectorGUI mf) {
         super();
         this.initComponents();
         this.pack();
-        this.mainForm = mainForm_;
+        this.mainForm = mf;
         this.setTitle("Triggered ReSpecT reaction set of tuplecentre < "
                 + this.mainForm.tid.getName() + "@"
                 + this.mainForm.tid.getNode() + ":"
@@ -47,6 +57,11 @@ public class ReactionViewer extends javax.swing.JFrame {
                 .setText("Ready for ReSpecT reactions triggering notification.");
     }
 
+    /**
+     * 
+     * @param st
+     *            the message to append
+     */
     public void appendText(final String st) {
         this.outputArea.append(st);
     }

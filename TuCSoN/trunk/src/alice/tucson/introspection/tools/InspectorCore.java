@@ -52,18 +52,21 @@ public class InspectorCore extends alice.tucson.introspection.Inspector {
      */
     private Calendar cal;
 
-    private final Inspector form;
+    private final InspectorGUI form;
 
     /**
      * 
      * 
      * @param f
-     * @param id_
-     * @param tid_
+     *            the GUI this inpector refers to
+     * @param id
+     *            the agent identifier used by this inspector
+     * @param tid
+     *            the identifier of the tuple centre to inspect
      */
-    public InspectorCore(final Inspector f, final TucsonAgentId id_,
-            final TucsonTupleCentreId tid_) {
-        super(id_, tid_);
+    public InspectorCore(final InspectorGUI f, final TucsonAgentId id,
+            final TucsonTupleCentreId tid) {
+        super(id, tid);
         this.form = f;
         this.logTupleFilename = "inspector-tuples.log";
         this.logQueryFilename = "inspector-queries.log";
@@ -74,7 +77,7 @@ public class InspectorCore extends alice.tucson.introspection.Inspector {
             this.logReactionWriter =
                     new FileWriter(this.logReactionFilename, true);
         } catch (final IOException e) {
-            // TODO Properly handle Exception
+            e.printStackTrace();
         }
     }
 
@@ -84,13 +87,13 @@ public class InspectorCore extends alice.tucson.introspection.Inspector {
             try {
                 this.logQueryWriter.close();
             } catch (final IOException e) {
-                // TODO Properly handle Exception
+                e.printStackTrace();
             }
         }
         try {
             this.logQueryWriter = new FileWriter(this.logQueryFilename, true);
         } catch (final IOException e) {
-            // TODO Properly handle Exception
+            e.printStackTrace();
         }
     }
 
@@ -100,14 +103,14 @@ public class InspectorCore extends alice.tucson.introspection.Inspector {
             try {
                 this.logReactionWriter.close();
             } catch (final IOException e) {
-                // TODO Properly handle Exception
+                e.printStackTrace();
             }
         }
         try {
             this.logReactionWriter =
                     new FileWriter(this.logReactionFilename, true);
         } catch (final IOException e) {
-            // TODO Properly handle Exception
+            e.printStackTrace();
         }
     }
 
@@ -117,13 +120,13 @@ public class InspectorCore extends alice.tucson.introspection.Inspector {
             try {
                 this.logTupleWriter.close();
             } catch (final IOException e) {
-                // TODO Properly handle Exception
+                e.printStackTrace();
             }
         }
         try {
             this.logTupleWriter = new FileWriter(this.logTupleFilename, true);
         } catch (final IOException e) {
-            // TODO Properly handle Exception
+            e.printStackTrace();
         }
     }
 
@@ -131,11 +134,11 @@ public class InspectorCore extends alice.tucson.introspection.Inspector {
     public void onContextEvent(
             final alice.tucson.introspection.InspectorContextEvent msg) {
 
-        if (msg.tuples != null) {
+        if (msg.getTuples() != null) {
 
             final TupleViewer viewer = this.form.getTupleForm();
             final StringBuffer st = new StringBuffer();
-            Iterator<? extends Tuple> it = msg.tuples.iterator();
+            Iterator<? extends Tuple> it = msg.getTuples().iterator();
             int n = 0;
 
             while (it.hasNext()) {
@@ -160,7 +163,7 @@ public class InspectorCore extends alice.tucson.introspection.Inspector {
                             + this.cal.get(Calendar.SECOND) + ")"
                             + "),\n\ttuples([\n");
 
-                    it = msg.tuples.iterator();
+                    it = msg.getTuples().iterator();
                     if (this.logTupleFilter == null) {
                         if (it.hasNext()) {
                             st.append("\t\t").append(it.next().toString())
@@ -195,18 +198,18 @@ public class InspectorCore extends alice.tucson.introspection.Inspector {
                     this.logTupleWriter.flush();
 
                 } catch (final IOException e) {
-                    // TODO Properly handle Exception
+                    e.printStackTrace();
                 }
 
             }
 
         }
 
-        if (msg.wnEvents != null) {
+        if (msg.getWnEvents() != null) {
 
             final EventViewer viewer = this.form.getQueryForm();
             final StringBuffer st = new StringBuffer();
-            Iterator<WSetEvent> it = msg.wnEvents.iterator();
+            Iterator<WSetEvent> it = msg.getWnEvents().iterator();
             int n = 0;
             WSetEvent ev;
 
@@ -232,7 +235,7 @@ public class InspectorCore extends alice.tucson.introspection.Inspector {
                             + this.cal.get(Calendar.MINUTE) + ":"
                             + this.cal.get(Calendar.SECOND) + "))"
                             + "),\n\toperations([\n");
-                    it = msg.wnEvents.iterator();
+                    it = msg.getWnEvents().iterator();
                     if (this.logOpFilter == null) {
                         if (it.hasNext()) {
                             ev = it.next();
@@ -293,17 +296,17 @@ public class InspectorCore extends alice.tucson.introspection.Inspector {
                     this.logQueryWriter.write(st + "\n\t])\n).\n");
                     this.logQueryWriter.flush();
                 } catch (final IOException e) {
-                    // TODO Properly handle Exception
+                    e.printStackTrace();
                 }
             }
 
         }
 
-        if (msg.reactionOk != null) {
+        if (msg.getReactionOk() != null) {
 
             this.cal = Calendar.getInstance();
             final ReactionViewer viewer = this.form.getReactionForm();
-            final TriggeredReaction tr = msg.reactionOk;
+            final TriggeredReaction tr = msg.getReactionOk();
             viewer.appendText("reaction < " + tr.getReaction()
                     + " > SUCCEEDED @ " + this.cal.get(Calendar.HOUR_OF_DAY)
                     + ":" + this.cal.get(Calendar.MINUTE) + ":"
@@ -322,15 +325,15 @@ public class InspectorCore extends alice.tucson.introspection.Inspector {
                             + " ).\n");
                     this.logReactionWriter.flush();
                 } catch (final IOException e) {
-                    // TODO Properly handle Exception
+                    e.printStackTrace();
                 }
             }
 
-        } else if (msg.reactionFailed != null) {
+        } else if (msg.getReactionFailed() != null) {
 
             this.cal = Calendar.getInstance();
             final ReactionViewer viewer = this.form.getReactionForm();
-            final TriggeredReaction tr = msg.reactionFailed;
+            final TriggeredReaction tr = msg.getReactionFailed();
             viewer.appendText("reaction < " + tr.getReaction() + " > FAILED @ "
                     + this.cal.get(Calendar.HOUR_OF_DAY) + ":"
                     + this.cal.get(Calendar.MINUTE) + ":"
@@ -348,7 +351,7 @@ public class InspectorCore extends alice.tucson.introspection.Inspector {
                             + "),\n\t\tfailed( " + tr.getReaction() + " ).\n");
                     this.logReactionWriter.flush();
                 } catch (final IOException e) {
-                    // TODO Properly handle Exception
+                    e.printStackTrace();
                 }
             }
 

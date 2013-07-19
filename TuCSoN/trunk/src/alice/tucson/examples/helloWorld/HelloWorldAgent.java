@@ -2,9 +2,9 @@ package alice.tucson.examples.helloWorld;
 
 import alice.logictuple.LogicTuple;
 import alice.logictuple.exceptions.InvalidLogicTupleException;
+import alice.tucson.api.AbstractTucsonAgent;
 import alice.tucson.api.ITucsonOperation;
 import alice.tucson.api.SynchACC;
-import alice.tucson.api.TucsonAgent;
 import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
@@ -12,15 +12,15 @@ import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 
+/*
+ * 1) Extend alice.tucson.api.TucsonAgent base class.
+ */
 /**
  * Java TuCSoN Agent extending alice.tucson.api.TucsonAgent base class.
  * 
  * @author s.mariani@unibo.it
  */
-/*
- * 1) Extend alice.tucson.api.TucsonAgent base class.
- */
-public class HelloWorldAgent extends TucsonAgent {
+public class HelloWorldAgent extends AbstractTucsonAgent {
 
     /**
      * @param args
@@ -40,12 +40,20 @@ public class HelloWorldAgent extends TucsonAgent {
         try {
             new HelloWorldAgent(aid).go();
         } catch (final TucsonInvalidAgentIdException e) {
-            // TODO Properly handle Exception
+            e.printStackTrace();
         }
     }
 
     /*
      * 2) Choose one of the given constructors.
+     */
+    /**
+     * 
+     * @param aid
+     *            the String representation of a valid TuCSoN agent identifier
+     * @throws TucsonInvalidAgentIdException
+     *             if the given String does not represent a valid TuCSoN agent
+     *             identifier
      */
     public HelloWorldAgent(final String aid)
             throws TucsonInvalidAgentIdException {
@@ -116,18 +124,18 @@ public class HelloWorldAgent extends TucsonAgent {
              * ACC release is automatically done by the TucsonAgent base class.
              */
         } catch (final TucsonInvalidTupleCentreIdException e) {
-            // TODO Properly handle Exception
+            e.printStackTrace();
         } catch (final InvalidLogicTupleException e) {
             /*
              * String to be parsed is not in a valid Prolog syntax.
              */
-            // TODO Properly handle Exception
+            e.printStackTrace();
         } catch (final TucsonOperationNotPossibleException e) {
-            // TODO Properly handle Exception
+            e.printStackTrace();
         } catch (final UnreachableNodeException e) {
-            // TODO Properly handle Exception
+            e.printStackTrace();
         } catch (final OperationTimeOutException e) {
-            // TODO Properly handle Exception
+            e.printStackTrace();
         }
     }
 

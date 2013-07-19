@@ -32,6 +32,7 @@ public interface TupleTemplate extends Tuple {
      * 
      * @param t
      *            the tuple subject to matching
+     * @return wether the given tuple matches this tuple template
      */
     boolean match(Tuple t);
 
@@ -39,8 +40,11 @@ public interface TupleTemplate extends Tuple {
      * tries to change the tuple template object and the tuple argument in order
      * to meld information
      * 
+     * @param p
+     *            the 2p engine to be used for matching
      * @param t
      *            a tuple matching the template
+     * @return wether unification propagation was succesfull
      */
     boolean propagate(Prolog p, Tuple t);
 

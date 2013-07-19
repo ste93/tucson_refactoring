@@ -18,14 +18,42 @@ import java.util.List;
 import alice.tucson.api.TucsonAgentId;
 import alice.tuplecentre.api.Tuple;
 
+/**
+ * 
+ * @author ste (mailto: s.mariani@unibo.it) on 03/lug/2013
+ * 
+ */
 public class SetEventSetMsg extends NodeMsg {
 
     private static final long serialVersionUID = -3946179149619833984L;
-    public java.util.List<? extends Tuple> eventWnSet;
+    private java.util.List<? extends Tuple> eventWnSet;
 
+    /**
+     * 
+     * @param id
+     *            the agent id of the sender
+     * @param ts
+     *            the list of tuples representing events to overwrite the InQ
+     *            with
+     */
     public SetEventSetMsg(final TucsonAgentId id, final List<? extends Tuple> ts) {
         super(id, "setEventSet");
         this.eventWnSet = ts;
+    }
+
+    /**
+     * @return the eventWnSet
+     */
+    public java.util.List<? extends Tuple> getEventWnSet() {
+        return this.eventWnSet;
+    }
+
+    /**
+     * @param set
+     *            the eventWnSet to set
+     */
+    public void setEventWnSet(final java.util.List<? extends Tuple> set) {
+        this.eventWnSet = set;
     }
 
 }

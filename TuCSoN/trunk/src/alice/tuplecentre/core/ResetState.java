@@ -18,11 +18,16 @@ package alice.tuplecentre.core;
  * 
  * @author aricci
  */
-public class ResetState extends TupleCentreVMState {
+public class ResetState extends AbstractTupleCentreVMState {
 
-    private TupleCentreVMState idleState;
+    private AbstractTupleCentreVMState idleState;
 
-    public ResetState(final TupleCentreVMContext tcvm) {
+    /**
+     * 
+     * @param tcvm
+     *            the tuple centre VM this state belongs to
+     */
+    public ResetState(final AbstractTupleCentreVMContext tcvm) {
         super(tcvm);
     }
 
@@ -32,7 +37,7 @@ public class ResetState extends TupleCentreVMState {
     }
 
     @Override
-    public TupleCentreVMState getNextState() {
+    public AbstractTupleCentreVMState getNextState() {
         return this.idleState;
     }
 

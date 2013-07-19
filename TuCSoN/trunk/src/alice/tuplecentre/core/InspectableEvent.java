@@ -15,18 +15,18 @@ package alice.tuplecentre.core;
 
 import java.util.EventObject;
 
-import alice.tuplecentre.api.ObservableEventListener;
-
 /**
  * Represents observable (by inspectors) events happening inside tuple centre
  * virtual machine
  * 
- * @see ObservableEventListener
+ * @author ste (mailto: s.mariani@unibo.it) on 17/lug/2013
  * 
- * @version 1.0
  */
 public class InspectableEvent extends EventObject {
 
+    /**
+     * 
+     */
     public static final int TYPE_NEWSTATE = 1;
     private static final long serialVersionUID = 5564085406606810969L;
     /** virtual machine time at which the event has been observed */
@@ -34,6 +34,13 @@ public class InspectableEvent extends EventObject {
     /** observable event type */
     private final int type;
 
+    /**
+     * 
+     * @param src
+     *            the source of the event
+     * @param t
+     *            the type code of the inspectable event
+     */
     public InspectableEvent(final Object src, final int t) {
         super(src);
         this.time = System.currentTimeMillis();
@@ -43,6 +50,8 @@ public class InspectableEvent extends EventObject {
     /**
      * Gets the time at which the event has been observed inside the tuple
      * centre VM
+     * 
+     * @return the time at which this inspectable event occurred
      */
     public long getTime() {
         return this.time;
@@ -50,6 +59,8 @@ public class InspectableEvent extends EventObject {
 
     /**
      * Gets observable event type
+     * 
+     * @return the type code of this inspectable event
      */
     public int getType() {
         return this.type;

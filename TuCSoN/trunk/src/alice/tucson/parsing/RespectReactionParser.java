@@ -12,45 +12,35 @@ import alice.util.Tools;
  */
 public class RespectReactionParser {
 
-    /**
-     * 
-     * @param arg
-     * @return
-     * @throws InvalidTupleOperationException
-     */
     private static boolean bigFatCondition(final TupleArgument arg)
             throws InvalidTupleOperationException {
-        return arg.getName().equals("request")
-                || arg.getName().equals("response")
-                || arg.getName().equals("success")
-                || arg.getName().equals("failure")
-                || arg.getName().equals("endo") || arg.getName().equals("exo")
-                || arg.getName().equals("intra")
-                || arg.getName().equals("inter")
-                || arg.getName().equals("from_agent")
-                || arg.getName().equals("to_agent")
-                || arg.getName().equals("from_tc")
-                || arg.getName().equals("to_tc")
-                || arg.getName().equals("before")
-                || arg.getName().equals("after")
-                || arg.getName().equals("from_agent")
-                || arg.getName().equals("invocation")
-                || arg.getName().equals("inv") || arg.getName().equals("req")
-                || arg.getName().equals("pre")
-                || arg.getName().equals("completion")
-                || arg.getName().equals("compl")
-                || arg.getName().equals("resp") || arg.getName().equals("post")
-                || arg.getName().equals("between")
-                || arg.getName().equals("operation")
-                || arg.getName().equals("link_out")
-                || arg.getName().equals("link_in")
-                || arg.getName().equals("internal");
+        return "request".equals(arg.getName())
+                || "response".equals(arg.getName())
+                || "success".equals(arg.getName())
+                || "failure".equals(arg.getName())
+                || "endo".equals(arg.getName()) || "exo".equals(arg.getName())
+                || "intra".equals(arg.getName())
+                || "inter".equals(arg.getName())
+                || "from_agent".equals(arg.getName())
+                || "to_agent".equals(arg.getName())
+                || "from_tc".equals(arg.getName())
+                || "to_tc".equals(arg.getName())
+                || "before".equals(arg.getName())
+                || "after".equals(arg.getName())
+                || "from_agent".equals(arg.getName())
+                || "invocation".equals(arg.getName())
+                || "inv".equals(arg.getName()) || "req".equals(arg.getName())
+                || "pre".equals(arg.getName())
+                || "completion".equals(arg.getName())
+                || "compl".equals(arg.getName())
+                || "resp".equals(arg.getName()) || "post".equals(arg.getName())
+                || "between".equals(arg.getName())
+                || "operation".equals(arg.getName())
+                || "link_out".equals(arg.getName())
+                || "link_in".equals(arg.getName())
+                || "internal".equals(arg.getName());
     }
 
-    /**
-     * 
-     * @param msg
-     */
     private static void log(final String msg) {
         System.out.println("[RespectReactionParser]: " + msg);
     }
@@ -63,6 +53,11 @@ public class RespectReactionParser {
 
     private final LogicTuple t;
 
+    /**
+     * 
+     * @param lt
+     *            the logic tuple representation of the ReSpecT reaction
+     */
     public RespectReactionParser(final LogicTuple lt) {
         this.t = lt;
         this.spec = "'reaction(";
@@ -73,31 +68,28 @@ public class RespectReactionParser {
 
     /**
      * 
-     * @return
+     * @return the String representation of the ReSpecT reaction given to the
+     *         parser
      */
     public String parse() {
         try {
-            if (this.t.getName().equals("[]")) {
+            if ("[]".equals(this.t.getName())) {
                 return "";
             }
             for (int i = 0; i < this.t.getArity(); i++) {
                 this.parse(this.t.getArg(i));
             }
         } catch (final InvalidTupleOperationException e) {
-            // TODO Properly handle Exception
+            e.printStackTrace();
         }
         RespectReactionParser.log("spec = "
                 + this.spec.substring(1, this.spec.length() - 1));
         return this.spec.substring(1, this.spec.length() - 1);
     }
 
-    /**
-     * 
-     * @param arg
-     */
     private void parse(final TupleArgument arg) {
         try {
-            if (arg.toString().equals("[]")) {
+            if ("[]".equals(arg.toString())) {
                 if (this.nTimes == 1) {
                     this.spec =
                             (this.spec.substring(0, this.spec.length() - 1))
@@ -107,7 +99,7 @@ public class RespectReactionParser {
                             (this.spec.substring(0, this.spec.length() - 1))
                                     + ".'";
                 }
-            } else if (Tools.removeApices(arg.getName()).equals(",")) {
+            } else if (",".equals(Tools.removeApices(arg.getName()))) {
                 for (int i = 0; i < arg.getArity(); i++) {
                     this.parse(arg.getArg(i));
                 }
@@ -119,7 +111,7 @@ public class RespectReactionParser {
                         this.spec += ")).";
                     }
                 }
-            } else if (Tools.removeApices(arg.getName()).equals(".")) {
+            } else if (".".equals(Tools.removeApices(arg.getName()))) {
                 this.spec += " reaction(";
                 this.nGuards = 0;
                 this.flag = false;
@@ -149,7 +141,7 @@ public class RespectReactionParser {
                 }
             }
         } catch (final InvalidTupleOperationException e) {
-            // TODO Properly handle Exception
+            e.printStackTrace();
         }
     }
 

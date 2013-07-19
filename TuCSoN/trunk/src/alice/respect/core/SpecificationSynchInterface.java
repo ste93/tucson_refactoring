@@ -36,11 +36,16 @@ import alice.tuplecentre.api.IId;
 public class SpecificationSynchInterface extends RootInterface implements
         ISpecificationSynchInterface {
 
+    /**
+     * 
+     * @param core
+     *            the ReSpecT tuple centres manager this interface refers to
+     */
     public SpecificationSynchInterface(final IRespectTC core) {
         super(core);
     }
 
-    public List<LogicTuple> get_s(final IId aid)
+    public List<LogicTuple> getS(final IId aid)
             throws OperationNotPossibleException {
         final IRespectOperation op = this.getCore().getS(aid);
         op.waitForOperationCompletion();
@@ -116,7 +121,7 @@ public class SpecificationSynchInterface extends RootInterface implements
         return this.unify(t, op.getLogicTupleResult());
     }
 
-    public List<LogicTuple> set_s(final IId aid, final LogicTuple t)
+    public List<LogicTuple> setS(final IId aid, final LogicTuple t)
             throws OperationNotPossibleException {
         final IRespectOperation op = this.getCore().setS(aid, t);
         op.waitForOperationCompletion();
@@ -124,11 +129,11 @@ public class SpecificationSynchInterface extends RootInterface implements
     }
 
     public List<LogicTuple>
-            set_s(final IId aid, final RespectSpecification spec)
+            setS(final IId aid, final RespectSpecification spec)
                     throws OperationNotPossibleException,
                     InvalidSpecificationException {
         final IRespectOperation op = this.getCore().setS(aid, spec);
-        if (aid.toString().equals("'$TucsonNodeService-Agent'")
+        if ("'$TucsonNodeService-Agent'".equals(aid.toString())
                 || aid.toString().startsWith("'$Inspector-'")) {
             return new LinkedList<LogicTuple>();
         }

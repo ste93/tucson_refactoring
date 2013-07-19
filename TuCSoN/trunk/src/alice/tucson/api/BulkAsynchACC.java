@@ -43,7 +43,9 @@ public interface BulkAsynchACC extends RootACC {
      *         asynchronously notified.
      * 
      * @throws TucsonOperationNotPossibleException
+     *             if the requested operation cannot be carried out
      * @throws UnreachableNodeException
+     *             if the target tuple centre is not reachable over the network
      * 
      * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
      * @see alice.tucson.api.TucsonOperationCompletionListener
@@ -51,7 +53,7 @@ public interface BulkAsynchACC extends RootACC {
      * @see alice.tucson.api.ITucsonOperation ITucsonOperation
      * @see alice.tuprolog.Struct Struct
      */
-    ITucsonOperation in_all(Object tid, LogicTuple tuple,
+    ITucsonOperation inAll(Object tid, LogicTuple tuple,
             TucsonOperationCompletionListener l)
             throws TucsonOperationNotPossibleException,
             UnreachableNodeException;
@@ -76,7 +78,9 @@ public interface BulkAsynchACC extends RootACC {
      *         asynchronously notified.
      * 
      * @throws TucsonOperationNotPossibleException
+     *             if the requested operation cannot be carried out
      * @throws UnreachableNodeException
+     *             if the target tuple centre is not reachable over the network
      * 
      * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
      * @see alice.tucson.api.TucsonOperationCompletionListener
@@ -84,7 +88,7 @@ public interface BulkAsynchACC extends RootACC {
      * @see alice.tucson.api.ITucsonOperation ITucsonOperation
      * @see alice.tuprolog.Struct Struct
      */
-    ITucsonOperation no_all(Object tid, LogicTuple tuple,
+    ITucsonOperation noAll(Object tid, LogicTuple tuple,
             TucsonOperationCompletionListener l)
             throws TucsonOperationNotPossibleException,
             UnreachableNodeException;
@@ -106,7 +110,9 @@ public interface BulkAsynchACC extends RootACC {
      *         asynchronously notified.
      * 
      * @throws TucsonOperationNotPossibleException
+     *             if the requested operation cannot be carried out
      * @throws UnreachableNodeException
+     *             if the target tuple centre is not reachable over the network
      * 
      * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
      * @see alice.tucson.api.TucsonOperationCompletionListener
@@ -114,7 +120,7 @@ public interface BulkAsynchACC extends RootACC {
      * @see alice.tucson.api.ITucsonOperation ITucsonOperation
      * @see alice.tuprolog.Struct Struct
      */
-    ITucsonOperation out_all(Object tid, LogicTuple tuple,
+    ITucsonOperation outAll(Object tid, LogicTuple tuple,
             TucsonOperationCompletionListener l)
             throws TucsonOperationNotPossibleException,
             UnreachableNodeException;
@@ -137,7 +143,9 @@ public interface BulkAsynchACC extends RootACC {
      *         asynchronously notified.
      * 
      * @throws TucsonOperationNotPossibleException
+     *             if the requested operation cannot be carried out
      * @throws UnreachableNodeException
+     *             if the target tuple centre is not reachable over the network
      * 
      * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
      * @see alice.tucson.api.TucsonOperationCompletionListener
@@ -145,7 +153,7 @@ public interface BulkAsynchACC extends RootACC {
      * @see alice.tucson.api.ITucsonOperation ITucsonOperation
      * @see alice.tuprolog.Struct Struct
      */
-    ITucsonOperation rd_all(Object tid, LogicTuple tuple,
+    ITucsonOperation rdAll(Object tid, LogicTuple tuple,
             TucsonOperationCompletionListener l)
             throws TucsonOperationNotPossibleException,
             UnreachableNodeException;

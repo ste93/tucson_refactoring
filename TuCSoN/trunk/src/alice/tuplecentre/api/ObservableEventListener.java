@@ -12,32 +12,150 @@
  */
 package alice.tuplecentre.api;
 
+/**
+ * 
+ * @author ste (mailto: s.mariani@unibo.it) on 17/lug/2013
+ * 
+ */
 public interface ObservableEventListener {
 
-    void getSpec_completed(TupleCentreId tid, IId id, String spec);
+    /**
+     * 
+     * @param tid
+     *            the identifier of the tuple centre under observation
+     * @param id
+     *            the identifier of the requestor of the observed operaion
+     * @param spec
+     *            the ReSpecT specification argument of the observed operation
+     */
+    void getSpecCompleted(TupleCentreId tid, IId id, String spec);
 
-    void getSpec_requested(TupleCentreId tid, IId id);
+    /**
+     * 
+     * @param tid
+     *            the identifier of the tuple centre under observation
+     * @param id
+     *            the identifier of the requestor of the observed operaion
+     */
+    void getSpecRequested(TupleCentreId tid, IId id);
 
-    void in_completed(TupleCentreId tid, IId id, Tuple t);
+    /**
+     * 
+     * @param tid
+     *            the identifier of the tuple centre under observation
+     * @param id
+     *            the identifier of the requestor of the observed operaion
+     * @param t
+     *            the tuple argument of the observed operation
+     */
+    void inCompleted(TupleCentreId tid, IId id, Tuple t);
 
-    void in_requested(TupleCentreId tid, IId id, TupleTemplate t);
+    /**
+     * 
+     * @param tid
+     *            the identifier of the tuple centre under observation
+     * @param id
+     *            the identifier of the requestor of the observed operaion
+     * @param t
+     *            the tuple argument of the observed operation
+     */
+    void inpCompleted(TupleCentreId tid, IId id, Tuple t);
 
-    void inp_completed(TupleCentreId tid, IId id, Tuple t);
+    /**
+     * 
+     * @param tid
+     *            the identifier of the tuple centre under observation
+     * @param id
+     *            the identifier of the requestor of the observed operaion
+     * @param t
+     *            the tuple argument of the observed operation
+     */
+    void inpRequested(TupleCentreId tid, IId id, TupleTemplate t);
 
-    void inp_requested(TupleCentreId tid, IId id, TupleTemplate t);
+    /**
+     * 
+     * @param tid
+     *            the identifier of the tuple centre under observation
+     * @param id
+     *            the identifier of the requestor of the observed operaion
+     * @param t
+     *            the tuple argument of the observed operation
+     */
+    void inRequested(TupleCentreId tid, IId id, TupleTemplate t);
 
-    void out_requested(TupleCentreId tid, IId id, Tuple t);
+    /**
+     * 
+     * @param tid
+     *            the identifier of the tuple centre under observation
+     * @param id
+     *            the identifier of the requestor of the observed operaion
+     * @param t
+     *            the tuple argument of the observed operation
+     */
+    void outRequested(TupleCentreId tid, IId id, Tuple t);
 
-    void rd_completed(TupleCentreId tid, IId id, Tuple t);
+    /**
+     * 
+     * @param tid
+     *            the identifier of the tuple centre under observation
+     * @param id
+     *            the identifier of the requestor of the observed operaion
+     * @param t
+     *            the tuple argument of the observed operation
+     */
+    void rdCompleted(TupleCentreId tid, IId id, Tuple t);
 
-    void rd_requested(TupleCentreId tid, IId id, TupleTemplate t);
+    /**
+     * 
+     * @param tid
+     *            the identifier of the tuple centre under observation
+     * @param id
+     *            the identifier of the requestor of the observed operaion
+     * @param t
+     *            the tuple argument of the observed operation
+     */
+    void rdpCompleted(TupleCentreId tid, IId id, Tuple t);
 
-    void rdp_completed(TupleCentreId tid, IId id, Tuple t);
+    /**
+     * 
+     * @param tid
+     *            the identifier of the tuple centre under observation
+     * @param id
+     *            the identifier of the requestor of the observed operaion
+     * @param t
+     *            the tuple argument of the observed operation
+     */
+    void rdpRequested(TupleCentreId tid, IId id, TupleTemplate t);
 
-    void rdp_requested(TupleCentreId tid, IId id, TupleTemplate t);
+    /**
+     * 
+     * @param tid
+     *            the identifier of the tuple centre under observation
+     * @param id
+     *            the identifier of the requestor of the observed operaion
+     * @param t
+     *            the tuple argument of the observed operation
+     */
+    void rdRequested(TupleCentreId tid, IId id, TupleTemplate t);
 
-    void setSpec_completed(TupleCentreId tid, IId id);
+    /**
+     * 
+     * @param tid
+     *            the identifier of the tuple centre under observation
+     * @param id
+     *            the identifier of the requestor of the observed operaion
+     */
+    void setSpecCompleted(TupleCentreId tid, IId id);
 
-    void setSpec_requested(TupleCentreId tid, IId id, String spec);
+    /**
+     * 
+     * @param tid
+     *            the identifier of the tuple centre under observation
+     * @param id
+     *            the identifier of the requestor of the observed operaion
+     * @param spec
+     *            the ReSpecT specification argument of the observed operation
+     */
+    void setSpecRequested(TupleCentreId tid, IId id, String spec);
 
 }

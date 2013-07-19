@@ -19,8 +19,13 @@ import alice.tucson.service.ACCProxyAgentSide;
 /**
  * TuCSoN Meta Agent Coordination Context. It is exploited by TuCSoN agents to
  * obtain an ACC with which to interact with the TuCSoN node.
+ * 
+ * @author ste (mailto: s.mariani@unibo.it) on 03/lug/2013
+ * 
  */
 public final class TucsonMetaACC {
+
+    private static final int DEFAULT_PORT = 20504;
 
     /**
      * Gets the available most-comprehensive ACC from the TuCSoN Node Service
@@ -32,7 +37,8 @@ public final class TucsonMetaACC {
      * @return The DefaultACC (which is the most powerful at the moment)
      */
     public static EnhancedACC getContext(final TucsonAgentId aid) {
-        return TucsonMetaACC.getContext(aid, "localhost", 20504);
+        return TucsonMetaACC.getContext(aid, "localhost",
+                TucsonMetaACC.DEFAULT_PORT);
     }
 
     /**
@@ -55,13 +61,16 @@ public final class TucsonMetaACC {
             acc = new ACCProxyAgentSide(aid.toString(), netid, portno);
             aid.assignUUID();
         } catch (final TucsonInvalidAgentIdException e) {
-            System.err.println("[Tucson-MetaACC]: " + e);
-            // TODO Properly handle Exception
+            e.printStackTrace();
             return null;
         }
         return acc;
     }
 
+    /**
+     * 
+     * @return the current version of the TuCSoN Coordination Infrastructure
+     */
     public static String getVersion() {
         return "TuCSoN-1.10.3.0207";
     }

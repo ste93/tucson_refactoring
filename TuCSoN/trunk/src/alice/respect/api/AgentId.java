@@ -30,9 +30,12 @@ public class AgentId implements alice.tuplecentre.api.AgentId,
     private static AgentIdOperatorManager opManager =
             new AgentIdOperatorManager();
     /**
-	 * 
-	 */
+     * 
+     */
     private static final long serialVersionUID = 1L;
+    /**
+     * 
+     */
     protected Term id;
 
     /**
@@ -52,7 +55,7 @@ public class AgentId implements alice.tuplecentre.api.AgentId,
         try {
             this.id = Term.createTerm(sid, AgentId.opManager);
         } catch (final InvalidTermException e) {
-            // TODO Properly handle Exception
+            e.printStackTrace();
             throw new InvalidAgentIdException();
         }
         if (!this.id.isGround()) {
@@ -60,6 +63,13 @@ public class AgentId implements alice.tuplecentre.api.AgentId,
         }
     }
 
+    /**
+     * 
+     * @param name
+     *            the string representation of this identifier
+     * @param tcId
+     *            the tuple centre identifier this agent operates on
+     */
     public AgentId(final String name, final TucsonTupleCentreId tcId) {
         this.id = new Struct(name, tcId.toTerm());
     }
@@ -75,16 +85,16 @@ public class AgentId implements alice.tuplecentre.api.AgentId,
      *             if it is not a valid identifier
      */
     public AgentId(final Term tid) throws InvalidAgentIdException {
-        try {
-            this.id = tid.getTerm();
-        } catch (final Exception ex) {
-            throw new InvalidAgentIdException();
-        }
+        this.id = tid.getTerm();
         if (!this.id.isGround()) {
             throw new InvalidAgentIdException();
         }
     }
 
+    /**
+     * 
+     * @return the string representation of the local name
+     */
     public String getLocalName() {
         if (this.id.isCompound()) {
             return ((Struct) this.id).getArg(0).toString();

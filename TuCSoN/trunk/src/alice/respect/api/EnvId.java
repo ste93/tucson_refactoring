@@ -4,10 +4,20 @@ import alice.tuplecentre.api.IId;
 import alice.tuprolog.Struct;
 import alice.tuprolog.Term;
 
+/**
+ * 
+ * @author ste (mailto: s.mariani@unibo.it) on 27/giu/2013
+ * 
+ */
 public class EnvId implements IId {
 
     private final Struct id;
 
+    /**
+     * 
+     * @param i
+     *            the struct representing this environment identifier
+     */
     public EnvId(final Struct i) {
         this.id = i;
     }
@@ -24,8 +34,12 @@ public class EnvId implements IId {
         return false;
     }
 
+    /**
+     * 
+     * @return the term representation of this identifier
+     */
     public Term toTerm() {
-        if (this.id.getName().equals("@")) {
+        if ("@".equals(this.id.getName())) {
             return this.id.getArg(0).getTerm();
         }
         return this.id.getTerm();

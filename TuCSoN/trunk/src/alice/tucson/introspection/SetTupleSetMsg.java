@@ -16,15 +16,42 @@ package alice.tucson.introspection;
 import alice.tucson.api.TucsonAgentId;
 import alice.tuplecentre.api.Tuple;
 
+/**
+ * 
+ * @author ste (mailto: s.mariani@unibo.it) on 03/lug/2013
+ * 
+ */
 public class SetTupleSetMsg extends NodeMsg {
 
     private static final long serialVersionUID = 3683932175338169242L;
-    public java.util.List<? extends Tuple> tupleSet;
+    private java.util.List<? extends Tuple> tupleSet;
 
+    /**
+     * 
+     * @param id
+     *            the agent id of the sender
+     * @param ts
+     *            the list of tuples to overwrite the tuple set with
+     */
     public SetTupleSetMsg(final TucsonAgentId id,
             final java.util.List<? extends Tuple> ts) {
         super(id, "setTupleSet");
         this.tupleSet = ts;
+    }
+
+    /**
+     * @return the tupleSet
+     */
+    public java.util.List<? extends Tuple> getTupleSet() {
+        return this.tupleSet;
+    }
+
+    /**
+     * @param set
+     *            the tupleSet to set
+     */
+    public void setTupleSet(final java.util.List<? extends Tuple> set) {
+        this.tupleSet = set;
     }
 
 }

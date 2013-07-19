@@ -48,6 +48,11 @@ public class OrdinarySynchInterface extends RootInterface implements
         return new Struct(termArray);
     }
 
+    /**
+     * 
+     * @param core
+     *            the ReSpecT tuple centre this context refers to
+     */
     public OrdinarySynchInterface(final IRespectTC core) {
         super(core);
     }
@@ -76,13 +81,13 @@ public class OrdinarySynchInterface extends RootInterface implements
         try {
             if (t == null) {
                 throw new InvalidLogicTupleException();
-            } else if (t.getName().equals(",") && (t.getArity() == 2)) {
+            } else if (",".equals(t.getName()) && (t.getArity() == 2)) {
                 op = this.getCore().inAll(aid, new LogicTuple(t.getArg(0)));
             } else {
                 op = this.getCore().inAll(aid, t);
             }
             op.waitForOperationCompletion();
-            if (t.getName().equals(",") && (t.getArity() == 2)) {
+            if (",".equals(t.getName()) && (t.getArity() == 2)) {
                 arg = t.getArg(1);
                 this.unify(
                         new LogicTuple(new TupleArgument(arg.toTerm())),
@@ -123,13 +128,13 @@ public class OrdinarySynchInterface extends RootInterface implements
         try {
             if (t == null) {
                 throw new InvalidLogicTupleException();
-            } else if (t.getName().equals(",") && (t.getArity() == 2)) {
+            } else if (",".equals(t.getName()) && (t.getArity() == 2)) {
                 op = this.getCore().noAll(aid, new LogicTuple(t.getArg(0)));
             } else {
                 op = this.getCore().noAll(aid, t);
             }
             op.waitForOperationCompletion();
-            if (t.getName().equals(",") && (t.getArity() == 2)) {
+            if (",".equals(t.getName()) && (t.getArity() == 2)) {
                 arg = t.getArg(1);
                 this.unify(
                         new LogicTuple(new TupleArgument(arg.toTerm())),
@@ -189,13 +194,13 @@ public class OrdinarySynchInterface extends RootInterface implements
         try {
             if (t == null) {
                 throw new InvalidLogicTupleException();
-            } else if (t.getName().equals(",") && (t.getArity() == 2)) {
+            } else if (",".equals(t.getName()) && (t.getArity() == 2)) {
                 op = this.getCore().rdAll(aid, new LogicTuple(t.getArg(0)));
             } else {
                 op = this.getCore().rdAll(aid, t);
             }
             op.waitForOperationCompletion();
-            if (t.getName().equals(",") && (t.getArity() == 2)) {
+            if (",".equals(t.getName()) && (t.getArity() == 2)) {
                 arg = t.getArg(1);
                 this.unify(
                         new LogicTuple(new TupleArgument(arg.toTerm())),

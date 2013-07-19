@@ -18,7 +18,7 @@ package alice.tuplecentre.core;
  * specific event
  * 
  * @see Reaction
- * @see Event
+ * @see AbstractEvent
  * 
  * @author aricci
  */
@@ -26,19 +26,34 @@ public class TriggeredReaction implements java.io.Serializable {
 
     private static final long serialVersionUID = -2906772411975529805L;
     /** the event triggering the reaction */
-    private final Event event;
+    private final AbstractEvent event;
     /** the reaction triggered */
     private final Reaction reaction;
 
-    public TriggeredReaction(final Event ev, final Reaction re) {
+    /**
+     * 
+     * @param ev
+     *            the event which triggered this reaction
+     * @param re
+     *            the ReSpecT specification triggered
+     */
+    public TriggeredReaction(final AbstractEvent ev, final Reaction re) {
         this.event = ev;
         this.reaction = re;
     }
 
-    public Event getEvent() {
+    /**
+     * 
+     * @return the event which triggered this reaction
+     */
+    public AbstractEvent getEvent() {
         return this.event;
     }
 
+    /**
+     * 
+     * @return the ReSpecT specification triggered
+     */
     public Reaction getReaction() {
         return this.reaction;
     }

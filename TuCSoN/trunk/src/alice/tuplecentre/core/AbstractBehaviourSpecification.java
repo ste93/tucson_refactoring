@@ -16,7 +16,7 @@ package alice.tuplecentre.core;
  * @author aricci
  * 
  */
-public abstract class BehaviourSpecification {
+public abstract class AbstractBehaviourSpecification {
     /*
      * FIXME This class could probably be deleted...
      */

@@ -24,14 +24,22 @@ import alice.tucson.service.RemoteLinkProvider;
  */
 public final class RespectTCContainer {
 
-    public static final int QUEUE_SIZE = 10;
     private static RespectTCContainer container;
     private static int defaultport;
+    private static final int QUEUE_SIZE = 1000;
 
+    /**
+     * 
+     * @return ReSpecT default listening port
+     */
     public static int getDefPort() {
         return RespectTCContainer.defaultport;
     }
 
+    /**
+     * 
+     * @return the ReSpecT container used for local tuple centres management
+     */
     public static RespectTCContainer getRespectTCContainer() {
         if (RespectTCContainer.container == null) {
             RespectTCContainer.container = new RespectTCContainer();
@@ -39,13 +47,18 @@ public final class RespectTCContainer {
         return RespectTCContainer.container;
     }
 
+    /**
+     * 
+     * @param port
+     *            ReSpecT default listening port
+     */
     public static void setDefPort(final int port) {
         RespectTCContainer.defaultport = port;
     }
 
-    public String hostname;
+    private String hostname;
 
-    public String loopback;
+    private String loopback;
 
     private final ITCRegistry registry;
 
@@ -59,18 +72,32 @@ public final class RespectTCContainer {
                     InetAddress.getLocalHost().getHostAddress().toString();
             this.hostname = InetAddress.getLocalHost().getHostName().toString();
         } catch (final UnknownHostException e) {
-            // TODO Auto-generated catch block
+            e.printStackTrace();
             this.loopback = null;
             this.hostname = null;
         }
     }
 
+    /**
+     * 
+     * @param s
+     *            the entity responsible of providing linking context to
+     *            requestors
+     */
     public void addStub(final IRemoteLinkProvider s) {
         if (s == null) {
             this.stub = s;
         }
     }
 
+    /**
+     * 
+     * @param id
+     *            the identifier of the tuple centre to create
+     * @param q
+     *            its maximum queue size
+     * @return a reference to the ReSpecT tuple centre created
+     */
     public RespectTC createRespectTC(final TupleCentreId id, final Integer q) {
         final RespectTC rtc = new RespectTC(id, this, q);
         this.registry.addTC(rtc);
@@ -82,7 +109,9 @@ public final class RespectTCContainer {
      * 
      * @param id
      *            the identifier of the tuple centre target (local or remote)
+     * @return the linking context toward the given tuple centre
      * @throws OperationNotPossibleException
+     *             if the requested operation cannot be carried out
      */
     public ILinkContext getLinkContext(final TupleCentreId id)
             throws OperationNotPossibleException {
@@ -104,10 +133,16 @@ public final class RespectTCContainer {
         return this.stub.getRemoteLinkContext(id);
     }
 
+    /**
+     * 
+     * @param id
+     *            the identifier of the tuple centre target (local or remote)
+     * @return the management context toward the given tuple centre
+     */
     public IManagementContext getManagementContext(final TupleCentreId id) {
         try {
             return ((RespectTC) this.registry.getTC(id)).getManagementContext();
-        } catch (final Exception e) {
+        } catch (final InstantiationNotPossibleException e) {
             final RespectTC tc =
                     new RespectTC(id, this, RespectTCContainer.QUEUE_SIZE);
             this.registry.addTC(tc);
@@ -115,12 +150,18 @@ public final class RespectTCContainer {
         }
     }
 
+    /**
+     * 
+     * @param id
+     *            the identifier of the tuple centre target (local or remote)
+     * @return the ordinary, asynchronous context toward the given tuple centre
+     */
     public IOrdinaryAsynchInterface getOrdinaryAsynchInterface(
             final TupleCentreId id) {
         try {
             return ((RespectTC) this.registry.getTC(id))
                     .getOrdinaryAsynchInterface();
-        } catch (final Exception e) {
+        } catch (final InstantiationNotPossibleException e) {
             final RespectTC tc =
                     new RespectTC(id, this, RespectTCContainer.QUEUE_SIZE);
             this.registry.addTC(tc);
@@ -128,12 +169,18 @@ public final class RespectTCContainer {
         }
     }
 
+    /**
+     * 
+     * @param id
+     *            the identifier of the tuple centre target (local or remote)
+     * @return the ordinary, synchronous context toward the given tuple centre
+     */
     public IOrdinarySynchInterface getOrdinarySynchInterface(
             final TupleCentreId id) {
         try {
             return ((RespectTC) this.registry.getTC(id))
                     .getOrdinarySynchInterface();
-        } catch (final Exception e) {
+        } catch (final InstantiationNotPossibleException e) {
             final RespectTC tc =
                     new RespectTC(id, this, RespectTCContainer.QUEUE_SIZE);
             this.registry.addTC(tc);
@@ -141,16 +188,27 @@ public final class RespectTCContainer {
         }
     }
 
+    /**
+     * 
+     * @return the registry of local ReSpecT tuple centres
+     */
     public ITCRegistry getRegistry() {
         return this.registry;
     }
 
+    /**
+     * 
+     * @param id
+     *            the identifier of the tuple centre target (local or remote)
+     * @return the specification, asynchronous context toward the given tuple
+     *         centre
+     */
     public ISpecificationAsynchInterface getSpecificationAsynchInterface(
             final TupleCentreId id) {
         try {
             return ((RespectTC) this.registry.getTC(id))
                     .getSpecificationAsynchInterface();
-        } catch (final Exception e) {
+        } catch (final InstantiationNotPossibleException e) {
             final RespectTC tc =
                     new RespectTC(id, this, RespectTCContainer.QUEUE_SIZE);
             this.registry.addTC(tc);
@@ -158,12 +216,19 @@ public final class RespectTCContainer {
         }
     }
 
+    /**
+     * 
+     * @param id
+     *            the identifier of the tuple centre target (local or remote)
+     * @return the specification, synchronous context toward the given tuple
+     *         centre
+     */
     public ISpecificationSynchInterface getSpecificationSynchInterface(
             final TupleCentreId id) {
         try {
             return ((RespectTC) this.registry.getTC(id))
                     .getSpecificationSynchInterface();
-        } catch (final Exception e) {
+        } catch (final InstantiationNotPossibleException e) {
             final RespectTC tc =
                     new RespectTC(id, this, RespectTCContainer.QUEUE_SIZE);
             this.registry.addTC(tc);

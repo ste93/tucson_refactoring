@@ -25,6 +25,11 @@ import alice.util.jedit.SyntaxStyle;
 import alice.util.jedit.TextAreaDefaults;
 import alice.util.jedit.Token;
 
+/**
+ * 
+ * @author ste (mailto: s.mariani@unibo.it) on 03/lug/2013
+ * 
+ */
 public class SpecificationTextArea extends TextAreaDefaults {
 
     private static SyntaxStyle[] getSyntaxStyles() {
@@ -45,6 +50,9 @@ public class SpecificationTextArea extends TextAreaDefaults {
         return styles;
     }
 
+    /**
+     * 
+     */
     public SpecificationTextArea() {
 
         super();

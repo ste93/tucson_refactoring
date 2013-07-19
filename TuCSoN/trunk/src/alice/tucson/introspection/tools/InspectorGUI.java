@@ -14,6 +14,7 @@
 package alice.tucson.introspection.tools;
 
 import java.awt.Color;
+import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -21,7 +22,6 @@ import javax.swing.JPanel;
 
 import alice.tucson.api.TucsonAgentId;
 import alice.tucson.api.TucsonTupleCentreId;
-import alice.tucson.api.exceptions.TucsonGenericException;
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.introspection.InspectorContext;
@@ -32,7 +32,7 @@ import alice.tucson.introspection.InspectorProtocol;
  * 
  * @author s.mariani@unibo.it
  */
-public class Inspector extends javax.swing.JFrame {
+public class InspectorGUI extends javax.swing.JFrame {
 
     private static final long serialVersionUID = -3765811664087552414L;
 
@@ -40,10 +40,10 @@ public class Inspector extends javax.swing.JFrame {
      * 
      * 
      * @param args
+     *            the arguments to launch the inspector
      * 
-     * @throws TucsonGenericException
      */
-    public static void main(final String args[]) throws TucsonGenericException {
+    public static void main(final String[] args) {
 
         System.out.println("[Inspector]: Booting...");
 
@@ -55,11 +55,11 @@ public class Inspector extends javax.swing.JFrame {
             System.exit(0);
         }
 
-        String st_aid = null;
+        String stAid = null;
         if (alice.util.Tools.isOpt(args, "-aid")) {
-            st_aid = alice.util.Tools.getOpt(args, "-aid");
+            stAid = alice.util.Tools.getOpt(args, "-aid");
         } else {
-            st_aid = "inspector" + System.currentTimeMillis();
+            stAid = "inspector" + System.currentTimeMillis();
         }
         String tcname = "";
         if (alice.util.Tools.isOpt(args, "-tcname")) {
@@ -77,10 +77,10 @@ public class Inspector extends javax.swing.JFrame {
         TucsonAgentId aid = null;
         TucsonTupleCentreId tid = null;
         try {
-            aid = new TucsonAgentId(st_aid);
+            aid = new TucsonAgentId(stAid);
             tid = new TucsonTupleCentreId(tcname, netid, port);
             System.out.println("[Inspector]: Inspector Agent Identifier: "
-                    + st_aid);
+                    + stAid);
             System.out.println("[Inspector]: Tuple Centre Identifier: " + tid);
         } catch (final TucsonInvalidAgentIdException e) {
             System.err.println("[Inspector]: failure: " + e);
@@ -91,27 +91,21 @@ public class Inspector extends javax.swing.JFrame {
                             + "name from the GUI...");
         }
 
-        try {
-            Inspector form = null;
-            if (tid != null) {
-                form = new Inspector(aid, tid);
-            } else {
-                form = new Inspector(aid);
-            }
-            synchronized (form.exit) {
-                try {
-                    form.exit.wait();
-                } catch (final InterruptedException e) {
-                    // TODO Properly handle Exception
-                }
-            }
-            System.out.println("[Inspector]: I quit, see you next time :)");
-            System.exit(0);
-        } catch (final Exception e) {
-            System.err.println("[Inspector]: " + e);
-            // TODO Properly handle Exception
-            System.exit(-1);
+        InspectorGUI form = null;
+        if (tid != null) {
+            form = new InspectorGUI(aid, tid);
+        } else {
+            form = new InspectorGUI(aid);
         }
+        synchronized (form.exit) {
+            try {
+                form.exit.wait();
+            } catch (final InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        System.out.println("[Inspector]: I quit, see you next time :)");
+        System.exit(0);
 
     }
 
@@ -153,7 +147,7 @@ public class Inspector extends javax.swing.JFrame {
      * @param id
      *            the name of the Inspector agent.
      */
-    public Inspector(final TucsonAgentId id) {
+    public InspectorGUI(final TucsonAgentId id) {
         super();
         this.initComponents();
         this.aid = id;
@@ -170,7 +164,7 @@ public class Inspector extends javax.swing.JFrame {
      * @param tc
      *            the fullname of the tuplecentre to inspect.
      */
-    public Inspector(final TucsonAgentId id, final TucsonTupleCentreId tc) {
+    public InspectorGUI(final TucsonAgentId id, final TucsonTupleCentreId tc) {
         this(id);
         this.tid = tc;
         this.inputName.setText(tc.getName());
@@ -181,12 +175,12 @@ public class Inspector extends javax.swing.JFrame {
     }
 
     public void onEventViewerExit() {
+        this.protocol
+                .setPendingQueryObservType(InspectorProtocol.NO_OBSERVATION);
         try {
-            this.protocol.pendingQueryObservType =
-                    InspectorProtocol.NO_OBSERVATION;
             this.context.setProtocol(this.protocol);
-        } catch (final Exception e) {
-            // TODO Properly handle Exception
+        } catch (final IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -206,12 +200,11 @@ public class Inspector extends javax.swing.JFrame {
     }
 
     protected void onReactionViewerExit() {
+        this.protocol.setReactionsObservType(InspectorProtocol.NO_OBSERVATION);
         try {
-            this.protocol.reactionsObservType =
-                    InspectorProtocol.NO_OBSERVATION;
             this.context.setProtocol(this.protocol);
-        } catch (final Exception e) {
-            // TODO Properly handle Exception
+        } catch (final IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -219,11 +212,11 @@ public class Inspector extends javax.swing.JFrame {
      * 'On-exit' callbacks.
      */
     protected void onTupleViewerExit() {
+        this.protocol.setTsetObservType(InspectorProtocol.NO_OBSERVATION);
         try {
-            this.protocol.tsetObservType = InspectorProtocol.NO_OBSERVATION;
             this.context.setProtocol(this.protocol);
-        } catch (final Exception e) {
-            // TODO Properly handle Exception
+        } catch (final IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -264,10 +257,7 @@ public class Inspector extends javax.swing.JFrame {
 
             } catch (final TucsonInvalidTupleCentreIdException e) {
                 this.stateBar.setText("Operation Failed: " + e);
-                // TODO Properly handle Exception
-            } catch (final Exception e) {
-                this.stateBar.setText("Operation Failed: " + e);
-                // TODO Properly handle Exception
+                e.printStackTrace();
             }
 
         } else {
@@ -327,8 +317,8 @@ public class Inspector extends javax.swing.JFrame {
         if (this.isSessionOpen) {
             try {
                 this.context.exit();
-            } catch (final Exception e) {
-                // TODO Properly handle Exception
+            } catch (final IOException e) {
+                e.printStackTrace();
             }
         }
         if (this.tupleForm != null) {
@@ -383,7 +373,7 @@ public class Inspector extends javax.swing.JFrame {
         this.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosing(final java.awt.event.WindowEvent evt) {
-                Inspector.this.exitForm();
+                InspectorGUI.this.exitForm();
             }
         });
 
@@ -406,7 +396,7 @@ public class Inspector extends javax.swing.JFrame {
         tuplesBtn.setPreferredSize(new java.awt.Dimension(130, 25));
         tuplesBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(final java.awt.event.ActionEvent evt) {
-                Inspector.this.tuplesBtnActionPerformed();
+                InspectorGUI.this.tuplesBtnActionPerformed();
             }
         });
 
@@ -425,7 +415,7 @@ public class Inspector extends javax.swing.JFrame {
         pendingBtn.setPreferredSize(new java.awt.Dimension(130, 25));
         pendingBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(final java.awt.event.ActionEvent evt) {
-                Inspector.this.pendingBtnActionPerformed();
+                InspectorGUI.this.pendingBtnActionPerformed();
             }
         });
 
@@ -444,7 +434,7 @@ public class Inspector extends javax.swing.JFrame {
         reactionsBtn.setPreferredSize(new java.awt.Dimension(130, 25));
         reactionsBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(final java.awt.event.ActionEvent evt) {
-                Inspector.this.trigReactsBtnActionPerformed();
+                InspectorGUI.this.trigReactsBtnActionPerformed();
             }
         });
 
@@ -463,7 +453,7 @@ public class Inspector extends javax.swing.JFrame {
         specBtn.setPreferredSize(new java.awt.Dimension(130, 25));
         specBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(final java.awt.event.ActionEvent evt) {
-                Inspector.this.specBtnActionPerformed();
+                InspectorGUI.this.specBtnActionPerformed();
             }
         });
 
@@ -564,7 +554,7 @@ public class Inspector extends javax.swing.JFrame {
                 .addActionListener(new java.awt.event.ActionListener() {
                     public void actionPerformed(
                             final java.awt.event.ActionEvent evt) {
-                        Inspector.this.buttonInspectActionPerformed();
+                        InspectorGUI.this.buttonInspectActionPerformed();
                     }
                 });
 
@@ -623,14 +613,14 @@ public class Inspector extends javax.swing.JFrame {
      *            'pending' button pushing event.
      */
     private void pendingBtnActionPerformed() {
+        this.protocol
+                .setPendingQueryObservType(InspectorProtocol.PROACTIVE_OBSERVATION);
         try {
-            this.protocol.pendingQueryObservType =
-                    InspectorProtocol.PROACTIVE_OBSERVATION;
             this.context.setProtocol(this.protocol);
-            this.pendingQueryForm.setVisible(true);
-        } catch (final Exception e) {
-            // TODO Properly handle Exception
+        } catch (final IOException e) {
+            e.printStackTrace();
         }
+        this.pendingQueryForm.setVisible(true);
     }
 
     /**
@@ -650,14 +640,14 @@ public class Inspector extends javax.swing.JFrame {
      *            'reaction' button pushing event.
      */
     private void trigReactsBtnActionPerformed() {
+        this.protocol
+                .setReactionsObservType(InspectorProtocol.PROACTIVE_OBSERVATION);
         try {
-            this.protocol.reactionsObservType =
-                    InspectorProtocol.PROACTIVE_OBSERVATION;
             this.context.setProtocol(this.protocol);
-            this.reactionForm.setVisible(true);
-        } catch (final Exception e) {
-            // TODO Properly handle Exception
+        } catch (final IOException e) {
+            e.printStackTrace();
         }
+        this.reactionForm.setVisible(true);
     }
 
     /**
@@ -667,14 +657,14 @@ public class Inspector extends javax.swing.JFrame {
      *            'tuples' button pushing event.
      */
     private void tuplesBtnActionPerformed() {
+        this.protocol
+                .setTsetObservType(InspectorProtocol.PROACTIVE_OBSERVATION);
         try {
-            this.protocol.tsetObservType =
-                    InspectorProtocol.PROACTIVE_OBSERVATION;
             this.context.setProtocol(this.protocol);
-            this.tupleForm.setVisible(true);
-        } catch (final Exception e) {
-            // TODO Properly handle Exception
+        } catch (final IOException e) {
+            e.printStackTrace();
         }
+        this.tupleForm.setVisible(true);
     }
 
 }

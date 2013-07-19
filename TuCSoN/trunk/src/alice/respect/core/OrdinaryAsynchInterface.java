@@ -10,11 +10,21 @@ import alice.respect.api.exceptions.OperationNotPossibleException;
 import alice.tuplecentre.api.IId;
 import alice.tuplecentre.core.OperationCompletionListener;
 
+/**
+ * 
+ * @author ste (mailto: s.mariani@unibo.it) on 01/lug/2013
+ * 
+ */
 public class OrdinaryAsynchInterface extends RootInterface implements
         IOrdinaryAsynchInterface {
 
-    public OrdinaryAsynchInterface(final IRespectTC core_) {
-        super(core_);
+    /**
+     * 
+     * @param core
+     *            the ReSpecT tuple centre this context refers to
+     */
+    public OrdinaryAsynchInterface(final IRespectTC core) {
+        super(core);
     }
 
     public IRespectOperation get(final IId aid,
@@ -39,13 +49,13 @@ public class OrdinaryAsynchInterface extends RootInterface implements
         try {
             if (t == null) {
                 throw new InvalidLogicTupleException();
-            } else if (t.getName().equals(",") && (t.getArity() == 2)) {
+            } else if (",".equals(t.getName()) && (t.getArity() == 2)) {
                 op = this.getCore().inAll(aid, new LogicTuple(t.getArg(0)), l);
             } else {
                 op = this.getCore().inAll(aid, t, l);
             }
-        } catch (final InvalidTupleOperationException e2) {
-            // TODO Properly handle Exception
+        } catch (final InvalidTupleOperationException e) {
+            e.printStackTrace();
         }
         return op;
     }
@@ -75,7 +85,7 @@ public class OrdinaryAsynchInterface extends RootInterface implements
         try {
             if (t == null) {
                 throw new InvalidLogicTupleException();
-            } else if (t.getName().equals(",") && (t.getArity() == 2)) {
+            } else if (",".equals(t.getName()) && (t.getArity() == 2)) {
                 op = this.getCore().noAll(aid, new LogicTuple(t.getArg(0)), l);
             } else {
                 op = this.getCore().noAll(aid, t, l);
@@ -129,13 +139,13 @@ public class OrdinaryAsynchInterface extends RootInterface implements
         try {
             if (t == null) {
                 throw new InvalidLogicTupleException();
-            } else if (t.getName().equals(",") && (t.getArity() == 2)) {
+            } else if (",".equals(t.getName()) && (t.getArity() == 2)) {
                 op = this.getCore().rdAll(aid, new LogicTuple(t.getArg(0)), l);
             } else {
                 op = this.getCore().rdAll(aid, t, l);
             }
         } catch (final InvalidTupleOperationException e) {
-            // TODO Properly handle Exception
+            e.printStackTrace();
         }
         return op;
     }

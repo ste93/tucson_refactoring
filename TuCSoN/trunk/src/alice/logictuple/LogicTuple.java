@@ -34,8 +34,8 @@ public class LogicTuple implements alice.tuplecentre.api.TupleTemplate,
         java.io.Serializable {
 
     /**
-	 * 
-	 */
+     * 
+     */
     private static final long serialVersionUID = 1L;
 
     /**
@@ -49,18 +49,16 @@ public class LogicTuple implements alice.tuplecentre.api.TupleTemplate,
      */
     public static LogicTuple parse(final String st)
             throws InvalidLogicTupleException {
-        try {
-            final Term t =
-                    alice.tuprolog.Term.createTerm(st, new MyOpManager());
-            return new LogicTuple(new TupleArgument(t));
-        } catch (final Exception ex) {
-            throw new InvalidLogicTupleException();
-        }
+        final Term t = alice.tuprolog.Term.createTerm(st, new MyOpManager());
+        return new LogicTuple(new TupleArgument(t));
     }
 
     /** the information content of logic tuple */
     private TupleArgument info;
 
+    /**
+     * 
+     */
     public LogicTuple() {
         /*
          * 
@@ -290,6 +288,7 @@ public class LogicTuple implements alice.tuplecentre.api.TupleTemplate,
      * 
      * @return the name of the logic tuple
      * @throws InvalidTupleOperationException
+     *             if the requested operation is not allowed for this tuple
      */
     public String getName() throws InvalidTupleOperationException {
         return this.info.getName();
@@ -312,49 +311,21 @@ public class LogicTuple implements alice.tuplecentre.api.TupleTemplate,
         return this.info.getVarValue(varName);
     }
 
-    /**
-     * Specifies if a logic tuple (as a tuple template) matches with a specified
-     * tuple, typically an other logic tuple
-     * 
-     * @param t
-     *            the matching tuple
-     * @return <code>true</code> if there is matching, <code>false</code>
-     *         otherwise
-     */
     public boolean match(final alice.tuplecentre.api.Tuple t) {
-        try {
-            final LogicTuple tu = (LogicTuple) t;
-            final Term term_a = this.info.toTerm();
-            final Term term_b = tu.info.toTerm();
-            return term_a.match(term_b);
-        } catch (final Exception ex) {
-            // TODO Properly handle Exception
-            return false;
-        }
+        final LogicTuple tu = (LogicTuple) t;
+        final Term termA = this.info.toTerm();
+        final Term termB = tu.info.toTerm();
+        return termA.match(termB);
     }
 
-    /**
-     * Tries to unify a logic tuple (as a tuple template) with a specified
-     * tuple, typically an other logic tuple
-     * 
-     * @param t
-     *            the matching tuple
-     * @return <code>true</code> if the propagation was successfull,
-     *         <code>false</code> otherwise
-     */
     public boolean
             propagate(final Prolog p, final alice.tuplecentre.api.Tuple t) {
-        try {
-            final LogicTuple tu = (LogicTuple) t;
-            final Term term_a = this.info.toTerm();
-            final Term term_b = tu.info.toTerm();
+        final LogicTuple tu = (LogicTuple) t;
+        final Term termA = this.info.toTerm();
+        final Term termB = tu.info.toTerm();
+        final boolean result = termA.unify(p, termB);
 
-            final boolean result = term_a.unify(p, term_b);
-
-            return result; // NEW FOR TUPROLOG 2.?? con null,
-        } catch (final Exception ex) {
-            return false;
-        }
+        return result;
     }
 
     /**
@@ -364,11 +335,7 @@ public class LogicTuple implements alice.tuplecentre.api.TupleTemplate,
      */
     @Override
     public String toString() {
-        try {
-            return this.info.toString();
-        } catch (final Exception ex) {
-            return null;
-        }
+        return this.info.toString();
     }
 
     /**

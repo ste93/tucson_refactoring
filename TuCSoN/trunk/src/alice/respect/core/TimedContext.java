@@ -34,6 +34,11 @@ import alice.tuplecentre.api.IId;
  */
 public class TimedContext extends RootInterface implements ITimedContext {
 
+    /**
+     * 
+     * @param core
+     *            the ReSpecT tuple centres manager this interface refers to
+     */
     public TimedContext(final IRespectTC core) {
         super(core);
     }
@@ -72,7 +77,7 @@ public class TimedContext extends RootInterface implements ITimedContext {
         try {
             if (t == null) {
                 throw new InvalidLogicTupleException();
-            } else if (t.getName().equals(",") && (t.getArity() == 2)) {
+            } else if (",".equals(t.getName()) && (t.getArity() == 2)) {
                 op = this.getCore().inAll(aid, new LogicTuple(t.getArg(0)));
             } else {
                 op = this.getCore().inAll(aid, t);
@@ -82,7 +87,7 @@ public class TimedContext extends RootInterface implements ITimedContext {
             } catch (final alice.tuplecentre.api.exceptions.OperationTimeOutException ex) {
                 throw new OperationTimeOutException(op);
             }
-            if (t.getName().equals(",") && (t.getArity() == 2)) {
+            if (",".equals(t.getName()) && (t.getArity() == 2)) {
                 arg = t.getArg(1);
                 return this.unify(new LogicTuple(
                         new TupleArgument(arg.toTerm())), op
@@ -132,7 +137,7 @@ public class TimedContext extends RootInterface implements ITimedContext {
         try {
             if (t == null) {
                 throw new InvalidLogicTupleException();
-            } else if (t.getName().equals(",") && (t.getArity() == 2)) {
+            } else if (",".equals(t.getName()) && (t.getArity() == 2)) {
                 op = this.getCore().noAll(aid, new LogicTuple(t.getArg(0)));
             } else {
                 op = this.getCore().noAll(aid, t);
@@ -142,7 +147,7 @@ public class TimedContext extends RootInterface implements ITimedContext {
             } catch (final alice.tuplecentre.api.exceptions.OperationTimeOutException ex) {
                 throw new OperationTimeOutException(op);
             }
-            if (t.getName().equals(",") && (t.getArity() == 2)) {
+            if (",".equals(t.getName()) && (t.getArity() == 2)) {
                 arg = t.getArg(1);
                 return this.unify(new LogicTuple(
                         new TupleArgument(arg.toTerm())), op
@@ -220,7 +225,7 @@ public class TimedContext extends RootInterface implements ITimedContext {
         try {
             if (t == null) {
                 throw new InvalidLogicTupleException();
-            } else if (t.getName().equals(",") && (t.getArity() == 2)) {
+            } else if (",".equals(t.getName()) && (t.getArity() == 2)) {
                 op = this.getCore().rdAll(aid, new LogicTuple(t.getArg(0)));
             } else {
                 op = this.getCore().rdAll(aid, t);
@@ -230,7 +235,7 @@ public class TimedContext extends RootInterface implements ITimedContext {
             } catch (final alice.tuplecentre.api.exceptions.OperationTimeOutException ex) {
                 throw new OperationTimeOutException(op);
             }
-            if (t.getName().equals(",") && (t.getArity() == 2)) {
+            if (",".equals(t.getName()) && (t.getArity() == 2)) {
                 arg = t.getArg(1);
                 return this.unify(new LogicTuple(
                         new TupleArgument(arg.toTerm())), op

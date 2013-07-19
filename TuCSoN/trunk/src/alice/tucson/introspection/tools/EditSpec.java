@@ -35,6 +35,11 @@ import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 
+/**
+ * 
+ * @author ste (mailto: s.mariani@unibo.it) on 03/lug/2013
+ * 
+ */
 public class EditSpec extends javax.swing.JFrame {
 
     private static final long serialVersionUID = 2491540632593263750L;
@@ -47,7 +52,7 @@ public class EditSpec extends javax.swing.JFrame {
             res.append(t.getArg(1)).append(",\n\t");
             res.append(t.getArg(2)).append("\n).\n");
         } catch (final InvalidTupleOperationException e) {
-            // TODO Properly handle Exception
+            e.printStackTrace();
         }
         return res.toString();
     }
@@ -62,7 +67,7 @@ public class EditSpec extends javax.swing.JFrame {
                 res.append(t.getArg(1)).append(".\n");
             }
         } catch (final InvalidTupleOperationException e) {
-            // TODO Properly handle Exception
+            e.printStackTrace();
         }
         return res.toString();
     }
@@ -76,14 +81,18 @@ public class EditSpec extends javax.swing.JFrame {
 
     private final TucsonTupleCentreId tid;
 
-    /** Creates new form GUIEditTheory */
-    public EditSpec(final TucsonTupleCentreId tid_) {
+    /**
+     * Creates new form GUIEditTheory
+     * 
+     * @param t
+     *            the identifier of the tuple centre under inspection
+     */
+    public EditSpec(final TucsonTupleCentreId t) {
 
         super();
         this.initComponents();
         this.setTitle("ReSpecT specification tuples of tuplecentre < "
-                + tid_.getName() + "@" + tid_.getNode() + ":" + tid_.getPort()
-                + " >");
+                + t.getName() + "@" + t.getNode() + ":" + t.getPort() + " >");
         this.inputSpec =
                 new alice.util.jedit.JEditTextArea(new SpecificationTextArea());
         this.inputSpec.setTokenMarker(new SpecificationTokenMarker());
@@ -108,22 +117,25 @@ public class EditSpec extends javax.swing.JFrame {
         });
         this.pack();
 
-        this.tid = tid_;
+        this.tid = t;
         try {
             this.context =
                     TucsonMetaACC.getContext(new TucsonAgentId("'$Inspector-"
                             + System.currentTimeMillis() + "'"));
         } catch (final TucsonInvalidAgentIdException e) {
-            // TODO Properly handle Exception
+            e.printStackTrace();
         }
 
     }
 
+    /**
+     * 
+     */
     public void exit() {
         try {
             this.context.exit();
         } catch (final TucsonOperationNotPossibleException e) {
-            // TODO Properly handle Exception
+            e.printStackTrace();
         }
     }
 
@@ -131,7 +143,7 @@ public class EditSpec extends javax.swing.JFrame {
         try {
             final StringBuffer spec = new StringBuffer();
             final List<LogicTuple> list =
-                    this.context.get_s(this.tid, (Long) null)
+                    this.context.getS(this.tid, (Long) null)
                             .getLogicTupleListResult();
             for (final LogicTuple t : list) {
                 if ("reaction".equals(t.getName())) {
@@ -179,7 +191,7 @@ public class EditSpec extends javax.swing.JFrame {
                     try {
                         in.close();
                     } catch (final IOException e) {
-                        // TODO Properly handle Exception
+                        e.printStackTrace();
                     }
                 }
             }
@@ -191,10 +203,10 @@ public class EditSpec extends javax.swing.JFrame {
         try {
             final String spec = this.inputSpec.getText();
             if (spec.isEmpty()) {
-                this.context.set_s(this.tid, LogicTuple.parse("[]"),
-                        (Long) null);
+                this.context
+                        .setS(this.tid, LogicTuple.parse("[]"), (Long) null);
             } else {
-                this.context.set_s(this.tid, spec, (Long) null);
+                this.context.setS(this.tid, spec, (Long) null);
             }
             this.outputState.setText("ReSpecT specification set.");
         } catch (final TucsonOperationNotPossibleException e) {
@@ -224,7 +236,7 @@ public class EditSpec extends javax.swing.JFrame {
             try {
                 out.close();
             } catch (final IOException e) {
-                // TODO Properly handle Exception
+                e.printStackTrace();
             }
         }
     }
@@ -253,7 +265,7 @@ public class EditSpec extends javax.swing.JFrame {
                     try {
                         out.close();
                     } catch (final IOException e) {
-                        // TODO Properly handle Exception
+                        e.printStackTrace();
                     }
                 }
             }
@@ -264,7 +276,7 @@ public class EditSpec extends javax.swing.JFrame {
     private void formComponentShown() {
         try {
             final String spec =
-                    this.context.get_s(this.tid, (Long) null)
+                    this.context.getS(this.tid, (Long) null)
                             .getLogicTupleListResult().toString();
             this.inputSpec.setText(spec);
             this.outputState.setText("ReSpecT specification read.");

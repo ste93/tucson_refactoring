@@ -12,9 +12,8 @@
  */
 package alice.respect.api;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-
-import alice.respect.core.RespectTC;
 
 /**
  * Base class for building ReSpecT agents.
@@ -22,13 +21,13 @@ import alice.respect.core.RespectTC;
  * @author aricci
  * 
  */
-public abstract class Agent {
+public abstract class AbstractAgent {
 
     final class PlanExecutor extends Thread {
         private final Method activity;
-        private final Agent agent;
+        private final AbstractAgent agent;
 
-        PlanExecutor(final Agent ag, final Method m) {
+        PlanExecutor(final AbstractAgent ag, final Method m) {
             super();
             this.agent = ag;
             this.activity = m;
@@ -37,9 +36,13 @@ public abstract class Agent {
         @Override
         public void run() {
             try {
-                this.activity.invoke(this.agent, Agent.ARGS);
-            } catch (final Exception ex) {
-                // TODO Properly handle Exception
+                this.activity.invoke(this.agent, AbstractAgent.ARGS);
+            } catch (final IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (final IllegalArgumentException e) {
+                e.printStackTrace();
+            } catch (final InvocationTargetException e) {
+                e.printStackTrace();
             }
         }
     }
@@ -49,17 +52,33 @@ public abstract class Agent {
     private static final Class<? extends Object>[] ARGS_CLASS = new Class[] {};
     private final AgentId id;
 
-    private RespectTC tc;
+    private IRespectTC tc;
 
-    protected Agent(final AgentId aid) {
+    /**
+     * 
+     * @param aid
+     *            the identifier of this agent
+     */
+    protected AbstractAgent(final AgentId aid) {
         this.id = aid;
     }
 
-    protected Agent(final AgentId aid, final RespectTC rtc) {
+    /**
+     * 
+     * @param aid
+     *            the identifier of this agent
+     * @param rtc
+     *            the ReSpecT tuple centre this agent wants to operate on
+     */
+    protected AbstractAgent(final AgentId aid, final IRespectTC rtc) {
         this.id = aid;
         this.tc = rtc;
     }
 
+    /**
+     * 
+     * @return the identifier of this agent
+     */
     public AgentId getId() {
         return this.id;
     }
@@ -67,14 +86,14 @@ public abstract class Agent {
     /**
      * @return the tc
      */
-    public RespectTC getTc() {
+    public IRespectTC getTc() {
         return this.tc;
     }
 
     /**
      * Starts agent execution
      */
-    final public void go() {
+    public final void go() {
         this.execPlan("mainPlan");
     }
 
@@ -82,18 +101,25 @@ public abstract class Agent {
      * @param rtc
      *            the tc to set
      */
-    public void setTc(final RespectTC rtc) {
+    public void setTc(final IRespectTC rtc) {
         this.tc = rtc;
     }
 
-    final protected void execPlan(final String name) {
+    /**
+     * 
+     * @param name
+     *            the full name of the Java class to execute as the agent plan
+     */
+    protected final void execPlan(final String name) {
         Method m = null;
         try {
-            m = this.getClass().getDeclaredMethod(name, Agent.ARGS_CLASS);
+            m =
+                    this.getClass().getDeclaredMethod(name,
+                            AbstractAgent.ARGS_CLASS);
         } catch (final NoSuchMethodException e) {
-            // TODO Auto-generated catch block
+            e.printStackTrace();
         } catch (final SecurityException e) {
-            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
         m.setAccessible(true);
         new PlanExecutor(this, m).start();
@@ -102,6 +128,6 @@ public abstract class Agent {
     /**
      * Body of the agent
      */
-    abstract protected void mainPlan();
+    protected abstract void mainPlan();
 
 }

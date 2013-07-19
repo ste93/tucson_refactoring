@@ -33,14 +33,24 @@ public interface IManagementContext {
      * 
      * The method is successful only if the operation has not completed
      * 
-     * @param op
+     * @param opId
      *            the operation identifier
      * @return true if the operation has been aborted
      */
     boolean abortOperation(long opId);
 
+    /**
+     * 
+     * @param l
+     *            the listener of inspectable events
+     */
     void addInspector(InspectableEventListener l);
 
+    /**
+     * 
+     * @param l
+     *            the listener of observable events
+     */
     void addObserver(ObservableEventListener l);
 
     /**
@@ -55,6 +65,7 @@ public interface IManagementContext {
      * 
      * @param filter
      *            tuple filtering tuples to be retrieved
+     * @return the array of tuples representing the triggered reactions
      */
     LogicTuple[] getTRSet(LogicTuple filter);
 
@@ -63,6 +74,7 @@ public interface IManagementContext {
      * 
      * @param filter
      *            tuple filtering tuples to be retrieved
+     * @return the array of tuples stored in the tuple centre
      */
     LogicTuple[] getTSet(LogicTuple filter);
 
@@ -71,6 +83,7 @@ public interface IManagementContext {
      * 
      * @param filter
      *            tuple filtering tuples to be retrieved
+     * @return the array of tuples representing the pending operations
      */
     WSetEvent[] getWSet(LogicTuple filter);
 
@@ -83,8 +96,18 @@ public interface IManagementContext {
      */
     void goCommand() throws OperationNotPossibleException;
 
+    /**
+     * 
+     * @return <code>true</code> if the tuple centre has some inspector
+     *         listening
+     */
     boolean hasInspectors();
 
+    /**
+     * 
+     * @return <code>true</code> if the tuple centre has some observers
+     *         listening
+     */
     boolean hasObservers();
 
     /**
@@ -96,10 +119,23 @@ public interface IManagementContext {
      */
     void nextStepCommand() throws OperationNotPossibleException;
 
+    /**
+     * 
+     * @param l
+     *            the listener of inspectable events
+     */
     void removeInspector(InspectableEventListener l);
 
+    /**
+     * 
+     * @param l
+     *            the listener of observable events
+     */
     void removeObserver(ObservableEventListener l);
 
+    /**
+     * 
+     */
     void reset();
 
     /**
@@ -125,7 +161,7 @@ public interface IManagementContext {
     /**
      * Sets current content of the query set in terms of logic tuples
      * 
-     * @param query
+     * @param wSet
      *            set in terms of logic tuples
      */
     void setWSet(List<LogicTuple> wSet);

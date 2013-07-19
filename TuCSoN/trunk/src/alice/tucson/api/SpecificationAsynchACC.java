@@ -49,13 +49,55 @@ public interface SpecificationAsynchACC extends RootACC {
      * @return the interface to access the data about TuCSoN operations outcome.
      * 
      * @throws TucsonOperationNotPossibleException
+     *             if the requested operation cannot be carried out
      * @throws UnreachableNodeException
+     *             if the target tuple centre is not reachable over the network
      * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
      * @see alice.tucson.api.TucsonOperationCompletionListener
      *      TucsonOperationCompletionListener
      * @see alice.tucson.api.ITucsonOperation ITucsonOperation
      */
-    ITucsonOperation get_s(Object tid, TucsonOperationCompletionListener l)
+    ITucsonOperation getS(Object tid, TucsonOperationCompletionListener l)
+            throws TucsonOperationNotPossibleException,
+            UnreachableNodeException;
+
+    /**
+     * <code>inp_s</code> specification primitive, retrieves a ReSpecT Reaction
+     * Specification from the given target tuplecentre specification space.
+     * 
+     * This time the primitive semantics is NOT SUSPENSIVE: if no ReSpecT
+     * specification is found to match the given template, a failure completion
+     * answer is forwarded to the TuCSoN Agent exploiting this ACC.
+     * 
+     * @param tid
+     *            the target TuCSoN tuplecentre id
+     *            {@link alice.tucson.api.TucsonTupleCentreId tid}
+     * @param event
+     *            the template for the TuCSoN primitive to react to
+     * @param guards
+     *            the template for the guard predicates to be checked for
+     *            satisfaction so to actually trigger the body of the ReSpecT
+     *            reaction
+     * @param reactionBody
+     *            the template for the computation to be done in response to the
+     *            <code>event</code>
+     * @param l
+     *            the listener who should be notified upon operation completion
+     * 
+     * @return the interface to access the data about TuCSoN operations outcome.
+     * 
+     * @throws TucsonOperationNotPossibleException
+     *             if the requested operation cannot be carried out
+     * @throws UnreachableNodeException
+     *             if the target tuple centre is not reachable over the network
+     * 
+     * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
+     * @see alice.tucson.api.TucsonOperationCompletionListener
+     *      TucsonOperationCompletionListener
+     * @see alice.tucson.api.ITucsonOperation ITucsonOperation
+     */
+    ITucsonOperation inpS(Object tid, LogicTuple event, LogicTuple guards,
+            LogicTuple reactionBody, TucsonOperationCompletionListener l)
             throws TucsonOperationNotPossibleException,
             UnreachableNodeException;
 
@@ -87,23 +129,25 @@ public interface SpecificationAsynchACC extends RootACC {
      * @return the interface to access the data about TuCSoN operations outcome.
      * 
      * @throws TucsonOperationNotPossibleException
+     *             if the requested operation cannot be carried out
      * @throws UnreachableNodeException
+     *             if the target tuple centre is not reachable over the network
      * 
      * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
      * @see alice.tucson.api.TucsonOperationCompletionListener
      *      TucsonOperationCompletionListener
      * @see alice.tucson.api.ITucsonOperation ITucsonOperation
      */
-    ITucsonOperation in_s(Object tid, LogicTuple event, LogicTuple guards,
+    ITucsonOperation inS(Object tid, LogicTuple event, LogicTuple guards,
             LogicTuple reactionBody, TucsonOperationCompletionListener l)
             throws TucsonOperationNotPossibleException,
             UnreachableNodeException;
 
     /**
-     * <code>inp_s</code> specification primitive, retrieves a ReSpecT Reaction
-     * Specification from the given target tuplecentre specification space.
+     * <code>nop_s</code> specification primitive, checks absence of the a
+     * ReSpecT Reaction in the given target tuplecentre specification space.
      * 
-     * This time the primitive semantics is NOT SUSPENSIVE: if no ReSpecT
+     * This time the primitive semantics is NOT SUSPENSIVE: if any ReSpecT
      * specification is found to match the given template, a failure completion
      * answer is forwarded to the TuCSoN Agent exploiting this ACC.
      * 
@@ -125,14 +169,16 @@ public interface SpecificationAsynchACC extends RootACC {
      * @return the interface to access the data about TuCSoN operations outcome.
      * 
      * @throws TucsonOperationNotPossibleException
+     *             if the requested operation cannot be carried out
      * @throws UnreachableNodeException
+     *             if the target tuple centre is not reachable over the network
      * 
      * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
      * @see alice.tucson.api.TucsonOperationCompletionListener
      *      TucsonOperationCompletionListener
      * @see alice.tucson.api.ITucsonOperation ITucsonOperation
      */
-    ITucsonOperation inp_s(Object tid, LogicTuple event, LogicTuple guards,
+    ITucsonOperation nopS(Object tid, LogicTuple event, LogicTuple guards,
             LogicTuple reactionBody, TucsonOperationCompletionListener l)
             throws TucsonOperationNotPossibleException,
             UnreachableNodeException;
@@ -165,52 +211,16 @@ public interface SpecificationAsynchACC extends RootACC {
      * @return the interface to access the data about TuCSoN operations outcome.
      * 
      * @throws TucsonOperationNotPossibleException
+     *             if the requested operation cannot be carried out
      * @throws UnreachableNodeException
+     *             if the target tuple centre is not reachable over the network
      * 
      * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
      * @see alice.tucson.api.TucsonOperationCompletionListener
      *      TucsonOperationCompletionListener
      * @see alice.tucson.api.ITucsonOperation ITucsonOperation
      */
-    ITucsonOperation no_s(Object tid, LogicTuple event, LogicTuple guards,
-            LogicTuple reactionBody, TucsonOperationCompletionListener l)
-            throws TucsonOperationNotPossibleException,
-            UnreachableNodeException;
-
-    /**
-     * <code>nop_s</code> specification primitive, checks absence of the a
-     * ReSpecT Reaction in the given target tuplecentre specification space.
-     * 
-     * This time the primitive semantics is NOT SUSPENSIVE: if any ReSpecT
-     * specification is found to match the given template, a failure completion
-     * answer is forwarded to the TuCSoN Agent exploiting this ACC.
-     * 
-     * @param tid
-     *            the target TuCSoN tuplecentre id
-     *            {@link alice.tucson.api.TucsonTupleCentreId tid}
-     * @param event
-     *            the template for the TuCSoN primitive to react to
-     * @param guards
-     *            the template for the guard predicates to be checked for
-     *            satisfaction so to actually trigger the body of the ReSpecT
-     *            reaction
-     * @param reactionBody
-     *            the template for the computation to be done in response to the
-     *            <code>event</code>
-     * @param l
-     *            the listener who should be notified upon operation completion
-     * 
-     * @return the interface to access the data about TuCSoN operations outcome.
-     * 
-     * @throws TucsonOperationNotPossibleException
-     * @throws UnreachableNodeException
-     * 
-     * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
-     * @see alice.tucson.api.TucsonOperationCompletionListener
-     *      TucsonOperationCompletionListener
-     * @see alice.tucson.api.ITucsonOperation ITucsonOperation
-     */
-    ITucsonOperation nop_s(Object tid, LogicTuple event, LogicTuple guards,
+    ITucsonOperation noS(Object tid, LogicTuple event, LogicTuple guards,
             LogicTuple reactionBody, TucsonOperationCompletionListener l)
             throws TucsonOperationNotPossibleException,
             UnreachableNodeException;
@@ -240,14 +250,57 @@ public interface SpecificationAsynchACC extends RootACC {
      * @return the interface to access the data about TuCSoN operations outcome.
      * 
      * @throws TucsonOperationNotPossibleException
+     *             if the requested operation cannot be carried out
      * @throws UnreachableNodeException
+     *             if the target tuple centre is not reachable over the network
      * 
      * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
      * @see alice.tucson.api.TucsonOperationCompletionListener
      *      TucsonOperationCompletionListener
      * @see alice.tucson.api.ITucsonOperation ITucsonOperation
      */
-    ITucsonOperation out_s(Object tid, LogicTuple event, LogicTuple guards,
+    ITucsonOperation outS(Object tid, LogicTuple event, LogicTuple guards,
+            LogicTuple reactionBody, TucsonOperationCompletionListener l)
+            throws TucsonOperationNotPossibleException,
+            UnreachableNodeException;
+
+    /**
+     * <code>rdp_s</code> specification primitive, reads (w/o removing) a
+     * ReSpecT Reaction Specification from the given target tuplecentre
+     * specification space.
+     * 
+     * This time the primitive semantics is NOT SUSPENSIVE: if no ReSpecT
+     * specification is found to match the given template, a failure completion
+     * answer is forwarded to the TuCSoN Agent exploiting this ACC.
+     * 
+     * @param tid
+     *            the target TuCSoN tuplecentre id
+     *            {@link alice.tucson.api.TucsonTupleCentreId tid}
+     * @param event
+     *            the template for the TuCSoN primitive to react to
+     * @param guards
+     *            the template for the guard predicates to be checked for
+     *            satisfaction so to actually trigger the body of the ReSpecT
+     *            reaction
+     * @param reactionBody
+     *            the template for the computation to be done in response to the
+     *            <code>event</code>
+     * @param l
+     *            the listener who should be notified upon operation completion
+     * 
+     * @return the interface to access the data about TuCSoN operations outcome.
+     * 
+     * @throws TucsonOperationNotPossibleException
+     *             if the requested operation cannot be carried out
+     * @throws UnreachableNodeException
+     *             if the target tuple centre is not reachable over the network
+     * 
+     * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
+     * @see alice.tucson.api.TucsonOperationCompletionListener
+     *      TucsonOperationCompletionListener
+     * @see alice.tucson.api.ITucsonOperation ITucsonOperation
+     */
+    ITucsonOperation rdpS(Object tid, LogicTuple event, LogicTuple guards,
             LogicTuple reactionBody, TucsonOperationCompletionListener l)
             throws TucsonOperationNotPossibleException,
             UnreachableNodeException;
@@ -281,53 +334,16 @@ public interface SpecificationAsynchACC extends RootACC {
      * @return the interface to access the data about TuCSoN operations outcome.
      * 
      * @throws TucsonOperationNotPossibleException
+     *             if the requested operation cannot be carried out
      * @throws UnreachableNodeException
+     *             if the target tuple centre is not reachable over the network
      * 
      * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
      * @see alice.tucson.api.TucsonOperationCompletionListener
      *      TucsonOperationCompletionListener
      * @see alice.tucson.api.ITucsonOperation ITucsonOperation
      */
-    ITucsonOperation rd_s(Object tid, LogicTuple event, LogicTuple guards,
-            LogicTuple reactionBody, TucsonOperationCompletionListener l)
-            throws TucsonOperationNotPossibleException,
-            UnreachableNodeException;
-
-    /**
-     * <code>rdp_s</code> specification primitive, reads (w/o removing) a
-     * ReSpecT Reaction Specification from the given target tuplecentre
-     * specification space.
-     * 
-     * This time the primitive semantics is NOT SUSPENSIVE: if no ReSpecT
-     * specification is found to match the given template, a failure completion
-     * answer is forwarded to the TuCSoN Agent exploiting this ACC.
-     * 
-     * @param tid
-     *            the target TuCSoN tuplecentre id
-     *            {@link alice.tucson.api.TucsonTupleCentreId tid}
-     * @param event
-     *            the template for the TuCSoN primitive to react to
-     * @param guards
-     *            the template for the guard predicates to be checked for
-     *            satisfaction so to actually trigger the body of the ReSpecT
-     *            reaction
-     * @param reactionBody
-     *            the template for the computation to be done in response to the
-     *            <code>event</code>
-     * @param l
-     *            the listener who should be notified upon operation completion
-     * 
-     * @return the interface to access the data about TuCSoN operations outcome.
-     * 
-     * @throws TucsonOperationNotPossibleException
-     * @throws UnreachableNodeException
-     * 
-     * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
-     * @see alice.tucson.api.TucsonOperationCompletionListener
-     *      TucsonOperationCompletionListener
-     * @see alice.tucson.api.ITucsonOperation ITucsonOperation
-     */
-    ITucsonOperation rdp_s(Object tid, LogicTuple event, LogicTuple guards,
+    ITucsonOperation rdS(Object tid, LogicTuple event, LogicTuple guards,
             LogicTuple reactionBody, TucsonOperationCompletionListener l)
             throws TucsonOperationNotPossibleException,
             UnreachableNodeException;
@@ -350,14 +366,16 @@ public interface SpecificationAsynchACC extends RootACC {
      * @return the interface to access the data about TuCSoN operations outcome.
      * 
      * @throws TucsonOperationNotPossibleException
+     *             if the requested operation cannot be carried out
      * @throws UnreachableNodeException
+     *             if the target tuple centre is not reachable over the network
      * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
      * @see alice.tucson.api.TucsonOperationCompletionListener
      *      TucsonOperationCompletionListener
      * @see alice.tucson.api.ITucsonOperation ITucsonOperation
      * @see alice.tuprolog.Theory Theory
      */
-    ITucsonOperation set_s(Object tid, String spec,
+    ITucsonOperation setS(Object tid, String spec,
             TucsonOperationCompletionListener l)
             throws TucsonOperationNotPossibleException,
             UnreachableNodeException;

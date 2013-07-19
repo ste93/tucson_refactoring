@@ -13,14 +13,9 @@
  */
 package alice.logictuple.exceptions;
 
-import alice.logictuple.TupleArgument;
-import alice.logictuple.Var;
-
 /**
  * Exception thrown when a not valid name for Variable is used
  * 
- * @see Var
- * @see TupleArgument
  * @version 1.0
  * @author aricci
  */

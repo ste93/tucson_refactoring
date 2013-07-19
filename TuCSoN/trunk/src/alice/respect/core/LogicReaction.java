@@ -30,21 +30,37 @@ public class LogicReaction implements alice.tuplecentre.core.Reaction,
     private static final long serialVersionUID = -930986977792219715L;
     private Struct reaction;
 
+    /**
+     * 
+     */
     public LogicReaction() {
         /*
          * 
          */
     }
 
+    /**
+     * 
+     * @param t
+     *            the Prolog struct representing this reaction
+     */
     public LogicReaction(final Struct t) {
         final AbstractMap<Var, Var> v = new LinkedHashMap<Var, Var>();
         this.reaction = (Struct) t.copyGoal(v, 0);
     }
 
+    /**
+     * 
+     * @return the Prolog term representing the trigger event
+     */
     public Term getReactionTerm() {
         return this.reaction.getArg(0);
     }
 
+    /**
+     * 
+     * @return the Prolog struct representing this reaction
+     */
     public Struct getStructReaction() {
         return this.reaction;
     }

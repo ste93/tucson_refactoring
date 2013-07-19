@@ -15,17 +15,61 @@ package alice.tucson.introspection;
 
 import alice.tucson.api.TucsonAgentId;
 
+/**
+ * 
+ * @author ste (mailto: s.mariani@unibo.it) on 03/lug/2013
+ * 
+ */
 public class NewInspectorMsg extends NodeMsg {
 
     private static final long serialVersionUID = -8887997708884852194L;
-    public InspectorProtocol info;
-    public String tcName;
+    private InspectorProtocol info;
+    private String tcName;
 
-    public NewInspectorMsg(final TucsonAgentId i, final String tcName_,
-            final InspectorProtocol info_) {
-        super(i, "newInspector");
-        this.tcName = tcName_;
-        this.info = info_;
+    /**
+     * 
+     * @param id
+     *            the agent id of the sender
+     * @param tcn
+     *            the identifier of the tuple centre under inspection
+     * @param i
+     *            the inspection protocol used
+     */
+    public NewInspectorMsg(final TucsonAgentId id, final String tcn,
+            final InspectorProtocol i) {
+        super(id, "newInspector");
+        this.tcName = tcn;
+        this.info = i;
+    }
+
+    /**
+     * @return the info
+     */
+    public InspectorProtocol getInfo() {
+        return this.info;
+    }
+
+    /**
+     * @return the tcName
+     */
+    public String getTcName() {
+        return this.tcName;
+    }
+
+    /**
+     * @param i
+     *            the info to set
+     */
+    public void setInfo(final InspectorProtocol i) {
+        this.info = i;
+    }
+
+    /**
+     * @param tcn
+     *            the tcName to set
+     */
+    public void setTcName(final String tcn) {
+        this.tcName = tcn;
     }
 
 }
