@@ -255,7 +255,7 @@ public class InterTupleCentreACCProxy implements InterTupleCentreACC,
         System.out.println("[InterTupleCentreACCProxy]: " + msg);
     }
 
-    // aid è il tuplecentre source
+    // aid e' il tuplecentre source
     private TucsonTupleCentreId aid;
     private final Map<String, ControllerSession> controllerSessions;
     private final List<TucsonOpCompletionEvent> events;

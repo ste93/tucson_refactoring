@@ -26,7 +26,7 @@ public class RemoteLinkProvider implements IRemoteLinkProvider {
     }
 
     public ILinkContext getRemoteLinkContext(final TupleCentreId id) {
-        // id è il tuplecentre target (nome completo xchè toString?)
+        // id e' il tuplecentre target (nome completo xche' toString?)
         InterTupleCentreACCProvider helper =
                 RemoteLinkProvider.remoteRegistry.get(id.toString());
         if (helper == null) {

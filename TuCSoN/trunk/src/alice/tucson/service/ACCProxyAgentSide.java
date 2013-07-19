@@ -962,9 +962,9 @@ public class ACCProxyAgentSide implements EnhancedACC {
      * side)
      * 
      * The difference w.r.t. the previous method
-     * {@link alice.tucson.api.doNonBlockingOperation nonBlocking} is that here
-     * we explicitly wait for completion a time specified in the timeout input
-     * parameter.
+     * {@link alice.tucson.service.ACCProxyAgentSide#doNonBlockingOperation
+     * nonBlocking} is that here we explicitly wait for completion a time
+     * specified in the timeout input parameter.
      * 
      * @param type
      *            TuCSoN operation type (internal integer code)

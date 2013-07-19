@@ -93,7 +93,7 @@ public class InterTupleCentreACCProvider implements ILinkContext {
     public synchronized void doOperation(final TupleCentreId id,
             final AbstractTupleCentreOperation op)
             throws OperationNotPossibleException {
-        // id è il tuplecentre source
+        // id e' il tuplecentre source
         final Executor ex =
                 new Executor(this.idTo, id, op,
                         InterTupleCentreACCProvider.helpList);
