@@ -32,10 +32,10 @@ public final class HelloWorld {
          */
         TucsonAgentId aid = null;
         try {
-            if (args.length == 0) {
-                aid = new TucsonAgentId("helloWorldMain");
-            } else if (args.length == 1) {
+            if (args.length == 1) {
                 aid = new TucsonAgentId(args[0]);
+            } else {
+                aid = new TucsonAgentId("helloWorldMain");
             }
             /*
              * 2) Get a TuCSoN ACC to enable interaction with the TuCSoN system.

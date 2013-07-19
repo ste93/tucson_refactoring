@@ -111,12 +111,14 @@ public class InspectorContextSkel extends AbstractACCProxyNodeSide implements
             e.printStackTrace();
         }
 
-        final TucsonTCUsers coreInfo = node.resolveCore(msg.getTcName());
-        if (coreInfo == null) {
-            throw new TucsonGenericException(
-                    "Internal error: InspectorContextSkel constructor");
+        if (msg != null) {
+            final TucsonTCUsers coreInfo = node.resolveCore(msg.getTcName());
+            if (coreInfo == null) {
+                throw new TucsonGenericException(
+                        "Internal error: InspectorContextSkel constructor");
+            }
+            this.protocol = msg.getInfo();
         }
-        this.protocol = msg.getInfo();
 
     }
 
@@ -153,8 +155,10 @@ public class InspectorContextSkel extends AbstractACCProxyNodeSide implements
             } catch (final TucsonInvalidLogicTupleException e) {
                 e.printStackTrace();
             }
-            for (final LogicTuple lt : tSet) {
-                msg.getTuples().add(lt);
+            if (tSet != null) {
+                for (final LogicTuple lt : tSet) {
+                    msg.getTuples().add(lt);
+                }
             }
 
         } else if (m.getWhat() == GetSnapshotMsg.WSET) {
@@ -173,8 +177,10 @@ public class InspectorContextSkel extends AbstractACCProxyNodeSide implements
                 e.printStackTrace();
             }
             msg.setWnEvents(new LinkedList<WSetEvent>());
-            for (final WSetEvent lt : ltSet) {
-                msg.getWnEvents().add(lt);
+            if (ltSet != null) {
+                for (final WSetEvent lt : ltSet) {
+                    msg.getWnEvents().add(lt);
+                }
             }
 
         }

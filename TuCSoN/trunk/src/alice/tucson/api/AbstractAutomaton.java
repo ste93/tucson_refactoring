@@ -13,7 +13,6 @@
  */
 package alice.tucson.api;
 
-import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -25,14 +24,12 @@ import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
  * 
  * @author unknown
  */
-public abstract class AbstractAutomaton extends AbstractTucsonAgent implements
-        Serializable {
+public abstract class AbstractAutomaton extends AbstractTucsonAgent {
 
     /**
      * 
      */
     protected static Class<?>[] argType;
-    private static final long serialVersionUID = -8327090817152965357L;
     /**
      * 
      */

@@ -28,10 +28,10 @@ public class HelloWorldAgent extends AbstractTucsonAgent {
      */
     public static void main(final String[] args) {
         String aid = null;
-        if (args.length == 0) {
-            aid = "helloWorldAgent";
-        } else if (args.length == 1) {
+        if (args.length == 1) {
             aid = args[0];
+        } else {
+            aid = "helloWorldAgent";
         }
         /*
          * 10) Instantiate your agent and 11) start executing its 'main()' using

@@ -42,24 +42,30 @@ public class InterTupleCentreACCProvider implements ILinkContext {
         @Override
         public void run() {
 
-            this.helper = this.helpers.get(this.fromId.getNode());
-            if (this.helper == null) {
-                try {
-                    this.helper =
-                            new InterTupleCentreACCProxy(
-                                    new TucsonTupleCentreId(this.fromId));
-                } catch (final TucsonInvalidTupleCentreIdException e) {
-                    e.printStackTrace();
+            if (this.helpers != null) {
+                this.helper = this.helpers.get(this.fromId.getNode());
+                if (this.helper == null) {
+                    try {
+                        this.helper =
+                                new InterTupleCentreACCProxy(
+                                        new TucsonTupleCentreId(this.fromId));
+                    } catch (final TucsonInvalidTupleCentreIdException e) {
+                        e.printStackTrace();
+                    }
+                    if (this.helpers != null) {
+                        this.helpers.put(this.fromId.getNode(), this.helper);
+                    }
                 }
-                this.helpers.put(this.fromId.getNode(), this.helper);
             }
 
-            try {
-                this.helper.doOperation(this.toId, this.op);
-            } catch (final TucsonOperationNotPossibleException e) {
-                e.printStackTrace();
-            } catch (final UnreachableNodeException e) {
-                e.printStackTrace();
+            if (this.helper != null) {
+                try {
+                    this.helper.doOperation(this.toId, this.op);
+                } catch (final TucsonOperationNotPossibleException e) {
+                    e.printStackTrace();
+                } catch (final UnreachableNodeException e) {
+                    e.printStackTrace();
+                }
             }
 
         }
@@ -81,12 +87,17 @@ public class InterTupleCentreACCProvider implements ILinkContext {
     public InterTupleCentreACCProvider(
             final alice.tuplecentre.api.TupleCentreId id) {
         this.idTo = id;
-        if (InterTupleCentreACCProvider.helpList == null) {
-            InterTupleCentreACCProvider.helpList =
-                    new HashMap<String, InterTupleCentreACC>();
+        synchronized (this) {
+            if (InterTupleCentreACCProvider.helpList == null) {
+                InterTupleCentreACCProvider.helpList =
+                        new HashMap<String, InterTupleCentreACC>();
+            }
         }
-        if (InterTupleCentreACCProvider.exec == null) {
-            InterTupleCentreACCProvider.exec = Executors.newCachedThreadPool();
+        synchronized (this) {
+            if (InterTupleCentreACCProvider.exec == null) {
+                InterTupleCentreACCProvider.exec =
+                        Executors.newCachedThreadPool();
+            }
         }
     }
 

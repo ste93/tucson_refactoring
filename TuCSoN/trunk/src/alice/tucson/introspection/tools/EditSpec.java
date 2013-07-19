@@ -187,7 +187,13 @@ public class EditSpec extends javax.swing.JFrame {
                     this.outputState.setText("File '" + name + "' not found.");
                 } catch (final IOException e) {
                     this.outputState.setText(e.toString());
-                } finally {
+                    try {
+                        in.close();
+                    } catch (final IOException ee) {
+                        ee.printStackTrace();
+                    }
+                }
+                if (in != null) {
                     try {
                         in.close();
                     } catch (final IOException e) {
@@ -232,7 +238,13 @@ public class EditSpec extends javax.swing.JFrame {
                     + "' not found.");
         } catch (final IOException e) {
             this.outputState.setText(e.toString());
-        } finally {
+            try {
+                out.close();
+            } catch (final IOException ee) {
+                ee.printStackTrace();
+            }
+        }
+        if (out != null) {
             try {
                 out.close();
             } catch (final IOException e) {
@@ -261,7 +273,13 @@ public class EditSpec extends javax.swing.JFrame {
                     this.outputState.setText("File '" + name + "' not found.");
                 } catch (final IOException e) {
                     this.outputState.setText(e.toString());
-                } finally {
+                    try {
+                        out.close();
+                    } catch (final IOException ee) {
+                        ee.printStackTrace();
+                    }
+                }
+                if (out != null) {
                     try {
                         out.close();
                     } catch (final IOException e) {

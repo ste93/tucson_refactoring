@@ -419,6 +419,7 @@ public class RespectOperation extends AbstractTupleCentreOperation implements
             cpy = LogicTuple.parse(t.toString());
         } catch (final InvalidLogicTupleException e) {
             e.printStackTrace();
+            return null;
         }
         TupleArgument arg;
         try {
@@ -488,6 +489,7 @@ public class RespectOperation extends AbstractTupleCentreOperation implements
             cpy = LogicTuple.parse(t.toString());
         } catch (final InvalidLogicTupleException e) {
             e.printStackTrace();
+            return null;
         }
         TupleArgument arg;
         try {

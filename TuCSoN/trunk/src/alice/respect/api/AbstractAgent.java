@@ -121,7 +121,9 @@ public abstract class AbstractAgent {
         } catch (final SecurityException e) {
             e.printStackTrace();
         }
-        m.setAccessible(true);
+        if (m != null) {
+            m.setAccessible(true);
+        }
         new PlanExecutor(this, m).start();
     }
 

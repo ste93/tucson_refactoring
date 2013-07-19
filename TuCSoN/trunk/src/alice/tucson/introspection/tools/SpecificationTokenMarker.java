@@ -33,7 +33,7 @@ public class SpecificationTokenMarker extends TokenMarker {
      * @return the Object representing associations between String
      *         representation of keywords and keywords token
      */
-    public static KeywordMap getKeywords() {
+    public static synchronized KeywordMap getKeywords() {
 
         if (SpecificationTokenMarker.respectKeywords == null) {
 

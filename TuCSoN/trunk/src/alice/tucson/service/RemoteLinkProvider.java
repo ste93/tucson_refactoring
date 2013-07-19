@@ -15,15 +15,8 @@ import alice.tuplecentre.api.TupleCentreId;
 public class RemoteLinkProvider implements IRemoteLinkProvider {
 
     // FIXME How to fix this?
-    private static Map<String, InterTupleCentreACCProvider> remoteRegistry;
-
-    /**
-     * 
-     */
-    public RemoteLinkProvider() {
-        RemoteLinkProvider.remoteRegistry =
-                new HashMap<String, InterTupleCentreACCProvider>();
-    }
+    private static Map<String, InterTupleCentreACCProvider> remoteRegistry =
+            new HashMap<String, InterTupleCentreACCProvider>();
 
     public ILinkContext getRemoteLinkContext(final TupleCentreId id) {
         // id e' il tuplecentre target (nome completo xche' toString?)
