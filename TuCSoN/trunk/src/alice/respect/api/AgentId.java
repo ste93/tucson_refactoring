@@ -52,6 +52,8 @@ public class AgentId implements alice.tuplecentre.api.AgentId,
         String newSid = null;
         if (sid.indexOf(':') != -1) {
             newSid = sid.substring(0, sid.indexOf(':'));
+        } else {
+            newSid = sid;
         }
         try {
             this.id = Term.createTerm(newSid, AgentId.opManager);
