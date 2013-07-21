@@ -9,7 +9,7 @@ import java.util.Map;
  * multiple values ​​for the same {@code key}. This value are stored in a
  * {@link List} associated whit the {@code key}.
  */
-public interface BucketMap<K, V> extends Iterable<V> {
+public interface MVmap<K, V> extends Iterable<V> {
 
 	/**
 	 * Returns the number of key-value pair in this BucketMap.

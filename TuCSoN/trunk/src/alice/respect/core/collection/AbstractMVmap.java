@@ -11,12 +11,12 @@ import java.util.ListIterator;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
-public abstract class AbstractBucketMap<K, V> implements BucketMap<K, V> {
+public abstract class AbstractMVmap<K, V> implements MVmap<K, V> {
 
 	private Map<K, List<V>> map;
 	private int totalSize;
 
-	protected AbstractBucketMap(Map<K, List<V>> map) {
+	protected AbstractMVmap(Map<K, List<V>> map) {
 		this.map = map;
 	}
 
@@ -193,8 +193,8 @@ public abstract class AbstractBucketMap<K, V> implements BucketMap<K, V> {
 		if (object == this) {
 			return true;
 		}
-		if (object instanceof AbstractBucketMap) {
-			AbstractBucketMap<?, ?> m = (AbstractBucketMap<?, ?>) object;
+		if (object instanceof AbstractMVmap) {
+			AbstractMVmap<?, ?> m = (AbstractMVmap<?, ?>) object;
 			return this.map.equals(m.getMap());
 		}
 		return false;

@@ -22,7 +22,7 @@ import java.util.LinkedList;
 import alice.logictuple.LogicTuple;
 import alice.logictuple.TupleArgument;
 import alice.logictuple.exceptions.InvalidTupleOperationException;
-import alice.respect.core.collection.BucketHashMap;
+import alice.respect.core.collection.MVHashMap;
 
 /**
  * Class representing a Tuple Set.
@@ -34,7 +34,7 @@ public class TupleSetSpec extends AbstractTupleSet {
 	// per le reaction potrebbe essere un problema.
 
 	public TupleSetSpec() {
-		tuples = new BucketHashMap<String, LogicTuple>();
+		tuples = new MVHashMap<String, LogicTuple>();
 		tAdded = new LinkedList<LogicTupleEntry>();
 		tRemoved = new LinkedList<LogicTupleEntry>();
 		transaction = false;

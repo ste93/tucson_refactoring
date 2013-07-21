@@ -21,12 +21,12 @@ import java.util.LinkedList;
 
 import alice.logictuple.LogicTuple;
 import alice.logictuple.exceptions.InvalidTupleOperationException;
-import alice.respect.core.collection.BucketHashMap;
+import alice.respect.core.collection.MVHashMap;
 
 public class TupleSetSimple extends AbstractTupleSet {
 
 	public TupleSetSimple() {
-		tuples = new BucketHashMap<String, LogicTuple>();
+		tuples = new MVHashMap<String, LogicTuple>();
 		tAdded = new LinkedList<LogicTupleEntry>();
 		tRemoved = new LinkedList<LogicTupleEntry>();
 		transaction = false;

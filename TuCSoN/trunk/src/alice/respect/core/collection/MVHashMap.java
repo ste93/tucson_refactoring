@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class BucketHashMap<K, V> extends AbstractBucketMap<K, V> {
+public class MVHashMap<K, V> extends AbstractMVmap<K, V> {
 
 	private final static int INITIAL_CAPACITY_PER_KEY = 2;
 
-	public BucketHashMap() {
+	public MVHashMap() {
 		super(new HashMap<K, List<V>>());
 	}
 

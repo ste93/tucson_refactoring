@@ -13,16 +13,16 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import alice.respect.core.collection.BucketHashMap;
-import alice.respect.core.collection.BucketMap;
+import alice.respect.core.collection.MVHashMap;
+import alice.respect.core.collection.MVmap;
 
-public class BucketMapJUnitTest {
+public class MVmapJUnitTest {
 
 	@Rule
 	public ExpectedException exception = ExpectedException.none();
 
-	private BucketMap<String, Integer> create() {
-		return new BucketHashMap<String, Integer>();
+	private MVmap<String, Integer> create() {
+		return new MVHashMap<String, Integer>();
 	}
 
 //	@Test
@@ -48,7 +48,7 @@ public class BucketMapJUnitTest {
 	@Test
 	public void testSize() {
 
-		BucketMap<String, Integer> map = create();
+		MVmap<String, Integer> map = create();
 		assertTrue(map.isEmpty());
 
 		map.put("A", 10);
@@ -82,7 +82,7 @@ public class BucketMapJUnitTest {
 	@Test
 	public void testSubListSize() {
 
-		BucketMap<String, Integer> map = create();
+		MVmap<String, Integer> map = create();
 		assertTrue(map.isEmpty());
 
 		map.put("A", 100);
@@ -120,7 +120,7 @@ public class BucketMapJUnitTest {
 	@Test
 	public void testIsEmpty() {
 
-		BucketMap<String, Integer> map = create();
+		MVmap<String, Integer> map = create();
 
 		assertTrue(map.isEmpty());
 
@@ -140,7 +140,7 @@ public class BucketMapJUnitTest {
 	@Test
 	public void testContainsKey() {
 
-		BucketMap<String, Integer> map = create();
+		MVmap<String, Integer> map = create();
 
 		map.put("A", 100);
 		map.put("B", 1900);
@@ -159,7 +159,7 @@ public class BucketMapJUnitTest {
 
 	@Test
 	public void testContainsValue() {
-		BucketMap<String, Integer> map = create();
+		MVmap<String, Integer> map = create();
 		assertTrue(map.isEmpty());
 
 		map.put("A", 100);
@@ -230,7 +230,7 @@ public class BucketMapJUnitTest {
 
 	@Test
 	public void testMapIterator() {
-		BucketMap<String, Integer> map = create();
+		MVmap<String, Integer> map = create();
 
 		map.put("A", 1);
 		map.put("B", 2);
@@ -291,7 +291,7 @@ public class BucketMapJUnitTest {
 
 	@Test
 	public void testMapIteratorException1() {
-		BucketMap<String, Integer> map = create();
+		MVmap<String, Integer> map = create();
 
 		map.put("A", 1);
 		map.put("B", 2);
@@ -316,7 +316,7 @@ public class BucketMapJUnitTest {
 
 	@Test
 	public void testMapIteratorException2() {
-		BucketMap<String, Integer> map = create();
+		MVmap<String, Integer> map = create();
 
 		map.put("A", 1);
 		map.put("B", 2);
@@ -337,7 +337,7 @@ public class BucketMapJUnitTest {
 
 	@Test
 	public void testListIterator() {
-		BucketMap<String, Integer> map = create();
+		MVmap<String, Integer> map = create();
 
 		map.put("A", 1);
 		map.put("B", 2);
@@ -386,7 +386,7 @@ public class BucketMapJUnitTest {
 
 	@Test
 	public void testListIteratorException1() {
-		BucketMap<String, Integer> map = create();
+		MVmap<String, Integer> map = create();
 
 		map.put("A", 1);
 		map.put("B", 2);
@@ -408,7 +408,7 @@ public class BucketMapJUnitTest {
 
 	@Test
 	public void testListIteratorException2() {
-		BucketMap<String, Integer> map = create();
+		MVmap<String, Integer> map = create();
 
 		map.put("A", 1);
 		map.put("B", 2);
