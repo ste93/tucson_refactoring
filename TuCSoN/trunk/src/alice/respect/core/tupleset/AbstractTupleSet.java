@@ -1,4 +1,4 @@
-package alice.respect.core;
+package alice.respect.core.tupleset;
 
 import java.util.AbstractMap;
 import java.util.Iterator;
