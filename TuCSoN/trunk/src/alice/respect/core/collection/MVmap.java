@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * A BucketMap is similar to a {@link Map} but, unlike this, it allows to map
+ * A MVmap (multivalue map) is similar to a {@link Map} but, unlike this, it allows to map
  * multiple values ​​for the same {@code key}. This value are stored in a
  * {@link List} associated whit the {@code key}.
  */
