@@ -14,13 +14,10 @@
 package alice.tucson.service;
 
 import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.net.ServerSocket;
-import java.net.SocketException;
-import java.net.SocketTimeoutException;
 
 import alice.tucson.network.AbstractTucsonProtocol;
-import alice.tucson.network.TucsonProtocolTCP;
+import alice.tucson.network.TPFactory;
+import alice.tucson.network.exceptions.DialogException;
 
 /**
  * 
@@ -35,9 +32,9 @@ public class WelcomeAgent extends Thread {
 
     private final ACCProvider contextManager;
     private final TucsonNodeService node;
-    private final int port;
-
     private boolean shut;
+
+    AbstractTucsonProtocol mainDialog;
 
     /**
      * 
@@ -53,7 +50,6 @@ public class WelcomeAgent extends Thread {
             final ACCProvider cm) {
         super();
         this.contextManager = cm;
-        this.port = p;
         this.node = n;
         this.shut = false;
         this.start();
@@ -65,45 +61,36 @@ public class WelcomeAgent extends Thread {
     @Override
     public void run() {
 
-        AbstractTucsonProtocol mainDialog = null;
         try {
-            final ServerSocket mainSocket = new ServerSocket();
-            mainSocket.setReuseAddress(true);
-            mainSocket.bind(new InetSocketAddress(this.port));
-            mainDialog = new TucsonProtocolTCP(mainSocket);
-        } catch (final SocketException e) {
+            this.mainDialog =
+                    TPFactory.getDialogNodeSide(TPFactory.DIALOG_TYPE_TCP);
+        } catch (final DialogException e) {
+            // TODO CICORA: what is the correct behavior when a port is already
+            // used?
             e.printStackTrace();
-        } catch (final IOException e) {
-            e.printStackTrace();
+            this.shut = true;
         }
 
         AbstractTucsonProtocol dialog = null;
-        boolean exception = false;
-        boolean timeout = false;
         try {
-            while (true) {
 
-                if (!timeout) {
-                    WelcomeAgent.log("Listening on port " + this.port
-                            + " for incoming ACC requests...");
-                } else {
-                    timeout = false;
-                }
+            while (!this.isShutdown()) {
 
                 try {
-                    dialog = mainDialog.acceptNewDialog();
-                } catch (final SocketTimeoutException e) {
-                    timeout = true;
-                    if (this.shut) {
-                        exception = true;
+                    dialog = this.mainDialog.acceptNewDialog();
+                } catch (final DialogException e) {
+                    // TODO CICORA: what is the correct behavior?
+                    if (this.isShutdown()) {
                         WelcomeAgent
-                                .log("Shutdown interrupt received, shutting down...");
-                        break;
+                                .log("Shutdown request received, shutting down...");
+                    } else {
+                        e.printStackTrace();
                     }
-                    continue;
+                    this.shut = true;
+                    break;
                 }
-                dialog.receiveFirstRequest();
 
+                dialog.receiveFirstRequest();
                 if (dialog.isEnterRequest()) {
                     dialog.receiveEnterRequest();
                     final ACCDescription desc = dialog.getContextDescription();
@@ -113,30 +100,35 @@ public class WelcomeAgent extends Thread {
                 }
 
             }
+
         } catch (final IOException e) {
-            exception = true;
             e.printStackTrace();
         } catch (final ClassNotFoundException e) {
-            exception = true;
             e.printStackTrace();
         }
 
-        if (exception && !this.shut) {
-            try {
-                dialog.end();
-            } catch (final IOException e) {
-                e.printStackTrace();
-            }
-            this.node.removeNodeAgent(this);
-        }
+        this.node.removeNodeAgent(this);
 
     }
 
-    /**
-     * 
-     */
-    public void shutdown() {
+    public synchronized void shutdown() {
+        /*
+         * TODO CICORA: it's not the WelcomAgent's thread to call this, but it's
+         * an acceptable compromise to avoid adding an additional thread
+         */
         this.shut = true;
+        try {
+            if (this.mainDialog != null) {
+                this.mainDialog.end();
+            }
+        } catch (final DialogException e) {
+            // TODO CICORA: what is the correct behavior?
+            e.printStackTrace();
+        }
+    }
+
+    private synchronized boolean isShutdown() {
+        return this.shut;
     }
 
 }

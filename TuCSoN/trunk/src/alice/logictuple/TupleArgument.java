@@ -164,6 +164,16 @@ public class TupleArgument implements java.io.Serializable {
         }
     }
 
+    public String getPredicateIndicator() throws InvalidTupleOperationException {
+        if (this.value instanceof alice.tuprolog.Struct) {
+            // TODO CICORA: oppure return
+            // ((Struct)value).getPredicateIndicator();
+            return ((alice.tuprolog.Struct) this.value).getName() + "/"
+                    + ((alice.tuprolog.Struct) this.value).getArity();
+        }
+        throw new InvalidTupleOperationException();
+    }
+
     /**
      * Gets the argument linked to a variable inside the tuple argument
      * 
@@ -448,4 +458,5 @@ public class TupleArgument implements java.io.Serializable {
         }
         return null;
     }
+
 }

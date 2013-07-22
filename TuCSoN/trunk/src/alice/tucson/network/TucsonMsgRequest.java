@@ -1,8 +1,5 @@
 package alice.tucson.network;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 import alice.logictuple.LogicTuple;
@@ -16,47 +13,6 @@ public class TucsonMsgRequest implements Serializable {
 
     /** serialVersionUID **/
     private static final long serialVersionUID = 1L;
-
-    /**
-     * 
-     * @param din
-     *            the input stream where to read objects from
-     * @return the request message received
-     * @throws IOException
-     *             if the stream has some problems
-     * @throws ClassNotFoundException
-     *             if the received object's class cannot be found
-     */
-    public static TucsonMsgRequest read(final ObjectInputStream din)
-            throws IOException, ClassNotFoundException {
-        final long id = din.readLong();
-        final int type = din.readInt();
-        final String tid = (String) din.readObject();
-        final LogicTuple t = (LogicTuple) din.readObject();
-        final TucsonMsgRequest msg = new TucsonMsgRequest();
-        msg.id = id;
-        msg.type = type;
-        msg.tuple = t;
-        msg.tid = tid;
-        return msg;
-    }
-
-    /**
-     * 
-     * @param dout
-     *            the output stream where to send objects to
-     * @param msg
-     *            the request message to be sent
-     * @throws IOException
-     *             if the stream has some problems
-     */
-    public static void write(final ObjectOutputStream dout,
-            final TucsonMsgRequest msg) throws IOException {
-        dout.writeLong(msg.getId());
-        dout.writeInt(msg.getType());
-        dout.writeObject(msg.getTid());
-        dout.writeObject(msg.getTuple());
-    }
 
     private long id;
     private String tid;
@@ -123,6 +79,15 @@ public class TucsonMsgRequest implements Serializable {
      */
     public int getType() {
         return this.type;
+    }
+
+    @Override
+    public String toString() {
+        String s = "ID: " + this.id;
+        s += "; Type: " + this.type;
+        s += "; TID: " + this.tid;
+        s += "; Tuple: " + this.tuple;
+        return s;
     }
 
 }

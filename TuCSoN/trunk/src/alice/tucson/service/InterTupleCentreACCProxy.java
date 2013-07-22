@@ -13,10 +13,7 @@
  */
 package alice.tucson.service;
 
-import java.io.EOFException;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -35,6 +32,8 @@ import alice.tucson.network.AbstractTucsonProtocol;
 import alice.tucson.network.TucsonMsgReply;
 import alice.tucson.network.TucsonMsgRequest;
 import alice.tucson.network.TucsonProtocolTCP;
+import alice.tucson.network.exceptions.DialogException;
+import alice.tucson.network.exceptions.DialogExceptionTcp;
 import alice.tuplecentre.api.Tuple;
 import alice.tuplecentre.api.TupleTemplate;
 import alice.tuplecentre.core.AbstractTupleCentreOperation;
@@ -55,7 +54,7 @@ public class InterTupleCentreACCProxy implements InterTupleCentreACC,
      */
     class Controller extends Thread {
 
-        private final ObjectInputStream in;
+        private final AbstractTucsonProtocol dialog;
         private final Prolog p = new Prolog();
         private boolean stop;
 
@@ -63,11 +62,11 @@ public class InterTupleCentreACCProxy implements InterTupleCentreACC,
          * 
          * @param input
          */
-        Controller(final ObjectInputStream input) {
+        Controller(final AbstractTucsonProtocol d) {
 
             super();
 
-            this.in = input;
+            this.dialog = d;
             this.stop = false;
             this.setDaemon(true);
 
@@ -90,18 +89,8 @@ public class InterTupleCentreACCProxy implements InterTupleCentreACC,
 
                 TucsonMsgReply msg = null;
                 try {
-                    msg = TucsonMsgReply.read(this.in);
-                } catch (final EOFException e) {
-                    InterTupleCentreACCProxy
-                            .log("TuCSoN node service unavailable, nothing I can do");
-                    this.setStop();
-                    break;
-                } catch (final ClassNotFoundException e) {
-                    InterTupleCentreACCProxy
-                            .log("TuCSoN node service unavailable, nothing I can do");
-                    this.setStop();
-                    break;
-                } catch (final IOException e) {
+                    msg = this.dialog.receiveMsgReply();
+                } catch (final DialogException e) {
                     InterTupleCentreACCProxy
                             .log("TuCSoN node service unavailable, nothing I can do");
                     this.setStop();
@@ -344,7 +333,6 @@ public class InterTupleCentreACCProxy implements InterTupleCentreACC,
                 exception = true;
                 throw new UnreachableNodeException();
             }
-            final ObjectOutputStream outStream = session.getOutputStream();
 
             this.operations.put(this.opId, op);
             final int type = op.getType();
@@ -368,9 +356,8 @@ public class InterTupleCentreACCProxy implements InterTupleCentreACC,
                     + ", op = " + msg.getType() + ", " + msg.getTuple() + ", "
                     + msg.getTid());
             try {
-                TucsonMsgRequest.write(outStream, msg);
-                outStream.flush();
-            } catch (final IOException e) {
+                session.sendMsgRequest(msg);
+            } catch (final DialogException e) {
                 exception = true;
                 e.printStackTrace();
             }
@@ -477,11 +464,13 @@ public class InterTupleCentreACCProxy implements InterTupleCentreACC,
             }
         } catch (final IOException e) {
             throw new UnreachableNodeException();
+        } catch (final DialogExceptionTcp e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
 
         if (isEnterReqAcpt) {
-            final ObjectInputStream din = dialog.getInputStream();
-            final Controller contr = new Controller(din);
+            final Controller contr = new Controller(dialog);
             final ControllerSession cs = new ControllerSession(contr, dialog);
             this.controllerSessions.put(opNode + ":" + port, cs);
             contr.start();

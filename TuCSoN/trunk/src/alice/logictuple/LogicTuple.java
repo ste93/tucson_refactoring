@@ -295,6 +295,18 @@ public class LogicTuple implements alice.tuplecentre.api.TupleTemplate,
     }
 
     /**
+     * Return a string that is the name and arity of the logic tuple in the
+     * following format: {@code name/arity}. The method is applicable only if
+     * this term is a structure.
+     * 
+     * @return a {@code String} in the form nome/arity.
+     * 
+     */
+    public String getPredicateIndicator() throws InvalidTupleOperationException {
+        return this.info.getPredicateIndicator();
+    }
+
+    /**
      * Gets the argument linked to a variable inside the tuple.
      * 
      * Note that this method works only after that the logic tuple has been
@@ -346,4 +358,5 @@ public class LogicTuple implements alice.tuplecentre.api.TupleTemplate,
     public Term toTerm() {
         return this.info.toTerm();
     }
+
 }

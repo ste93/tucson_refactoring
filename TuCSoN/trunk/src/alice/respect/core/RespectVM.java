@@ -52,7 +52,7 @@ public class RespectVM implements Runnable {
     private final RespectTCContainer container;
     private final RespectVMContext context;
     private final Object idle;
-    private final Object news;
+    private final EventMonitor news;
 
     /**
      * 
@@ -70,7 +70,7 @@ public class RespectVM implements Runnable {
             final int qSize, final IRespectTC respectTC) {
         this.container = c;
         this.context = new RespectVMContext(this, tid, qSize, respectTC);
-        this.news = new Object();
+        this.news = new EventMonitor();
         this.idle = new Object();
         this.inspectors = new ArrayList<InspectableEventListener>();
         this.observers = new ArrayList<ObservableEventListener>();
@@ -122,11 +122,9 @@ public class RespectVM implements Runnable {
             throws OperationNotPossibleException {
         try {
             this.context.doOperation(id, op);
+            this.news.signalEvent();
         } catch (final alice.tuplecentre.api.exceptions.OperationNotPossibleException e) {
             throw new OperationNotPossibleException();
-        }
-        synchronized (this.news) {
-            this.news.notifyAll();
         }
     }
 
@@ -208,11 +206,9 @@ public class RespectVM implements Runnable {
     public void goCommand() throws OperationNotPossibleException {
         try {
             this.context.goCommand();
+            this.news.signalEvent();
         } catch (final alice.tuplecentre.api.exceptions.OperationNotPossibleException e) {
             throw new OperationNotPossibleException();
-        }
-        synchronized (this.news) {
-            this.news.notifyAll();
         }
     }
 
@@ -242,11 +238,9 @@ public class RespectVM implements Runnable {
     public void nextStepCommand() throws OperationNotPossibleException {
         try {
             this.context.nextStepCommand();
+            this.news.signalEvent();
         } catch (final alice.tuplecentre.api.exceptions.OperationNotPossibleException e) {
             throw new OperationNotPossibleException();
-        }
-        synchronized (this.news) {
-            this.news.notifyAll();
         }
     }
 
@@ -267,9 +261,7 @@ public class RespectVM implements Runnable {
      * 
      */
     public void notifyNewInputEvent() {
-        synchronized (this.news) {
-            this.news.notifyAll();
-        }
+        this.news.signalEvent();
     }
 
     /**
@@ -426,9 +418,7 @@ public class RespectVM implements Runnable {
                 }
                 if (!(this.context.pendingEvents() || this.context
                         .pendingEnvEvents())) {
-                    synchronized (this.news) {
-                        this.news.wait();
-                    }
+                    this.news.awaitEvent();
                 }
             } catch (final InterruptedException e) {
                 System.out

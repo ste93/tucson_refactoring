@@ -13,10 +13,7 @@
  */
 package alice.tucson.service;
 
-import java.io.EOFException;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,9 +36,10 @@ import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
 import alice.tucson.network.AbstractTucsonProtocol;
+import alice.tucson.network.TPFactory;
 import alice.tucson.network.TucsonMsgReply;
 import alice.tucson.network.TucsonMsgRequest;
-import alice.tucson.network.TucsonProtocolTCP;
+import alice.tucson.network.exceptions.DialogException;
 import alice.tucson.parsing.MyOpManager;
 import alice.tuplecentre.api.Tuple;
 import alice.tuplecentre.api.TupleTemplate;
@@ -92,7 +90,7 @@ public class ACCProxyAgentSide implements EnhancedACC {
      */
     protected class Controller extends Thread {
 
-        private final ObjectInputStream in;
+        private final AbstractTucsonProtocol dialog;
         private final Prolog p = new Prolog();
         private boolean stop;
 
@@ -100,11 +98,11 @@ public class ACCProxyAgentSide implements EnhancedACC {
          * 
          * @param input
          */
-        Controller(final ObjectInputStream input) {
+        Controller(final AbstractTucsonProtocol d) {
 
             super();
 
-            this.in = input;
+            this.dialog = d;
             this.stop = false;
             this.setDaemon(true);
 
@@ -134,19 +132,11 @@ public class ACCProxyAgentSide implements EnhancedACC {
 
                 TucsonMsgReply msg = null;
                 try {
-                    msg = TucsonMsgReply.read(this.in);
-                } catch (final EOFException e) {
+                    msg = this.dialog.receiveMsgReply();
+                } catch (final DialogException e) {
                     ACCProxyAgentSide.this
                             .log("TuCSoN node service unavailable, nothing I can do");
                     this.setStop();
-                    break;
-                } catch (final ClassNotFoundException e) {
-                    this.setStop();
-                    e.printStackTrace();
-                    break;
-                } catch (final IOException e) {
-                    this.setStop();
-                    e.printStackTrace();
                     break;
                 }
 
@@ -417,7 +407,6 @@ public class ACCProxyAgentSide implements EnhancedACC {
         ControllerSession cs;
         AbstractTucsonProtocol info;
         Controller contr;
-        ObjectOutputStream outStream;
         TucsonOperation op;
         TucsonMsgRequest exit;
 
@@ -427,7 +416,6 @@ public class ACCProxyAgentSide implements EnhancedACC {
             info = cs.getSession();
             contr = cs.getController();
             contr.setStop();
-            outStream = info.getOutputStream();
 
             op =
                     new TucsonOperation(TucsonOperation.exitCode(),
@@ -438,9 +426,8 @@ public class ACCProxyAgentSide implements EnhancedACC {
                     new TucsonMsgRequest((int) op.getId(), op.getType(), null,
                             op.getLogicTupleArgument());
             try {
-                TucsonMsgRequest.write(outStream, exit);
-                outStream.flush();
-            } catch (final IOException e) {
+                info.sendMsgRequest(exit);
+            } catch (final DialogException e) {
                 e.printStackTrace();
             }
 
@@ -1160,7 +1147,6 @@ public class ACCProxyAgentSide implements EnhancedACC {
                 exception = true;
                 throw new UnreachableNodeException();
             }
-            final ObjectOutputStream outStream = session.getOutputStream();
 
             TucsonOperation op = null;
             if ((type == TucsonOperation.outCode())
@@ -1181,9 +1167,8 @@ public class ACCProxyAgentSide implements EnhancedACC {
                     + ", " + msg.getTid());
 
             try {
-                TucsonMsgRequest.write(outStream, msg);
-                outStream.flush();
-            } catch (final IOException ex) {
+                session.sendMsgRequest(msg);
+            } catch (final DialogException ex) {
                 exception = true;
                 System.err.println("[ACCProxyAgentSide]: " + ex);
             }
@@ -1258,7 +1243,7 @@ public class ACCProxyAgentSide implements EnhancedACC {
         AbstractTucsonProtocol dialog = null;
         boolean isEnterReqAcpt = false;
         try {
-            dialog = new TucsonProtocolTCP(opNode, p);
+            dialog = TPFactory.getDialogAgentSide(tid);
             dialog.sendEnterRequest(this.profile);
             dialog.receiveEnterRequestAnswer();
             if (dialog.isEnterRequestAccepted()) {
@@ -1266,11 +1251,13 @@ public class ACCProxyAgentSide implements EnhancedACC {
             }
         } catch (final IOException e) {
             throw new UnreachableNodeException();
+        } catch (final DialogException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
 
         if (isEnterReqAcpt) {
-            final ObjectInputStream din = dialog.getInputStream();
-            final Controller contr = new Controller(din);
+            final Controller contr = new Controller(dialog);
             final ControllerSession cs = new ControllerSession(contr, dialog);
             this.controllerSessions.put(opNode + ":" + p, cs);
             contr.start();

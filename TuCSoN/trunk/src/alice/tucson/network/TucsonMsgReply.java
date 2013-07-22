@@ -1,8 +1,5 @@
 package alice.tucson.network;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 import alice.logictuple.LogicTuple;
@@ -16,56 +13,6 @@ public class TucsonMsgReply implements Serializable {
 
     /** serialVersionUID **/
     private static final long serialVersionUID = 1L;
-
-    /**
-     * 
-     * @param din
-     *            the input stream where to read objects from
-     * @return the reply message received
-     * @throws IOException
-     *             if the stream has some problems
-     * @throws ClassNotFoundException
-     *             if the received object's class cannot be found
-     */
-    public static TucsonMsgReply read(final ObjectInputStream din)
-            throws IOException, ClassNotFoundException {
-        final long id = din.readLong();
-        final int type = din.readInt();
-        final boolean bool = din.readBoolean();
-        final boolean succ = din.readBoolean();
-        final boolean res = din.readBoolean();
-        final LogicTuple treq = (LogicTuple) din.readObject();
-        final Object tres = din.readObject();
-        final TucsonMsgReply msg = new TucsonMsgReply();
-        msg.id = id;
-        msg.type = type;
-        msg.allowed = bool;
-        msg.success = succ;
-        msg.resultSuccess = res;
-        msg.reqTuple = treq;
-        msg.resTuple = tres;
-        return msg;
-    }
-
-    /**
-     * 
-     * @param dout
-     *            the output stream where to send objects to
-     * @param msg
-     *            the reply message to be sent
-     * @throws IOException
-     *             if the stream has some problems
-     */
-    public static void write(final ObjectOutputStream dout,
-            final TucsonMsgReply msg) throws IOException {
-        dout.writeLong(msg.getId());
-        dout.writeInt(msg.getType());
-        dout.writeBoolean(msg.isAllowed());
-        dout.writeBoolean(msg.isSuccess());
-        dout.writeBoolean(msg.isResultSuccess());
-        dout.writeObject(msg.getTupleRequested());
-        dout.writeObject(msg.getTupleResult());
-    }
 
     private boolean allowed;
     private long id;
@@ -195,6 +142,18 @@ public class TucsonMsgReply implements Serializable {
      */
     public boolean isSuccess() {
         return this.success;
+    }
+
+    @Override
+    public String toString() {
+        String s = "ID: " + this.id;
+        s += "; Type: " + this.type;
+        s += "; Tuple Requested: " + this.reqTuple;
+        s += "; Tuple Result: " + this.resTuple;
+        s += "; Allowed: " + this.allowed;
+        s += "; Success: " + this.success;
+        s += "; Result Success: " + this.resultSuccess;
+        return s;
     }
 
 }

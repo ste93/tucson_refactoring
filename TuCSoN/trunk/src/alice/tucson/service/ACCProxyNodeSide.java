@@ -13,10 +13,6 @@
  */
 package alice.tucson.service;
 
-import java.io.EOFException;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -33,6 +29,7 @@ import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.network.AbstractTucsonProtocol;
 import alice.tucson.network.TucsonMsgReply;
 import alice.tucson.network.TucsonMsgRequest;
+import alice.tucson.network.exceptions.DialogException;
 import alice.tuplecentre.api.ITupleCentreOperation;
 import alice.tuplecentre.api.Tuple;
 import alice.tuplecentre.core.AbstractTupleCentreOperation;
@@ -48,11 +45,9 @@ public class ACCProxyNodeSide extends AbstractACCProxyNodeSide {
     private final int ctxId;
     private final AbstractTucsonProtocol dialog;
     private boolean ex = false;
-    private final ObjectInputStream inStream;
     private final ACCProvider manager;
     private final TucsonNodeService node;
     private final Map<Long, Long> opVsReq;
-    private final ObjectOutputStream outStream;
     private final Map<Long, TucsonMsgRequest> requests;
     private TucsonTupleCentreId tcId;
 
@@ -95,8 +90,6 @@ public class ACCProxyNodeSide extends AbstractACCProxyNodeSide {
         }
 
         this.dialog = d;
-        this.inStream = d.getInputStream();
-        this.outStream = d.getOutputStream();
 
         this.requests = new HashMap<Long, TucsonMsgRequest>();
         this.opVsReq = new HashMap<Long, Long>();
@@ -156,9 +149,8 @@ public class ACCProxyNodeSide extends AbstractACCProxyNodeSide {
         }
 
         try {
-            TucsonMsgReply.write(this.outStream, reply);
-            this.outStream.flush();
-        } catch (final IOException e) {
+            this.dialog.sendMsgReply(reply);
+        } catch (final DialogException e) {
             e.printStackTrace();
         }
 
@@ -183,14 +175,9 @@ public class ACCProxyNodeSide extends AbstractACCProxyNodeSide {
             this.log("Listening to incoming TuCSoN agents/nodes requests...");
 
             try {
-                msg = TucsonMsgRequest.read(this.inStream);
-            } catch (final EOFException e) {
+                msg = this.dialog.receiveMsgRequest();
+            } catch (final DialogException e) {
                 this.log("Agent " + this.agentId + " quitted");
-                break;
-            } catch (final ClassNotFoundException e) {
-                e.printStackTrace();
-                break;
-            } catch (final IOException e) {
                 e.printStackTrace();
                 break;
             }
@@ -201,10 +188,9 @@ public class ACCProxyNodeSide extends AbstractACCProxyNodeSide {
                         new TucsonMsgReply(msg.getId(),
                                 TucsonOperation.exitCode(), true, true, true);
                 try {
-                    TucsonMsgReply.write(this.outStream, reply);
-                    this.outStream.flush();
+                    this.dialog.sendMsgReply(reply);
                     break;
-                } catch (final IOException e) {
+                } catch (final DialogException e) {
                     e.printStackTrace();
                     break;
                 }
@@ -253,9 +239,8 @@ public class ACCProxyNodeSide extends AbstractACCProxyNodeSide {
                                 true, msg.getTuple(), resList);
 
                 try {
-                    TucsonMsgReply.write(this.outStream, reply);
-                    this.outStream.flush();
-                } catch (final IOException e) {
+                    this.dialog.sendMsgReply(reply);
+                } catch (final DialogException e) {
                     e.printStackTrace();
                     break;
                 }
@@ -290,9 +275,8 @@ public class ACCProxyNodeSide extends AbstractACCProxyNodeSide {
                                 true, res, resList);
 
                 try {
-                    TucsonMsgReply.write(this.outStream, reply);
-                    this.outStream.flush();
-                } catch (final IOException e) {
+                    this.dialog.sendMsgReply(reply);
+                } catch (final DialogException e) {
                     e.printStackTrace();
                     break;
                 }
@@ -326,9 +310,8 @@ public class ACCProxyNodeSide extends AbstractACCProxyNodeSide {
                                 true, null, resList);
 
                 try {
-                    TucsonMsgReply.write(this.outStream, reply);
-                    this.outStream.flush();
-                } catch (final IOException e) {
+                    this.dialog.sendMsgReply(reply);
+                } catch (final DialogException e) {
                     e.printStackTrace();
                     break;
                 }
@@ -368,9 +351,8 @@ public class ACCProxyNodeSide extends AbstractACCProxyNodeSide {
                                 true, null, resList);
 
                 try {
-                    TucsonMsgReply.write(this.outStream, reply);
-                    this.outStream.flush();
-                } catch (final IOException e) {
+                    this.dialog.sendMsgReply(reply);
+                } catch (final DialogException e) {
                     e.printStackTrace();
                     break;
                 }
@@ -470,7 +452,7 @@ public class ACCProxyNodeSide extends AbstractACCProxyNodeSide {
 
         try {
             this.dialog.end();
-        } catch (final IOException e) {
+        } catch (final DialogException e) {
             e.printStackTrace();
         }
 

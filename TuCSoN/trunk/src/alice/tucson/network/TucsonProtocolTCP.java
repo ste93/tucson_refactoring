@@ -12,14 +12,25 @@
  */
 package alice.tucson.network;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.BindException;
+import java.net.ConnectException;
+import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 
+import alice.tucson.api.exceptions.UnreachableNodeException;
+import alice.tucson.network.exceptions.DialogExceptionTcp;
+
+/*
+ * TODO CICORA: è necessario separare la classe usata server side e la classe usata
+ * client side anche in vista di una separazione delle librerie agent-node
+ */
 /**
  * 
  * @author ste (mailto: s.mariani@unibo.it) on 03/lug/2013
@@ -29,68 +40,200 @@ public class TucsonProtocolTCP extends AbstractTucsonProtocol {
 
     /** serialVersionUID **/
     private static final long serialVersionUID = 1L;
-    private static final int SOCKET_TIMEOUT = 5000;
     private ObjectInputStream inStream;
     private ServerSocket mainSocket;
     private ObjectOutputStream outStream;
+    private boolean serverSocketClosed;
     private Socket socket;
 
     /**
+     * This constructor is typically used node side: it builds a new access
+     * point to which an external agent can engage a new dialog. After the
+     * creation of this object usually is invoked the method acceptNewDialog()
      * 
-     * @param s
-     *            the socket whose this connection is bound
+     * It make a new ServerSocket binded at port specified by port parameter.
      */
-    public TucsonProtocolTCP(final ServerSocket s) {
-        super();
-        this.mainSocket = s;
+    public TucsonProtocolTCP(final int port) throws DialogExceptionTcp {
+        try {
+            this.mainSocket = new ServerSocket();
+            this.mainSocket.setReuseAddress(true);
+            this.mainSocket.bind(new InetSocketAddress(port));
+        } catch (final IllegalArgumentException e) {
+            throw new DialogExceptionTcp();
+        } catch (final BindException e) {
+            throw new DialogExceptionTcp();
+        } catch (final IOException e) {
+            throw new DialogExceptionTcp();
+        }
+
     }
 
     /**
+     * This constructor create a new dialog whit a specific host that identified
+     * by host/port pair. This constructor is typically used from external agent
+     * who want start a new dialogue with the node.
+     * 
+     * It make a new socket and init I/O streams. The streams are bufferized.
      * 
      * @param host
      *            the host where to bound
      * @param port
      *            the listening port where to bound
-     * @throws UnknownHostException
+     * @throws UnreachableNodeException
      *             if the given host is unknown
-     * @throws IOException
+     * @throws DialogExceptionTcp
      *             if some network problems arise
      */
     public TucsonProtocolTCP(final String host, final int port)
-            throws UnknownHostException, IOException {
-        super();
-        this.socket = new Socket(host, port);
-        this.outStream = new ObjectOutputStream(this.socket.getOutputStream());
-        this.inStream = new ObjectInputStream(this.socket.getInputStream());
+            throws UnreachableNodeException, DialogExceptionTcp {
+        try {
+            this.socket = new Socket(host, port);
+        } catch (final UnknownHostException e) {
+            throw new UnreachableNodeException();
+        } catch (final ConnectException e) {
+            throw new DialogExceptionTcp();
+        } catch (final IOException e) {
+            throw new DialogExceptionTcp();
+        }
+        /*
+         * To avoid deadlock: construct the output stream first, then flush it
+         * before creating the input stream.
+         */
+        try {
+            this.outStream =
+                    new ObjectOutputStream(new BufferedOutputStream(
+                            this.socket.getOutputStream()));
+            this.outStream.flush();
+            this.inStream =
+                    new ObjectInputStream(new BufferedInputStream(
+                            this.socket.getInputStream()));
+        } catch (final IOException e) {
+            throw new DialogExceptionTcp();
+        }
     }
 
-    private TucsonProtocolTCP(final Socket s) throws IOException {
-        super();
+    private TucsonProtocolTCP(final Socket s) throws DialogExceptionTcp {
         this.socket = s;
-        this.outStream = new ObjectOutputStream(s.getOutputStream());
-        this.inStream = new ObjectInputStream(s.getInputStream());
+        /*
+         * To avoid deadlock: construct the output stream first, then flush it
+         * before creating the input stream.
+         */
+        try {
+            this.outStream =
+                    new ObjectOutputStream(new BufferedOutputStream(
+                            this.socket.getOutputStream()));
+            this.outStream.flush();
+            this.inStream =
+                    new ObjectInputStream(new BufferedInputStream(
+                            this.socket.getInputStream()));
+        } catch (final IOException e) {
+            throw new DialogExceptionTcp();
+        }
     }
 
     @Override
-    public AbstractTucsonProtocol acceptNewDialog() throws IOException,
-            SocketTimeoutException {
-        this.mainSocket.setSoTimeout(TucsonProtocolTCP.SOCKET_TIMEOUT);
-        return new TucsonProtocolTCP(this.mainSocket.accept());
+    public AbstractTucsonProtocol acceptNewDialog() throws DialogExceptionTcp {
+        try {
+            return new TucsonProtocolTCP(this.mainSocket.accept());
+        } catch (final IOException e) {
+            // FIXME What to do here?
+            if (this.serverSocketClosed) {
+                System.out.println("SocketClosed...");
+            } else {
+                System.err.println("Generic IO error: " + e);
+            }
+            throw new DialogExceptionTcp();
+        }
     }
 
     @Override
-    public void end() throws IOException {
-        this.socket.close();
+    public void end() throws DialogExceptionTcp {
+        try {
+            if (this.socket != null) {
+                this.socket.close();
+            }
+            if (this.mainSocket != null) {
+                this.mainSocket.close();
+            }
+            this.serverSocketClosed = true;
+        } catch (final IOException e) {
+            System.err.println("Generic IO error: " + e);
+            throw new DialogExceptionTcp();
+        }
     }
 
     @Override
-    public ObjectInputStream getInputStream() {
-        return this.inStream;
+    public TucsonMsg receiveMsg() throws DialogExceptionTcp {
+        TucsonMsg msg;
+        try {
+            msg = (TucsonMsg) this.inStream.readObject();
+        } catch (final IOException e) {
+            throw new DialogExceptionTcp();
+        } catch (final ClassNotFoundException e) {
+            throw new DialogExceptionTcp();
+        }
+        return msg;
     }
 
     @Override
-    public ObjectOutputStream getOutputStream() {
-        return this.outStream;
+    public TucsonMsgReply receiveMsgReply() throws DialogExceptionTcp {
+
+        TucsonMsgReply msg = new TucsonMsgReply();
+        try {
+            msg = (TucsonMsgReply) this.inStream.readObject();
+        } catch (final IOException e) {
+            throw new DialogExceptionTcp();
+        } catch (final ClassNotFoundException e) {
+            throw new DialogExceptionTcp();
+        }
+        return msg;
+    }
+
+    @Override
+    public TucsonMsgRequest receiveMsgRequest() throws DialogExceptionTcp {
+        TucsonMsgRequest msg = new TucsonMsgRequest();
+        try {
+            msg = (TucsonMsgRequest) this.inStream.readObject();
+        } catch (final IOException e) {
+            throw new DialogExceptionTcp();
+        } catch (final ClassNotFoundException e) {
+            throw new DialogExceptionTcp();
+        }
+        return msg;
+    }
+
+    @Override
+    public void sendMsg(final TucsonMsg msg) throws DialogExceptionTcp {
+        try {
+            this.outStream.writeObject(msg);
+            this.outStream.flush();
+        } catch (final IOException e) {
+            throw new DialogExceptionTcp();
+        }
+    }
+
+    @Override
+    public void sendMsgReply(final TucsonMsgReply reply)
+            throws DialogExceptionTcp {
+        try {
+            this.outStream.writeObject(reply);
+            this.outStream.flush();
+        } catch (final IOException e) {
+            throw new DialogExceptionTcp();
+        }
+
+    }
+
+    @Override
+    public void sendMsgRequest(final TucsonMsgRequest request)
+            throws DialogExceptionTcp {
+
+        try {
+            this.outStream.writeObject(request);
+            this.outStream.flush();
+        } catch (final IOException e) {
+            throw new DialogExceptionTcp();
+        }
     }
 
     @Override
@@ -114,8 +257,8 @@ public class TucsonProtocolTCP extends AbstractTucsonProtocol {
     }
 
     @Override
-    protected String receiveString() throws ClassNotFoundException, IOException {
-        return (String) this.inStream.readObject();
+    protected String receiveString() throws IOException {
+        return this.inStream.readUTF();
     }
 
     @Override
@@ -140,7 +283,7 @@ public class TucsonProtocolTCP extends AbstractTucsonProtocol {
 
     @Override
     protected void send(final String value) throws IOException {
-        this.outStream.writeObject(value);
+        this.outStream.writeUTF(value);
     }
 
 }

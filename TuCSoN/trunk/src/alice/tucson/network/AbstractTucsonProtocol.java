@@ -13,11 +13,9 @@
 package alice.tucson.network;
 
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.SocketTimeoutException;
 import java.util.Properties;
 
+import alice.tucson.network.exceptions.DialogException;
 import alice.tucson.service.ACCDescription;
 
 /**
@@ -41,20 +39,13 @@ public abstract class AbstractTucsonProtocol implements java.io.Serializable {
     /**
      * 
      * @return the protocol to be used for interacting with TuCSoN
-     * @throws IOException
-     *             if some network problems arise
-     * @throws SocketTimeoutException
-     *             if connection timeout expires
      */
     public abstract AbstractTucsonProtocol acceptNewDialog()
-            throws IOException, SocketTimeoutException;
+            throws DialogException;
 
     /**
-     * 
-     * @throws IOException
-     *             if some network problems arise
      */
-    public abstract void end() throws IOException;
+    public abstract void end() throws DialogException;
 
     /**
      * 
@@ -64,17 +55,10 @@ public abstract class AbstractTucsonProtocol implements java.io.Serializable {
         return this.context;
     }
 
-    /**
-     * 
-     * @return the input stream where to read objects from
+    /*
+     * public abstract ObjectInputStream getInputStream(); public abstract
+     * ObjectOutputStream getOutputStream();
      */
-    public abstract ObjectInputStream getInputStream();
-
-    /**
-     * 
-     * @return the output stream where to send objects to
-     */
-    public abstract ObjectOutputStream getOutputStream();
 
     /**
      * 
@@ -133,6 +117,12 @@ public abstract class AbstractTucsonProtocol implements java.io.Serializable {
         this.reqType = this.receiveInt();
     }
 
+    abstract public TucsonMsg receiveMsg() throws DialogException;
+
+    abstract public TucsonMsgReply receiveMsgReply() throws DialogException;
+
+    abstract public TucsonMsgRequest receiveMsgRequest() throws DialogException;
+
     /**
      * 
      * @param ctx
@@ -188,6 +178,14 @@ public abstract class AbstractTucsonProtocol implements java.io.Serializable {
         this.send(false);
         this.flush();
     }
+
+    abstract public void sendMsg(TucsonMsg msg) throws DialogException;
+
+    abstract public void sendMsgReply(TucsonMsgReply reply)
+            throws DialogException;
+
+    abstract public void sendMsgRequest(TucsonMsgRequest request)
+            throws DialogException;
 
     /**
      * 
