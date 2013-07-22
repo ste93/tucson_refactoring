@@ -21,6 +21,7 @@ import alice.logictuple.*;
 import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.logictuple.exceptions.InvalidTupleOperationException;
 
+import alice.respect.core.RespectOperation;
 import alice.tucson.api.EnhancedACC;
 import alice.tucson.api.ITucsonOperation;
 import alice.tucson.api.TucsonAgentId;
@@ -63,7 +64,7 @@ import java.util.*;
  * upon the first invocation of any method belonging to the ACC Interface).
  * 
  * It is created from the TuCSoN Agent class. In it, an internal thread
- * is responsible to obtain the choosen ACC (the Default is the only at the moment)
+ * is responsible to obtain the chosen ACC (the Default is the only at the moment)
  * by invoking the {@link alice.tucson.api.TucsonMetaACC#getContext getContext}
  * static method from the TuCSoN Meta ACC class {@link alice.tucson.api.TucsonMetaACC metaACC}.
  * The acquisition of such ACC triggers this proxy creation and execution.
@@ -89,26 +90,28 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	 * TuCSoN Node Service listening port
 	 */
 	protected int port;
-	/**
-	 * Current ACC session description
-	 */
-	protected ACCDescription profile;
-	/**
-	 * TuCSoN requests completion events (node replies events)
-	 */
-	protected LinkedList<TucsonOpCompletionEvent> events;
-	/**
-	 * Active sessions toward different nodes
-	 */
-	protected HashMap<String, ControllerSession> controllerSessions;
-	/**
-	 * Requested TuCSoN operations
-	 */
-	protected HashMap<Long, TucsonOperation> operations;
-	/**
-	 * Expired TuCSoN operations
-	 */
-	protected ArrayList<Long> operationExpired;
+//	/**
+//	 * Current ACC session description
+//	 */
+//	protected ACCDescription profile;
+//	/**
+//	 * TuCSoN requests completion events (node replies events)
+//	 */
+//	protected LinkedList<TucsonOpCompletionEvent> events;
+//	/**
+//	 * Active sessions toward different nodes
+//	 */
+//	protected HashMap<String, OperationPerformer.ControllerSession> controllerSessions;
+//	/**
+//	 * Requested TuCSoN operations
+//	 */
+//	protected HashMap<Long, TucsonOperation> operations;
+//	/**
+//	 * Expired TuCSoN operations
+//	 */
+//	protected ArrayList<Long> operationExpired;
+	
+	protected OperationHandler executor;
 	
 	
 	/**
@@ -126,15 +129,18 @@ public class ACCProxyAgentSide implements EnhancedACC{
 //		if(aid.getClass().getName().equals("alice.tucson.api.TucsonAgentId"))
 //			this.aid = (TucsonAgentId) aid;
 //		else
-			this.aid = new TucsonAgentId(aid);
+		this.aid = new TucsonAgentId(aid);
 		this.node = node;
 		this.port = port;
+		
+		// Class used to perform tucson operations
+		executor = new OperationHandler();
 
-		profile = new ACCDescription();
-		events = new LinkedList<TucsonOpCompletionEvent>();
-		controllerSessions = new HashMap<String, ControllerSession>();
-		operations = new HashMap<Long, TucsonOperation>();
-		operationExpired = new ArrayList<Long>();
+//		profile = new ACCDescription();
+//		events = new LinkedList<TucsonOpCompletionEvent>();
+//		controllerSessions = new HashMap<String, OperationPerformer.ControllerSession>();
+//		operations = new HashMap<Long, TucsonOperation>();
+//		operationExpired = new ArrayList<Long>();
 		
 	}
 	
@@ -180,7 +186,8 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	 */
 	public ITucsonOperation out(Object tid, LogicTuple tuple, TucsonOperationCompletionListener l)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException{
-		return doNonBlockingOperation(TucsonOperation.outCode(), tid, tuple, l);
+//		return doNonBlockingOperation(TucsonOperation.outCode(), tid, tuple, l);
+		return executor.doNonBlockingOperation(aid, TucsonOperation.outCode(), tid, tuple, l);
 	}
 	
 	/**
@@ -214,7 +221,8 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	 */
 	public ITucsonOperation in(Object tid, LogicTuple tuple, TucsonOperationCompletionListener l)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException{
-		return doNonBlockingOperation(TucsonOperation.inCode(), tid, tuple, l);
+//		return doNonBlockingOperation(TucsonOperation.inCode(), tid, tuple, l);
+		return executor.doNonBlockingOperation(aid, TucsonOperation.inCode(), tid, tuple, l);
 	}
 	
 	/**
@@ -248,7 +256,8 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	 */
 	public ITucsonOperation rd(Object tid, LogicTuple tuple, TucsonOperationCompletionListener l)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException{
-		return doNonBlockingOperation(TucsonOperation.rdCode(), tid, tuple, l);
+//		return doNonBlockingOperation(TucsonOperation.rdCode(), tid, tuple, l);
+		return executor.doNonBlockingOperation(aid, TucsonOperation.rdCode(), tid, tuple, l);
 	}
 	
 	/**
@@ -281,7 +290,8 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	 */
 	public ITucsonOperation inp(Object tid, LogicTuple tuple, TucsonOperationCompletionListener l)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException{
-		return doNonBlockingOperation(TucsonOperation.inpCode(), tid, tuple, l);
+//		return doNonBlockingOperation(TucsonOperation.inpCode(), tid, tuple, l);
+		return executor.doNonBlockingOperation(aid, TucsonOperation.inpCode(), tid, tuple, l);
 	}
 	
 	/**
@@ -314,7 +324,8 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	 */
 	public ITucsonOperation rdp(Object tid, LogicTuple tuple, TucsonOperationCompletionListener l)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException{
-		return doNonBlockingOperation(TucsonOperation.rdpCode(), tid, tuple, l);
+//		return doNonBlockingOperation(TucsonOperation.rdpCode(), tid, tuple, l);
+		return executor.doNonBlockingOperation(aid, TucsonOperation.rdpCode(), tid, tuple, l);
 	}
 	
 	/**
@@ -347,7 +358,8 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	 */
 	public ITucsonOperation no(Object tid, LogicTuple tuple, TucsonOperationCompletionListener l)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException{
-		return doNonBlockingOperation(TucsonOperation.noCode(), tid, tuple, l);
+//		return doNonBlockingOperation(TucsonOperation.noCode(), tid, tuple, l);
+		return executor.doNonBlockingOperation(aid, TucsonOperation.noCode(), tid, tuple, l);
 	}
 	
 	/**
@@ -380,7 +392,8 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	 */
 	public ITucsonOperation nop(Object tid, LogicTuple tuple, TucsonOperationCompletionListener l)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException{
-		return doNonBlockingOperation(TucsonOperation.nopCode(), tid, tuple, l);
+//		return doNonBlockingOperation(TucsonOperation.nopCode(), tid, tuple, l);
+		return executor.doNonBlockingOperation(aid, TucsonOperation.nopCode(), tid, tuple, l);
 	}
 	
 	/**
@@ -411,7 +424,8 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	 */
 	public ITucsonOperation get(Object tid, TucsonOperationCompletionListener l)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException{
-		return doNonBlockingOperation(TucsonOperation.get_Code(), tid, null, l);
+//		return doNonBlockingOperation(TucsonOperation.get_Code(), tid, null, l);
+		return executor.doNonBlockingOperation(aid, TucsonOperation.get_Code(), tid, null, l);
 	}
 	
 	/**
@@ -440,7 +454,8 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	 */
 	public ITucsonOperation set(Object tid, LogicTuple tuple, TucsonOperationCompletionListener l)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException{
-		return doNonBlockingOperation(TucsonOperation.set_Code(), tid, tuple, l);
+//		return doNonBlockingOperation(TucsonOperation.set_Code(), tid, tuple, l);
+		return executor.doNonBlockingOperation(aid, TucsonOperation.set_Code(), tid, tuple, l);
 	}
 	
 	
@@ -450,7 +465,8 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	 */
 	public ITucsonOperation spawn(Object tid, LogicTuple toSpawn, TucsonOperationCompletionListener l)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException{
-		return doNonBlockingOperation(TucsonOperation.spawnCode(), tid, toSpawn, l);
+//		return doNonBlockingOperation(TucsonOperation.spawnCode(), tid, toSpawn, l);
+		return executor.doNonBlockingOperation(aid, TucsonOperation.spawnCode(), tid, toSpawn, l);
 	}
 	
 	
@@ -459,70 +475,80 @@ public class ACCProxyAgentSide implements EnhancedACC{
 			TucsonOperationCompletionListener l)
 			throws TucsonOperationNotPossibleException,
 			UnreachableNodeException {
-		return doNonBlockingOperation(TucsonOperation.uinCode(), tid, tuple, l);
+//		return doNonBlockingOperation(TucsonOperation.uinCode(), tid, tuple, l);
+		return executor.doNonBlockingOperation(aid, TucsonOperation.uinCode(), tid, tuple, l);
 	}
 
 	public ITucsonOperation urd(Object tid, LogicTuple tuple,
 			TucsonOperationCompletionListener l)
 			throws TucsonOperationNotPossibleException,
 			UnreachableNodeException {
-		return doNonBlockingOperation(TucsonOperation.urdCode(), tid, tuple, l);
+//		return doNonBlockingOperation(TucsonOperation.urdCode(), tid, tuple, l);
+		return executor.doNonBlockingOperation(aid, TucsonOperation.urdCode(), tid, tuple, l);
 	}
 	
 	public ITucsonOperation uno(Object tid, LogicTuple tuple,
 			TucsonOperationCompletionListener l)
 			throws TucsonOperationNotPossibleException,
 			UnreachableNodeException {
-		return doNonBlockingOperation(TucsonOperation.unoCode(), tid, tuple, l);
+//		return doNonBlockingOperation(TucsonOperation.unoCode(), tid, tuple, l);
+		return executor.doNonBlockingOperation(aid, TucsonOperation.unoCode(), tid, tuple, l);
 	}
 
 	public ITucsonOperation uinp(Object tid, LogicTuple tuple,
 			TucsonOperationCompletionListener l)
 			throws TucsonOperationNotPossibleException,
 			UnreachableNodeException {
-		return doNonBlockingOperation(TucsonOperation.uinpCode(), tid, tuple, l);
+//		return doNonBlockingOperation(TucsonOperation.uinpCode(), tid, tuple, l);
+		return executor.doNonBlockingOperation(aid, TucsonOperation.uinpCode(), tid, tuple, l);
 	}
 
 	public ITucsonOperation urdp(Object tid, LogicTuple tuple,
 			TucsonOperationCompletionListener l)
 			throws TucsonOperationNotPossibleException,
 			UnreachableNodeException {
-		return doNonBlockingOperation(TucsonOperation.urdpCode(), tid, tuple, l);
+//		return doNonBlockingOperation(TucsonOperation.urdpCode(), tid, tuple, l);
+		return executor.doNonBlockingOperation(aid, TucsonOperation.urdpCode(), tid, tuple, l);
 	}
 	
 	public ITucsonOperation unop(Object tid, LogicTuple tuple,
 			TucsonOperationCompletionListener l)
 			throws TucsonOperationNotPossibleException,
 			UnreachableNodeException {
-		return doNonBlockingOperation(TucsonOperation.unopCode(), tid, tuple, l);
+//		return doNonBlockingOperation(TucsonOperation.unopCode(), tid, tuple, l);
+		return executor.doNonBlockingOperation(aid, TucsonOperation.unopCode(), tid, tuple, l);
 	}
 	
 	public ITucsonOperation out_all(Object tid, LogicTuple tuple,
 			TucsonOperationCompletionListener l)
 			throws TucsonOperationNotPossibleException,
 			UnreachableNodeException {
-		return doNonBlockingOperation(TucsonOperation.out_allCode(), tid, tuple, l);
+//		return doNonBlockingOperation(TucsonOperation.out_allCode(), tid, tuple, l);
+		return executor.doNonBlockingOperation(aid, TucsonOperation.out_allCode(), tid, tuple, l);
 	}
 
 	public ITucsonOperation in_all(Object tid, LogicTuple tuple,
 			TucsonOperationCompletionListener l)
 			throws TucsonOperationNotPossibleException,
 			UnreachableNodeException {
-		return doNonBlockingOperation(TucsonOperation.in_allCode(), tid, tuple, l);
+//		return doNonBlockingOperation(TucsonOperation.in_allCode(), tid, tuple, l);
+		return executor.doNonBlockingOperation(aid, TucsonOperation.in_allCode(), tid, tuple, l);
 	}
 
 	public ITucsonOperation rd_all(Object tid, LogicTuple tuple,
 			TucsonOperationCompletionListener l)
 			throws TucsonOperationNotPossibleException,
 			UnreachableNodeException {
-		return doNonBlockingOperation(TucsonOperation.rd_allCode(), tid, tuple, l);
+//		return doNonBlockingOperation(TucsonOperation.rd_allCode(), tid, tuple, l);
+		return executor.doNonBlockingOperation(aid, TucsonOperation.rd_allCode(), tid, tuple, l);
 	}
 	
 	public ITucsonOperation no_all(Object tid, LogicTuple tuple,
 			TucsonOperationCompletionListener l)
 			throws TucsonOperationNotPossibleException,
 			UnreachableNodeException {
-		return doNonBlockingOperation(TucsonOperation.no_allCode(), tid, tuple, l);
+//		return doNonBlockingOperation(TucsonOperation.no_allCode(), tid, tuple, l);
+		return executor.doNonBlockingOperation(aid, TucsonOperation.no_allCode(), tid, tuple, l);
 	}
 	
 	
@@ -560,7 +586,8 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	public ITucsonOperation out_s(Object tid, LogicTuple event, LogicTuple guards, LogicTuple reactionBody, TucsonOperationCompletionListener l)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException{
 		LogicTuple tuple = new LogicTuple(Parser.parseSingleTerm("reaction("+event+","+guards+","+reactionBody+")", new MyOpManager()));
-		return doNonBlockingOperation(TucsonOperation.out_sCode(), tid, tuple, l);
+//		return doNonBlockingOperation(TucsonOperation.out_sCode(), tid, tuple, l);
+		return executor.doNonBlockingOperation(aid, TucsonOperation.out_sCode(), tid, tuple, l);
 	}
 	
 	/**
@@ -598,7 +625,8 @@ public class ACCProxyAgentSide implements EnhancedACC{
 			LogicTuple reactionBody, TucsonOperationCompletionListener l)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException{
 		LogicTuple tuple = new LogicTuple(Parser.parseSingleTerm("reaction("+event+","+guards+","+reactionBody+")", new MyOpManager()));
-		return doNonBlockingOperation(TucsonOperation.in_sCode(), tid, tuple, l);
+//		return doNonBlockingOperation(TucsonOperation.in_sCode(), tid, tuple, l);
+		return executor.doNonBlockingOperation(aid, TucsonOperation.in_sCode(), tid, tuple, l);
 	}
 	
 	/**
@@ -635,7 +663,8 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	public ITucsonOperation rd_s(Object tid, LogicTuple event, LogicTuple guards, LogicTuple reactionBody, TucsonOperationCompletionListener l)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException{
 		LogicTuple tuple = new LogicTuple(Parser.parseSingleTerm("reaction("+event+","+guards+","+reactionBody+")", new MyOpManager()));
-		return doNonBlockingOperation(TucsonOperation.rd_sCode(), tid, tuple, l);
+//		return doNonBlockingOperation(TucsonOperation.rd_sCode(), tid, tuple, l);
+		return executor.doNonBlockingOperation(aid, TucsonOperation.rd_sCode(), tid, tuple, l);
 	}
 	
 	/**
@@ -671,7 +700,8 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	public ITucsonOperation inp_s(Object tid, LogicTuple event, LogicTuple guards, LogicTuple reactionBody, TucsonOperationCompletionListener l)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException{
 		LogicTuple tuple = new LogicTuple(Parser.parseSingleTerm("reaction("+event+","+guards+","+reactionBody+")", new MyOpManager()));
-		return doNonBlockingOperation(TucsonOperation.inp_sCode(), tid, tuple, l);
+//		return doNonBlockingOperation(TucsonOperation.inp_sCode(), tid, tuple, l);
+		return executor.doNonBlockingOperation(aid, TucsonOperation.inp_sCode(), tid, tuple, l);
 	}
 	
 	/**
@@ -707,7 +737,8 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	public ITucsonOperation rdp_s(Object tid, LogicTuple event, LogicTuple guards, LogicTuple reactionBody, TucsonOperationCompletionListener l)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException{
 		LogicTuple tuple = new LogicTuple(Parser.parseSingleTerm("reaction("+event+","+guards+","+reactionBody+")", new MyOpManager()));
-		return doNonBlockingOperation(TucsonOperation.rdp_sCode(), tid, tuple, l);
+//		return doNonBlockingOperation(TucsonOperation.rdp_sCode(), tid, tuple, l);
+		return executor.doNonBlockingOperation(aid, TucsonOperation.rdp_sCode(), tid, tuple, l);
 	}
 	
 	/**
@@ -743,7 +774,8 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	public ITucsonOperation no_s(Object tid, LogicTuple event, LogicTuple guards, LogicTuple reactionBody, TucsonOperationCompletionListener l)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException{
 		LogicTuple tuple = new LogicTuple(Parser.parseSingleTerm("reaction("+event+","+guards+","+reactionBody+")", new MyOpManager()));
-		return doNonBlockingOperation(TucsonOperation.no_sCode(), tid, tuple, l);
+//		return doNonBlockingOperation(TucsonOperation.no_sCode(), tid, tuple, l);
+		return executor.doNonBlockingOperation(aid, TucsonOperation.no_sCode(), tid, tuple, l);
 	}
 	
 	/**
@@ -779,7 +811,8 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	public ITucsonOperation nop_s(Object tid, LogicTuple event, LogicTuple guards, LogicTuple reactionBody, TucsonOperationCompletionListener l)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException{
 		LogicTuple tuple = new LogicTuple(Parser.parseSingleTerm("reaction("+event+","+guards+","+reactionBody+")", new MyOpManager()));
-		return doNonBlockingOperation(TucsonOperation.nop_sCode(), tid, tuple, l);
+//		return doNonBlockingOperation(TucsonOperation.nop_sCode(), tid, tuple, l);
+		return executor.doNonBlockingOperation(aid, TucsonOperation.nop_sCode(), tid, tuple, l);
 	}
 	
 	/**
@@ -813,7 +846,8 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	public ITucsonOperation get_s(Object tid, TucsonOperationCompletionListener l)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException{
 		LogicTuple spec = new LogicTuple("spec");		
-		return doNonBlockingOperation(TucsonOperation.get_sCode(), tid, spec, l);
+//		return doNonBlockingOperation(TucsonOperation.get_sCode(), tid, spec, l);
+		return executor.doNonBlockingOperation(aid, TucsonOperation.get_sCode(), tid, spec, l);
 //		return tupleRes.getArg(0).getName().replace('\'', ' ').trim();
 	}
 	
@@ -847,62 +881,63 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	public ITucsonOperation set_s(Object tid, String spec, TucsonOperationCompletionListener l)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException{
 		LogicTuple specT = new LogicTuple("spec", new Value(spec));
-		return doNonBlockingOperation(TucsonOperation.set_sCode(), tid, specT, l);
+//		return doNonBlockingOperation(TucsonOperation.set_sCode(), tid, specT, l);
+		return executor.doNonBlockingOperation(aid, TucsonOperation.set_sCode(), tid, specT, l);
 	}
 	
-	/**
-	 * Private method that takes in charge execution of all the Asynchronous
-	 * primitives listed above. It simply forwards real execution to another private
-	 * method {@link alice.tucson.api doOperation doOp} (notice that in truth
-	 * there is no real execution at this point: we are just packing primitives
-	 * invocation into TuCSoN messages, then send them to the Node side)
-	 * 
-	 * @param type TuCSoN operation type (internal integer code)
-	 * @param tid Target TuCSoN tuplecentre id {@link alice.tucson.api.TucsonTupleCentreId tid}
-	 * @param t The Logic Tuple involved in the requested operation
-	 * @param l The listener who should be notified upon operation completion
-	 * 
-	 * @return An object representing the primitive invocation on the TuCSoN infrastructure
-	 * which will store its result
-	 * 
-	 * @throws TucsonOperationNotPossibleException
-	 * @throws UnreachableNodeException
-	 * 
-	 * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
-	 * @see alice.tucson.api.TucsonOperationCompletionListener TucsonOperationCompletionListener
-	 * @see alice.tucson.api.ITucsonOperation ITucsonOperation
-	 */
-	protected ITucsonOperation doNonBlockingOperation(int type, Object tid, LogicTuple t,
-			TucsonOperationCompletionListener l)
-					throws TucsonOperationNotPossibleException, UnreachableNodeException{
-		return doNonBlockingOperation(type, tid, t, null, l);
-	}
-	
-	protected ITucsonOperation doNonBlockingOperation(int type, Object tid, LogicTuple t,
-			List<LogicTuple> list, TucsonOperationCompletionListener l)
-					throws TucsonOperationNotPossibleException, UnreachableNodeException{
-		
-		TucsonTupleCentreId tcid = null;
-		if(tid.getClass().getName().equals("alice.tucson.api.TucsonTupleCentreId")){
-			tcid = (TucsonTupleCentreId) tid;
-		}else{
-			try{
-				tcid = new TucsonTupleCentreId(tid);
-			}catch(TucsonInvalidTupleCentreIdException ex){
-				System.err.println("[ACCProxyAgentSide]: " + ex);
-				return null;
-			}
-		}
-		
-		try{
-			return doOperation(tcid, type, t, list, l);
-		}catch(TucsonOperationNotPossibleException e){
-			throw new TucsonOperationNotPossibleException();
-		}catch(UnreachableNodeException e){
-			throw new UnreachableNodeException();
-		}
-		
-	}
+//	/**
+//	 * Private method that takes in charge execution of all the Asynchronous
+//	 * primitives listed above. It simply forwards real execution to another private
+//	 * method {@link alice.tucson.api doOperation doOp} (notice that in truth
+//	 * there is no real execution at this point: we are just packing primitives
+//	 * invocation into TuCSoN messages, then send them to the Node side)
+//	 * 
+//	 * @param type TuCSoN operation type (internal integer code)
+//	 * @param tid Target TuCSoN tuplecentre id {@link alice.tucson.api.TucsonTupleCentreId tid}
+//	 * @param t The Logic Tuple involved in the requested operation
+//	 * @param l The listener who should be notified upon operation completion
+//	 * 
+//	 * @return An object representing the primitive invocation on the TuCSoN infrastructure
+//	 * which will store its result
+//	 * 
+//	 * @throws TucsonOperationNotPossibleException
+//	 * @throws UnreachableNodeException
+//	 * 
+//	 * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
+//	 * @see alice.tucson.api.TucsonOperationCompletionListener TucsonOperationCompletionListener
+//	 * @see alice.tucson.api.ITucsonOperation ITucsonOperation
+//	 */
+//	protected ITucsonOperation doNonBlockingOperation(int type, Object tid, LogicTuple t,
+//			TucsonOperationCompletionListener l)
+//					throws TucsonOperationNotPossibleException, UnreachableNodeException{
+//		return doNonBlockingOperation(type, tid, t, null, l);
+//	}
+//	
+//	protected ITucsonOperation doNonBlockingOperation(int type, Object tid, LogicTuple t,
+//			List<LogicTuple> list, TucsonOperationCompletionListener l)
+//					throws TucsonOperationNotPossibleException, UnreachableNodeException{
+//		
+//		TucsonTupleCentreId tcid = null;
+//		if(tid.getClass().getName().equals("alice.tucson.api.TucsonTupleCentreId")){
+//			tcid = (TucsonTupleCentreId) tid;
+//		}else{
+//			try{
+//				tcid = new TucsonTupleCentreId(tid);
+//			}catch(TucsonInvalidTupleCentreIdException ex){
+//				System.err.println("[ACCProxyAgentSide]: " + ex);
+//				return null;
+//			}
+//		}
+//		
+//		try{
+//			return executor.doOperation(aid, tcid, type, t, list, l);
+//		}catch(TucsonOperationNotPossibleException e){
+//			throw new TucsonOperationNotPossibleException();
+//		}catch(UnreachableNodeException e){
+//			throw new UnreachableNodeException();
+//		}
+//		
+//	}
 	
 	/**
 	 * Out Linda primitive, synchronous version. Inserts the specified tuple
@@ -930,7 +965,8 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	 */
 	public ITucsonOperation out(Object tid, LogicTuple tuple, Long timeout)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException{
-		return doBlockingOperation(TucsonOperation.outCode(), tid, tuple, timeout);
+//		return doBlockingOperation(TucsonOperation.outCode(), tid, tuple, timeout);
+		return executor.doBlockingOperation(aid,TucsonOperation.outCode(), tid, tuple, timeout);
 	}
 	
 	/**
@@ -955,7 +991,8 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	 */
 	public ITucsonOperation in(Object tid, LogicTuple tuple, Long timeout)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException{
-		return doBlockingOperation(TucsonOperation.inCode(), tid, tuple, timeout);
+//		return doBlockingOperation(TucsonOperation.inCode(), tid, tuple, timeout);
+		return executor.doBlockingOperation(aid,TucsonOperation.inCode(), tid, tuple, timeout);
 	}
 	
 	/**
@@ -980,7 +1017,8 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	 */
 	public ITucsonOperation rd(Object tid, LogicTuple tuple, Long timeout)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException{
-		return doBlockingOperation(TucsonOperation.rdCode(), tid, tuple, timeout);
+//		return doBlockingOperation(TucsonOperation.rdCode(), tid, tuple, timeout);
+		return executor.doBlockingOperation(aid,TucsonOperation.rdCode(), tid, tuple, timeout);
 	}
 	
 	/**
@@ -1005,7 +1043,8 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	 */
 	public ITucsonOperation inp(Object tid, LogicTuple tuple, Long timeout)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException{
-		return doBlockingOperation(TucsonOperation.inpCode(), tid, tuple, timeout);
+//		return doBlockingOperation(TucsonOperation.inpCode(), tid, tuple, timeout);
+		return executor.doBlockingOperation(aid,TucsonOperation.inpCode(), tid, tuple, timeout);
 	}
 	
 	/**
@@ -1030,7 +1069,8 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	 */
 	public ITucsonOperation rdp(Object tid, LogicTuple tuple, Long timeout)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException{
-		return doBlockingOperation(TucsonOperation.rdpCode(), tid, tuple, timeout);
+//		return doBlockingOperation(TucsonOperation.rdpCode(), tid, tuple, timeout);
+		return executor.doBlockingOperation(aid,TucsonOperation.rdpCode(), tid, tuple, timeout);
 	}
 	
 	/**
@@ -1058,7 +1098,8 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	 */
 	public ITucsonOperation no(Object tid, LogicTuple tuple, Long timeout)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException{
-		return doBlockingOperation(TucsonOperation.noCode(), tid, tuple, timeout);
+//		return doBlockingOperation(TucsonOperation.noCode(), tid, tuple, timeout);
+		return executor.doBlockingOperation(aid,TucsonOperation.noCode(), tid, tuple, timeout);
 	}
 	
 	/**
@@ -1086,7 +1127,8 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	 */
 	public ITucsonOperation nop(Object tid, LogicTuple tuple, Long timeout)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException{
-		return doBlockingOperation(TucsonOperation.nopCode(), tid, tuple, timeout);
+//		return doBlockingOperation(TucsonOperation.nopCode(), tid, tuple, timeout);
+		return executor.doBlockingOperation(aid, TucsonOperation.nopCode(), tid, tuple, timeout);
 	}
 	
 	/**
@@ -1114,7 +1156,8 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	 */
 	public ITucsonOperation get(Object tid, Long timeout)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException{
-		return doBlockingOperation(TucsonOperation.get_Code(), tid, null, timeout);
+//		return doBlockingOperation(TucsonOperation.get_Code(), tid, null, timeout);
+		return executor.doBlockingOperation(aid, TucsonOperation.get_Code(), tid, null, timeout);
 	}
 	
 	/**
@@ -1139,7 +1182,8 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	 */
 	public ITucsonOperation set(Object tid, LogicTuple tuple, Long timeout)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException{
-		return doBlockingOperation(TucsonOperation.set_Code(), tid, tuple, timeout);
+//		return doBlockingOperation(TucsonOperation.set_Code(), tid, tuple, timeout);
+		return executor.doBlockingOperation(aid, TucsonOperation.set_Code(), tid, tuple, timeout);
 	}
 	
 	
@@ -1149,7 +1193,8 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	 */
 	public ITucsonOperation spawn(Object tid, LogicTuple toSpawn, Long timeout)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException{
-		return doBlockingOperation(TucsonOperation.spawnCode(), tid, toSpawn, timeout);
+//		return doBlockingOperation(TucsonOperation.spawnCode(), tid, toSpawn, timeout);
+		return executor.doBlockingOperation(aid,TucsonOperation.spawnCode(), tid, toSpawn, timeout);
 	}
 	
 	
@@ -1157,64 +1202,72 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	public ITucsonOperation uin(Object tid, LogicTuple tuple, Long timeout)
 			throws TucsonOperationNotPossibleException,
 			UnreachableNodeException, OperationTimeOutException {
-		return doBlockingOperation(TucsonOperation.uinCode(), tid, tuple, timeout);
+//		return doBlockingOperation(TucsonOperation.uinCode(), tid, tuple, timeout);
+		return executor.doBlockingOperation(aid,TucsonOperation.uinCode(), tid, tuple, timeout);
 	}
 
 	public ITucsonOperation urd(Object tid, LogicTuple tuple, Long timeout)
 			throws TucsonOperationNotPossibleException,
 			UnreachableNodeException, OperationTimeOutException {
-		return doBlockingOperation(TucsonOperation.urdCode(), tid, tuple, timeout);
+//		return doBlockingOperation(TucsonOperation.urdCode(), tid, tuple, timeout);
+		return executor.doBlockingOperation(aid,TucsonOperation.urdCode(), tid, tuple, timeout);
 	}
 	
 	public ITucsonOperation uno(Object tid, LogicTuple tuple, Long timeout)
 			throws TucsonOperationNotPossibleException,
 			UnreachableNodeException, OperationTimeOutException {
-		return doBlockingOperation(TucsonOperation.unoCode(), tid, tuple, timeout);
+//		return doBlockingOperation(TucsonOperation.unoCode(), tid, tuple, timeout);
+		return executor.doBlockingOperation(aid,TucsonOperation.unoCode(), tid, tuple, timeout);
 	}
 
 	public ITucsonOperation uinp(Object tid, LogicTuple tuple, Long timeout)
 			throws TucsonOperationNotPossibleException,
 			UnreachableNodeException, OperationTimeOutException {
-		return doBlockingOperation(TucsonOperation.uinpCode(), tid, tuple, timeout);
+//		return doBlockingOperation(TucsonOperation.uinpCode(), tid, tuple, timeout);
+		return executor.doBlockingOperation(aid,TucsonOperation.uinpCode(), tid, tuple, timeout);
 	}
 
 	public ITucsonOperation urdp(Object tid, LogicTuple tuple, Long timeout)
 			throws TucsonOperationNotPossibleException,
 			UnreachableNodeException, OperationTimeOutException {
-		return doBlockingOperation(TucsonOperation.urdpCode(), tid, tuple, timeout);
+//		return doBlockingOperation(TucsonOperation.urdpCode(), tid, tuple, timeout);
+		return executor.doBlockingOperation(aid,TucsonOperation.urdpCode(), tid, tuple, timeout);
 	}
 	
 	public ITucsonOperation unop(Object tid, LogicTuple tuple, Long timeout)
 			throws TucsonOperationNotPossibleException,
 			UnreachableNodeException, OperationTimeOutException {
-		return doBlockingOperation(TucsonOperation.unopCode(), tid, tuple, timeout);
+//		return doBlockingOperation(TucsonOperation.unopCode(), tid, tuple, timeout);
+		return executor.doBlockingOperation(aid,TucsonOperation.unopCode(), tid, tuple, timeout);
 	}
 	
 	public ITucsonOperation out_all(Object tid, LogicTuple tuple, Long timeout)
 			throws TucsonOperationNotPossibleException,
 			UnreachableNodeException, OperationTimeOutException {
-		return doBlockingOperation(TucsonOperation.out_allCode(), tid, tuple, timeout);
+//		return doBlockingOperation(TucsonOperation.out_allCode(), tid, tuple, timeout);
+		return executor.doBlockingOperation(aid, TucsonOperation.out_allCode(), tid, tuple, timeout);
 	}
 
 	public ITucsonOperation in_all(Object tid, LogicTuple tuple, Long timeout)
 			throws TucsonOperationNotPossibleException,
 			UnreachableNodeException, OperationTimeOutException {
-		return doBlockingOperation(TucsonOperation.in_allCode(), tid, tuple, timeout);
+//		return doBlockingOperation(TucsonOperation.in_allCode(), tid, tuple, timeout);
+		return executor.doBlockingOperation(aid, TucsonOperation.in_allCode(), tid, tuple, timeout);
 	}
 
 	public ITucsonOperation rd_all(Object tid, LogicTuple tuple, Long timeout)
 			throws TucsonOperationNotPossibleException,
 			UnreachableNodeException, OperationTimeOutException {
-		return doBlockingOperation(TucsonOperation.rd_allCode(), tid, tuple, timeout);
+//		return doBlockingOperation(TucsonOperation.rd_allCode(), tid, tuple, timeout);
+		return executor.doBlockingOperation(aid, TucsonOperation.rd_allCode(), tid, tuple, timeout);
 	}
 	
 	public ITucsonOperation no_all(Object tid, LogicTuple tuple, Long timeout)
 			throws TucsonOperationNotPossibleException,
 			UnreachableNodeException, OperationTimeOutException {
-		return doBlockingOperation(TucsonOperation.no_allCode(), tid, tuple, timeout);
+//		return doBlockingOperation(TucsonOperation.no_allCode(), tid, tuple, timeout);
+		return executor.doBlockingOperation(aid, TucsonOperation.no_allCode(), tid, tuple, timeout);
 	}
-	
-	
 	
 	/**
 	 * Out_s Specification primitive, synchronous version. Adds the specified Reaction
@@ -1245,7 +1298,8 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	public ITucsonOperation out_s(Object tid, LogicTuple event, LogicTuple guards, LogicTuple reactionBody, Long timeout)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException{
 		LogicTuple tuple = new LogicTuple(Parser.parseSingleTerm("reaction("+event+","+guards+","+reactionBody+")", new MyOpManager()));
-		return doBlockingOperation(TucsonOperation.out_sCode(), tid, tuple, timeout);
+//		return doBlockingOperation(TucsonOperation.out_sCode(), tid, tuple, timeout);
+		return executor.doBlockingOperation(aid, TucsonOperation.out_sCode(), tid, tuple, timeout);
 	}
 	
 	/**
@@ -1273,7 +1327,8 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	public ITucsonOperation in_s(Object tid, LogicTuple event, LogicTuple guards, LogicTuple reactionBody, Long timeout)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException{
 		LogicTuple tuple = new LogicTuple(Parser.parseSingleTerm("reaction("+event+","+guards+","+reactionBody+")", new MyOpManager()));
-		return doBlockingOperation(TucsonOperation.in_sCode(), tid, tuple, timeout);
+//		return doBlockingOperation(TucsonOperation.in_sCode(), tid, tuple, timeout);
+		return executor.doBlockingOperation(aid, TucsonOperation.in_sCode(), tid, tuple, timeout);
 	}
 	
 	/**
@@ -1301,7 +1356,8 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	public ITucsonOperation rd_s(Object tid, LogicTuple event, LogicTuple guards, LogicTuple reactionBody, Long timeout)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException{
 		LogicTuple tuple = new LogicTuple(Parser.parseSingleTerm("reaction("+event+","+guards+","+reactionBody+")", new MyOpManager()));
-		return doBlockingOperation(TucsonOperation.rd_sCode(), tid, tuple, timeout);
+//		return doBlockingOperation(TucsonOperation.rd_sCode(), tid, tuple, timeout);
+		return executor.doBlockingOperation(aid, TucsonOperation.rd_sCode(), tid, tuple, timeout);
 	}
 	
 	/**
@@ -1333,7 +1389,8 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	public ITucsonOperation inp_s(Object tid, LogicTuple event, LogicTuple guards, LogicTuple reactionBody, Long timeout)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException{
 		LogicTuple tuple = new LogicTuple(Parser.parseSingleTerm("reaction("+event+","+guards+","+reactionBody+")", new MyOpManager()));
-		return doBlockingOperation(TucsonOperation.inp_sCode(), tid, tuple, timeout);
+//		return doBlockingOperation(TucsonOperation.inp_sCode(), tid, tuple, timeout);
+		return executor.doBlockingOperation(aid, TucsonOperation.inp_sCode(), tid, tuple, timeout);
 	}
 	
 	/**
@@ -1366,7 +1423,8 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	public ITucsonOperation rdp_s(Object tid, LogicTuple event, LogicTuple guards, LogicTuple reactionBody, Long timeout)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException{
 		LogicTuple tuple = new LogicTuple(Parser.parseSingleTerm("reaction("+event+","+guards+","+reactionBody+")", new MyOpManager()));
-		return doBlockingOperation(TucsonOperation.rdp_sCode(), tid, tuple, timeout);
+//		return doBlockingOperation(TucsonOperation.rdp_sCode(), tid, tuple, timeout);
+		return executor.doBlockingOperation(aid, TucsonOperation.rdp_sCode(), tid, tuple, timeout);
 	}
 	
 	/**
@@ -1398,7 +1456,8 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	public ITucsonOperation no_s(Object tid, LogicTuple event, LogicTuple guards, LogicTuple reactionBody, Long timeout)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException{
 		LogicTuple tuple = new LogicTuple(Parser.parseSingleTerm("reaction("+event+","+guards+","+reactionBody+")", new MyOpManager()));
-		return doBlockingOperation(TucsonOperation.no_sCode(), tid, tuple, timeout);
+//		return doBlockingOperation(TucsonOperation.no_sCode(), tid, tuple, timeout);
+		return executor.doBlockingOperation(aid,TucsonOperation.no_sCode(), tid, tuple, timeout);
 	}
 	
 	/**
@@ -1430,7 +1489,8 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	public ITucsonOperation nop_s(Object tid, LogicTuple event, LogicTuple guards, LogicTuple reactionBody, Long timeout)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException{
 		LogicTuple tuple = new LogicTuple(Parser.parseSingleTerm("reaction("+event+","+guards+","+reactionBody+")", new MyOpManager()));
-		return doBlockingOperation(TucsonOperation.nop_sCode(), tid, tuple, timeout);
+//		return doBlockingOperation(TucsonOperation.nop_sCode(), tid, tuple, timeout);
+		return executor.doBlockingOperation(aid, TucsonOperation.nop_sCode(), tid, tuple, timeout);
 	}
 	
 	/**
@@ -1459,7 +1519,8 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	public ITucsonOperation get_s(Object tid, Long timeout)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException{		
 		LogicTuple spec = new LogicTuple("spec", new Var("S"));
-		return doBlockingOperation(TucsonOperation.get_sCode(), tid, spec, timeout);
+//		return doBlockingOperation(TucsonOperation.get_sCode(), tid, spec, timeout);
+		return executor.doBlockingOperation(aid, TucsonOperation.get_sCode(), tid, spec, timeout);
 //		LogicTuple tupleRes = (LogicTuple) doBlockingOperation(TucsonOperation.get_sCode(), tid, spec, ms);
 //		return tupleRes.getArg(0).getName().replace('\'', ' ').trim();
 	}
@@ -1491,7 +1552,8 @@ public class ACCProxyAgentSide implements EnhancedACC{
 		if(spec.equals("") || spec.equals("''") || spec.equals("'.'"))
 			throw new TucsonOperationNotPossibleException();
 		LogicTuple specT = new LogicTuple("spec", new Value(spec));
-		return doBlockingOperation(TucsonOperation.set_sCode(), tid, specT, timeout);
+//		return doBlockingOperation(TucsonOperation.set_sCode(), tid, specT, timeout);
+		return executor.doBlockingOperation(aid, TucsonOperation.set_sCode(), tid, specT, timeout);
 	}
 	
 	/**
@@ -1521,170 +1583,172 @@ public class ACCProxyAgentSide implements EnhancedACC{
 //		if(spec.equals("") || spec.equals("''") || spec.equals("'.'"))
 //			throw new TucsonOperationNotPossibleException();
 //		LogicTuple specT = new LogicTuple("spec", new Value(spec));
-		return doBlockingOperation(TucsonOperation.set_sCode(), tid, spec, timeout);
+//		return doBlockingOperation(TucsonOperation.set_sCode(), tid, spec, timeout);
+		return executor.doBlockingOperation(aid, TucsonOperation.set_sCode(), tid, spec, timeout);
 	}
 	
-	/**
-	 * Private method that takes in charge execution of all the Synchronous
-	 * primitives listed above. It simply forwards real execution to another private
-	 * method {@link alice.tucson.api doOperation doOp} (notice that in truth
-	 * there is no real execution at this point: we are just packing primitives
-	 * invocation into TuCSoN messages, then send them to the Node side)
-	 * 
-	 * The difference w.r.t. the previous method {@link alice.tucson.api.doNonBlockingOperation
-	 * nonBlocking} is that here we explicitly wait for completion a time specified
-	 * in the timeout input parameter.
-	 * 
-	 * @param type TuCSoN operation type (internal integer code)
-	 * @param tid Target TuCSoN tuplecentre id {@link alice.tucson.api.TucsonTupleCentreId tid}
-	 * @param t The Logic Tuple involved in the requested operation
-	 * @param ms Maximum waiting time tolerated by the callee TuCSoN Agent
-	 * 
-	 * @return An object representing the primitive invocation on the TuCSoN infrastructure
-	 * which will store its result
-	 * 
-	 * @throws TucsonOperationNotPossibleException
-	 * @throws UnreachableNodeException
-	 * @throws OperationTimeOutException
-	 * 
-	 * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
-	 */
-	protected ITucsonOperation doBlockingOperation(int type, Object tid, LogicTuple t, Long ms)
-			throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException{
-		return doBlockingOperation(type, tid, t, null, ms);
-	}
+//	/**
+//	 * Private method that takes in charge execution of all the Synchronous
+//	 * primitives listed above. It simply forwards real execution to another private
+//	 * method {@link alice.tucson.api doOperation doOp} (notice that in truth
+//	 * there is no real execution at this point: we are just packing primitives
+//	 * invocation into TuCSoN messages, then send them to the Node side)
+//	 * 
+//	 * The difference w.r.t. the previous method {@link alice.tucson.api.doNonBlockingOperation
+//	 * nonBlocking} is that here we explicitly wait for completion a time specified
+//	 * in the timeout input parameter.
+//	 * 
+//	 * @param type TuCSoN operation type (internal integer code)
+//	 * @param tid Target TuCSoN tuplecentre id {@link alice.tucson.api.TucsonTupleCentreId tid}
+//	 * @param t The Logic Tuple involved in the requested operation
+//	 * @param ms Maximum waiting time tolerated by the callee TuCSoN Agent
+//	 * 
+//	 * @return An object representing the primitive invocation on the TuCSoN infrastructure
+//	 * which will store its result
+//	 * 
+//	 * @throws TucsonOperationNotPossibleException
+//	 * @throws UnreachableNodeException
+//	 * @throws OperationTimeOutException
+//	 * 
+//	 * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
+//	 */
+//	protected ITucsonOperation doBlockingOperation(int type, Object tid, LogicTuple t, Long ms)
+//			throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException{
+//		return doBlockingOperation(type, tid, t, null, ms);
+//	}
+//	
+//	protected ITucsonOperation doBlockingOperation(int type, Object tid, LogicTuple t, List<LogicTuple> list, Long ms)
+//			throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException{		
+//		
+//		TucsonTupleCentreId tcid = null;
+//		if(tid.getClass().getName().equals("alice.tucson.api.TucsonTupleCentreId")){
+//			tcid = (TucsonTupleCentreId) tid;
+//		}else{
+//			try{
+//				tcid = new TucsonTupleCentreId(tid);
+//			}catch(TucsonInvalidTupleCentreIdException ex){
+//				System.err.println("[ACCProxyAgentSide]: " + ex);
+//				return null;
+//			}
+//		}
+//		
+//		ITucsonOperation op = null;
+//		try{			
+//			op = executor.doOperation(aid, tcid, type, t, list, null);
+//		}catch(TucsonOperationNotPossibleException e){
+//			throw new TucsonOperationNotPossibleException();
+//		}catch(UnreachableNodeException e){
+//			throw new UnreachableNodeException();
+//		}
+//		try{
+//			if(ms == null)
+//				op.waitForOperationCompletion();
+//			else
+//				op.waitForOperationCompletion(ms);
+//		}catch(OperationTimeOutException e){
+//			throw new OperationTimeOutException();
+//		}
+//		return op;
+//
+//	}
 	
-	protected ITucsonOperation doBlockingOperation(int type, Object tid, LogicTuple t, List<LogicTuple> list, Long ms)
-			throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException{		
-		
-		TucsonTupleCentreId tcid = null;
-		if(tid.getClass().getName().equals("alice.tucson.api.TucsonTupleCentreId")){
-			tcid = (TucsonTupleCentreId) tid;
-		}else{
-			try{
-				tcid = new TucsonTupleCentreId(tid);
-			}catch(TucsonInvalidTupleCentreIdException ex){
-				System.err.println("[ACCProxyAgentSide]: " + ex);
-				return null;
-			}
-		}
-		
-		ITucsonOperation op = null;
-		try{			
-			op = doOperation(tcid, type, t, list, null);
-		}catch(TucsonOperationNotPossibleException e){
-			throw new TucsonOperationNotPossibleException();
-		}catch(UnreachableNodeException e){
-			throw new UnreachableNodeException();
-		}
-		try{
-			if(ms == null)
-				op.waitForOperationCompletion();
-			else
-				op.waitForOperationCompletion(ms);
-		}catch(OperationTimeOutException e){
-			throw new OperationTimeOutException();
-		}
-		return op;
-
-	}
-	
-	/**
-	 * Method to track expired operations, that is operations whose completion
-	 * has not been received before specified timeout expiration 
-	 * 
-	 * @param id Unique Identifier of the expired operation
-	 */
-	public void addOperationExpired(long id){
-		this.operationExpired.add(id);
-	}
-	
-	/**
-	 * This method is the real responsible of TuCSoN operations execution.
-	 * 
-	 * First, it takes the target tuplecentre and checks wether this proxy has
-	 * ever established a connection toward it: if it did, the already opened
-	 * connection is retrieved and used, otherwise a new connection is opened
-	 * and stored for later use {@link alice.tucson.service.ACCProxyAgentSide#getSession getSession}.
-	 * 
-	 * Then, a Tucson Operation {@link alice.tucson.service.TucsonOperation op}
-	 * storing any useful information about the TuCSoN primitive invocation
-	 * is created and packed into a Tucson Message Request {@link alice.tucson.network.TucsonMsgRequest}
-	 * to be possibly sent over the wire toward the target tuplecentre.
-	 * 
-	 * Notice that a listener is needed, who is the proxy itself, wichever was the
-	 * requested operation (inp, in, etc.) and despite its (a-)synchronous behavior.
-	 * This is because of the distributed very nature of TuCSoN: we couldn't expect
-	 * to block on a socket waiting for a reply. Instead, requested operations should be
-	 * dispatched toward the TuCSoN Node Service, which in turn will take them in
-	 * charge and notify the requestor upon completion.
-	 * 
-	 * @param tcid Target TuCSoN tuplecentre id {@link alice.tucson.api.TucsonTupleCentreId tid}
-	 * @param type TuCSoN operation type (internal integer code)
-	 * @param t The Logic Tuple involved in the requested operation
-	 * @param l The listener who should be notified upon operation completion
-	 * 
-	 * @return An object representing the primitive invocation on the TuCSoN infrastructure
-	 * which will store its result
-	 * 
-	 * @throws TucsonOperationNotPossibleException
-	 * @throws UnreachableNodeException
-	 * 
-	 * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
-	 * @see alice.tucson.api.TucsonOperationCompletionListener TucsonOperationCompletionListener
-	 * @see alice.tucson.api.ITucsonOperation ITucsonOperation
-	 * @see alice.tucson.service.TucsonOperation TucsonOperation
-	 */
-	protected synchronized ITucsonOperation doOperation(TucsonTupleCentreId tcid,
-			int type, LogicTuple t, List<LogicTuple> list, TucsonOperationCompletionListener l)
-					throws TucsonOperationNotPossibleException, UnreachableNodeException{				
-
-		int nTry = 0;
-		boolean exception;
-		
-		do{
-			
-			nTry++;
-			exception = false;
-			
-			TucsonProtocol session = null;
-			try{
-				session = getSession(tcid);
-			}catch(UnreachableNodeException ex2){
-				exception = true;
-				throw new UnreachableNodeException();
-			}
-			ObjectOutputStream outStream = session.getOutputStream();
-
-			TucsonOperation op = null;
-			if((type == TucsonOperation.outCode()) || (type == TucsonOperation.out_sCode())
-					|| (type == TucsonOperation.set_sCode()) || (type == TucsonOperation.set_Code())
-					|| type == TucsonOperation.out_allCode() || type == TucsonOperation.spawnCode())
-				op = new TucsonOperation(type, (Tuple) t, l, this);
-			else
-				op = new TucsonOperation(type, (TupleTemplate) t, l, this);
-			operations.put(op.getId(), op);
-			TucsonMsgRequest msg = new TucsonMsgRequest(op.getId(), op.getType(), tcid.toString(),
-					op.getLogicTupleArgument());
-			log("requesting op " + msg.getType() + ", " + msg.getTuple() + ", " + msg.getTid());
-			
-			try{
-				TucsonMsgRequest.write(outStream, msg);
-				outStream.flush();
-			}catch(IOException ex){
-				exception = true;
-				System.err.println("[ACCProxyAgentSide]: " + ex);
-			}
-			
-			if(!exception)
-				return op;
-			
-		}while(nTry < 3);
-		
-		throw new UnreachableNodeException();
-		
-	}
-
+//	/**
+//	 * Method to track expired operations, that is operations whose completion
+//	 * has not been received before specified timeout expiration 
+//	 * 
+//	 * @param id Unique Identifier of the expired operation
+//	 */
+//	public void addOperationExpired(long id){
+//		this.operationExpired.add(id);
+//	}
+//	
+//	/**
+//	 * This method is the real responsible of TuCSoN operations execution.
+//	 * 
+//	 * First, it takes the target tuplecentre and checks wether this proxy has
+//	 * ever established a connection toward it: if it did, the already opened
+//	 * connection is retrieved and used, otherwise a new connection is opened
+//	 * and stored for later use {@link alice.tucson.service.ACCProxyAgentSide#getSession getSession}.
+//	 * 
+//	 * Then, a Tucson Operation {@link alice.tucson.service.TucsonOperation op}
+//	 * storing any useful information about the TuCSoN primitive invocation
+//	 * is created and packed into a Tucson Message Request {@link alice.tucson.network.TucsonMsgRequest}
+//	 * to be possibly sent over the wire toward the target tuplecentre.
+//	 * 
+//	 * Notice that a listener is needed, who is the proxy itself, wichever was the
+//	 * requested operation (inp, in, etc.) and despite its (a-)synchronous behavior.
+//	 * This is because of the distributed very nature of TuCSoN: we couldn't expect
+//	 * to block on a socket waiting for a reply. Instead, requested operations should be
+//	 * dispatched toward the TuCSoN Node Service, which in turn will take them in
+//	 * charge and notify the requestor upon completion.
+//	 * 
+//	 * @param tcid Target TuCSoN tuplecentre id {@link alice.tucson.api.TucsonTupleCentreId tid}
+//	 * @param type TuCSoN operation type (internal integer code)
+//	 * @param t The Logic Tuple involved in the requested operation
+//	 * @param l The listener who should be notified upon operation completion
+//	 * 
+//	 * @return An object representing the primitive invocation on the TuCSoN infrastructure
+//	 * which will store its result
+//	 * 
+//	 * @throws TucsonOperationNotPossibleException
+//	 * @throws UnreachableNodeException
+//	 * 
+//	 * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
+//	 * @see alice.tucson.api.TucsonOperationCompletionListener TucsonOperationCompletionListener
+//	 * @see alice.tucson.api.ITucsonOperation ITucsonOperation
+//	 * @see alice.tucson.service.TucsonOperation TucsonOperation
+//	 */
+//	protected synchronized ITucsonOperation doOperation(TucsonTupleCentreId tcid,
+//			int type, LogicTuple t, List<LogicTuple> list, TucsonOperationCompletionListener l)
+//					throws TucsonOperationNotPossibleException, UnreachableNodeException{				
+//
+//		int nTry = 0;
+//		boolean exception;
+//		
+//		do{
+//			
+//			nTry++;
+//			exception = false;
+//			
+//			TucsonProtocol session = null;
+//			try{
+//				session = getSession(tcid);
+//			}catch(UnreachableNodeException ex2){
+//				exception = true;
+//				throw new UnreachableNodeException();
+//			}
+//			ObjectOutputStream outStream = session.getOutputStream();
+//
+//			TucsonOperation op = null;
+//			if((type == TucsonOperation.outCode()) || (type == TucsonOperation.out_sCode())
+//					|| (type == TucsonOperation.set_sCode()) || (type == TucsonOperation.set_Code())
+//					|| type == TucsonOperation.out_allCode() || type == TucsonOperation.spawnCode())
+//				op = new TucsonOperation(type, (Tuple) t, l, this);
+//			else 
+//				op = new TucsonOperation(type, (TupleTemplate) t, l, this);
+//			
+//			operations.put(op.getId(), op);
+//			TucsonMsgRequest msg = new TucsonMsgRequest(op.getId(), op.getType(), tcid.toString(),
+//					op.getLogicTupleArgument());
+//			log("requesting op " + msg.getType() + ", " + msg.getTuple() + ", " + msg.getTid());
+//			
+//			try{
+//				TucsonMsgRequest.write(outStream, msg);
+//				outStream.flush();
+//			}catch(IOException ex){
+//				exception = true;
+//				System.err.println("[ACCProxyAgentSide]: " + ex);
+//			}
+//			
+//			if(!exception)
+//				return op;
+//			
+//		}while(nTry < 3);
+//		
+//		throw new UnreachableNodeException();
+//		
+//	}
+//
 	/**
 	 * Method to release the current ACC held by the TuCSoN Agent behind this
 	 * proxy: it takes all the opened connection (we could have been interacting
@@ -1695,24 +1759,26 @@ public class ACCProxyAgentSide implements EnhancedACC{
 	 */
 	public synchronized void exit() throws TucsonOperationNotPossibleException{
 		
-		Iterator<ControllerSession> it = controllerSessions.values().iterator();
-		ControllerSession cs;
+//		Iterator<OperationPerformer.ControllerSession> it = controllerSessions.values().iterator();
+		Iterator<OperationHandler.ControllerSession> it = executor.getControllerSessions().values().iterator();
+		OperationHandler.ControllerSession cs;
 		TucsonProtocol info;
-		Controller contr;
+		OperationHandler.Controller contr;
 		ObjectOutputStream outStream;
 		TucsonOperation op;
 		TucsonMsgRequest exit;
 		
 		while(it.hasNext()){
 			
-			cs = (ControllerSession) it.next();
+			cs = (OperationHandler.ControllerSession) it.next();
 			info = cs.getSession();
 			contr = cs.getController();
 			contr.setStop();
 			outStream = info.getOutputStream();
 			
-			op = new TucsonOperation(TucsonOperation.exitCode(), (TupleTemplate) null, null, this);				
-			operations.put(op.getId(), op);
+			op = new TucsonOperation(TucsonOperation.exitCode(), (TupleTemplate) null, null, executor /*this*/);				
+			//operations.put(op.getId(), op);
+			executor.addOperation(op.getId(), op);
 			
 			exit = new TucsonMsgRequest((int) op.getId(), op.getType(), null,
 					op.getLogicTupleArgument());
@@ -1726,281 +1792,281 @@ public class ACCProxyAgentSide implements EnhancedACC{
 		}
 		
 	}
-
-	/**
-	 * This method is responsible to setup, store and retrieve connections toward
-	 * all the tuplecentres ever contacted by the TuCSoN Agent behind this proxy.
-	 * 
-	 * If a connection toward the given target tuplecentre already exists, it is
-	 * retrieved and used. If not, the new connection is setup then stored for later use.
-	 * 
-	 * It is worth noting a couple of things. Why don't we setup connections
-	 * once and for all as soon as the TuCSoN Agent is booted? The reason is that
-	 * new tuplecentres can be created at run-time as TuCSoN Agents please, thus for every
-	 * TuCSoN Operation request we should check wether a new tuplecentre has to be 
-	 * created and booted. If a new tuplecentre has to be booted the correspondant
-	 * proxy node side is dinamically triggered and booted {@link alice.tucson.service.ACCProxyNodeSide
-	 * nodeProxy} 
-	 * 
-	 * @param tid Target TuCSoN tuplecentre id {@link alice.tucson.api.TucsonTupleCentreId tid}
-	 * 
-	 * @return The open session toward the given target tuplecentre
-	 * 
-	 * @throws UnreachableNodeException
-	 * 
-	 * @see alice.tucson.network.TucsonProtocol TucsonProtocol
-	 * @see alice.tucson.service.ACCProxyNodeSide ACCProxyNodeSide
-	 */
-	protected TucsonProtocol getSession(TucsonTupleCentreId tid) throws UnreachableNodeException{				
-		
-		String opNode = alice.util.Tools.removeApices(tid.getNode());
-		int port = tid.getPort();
-//		log(opNode+":"+port);
-		ControllerSession tc = controllerSessions.get(opNode+":"+port);
-		if(tc != null)
-			return tc.getSession();
-		else{
-			if(opNode.equals("localhost"))
-				tc = controllerSessions.get("127.0.0.1:"+port);
-			if(opNode.equals("127.0.0.1"))
-				tc = controllerSessions.get("localhost:"+port);
-			if(tc != null)
-				return tc.getSession();
-		}
-			
-		profile.setProperty("agent-identity", aid.toString());
-		profile.setProperty("agent-role", "user");
-
-		TucsonProtocol dialog = null;
-		boolean isEnterReqAcpt = false;
-		try{
-			dialog = new TucsonProtocolTCP(opNode, port);
-			dialog.sendEnterRequest(profile);
-			dialog.receiveEnterRequestAnswer();
-			if(dialog.isEnterRequestAccepted())
-				isEnterReqAcpt = true;
-		}catch(Exception ex){
-			throw new UnreachableNodeException();
-		}								
-
-		if(isEnterReqAcpt){
-			ObjectInputStream din = dialog.getInputStream();
-			Controller contr = new Controller(din);
-			ControllerSession cs = new ControllerSession(contr, dialog);
-			controllerSessions.put(opNode+":"+port, cs);
-			contr.start();
-			return dialog;
-		}
-		
-		return null;
-		
-	}
-
-	/**
-	 * Method to add a TuCSoN Operation Completion Event {@link alice.tucson.service.TucsonOpCompletionEvent
-	 * event} to the internal queue of pending completion event to process
-	 * 
-	 * @param ev Completion Event to be added to pending queue
-	 * 
-	 * @see alice.tucson.service.TucsonOpCompletionEvent TucsonOpCompletionEvent
-	 */
-	protected void postEvent(TucsonOpCompletionEvent ev){
-		synchronized(events){
-			events.addLast(ev);
-		}
-	}
-
-	/**
-	 * Method internally used to log proxy activity (could be used for debug)
-	 * 
-	 * @param msg String to display on the standard output
-	 */
-	protected void log(String msg){
-		System.out.println("[ACCProxyAgentSide]: " + msg);
-	}
-
-	/**
-	 * 
-	 */
-	protected class Controller extends Thread{
-		
-		private boolean stop;
-		private ObjectInputStream in;
-		private final Prolog p = new Prolog();
-
-		/**
-		 * 
-		 * @param in
-		 */
-		Controller(ObjectInputStream in){
-			
-			this.in = in;
-			stop = false;
-			this.setDaemon(true);
-			
-			alice.tuprolog.lib.JavaLibrary jlib = (alice.tuprolog.lib.JavaLibrary) p.getLibrary("alice.tuprolog.lib.JavaLibrary");
-			try{
-				jlib.register(new alice.tuprolog.Struct("config"), this);
-			}catch(InvalidObjectIdException ex){
-				System.err.println("[ACCProxyAgentSide] Controller: " + ex);
-				ex.printStackTrace();
-			}
-			
-		}
-
-		/**
-		 * 
-		 */
-		@SuppressWarnings("unchecked")
-		public void run(){
-			
-			TucsonOpCompletionEvent ev = null;
-			while(!isStopped()){
-				
-				for(Long operation : operationExpired)
-					operations.remove(operation);
-				
-				TucsonMsgReply msg = null;
-				try{
-					msg = TucsonMsgReply.read(in);
-				}catch(EOFException e){
-					log("TuCSoN node service unavailable, nothing I can do");
-					setStop();
-					break;
-				}catch(Exception ex){
-					setStop();
-					System.err.println("[ACCProxyAgentSide] Controller: " + ex);
-				}
-
-				boolean ok = msg.isAllowed();
-				if(ok){
-					
-					int type = msg.getType();
-					if(type == TucsonOperation.uinCode() || type == TucsonOperation.uinpCode()
-							|| type == TucsonOperation.urdCode() || type == TucsonOperation.urdpCode()
-							|| type == TucsonOperation.unoCode() || type == TucsonOperation.unopCode()
-							|| type == TucsonOperation.noCode() || type == TucsonOperation.no_sCode()
-							|| type == TucsonOperation.nopCode() || type == TucsonOperation.nop_sCode()
-							|| type == TucsonOperation.inCode() || type == TucsonOperation.rdCode()
-							|| type == TucsonOperation.inpCode() || type == TucsonOperation.rdpCode()
-							|| type == TucsonOperation.in_sCode() || type == TucsonOperation.rd_sCode()
-							|| type == TucsonOperation.inp_sCode() || type == TucsonOperation.rdp_sCode()){
-
-						boolean succeeded = msg.isSuccess();
-						if(succeeded){
-							
-							LogicTuple tupleReq = msg.getTupleRequested();
-							LogicTuple tupleRes = (LogicTuple) msg.getTupleResult();
-//							log("tupleReq="+tupleReq+", tupleRes="+tupleRes);
-							LogicTuple res = unify(tupleReq, tupleRes);
-							ev = new TucsonOpCompletionEvent(new TucsonOpId(msg.getId()), ok, true, res);
-							
-						}else{
-							ev = new TucsonOpCompletionEvent(new TucsonOpId(msg.getId()), ok, false);
-						}
-						
-					}else if(type == TucsonOperation.set_Code() || type == TucsonOperation.set_sCode()
-							|| type == TucsonOperation.outCode() || type == TucsonOperation.out_sCode()
-							|| type == TucsonOperation.out_allCode() || type == TucsonOperation.spawnCode()){
-						ev = new TucsonOpCompletionEvent(new TucsonOpId(msg.getId()), ok, msg.isSuccess());
-					}else if(type == TucsonOperation.in_allCode() || type == TucsonOperation.rd_allCode()
-							|| type == TucsonOperation.no_allCode()
-							|| type == TucsonOperation.get_Code() || type == TucsonOperation.get_sCode()){
-						List<LogicTuple> tupleSetRes = (List<LogicTuple>) msg.getTupleResult();
-						ev = new TucsonOpCompletionEvent(new TucsonOpId(msg.getId()), ok, msg.isSuccess(), tupleSetRes);
-					}else if(type == TucsonOperation.exitCode()){
-						setStop();
-						break;
-					}
-					
-				}else{
-					ev = new TucsonOpCompletionEvent(new TucsonOpId(msg.getId()), false, false);
-				}
-				
-				TucsonOperation op = operations.remove(msg.getId());
-				if(op.isNoAll() || op.isInAll() || op.isRdAll() || op.isGet() || op.isSet() || op.isGet_s()
-						|| op.isSet_s() || op.isOutAll()){
-					op.setLogicTupleListResult((List<LogicTuple>) msg.getTupleResult());
-				}else{
-					op.setTupleResult((LogicTuple) msg.getTupleResult());
-				}
-				if(msg.isResultSuccess()){
-					op.setOpResult(Outcome.SUCCESS);
-				}else
-					op.setOpResult(Outcome.FAILURE);
-				op.notifyCompletion(ev.operationSucceeded(), msg.isAllowed());
-				postEvent(ev);
-				
-			}
-			
-		}
-
-		/**
-		 * 
-		 * @return
-		 */
-		synchronized boolean isStopped(){
-			return stop;
-		}
-
-		/**
-		 * 
-		 */
-		synchronized void setStop(){
-			stop = true;
-		}
-
-		/**
-		 * 
-		 * @param template
-		 * @param tuple
-		 * @return
-		 */
-		LogicTuple unify(TupleTemplate template, Tuple tuple){
-			boolean res = template.propagate(p, tuple);
-			if(res)
-				return (LogicTuple) template;
-			else
-				return null;
-
-		}
-		
-	}
-
-	/**
-	 * 
-	 */
-	protected class ControllerSession{
-		
-		private Controller controller;
-		private TucsonProtocol session;
-
-		/**
-		 * 
-		 * @param c
-		 * @param s
-		 */
-		ControllerSession(Controller c, TucsonProtocol s){
-			controller = c;
-			session = s;
-		}
-
-		/**
-		 * 
-		 * @return
-		 */
-		public Controller getController(){
-			return controller;
-		}
-
-		/**
-		 * 
-		 * @return
-		 */
-		public TucsonProtocol getSession(){
-			return session;
-		}
-		
-	}
+//
+//	/**
+//	 * This method is responsible to setup, store and retrieve connections toward
+//	 * all the tuplecentres ever contacted by the TuCSoN Agent behind this proxy.
+//	 * 
+//	 * If a connection toward the given target tuplecentre already exists, it is
+//	 * retrieved and used. If not, the new connection is setup then stored for later use.
+//	 * 
+//	 * It is worth noting a couple of things. Why don't we setup connections
+//	 * once and for all as soon as the TuCSoN Agent is booted? The reason is that
+//	 * new tuplecentres can be created at run-time as TuCSoN Agents please, thus for every
+//	 * TuCSoN Operation request we should check wether a new tuplecentre has to be 
+//	 * created and booted. If a new tuplecentre has to be booted the correspondant
+//	 * proxy node side is dinamically triggered and booted {@link alice.tucson.service.ACCProxyNodeSide
+//	 * nodeProxy} 
+//	 * 
+//	 * @param tid Target TuCSoN tuplecentre id {@link alice.tucson.api.TucsonTupleCentreId tid}
+//	 * 
+//	 * @return The open session toward the given target tuplecentre
+//	 * 
+//	 * @throws UnreachableNodeException
+//	 * 
+//	 * @see alice.tucson.network.TucsonProtocol TucsonProtocol
+//	 * @see alice.tucson.service.ACCProxyNodeSide ACCProxyNodeSide
+//	 */
+//	protected TucsonProtocol getSession(TucsonTupleCentreId tid) throws UnreachableNodeException{				
+//		
+//		String opNode = alice.util.Tools.removeApices(tid.getNode());
+//		int port = tid.getPort();
+////		log(opNode+":"+port);
+//		ControllerSession tc = controllerSessions.get(opNode+":"+port);
+//		if(tc != null)
+//			return tc.getSession();
+//		else{
+//			if(opNode.equals("localhost"))
+//				tc = controllerSessions.get("127.0.0.1:"+port);
+//			if(opNode.equals("127.0.0.1"))
+//				tc = controllerSessions.get("localhost:"+port);
+//			if(tc != null)
+//				return tc.getSession();
+//		}
+//			
+//		profile.setProperty("agent-identity", aid.toString());
+//		profile.setProperty("agent-role", "user");
+//
+//		TucsonProtocol dialog = null;
+//		boolean isEnterReqAcpt = false;
+//		try{
+//			dialog = new TucsonProtocolTCP(opNode, port);
+//			dialog.sendEnterRequest(profile);
+//			dialog.receiveEnterRequestAnswer();
+//			if(dialog.isEnterRequestAccepted())
+//				isEnterReqAcpt = true;
+//		}catch(Exception ex){
+//			throw new UnreachableNodeException();
+//		}								
+//
+//		if(isEnterReqAcpt){
+//			ObjectInputStream din = dialog.getInputStream();
+//			Controller contr = new Controller(din);
+//			ControllerSession cs = new ControllerSession(contr, dialog);
+//			controllerSessions.put(opNode+":"+port, cs);
+//			contr.start();
+//			return dialog;
+//		}
+//		
+//		return null;
+//		
+//	}
+//
+//	/**
+//	 * Method to add a TuCSoN Operation Completion Event {@link alice.tucson.service.TucsonOpCompletionEvent
+//	 * event} to the internal queue of pending completion event to process
+//	 * 
+//	 * @param ev Completion Event to be added to pending queue
+//	 * 
+//	 * @see alice.tucson.service.TucsonOpCompletionEvent TucsonOpCompletionEvent
+//	 */
+//	protected void postEvent(TucsonOpCompletionEvent ev){
+//		synchronized(events){
+//			events.addLast(ev);
+//		}
+//	}
+//
+//	/**
+//	 * Method internally used to log proxy activity (could be used for debug)
+//	 * 
+//	 * @param msg String to display on the standard output
+//	 */
+//	protected void log(String msg){
+//		System.out.println("[ACCProxyAgentSide]: " + msg);
+//	}
+//
+//	/**
+//	 * 
+//	 */
+//	protected class Controller extends Thread{
+//		
+//		private boolean stop;
+//		private ObjectInputStream in;
+//		private final Prolog p = new Prolog();
+//
+//		/**
+//		 * 
+//		 * @param in
+//		 */
+//		Controller(ObjectInputStream in){
+//			
+//			this.in = in;
+//			stop = false;
+//			this.setDaemon(true);
+//			
+//			alice.tuprolog.lib.JavaLibrary jlib = (alice.tuprolog.lib.JavaLibrary) p.getLibrary("alice.tuprolog.lib.JavaLibrary");
+//			try{
+//				jlib.register(new alice.tuprolog.Struct("config"), this);
+//			}catch(InvalidObjectIdException ex){
+//				System.err.println("[ACCProxyAgentSide] Controller: " + ex);
+//				ex.printStackTrace();
+//			}
+//			
+//		}
+//
+//		/**
+//		 * 
+//		 */
+//		@SuppressWarnings("unchecked")
+//		public void run(){
+//			
+//			TucsonOpCompletionEvent ev = null;
+//			while(!isStopped()){
+//				
+//				for(Long operation : operationExpired)
+//					operations.remove(operation);
+//				
+//				TucsonMsgReply msg = null;
+//				try{
+//					msg = TucsonMsgReply.read(in);
+//				}catch(EOFException e){
+//					log("TuCSoN node service unavailable, nothing I can do");
+//					setStop();
+//					break;
+//				}catch(Exception ex){
+//					setStop();
+//					System.err.println("[ACCProxyAgentSide] Controller: " + ex);
+//				}
+//
+//				boolean ok = msg.isAllowed();
+//				if(ok){
+//					
+//					int type = msg.getType();
+//					if(type == TucsonOperation.uinCode() || type == TucsonOperation.uinpCode()
+//							|| type == TucsonOperation.urdCode() || type == TucsonOperation.urdpCode()
+//							|| type == TucsonOperation.unoCode() || type == TucsonOperation.unopCode()
+//							|| type == TucsonOperation.noCode() || type == TucsonOperation.no_sCode()
+//							|| type == TucsonOperation.nopCode() || type == TucsonOperation.nop_sCode()
+//							|| type == TucsonOperation.inCode() || type == TucsonOperation.rdCode()
+//							|| type == TucsonOperation.inpCode() || type == TucsonOperation.rdpCode()
+//							|| type == TucsonOperation.in_sCode() || type == TucsonOperation.rd_sCode()
+//							|| type == TucsonOperation.inp_sCode() || type == TucsonOperation.rdp_sCode()){
+//
+//						boolean succeeded = msg.isSuccess();
+//						if(succeeded){
+//							
+//							LogicTuple tupleReq = msg.getTupleRequested();
+//							LogicTuple tupleRes = (LogicTuple) msg.getTupleResult();
+////							log("tupleReq="+tupleReq+", tupleRes="+tupleRes);
+//							LogicTuple res = unify(tupleReq, tupleRes);
+//							ev = new TucsonOpCompletionEvent(new TucsonOpId(msg.getId()), ok, true, res);
+//							
+//						}else{
+//							ev = new TucsonOpCompletionEvent(new TucsonOpId(msg.getId()), ok, false);
+//						}
+//						
+//					}else if(type == TucsonOperation.set_Code() || type == TucsonOperation.set_sCode()
+//							|| type == TucsonOperation.outCode() || type == TucsonOperation.out_sCode()
+//							|| type == TucsonOperation.out_allCode() || type == TucsonOperation.spawnCode()){
+//						ev = new TucsonOpCompletionEvent(new TucsonOpId(msg.getId()), ok, msg.isSuccess());
+//					}else if(type == TucsonOperation.in_allCode() || type == TucsonOperation.rd_allCode()
+//							|| type == TucsonOperation.no_allCode()
+//							|| type == TucsonOperation.get_Code() || type == TucsonOperation.get_sCode()){
+//						List<LogicTuple> tupleSetRes = (List<LogicTuple>) msg.getTupleResult();
+//						ev = new TucsonOpCompletionEvent(new TucsonOpId(msg.getId()), ok, msg.isSuccess(), tupleSetRes);
+//					}else if(type == TucsonOperation.exitCode()){
+//						setStop();
+//						break;
+//					}
+//					
+//				}else{
+//					ev = new TucsonOpCompletionEvent(new TucsonOpId(msg.getId()), false, false);
+//				}
+//				
+//				TucsonOperation op = operations.remove(msg.getId());
+//				if(op.isNoAll() || op.isInAll() || op.isRdAll() || op.isGet() || op.isSet() || op.isGet_s()
+//						|| op.isSet_s() || op.isOutAll()){
+//					op.setLogicTupleListResult((List<LogicTuple>) msg.getTupleResult());
+//				}else{
+//					op.setTupleResult((LogicTuple) msg.getTupleResult());
+//				}
+//				if(msg.isResultSuccess()){
+//					op.setOpResult(Outcome.SUCCESS);
+//				}else
+//					op.setOpResult(Outcome.FAILURE);
+//				op.notifyCompletion(ev.operationSucceeded(), msg.isAllowed());
+//				postEvent(ev);
+//				
+//			}
+//			
+//		}
+//
+//		/**
+//		 * 
+//		 * @return
+//		 */
+//		synchronized boolean isStopped(){
+//			return stop;
+//		}
+//
+//		/**
+//		 * 
+//		 */
+//		synchronized void setStop(){
+//			stop = true;
+//		}
+//
+//		/**
+//		 * 
+//		 * @param template
+//		 * @param tuple
+//		 * @return
+//		 */
+//		LogicTuple unify(TupleTemplate template, Tuple tuple){
+//			boolean res = template.propagate(p, tuple);
+//			if(res)
+//				return (LogicTuple) template;
+//			else
+//				return null;
+//
+//		}
+//		
+//	}
+//
+//	/**
+//	 * 
+//	 */
+//	protected class ControllerSession{
+//		
+//		private Controller controller;
+//		private TucsonProtocol session;
+//
+//		/**
+//		 * 
+//		 * @param c
+//		 * @param s
+//		 */
+//		ControllerSession(Controller c, TucsonProtocol s){
+//			controller = c;
+//			session = s;
+//		}
+//
+//		/**
+//		 * 
+//		 * @return
+//		 */
+//		public Controller getController(){
+//			return controller;
+//		}
+//
+//		/**
+//		 * 
+//		 * @return
+//		 */
+//		public TucsonProtocol getSession(){
+//			return session;
+//		}
+//		
+//	}
 
 }

@@ -1,5 +1,6 @@
 package alice.respect.core;
 
+import alice.respect.api.IEnvironmentContext;
 import alice.respect.api.IOrdinarySynchInterface;
 import alice.respect.api.ISpecificationSynchInterface;
 import alice.respect.api.ILinkContext;
@@ -127,6 +128,16 @@ public class RespectTCContainer{
 			RespectTC tc = new RespectTC(id, this, QUEUE_SIZE);
 			this.registry.addTC(tc);
 			return tc.getManagementContext();
+		}
+	}
+	
+	public IEnvironmentContext getEnvironmentContext(TupleCentreId id){
+		try{
+			return ((RespectTC) registry.getTC(id)).getEnvironmentContext();
+		}catch (Exception e){
+			RespectTC tc = new RespectTC(id, this, QUEUE_SIZE);
+			this.registry.addTC(tc);
+			return tc.getEnvironmentContext();
 		}
 	}
 

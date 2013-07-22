@@ -6,10 +6,16 @@ import alice.tuprolog.Term;
 
 public class EnvId implements IId{
 
+	private String localName;
 	private Struct id;
 	
-	public EnvId(Struct id){
-		this.id=id;
+	public EnvId( String id ){
+		this.localName = id;
+		this.id= new Struct( id );
+	}
+	
+	public String getLocalName(){
+    	return localName;
 	}
 	
 	public boolean isAgent() {

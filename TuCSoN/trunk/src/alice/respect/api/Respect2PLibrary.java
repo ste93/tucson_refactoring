@@ -28,6 +28,8 @@ import alice.respect.core.InternalEvent;
 import alice.respect.core.InternalOperation;
 import alice.respect.core.RespectOperation;
 import alice.respect.core.RespectVMContext;
+import alice.respect.core.TransducerManager;
+import alice.respect.transducer.TransducerId;
 
 import alice.tucson.parsing.MyOpManager;
 import  alice.tuprolog.*;
@@ -134,8 +136,8 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
 		"rd_all(T,L):-rd_all(T,L,this@localhost). \n"+
 		"no_all(T,L):-no_all(T,L,this@localhost). \n"+
         
-//        "Env ? getEnv(Key,Value) :- getEnv(Env,Key,Value). \n" +
-//        "Env ? setEnv(Key,Value) :- setEnv(Env,Key,Value). \n" +
+        "Env ? getEnv(Key,Value) :- getEnv(Env,Key,Value). \n" +
+        "Env ? setEnv(Key,Value) :- setEnv(Env,Key,Value). \n" +
 //        "prolog(Term):- Term. \n" +
         
         "completion :- response. \n"+
@@ -1945,32 +1947,61 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     }
     
     public boolean getEnv_3(Term env, Term key, Term val){
+    	// Get engine's copy of key and val
     	AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
     	AbstractMap<Var,Var> v1 = new LinkedHashMap<Var,Var>();
     	LogicTuple lt=new LogicTuple("getEnv",new TupleArgument(key.copyGoal(v,0)),new TupleArgument(val.copyGoal(v1,0)));
+    	
+    	// Building internal event
     	InputEvent ev=vm.getCurrentEvent();
-    	InternalEvent ie=new InternalEvent(ev,InternalOperation.makeGetEnv(lt));
-    	ie.setTarget(new EnvId((Struct)env));
-    	ie.setSource(vm.getId());    	
-//    	if (vm.getTransducerManager().notifyOutputEnv(ie)){
-//    		vm.fetchTriggeredReactions(ie);
-//    		return true;
-//    	}
+    	InternalEvent internalEv = new InternalEvent(ev,InternalOperation.makeGetEnv(lt));
+    	String normEnv = env.toString().substring( env.toString().indexOf("(")+1,  env.toString().indexOf(",") );
+    	EnvId envId = new EnvId( normEnv );
+    	internalEv.setTarget( envId );		// Set target resource
+    	internalEv.setSource(vm.getId());	// Set the source of the event
+  	
+    	// Getting the transducer from the transducer manager
+		TransducerId tId = TransducerManager.getTransducerManager().getTransducerId( envId );
+    	
+    	try {
+			if ( TransducerManager.getTransducerManager().getTransducer( tId.getAgentName() ).notifyOutput( internalEv ) ){
+				vm.fetchTriggeredReactions( internalEv );
+				return true;
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     	return false;
     }
     
     public boolean setEnv_3(Term env, Term key, Term val){
+
+    	// Get engine's copy of key and val
     	AbstractMap<Var,Var> v = new LinkedHashMap<Var,Var>();
     	AbstractMap<Var,Var> v1 = new LinkedHashMap<Var,Var>();
     	LogicTuple lt=new LogicTuple("setEnv",new TupleArgument(key.copyGoal(v,0)),new TupleArgument(val.copyGoal(v1,0)));
+    	
+    	// Building internal event
     	InputEvent ev=vm.getCurrentEvent();
-    	InternalEvent ie=new InternalEvent(ev,InternalOperation.makeSetEnv(lt));
-    	ie.setTarget(new EnvId((Struct)env));
-    	ie.setSource(vm.getId());   	
-//    	if (vm.getTransducerManager().notifyOutputEnv(ie)){
-//    		vm.fetchTriggeredReactions(ie);
-//    		return true;
-//    	}
+    	InternalEvent internalEv=new InternalEvent(ev,InternalOperation.makeSetEnv(lt));
+    	String normEnv = env.toString().substring( env.toString().indexOf("(")+1,  env.toString().indexOf(",") );
+    	EnvId envId = new EnvId( normEnv );
+    	internalEv.setTarget(envId);
+    	internalEv.setSource(vm.getId());  
+
+    	// Getting the transducer from the transducer manager
+    	TransducerId tId = TransducerManager.getTransducerManager().getTransducerId( envId );
+    	
+    	try {
+			if ( TransducerManager.getTransducerManager().getTransducer( tId.getAgentName() ).notifyOutput( internalEv ) ){
+				vm.fetchTriggeredReactions( internalEv );
+				return true;
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     	return false;
     }
     

@@ -22,6 +22,7 @@ import alice.logictuple.*;
 import alice.logictuple.exceptions.InvalidTupleArgumentException;
 
 import alice.respect.api.exceptions.InvalidTupleCentreIdException;
+import alice.respect.core.EnvConfigAgent;
 import alice.respect.core.RespectTC;
 import alice.tucson.api.exceptions.*;
 import alice.tucson.api.TucsonAgentId;
@@ -57,11 +58,13 @@ public class TucsonNodeService{
 	private TucsonTupleCentreId idConfigTC;
 	private TucsonTupleCentreId idObsTC;
 	private ObservationService obsService;
+	private TucsonTupleCentreId idEnvTC;	// Tuple centre for environment configuration
 
 	private Prolog configManager;
 	private String configFile;
 	private static final String DEFAULT_BOOT_SPEC_FILE = "alice/tucson/service/config/boot_spec.rsp";
 	private static final String DEFAULT_OBS_SPEC_FILE = "alice/tucson/service/config/obs_spec.rsp";
+	private static final String DEFAULT_ENVCONFIG_SPEC_FILE = "alice/respect/core/specTcEnvConfig.rsp";
 	private static final String PERSISTENCY_PATH = "./persistent/";
 	private static final String BOOT_SETUP_THEORY = "alice/tucson/service/config/boot.pl";
 	private static final int DEFAULT_TCP_PORT = 20504; 
@@ -96,6 +99,7 @@ public class TucsonNodeService{
 			nodeAid = new TucsonAgentId("'$TucsonNodeService-Agent'");
 			idConfigTC = new TucsonTupleCentreId("'$ORG'", "localhost", ""+tcp_port);
 			idObsTC = new TucsonTupleCentreId("'$OBS'", "localhost", ""+tcp_port);
+			idEnvTC = new TucsonTupleCentreId("envConfigTC", "localhost", ""+tcp_port );
 		}catch(TucsonInvalidAgentIdException e){
 			System.err.println("[TucsonNodeService]: " + e);
 			e.printStackTrace();
@@ -159,6 +163,8 @@ public class TucsonNodeService{
 		setupConfigTupleCentre();
 //		log("Check Persistency service...");
 		checkPersistentTupleCentres(PERSISTENCY_PATH);
+		log("Setting up Environment Configuration Service...");
+		setupEnvConfigTupleCentre();
 
 		installationDate = new Date();
 //		instance = this;
@@ -619,6 +625,39 @@ public class TucsonNodeService{
 		}
 
 	}
+	
+	/*
+	 * Setting up the environment configuration tuple centre
+	 */
+	private void setupEnvConfigTupleCentre(){
+		
+		try {
+			bootTupleCentre( idEnvTC.getName() );
+			InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream(DEFAULT_ENVCONFIG_SPEC_FILE);
+			String spec = alice.util.Tools.loadText(new BufferedInputStream(is));
+			LogicTuple specTuple = new LogicTuple("spec", new Value(spec));
+			TupleCentreContainer.doBlockingSpecOperation(TucsonOperation.set_sCode(), nodeAid, idEnvTC, specTuple);
+		} catch (TucsonInvalidTupleCentreIdException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (TCInstantiationNotPossibleException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (TucsonInvalidLogicTupleException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (TucsonOperationNotPossibleException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (TucsonInvalidSpecificationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
 
 	/**
 	 * 
@@ -629,6 +668,14 @@ public class TucsonNodeService{
 		nodeAgents.add(new NodeManagementAgent(idConfigTC, this));
 
 		log("--------------------------------------------------------------------------------");
+		log("Spawning EnvConfig Agent...");
+		try {
+			EnvConfigAgent envConfigAgent = new EnvConfigAgent( "localhost", tcp_port );
+		} catch (TucsonInvalidAgentIdException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		log("Spawning ACC Provider Agent...");
 		ctxman = new ACCProvider(this, idConfigTC);
 		

@@ -54,5 +54,4 @@ public interface IOrdinaryAsynchInterface {
 	IRespectOperation uinp(IId aid, LogicTuple t, OperationCompletionListener l) throws InvalidLogicTupleException, OperationNotPossibleException;
 	
 	IRespectOperation unop(IId aid, LogicTuple t, OperationCompletionListener l) throws InvalidLogicTupleException, OperationNotPossibleException;
-	
 }

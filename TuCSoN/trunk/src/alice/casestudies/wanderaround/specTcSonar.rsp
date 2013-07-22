@@ -1,0 +1,183 @@
+reaction(
+	time(200),
+	endo,
+	(
+		out(output(ag_feelforce)),
+		out(output(ag_collide))
+	)
+).
+
+reaction( 
+	in(can_suppress(Tci,Tcs,Time)), 
+	(exo, response),
+	( 
+		in(input(Tci)), out(input(Tcs)),
+		current_time(CurrentT), NewTime is CurrentT + Time,
+		out_s( 
+			time(NewTime), 
+			endo,
+			( 
+				in(input(Tcs)), out(input(Tci)),
+				out(can_suppress(Tci,Tcs,Time))
+			)
+		)
+	)
+).
+
+reaction( 
+	out(data(X)), 
+	(exo, response),
+	( 
+		in(data(X)),
+		event_source(Tc), rd(input(Tc)),
+		out(X) 
+	)
+).
+
+reaction( 
+	out(data(X)), 
+	(exo, response),
+	( 
+		event_source(Tc), no(input(Tc)),
+		in(data(X))
+	)
+).
+
+reaction( 
+	in(can_inhibit(Tco,Tcs,Time)), 
+	(exo, response),
+	( 
+		in(output(Tco)),
+		current_time(CurrentT), NewTime is CurrentT + Time,
+		out_s( 
+				time(NewTime), 
+				endo,
+				( 
+					out(output(Tco)),
+					out(can_inhibit(Tco,Tcs,Time))
+				)
+		)
+	)
+).
+
+reaction( 
+	rdp(X), 
+	(from_agent, request),
+	( 
+		in(X),
+		event_source(Ag), rd(output(Ag)),
+		out(X) 
+	)
+).
+
+reaction(
+	time(1000),
+	endo,
+	(
+		tc_u1 @ localhost : 20504 ? rd(reading(distance,X)),
+		tc_u2 @ localhost : 20504 ? rd(reading(distance,X)),
+		tc_u3 @ localhost : 20504 ? rd(reading(distance,X)),
+		tc_u4 @ localhost : 20504 ? rd(reading(distance,X)),
+		out(done)
+	)
+).
+
+reaction(
+	out(done),
+	endo,
+	(
+		in(done),
+		current_time(Time),
+		NewTime is Time + 1000,
+		out_s(	time(NewTime),
+				endo,
+				(
+					tc_u1 @ localhost : 20504 ? rd(reading(distance,X)),
+					tc_u2 @ localhost : 20504 ? rd(reading(distance,X)),
+					tc_u3 @ localhost : 20504 ? rd(reading(distance,X)),
+					tc_u4 @ localhost : 20504 ? rd(reading(distance,X)),
+					out(done)
+				)
+		)
+	)
+).
+
+reaction(
+	rd(reading(distance,X)),
+	( link_out, success ),
+	(
+		event_target( tc_u1@localhost:20504 ),
+		in( distance(front,OldValue) ),
+		out( distance(front,X) )
+	)
+).
+
+reaction(
+	rd(reading(distance,X)),
+	( link_out, success ),
+	(
+		event_target( tc_u2@localhost:20504 ),
+		in( distance(right,OldValue) ),
+		out( distance(right,X) )
+	)
+).
+
+reaction(
+	rd(reading(distance,X)),
+	( link_out, success ),
+	(
+		event_target( tc_u3@localhost:20504 ),
+		in( distance(back,OldValue) ),
+		out( distance(back,X) )
+	)
+).
+
+reaction(
+	rd(reading(distance,X)),
+	( link_out, success ),
+	(
+		event_target( tc_u4@localhost:20504 ),
+		in( distance(left,OldValue) ),
+		out( distance(left,X) )
+	)
+).
+
+reaction(
+	rd(reading(distance,X)),
+	( link_out, success ),
+	(
+		event_target( tc_u1@localhost:20504 ),
+		no( distance(front,OldValue) ),
+		out( distance(front,X) )
+	)
+).
+
+reaction(
+	rd(reading(distance,X)),
+	( link_out, success ),
+	(
+		event_target( tc_u2@localhost:20504 ),
+		no( distance(right,OldValue) ),
+		out( distance(right,X) )
+	)
+).
+
+reaction(
+	rd(reading(distance,X)),
+	( link_out, success ),
+	(
+		event_target( tc_u3@localhost:20504 ),
+		no( distance(back,OldValue) ),
+		out( distance(back,X) )
+	)
+).
+
+reaction(
+	rd(reading(distance,X)),
+	( link_out, success ),
+	(
+		event_target( tc_u4@localhost:20504 ),
+		no( distance(left,OldValue) ),
+		out( distance(left,X) )
+	)
+).

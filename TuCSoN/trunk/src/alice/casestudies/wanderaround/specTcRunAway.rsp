@@ -1,0 +1,81 @@
+reaction(
+	time(200),
+	endo,
+	(
+		out(input(ag_feelforce)),
+		out(threshold(50))
+	)
+).
+
+reaction( 
+	in(can_suppress(Tci,Tcs,Time)), 
+	(exo, response),
+	( 
+		in(input(Tci)), out(input(Tcs)),
+		current_time(CurrentT), NewTime is CurrentT + Time,
+		out_s( 
+			time(NewTime), 
+			endo,
+			( 
+				in(input(Tcs)), out(input(Tci)),
+				out(can_suppress(Tci,Tcs,Time))
+			)
+		)
+	)
+).
+
+reaction( 
+	out(data(X)), 
+	(exo, response),
+	( 
+		event_source(Tc), rd(input(Tc)),
+		in(data(X)), out(X) 
+	)
+).
+
+reaction( 
+	out(data(X)), 
+	(exo, response),
+	( 
+		event_source(Tc), no(input(Tc)),
+		in(data(X))
+	)
+).
+
+reaction( 
+	in(can_inhibit(Tco,Tcs,Time)), 
+	(exo, response),
+	( 
+		in(output(Tco)),
+		current_time(CurrentT), NewTime is CurrentT + Time,
+		out_s( 
+				time(NewTime), 
+				endo,
+				( 
+					out(output(Tco)),
+					out(can_inhibit(Tco,Tcs,Time))
+				)
+		)
+	)
+).
+
+reaction( 
+	inp(data(X)), 
+	(from_agent, request),
+	( 
+		in(X),
+		event_source(Ag), rd(output(Ag)),
+		out(X) 
+	)
+).
+
+reaction( 
+	out(direction(Angle, Speed)), 
+	(endo,response),
+	( 
+		in(direction(Angle, Speed)), 
+		rd(threshold(Th)), 
+		Speed >= Th,
+		tc_motor ? out(data(command(Angle,Speed)))
+	)
+).

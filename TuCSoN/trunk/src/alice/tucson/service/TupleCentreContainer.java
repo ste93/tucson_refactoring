@@ -5,6 +5,7 @@ import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.logictuple.exceptions.InvalidTupleOperationException;
 
 import alice.respect.api.AgentId;
+import alice.respect.api.IEnvironmentContext;
 import alice.respect.api.IOrdinarySynchInterface;
 import alice.respect.api.ISpecificationSynchInterface;
 import alice.respect.api.IManagementContext;
@@ -17,9 +18,15 @@ import alice.respect.api.exceptions.InvalidSpecificationException;
 import alice.respect.api.exceptions.InvalidTupleCentreIdException;
 import alice.respect.api.exceptions.OperationNotPossibleException;
 
+import alice.respect.core.InternalEvent;
+import alice.respect.core.InternalOperation;
+import alice.respect.core.RespectOperation;
 import alice.respect.core.RespectTC;
 import alice.respect.core.SpecificationSynchInterface;
 import alice.respect.core.RespectTCContainer;
+import alice.respect.core.TransducerManager;
+import alice.respect.transducer.TransducerId;
+import alice.respect.transducer.TransducerStandardInterface;
 
 import alice.tucson.api.TucsonAgentId;
 import alice.tucson.api.TucsonTupleCentreId;
@@ -27,6 +34,7 @@ import alice.tucson.api.exceptions.TucsonInvalidSpecificationException;
 import alice.tucson.api.exceptions.TCInstantiationNotPossibleException;
 import alice.tucson.api.exceptions.TucsonInvalidLogicTupleException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
+import alice.tucson.api.exceptions.UnreachableNodeException;
 
 import alice.tucson.service.TucsonOperation;
 
@@ -34,8 +42,10 @@ import alice.tuplecentre.api.ITupleCentreOperation;
 import alice.tuplecentre.api.InspectableEventListener;
 import alice.tuplecentre.api.ObservableEventListener;
 
+import alice.tuplecentre.core.InputEvent;
 import alice.tuplecentre.core.OperationCompletionListener;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -558,6 +568,83 @@ public class TupleCentreContainer{
 			throw new TucsonOperationNotPossibleException();
 		}	
 		return res;
+	}
+	
+	/*
+	 *  Do an environmental operation from an agent aid to the tuple centre tid
+	 */
+	public static ITupleCentreOperation doEnvironmentalOperation(int type, TucsonAgentId aid, TucsonTupleCentreId tid, LogicTuple t, OperationCompletionListener l) throws alice.tuplecentre.api.exceptions.OperationTimeOutException, InvalidTupleOperationException, TucsonOperationNotPossibleException, UnreachableNodeException{
+				
+		IEnvironmentContext context = null;
+		RespectOperation op = null;
+		
+		context = (IEnvironmentContext) (RespectTCContainer.getRespectTCContainer()).getEnvironmentContext((TupleCentreId) tid.getInternalTupleCentreId());
+		if( type == TucsonOperation.getEnvCode() ){
+			op = RespectOperation.makeGetEnv( null, t, l);
+		}else if( type == TucsonOperation.setEnvCode() ){
+			op = RespectOperation.makeSetEnv( null, t, l);
+		}
+		
+		// Preparing the input event for the tuple centre.
+		HashMap<String, String> eventMap = new HashMap<String, String>();
+		eventMap.put("id", aid.toString() );
+		InputEvent event = null;
+		TransducerStandardInterface transducer = TransducerManager.getTransducerManager().getTransducer( aid.getAgentName() );
+		if( t != null ){
+			// It's an event performed by a transducer. In other words, it's an environment event
+			event = new InputEvent( transducer.getIdentifier(), op, (TupleCentreId)tid.getInternalTupleCentreId(), context.getCurrentTime(), eventMap );
+			// Sending the event
+			event.setSource( transducer.getIdentifier() );
+			event.setTarget( (TupleCentreId)tid.getInternalTupleCentreId() );
+			context.notifyInputEnvEvent( event );
+		}else{
+			// It's an agent request of environment properties
+			event = new InputEvent( aid, op, (TupleCentreId)tid.getInternalTupleCentreId(), context.getCurrentTime(), eventMap );
+			InternalEvent internalEv = new InternalEvent(event, InternalOperation.makeGetEnv(t));
+			internalEv.setSource( (TupleCentreId)tid.getInternalTupleCentreId() );	// Set the source of the event
+			TransducerId[] tIds = TransducerManager.getTransducerManager().getTransducerIds((TupleCentreId)tid.getInternalTupleCentreId());
+			for( int i=0; i<tIds.length; i++ ){
+				internalEv.setTarget( tIds[i] );		// Set target resource
+				transducer = TransducerManager.getTransducerManager().getTransducer( tIds[i].getAgentName() );
+		    	transducer.notifyOutput( internalEv );
+			}
+		}
+		
+		return op;
+	}
+	
+	/*
+	 *  Do an environmental operation from a tuple centre aid to the tuple centre tid
+	 */
+	public static ITupleCentreOperation doEnvironmentalOperation(int type, TucsonTupleCentreId aid, TucsonTupleCentreId tid, LogicTuple t, OperationCompletionListener l) throws InvalidTupleOperationException, TucsonOperationNotPossibleException, UnreachableNodeException, alice.tuplecentre.api.exceptions.OperationTimeOutException{
+		
+		IEnvironmentContext context = null;
+		RespectOperation op = null;
+		
+		context = (IEnvironmentContext) (RespectTCContainer.getRespectTCContainer()).getEnvironmentContext((TupleCentreId) tid.getInternalTupleCentreId());
+		if( type == TucsonOperation.getEnvCode() ){
+			op = RespectOperation.makeGetEnv( null, t, l);
+		}else if( type == TucsonOperation.setEnvCode() ){
+			op = RespectOperation.makeSetEnv( null, t, l);
+		}
+
+		// Preparing the input event for the tuple centre.
+		HashMap<String, String> eventMap = new HashMap<String, String>();
+		eventMap.put("id", aid.toString() );
+		InputEvent event = new InputEvent( aid, op, (TupleCentreId)tid.getInternalTupleCentreId(), context.getCurrentTime(), eventMap);
+		
+		TransducerStandardInterface transducer;
+		event = new InputEvent( aid, op, (TupleCentreId)tid.getInternalTupleCentreId(), context.getCurrentTime(), eventMap );
+		InternalEvent internalEv = new InternalEvent(event, InternalOperation.makeGetEnv(t));
+		internalEv.setSource( (TupleCentreId)tid.getInternalTupleCentreId() );	// Set the source of the event
+		TransducerId[] tIds = TransducerManager.getTransducerManager().getTransducerIds((TupleCentreId)tid.getInternalTupleCentreId());
+		for( int i=0; i<tIds.length; i++ ){
+			internalEv.setTarget( tIds[i] );		// Set target resource
+			transducer = TransducerManager.getTransducerManager().getTransducer( tIds[i].getAgentName() );
+	    	transducer.notifyOutput( internalEv );
+		}
+		
+		return op;
 	}
 
 //	why are these methods not implemented yet?

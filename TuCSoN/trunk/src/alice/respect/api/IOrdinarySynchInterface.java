@@ -56,5 +56,4 @@ public interface IOrdinarySynchInterface {
 
 	LogicTuple spawn(IId aid, LogicTuple t) throws InvalidLogicTupleException,
 			OperationNotPossibleException;
-	
 }

@@ -319,6 +319,16 @@ public class SpeakingState extends TupleCentreVMState {
 						foundSatisfied=true;
 						out_ev = new OutputEvent(ev);
 						vm.fetchTimedReactions(out_ev);
+					} else if(((RespectOperation)op).isGetEnv()){
+						tuple = op.getTupleArgument();
+						op.setOpResult(Outcome.SUCCESS);
+	            		op.setTupleResult(tuple);
+	            		foundSatisfied = true;
+					} else if(((RespectOperation)op).isSetEnv()){
+						tuple = op.getTupleArgument();
+						op.setOpResult(Outcome.SUCCESS);
+	            		op.setTupleResult(tuple);
+	            		foundSatisfied = true;
 					}
 		            
 					else throw new InvalidOperationException();

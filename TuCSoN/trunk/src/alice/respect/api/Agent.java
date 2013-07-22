@@ -31,17 +31,32 @@ import alice.respect.core.RespectTC;
 public abstract class Agent  {
 
     private AgentId id;
-    private RespectTC tc;
+    private String node;
+    private int portNum;
+    
 	private static final Class[] ARGS_CLASS = new Class[]{}; 
 	private static final Object[] ARGS = new Object[]{}; 
         
-    protected Agent(AgentId id) throws RespectException {
+    protected Agent(AgentId id, String nodeAddress, int portNum){
         this.id=id;
+        this.node = nodeAddress;
+        this.portNum = portNum;
     }
-
-    protected Agent(AgentId id, RespectTC tc) throws RespectException {
-        this.id=id;
-        this.tc=tc;
+    
+    protected Agent(AgentId id, String nodeAddress){
+    	this( id, nodeAddress, 20504);
+    }
+    
+    public final AgentId myName(){
+    	return id;
+    }
+    
+    public final String myNode(){
+    	return node;
+    }
+    
+    public final int myPortNum(){
+    	return portNum;
     }
     
     /**

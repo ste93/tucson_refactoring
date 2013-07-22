@@ -307,5 +307,4 @@ public interface OrdinarySynchACC extends RootACC{
 	 */
 	ITucsonOperation spawn(Object tid, LogicTuple toSpawn, Long timeout)
 			throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException;
-
 }

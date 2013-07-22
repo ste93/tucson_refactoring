@@ -131,6 +131,7 @@ public class TupleCentreId implements alice.tuplecentre.api.TupleCentreId, java.
 			Struct sid = (Struct) id;
 			if (sid.getArity() == 2 && sid.getName().equals("@")){
 				Struct t = (Struct) sid.getArg(1);
+
 				if(!t.getArg(0).isCompound()){
 					return t.getArg(0).getTerm().toString();
 				}else{

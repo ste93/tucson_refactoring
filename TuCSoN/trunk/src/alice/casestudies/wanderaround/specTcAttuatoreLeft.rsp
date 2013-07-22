@@ -1,0 +1,8 @@
+reaction(
+			out(command(Key,Value)),
+			response,
+			(
+				in(command(Key,Value)), 
+				servoMotorActuatorLeft ? setEnv(Key,Value)
+			)
+		).

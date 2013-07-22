@@ -577,7 +577,11 @@ public class RespectVMContext extends
 												.toTerm(),
 										list2tuple(op.getLogicTupleListResult()));
 							}
-						}
+						}else if (op.isGetEnv()){
+		                	currentReactionTerm = new Struct("getEnv", op.getLogicTupleArgument().getArg(0).toTerm(), op.getLogicTupleArgument().getArg(1).toTerm());
+		                }else if (op.isSetEnv()){
+		                	currentReactionTerm = new Struct("setEnv", op.getLogicTupleArgument().getArg(0).toTerm(), op.getLogicTupleArgument().getArg(1).toTerm());
+		                }
 					}
 
 				} else if (ev.isInternal()) {
@@ -1507,6 +1511,7 @@ public class RespectVMContext extends
 			// (TupleCentreId)oe.getSource());
 			link.doOperation((TupleCentreId) oe.getSource(), op);
 		} catch (Exception e) {
+			System.err.println(oe.getSource());
 			e.printStackTrace();
 		}
 	}

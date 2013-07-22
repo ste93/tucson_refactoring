@@ -1,0 +1,19 @@
+
+% ReSpecT specification used into tc_ph and tc_ps ( LIGHT SUPERVISOR CASE STUDY )
+
+% Initialization tuple
+reaction(
+	time(200),
+	endo,
+	out(reading(intensity,0))
+).
+
+% Reacting to environment event
+reaction(
+	getEnv(Key,Value),
+	from_env,
+	(
+		in(reading(OldK,OldV)),
+		out(reading(Key,Value))
+	)
+).

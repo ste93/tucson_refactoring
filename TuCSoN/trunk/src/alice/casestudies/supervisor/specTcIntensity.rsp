@@ -1,0 +1,135 @@
+
+% ReSpecT specification used into tc_intensity ( LIGHT SUPERVISOR CASE STUDY )
+
+% Initialization tuples
+reaction(
+	time(200),
+	endo,
+	(
+		out(input(tc_ph)),
+		out(output(ag_intensity)),
+		out(input(ag_range)),
+		out(output(ag_range)),
+		out(input(tc_lock@localhost:20504)),
+		out(output(tc_lock@localhost:20504))
+	)
+).
+
+% Checks reading permissions
+reaction(
+	inp(intensity(X)),
+	(from_agent, request),
+	(
+		in(intensity(X)),
+		event_source(Src), rd(output(Src)),
+		out(intensity(X))
+	)
+).
+
+reaction(
+	inp(intensity_to_set(X)),
+	(from_agent, request),
+	(
+		in(intensity_to_set(X)),
+		event_source(Src), rd(output(Src)),
+		out(intensity_to_set(X))
+	)
+).
+
+% Checks writing permissions
+reaction(
+	out(data(X)),
+	(link_in, success),
+	(
+		in(data(X)),
+		event_source(Src), rd(input(Src)),
+		out(X)
+	)
+).
+
+reaction(
+	out(data(X)),
+	(from_agent, response),
+	(
+		in(data(X)),
+		event_source(Src), rd(input(Src)),
+		out(X)
+	)
+).
+
+% Start reading cycle
+reaction(
+	time(1000),
+	internal,
+	(
+		tc_ph@localhost:20504 ? rd(reading(intensity,X)),
+		tc_ps@localhost:20504 ? rd(reading(intensity,X)),
+		out(done)
+	)
+).
+
+% Reading cycle
+reaction(
+	out(done),
+	internal,
+	(
+		in(done),
+		current_time(Time),
+		NewTime is Time + 100,
+		out_s(	time(NewTime),
+				internal,
+				(
+					tc_ph @ localhost : 20504 ? rd(reading(intensity,X)),
+					tc_ps @ localhost : 20504 ? rd(reading(intensity,X)),
+					out(done)
+				)
+		)
+	)
+).
+
+% Checks event target and permissions before setting new intensity value
+reaction(
+	rd(reading(intensity,X)),
+	( link_out, success ),
+	(
+		event_target( tc_ph@localhost:20504 ),
+		rdp(input(tc_ph)),
+		in( intensity(OldX) ),
+		out( intensity(X) )
+	)
+).
+
+reaction(
+	rd(reading(intensity,X)),
+	( link_out, success ),
+	(
+		event_target( tc_ps@localhost:20504 ),
+		rd(input(tc_ps)),
+		in( intensity(OldX) ),
+		out( intensity(X) )
+	)
+).
+
+reaction(
+	rd(reading(intensity,X)),
+	( link_out, success ),
+	(
+		event_target( tc_ph@localhost:20504 ),
+		rdp(input(tc_ph)),
+		no( intensity(OldX) ),
+		out( intensity(X) )
+	)
+).
+
+reaction(
+	rd(reading(intensity,X)),
+	( link_out, success ),
+	(
+		event_target( tc_ps@localhost:20504 ),
+		rd(input(tc_ps)),
+		no( intensity(OldX) ),
+		out( intensity(X) )
+	)
+).
+	
+

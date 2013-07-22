@@ -315,6 +315,26 @@ public class ACCProxyNodeSide extends ACCAbstractProxyNodeSide{
 					opVsReq.put(new Long(op.getId()), new Long(msg.getId()));
 				}
 				
+			}else if(msg_type == TucsonOperation.getEnvCode() || msg_type == TucsonOperation.setEnvCode()){
+
+				node.resolveCore(tid.getName());
+				node.addTCAgent(agentId, tid);
+				
+				ITupleCentreOperation op = null;
+				synchronized(requests){
+					try{
+						if(tcId == null)
+							op = TupleCentreContainer.doEnvironmentalOperation(msg_type, agentId, tid, msg.getTuple(), this);
+						else
+							op = TupleCentreContainer.doEnvironmentalOperation(msg_type, tcId, tid, msg.getTuple(), this);
+					}catch(Exception e){
+						System.err.println("[ACCProxyNodeSide]: " + e);
+						e.printStackTrace();
+						break;
+					}
+				}
+				requests.put(new Long(msg.getId()), msg);
+				opVsReq.put(new Long(op.getId()), new Long(msg.getId()));
 			}
 			
 		}

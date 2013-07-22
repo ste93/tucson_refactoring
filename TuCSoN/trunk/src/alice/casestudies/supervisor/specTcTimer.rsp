@@ -1,0 +1,59 @@
+
+% ReSpecT specification used into tc_timer ( LIGHT SUPERVISOR CASE STUDY )
+
+% Initialization tuple
+reaction(
+	time(200),
+	endo,
+	out(input(ag_connection))
+).
+
+% Checks writing permissions
+reaction(
+	out(cmd(X)),
+	(from_agent, success),
+	(
+		in(cmd(X)),
+		event_source(Src), rd(input(Src)),
+		out(X)
+	)
+).
+
+% Resets the timer
+reaction(
+	out(reset),
+	internal,
+	(
+		connectionTimer ? setEnv(time, 0),
+		in(reset)
+	)
+).
+
+% Starts the timer cycle
+reaction(
+	time(3000),
+	internal,
+	(
+		connectionTimer ? setEnv(time, 1),
+		out(done)
+	)
+).
+
+% Timer cycle
+reaction(
+	out(done),
+	internal,
+	(
+		in(done),
+		current_time(Time),
+		NewTime is Time + 1000,
+		out_s( 
+			time(NewTime),
+			internal,
+			(
+				connectionTimer ? setEnv(time, 1),
+				out(done)
+			)
+		)
+	)
+).

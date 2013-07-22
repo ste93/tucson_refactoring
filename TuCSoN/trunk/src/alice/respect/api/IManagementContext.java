@@ -24,7 +24,6 @@ import alice.respect.api.exceptions.OperationNotPossibleException;
 import alice.tucson.introspection.WSetEvent;
 import alice.tuplecentre.api.InspectableEventListener;
 import alice.tuplecentre.api.ObservableEventListener;
-import alice.tuplecentre.core.Event;
 
 /**
  * Basic Management Interface for a RespecT Tuple Centre.

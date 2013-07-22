@@ -3,6 +3,7 @@ package alice.tucson.service;
 import alice.logictuple.*;
 import alice.logictuple.exceptions.InvalidTupleOperationException;
 
+import alice.respect.core.RespectOperation;
 import alice.tucson.api.*;
 
 import alice.tuplecentre.api.Tuple;
@@ -21,15 +22,15 @@ public class TucsonOperation extends TupleCentreOperation implements ITucsonOper
 	private static final int OPTYPE_EXIT = 310;
 	private boolean successed;
 	private boolean allowed;
-	private ACCProxyAgentSide context = null;
+	private /*ACCProxyAgentSide*/ OperationHandler context = null;
 	
-	public TucsonOperation(int type, Tuple t, OperationCompletionListener l, ACCProxyAgentSide context){
+	public TucsonOperation(int type, Tuple t, OperationCompletionListener l, /*ACCProxyAgentSide*/OperationHandler context){
 		super(null, type, t, l);
 		this.context = context;
 		successed = false;
 	}
 
-	public TucsonOperation(int type, TupleTemplate t, OperationCompletionListener l, ACCProxyAgentSide context){
+	public TucsonOperation(int type, TupleTemplate t, OperationCompletionListener l, /*ACCProxyAgentSide*/ OperationHandler context){
 		super(null, type, t, l);
 		this.context = context;
 		successed = false;
@@ -38,6 +39,22 @@ public class TucsonOperation extends TupleCentreOperation implements ITucsonOper
 	/**
 	 * NEW PRIMITIVES CODES
 	 */
+	
+	public static int getEnvCode(){
+		return RespectOperation.OPTYPE_GET_ENV;
+	}
+	
+	public static int setEnvCode(){
+		return RespectOperation.OPTYPE_SET_ENV;
+	}
+	
+	public static int envCode(){
+		return RespectOperation.OPTYPE_ENV;
+	}
+	
+	public static int timeCode(){
+		return RespectOperation.OPTYPE_TIME;
+	}
 	
 	public static int spawnCode(){
 		return OPTYPE_SPAWN;
