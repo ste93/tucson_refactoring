@@ -56,6 +56,11 @@ public class TucsonProtocolTCP extends AbstractTucsonProtocol {
      * creation of this object usually is invoked the method acceptNewDialog()
      * 
      * It make a new ServerSocket binded at port specified by port parameter.
+     * 
+     * @param port
+     *            the listening port where to bind
+     * @throws DialogExceptionTcp
+     *             if something goes wrong in the udenrlying network
      */
     public TucsonProtocolTCP(final int port) throws DialogExceptionTcp {
         super();

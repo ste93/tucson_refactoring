@@ -1,7 +1,5 @@
 package alice.tucson.network;
 
-import java.net.InetSocketAddress;
-
 /**
  * <p>
  * TPConfig
@@ -9,6 +7,9 @@ import java.net.InetSocketAddress;
  * <p>
  * A singleton class to manage configuration of TucsonProtocol
  * </p>
+ * 
+ * @author ste (mailto: s.mariani@unibo.it) on 22/lug/2013
+ * 
  */
 public final class TPConfig {
 
@@ -26,7 +27,11 @@ public final class TPConfig {
         return TPConfig.DEFAULT_TCP_PORT;
     }
 
-    /** Return singleton instance of TPConfig */
+    /**
+     * Return singleton instance of TPConfig
+     * 
+     * @return the singleton instance of this TuCSoN Protocol configurator
+     */
     public static synchronized TPConfig getInstance() {
         if (TPConfig.singletonTPConfig == null) {
             TPConfig.singletonTPConfig = new TPConfig();
@@ -35,7 +40,7 @@ public final class TPConfig {
     }
 
     // Generic configuration ------------------------------
-    private final int DEFAULT_PROTOCOL_TYPE = TPFactory.DIALOG_TYPE_TCP;
+    private final int defProtType = TPFactory.DIALOG_TYPE_TCP;
 
     private int tcpPort = -1;
 
@@ -48,7 +53,7 @@ public final class TPConfig {
      * @return the protocol type codified as an integer
      */
     public int getDefaultProtocolType() {
-        return this.DEFAULT_PROTOCOL_TYPE;
+        return this.defProtType;
     }
 
     /**
@@ -67,12 +72,15 @@ public final class TPConfig {
      * TODO CICORA: Set the TCP port: only one set is permitted, the second one
      * will be ignored
      * 
+     * @param portNumber
+     *            the TCP listening port
+     * 
      * @throws IllegalArgumentException
      *             if the port value in already set OR parameter is outside the
-     *             specified range, which is between 0 and 64000, inclusive. See
-     *             {@link InetSocketAddress} for detail.
+     *             specified range, which is between 0 and 64000, inclusive.
      */
-    public synchronized void setTcpPort(final int portNumber) {
+    public synchronized void setTcpPort(final int portNumber)
+            throws IllegalArgumentException {
         if ((portNumber < 1) || (portNumber > 64000) || (this.tcpPort > 0)) {
             throw new IllegalArgumentException();
         }

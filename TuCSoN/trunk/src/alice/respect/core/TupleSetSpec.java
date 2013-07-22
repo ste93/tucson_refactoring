@@ -21,6 +21,9 @@ import alice.respect.core.collection.BucketHashMap;
 
 /**
  * Class representing a Tuple Set.
+ * 
+ * @author ste (mailto: s.mariani@unibo.it) on 22/lug/2013
+ * 
  */
 public class TupleSetSpec extends AbstractTupleSet {
 
@@ -33,6 +36,9 @@ public class TupleSetSpec extends AbstractTupleSet {
         System.out.println(o.toString());
     }
 
+    /**
+     * 
+     */
     public TupleSetSpec() {
         super();
         this.tuples = new BucketHashMap<String, LogicTuple>();
@@ -46,7 +52,7 @@ public class TupleSetSpec extends AbstractTupleSet {
         TupleSetSpec.log("");
         TupleSetSpec.log("La tupla è " + t.toString());
         try {
-            if (!t.getName().equals("reaction")) {
+            if (!"reaction".equals(t.getName())) {
                 System.err
                         .println("Messaggio Saverio: TupleSpech ha un problema");
                 // TODO CICORA: valutare se è il caso di effettuare questo

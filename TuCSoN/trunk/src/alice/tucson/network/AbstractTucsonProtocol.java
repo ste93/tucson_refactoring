@@ -42,11 +42,16 @@ public abstract class AbstractTucsonProtocol implements java.io.Serializable {
     /**
      * 
      * @return the protocol to be used for interacting with TuCSoN
+     * 
+     * @throws DialogException
+     *             if something goes wrong in the underlying network
      */
     public abstract AbstractTucsonProtocol acceptNewDialog()
             throws DialogException;
 
     /**
+     * @throws DialogException
+     *             if something goes wrong in the underlying network
      */
     public abstract void end() throws DialogException;
 
@@ -120,19 +125,55 @@ public abstract class AbstractTucsonProtocol implements java.io.Serializable {
         this.reqType = this.receiveInt();
     }
 
-    abstract public InspectorContextEvent receiveInspectorEvent()
+    /**
+     * 
+     * @return the Inspector event received over the network
+     * @throws DialogException
+     *             if something goes wrong in the underlying network
+     */
+    public abstract InspectorContextEvent receiveInspectorEvent()
             throws DialogException;
 
-    abstract public NewInspectorMsg receiveInspectorMsg()
+    /**
+     * 
+     * @return the Inspector message received over the network
+     * @throws DialogException
+     *             if something goes wrong in the underlying network
+     */
+    public abstract NewInspectorMsg receiveInspectorMsg()
             throws DialogException;
 
-    abstract public TucsonMsg receiveMsg() throws DialogException;
+    /**
+     * 
+     * @return the TuCSoN message received over the network
+     * @throws DialogException
+     *             if something goes wrong in the underlying network
+     */
+    public abstract TucsonMsg receiveMsg() throws DialogException;
 
-    abstract public TucsonMsgReply receiveMsgReply() throws DialogException;
+    /**
+     * 
+     * @return the TuCSoN message reply event received over the network
+     * @throws DialogException
+     *             if something goes wrong in the underlying network
+     */
+    public abstract TucsonMsgReply receiveMsgReply() throws DialogException;
 
-    abstract public TucsonMsgRequest receiveMsgRequest() throws DialogException;
+    /**
+     * 
+     * @return the TuCSoN message request received over the network
+     * @throws DialogException
+     *             if something goes wrong in the underlying network
+     */
+    public abstract TucsonMsgRequest receiveMsgRequest() throws DialogException;
 
-    abstract public NodeMsg receiveNodeMsg() throws DialogException;
+    /**
+     * 
+     * @return the node message received over the network
+     * @throws DialogException
+     *             if something goes wrong in the underlying network
+     */
+    public abstract NodeMsg receiveNodeMsg() throws DialogException;
 
     /**
      * 
@@ -190,21 +231,63 @@ public abstract class AbstractTucsonProtocol implements java.io.Serializable {
         this.flush();
     }
 
-    abstract public void sendInspectorEvent(InspectorContextEvent msg)
+    /**
+     * 
+     * @param msg
+     *            the message to send over the network
+     * @throws DialogException
+     *             if something goes wrong in the underlying network
+     */
+    public abstract void sendInspectorEvent(InspectorContextEvent msg)
             throws DialogException;
 
-    abstract public void sendInspectorMsg(NewInspectorMsg msg)
+    /**
+     * 
+     * @param msg
+     *            the message to send over the network
+     * @throws DialogException
+     *             if something goes wrong in the underlying network
+     */
+    public abstract void sendInspectorMsg(NewInspectorMsg msg)
             throws DialogException;
 
-    abstract public void sendMsg(TucsonMsg msg) throws DialogException;
+    /**
+     * 
+     * @param msg
+     *            the message to send over the network
+     * @throws DialogException
+     *             if something goes wrong in the underlying network
+     */
+    public abstract void sendMsg(TucsonMsg msg) throws DialogException;
 
-    abstract public void sendMsgReply(TucsonMsgReply reply)
+    /**
+     * 
+     * @param reply
+     *            the message to send over the network
+     * @throws DialogException
+     *             if something goes wrong in the underlying network
+     */
+    public abstract void sendMsgReply(TucsonMsgReply reply)
             throws DialogException;
 
-    abstract public void sendMsgRequest(TucsonMsgRequest request)
+    /**
+     * 
+     * @param request
+     *            the message to send over the network
+     * @throws DialogException
+     *             if something goes wrong in the underlying network
+     */
+    public abstract void sendMsgRequest(TucsonMsgRequest request)
             throws DialogException;
 
-    abstract public void sendNodeMsg(NodeMsg msg) throws DialogException;
+    /**
+     * 
+     * @param msg
+     *            the message to send over the network
+     * @throws DialogException
+     *             if something goes wrong in the underlying network
+     */
+    public abstract void sendNodeMsg(NodeMsg msg) throws DialogException;
 
     /**
      * 

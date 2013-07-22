@@ -10,6 +10,15 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 
+/**
+ * 
+ * @author ste (mailto: s.mariani@unibo.it) on 22/lug/2013
+ * 
+ * @param <K>
+ *            the type of the key of the map
+ * @param <V>
+ *            the type of the value of the map
+ */
 public abstract class AbstractBucketMap<K, V> implements BucketMap<K, V> {
 
     /**
@@ -206,7 +215,7 @@ public abstract class AbstractBucketMap<K, V> implements BucketMap<K, V> {
             private ListIterator<V> getDelegateListIterator() {
                 return (ListIterator<V>) this.getDelegateIterator();
             }
-        }// END WrappedListIterator
+        }
 
         private final WrappedList ancestor;
         private final Collection<V> ancestorDelegate;
@@ -490,12 +499,17 @@ public abstract class AbstractBucketMap<K, V> implements BucketMap<K, V> {
             return this.delegate.toString();
         }
 
-    }// END WrappedList
+    }
 
     private final Map<K, List<V>> map;
 
     private int totalSize;
 
+    /**
+     * 
+     * @param m
+     *            the map to be used for initialisation
+     */
     protected AbstractBucketMap(final Map<K, List<V>> m) {
         this.map = m;
     }
@@ -534,6 +548,10 @@ public abstract class AbstractBucketMap<K, V> implements BucketMap<K, V> {
         return false;
     }
 
+    /**
+     * 
+     * @return the list of values stored by this map
+     */
     public abstract List<V> createList();
 
     /*

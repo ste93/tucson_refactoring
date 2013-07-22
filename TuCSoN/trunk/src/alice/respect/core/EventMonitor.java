@@ -3,18 +3,31 @@ package alice.respect.core;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
+/**
+ * 
+ * @author ste (mailto: s.mariani@unibo.it) on 22/lug/2013
+ * 
+ */
 public class EventMonitor {
 
     private final Condition canCompute;
     private boolean event;
     private final ReentrantLock lock;
 
+    /**
+     * 
+     */
     public EventMonitor() {
         this.event = false;
         this.lock = new ReentrantLock();
         this.canCompute = this.lock.newCondition();
     }
 
+    /**
+     * 
+     * @throws InterruptedException
+     *             if the synchronisation wait gets interrupted
+     */
     public void awaitEvent() throws InterruptedException {
         this.lock.lock();
         try {
@@ -28,6 +41,10 @@ public class EventMonitor {
         }
     }
 
+    /**
+     * 
+     * @return wether at least an event has been signaled
+     */
     public boolean hasEvent() {
         this.lock.lock();
         try {
@@ -37,6 +54,9 @@ public class EventMonitor {
         }
     }
 
+    /**
+     * 
+     */
     public void signalEvent() {
         this.lock.lock();
         try {

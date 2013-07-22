@@ -164,6 +164,12 @@ public class TupleArgument implements java.io.Serializable {
         }
     }
 
+    /**
+     * 
+     * @return the String representation of the tuProlog predicate
+     * @throws InvalidTupleOperationException
+     *             if this tuple is not a Prolog predicate (a Struct)
+     */
     public String getPredicateIndicator() throws InvalidTupleOperationException {
         if (this.value instanceof alice.tuprolog.Struct) {
             // TODO CICORA: oppure return

@@ -301,6 +301,9 @@ public class LogicTuple implements alice.tuplecentre.api.TupleTemplate,
      * 
      * @return a {@code String} in the form nome/arity.
      * 
+     * @throws InvalidTupleOperationException
+     *             if the tuple is not a predicate (e.g. a tuProlog Struct)
+     * 
      */
     public String getPredicateIndicator() throws InvalidTupleOperationException {
         return this.info.getPredicateIndicator();

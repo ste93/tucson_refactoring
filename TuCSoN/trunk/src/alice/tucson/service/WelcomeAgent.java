@@ -108,6 +108,9 @@ public class WelcomeAgent extends Thread {
 
     }
 
+    /**
+     * 
+     */
     public synchronized void shutdown() {
         /*
          * TODO CICORA: it's not the WelcomAgent's thread to call this, but it's

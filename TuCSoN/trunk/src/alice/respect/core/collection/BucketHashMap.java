@@ -4,10 +4,22 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * 
+ * @author ste (mailto: s.mariani@unibo.it) on 22/lug/2013
+ * 
+ * @param <K>
+ *            the type of the key
+ * @param <V>
+ *            the type of the value
+ */
 public class BucketHashMap<K, V> extends AbstractBucketMap<K, V> {
 
-    private final static int INITIAL_CAPACITY_PER_KEY = 2;
+    private static final int INITIAL_CAPACITY_PER_KEY = 2;
 
+    /**
+     * 
+     */
     public BucketHashMap() {
         super(new HashMap<K, List<V>>());
     }

@@ -10,6 +10,11 @@ import alice.logictuple.LogicTuple;
 import alice.respect.core.collection.BucketMap;
 import alice.tuprolog.Var;
 
+/**
+ * 
+ * @author ste (mailto: s.mariani@unibo.it) on 22/lug/2013
+ * 
+ */
 public abstract class AbstractTupleSet implements ITupleSet {
 
     /**
@@ -53,8 +58,6 @@ public abstract class AbstractTupleSet implements ITupleSet {
          * </p>
          * {@inheritDoc}
          * 
-         * @throws UnsupportedOperationException
-         *             on each invocation of method.
          */
         public LogicTuple setValue(final LogicTuple v) {
             throw new UnsupportedOperationException();
@@ -62,10 +65,22 @@ public abstract class AbstractTupleSet implements ITupleSet {
 
     }
 
+    /**
+     * 
+     */
     protected List<LogicTupleEntry> tAdded;
+    /**
+     * 
+     */
     protected boolean transaction;
+    /**
+     * 
+     */
     protected List<LogicTupleEntry> tRemoved;
 
+    /**
+     * 
+     */
     protected BucketMap<String, LogicTuple> tuples;
 
     public void add(final LogicTuple t) {
@@ -178,6 +193,12 @@ public abstract class AbstractTupleSet implements ITupleSet {
         return str.toString();
     }
 
+    /**
+     * 
+     * @param t
+     *            the tuple whose key should be retrieved
+     * @return the String representation of the key retrieved
+     */
     protected abstract String getKey(LogicTuple t);
 
     private LogicTupleEntry createEntry(final LogicTuple t) {

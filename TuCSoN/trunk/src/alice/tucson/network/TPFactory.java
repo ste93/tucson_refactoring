@@ -25,6 +25,18 @@ public final class TPFactory {
      */
     public static final int DIALOG_TYPE_TCP = 0;
 
+    /**
+     * 
+     * @param tucsonProtocolType
+     *            the type code of the TuCSoN protocol to be used
+     * @param tid
+     *            the identifier of the tuple centre to connect to
+     * @return the connection protocol hosting communications
+     * @throws DialogException
+     *             if something goes wrong in the underlying network
+     * @throws UnreachableNodeException
+     *             if the target tuple centre is unreachable
+     */
     public static AbstractTucsonProtocol getDialogAgentSide(
             final int tucsonProtocolType, final TucsonTupleCentreId tid)
             throws DialogException, UnreachableNodeException {
@@ -47,6 +59,16 @@ public final class TPFactory {
         return tp;
     }
 
+    /**
+     * 
+     * @param tid
+     *            the identifier of the tuple centre to connect to
+     * @return the connection protocol hosting communications
+     * @throws DialogException
+     *             if something goes wrong in the underlying network
+     * @throws UnreachableNodeException
+     *             if the target tuple centre is unreachable
+     */
     public static AbstractTucsonProtocol getDialogAgentSide(
             final TucsonTupleCentreId tid) throws DialogException,
             UnreachableNodeException {
@@ -61,6 +83,7 @@ public final class TPFactory {
      * 
      * @return the TucsonProtocol class
      * @throws DialogException
+     *             if something goes wrong in the underlying network
      */
     public static AbstractTucsonProtocol getDialogNodeSide()
             throws DialogException {
@@ -72,8 +95,11 @@ public final class TPFactory {
     /**
      * Instantiate a new TucsonProtocol based on type specified by parameter.
      * 
+     * @param tucsonProtocolType
+     *            the type code of the TuCSoN protocol to be used
      * @return the TucsonProtocol class
      * @throws DialogException
+     *             if something goes wrong in the underlying network
      */
     public static AbstractTucsonProtocol getDialogNodeSide(
             final int tucsonProtocolType) throws DialogException {

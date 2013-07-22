@@ -47,8 +47,18 @@ public interface ITupleSet {
      */
     void endTransaction(boolean commit);
 
+    /**
+     * 
+     * @return the Iterator through this set
+     */
     Iterator<LogicTuple> getIterator();
 
+    /**
+     * 
+     * @param templ
+     *            the tuple template to use for unification
+     * @return the tuple selected for matching
+     */
     LogicTuple getMatchingTuple(LogicTuple templ);
 
     /**
@@ -67,6 +77,12 @@ public interface ITupleSet {
      */
     boolean operationsPending();
 
+    /**
+     * 
+     * @param templ
+     *            the tuple template to use for unification
+     * @return the tuple selected for matching
+     */
     LogicTuple readMatchingTuple(LogicTuple templ);
 
     /**
@@ -84,6 +100,10 @@ public interface ITupleSet {
      */
     int size();
 
+    /**
+     * 
+     * @return the Array representation of this tuple Set
+     */
     LogicTuple[] toArray();
 
     /**

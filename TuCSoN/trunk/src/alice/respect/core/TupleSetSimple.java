@@ -18,8 +18,16 @@ import alice.logictuple.LogicTuple;
 import alice.logictuple.exceptions.InvalidTupleOperationException;
 import alice.respect.core.collection.BucketHashMap;
 
+/**
+ * 
+ * @author ste (mailto: s.mariani@unibo.it) on 22/lug/2013
+ * 
+ */
 public class TupleSetSimple extends AbstractTupleSet {
 
+    /**
+     * 
+     */
     public TupleSetSimple() {
         super();
         this.tuples = new BucketHashMap<String, LogicTuple>();

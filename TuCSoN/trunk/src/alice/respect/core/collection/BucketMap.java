@@ -8,6 +8,13 @@ import java.util.Map;
  * A BucketMap is similar to a {@link Map} but, unlike this, it allows to map
  * multiple values ​​for the same {@code key}. This value are stored in a
  * {@link List} associated whit the {@code key}.
+ * 
+ * @author ste (mailto: s.mariani@unibo.it) on 22/lug/2013
+ * 
+ * @param <K>
+ *            the type of the key
+ * @param <V>
+ *            the type of the value
  */
 public interface BucketMap<K, V> extends Iterable<V> {
 
@@ -86,6 +93,8 @@ public interface BucketMap<K, V> extends Iterable<V> {
      * Is the same of the {@link #put(Object key, Object value)} but the
      * key-value pair is provided by a {@link java.util.Map.Entry} object.
      * 
+     * @param e
+     *            the entry of the map
      * 
      * @return {@code true} if the {@code value} are correctly added at the
      *         BucketMap. This depend of the specific implementation of List
@@ -97,6 +106,11 @@ public interface BucketMap<K, V> extends Iterable<V> {
      * Removes the first occurrence of the specified element from this
      * BucketMap.
      * 
+     * @param key
+     *            the key of the map
+     * @param value
+     *            the value of the map
+     * 
      * @return <tt>true</tt> if this list contained the specified element
      */
     boolean remove(K key, V value);
@@ -104,6 +118,9 @@ public interface BucketMap<K, V> extends Iterable<V> {
     /**
      * Removes the first occurrence of the specified element from this
      * BucketMap.
+     * 
+     * @param e
+     *            the entry of the map
      * 
      * @return <tt>true</tt> if this list contained the specified element
      */
@@ -119,11 +136,21 @@ public interface BucketMap<K, V> extends Iterable<V> {
      */
     int size();
 
+    /**
+     * 
+     * @param v
+     *            the Array type to get as return array type
+     * @return the array representation of this map
+     */
     V[] toArray(V[] v);
 
     @Override
     String toString();
 
+    /**
+     * 
+     * @return the list of the values of this map
+     */
     // TODO CICORA: vedere se è da rimuovere
     List<V> values();
 
