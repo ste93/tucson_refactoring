@@ -13,10 +13,6 @@
  */
 package alice.tucson.introspection;
 
-import java.io.EOFException;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.LinkedList;
@@ -30,6 +26,7 @@ import alice.tucson.api.exceptions.TucsonInvalidLogicTupleException;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.network.AbstractTucsonProtocol;
+import alice.tucson.network.exceptions.DialogException;
 import alice.tucson.service.ACCDescription;
 import alice.tucson.service.ACCProvider;
 import alice.tucson.service.AbstractACCProxyNodeSide;
@@ -58,12 +55,8 @@ public class InspectorContextSkel extends AbstractACCProxyNodeSide implements
 
     private final AbstractTucsonProtocol dialog;
 
-    private ObjectInputStream inStream;
-
     private final ACCProvider manager;
     private boolean nStep;
-    /** channel with remote inspector proxy */
-    private ObjectOutputStream outStream;
     /** current observation protocol */
     private InspectorProtocol protocol;
     private boolean shutdown = false;
@@ -94,20 +87,16 @@ public class InspectorContextSkel extends AbstractACCProxyNodeSide implements
             this.ctxId = Integer.parseInt(p.getProperty("context-id"));
             final String name = p.getProperty("agent-identity");
             this.agentId = new TucsonAgentId(name);
-            this.inStream = d.getInputStream();
-            this.outStream = d.getOutputStream();
 
-            msg = (NewInspectorMsg) this.inStream.readObject();
+            msg = this.dialog.receiveInspectorMsg();
             this.tcId = new TucsonTupleCentreId(msg.getTcName());
         } catch (final NumberFormatException e) {
             e.printStackTrace();
         } catch (final TucsonInvalidAgentIdException e) {
             e.printStackTrace();
-        } catch (final ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (final IOException e) {
-            e.printStackTrace();
         } catch (final TucsonInvalidTupleCentreIdException e) {
+            e.printStackTrace();
+        } catch (final DialogException e) {
             e.printStackTrace();
         }
 
@@ -186,9 +175,8 @@ public class InspectorContextSkel extends AbstractACCProxyNodeSide implements
         }
 
         try {
-            this.outStream.writeObject(msg);
-            this.outStream.flush();
-        } catch (final IOException e) {
+            this.dialog.sendInspectorEvent(msg);
+        } catch (final DialogException e) {
             e.printStackTrace();
         }
 
@@ -249,8 +237,7 @@ public class InspectorContextSkel extends AbstractACCProxyNodeSide implements
                     }
                 }
 
-                this.outStream.writeObject(msg);
-                this.outStream.flush();
+                this.dialog.sendInspectorEvent(msg);
 
             } else if (ev.getType() == ObservableEventExt.TYPE_REACTIONOK) {
 
@@ -260,8 +247,7 @@ public class InspectorContextSkel extends AbstractACCProxyNodeSide implements
                                     ((ObservableEventReactionOK) ev).getZ()
                                             .getReaction());
                     msg.setReactionOk(zCopy);
-                    this.outStream.writeObject(msg);
-                    this.outStream.flush();
+                    this.dialog.sendInspectorEvent(msg);
                 }
 
             } else if ((ev.getType() == ObservableEventExt.TYPE_REACTIONFAIL)
@@ -272,8 +258,7 @@ public class InspectorContextSkel extends AbstractACCProxyNodeSide implements
                                 ((ObservableEventReactionFail) ev).getZ()
                                         .getReaction());
                 msg.setReactionFailed(zCopy);
-                this.outStream.writeObject(msg);
-                this.outStream.flush();
+                this.dialog.sendInspectorEvent(msg);
 
             }
 
@@ -283,8 +268,8 @@ public class InspectorContextSkel extends AbstractACCProxyNodeSide implements
             e.printStackTrace();
         } catch (final TucsonInvalidLogicTupleException e) {
             e.printStackTrace();
-        } catch (final IOException e) {
-            e.printStackTrace();
+        } catch (final DialogException e) {
+            log("Inspector quit");
         }
 
     }
@@ -314,7 +299,7 @@ public class InspectorContextSkel extends AbstractACCProxyNodeSide implements
             TupleCentreContainer.doManagementOperation(
                     TucsonOperation.addInspCode(), this.tcId, this);
             while (!this.shutdown) {
-                final NodeMsg msg = (NodeMsg) this.inStream.readObject();
+                final NodeMsg msg = this.dialog.receiveNodeMsg();
                 final Class<?> cl = msg.getClass();
                 final Method m =
                         this.getClass().getMethod(msg.getAction(),
@@ -324,12 +309,6 @@ public class InspectorContextSkel extends AbstractACCProxyNodeSide implements
             this.dialog.end();
             TupleCentreContainer.doManagementOperation(
                     TucsonOperation.rmvInspCode(), this.tcId, this);
-        } catch (final EOFException e) {
-            e.printStackTrace();
-        } catch (final IOException e) {
-            e.printStackTrace();
-        } catch (final ClassNotFoundException e) {
-            e.printStackTrace();
         } catch (final NoSuchMethodException e) {
             e.printStackTrace();
         } catch (final SecurityException e) {
@@ -343,6 +322,8 @@ public class InspectorContextSkel extends AbstractACCProxyNodeSide implements
         } catch (final TucsonOperationNotPossibleException e) {
             e.printStackTrace();
         } catch (final TucsonInvalidLogicTupleException e) {
+            e.printStackTrace();
+        } catch (final DialogException e) {
             e.printStackTrace();
         }
 

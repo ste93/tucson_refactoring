@@ -66,7 +66,6 @@ public class TucsonTupleCentreId implements
         try {
             this.tid = new TupleCentreId(tcName, netid, portno);
         } catch (final InvalidTupleCentreIdException e) {
-            e.printStackTrace();
             throw new TucsonInvalidTupleCentreIdException();
         }
     }

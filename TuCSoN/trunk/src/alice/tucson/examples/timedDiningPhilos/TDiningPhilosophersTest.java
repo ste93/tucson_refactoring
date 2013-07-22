@@ -21,7 +21,7 @@ import alice.tuplecentre.api.exceptions.OperationTimeOutException;
  * 
  * @author s.mariani@unibo.it
  */
-public class DiningPhilosophersTest extends AbstractTucsonAgent {
+public class TDiningPhilosophersTest extends AbstractTucsonAgent {
 
     private static final int EATING_STEP = 1000;
     /*
@@ -42,7 +42,7 @@ public class DiningPhilosophersTest extends AbstractTucsonAgent {
      */
     public static void main(final String[] args) {
         try {
-            new DiningPhilosophersTest("boot").go();
+            new TDiningPhilosophersTest("boot").go();
         } catch (final TucsonInvalidAgentIdException e) {
             e.printStackTrace();
         }
@@ -60,7 +60,7 @@ public class DiningPhilosophersTest extends AbstractTucsonAgent {
      *             if the given String does not represent a valid TuCSoN agent
      *             identifier
      */
-    public DiningPhilosophersTest(final String aid)
+    public TDiningPhilosophersTest(final String aid)
             throws TucsonInvalidAgentIdException {
         super(aid);
         /*
@@ -99,32 +99,32 @@ public class DiningPhilosophersTest extends AbstractTucsonAgent {
              */
             acc.out(table,
                     LogicTuple.parse("max_eating_time("
-                            + DiningPhilosophersTest.MAX_EATING_TIME + ")"),
+                            + TDiningPhilosophersTest.MAX_EATING_TIME + ")"),
                     null);
-            for (int i = 0; i < DiningPhilosophersTest.N_PHILOSOPHERS; i++) {
+            for (int i = 0; i < TDiningPhilosophersTest.N_PHILOSOPHERS; i++) {
                 /*
                  * Init chopsticks required to eat.
                  */
                 acc.out(table, LogicTuple.parse("chop(" + i + ")"), null);
             }
-            for (int i = 0; i < (DiningPhilosophersTest.N_PHILOSOPHERS - 1); i++) {
+            for (int i = 0; i < (TDiningPhilosophersTest.N_PHILOSOPHERS - 1); i++) {
                 /*
                  * Start philosophers by telling them which chopsticks pair they
                  * need.
                  */
                 new DiningPhilosopher("'philo-" + i + "'", table, i, (i + 1)
-                        % DiningPhilosophersTest.N_PHILOSOPHERS,
-                        DiningPhilosophersTest.EATING_TIME,
-                        DiningPhilosophersTest.EATING_STEP).go();
+                        % TDiningPhilosophersTest.N_PHILOSOPHERS,
+                        TDiningPhilosophersTest.EATING_TIME,
+                        TDiningPhilosophersTest.EATING_STEP).go();
             }
             /*
              * Sloth philosopher.
              */
             new DiningPhilosopher("'philo-"
-                    + (DiningPhilosophersTest.N_PHILOSOPHERS - 1) + "'", table,
-                    DiningPhilosophersTest.N_PHILOSOPHERS - 1, 0,
-                    DiningPhilosophersTest.EATING_TIME * 2,
-                    DiningPhilosophersTest.EATING_STEP).go();
+                    + (TDiningPhilosophersTest.N_PHILOSOPHERS - 1) + "'", table,
+                    TDiningPhilosophersTest.N_PHILOSOPHERS - 1, 0,
+                    TDiningPhilosophersTest.EATING_TIME * 2,
+                    TDiningPhilosophersTest.EATING_STEP).go();
             acc.exit();
         } catch (final TucsonInvalidTupleCentreIdException e) {
             e.printStackTrace();

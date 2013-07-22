@@ -25,11 +25,15 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 import alice.tucson.api.exceptions.UnreachableNodeException;
+import alice.tucson.introspection.InspectorContextEvent;
+import alice.tucson.introspection.NewInspectorMsg;
+import alice.tucson.introspection.NodeMsg;
+import alice.tucson.network.exceptions.DialogException;
 import alice.tucson.network.exceptions.DialogExceptionTcp;
 
 /*
- * TODO CICORA: è necessario separare la classe usata server side e la classe usata
- * client side anche in vista di una separazione delle librerie agent-node
+ * TODO CICORA: è necessario separare la classe usata server side e la classe
+ * usata client side anche in vista di una separazione delle librerie agent-node
  */
 /**
  * 
@@ -162,6 +166,40 @@ public class TucsonProtocolTCP extends AbstractTucsonProtocol {
         }
     }
 
+    /*
+     * (non-Javadoc)
+     * @see alice.tucson.network.AbstractTucsonProtocol#receiveInspectorEvent()
+     */
+    @Override
+    public InspectorContextEvent receiveInspectorEvent() throws DialogException {
+        InspectorContextEvent msg;
+        try {
+            msg = (InspectorContextEvent) this.inStream.readObject();
+        } catch (final IOException e) {
+            throw new DialogExceptionTcp();
+        } catch (final ClassNotFoundException e) {
+            throw new DialogExceptionTcp();
+        }
+        return msg;
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see alice.tucson.network.AbstractTucsonProtocol#receiveInspectorMsg()
+     */
+    @Override
+    public NewInspectorMsg receiveInspectorMsg() throws DialogException {
+        NewInspectorMsg msg;
+        try {
+            msg = (NewInspectorMsg) this.inStream.readObject();
+        } catch (final IOException e) {
+            throw new DialogExceptionTcp();
+        } catch (final ClassNotFoundException e) {
+            throw new DialogExceptionTcp();
+        }
+        return msg;
+    }
+
     @Override
     public TucsonMsg receiveMsg() throws DialogExceptionTcp {
         TucsonMsg msg;
@@ -202,6 +240,57 @@ public class TucsonProtocolTCP extends AbstractTucsonProtocol {
         return msg;
     }
 
+    /*
+     * (non-Javadoc)
+     * @see alice.tucson.network.AbstractTucsonProtocol#receiveNodeMsg()
+     */
+    @Override
+    public NodeMsg receiveNodeMsg() throws DialogException {
+        NodeMsg msg;
+        try {
+            msg = (NodeMsg) this.inStream.readObject();
+        } catch (final IOException e) {
+            throw new DialogExceptionTcp();
+        } catch (final ClassNotFoundException e) {
+            throw new DialogExceptionTcp();
+        }
+        return msg;
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see
+     * alice.tucson.network.AbstractTucsonProtocol#sendInspectorEvent(alice.
+     * tucson.introspection.InspectorContextEvent)
+     */
+    @Override
+    public void sendInspectorEvent(final InspectorContextEvent msg)
+            throws DialogException {
+        try {
+            this.outStream.writeObject(msg);
+            this.outStream.flush();
+        } catch (final IOException e) {
+            throw new DialogExceptionTcp();
+        }
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see
+     * alice.tucson.network.AbstractTucsonProtocol#sendInspectorMsg(alice.tucson
+     * .introspection.NewInspectorMsg)
+     */
+    @Override
+    public void sendInspectorMsg(final NewInspectorMsg msg)
+            throws DialogException {
+        try {
+            this.outStream.writeObject(msg);
+            this.outStream.flush();
+        } catch (final IOException e) {
+            throw new DialogExceptionTcp();
+        }
+    }
+
     @Override
     public void sendMsg(final TucsonMsg msg) throws DialogExceptionTcp {
         try {
@@ -230,6 +319,22 @@ public class TucsonProtocolTCP extends AbstractTucsonProtocol {
 
         try {
             this.outStream.writeObject(request);
+            this.outStream.flush();
+        } catch (final IOException e) {
+            throw new DialogExceptionTcp();
+        }
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see
+     * alice.tucson.network.AbstractTucsonProtocol#sendNodeMsg(alice.tucson.
+     * introspection.NodeMsg)
+     */
+    @Override
+    public void sendNodeMsg(final NodeMsg msg) throws DialogException {
+        try {
+            this.outStream.writeObject(msg);
             this.outStream.flush();
         } catch (final IOException e) {
             throw new DialogExceptionTcp();

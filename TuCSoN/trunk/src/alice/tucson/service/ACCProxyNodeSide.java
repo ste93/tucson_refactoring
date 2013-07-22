@@ -177,8 +177,7 @@ public class ACCProxyNodeSide extends AbstractACCProxyNodeSide {
             try {
                 msg = this.dialog.receiveMsgRequest();
             } catch (final DialogException e) {
-                this.log("Agent " + this.agentId + " quitted");
-                e.printStackTrace();
+                this.log("Agent " + this.agentId + " quit");
                 break;
             }
             final int msgType = msg.getType();

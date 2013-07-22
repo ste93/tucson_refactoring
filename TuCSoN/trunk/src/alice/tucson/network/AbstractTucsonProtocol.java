@@ -15,6 +15,9 @@ package alice.tucson.network;
 import java.io.IOException;
 import java.util.Properties;
 
+import alice.tucson.introspection.InspectorContextEvent;
+import alice.tucson.introspection.NewInspectorMsg;
+import alice.tucson.introspection.NodeMsg;
 import alice.tucson.network.exceptions.DialogException;
 import alice.tucson.service.ACCDescription;
 
@@ -117,11 +120,19 @@ public abstract class AbstractTucsonProtocol implements java.io.Serializable {
         this.reqType = this.receiveInt();
     }
 
+    abstract public InspectorContextEvent receiveInspectorEvent()
+            throws DialogException;
+
+    abstract public NewInspectorMsg receiveInspectorMsg()
+            throws DialogException;
+
     abstract public TucsonMsg receiveMsg() throws DialogException;
 
     abstract public TucsonMsgReply receiveMsgReply() throws DialogException;
 
     abstract public TucsonMsgRequest receiveMsgRequest() throws DialogException;
+
+    abstract public NodeMsg receiveNodeMsg() throws DialogException;
 
     /**
      * 
@@ -179,6 +190,12 @@ public abstract class AbstractTucsonProtocol implements java.io.Serializable {
         this.flush();
     }
 
+    abstract public void sendInspectorEvent(InspectorContextEvent msg)
+            throws DialogException;
+
+    abstract public void sendInspectorMsg(NewInspectorMsg msg)
+            throws DialogException;
+
     abstract public void sendMsg(TucsonMsg msg) throws DialogException;
 
     abstract public void sendMsgReply(TucsonMsgReply reply)
@@ -186,6 +203,8 @@ public abstract class AbstractTucsonProtocol implements java.io.Serializable {
 
     abstract public void sendMsgRequest(TucsonMsgRequest request)
             throws DialogException;
+
+    abstract public void sendNodeMsg(NodeMsg msg) throws DialogException;
 
     /**
      * 
