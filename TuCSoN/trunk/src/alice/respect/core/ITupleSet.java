@@ -22,19 +22,19 @@ public interface ITupleSet {
      * @param t
      *            a {@code LogicTuple} to add.
      */
-    public void add(LogicTuple t);
+    void add(LogicTuple t);
 
     /**
      * Begins a transaction section
      * 
      * Every operation on multiset can be undone
      */
-    public void beginTransaction();
+    void beginTransaction();
 
     /**
      * Removes all element from Tuple Set.
      */
-    public void empty();
+    void empty();
 
     /**
      * Ends a transaction section specifying if operations must be committed or
@@ -45,18 +45,18 @@ public interface ITupleSet {
      *            undone and the multiset is rolled back to the state before the
      *            <code>beginTransaction</code> invocation
      */
-    public void endTransaction(boolean commit);
+    void endTransaction(boolean commit);
 
-    public Iterator<LogicTuple> getIterator();
+    Iterator<LogicTuple> getIterator();
 
-    public LogicTuple getMatchingTuple(LogicTuple templ);
+    LogicTuple getMatchingTuple(LogicTuple templ);
 
     /**
      * Returns {@code true} if the tuple set contains no elements.
      * 
      * @return {@code true} if the tuple set contains no elements.
      */
-    public boolean isEmpty();
+    boolean isEmpty();
 
     /**
      * Tells whether there are changes in the tuple multi-set during a
@@ -65,9 +65,9 @@ public interface ITupleSet {
      * @return true if the ongoing transaction made any changes to the tuple
      *         multi-set
      */
-    public boolean operationsPending();
+    boolean operationsPending();
 
-    public LogicTuple readMatchingTuple(LogicTuple templ);
+    LogicTuple readMatchingTuple(LogicTuple templ);
 
     /**
      * Remove a logic tuple from tuple set.
@@ -75,16 +75,16 @@ public interface ITupleSet {
      * @param t
      *            a {@code LogicTuple} to remove.
      */
-    public void remove(LogicTuple t);
+    void remove(LogicTuple t);
 
     /**
      * Returns the number of elements in this tuple set.
      * 
      * @return the number of elements in this tuple set
      */
-    public int size();
+    int size();
 
-    public LogicTuple[] toArray();
+    LogicTuple[] toArray();
 
     /**
      * Provides a representation of the tuple multi-set in the form of a String
@@ -92,6 +92,6 @@ public interface ITupleSet {
      * 
      * @return a textual representation in the form of a prolog theory.
      */
-    public String toString();
+    String toString();
 
 }

@@ -12,7 +12,7 @@ import java.util.Map;
 public interface BucketMap<K, V> extends Iterable<V> {
 
     /** Remove all element from the BucketMap */
-    public void clear();
+    void clear();
 
     /**
      * Returns {@code true} if the BucketMap contain at least one value for the
@@ -23,7 +23,7 @@ public interface BucketMap<K, V> extends Iterable<V> {
      * @return {@code true} - if the BucketMap contain at least one value for
      *         the specified key
      */
-    public boolean containsKey(K key);
+    boolean containsKey(K key);
 
     /**
      * Returns {@code true} if the BucketMap contains the specified value for
@@ -34,10 +34,10 @@ public interface BucketMap<K, V> extends Iterable<V> {
      * @return {@code true} - if the BucketMap contains the specified value for
      *         any key
      */
-    public boolean containsValue(V value);
+    boolean containsValue(V value);
 
     @Override
-    public boolean equals(Object object);
+    boolean equals(Object object);
 
     /**
      * Returns a {@link List} that contain the value mapped at specified key. If
@@ -51,19 +51,19 @@ public interface BucketMap<K, V> extends Iterable<V> {
      * @return {@code List<V>} whit the value mapped at specified key if any or
      *         return an empty list
      * */
-    public List<V> get(K key);
+    List<V> get(K key);
 
     @Override
-    public int hashCode();
+    int hashCode();
 
     /**
      * Returns {@code true} if this map contains no key-value mappings.
      * 
      * @return {@code true} if this map contains no key-value mappings
      */
-    public boolean isEmpty();
+    boolean isEmpty();
 
-    public Iterator<V> iterator();
+    Iterator<V> iterator();
 
     /**
      * Associates the specified {@code value} with the specified {@code key} in
@@ -80,7 +80,7 @@ public interface BucketMap<K, V> extends Iterable<V> {
      *         BucketMap. This depend of the specific implementation of List
      *         that is used.
      */
-    public boolean put(K key, V value);
+    boolean put(K key, V value);
 
     /**
      * Is the same of the {@link #put(Object key, Object value)} but the
@@ -91,7 +91,7 @@ public interface BucketMap<K, V> extends Iterable<V> {
      *         BucketMap. This depend of the specific implementation of List
      *         that is used.
      */
-    public boolean put(Map.Entry<K, V> e);
+    boolean put(Map.Entry<K, V> e);
 
     /**
      * Removes the first occurrence of the specified element from this
@@ -99,7 +99,7 @@ public interface BucketMap<K, V> extends Iterable<V> {
      * 
      * @return <tt>true</tt> if this list contained the specified element
      */
-    public boolean remove(K key, V value);
+    boolean remove(K key, V value);
 
     /**
      * Removes the first occurrence of the specified element from this
@@ -107,7 +107,7 @@ public interface BucketMap<K, V> extends Iterable<V> {
      * 
      * @return <tt>true</tt> if this list contained the specified element
      */
-    public boolean remove(Map.Entry<K, V> e);
+    boolean remove(Map.Entry<K, V> e);
 
     /**
      * Returns the number of key-value pair in this BucketMap.
@@ -117,14 +117,14 @@ public interface BucketMap<K, V> extends Iterable<V> {
      * 
      * @return the number of key-value mappings in this map
      */
-    public int size();
+    int size();
 
-    public V[] toArray(V[] v);
+    V[] toArray(V[] v);
 
     @Override
-    public String toString();
+    String toString();
 
     // TODO CICORA: vedere se è da rimuovere
-    public List<V> values();
+    List<V> values();
 
 }

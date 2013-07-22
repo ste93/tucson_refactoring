@@ -6,11 +6,11 @@ import java.util.concurrent.locks.ReentrantLock;
 public class EventMonitor {
 
     private final Condition canCompute;
-    private boolean hasEvent;
+    private boolean event;
     private final ReentrantLock lock;
 
     public EventMonitor() {
-        this.hasEvent = false;
+        this.event = false;
         this.lock = new ReentrantLock();
         this.canCompute = this.lock.newCondition();
     }
@@ -18,10 +18,10 @@ public class EventMonitor {
     public void awaitEvent() throws InterruptedException {
         this.lock.lock();
         try {
-            while (!this.hasEvent) {
+            while (!this.event) {
                 this.canCompute.await();
             }
-            this.hasEvent = false;
+            this.event = false;
             return;
         } finally {
             this.lock.unlock();
@@ -31,7 +31,7 @@ public class EventMonitor {
     public boolean hasEvent() {
         this.lock.lock();
         try {
-            return this.hasEvent;
+            return this.event;
         } finally {
             this.lock.unlock();
         }
@@ -40,7 +40,7 @@ public class EventMonitor {
     public void signalEvent() {
         this.lock.lock();
         try {
-            this.hasEvent = true;
+            this.event = true;
             this.canCompute.signal();
         } finally {
             this.lock.unlock();

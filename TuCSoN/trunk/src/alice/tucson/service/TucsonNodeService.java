@@ -715,7 +715,7 @@ public class TucsonNodeService {
         this.ctxman = new ACCProvider(this, this.idConfigTC);
 
         TucsonNodeService.log("Spawning Welcome Agent...");
-        this.welcome = new WelcomeAgent(this.tcpPort, this, this.ctxman);
+        this.welcome = new WelcomeAgent(this, this.ctxman);
 
     }
 

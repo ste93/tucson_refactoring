@@ -121,8 +121,8 @@ public class TDiningPhilosophersTest extends AbstractTucsonAgent {
              * Sloth philosopher.
              */
             new DiningPhilosopher("'philo-"
-                    + (TDiningPhilosophersTest.N_PHILOSOPHERS - 1) + "'", table,
-                    TDiningPhilosophersTest.N_PHILOSOPHERS - 1, 0,
+                    + (TDiningPhilosophersTest.N_PHILOSOPHERS - 1) + "'",
+                    table, TDiningPhilosophersTest.N_PHILOSOPHERS - 1, 0,
                     TDiningPhilosophersTest.EATING_TIME * 2,
                     TDiningPhilosophersTest.EATING_STEP).go();
             acc.exit();

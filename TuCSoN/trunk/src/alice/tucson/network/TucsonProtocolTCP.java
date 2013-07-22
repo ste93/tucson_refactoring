@@ -58,6 +58,7 @@ public class TucsonProtocolTCP extends AbstractTucsonProtocol {
      * It make a new ServerSocket binded at port specified by port parameter.
      */
     public TucsonProtocolTCP(final int port) throws DialogExceptionTcp {
+        super();
         try {
             this.mainSocket = new ServerSocket();
             this.mainSocket.setReuseAddress(true);
@@ -90,6 +91,7 @@ public class TucsonProtocolTCP extends AbstractTucsonProtocol {
      */
     public TucsonProtocolTCP(final String host, final int port)
             throws UnreachableNodeException, DialogExceptionTcp {
+        super();
         try {
             this.socket = new Socket(host, port);
         } catch (final UnknownHostException e) {
@@ -117,6 +119,7 @@ public class TucsonProtocolTCP extends AbstractTucsonProtocol {
     }
 
     private TucsonProtocolTCP(final Socket s) throws DialogExceptionTcp {
+        super();
         this.socket = s;
         /*
          * To avoid deadlock: construct the output stream first, then flush it

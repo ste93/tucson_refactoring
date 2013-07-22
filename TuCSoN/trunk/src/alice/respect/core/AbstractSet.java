@@ -2,12 +2,13 @@ package alice.respect.core;
 
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 
 public abstract class AbstractSet<E> {
 
-    protected LinkedList<E> elAdded;
-    protected LinkedList<E> elements;
-    protected LinkedList<E> elRemoved;
+    protected List<E> elAdded;
+    protected List<E> elements;
+    protected List<E> elRemoved;
     private boolean transaction;
 
     public AbstractSet() {
@@ -65,7 +66,7 @@ public abstract class AbstractSet<E> {
     }
 
     public E get() {
-        final E e = this.elements.removeFirst();
+        final E e = this.elements.remove(0);
         if (this.transaction) {
             this.elRemoved.add(e);
         }

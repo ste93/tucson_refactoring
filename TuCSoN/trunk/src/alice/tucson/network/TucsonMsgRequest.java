@@ -83,11 +83,16 @@ public class TucsonMsgRequest implements Serializable {
 
     @Override
     public String toString() {
-        String s = "ID: " + this.id;
-        s += "; Type: " + this.type;
-        s += "; TID: " + this.tid;
-        s += "; Tuple: " + this.tuple;
-        return s;
+        final StringBuffer s = new StringBuffer(28);
+        s.append("ID: ");
+        s.append(this.id);
+        s.append("; Type: ");
+        s.append(this.type);
+        s.append("; TID: ");
+        s.append(this.tid);
+        s.append("; Tuple: ");
+        s.append(this.tuple);
+        return s.toString();
     }
 
 }

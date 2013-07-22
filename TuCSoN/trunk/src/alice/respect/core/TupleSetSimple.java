@@ -21,6 +21,7 @@ import alice.respect.core.collection.BucketHashMap;
 public class TupleSetSimple extends AbstractTupleSet {
 
     public TupleSetSimple() {
+        super();
         this.tuples = new BucketHashMap<String, LogicTuple>();
         this.tAdded = new LinkedList<LogicTupleEntry>();
         this.tRemoved = new LinkedList<LogicTupleEntry>();

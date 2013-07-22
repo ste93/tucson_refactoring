@@ -3,10 +3,9 @@ package alice.respect.core;
 import java.util.AbstractMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import alice.logictuple.LogicTuple;
 import alice.respect.core.collection.BucketMap;
 import alice.tuprolog.Var;
@@ -28,8 +27,8 @@ public abstract class AbstractTupleSet implements ITupleSet {
      */
     protected class LogicTupleEntry implements Map.Entry<String, LogicTuple> {
 
-        final String key;
-        final LogicTuple value;
+        private final String key;
+        private final LogicTuple value;
 
         LogicTupleEntry(final String k, final LogicTuple v) {
             this.key = k;
@@ -54,24 +53,20 @@ public abstract class AbstractTupleSet implements ITupleSet {
          * </p>
          * {@inheritDoc}
          * 
-         * @throws NotImplementedException
+         * @throws UnsupportedOperationException
          *             on each invocation of method.
          */
         public LogicTuple setValue(final LogicTuple v) {
-            throw new NotImplementedException();
+            throw new UnsupportedOperationException();
         }
 
     }
 
-    protected LinkedList<LogicTupleEntry> tAdded;
+    protected List<LogicTupleEntry> tAdded;
     protected boolean transaction;
-    protected LinkedList<LogicTupleEntry> tRemoved;
+    protected List<LogicTupleEntry> tRemoved;
 
     protected BucketMap<String, LogicTuple> tuples;
-
-    public AbstractTupleSet() {
-        super();
-    }
 
     public void add(final LogicTuple t) {
         // TODO CICORA: in questo caso l'eccezione viene gestita nella getKey
@@ -176,11 +171,11 @@ public abstract class AbstractTupleSet implements ITupleSet {
 
     @Override
     public String toString() {
-        String str = "";
+        final StringBuffer str = new StringBuffer();
         for (final LogicTuple t : this.tuples) {
-            str += t.toString() + ".\n";
+            str.append(t.toString()).append(".\n");
         }
-        return str;
+        return str.toString();
     }
 
     protected abstract String getKey(LogicTuple t);

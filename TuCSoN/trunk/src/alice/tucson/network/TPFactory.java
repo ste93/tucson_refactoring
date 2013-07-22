@@ -17,7 +17,7 @@ import alice.tucson.network.exceptions.DialogException;
  * @version 1.0
  */
 
-public class TPFactory {
+public final class TPFactory {
 
     /**
      * Constant indentify implementated protocol type: one constant for each
@@ -31,19 +31,17 @@ public class TPFactory {
         final String node = alice.util.Tools.removeApices(tid.getNode());
         final int port = tid.getPort();
 
-        // TODO CICORA: il controllo su porta e address va fatto meglio, vedere come è
+        // TODO CICORA: il controllo su porta e address va fatto meglio, vedere
+        // come è
         // fatto nel resto del codice
         if ((port < 1) || (port > 64000)) {
             throw new DialogException("Illegal port argument");
         }
         AbstractTucsonProtocol tp = null;
-        switch (tucsonProtocolType) {
-            case DIALOG_TYPE_TCP:
-                tp = new TucsonProtocolTCP(node, port);
-                break;
-
-            default:
-                throw new DialogException("Unsupported protocol type");
+        if (tucsonProtocolType == TPFactory.DIALOG_TYPE_TCP) {
+            tp = new TucsonProtocolTCP(node, port);
+        } else {
+            throw new DialogException("Unsupported protocol type");
         }
 
         return tp;
@@ -82,17 +80,20 @@ public class TPFactory {
 
         AbstractTucsonProtocol tp = null;
 
-        switch (tucsonProtocolType) {
-            case DIALOG_TYPE_TCP:
-                final TPConfig config = TPConfig.getInstance();
-                tp = new TucsonProtocolTCP(config.getNodeTcpPort());
-                break;
-
-            default:
-                throw new DialogException("Unsupported protocol type");
+        if (tucsonProtocolType == TPFactory.DIALOG_TYPE_TCP) {
+            final TPConfig config = TPConfig.getInstance();
+            tp = new TucsonProtocolTCP(config.getNodeTcpPort());
+        } else {
+            throw new DialogException("Unsupported protocol type");
         }
 
         return tp;
+    }
+
+    private TPFactory() {
+        /*
+         * 
+         */
     }
 
 }

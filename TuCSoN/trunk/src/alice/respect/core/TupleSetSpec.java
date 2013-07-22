@@ -24,7 +24,8 @@ import alice.respect.core.collection.BucketHashMap;
  */
 public class TupleSetSpec extends AbstractTupleSet {
 
-    // TODO CICORA: ha senso avere due reaction perfettamente uguali nella lista?
+    // TODO CICORA: ha senso avere due reaction perfettamente uguali nella
+    // lista?
     // due normali tuple devono rimanere distinte anche se sono identiche, ma
     // per le reaction potrebbe essere un problema.
 
@@ -33,6 +34,7 @@ public class TupleSetSpec extends AbstractTupleSet {
     }
 
     public TupleSetSpec() {
+        super();
         this.tuples = new BucketHashMap<String, LogicTuple>();
         this.tAdded = new LinkedList<LogicTupleEntry>();
         this.tRemoved = new LinkedList<LogicTupleEntry>();
@@ -47,12 +49,13 @@ public class TupleSetSpec extends AbstractTupleSet {
             if (!t.getName().equals("reaction")) {
                 System.err
                         .println("Messaggio Saverio: TupleSpech ha un problema");
-                // TODO CICORA: valutare se è il caso di effettuare questo controllo
+                // TODO CICORA: valutare se è il caso di effettuare questo
+                // controllo
                 // throw new Exception();
             }
             final TupleArgument event = t.getArg(0);
             String key = event.getName();
-            key += "-" + event.getArg(0).getPredicateIndicator();
+            key = key.concat("-" + event.getArg(0).getPredicateIndicator());
 
             TupleSetSpec.log("La chiave è:" + key);
 

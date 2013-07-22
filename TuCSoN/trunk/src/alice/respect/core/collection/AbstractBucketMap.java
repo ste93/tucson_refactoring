@@ -9,7 +9,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
-import java.util.NoSuchElementException;
 
 public abstract class AbstractBucketMap<K, V> implements BucketMap<K, V> {
 
@@ -19,9 +18,9 @@ public abstract class AbstractBucketMap<K, V> implements BucketMap<K, V> {
      */
     private class BucketMapIterator implements Iterator<V> {
 
-        final Iterator<Map.Entry<K, List<V>>> entryIterator;
-        List<V> list;
-        Iterator<V> valueIterator;
+        private final Iterator<Map.Entry<K, List<V>>> entryIterator;
+        private List<V> list;
+        private Iterator<V> valueIterator;
 
         protected BucketMapIterator() {
             // Initialize the Entry iterator
@@ -51,8 +50,6 @@ public abstract class AbstractBucketMap<K, V> implements BucketMap<K, V> {
          * Returns the next element in the iteration.
          * 
          * @return the next element in the iteration
-         * @throws NoSuchElementException
-         *             if the iteration has no more elements
          */
         public V next() {
             if (!this.valueIterator.hasNext()) {
@@ -99,8 +96,8 @@ public abstract class AbstractBucketMap<K, V> implements BucketMap<K, V> {
 
         /** Collection iterator for {@code WrappedCollection}. */
         private class WrappedIterator implements Iterator<V> {
-            final Iterator<V> delegateIterator;
-            final List<V> originalDelegate = WrappedList.this.delegate;
+            private final Iterator<V> delegateIterator;
+            private final List<V> originalDelegate = WrappedList.this.delegate;
 
             WrappedIterator() {
                 this.delegateIterator =
@@ -109,6 +106,11 @@ public abstract class AbstractBucketMap<K, V> implements BucketMap<K, V> {
 
             WrappedIterator(final Iterator<V> di) {
                 this.delegateIterator = di;
+            }
+
+            public Iterator<V> getDelegateIterator() {
+                this.validateIterator();
+                return this.delegateIterator;
             }
 
             public boolean hasNext() {
@@ -140,16 +142,11 @@ public abstract class AbstractBucketMap<K, V> implements BucketMap<K, V> {
                 WrappedList.this.removeIfEmpty();
             }
 
-            Iterator<V> getDelegateIterator() {
-                this.validateIterator();
-                return this.delegateIterator;
-            }
-
             /**
              * If the delegate changed since the iterator was created, the
              * iterator is no longer valid.
              */
-            void validateIterator() {
+            public void validateIterator() {
                 WrappedList.this.refreshIfEmpty();
                 if (WrappedList.this.delegate != this.originalDelegate) {
                     throw new ConcurrentModificationException();
@@ -174,6 +171,7 @@ public abstract class AbstractBucketMap<K, V> implements BucketMap<K, V> {
             }
 
             WrappedListIterator() {
+                super();
             }
 
             public void add(final V value) {
@@ -210,14 +208,15 @@ public abstract class AbstractBucketMap<K, V> implements BucketMap<K, V> {
             }
         }// END WrappedListIterator
 
-        final WrappedList ancestor;
-        final Collection<V> ancestorDelegate;
+        private final WrappedList ancestor;
+        private final Collection<V> ancestorDelegate;
 
-        List<V> delegate;
+        private List<V> delegate;
 
-        final K key;
+        private final K key;
 
         WrappedList(final K k, final List<V> d, final WrappedList a) {
+            super();
             this.key = k;
             this.delegate = d;
             this.ancestor = a;
@@ -281,6 +280,22 @@ public abstract class AbstractBucketMap<K, V> implements BucketMap<K, V> {
             return changed;
         }
 
+        /**
+         * Add the delegate to the map. Other {@code WrappedCollection} methods
+         * should call this method after adding elements to a previously empty
+         * collection.
+         * 
+         * <p>
+         * Subcollection add the ancestor's delegate instead.
+         */
+        public void addToMap() {
+            if (this.ancestor != null) {
+                this.ancestor.addToMap();
+            } else {
+                AbstractBucketMap.this.map.put(this.key, this.delegate);
+            }
+        }
+
         @Override
         public void clear() {
             final int oldSize = this.size(); // calls refreshIfEmpty
@@ -319,6 +334,14 @@ public abstract class AbstractBucketMap<K, V> implements BucketMap<K, V> {
             return this.delegate.get(index);
         }
 
+        public List<V> getDelegate() {
+            return this.delegate;
+        }
+
+        public K getKey() {
+            return this.key;
+        }
+
         @Override
         public int hashCode() {
             this.refreshIfEmpty();
@@ -349,6 +372,35 @@ public abstract class AbstractBucketMap<K, V> implements BucketMap<K, V> {
         public ListIterator<V> listIterator(final int index) {
             this.refreshIfEmpty();
             return new WrappedListIterator(index);
+        }
+
+        /**
+         * If the delegate collection is empty, but the multimap has values for
+         * the key, replace the delegate with the new collection for the key.
+         * 
+         * <p>
+         * For a subcollection, refresh its ancestor and validate that the
+         * ancestor delegate hasn't changed.
+         */
+        public void refreshIfEmpty() {
+            // If the delegate list is empty it's possible that the key
+            // associated
+            // to it do not exist in the map but it's possible that the
+            // key was subsequently added. This code grant the consistency of
+            // the map.
+            if (this.ancestor != null) {
+                this.ancestor.refreshIfEmpty();
+                if (this.ancestor.getDelegate() != this.ancestorDelegate) {
+                    throw new ConcurrentModificationException();
+                }
+            } else if (this.delegate.isEmpty()) {
+
+                final List<V> newDelegate =
+                        AbstractBucketMap.this.map.get(this.key);
+                if (newDelegate != null) {
+                    this.delegate = newDelegate;
+                }
+            }
         }
 
         public V remove(final int index) {
@@ -385,11 +437,24 @@ public abstract class AbstractBucketMap<K, V> implements BucketMap<K, V> {
             return changed;
         }
 
+        /**
+         * If collection is empty, remove it from
+         * {@code AbstractMapBasedMultimap.this.map}. For subcollections, check
+         * whether the ancestor collection is empty.
+         */
+        public void removeIfEmpty() {
+            if (this.ancestor != null) {
+                this.ancestor.removeIfEmpty();
+            } else if (this.delegate.isEmpty()) {
+                AbstractBucketMap.this.map.remove(this.key);
+            }
+        }
+
         @Override
         public boolean retainAll(final Collection<?> c) {
 
             if (c == null) {
-                throw new NullPointerException();
+                throw new IllegalArgumentException();
             }
             final int oldSize = this.size(); // calls refreshIfEmpty
             final boolean changed = this.delegate.retainAll(c);
@@ -423,72 +488,6 @@ public abstract class AbstractBucketMap<K, V> implements BucketMap<K, V> {
         public String toString() {
             this.refreshIfEmpty();
             return this.delegate.toString();
-        }
-
-        /**
-         * Add the delegate to the map. Other {@code WrappedCollection} methods
-         * should call this method after adding elements to a previously empty
-         * collection.
-         * 
-         * <p>
-         * Subcollection add the ancestor's delegate instead.
-         */
-        void addToMap() {
-            if (this.ancestor != null) {
-                this.ancestor.addToMap();
-            } else {
-                AbstractBucketMap.this.map.put(this.key, this.delegate);
-            }
-        }
-
-        List<V> getDelegate() {
-            return this.delegate;
-        }
-
-        K getKey() {
-            return this.key;
-        }
-
-        /**
-         * If the delegate collection is empty, but the multimap has values for
-         * the key, replace the delegate with the new collection for the key.
-         * 
-         * <p>
-         * For a subcollection, refresh its ancestor and validate that the
-         * ancestor delegate hasn't changed.
-         */
-        void refreshIfEmpty() {
-            // If the delegate list is empty it's possible that the key
-            // associated
-            // to it do not exist in the map but it's possible that the
-            // key was subsequently added. This code grant the consistency of
-            // the map.
-            if (this.ancestor != null) {
-                this.ancestor.refreshIfEmpty();
-                if (this.ancestor.getDelegate() != this.ancestorDelegate) {
-                    throw new ConcurrentModificationException();
-                }
-            } else if (this.delegate.isEmpty()) {
-
-                final List<V> newDelegate =
-                        AbstractBucketMap.this.map.get(this.key);
-                if (newDelegate != null) {
-                    this.delegate = newDelegate;
-                }
-            }
-        }
-
-        /**
-         * If collection is empty, remove it from
-         * {@code AbstractMapBasedMultimap.this.map}. For subcollections, check
-         * whether the ancestor collection is empty.
-         */
-        void removeIfEmpty() {
-            if (this.ancestor != null) {
-                this.ancestor.removeIfEmpty();
-            } else if (this.delegate.isEmpty()) {
-                AbstractBucketMap.this.map.remove(this.key);
-            }
         }
 
     }// END WrappedList
@@ -534,6 +533,8 @@ public abstract class AbstractBucketMap<K, V> implements BucketMap<K, V> {
         }
         return false;
     }
+
+    public abstract List<V> createList();
 
     /*
      * (non-Javadoc)
@@ -708,7 +709,5 @@ public abstract class AbstractBucketMap<K, V> implements BucketMap<K, V> {
     private List<V> wrapList(final K key, final List<V> list) {
         return new WrappedList(key, list, null);
     }
-
-    abstract List<V> createList();
 
 }

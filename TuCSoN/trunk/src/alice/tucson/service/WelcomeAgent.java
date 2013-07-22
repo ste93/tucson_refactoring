@@ -31,23 +31,20 @@ public class WelcomeAgent extends Thread {
     }
 
     private final ACCProvider contextManager;
+    private AbstractTucsonProtocol mainDialog;
     private final TucsonNodeService node;
-    private boolean shut;
 
-    AbstractTucsonProtocol mainDialog;
+    private boolean shut;
 
     /**
      * 
-     * @param p
-     *            the listening port to be taken as default
      * @param n
      *            the TuCSoN node this internal agent refers to
      * @param cm
      *            the ACC provider this internal agent should delegate ACC
      *            requests to
      */
-    public WelcomeAgent(final int p, final TucsonNodeService n,
-            final ACCProvider cm) {
+    public WelcomeAgent(final TucsonNodeService n, final ACCProvider cm) {
         super();
         this.contextManager = cm;
         this.node = n;

@@ -146,14 +146,22 @@ public class TucsonMsgReply implements Serializable {
 
     @Override
     public String toString() {
-        String s = "ID: " + this.id;
-        s += "; Type: " + this.type;
-        s += "; Tuple Requested: " + this.reqTuple;
-        s += "; Tuple Result: " + this.resTuple;
-        s += "; Allowed: " + this.allowed;
-        s += "; Success: " + this.success;
-        s += "; Result Success: " + this.resultSuccess;
-        return s;
+        final StringBuffer s = new StringBuffer(87);
+        s.append("ID: ");
+        s.append(this.id);
+        s.append("; Type: ");
+        s.append(this.type);
+        s.append("; Tuple Requested: ");
+        s.append(this.reqTuple);
+        s.append("; Tuple Result: ");
+        s.append(this.resTuple);
+        s.append("; Allowed: ");
+        s.append(this.allowed);
+        s.append("; Success: ");
+        s.append(this.success);
+        s.append("; Result Success: ");
+        s.append(this.resultSuccess);
+        return s.toString();
     }
 
 }

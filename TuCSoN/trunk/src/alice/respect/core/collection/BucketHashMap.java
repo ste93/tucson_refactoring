@@ -13,7 +13,7 @@ public class BucketHashMap<K, V> extends AbstractBucketMap<K, V> {
     }
 
     @Override
-    List<V> createList() {
+    public List<V> createList() {
         return new ArrayList<V>(BucketHashMap.INITIAL_CAPACITY_PER_KEY);
     }
 
