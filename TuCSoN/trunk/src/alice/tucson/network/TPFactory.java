@@ -44,7 +44,7 @@ public final class TPFactory {
         final int port = tid.getPort();
 
         // TODO CICORA: il controllo su porta e address va fatto meglio, vedere
-        // come è
+        // come e'
         // fatto nel resto del codice
         if ((port < 1) || (port > 64000)) {
             throw new DialogException("Illegal port argument");

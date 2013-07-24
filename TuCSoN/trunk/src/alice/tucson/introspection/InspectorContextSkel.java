@@ -269,7 +269,7 @@ public class InspectorContextSkel extends AbstractACCProxyNodeSide implements
         } catch (final TucsonInvalidLogicTupleException e) {
             e.printStackTrace();
         } catch (final DialogException e) {
-            this.log("Inspector quit");
+            this.log("Inspector quit");
         }
 
     }

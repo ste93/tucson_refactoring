@@ -6,7 +6,7 @@ import java.util.Map;
 
 /**
  * A BucketMap is similar to a {@link Map} but, unlike this, it allows to map
- * multiple values ​​for the same {@code key}. This value are stored in a
+ * multiple values for the same {@code key}. This value are stored in a
  * {@link List} associated whit the {@code key}.
  * 
  * @author ste (mailto: s.mariani@unibo.it) on 22/lug/2013
@@ -151,7 +151,7 @@ public interface BucketMap<K, V> extends Iterable<V> {
      * 
      * @return the list of the values of this map
      */
-    // TODO CICORA: vedere se è da rimuovere
+    // TODO CICORA: vedere se e' da rimuovere
     List<V> values();
 
 }

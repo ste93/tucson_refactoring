@@ -50,12 +50,12 @@ public class TupleSetSpec extends AbstractTupleSet {
     @Override
     protected String getKey(final LogicTuple t) {
         TupleSetSpec.log("");
-        TupleSetSpec.log("La tupla è " + t.toString());
+        TupleSetSpec.log("La tupla e' " + t.toString());
         try {
             if (!"reaction".equals(t.getName())) {
                 System.err
                         .println("Messaggio Saverio: TupleSpech ha un problema");
-                // TODO CICORA: valutare se è il caso di effettuare questo
+                // TODO CICORA: valutare se e' il caso di effettuare questo
                 // controllo
                 // throw new Exception();
             }
@@ -63,7 +63,7 @@ public class TupleSetSpec extends AbstractTupleSet {
             String key = event.getName();
             key = key.concat("-" + event.getArg(0).getPredicateIndicator());
 
-            TupleSetSpec.log("La chiave è:" + key);
+            TupleSetSpec.log("La chiave e':" + key);
 
             return key;
 

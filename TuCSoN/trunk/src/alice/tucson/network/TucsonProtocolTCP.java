@@ -32,7 +32,7 @@ import alice.tucson.network.exceptions.DialogException;
 import alice.tucson.network.exceptions.DialogExceptionTcp;
 
 /*
- * TODO CICORA: è necessario separare la classe usata server side e la classe
+ * TODO CICORA: e' necessario separare la classe usata server side e la classe
  * usata client side anche in vista di una separazione delle librerie agent-node
  */
 /**
