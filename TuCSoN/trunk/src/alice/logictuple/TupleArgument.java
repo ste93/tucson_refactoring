@@ -113,7 +113,7 @@ public class TupleArgument implements java.io.Serializable {
      */
     public TupleArgument getArg(final int index)
             throws InvalidTupleOperationException {
-        return new TupleArgument(((Struct) this.value).getTerm(index));
+        return new TupleArgument(((Struct) this.value.getTerm()).getTerm(index));
     }
 
     /**

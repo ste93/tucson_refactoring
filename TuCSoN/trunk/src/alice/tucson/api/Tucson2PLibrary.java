@@ -97,7 +97,7 @@ public class Tucson2PLibrary extends Library {
         }
         TucsonTupleCentreId tid;
         try {
-            tid = new TucsonTupleCentreId(arg1.toString());
+            tid = new TucsonTupleCentreId(arg1.getTerm().toString());
         } catch (final TucsonInvalidTupleCentreIdException e) {
             e.printStackTrace();
             return false;
@@ -136,7 +136,7 @@ public class Tucson2PLibrary extends Library {
      * @see alice.tucson.api.EnhancedACC EnhancedACC
      * @see alice.tucson.api.TucsonAgentId TucsonAgentId
      */
-    public boolean get_context_1(final Struct id) {
+    public boolean get_context_1(final Term id) {
         TucsonAgentId agentId;
         if (this.context != null) {
             try {
@@ -147,7 +147,7 @@ public class Tucson2PLibrary extends Library {
             }
         }
         try {
-            agentId = new TucsonAgentId(id.toString());
+            agentId = new TucsonAgentId(id.getTerm().toString());
         } catch (final TucsonInvalidAgentIdException e) {
             e.printStackTrace();
             return false;
@@ -176,7 +176,7 @@ public class Tucson2PLibrary extends Library {
         }
         TucsonTupleCentreId tid;
         try {
-            tid = new TucsonTupleCentreId(arg1.toString());
+            tid = new TucsonTupleCentreId(arg1.getTerm().toString());
         } catch (final TucsonInvalidTupleCentreIdException e) {
             e.printStackTrace();
             return false;
@@ -305,14 +305,16 @@ public class Tucson2PLibrary extends Library {
         }
         TucsonTupleCentreId tid;
         try {
-            tid = new TucsonTupleCentreId(arg1.toString());
+            tid = new TucsonTupleCentreId(arg1.getTerm().toString());
         } catch (final TucsonInvalidTupleCentreIdException e) {
             e.printStackTrace();
             return false;
         }
         ITucsonOperation op;
         try {
-            op = this.context.in(tid, new LogicTuple(arg0), (Long) null);
+            op =
+                    this.context.in(tid, new LogicTuple(arg0.getTerm()),
+                            (Long) null);
         } catch (final TucsonOperationNotPossibleException e) {
             e.printStackTrace();
             return false;
@@ -324,7 +326,7 @@ public class Tucson2PLibrary extends Library {
             return false;
         }
         if (op.isResultSuccess()) {
-            this.unify(arg0, op.getLogicTupleResult().toTerm());
+            this.unify(arg0.getTerm(), op.getLogicTupleResult().toTerm());
         }
         return op.isResultSuccess();
     }
@@ -351,14 +353,16 @@ public class Tucson2PLibrary extends Library {
         }
         TucsonTupleCentreId tid;
         try {
-            tid = new TucsonTupleCentreId(arg2.toString());
+            tid = new TucsonTupleCentreId(arg2.getTerm().toString());
         } catch (final TucsonInvalidTupleCentreIdException e) {
             e.printStackTrace();
             return false;
         }
         ITucsonOperation op;
         try {
-            op = this.context.inAll(tid, new LogicTuple(arg0), (Long) null);
+            op =
+                    this.context.inAll(tid, new LogicTuple(arg0.getTerm()),
+                            (Long) null);
         } catch (final TucsonOperationNotPossibleException e) {
             e.printStackTrace();
             return false;
@@ -404,7 +408,7 @@ public class Tucson2PLibrary extends Library {
         }
         TucsonTupleCentreId tid;
         try {
-            tid = new TucsonTupleCentreId(arg3.toString());
+            tid = new TucsonTupleCentreId(arg3.getTerm().toString());
         } catch (final TucsonInvalidTupleCentreIdException e) {
             e.printStackTrace();
             return false;
@@ -412,9 +416,9 @@ public class Tucson2PLibrary extends Library {
         ITucsonOperation op;
         try {
             op =
-                    this.context.inS(tid, new LogicTuple(event),
-                            new LogicTuple(guards),
-                            new LogicTuple(reactionBody), (Long) null);
+                    this.context.inS(tid, new LogicTuple(event.getTerm()),
+                            new LogicTuple(guards.getTerm()), new LogicTuple(
+                                    reactionBody.getTerm()), (Long) null);
         } catch (final TucsonOperationNotPossibleException e) {
             e.printStackTrace();
             return false;
@@ -451,14 +455,16 @@ public class Tucson2PLibrary extends Library {
         }
         TucsonTupleCentreId tid;
         try {
-            tid = new TucsonTupleCentreId(arg1.toString());
+            tid = new TucsonTupleCentreId(arg1.getTerm().toString());
         } catch (final TucsonInvalidTupleCentreIdException e) {
             e.printStackTrace();
             return false;
         }
         ITucsonOperation op;
         try {
-            op = this.context.inp(tid, new LogicTuple(arg0), (Long) null);
+            op =
+                    this.context.inp(tid, new LogicTuple(arg0.getTerm()),
+                            (Long) null);
         } catch (final TucsonOperationNotPossibleException e) {
             e.printStackTrace();
             return false;
@@ -470,7 +476,7 @@ public class Tucson2PLibrary extends Library {
             return false;
         }
         if (op.isResultSuccess()) {
-            this.unify(arg0, op.getLogicTupleResult().toTerm());
+            this.unify(arg0.getTerm(), op.getLogicTupleResult().toTerm());
         }
         return op.isResultSuccess();
     }
@@ -503,7 +509,7 @@ public class Tucson2PLibrary extends Library {
         }
         TucsonTupleCentreId tid;
         try {
-            tid = new TucsonTupleCentreId(arg3.toString());
+            tid = new TucsonTupleCentreId(arg3.getTerm().toString());
         } catch (final TucsonInvalidTupleCentreIdException e) {
             e.printStackTrace();
             return false;
@@ -511,9 +517,9 @@ public class Tucson2PLibrary extends Library {
         ITucsonOperation op;
         try {
             op =
-                    this.context.inpS(tid, new LogicTuple(event),
-                            new LogicTuple(guards),
-                            new LogicTuple(reactionBody), (Long) null);
+                    this.context.inpS(tid, new LogicTuple(event.getTerm()),
+                            new LogicTuple(guards.getTerm()), new LogicTuple(
+                                    reactionBody.getTerm()), (Long) null);
         } catch (final TucsonOperationNotPossibleException e) {
             e.printStackTrace();
             return false;
@@ -550,14 +556,16 @@ public class Tucson2PLibrary extends Library {
         }
         TucsonTupleCentreId tid;
         try {
-            tid = new TucsonTupleCentreId(arg1.toString());
+            tid = new TucsonTupleCentreId(arg1.getTerm().toString());
         } catch (final TucsonInvalidTupleCentreIdException e) {
             e.printStackTrace();
             return false;
         }
         ITucsonOperation op;
         try {
-            op = this.context.no(tid, new LogicTuple(arg0), (Long) null);
+            op =
+                    this.context.no(tid, new LogicTuple(arg0.getTerm()),
+                            (Long) null);
         } catch (final TucsonOperationNotPossibleException e) {
             e.printStackTrace();
             return false;
@@ -569,7 +577,7 @@ public class Tucson2PLibrary extends Library {
             return false;
         }
         if (!op.isResultSuccess()) {
-            this.unify(arg0, op.getLogicTupleResult().toTerm());
+            this.unify(arg0.getTerm(), op.getLogicTupleResult().toTerm());
         }
         return op.isResultSuccess();
     }
@@ -596,14 +604,16 @@ public class Tucson2PLibrary extends Library {
         }
         TucsonTupleCentreId tid;
         try {
-            tid = new TucsonTupleCentreId(arg2.toString());
+            tid = new TucsonTupleCentreId(arg2.getTerm().toString());
         } catch (final TucsonInvalidTupleCentreIdException e) {
             e.printStackTrace();
             return false;
         }
         ITucsonOperation op;
         try {
-            op = this.context.noAll(tid, new LogicTuple(arg0), (Long) null);
+            op =
+                    this.context.noAll(tid, new LogicTuple(arg0.getTerm()),
+                            (Long) null);
         } catch (final TucsonOperationNotPossibleException e) {
             e.printStackTrace();
             return false;
@@ -649,7 +659,7 @@ public class Tucson2PLibrary extends Library {
         }
         TucsonTupleCentreId tid;
         try {
-            tid = new TucsonTupleCentreId(arg3.toString());
+            tid = new TucsonTupleCentreId(arg3.getTerm().toString());
         } catch (final TucsonInvalidTupleCentreIdException e) {
             e.printStackTrace();
             return false;
@@ -657,9 +667,9 @@ public class Tucson2PLibrary extends Library {
         ITucsonOperation op;
         try {
             op =
-                    this.context.noS(tid, new LogicTuple(event),
-                            new LogicTuple(guards),
-                            new LogicTuple(reactionBody), (Long) null);
+                    this.context.noS(tid, new LogicTuple(event.getTerm()),
+                            new LogicTuple(guards.getTerm()), new LogicTuple(
+                                    reactionBody.getTerm()), (Long) null);
         } catch (final TucsonOperationNotPossibleException e) {
             e.printStackTrace();
             return false;
@@ -696,14 +706,16 @@ public class Tucson2PLibrary extends Library {
         }
         TucsonTupleCentreId tid;
         try {
-            tid = new TucsonTupleCentreId(arg1.toString());
+            tid = new TucsonTupleCentreId(arg1.getTerm().toString());
         } catch (final TucsonInvalidTupleCentreIdException e) {
             e.printStackTrace();
             return false;
         }
         ITucsonOperation op;
         try {
-            op = this.context.nop(tid, new LogicTuple(arg0), (Long) null);
+            op =
+                    this.context.nop(tid, new LogicTuple(arg0.getTerm()),
+                            (Long) null);
         } catch (final TucsonOperationNotPossibleException e) {
             e.printStackTrace();
             return false;
@@ -715,7 +727,7 @@ public class Tucson2PLibrary extends Library {
             return false;
         }
         if (!op.isResultSuccess()) {
-            this.unify(arg0, op.getLogicTupleResult().toTerm());
+            this.unify(arg0.getTerm(), op.getLogicTupleResult().toTerm());
         }
         return op.isResultSuccess();
     }
@@ -748,7 +760,7 @@ public class Tucson2PLibrary extends Library {
         }
         TucsonTupleCentreId tid;
         try {
-            tid = new TucsonTupleCentreId(arg3.toString());
+            tid = new TucsonTupleCentreId(arg3.getTerm().toString());
         } catch (final TucsonInvalidTupleCentreIdException e) {
             e.printStackTrace();
             return false;
@@ -756,9 +768,9 @@ public class Tucson2PLibrary extends Library {
         ITucsonOperation op;
         try {
             op =
-                    this.context.nopS(tid, new LogicTuple(event),
-                            new LogicTuple(guards),
-                            new LogicTuple(reactionBody), (Long) null);
+                    this.context.nopS(tid, new LogicTuple(event.getTerm()),
+                            new LogicTuple(guards.getTerm()), new LogicTuple(
+                                    reactionBody.getTerm()), (Long) null);
         } catch (final TucsonOperationNotPossibleException e) {
             e.printStackTrace();
             return false;
@@ -795,14 +807,16 @@ public class Tucson2PLibrary extends Library {
         }
         TucsonTupleCentreId tid;
         try {
-            tid = new TucsonTupleCentreId(arg1.toString());
+            tid = new TucsonTupleCentreId(arg1.getTerm().toString());
         } catch (final TucsonInvalidTupleCentreIdException e) {
             e.printStackTrace();
             return false;
         }
         ITucsonOperation op;
         try {
-            op = this.context.out(tid, new LogicTuple(arg0), (Long) null);
+            op =
+                    this.context.out(tid, new LogicTuple(arg0.getTerm()),
+                            (Long) null);
         } catch (final TucsonOperationNotPossibleException e) {
             e.printStackTrace();
             return false;
@@ -836,14 +850,16 @@ public class Tucson2PLibrary extends Library {
         }
         TucsonTupleCentreId tid;
         try {
-            tid = new TucsonTupleCentreId(arg1.toString());
+            tid = new TucsonTupleCentreId(arg1.getTerm().toString());
         } catch (final TucsonInvalidTupleCentreIdException e) {
             e.printStackTrace();
             return false;
         }
         ITucsonOperation op;
         try {
-            op = this.context.outAll(tid, new LogicTuple(arg0), (Long) null);
+            op =
+                    this.context.outAll(tid, new LogicTuple(arg0.getTerm()),
+                            (Long) null);
         } catch (final TucsonOperationNotPossibleException e) {
             e.printStackTrace();
             return false;
@@ -884,7 +900,7 @@ public class Tucson2PLibrary extends Library {
         }
         TucsonTupleCentreId tid;
         try {
-            tid = new TucsonTupleCentreId(arg3.toString());
+            tid = new TucsonTupleCentreId(arg3.getTerm().toString());
         } catch (final TucsonInvalidTupleCentreIdException e) {
             e.printStackTrace();
             return false;
@@ -892,9 +908,9 @@ public class Tucson2PLibrary extends Library {
         ITucsonOperation op;
         try {
             op =
-                    this.context.outS(tid, new LogicTuple(event),
-                            new LogicTuple(guards),
-                            new LogicTuple(reactionBody), (Long) null);
+                    this.context.outS(tid, new LogicTuple(event.getTerm()),
+                            new LogicTuple(guards.getTerm()), new LogicTuple(
+                                    reactionBody.getTerm()), (Long) null);
         } catch (final TucsonOperationNotPossibleException e) {
             e.printStackTrace();
             return false;
@@ -928,14 +944,16 @@ public class Tucson2PLibrary extends Library {
         }
         TucsonTupleCentreId tid;
         try {
-            tid = new TucsonTupleCentreId(arg1.toString());
+            tid = new TucsonTupleCentreId(arg1.getTerm().toString());
         } catch (final TucsonInvalidTupleCentreIdException e) {
             e.printStackTrace();
             return false;
         }
         ITucsonOperation op;
         try {
-            op = this.context.rd(tid, new LogicTuple(arg0), (Long) null);
+            op =
+                    this.context.rd(tid, new LogicTuple(arg0.getTerm()),
+                            (Long) null);
         } catch (final TucsonOperationNotPossibleException e) {
             e.printStackTrace();
             return false;
@@ -947,7 +965,7 @@ public class Tucson2PLibrary extends Library {
             return false;
         }
         if (op.isResultSuccess()) {
-            this.unify(arg0, op.getLogicTupleResult().toTerm());
+            this.unify(arg0.getTerm(), op.getLogicTupleResult().toTerm());
         }
         return op.isResultSuccess();
     }
@@ -974,14 +992,16 @@ public class Tucson2PLibrary extends Library {
         }
         TucsonTupleCentreId tid;
         try {
-            tid = new TucsonTupleCentreId(arg2.toString());
+            tid = new TucsonTupleCentreId(arg2.getTerm().toString());
         } catch (final TucsonInvalidTupleCentreIdException e) {
             e.printStackTrace();
             return false;
         }
         ITucsonOperation op;
         try {
-            op = this.context.rdAll(tid, new LogicTuple(arg0), (Long) null);
+            op =
+                    this.context.rdAll(tid, new LogicTuple(arg0.getTerm()),
+                            (Long) null);
         } catch (final TucsonOperationNotPossibleException e) {
             e.printStackTrace();
             return false;
@@ -1027,7 +1047,7 @@ public class Tucson2PLibrary extends Library {
         }
         TucsonTupleCentreId tid;
         try {
-            tid = new TucsonTupleCentreId(arg3.toString());
+            tid = new TucsonTupleCentreId(arg3.getTerm().toString());
         } catch (final TucsonInvalidTupleCentreIdException e) {
             e.printStackTrace();
             return false;
@@ -1035,9 +1055,9 @@ public class Tucson2PLibrary extends Library {
         ITucsonOperation op;
         try {
             op =
-                    this.context.rdS(tid, new LogicTuple(event),
-                            new LogicTuple(guards),
-                            new LogicTuple(reactionBody), (Long) null);
+                    this.context.rdS(tid, new LogicTuple(event.getTerm()),
+                            new LogicTuple(guards.getTerm()), new LogicTuple(
+                                    reactionBody.getTerm()), (Long) null);
         } catch (final TucsonOperationNotPossibleException e) {
             e.printStackTrace();
             return false;
@@ -1074,14 +1094,16 @@ public class Tucson2PLibrary extends Library {
         }
         TucsonTupleCentreId tid;
         try {
-            tid = new TucsonTupleCentreId(arg1.toString());
+            tid = new TucsonTupleCentreId(arg1.getTerm().toString());
         } catch (final TucsonInvalidTupleCentreIdException e) {
             e.printStackTrace();
             return false;
         }
         ITucsonOperation op;
         try {
-            op = this.context.rdp(tid, new LogicTuple(arg0), (Long) null);
+            op =
+                    this.context.rdp(tid, new LogicTuple(arg0.getTerm()),
+                            (Long) null);
         } catch (final TucsonOperationNotPossibleException e) {
             e.printStackTrace();
             return false;
@@ -1093,7 +1115,7 @@ public class Tucson2PLibrary extends Library {
             return false;
         }
         if (op.isResultSuccess()) {
-            this.unify(arg0, op.getLogicTupleResult().toTerm());
+            this.unify(arg0.getTerm(), op.getLogicTupleResult().toTerm());
         }
         return op.isResultSuccess();
     }
@@ -1126,7 +1148,7 @@ public class Tucson2PLibrary extends Library {
         }
         TucsonTupleCentreId tid;
         try {
-            tid = new TucsonTupleCentreId(arg3.toString());
+            tid = new TucsonTupleCentreId(arg3.getTerm().toString());
         } catch (final TucsonInvalidTupleCentreIdException e) {
             e.printStackTrace();
             return false;
@@ -1134,9 +1156,9 @@ public class Tucson2PLibrary extends Library {
         ITucsonOperation op;
         try {
             op =
-                    this.context.rdpS(tid, new LogicTuple(event),
-                            new LogicTuple(guards),
-                            new LogicTuple(reactionBody), (Long) null);
+                    this.context.rdpS(tid, new LogicTuple(event.getTerm()),
+                            new LogicTuple(guards.getTerm()), new LogicTuple(
+                                    reactionBody.getTerm()), (Long) null);
         } catch (final TucsonOperationNotPossibleException e) {
             e.printStackTrace();
             return false;
@@ -1173,14 +1195,16 @@ public class Tucson2PLibrary extends Library {
         }
         TucsonTupleCentreId tid;
         try {
-            tid = new TucsonTupleCentreId(arg1.toString());
+            tid = new TucsonTupleCentreId(arg1.getTerm().toString());
         } catch (final TucsonInvalidTupleCentreIdException e) {
             e.printStackTrace();
             return false;
         }
         ITucsonOperation op;
         try {
-            op = this.context.set(tid, new LogicTuple(arg0), (Long) null);
+            op =
+                    this.context.set(tid, new LogicTuple(arg0.getTerm()),
+                            (Long) null);
         } catch (final TucsonOperationNotPossibleException e) {
             e.printStackTrace();
             return false;
@@ -1215,14 +1239,16 @@ public class Tucson2PLibrary extends Library {
         }
         TucsonTupleCentreId tid;
         try {
-            tid = new TucsonTupleCentreId(arg1.toString());
+            tid = new TucsonTupleCentreId(arg1.getTerm().toString());
         } catch (final TucsonInvalidTupleCentreIdException e) {
             e.printStackTrace();
             return false;
         }
         ITucsonOperation op;
         try {
-            op = this.context.setS(tid, new LogicTuple(arg0), (Long) null);
+            op =
+                    this.context.setS(tid, new LogicTuple(arg0.getTerm()),
+                            (Long) null);
         } catch (final TucsonOperationNotPossibleException e) {
             e.printStackTrace();
             return false;
@@ -1256,14 +1282,16 @@ public class Tucson2PLibrary extends Library {
         }
         TucsonTupleCentreId tid;
         try {
-            tid = new TucsonTupleCentreId(arg1.toString());
+            tid = new TucsonTupleCentreId(arg1.getTerm().toString());
         } catch (final TucsonInvalidTupleCentreIdException e) {
             e.printStackTrace();
             return false;
         }
         ITucsonOperation op;
         try {
-            op = this.context.spawn(tid, new LogicTuple(arg0), (Long) null);
+            op =
+                    this.context.spawn(tid, new LogicTuple(arg0.getTerm()),
+                            (Long) null);
         } catch (final TucsonOperationNotPossibleException e) {
             e.printStackTrace();
             return false;
@@ -1297,14 +1325,16 @@ public class Tucson2PLibrary extends Library {
         }
         TucsonTupleCentreId tid;
         try {
-            tid = new TucsonTupleCentreId(arg1.toString());
+            tid = new TucsonTupleCentreId(arg1.getTerm().toString());
         } catch (final TucsonInvalidTupleCentreIdException e) {
             e.printStackTrace();
             return false;
         }
         ITucsonOperation op;
         try {
-            op = this.context.uin(tid, new LogicTuple(arg0), (Long) null);
+            op =
+                    this.context.uin(tid, new LogicTuple(arg0.getTerm()),
+                            (Long) null);
         } catch (final TucsonOperationNotPossibleException e) {
             e.printStackTrace();
             return false;
@@ -1316,7 +1346,7 @@ public class Tucson2PLibrary extends Library {
             return false;
         }
         if (op.isResultSuccess()) {
-            this.unify(arg0, op.getLogicTupleResult().toTerm());
+            this.unify(arg0.getTerm(), op.getLogicTupleResult().toTerm());
         }
         return op.isResultSuccess();
     }
@@ -1341,14 +1371,16 @@ public class Tucson2PLibrary extends Library {
         }
         TucsonTupleCentreId tid;
         try {
-            tid = new TucsonTupleCentreId(arg1.toString());
+            tid = new TucsonTupleCentreId(arg1.getTerm().toString());
         } catch (final TucsonInvalidTupleCentreIdException e) {
             e.printStackTrace();
             return false;
         }
         ITucsonOperation op;
         try {
-            op = this.context.uinp(tid, new LogicTuple(arg0), (Long) null);
+            op =
+                    this.context.uinp(tid, new LogicTuple(arg0.getTerm()),
+                            (Long) null);
         } catch (final TucsonOperationNotPossibleException e) {
             e.printStackTrace();
             return false;
@@ -1360,7 +1392,7 @@ public class Tucson2PLibrary extends Library {
             return false;
         }
         if (op.isResultSuccess()) {
-            this.unify(arg0, op.getLogicTupleResult().toTerm());
+            this.unify(arg0.getTerm(), op.getLogicTupleResult().toTerm());
         }
         return op.isResultSuccess();
     }
@@ -1385,14 +1417,16 @@ public class Tucson2PLibrary extends Library {
         }
         TucsonTupleCentreId tid;
         try {
-            tid = new TucsonTupleCentreId(arg1.toString());
+            tid = new TucsonTupleCentreId(arg1.getTerm().toString());
         } catch (final TucsonInvalidTupleCentreIdException e) {
             e.printStackTrace();
             return false;
         }
         ITucsonOperation op;
         try {
-            op = this.context.uno(tid, new LogicTuple(arg0), (Long) null);
+            op =
+                    this.context.uno(tid, new LogicTuple(arg0.getTerm()),
+                            (Long) null);
         } catch (final TucsonOperationNotPossibleException e) {
             e.printStackTrace();
             return false;
@@ -1404,7 +1438,7 @@ public class Tucson2PLibrary extends Library {
             return false;
         }
         if (!op.isResultSuccess()) {
-            this.unify(arg0, op.getLogicTupleResult().toTerm());
+            this.unify(arg0.getTerm(), op.getLogicTupleResult().toTerm());
         }
         return op.isResultSuccess();
     }
@@ -1429,14 +1463,16 @@ public class Tucson2PLibrary extends Library {
         }
         TucsonTupleCentreId tid;
         try {
-            tid = new TucsonTupleCentreId(arg1.toString());
+            tid = new TucsonTupleCentreId(arg1.getTerm().toString());
         } catch (final TucsonInvalidTupleCentreIdException e) {
             e.printStackTrace();
             return false;
         }
         ITucsonOperation op;
         try {
-            op = this.context.unop(tid, new LogicTuple(arg0), (Long) null);
+            op =
+                    this.context.unop(tid, new LogicTuple(arg0.getTerm()),
+                            (Long) null);
         } catch (final TucsonOperationNotPossibleException e) {
             e.printStackTrace();
             return false;
@@ -1448,7 +1484,7 @@ public class Tucson2PLibrary extends Library {
             return false;
         }
         if (!op.isResultSuccess()) {
-            this.unify(arg0, op.getLogicTupleResult().toTerm());
+            this.unify(arg0.getTerm(), op.getLogicTupleResult().toTerm());
         }
         return op.isResultSuccess();
     }
@@ -1473,14 +1509,16 @@ public class Tucson2PLibrary extends Library {
         }
         TucsonTupleCentreId tid;
         try {
-            tid = new TucsonTupleCentreId(arg1.toString());
+            tid = new TucsonTupleCentreId(arg1.getTerm().toString());
         } catch (final TucsonInvalidTupleCentreIdException e) {
             e.printStackTrace();
             return false;
         }
         ITucsonOperation op;
         try {
-            op = this.context.urd(tid, new LogicTuple(arg0), (Long) null);
+            op =
+                    this.context.urd(tid, new LogicTuple(arg0.getTerm()),
+                            (Long) null);
         } catch (final TucsonOperationNotPossibleException e) {
             e.printStackTrace();
             return false;
@@ -1492,7 +1530,7 @@ public class Tucson2PLibrary extends Library {
             return false;
         }
         if (op.isResultSuccess()) {
-            this.unify(arg0, op.getLogicTupleResult().toTerm());
+            this.unify(arg0.getTerm(), op.getLogicTupleResult().toTerm());
         }
         return op.isResultSuccess();
     }
@@ -1517,14 +1555,16 @@ public class Tucson2PLibrary extends Library {
         }
         TucsonTupleCentreId tid;
         try {
-            tid = new TucsonTupleCentreId(arg1.toString());
+            tid = new TucsonTupleCentreId(arg1.getTerm().toString());
         } catch (final TucsonInvalidTupleCentreIdException e) {
             e.printStackTrace();
             return false;
         }
         ITucsonOperation op;
         try {
-            op = this.context.urdp(tid, new LogicTuple(arg0), (Long) null);
+            op =
+                    this.context.urdp(tid, new LogicTuple(arg0.getTerm()),
+                            (Long) null);
         } catch (final TucsonOperationNotPossibleException e) {
             e.printStackTrace();
             return false;
@@ -1536,7 +1576,7 @@ public class Tucson2PLibrary extends Library {
             return false;
         }
         if (op.isResultSuccess()) {
-            this.unify(arg0, op.getLogicTupleResult().toTerm());
+            this.unify(arg0.getTerm(), op.getLogicTupleResult().toTerm());
         }
         return op.isResultSuccess();
     }
