@@ -13,7 +13,7 @@ import alice.tucson.api.exceptions.UnreachableNodeException;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 
 /*
- * 1) Extend alice.tucson.api.TucsonAgent base class.
+ * 1) Extend alice.tucson.api.AbstractTucsonAgent class.
  */
 /**
  * Java TuCSoN Agent extending alice.tucson.api.TucsonAgent base class.

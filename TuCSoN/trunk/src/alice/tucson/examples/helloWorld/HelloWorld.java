@@ -88,7 +88,7 @@ public final class HelloWorld {
                         + "]: Operation failed.");
             }
             /*
-             * Automatically done by the TuCSoN Node, hence unnecessary.
+             * Release any TuCSoN ACC held when done.
              */
             acc.exit();
         } catch (final TucsonInvalidAgentIdException e) {
