@@ -13,14 +13,14 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import alice.respect.core.collection.MVHashMap;
-import alice.respect.core.collection.MVmap;
+import alice.respect.core.collection.MVMap;
 
 public class MVmapJUnitTest {
 
 	@Rule
 	public ExpectedException exception = ExpectedException.none();
 
-	private MVmap<String, Integer> create() {
+	private MVMap<String, Integer> create() {
 		return new MVHashMap<String, Integer>();
 	}
 
@@ -47,7 +47,7 @@ public class MVmapJUnitTest {
 	@Test
 	public void testSize() {
 
-		MVmap<String, Integer> map = create();
+		MVMap<String, Integer> map = create();
 		assertTrue(map.isEmpty());
 
 		map.put("A", 10);
@@ -81,7 +81,7 @@ public class MVmapJUnitTest {
 	@Test
 	public void testSubListSize() {
 
-		MVmap<String, Integer> map = create();
+		MVMap<String, Integer> map = create();
 		assertTrue(map.isEmpty());
 
 		map.put("A", 100);
@@ -119,7 +119,7 @@ public class MVmapJUnitTest {
 	@Test
 	public void testIsEmpty() {
 
-		MVmap<String, Integer> map = create();
+		MVMap<String, Integer> map = create();
 
 		assertTrue(map.isEmpty());
 
@@ -139,7 +139,7 @@ public class MVmapJUnitTest {
 	@Test
 	public void testContainsKey() {
 
-		MVmap<String, Integer> map = create();
+		MVMap<String, Integer> map = create();
 
 		map.put("A", 100);
 		map.put("B", 1900);
@@ -158,7 +158,7 @@ public class MVmapJUnitTest {
 
 	@Test
 	public void testContainsValue() {
-		MVmap<String, Integer> map = create();
+		MVMap<String, Integer> map = create();
 		assertTrue(map.isEmpty());
 
 		map.put("A", 100);
@@ -229,7 +229,7 @@ public class MVmapJUnitTest {
 
 	@Test
 	public void testMapIterator() {
-		MVmap<String, Integer> map = create();
+		MVMap<String, Integer> map = create();
 
 		map.put("A", 1);
 		map.put("B", 2);
@@ -290,7 +290,7 @@ public class MVmapJUnitTest {
 
 	@Test
 	public void testMapIteratorException1() {
-		MVmap<String, Integer> map = create();
+		MVMap<String, Integer> map = create();
 
 		map.put("A", 1);
 		map.put("B", 2);
@@ -315,7 +315,7 @@ public class MVmapJUnitTest {
 
 	@Test
 	public void testMapIteratorException2() {
-		MVmap<String, Integer> map = create();
+		MVMap<String, Integer> map = create();
 
 		map.put("A", 1);
 		map.put("B", 2);
@@ -336,7 +336,7 @@ public class MVmapJUnitTest {
 
 	@Test
 	public void testListIterator() {
-		MVmap<String, Integer> map = create();
+		MVMap<String, Integer> map = create();
 
 		map.put("A", 1);
 		map.put("B", 2);
@@ -385,7 +385,7 @@ public class MVmapJUnitTest {
 
 	@Test
 	public void testListIteratorException1() {
-		MVmap<String, Integer> map = create();
+		MVMap<String, Integer> map = create();
 
 		map.put("A", 1);
 		map.put("B", 2);
@@ -407,7 +407,7 @@ public class MVmapJUnitTest {
 
 	@Test
 	public void testListIteratorException2() {
-		MVmap<String, Integer> map = create();
+		MVMap<String, Integer> map = create();
 
 		map.put("A", 1);
 		map.put("B", 2);

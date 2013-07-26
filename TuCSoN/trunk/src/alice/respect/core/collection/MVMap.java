@@ -5,19 +5,21 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * A MVmap (multivalue map) is similar to a {@link Map} but, unlike this, it allows to map
- * multiple values ​​for the same {@code key}. This value are stored in a
- * {@link List} associated whit the {@code key}.
+ * A MVmap (multi-value map) is similar to a {@link Map} but, unlike this, it
+ * allows to map multiple values ​​for the same {@code key}. This value are
+ * stored in a {@link List} associated whit the {@code key}. You can have
+ * duplicate values ​​associated with the same key.
+ * 
  */
-public interface MVmap<K, V> extends Iterable<V> {
+public interface MVMap<K, V> extends Iterable<V> {
 
 	/**
-	 * Returns the number of key-value pair in this BucketMap.
+	 * Returns the number of value contains in this Multi-Value Map.
 	 * 
 	 * The max number of key permitted is {@code Integer.MAX_VALUE} and each key
 	 * can contain {@code Integer.MAX_VALUE} value.
 	 * 
-	 * @return the number of key-value mappings in this map
+	 * @return the number of values contained in this map
 	 */
 	public int size();
 
@@ -29,21 +31,21 @@ public interface MVmap<K, V> extends Iterable<V> {
 	public boolean isEmpty();
 
 	/**
-	 * Returns {@code true} if the BucketMap contain at least one value for the
+	 * Returns {@code true} if the MVMap contain at least one value for the
 	 * specified key.
 	 * 
 	 * @param {@code key} - key to search
-	 * @return {@code true} - if the BucketMap contain at least one value for
+	 * @return {@code true} - if the MVMap contain at least one value for
 	 *         the specified key
 	 */
 	public boolean containsKey(K key);
 
 	/**
-	 * Returns {@code true} if the BucketMap contains the specified value for
-	 * any key.
+	 * Returns {@code true} if the MVMap contains the specified value for any
+	 * key.
 	 * 
 	 * @param {@code value} - value to search
-	 * @return {@code true} - if the BucketMap contains the specified value for
+	 * @return {@code true} - if the MVMap contains the specified value for
 	 *         any key
 	 */
 	public boolean containsValue(V value);
@@ -53,7 +55,7 @@ public interface MVmap<K, V> extends Iterable<V> {
 	 * the key does not contain values (or not existing) it return an empty List
 	 * 
 	 * Changes to the {@code List} are allowed and they are reflected on the
-	 * BucketMap and vice versa.
+	 * MVMap and vice versa.
 	 * 
 	 * @param {@code key} - key to search
 	 * @return {@code List<V>} whit the value mapped at specified key if any or
@@ -63,15 +65,12 @@ public interface MVmap<K, V> extends Iterable<V> {
 
 	/**
 	 * Associates the specified {@code value} with the specified {@code key} in
-	 * this BucketMap. Multiple value for each {@code key} are allowed.
-	 * 
-	 * Note: some implementation of {@code List} does not allow duplicates. See
-	 * the specific implementation for detail.
+	 * this MVMap. Multiple value for each {@code key} are allowed.
 	 * 
 	 * @param {@code key} - the key
 	 * @param {@code value} - the value
 	 * @return {@code true} if the {@code value} are correctly added at the
-	 *         BucketMap. This depend of the specific implementation of List
+	 *         MVMap. This depend of the specific implementation of List
 	 *         that is used.
 	 */
 	public boolean put(K key, V value);
@@ -89,7 +88,7 @@ public interface MVmap<K, V> extends Iterable<V> {
 
 	/**
 	 * Removes the first occurrence of the specified element from this
-	 * BucketMap.
+	 * MVMap.
 	 * 
 	 * @return <tt>true</tt> if this list contained the specified element
 	 */
@@ -97,7 +96,7 @@ public interface MVmap<K, V> extends Iterable<V> {
 
 	/**
 	 * Removes the first occurrence of the specified element from this
-	 * BucketMap.
+	 * MVMap.
 	 * 
 	 * @return <tt>true</tt> if this list contained the specified element
 	 */

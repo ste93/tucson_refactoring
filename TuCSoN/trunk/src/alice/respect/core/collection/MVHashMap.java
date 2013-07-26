@@ -13,23 +13,30 @@ import java.util.ListIterator;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
-public class MVHashMap<K, V> implements MVmap<K, V> {
+/**
+ * This is an implementation of MVMap based on HashMap and ArrayList.
+ * 
+ * This class are not Thread-safe
+ * */
+public class MVHashMap<K, V> implements MVMap<K, V> {
 
-	private final static int INITIAL_CAPACITY_PER_KEY = 2;
-	
+	private final static int INITIAL_CAPACITY_PER_KEY = 5;
+
 	private Map<K, List<V>> map;
 	private int totalSize;
 
 	public MVHashMap() {
 		this.map = new HashMap<K, List<V>>();
 	}
-
-	protected List<V> createList() {
+	
+	private List<V> createList() {
 		return new ArrayList<V>(INITIAL_CAPACITY_PER_KEY);
 	}
 
 	@Override
 	public int size() {
+		HashMap<String, String> m = new HashMap<String, String>();
+		m.entrySet().toArray(new String[10]);
 		return totalSize;
 	}
 
@@ -71,15 +78,12 @@ public class MVHashMap<K, V> implements MVmap<K, V> {
 				totalSize++;
 				map.put(key, list);
 				return true;
-			} else {
-				throw new AssertionError("New Collection violated the Collection spec");
 			}
 		} else if (list.add(value)) {
 			totalSize++;
 			return true;
-		} else {
-			return false;
 		}
+		return false;
 	}
 
 	@Override
@@ -107,7 +111,7 @@ public class MVHashMap<K, V> implements MVmap<K, V> {
 
 	@Override
 	public void clear() {
-		// Clear each collection, to make previously returned collections empty.
+		// For clear value for each key
 		for (List<V> list : map.values()) {
 			list.clear();
 		}
@@ -151,6 +155,7 @@ public class MVHashMap<K, V> implements MVmap<K, V> {
 		return new MVmapIterator();
 	}
 
+	/** See {@link AbstractCollection#toArray()} */
 	@Override
 	@SuppressWarnings("unchecked")
 	public V[] toArray(V[] v) {
@@ -195,7 +200,8 @@ public class MVHashMap<K, V> implements MVmap<K, V> {
 
 		void refreshIfEmpty() {
 			// If the delegate list is empty it's possible that the key
-			// associated to it do not exist in the map but it's possible that the
+			// associated to it do not exist in the map but it's possible that
+			// the
 			// key was subsequently added. This code grant the consistency of
 			// the map.
 			if (ancestor != null) {
@@ -224,14 +230,6 @@ public class MVHashMap<K, V> implements MVmap<K, V> {
 			return key;
 		}
 
-		/**
-		 * Add the delegate to the map. Other {@code WrappedCollection} methods
-		 * should call this method after adding elements to a previously empty
-		 * collection.
-		 * 
-		 * <p>
-		 * Subcollection add the ancestor's delegate instead.
-		 */
 		void addToMap() {
 			if (ancestor != null) {
 				ancestor.addToMap();
@@ -322,7 +320,7 @@ public class MVHashMap<K, V> implements MVmap<K, V> {
 
 		@Override
 		public void clear() {
-			int oldSize = size(); // calls refreshIfEmpty
+			int oldSize = size();
 			if (oldSize == 0) {
 				return;
 			}
@@ -452,7 +450,6 @@ public class MVHashMap<K, V> implements MVmap<K, V> {
 			return new WrappedList(getKey(), delegate.subList(fromIndex, toIndex), (ancestor == null) ? this : ancestor);
 		}
 
-		/** Collection iterator for {@code WrappedCollection}. */
 		private class WrappedIterator implements Iterator<V> {
 			final Iterator<V> delegateIterator;
 			final List<V> originalDelegate = delegate;
@@ -488,19 +485,6 @@ public class MVHashMap<K, V> implements MVmap<K, V> {
 				return delegateIterator.next();
 			}
 
-			/**
-			 * Removes from the underlying collection the last element returned
-			 * by this iterator (optional operation). This method can be called
-			 * only once per call to {@link #next}. The behavior of an iterator
-			 * is unspecified if the underlying collection is modified while the
-			 * iteration is in progress in any way other than by calling this
-			 * method.
-			 * 
-			 * @throws IllegalStateException
-			 *             if the {@code next} method has not yet been called,
-			 *             or the {@code remove} method has already been called
-			 *             after the last call to the {@code next} method
-			 */
 			@Override
 			public void remove() {
 				delegateIterator.remove();
@@ -514,15 +498,6 @@ public class MVHashMap<K, V> implements MVmap<K, V> {
 			}
 		}
 
-		/**
-		 * {@code ListIterator} decorator. This is necessary for grant the
-		 * consistency of {@code totalSize} value.
-		 * 
-		 * Note that the {@link #remove} and {@link #set(Object)} methods are
-		 * <i>not</i> defined in terms of the cursor position; they are defined
-		 * to operate on the last element returned by a call to {@link #next} or
-		 * {@link #previous()}.
-		 */
 		private class WrappedListIterator extends WrappedIterator implements ListIterator<V> {
 
 			WrappedListIterator() {

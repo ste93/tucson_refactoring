@@ -8,12 +8,12 @@ import java.util.Map;
 
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import alice.logictuple.LogicTuple;
-import alice.respect.core.collection.MVmap;
+import alice.respect.core.collection.MVMap;
 import alice.tuprolog.Var;
 
 public abstract class AbstractTupleSet implements TupleSet2 {
 
-	protected MVmap<String, LogicTuple> tuples;
+	protected MVMap<String, LogicTuple> tuples;
 	protected LinkedList<LogicTupleEntry> tAdded;
 	protected LinkedList<LogicTupleEntry> tRemoved;
 	protected boolean transaction;

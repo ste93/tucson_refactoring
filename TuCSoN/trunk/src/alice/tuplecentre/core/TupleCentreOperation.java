@@ -121,7 +121,7 @@ public abstract class TupleCentreOperation implements ITupleCentreOperation{
 	protected TupleCentreOperation(Prolog p, int type, TupleTemplate t){
 		this(p, type);
 		listener = null;
-//		System.out.println(" # t = " + t);
+//		System.out.println("  t = " + t);
 		this.templateArgument = t;
 	}
 	

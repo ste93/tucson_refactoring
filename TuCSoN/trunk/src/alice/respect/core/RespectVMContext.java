@@ -22,12 +22,28 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.*;
+import java.util.AbstractMap;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Random;
+import java.util.Timer;
+import java.util.Vector;
 
+import alice.logictuple.LogicTuple;
+import alice.logictuple.TupleArgument;
+import alice.logictuple.Value;
+import alice.logictuple.exceptions.InvalidLogicTupleException;
+import alice.logictuple.exceptions.InvalidTupleOperationException;
 import alice.respect.api.ILinkContext;
 import alice.respect.api.RespectSpecification;
 import alice.respect.api.TupleCentreId;
 import alice.respect.api.exceptions.OperationNotPossibleException;
+import alice.respect.core.tupleset.TupleSet2;
+import alice.respect.core.tupleset.TupleSetSimple;
+import alice.respect.core.tupleset.TupleSetSpec;
 import alice.tucson.api.SpawnActivity;
 import alice.tucson.api.TucsonAgentId;
 import alice.tucson.api.TucsonTupleCentreId;
@@ -38,17 +54,31 @@ import alice.tucson.introspection.WSetEvent;
 import alice.tucson.parsing.MyOpManager;
 import alice.tucson.service.Spawn2PLibrary;
 import alice.tucson.service.Spawn2PSolver;
-import alice.tuplecentre.core.BehaviourSpecification;
 import alice.tuplecentre.api.AgentId;
 import alice.tuplecentre.api.IId;
 import alice.tuplecentre.api.Tuple;
 import alice.tuplecentre.api.TupleTemplate;
-import alice.tuplecentre.core.*;
-import alice.tuprolog.*;
+import alice.tuplecentre.core.BehaviourSpecification;
+import alice.tuplecentre.core.Event;
+import alice.tuplecentre.core.InputEvent;
+import alice.tuplecentre.core.ObservableEventReactionFail;
+import alice.tuplecentre.core.ObservableEventReactionOK;
+import alice.tuplecentre.core.OperationCompletionListener;
+import alice.tuplecentre.core.OutputEvent;
+import alice.tuplecentre.core.TriggeredReaction;
+import alice.tuplecentre.core.TupleCentreOperation;
+import alice.tuprolog.InvalidLibraryException;
+import alice.tuprolog.InvalidTheoryException;
+import alice.tuprolog.MalformedGoalException;
+import alice.tuprolog.NoMoreSolutionException;
+import alice.tuprolog.NoSolutionException;
+import alice.tuprolog.Parser;
+import alice.tuprolog.Prolog;
+import alice.tuprolog.SolveInfo;
+import alice.tuprolog.Struct;
+import alice.tuprolog.Term;
+import alice.tuprolog.Theory;
 import alice.tuprolog.Var;
-import alice.logictuple.*;
-import alice.logictuple.exceptions.InvalidLogicTupleException;
-import alice.logictuple.exceptions.InvalidTupleOperationException;
 
 /**
  * This class defines a ReSpecT Context as a specialisation of a tuple centre VM
@@ -69,9 +99,9 @@ public class RespectVMContext extends
 	/** List of timers scheduled for execution */
 	private List<Timer> timers;
 	/** multiset of tuples T */
-	private TupleSet tSet;
+	private TupleSet2 tSet;
 	/** multiset of specification tuple Sigma */
-	private TupleSet tSpecSet;
+	private TupleSet2 tSpecSet;
 	/** multiset of Prolog predicates */
 	private TupleSet prologPredicates;
 	/** multiset of pending query set */
@@ -103,8 +133,8 @@ public class RespectVMContext extends
 		super(tid, queueSize, respectTC);
 		timers = new Vector<Timer>();
 		semaphore = new Object();
-		tSet = new TupleSet();
-		tSpecSet = new TupleSet();
+		tSet = new TupleSetSimple();
+		tSpecSet = new TupleSetSpec();
 		prologPredicates = new TupleSet();
 		wSet = new PendingQuerySet();
 		zSet = new TRSet();
