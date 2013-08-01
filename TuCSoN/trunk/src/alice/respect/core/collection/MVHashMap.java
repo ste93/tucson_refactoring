@@ -1,6 +1,7 @@
 package alice.respect.core.collection;
 
 import java.util.AbstractCollection;
+import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -23,20 +24,23 @@ public class MVHashMap<K, V> implements MVMap<K, V> {
 	private final static int INITIAL_CAPACITY_PER_KEY = 5;
 
 	private Map<K, List<V>> map;
-	private int totalSize;
+	private int totalSize = 0;
 
 	public MVHashMap() {
 		this.map = new HashMap<K, List<V>>();
 	}
-	
-	private List<V> createList() {
+
+	private List<V> createNewList() {
 		return new ArrayList<V>(INITIAL_CAPACITY_PER_KEY);
 	}
 
 	@Override
+	public int getKeysNumber() {
+		return map.size();
+	}
+
+	@Override
 	public int size() {
-		HashMap<String, String> m = new HashMap<String, String>();
-		m.entrySet().toArray(new String[10]);
 		return totalSize;
 	}
 
@@ -64,19 +68,19 @@ public class MVHashMap<K, V> implements MVMap<K, V> {
 	public List<V> get(K key) {
 		List<V> list = map.get(key);
 		if (list == null) {
-			list = createList();
+			list = createNewList();
 		}
-		return wrapList(key, list);
+		return new Values(key, list, null);
 	}
 
 	@Override
 	public boolean put(K key, V value) {
 		List<V> list = map.get(key);
 		if (list == null) {
-			list = createList();
+			list = createNewList();
 			if (list.add(value)) {
-				totalSize++;
 				map.put(key, list);
+				totalSize++;
 				return true;
 			}
 		} else if (list.add(value)) {
@@ -99,9 +103,8 @@ public class MVHashMap<K, V> implements MVMap<K, V> {
 		} else if (list.remove(value)) {
 			totalSize--;
 			return true;
-		} else {
-			return false;
 		}
+		return false;
 	}
 
 	@Override
@@ -119,13 +122,21 @@ public class MVHashMap<K, V> implements MVMap<K, V> {
 		totalSize = 0;
 	}
 
+	/**
+	 * <p>
+	 * Return a list of all values contained into MVMap.
+	 * The list are wrapped whit a {@link Collections#unmodifiableList()}
+	 * </p>
+	 * WARNING: the returned list should be used in read-only mode because it is
+	 * not synchronized with the rest of the map
+	 */
 	@Override
 	public List<V> values() {
-		List<V> list = createList();
+		List<V> list = createNewList();
 		for (K k : map.keySet()) {
 			list.addAll(get(k));
 		}
-		return list;
+		return Collections.unmodifiableList(list);
 	}
 
 	@Override
@@ -180,48 +191,42 @@ public class MVHashMap<K, V> implements MVMap<K, V> {
 		return map;
 	}
 
-	private List<V> wrapList(K key, List<V> list) {
-		return new WrappedList(key, list, null);
-	}
-
-	private class WrappedList extends AbstractCollection<V> implements List<V> {
+	private class Values extends AbstractList<V> implements List<V> {
 
 		final K key;
-		List<V> delegate;
-		final WrappedList ancestor;
-		final Collection<V> ancestorDelegate;
 
-		WrappedList(K key, List<V> delegate, WrappedList ancestor) {
+		List<V> wrappedList;
+		// This is the super-list when create a sub-list
+		final Values parentList;
+
+		Values(K key, List<V> list, Values parentList) {
 			this.key = key;
-			this.delegate = delegate;
-			this.ancestor = ancestor;
-			this.ancestorDelegate = (ancestor == null) ? null : ancestor.getDelegate();
+			this.wrappedList = list;
+			this.parentList = parentList;
 		}
 
-		void refreshIfEmpty() {
-			// If the delegate list is empty it's possible that the key
-			// associated to it do not exist in the map but it's possible that
-			// the
-			// key was subsequently added. This code grant the consistency of
-			// the map.
-			if (ancestor != null) {
-				ancestor.refreshIfEmpty();
-				if (ancestor.getDelegate() != ancestorDelegate) {
-					throw new ConcurrentModificationException();
-				}
-			} else if (delegate.isEmpty()) {
+		private boolean isSubList() {
+			return (parentList != null);
+		}
 
-				List<V> newDelegate = map.get(key);
-				if (newDelegate != null) {
-					delegate = newDelegate;
+		void checkKeyExistence() {
+			// The get method of MVMap returns an empty list if the requested
+			// key does not exist. If a value is added to this list I need to
+			// create the key associated with the list in the map.
+			if (parentList != null) {
+				parentList.checkKeyExistence();
+			} else if (wrappedList.isEmpty()) {
+				List<V> list = map.get(key);
+				if (list != null) {
+					wrappedList = list;
 				}
 			}
 		}
 
-		void removeIfEmpty() {
-			if (ancestor != null) {
-				ancestor.removeIfEmpty();
-			} else if (delegate.isEmpty()) {
+		void removeKeyIfEmpty() {
+			if (parentList != null) {
+				parentList.removeKeyIfEmpty();
+			} else if (wrappedList.isEmpty()) {
 				map.remove(key);
 			}
 		}
@@ -231,55 +236,36 @@ public class MVHashMap<K, V> implements MVMap<K, V> {
 		}
 
 		void addToMap() {
-			if (ancestor != null) {
-				ancestor.addToMap();
+			if (parentList != null) {
+				parentList.addToMap();
 			} else {
-				map.put(key, delegate);
+				map.put(key, wrappedList);
 			}
 		}
 
 		@Override
 		public int size() {
-			refreshIfEmpty();
-			return delegate.size();
+			checkKeyExistence();
+			return wrappedList.size();
 		}
 
 		@Override
-		public boolean equals(Object object) {
-			if (object == this) {
-				return true;
-			}
-			refreshIfEmpty();
-			return delegate.equals(object);
-		}
-
-		@Override
-		public int hashCode() {
-			refreshIfEmpty();
-			return delegate.hashCode();
-		}
-
-		@Override
-		public String toString() {
-			refreshIfEmpty();
-			return delegate.toString();
-		}
-
-		List<V> getDelegate() {
-			return delegate;
+		public boolean contains(Object o) {
+			checkKeyExistence();
+			return wrappedList.contains(o);
 		}
 
 		@Override
 		public Iterator<V> iterator() {
-			refreshIfEmpty();
+			checkKeyExistence();
 			return new WrappedIterator();
 		}
 
 		@Override
 		public boolean add(V value) {
-			refreshIfEmpty();
-			boolean wasEmpty = delegate.isEmpty();
-			boolean changed = delegate.add(value);
+			checkKeyExistence();
+			boolean wasEmpty = wrappedList.isEmpty();
+			boolean changed = wrappedList.add(value);
 			if (changed) {
 				totalSize++;
 				if (wasEmpty) {
@@ -290,83 +276,56 @@ public class MVHashMap<K, V> implements MVMap<K, V> {
 		}
 
 		@Override
-		public boolean addAll(Collection<? extends V> collection) {
-			if (collection.isEmpty()) {
-				return false;
-			}
-			int oldSize = size(); // calls refreshIfEmpty
-			boolean changed = delegate.addAll(collection);
+		public boolean remove(Object o) {
+			checkKeyExistence();
+			boolean changed = wrappedList.remove(o);
 			if (changed) {
-				int newSize = delegate.size();
-				totalSize += (newSize - oldSize);
-				if (oldSize == 0) {
-					addToMap();
-				}
+				totalSize--;
+				removeKeyIfEmpty();
 			}
 			return changed;
-		}
-
-		@Override
-		public boolean contains(Object o) {
-			refreshIfEmpty();
-			return delegate.contains(o);
 		}
 
 		@Override
 		public boolean containsAll(Collection<?> c) {
-			refreshIfEmpty();
-			return delegate.containsAll(c);
+			checkKeyExistence();
+			return wrappedList.containsAll(c);
 		}
 
 		@Override
-		public void clear() {
-			int oldSize = size();
-			if (oldSize == 0) {
-				return;
+		public boolean equals(Object object) {
+			if (object == this) {
+				return true;
 			}
-			delegate.clear();
-			totalSize -= oldSize;
-			removeIfEmpty(); // maybe shouldn't be removed if this is a sublist
+			checkKeyExistence();
+			return wrappedList.equals(object);
 		}
 
 		@Override
-		public boolean remove(Object o) {
-			refreshIfEmpty();
-			boolean changed = delegate.remove(o);
-			if (changed) {
-				totalSize--;
-				removeIfEmpty();
-			}
-			return changed;
+		public int hashCode() {
+			checkKeyExistence();
+			return wrappedList.hashCode();
 		}
 
 		@Override
-		public boolean removeAll(Collection<?> c) {
-			if (c.isEmpty()) {
+		public String toString() {
+			checkKeyExistence();
+			return wrappedList.toString();
+		}
+
+		@Override
+		public boolean addAll(Collection<? extends V> collection) {
+			if (collection.isEmpty()) {
 				return false;
 			}
-			int oldSize = size(); // calls refreshIfEmpty
-			boolean changed = delegate.removeAll(c);
+			int oldSize = size();
+			boolean changed = wrappedList.addAll(collection);
 			if (changed) {
-				int newSize = delegate.size();
+				int newSize = wrappedList.size();
 				totalSize += (newSize - oldSize);
-				removeIfEmpty();
-			}
-			return changed;
-		}
-
-		@Override
-		public boolean retainAll(Collection<?> c) {
-
-			if (c == null) {
-				throw new NullPointerException();
-			}
-			int oldSize = size(); // calls refreshIfEmpty
-			boolean changed = delegate.retainAll(c);
-			if (changed) {
-				int newSize = delegate.size();
-				totalSize += (newSize - oldSize);
-				removeIfEmpty();
+				if (oldSize == 0) {
+					addToMap();
+				}
 			}
 			return changed;
 		}
@@ -377,9 +336,9 @@ public class MVHashMap<K, V> implements MVMap<K, V> {
 				return false;
 			}
 			int oldSize = size(); // calls refreshIfEmpty
-			boolean changed = delegate.addAll(index, c);
+			boolean changed = wrappedList.addAll(index, c);
 			if (changed) {
-				int newSize = delegate.size();
+				int newSize = wrappedList.size();
 				totalSize += (newSize - oldSize);
 				if (oldSize == 0) {
 					addToMap();
@@ -389,22 +348,64 @@ public class MVHashMap<K, V> implements MVMap<K, V> {
 		}
 
 		@Override
+		public boolean removeAll(Collection<?> c) {
+			if (c.isEmpty()) {
+				return false;
+			}
+			int oldSize = size();
+			boolean changed = wrappedList.removeAll(c);
+			if (changed) {
+				int newSize = wrappedList.size();
+				totalSize += (newSize - oldSize);
+				removeKeyIfEmpty();
+			}
+			return changed;
+		}
+
+		@Override
+		public boolean retainAll(Collection<?> c) {
+
+			if (c == null) {
+				throw new NullPointerException();
+			}
+			int oldSize = size();
+			boolean changed = wrappedList.retainAll(c);
+			if (changed) {
+				int newSize = wrappedList.size();
+				totalSize += (newSize - oldSize);
+				removeKeyIfEmpty();
+			}
+			return changed;
+		}
+
+		@Override
+		public void clear() {
+			int oldSize = size();
+			if (oldSize == 0) {
+				return;
+			}
+			wrappedList.clear();
+			totalSize -= oldSize;
+			removeKeyIfEmpty();
+		}
+
+		@Override
 		public V get(int index) {
-			refreshIfEmpty();
-			return delegate.get(index);
+			checkKeyExistence();
+			return wrappedList.get(index);
 		}
 
 		@Override
 		public V set(int index, V element) {
-			refreshIfEmpty();
-			return delegate.set(index, element);
+			checkKeyExistence();
+			return wrappedList.set(index, element);
 		}
 
 		@Override
 		public void add(int index, V element) {
-			refreshIfEmpty();
-			boolean wasEmpty = getDelegate().isEmpty();
-			delegate.add(index, element);
+			checkKeyExistence();
+			boolean wasEmpty = wrappedList.isEmpty();
+			wrappedList.add(index, element);
 			totalSize++;
 			if (wasEmpty) {
 				addToMap();
@@ -413,49 +414,50 @@ public class MVHashMap<K, V> implements MVMap<K, V> {
 
 		@Override
 		public V remove(int index) {
-			refreshIfEmpty();
-			V value = delegate.remove(index);
+			checkKeyExistence();
+			V value = wrappedList.remove(index);
 			totalSize--;
-			removeIfEmpty();
+			removeKeyIfEmpty();
 			return value;
 		}
 
 		@Override
 		public int indexOf(Object o) {
-			refreshIfEmpty();
-			return delegate.indexOf(o);
+			checkKeyExistence();
+			return wrappedList.indexOf(o);
 		}
 
 		@Override
 		public int lastIndexOf(Object o) {
-			refreshIfEmpty();
-			return delegate.lastIndexOf(o);
+			checkKeyExistence();
+			return wrappedList.lastIndexOf(o);
 		}
 
 		@Override
 		public ListIterator<V> listIterator() {
-			refreshIfEmpty();
+			checkKeyExistence();
 			return new WrappedListIterator();
 		}
 
 		@Override
 		public ListIterator<V> listIterator(int index) {
-			refreshIfEmpty();
+			checkKeyExistence();
 			return new WrappedListIterator(index);
 		}
 
 		@Override
 		public List<V> subList(int fromIndex, int toIndex) {
-			refreshIfEmpty();
-			return new WrappedList(getKey(), delegate.subList(fromIndex, toIndex), (ancestor == null) ? this : ancestor);
+			checkKeyExistence();
+			return new Values(getKey(), wrappedList.subList(fromIndex, toIndex), isSubList() ? parentList : this);
+
 		}
 
 		private class WrappedIterator implements Iterator<V> {
 			final Iterator<V> delegateIterator;
-			final List<V> originalDelegate = delegate;
+			final List<V> originalDelegate = wrappedList;
 
 			WrappedIterator() {
-				delegateIterator = delegate.listIterator();
+				delegateIterator = wrappedList.listIterator();
 			}
 
 			WrappedIterator(Iterator<V> delegateIterator) {
@@ -467,8 +469,8 @@ public class MVHashMap<K, V> implements MVMap<K, V> {
 			 * iterator is no longer valid.
 			 */
 			void validateIterator() {
-				refreshIfEmpty();
-				if (delegate != originalDelegate) {
+				checkKeyExistence();
+				if (wrappedList != originalDelegate) {
 					throw new ConcurrentModificationException();
 				}
 			}
@@ -489,7 +491,7 @@ public class MVHashMap<K, V> implements MVMap<K, V> {
 			public void remove() {
 				delegateIterator.remove();
 				totalSize--;
-				removeIfEmpty();
+				removeKeyIfEmpty();
 			}
 
 			Iterator<V> getDelegateIterator() {
@@ -504,7 +506,7 @@ public class MVHashMap<K, V> implements MVMap<K, V> {
 			}
 
 			public WrappedListIterator(int index) {
-				super(delegate.listIterator(index));
+				super(wrappedList.listIterator(index));
 			}
 
 			private ListIterator<V> getDelegateListIterator() {

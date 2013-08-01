@@ -13,16 +13,17 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import alice.respect.core.collection.DoubleKeyMVMap;
 import alice.respect.core.collection.MVHashMap;
 import alice.respect.core.collection.MVMap;
 
-public class MVmapJUnitTest {
+public class InnerMVmapJUnitTest {
 
 	@Rule
 	public ExpectedException exception = ExpectedException.none();
 
 	private MVMap<String, Integer> createEmpty() {
-		return new MVHashMap<String, Integer>();
+		return new DoubleKeyMVMap<String, String, Integer>().get(null);
 	}
 
 	private MVMap<String, Integer> create() {

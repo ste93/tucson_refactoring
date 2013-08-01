@@ -35,8 +35,8 @@ public interface MVMap<K, V> extends Iterable<V> {
 	 * specified key.
 	 * 
 	 * @param {@code key} - key to search
-	 * @return {@code true} - if the MVMap contain at least one value for
-	 *         the specified key
+	 * @return {@code true} - if the MVMap contain at least one value for the
+	 *         specified key
 	 */
 	public boolean containsKey(K key);
 
@@ -45,8 +45,8 @@ public interface MVMap<K, V> extends Iterable<V> {
 	 * key.
 	 * 
 	 * @param {@code value} - value to search
-	 * @return {@code true} - if the MVMap contains the specified value for
-	 *         any key
+	 * @return {@code true} - if the MVMap contains the specified value for any
+	 *         key
 	 */
 	public boolean containsValue(V value);
 
@@ -70,8 +70,8 @@ public interface MVMap<K, V> extends Iterable<V> {
 	 * @param {@code key} - the key
 	 * @param {@code value} - the value
 	 * @return {@code true} if the {@code value} are correctly added at the
-	 *         MVMap. This depend of the specific implementation of List
-	 *         that is used.
+	 *         MVMap. This depend of the specific implementation of List that is
+	 *         used.
 	 */
 	public boolean put(K key, V value);
 
@@ -87,25 +87,32 @@ public interface MVMap<K, V> extends Iterable<V> {
 	public boolean put(Map.Entry<K, V> e);
 
 	/**
-	 * Removes the first occurrence of the specified element from this
-	 * MVMap.
+	 * Removes the first occurrence of the specified element from this MVMap.
 	 * 
 	 * @return <tt>true</tt> if this list contained the specified element
 	 */
 	public boolean remove(K key, V value);
 
 	/**
-	 * Removes the first occurrence of the specified element from this
-	 * MVMap.
+	 * Removes the first occurrence of the specified element from this MVMap.
 	 * 
 	 * @return <tt>true</tt> if this list contained the specified element
 	 */
 	public boolean remove(Map.Entry<K, V> e);
 
-	/** Remove all element from the BucketMap */
+	/** Remove all element from the MVMap */
 	public void clear();
 
-	// TODO vedere se è da rimuovere
+	/** Return a number of keys collected into MVMap */
+	public int getKeysNumber();
+
+	/**
+	 * <p>
+	 * Return a list of all values contained into MVMap
+	 * </p>
+	 * WARNING: the returned list should be used in read-only mode because it is
+	 * not synchronized with the rest of the map
+	 */
 	public List<V> values();
 
 	@Override
