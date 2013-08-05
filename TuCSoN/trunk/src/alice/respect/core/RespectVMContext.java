@@ -42,7 +42,7 @@ import alice.respect.api.RespectSpecification;
 import alice.respect.api.TupleCentreId;
 import alice.respect.api.exceptions.OperationNotPossibleException;
 import alice.respect.core.tupleset.TupleSet2;
-import alice.respect.core.tupleset.TupleSetSimple;
+import alice.respect.core.tupleset.TupleSetCoord;
 import alice.respect.core.tupleset.TupleSetSpec;
 import alice.tucson.api.SpawnActivity;
 import alice.tucson.api.TucsonAgentId;
@@ -133,7 +133,7 @@ public class RespectVMContext extends
 		super(tid, queueSize, respectTC);
 		timers = new Vector<Timer>();
 		semaphore = new Object();
-		tSet = new TupleSetSimple();
+		tSet = new TupleSetCoord();
 		tSpecSet = new TupleSetSpec();
 		prologPredicates = new TupleSet();
 		wSet = new PendingQuerySet();

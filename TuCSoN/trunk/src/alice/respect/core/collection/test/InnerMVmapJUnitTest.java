@@ -14,7 +14,6 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import alice.respect.core.collection.DoubleKeyMVMap;
-import alice.respect.core.collection.MVHashMap;
 import alice.respect.core.collection.MVMap;
 
 public class InnerMVmapJUnitTest {

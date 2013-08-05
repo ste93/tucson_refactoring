@@ -351,13 +351,11 @@ public class TupleArgument implements java.io.Serializable {
 
 	public String getPredicateIndicator() throws InvalidTupleOperationException {
 		if (value instanceof alice.tuprolog.Struct) {
-			// TODO saverio non so se è il caso di rendere visibile il metodo omonimo
-			// della classe Struct.
-			// return ((Struct)value).getPredicateIndicator();
 			return ((alice.tuprolog.Struct) value).getName() + "/" + ((alice.tuprolog.Struct) value).getArity();
 		} else {
 			throw new InvalidTupleOperationException();
 		}
+
 	}
 
 	/**

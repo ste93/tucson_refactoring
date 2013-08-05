@@ -4,42 +4,57 @@ import java.util.AbstractMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
-import java.util.Map;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import alice.logictuple.LogicTuple;
+import alice.logictuple.TupleArgument;
+import alice.logictuple.exceptions.InvalidLogicTupleException;
+import alice.respect.core.collection.DoubleKeyMVMap;
 import alice.respect.core.collection.MVMap;
 import alice.tuprolog.Var;
 
 public abstract class AbstractTupleSet implements TupleSet2 {
 
-	protected MVMap<String, LogicTuple> tuples;
-	protected LinkedList<LogicTupleEntry> tAdded;
-	protected LinkedList<LogicTupleEntry> tRemoved;
+	protected DoubleKeyMVMap<String, String, LogicTuple> tuples;
+	protected LinkedList<LTEntry> tAdded;
+	protected LinkedList<LTEntry> tRemoved;
 	protected boolean transaction;
 
-	protected abstract String getKey(LogicTuple t);
+
 
 	public AbstractTupleSet() {
 		super();
 	}
 
+	abstract protected String getTupleKey1(LogicTuple t) throws alice.logictuple.exceptions.InvalidLogicTupleException;
+
+	abstract protected String getTupleKey2(LogicTuple t) throws alice.logictuple.exceptions.InvalidLogicTupleException;
+
+	
 	@Override
 	public void add(LogicTuple t) {
-		// TODO in questo caso l'eccezione viene gestita nella getKey
-		// Cosa fare in caso di problemi?
-		tuples.put(createEntry(t));
-		if (transaction)
-			tAdded.add(createEntry(t));
+		try {
+			LTEntry e = createEntry(t);
+			tuples.put(e.getKey1(), e.getKey2(), e.getValue());
+			if (transaction)
+				tAdded.add(e);
+		} catch (InvalidLogicTupleException e1) {
+			e1.printStackTrace();
+		}
 	}
 
 	@Override
 	public void remove(LogicTuple t) {
-		// TODO in questo caso l'eccezione viene gestita nella getKey
-		// Cosa fare in caso di problemi?
-		tuples.remove(createEntry(t));
-		if (transaction)
-			tRemoved.add(createEntry(t));
+		try {
+			LTEntry e = createEntry(t);
+			boolean res = tuples.remove(e.getKey1(), e.getKey2(), e.getValue());
+			if (res) {
+				if (transaction)
+					tRemoved.add(createEntry(t));
+			}
+		} catch (InvalidLogicTupleException e1) {
+			System.out.println(t.toString());
+			e1.printStackTrace();
+		}
 	}
 
 	@Override
@@ -62,13 +77,15 @@ public abstract class AbstractTupleSet implements TupleSet2 {
 	@Override
 	public void endTransaction(boolean commit) {
 		if (!commit) {
-			Iterator<LogicTupleEntry> it = tAdded.listIterator();
+			Iterator<LTEntry> it = tAdded.listIterator();
 			while (it.hasNext()) {
-				tuples.remove(it.next());
+				LTEntry e = it.next();
+				tuples.remove(e.getKey1(), e.getKey2(), e.getValue());
 			}
 			it = tRemoved.listIterator();
 			while (it.hasNext()) {
-				tuples.put(it.next());
+				LTEntry e = it.next();
+				tuples.put(e.getKey1(), e.getKey2(), e.getValue());
 			}
 		}
 		transaction = false;
@@ -85,16 +102,32 @@ public abstract class AbstractTupleSet implements TupleSet2 {
 	public LogicTuple getMatchingTuple(LogicTuple templ) {
 		if (templ == null)
 			return null;
-		Iterator<LogicTuple> l = tuples.iterator();
-		while (l.hasNext()) {
-			LogicTuple tu = l.next();
-			if (templ.match(tu)) {
-				l.remove();
-				if (transaction)
-					tRemoved.add(createEntry(tu));
-				AbstractMap<Var, Var> v = new LinkedHashMap<Var, Var>();
-				return new LogicTuple(tu.toTerm().copyGoal(v, 0));
+
+		Iterator<LogicTuple> l;
+		try {
+			String key2 = getTupleKey2(templ);
+			if (key2.equals("VAR"))
+				l = tuples.get(getTupleKey1(templ)).iterator();
+			else {
+				MVMap<String, LogicTuple> map = tuples.get(getTupleKey1(templ));
+				if (map.get("VAR").size() > 0)
+					l = map.iterator();
+				else
+					l = map.get(key2).iterator();
 			}
+
+			while (l.hasNext()) {
+				LogicTuple tu = l.next();
+				if (templ.match(tu)) {
+					l.remove();
+					if (transaction)
+						tRemoved.add(createEntry(tu));
+					AbstractMap<Var, Var> v = new LinkedHashMap<Var, Var>();
+					return new LogicTuple(tu.toTerm().copyGoal(v, 0));
+				}
+			}
+		} catch (InvalidLogicTupleException e) {
+			e.printStackTrace();
 		}
 		return null;
 	}
@@ -103,13 +136,29 @@ public abstract class AbstractTupleSet implements TupleSet2 {
 	public LogicTuple readMatchingTuple(LogicTuple templ) {
 		if (templ == null)
 			return null;
-		Iterator<LogicTuple> l = tuples.iterator();
-		while (l.hasNext()) {
-			LogicTuple tu = l.next();
-			if (templ.match(tu)) {
-				AbstractMap<Var, Var> v = new LinkedHashMap<Var, Var>();
-				return new LogicTuple(tu.toTerm().copyGoal(v, 0));
+
+		Iterator<LogicTuple> l;
+		try {
+			String key2 = getTupleKey2(templ);
+			if (key2.equals("VAR"))
+				l = tuples.get(getTupleKey1(templ)).iterator();
+			else {
+				MVMap<String, LogicTuple> map = tuples.get(getTupleKey1(templ));
+				if (map.get("VAR").size() > 0)
+					l = map.iterator();
+				else
+					l = map.get(key2).iterator();
 			}
+
+			while (l.hasNext()) {
+				LogicTuple tu = l.next();
+				if (templ.match(tu)) {
+					AbstractMap<Var, Var> v = new LinkedHashMap<Var, Var>();
+					return new LogicTuple(tu.toTerm().copyGoal(v, 0));
+				}
+			}
+		} catch (InvalidLogicTupleException e1) {
+			e1.printStackTrace();
 		}
 		return null;
 	}
@@ -126,10 +175,7 @@ public abstract class AbstractTupleSet implements TupleSet2 {
 
 	@Override
 	public String toString() {
-		String str = "";
-		for (LogicTuple t : tuples)
-			str += t.toString() + ".\n";
-		return str;
+		return tuples.toString();
 	}
 
 	@Override
@@ -140,59 +186,37 @@ public abstract class AbstractTupleSet implements TupleSet2 {
 			return true;
 	}
 
-	private LogicTupleEntry createEntry(LogicTuple t) {
-		return new LogicTupleEntry(getKey(t), t);
+	private LTEntry createEntry(LogicTuple t) throws InvalidLogicTupleException {
+		return new LTEntry(getTupleKey1(t), getTupleKey2(t), t);
 	}
 
-	/**
-	 * FIXME questa classe dovrebbe stare nella BucketMap
-	 * 
-	 * 
-	 * This class represents a key-value pair, where the key is a String and the
-	 * value is an instance of the class LogicTuple. These
-	 * <tt>LogicTupleEntry</tt> objects are valid <i>only</i> for the duration
-	 * of the iteration; more formally, the behavior of a map entry is undefined
-	 * if the backing map has been modified after the entry was returned by the
-	 * iterator, except through the <tt>setValue</tt> operation on the map
-	 * entry.
-	 * 
-	 */
-	protected class LogicTupleEntry implements Map.Entry<String, LogicTuple> {
+	protected class LTEntry {
 
-		final String key;
+		final String key1;
+		final String key2;
 		final LogicTuple value;
 
-		LogicTupleEntry(String k, LogicTuple v) {
-			this.key = k;
+		LTEntry(String keyOuter, String keyInner, LogicTuple v) {
+			this.key1 = keyOuter;
+			this.key2 = keyInner;
 			this.value = v;
 		}
 
-		@Override
-		public String getKey() {
-			return key;
+		public String getKey1() {
+			return key1;
 		}
 
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
+		public String getKey2() {
+			return key2;
+		}
+
 		public LogicTuple getValue() {
 			return value;
 		}
 
-		/**
-		 * <p>
-		 * NOTE: This method is not implemented, the value of this class can not be
-		 * changed after initialization.
-		 * </p>
-		 * {@inheritDoc}
-		 * 
-		 * @throws NotImplementedException
-		 *             on each invocation of method.
-		 */
 		@Override
-		public LogicTuple setValue(LogicTuple value) {
-			throw new NotImplementedException();
+		public String toString() {
+			return key1 + "\t" + key2 + "\t" + value.toString();
 		}
 
 	}

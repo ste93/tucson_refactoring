@@ -25,40 +25,71 @@ import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.logictuple.exceptions.InvalidTupleOperationException;
 import alice.respect.core.collection.DoubleKeyMVMap;
 
-/**
- * Class representing a Tuple Set.
- */
-public class TupleSetSpec extends AbstractTupleSet {
+public class TupleSetCoord extends AbstractTupleSet {
 
-	public TupleSetSpec() {
+	public TupleSetCoord() {
 		tuples = new DoubleKeyMVMap<String, String, LogicTuple>();
 		tAdded = new LinkedList<LTEntry>();
 		tRemoved = new LinkedList<LTEntry>();
 		transaction = false;
 	}
 
+	/**
+	 * Return the first level key. This key are based on functorn name and
+	 * arity.
+	 */
 	@Override
 	protected String getTupleKey1(LogicTuple t) throws alice.logictuple.exceptions.InvalidLogicTupleException {
 		try {
-			TupleArgument event = t.getArg(0);
-			String s = event.getPredicateIndicator();
-			return s;
+			TupleArgument ta = t.getVarValue(null);
+			if (ta != null)
+				return ta.getPredicateIndicator();
+			else
+				return t.getPredicateIndicator();
+
 		} catch (InvalidTupleOperationException e) {
 			throw new alice.logictuple.exceptions.InvalidLogicTupleException();
 		}
 	}
 
+	/**
+	 * Returns the second level key. This key is based on the first term of the
+	 * LogicTuple if exist, return an empty String otherwise. The variable are
+	 * stored whit a special key.
+	 * */
 	@Override
 	protected String getTupleKey2(LogicTuple t) throws InvalidLogicTupleException {
-		try {
-			TupleArgument eventArg = t.getArg(0).getArg(0);
 
-			if (eventArg.isNumber())
-				return eventArg.toString();
-			else if (eventArg.isVar())
-				return "VAR";
-			else
-				return eventArg.getPredicateIndicator();
+		try {
+			TupleArgument tArg = t.getVarValue(null);
+			// Check if the term as a value assigned to a variable
+			if (tArg != null) {
+				if (tArg.getArity() > 0) {
+					tArg = tArg.getArg(0);
+					if (tArg.isNumber())
+						// The number are treated as a special case and
+						// are indexed with their string representation
+						return tArg.toString();
+					// If a term are a variable, this is
+					// indicized with a special key
+					else if (tArg.isVar())
+						return "VAR";
+					else
+						return tArg.getPredicateIndicator();
+				} else
+					return "";
+
+			} else if (t.getArity() > 0) {
+				tArg = t.getArg(0);
+				if (tArg.isNumber())
+					return tArg.toString();
+				else if (tArg.isVar())
+					return "VAR";
+				else
+					return tArg.getPredicateIndicator();
+
+			} else
+				return "";
 
 		} catch (InvalidTupleOperationException e) {
 			throw new alice.logictuple.exceptions.InvalidLogicTupleException();
