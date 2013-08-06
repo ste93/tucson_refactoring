@@ -10,14 +10,15 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
-package alice.respect.core;
+package alice.respect.core.tupleset;
 
 import java.util.LinkedList;
 
 import alice.logictuple.LogicTuple;
 import alice.logictuple.TupleArgument;
+import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.logictuple.exceptions.InvalidTupleOperationException;
-import alice.respect.core.collection.BucketHashMap;
+import alice.respect.core.collection.DoubleKeyMVMap;
 
 /**
  * Class representing a Tuple Set.
@@ -32,50 +33,42 @@ public class TupleSetSpec extends AbstractTupleSet {
     // due normali tuple devono rimanere distinte anche se sono identiche, ma
     // per le reaction potrebbe essere un problema.
 
-    private static void log(final Object o) {
-        System.out.println(o.toString());
-    }
-
-    /**
-     * 
-     */
     public TupleSetSpec() {
-        super();
-        this.tuples = new BucketHashMap<String, LogicTuple>();
-        this.tAdded = new LinkedList<LogicTupleEntry>();
-        this.tRemoved = new LinkedList<LogicTupleEntry>();
+        this.tuples = new DoubleKeyMVMap<String, String, LogicTuple>();
+        this.tAdded = new LinkedList<LTEntry>();
+        this.tRemoved = new LinkedList<LTEntry>();
         this.transaction = false;
     }
 
     @Override
-    protected String getKey(final LogicTuple t) {
-        TupleSetSpec.log("");
-        TupleSetSpec.log("La tupla e' " + t.toString());
+    protected String getTupleKey1(final LogicTuple t)
+            throws alice.logictuple.exceptions.InvalidLogicTupleException {
         try {
-            if (!"reaction".equals(t.getName())) {
-                System.err
-                        .println("Messaggio Saverio: TupleSpech ha un problema");
-                // TODO CICORA: valutare se e' il caso di effettuare questo
-                // controllo
-                // throw new Exception();
-            }
             final TupleArgument event = t.getArg(0);
-            String key = event.getName();
-            key = key.concat("-" + event.getArg(0).getPredicateIndicator());
+            final String s = event.getPredicateIndicator();
+            return s;
+        } catch (final InvalidTupleOperationException e) {
+            throw new alice.logictuple.exceptions.InvalidLogicTupleException();
+        }
+    }
 
-            TupleSetSpec.log("La chiave e':" + key);
+    @Override
+    protected String getTupleKey2(final LogicTuple t)
+            throws InvalidLogicTupleException {
+        try {
+            final TupleArgument eventArg = t.getArg(0).getArg(0);
 
-            return key;
+            if (eventArg.isNumber()) {
+                return eventArg.toString();
+            } else if (eventArg.isVar()) {
+                return "VAR";
+            } else {
+                return eventArg.getPredicateIndicator();
+            }
 
         } catch (final InvalidTupleOperationException e) {
-            e.printStackTrace();
+            throw new alice.logictuple.exceptions.InvalidLogicTupleException();
         }
-        /*
-         * reaction( out(boot),
-         * true,','(out(agent_list([])),','(out(tc_list([])),in(boot))) ).
-         */
-
-        return "";
     }
 
 }

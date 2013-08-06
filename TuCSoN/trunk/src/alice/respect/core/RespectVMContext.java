@@ -36,6 +36,9 @@ import alice.respect.api.IRespectTC;
 import alice.respect.api.RespectSpecification;
 import alice.respect.api.TupleCentreId;
 import alice.respect.api.exceptions.OperationNotPossibleException;
+import alice.respect.core.tupleset.ITupleSet;
+import alice.respect.core.tupleset.TupleSetCoord;
+import alice.respect.core.tupleset.TupleSetSpec;
 import alice.tucson.api.AbstractSpawnActivity;
 import alice.tucson.api.TucsonAgentId;
 import alice.tucson.api.TucsonTupleCentreId;
@@ -180,9 +183,9 @@ public class RespectVMContext extends
     private boolean transaction;
     private Prolog trigCore;
     /** multiset of tuples T */
-    private final TupleSet tSet;
+    private final ITupleSet tSet;
     /** multiset of specification tuple Sigma */
-    private final TupleSet tSpecSet;
+    private final ITupleSet tSpecSet;
 
     private final RespectVM vm;
 
@@ -209,8 +212,8 @@ public class RespectVMContext extends
         super(tid, queueSize, respectTC);
         this.timers = new ArrayList<Timer>();
         this.semaphore = new Object();
-        this.tSet = new TupleSet();
-        this.tSpecSet = new TupleSet();
+        this.tSet = new TupleSetCoord();
+        this.tSpecSet = new TupleSetSpec();
         this.prologPredicates = new TupleSet();
         this.wSet = new PendingQuerySet();
         this.zSet = new TRSet();
@@ -1619,11 +1622,11 @@ public class RespectVMContext extends
                     final Theory toSpawn =
                             new Theory(new BufferedInputStream(is));
                     solver.setTheory(toSpawn);
-//                    final String[] libs = solver.getCurrentLibraries();
-//                    this.log("Known libs:");
-//                    for (final String lib : libs) {
-//                        System.out.println("\t" + lib);
-//                    }
+                    // final String[] libs = solver.getCurrentLibraries();
+                    // this.log("Known libs:");
+                    // for (final String lib : libs) {
+                    // System.out.println("\t" + lib);
+                    // }
                     new Spawn2PSolver(solver, goal).start();
                     return true;
                 }
