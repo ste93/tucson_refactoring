@@ -2,7 +2,10 @@ package alice.tucson.service;
 
 import alice.tuprolog.NoMoreSolutionException;
 import alice.tuprolog.Prolog;
+import alice.tuprolog.SolveInfo;
 import alice.tuprolog.Term;
+import alice.tuprolog.event.OutputEvent;
+import alice.tuprolog.event.OutputListener;
 
 /**
  * 
@@ -29,16 +32,27 @@ public class Spawn2PSolver extends Thread {
 
     @Override
     public void run() {
-        this.solver.solve(this.goal);
+        this.solver.addOutputListener(new OutputListener() {
+
+            public void onOutput(OutputEvent arg0) {
+                System.out.println("[Spawn2PSolver]: " + arg0.getMsg());
+            }
+        });
+//        System.out.println("[Spawn2PSolver]: theory = "
+//                + this.solver.getTheory());
+        System.out.println("[Spawn2PSolver]: goal = " + this.goal);
+        SolveInfo info;
         try {
-            do {
-                this.solver.solveNext();
-            } while (this.solver.hasOpenAlternatives());
+            info = this.solver.solve(this.goal);
+            System.out.println("[Spawn2PSolver]: info = " + info.toString());
+            while (this.solver.hasOpenAlternatives()) {
+                info = this.solver.solveNext();
+                System.out
+                        .println("[Spawn2PSolver]: info = " + info.toString());
+            }
             this.solver.solveEnd();
         } catch (final NoMoreSolutionException e) {
-            /*
-             * 
-             */
+            System.out.println("[Spawn2PSolver]: No more solutions.");
         }
     }
 

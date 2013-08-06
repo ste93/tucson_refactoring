@@ -1619,11 +1619,11 @@ public class RespectVMContext extends
                     final Theory toSpawn =
                             new Theory(new BufferedInputStream(is));
                     solver.setTheory(toSpawn);
-                    final String[] libs = solver.getCurrentLibraries();
-                    this.log("Known libs:");
-                    for (final String lib : libs) {
-                        System.out.println("\t" + lib);
-                    }
+//                    final String[] libs = solver.getCurrentLibraries();
+//                    this.log("Known libs:");
+//                    for (final String lib : libs) {
+//                        System.out.println("\t" + lib);
+//                    }
                     new Spawn2PSolver(solver, goal).start();
                     return true;
                 }
@@ -1706,9 +1706,9 @@ public class RespectVMContext extends
             e.printStackTrace();
             return false;
         } catch (final InvalidTheoryException e) {
-            System.err.println("[RespectVMContext]: " + e.clause);
-            System.err.println("[RespectVMContext]: " + e.line);
-            System.err.println("[RespectVMContext]: " + e.pos);
+            System.err
+                    .println("[RespectVMContext]: InvalidTheoryException @ c: "
+                            + e.clause + ", l: " + e.line + ", p: " + e.pos);
             e.printStackTrace();
             return false;
         } catch (final InvalidTupleOperationException e) {

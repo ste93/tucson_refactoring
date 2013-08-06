@@ -97,6 +97,7 @@ public class Spawn2PLibrary extends Library {
                         TupleCentreContainer.doNonBlockingOperation(
                                 TucsonOperation.inCode(), this.aid,
                                 this.target, arg, null);
+                System.out.println("[Spawn2PLibrary]: op = " + op.toString());
             } catch (final TucsonInvalidLogicTupleException e) {
                 e.printStackTrace();
                 return false;
@@ -363,6 +364,7 @@ public class Spawn2PLibrary extends Library {
                         TupleCentreContainer.doNonBlockingOperation(
                                 TucsonOperation.outCode(), this.aid,
                                 this.target, arg, null);
+                System.out.println("[Spawn2PLibrary]: op = " + op.toString());
             } catch (final TucsonInvalidLogicTupleException e) {
                 e.printStackTrace();
                 return false;
