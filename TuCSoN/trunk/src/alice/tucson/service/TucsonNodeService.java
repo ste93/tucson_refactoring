@@ -77,7 +77,7 @@ public class TucsonNodeService {
      * @return the String representation of the TuCSoN version
      */
     public static String getVersion() {
-        return "TuCSoN-1.10.3.0207";
+        return "TuCSoN-1.10.4.0207";
     }
 
     /**

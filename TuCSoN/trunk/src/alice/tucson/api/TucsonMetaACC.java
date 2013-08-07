@@ -72,7 +72,7 @@ public final class TucsonMetaACC {
      * @return the current version of the TuCSoN Coordination Infrastructure
      */
     public static String getVersion() {
-        return "TuCSoN-1.10.3.0207";
+        return "TuCSoN-1.10.4.0207";
     }
 
     private TucsonMetaACC() {
