@@ -17,7 +17,7 @@ import alice.tucson.network.exceptions.DialogException;
  * @version 1.0
  */
 
-public final class TPFactory {
+public abstract class TPFactory {
 
     /**
      * Constant indentify implementated protocol type: one constant for each

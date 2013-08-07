@@ -32,7 +32,7 @@ public class TupleSetTest {
             /*
              * Non funziona il metodo remove: il metodo non viene mai usato, per
              * farlo funzionare bisogna sovrascrivere il metodo equals() di
-             * LogicTuple, in alternativa si può rimuovere.
+             * LogicTuple, in alternativa si puo' rimuovere.
              */
             // ts.remove(LogicTuple.parse("a(b, c)"));
             // ts.remove(LogicTuple.parse("a(b, d)"));

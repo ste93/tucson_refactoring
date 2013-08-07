@@ -14,8 +14,11 @@ import alice.tucson.network.TucsonProtocolTCP;
 /**
  * This is a simple test for check the dialog. A JUnit test with multiple thread
  * requires additional libraries
+ * 
+ * @author Saverio Cicora
+ * 
  */
-public class TPTestDialog {
+public final class TPTestDialog {
 
     public static void main(final String[] args) {
         TPTestDialog.startNode();
@@ -109,10 +112,10 @@ public class TPTestDialog {
                         if (m.getId() != i) {
                             System.out.println("Error ID");
                         }
-                        if (!(m.getTid().equals("foo"))) {
+                        if (!("foo".equals(m.getTid()))) {
                             System.out.println("Error TID");
                         }
-                        if (!(m.getTuple().getName().equals("logictupletest"))) {
+                        if (!("logictupletest".equals(m.getTuple().getName()))) {
                             System.out.println("Error LogicTuple");
                         }
                         if (m.getType() != 999) {
@@ -135,8 +138,8 @@ public class TPTestDialog {
 
         } catch (final Exception e) {
             /*
-		     * 
-		     */
+             * 
+             */
         }
     }
 }

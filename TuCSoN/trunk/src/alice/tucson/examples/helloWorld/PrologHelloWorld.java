@@ -24,7 +24,7 @@ import alice.tuprolog.event.OutputListener;
  * @author ste (mailto: s.mariani@unibo.it) on 26/lug/2013
  * 
  */
-public class PrologHelloWorld {
+public final class PrologHelloWorld {
 
     /*
      * Relative path w.r.t. to running location (project root).
@@ -50,6 +50,8 @@ public class PrologHelloWorld {
 
     /**
      * @param args
+     *            argument 0 can be the theory path, then argument 1 can be the
+     *            goal to be solved
      */
     public static void main(final String[] args) {
         /*

@@ -284,7 +284,7 @@ public class TupleSetCoordTest {
 
             txt = "varterm(a)";
             actual = ts.readMatchingTuple(LogicTuple.parse(txt));
-            Assert.assertTrue(actual.getName().equals("varterm"));
+            Assert.assertTrue("varterm".equals(actual.getName()));
             Assert.assertTrue(actual.getArg(0).isVar());
 
         } catch (final Exception e) {

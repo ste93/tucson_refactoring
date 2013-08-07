@@ -11,8 +11,18 @@ import alice.respect.core.collection.DoubleKeyMVMap;
 import alice.respect.core.collection.MVMap;
 import alice.tuprolog.Var;
 
+/**
+ * 
+ * @author Saverio Cicora
+ * 
+ */
 public abstract class AbstractTupleSet implements ITupleSet {
 
+    /**
+     * 
+     * @author Saverio Cicora
+     * 
+     */
     protected class LTEntry {
 
         private final String key1;
@@ -25,14 +35,26 @@ public abstract class AbstractTupleSet implements ITupleSet {
             this.value = v;
         }
 
+        /**
+         * 
+         * @return the String representation of the first key (K)
+         */
         public String getKey1() {
             return this.key1;
         }
 
+        /**
+         * 
+         * @return the String representation of the second key (Q)
+         */
         public String getKey2() {
             return this.key2;
         }
 
+        /**
+         * 
+         * @return the LogicTuple value
+         */
         public LogicTuple getValue() {
             return this.value;
         }
@@ -44,10 +66,22 @@ public abstract class AbstractTupleSet implements ITupleSet {
 
     }
 
+    /**
+     * 
+     */
     protected List<LTEntry> tAdded;
+    /**
+     * 
+     */
     protected boolean transaction;
+    /**
+     * 
+     */
     protected List<LTEntry> tRemoved;
 
+    /**
+     * 
+     */
     protected DoubleKeyMVMap<String, String, LogicTuple> tuples;
 
     public void add(final LogicTuple t) {
@@ -204,10 +238,24 @@ public abstract class AbstractTupleSet implements ITupleSet {
         return this.tuples.toString();
     }
 
-    abstract protected String getTupleKey1(LogicTuple t)
+    /**
+     * 
+     * @param t
+     *            the LogicTuple whose first key should be retrieved
+     * @return the String representation of the retrieved key
+     * @throws alice.logictuple.exceptions.InvalidLogicTupleException
+     */
+    protected abstract String getTupleKey1(LogicTuple t)
             throws alice.logictuple.exceptions.InvalidLogicTupleException;
 
-    abstract protected String getTupleKey2(LogicTuple t)
+    /**
+     * 
+     * @param t
+     *            the LogicTuple whose second key should be retrieved
+     * @return the String representation of the retrieved key
+     * @throws alice.logictuple.exceptions.InvalidLogicTupleException
+     */
+    protected abstract String getTupleKey2(LogicTuple t)
             throws alice.logictuple.exceptions.InvalidLogicTupleException;
 
     private LTEntry createEntry(final LogicTuple t)

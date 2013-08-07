@@ -33,6 +33,9 @@ public class TupleSetSpec extends AbstractTupleSet {
     // due normali tuple devono rimanere distinte anche se sono identiche, ma
     // per le reaction potrebbe essere un problema.
 
+    /**
+     * 
+     */
     public TupleSetSpec() {
         super();
         this.tuples = new DoubleKeyMVMap<String, String, LogicTuple>();

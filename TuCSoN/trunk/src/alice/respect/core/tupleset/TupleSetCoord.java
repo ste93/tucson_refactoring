@@ -20,8 +20,16 @@ import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.logictuple.exceptions.InvalidTupleOperationException;
 import alice.respect.core.collection.DoubleKeyMVMap;
 
+/**
+ * 
+ * @author Saverio Cicora
+ * 
+ */
 public class TupleSetCoord extends AbstractTupleSet {
 
+    /**
+     * 
+     */
     public TupleSetCoord() {
         super();
         this.tuples = new DoubleKeyMVMap<String, String, LogicTuple>();

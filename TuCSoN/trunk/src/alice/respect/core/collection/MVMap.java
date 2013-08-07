@@ -6,9 +6,9 @@ import java.util.Map;
 
 /**
  * A MVmap (multi-value map) is similar to a {@link Map} but, unlike this, it
- * allows to map multiple values ​​for the same {@code key}. This value are
+ * allows to map multiple values for the same {@code key}. This value are
  * stored in a {@link List} associated whit the {@code key}. You can have
- * duplicate values ​​associated with the same key.
+ * duplicate values associated with the same key.
  * 
  * @author ste (mailto: s.mariani@unibo.it) on 22/lug/2013
  * 
@@ -61,7 +61,11 @@ public interface MVMap<K, V> extends Iterable<V> {
      * */
     List<V> get(K key);
 
-    /** Return a number of keys collected into MVMap */
+    /**
+     * Return a number of keys collected into MVMap
+     * 
+     * @return the number of keys
+     */
     int getKeysNumber();
 
     @Override
@@ -105,6 +109,10 @@ public interface MVMap<K, V> extends Iterable<V> {
     /**
      * Removes the first occurrence of the specified element from this MVMap.
      * 
+     * @param key
+     *            the key
+     * @param value
+     *            the value
      * @return <tt>true</tt> if this list contained the specified element
      */
     boolean remove(K key, V value);
@@ -112,6 +120,8 @@ public interface MVMap<K, V> extends Iterable<V> {
     /**
      * Removes the first occurrence of the specified element from this MVMap.
      * 
+     * @param e
+     *            the entry of the map
      * @return <tt>true</tt> if this list contained the specified element
      */
     boolean remove(Map.Entry<K, V> e);
@@ -126,6 +136,12 @@ public interface MVMap<K, V> extends Iterable<V> {
      */
     int size();
 
+    /**
+     * 
+     * @param v
+     *            the array type to be used for array construction
+     * @return the array representation of this map
+     */
     V[] toArray(V[] v);
 
     @Override
@@ -137,6 +153,8 @@ public interface MVMap<K, V> extends Iterable<V> {
      * </p>
      * WARNING: the returned list should be used in read-only mode because it is
      * not synchronized with the rest of the map
+     * 
+     * @return the list of values
      */
     List<V> values();
 
