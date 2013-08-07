@@ -67,7 +67,7 @@ public class InnerMVmapJUnitTest {
 
         l.remove(0);
 
-        Assert.assertTrue(l.size() == 0);
+        Assert.assertTrue(l.isEmpty());
 
     }
 
@@ -154,7 +154,8 @@ public class InnerMVmapJUnitTest {
         // remove all element of the map from a test list.
         // If the final size of the test list is zero the test is passed
         int count = 0;
-        for (Iterator<Integer> iterator = list.iterator(); iterator.hasNext();) {
+        for (final Iterator<Integer> iterator = list.iterator(); iterator
+                .hasNext();) {
             iterator.next();
             count++;
         }
@@ -250,7 +251,7 @@ public class InnerMVmapJUnitTest {
         while (it.hasNext()) {
             Assert.assertTrue(test.remove(it.next()));
         }
-        Assert.assertTrue(test.size() == 0);
+        Assert.assertTrue(test.isEmpty());
 
         test = new ArrayList<Integer>();
         test.add(1);
@@ -265,7 +266,7 @@ public class InnerMVmapJUnitTest {
         for (final Integer i : map) {
             Assert.assertTrue(test.remove(i));
         }
-        Assert.assertTrue(test.size() == 0);
+        Assert.assertTrue(test.isEmpty());
 
         it = map.iterator();
         it.next();
@@ -398,7 +399,7 @@ public class InnerMVmapJUnitTest {
         Assert.assertTrue(map.get("B").size() == 3);
 
         map.clear();
-        Assert.assertTrue(list.size() == 0);
+        Assert.assertTrue(list.isEmpty());
         Assert.assertTrue(map.isEmpty());
         Assert.assertTrue(map.size() == 0);
 

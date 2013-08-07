@@ -34,6 +34,7 @@ public class TupleSetSpec extends AbstractTupleSet {
     // per le reaction potrebbe essere un problema.
 
     public TupleSetSpec() {
+        super();
         this.tuples = new DoubleKeyMVMap<String, String, LogicTuple>();
         this.tAdded = new LinkedList<LTEntry>();
         this.tRemoved = new LinkedList<LTEntry>();
@@ -45,8 +46,7 @@ public class TupleSetSpec extends AbstractTupleSet {
             throws alice.logictuple.exceptions.InvalidLogicTupleException {
         try {
             final TupleArgument event = t.getArg(0);
-            final String s = event.getPredicateIndicator();
-            return s;
+            return event.getPredicateIndicator();
         } catch (final InvalidTupleOperationException e) {
             throw new alice.logictuple.exceptions.InvalidLogicTupleException();
         }

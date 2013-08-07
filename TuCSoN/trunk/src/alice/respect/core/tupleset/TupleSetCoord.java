@@ -23,6 +23,7 @@ import alice.respect.core.collection.DoubleKeyMVMap;
 public class TupleSetCoord extends AbstractTupleSet {
 
     public TupleSetCoord() {
+        super();
         this.tuples = new DoubleKeyMVMap<String, String, LogicTuple>();
         this.tAdded = new LinkedList<LTEntry>();
         this.tRemoved = new LinkedList<LTEntry>();

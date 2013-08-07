@@ -13,7 +13,7 @@ import alice.logictuple.exceptions.InvalidLogicTupleException;
 
 public class TupleSetSpecTest {
 
-    String[] t = { "reaction(out(hello),guard,body)",
+    private String[] t = { "reaction(out(hello),guard,body)",
             "reaction(in(X),guard,body)",
             "reaction(rd(hello(world)),true,in(a))", "reaction(rdp(a(b)),c,f)",
             "reaction(rd(pluto),event,rd(asd))",
@@ -131,8 +131,9 @@ public class TupleSetSpecTest {
             txt = "reaction(out(X),guard,body)";
             actual = ts.readMatchingTuple(LogicTuple.parse(txt));
             final String act = actual.toString();
-            Assert.assertTrue(act.equals("reaction(out(hello),guard,body)")
-                    || act.equals("reaction(out(pippo(pluto,paperino),guard,body))"));
+            Assert.assertTrue("reaction(out(hello),guard,body)".equals(act)
+                    || "reaction(out(pippo(pluto,paperino),guard,body))"
+                            .equals(act));
 
             txt = "reaction(out(pippo(A,paperino),guard,body))";
             actual = ts.readMatchingTuple(LogicTuple.parse(txt));
@@ -213,8 +214,9 @@ public class TupleSetSpecTest {
             txt = "reaction(out(X),guard,body)";
             actual = ts.readMatchingTuple(LogicTuple.parse(txt));
             final String act = actual.toString();
-            Assert.assertTrue(act.equals("reaction(out(hello),guard,body)")
-                    || act.equals("reaction(out(pippo(pluto,paperino),guard,body))"));
+            Assert.assertTrue("reaction(out(hello),guard,body)".equals(act)
+                    || "reaction(out(pippo(pluto,paperino),guard,body))"
+                            .equals(act));
 
             txt = "reaction(out(pippo(A,paperino),guard,body))";
             actual = ts.readMatchingTuple(LogicTuple.parse(txt));

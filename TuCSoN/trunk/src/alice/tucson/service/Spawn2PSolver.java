@@ -34,12 +34,12 @@ public class Spawn2PSolver extends Thread {
     public void run() {
         this.solver.addOutputListener(new OutputListener() {
 
-            public void onOutput(OutputEvent arg0) {
+            public void onOutput(final OutputEvent arg0) {
                 System.out.println("[Spawn2PSolver]: " + arg0.getMsg());
             }
         });
-//        System.out.println("[Spawn2PSolver]: theory = "
-//                + this.solver.getTheory());
+        // System.out.println("[Spawn2PSolver]: theory = "
+        // + this.solver.getTheory());
         System.out.println("[Spawn2PSolver]: goal = " + this.goal);
         SolveInfo info;
         try {

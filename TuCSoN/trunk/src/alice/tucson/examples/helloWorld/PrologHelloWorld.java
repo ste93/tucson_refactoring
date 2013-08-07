@@ -51,7 +51,7 @@ public class PrologHelloWorld {
     /**
      * @param args
      */
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         /*
          * 1) Get the Prolog program (theory) to run.
          */
@@ -74,7 +74,7 @@ public class PrologHelloWorld {
          * 2) Boot a tuProlog engine with required libraries (Tucson2PLibrary)
          * loaded.
          */
-        Prolog engine = new Prolog();
+        final Prolog engine = new Prolog();
         try {
             engine.loadLibrary(PrologHelloWorld.DEFAULT_LIBRARY_NAME,
                     new String[] { PrologHelloWorld.DEFAULT_LIBRARY_PATH });
@@ -98,7 +98,7 @@ public class PrologHelloWorld {
          */
         engine.addOutputListener(new OutputListener() {
 
-            public void onOutput(OutputEvent arg0) {
+            public void onOutput(final OutputEvent arg0) {
                 System.out.println(arg0.getMsg());
             }
         });
@@ -132,8 +132,8 @@ public class PrologHelloWorld {
         }
     }
 
-    private static String fileToString(String path) throws IOException {
-        InputStream in =
+    private static String fileToString(final String path) throws IOException {
+        final InputStream in =
                 Thread.currentThread().getContextClassLoader()
                         .getResourceAsStream(path);
         if (in == null) {
@@ -141,10 +141,15 @@ public class PrologHelloWorld {
                     "No input stream found.");
             System.exit(-1);
         }
-        BufferedInputStream br = new BufferedInputStream(in);
-        byte[] res = new byte[br.available()];
+        final BufferedInputStream br = new BufferedInputStream(in);
+        final byte[] res = new byte[br.available()];
         br.read(res);
         br.close();
         return new String(res);
     }
+
+    private PrologHelloWorld() {
+        super();
+    }
+
 }

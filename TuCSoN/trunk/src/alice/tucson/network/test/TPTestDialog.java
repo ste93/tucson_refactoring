@@ -1,5 +1,7 @@
 package alice.tucson.network.test;
 
+import java.net.InetAddress;
+
 import alice.logictuple.LogicTuple;
 import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.network.AbstractTucsonProtocol;
@@ -38,11 +40,17 @@ public class TPTestDialog {
         }).start();
     }
 
+    private TPTestDialog() {
+        super();
+    }
+
     private static void agent() {
         try {
             final int port = TPConfig.getInstance().getNodeTcpPort();
             final TucsonTupleCentreId tid =
-                    new TucsonTupleCentreId("foo", "127.0.0.1", "" + port);
+                    new TucsonTupleCentreId("foo", InetAddress
+                            .getLoopbackAddress().getHostAddress(),
+                            String.valueOf(port));
 
             final AbstractTucsonProtocol agent =
                     TPFactory.getDialogAgentSide(tid);

@@ -29,6 +29,11 @@ public class TupleSetTest {
             for (final LogicTuple logicTuple : array) {
                 System.out.println(logicTuple.toString());
             }
+            /*
+             * Non funziona il metodo remove: il metodo non viene mai usato, per
+             * farlo funzionare bisogna sovrascrivere il metodo equals() di
+             * LogicTuple, in alternativa si può rimuovere.
+             */
             // ts.remove(LogicTuple.parse("a(b, c)"));
             // ts.remove(LogicTuple.parse("a(b, d)"));
             // ts.remove(LogicTuple.parse("a(b, g)"));

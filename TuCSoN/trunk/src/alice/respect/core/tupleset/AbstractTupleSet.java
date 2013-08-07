@@ -3,7 +3,7 @@ package alice.respect.core.tupleset;
 import java.util.AbstractMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
+import java.util.List;
 
 import alice.logictuple.LogicTuple;
 import alice.logictuple.exceptions.InvalidLogicTupleException;
@@ -15,9 +15,9 @@ public abstract class AbstractTupleSet implements ITupleSet {
 
     protected class LTEntry {
 
-        final String key1;
-        final String key2;
-        final LogicTuple value;
+        private final String key1;
+        private final String key2;
+        private final LogicTuple value;
 
         LTEntry(final String keyOuter, final String keyInner, final LogicTuple v) {
             this.key1 = keyOuter;
@@ -44,15 +44,11 @@ public abstract class AbstractTupleSet implements ITupleSet {
 
     }
 
-    protected LinkedList<LTEntry> tAdded;
+    protected List<LTEntry> tAdded;
     protected boolean transaction;
-    protected LinkedList<LTEntry> tRemoved;
+    protected List<LTEntry> tRemoved;
 
     protected DoubleKeyMVMap<String, String, LogicTuple> tuples;
-
-    public AbstractTupleSet() {
-        super();
-    }
 
     public void add(final LogicTuple t) {
         try {
@@ -61,8 +57,8 @@ public abstract class AbstractTupleSet implements ITupleSet {
             if (this.transaction) {
                 this.tAdded.add(e);
             }
-        } catch (final InvalidLogicTupleException e1) {
-            e1.printStackTrace();
+        } catch (final InvalidLogicTupleException e) {
+            e.printStackTrace();
         }
     }
 
@@ -106,7 +102,7 @@ public abstract class AbstractTupleSet implements ITupleSet {
         Iterator<LogicTuple> l;
         try {
             final String key2 = this.getTupleKey2(templ);
-            if (key2.equals("VAR")) {
+            if ("VAR".equals(key2)) {
                 l = this.tuples.get(this.getTupleKey1(templ)).iterator();
             } else {
                 final MVMap<String, LogicTuple> map =
@@ -155,7 +151,7 @@ public abstract class AbstractTupleSet implements ITupleSet {
         Iterator<LogicTuple> l;
         try {
             final String key2 = this.getTupleKey2(templ);
-            if (key2.equals("VAR")) {
+            if ("VAR".equals(key2)) {
                 l = this.tuples.get(this.getTupleKey1(templ)).iterator();
             } else {
                 final MVMap<String, LogicTuple> map =
@@ -175,8 +171,8 @@ public abstract class AbstractTupleSet implements ITupleSet {
                     return new LogicTuple(tu.toTerm().copyGoal(v, 0));
                 }
             }
-        } catch (final InvalidLogicTupleException e1) {
-            e1.printStackTrace();
+        } catch (final InvalidLogicTupleException e) {
+            e.printStackTrace();
         }
         return null;
     }
@@ -186,14 +182,12 @@ public abstract class AbstractTupleSet implements ITupleSet {
             final LTEntry e = this.createEntry(t);
             final boolean res =
                     this.tuples.remove(e.getKey1(), e.getKey2(), e.getValue());
-            if (res) {
-                if (this.transaction) {
-                    this.tRemoved.add(this.createEntry(t));
-                }
+            if (res && this.transaction) {
+                this.tRemoved.add(this.createEntry(t));
             }
-        } catch (final InvalidLogicTupleException e1) {
+        } catch (final InvalidLogicTupleException e) {
             System.out.println(t.toString());
-            e1.printStackTrace();
+            e.printStackTrace();
         }
     }
 

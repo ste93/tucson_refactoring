@@ -98,7 +98,7 @@ public class DoubleKeyMVMapTest {
         Assert.assertTrue(map.size() == 10);
 
         listInner1.clear();
-        Assert.assertTrue(listInner1.size() == 0);
+        Assert.assertTrue(listInner1.isEmpty());
         Assert.assertTrue(inner2.size() == 2);
         Assert.assertTrue(inner1.size() == 2);
         Assert.assertTrue(map.size() == 4);

@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.NoSuchElementException;
 
 public class DoubleKeyMVMap<K1, K2, V> {
 
@@ -23,9 +22,9 @@ public class DoubleKeyMVMap<K1, K2, V> {
      */
     private class DoubleKeyMVmapIterator implements Iterator<V> {
 
-        final Iterator<Map.Entry<K1, MVMap<K2, V>>> entryIterator;
-        MVMap<K2, V> innerMap;
-        Iterator<V> valueIterator;
+        private final Iterator<Map.Entry<K1, MVMap<K2, V>>> entryIterator;
+        private MVMap<K2, V> innerMap;
+        private Iterator<V> valueIterator;
 
         protected DoubleKeyMVmapIterator() {
             // Initialize the Entry iterator
@@ -56,8 +55,6 @@ public class DoubleKeyMVMap<K1, K2, V> {
          * Returns the next element in the iteration.
          * 
          * @return the next element in the iteration
-         * @throws NoSuchElementException
-         *             if the iteration has no more elements
          */
         public V next() {
             if (!this.valueIterator.hasNext()) {
@@ -108,9 +105,9 @@ public class DoubleKeyMVMap<K1, K2, V> {
          */
         private class MVmapIterator implements Iterator<V> {
 
-            final Iterator<Map.Entry<K2, List<V>>> entryIterator;
-            List<V> list;
-            Iterator<V> valueIterator;
+            private final Iterator<Map.Entry<K2, List<V>>> entryIterator;
+            private List<V> list;
+            private Iterator<V> valueIterator;
 
             protected MVmapIterator() {
                 // Initialize the Entry iterator
@@ -142,8 +139,6 @@ public class DoubleKeyMVMap<K1, K2, V> {
              * Returns the next element in the iteration.
              * 
              * @return the next element in the iteration
-             * @throws NoSuchElementException
-             *             if the iteration has no more elements
              */
             public V next() {
                 if (!this.valueIterator.hasNext()) {
@@ -189,8 +184,10 @@ public class DoubleKeyMVMap<K1, K2, V> {
         private class Values extends AbstractList<V> {
 
             private class WrappedIterator implements Iterator<V> {
-                final Iterator<V> delegateIterator;
-                final List<V> originalDelegate = Values.this.wrappedList;
+
+                private final Iterator<V> delegateIterator;
+                private final List<V> originalDelegate =
+                        Values.this.wrappedList;
 
                 WrappedIterator() {
                     this.delegateIterator =
@@ -218,7 +215,7 @@ public class DoubleKeyMVMap<K1, K2, V> {
                     Values.this.removeInnerKeyIfEmpty();
                 }
 
-                Iterator<V> getDelegateIterator() {
+                public Iterator<V> getDelegateIterator() {
                     this.validateIterator();
                     return this.delegateIterator;
                 }
@@ -227,7 +224,7 @@ public class DoubleKeyMVMap<K1, K2, V> {
                  * If the delegate changed since the iterator was created, the
                  * iterator is no longer valid.
                  */
-                void validateIterator() {
+                private void validateIterator() {
                     if (Values.this.wrappedList != this.originalDelegate) {
                         throw new ConcurrentModificationException();
                     }
@@ -241,7 +238,8 @@ public class DoubleKeyMVMap<K1, K2, V> {
                     super(Values.this.wrappedList.listIterator(index));
                 }
 
-                WrappedListIterator() {
+                private WrappedListIterator() {
+                    super();
                 }
 
                 public void add(final V value) {
@@ -279,13 +277,13 @@ public class DoubleKeyMVMap<K1, K2, V> {
                 }
             }// END WrappedListIterator
 
-            final K1 listKey1;
-            final K2 listKey2;
+            private final K1 listKey1;
+            private final K2 listKey2;
 
-            final Values parentList;
+            private final Values parentList;
 
             // This is the super-list when create a sub-list
-            final List<V> wrappedList;
+            private final List<V> wrappedList;
 
             Values(final K1 k1, final K2 k2, final List<V> listToWrap,
                     final Values pl) {
@@ -506,7 +504,7 @@ public class DoubleKeyMVMap<K1, K2, V> {
 
         private int innerMapSize = 0;
 
-        final K1 mapKey1;
+        private final K1 mapKey1;
 
         InnerMVMap(final K1 mapK1) {
             this.innerMap = new HashMap<K2, List<V>>();
@@ -593,7 +591,7 @@ public class DoubleKeyMVMap<K1, K2, V> {
             } else if (l.remove(value)) {
                 this.innerMapSize--;
                 DoubleKeyMVMap.this.totalValuesSize--;
-                if (l.size() == 0) {
+                if (l.isEmpty()) {
                     this.innerMap.remove(key);
                 }
                 return true;
@@ -636,9 +634,9 @@ public class DoubleKeyMVMap<K1, K2, V> {
             }
             while (it.hasNext()) {
                 ret.append(", ");
-                ret.append(it.next().toString() + " ");
+                ret.append(it.next().toString() + ' ');
             }
-            ret.append("]");
+            ret.append(']');
             return ret.toString();
         }
 
@@ -666,7 +664,7 @@ public class DoubleKeyMVMap<K1, K2, V> {
 
     private int totalValuesSize = 0;
 
-    HashMap<K1, MVMap<K2, V>> outerMap = new HashMap<K1, MVMap<K2, V>>();
+    private Map<K1, MVMap<K2, V>> outerMap = new HashMap<K1, MVMap<K2, V>>();
 
     public void clear() {
         for (final K1 k : this.outerMap.keySet()) {
@@ -716,13 +714,11 @@ public class DoubleKeyMVMap<K1, K2, V> {
      */
     public boolean remove(final K1 k1, final K2 k2, final V v) {
         final MVMap<K2, V> innerMap = this.outerMap.get(k1);
-        if (innerMap != null) {
-            if (innerMap.remove(k2, v)) {
-                if (innerMap.getKeysNumber() == 0) {
-                    this.outerMap.remove(k1);
-                }
-                return true;
+        if (innerMap != null && innerMap.remove(k2, v)) {
+            if (innerMap.getKeysNumber() == 0) {
+                this.outerMap.remove(k1);
             }
+            return true;
         }
         return false;
     }
@@ -731,7 +727,6 @@ public class DoubleKeyMVMap<K1, K2, V> {
         return this.totalValuesSize;
     }
 
-    @SuppressWarnings("unchecked")
     public V[] toArray(final V[] v) {
         // Estimate size of array; be prepared to see more or fewer elements
         final int size = this.totalValuesSize;
@@ -763,9 +758,9 @@ public class DoubleKeyMVMap<K1, K2, V> {
         }
         while (it.hasNext()) {
             ret.append(", ");
-            ret.append(it.next().toString() + " ");
+            ret.append(it.next().toString() + ' ');
         }
-        ret.append("]");
+        ret.append(']');
         return ret.toString();
     }
 

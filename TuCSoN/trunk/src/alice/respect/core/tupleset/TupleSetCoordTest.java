@@ -13,8 +13,8 @@ import alice.logictuple.exceptions.InvalidLogicTupleException;
 
 public class TupleSetCoordTest {
 
-    String[] t = { "a", "b", "hello", "world", "pippo(a(b),c)", "pluto",
-            "paperino", "foo", "bar", "hello(world)", "hello(a)",
+    private String[] t = { "a", "b", "hello", "world", "pippo(a(b),c)",
+            "pluto", "paperino", "foo", "bar", "hello(world)", "hello(a)",
             "pippo(pluto,paperino)", "aaaa(sa,sa,e)", "hello(paperino)",
             "lol(hello)", "world(hello)", "world(hello(a,c))", "world(hello3)",
             "world(hello2)", "a(b)", "pippo(10)", "pippo(10.1)", "varterm(V)" };
@@ -181,9 +181,9 @@ public class TupleSetCoordTest {
             txt = "world(A)";
             actual = ts.getMatchingTuple(LogicTuple.parse(txt));
             final String act = actual.toString();
-            Assert.assertTrue(act.equals("world(hello)")
-                    || act.equals("world(hello3)")
-                    || act.equals("world(hello2)"));
+            Assert.assertTrue("world(hello)".equals(act)
+                    || "world(hello3)".equals(act)
+                    || "world(hello2)".equals(act));
 
         } catch (final Exception e) {
             e.printStackTrace();
@@ -272,10 +272,10 @@ public class TupleSetCoordTest {
             txt = "world(A)";
             actual = ts.readMatchingTuple(LogicTuple.parse(txt));
             final String act = actual.toString();
-            Assert.assertTrue(act.equals("world(hello)")
-                    || act.equals("world(hello3)")
-                    || act.equals("world(hello2)")
-                    || act.equals("world(hello(a,c))"));
+            Assert.assertTrue("world(hello)".equals(act)
+                    || "world(hello3)".equals(act)
+                    || "world(hello2)".equals(act)
+                    || "world(hello(a,c))".equals(act));
 
             txt = "pippo(10.10)";
             actual = ts.readMatchingTuple(LogicTuple.parse(txt));
