@@ -16,105 +16,93 @@ import alice.tuplecentre.api.exceptions.OperationTimeOutException;
  * Probe used for communication from/to the ligh actuator hardware
  * 
  * @author Steven Maraldi
- *
+ * 
  */
-public class LightProbe extends Thread implements ISimpleProbe, ISerialEventListener{
+public class LightProbe extends Thread implements ISimpleProbe,
+        ISerialEventListener {
 
-	private ProbeId id;
-	private TransducerId tId;
-	private TransducerStandardInterface transducer;
-	
-	public LightProbe( ProbeId id ){
-		this.id = id;
-		SerialComm.getSerialComm().addListener(this);
-	}
-	
-	@Override
-	public boolean writeValue(String key, int value) {
-		speak("WRITE REQUEST ( "+key+", "+value+" )");
-		// TODO Auto-generated method stub
-		if( key.equals("intensity") ){
-			String msg = "LI"; // Light intensity
-			try {
-				SerialComm.getSerialComm().getOutputStream().write( msg.getBytes() );
-				SerialComm.getSerialComm().getOutputStream().write( value );
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				SerialComm.getSerialComm().close();
-				return false;
-			}
-			return true;
-		}
-		return false;
-	}
+    private final ProbeId id;
+    private TransducerId tId;
+    private TransducerStandardInterface transducer;
 
-	@Override
-	public boolean readValue(String key) {
-		// TODO Auto-generated method stub
-		if( key.equals("intensity") ){
-			String msg = "RI"; // RP means Read Power
-			try {
-				SerialComm.getSerialComm().getOutputStream().write( msg.getBytes() );
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				SerialComm.getSerialComm().close();
-				return false;
-			}
-			return true;
-		}
-		return false;
-	}
+    public LightProbe(final ProbeId i) {
+        this.id = i;
+        SerialComm.getSerialComm().addListener(this);
+    }
 
-	@Override
-	public ProbeId getIdentifier() {
-		// TODO Auto-generated method stub
-		return id;
-	}
+    public ProbeId getIdentifier() {
+        return this.id;
+    }
 
-	private void speak( String msg ){
-		System.out.println("[**ENVIRONMENT**][RESOURCE "+id.getLocalName()+"] "+msg);
-	}
+    public String getListenerName() {
+        return this.id.getLocalName();
+    }
 
-	@Override
-	public void setTransducer(TransducerId tId) {
-		// TODO Auto-generated method stub
-		this.tId = tId;
-	}
+    public TransducerId getTransducer() {
+        return this.tId;
+    }
 
-	@Override
-	public TransducerId getTransducer() {
-		// TODO Auto-generated method stub
-		return tId;
-	}
+    public void notifyEvent(final String value) {
+        try {
+            final String[] key_value = value.split("/");
+            if (key_value[0].equals("intensity")) {
+                if (this.transducer == null) {
+                    this.transducer =
+                            TransducerManager.getTransducerManager()
+                                    .getTransducer(this.tId.getAgentName());
+                }
+                this.transducer.notifyEnvEvent(key_value[0],
+                        Integer.parseInt(key_value[1]));
+            }
+        } catch (final TucsonOperationNotPossibleException e) {
+            e.printStackTrace();
+        } catch (final UnreachableNodeException e) {
+            e.printStackTrace();
+        } catch (final OperationTimeOutException e) {
+            e.printStackTrace();
+        }
+    }
 
-	@Override
-	public void notifyEvent(String value) {
-		// TODO Auto-generated method stub
-		try {
-			String[] key_value = value.split("/");
-			if( key_value[0].equals("intensity") ){
-				if( transducer == null ){
-					transducer = TransducerManager.getTransducerManager().getTransducer( tId.getAgentName() );
-				}
-				transducer.notifyEnvEvent( key_value[0], Integer.parseInt( key_value[1] ) );
-			}
-		} catch (TucsonOperationNotPossibleException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (UnreachableNodeException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (OperationTimeOutException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
-	@Override
-	public String getListenerName() {
-		// TODO Auto-generated method stub
-		return id.getLocalName();
-	}
+    public boolean readValue(final String key) {
+        if (key.equals("intensity")) {
+            final String msg = "RI"; // RP means Read Power
+            try {
+                SerialComm.getSerialComm().getOutputStream()
+                        .write(msg.getBytes());
+            } catch (final Exception e) {
+                e.printStackTrace();
+                SerialComm.getSerialComm().close();
+                return false;
+            }
+            return true;
+        }
+        return false;
+    }
+
+    public void setTransducer(final TransducerId t) {
+        this.tId = t;
+    }
+
+    public boolean writeValue(final String key, final int value) {
+        this.speak("WRITE REQUEST ( " + key + ", " + value + " )");
+        if (key.equals("intensity")) {
+            final String msg = "LI"; // Light intensity
+            try {
+                SerialComm.getSerialComm().getOutputStream()
+                        .write(msg.getBytes());
+                SerialComm.getSerialComm().getOutputStream().write(value);
+            } catch (final Exception e) {
+                e.printStackTrace();
+                SerialComm.getSerialComm().close();
+                return false;
+            }
+            return true;
+        }
+        return false;
+    }
+
+    private void speak(final String msg) {
+        System.out.println("[**ENVIRONMENT**][RESOURCE "
+                + this.id.getLocalName() + "] " + msg);
+    }
 }

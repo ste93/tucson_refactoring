@@ -8,80 +8,68 @@ import alice.respect.probe.ProbeId;
 import alice.respect.transducer.TransducerId;
 import alice.respect.transducer.TransducerStandardInterface;
 
-public class SliderProbe implements ISerialEventListener, ISimpleProbe{
+public class SliderProbe implements ISerialEventListener, ISimpleProbe {
 
-	private ProbeId id;
-	private TransducerId tId;
-	private TransducerStandardInterface transducer;
-	private int sliderValue = 50;
-	
-	public SliderProbe(ProbeId id){
-		this.id = id;
-		SerialComm.getSerialComm().addListener(this);
-	}
+    private final ProbeId id;
+    private int sliderValue = 50;
+    private TransducerId tId;
+    private TransducerStandardInterface transducer;
 
-	@Override
-	public boolean writeValue(String key, int value) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+    public SliderProbe(final ProbeId i) {
+        this.id = i;
+        SerialComm.getSerialComm().addListener(this);
+    }
 
-	@Override
-	public boolean readValue(String key) {
-		// TODO Auto-generated method stub
-		if( key.equals("intensity") ){
-			String msg = "RI"; // RD means Read Distance
-			try {
-				SerialComm.getSerialComm().getOutputStream().write( msg.getBytes() );
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				SerialComm.getSerialComm().close();
-				return false;
-			}
-			return true;
-		}
-		return false;
-	}
+    public ProbeId getIdentifier() {
+        return this.id;
+    }
 
-	@Override
-	public ProbeId getIdentifier() {
-		// TODO Auto-generated method stub
-		return id;
-	}
+    public String getListenerName() {
+        return this.id.getLocalName();
+    }
 
-	@Override
-	public void setTransducer(TransducerId tId) {
-		// TODO Auto-generated method stub
-		this.tId = tId;
-	}
+    public TransducerId getTransducer() {
+        return this.tId;
+    }
 
-	@Override
-	public TransducerId getTransducer() {
-		// TODO Auto-generated method stub
-		return tId;
-	}
+    public void notifyEvent(final String value) {
+        final String[] key_value = value.split("/");
+        this.sliderValue = Integer.parseInt(key_value[1]);
+        // valueNormalized = sliderValue/10;
+        try {
+            if (this.transducer == null) {
+                this.transducer =
+                        TransducerManager.getTransducerManager().getTransducer(
+                                this.tId.getAgentName());
+            }
+            this.transducer.notifyEnvEvent(key_value[0], this.sliderValue);
+        } catch (final Exception ex) {
+            ex.printStackTrace();
+        }
+    }
 
-	@Override
-	public void notifyEvent(String value) {
-		// TODO Auto-generated method stub
-		String[] key_value = value.split("/");
-		sliderValue = Integer.parseInt(key_value[1]);
-//		valueNormalized = sliderValue/10;
-		try{
-			if( transducer == null ){
-				transducer = TransducerManager.getTransducerManager().getTransducer( tId.getAgentName() );
-			}
-			transducer.notifyEnvEvent( key_value[0], sliderValue );
-		}catch(Exception ex){
-			ex.printStackTrace();
-		}
-	}
+    public boolean readValue(final String key) {
+        if (key.equals("intensity")) {
+            final String msg = "RI"; // RD means Read Distance
+            try {
+                SerialComm.getSerialComm().getOutputStream()
+                        .write(msg.getBytes());
+            } catch (final Exception e) {
+                e.printStackTrace();
+                SerialComm.getSerialComm().close();
+                return false;
+            }
+            return true;
+        }
+        return false;
+    }
 
-	@Override
-	public String getListenerName() {
-		// TODO Auto-generated method stub
-		return id.getLocalName();
-	}
+    public void setTransducer(final TransducerId t) {
+        this.tId = t;
+    }
+
+    public boolean writeValue(final String key, final int value) {
+        return false;
+    }
 
 }

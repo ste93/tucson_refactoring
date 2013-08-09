@@ -10,76 +10,69 @@ import alice.respect.probe.ProbeId;
 import alice.respect.transducer.TransducerId;
 import alice.respect.transducer.TransducerStandardInterface;
 
-public class SliderProbeSw implements ChangeListener, ISimpleProbe{
+public class SliderProbeSw implements ChangeListener, ISimpleProbe {
 
-	private ProbeId id;
-	private TransducerId tId;
-	private TransducerStandardInterface transducer;
-	private int sliderValue = 50;
-	
-	public SliderProbeSw(ProbeId id){
-		this.id = id;
-		SupervisorGUI.getLightGUI().addSliderChangeListener(this);
-		readValue("intensity");
-	}
-	
-	@Override
-	public void stateChanged(ChangeEvent e) {
-		// TODO Auto-generated method stub
-		JSlider source = (JSlider) e.getSource();
-//		if (!source.getValueIsAdjusting()) {
-			sliderValue = (int)source.getValue();
-//			valueNormalized = sliderValue/10;
-			try{
-				if( transducer == null ){
-					transducer = TransducerManager.getTransducerManager().getTransducer( tId.getAgentName() );
-				}
-				transducer.notifyEnvEvent( "intensity", sliderValue );
-			}catch(Exception ex){
-				ex.printStackTrace();
-			}
-//		}
-	}
+    private final ProbeId id;
+    private int sliderValue = 50;
+    private TransducerId tId;
+    private TransducerStandardInterface transducer;
 
-	@Override
-	public boolean writeValue(String key, int value) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+    public SliderProbeSw(final ProbeId i) {
+        this.id = i;
+        SupervisorGUI.getLightGUI().addSliderChangeListener(this);
+        this.readValue("intensity");
+    }
 
-	@Override
-	public boolean readValue(String key) {
-		// TODO Auto-generated method stub
-		if( !key.equals("intensity") )
-			return false;
-		try{
-			if( transducer == null ){
-				transducer = TransducerManager.getTransducerManager().getTransducer( tId.getAgentName() );
-			}
-			transducer.notifyEnvEvent( key, sliderValue );
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		
-		return false;
-	}
+    public ProbeId getIdentifier() {
+        return this.id;
+    }
 
-	@Override
-	public ProbeId getIdentifier() {
-		// TODO Auto-generated method stub
-		return id;
-	}
+    public TransducerId getTransducer() {
+        return this.tId;
+    }
 
-	@Override
-	public void setTransducer(TransducerId tId) {
-		// TODO Auto-generated method stub
-		this.tId = tId;
-	}
+    public boolean readValue(final String key) {
+        if (!key.equals("intensity")) {
+            return false;
+        }
+        try {
+            if (this.transducer == null) {
+                this.transducer =
+                        TransducerManager.getTransducerManager().getTransducer(
+                                this.tId.getAgentName());
+            }
+            this.transducer.notifyEnvEvent(key, this.sliderValue);
+        } catch (final Exception e) {
+            e.printStackTrace();
+        }
 
-	@Override
-	public TransducerId getTransducer() {
-		// TODO Auto-generated method stub
-		return tId;
-	}
+        return false;
+    }
+
+    public void setTransducer(final TransducerId t) {
+        this.tId = t;
+    }
+
+    public void stateChanged(final ChangeEvent e) {
+        final JSlider source = (JSlider) e.getSource();
+        // if (!source.getValueIsAdjusting()) {
+        this.sliderValue = source.getValue();
+        // valueNormalized = sliderValue/10;
+        try {
+            if (this.transducer == null) {
+                this.transducer =
+                        TransducerManager.getTransducerManager().getTransducer(
+                                this.tId.getAgentName());
+            }
+            this.transducer.notifyEnvEvent("intensity", this.sliderValue);
+        } catch (final Exception ex) {
+            ex.printStackTrace();
+        }
+        // }
+    }
+
+    public boolean writeValue(final String key, final int value) {
+        return false;
+    }
 
 }

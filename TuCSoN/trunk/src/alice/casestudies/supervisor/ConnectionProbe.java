@@ -13,106 +13,96 @@ import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 
 /**
  * 
- * Probe used for interaction with Arduino board and SupervisorGUI. Used for checking connection status.
+ * Probe used for interaction with Arduino board and SupervisorGUI. Used for
+ * checking connection status.
  * 
  * @author Steven maraldi
- *
+ * 
  */
 
-public class ConnectionProbe extends Thread implements ISimpleProbe, ISerialEventListener{
+public class ConnectionProbe extends Thread implements ISimpleProbe,
+        ISerialEventListener {
 
-	private ProbeId id;
-	private TransducerId tId;
-	private TransducerStandardInterface transducer;
-	private SupervisorGUI gui;
-	
-	public ConnectionProbe( ProbeId id ){
-		this.id = id;
-		SerialComm.getSerialComm().addListener(this);
-		gui = SupervisorGUI.getLightGUI();
-	}
-	
-	@Override
-	public boolean writeValue(String key, int value) {
-		speak("WRITE REQUEST ( "+key+", "+value+" )");
-		// TODO Auto-generated method stub
-		if( key.equals("status") ){
-			if( value > 0 )
-				gui.setConnectionStatus(true);
-			else
-				gui.setConnectionStatus(false);
-			
-			return true;
-		}
-		return false;
-	}
+    private final SupervisorGUI gui;
+    private final ProbeId id;
+    private TransducerId tId;
+    private TransducerStandardInterface transducer;
 
-	@Override
-	public boolean readValue(String key) {
-		// TODO Auto-generated method stub
-		if( key.equals("status") ){
-			String msg = "RC"; // RP means Read Power
-			try {
-				SerialComm.getSerialComm().getOutputStream().write( msg.getBytes() );
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				SerialComm.getSerialComm().close();
-				return false;
-			}
-			return true;
-		}
-		return false;
-	}
+    public ConnectionProbe(final ProbeId i) {
+        this.id = i;
+        SerialComm.getSerialComm().addListener(this);
+        this.gui = SupervisorGUI.getLightGUI();
+    }
 
-	@Override
-	public ProbeId getIdentifier() {
-		// TODO Auto-generated method stub
-		return id;
-	}
+    public ProbeId getIdentifier() {
+        return this.id;
+    }
 
-	private void speak( String msg ){
-		System.out.println("[**ENVIRONMENT**][RESOURCE "+id.getLocalName()+"] "+msg);
-	}
+    public String getListenerName() {
+        return this.id.getLocalName();
+    }
 
-	@Override
-	public void setTransducer(TransducerId tId) {
-		// TODO Auto-generated method stub
-		this.tId = tId;
-	}
+    public TransducerId getTransducer() {
+        return this.tId;
+    }
 
-	@Override
-	public TransducerId getTransducer() {
-		// TODO Auto-generated method stub
-		return tId;
-	}
+    public void notifyEvent(final String value) {
+        try {
+            final String[] key_value = value.split("/");
+            if (key_value[0].equals("status")) {
+                if (this.transducer == null) {
+                    this.transducer =
+                            TransducerManager.getTransducerManager()
+                                    .getTransducer(this.tId.getAgentName());
+                }
+                this.transducer.notifyEnvEvent(key_value[0],
+                        Integer.parseInt(key_value[1]));
+            }
+        } catch (final TucsonOperationNotPossibleException e) {
+            e.printStackTrace();
+        } catch (final UnreachableNodeException e) {
+            e.printStackTrace();
+        } catch (final OperationTimeOutException e) {
+            e.printStackTrace();
+        }
+    }
 
-	@Override
-	public void notifyEvent(String value) {
-		// TODO Auto-generated method stub
-		try {
-			String[] key_value = value.split("/");
-			if( key_value[0].equals("status") ){
-				if( transducer == null ){
-					transducer = TransducerManager.getTransducerManager().getTransducer( tId.getAgentName() );
-				}
-				transducer.notifyEnvEvent( key_value[0], Integer.parseInt( key_value[1] ) );
-			}
-		} catch (TucsonOperationNotPossibleException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (UnreachableNodeException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (OperationTimeOutException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
-	@Override
-	public String getListenerName() {
-		// TODO Auto-generated method stub
-		return id.getLocalName();
-	}
+    public boolean readValue(final String key) {
+        if (key.equals("status")) {
+            final String msg = "RC"; // RP means Read Power
+            try {
+                SerialComm.getSerialComm().getOutputStream()
+                        .write(msg.getBytes());
+            } catch (final Exception e) {
+                e.printStackTrace();
+                SerialComm.getSerialComm().close();
+                return false;
+            }
+            return true;
+        }
+        return false;
+    }
+
+    public void setTransducer(final TransducerId t) {
+        this.tId = t;
+    }
+
+    public boolean writeValue(final String key, final int value) {
+        this.speak("WRITE REQUEST ( " + key + ", " + value + " )");
+        if (key.equals("status")) {
+            if (value > 0) {
+                this.gui.setConnectionStatus(true);
+            } else {
+                this.gui.setConnectionStatus(false);
+            }
+
+            return true;
+        }
+        return false;
+    }
+
+    private void speak(final String msg) {
+        System.out.println("[**ENVIRONMENT**][RESOURCE "
+                + this.id.getLocalName() + "] " + msg);
+    }
 }

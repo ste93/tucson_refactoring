@@ -9,99 +9,84 @@ import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 
-public class NXT_UltrasonicSensor implements ISimpleProbe, ISensorEventListener{
+public class NXT_UltrasonicSensor implements ISimpleProbe, ISensorEventListener {
 
-	private ProbeId id;
-	private TransducerId tId;
-	private TransducerStandardInterface transducer;
-	
-	private int distance = 0;
-	
-	public NXT_UltrasonicSensor( ProbeId id ){
-		this.id = id;
-		DistanceGenerator resource = new DistanceGenerator();
-		resource.addListener(this);
-	}
-	
-	@Override
-	public boolean writeValue(String key, int value) {
-		// TODO Auto-generated method stub
-		speakErr("I'm a sensor, I can't set values. Try asking to an actuator next time!!");
-		return false;
-	}
+    private int distance = 0;
+    private final ProbeId id;
+    private TransducerId tId;
 
-	@Override
-	public boolean readValue(String key) {
-		// TODO Auto-generated method stub
-		try {
-			if( key.equals("distance") ){
-				if( transducer == null ){
-					transducer = TransducerManager.getTransducerManager().getTransducer( tId.getAgentName() );
-				}
-				transducer.notifyEnvEvent( key, distance );
-			}
-			return true;
-		} catch (TucsonOperationNotPossibleException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (UnreachableNodeException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (OperationTimeOutException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return false;
-	}
+    private TransducerStandardInterface transducer;
 
-	@Override
-	public ProbeId getIdentifier() {
-		// TODO Auto-generated method stub
-		return id;
-	}
+    public NXT_UltrasonicSensor(final ProbeId i) {
+        this.id = i;
+        final DistanceGenerator resource = new DistanceGenerator();
+        resource.addListener(this);
+    }
 
-	@Override
-	public void setTransducer(TransducerId tId) {
-		// TODO Auto-generated method stub
-		this.tId = tId;
-	}
+    public ProbeId getIdentifier() {
+        return this.id;
+    }
 
-	@Override
-	public TransducerId getTransducer() {
-		// TODO Auto-generated method stub
-		return tId;
-	}
-	
-	private void speakErr( String msg ){
-		System.err.println("[**ENVIRONMENT**][RESOURCE "+id.getLocalName()+"] "+msg);
-	}
+    public String getListenerName() {
+        return this.id.getLocalName();
+    }
 
-	@Override
-	public void notifyEvent(String key, int value) {
-		// TODO Auto-generated method stub
-		try {
-			if( key.equals("distance") ){
-				this.distance = value;
-				if( transducer == null ){
-					transducer = TransducerManager.getTransducerManager().getTransducer( tId.getAgentName() );
-				}
-				transducer.notifyEnvEvent( key, distance );
-			}
-		} catch (TucsonOperationNotPossibleException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (UnreachableNodeException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (OperationTimeOutException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+    public TransducerId getTransducer() {
+        return this.tId;
+    }
 
-	@Override
-	public String getListenerName() {
-		// TODO Auto-generated method stub
-		return id.getLocalName();
-	}
+    public void notifyEvent(final String key, final int value) {
+        try {
+            if (key.equals("distance")) {
+                this.distance = value;
+                if (this.transducer == null) {
+                    this.transducer =
+                            TransducerManager.getTransducerManager()
+                                    .getTransducer(this.tId.getAgentName());
+                }
+                this.transducer.notifyEnvEvent(key, this.distance);
+            }
+        } catch (final TucsonOperationNotPossibleException e) {
+            e.printStackTrace();
+        } catch (final UnreachableNodeException e) {
+            e.printStackTrace();
+        } catch (final OperationTimeOutException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public boolean readValue(final String key) {
+        try {
+            if (key.equals("distance")) {
+                if (this.transducer == null) {
+                    this.transducer =
+                            TransducerManager.getTransducerManager()
+                                    .getTransducer(this.tId.getAgentName());
+                }
+                this.transducer.notifyEnvEvent(key, this.distance);
+            }
+            return true;
+        } catch (final TucsonOperationNotPossibleException e) {
+            e.printStackTrace();
+        } catch (final UnreachableNodeException e) {
+            e.printStackTrace();
+        } catch (final OperationTimeOutException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public void setTransducer(final TransducerId t) {
+        this.tId = t;
+    }
+
+    public boolean writeValue(final String key, final int value) {
+        this.speakErr("I'm a sensor, I can't set values. Try asking to an actuator next time!!");
+        return false;
+    }
+
+    private void speakErr(final String msg) {
+        System.err.println("[**ENVIRONMENT**][RESOURCE "
+                + this.id.getLocalName() + "] " + msg);
+    }
 }

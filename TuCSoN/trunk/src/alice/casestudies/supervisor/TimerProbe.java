@@ -9,77 +9,75 @@ import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 
-public class TimerProbe extends Thread implements ISimpleProbe{
+public class TimerProbe extends Thread implements ISimpleProbe {
 
-	private ProbeId id;
-	private TransducerId tId;
-	private TransducerStandardInterface transducer;
-	private SupervisorGUI gui;
-	private int time = 0;
-	
-	public TimerProbe( ProbeId id ){
-		this.id = id;
-		gui = SupervisorGUI.getLightGUI();
-	}
-	
-	@Override
-	public boolean writeValue(String key, int value) {
-		speak("WRITE REQUEST ( "+key+", "+value+" )");
-		// TODO Auto-generated method stub
-		if( key.equals("time") ){
-			if( value == 0 ){
-				time = value;
-				gui.setTimeValue(0);
-			}else{
-				time++;
-				gui.setTimeValue( ((int) time) );
-			}
-			
-			return true;
-		}
-		return false;
-	}
+    private final SupervisorGUI gui;
+    private final ProbeId id;
+    private TransducerId tId;
+    private int time = 0;
+    private TransducerStandardInterface transducer;
 
-	@Override
-	public boolean readValue(String key) {
-		// TODO Auto-generated method stub
-		if( key.equals("time") ){
-			int intensity = Integer.parseInt(gui.getIntensityValue());
-			if( transducer == null ){
-				transducer = TransducerManager.getTransducerManager().getTransducer( tId.getAgentName() );
-			}
-			try {
-				transducer.notifyEnvEvent( key, intensity );
-			} catch (TucsonOperationNotPossibleException
-					| UnreachableNodeException | OperationTimeOutException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				return false;
-			}
-			return true;
-		}
-		return false;
-	}
+    public TimerProbe(final ProbeId i) {
+        this.id = i;
+        this.gui = SupervisorGUI.getLightGUI();
+    }
 
-	@Override
-	public ProbeId getIdentifier() {
-		// TODO Auto-generated method stub
-		return id;
-	}
+    public ProbeId getIdentifier() {
+        return this.id;
+    }
 
-	private void speak( String msg ){
-		System.out.println("[**ENVIRONMENT**][RESOURCE "+id.getLocalName()+"] "+msg);
-	}
+    public TransducerId getTransducer() {
+        return this.tId;
+    }
 
-	@Override
-	public void setTransducer(TransducerId tId) {
-		// TODO Auto-generated method stub
-		this.tId = tId;
-	}
+    public boolean readValue(final String key) {
+        if (key.equals("time")) {
+            final int intensity =
+                    Integer.parseInt(this.gui.getIntensityValue());
+            if (this.transducer == null) {
+                this.transducer =
+                        TransducerManager.getTransducerManager().getTransducer(
+                                this.tId.getAgentName());
+            }
+            try {
+                this.transducer.notifyEnvEvent(key, intensity);
+            } catch (final TucsonOperationNotPossibleException e) {
+                e.printStackTrace();
+                return false;
+            } catch (final UnreachableNodeException e) {
+                e.printStackTrace();
+                return false;
+            } catch (final OperationTimeOutException e) {
+                e.printStackTrace();
+                return false;
+            }
+            return true;
+        }
+        return false;
+    }
 
-	@Override
-	public TransducerId getTransducer() {
-		// TODO Auto-generated method stub
-		return tId;
-	}
+    public void setTransducer(final TransducerId t) {
+        this.tId = t;
+    }
+
+    public boolean writeValue(final String key, final int value) {
+        this.speak("WRITE REQUEST ( " + key + ", " + value + " )");
+        if (key.equals("time")) {
+            if (value == 0) {
+                this.time = value;
+                this.gui.setTimeValue(0);
+            } else {
+                this.time++;
+                this.gui.setTimeValue((this.time));
+            }
+
+            return true;
+        }
+        return false;
+    }
+
+    private void speak(final String msg) {
+        System.out.println("[**ENVIRONMENT**][RESOURCE "
+                + this.id.getLocalName() + "] " + msg);
+    }
 }

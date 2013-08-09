@@ -9,77 +9,72 @@ import alice.respect.probe.ProbeId;
 import alice.respect.transducer.TransducerId;
 import alice.respect.transducer.TransducerStandardInterface;
 
-public class SwitchProbe implements ActionListener, ISimpleProbe{
+public class SwitchProbe implements ActionListener, ISimpleProbe {
 
-	private ProbeId id;
-	private TransducerId tId;
-	private TransducerStandardInterface transducer;
-	private boolean lock = false;
-	
-	public SwitchProbe(ProbeId id){
-		this.id = id;
-		SupervisorGUI.getLightGUI().addSwitchActionListener(this);
-	}
+    private final ProbeId id;
+    private boolean lock = false;
+    private TransducerId tId;
+    private TransducerStandardInterface transducer;
 
-	@Override
-	public boolean writeValue(String key, int value) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+    public SwitchProbe(final ProbeId i) {
+        this.id = i;
+        SupervisorGUI.getLightGUI().addSwitchActionListener(this);
+    }
 
-	@Override
-	public boolean readValue(String key) {
-		// TODO Auto-generated method stub
-		if( !key.equals("lock") )
-			return false;
-		try{
-			if( transducer == null ){
-				transducer = TransducerManager.getTransducerManager().getTransducer( tId.getAgentName() );
-			}
-			if( lock )
-				transducer.notifyEnvEvent( key, 1 );
-			else
-				transducer.notifyEnvEvent( key, 0 );
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		
-		return false;
-	}
+    public void actionPerformed(final ActionEvent e) {
+        this.lock = !this.lock;
+        try {
+            if (this.transducer == null) {
+                this.transducer =
+                        TransducerManager.getTransducerManager().getTransducer(
+                                this.tId.getAgentName());
+            }
+            if (this.lock) {
+                this.transducer.notifyEnvEvent("lock", 1);
+            } else {
+                this.transducer.notifyEnvEvent("lock", 0);
+            }
+        } catch (final Exception ex) {
+            ex.printStackTrace();
+        }
+    }
 
-	@Override
-	public ProbeId getIdentifier() {
-		// TODO Auto-generated method stub
-		return id;
-	}
+    public ProbeId getIdentifier() {
+        return this.id;
+    }
 
-	@Override
-	public void setTransducer(TransducerId tId) {
-		// TODO Auto-generated method stub
-		this.tId = tId;
-	}
+    public TransducerId getTransducer() {
+        return this.tId;
+    }
 
-	@Override
-	public TransducerId getTransducer() {
-		// TODO Auto-generated method stub
-		return tId;
-	}
+    public boolean readValue(final String key) {
+        if (!key.equals("lock")) {
+            return false;
+        }
+        try {
+            if (this.transducer == null) {
+                this.transducer =
+                        TransducerManager.getTransducerManager().getTransducer(
+                                this.tId.getAgentName());
+            }
+            if (this.lock) {
+                this.transducer.notifyEnvEvent(key, 1);
+            } else {
+                this.transducer.notifyEnvEvent(key, 0);
+            }
+        } catch (final Exception e) {
+            e.printStackTrace();
+        }
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		lock = !lock;
-		try{
-			if( transducer == null ){
-				transducer = TransducerManager.getTransducerManager().getTransducer( tId.getAgentName() );
-			}
-			if( lock )
-				transducer.notifyEnvEvent( "lock", 1 );
-			else
-				transducer.notifyEnvEvent( "lock", 0 );
-		}catch(Exception ex){
-			ex.printStackTrace();
-		}
-	}
+        return false;
+    }
+
+    public void setTransducer(final TransducerId t) {
+        this.tId = t;
+    }
+
+    public boolean writeValue(final String key, final int value) {
+        return false;
+    }
 
 }

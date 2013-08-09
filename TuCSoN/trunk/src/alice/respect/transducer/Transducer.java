@@ -18,6 +18,7 @@ import alice.tucson.service.OperationHandler;
 import alice.tucson.service.TucsonOperation;
 import alice.tuplecentre.api.TupleCentreId;
 import alice.tuplecentre.api.TupleTemplate;
+import alice.tuplecentre.core.AbstractTupleCentreOperation;
 
 /**
  * 

@@ -9,84 +9,86 @@ import alice.respect.probe.ProbeId;
 import alice.respect.transducer.TransducerId;
 import alice.respect.transducer.TransducerStandardInterface;
 
-public class RangeProbe implements ActionListener, ISimpleProbe{
+public class RangeProbe implements ActionListener, ISimpleProbe {
 
-	private ProbeId id;
-	private TransducerId tId;
-	private TransducerStandardInterface transducer;
-	private SupervisorGUI gui;
-	
-	public RangeProbe(ProbeId id){
-		this.id = id;
-		gui = SupervisorGUI.getLightGUI();
-		gui.addRangeButtonActionListener(this);
-	}
+    private final SupervisorGUI gui;
+    private final ProbeId id;
+    private TransducerId tId;
+    private TransducerStandardInterface transducer;
 
-	@Override
-	public boolean writeValue(String key, int value) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+    public RangeProbe(final ProbeId i) {
+        this.id = i;
+        this.gui = SupervisorGUI.getLightGUI();
+        this.gui.addRangeButtonActionListener(this);
+    }
 
-	@Override
-	public boolean readValue(String key) {
-		// TODO Auto-generated method stub
-		try{	
-			if( key.equals("min") ){
-				if( transducer == null ){
-					transducer = TransducerManager.getTransducerManager().getTransducer( tId.getAgentName() );
-				}
-				transducer.notifyEnvEvent( key, Integer.parseInt(gui.getMinValue()) );
-				return true;
-			}else if( key.equals("max")){
-				if( transducer == null ){
-					transducer = TransducerManager.getTransducerManager().getTransducer( tId.getAgentName() );
-				}
-				transducer.notifyEnvEvent( key, Integer.parseInt(gui.getMaxValue()) );
-				return true;
-			}
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		return false;
-	}
+    public void actionPerformed(final ActionEvent arg0) {
+        try {
+            if (((javax.swing.JButton) arg0.getSource()).getName().equals(
+                    "btnMin")) {
+                if (this.transducer == null) {
+                    this.transducer =
+                            TransducerManager.getTransducerManager()
+                                    .getTransducer(this.tId.getAgentName());
+                }
+                this.transducer.notifyEnvEvent("min",
+                        Integer.parseInt(this.gui.getMinValue()));
+            } else if (((javax.swing.JButton) arg0.getSource()).getName()
+                    .equals("btnMax")) {
+                if (this.transducer == null) {
+                    this.transducer =
+                            TransducerManager.getTransducerManager()
+                                    .getTransducer(this.tId.getAgentName());
+                }
+                this.transducer.notifyEnvEvent("max",
+                        Integer.parseInt(this.gui.getMaxValue()));
+            }
+        } catch (final Exception e) {
+            e.printStackTrace();
+        }
+    }
 
-	@Override
-	public ProbeId getIdentifier() {
-		// TODO Auto-generated method stub
-		return id;
-	}
+    public ProbeId getIdentifier() {
+        return this.id;
+    }
 
-	@Override
-	public void setTransducer(TransducerId tId) {
-		// TODO Auto-generated method stub
-		this.tId = tId;
-	}
+    public TransducerId getTransducer() {
+        return this.tId;
+    }
 
-	@Override
-	public TransducerId getTransducer() {
-		// TODO Auto-generated method stub
-		return tId;
-	}
+    public boolean readValue(final String key) {
+        try {
+            if (key.equals("min")) {
+                if (this.transducer == null) {
+                    this.transducer =
+                            TransducerManager.getTransducerManager()
+                                    .getTransducer(this.tId.getAgentName());
+                }
+                this.transducer.notifyEnvEvent(key,
+                        Integer.parseInt(this.gui.getMinValue()));
+                return true;
+            } else if (key.equals("max")) {
+                if (this.transducer == null) {
+                    this.transducer =
+                            TransducerManager.getTransducerManager()
+                                    .getTransducer(this.tId.getAgentName());
+                }
+                this.transducer.notifyEnvEvent(key,
+                        Integer.parseInt(this.gui.getMaxValue()));
+                return true;
+            }
+        } catch (final Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 
-	@Override
-	public void actionPerformed(ActionEvent arg0) {
-		// TODO Auto-generated method stub
-		try{
-			if( ((javax.swing.JButton)arg0.getSource()).getName().equals("btnMin") ){
-				if( transducer == null ){
-					transducer = TransducerManager.getTransducerManager().getTransducer( tId.getAgentName() );
-				}
-				transducer.notifyEnvEvent( "min", Integer.parseInt(gui.getMinValue()) );
-			}else if( ((javax.swing.JButton)arg0.getSource()).getName().equals("btnMax") ){
-				if( transducer == null ){
-					transducer = TransducerManager.getTransducerManager().getTransducer( tId.getAgentName() );
-				}
-				transducer.notifyEnvEvent( "max", Integer.parseInt(gui.getMaxValue()) );
-			}
-		}catch( Exception e ){
-			e.printStackTrace();
-		}
-	}
+    public void setTransducer(final TransducerId t) {
+        this.tId = t;
+    }
+
+    public boolean writeValue(final String key, final int value) {
+        return false;
+    }
 
 }

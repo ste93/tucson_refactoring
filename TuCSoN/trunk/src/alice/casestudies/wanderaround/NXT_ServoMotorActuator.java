@@ -9,89 +9,80 @@ import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 
-public class NXT_ServoMotorActuator implements ISimpleProbe{
+public class NXT_ServoMotorActuator implements ISimpleProbe {
 
-	private ProbeId id;
-	private TransducerId tId;
-	private TransducerStandardInterface transducer;
-	private NxtSimulatorGUI gui;
-	
-	private int angle = 0, power = 0;
-	
-	public NXT_ServoMotorActuator( ProbeId id ){
-		this.id = id;
-		this.gui = NxtSimulatorGUI.getNxtSimulatorGUI();
-	}
-	
-	@Override
-	public boolean writeValue(String key, int value) {
-		System.err.println("WRITE REQUEST ( "+key+", "+value+" )");
-		// TODO Auto-generated method stub
-		if( key.equals("power") ){
-			this.power = value;
-			if( id.getLocalName().equals("servoMotorActuatorLeft") ){
-				gui.setMotorParameters("left", "power", power);
-			}else if( id.getLocalName().equals("servoMotorActuatorRight") ){
-				gui.setMotorParameters("right", "power", power);
-			}
-			return true;	
-		}else if( key.equals("angle") ){
-			this.angle = value;
-			if( id.getLocalName().equals("servoMotorActuatorLeft") ){
-				gui.setMotorParameters("left", "angle", angle);
-			}else if( id.getLocalName().equals("servoMotorActuatorRight") ){
-				gui.setMotorParameters("right", "angle", angle);
-			}
-			return true;
-		}
-		return false;
-	}
+    private int angle = 0, power = 0;
+    private final NxtSimulatorGUI gui;
+    private final ProbeId id;
+    private TransducerId tId;
 
-	@Override
-	public boolean readValue(String key) {
-		// TODO Auto-generated method stub
-		try {
-			if( key.equals("power") ){
-				if( transducer == null ){
-					transducer = TransducerManager.getTransducerManager().getTransducer( tId.getAgentName() );
-				}
-				transducer.notifyEnvEvent( key, power );
-				return true;
-			}else if( key.equals("angle") ){
-				if( transducer == null ){
-					transducer = TransducerManager.getTransducerManager().getTransducer( tId.getAgentName() );
-				}
-				transducer.notifyEnvEvent( key, angle );
-				return true;
-			}
-		} catch (TucsonOperationNotPossibleException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (UnreachableNodeException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (OperationTimeOutException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return false;
-	}
+    private TransducerStandardInterface transducer;
 
-	@Override
-	public ProbeId getIdentifier() {
-		// TODO Auto-generated method stub
-		return id;
-	}
+    public NXT_ServoMotorActuator(final ProbeId i) {
+        this.id = i;
+        this.gui = NxtSimulatorGUI.getNxtSimulatorGUI();
+    }
 
-	@Override
-	public void setTransducer(TransducerId tId) {
-		// TODO Auto-generated method stub
-		this.tId = tId;
-	}
+    public ProbeId getIdentifier() {
+        return this.id;
+    }
 
-	@Override
-	public TransducerId getTransducer() {
-		// TODO Auto-generated method stub
-		return tId;
-	}
+    public TransducerId getTransducer() {
+        return this.tId;
+    }
+
+    public boolean readValue(final String key) {
+        try {
+            if (key.equals("power")) {
+                if (this.transducer == null) {
+                    this.transducer =
+                            TransducerManager.getTransducerManager()
+                                    .getTransducer(this.tId.getAgentName());
+                }
+                this.transducer.notifyEnvEvent(key, this.power);
+                return true;
+            } else if (key.equals("angle")) {
+                if (this.transducer == null) {
+                    this.transducer =
+                            TransducerManager.getTransducerManager()
+                                    .getTransducer(this.tId.getAgentName());
+                }
+                this.transducer.notifyEnvEvent(key, this.angle);
+                return true;
+            }
+        } catch (final TucsonOperationNotPossibleException e) {
+            e.printStackTrace();
+        } catch (final UnreachableNodeException e) {
+            e.printStackTrace();
+        } catch (final OperationTimeOutException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public void setTransducer(final TransducerId t) {
+        this.tId = t;
+    }
+
+    public boolean writeValue(final String key, final int value) {
+        System.err.println("WRITE REQUEST ( " + key + ", " + value + " )");
+        if (key.equals("power")) {
+            this.power = value;
+            if (this.id.getLocalName().equals("servoMotorActuatorLeft")) {
+                this.gui.setMotorParameters("left", "power", this.power);
+            } else if (this.id.getLocalName().equals("servoMotorActuatorRight")) {
+                this.gui.setMotorParameters("right", "power", this.power);
+            }
+            return true;
+        } else if (key.equals("angle")) {
+            this.angle = value;
+            if (this.id.getLocalName().equals("servoMotorActuatorLeft")) {
+                this.gui.setMotorParameters("left", "angle", this.angle);
+            } else if (this.id.getLocalName().equals("servoMotorActuatorRight")) {
+                this.gui.setMotorParameters("right", "angle", this.angle);
+            }
+            return true;
+        }
+        return false;
+    }
 }

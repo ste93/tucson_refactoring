@@ -5,60 +5,61 @@ import alice.respect.probe.ProbeId;
 import alice.respect.transducer.Transducer;
 import alice.respect.transducer.TransducerId;
 import alice.tucson.api.ITucsonOperation;
-import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tuplecentre.api.TupleCentreId;
-import alice.tuplecentre.core.TupleCentreOperation;
+import alice.tuplecentre.core.AbstractTupleCentreOperation;
 
-public class TransducerAct extends Transducer{
-	
-	public TransducerAct(TransducerId id, TupleCentreId tcId, ProbeId probeId ) throws TucsonInvalidAgentIdException{
-		super(id, tcId, probeId );
-		// TODO Auto-generated constructor stub
-	}
+public class TransducerAct extends Transducer {
 
-	@Override
-	public void operationCompleted(ITucsonOperation op) {
-		// TODO Auto-generated method stub
-		
-	}
+    public TransducerAct(final TransducerId i, final TupleCentreId t,
+            final ProbeId probeId) {
+        super(i, t, probeId);
+    }
 
-	@Override
-	public void operationCompleted(TupleCentreOperation op) {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    public boolean getEnv(final String key) {
+        try {
+            boolean allReadsOk = false;
+            final Object[] keySet = this.probes.keySet().toArray();
+            for (final Object element : keySet) {
+                allReadsOk =
+                        ((ISimpleProbe) this.probes.get(element))
+                                .readValue(key);
+            }
 
-	@Override
-	public boolean getEnv(String key){
-		// TODO Auto-generated method stub
-		try{
-			boolean allReadsOk = false;
-			Object[] keySet = probes.keySet().toArray();
-			for( int i=0; i<keySet.length; i++ ){
-				allReadsOk = ((ISimpleProbe)probes.get( (ProbeId)keySet[i] )).readValue( key );
-			}
-			
-			return allReadsOk;
-		}catch( Exception ex ){
-			ex.printStackTrace();
-			return false;
-		}
-	}
+            return allReadsOk;
+        } catch (final Exception ex) {
+            ex.printStackTrace();
+            return false;
+        }
+    }
 
-	@Override
-	public boolean setEnv(String key, int value) {
-		// TODO Auto-generated method stub
-		try{
-			boolean resultIsOk = false;
-			Object[] keySet = probes.keySet().toArray();
-			for( int i=0; i<keySet.length; i++ ){
-				resultIsOk = ((ISimpleProbe)probes.get( (ProbeId)keySet[i] )).writeValue(key, value);
-			}
-			return resultIsOk;
-		}catch( Exception ex ){
-			//ex.printStackTrace();
-			return false;
-		}
-	}
+    public void operationCompleted(final AbstractTupleCentreOperation op) {
+        /*
+         * 
+         */
+    }
+
+    public void operationCompleted(final ITucsonOperation op) {
+        /*
+         * 
+         */
+    }
+
+    @Override
+    public boolean setEnv(final String key, final int value) {
+        try {
+            boolean resultIsOk = false;
+            final Object[] keySet = this.probes.keySet().toArray();
+            for (final Object element : keySet) {
+                resultIsOk =
+                        ((ISimpleProbe) this.probes.get(element)).writeValue(
+                                key, value);
+            }
+            return resultIsOk;
+        } catch (final Exception ex) {
+            // ex.printStackTrace();
+            return false;
+        }
+    }
 
 }
