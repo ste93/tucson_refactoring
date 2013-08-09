@@ -1,21 +1,41 @@
 package alice.tucson.service;
 
+/**
+ * 
+ * @author ste (mailto: s.mariani@unibo.it) on 17/lug/2013
+ * 
+ */
 public class TucsonCmd {
 
-	private String primitive;
-	private String arg;
-	
-	public TucsonCmd(String p, String a){
-		primitive = p;
-		arg = a;
-	}
-	
-	public String getPrimitive(){
-		return primitive;
-	}
-	
-	public String getArg(){
-		return arg;
-	}
-	
+    private final String arg;
+    private final String primitive;
+
+    /**
+     * 
+     * @param p
+     *            the String representation of the TuCSoN primitive
+     * @param a
+     *            the String representation of the argument of the operation
+     */
+    public TucsonCmd(final String p, final String a) {
+        this.primitive = p;
+        this.arg = a;
+    }
+
+    /**
+     * 
+     * @return the String representation of the argument of the operation
+     */
+    public String getArg() {
+        return this.arg;
+    }
+
+    /**
+     * 
+     * @return the String representation of the TuCSoN primitive
+     */
+    public String getPrimitive() {
+        return this.primitive;
+    }
+
 }

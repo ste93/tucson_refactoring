@@ -1,4 +1,3 @@
-
 % ReSpecT specification of tuple centre tcEnvConfig, used with envConfigAgent for the configuration of the environment.
 
 % Used to create a transducer and a sensor. 

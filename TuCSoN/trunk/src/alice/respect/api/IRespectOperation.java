@@ -1,41 +1,61 @@
 package alice.respect.api;
 
 import java.util.List;
+
 import alice.logictuple.LogicTuple;
 
 /**
  * ReSpecT Operation Interface.
  * 
  * @author aricci
- *
+ * 
  */
-public interface IRespectOperation extends alice.tuplecentre.api.ITupleCentreOperation {
+public interface IRespectOperation extends
+        alice.tuplecentre.api.ITupleCentreOperation {
 
-	/**
-	 * Gets the result of the operation,
-	 * 
-	 * @return
-	 */
-	LogicTuple getLogicTupleResult();
+    /**
+     * Gets the argument of the operation
+     * 
+     * @return the argument of this operation
+     */
+    LogicTuple getLogicTupleArgument();
 
-	/**
-	 * Gets the argument of the operation
-	 * 
-	 * @return
-	 */
-	LogicTuple getLogicTupleArgument();
-	
-	boolean isTime();
-	
-	boolean isGetEnv();
-	
-	boolean isSetEnv();
+    /**
+     * Gets the results of a get operation
+     * 
+     * @return the result of this operation
+     */
+    List<LogicTuple> getLogicTupleListResult();
 
-	boolean isEnv();
-	
-	/**
-	 * Gets the results of a get operation
-	 */
-	public List<LogicTuple> getLogicTupleListResult();
+    /**
+     * Gets the result of the operation,
+     * 
+     * @return the result of this operation
+     */
+    LogicTuple getLogicTupleResult();
+
+    /**
+     * 
+     * @return <code>true</code> if this is an env operation
+     */
+    boolean isEnv();
+
+    /**
+     * 
+     * @return <code>true</code> if this is a getEnv operation
+     */
+    boolean isGetEnv();
+
+    /**
+     * 
+     * @return <code>true</code> if this is a setEnv operation
+     */
+    boolean isSetEnv();
+
+    /**
+     * 
+     * @return <code>true</code> if this is a time operation
+     */
+    boolean isTime();
 
 }

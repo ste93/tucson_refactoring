@@ -1,60 +1,59 @@
 package alice.tucson.parsing;
 
-import alice.tucson.api.exceptions.TucsonInvalidCommandException;
 import alice.tucson.service.TucsonCmd;
 
 /**
  * 
  * @author ste
- *
+ * 
  */
 public class TucsonPrimitiveParser {
-	
-	private String input;
-	
-	/**
-	 * 
-	 * @param input
-	 */
-	public TucsonPrimitiveParser(String input){
-		this.input = input;
-	}
-	
-	/**
-	 * 
-	 * @return
-	 * @throws TucsonInvalidCommandException
-	 */
-	public TucsonCmd parse(){
-		String primitive = input.trim();
-		String arg = "";
-		int iLeftBra = input.indexOf("(");
-		int iRightBra = input.lastIndexOf(")");
-		if(iLeftBra != -1){
-			primitive = input.substring(0, iLeftBra).trim();
-			if(iRightBra != -1){
-				arg = input.substring(iLeftBra+1, iRightBra).trim();
-				if((primitive.equals("get") || primitive.equals("get_s")) && !arg.equals("")){
-					primitive = "";
-					arg = "";
-					return null;
-				}
-			}else{
-				primitive = "";
-				return null;
-//				throw new TucsonInvalidCommandException();
-			}
-		}else{
-			if(!primitive.equals("quit") && !primitive.equals("exit") && !primitive.equals("get") 
-					&& !primitive.equals("get_s") && !primitive.equals("help") && !primitive.equals("man") 
-					&& !primitive.equals("syntax") && !primitive.equals("o/") && !primitive.equals("\\o") 
-					&& !primitive.equals("hi")){
-				primitive = "";
-				return null;
-//				throw new TucsonInvalidCommandException();
-			}
-		}
-		return new TucsonCmd(primitive, arg);
-	}
-	
+
+    private final String input;
+
+    /**
+     * 
+     * @param in
+     *            the String representation of the TuCSoN primitive to be parsed
+     */
+    public TucsonPrimitiveParser(final String in) {
+        this.input = in;
+    }
+
+    /**
+     * 
+     * @return the Object representing the TuCSoN command parsed
+     */
+    public TucsonCmd parse() {
+        String primitive = this.input.trim();
+        String arg = "";
+        final int iLeftBra = this.input.indexOf("(");
+        final int iRightBra = this.input.lastIndexOf(")");
+        if (iLeftBra != -1) {
+            primitive = this.input.substring(0, iLeftBra).trim();
+            if (iRightBra != -1) {
+                arg = this.input.substring(iLeftBra + 1, iRightBra).trim();
+                if (("get".equals(primitive) || "get_s".equals(primitive))
+                        && !"".equals(arg)) {
+                    primitive = "";
+                    arg = "";
+                    return null;
+                }
+            } else {
+                primitive = "";
+                return null;
+            }
+        } else {
+            if (!"quit".equals(primitive) && !"exit".equals(primitive)
+                    && !"get".equals(primitive) && !"get_s".equals(primitive)
+                    && !"help".equals(primitive) && !"man".equals(primitive)
+                    && !"syntax".equals(primitive) && !"o/".equals(primitive)
+                    && !"\\o".equals(primitive) && !"hi".equals(primitive)) {
+                primitive = "";
+                return null;
+            }
+        }
+        return new TucsonCmd(primitive, arg);
+    }
+
 }

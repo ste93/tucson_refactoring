@@ -1,92 +1,140 @@
 /*
- * TuCSoN coordination infrastructure - Copyright (C) 2001-2002  aliCE team at deis.unibo.it
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ * TuCSoN coordination infrastructure - Copyright (C) 2001-2002 aliCE team at
+ * deis.unibo.it This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation; either version 2.1 of the License,
+ * or (at your option) any later version. This library is distributed in the
+ * hope that it will be useful, but WITHOUT ANY WARRANTY; without even the
+ * implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See
+ * the GNU Lesser General Public License for more details. You should have
+ * received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple
+ * Place, Suite 330, Boston, MA 02111-1307 USA
  */
 package alice.tucson.api;
 
-import alice.respect.api.TupleCentreId;
-import alice.respect.api.exceptions.InvalidTupleCentreIdException;
-
-import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
-
-import alice.tuprolog.Term;
-
 import java.io.Serializable;
 
-public class TucsonTupleCentreId implements alice.tuplecentre.api.TupleCentreId, Serializable{
+import alice.respect.api.TupleCentreId;
+import alice.respect.api.exceptions.InvalidTupleCentreIdException;
+import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
+import alice.tuprolog.Term;
 
-	private static final long serialVersionUID = -4503481713163088789L;
-	private Object tid;
-	
-	public TucsonTupleCentreId(Object tid) throws TucsonInvalidTupleCentreIdException{		
-		if(tid.getClass().getName().equals("alice.respect.api.TupleCentreId"))
-			this.tid = tid;
-		else{
-			try{
-				this.tid = new TupleCentreId((String) tid);
-			}catch(InvalidTupleCentreIdException e){
-				throw new TucsonInvalidTupleCentreIdException();
-			}
-		}
-	}
+/**
+ * 
+ * @author ste (mailto: s.mariani@unibo.it) on 03/lug/2013
+ * 
+ */
+public class TucsonTupleCentreId implements
+        alice.tuplecentre.api.TupleCentreId, Serializable {
 
-	public TucsonTupleCentreId(String tcName, String netid, String portno)
-			throws TucsonInvalidTupleCentreIdException{
-		try{
-			tid = new TupleCentreId(tcName, netid, portno);
-		}catch(InvalidTupleCentreIdException e){
-//			e.printStackTrace();
-			throw new TucsonInvalidTupleCentreIdException();
-		}
-	}
+    private static final long serialVersionUID = -4503481713163088789L;
+    private TupleCentreId tid;
 
-	public Object getInternalTupleCentreId(){
-		return tid;
-	}
-	
-	public String toString(){
-		return ((TupleCentreId) tid).toString();
-	}
-	
-	public String getName(){
-		return ((TupleCentreId) tid).getName();
-	}
+    /**
+     * 
+     * @param id
+     *            the String representation of a valid TuCSoN tuple centre
+     *            identifier
+     * @throws TucsonInvalidTupleCentreIdException
+     *             if the given String does not represent a valid TuCSoN
+     *             identifier
+     */
+    public TucsonTupleCentreId(final String id)
+            throws TucsonInvalidTupleCentreIdException {
+        try {
+            this.tid = new TupleCentreId(id);
+        } catch (final InvalidTupleCentreIdException e) {
+            throw new TucsonInvalidTupleCentreIdException();
+        }
+    }
 
-	public String getNode(){
-		return ((TupleCentreId) tid).getNode();
-	}
-	
-	public int getPort(){
-		return ((TupleCentreId) tid).getPort();
-	}
+    /**
+     * 
+     * @param tcName
+     *            the String representation of a valid tuple centre name
+     * @param netid
+     *            the String representation of a valid IP address
+     * @param portno
+     *            the String representation of a valid port number
+     * @throws TucsonInvalidTupleCentreIdException
+     *             if the combination of the given Strings does not represent a
+     *             valid TuCSoN identifier
+     */
+    public TucsonTupleCentreId(final String tcName, final String netid,
+            final String portno) throws TucsonInvalidTupleCentreIdException {
+        try {
+            this.tid = new TupleCentreId(tcName, netid, portno);
+        } catch (final InvalidTupleCentreIdException e) {
+            throw new TucsonInvalidTupleCentreIdException();
+        }
+    }
 
-	public boolean isAgent(){
-		return false;
-	}
+    /**
+     * 
+     * @param id
+     *            the String representation of a valid TuCSoN tuple centre
+     *            identifier
+     */
+    public TucsonTupleCentreId(final TupleCentreId id) {
+        this.tid = id;
+    }
 
-	public boolean isTC(){
-		return true;
-	}
-	
-	public boolean isEnv(){
-		return false;
-	}
+    /**
+     * 
+     * @return the local tuple centre identifier
+     */
+    public TupleCentreId getInternalTupleCentreId() {
+        return this.tid;
+    }
 
-	public Term toTerm() {
-		return alice.tuprolog.Term.createTerm(tid.toString());
-	}
-	
+    /**
+     * 
+     * @return the local name of the tuple centre
+     */
+    public String getName() {
+        return this.tid.getName();
+    }
+
+    /**
+     * 
+     * @return the IP address of the tuple centre
+     */
+    public String getNode() {
+        return this.tid.getNode();
+    }
+
+    /**
+     * 
+     * @return the listening port of the tuple centre
+     */
+    public int getPort() {
+        return this.tid.getPort();
+    }
+
+    public boolean isAgent() {
+        return false;
+    }
+
+    public boolean isEnv() {
+        return false;
+    }
+
+    public boolean isTC() {
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return this.tid.toString();
+    }
+
+    /**
+     * 
+     * @return the tuProlog Term representation of this tuple centre identifier
+     */
+    public Term toTerm() {
+        return alice.tuprolog.Term.createTerm(this.tid.toString());
+    }
+
 }

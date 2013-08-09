@@ -1,32 +1,90 @@
 package alice.tuplecentre.api;
 
 import java.util.List;
+
 import alice.tuplecentre.core.TCCycleResult.Outcome;
 
+/**
+ * 
+ * @author ste (mailto: s.mariani@unibo.it) on 17/lug/2013
+ * 
+ */
 public interface ITCCycleResult {
-	
-	public boolean isResultDefined();
-	
-	public boolean isResultSuccess();
-	
-	public boolean isResultFailure();
-	
-	public void setOpResult(Outcome o);
-	
-	public Outcome getOpResult();
-	
-	public void setTupleResult(Tuple res);
-	
-	public Tuple getTupleResult();
-	
-	public void setTupleListResult(List<Tuple> resList);
-	
-	public List<Tuple> getTupleListResult();
 
-	public void setEndTime(long time);
-	
-	public long getEndTime();
+    /**
+     * 
+     * @return the time the operation was completed
+     */
+    long getEndTime();
 
-	public long getStartTime(); 
-	
+    /**
+     * 
+     * @return the outcome of the operation
+     */
+    Outcome getOpResult();
+
+    /**
+     * 
+     * @return the time the operation was requested
+     */
+    long getStartTime();
+
+    /**
+     * 
+     * @return the list of tuples result of the operation
+     */
+    List<Tuple> getTupleListResult();
+
+    /**
+     * 
+     * @return the tuple result of the operation
+     */
+    Tuple getTupleResult();
+
+    /**
+     * 
+     * @return wether the result of the operation is defined
+     */
+    boolean isResultDefined();
+
+    /**
+     * 
+     * @return wether the result of the operation is a failure
+     */
+    boolean isResultFailure();
+
+    /**
+     * 
+     * @return wether the result of the operation is a success
+     */
+    boolean isResultSuccess();
+
+    /**
+     * 
+     * @param time
+     *            the time at which the operation completed
+     */
+    void setEndTime(long time);
+
+    /**
+     * 
+     * @param o
+     *            the outcome of the operation
+     */
+    void setOpResult(Outcome o);
+
+    /**
+     * 
+     * @param resList
+     *            the list of tuples result of the operation
+     */
+    void setTupleListResult(List<Tuple> resList);
+
+    /**
+     * 
+     * @param res
+     *            the tuple result of the operation
+     */
+    void setTupleResult(Tuple res);
+
 }

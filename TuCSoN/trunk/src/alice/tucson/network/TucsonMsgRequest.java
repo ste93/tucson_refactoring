@@ -1,77 +1,98 @@
 package alice.tucson.network;
 
-import alice.logictuple.*;
+import java.io.Serializable;
 
-import java.io.*;
+import alice.logictuple.LogicTuple;
 
 /**
  * 
+ * @author ste (mailto: s.mariani@unibo.it) on 03/lug/2013
+ * 
  */
-@SuppressWarnings("serial")
-public class TucsonMsgRequest implements Serializable{
-	
-	private long id;
-	private int type;
-	private LogicTuple tuple;
-	private String tid;
+public class TucsonMsgRequest implements Serializable {
 
-	protected TucsonMsgRequest(){
-		
-	}
+    /** serialVersionUID **/
+    private static final long serialVersionUID = 1L;
 
-	public TucsonMsgRequest(long id, int type, String stcid, LogicTuple t){
-		this.id = id;
-		this.type = type;
-		this.tid = stcid;
-		tuple = t;
-	}
+    private long id;
+    private String tid;
 
-	public LogicTuple getTuple(){
-		return tuple;
-	}
+    private LogicTuple tuple;
 
-	public long getId(){
-		return id;
-	}
+    private int type;
 
-	public String getTid(){
-		return tid;
-	}
+    /**
+     * 
+     * @param i
+     *            the operation id
+     * @param ty
+     *            the operation type code
+     * @param stcid
+     *            the String representation of the target tuple centre
+     * @param t
+     *            the tuple argument of the operation
+     */
+    public TucsonMsgRequest(final long i, final int ty, final String stcid,
+            final LogicTuple t) {
+        this.id = i;
+        this.type = ty;
+        this.tid = stcid;
+        this.tuple = t;
+    }
 
-	public int getType(){
-		return type;
-	}
+    /**
+     * 
+     */
+    protected TucsonMsgRequest() {
+        /*
+         * 
+         */
+    }
 
-	/**
-	 * 
-	 * @param dout
-	 * @param msg
-	 * @throws IOException
-	 */
-	public static void write(ObjectOutputStream dout, TucsonMsgRequest msg) throws IOException{
-		dout.writeLong(msg.getId());
-		dout.writeInt(msg.getType());
-		dout.writeObject(msg.getTid());
-		dout.writeObject(msg.getTuple());
-	}
+    /**
+     * 
+     * @return the operation id
+     */
+    public long getId() {
+        return this.id;
+    }
 
-	/**
-	 * 
-	 * @param din
-	 * @return
-	 * @throws Exception
-	 */
-	public static TucsonMsgRequest read(ObjectInputStream din) throws Exception{
-		long id = din.readLong();
-		int type = din.readInt();
-		String tid = (String) din.readObject();
-		LogicTuple t = (LogicTuple) din.readObject();
-		TucsonMsgRequest msg = new TucsonMsgRequest();
-		msg.id = id;
-		msg.type = type;
-		msg.tuple = t;
-		msg.tid = tid;
-		return msg;
-	}
-	
+    /**
+     * 
+     * @return the String representation of the target tuple centre
+     */
+    public String getTid() {
+        return this.tid;
+    }
+
+    /**
+     * 
+     * @return the tuple argument of the operation
+     */
+    public LogicTuple getTuple() {
+        return this.tuple;
+    }
+
+    /**
+     * 
+     * @return the operation type code
+     */
+    public int getType() {
+        return this.type;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuffer s = new StringBuffer(28);
+        s.append("ID: ");
+        s.append(this.id);
+        s.append("; Type: ");
+        s.append(this.type);
+        s.append("; TID: ");
+        s.append(this.tid);
+        s.append("; Tuple: ");
+        s.append(this.tuple);
+        return s.toString();
+    }
+
 }

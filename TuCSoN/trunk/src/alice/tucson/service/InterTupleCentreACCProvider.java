@@ -1,95 +1,114 @@
 package alice.tucson.service;
 
-import alice.respect.api.*;
-import alice.respect.api.exceptions.OperationNotPossibleException;
-
-import alice.respect.core.RespectOperation;
-
-import alice.tucson.api.TucsonOpId;
-import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
-import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
-import alice.tucson.api.exceptions.UnreachableNodeException;
-import alice.tucson.api.TucsonTupleCentreId;
-
-
-import alice.tuplecentre.core.TupleCentreOperation;
-
 import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import alice.respect.api.ILinkContext;
+import alice.respect.api.TupleCentreId;
+import alice.respect.api.exceptions.OperationNotPossibleException;
+import alice.tucson.api.TucsonTupleCentreId;
+import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
+import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
+import alice.tucson.api.exceptions.UnreachableNodeException;
+import alice.tuplecentre.core.AbstractTupleCentreOperation;
+
 /**
  * 
+ * @author ste (mailto: s.mariani@unibo.it) on 16/lug/2013
+ * 
  */
-public class InterTupleCentreACCProvider implements ILinkContext{
-	
-	private final static int threadsNumber = Runtime.getRuntime().availableProcessors()+1;
-	private static HashMap<String, InterTupleCentreACC> helpList;
-	private static ExecutorService exec;
-	private alice.tuplecentre.api.TupleCentreId idTo;
+public class InterTupleCentreACCProvider implements ILinkContext {
 
-	public InterTupleCentreACCProvider(alice.tuplecentre.api.TupleCentreId id){
-		idTo = id;
-		if(helpList == null)
-			helpList = new HashMap<String, InterTupleCentreACC>();
-		if (exec == null)
-			exec = Executors.newFixedThreadPool(threadsNumber);
-	}
+    class Executor extends Thread {
 
-	public synchronized void doOperation(TupleCentreId id, TupleCentreOperation op) throws OperationNotPossibleException{
-		// id il tuplecentre source
-		Executor ex = new Executor(idTo, id, op, helpList);
-		exec.execute(ex);
-	}
+        private final TupleCentreId fromId;
+        private InterTupleCentreACC helper;
+        private final Map<String, InterTupleCentreACC> helpers;
+        private final AbstractTupleCentreOperation op;
+        private final alice.tuplecentre.api.TupleCentreId toId;
 
-	@SuppressWarnings("unused")
-	private void log(String msg){
-		System.out.println("[RespectInterTupleCentreContextProxy]: " + msg);
-	}
+        public Executor(final alice.tuplecentre.api.TupleCentreId to,
+                final TupleCentreId from, final AbstractTupleCentreOperation o,
+                final Map<String, InterTupleCentreACC> helps) {
+            super();
+            this.toId = to;
+            this.fromId = from;
+            this.op = o;
+            this.helpers = helps;
+        }
 
-	class Executor extends Thread{
+        @Override
+        public void run() {
 
-		private alice.tuplecentre.api.TupleCentreId toId;
-		private TupleCentreId fromId;
-		private TupleCentreOperation op;
-		private HashMap<String, InterTupleCentreACC> helpList;
-		private InterTupleCentreACC helper;
+            if (this.helpers != null) {
+                this.helper = this.helpers.get(this.fromId.getNode());
+                if (this.helper == null) {
+                    try {
+                        this.helper =
+                                new InterTupleCentreACCProxy(
+                                        new TucsonTupleCentreId(this.fromId));
+                    } catch (final TucsonInvalidTupleCentreIdException e) {
+                        e.printStackTrace();
+                    }
+                    if (this.helpers != null) {
+                        this.helpers.put(this.fromId.getNode(), this.helper);
+                    }
+                }
+            }
 
-		public Executor(alice.tuplecentre.api.TupleCentreId toId, TupleCentreId fromId, TupleCentreOperation op, HashMap<String, InterTupleCentreACC> helpList){
-			this.toId = toId;
-			this.fromId = fromId;
-			this.op = op;
-			this.helpList = helpList;
-		}
+            if (this.helper != null) {
+                try {
+                    this.helper.doOperation(this.toId, this.op);
+                } catch (final TucsonOperationNotPossibleException e) {
+                    e.printStackTrace();
+                } catch (final UnreachableNodeException e) {
+                    e.printStackTrace();
+                }
+            }
 
-		public void run(){
-			
-			helper = helpList.get(fromId.getNode());
-			if(helper == null){
-				try {
-					helper = new InterTupleCentreACCProxy(new TucsonTupleCentreId(fromId));
-				} catch (TucsonInvalidTupleCentreIdException e) {
-					System.err.println("[RespectInterTupleCentreContextProxy] Executor: " + e);
-					e.printStackTrace();
-				}
-				helpList.put(fromId.getNode(), helper);
-			}
+        }
 
-			TucsonOpId opId = null;
-			try {
-				opId = helper.doOperation(toId, op);
-			} catch (TucsonOperationNotPossibleException e) {
-				System.err.println("[RespectInterTupleCentreContextProxy] Executor: " + e);
-				e.printStackTrace();
-			} catch (UnreachableNodeException e) {
-				System.err.println("[RespectInterTupleCentreContextProxy] Executor: " + e);
-				e.printStackTrace();
-			}
-//			TucsonOpCompletionEvent ev = helper.waitForCompletion(opId);
-//			op.setTupleResult(ev.getTuple());
-		
-		}
+    }
 
-	}
-	
+    // FIXME How to fix this?
+    private static ExecutorService exec;
+    private static Map<String, InterTupleCentreACC> helpList;
+
+    private final alice.tuplecentre.api.TupleCentreId idTo;
+
+    /**
+     * 
+     * @param id
+     *            the identifier of the tuple centre target of the linking
+     *            invocation
+     */
+    public InterTupleCentreACCProvider(
+            final alice.tuplecentre.api.TupleCentreId id) {
+        this.idTo = id;
+        synchronized (this) {
+            if (InterTupleCentreACCProvider.helpList == null) {
+                InterTupleCentreACCProvider.helpList =
+                        new HashMap<String, InterTupleCentreACC>();
+            }
+        }
+        synchronized (this) {
+            if (InterTupleCentreACCProvider.exec == null) {
+                InterTupleCentreACCProvider.exec =
+                        Executors.newCachedThreadPool();
+            }
+        }
+    }
+
+    public synchronized void doOperation(final TupleCentreId id,
+            final AbstractTupleCentreOperation op)
+            throws OperationNotPossibleException {
+        // id e' il tuplecentre source
+        final Executor ex =
+                new Executor(this.idTo, id, op,
+                        InterTupleCentreACCProvider.helpList);
+        InterTupleCentreACCProvider.exec.execute(ex);
+    }
+
 }

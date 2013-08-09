@@ -1,114 +1,167 @@
 package alice.tucson.network;
 
-import alice.logictuple.*;
+import java.io.Serializable;
 
-import java.io.*;
+import alice.logictuple.LogicTuple;
 
 /**
  * 
+ * @author ste (mailto: s.mariani@unibo.it) on 03/lug/2013
+ * 
  */
-@SuppressWarnings("serial")
-public class TucsonMsgReply implements Serializable{
-	
-	private long id;
-	private int type;
-	private LogicTuple tuple_requested;
-	private Object tuple_result;
-	private boolean allowed;
-	private boolean success;
-	private boolean resultSuccess;
+public class TucsonMsgReply implements Serializable {
 
-	protected TucsonMsgReply(){
-		
-	}
+    /** serialVersionUID **/
+    private static final long serialVersionUID = 1L;
 
-	public TucsonMsgReply(long id, int type, boolean allowed, boolean success, boolean ok){
-		this.id = id;
-		this.type = type;
-		this.allowed = allowed;
-		this.success = success;
-		tuple_requested = null;
-		tuple_result = null;
-		resultSuccess = ok;
-	}
+    private boolean allowed;
+    private long id;
+    private LogicTuple reqTuple;
+    private Object resTuple;
+    private boolean resultSuccess;
 
-	public TucsonMsgReply(long id, int type, boolean allowed, boolean success, boolean ok, LogicTuple req, Object res){
-		this.id = id;
-		this.type = type;
-		this.success = success;
-		this.allowed = allowed;
-		tuple_requested = req;
-		tuple_result = res;
-		resultSuccess = ok;
-	}
-	
-	public LogicTuple getTupleRequested(){
-		return tuple_requested;
-	}
+    private boolean success;
 
-	public Object getTupleResult(){
-		return tuple_result;
-	}
-	
-	public long getId(){
-		return id;
-	}
+    private int type;
 
-	public int getType(){
-		return type;
-	}
+    /**
+     * 
+     * @param i
+     *            the operation id
+     * @param t
+     *            the operation type code
+     * @param a
+     *            wether the operation is allowed
+     * @param s
+     *            wether the operation completed
+     * @param ok
+     *            wether the operation succeeded
+     */
+    public TucsonMsgReply(final long i, final int t, final boolean a,
+            final boolean s, final boolean ok) {
+        this.id = i;
+        this.type = t;
+        this.allowed = a;
+        this.success = s;
+        this.reqTuple = null;
+        this.resTuple = null;
+        this.resultSuccess = ok;
+    }
 
-	public boolean isSuccess(){
-		return success;
-	}
+    /**
+     * 
+     * @param i
+     *            the operation id
+     * @param t
+     *            the operation type code
+     * @param a
+     *            wether the operation is allowed
+     * @param s
+     *            wether the operation completed
+     * @param ok
+     *            wether the operation succeeded
+     * @param req
+     *            the tuple argument of the operation
+     * @param res
+     *            the object result of the operation (can be a tuple or a list
+     *            of tuples)
+     */
+    public TucsonMsgReply(final long i, final int t, final boolean a,
+            final boolean s, final boolean ok, final LogicTuple req,
+            final Object res) {
+        this.id = i;
+        this.type = t;
+        this.success = s;
+        this.allowed = a;
+        this.reqTuple = req;
+        this.resTuple = res;
+        this.resultSuccess = ok;
+    }
 
-	public boolean isAllowed(){
-		return allowed;
-	}
-	
-	public boolean isResultSuccess(){
-		return resultSuccess;
-	}
+    /**
+     * 
+     */
+    protected TucsonMsgReply() {
+        /*
+         * 
+         */
+    }
 
-	/**
-	 * 
-	 * @param dout
-	 * @param msg
-	 * @throws IOException
-	 */
-	public static void write(ObjectOutputStream dout, TucsonMsgReply msg) throws IOException{
-		dout.writeLong(msg.getId());
-		dout.writeInt(msg.getType());
-		dout.writeBoolean(msg.isAllowed());
-		dout.writeBoolean(msg.isSuccess());
-		dout.writeBoolean(msg.isResultSuccess());
-		dout.writeObject(msg.getTupleRequested());
-		dout.writeObject(msg.getTupleResult());
-	}
+    /**
+     * 
+     * @return the operation id
+     */
+    public long getId() {
+        return this.id;
+    }
 
-	/**
-	 * 
-	 * @param din
-	 * @return
-	 * @throws Exception
-	 */
-	public static TucsonMsgReply read(ObjectInputStream din) throws Exception{
-		long id = din.readLong();
-		int type = din.readInt();
-		boolean bool = din.readBoolean();
-		boolean succ = din.readBoolean();
-		boolean res = din.readBoolean();
-		LogicTuple treq = (LogicTuple) din.readObject();
-		Object tres = din.readObject();
-		TucsonMsgReply msg = new TucsonMsgReply();
-		msg.id = id;
-		msg.type = type;
-		msg.allowed = bool;
-		msg.success = succ;
-		msg.resultSuccess = res;
-		msg.tuple_requested = treq;
-		msg.tuple_result = tres;
-		return msg;
-	}
-	
+    /**
+     * 
+     * @return the tuple argument of the operation
+     */
+    public LogicTuple getTupleRequested() {
+        return this.reqTuple;
+    }
+
+    /**
+     * 
+     * @return the object result of the operation (can be a tuple or a tuple
+     *         list)
+     */
+    public Object getTupleResult() {
+        return this.resTuple;
+    }
+
+    /**
+     * 
+     * @return the type code of the operation
+     */
+    public int getType() {
+        return this.type;
+    }
+
+    /**
+     * 
+     * @return wether the operation is allowed
+     */
+    public boolean isAllowed() {
+        return this.allowed;
+    }
+
+    /**
+     * 
+     * @return wether the operation succeeded
+     */
+    public boolean isResultSuccess() {
+        return this.resultSuccess;
+    }
+
+    /**
+     * 
+     * @return wether the operation completed
+     */
+    public boolean isSuccess() {
+        return this.success;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuffer s = new StringBuffer(87);
+        s.append("ID: ");
+        s.append(this.id);
+        s.append("; Type: ");
+        s.append(this.type);
+        s.append("; Tuple Requested: ");
+        s.append(this.reqTuple);
+        s.append("; Tuple Result: ");
+        s.append(this.resTuple);
+        s.append("; Allowed: ");
+        s.append(this.allowed);
+        s.append("; Success: ");
+        s.append(this.success);
+        s.append("; Result Success: ");
+        s.append(this.resultSuccess);
+        return s.toString();
+    }
+
 }

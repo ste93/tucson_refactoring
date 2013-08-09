@@ -12,17 +12,22 @@ import alice.tuplecentre.api.exceptions.OperationTimeOutException;
  * Interface providing users only the admissible operations from the transducer.
  * 
  * @author Steven Maraldi
- *
+ * 
  */
 public interface TransducerStandardInterface {
-	
-	public TransducerId getIdentifier();
-	
-	public TupleCentreId getTCId();
-	
-	public ProbeId[] getProbes();
 
-	public void notifyEnvEvent( String key, int value ) throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException;
+    public TransducerId getIdentifier();
 
-	public boolean notifyOutput( InternalEvent ev ) throws InvalidTupleOperationException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException;
+    public ProbeId[] getProbes();
+
+    public TupleCentreId getTCId();
+
+    public void notifyEnvEvent(String key, int value)
+            throws TucsonOperationNotPossibleException,
+            UnreachableNodeException, OperationTimeOutException;
+
+    public boolean notifyOutput(InternalEvent ev)
+            throws InvalidTupleOperationException,
+            TucsonOperationNotPossibleException, UnreachableNodeException,
+            OperationTimeOutException;
 }

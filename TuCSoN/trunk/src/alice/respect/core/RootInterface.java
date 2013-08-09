@@ -5,30 +5,49 @@ import alice.respect.api.IRespectTC;
 import alice.tuplecentre.api.Tuple;
 import alice.tuplecentre.api.TupleTemplate;
 
-/*
- * Created by Enrico Romagnoli
+/**
+ * Created by Enrico Romagnoli A new abstract class for the context
  * 
- * A new abstract class for the context
+ * @author ste (mailto: s.mariani@unibo.it) on 02/lug/2013
+ * 
  */
-public abstract class RootInterface {
-	
-	private IRespectTC core;
-	
-	public RootInterface(IRespectTC core){
-		this.core = core;
-	}
-	
-	protected IRespectTC getCore(){
-		return core;
-	}
-	
-	protected LogicTuple unify(TupleTemplate template, Tuple tuple){
-		boolean res = template.propagate(core.getVM().getRespectVMContext().getPrologCore(), tuple);
-		if(res){
-			return (LogicTuple) template;
-		}else{
-			return null;
-		}
-	}
+public class RootInterface {
+
+    private final IRespectTC core;
+
+    /**
+     * 
+     * @param rCore
+     *            the ReSpecT tuple centres manager this interface refers to
+     */
+    public RootInterface(final IRespectTC rCore) {
+        this.core = rCore;
+    }
+
+    /**
+     * 
+     * @return the ReSpecT tuple centres manager this interface refers to
+     */
+    protected IRespectTC getCore() {
+        return this.core;
+    }
+
+    /**
+     * 
+     * @param template
+     *            the tuple template to unify
+     * @param tuple
+     *            the tuple to unify
+     * @return the tuple result of the unification process
+     */
+    protected LogicTuple unify(final TupleTemplate template, final Tuple tuple) {
+        final boolean res =
+                template.propagate(this.core.getVM().getRespectVMContext()
+                        .getPrologCore(), tuple);
+        if (res) {
+            return (LogicTuple) template;
+        }
+        return null;
+    }
 
 }

@@ -1,338 +1,583 @@
 package alice.tucson.service;
 
-import alice.logictuple.*;
-import alice.logictuple.exceptions.InvalidTupleOperationException;
-
-import alice.respect.core.RespectOperation;
-import alice.tucson.api.*;
-
-import alice.tuplecentre.api.Tuple;
-import alice.tuplecentre.api.TupleTemplate;
-import alice.tuplecentre.api.exceptions.OperationTimeOutException;
-import alice.tuplecentre.core.*;
-
 import java.util.LinkedList;
 import java.util.List;
 
+import alice.logictuple.LogicTuple;
+import alice.respect.core.RespectOperation;
+import alice.tucson.api.ITucsonOperation;
+import alice.tuplecentre.api.Tuple;
+import alice.tuplecentre.api.TupleTemplate;
+import alice.tuplecentre.api.exceptions.OperationTimeOutException;
+import alice.tuplecentre.core.AbstractTupleCentreOperation;
+import alice.tuplecentre.core.OperationCompletionListener;
+
 /**
  * 
+ * @author ste (mailto: s.mariani@unibo.it) on 17/lug/2013
+ * 
  */
-public class TucsonOperation extends TupleCentreOperation implements ITucsonOperation{
-	
-	private static final int OPTYPE_EXIT = 310;
-	private boolean successed;
-	private boolean allowed;
-	private /*ACCProxyAgentSide*/ OperationHandler context = null;
-	
-	public TucsonOperation(int type, Tuple t, OperationCompletionListener l, /*ACCProxyAgentSide*/OperationHandler context){
-		super(null, type, t, l);
-		this.context = context;
-		successed = false;
-	}
+public class TucsonOperation extends AbstractTupleCentreOperation implements
+        ITucsonOperation {
 
-	public TucsonOperation(int type, TupleTemplate t, OperationCompletionListener l, /*ACCProxyAgentSide*/ OperationHandler context){
-		super(null, type, t, l);
-		this.context = context;
-		successed = false;
-	}
-	
-	/**
-	 * NEW PRIMITIVES CODES
-	 */
-	
-	public static int getEnvCode(){
-		return RespectOperation.OPTYPE_GET_ENV;
-	}
-	
-	public static int setEnvCode(){
-		return RespectOperation.OPTYPE_SET_ENV;
-	}
-	
-	public static int envCode(){
-		return RespectOperation.OPTYPE_ENV;
-	}
-	
-	public static int timeCode(){
-		return RespectOperation.OPTYPE_TIME;
-	}
-	
-	public static int spawnCode(){
-		return OPTYPE_SPAWN;
-	}
-	
-	public static int uinCode(){
-		return OPTYPE_UIN;
-	}
-	
-	public static int urdCode(){
-		return OPTYPE_URD;
-	}
-	
-	public static int unoCode(){
-		return OPTYPE_UNO;
-	}
-	
-	public static int uinpCode(){
-		return OPTYPE_UINP;
-	}
-	
-	public static int urdpCode(){
-		return OPTYPE_URDP;
-	}
-	
-	public static int unopCode(){
-		return OPTYPE_UNOP;
-	}
-	
-	public static int out_allCode(){
-		return OPTYPE_OUT_ALL;
-	}
-	
-	public static int in_allCode(){
-		return OPTYPE_IN_ALL;
-	}
-	
-	public static int rd_allCode(){
-		return OPTYPE_RD_ALL;
-	}
-	
-	public static int no_allCode(){
-		return OPTYPE_NO_ALL;
-	}
-	
-	public static int outCode(){
-		return OPTYPE_OUT;
-	}
-	
-	public static int inCode(){
-		return OPTYPE_IN;
-	}
-	
-	public static int rdCode(){
-		return OPTYPE_RD;
-	}
-	
-	public static int inpCode(){
-		return OPTYPE_INP;
-	}
-	
-	public static int rdpCode(){
-		return OPTYPE_RDP;
-	}
+    private static final int OPTYPE_EXIT = 310;
 
-	public static int set_Code(){
-		return OPTYPE_SET;
-	}
-	
-	public static int get_Code(){
-		return OPTYPE_GET;
-	}
-	
-	public static int noCode(){
-		return OPTYPE_NO;
-	}
-	
-	public static int nopCode(){
-		return OPTYPE_NOP;
-	}
-	
-	public static int out_sCode(){
-		return OPTYPE_OUT_S;
-	}
-	
-	public static int in_sCode(){
-		return OPTYPE_IN_S;
-	}
-	
-	public static int rd_sCode(){
-		return OPTYPE_RD_S;
-	}
-	
-	public static int inp_sCode(){
-		return OPTYPE_INP_S;
-	}
-	
-	public static int rdp_sCode(){
-		return OPTYPE_RDP_S;
-	}
-	
-	public static int set_sCode(){
-		return OPTYPE_SET_S;
-	}
-	
-	public static int get_sCode(){
-		return OPTYPE_GET_S;
-	}	
-	
-	public static int no_sCode(){
-		return OPTYPE_NO_S;
-	}
-	
-	public static int nop_sCode(){
-		return OPTYPE_NOP_S;
-	}
-	
-	public static int exitCode(){
-		return OPTYPE_EXIT;
-	}
-	
-	public static int abortOpCode(){
-		return OPTYPE_ABORT_OP;
-	}
-	
-	public static int setMngModeCode(){
-		return OPTYPE_SET_MNG_MODE;
-	}
-	
-	public static int stopCmdCode(){
-		return OPTYPE_STOP_CMD;
-	}
-	
-	public static int goCmdCode(){
-		return OPTYPE_GO_CMD;
-	}
-	
-	public static int nextStepCode(){
-		return OPTYPE_NEXT_STEP;
-	}
-	
-	public static int setSpyCode(){
-		return OPTYPE_SET_SPY;
-	}
-	
-	public static int getTSetCode(){
-		return OPTYPE_GET_TSET;
-	}
-	
-	public static int getWSetCode(){
-		return OPTYPE_GET_WSET;
-	}
-	
-	public static int setWSetCode(){
-		return OPTYPE_SET_WSET;
-	}
-	
-	public static int getTRSetCode(){
-		return OPTYPE_GET_TRSET;
-	}
-	
-//	public EnhancedACC getTucsonContex(){
-//		return context;
-//	}
-	
-	public static int addObsCode(){
-		return OPTYPE_ADD_OBS;
-	}
-	
-	public static int rmvObsCode(){
-		return OPTYPE_RMV_OBS;
-	}
-	
-	public static int hasObsCode(){
-		return OPTYPE_HAS_OBS;
-	}
-	
-	public static int addInspCode(){
-		return OPTYPE_ADD_INSP;
-	}
-	
-	public static int rmvInspCode(){
-		return OPTYPE_RMV_INSP;
-	}
-	
-	public static int hasInspCode(){
-		return OPTYPE_HAS_INSP;
-	}
-	
-	public static int reset(){
-		return RESET;
-	}
-	
-	public OperationCompletionListener getListener(){
-		return listener;
-	}	
-	
-	/**
-	 * 
-	 * @param successed
-	 * @param allowed
-	 */
-	public void notifyCompletion(boolean successed, boolean allowed){
-		
-		this.successed = successed;
-		this.allowed = allowed;
-		
-		if(listener != null){
-			System.out.println("......[TucsonOperation]: listener is " + listener.getClass().getSimpleName());
-			operationCompleted = true;
-			listener.operationCompleted(this);
-		}else{
-			synchronized(token){
-				operationCompleted = true;
-				token.notifyAll();
-			}
-		}
-		
-	}
-	
-	public LogicTuple getLogicTupleResult(){
-		return (LogicTuple) getTupleResult();
-	}
+    /**
+     * 
+     * @return the Integer representing the type code of
+     *         <code>abort_operation</code> operation
+     */
+    public static int abortOpCode() {
+        return AbstractTupleCentreOperation.OPTYPE_ABORT_OP;
+    }
 
-	public LogicTuple getLogicTupleArgument(){
-		if(isOut() || isOut_s() || isSet_s() || isSet() || isOutAll() || isSpawn())
-			return (LogicTuple) getTupleArgument();
-		else
-			return (LogicTuple) getTemplateArgument();
-	}
-	
-	public List<LogicTuple> getLogicTupleListResult(){
-		List<Tuple> tl = this.getTupleListResult();
-		List<LogicTuple> tll = new LinkedList<LogicTuple>();
-		for(Tuple t : tl)
-			tll.add((LogicTuple) t);
-		return tll;
-	}
-	
-	public void setLogicTupleListResult(List<LogicTuple> tl){
-		List<Tuple> t = new LinkedList<Tuple>();
-		for(LogicTuple logicTuple : tl)
-			t.add(logicTuple);
-		setTupleListResult(t);
-	}
-	
-	public String getSpecResult() throws InvalidTupleOperationException{
-		return getLogicTupleResult().getArg(0).getName();
-	}
-	
-	public boolean isResultSuccess(){
-		return super.isResultSuccess();
-	}
-	
-	public boolean isSuccessed(){
-		return successed;
-	}
-	
-	public boolean isAllowed(){
-		return allowed;
-	}
-	
-	/**
-	 * 
-	 */
-	public void waitForOperationCompletion(long ms) throws OperationTimeOutException{
-		synchronized(token){
-			if(!operationCompleted)
-				try {
-					token.wait(ms);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			if(!operationCompleted){
-				this.context.addOperationExpired(getId());
-				throw new OperationTimeOutException();
-			}
-		}
-	}
-	
+    /**
+     * 
+     * @return the Integer representing the type code of
+     *         <code>add_inspector</code> operation
+     */
+    public static int addInspCode() {
+        return AbstractTupleCentreOperation.OPTYPE_ADD_INSP;
+    }
+
+    /**
+     * 
+     * @return the Integer representing the type code of
+     *         <code>add_observer</code> operation
+     */
+    public static int addObsCode() {
+        return AbstractTupleCentreOperation.OPTYPE_ADD_OBS;
+    }
+
+    public static int getEnvCode() {
+        return RespectOperation.OPTYPE_GET_ENV;
+    }
+
+    public static int setEnvCode() {
+        return RespectOperation.OPTYPE_SET_ENV;
+    }
+
+    public static int envCode() {
+        return RespectOperation.OPTYPE_ENV;
+    }
+
+    public static int timeCode() {
+        return RespectOperation.OPTYPE_TIME;
+    }
+
+    /**
+     * 
+     * @return the Integer representing the type code of <code>exit</code>
+     *         operation
+     */
+    public static int exitCode() {
+        return TucsonOperation.OPTYPE_EXIT;
+    }
+
+    /**
+     * 
+     * @return the Integer representing the type code of <code>get</code>
+     *         operation
+     */
+    public static int getCode() {
+        return AbstractTupleCentreOperation.OPTYPE_GET;
+    }
+
+    /**
+     * 
+     * @return the Integer representing the type code of <code>get_s</code>
+     *         operation
+     */
+    public static int getSCode() {
+        return AbstractTupleCentreOperation.OPTYPE_GET_S;
+    }
+
+    /**
+     * 
+     * @return the Integer representing the type code of the operation to
+     *         retrieve the triggered reactions set
+     */
+    public static int getTRSetCode() {
+        return AbstractTupleCentreOperation.OPTYPE_GET_TRSET;
+    }
+
+    /**
+     * 
+     * @return the Integer representing the type code of the operation to
+     *         retrieve the tuples set
+     */
+    public static int getTSetCode() {
+        return AbstractTupleCentreOperation.OPTYPE_GET_TSET;
+    }
+
+    /**
+     * 
+     * @return the Integer representing the type code of the operation to
+     *         retrieve the input events set
+     */
+    public static int getWSetCode() {
+        return AbstractTupleCentreOperation.OPTYPE_GET_WSET;
+    }
+
+    /**
+     * 
+     * @return the Integer representing the type code of <code>go_cmd</code>
+     *         operation
+     */
+    public static int goCmdCode() {
+        return AbstractTupleCentreOperation.OPTYPE_GO_CMD;
+    }
+
+    /**
+     * 
+     * @return the Integer representing the type code of
+     *         <code>has_inspectors</code> operation
+     */
+    public static int hasInspCode() {
+        return AbstractTupleCentreOperation.OPTYPE_HAS_INSP;
+    }
+
+    /**
+     * 
+     * @return the Integer representing the type code of
+     *         <code>has_observers</code> operation
+     */
+    public static int hasObsCode() {
+        return AbstractTupleCentreOperation.OPTYPE_HAS_OBS;
+    }
+
+    /**
+     * 
+     * @return the Integer representing the type code of <code>in_all</code>
+     *         operation
+     */
+    public static int inAllCode() {
+        return AbstractTupleCentreOperation.OPTYPE_IN_ALL;
+    }
+
+    /**
+     * 
+     * @return the Integer representing the type code of <code>in</code>
+     *         operation
+     */
+    public static int inCode() {
+        return AbstractTupleCentreOperation.OPTYPE_IN;
+    }
+
+    /**
+     * 
+     * @return the Integer representing the type code of <code>inp</code>
+     *         operation
+     */
+    public static int inpCode() {
+        return AbstractTupleCentreOperation.OPTYPE_INP;
+    }
+
+    /**
+     * 
+     * @return the Integer representing the type code of <code>inp_s</code>
+     *         operation
+     */
+    public static int inpSCode() {
+        return AbstractTupleCentreOperation.OPTYPE_INP_S;
+    }
+
+    /**
+     * 
+     * @return the Integer representing the type code of <code>in_s</code>
+     *         operation
+     */
+    public static int inSCode() {
+        return AbstractTupleCentreOperation.OPTYPE_IN_S;
+    }
+
+    /**
+     * 
+     * @return the Integer representing the type code of <code>next_step</code>
+     *         operation
+     */
+    public static int nextStepCode() {
+        return AbstractTupleCentreOperation.OPTYPE_NEXT_STEP;
+    }
+
+    /**
+     * 
+     * @return the Integer representing the type code of <code>no_all</code>
+     *         operation
+     */
+    public static int noAllCode() {
+        return AbstractTupleCentreOperation.OPTYPE_NO_ALL;
+    }
+
+    /**
+     * 
+     * @return the Integer representing the type code of <code>no</code>
+     *         operation
+     */
+    public static int noCode() {
+        return AbstractTupleCentreOperation.OPTYPE_NO;
+    }
+
+    /**
+     * 
+     * @return the Integer representing the type code of <code>nop</code>
+     *         operation
+     */
+    public static int nopCode() {
+        return AbstractTupleCentreOperation.OPTYPE_NOP;
+    }
+
+    /**
+     * 
+     * @return the Integer representing the type code of <code>nop_s</code>
+     *         operation
+     */
+    public static int nopSCode() {
+        return AbstractTupleCentreOperation.OPTYPE_NOP_S;
+    }
+
+    /**
+     * 
+     * @return the Integer representing the type code of <code>no_s</code>
+     *         operation
+     */
+    public static int noSCode() {
+        return AbstractTupleCentreOperation.OPTYPE_NO_S;
+    }
+
+    /**
+     * 
+     * @return the Integer representing the type code of <code>out_all</code>
+     *         operation
+     */
+    public static int outAllCode() {
+        return AbstractTupleCentreOperation.OPTYPE_OUT_ALL;
+    }
+
+    /**
+     * 
+     * @return the Integer representing the type code of <code>out</code>
+     *         operation
+     */
+    public static int outCode() {
+        return AbstractTupleCentreOperation.OPTYPE_OUT;
+    }
+
+    /**
+     * 
+     * @return the Integer representing the type code of <code>out_s</code>
+     *         operation
+     */
+    public static int outSCode() {
+        return AbstractTupleCentreOperation.OPTYPE_OUT_S;
+    }
+
+    /**
+     * 
+     * @return the Integer representing the type code of <code>rd_all</code>
+     *         operation
+     */
+    public static int rdAllCode() {
+        return AbstractTupleCentreOperation.OPTYPE_RD_ALL;
+    }
+
+    /**
+     * 
+     * @return the Integer representing the type code of <code>rd</code>
+     *         operation
+     */
+    public static int rdCode() {
+        return AbstractTupleCentreOperation.OPTYPE_RD;
+    }
+
+    /**
+     * 
+     * @return the Integer representing the type code of <code>rdp</code>
+     *         operation
+     */
+    public static int rdpCode() {
+        return AbstractTupleCentreOperation.OPTYPE_RDP;
+    }
+
+    /**
+     * 
+     * @return the Integer representing the type code of <code>rdp_s</code>
+     *         operation
+     */
+    public static int rdpSCode() {
+        return AbstractTupleCentreOperation.OPTYPE_RDP_S;
+    }
+
+    /**
+     * 
+     * @return the Integer representing the type code of <code>rd_s</code>
+     *         operation
+     */
+    public static int rdSCode() {
+        return AbstractTupleCentreOperation.OPTYPE_RD_S;
+    }
+
+    /**
+     * 
+     * @return the Integer representing the type code of <code>reset</code>
+     *         operation
+     */
+    public static int reset() {
+        return AbstractTupleCentreOperation.RESET;
+    }
+
+    /**
+     * 
+     * @return the Integer representing the type code of
+     *         <code>rmv_inspector</code> operation
+     */
+    public static int rmvInspCode() {
+        return AbstractTupleCentreOperation.OPTYPE_RMV_INSP;
+    }
+
+    /**
+     * 
+     * @return the Integer representing the type code of
+     *         <code>rmv_observer</code> operation
+     */
+    public static int rmvObsCode() {
+        return AbstractTupleCentreOperation.OPTYPE_RMV_OBS;
+    }
+
+    /**
+     * 
+     * @return the Integer representing the type code of <code>set</code>
+     *         operation
+     */
+    public static int setCode() {
+        return AbstractTupleCentreOperation.OPTYPE_SET;
+    }
+
+    /**
+     * 
+     * @return the Integer representing the type code of
+     *         <code>set_mgm_mode</code> operation
+     */
+    public static int setMngModeCode() {
+        return AbstractTupleCentreOperation.OPTYPE_SET_MNG_MODE;
+    }
+
+    /**
+     * 
+     * @return the Integer representing the type code of <code>set_s</code>
+     *         operation
+     */
+    public static int setSCode() {
+        return AbstractTupleCentreOperation.OPTYPE_SET_S;
+    }
+
+    /**
+     * 
+     * @return the Integer representing the type code of <code>set_spy</code>
+     *         operation
+     */
+    public static int setSpyCode() {
+        return AbstractTupleCentreOperation.OPTYPE_SET_SPY;
+    }
+
+    /**
+     * 
+     * @return the Integer representing the type code of the operation to set
+     *         the input events set
+     */
+    public static int setWSetCode() {
+        return AbstractTupleCentreOperation.OPTYPE_SET_WSET;
+    }
+
+    /**
+     * 
+     * @return the Integer representing the type code of <code>spawn</code>
+     *         operation
+     */
+    public static int spawnCode() {
+        return AbstractTupleCentreOperation.OPTYPE_SPAWN;
+    }
+
+    /**
+     * 
+     * @return the Integer representing the type code of <code>stop_cmd</code>
+     *         operation
+     */
+    public static int stopCmdCode() {
+        return AbstractTupleCentreOperation.OPTYPE_STOP_CMD;
+    }
+
+    /**
+     * 
+     * @return the Integer representing the type code of <code>uin</code>
+     *         operation
+     */
+    public static int uinCode() {
+        return AbstractTupleCentreOperation.OPTYPE_UIN;
+    }
+
+    /**
+     * 
+     * @return the Integer representing the type code of <code>uinp</code>
+     *         operation
+     */
+    public static int uinpCode() {
+        return AbstractTupleCentreOperation.OPTYPE_UINP;
+    }
+
+    /**
+     * 
+     * @return the Integer representing the type code of <code>uno</code>
+     *         operation
+     */
+    public static int unoCode() {
+        return AbstractTupleCentreOperation.OPTYPE_UNO;
+    }
+
+    /**
+     * 
+     * @return the Integer representing the type code of <code>unop</code>
+     *         operation
+     */
+    public static int unopCode() {
+        return AbstractTupleCentreOperation.OPTYPE_UNOP;
+    }
+
+    /**
+     * 
+     * @return the Integer representing the type code of <code>urd</code>
+     *         operation
+     */
+    public static int urdCode() {
+        return AbstractTupleCentreOperation.OPTYPE_URD;
+    }
+
+    /**
+     * 
+     * @return the Integer representing the type code of <code>urdp</code>
+     *         operation
+     */
+    public static int urdpCode() {
+        return AbstractTupleCentreOperation.OPTYPE_URDP;
+    }
+
+    private OperationHandler context = null;
+
+    /**
+     * 
+     * @param type
+     *            the type code of the operation
+     * @param t
+     *            the tuple argument of the operation
+     * @param l
+     *            the listener for operation completion
+     * @param ctx
+     *            the ACC requesting the operation
+     */
+    public TucsonOperation(final int type, final Tuple t,
+            final OperationCompletionListener l, final OperationHandler ctx) {
+        super(null, type, t, l);
+        this.context = ctx;
+    }
+
+    /**
+     * 
+     * @param type
+     *            the type code of the operation
+     * @param t
+     *            the tuple template argument of the operation
+     * @param l
+     *            the listener for operation completion
+     * @param ctx
+     *            the ACC requesting the operation
+     */
+    public TucsonOperation(final int type, final TupleTemplate t,
+            final OperationCompletionListener l, final OperationHandler ctx) {
+        super(null, type, t, l);
+        this.context = ctx;
+    }
+
+    /**
+     * 
+     * @return the listener for operation completion
+     */
+    public OperationCompletionListener getListener() {
+        return this.listener;
+    }
+
+    public LogicTuple getLogicTupleArgument() {
+        if (this.isOut() || this.isOutS() || this.isSetS() || this.isSet()
+                || this.isOutAll() || this.isSpawn()) {
+            return (LogicTuple) this.getTupleArgument();
+        }
+        return (LogicTuple) this.getTemplateArgument();
+    }
+
+    public List<LogicTuple> getLogicTupleListResult() {
+        final List<Tuple> tl = this.getTupleListResult();
+        final List<LogicTuple> tll = new LinkedList<LogicTuple>();
+        for (final Tuple t : tl) {
+            tll.add((LogicTuple) t);
+        }
+        return tll;
+    }
+
+    public LogicTuple getLogicTupleResult() {
+        return (LogicTuple) this.getTupleResult();
+    }
+
+    /**
+     * 
+     * @param s
+     *            wether the operation succeeded
+     * @param a
+     *            wether the operation was allowed
+     */
+    public void notifyCompletion(final boolean s, final boolean a) {
+
+        if (this.listener != null) {
+            System.out.println("......[TucsonOperation]: listener is "
+                    + this.listener.getClass().getSimpleName());
+            this.operationCompleted = true;
+            this.listener.operationCompleted(this);
+        } else {
+            synchronized (this.token) {
+                this.operationCompleted = true;
+                this.token.notifyAll();
+            }
+        }
+
+    }
+
+    /**
+     * 
+     * @param tl
+     *            the list of tuples result of the operation
+     */
+    public void setLogicTupleListResult(final List<LogicTuple> tl) {
+        final List<Tuple> t = new LinkedList<Tuple>();
+        for (final LogicTuple logicTuple : tl) {
+            t.add(logicTuple);
+        }
+        this.setTupleListResult(t);
+    }
+
+    @Override
+    public void waitForOperationCompletion(final long ms)
+            throws OperationTimeOutException {
+        synchronized (this.token) {
+            if (!this.operationCompleted) {
+                try {
+                    this.token.wait(ms);
+                } catch (final InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (!this.operationCompleted) {
+                this.context.addOperationExpired(this.getId());
+                throw new OperationTimeOutException();
+            }
+        }
+    }
+
 }

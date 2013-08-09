@@ -31,5 +31,3 @@ reaction(out(agent_to_remove(Id,[Id1|L],L1)),true,(
 	  
 reaction(out(agent_to_remove(Id,[],L)),true,(
     out(agent_list(L)) )).
-	  
-	  

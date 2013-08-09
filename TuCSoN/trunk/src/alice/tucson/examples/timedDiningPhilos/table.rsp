@@ -40,6 +40,7 @@ reaction(
 	    out(chop(C2))
 	)
 ).
+
 % 5a) If some of the newly released chops is needed by a waiting philosopher,
 %	  give it to him
 reaction(

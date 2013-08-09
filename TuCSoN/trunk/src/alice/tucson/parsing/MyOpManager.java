@@ -4,16 +4,31 @@ import alice.tuprolog.Operator;
 import alice.tuprolog.OperatorManager;
 import alice.tuprolog.Prolog;
 
-@SuppressWarnings("serial")
+/**
+ * 
+ * @author ste (mailto: s.mariani@unibo.it) on 03/lug/2013
+ * 
+ */
 public class MyOpManager extends OperatorManager {
-	
-	public MyOpManager(){
-        for(Operator op : new Prolog().getOperatorManager().getOperators())
-        	opNew(op.name, op.type, op.prio);
-		opNew("?","xfx",551);
-		opNew("@","xfx",550);
-        opNew(":","xfx",549);
-        opNew(".","xfx",548);
-	}
+
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
+    /**
+     * 
+     */
+    public MyOpManager() {
+        super();
+        for (final Operator op : new Prolog().getOperatorManager()
+                .getOperators()) {
+            this.opNew(op.name, op.type, op.prio);
+        }
+        this.opNew("?", "xfx", 551);
+        this.opNew("@", "xfx", 550);
+        this.opNew(":", "xfx", 549);
+        this.opNew(".", "xfx", 548);
+    }
 
 }

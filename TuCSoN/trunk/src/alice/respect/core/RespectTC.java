@@ -1,26 +1,22 @@
 /*
- * ReSpecT - Copyright (C) aliCE team at deis.unibo.it
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
+ * ReSpecT - Copyright (C) aliCE team at deis.unibo.it This library is free
+ * software; you can redistribute it and/or modify it under the terms of the GNU
+ * Lesser General Public License as published by the Free Software Foundation;
+ * either version 2.1 of the License, or (at your option) any later version.
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details. You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 package alice.respect.core;
 
 import java.util.Iterator;
 import java.util.LinkedList;
 
-import alice.logictuple.*;
+import alice.logictuple.LogicTuple;
+import alice.logictuple.Var;
 import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.respect.api.IEnvironmentContext;
 import alice.respect.api.ILinkContext;
@@ -47,433 +43,573 @@ import alice.tuprolog.Prolog;
  * A ReSpecT tuple centre.
  * 
  * @author aricci
- *
+ * 
  */
 public class RespectTC implements IRespectTC {
-	
-	private RespectVM vm;
-	private Thread vmThread;
-	
-	public RespectTC(TupleCentreId tid,RespectTCContainer container, int qSize){
-		vm = new RespectVM(tid, container, qSize, this);
-		vmThread=new Thread(vm);
-		vmThread.start();
-	}
-	
-	public IRespectOperation spawn(IId id, LogicTuple t,
-			OperationCompletionListener l) throws OperationNotPossibleException {
-		RespectOperation op = RespectOperation.makeSpawn(getProlog(), t, l);
-		vm.doOperation(id, op);
-		return op;
-	}
 
-	public IRespectOperation spawn(IId id, LogicTuple t)
-			throws OperationNotPossibleException {
-		return this.spawn(id, t, null);
-	}
-	
-	/**
-	 * ORDINARY primitives ASYNCH semantics
-	 */
-	
-	public IRespectOperation out(IId id, LogicTuple t, OperationCompletionListener l) throws OperationNotPossibleException {
-		RespectOperation op = RespectOperation.makeOut(getProlog(), t, l);
-		vm.doOperation(id, op);
-		return op;
-	}
+    private final RespectVM vm;
+    private final Thread vmThread;
 
-	public IRespectOperation in(IId id, LogicTuple t, OperationCompletionListener l) throws OperationNotPossibleException {
-		RespectOperation op = RespectOperation.makeIn(getProlog(),t,l);
-		vm.doOperation(id,op);
-		return op;
-	}
+    /**
+     * 
+     * @param tid
+     *            the identifier of the tuple centre
+     * @param container
+     *            the ReSpecT wrapper this tuple centre refers to
+     * @param qSize
+     *            the maximum size of the input queue
+     */
+    public RespectTC(final TupleCentreId tid,
+            final RespectTCContainer container, final int qSize) {
+        this.vm = new RespectVM(tid, container, qSize, this);
+        this.vmThread = new Thread(this.vm);
+        this.vmThread.start();
+    }
 
-	public IRespectOperation rd(IId id, LogicTuple t, OperationCompletionListener l) throws OperationNotPossibleException {
-		RespectOperation op = RespectOperation.makeRd(getProlog(),t,l);
-		vm.doOperation(id,op);
-		return op;
-	}
+    public IRespectOperation get(final IId id)
+            throws OperationNotPossibleException {
+        return this.get(id, null);
+    }
 
-	public IRespectOperation inp(IId id, LogicTuple t, OperationCompletionListener l) throws OperationNotPossibleException {
-		RespectOperation op = RespectOperation.makeInp(getProlog(),t, l);
-		vm.doOperation(id, op);
-		return op;
-	}
+    public IRespectOperation get(final IId id,
+            final OperationCompletionListener l)
+            throws OperationNotPossibleException {
+        final RespectOperation op =
+                RespectOperation.makeGet(this.getProlog(),
+                        new LogicTuple("get"), l);
+        this.vm.doOperation(id, op);
+        return op;
+    }
 
-	public IRespectOperation rdp(IId id, LogicTuple t, OperationCompletionListener l) throws OperationNotPossibleException {
-		RespectOperation op = RespectOperation.makeRdp(getProlog(),t, l);
-		vm.doOperation(id, op);
-		return op;
-	}
-	
-	public IRespectOperation no(IId id, LogicTuple t, OperationCompletionListener l) throws OperationNotPossibleException {
-		RespectOperation op = RespectOperation.makeNo(getProlog(),t, l);
-		vm.doOperation(id, op);
-		return op;
-	}
-	
-	public IRespectOperation nop(IId id, LogicTuple t, OperationCompletionListener l) throws OperationNotPossibleException {
-		RespectOperation op = RespectOperation.makeNop(getProlog(),t, l);
-		vm.doOperation(id, op);
-		return op;
-	}
-	
-	public IRespectOperation get(IId id, OperationCompletionListener l) throws OperationNotPossibleException {
-		RespectOperation op = RespectOperation.makeGet(getProlog(),new LogicTuple("get"),l);
-		vm.doOperation(id,op);
-		return op;
-	}
-	
-	public IRespectOperation set(IId id, LogicTuple tuple, OperationCompletionListener l) throws OperationNotPossibleException, InvalidLogicTupleException {
-		RespectOperation op = RespectOperation.makeSet(getProlog(),tuple, l);
-		vm.doOperation(id,op);
-		return op;
-	}
-	
-	public IRespectOperation out_all(IId id, LogicTuple t, OperationCompletionListener l) throws OperationNotPossibleException {
-		RespectOperation op = RespectOperation.makeOutAll(getProlog(),t,l);
-		vm.doOperation(id,op);
-		return op;
-	}
-	
-	public IRespectOperation in_all(IId id, LogicTuple t, OperationCompletionListener l) throws OperationNotPossibleException {
-		RespectOperation op = RespectOperation.makeInAll(getProlog(),t,l);
-		vm.doOperation(id,op);
-		return op;
-	}
-	
-	public IRespectOperation rd_all(IId id, LogicTuple t, OperationCompletionListener l) throws OperationNotPossibleException {
-		RespectOperation op = RespectOperation.makeRdAll(getProlog(),t,l);
-		vm.doOperation(id,op);
-		return op;
-	}
-	
-	public IRespectOperation no_all(IId id, LogicTuple t, OperationCompletionListener l) throws OperationNotPossibleException {
-		RespectOperation op = RespectOperation.makeNoAll(getProlog(),t,l);
-		vm.doOperation(id,op);
-		return op;
-	}
-	
-	public IRespectOperation urd(IId id, LogicTuple t, OperationCompletionListener l) throws OperationNotPossibleException {
-		RespectOperation op = RespectOperation.makeUrd(getProlog(),t,l);
-		vm.doOperation(id,op);
-		return op;
-	}
-	
-	public IRespectOperation uin(IId id, LogicTuple t, OperationCompletionListener l) throws OperationNotPossibleException {
-		RespectOperation op = RespectOperation.makeUin(getProlog(),t,l);
-		vm.doOperation(id,op);
-		return op;
-	}
-	
-	public IRespectOperation uno(IId id, LogicTuple t, OperationCompletionListener l) throws OperationNotPossibleException {
-		RespectOperation op = RespectOperation.makeUno(getProlog(),t,l);
-		vm.doOperation(id,op);
-		return op;
-	}
-	
-	public IRespectOperation urdp(IId id, LogicTuple t, OperationCompletionListener l) throws OperationNotPossibleException {
-		RespectOperation op = RespectOperation.makeUrdp(getProlog(),t,l);
-		vm.doOperation(id,op);
-		return op;
-	}
-	
-	public IRespectOperation uinp(IId id, LogicTuple t, OperationCompletionListener l) throws OperationNotPossibleException {
-		RespectOperation op = RespectOperation.makeUinp(getProlog(),t,l);
-		vm.doOperation(id,op);
-		return op;
-	}
-	
-	public IRespectOperation unop(IId id, LogicTuple t, OperationCompletionListener l) throws OperationNotPossibleException {
-		RespectOperation op = RespectOperation.makeUnop(getProlog(),t,l);
-		vm.doOperation(id,op);
-		return op;
-	}
-	
-	/**
-	 * SPECIFICATION primitives ASYNCH semantics
-	 */
+    /**
+     * 
+     * @return the environment context toward this tuple centre
+     */
+    public IEnvironmentContext getEnvironmentContext() {
+        return new EnviromentContext(this.vm.getRespectVMContext());
+    }
 
-	public IRespectOperation out_s(IId id, LogicTuple t, OperationCompletionListener l) throws OperationNotPossibleException {
-		RespectOperation op = RespectOperation.makeOut_s(getProlog(),t, l);
-		vm.doOperation(id,op);
-		return op;
-	}
-	
-	public IRespectOperation in_s(IId id, LogicTuple t, OperationCompletionListener l) throws OperationNotPossibleException {
-		RespectOperation op = RespectOperation.makeIn_s(getProlog(),t,l);
-		vm.doOperation(id,op);
-		return op;
-	}
-	
-	public IRespectOperation rd_s(IId id, LogicTuple t, OperationCompletionListener l) throws OperationNotPossibleException {
-		RespectOperation op = RespectOperation.makeRd_s(getProlog(),t,l);
-		vm.doOperation(id,op);
-		return op;
-	}
-	
-	public IRespectOperation inp_s(IId id, LogicTuple t, OperationCompletionListener l) throws OperationNotPossibleException {
-		RespectOperation op = RespectOperation.makeInp_s(getProlog(),t,l);
-		vm.doOperation(id,op);
-		return op;
-	}
-	
-	public IRespectOperation rdp_s(IId id, LogicTuple t, OperationCompletionListener l) throws OperationNotPossibleException {
-		RespectOperation op = RespectOperation.makeRdp_s(getProlog(),t,l);
-		vm.doOperation(id,op);
-		return op;
-	}
-	
-	public IRespectOperation no_s(IId id, LogicTuple t, OperationCompletionListener l) throws OperationNotPossibleException {
-		RespectOperation op = RespectOperation.makeNo_s(getProlog(),t,l);
-		vm.doOperation(id,op);
-		return op;
-	}
-	
-	public IRespectOperation nop_s(IId id, LogicTuple t, OperationCompletionListener l) throws OperationNotPossibleException {
-		RespectOperation op = RespectOperation.makeNop_s(getProlog(),t,l);
-		vm.doOperation(id,op);
-		return op;
-	}
-	
-	public IRespectOperation set_s(IId aid, RespectSpecification spec, OperationCompletionListener l) throws OperationNotPossibleException {
-		RespectOperation op = RespectOperation.makeSet_s(getProlog(), spec, l);
-		vm.doOperation(aid,op);
-		return op;
-	}
-	
-	public IRespectOperation set_s(IId aid, LogicTuple t, OperationCompletionListener l) throws OperationNotPossibleException {
-		RespectOperation op = RespectOperation.makeSet_s(getProlog(), t, l);
-		vm.doOperation(aid,op);
-		return op;
-	}
+    public TupleCentreId getId() {
+        return this.vm.getId();
+    }
 
-	public IRespectOperation get_s(IId aid, OperationCompletionListener l) throws OperationNotPossibleException {
-		RespectOperation op = RespectOperation.makeGet_s(getProlog(),new LogicTuple("spec", new Var("S")), l);
-		vm.doOperation(aid,op);
-		return op;
-	}
-	
-	/**
-	 * ORDINARY primitives SYNCH semantics
-	 */
+    /**
+     * Gets a interface for linking operations
+     * 
+     * @return the linking context toward this tuple centre
+     */
+    public ILinkContext getLinkContext() {
+        return new LinkContext(this.vm);
+    }
 
-	public IRespectOperation out(IId id, LogicTuple t) throws OperationNotPossibleException {
-		return this.out(id, t,null);
-	}
-	
-	public IRespectOperation in(IId id, LogicTuple t) throws OperationNotPossibleException {
-		return this.in(id, t,null);
-	}
+    /**
+     * Gets a context for tuple centre management.
+     * 
+     * @return the management context toward this tuple centre
+     */
+    public IManagementContext getManagementContext() {
+        return new ManagementContext(this.vm);
+    }
 
-	public IRespectOperation rd(IId id, LogicTuple t) throws OperationNotPossibleException {
-		return this.rd(id, t,null);
-	}
+    /**
+     * Gets a context with no blocking functionalities
+     * 
+     * @return the ordinary, asynchronous context toward this tuple centre
+     */
+    public IOrdinaryAsynchInterface getOrdinaryAsynchInterface() {
+        return new OrdinaryAsynchInterface(this);
+    }
 
-	public IRespectOperation inp(IId id, LogicTuple t) throws OperationNotPossibleException {
-		return this.inp(id, t,null);
-	}
+    /**
+     * Gets a context with blocking functionalities
+     * 
+     * @return the ordinary, synchronous context toward this tuple centre
+     */
+    public IOrdinarySynchInterface getOrdinarySynchInterface() {
+        return new OrdinarySynchInterface(this);
+    }
 
-	public IRespectOperation rdp(IId id, LogicTuple t) throws OperationNotPossibleException {
-		return this.rdp(id, t,null);
-	}
-	
-	public IRespectOperation no(IId id, LogicTuple t) throws OperationNotPossibleException {
-		return this.no(id, t,null);
-	}
-	
-	public IRespectOperation nop(IId id, LogicTuple t) throws OperationNotPossibleException {
-		return this.nop(id, t,null);
-	}
-	
-	public IRespectOperation get(IId id) throws OperationNotPossibleException {
-		return this.get(id,null);
-	}
-	
-	public IRespectOperation set(IId id, LogicTuple tuple) throws OperationNotPossibleException, InvalidLogicTupleException {
-		return this.set(id, tuple, null);
-	}
-	
-	public IRespectOperation out_all(IId id, LogicTuple t) throws OperationNotPossibleException {
-		return this.out_all(id, t,null);
-	}
-	
-	public IRespectOperation in_all(IId id, LogicTuple t) throws OperationNotPossibleException {
-		return this.in_all(id, t,null);
-	}
-	
-	public IRespectOperation rd_all(IId id, LogicTuple t) throws OperationNotPossibleException {
-		return this.rd_all(id, t,null);
-	}
-	
-	public IRespectOperation no_all(IId id, LogicTuple t) throws OperationNotPossibleException {
-		return this.no_all(id, t,null);
-	}
-	
-	public IRespectOperation urd(IId id, LogicTuple t) throws OperationNotPossibleException {
-		return this.urd(id, t,null);
-	}
-	
-	public IRespectOperation uin(IId id, LogicTuple t) throws OperationNotPossibleException {
-		return this.uin(id, t,null);
-	}
-	
-	public IRespectOperation uno(IId id, LogicTuple t) throws OperationNotPossibleException {
-		return this.uno(id, t,null);
-	}
-	
-	public IRespectOperation urdp(IId id, LogicTuple t) throws OperationNotPossibleException {
-		return this.urdp(id, t,null);
-	}
-	
-	public IRespectOperation uinp(IId id, LogicTuple t) throws OperationNotPossibleException {
-		return this.uinp(id, t,null);
-	}
-	
-	public IRespectOperation unop(IId id, LogicTuple t) throws OperationNotPossibleException {
-		return this.unop(id, t,null);
-	}
-	
-	/**
-	 * SPECIFICATION primitives SYNCH semantics
-	 */
-	
-	public IRespectOperation out_s(IId id, LogicTuple t) throws OperationNotPossibleException {
-		return this.out_s(id, t, null);
-	}
-	
-	public IRespectOperation in_s(IId id, LogicTuple t) throws OperationNotPossibleException {
-		return this.in_s(id, t,null);
-	}
-	
-	public IRespectOperation rd_s(IId id, LogicTuple t) throws OperationNotPossibleException {
-		return this.rd_s(id, t,null);
-	}
-	
-	public IRespectOperation inp_s(IId id, LogicTuple t) throws OperationNotPossibleException {
-		return this.inp_s(id, t,null);
-	}
+    public IRespectOperation getS(final IId aid)
+            throws OperationNotPossibleException {
+        return this.getS(aid, null);
+    }
 
-	public IRespectOperation rdp_s(IId id, LogicTuple t) throws OperationNotPossibleException {
-		return this.rdp_s(id, t,null);
-	}
-	
-	public IRespectOperation no_s(IId id, LogicTuple t) throws OperationNotPossibleException{
-		return this.no_s(id, t, null);
-	}
-	
-	public IRespectOperation nop_s(IId id, LogicTuple t) throws OperationNotPossibleException{
-		return this.nop_s(id, t, null);
-	}
-	
-	public IRespectOperation get_s(IId aid) throws OperationNotPossibleException {
-		return this.get_s(aid, null);
-	}
-	
-	public IRespectOperation set_s(IId aid, RespectSpecification spec) throws OperationNotPossibleException, InvalidSpecificationException {
-		boolean accepted = vm.setReactionSpec(spec);
-		if (!accepted){
-			throw new InvalidSpecificationException();
-		}else{
-			RespectOperation op = RespectOperation.makeSet_s(getProlog(), null);
-			Iterator<Tuple> rit = vm.getRespectVMContext().getSpecTupleSetIterator();
-			LinkedList<Tuple> reactionList = new LinkedList<Tuple>();
-			while(rit.hasNext())
-				reactionList.add(rit.next());
-			op.setOpResult(Outcome.SUCCESS);
-			op.setTupleListResult(reactionList);
-			return op;
-		}
-	}
-	
-	public IRespectOperation set_s(IId aid, LogicTuple t)
-			throws OperationNotPossibleException {
-		return this.set_s(aid, t, null);
-	}
-	
-	
+    public IRespectOperation getS(final IId aid,
+            final OperationCompletionListener l)
+            throws OperationNotPossibleException {
+        final RespectOperation op =
+                RespectOperation.makeGetS(this.getProlog(), new LogicTuple(
+                        "spec", new Var("S")), l);
+        this.vm.doOperation(aid, op);
+        return op;
+    }
 
-	/**
-	 * Gets the tuple centre id
-	 * 
-	 * @return the id
-	 */
-	public TupleCentreId getId(){
-		return vm.getId();
-	}
-	
-	/**
-	 * Gets a context for tuple centre management.
-	 * 
-	 * @return
-	 */
-	public IManagementContext getManagementContext(){
-		return new ManagementContext(vm,vmThread);
-	}
-	
-	/**
-	 * Gets a context with blocking functionalities
-	 * 
-	 * @return
-	 */
-	public IOrdinarySynchInterface getOrdinarySynchInterface(){
-		return new OrdinarySynchInterface(this);
-	}
-	
-	/**
-	 * Gets a interface for linking operations
-	 * 
-	 * @return
-	 */
-	public ILinkContext getLinkContext(){
-		return new LinkContext(vm);
-	}
+    /**
+     * 
+     * @return the specification, asynchronous context toward this tuple centre
+     */
+    public ISpecificationAsynchInterface getSpecificationAsynchInterface() {
+        return new SpecificationAsynchInterface(this);
+    }
 
-	/**
-	 * Gets a context with no blocking functionalities
-	 * 
-	 * @return
-	 */
-	public IOrdinaryAsynchInterface getOrdinaryAsynchInterface(){
-		return new OrdinaryAsynchInterface(this);
-	}
-	
-	/**
-	 * Gets a context with timing functionalities.
-	 * 
-	 * @return
-	 */
-	public ITimedContext getTimedContext(){
-		return new TimedContext(this);
-	}
+    /**
+     * Gets a context with blocking specification functionalities
+     * 
+     * @return the specification, synchronous context toward this tuple centre
+     */
+    public ISpecificationSynchInterface getSpecificationSynchInterface() {
+        return new SpecificationSynchInterface(this);
+    }
 
-	/**
-	 * Gets a context with blocking specification functionalities 
-	 * 
-	 * @return
-	 */
-	public ISpecificationSynchInterface getSpecificationSynchInterface() {
-		return new SpecificationSynchInterface(this);
-	}
-	
-	public ISpecificationAsynchInterface getSpecificationAsynchInterface() {
-		return new SpecificationAsynchInterface(this);
-	}
+    /**
+     * Gets a context with timing functionalities.
+     * 
+     * @return the timed context toward this tuple centre
+     */
+    public ITimedContext getTimedContext() {
+        return new TimedContext(this);
+    }
 
-	public Thread getVMThread() {
-		return vmThread;
-	}
-	
-	public IEnvironmentContext getEnvironmentContext(){
-	    return new EnviromentContext(vm.getRespectVMContext());
-	}
-	
-	public RespectVM getVM(){
-		return vm;
-	}
-	
-	private Prolog getProlog(){
-		return vm.getRespectVMContext().getPrologCore();
-	}
-	
+    public RespectVM getVM() {
+        return this.vm;
+    }
+
+    /**
+     * 
+     * @return the Java thread executing the ReSpecT VM managing this tuple
+     *         centre
+     */
+    public Thread getVMThread() {
+        return this.vmThread;
+    }
+
+    public IRespectOperation in(final IId id, final LogicTuple t)
+            throws OperationNotPossibleException {
+        return this.in(id, t, null);
+    }
+
+    public IRespectOperation in(final IId id, final LogicTuple t,
+            final OperationCompletionListener l)
+            throws OperationNotPossibleException {
+        final RespectOperation op =
+                RespectOperation.makeIn(this.getProlog(), t, l);
+        this.vm.doOperation(id, op);
+        return op;
+    }
+
+    public IRespectOperation inAll(final IId id, final LogicTuple t)
+            throws OperationNotPossibleException {
+        return this.inAll(id, t, null);
+    }
+
+    public IRespectOperation inAll(final IId id, final LogicTuple t,
+            final OperationCompletionListener l)
+            throws OperationNotPossibleException {
+        final RespectOperation op =
+                RespectOperation.makeInAll(this.getProlog(), t, l);
+        this.vm.doOperation(id, op);
+        return op;
+    }
+
+    public IRespectOperation inp(final IId id, final LogicTuple t)
+            throws OperationNotPossibleException {
+        return this.inp(id, t, null);
+    }
+
+    public IRespectOperation inp(final IId id, final LogicTuple t,
+            final OperationCompletionListener l)
+            throws OperationNotPossibleException {
+        final RespectOperation op =
+                RespectOperation.makeInp(this.getProlog(), t, l);
+        this.vm.doOperation(id, op);
+        return op;
+    }
+
+    public IRespectOperation inpS(final IId id, final LogicTuple t)
+            throws OperationNotPossibleException {
+        return this.inpS(id, t, null);
+    }
+
+    public IRespectOperation inpS(final IId id, final LogicTuple t,
+            final OperationCompletionListener l)
+            throws OperationNotPossibleException {
+        final RespectOperation op =
+                RespectOperation.makeInpS(this.getProlog(), t, l);
+        this.vm.doOperation(id, op);
+        return op;
+    }
+
+    public IRespectOperation inS(final IId id, final LogicTuple t)
+            throws OperationNotPossibleException {
+        return this.inS(id, t, null);
+    }
+
+    public IRespectOperation inS(final IId id, final LogicTuple t,
+            final OperationCompletionListener l)
+            throws OperationNotPossibleException {
+        final RespectOperation op =
+                RespectOperation.makeInS(this.getProlog(), t, l);
+        this.vm.doOperation(id, op);
+        return op;
+    }
+
+    public IRespectOperation no(final IId id, final LogicTuple t)
+            throws OperationNotPossibleException {
+        return this.no(id, t, null);
+    }
+
+    public IRespectOperation no(final IId id, final LogicTuple t,
+            final OperationCompletionListener l)
+            throws OperationNotPossibleException {
+        final RespectOperation op =
+                RespectOperation.makeNo(this.getProlog(), t, l);
+        this.vm.doOperation(id, op);
+        return op;
+    }
+
+    public IRespectOperation noAll(final IId id, final LogicTuple t)
+            throws OperationNotPossibleException {
+        return this.noAll(id, t, null);
+    }
+
+    public IRespectOperation noAll(final IId id, final LogicTuple t,
+            final OperationCompletionListener l)
+            throws OperationNotPossibleException {
+        final RespectOperation op =
+                RespectOperation.makeNoAll(this.getProlog(), t, l);
+        this.vm.doOperation(id, op);
+        return op;
+    }
+
+    public IRespectOperation nop(final IId id, final LogicTuple t)
+            throws OperationNotPossibleException {
+        return this.nop(id, t, null);
+    }
+
+    public IRespectOperation nop(final IId id, final LogicTuple t,
+            final OperationCompletionListener l)
+            throws OperationNotPossibleException {
+        final RespectOperation op =
+                RespectOperation.makeNop(this.getProlog(), t, l);
+        this.vm.doOperation(id, op);
+        return op;
+    }
+
+    public IRespectOperation nopS(final IId id, final LogicTuple t)
+            throws OperationNotPossibleException {
+        return this.nopS(id, t, null);
+    }
+
+    public IRespectOperation nopS(final IId id, final LogicTuple t,
+            final OperationCompletionListener l)
+            throws OperationNotPossibleException {
+        final RespectOperation op =
+                RespectOperation.makeNopS(this.getProlog(), t, l);
+        this.vm.doOperation(id, op);
+        return op;
+    }
+
+    public IRespectOperation noS(final IId id, final LogicTuple t)
+            throws OperationNotPossibleException {
+        return this.noS(id, t, null);
+    }
+
+    public IRespectOperation noS(final IId id, final LogicTuple t,
+            final OperationCompletionListener l)
+            throws OperationNotPossibleException {
+        final RespectOperation op =
+                RespectOperation.makeNoS(this.getProlog(), t, l);
+        this.vm.doOperation(id, op);
+        return op;
+    }
+
+    /**
+     * ORDINARY primitives SYNCH semantics
+     */
+
+    public IRespectOperation out(final IId id, final LogicTuple t)
+            throws OperationNotPossibleException {
+        return this.out(id, t, null);
+    }
+
+    /**
+     * ORDINARY primitives ASYNCH semantics
+     */
+
+    public IRespectOperation out(final IId id, final LogicTuple t,
+            final OperationCompletionListener l)
+            throws OperationNotPossibleException {
+        final RespectOperation op =
+                RespectOperation.makeOut(this.getProlog(), t, l);
+        this.vm.doOperation(id, op);
+        return op;
+    }
+
+    public IRespectOperation outAll(final IId id, final LogicTuple t)
+            throws OperationNotPossibleException {
+        return this.outAll(id, t, null);
+    }
+
+    public IRespectOperation outAll(final IId id, final LogicTuple t,
+            final OperationCompletionListener l)
+            throws OperationNotPossibleException {
+        final RespectOperation op =
+                RespectOperation.makeOutAll(this.getProlog(), t, l);
+        this.vm.doOperation(id, op);
+        return op;
+    }
+
+    /**
+     * SPECIFICATION primitives SYNCH semantics
+     */
+
+    public IRespectOperation outS(final IId id, final LogicTuple t)
+            throws OperationNotPossibleException {
+        return this.outS(id, t, null);
+    }
+
+    /**
+     * SPECIFICATION primitives ASYNCH semantics
+     */
+
+    public IRespectOperation outS(final IId id, final LogicTuple t,
+            final OperationCompletionListener l)
+            throws OperationNotPossibleException {
+        final RespectOperation op =
+                RespectOperation.makeOutS(this.getProlog(), t, l);
+        this.vm.doOperation(id, op);
+        return op;
+    }
+
+    public IRespectOperation rd(final IId id, final LogicTuple t)
+            throws OperationNotPossibleException {
+        return this.rd(id, t, null);
+    }
+
+    public IRespectOperation rd(final IId id, final LogicTuple t,
+            final OperationCompletionListener l)
+            throws OperationNotPossibleException {
+        final RespectOperation op =
+                RespectOperation.makeRd(this.getProlog(), t, l);
+        this.vm.doOperation(id, op);
+        return op;
+    }
+
+    public IRespectOperation rdAll(final IId id, final LogicTuple t)
+            throws OperationNotPossibleException {
+        return this.rdAll(id, t, null);
+    }
+
+    public IRespectOperation rdAll(final IId id, final LogicTuple t,
+            final OperationCompletionListener l)
+            throws OperationNotPossibleException {
+        final RespectOperation op =
+                RespectOperation.makeRdAll(this.getProlog(), t, l);
+        this.vm.doOperation(id, op);
+        return op;
+    }
+
+    public IRespectOperation rdp(final IId id, final LogicTuple t)
+            throws OperationNotPossibleException {
+        return this.rdp(id, t, null);
+    }
+
+    public IRespectOperation rdp(final IId id, final LogicTuple t,
+            final OperationCompletionListener l)
+            throws OperationNotPossibleException {
+        final RespectOperation op =
+                RespectOperation.makeRdp(this.getProlog(), t, l);
+        this.vm.doOperation(id, op);
+        return op;
+    }
+
+    public IRespectOperation rdpS(final IId id, final LogicTuple t)
+            throws OperationNotPossibleException {
+        return this.rdpS(id, t, null);
+    }
+
+    public IRespectOperation rdpS(final IId id, final LogicTuple t,
+            final OperationCompletionListener l)
+            throws OperationNotPossibleException {
+        final RespectOperation op =
+                RespectOperation.makeRdpS(this.getProlog(), t, l);
+        this.vm.doOperation(id, op);
+        return op;
+    }
+
+    public IRespectOperation rdS(final IId id, final LogicTuple t)
+            throws OperationNotPossibleException {
+        return this.rdS(id, t, null);
+    }
+
+    public IRespectOperation rdS(final IId id, final LogicTuple t,
+            final OperationCompletionListener l)
+            throws OperationNotPossibleException {
+        final RespectOperation op =
+                RespectOperation.makeRdS(this.getProlog(), t, l);
+        this.vm.doOperation(id, op);
+        return op;
+    }
+
+    public IRespectOperation set(final IId id, final LogicTuple tuple)
+            throws OperationNotPossibleException, InvalidLogicTupleException {
+        return this.set(id, tuple, null);
+    }
+
+    public IRespectOperation set(final IId id, final LogicTuple tuple,
+            final OperationCompletionListener l)
+            throws OperationNotPossibleException, InvalidLogicTupleException {
+        final RespectOperation op =
+                RespectOperation.makeSet(this.getProlog(), tuple, l);
+        this.vm.doOperation(id, op);
+        return op;
+    }
+
+    public IRespectOperation setS(final IId aid, final LogicTuple t)
+            throws OperationNotPossibleException {
+        return this.setS(aid, t, null);
+    }
+
+    public IRespectOperation setS(final IId aid, final LogicTuple t,
+            final OperationCompletionListener l)
+            throws OperationNotPossibleException {
+        final RespectOperation op =
+                RespectOperation.makeSetS(this.getProlog(), t, l);
+        this.vm.doOperation(aid, op);
+        return op;
+    }
+
+    public IRespectOperation
+            setS(final IId aid, final RespectSpecification spec)
+                    throws OperationNotPossibleException,
+                    InvalidSpecificationException {
+        final boolean accepted = this.vm.setReactionSpec(spec);
+        if (!accepted) {
+            throw new InvalidSpecificationException();
+        }
+        final RespectOperation op =
+                RespectOperation.makeSetS(this.getProlog(), null);
+        final Iterator<LogicTuple> rit =
+                this.vm.getRespectVMContext().getSpecTupleSetIterator();
+        final LinkedList<Tuple> reactionList = new LinkedList<Tuple>();
+        while (rit.hasNext()) {
+            reactionList.add(rit.next());
+        }
+        op.setOpResult(Outcome.SUCCESS);
+        op.setTupleListResult(reactionList);
+        return op;
+    }
+
+    public IRespectOperation
+            setS(final IId aid, final RespectSpecification spec,
+                    final OperationCompletionListener l)
+                    throws OperationNotPossibleException {
+        final RespectOperation op =
+                RespectOperation.makeSetS(this.getProlog(), spec, l);
+        this.vm.doOperation(aid, op);
+        return op;
+    }
+
+    public IRespectOperation spawn(final IId id, final LogicTuple t)
+            throws OperationNotPossibleException {
+        return this.spawn(id, t, null);
+    }
+
+    public IRespectOperation spawn(final IId id, final LogicTuple t,
+            final OperationCompletionListener l)
+            throws OperationNotPossibleException {
+        final RespectOperation op =
+                RespectOperation.makeSpawn(this.getProlog(), t, l);
+        this.vm.doOperation(id, op);
+        return op;
+    }
+
+    public IRespectOperation uin(final IId id, final LogicTuple t)
+            throws OperationNotPossibleException {
+        return this.uin(id, t, null);
+    }
+
+    public IRespectOperation uin(final IId id, final LogicTuple t,
+            final OperationCompletionListener l)
+            throws OperationNotPossibleException {
+        final RespectOperation op =
+                RespectOperation.makeUin(this.getProlog(), t, l);
+        this.vm.doOperation(id, op);
+        return op;
+    }
+
+    public IRespectOperation uinp(final IId id, final LogicTuple t)
+            throws OperationNotPossibleException {
+        return this.uinp(id, t, null);
+    }
+
+    public IRespectOperation uinp(final IId id, final LogicTuple t,
+            final OperationCompletionListener l)
+            throws OperationNotPossibleException {
+        final RespectOperation op =
+                RespectOperation.makeUinp(this.getProlog(), t, l);
+        this.vm.doOperation(id, op);
+        return op;
+    }
+
+    public IRespectOperation uno(final IId id, final LogicTuple t)
+            throws OperationNotPossibleException {
+        return this.uno(id, t, null);
+    }
+
+    public IRespectOperation uno(final IId id, final LogicTuple t,
+            final OperationCompletionListener l)
+            throws OperationNotPossibleException {
+        final RespectOperation op =
+                RespectOperation.makeUno(this.getProlog(), t, l);
+        this.vm.doOperation(id, op);
+        return op;
+    }
+
+    public IRespectOperation unop(final IId id, final LogicTuple t)
+            throws OperationNotPossibleException {
+        return this.unop(id, t, null);
+    }
+
+    public IRespectOperation unop(final IId id, final LogicTuple t,
+            final OperationCompletionListener l)
+            throws OperationNotPossibleException {
+        final RespectOperation op =
+                RespectOperation.makeUnop(this.getProlog(), t, l);
+        this.vm.doOperation(id, op);
+        return op;
+    }
+
+    public IRespectOperation urd(final IId id, final LogicTuple t)
+            throws OperationNotPossibleException {
+        return this.urd(id, t, null);
+    }
+
+    public IRespectOperation urd(final IId id, final LogicTuple t,
+            final OperationCompletionListener l)
+            throws OperationNotPossibleException {
+        final RespectOperation op =
+                RespectOperation.makeUrd(this.getProlog(), t, l);
+        this.vm.doOperation(id, op);
+        return op;
+    }
+
+    public IRespectOperation urdp(final IId id, final LogicTuple t)
+            throws OperationNotPossibleException {
+        return this.urdp(id, t, null);
+    }
+
+    public IRespectOperation urdp(final IId id, final LogicTuple t,
+            final OperationCompletionListener l)
+            throws OperationNotPossibleException {
+        final RespectOperation op =
+                RespectOperation.makeUrdp(this.getProlog(), t, l);
+        this.vm.doOperation(id, op);
+        return op;
+    }
+
+    private Prolog getProlog() {
+        return this.vm.getRespectVMContext().getPrologCore();
+    }
+
 }
