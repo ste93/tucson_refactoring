@@ -27,18 +27,20 @@ public class RangeProbe implements ActionListener, ISimpleProbe {
             if (((javax.swing.JButton) arg0.getSource()).getName().equals(
                     "btnMin")) {
                 if (this.transducer == null) {
+                    TransducerManager.getTransducerManager();
                     this.transducer =
-                            TransducerManager.getTransducerManager()
-                                    .getTransducer(this.tId.getAgentName());
+                            TransducerManager.getTransducer(this.tId
+                                    .getAgentName());
                 }
                 this.transducer.notifyEnvEvent("min",
                         Integer.parseInt(this.gui.getMinValue()));
             } else if (((javax.swing.JButton) arg0.getSource()).getName()
                     .equals("btnMax")) {
                 if (this.transducer == null) {
+                    TransducerManager.getTransducerManager();
                     this.transducer =
-                            TransducerManager.getTransducerManager()
-                                    .getTransducer(this.tId.getAgentName());
+                            TransducerManager.getTransducer(this.tId
+                                    .getAgentName());
                 }
                 this.transducer.notifyEnvEvent("max",
                         Integer.parseInt(this.gui.getMaxValue()));
@@ -58,20 +60,22 @@ public class RangeProbe implements ActionListener, ISimpleProbe {
 
     public boolean readValue(final String key) {
         try {
-            if (key.equals("min")) {
+            if ("min".equals(key)) {
                 if (this.transducer == null) {
+                    TransducerManager.getTransducerManager();
                     this.transducer =
-                            TransducerManager.getTransducerManager()
-                                    .getTransducer(this.tId.getAgentName());
+                            TransducerManager.getTransducer(this.tId
+                                    .getAgentName());
                 }
                 this.transducer.notifyEnvEvent(key,
                         Integer.parseInt(this.gui.getMinValue()));
                 return true;
-            } else if (key.equals("max")) {
+            } else if ("max".equals(key)) {
                 if (this.transducer == null) {
+                    TransducerManager.getTransducerManager();
                     this.transducer =
-                            TransducerManager.getTransducerManager()
-                                    .getTransducer(this.tId.getAgentName());
+                            TransducerManager.getTransducer(this.tId
+                                    .getAgentName());
                 }
                 this.transducer.notifyEnvEvent(key,
                         Integer.parseInt(this.gui.getMaxValue()));

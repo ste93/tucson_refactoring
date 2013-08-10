@@ -473,8 +473,9 @@ public class ACCProxyNodeSide extends AbstractACCProxyNodeSide {
                         break;
                     }
                 }
-                this.requests.put(new Long(msg.getId()), msg);
-                this.opVsReq.put(new Long(op.getId()), new Long(msg.getId()));
+                this.requests.put(Long.valueOf(msg.getId()), msg);
+                this.opVsReq.put(Long.valueOf(op.getId()),
+                        Long.valueOf(msg.getId()));
             }
 
         }

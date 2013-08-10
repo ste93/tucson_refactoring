@@ -4,6 +4,8 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import alice.respect.api.EnvId;
@@ -25,54 +27,18 @@ import alice.tuprolog.Term;
  * @author Steven Maraldi
  * 
  */
-public class TransducerManager {
+public final class TransducerManager {
     /** List of the associations transducer/probes **/
-    private static HashMap<TransducerId, ArrayList<ProbeId>> resourceList;
+    private static Map<TransducerId, List<ProbeId>> resourceList;
 
     /** The TransducerManager instance **/
     private static TransducerManager tm;
 
     /** List of all the transducers on a single node **/
-    private static HashMap<TransducerId, Transducer> transducerList;
+    private static Map<TransducerId, Transducer> transducerList;
 
     /** List of the associations tuple centre/transducers **/
-    private static HashMap<TupleCentreId, ArrayList<TransducerId>> tupleCentresAssociated;
-
-    /**
-     * Gets the static instance of the transducer manager
-     * 
-     * @return the transducer manager
-     */
-    public synchronized static TransducerManager getTransducerManager() {
-        if (TransducerManager.tm == null) {
-            TransducerManager.tm = new TransducerManager();
-        }
-
-        return TransducerManager.tm;
-    }
-
-    /**
-     * Utility methods used to communicate an output message to the console.
-     * 
-     * @param msg
-     *            message to print.
-     */
-    private static void speak(final String msg) {
-        System.out.println("[TransducerManager] " + msg);
-    }
-
-    private static void speakErr(final String msg) {
-        System.err.println("[TransducerManager] " + msg);
-    }
-
-    private TransducerManager() {
-        TransducerManager.transducerList =
-                new HashMap<TransducerId, Transducer>();
-        TransducerManager.resourceList =
-                new HashMap<TransducerId, ArrayList<ProbeId>>();
-        TransducerManager.tupleCentresAssociated =
-                new HashMap<TupleCentreId, ArrayList<TransducerId>>();
-    }
+    private static Map<TupleCentreId, List<TransducerId>> tupleCentresAssociated;
 
     /**
      * Adds a new resource and associate it to the transducer tId.
@@ -84,7 +50,7 @@ public class TransducerManager {
      * @param probe
      *            the probe itself
      */
-    public boolean addResource(final ProbeId id, final TransducerId tId,
+    public static boolean addResource(final ProbeId id, final TransducerId tId,
             final ISimpleProbe probe) {
         TransducerManager.speak("Adding new resource " + id.getLocalName()
                 + " to transducer " + tId.getAgentName());
@@ -121,7 +87,7 @@ public class TransducerManager {
      * @throws InvocationTargetException
      * @throws IllegalArgumentException
      */
-    public boolean createTransducer(final String className,
+    public static boolean createTransducer(final String className,
             final TransducerId id, final TupleCentreId tcId,
             final ProbeId probeId) throws InstantiationException,
             IllegalAccessException, ClassNotFoundException,
@@ -160,8 +126,8 @@ public class TransducerManager {
         final ArrayList<ProbeId> probes = new ArrayList<ProbeId>();
         probes.add(probeId);
         TransducerManager.resourceList.put(id, probes);
-        this.addResource(probeId, id, ResourceManager.getResourceManager()
-                .getResource(probeId));
+        TransducerManager.addResource(probeId, id, ResourceManager
+                .getResourceManager().getResource(probeId));
         TransducerManager.speak("Transducer " + id.toString()
                 + " has been registered");
         return true;
@@ -174,7 +140,7 @@ public class TransducerManager {
      *            the transducer's identifier
      * @return a resource list as a ProbeId array.
      */
-    public ProbeId[] getResources(final TransducerId tId) {
+    public static ProbeId[] getResources(final TransducerId tId) {
         if (!TransducerManager.resourceList.containsKey(tId)) {
             TransducerManager.speakErr("The transducer " + tId.getAgentName()
                     + " doesn't exist");
@@ -196,7 +162,7 @@ public class TransducerManager {
      *            the transducer's name
      * @return the transducer
      */
-    public TransducerStandardInterface getTransducer(final String tId) {
+    public static TransducerStandardInterface getTransducer(final String tId) {
         final Object[] keySet =
                 TransducerManager.transducerList.keySet().toArray();
         for (final Object element : keySet) {
@@ -214,7 +180,7 @@ public class TransducerManager {
      *            resource associated to the transducer
      * @return the transducer identifier
      */
-    public TransducerId getTransducerId(final EnvId probe) {
+    public static TransducerId getTransducerId(final EnvId probe) {
         final Set<TransducerId> set = TransducerManager.resourceList.keySet();
         final Object[] keySet = set.toArray();
         for (final Object element : keySet) {
@@ -241,7 +207,7 @@ public class TransducerManager {
      *            the tuple centre's identifier
      * @return list of transducer id associated to tcId
      */
-    public TransducerId[] getTransducerIds(final TupleCentreId tcId) {
+    public static TransducerId[] getTransducerIds(final TupleCentreId tcId) {
         final Object[] tcIds =
                 TransducerManager.tupleCentresAssociated.keySet().toArray();
         for (final Object tcId2 : tcIds) {
@@ -260,7 +226,20 @@ public class TransducerManager {
         TransducerManager
                 .speakErr("There's no transducer associated to tuple centre "
                         + tcId + " or it doesn't exist at all");
-        return null;
+        return new TransducerId[] {};
+    }
+
+    /**
+     * Gets the static instance of the transducer manager
+     * 
+     * @return the transducer manager
+     */
+    public synchronized static TransducerManager getTransducerManager() {
+        if (TransducerManager.tm == null) {
+            TransducerManager.tm = new TransducerManager();
+        }
+
+        return TransducerManager.tm;
     }
 
     /**
@@ -271,7 +250,7 @@ public class TransducerManager {
      *            the transducer's identifier
      * @return the tuple centre's identifier
      */
-    public TupleCentreId getTupleCentreId(final TransducerId tId) {
+    public static TupleCentreId getTupleCentreId(final TransducerId tId) {
         if (TransducerManager.tupleCentresAssociated.containsValue(tId)) {
             final TupleCentreId[] tcArray =
                     (TupleCentreId[]) TransducerManager.tupleCentresAssociated
@@ -289,41 +268,13 @@ public class TransducerManager {
     }
 
     /**
-     * Removes a probe from the resource list
-     * 
-     * @param probe
-     *            the resource's identifier to remove
-     * @throws TucsonOperationNotPossibleException
-     */
-    public boolean removeResource(final ProbeId probe)
-            throws TucsonOperationNotPossibleException {
-        if (!TransducerManager.resourceList.containsValue(probe)) {
-            return false;
-        }
-        final TransducerId tId = this.getTransducerId(probe);
-        TransducerManager.transducerList.get(tId).removeProbe(probe);
-        TransducerManager.resourceList.get(tId).remove(probe);
-        ResourceManager.getResourceManager().getResource(probe)
-                .setTransducer(null);
-        // Se il transducer � rimasto senza risorse associate viene terminato
-        if (TransducerManager.resourceList.get(tId).isEmpty()) {
-            TransducerManager
-                    .speak("Transducer "
-                            + tId.toString()
-                            + " has no more resources associated. Its execution will be stopped");
-            this.stopTransducer(tId);
-        }
-        return true;
-    }
-
-    /**
      * Stops and removes the transducer identified by id
      * 
      * @param id
      *            the transducer identifier
      * @throws TucsonOperationNotPossibleException
      */
-    public void stopTransducer(final TransducerId id)
+    public static void stopTransducer(final TransducerId id)
             throws TucsonOperationNotPossibleException {
         if (!TransducerManager.transducerList.containsKey(id)) {
             TransducerManager.speakErr("The transducer " + id
@@ -340,7 +291,8 @@ public class TransducerManager {
 
         TransducerManager.transducerList.remove(id);
         TransducerManager.resourceList.remove(id);
-        final TupleCentreId tcAssociated = this.getTupleCentreId(id);
+        final TupleCentreId tcAssociated =
+                TransducerManager.getTupleCentreId(id);
         TransducerManager.tupleCentresAssociated.get(tcAssociated).remove(id);
         // If the tc doesn't have any transducer associated, it will be removed
         if (TransducerManager.tupleCentresAssociated.get(tcAssociated)
@@ -348,5 +300,56 @@ public class TransducerManager {
             TransducerManager.tupleCentresAssociated.remove(tcAssociated);
         }
         TransducerManager.speak("Transducer " + id + " has been removed.");
+    }
+
+    /**
+     * Utility methods used to communicate an output message to the console.
+     * 
+     * @param msg
+     *            message to print.
+     */
+    private static void speak(final String msg) {
+        System.out.println("[TransducerManager] " + msg);
+    }
+
+    private static void speakErr(final String msg) {
+        System.err.println("[TransducerManager] " + msg);
+    }
+
+    private TransducerManager() {
+        TransducerManager.transducerList =
+                new HashMap<TransducerId, Transducer>();
+        TransducerManager.resourceList =
+                new HashMap<TransducerId, List<ProbeId>>();
+        TransducerManager.tupleCentresAssociated =
+                new HashMap<TupleCentreId, List<TransducerId>>();
+    }
+
+    /**
+     * Removes a probe from the resource list
+     * 
+     * @param probe
+     *            the resource's identifier to remove
+     * @throws TucsonOperationNotPossibleException
+     */
+    public static boolean removeResource(final ProbeId probe)
+            throws TucsonOperationNotPossibleException {
+        if (!TransducerManager.resourceList.containsValue(probe)) {
+            return false;
+        }
+        final TransducerId tId = TransducerManager.getTransducerId(probe);
+        TransducerManager.transducerList.get(tId).removeProbe(probe);
+        TransducerManager.resourceList.get(tId).remove(probe);
+        ResourceManager.getResourceManager().getResource(probe)
+                .setTransducer(null);
+        // Se il transducer e' rimasto senza risorse associate viene terminato
+        if (TransducerManager.resourceList.get(tId).isEmpty()) {
+            TransducerManager
+                    .speak("Transducer "
+                            + tId.toString()
+                            + " has no more resources associated. Its execution will be stopped");
+            TransducerManager.stopTransducer(tId);
+        }
+        return true;
     }
 }

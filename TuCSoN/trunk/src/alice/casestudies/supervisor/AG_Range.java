@@ -26,8 +26,9 @@ public class AG_Range extends AbstractTucsonAgent {
 
     @Override
     public void operationCompleted(final ITucsonOperation op) {
-        // TODO Auto-generated method stub
-
+        /*
+         * 
+         */
     }
 
     public void stopAgent() {
@@ -36,7 +37,6 @@ public class AG_Range extends AbstractTucsonAgent {
 
     @Override
     protected void main() {
-        // TODO Auto-generated method stub
         final SynchACC acc = this.getContext();
         TucsonTupleCentreId tc_intensity = null;
         TucsonTupleCentreId tc_range = null;
@@ -46,12 +46,12 @@ public class AG_Range extends AbstractTucsonAgent {
         try {
             tc_intensity =
                     new TucsonTupleCentreId("tc_intensity", "localhost",
-                            "" + 20504);
+                            String.valueOf(20504));
             tc_range =
-                    new TucsonTupleCentreId("tc_range", "localhost", "" + 20504);
-        } catch (final TucsonInvalidTupleCentreIdException e1) {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
+                    new TucsonTupleCentreId("tc_range", "localhost",
+                            String.valueOf(20504));
+        } catch (final TucsonInvalidTupleCentreIdException e) {
+            e.printStackTrace();
         }
 
         while (this.iteraction) {

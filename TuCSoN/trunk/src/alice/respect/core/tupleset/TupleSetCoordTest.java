@@ -13,7 +13,7 @@ import alice.logictuple.exceptions.InvalidLogicTupleException;
 
 public class TupleSetCoordTest {
 
-    private String[] t = { "a", "b", "hello", "world", "pippo(a(b),c)",
+    private final String[] t = { "a", "b", "hello", "world", "pippo(a(b),c)",
             "pluto", "paperino", "foo", "bar", "hello(world)", "hello(a)",
             "pippo(pluto,paperino)", "aaaa(sa,sa,e)", "hello(paperino)",
             "lol(hello)", "world(hello)", "world(hello(a,c))", "world(hello3)",

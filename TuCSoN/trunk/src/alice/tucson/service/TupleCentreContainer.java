@@ -387,7 +387,7 @@ public final class TupleCentreContainer {
         RespectOperation op = null;
 
         context =
-                (RespectTCContainer.getRespectTCContainer())
+                RespectTCContainer.getRespectTCContainer()
                         .getEnvironmentContext(tid.getInternalTupleCentreId());
         if (type == TucsonOperation.getEnvCode()) {
             op = RespectOperation.makeGetEnv(null, t, l);
@@ -399,9 +399,9 @@ public final class TupleCentreContainer {
         final HashMap<String, String> eventMap = new HashMap<String, String>();
         eventMap.put("id", aid.toString());
         InputEvent event = null;
+        TransducerManager.getTransducerManager();
         TransducerStandardInterface transducer =
-                TransducerManager.getTransducerManager().getTransducer(
-                        aid.getAgentName());
+                TransducerManager.getTransducer(aid.getAgentName());
         if (t != null) {
             // It's an event performed by a transducer. In other words, it's an
             // environment event
@@ -421,19 +421,20 @@ public final class TupleCentreContainer {
             final InternalEvent internalEv =
                     new InternalEvent(event, InternalOperation.makeGetEnv(t));
             internalEv.setSource(tid.getInternalTupleCentreId()); // Set
-                                                                  // the
-                                                                  // source
-                                                                  // of
-                                                                  // the
-                                                                  // event
+            TransducerManager.getTransducerManager();
+            // the
+            // source
+            // of
+            // the
+            // event
             final TransducerId[] tIds =
-                    TransducerManager.getTransducerManager().getTransducerIds(
-                            tid.getInternalTupleCentreId());
+                    TransducerManager.getTransducerIds(tid
+                            .getInternalTupleCentreId());
             for (final TransducerId tId2 : tIds) {
                 internalEv.setTarget(tId2); // Set target resource
+                TransducerManager.getTransducerManager();
                 transducer =
-                        TransducerManager.getTransducerManager().getTransducer(
-                                tId2.getAgentName());
+                        TransducerManager.getTransducer(tId2.getAgentName());
                 transducer.notifyOutput(internalEv);
             }
         }
@@ -457,7 +458,7 @@ public final class TupleCentreContainer {
         RespectOperation op = null;
 
         context =
-                (RespectTCContainer.getRespectTCContainer())
+                RespectTCContainer.getRespectTCContainer()
                         .getEnvironmentContext(tid.getInternalTupleCentreId());
         if (type == TucsonOperation.getEnvCode()) {
             op = RespectOperation.makeGetEnv(null, t, l);
@@ -479,19 +480,19 @@ public final class TupleCentreContainer {
         final InternalEvent internalEv =
                 new InternalEvent(event, InternalOperation.makeGetEnv(t));
         internalEv.setSource(tid.getInternalTupleCentreId()); // Set
-                                                              // the
-                                                              // source
-                                                              // of
-                                                              // the
-                                                              // event
+        TransducerManager.getTransducerManager();
+        // the
+        // source
+        // of
+        // the
+        // event
         final TransducerId[] tIds =
-                TransducerManager.getTransducerManager().getTransducerIds(
-                        tid.getInternalTupleCentreId());
+                TransducerManager.getTransducerIds(tid
+                        .getInternalTupleCentreId());
         for (final TransducerId tId2 : tIds) {
             internalEv.setTarget(tId2); // Set target resource
-            transducer =
-                    TransducerManager.getTransducerManager().getTransducer(
-                            tId2.getAgentName());
+            TransducerManager.getTransducerManager();
+            transducer = TransducerManager.getTransducer(tId2.getAgentName());
             transducer.notifyOutput(internalEv);
         }
 

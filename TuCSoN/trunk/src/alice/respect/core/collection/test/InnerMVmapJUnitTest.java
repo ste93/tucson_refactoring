@@ -154,8 +154,7 @@ public class InnerMVmapJUnitTest {
         // remove all element of the map from a test list.
         // If the final size of the test list is zero the test is passed
         int count = 0;
-        for (final Iterator<Integer> iterator = list.iterator(); iterator
-                .hasNext();) {
+        for (final Iterator<Integer> iterator = list.iterator(); iterator.hasNext();) {
             iterator.next();
             count++;
         }

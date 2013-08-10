@@ -2,7 +2,7 @@ package alice.respect.core;
 
 public interface ISerialEventListener {
 
-    public String getListenerName();
+    String getListenerName();
 
-    public void notifyEvent(String value);
+    void notifyEvent(String value);
 }

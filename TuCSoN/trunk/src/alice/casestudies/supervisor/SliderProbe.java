@@ -11,13 +11,13 @@ import alice.respect.transducer.TransducerStandardInterface;
 public class SliderProbe implements ISerialEventListener, ISimpleProbe {
 
     private final ProbeId id;
-    private int sliderValue = 50;
     private TransducerId tId;
     private TransducerStandardInterface transducer;
 
     public SliderProbe(final ProbeId i) {
         this.id = i;
-        SerialComm.getSerialComm().addListener(this);
+        SerialComm.getSerialComm();
+        SerialComm.addListener(this);
     }
 
     public ProbeId getIdentifier() {
@@ -34,26 +34,27 @@ public class SliderProbe implements ISerialEventListener, ISimpleProbe {
 
     public void notifyEvent(final String value) {
         final String[] key_value = value.split("/");
-        this.sliderValue = Integer.parseInt(key_value[1]);
+        final int sliderValue = Integer.parseInt(key_value[1]);
         // valueNormalized = sliderValue/10;
         try {
             if (this.transducer == null) {
+                TransducerManager.getTransducerManager();
                 this.transducer =
-                        TransducerManager.getTransducerManager().getTransducer(
-                                this.tId.getAgentName());
+                        TransducerManager
+                                .getTransducer(this.tId.getAgentName());
             }
-            this.transducer.notifyEnvEvent(key_value[0], this.sliderValue);
-        } catch (final Exception ex) {
-            ex.printStackTrace();
+            this.transducer.notifyEnvEvent(key_value[0], sliderValue);
+        } catch (final Exception e) {
+            e.printStackTrace();
         }
     }
 
     public boolean readValue(final String key) {
-        if (key.equals("intensity")) {
+        if ("intensity".equals(key)) {
             final String msg = "RI"; // RD means Read Distance
             try {
-                SerialComm.getSerialComm().getOutputStream()
-                        .write(msg.getBytes());
+                SerialComm.getSerialComm();
+                SerialComm.getOutputStream().write(msg.getBytes());
             } catch (final Exception e) {
                 e.printStackTrace();
                 SerialComm.getSerialComm().close();

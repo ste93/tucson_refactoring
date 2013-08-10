@@ -8,11 +8,14 @@
  */
 package alice.casestudies.wanderaround;
 
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
 /**
  * 
  * @author Steven Maraldi
  */
-public class NxtSimulatorGUI extends javax.swing.JFrame {
+public final class NxtSimulatorGUI extends javax.swing.JFrame {
 
     private static NxtSimulatorGUI gui;
     /**
@@ -29,24 +32,7 @@ public class NxtSimulatorGUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify
-    private javax.swing.JLabel jLabel1;
-
-    private javax.swing.JLabel jLabel2;
-
-    private javax.swing.JLabel jLabel3;
-
-    private javax.swing.JLabel jLabel4;
-
     private javax.swing.JLabel jLabel5;
-
-    private javax.swing.JLabel jLabel6;
-
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
@@ -59,6 +45,7 @@ public class NxtSimulatorGUI extends javax.swing.JFrame {
     // End of variables declaration
     /** Creates new form NxtSimulatorGUI */
     private NxtSimulatorGUI() {
+        super();
         this.initComponents();
         /* Set the Nimbus look and feel */
         // <editor-fold defaultstate="collapsed"
@@ -97,13 +84,13 @@ public class NxtSimulatorGUI extends javax.swing.JFrame {
     }
 
     public int getDistance(final String side) {
-        if (side.equals("front")) {
+        if ("front".equals(side)) {
             return Integer.parseInt(this.jTextField5.getText());
-        } else if (side.equals("back")) {
+        } else if ("back".equals(side)) {
             return Integer.parseInt(this.jTextField6.getText());
-        } else if (side.equals("right")) {
+        } else if ("right".equals(side)) {
             return Integer.parseInt(this.jTextField7.getText());
-        } else if (side.equals("left")) {
+        } else if ("left".equals(side)) {
             return Integer.parseInt(this.jTextField8.getText());
         } else {
             return -1;
@@ -112,17 +99,17 @@ public class NxtSimulatorGUI extends javax.swing.JFrame {
 
     public void setMotorParameters(final String side, final String param,
             final int value) {
-        if (side.equals("right")) {
-            if (param.equals("power")) {
-                this.jTextField3.setText("" + value);
-            } else if (param.equals("angle")) {
-                this.jTextField4.setText("" + value);
+        if ("right".equals(side)) {
+            if ("power".equals(param)) {
+                this.jTextField3.setText(String.valueOf(value));
+            } else if ("angle".equals(param)) {
+                this.jTextField4.setText(String.valueOf(value));
             }
-        } else if (side.equals("left")) {
-            if (param.equals("power")) {
-                this.jTextField1.setText("" + value);
-            } else if (param.equals("angle")) {
-                this.jTextField2.setText("" + value);
+        } else if ("left".equals(side)) {
+            if ("power".equals(param)) {
+                this.jTextField1.setText(String.valueOf(value));
+            } else if ("angle".equals(param)) {
+                this.jTextField2.setText(String.valueOf(value));
             }
         }
     }
@@ -135,44 +122,43 @@ public class NxtSimulatorGUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">
     private void initComponents() {
 
-        this.jLabel1 = new javax.swing.JLabel();
-        this.jPanel1 = new javax.swing.JPanel();
-        this.jLabel2 = new javax.swing.JLabel();
-        this.jLabel9 = new javax.swing.JLabel();
+        final JLabel jLabel1 = new javax.swing.JLabel();
+        final JPanel jPanel1 = new javax.swing.JPanel();
+        final JLabel jLabel2 = new javax.swing.JLabel();
+        final JLabel jLabel9 = new javax.swing.JLabel();
         this.jTextField5 = new javax.swing.JTextField();
         this.jTextField6 = new javax.swing.JTextField();
         this.jTextField7 = new javax.swing.JTextField();
         this.jTextField8 = new javax.swing.JTextField();
-        this.jPanel2 = new javax.swing.JPanel();
-        this.jLabel3 = new javax.swing.JLabel();
-        this.jLabel4 = new javax.swing.JLabel();
+        final JPanel jPanel2 = new javax.swing.JPanel();
+        final JLabel jLabel3 = new javax.swing.JLabel();
+        final JLabel jLabel4 = new javax.swing.JLabel();
         this.jLabel5 = new javax.swing.JLabel();
         this.jTextField1 = new javax.swing.JTextField();
         this.jTextField2 = new javax.swing.JTextField();
-        this.jPanel3 = new javax.swing.JPanel();
-        this.jLabel6 = new javax.swing.JLabel();
-        this.jLabel7 = new javax.swing.JLabel();
-        this.jLabel8 = new javax.swing.JLabel();
+        final JPanel jPanel3 = new javax.swing.JPanel();
+        final JLabel jLabel6 = new javax.swing.JLabel();
+        final JLabel jLabel7 = new javax.swing.JLabel();
+        final JLabel jLabel8 = new javax.swing.JLabel();
         this.jTextField3 = new javax.swing.JTextField();
         this.jTextField4 = new javax.swing.JTextField();
 
         this.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        this.jLabel1.setFont(new java.awt.Font("Tahoma", 3, 24)); // NOI18N
-        this.jLabel1.setForeground(new java.awt.Color(0, 153, 204));
-        this.jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        this.jLabel1.setText("NXT Simulator GUI");
-        this.jLabel1
-                .setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jLabel1.setFont(new java.awt.Font("Tahoma", 3, 24)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(0, 153, 204));
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("NXT Simulator GUI");
+        jLabel1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
-        this.jPanel1.setBorder(javax.swing.BorderFactory
+        jPanel1.setBorder(javax.swing.BorderFactory
                 .createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        this.jLabel2.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        this.jLabel2.setText("Ultrasonic Sensors");
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jLabel2.setText("Ultrasonic Sensors");
 
-        this.jLabel9.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        this.jLabel9.setText("NXT");
+        jLabel9.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jLabel9.setText("NXT");
 
         this.jTextField5.setText("50");
         this.jTextField5.setName(""); // NOI18N
@@ -184,8 +170,8 @@ public class NxtSimulatorGUI extends javax.swing.JFrame {
         this.jTextField8.setText("50");
 
         final javax.swing.GroupLayout jPanel1Layout =
-                new javax.swing.GroupLayout(this.jPanel1);
-        this.jPanel1.setLayout(jPanel1Layout);
+                new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout
                 .setHorizontalGroup(jPanel1Layout
                         .createParallelGroup(
@@ -198,8 +184,7 @@ public class NxtSimulatorGUI extends javax.swing.JFrame {
                                                 jPanel1Layout
                                                         .createParallelGroup(
                                                                 javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addComponent(
-                                                                this.jLabel2)
+                                                        .addComponent(jLabel2)
                                                         .addGroup(
                                                                 jPanel1Layout
                                                                         .createSequentialGroup()
@@ -224,7 +209,7 @@ public class NxtSimulatorGUI extends javax.swing.JFrame {
                                                                                                                 18,
                                                                                                                 18)
                                                                                                         .addComponent(
-                                                                                                                this.jLabel9))
+                                                                                                                jLabel9))
                                                                                         .addComponent(
                                                                                                 this.jTextField6,
                                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE,
@@ -247,7 +232,7 @@ public class NxtSimulatorGUI extends javax.swing.JFrame {
                                 jPanel1Layout
                                         .createSequentialGroup()
                                         .addContainerGap()
-                                        .addComponent(this.jLabel2)
+                                        .addComponent(jLabel2)
                                         .addPreferredGap(
                                                 javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(
@@ -260,8 +245,7 @@ public class NxtSimulatorGUI extends javax.swing.JFrame {
                                                 jPanel1Layout
                                                         .createParallelGroup(
                                                                 javax.swing.GroupLayout.Alignment.BASELINE)
-                                                        .addComponent(
-                                                                this.jLabel9)
+                                                        .addComponent(jLabel9)
                                                         .addComponent(
                                                                 this.jTextField7,
                                                                 javax.swing.GroupLayout.PREFERRED_SIZE,
@@ -280,14 +264,14 @@ public class NxtSimulatorGUI extends javax.swing.JFrame {
                                                 javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addContainerGap(48, Short.MAX_VALUE)));
 
-        this.jPanel2.setBorder(javax.swing.BorderFactory
+        jPanel2.setBorder(javax.swing.BorderFactory
                 .createLineBorder(new java.awt.Color(0, 0, 0)));
-        this.jPanel2.setEnabled(false);
+        jPanel2.setEnabled(false);
 
-        this.jLabel3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        this.jLabel3.setText("Servo motor left");
+        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel3.setText("Servo motor left");
 
-        this.jLabel4.setText("Power");
+        jLabel4.setText("Power");
 
         this.jLabel5.setText("Angle");
 
@@ -306,8 +290,8 @@ public class NxtSimulatorGUI extends javax.swing.JFrame {
         });
 
         final javax.swing.GroupLayout jPanel2Layout =
-                new javax.swing.GroupLayout(this.jPanel2);
-        this.jPanel2.setLayout(jPanel2Layout);
+                new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout
                 .setHorizontalGroup(jPanel2Layout
                         .createParallelGroup(
@@ -320,8 +304,7 @@ public class NxtSimulatorGUI extends javax.swing.JFrame {
                                                 jPanel2Layout
                                                         .createParallelGroup(
                                                                 javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addComponent(
-                                                                this.jLabel3)
+                                                        .addComponent(jLabel3)
                                                         .addGroup(
                                                                 javax.swing.GroupLayout.Alignment.TRAILING,
                                                                 jPanel2Layout
@@ -333,7 +316,7 @@ public class NxtSimulatorGUI extends javax.swing.JFrame {
                                                                                         .addComponent(
                                                                                                 this.jLabel5)
                                                                                         .addComponent(
-                                                                                                this.jLabel4))
+                                                                                                jLabel4))
                                                                         .addPreferredGap(
                                                                                 javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                                                         .addGroup(
@@ -359,7 +342,7 @@ public class NxtSimulatorGUI extends javax.swing.JFrame {
                                 jPanel2Layout
                                         .createSequentialGroup()
                                         .addContainerGap()
-                                        .addComponent(this.jLabel3)
+                                        .addComponent(jLabel3)
                                         .addPreferredGap(
                                                 javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addGroup(
@@ -371,8 +354,7 @@ public class NxtSimulatorGUI extends javax.swing.JFrame {
                                                                 javax.swing.GroupLayout.PREFERRED_SIZE,
                                                                 javax.swing.GroupLayout.DEFAULT_SIZE,
                                                                 javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(
-                                                                this.jLabel4))
+                                                        .addComponent(jLabel4))
                                         .addPreferredGap(
                                                 javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addGroup(
@@ -388,16 +370,16 @@ public class NxtSimulatorGUI extends javax.swing.JFrame {
                                                                 javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addContainerGap(14, Short.MAX_VALUE)));
 
-        this.jPanel3.setBorder(javax.swing.BorderFactory
+        jPanel3.setBorder(javax.swing.BorderFactory
                 .createLineBorder(new java.awt.Color(0, 0, 0)));
-        this.jPanel3.setEnabled(false);
+        jPanel3.setEnabled(false);
 
-        this.jLabel6.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        this.jLabel6.setText("Servo motor right");
+        jLabel6.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel6.setText("Servo motor right");
 
-        this.jLabel7.setText("Power");
+        jLabel7.setText("Power");
 
-        this.jLabel8.setText("Angle");
+        jLabel8.setText("Angle");
 
         this.jTextField3.setText("Right Pw");
         this.jTextField3.addActionListener(new java.awt.event.ActionListener() {
@@ -414,8 +396,8 @@ public class NxtSimulatorGUI extends javax.swing.JFrame {
         });
 
         final javax.swing.GroupLayout jPanel3Layout =
-                new javax.swing.GroupLayout(this.jPanel3);
-        this.jPanel3.setLayout(jPanel3Layout);
+                new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout
                 .setHorizontalGroup(jPanel3Layout
                         .createParallelGroup(
@@ -433,7 +415,7 @@ public class NxtSimulatorGUI extends javax.swing.JFrame {
                                                                 jPanel3Layout
                                                                         .createSequentialGroup()
                                                                         .addComponent(
-                                                                                this.jLabel7)
+                                                                                jLabel7)
                                                                         .addPreferredGap(
                                                                                 javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                                                         .addComponent(
@@ -449,7 +431,7 @@ public class NxtSimulatorGUI extends javax.swing.JFrame {
                                                                 jPanel3Layout
                                                                         .createSequentialGroup()
                                                                         .addComponent(
-                                                                                this.jLabel8)
+                                                                                jLabel8)
                                                                         .addPreferredGap(
                                                                                 javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                                                         .addComponent(
@@ -460,8 +442,7 @@ public class NxtSimulatorGUI extends javax.swing.JFrame {
                                                                         .addGap(8,
                                                                                 8,
                                                                                 8))
-                                                        .addComponent(
-                                                                this.jLabel6))
+                                                        .addComponent(jLabel6))
                                         .addContainerGap(28, Short.MAX_VALUE)));
         jPanel3Layout
                 .setVerticalGroup(jPanel3Layout
@@ -471,7 +452,7 @@ public class NxtSimulatorGUI extends javax.swing.JFrame {
                                 jPanel3Layout
                                         .createSequentialGroup()
                                         .addContainerGap()
-                                        .addComponent(this.jLabel6)
+                                        .addComponent(jLabel6)
                                         .addPreferredGap(
                                                 javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addGroup(
@@ -483,16 +464,14 @@ public class NxtSimulatorGUI extends javax.swing.JFrame {
                                                                 javax.swing.GroupLayout.PREFERRED_SIZE,
                                                                 javax.swing.GroupLayout.DEFAULT_SIZE,
                                                                 javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(
-                                                                this.jLabel7))
+                                                        .addComponent(jLabel7))
                                         .addPreferredGap(
                                                 javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addGroup(
                                                 jPanel3Layout
                                                         .createParallelGroup(
                                                                 javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addComponent(
-                                                                this.jLabel8)
+                                                        .addComponent(jLabel8)
                                                         .addComponent(
                                                                 this.jTextField4,
                                                                 javax.swing.GroupLayout.PREFERRED_SIZE,
@@ -515,7 +494,7 @@ public class NxtSimulatorGUI extends javax.swing.JFrame {
                                                                 .addGap(52, 52,
                                                                         52)
                                                                 .addComponent(
-                                                                        this.jLabel1,
+                                                                        jLabel1,
                                                                         javax.swing.GroupLayout.DEFAULT_SIZE,
                                                                         338,
                                                                         Short.MAX_VALUE))
@@ -523,7 +502,7 @@ public class NxtSimulatorGUI extends javax.swing.JFrame {
                                                         layout.createSequentialGroup()
                                                                 .addContainerGap()
                                                                 .addComponent(
-                                                                        this.jPanel1,
+                                                                        jPanel1,
                                                                         javax.swing.GroupLayout.PREFERRED_SIZE,
                                                                         javax.swing.GroupLayout.DEFAULT_SIZE,
                                                                         javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -533,12 +512,12 @@ public class NxtSimulatorGUI extends javax.swing.JFrame {
                                                                         layout.createParallelGroup(
                                                                                 javax.swing.GroupLayout.Alignment.LEADING)
                                                                                 .addComponent(
-                                                                                        this.jPanel3,
+                                                                                        jPanel3,
                                                                                         javax.swing.GroupLayout.DEFAULT_SIZE,
                                                                                         javax.swing.GroupLayout.DEFAULT_SIZE,
                                                                                         Short.MAX_VALUE)
                                                                                 .addComponent(
-                                                                                        this.jPanel2,
+                                                                                        jPanel2,
                                                                                         javax.swing.GroupLayout.DEFAULT_SIZE,
                                                                                         javax.swing.GroupLayout.DEFAULT_SIZE,
                                                                                         Short.MAX_VALUE))))
@@ -548,7 +527,7 @@ public class NxtSimulatorGUI extends javax.swing.JFrame {
                 .addGroup(
                         layout.createSequentialGroup()
                                 .addContainerGap()
-                                .addComponent(this.jLabel1,
+                                .addComponent(jLabel1,
                                         javax.swing.GroupLayout.PREFERRED_SIZE,
                                         43,
                                         javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -561,19 +540,19 @@ public class NxtSimulatorGUI extends javax.swing.JFrame {
                                                 .addGroup(
                                                         layout.createSequentialGroup()
                                                                 .addComponent(
-                                                                        this.jPanel2,
+                                                                        jPanel2,
                                                                         javax.swing.GroupLayout.PREFERRED_SIZE,
                                                                         javax.swing.GroupLayout.DEFAULT_SIZE,
                                                                         javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                 .addPreferredGap(
                                                                         javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                                 .addComponent(
-                                                                        this.jPanel3,
+                                                                        jPanel3,
                                                                         javax.swing.GroupLayout.PREFERRED_SIZE,
                                                                         javax.swing.GroupLayout.DEFAULT_SIZE,
                                                                         javax.swing.GroupLayout.PREFERRED_SIZE))
                                                 .addComponent(
-                                                        this.jPanel1,
+                                                        jPanel1,
                                                         javax.swing.GroupLayout.DEFAULT_SIZE,
                                                         javax.swing.GroupLayout.DEFAULT_SIZE,
                                                         Short.MAX_VALUE))

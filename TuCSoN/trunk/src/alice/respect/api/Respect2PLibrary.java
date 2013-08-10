@@ -528,13 +528,14 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         internalEv.setTarget(envId); // Set target resource
         internalEv.setSource(this.vm.getId()); // Set the source of the event
 
+        TransducerManager.getTransducerManager();
         // Getting the transducer from the transducer manager
-        final TransducerId tId =
-                TransducerManager.getTransducerManager().getTransducerId(envId);
+        final TransducerId tId = TransducerManager.getTransducerId(envId);
 
         try {
-            if (TransducerManager.getTransducerManager()
-                    .getTransducer(tId.getAgentName()).notifyOutput(internalEv)) {
+            TransducerManager.getTransducerManager();
+            if (TransducerManager.getTransducer(tId.getAgentName())
+                    .notifyOutput(internalEv)) {
                 this.vm.fetchTriggeredReactions(internalEv);
                 return true;
             }
@@ -1932,13 +1933,14 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         internalEv.setTarget(envId);
         internalEv.setSource(this.vm.getId());
 
+        TransducerManager.getTransducerManager();
         // Getting the transducer from the transducer manager
-        final TransducerId tId =
-                TransducerManager.getTransducerManager().getTransducerId(envId);
+        final TransducerId tId = TransducerManager.getTransducerId(envId);
 
         try {
-            if (TransducerManager.getTransducerManager()
-                    .getTransducer(tId.getAgentName()).notifyOutput(internalEv)) {
+            TransducerManager.getTransducerManager();
+            if (TransducerManager.getTransducer(tId.getAgentName())
+                    .notifyOutput(internalEv)) {
                 this.vm.fetchTriggeredReactions(internalEv);
                 return true;
             }

@@ -1,7 +1,6 @@
 package alice.casestudies.supervisor;
 
 import alice.respect.probe.ISimpleProbe;
-import alice.respect.probe.ProbeId;
 import alice.respect.transducer.Transducer;
 import alice.respect.transducer.TransducerId;
 import alice.tucson.api.ITucsonOperation;
@@ -10,9 +9,8 @@ import alice.tuplecentre.core.AbstractTupleCentreOperation;
 
 public class TransducerAct extends Transducer {
 
-    public TransducerAct(final TransducerId i, final TupleCentreId t,
-            final ProbeId probeId) {
-        super(i, t, probeId);
+    public TransducerAct(final TransducerId i, final TupleCentreId t) {
+        super(i, t);
     }
 
     @Override

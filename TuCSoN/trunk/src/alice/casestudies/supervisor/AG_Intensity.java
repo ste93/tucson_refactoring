@@ -46,12 +46,13 @@ public class AG_Intensity extends AbstractTucsonAgent {
         try {
             tc_intensity =
                     new TucsonTupleCentreId("tc_intensity", "localhost",
-                            "" + 20504);
+                            String.valueOf(20504));
             tc_light =
-                    new TucsonTupleCentreId("tc_light", "localhost", "" + 20504);
-        } catch (final TucsonInvalidTupleCentreIdException e1) {
+                    new TucsonTupleCentreId("tc_light", "localhost",
+                            String.valueOf(20504));
+        } catch (final TucsonInvalidTupleCentreIdException e) {
             // TODO Auto-generated catch block
-            e1.printStackTrace();
+            e.printStackTrace();
         }
 
         while (this.iteraction) {

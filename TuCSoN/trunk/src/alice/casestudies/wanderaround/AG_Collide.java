@@ -35,11 +35,13 @@ public class AG_Collide extends AbstractTucsonAgent {
 
         try {
             tc_motor =
-                    new TucsonTupleCentreId("tc_motor", "localhost", "" + 20504);
+                    new TucsonTupleCentreId("tc_motor", "localhost",
+                            String.valueOf(20504));
             tc_sonar =
-                    new TucsonTupleCentreId("tc_sonar", "localhost", "" + 20504);
-        } catch (final Exception ex) {
-            ex.printStackTrace();
+                    new TucsonTupleCentreId("tc_sonar", "localhost",
+                            String.valueOf(20504));
+        } catch (final Exception e) {
+            e.printStackTrace();
         }
 
         while (this.iteraction) {

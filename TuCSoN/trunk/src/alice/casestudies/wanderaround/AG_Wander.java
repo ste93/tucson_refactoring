@@ -36,9 +36,10 @@ public class AG_Wander extends AbstractTucsonAgent {
 
         try {
             tc_avoid =
-                    new TucsonTupleCentreId("tc_avoid", "localhost", "" + 20504);
-        } catch (final TucsonInvalidTupleCentreIdException e1) {
-            e1.printStackTrace();
+                    new TucsonTupleCentreId("tc_avoid", "localhost",
+                            String.valueOf(20504));
+        } catch (final TucsonInvalidTupleCentreIdException e) {
+            e.printStackTrace();
         }
 
         while (this.iteraction) {

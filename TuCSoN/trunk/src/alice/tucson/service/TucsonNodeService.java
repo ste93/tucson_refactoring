@@ -171,16 +171,18 @@ public class TucsonNodeService {
     private Prolog configManager;
     private Map<String, TucsonTCUsers> cores;
     private ACCProvider ctxman;
+    private EnvConfigAgent envAgent;
     private TucsonTupleCentreId idConfigTC;
     private TucsonTupleCentreId idEnvTC; // Tuple centre for environment
-                                         // configuration
+
+    // configuration
     private TucsonTupleCentreId idObsTC;
 
     private Date installationDate;
-
     private final List<Thread> nodeAgents;
     private TucsonAgentId nodeAid;
     private boolean observed;
+
     private ObservationService obsService;
 
     private TupleArgument persistencyTemplate;
@@ -190,8 +192,6 @@ public class TucsonNodeService {
     private final List<RespectTC> tcs;
 
     private WelcomeAgent welcome;
-
-    private EnvConfigAgent envAgent;
 
     /**
      * 
@@ -242,8 +242,8 @@ public class TucsonNodeService {
                     new TucsonTupleCentreId("'$OBS'", "localhost",
                             String.valueOf(this.tcpPort));
             this.idEnvTC =
-                    new TucsonTupleCentreId("envConfigTC", "localhost", ""
-                            + this.tcpPort);
+                    new TucsonTupleCentreId("envConfigTC", "localhost",
+                            String.valueOf(this.tcpPort));
         } catch (final TucsonInvalidAgentIdException e) {
             e.printStackTrace();
         } catch (final TucsonInvalidTupleCentreIdException e) {
@@ -731,7 +731,7 @@ public class TucsonNodeService {
 
         TucsonNodeService.log("Spawning Welcome Agent...");
         this.welcome = new WelcomeAgent(this, this.ctxman);
-        
+
         TucsonNodeService.log("Spawning EnvConfig Agent...");
         try {
             this.envAgent = new EnvConfigAgent("localhost", this.tcpPort);

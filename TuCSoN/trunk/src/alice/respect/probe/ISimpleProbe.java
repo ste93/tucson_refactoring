@@ -15,14 +15,14 @@ public interface ISimpleProbe {
      * 
      * @return probe's identifier
      */
-    public ProbeId getIdentifier();
+    ProbeId getIdentifier();
 
     /**
      * Gets the transducer which the probe is communicating with.
      * 
      * @return the transducer's identifier
      */
-    public TransducerId getTransducer();
+    TransducerId getTransducer();
 
     /**
      * Reads the probe's value. A read request should force an event from the
@@ -33,7 +33,7 @@ public interface ISimpleProbe {
      * 
      * @return true if success
      */
-    public boolean readValue(String key);
+    boolean readValue(String key);
 
     /**
      * Sets the transducer which the probe will communicate with.
@@ -41,7 +41,7 @@ public interface ISimpleProbe {
      * @param tId
      *            transducer's identifier
      */
-    public void setTransducer(TransducerId tId);
+    void setTransducer(TransducerId tId);
 
     /**
      * Set the specific value of a parameter of the probe
@@ -52,5 +52,5 @@ public interface ISimpleProbe {
      *            value to be set.
      * @return true if the operation has been successfully executed.
      */
-    public boolean writeValue(String key, int value);
+    boolean writeValue(String key, int value);
 }

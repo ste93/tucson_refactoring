@@ -43,10 +43,6 @@ public final class TPTestDialog {
         }).start();
     }
 
-    private TPTestDialog() {
-        super();
-    }
-
     private static void agent() {
         try {
             final int port = TPConfig.getInstance().getNodeTcpPort();
@@ -141,5 +137,9 @@ public final class TPTestDialog {
              * 
              */
         }
+    }
+
+    private TPTestDialog() {
+        super();
     }
 }

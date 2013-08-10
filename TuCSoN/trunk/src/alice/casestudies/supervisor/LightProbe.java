@@ -26,8 +26,10 @@ public class LightProbe extends Thread implements ISimpleProbe,
     private TransducerStandardInterface transducer;
 
     public LightProbe(final ProbeId i) {
+        super();
         this.id = i;
-        SerialComm.getSerialComm().addListener(this);
+        SerialComm.getSerialComm();
+        SerialComm.addListener(this);
     }
 
     public ProbeId getIdentifier() {
@@ -47,9 +49,10 @@ public class LightProbe extends Thread implements ISimpleProbe,
             final String[] key_value = value.split("/");
             if (key_value[0].equals("intensity")) {
                 if (this.transducer == null) {
+                    TransducerManager.getTransducerManager();
                     this.transducer =
-                            TransducerManager.getTransducerManager()
-                                    .getTransducer(this.tId.getAgentName());
+                            TransducerManager.getTransducer(this.tId
+                                    .getAgentName());
                 }
                 this.transducer.notifyEnvEvent(key_value[0],
                         Integer.parseInt(key_value[1]));
@@ -64,11 +67,11 @@ public class LightProbe extends Thread implements ISimpleProbe,
     }
 
     public boolean readValue(final String key) {
-        if (key.equals("intensity")) {
+        if ("intensity".equals(key)) {
             final String msg = "RI"; // RP means Read Power
             try {
-                SerialComm.getSerialComm().getOutputStream()
-                        .write(msg.getBytes());
+                SerialComm.getSerialComm();
+                SerialComm.getOutputStream().write(msg.getBytes());
             } catch (final Exception e) {
                 e.printStackTrace();
                 SerialComm.getSerialComm().close();
@@ -85,12 +88,13 @@ public class LightProbe extends Thread implements ISimpleProbe,
 
     public boolean writeValue(final String key, final int value) {
         this.speak("WRITE REQUEST ( " + key + ", " + value + " )");
-        if (key.equals("intensity")) {
+        if ("intensity".equals(key)) {
             final String msg = "LI"; // Light intensity
             try {
-                SerialComm.getSerialComm().getOutputStream()
-                        .write(msg.getBytes());
-                SerialComm.getSerialComm().getOutputStream().write(value);
+                SerialComm.getSerialComm();
+                SerialComm.getOutputStream().write(msg.getBytes());
+                SerialComm.getSerialComm();
+                SerialComm.getOutputStream().write(value);
             } catch (final Exception e) {
                 e.printStackTrace();
                 SerialComm.getSerialComm().close();

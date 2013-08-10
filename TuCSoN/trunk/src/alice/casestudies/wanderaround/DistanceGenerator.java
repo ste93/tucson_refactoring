@@ -1,14 +1,16 @@
 package alice.casestudies.wanderaround;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class DistanceGenerator extends Thread {
 
+    private static final boolean ITERATE = true;
     private final NxtSimulatorGUI gui;
-    private final boolean iteraction = true;
-    private final ArrayList<ISensorEventListener> listeners;
+    private final List<ISensorEventListener> listeners;
 
     public DistanceGenerator() {
+        super();
         this.listeners = new ArrayList<ISensorEventListener>();
         this.gui = NxtSimulatorGUI.getNxtSimulatorGUI();
         this.start();
@@ -28,7 +30,7 @@ public class DistanceGenerator extends Thread {
 
     @Override
     public void run() {
-        while (this.iteraction) {
+        while (DistanceGenerator.ITERATE) {
             try {
                 for (int i = 0; i < this.listeners.size(); i++) {
                     if (this.listeners.get(i).getListenerName()
@@ -52,7 +54,9 @@ public class DistanceGenerator extends Thread {
 
                 Thread.sleep(1000);
             } catch (final Exception e) {
-                // e.printStackTrace();
+                /*
+                 * 
+                 */
             }
         }
     }

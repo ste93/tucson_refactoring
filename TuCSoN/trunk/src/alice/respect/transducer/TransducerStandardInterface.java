@@ -16,17 +16,17 @@ import alice.tuplecentre.api.exceptions.OperationTimeOutException;
  */
 public interface TransducerStandardInterface {
 
-    public TransducerId getIdentifier();
+    TransducerId getIdentifier();
 
-    public ProbeId[] getProbes();
+    ProbeId[] getProbes();
 
-    public TupleCentreId getTCId();
+    TupleCentreId getTCId();
 
-    public void notifyEnvEvent(String key, int value)
+    void notifyEnvEvent(String key, int value)
             throws TucsonOperationNotPossibleException,
             UnreachableNodeException, OperationTimeOutException;
 
-    public boolean notifyOutput(InternalEvent ev)
+    boolean notifyOutput(InternalEvent ev)
             throws InvalidTupleOperationException,
             TucsonOperationNotPossibleException, UnreachableNodeException,
             OperationTimeOutException;

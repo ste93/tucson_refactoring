@@ -40,14 +40,16 @@ public class AG_FeelForce extends AbstractTucsonAgent {
 
         try {
             tc_sonar =
-                    new TucsonTupleCentreId("tc_sonar", "localhost", "" + 20504);
+                    new TucsonTupleCentreId("tc_sonar", "localhost",
+                            String.valueOf(20504));
             tc_runaway =
                     new TucsonTupleCentreId("tc_runaway", "localhost",
-                            "" + 20504);
+                            String.valueOf(20504));
             tc_avoid =
-                    new TucsonTupleCentreId("tc_avoid", "localhost", "" + 20504);
-        } catch (final TucsonInvalidTupleCentreIdException e1) {
-            e1.printStackTrace();
+                    new TucsonTupleCentreId("tc_avoid", "localhost",
+                            String.valueOf(20504));
+        } catch (final TucsonInvalidTupleCentreIdException e) {
+            e.printStackTrace();
         }
 
         while (this.iteraction) {

@@ -29,8 +29,10 @@ public class ConnectionProbe extends Thread implements ISimpleProbe,
     private TransducerStandardInterface transducer;
 
     public ConnectionProbe(final ProbeId i) {
+        super();
         this.id = i;
-        SerialComm.getSerialComm().addListener(this);
+        SerialComm.getSerialComm();
+        SerialComm.addListener(this);
         this.gui = SupervisorGUI.getLightGUI();
     }
 
@@ -51,9 +53,10 @@ public class ConnectionProbe extends Thread implements ISimpleProbe,
             final String[] key_value = value.split("/");
             if (key_value[0].equals("status")) {
                 if (this.transducer == null) {
+                    TransducerManager.getTransducerManager();
                     this.transducer =
-                            TransducerManager.getTransducerManager()
-                                    .getTransducer(this.tId.getAgentName());
+                            TransducerManager.getTransducer(this.tId
+                                    .getAgentName());
                 }
                 this.transducer.notifyEnvEvent(key_value[0],
                         Integer.parseInt(key_value[1]));
@@ -68,11 +71,11 @@ public class ConnectionProbe extends Thread implements ISimpleProbe,
     }
 
     public boolean readValue(final String key) {
-        if (key.equals("status")) {
+        if ("status".equals(key)) {
             final String msg = "RC"; // RP means Read Power
             try {
-                SerialComm.getSerialComm().getOutputStream()
-                        .write(msg.getBytes());
+                SerialComm.getSerialComm();
+                SerialComm.getOutputStream().write(msg.getBytes());
             } catch (final Exception e) {
                 e.printStackTrace();
                 SerialComm.getSerialComm().close();
@@ -89,7 +92,7 @@ public class ConnectionProbe extends Thread implements ISimpleProbe,
 
     public boolean writeValue(final String key, final int value) {
         this.speak("WRITE REQUEST ( " + key + ", " + value + " )");
-        if (key.equals("status")) {
+        if ("status".equals(key)) {
             if (value > 0) {
                 this.gui.setConnectionStatus(true);
             } else {

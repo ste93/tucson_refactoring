@@ -21,21 +21,22 @@ public class SwitchProbe implements ActionListener, ISimpleProbe {
         SupervisorGUI.getLightGUI().addSwitchActionListener(this);
     }
 
-    public void actionPerformed(final ActionEvent e) {
-        this.lock = !this.lock;
+    public void actionPerformed(final ActionEvent ae) {
+        this.lock ^= true;
         try {
             if (this.transducer == null) {
+                TransducerManager.getTransducerManager();
                 this.transducer =
-                        TransducerManager.getTransducerManager().getTransducer(
-                                this.tId.getAgentName());
+                        TransducerManager
+                                .getTransducer(this.tId.getAgentName());
             }
             if (this.lock) {
                 this.transducer.notifyEnvEvent("lock", 1);
             } else {
                 this.transducer.notifyEnvEvent("lock", 0);
             }
-        } catch (final Exception ex) {
-            ex.printStackTrace();
+        } catch (final Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -48,13 +49,14 @@ public class SwitchProbe implements ActionListener, ISimpleProbe {
     }
 
     public boolean readValue(final String key) {
-        if (!key.equals("lock")) {
+        if (!"lock".equals(key)) {
             return false;
         }
         try {
             if (this.transducer == null) {
+                TransducerManager.getTransducerManager();
                 this.transducer =
-                        TransducerManager.getTransducerManager().getTransducer(
+                        TransducerManager.getTransducer(
                                 this.tId.getAgentName());
             }
             if (this.lock) {

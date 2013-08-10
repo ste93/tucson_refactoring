@@ -25,6 +25,7 @@ public class LightProbeSw extends Thread implements ISimpleProbe {
     private TransducerStandardInterface transducer;
 
     public LightProbeSw(final ProbeId i) {
+        super();
         this.id = i;
         this.gui = SupervisorGUI.getLightGUI();
     }
@@ -38,13 +39,14 @@ public class LightProbeSw extends Thread implements ISimpleProbe {
     }
 
     public boolean readValue(final String key) {
-        if (key.equals("intensity")) {
+        if ("intensity".equals(key)) {
             final int intensity =
                     Integer.parseInt(this.gui.getIntensityValue());
             if (this.transducer == null) {
+                TransducerManager.getTransducerManager();
                 this.transducer =
-                        TransducerManager.getTransducerManager().getTransducer(
-                                this.tId.getAgentName());
+                        TransducerManager
+                                .getTransducer(this.tId.getAgentName());
             }
             try {
                 this.transducer.notifyEnvEvent(key, intensity);
@@ -69,7 +71,7 @@ public class LightProbeSw extends Thread implements ISimpleProbe {
 
     public boolean writeValue(final String key, final int value) {
         this.speak("WRITE REQUEST ( " + key + ", " + value + " )");
-        if (key.equals("intensity")) {
+        if ("intensity".equals(key)) {
             if (value > 0) {
                 this.gui.setLedStatus(true);
             } else {

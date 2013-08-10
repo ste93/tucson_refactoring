@@ -33,19 +33,21 @@ public class NXT_ServoMotorActuator implements ISimpleProbe {
 
     public boolean readValue(final String key) {
         try {
-            if (key.equals("power")) {
+            if ("power".equals(key)) {
                 if (this.transducer == null) {
+                    TransducerManager.getTransducerManager();
                     this.transducer =
-                            TransducerManager.getTransducerManager()
-                                    .getTransducer(this.tId.getAgentName());
+                            TransducerManager.getTransducer(this.tId
+                                    .getAgentName());
                 }
                 this.transducer.notifyEnvEvent(key, this.power);
                 return true;
-            } else if (key.equals("angle")) {
+            } else if ("angle".equals(key)) {
                 if (this.transducer == null) {
+                    TransducerManager.getTransducerManager();
                     this.transducer =
-                            TransducerManager.getTransducerManager()
-                                    .getTransducer(this.tId.getAgentName());
+                            TransducerManager.getTransducer(this.tId
+                                    .getAgentName());
                 }
                 this.transducer.notifyEnvEvent(key, this.angle);
                 return true;
@@ -66,7 +68,7 @@ public class NXT_ServoMotorActuator implements ISimpleProbe {
 
     public boolean writeValue(final String key, final int value) {
         System.err.println("WRITE REQUEST ( " + key + ", " + value + " )");
-        if (key.equals("power")) {
+        if ("power".equals(key)) {
             this.power = value;
             if (this.id.getLocalName().equals("servoMotorActuatorLeft")) {
                 this.gui.setMotorParameters("left", "power", this.power);
@@ -74,7 +76,7 @@ public class NXT_ServoMotorActuator implements ISimpleProbe {
                 this.gui.setMotorParameters("right", "power", this.power);
             }
             return true;
-        } else if (key.equals("angle")) {
+        } else if ("angle".equals(key)) {
             this.angle = value;
             if (this.id.getLocalName().equals("servoMotorActuatorLeft")) {
                 this.gui.setMotorParameters("left", "angle", this.angle);

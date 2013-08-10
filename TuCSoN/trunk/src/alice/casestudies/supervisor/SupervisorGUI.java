@@ -2,6 +2,9 @@ package alice.casestudies.supervisor;
 
 import java.awt.event.ActionListener;
 
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JSlider;
 import javax.swing.event.ChangeListener;
 
 /**
@@ -10,7 +13,7 @@ import javax.swing.event.ChangeListener;
  * 
  * @author Steven Maraldi
  */
-public class SupervisorGUI extends javax.swing.JFrame {
+public final class SupervisorGUI extends javax.swing.JFrame {
 
     private static SupervisorGUI lightGui;
     /**
@@ -31,29 +34,11 @@ public class SupervisorGUI extends javax.swing.JFrame {
 
     private javax.swing.JButton jButton2;
 
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
-    private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JSlider jSlider3;
-    private javax.swing.JSlider jSlider4;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
@@ -63,6 +48,7 @@ public class SupervisorGUI extends javax.swing.JFrame {
     // End of variables declaration
     /** Creates new form LightGUI */
     private SupervisorGUI() {
+        super();
         this.initComponents();
 
         /* Set the Nimbus look and feel */
@@ -112,14 +98,6 @@ public class SupervisorGUI extends javax.swing.JFrame {
         this.jToggleButton2.addActionListener(l);
     }
 
-    public boolean getConnectionStatus() {
-        if (this.jLabel11.getText().equals("OK")) {
-            return true;
-        }
-
-        return false;
-    }
-
     public String getIntensityValue() {
         return this.jTextField3.getText();
     }
@@ -136,6 +114,14 @@ public class SupervisorGUI extends javax.swing.JFrame {
         return this.jTextField4.getText();
     }
 
+    public boolean isConnected() {
+        if (this.jLabel11.getText().equals("OK")) {
+            return true;
+        }
+
+        return false;
+    }
+
     public void setConnectionStatus(final boolean ok) {
         if (ok) {
             this.jPanel7.setBackground(new java.awt.Color(0, 204, 0));
@@ -147,7 +133,7 @@ public class SupervisorGUI extends javax.swing.JFrame {
     }
 
     public void setIntensityValue(final int value) {
-        this.jTextField3.setText("" + value);
+        this.jTextField3.setText(String.valueOf(value));
     }
 
     public void setLedStatus(final boolean on) {
@@ -161,7 +147,7 @@ public class SupervisorGUI extends javax.swing.JFrame {
     }
 
     public void setTimeValue(final int value) {
-        this.jTextField4.setText("" + value);
+        this.jTextField4.setText(String.valueOf(value));
     }
 
     /**
@@ -173,75 +159,75 @@ public class SupervisorGUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">
     private void initComponents() {
 
-        this.jLabel1 = new javax.swing.JLabel();
-        this.jLabel3 = new javax.swing.JLabel();
-        this.jPanel2 = new javax.swing.JPanel();
+        final JLabel jLabel1 = new javax.swing.JLabel();
+        final JLabel jLabel3 = new javax.swing.JLabel();
+        final JPanel jPanel2 = new javax.swing.JPanel();
         this.jSlider3 = new javax.swing.JSlider();
-        this.jLabel4 = new javax.swing.JLabel();
+        final JLabel jLabel4 = new javax.swing.JLabel();
         this.jToggleButton2 = new javax.swing.JToggleButton();
-        this.jPanel1 = new javax.swing.JPanel();
+        final JPanel jPanel1 = new javax.swing.JPanel();
         this.jTextField1 = new javax.swing.JTextField();
-        this.jLabel2 = new javax.swing.JLabel();
+        final JLabel jLabel2 = new javax.swing.JLabel();
         this.jTextField2 = new javax.swing.JTextField();
-        this.jLabel5 = new javax.swing.JLabel();
-        this.jLabel6 = new javax.swing.JLabel();
+        final JLabel jLabel5 = new javax.swing.JLabel();
+        final JLabel jLabel6 = new javax.swing.JLabel();
         this.jButton1 = new javax.swing.JButton();
         this.jButton2 = new javax.swing.JButton();
-        this.jLabel7 = new javax.swing.JLabel();
-        this.jPanel3 = new javax.swing.JPanel();
-        this.jSlider4 = new javax.swing.JSlider();
-        this.jLabel12 = new javax.swing.JLabel();
-        this.jPanel4 = new javax.swing.JPanel();
-        this.jLabel8 = new javax.swing.JLabel();
-        this.jLabel13 = new javax.swing.JLabel();
+        final JLabel jLabel7 = new javax.swing.JLabel();
+        final JPanel jPanel3 = new javax.swing.JPanel();
+        final JSlider jSlider4 = new javax.swing.JSlider();
+        final JLabel jLabel12 = new javax.swing.JLabel();
+        final JPanel jPanel4 = new javax.swing.JPanel();
+        final JLabel jLabel8 = new javax.swing.JLabel();
+        final JLabel jLabel13 = new javax.swing.JLabel();
         this.jTextField3 = new javax.swing.JTextField();
         this.jPanel5 = new javax.swing.JPanel();
         this.jLabel9 = new javax.swing.JLabel();
-        this.jPanel6 = new javax.swing.JPanel();
-        this.jLabel10 = new javax.swing.JLabel();
-        this.jLabel14 = new javax.swing.JLabel();
+        final JPanel jPanel6 = new javax.swing.JPanel();
+        final JLabel jLabel10 = new javax.swing.JLabel();
+        final JLabel jLabel14 = new javax.swing.JLabel();
         this.jTextField4 = new javax.swing.JTextField();
         this.jPanel7 = new javax.swing.JPanel();
         this.jLabel11 = new javax.swing.JLabel();
 
         this.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        this.jLabel1.setBackground(new java.awt.Color(0, 204, 204));
-        this.jLabel1.setFont(new java.awt.Font("Tahoma", 3, 18)); // NOI18N
-        this.jLabel1.setForeground(new java.awt.Color(0, 153, 204));
-        this.jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        this.jLabel1.setText("LIGHT SUPERVISOR");
+        jLabel1.setBackground(new java.awt.Color(0, 204, 204));
+        jLabel1.setFont(new java.awt.Font("Tahoma", 3, 18)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(0, 153, 204));
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("LIGHT SUPERVISOR");
 
-        this.jPanel2.setBorder(javax.swing.BorderFactory
+        jPanel2.setBorder(javax.swing.BorderFactory
                 .createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        this.jLabel4.setText("Light's intensity slider");
+        jLabel4.setText("Light's intensity slider");
 
         this.jToggleButton2.setText("LOCK/UNLOCK");
 
-        this.jPanel1.setBorder(javax.swing.BorderFactory
+        jPanel1.setBorder(javax.swing.BorderFactory
                 .createLineBorder(new java.awt.Color(0, 0, 0)));
 
         this.jTextField1.setText("Insert Value");
         this.jTextField1.setName(""); // NOI18N
 
-        this.jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        this.jLabel2.setText("INTENSITY RANGE");
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setText("INTENSITY RANGE");
 
         this.jTextField2.setText("Insert value");
         this.jTextField2.setName(""); // NOI18N
 
-        this.jLabel5.setText("Min Value");
+        jLabel5.setText("Min Value");
 
-        this.jLabel6.setText("Max Value");
+        jLabel6.setText("Max Value");
 
         this.jButton1.setText("Set Min");
 
         this.jButton2.setText("Set Max");
 
         final javax.swing.GroupLayout jPanel1Layout =
-                new javax.swing.GroupLayout(this.jPanel1);
-        this.jPanel1.setLayout(jPanel1Layout);
+                new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout
                 .setHorizontalGroup(jPanel1Layout
                         .createParallelGroup(
@@ -260,7 +246,7 @@ public class SupervisorGUI extends javax.swing.JFrame {
                                                                                 38,
                                                                                 38)
                                                                         .addComponent(
-                                                                                this.jLabel2))
+                                                                                jLabel2))
                                                         .addGroup(
                                                                 jPanel1Layout
                                                                         .createSequentialGroup()
@@ -277,7 +263,7 @@ public class SupervisorGUI extends javax.swing.JFrame {
                                                                                                 0,
                                                                                                 Short.MAX_VALUE)
                                                                                         .addComponent(
-                                                                                                this.jLabel5,
+                                                                                                jLabel5,
                                                                                                 javax.swing.GroupLayout.Alignment.LEADING)
                                                                                         .addComponent(
                                                                                                 this.jTextField1,
@@ -298,7 +284,7 @@ public class SupervisorGUI extends javax.swing.JFrame {
                                                                                                 javax.swing.GroupLayout.DEFAULT_SIZE,
                                                                                                 Short.MAX_VALUE)
                                                                                         .addComponent(
-                                                                                                this.jLabel6)
+                                                                                                jLabel6)
                                                                                         .addComponent(
                                                                                                 this.jTextField2,
                                                                                                 javax.swing.GroupLayout.Alignment.TRAILING,
@@ -316,17 +302,15 @@ public class SupervisorGUI extends javax.swing.JFrame {
                                 jPanel1Layout
                                         .createSequentialGroup()
                                         .addGap(6, 6, 6)
-                                        .addComponent(this.jLabel2)
+                                        .addComponent(jLabel2)
                                         .addPreferredGap(
                                                 javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addGroup(
                                                 jPanel1Layout
                                                         .createParallelGroup(
                                                                 javax.swing.GroupLayout.Alignment.BASELINE)
-                                                        .addComponent(
-                                                                this.jLabel5)
-                                                        .addComponent(
-                                                                this.jLabel6))
+                                                        .addComponent(jLabel5)
+                                                        .addComponent(jLabel6))
                                         .addGap(7, 7, 7)
                                         .addGroup(
                                                 jPanel1Layout
@@ -356,12 +340,12 @@ public class SupervisorGUI extends javax.swing.JFrame {
                                                 javax.swing.GroupLayout.DEFAULT_SIZE,
                                                 Short.MAX_VALUE)));
 
-        this.jLabel7.setFont(new java.awt.Font("Tahoma", 3, 11)); // NOI18N
-        this.jLabel7.setText("COMMAND PANEL");
+        jLabel7.setFont(new java.awt.Font("Tahoma", 3, 11)); // NOI18N
+        jLabel7.setText("COMMAND PANEL");
 
         final javax.swing.GroupLayout jPanel2Layout =
-                new javax.swing.GroupLayout(this.jPanel2);
-        this.jPanel2.setLayout(jPanel2Layout);
+                new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout
                 .setHorizontalGroup(jPanel2Layout
                         .createParallelGroup(
@@ -370,7 +354,7 @@ public class SupervisorGUI extends javax.swing.JFrame {
                                 javax.swing.GroupLayout.Alignment.TRAILING,
                                 jPanel2Layout.createSequentialGroup()
                                         .addContainerGap(58, Short.MAX_VALUE)
-                                        .addComponent(this.jLabel7)
+                                        .addComponent(jLabel7)
                                         .addGap(46, 46, 46))
                         .addGroup(
                                 jPanel2Layout
@@ -385,10 +369,9 @@ public class SupervisorGUI extends javax.swing.JFrame {
                                                                 javax.swing.GroupLayout.DEFAULT_SIZE,
                                                                 179,
                                                                 Short.MAX_VALUE)
+                                                        .addComponent(jLabel4)
                                                         .addComponent(
-                                                                this.jLabel4)
-                                                        .addComponent(
-                                                                this.jPanel1,
+                                                                jPanel1,
                                                                 javax.swing.GroupLayout.PREFERRED_SIZE,
                                                                 javax.swing.GroupLayout.DEFAULT_SIZE,
                                                                 javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -403,7 +386,7 @@ public class SupervisorGUI extends javax.swing.JFrame {
                                 jPanel2Layout
                                         .createSequentialGroup()
                                         .addGap(24, 24, 24)
-                                        .addComponent(this.jLabel7)
+                                        .addComponent(jLabel7)
                                         .addPreferredGap(
                                                 javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                         .addComponent(
@@ -413,13 +396,13 @@ public class SupervisorGUI extends javax.swing.JFrame {
                                                 javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(5, 5, 5)
                                         .addComponent(
-                                                this.jPanel1,
+                                                jPanel1,
                                                 javax.swing.GroupLayout.PREFERRED_SIZE,
                                                 javax.swing.GroupLayout.DEFAULT_SIZE,
                                                 javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(
                                                 javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(this.jLabel4)
+                                        .addComponent(jLabel4)
                                         .addPreferredGap(
                                                 javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(
@@ -429,19 +412,19 @@ public class SupervisorGUI extends javax.swing.JFrame {
                                                 javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addContainerGap(27, Short.MAX_VALUE)));
 
-        this.jPanel3.setBorder(javax.swing.BorderFactory
+        jPanel3.setBorder(javax.swing.BorderFactory
                 .createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        this.jLabel12.setFont(new java.awt.Font("Tahoma", 3, 11)); // NOI18N
-        this.jLabel12.setText("CONTROL PANEL");
+        jLabel12.setFont(new java.awt.Font("Tahoma", 3, 11)); // NOI18N
+        jLabel12.setText("CONTROL PANEL");
 
-        this.jPanel4.setBorder(javax.swing.BorderFactory
+        jPanel4.setBorder(javax.swing.BorderFactory
                 .createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        this.jLabel8.setText("Intensity");
+        jLabel8.setText("Intensity");
 
-        this.jLabel13.setFont(new java.awt.Font("Tahoma", 3, 11));
-        this.jLabel13.setText("Light Status");
+        jLabel13.setFont(new java.awt.Font("Tahoma", 3, 11));
+        jLabel13.setText("Light Status");
 
         this.jTextField3.setEditable(false);
 
@@ -472,8 +455,8 @@ public class SupervisorGUI extends javax.swing.JFrame {
                         .addComponent(this.jLabel9)));
 
         final javax.swing.GroupLayout jPanel4Layout =
-                new javax.swing.GroupLayout(this.jPanel4);
-        this.jPanel4.setLayout(jPanel4Layout);
+                new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout
                 .setHorizontalGroup(jPanel4Layout
                         .createParallelGroup(
@@ -486,8 +469,7 @@ public class SupervisorGUI extends javax.swing.JFrame {
                                                 jPanel4Layout
                                                         .createParallelGroup(
                                                                 javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addComponent(
-                                                                this.jLabel13)
+                                                        .addComponent(jLabel13)
                                                         .addGroup(
                                                                 jPanel4Layout
                                                                         .createSequentialGroup()
@@ -500,7 +482,7 @@ public class SupervisorGUI extends javax.swing.JFrame {
                                                                                                 this.jTextField3,
                                                                                                 javax.swing.GroupLayout.Alignment.LEADING)
                                                                                         .addComponent(
-                                                                                                this.jLabel8,
+                                                                                                jLabel8,
                                                                                                 javax.swing.GroupLayout.Alignment.LEADING,
                                                                                                 javax.swing.GroupLayout.DEFAULT_SIZE,
                                                                                                 javax.swing.GroupLayout.DEFAULT_SIZE,
@@ -523,7 +505,7 @@ public class SupervisorGUI extends javax.swing.JFrame {
                                 jPanel4Layout
                                         .createSequentialGroup()
                                         .addGap(11, 11, 11)
-                                        .addComponent(this.jLabel13)
+                                        .addComponent(jLabel13)
                                         .addPreferredGap(
                                                 javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                         .addGroup(
@@ -539,7 +521,7 @@ public class SupervisorGUI extends javax.swing.JFrame {
                                                                 jPanel4Layout
                                                                         .createSequentialGroup()
                                                                         .addComponent(
-                                                                                this.jLabel8)
+                                                                                jLabel8)
                                                                         .addPreferredGap(
                                                                                 javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                                         .addComponent(
@@ -549,13 +531,13 @@ public class SupervisorGUI extends javax.swing.JFrame {
                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE)))
                                         .addContainerGap()));
 
-        this.jPanel6.setBorder(javax.swing.BorderFactory
+        jPanel6.setBorder(javax.swing.BorderFactory
                 .createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        this.jLabel10.setText("Time");
+        jLabel10.setText("Time");
 
-        this.jLabel14.setFont(new java.awt.Font("Tahoma", 3, 11));
-        this.jLabel14.setText("Connection Status");
+        jLabel14.setFont(new java.awt.Font("Tahoma", 3, 11));
+        jLabel14.setText("Connection Status");
 
         this.jTextField4.setEditable(false);
 
@@ -586,8 +568,8 @@ public class SupervisorGUI extends javax.swing.JFrame {
                         .addComponent(this.jLabel11)));
 
         final javax.swing.GroupLayout jPanel6Layout =
-                new javax.swing.GroupLayout(this.jPanel6);
-        this.jPanel6.setLayout(jPanel6Layout);
+                new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout
                 .setHorizontalGroup(jPanel6Layout
                         .createParallelGroup(
@@ -601,7 +583,7 @@ public class SupervisorGUI extends javax.swing.JFrame {
                                                         .createParallelGroup(
                                                                 javax.swing.GroupLayout.Alignment.LEADING)
                                                         .addComponent(
-                                                                this.jLabel14,
+                                                                jLabel14,
                                                                 javax.swing.GroupLayout.DEFAULT_SIZE,
                                                                 145,
                                                                 Short.MAX_VALUE)
@@ -613,7 +595,7 @@ public class SupervisorGUI extends javax.swing.JFrame {
                                                                                         .createParallelGroup(
                                                                                                 javax.swing.GroupLayout.Alignment.LEADING)
                                                                                         .addComponent(
-                                                                                                this.jLabel10)
+                                                                                                jLabel10)
                                                                                         .addComponent(
                                                                                                 this.jTextField4,
                                                                                                 javax.swing.GroupLayout.DEFAULT_SIZE,
@@ -636,7 +618,7 @@ public class SupervisorGUI extends javax.swing.JFrame {
                                 jPanel6Layout
                                         .createSequentialGroup()
                                         .addGap(11, 11, 11)
-                                        .addComponent(this.jLabel14)
+                                        .addComponent(jLabel14)
                                         .addPreferredGap(
                                                 javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addGroup(
@@ -647,7 +629,7 @@ public class SupervisorGUI extends javax.swing.JFrame {
                                                                 jPanel6Layout
                                                                         .createSequentialGroup()
                                                                         .addComponent(
-                                                                                this.jLabel10)
+                                                                                jLabel10)
                                                                         .addPreferredGap(
                                                                                 javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                                         .addComponent(
@@ -663,8 +645,8 @@ public class SupervisorGUI extends javax.swing.JFrame {
                                         .addContainerGap()));
 
         final javax.swing.GroupLayout jPanel3Layout =
-                new javax.swing.GroupLayout(this.jPanel3);
-        this.jPanel3.setLayout(jPanel3Layout);
+                new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout
                 .setHorizontalGroup(jPanel3Layout
                         .createParallelGroup(
@@ -685,17 +667,17 @@ public class SupervisorGUI extends javax.swing.JFrame {
                                                                                         .createParallelGroup(
                                                                                                 javax.swing.GroupLayout.Alignment.LEADING)
                                                                                         .addComponent(
-                                                                                                this.jSlider4,
+                                                                                                jSlider4,
                                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE,
                                                                                                 0,
                                                                                                 javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                                         .addComponent(
-                                                                                                this.jPanel4,
+                                                                                                jPanel4,
                                                                                                 javax.swing.GroupLayout.DEFAULT_SIZE,
                                                                                                 javax.swing.GroupLayout.DEFAULT_SIZE,
                                                                                                 Short.MAX_VALUE)
                                                                                         .addComponent(
-                                                                                                this.jPanel6,
+                                                                                                jPanel6,
                                                                                                 javax.swing.GroupLayout.Alignment.TRAILING,
                                                                                                 javax.swing.GroupLayout.DEFAULT_SIZE,
                                                                                                 javax.swing.GroupLayout.DEFAULT_SIZE,
@@ -706,7 +688,7 @@ public class SupervisorGUI extends javax.swing.JFrame {
                                                                 jPanel3Layout
                                                                         .createSequentialGroup()
                                                                         .addComponent(
-                                                                                this.jLabel12)
+                                                                                jLabel12)
                                                                         .addGap(47,
                                                                                 47,
                                                                                 47)))));
@@ -718,23 +700,23 @@ public class SupervisorGUI extends javax.swing.JFrame {
                                 jPanel3Layout
                                         .createSequentialGroup()
                                         .addGap(24, 24, 24)
-                                        .addComponent(this.jLabel12)
+                                        .addComponent(jLabel12)
                                         .addPreferredGap(
                                                 javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                         .addComponent(
-                                                this.jPanel4,
+                                                jPanel4,
                                                 javax.swing.GroupLayout.PREFERRED_SIZE,
                                                 javax.swing.GroupLayout.DEFAULT_SIZE,
                                                 javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(18, 18, 18)
                                         .addComponent(
-                                                this.jPanel6,
+                                                jPanel6,
                                                 javax.swing.GroupLayout.PREFERRED_SIZE,
                                                 javax.swing.GroupLayout.DEFAULT_SIZE,
                                                 javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(40, 40, 40)
                                         .addComponent(
-                                                this.jSlider4,
+                                                jSlider4,
                                                 javax.swing.GroupLayout.PREFERRED_SIZE,
                                                 javax.swing.GroupLayout.DEFAULT_SIZE,
                                                 javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -750,27 +732,27 @@ public class SupervisorGUI extends javax.swing.JFrame {
                 .addGroup(
                         layout.createSequentialGroup()
                                 .addContainerGap()
-                                .addComponent(this.jLabel3)
+                                .addComponent(jLabel3)
                                 .addPreferredGap(
                                         javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(
                                         layout.createParallelGroup(
                                                 javax.swing.GroupLayout.Alignment.LEADING)
                                                 .addComponent(
-                                                        this.jLabel1,
+                                                        jLabel1,
                                                         javax.swing.GroupLayout.DEFAULT_SIZE,
                                                         396, Short.MAX_VALUE)
                                                 .addGroup(
                                                         layout.createSequentialGroup()
                                                                 .addComponent(
-                                                                        this.jPanel2,
+                                                                        jPanel2,
                                                                         javax.swing.GroupLayout.PREFERRED_SIZE,
                                                                         javax.swing.GroupLayout.DEFAULT_SIZE,
                                                                         javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                 .addPreferredGap(
                                                                         javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                                 .addComponent(
-                                                                        this.jPanel3,
+                                                                        jPanel3,
                                                                         javax.swing.GroupLayout.DEFAULT_SIZE,
                                                                         javax.swing.GroupLayout.DEFAULT_SIZE,
                                                                         Short.MAX_VALUE)))
@@ -780,7 +762,7 @@ public class SupervisorGUI extends javax.swing.JFrame {
                 .addGroup(
                         javax.swing.GroupLayout.Alignment.TRAILING,
                         layout.createSequentialGroup()
-                                .addComponent(this.jLabel1,
+                                .addComponent(jLabel1,
                                         javax.swing.GroupLayout.PREFERRED_SIZE,
                                         33,
                                         javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -792,7 +774,7 @@ public class SupervisorGUI extends javax.swing.JFrame {
                                                                 .addGap(38, 38,
                                                                         38)
                                                                 .addComponent(
-                                                                        this.jLabel3))
+                                                                        jLabel3))
                                                 .addGroup(
                                                         layout.createSequentialGroup()
                                                                 .addPreferredGap(
@@ -801,12 +783,12 @@ public class SupervisorGUI extends javax.swing.JFrame {
                                                                         layout.createParallelGroup(
                                                                                 javax.swing.GroupLayout.Alignment.LEADING)
                                                                                 .addComponent(
-                                                                                        this.jPanel2,
+                                                                                        jPanel2,
                                                                                         javax.swing.GroupLayout.DEFAULT_SIZE,
                                                                                         javax.swing.GroupLayout.DEFAULT_SIZE,
                                                                                         Short.MAX_VALUE)
                                                                                 .addComponent(
-                                                                                        this.jPanel3,
+                                                                                        jPanel3,
                                                                                         javax.swing.GroupLayout.DEFAULT_SIZE,
                                                                                         281,
                                                                                         Short.MAX_VALUE))))

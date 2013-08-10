@@ -25,54 +25,65 @@ public class WanderAroundMain extends AbstractTucsonAgent {
 
     // ACC
     private static SynchACC acc;
-    private static TupleCentreId TC_Avoid;
-    // Actuators
-    private static TupleCentreId TC_M1; // Left servomotor actuator
-    private static TupleCentreId TC_M2; // Right servomotor actuator
-    private static TupleCentreId TC_Motor;
-    private static TupleCentreId TC_RunAway;
-    // Application tuple centres
-    private static TupleCentreId TC_Sonar;
-    // Sensors
-    private static TupleCentreId TC_U1; // Front ultrasonic sensor
-    private static TupleCentreId TC_U2; // Right ultrasonic sensor
-    private static TupleCentreId TC_U3; // Back ultrasonic sensor
-
-    private static TupleCentreId TC_U4; // Left ultrasonic sensor
-
+    private static TupleCentreId tcAvoid;
     // Environment configuration tuple centre
     private static TupleCentreId tcId;
+    // Actuators
+    private static TupleCentreId tcM1; // Left servomotor actuator
+    private static TupleCentreId tcM2; // Right servomotor actuator
+    private static TupleCentreId tcMotor;
+    private static TupleCentreId tcRunAway;
+    // Application tuple centres
+    private static TupleCentreId tcSonar;
+    // Sensors
+    private static TupleCentreId tcU1; // Front ultrasonic sensor
+    private static TupleCentreId tcU2; // Right ultrasonic sensor
+
+    private static TupleCentreId tcU3; // Back ultrasonic sensor
+
+    private static TupleCentreId tcU4; // Left ultrasonic sensor
 
     public static void main(final String[] args) {
         try {
-            WanderAroundMain.TC_U1 =
-                    new TupleCentreId("tc_u1", "localhost", "" + 20504);
-            WanderAroundMain.TC_U2 =
-                    new TupleCentreId("tc_u2", "localhost", "" + 20504);
-            WanderAroundMain.TC_U3 =
-                    new TupleCentreId("tc_u3", "localhost", "" + 20504);
-            WanderAroundMain.TC_U4 =
-                    new TupleCentreId("tc_u4", "localhost", "" + 20504);
-            WanderAroundMain.TC_M1 =
-                    new TupleCentreId("tc_m1", "localhost", "" + 20504);
-            WanderAroundMain.TC_M2 =
-                    new TupleCentreId("tc_m2", "localhost", "" + 20504);
-            WanderAroundMain.TC_Sonar =
-                    new TupleCentreId("tc_sonar", "localhost", "" + 20504);
-            WanderAroundMain.TC_RunAway =
-                    new TupleCentreId("tc_runaway", "localhost", "" + 20504);
-            WanderAroundMain.TC_Motor =
-                    new TupleCentreId("tc_motor", "localhost", "" + 20504);
-            WanderAroundMain.TC_Avoid =
-                    new TupleCentreId("tc_avoid", "localhost", "" + 20504);
+            WanderAroundMain.tcU1 =
+                    new TupleCentreId("tc_u1", "localhost",
+                            String.valueOf(20504));
+            WanderAroundMain.tcU2 =
+                    new TupleCentreId("tc_u2", "localhost",
+                            String.valueOf(20504));
+            WanderAroundMain.tcU3 =
+                    new TupleCentreId("tc_u3", "localhost",
+                            String.valueOf(20504));
+            WanderAroundMain.tcU4 =
+                    new TupleCentreId("tc_u4", "localhost",
+                            String.valueOf(20504));
+            WanderAroundMain.tcM1 =
+                    new TupleCentreId("tc_m1", "localhost",
+                            String.valueOf(20504));
+            WanderAroundMain.tcM2 =
+                    new TupleCentreId("tc_m2", "localhost",
+                            String.valueOf(20504));
+            WanderAroundMain.tcSonar =
+                    new TupleCentreId("tc_sonar", "localhost",
+                            String.valueOf(20504));
+            WanderAroundMain.tcRunAway =
+                    new TupleCentreId("tc_runaway", "localhost",
+                            String.valueOf(20504));
+            WanderAroundMain.tcMotor =
+                    new TupleCentreId("tc_motor", "localhost",
+                            String.valueOf(20504));
+            WanderAroundMain.tcAvoid =
+                    new TupleCentreId("tc_avoid", "localhost",
+                            String.valueOf(20504));
             WanderAroundMain.tcId =
-                    new TupleCentreId("envConfigTC", "localhost", "" + 20504);
+                    new TupleCentreId("envConfigTC", "localhost",
+                            String.valueOf(20504));
 
             // Starting test
             final WanderAroundMain mainTest = new WanderAroundMain("main");
             mainTest.go();
-        } catch (final Exception ex) {
-            ex.printStackTrace();
+        } catch (final Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -96,104 +107,104 @@ public class WanderAroundMain extends AbstractTucsonAgent {
         // Sensor's TCs
         WanderAroundMain
                 .speak("Injecting 'table' ReSpecT specification in tc < "
-                        + WanderAroundMain.TC_U1.toString() + " >...");
+                        + WanderAroundMain.tcU1.toString() + " >...");
         LogicTuple specTuple =
                 new LogicTuple(
                         "spec",
                         new Value(
                                 Utils.fileToString("alice/casestudies/wanderaround/specTcSensore.rsp")));
-        WanderAroundMain.acc.setS(WanderAroundMain.TC_U1, specTuple, null);
+        WanderAroundMain.acc.setS(WanderAroundMain.tcU1, specTuple, null);
         WanderAroundMain
                 .speak("Injecting 'table' ReSpecT specification in tc < "
-                        + WanderAroundMain.TC_U2.toString() + " >...");
+                        + WanderAroundMain.tcU2.toString() + " >...");
         specTuple =
                 new LogicTuple(
                         "spec",
                         new Value(
                                 Utils.fileToString("alice/casestudies/wanderaround/specTcSensore.rsp")));
-        WanderAroundMain.acc.setS(WanderAroundMain.TC_U2, specTuple, null);
+        WanderAroundMain.acc.setS(WanderAroundMain.tcU2, specTuple, null);
         WanderAroundMain
                 .speak("Injecting 'table' ReSpecT specification in tc < "
-                        + WanderAroundMain.TC_U3.toString() + " >...");
+                        + WanderAroundMain.tcU3.toString() + " >...");
         specTuple =
                 new LogicTuple(
                         "spec",
                         new Value(
                                 Utils.fileToString("alice/casestudies/wanderaround/specTcSensore.rsp")));
-        WanderAroundMain.acc.setS(WanderAroundMain.TC_U3, specTuple, null);
+        WanderAroundMain.acc.setS(WanderAroundMain.tcU3, specTuple, null);
         WanderAroundMain
                 .speak("Injecting 'table' ReSpecT specification in tc < "
-                        + WanderAroundMain.TC_U4.toString() + " >...");
+                        + WanderAroundMain.tcU4.toString() + " >...");
         specTuple =
                 new LogicTuple(
                         "spec",
                         new Value(
                                 Utils.fileToString("alice/casestudies/wanderaround/specTcSensore.rsp")));
-        WanderAroundMain.acc.setS(WanderAroundMain.TC_U4, specTuple, null);
+        WanderAroundMain.acc.setS(WanderAroundMain.tcU4, specTuple, null);
 
         // Actuator's TCs
         WanderAroundMain
                 .speak("Injecting 'table' ReSpecT specification in tc < "
-                        + WanderAroundMain.TC_M1.toString() + " >...");
+                        + WanderAroundMain.tcM1.toString() + " >...");
         specTuple =
                 new LogicTuple(
                         "spec",
                         new Value(
                                 Utils.fileToString("alice/casestudies/wanderaround/specTcAttuatoreLeft.rsp")));
-        WanderAroundMain.acc.setS(WanderAroundMain.TC_M1, specTuple, null);
+        WanderAroundMain.acc.setS(WanderAroundMain.tcM1, specTuple, null);
         WanderAroundMain
                 .speak("Injecting 'table' ReSpecT specification in tc < "
-                        + WanderAroundMain.TC_M2.toString() + " >...");
+                        + WanderAroundMain.tcM2.toString() + " >...");
         specTuple =
                 new LogicTuple(
                         "spec",
                         new Value(
                                 Utils.fileToString("alice/casestudies/wanderaround/specTcAttuatoreRight.rsp")));
-        WanderAroundMain.acc.setS(WanderAroundMain.TC_M2, specTuple, null);
+        WanderAroundMain.acc.setS(WanderAroundMain.tcM2, specTuple, null);
 
         // TC Sonar
         WanderAroundMain
                 .speak("Injecting 'table' ReSpecT specification in tc < "
-                        + WanderAroundMain.TC_Sonar.toString() + " >...");
+                        + WanderAroundMain.tcSonar.toString() + " >...");
         specTuple =
                 new LogicTuple(
                         "spec",
                         new Value(
                                 Utils.fileToString("alice/casestudies/wanderaround/specTcSonar.rsp")));
-        WanderAroundMain.acc.setS(WanderAroundMain.TC_Sonar, specTuple, null);
+        WanderAroundMain.acc.setS(WanderAroundMain.tcSonar, specTuple, null);
 
         // TC Run Away
         WanderAroundMain
                 .speak("Injecting 'table' ReSpecT specification in tc < "
-                        + WanderAroundMain.TC_RunAway.toString() + " >...");
+                        + WanderAroundMain.tcRunAway.toString() + " >...");
         specTuple =
                 new LogicTuple(
                         "spec",
                         new Value(
                                 Utils.fileToString("alice/casestudies/wanderaround/specTcRunAway.rsp")));
-        WanderAroundMain.acc.setS(WanderAroundMain.TC_RunAway, specTuple, null);
+        WanderAroundMain.acc.setS(WanderAroundMain.tcRunAway, specTuple, null);
 
         // TC Motor
         WanderAroundMain
                 .speak("Injecting 'table' ReSpecT specification in tc < "
-                        + WanderAroundMain.TC_Motor.toString() + " >...");
+                        + WanderAroundMain.tcMotor.toString() + " >...");
         specTuple =
                 new LogicTuple(
                         "spec",
                         new Value(
                                 Utils.fileToString("alice/casestudies/wanderaround/specTcMotor.rsp")));
-        WanderAroundMain.acc.setS(WanderAroundMain.TC_Motor, specTuple, null);
+        WanderAroundMain.acc.setS(WanderAroundMain.tcMotor, specTuple, null);
 
         // TC Avoid
         WanderAroundMain
                 .speak("Injecting 'table' ReSpecT specification in tc < "
-                        + WanderAroundMain.TC_Avoid.toString() + " >...");
+                        + WanderAroundMain.tcAvoid.toString() + " >...");
         specTuple =
                 new LogicTuple(
                         "spec",
                         new Value(
                                 Utils.fileToString("alice/casestudies/wanderaround/specTcAvoid.rsp")));
-        WanderAroundMain.acc.setS(WanderAroundMain.TC_Avoid, specTuple, null);
+        WanderAroundMain.acc.setS(WanderAroundMain.tcAvoid, specTuple, null);
         WanderAroundMain.speak("TCs created");
     }
 
@@ -204,7 +215,7 @@ public class WanderAroundMain extends AbstractTucsonAgent {
         LogicTuple t =
                 new LogicTuple(
                         "createTransducerSensor",
-                        new Value(WanderAroundMain.TC_U1.toString()),
+                        new Value(WanderAroundMain.tcU1.toString()),
                         new Value(
                                 "alice.casestudies.wanderaround.TransducerSens"),
                         new Value("tSensorFront"),
@@ -215,7 +226,7 @@ public class WanderAroundMain extends AbstractTucsonAgent {
         t =
                 new LogicTuple(
                         "createTransducerSensor",
-                        new Value(WanderAroundMain.TC_U2.toString()),
+                        new Value(WanderAroundMain.tcU2.toString()),
                         new Value(
                                 "alice.casestudies.wanderaround.TransducerSens"),
                         new Value("tSensorRight"),
@@ -226,7 +237,7 @@ public class WanderAroundMain extends AbstractTucsonAgent {
         t =
                 new LogicTuple(
                         "createTransducerSensor",
-                        new Value(WanderAroundMain.TC_U3.toString()),
+                        new Value(WanderAroundMain.tcU3.toString()),
                         new Value(
                                 "alice.casestudies.wanderaround.TransducerSens"),
                         new Value("tSensorBack"),
@@ -237,7 +248,7 @@ public class WanderAroundMain extends AbstractTucsonAgent {
         t =
                 new LogicTuple(
                         "createTransducerSensor",
-                        new Value(WanderAroundMain.TC_U4.toString()),
+                        new Value(WanderAroundMain.tcU4.toString()),
                         new Value(
                                 "alice.casestudies.wanderaround.TransducerSens"),
                         new Value("tSensorLeft"),
@@ -249,7 +260,7 @@ public class WanderAroundMain extends AbstractTucsonAgent {
         t =
                 new LogicTuple(
                         "createTransducerActuator",
-                        new Value(WanderAroundMain.TC_M1.toString()),
+                        new Value(WanderAroundMain.tcM1.toString()),
                         new Value(
                                 "alice.casestudies.wanderaround.TransducerAct"),
                         new Value("tMotorLeft"),
@@ -260,7 +271,7 @@ public class WanderAroundMain extends AbstractTucsonAgent {
         t =
                 new LogicTuple(
                         "createTransducerActuator",
-                        new Value(WanderAroundMain.TC_M2.toString()),
+                        new Value(WanderAroundMain.tcM2.toString()),
                         new Value(
                                 "alice.casestudies.wanderaround.TransducerAct"),
                         new Value("tMotorRight"),

@@ -208,6 +208,11 @@ public class DoubleKeyMVMap<K, Q, V> {
                     this.delegateIterator = di;
                 }
 
+                public Iterator<V> getDelegateIterator() {
+                    this.validateIterator();
+                    return this.delegateIterator;
+                }
+
                 public boolean hasNext() {
                     this.validateIterator();
                     return this.delegateIterator.hasNext();
@@ -223,11 +228,6 @@ public class DoubleKeyMVMap<K, Q, V> {
                     InnerMVMap.this.innerMapSize--;
                     DoubleKeyMVMap.this.totalValuesSize--;
                     Values.this.removeInnerKeyIfEmpty();
-                }
-
-                public Iterator<V> getDelegateIterator() {
-                    this.validateIterator();
-                    return this.delegateIterator;
                 }
 
                 /**
@@ -643,7 +643,8 @@ public class DoubleKeyMVMap<K, Q, V> {
             }
             while (it.hasNext()) {
                 ret.append(", ");
-                ret.append(it.next().toString() + ' ');
+                ret.append(it.next().toString());
+                ret.append(' ');
             }
             ret.append(']');
             return ret.toString();
@@ -671,9 +672,9 @@ public class DoubleKeyMVMap<K, Q, V> {
 
     } // InnerMap
 
-    private int totalValuesSize = 0;
+    private final Map<K, MVMap<Q, V>> outerMap = new HashMap<K, MVMap<Q, V>>();
 
-    private Map<K, MVMap<Q, V>> outerMap = new HashMap<K, MVMap<Q, V>>();
+    private int totalValuesSize = 0;
 
     /**
      * 
@@ -764,7 +765,7 @@ public class DoubleKeyMVMap<K, Q, V> {
      */
     public boolean remove(final K k1, final Q k2, final V v) {
         final MVMap<Q, V> innerMap = this.outerMap.get(k1);
-        if (innerMap != null && innerMap.remove(k2, v)) {
+        if ((innerMap != null) && innerMap.remove(k2, v)) {
             if (innerMap.getKeysNumber() == 0) {
                 this.outerMap.remove(k1);
             }
@@ -818,7 +819,8 @@ public class DoubleKeyMVMap<K, Q, V> {
         }
         while (it.hasNext()) {
             ret.append(", ");
-            ret.append(it.next().toString() + ' ');
+            ret.append(it.next().toString());
+            ret.append(' ');
         }
         ret.append(']');
         return ret.toString();

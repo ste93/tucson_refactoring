@@ -49,20 +49,8 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
         return AbstractTupleCentreOperation.OPTYPE_ADD_OBS;
     }
 
-    public static int getEnvCode() {
-        return RespectOperation.OPTYPE_GET_ENV;
-    }
-
-    public static int setEnvCode() {
-        return RespectOperation.OPTYPE_SET_ENV;
-    }
-
     public static int envCode() {
         return RespectOperation.OPTYPE_ENV;
-    }
-
-    public static int timeCode() {
-        return RespectOperation.OPTYPE_TIME;
     }
 
     /**
@@ -81,6 +69,10 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
      */
     public static int getCode() {
         return AbstractTupleCentreOperation.OPTYPE_GET;
+    }
+
+    public static int getEnvCode() {
+        return RespectOperation.OPTYPE_GET_ENV;
     }
 
     /**
@@ -353,6 +345,10 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
         return AbstractTupleCentreOperation.OPTYPE_SET;
     }
 
+    public static int setEnvCode() {
+        return RespectOperation.OPTYPE_SET_ENV;
+    }
+
     /**
      * 
      * @return the Integer representing the type code of
@@ -405,6 +401,10 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
      */
     public static int stopCmdCode() {
         return AbstractTupleCentreOperation.OPTYPE_STOP_CMD;
+    }
+
+    public static int timeCode() {
+        return RespectOperation.OPTYPE_TIME;
     }
 
     /**

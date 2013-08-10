@@ -2,6 +2,7 @@ package alice.respect.transducer;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 import alice.logictuple.LogicTuple;
 import alice.logictuple.Value;
@@ -18,7 +19,6 @@ import alice.tucson.service.OperationHandler;
 import alice.tucson.service.TucsonOperation;
 import alice.tuplecentre.api.TupleCentreId;
 import alice.tuplecentre.api.TupleTemplate;
-import alice.tuplecentre.core.AbstractTupleCentreOperation;
 
 /**
  * 
@@ -39,7 +39,7 @@ public abstract class Transducer implements TransducerStandardInterface,
     protected TransducerId id;
 
     /** List of probes associated to the transducer **/
-    protected HashMap<ProbeId, Object> probes;
+    protected Map<ProbeId, Object> probes;
 
     /** Identifier of the tuple centre associated **/
     protected TupleCentreId tcId;
@@ -51,11 +51,8 @@ public abstract class Transducer implements TransducerStandardInterface,
      *            the transducer's identifier
      * @param tc
      *            the associated tuple centre's identifier
-     * @param probeId
-     *            probe's identifier associated to the transducer
      */
-    public Transducer(final TransducerId i, final TupleCentreId tc,
-            final ProbeId probeId) {
+    public Transducer(final TransducerId i, final TupleCentreId tc) {
         this.id = i;
         this.tcId = tc;
 
@@ -191,19 +188,19 @@ public abstract class Transducer implements TransducerStandardInterface,
     public boolean notifyOutput(final InternalEvent ev) {
         try {
             if (ev.getInternalOperation().isGetEnv()) {
-                return this.getEnv(""
-                        + ev.getInternalOperation().getArgument().getArg(0));
+                return this.getEnv(ev.getInternalOperation().getArgument()
+                        .getArg(0).toString());
             } else if (ev.getInternalOperation().isSetEnv()) {
                 final String key =
-                        "" + ev.getInternalOperation().getArgument().getArg(0);
+                        ev.getInternalOperation().getArgument().getArg(0)
+                                .toString();
                 final int value =
-                        Integer.parseInt(""
-                                + ev.getInternalOperation().getArgument()
-                                        .getArg(1));
+                        Integer.parseInt(ev.getInternalOperation()
+                                .getArgument().getArg(1).toString());
                 return this.setEnv(key, value);
             }
-        } catch (final Exception ex) {
-            ex.printStackTrace();
+        } catch (final Exception e) {
+            e.printStackTrace();
             return false;
         }
         return false;

@@ -47,12 +47,13 @@ public class AG_Connection extends AbstractTucsonAgent {
         try {
             tc_connection =
                     new TucsonTupleCentreId("tc_connection", "localhost",
-                            "" + 20504);
+                            String.valueOf(20504));
             tc_timer =
-                    new TucsonTupleCentreId("tc_timer", "localhost", "" + 20504);
-        } catch (final TucsonInvalidTupleCentreIdException e1) {
+                    new TucsonTupleCentreId("tc_timer", "localhost",
+                            String.valueOf(20504));
+        } catch (final TucsonInvalidTupleCentreIdException e) {
             // TODO Auto-generated catch block
-            e1.printStackTrace();
+            e.printStackTrace();
         }
 
         while (this.iteraction) {

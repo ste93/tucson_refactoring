@@ -26,50 +26,59 @@ public class TesiMain extends AbstractTucsonAgent {
 
     // ACC
     private static SynchACC acc;
-    private static TupleCentreId TC_Connection; // Connection status
-    // Utility tuple centres
-    private static TupleCentreId TC_Intensity;
-    // Actuators tuple centres
-    private static TupleCentreId TC_Light; // Light intensity
-    private static TupleCentreId TC_Lock; // Lock toggle button
-    // Sensors tuple centres
-    private static TupleCentreId TC_PH; // Potentiometer hardware
-    private static TupleCentreId TC_PS; // Potentiometer software
-    private static TupleCentreId TC_Range; // Range control panel
-
-    private static TupleCentreId TC_Timer;
-
+    private static TupleCentreId tcConnect; // Connection status
     // Environment configuration tuple centre
     private static TupleCentreId tcId;
+    // Utility tuple centres
+    private static TupleCentreId tcIntensity;
+    // Actuators tuple centres
+    private static TupleCentreId tcLight; // Light intensity
+    private static TupleCentreId tcLock; // Lock toggle button
+    // Sensors tuple centres
+    private static TupleCentreId tcPh; // Potentiometer hardware
+    private static TupleCentreId tcPs; // Potentiometer software
+
+    private static TupleCentreId tcRange; // Range control panel
+
+    private static TupleCentreId tcTimer;
 
     public static void main(final String[] args) {
         try {
-            TesiMain.TC_PH =
-                    new TupleCentreId("tc_ph", "localhost", "" + 20504);
-            TesiMain.TC_PS =
-                    new TupleCentreId("tc_ps", "localhost", "" + 20504);
-            TesiMain.TC_Lock =
-                    new TupleCentreId("tc_lock", "localhost", "" + 20504);
-            TesiMain.TC_Range =
-                    new TupleCentreId("tc_range", "localhost", "" + 20504);
-            TesiMain.TC_Light =
-                    new TupleCentreId("tc_light", "localhost", "" + 20504);
-            TesiMain.TC_Intensity =
-                    new TupleCentreId("tc_intensity", "localhost", "" + 20504);
-            TesiMain.TC_Connection =
-                    new TupleCentreId("tc_connection", "localhost", "" + 20504);
-            TesiMain.TC_Timer =
-                    new TupleCentreId("tc_timer", "localhost", "" + 20504);
+            TesiMain.tcPh =
+                    new TupleCentreId("tc_ph", "localhost",
+                            String.valueOf(20504));
+            TesiMain.tcPs =
+                    new TupleCentreId("tc_ps", "localhost",
+                            String.valueOf(20504));
+            TesiMain.tcLock =
+                    new TupleCentreId("tc_lock", "localhost",
+                            String.valueOf(20504));
+            TesiMain.tcRange =
+                    new TupleCentreId("tc_range", "localhost",
+                            String.valueOf(20504));
+            TesiMain.tcLight =
+                    new TupleCentreId("tc_light", "localhost",
+                            String.valueOf(20504));
+            TesiMain.tcIntensity =
+                    new TupleCentreId("tc_intensity", "localhost",
+                            String.valueOf(20504));
+            TesiMain.tcConnect =
+                    new TupleCentreId("tc_connection", "localhost",
+                            String.valueOf(20504));
+            TesiMain.tcTimer =
+                    new TupleCentreId("tc_timer", "localhost",
+                            String.valueOf(20504));
 
             // Tuple centre for environment configuration
             TesiMain.tcId =
-                    new TupleCentreId("envConfigTC", "localhost", "" + 20504);
+                    new TupleCentreId("envConfigTC", "localhost",
+                            String.valueOf(20504));
 
             // Starting main test
             final TesiMain mainTest = new TesiMain("main");
             mainTest.go();
-        } catch (final Exception ex) {
-            ex.printStackTrace();
+        } catch (final Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -92,75 +101,75 @@ public class TesiMain extends AbstractTucsonAgent {
         TesiMain.speak("Creating TCs...");
         // TC Sensors
         TesiMain.speak("Injecting 'table' ReSpecT specification in tc < "
-                + TesiMain.TC_PH.toString() + " >...");
+                + TesiMain.tcPh.toString() + " >...");
         LogicTuple specTuple =
                 new LogicTuple(
                         "spec",
                         new Value(
                                 Utils.fileToString("alice/casestudies/supervisor/specTcPot.rsp")));
-        TesiMain.acc.setS(TesiMain.TC_PH, specTuple, null);
+        TesiMain.acc.setS(TesiMain.tcPh, specTuple, null);
         TesiMain.speak("Injecting 'table' ReSpecT specification in tc < "
-                + TesiMain.TC_PS.toString() + " >...");
+                + TesiMain.tcPs.toString() + " >...");
         specTuple =
                 new LogicTuple(
                         "spec",
                         new Value(
                                 Utils.fileToString("alice/casestudies/supervisor/specTcPot.rsp")));
-        TesiMain.acc.setS(TesiMain.TC_PS, specTuple, null);
+        TesiMain.acc.setS(TesiMain.tcPs, specTuple, null);
         TesiMain.speak("Injecting 'table' ReSpecT specification in tc < "
-                + TesiMain.TC_Lock.toString() + " >...");
+                + TesiMain.tcLock.toString() + " >...");
         specTuple =
                 new LogicTuple(
                         "spec",
                         new Value(
                                 Utils.fileToString("alice/casestudies/supervisor/specTcLock.rsp")));
-        TesiMain.acc.setS(TesiMain.TC_Lock, specTuple, null);
+        TesiMain.acc.setS(TesiMain.tcLock, specTuple, null);
         TesiMain.speak("Injecting 'table' ReSpecT specification in tc < "
-                + TesiMain.TC_Range.toString() + " >...");
+                + TesiMain.tcRange.toString() + " >...");
         specTuple =
                 new LogicTuple(
                         "spec",
                         new Value(
                                 Utils.fileToString("alice/casestudies/supervisor/specTcRange.rsp")));
-        TesiMain.acc.setS(TesiMain.TC_Range, specTuple, null);
+        TesiMain.acc.setS(TesiMain.tcRange, specTuple, null);
 
         // TC Actuators
         TesiMain.speak("Injecting 'table' ReSpecT specification in tc < "
-                + TesiMain.TC_Light.toString() + " >...");
+                + TesiMain.tcLight.toString() + " >...");
         specTuple =
                 new LogicTuple(
                         "spec",
                         new Value(
                                 Utils.fileToString("alice/casestudies/supervisor/specTcLight.rsp")));
-        TesiMain.acc.setS(TesiMain.TC_Light, specTuple, null);
+        TesiMain.acc.setS(TesiMain.tcLight, specTuple, null);
         TesiMain.speak("Injecting 'table' ReSpecT specification in tc < "
-                + TesiMain.TC_Connection.toString() + " >...");
+                + TesiMain.tcConnect.toString() + " >...");
         specTuple =
                 new LogicTuple(
                         "spec",
                         new Value(
                                 Utils.fileToString("alice/casestudies/supervisor/specTcConnection.rsp")));
-        TesiMain.acc.setS(TesiMain.TC_Connection, specTuple, null);
+        TesiMain.acc.setS(TesiMain.tcConnect, specTuple, null);
 
         // TC Intensity
         TesiMain.speak("Injecting 'table' ReSpecT specification in tc < "
-                + TesiMain.TC_Intensity.toString() + " >...");
+                + TesiMain.tcIntensity.toString() + " >...");
         specTuple =
                 new LogicTuple(
                         "spec",
                         new Value(
                                 Utils.fileToString("alice/casestudies/supervisor/specTcIntensity.rsp")));
-        TesiMain.acc.setS(TesiMain.TC_Intensity, specTuple, null);
+        TesiMain.acc.setS(TesiMain.tcIntensity, specTuple, null);
 
         // TC Timer
         TesiMain.speak("Injecting 'table' ReSpecT specification in tc < "
-                + TesiMain.TC_Timer.toString() + " >...");
+                + TesiMain.tcTimer.toString() + " >...");
         specTuple =
                 new LogicTuple(
                         "spec",
                         new Value(
                                 Utils.fileToString("alice/casestudies/supervisor/specTcTimer.rsp")));
-        TesiMain.acc.setS(TesiMain.TC_Timer, specTuple, null);
+        TesiMain.acc.setS(TesiMain.tcTimer, specTuple, null);
         TesiMain.speak("TCs created");
     }
 
@@ -170,7 +179,7 @@ public class TesiMain extends AbstractTucsonAgent {
         TesiMain.speak("Creating transducers");
         LogicTuple t =
                 new LogicTuple("createTransducerSensor", new Value(
-                        TesiMain.TC_PH.toString()), new Value(
+                        TesiMain.tcPh.toString()), new Value(
                         "alice.casestudies.supervisor.TransducerSens"),
                         new Value("tPotHardware"), new Value(
                                 "alice.casestudies.supervisor.SliderProbe"),
@@ -178,7 +187,7 @@ public class TesiMain extends AbstractTucsonAgent {
         TesiMain.acc.out(TesiMain.tcId, t, null);
         t =
                 new LogicTuple("createTransducerSensor", new Value(
-                        TesiMain.TC_PS.toString()), new Value(
+                        TesiMain.tcPs.toString()), new Value(
                         "alice.casestudies.supervisor.TransducerSens"),
                         new Value("tPotSoftware"), new Value(
                                 "alice.casestudies.supervisor.SliderProbeSw"),
@@ -186,7 +195,7 @@ public class TesiMain extends AbstractTucsonAgent {
         TesiMain.acc.out(TesiMain.tcId, t, null);
         t =
                 new LogicTuple("createTransducerSensor", new Value(
-                        TesiMain.TC_Lock.toString()), new Value(
+                        TesiMain.tcLock.toString()), new Value(
                         "alice.casestudies.supervisor.TransducerSens"),
                         new Value("tLock"), new Value(
                                 "alice.casestudies.supervisor.SwitchProbe"),
@@ -194,7 +203,7 @@ public class TesiMain extends AbstractTucsonAgent {
         TesiMain.acc.out(TesiMain.tcId, t, null);
         t =
                 new LogicTuple("createTransducerSensor", new Value(
-                        TesiMain.TC_Range.toString()), new Value(
+                        TesiMain.tcRange.toString()), new Value(
                         "alice.casestudies.supervisor.TransducerSens"),
                         new Value("tRange"), new Value(
                                 "alice.casestudies.supervisor.RangeProbe"),
@@ -203,7 +212,7 @@ public class TesiMain extends AbstractTucsonAgent {
 
         t =
                 new LogicTuple("createTransducerActuator", new Value(
-                        TesiMain.TC_Light.toString()), new Value(
+                        TesiMain.tcLight.toString()), new Value(
                         "alice.casestudies.supervisor.TransducerAct"),
                         new Value("tLight"), new Value(
                                 "alice.casestudies.supervisor.LightProbe"),
@@ -218,7 +227,7 @@ public class TesiMain extends AbstractTucsonAgent {
         t =
                 new LogicTuple(
                         "createTransducerActuator",
-                        new Value(TesiMain.TC_Connection.toString()),
+                        new Value(TesiMain.tcConnect.toString()),
                         new Value("alice.casestudies.supervisor.TransducerAct"),
                         new Value("tConn"),
                         new Value(
@@ -228,7 +237,7 @@ public class TesiMain extends AbstractTucsonAgent {
 
         t =
                 new LogicTuple("createTransducerActuator", new Value(
-                        TesiMain.TC_Timer.toString()), new Value(
+                        TesiMain.tcTimer.toString()), new Value(
                         "alice.casestudies.supervisor.TransducerAct"),
                         new Value("tTimer"), new Value(
                                 "alice.casestudies.supervisor.TimerProbe"),

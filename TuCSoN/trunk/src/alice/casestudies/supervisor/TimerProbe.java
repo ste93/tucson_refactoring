@@ -18,6 +18,7 @@ public class TimerProbe extends Thread implements ISimpleProbe {
     private TransducerStandardInterface transducer;
 
     public TimerProbe(final ProbeId i) {
+        super();
         this.id = i;
         this.gui = SupervisorGUI.getLightGUI();
     }
@@ -31,13 +32,14 @@ public class TimerProbe extends Thread implements ISimpleProbe {
     }
 
     public boolean readValue(final String key) {
-        if (key.equals("time")) {
+        if ("time".equals(key)) {
             final int intensity =
                     Integer.parseInt(this.gui.getIntensityValue());
             if (this.transducer == null) {
+                TransducerManager.getTransducerManager();
                 this.transducer =
-                        TransducerManager.getTransducerManager().getTransducer(
-                                this.tId.getAgentName());
+                        TransducerManager
+                                .getTransducer(this.tId.getAgentName());
             }
             try {
                 this.transducer.notifyEnvEvent(key, intensity);
@@ -62,13 +64,13 @@ public class TimerProbe extends Thread implements ISimpleProbe {
 
     public boolean writeValue(final String key, final int value) {
         this.speak("WRITE REQUEST ( " + key + ", " + value + " )");
-        if (key.equals("time")) {
+        if ("time".equals(key)) {
             if (value == 0) {
                 this.time = value;
                 this.gui.setTimeValue(0);
             } else {
                 this.time++;
-                this.gui.setTimeValue((this.time));
+                this.gui.setTimeValue(this.time);
             }
 
             return true;

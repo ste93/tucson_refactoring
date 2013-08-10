@@ -11,6 +11,8 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 
@@ -22,10 +24,10 @@ import java.util.HashMap;
  * 
  */
 
-public class SerialComm implements SerialPortEventListener {
+public final class SerialComm implements SerialPortEventListener {
 
     /** Serial communicator instances ( one for port ) **/
-    private static HashMap<String, SerialComm> comm;
+    private static Map<String, SerialComm> comm;
 
     /**
      * Default bits per second for COM port ( Baud rate ). Must be coherent with
@@ -34,7 +36,7 @@ public class SerialComm implements SerialPortEventListener {
     private static final int DATA_RATE = 9600;
 
     /** Listeners of events from the serial port **/
-    private static ArrayList<ISerialEventListener> listeners;
+    private static List<ISerialEventListener> listeners;
 
     /** Output stream from the port */
     private static OutputStream output;
@@ -52,6 +54,25 @@ public class SerialComm implements SerialPortEventListener {
 
     /** Milliseconds to wait while port is opening */
     private static final int TIME_OUT = 2000;
+
+    /**
+     * Adds a listener for serial events generated from the device
+     * 
+     * @param l
+     *            the serial event listener
+     */
+    public synchronized static void addListener(final ISerialEventListener l) {
+        SerialComm.listeners.add(l);
+    }
+
+    /**
+     * Gets the output stream used by the communicator
+     * 
+     * @return output stream
+     */
+    public static OutputStream getOutputStream() {
+        return SerialComm.output;
+    }
 
     /**
      * Gets the static instance of serial communicator
@@ -122,6 +143,20 @@ public class SerialComm implements SerialPortEventListener {
         }
 
         return SerialComm.comm.get(portName);
+    }
+
+    /**
+     * Removes a listener from the communication. The listener won't be able to
+     * hear serial events from the device.
+     * 
+     * @param l
+     *            the serial event listener
+     */
+    public synchronized static void
+            removeListener(final ISerialEventListener l) {
+        if (SerialComm.listeners.contains(l)) {
+            SerialComm.listeners.remove(l);
+        }
     }
 
     /**
@@ -204,16 +239,6 @@ public class SerialComm implements SerialPortEventListener {
     }
 
     /**
-     * Adds a listener for serial events generated from the device
-     * 
-     * @param l
-     *            the serial event listener
-     */
-    public synchronized void addListener(final ISerialEventListener l) {
-        SerialComm.listeners.add(l);
-    }
-
-    /**
      * Closing procedure.
      * 
      * This should be called when you stop using the port. This will prevent
@@ -236,28 +261,6 @@ public class SerialComm implements SerialPortEventListener {
      */
     public BufferedReader getInputStream() {
         return this.input;
-    }
-
-    /**
-     * Gets the output stream used by the communicator
-     * 
-     * @return output stream
-     */
-    public OutputStream getOutputStream() {
-        return SerialComm.output;
-    }
-
-    /**
-     * Removes a listener from the communication. The listener won't be able to
-     * hear serial events from the device.
-     * 
-     * @param l
-     *            the serial event listener
-     */
-    public synchronized void removeListener(final ISerialEventListener l) {
-        if (SerialComm.listeners.contains(l)) {
-            SerialComm.listeners.remove(l);
-        }
     }
 
     /**

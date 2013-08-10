@@ -3,6 +3,7 @@ package alice.respect.core;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
+import java.util.Map;
 
 import alice.respect.probe.ISimpleProbe;
 import alice.respect.probe.ProbeId;
@@ -16,7 +17,7 @@ import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
  * @author Steven maraldi
  * 
  */
-public class ResourceManager {
+public final class ResourceManager {
 
     /** The ResourceManager instance **/
     private static ResourceManager rm;
@@ -49,7 +50,7 @@ public class ResourceManager {
     }
 
     /** List of all probes on a single node **/
-    private final HashMap<ProbeId, ISimpleProbe> probeList;
+    private final Map<ProbeId, ISimpleProbe> probeList;
 
     private ResourceManager() {
         this.probeList = new HashMap<ProbeId, ISimpleProbe>();
@@ -145,7 +146,8 @@ public class ResourceManager {
                     + " doesn't exist");
             return false;
         }
-        TransducerManager.getTransducerManager().removeResource(id);
+        TransducerManager.getTransducerManager();
+        TransducerManager.removeResource(id);
         this.probeList.remove(id);
         return true;
     }

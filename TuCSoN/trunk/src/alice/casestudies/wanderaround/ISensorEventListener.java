@@ -2,7 +2,7 @@ package alice.casestudies.wanderaround;
 
 public interface ISensorEventListener {
 
-    public String getListenerName();
+    String getListenerName();
 
-    public void notifyEvent(String key, int value);
+    void notifyEvent(String key, int value);
 }

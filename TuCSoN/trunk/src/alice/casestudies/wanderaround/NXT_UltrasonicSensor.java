@@ -37,12 +37,13 @@ public class NXT_UltrasonicSensor implements ISimpleProbe, ISensorEventListener 
 
     public void notifyEvent(final String key, final int value) {
         try {
-            if (key.equals("distance")) {
+            if ("distance".equals(key)) {
                 this.distance = value;
                 if (this.transducer == null) {
+                    TransducerManager.getTransducerManager();
                     this.transducer =
-                            TransducerManager.getTransducerManager()
-                                    .getTransducer(this.tId.getAgentName());
+                            TransducerManager.getTransducer(this.tId
+                                    .getAgentName());
                 }
                 this.transducer.notifyEnvEvent(key, this.distance);
             }
@@ -57,11 +58,12 @@ public class NXT_UltrasonicSensor implements ISimpleProbe, ISensorEventListener 
 
     public boolean readValue(final String key) {
         try {
-            if (key.equals("distance")) {
+            if ("distance".equals(key)) {
                 if (this.transducer == null) {
+                    TransducerManager.getTransducerManager();
                     this.transducer =
-                            TransducerManager.getTransducerManager()
-                                    .getTransducer(this.tId.getAgentName());
+                            TransducerManager.getTransducer(this.tId
+                                    .getAgentName());
                 }
                 this.transducer.notifyEnvEvent(key, this.distance);
             }

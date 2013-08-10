@@ -13,7 +13,7 @@ import alice.logictuple.exceptions.InvalidLogicTupleException;
 
 public class TupleSetSpecTest {
 
-    private String[] t = { "reaction(out(hello),guard,body)",
+    private final String[] t = { "reaction(out(hello),guard,body)",
             "reaction(in(X),guard,body)",
             "reaction(rd(hello(world)),true,in(a))", "reaction(rdp(a(b)),c,f)",
             "reaction(rd(pluto),event,rd(asd))",

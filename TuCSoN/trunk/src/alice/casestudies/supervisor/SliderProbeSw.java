@@ -32,14 +32,15 @@ public class SliderProbeSw implements ChangeListener, ISimpleProbe {
     }
 
     public boolean readValue(final String key) {
-        if (!key.equals("intensity")) {
+        if (!"intensity".equals(key)) {
             return false;
         }
         try {
             if (this.transducer == null) {
+                TransducerManager.getTransducerManager();
                 this.transducer =
-                        TransducerManager.getTransducerManager().getTransducer(
-                                this.tId.getAgentName());
+                        TransducerManager
+                                .getTransducer(this.tId.getAgentName());
             }
             this.transducer.notifyEnvEvent(key, this.sliderValue);
         } catch (final Exception e) {
@@ -53,20 +54,21 @@ public class SliderProbeSw implements ChangeListener, ISimpleProbe {
         this.tId = t;
     }
 
-    public void stateChanged(final ChangeEvent e) {
-        final JSlider source = (JSlider) e.getSource();
+    public void stateChanged(final ChangeEvent ce) {
+        final JSlider source = (JSlider) ce.getSource();
         // if (!source.getValueIsAdjusting()) {
         this.sliderValue = source.getValue();
         // valueNormalized = sliderValue/10;
         try {
             if (this.transducer == null) {
+                TransducerManager.getTransducerManager();
                 this.transducer =
-                        TransducerManager.getTransducerManager().getTransducer(
-                                this.tId.getAgentName());
+                        TransducerManager
+                                .getTransducer(this.tId.getAgentName());
             }
             this.transducer.notifyEnvEvent("intensity", this.sliderValue);
-        } catch (final Exception ex) {
-            ex.printStackTrace();
+        } catch (final Exception e) {
+            e.printStackTrace();
         }
         // }
     }
