@@ -10,8 +10,8 @@ import java.util.Set;
 
 import alice.respect.api.EnvId;
 import alice.respect.probe.ISimpleProbe;
-import alice.respect.probe.ProbeId;
-import alice.respect.transducer.Transducer;
+import alice.respect.probe.AbstractProbeId;
+import alice.respect.transducer.AbstractTransducer;
 import alice.respect.transducer.TransducerId;
 import alice.respect.transducer.TransducerStandardInterface;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
@@ -29,13 +29,13 @@ import alice.tuprolog.Term;
  */
 public final class TransducerManager {
     /** List of the associations transducer/probes **/
-    private static Map<TransducerId, List<ProbeId>> resourceList;
+    private static Map<TransducerId, List<AbstractProbeId>> resourceList;
 
     /** The TransducerManager instance **/
     private static TransducerManager tm;
 
     /** List of all the transducers on a single node **/
-    private static Map<TransducerId, Transducer> transducerList;
+    private static Map<TransducerId, AbstractTransducer> transducerList;
 
     /** List of the associations tuple centre/transducers **/
     private static Map<TupleCentreId, List<TransducerId>> tupleCentresAssociated;
@@ -49,8 +49,9 @@ public final class TransducerManager {
      *            transducer associated
      * @param probe
      *            the probe itself
+     * @return wether the resource has been successfully added
      */
-    public static boolean addResource(final ProbeId id, final TransducerId tId,
+    public static boolean addResource(final AbstractProbeId id, final TransducerId tId,
             final ISimpleProbe probe) {
         TransducerManager.speak("Adding new resource " + id.getLocalName()
                 + " to transducer " + tId.getAgentName());
@@ -80,19 +81,26 @@ public final class TransducerManager {
      *            the tuple center with which the transducer will interact
      * @param probeId
      *            resource's identifier associated to the transducer
+     * @return wether the transducer has been successfully created
      * 
-     * 
-     * @throws SecurityException
+     * @throws ClassNotFoundException
+     *             if the given Java full class name cannot be found within
+     *             known paths
      * @throws NoSuchMethodException
+     *             if the Java method name cannot be found
+     * @throws InstantiationException
+     *             if the given Java class cannot be instantiated
+     * @throws IllegalAccessException
+     *             if the caller has no rights to access class, methods, or
+     *             fields
      * @throws InvocationTargetException
-     * @throws IllegalArgumentException
+     *             if the callee cannot be found
      */
     public static boolean createTransducer(final String className,
             final TransducerId id, final TupleCentreId tcId,
-            final ProbeId probeId) throws InstantiationException,
+            final AbstractProbeId probeId) throws InstantiationException,
             IllegalAccessException, ClassNotFoundException,
-            NoSuchMethodException, SecurityException, IllegalArgumentException,
-            InvocationTargetException {
+            NoSuchMethodException, InvocationTargetException {
         // Checking if the transducer already exist
         if (TransducerManager.transducerList.containsKey(id)) {
             TransducerManager.speakErr("Transducer " + id.toString()
@@ -116,14 +124,14 @@ public final class TransducerManager {
         final Class<?> c = Class.forName(normClassName);
         final Constructor<?> ctor =
                 c.getConstructor(new Class[] { TransducerId.class,
-                        TupleCentreId.class, ProbeId.class });
-        final Transducer t =
-                (Transducer) ctor
+                        TupleCentreId.class, AbstractProbeId.class });
+        final AbstractTransducer t =
+                (AbstractTransducer) ctor
                         .newInstance(new Object[] { id, tcId, probeId });
         TransducerManager.transducerList.put(id, t);
 
         // Adding probe to the transducer
-        final ArrayList<ProbeId> probes = new ArrayList<ProbeId>();
+        final ArrayList<AbstractProbeId> probes = new ArrayList<AbstractProbeId>();
         probes.add(probeId);
         TransducerManager.resourceList.put(id, probes);
         TransducerManager.addResource(probeId, id, ResourceManager
@@ -140,7 +148,7 @@ public final class TransducerManager {
      *            the transducer's identifier
      * @return a resource list as a ProbeId array.
      */
-    public static ProbeId[] getResources(final TransducerId tId) {
+    public static AbstractProbeId[] getResources(final TransducerId tId) {
         if (!TransducerManager.resourceList.containsKey(tId)) {
             TransducerManager.speakErr("The transducer " + tId.getAgentName()
                     + " doesn't exist");
@@ -148,9 +156,9 @@ public final class TransducerManager {
         }
         final Object[] values =
                 TransducerManager.resourceList.get(tId).toArray();
-        final ProbeId[] probes = new ProbeId[values.length];
+        final AbstractProbeId[] probes = new AbstractProbeId[values.length];
         for (int i = 0; i < probes.length; i++) {
-            probes[i] = (ProbeId) values[i];
+            probes[i] = (AbstractProbeId) values[i];
         }
         return probes;
     }
@@ -234,7 +242,7 @@ public final class TransducerManager {
      * 
      * @return the transducer manager
      */
-    public synchronized static TransducerManager getTransducerManager() {
+    public static synchronized TransducerManager getTransducerManager() {
         if (TransducerManager.tm == null) {
             TransducerManager.tm = new TransducerManager();
         }
@@ -273,6 +281,7 @@ public final class TransducerManager {
      * @param id
      *            the transducer identifier
      * @throws TucsonOperationNotPossibleException
+     *             if the requested operation cannot be successfully performed
      */
     public static void stopTransducer(final TransducerId id)
             throws TucsonOperationNotPossibleException {
@@ -285,7 +294,7 @@ public final class TransducerManager {
         // Decouple the transducer from the probes associated.
         final Object[] pIds = TransducerManager.resourceList.get(id).toArray();
         for (final Object pId : pIds) {
-            ResourceManager.getResourceManager().getResource((ProbeId) pId)
+            ResourceManager.getResourceManager().getResource((AbstractProbeId) pId)
                     .setTransducer(null);
         }
 
@@ -318,9 +327,9 @@ public final class TransducerManager {
 
     private TransducerManager() {
         TransducerManager.transducerList =
-                new HashMap<TransducerId, Transducer>();
+                new HashMap<TransducerId, AbstractTransducer>();
         TransducerManager.resourceList =
-                new HashMap<TransducerId, List<ProbeId>>();
+                new HashMap<TransducerId, List<AbstractProbeId>>();
         TransducerManager.tupleCentresAssociated =
                 new HashMap<TupleCentreId, List<TransducerId>>();
     }
@@ -330,9 +339,11 @@ public final class TransducerManager {
      * 
      * @param probe
      *            the resource's identifier to remove
+     * @return wether the resource has been succesfully removed
      * @throws TucsonOperationNotPossibleException
+     *             if the requested operation cannot be succesfully carried out
      */
-    public static boolean removeResource(final ProbeId probe)
+    public static boolean removeResource(final AbstractProbeId probe)
             throws TucsonOperationNotPossibleException {
         if (!TransducerManager.resourceList.containsValue(probe)) {
             return false;

@@ -16,11 +16,13 @@ import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
  * 
  */
 
-public class AG_Connection extends AbstractTucsonAgent {
+public class AgentConnection extends AbstractTucsonAgent {
+    
+    private static final String DEFAULT_PORT = "20504";
 
     private boolean iteraction = true;
 
-    public AG_Connection(final String aid) throws TucsonInvalidAgentIdException {
+    public AgentConnection(final String aid) throws TucsonInvalidAgentIdException {
         super(aid);
     }
 
@@ -38,19 +40,19 @@ public class AG_Connection extends AbstractTucsonAgent {
     protected void main() {
         // TODO Auto-generated method stub
         final SynchACC acc = this.getContext();
-        TucsonTupleCentreId tc_connection = null;
-        TucsonTupleCentreId tc_timer = null;
+        TucsonTupleCentreId tcConnection = null;
+        TucsonTupleCentreId tcTimer = null;
         boolean connectionStatus = false;
         int nTry = 3;
         LogicTuple t;
 
         try {
-            tc_connection =
+            tcConnection =
                     new TucsonTupleCentreId("tc_connection", "localhost",
-                            String.valueOf(20504));
-            tc_timer =
+                            DEFAULT_PORT);
+            tcTimer =
                     new TucsonTupleCentreId("tc_timer", "localhost",
-                            String.valueOf(20504));
+                            DEFAULT_PORT);
         } catch (final TucsonInvalidTupleCentreIdException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -59,17 +61,17 @@ public class AG_Connection extends AbstractTucsonAgent {
         while (this.iteraction) {
             try {
                 t = LogicTuple.parse("cmd(check_connection)");
-                acc.out(tc_connection, t, null);
+                acc.out(tcConnection, t, null);
                 t = LogicTuple.parse("connection_status(X)");
-                t = acc.inp(tc_connection, t, null).getLogicTupleResult();
+                t = acc.inp(tcConnection, t, null).getLogicTupleResult();
 
-                if (t.getArg(0).toString().equals("ok")) {
+                if ("ok".equals(t.getArg(0).toString())) {
                     t = LogicTuple.parse("cmd(notify_status(1))");
-                    acc.out(tc_connection, t, null);
+                    acc.out(tcConnection, t, null);
                     nTry = 3;
                     if (!connectionStatus) {
                         t = LogicTuple.parse("cmd(reset)");
-                        acc.out(tc_timer, t, null);
+                        acc.out(tcTimer, t, null);
                         connectionStatus = true;
                     }
                 } else {
@@ -78,11 +80,11 @@ public class AG_Connection extends AbstractTucsonAgent {
 
                 if (nTry == 0) {
                     t = LogicTuple.parse("cmd(notify_status(0))");
-                    acc.out(tc_connection, t, null);
+                    acc.out(tcConnection, t, null);
                     nTry = 3;
                     if (connectionStatus) {
                         t = LogicTuple.parse("cmd(reset)");
-                        acc.out(tc_timer, t, null);
+                        acc.out(tcTimer, t, null);
                         connectionStatus = false;
                     }
                 }

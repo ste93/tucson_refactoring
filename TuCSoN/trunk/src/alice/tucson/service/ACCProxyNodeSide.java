@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 import alice.logictuple.LogicTuple;
+import alice.logictuple.exceptions.InvalidTupleOperationException;
 import alice.tucson.api.TucsonAgentId;
 import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
@@ -26,12 +27,14 @@ import alice.tucson.api.exceptions.TucsonInvalidLogicTupleException;
 import alice.tucson.api.exceptions.TucsonInvalidSpecificationException;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
+import alice.tucson.api.exceptions.UnreachableNodeException;
 import alice.tucson.network.AbstractTucsonProtocol;
 import alice.tucson.network.TucsonMsgReply;
 import alice.tucson.network.TucsonMsgRequest;
 import alice.tucson.network.exceptions.DialogException;
 import alice.tuplecentre.api.ITupleCentreOperation;
 import alice.tuplecentre.api.Tuple;
+import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 import alice.tuplecentre.core.AbstractTupleCentreOperation;
 
 /**
@@ -467,9 +470,17 @@ public class ACCProxyNodeSide extends AbstractACCProxyNodeSide {
                                                     this.tcId, tid,
                                                     msg.getTuple(), this);
                         }
-                    } catch (final Exception e) {
+                    } catch (final TucsonOperationNotPossibleException e) {
                         System.err.println("[ACCProxyNodeSide]: " + e);
-                        e.printStackTrace();
+                        break;
+                    } catch (InvalidTupleOperationException e) {
+                        System.err.println("[ACCProxyNodeSide]: " + e);
+                        break;
+                    } catch (OperationTimeOutException e) {
+                        System.err.println("[ACCProxyNodeSide]: " + e);
+                        break;
+                    } catch (UnreachableNodeException e) {
+                        System.err.println("[ACCProxyNodeSide]: " + e);
                         break;
                     }
                 }

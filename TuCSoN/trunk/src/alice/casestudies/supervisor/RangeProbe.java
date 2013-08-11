@@ -5,18 +5,18 @@ import java.awt.event.ActionListener;
 
 import alice.respect.core.TransducerManager;
 import alice.respect.probe.ISimpleProbe;
-import alice.respect.probe.ProbeId;
+import alice.respect.probe.AbstractProbeId;
 import alice.respect.transducer.TransducerId;
 import alice.respect.transducer.TransducerStandardInterface;
 
 public class RangeProbe implements ActionListener, ISimpleProbe {
 
     private final SupervisorGUI gui;
-    private final ProbeId id;
+    private final AbstractProbeId id;
     private TransducerId tId;
     private TransducerStandardInterface transducer;
 
-    public RangeProbe(final ProbeId i) {
+    public RangeProbe(final AbstractProbeId i) {
         this.id = i;
         this.gui = SupervisorGUI.getLightGUI();
         this.gui.addRangeButtonActionListener(this);
@@ -24,8 +24,8 @@ public class RangeProbe implements ActionListener, ISimpleProbe {
 
     public void actionPerformed(final ActionEvent arg0) {
         try {
-            if (((javax.swing.JButton) arg0.getSource()).getName().equals(
-                    "btnMin")) {
+            if ("btnMin".equals(((javax.swing.JButton) arg0.getSource())
+                    .getName())) {
                 if (this.transducer == null) {
                     TransducerManager.getTransducerManager();
                     this.transducer =
@@ -34,8 +34,8 @@ public class RangeProbe implements ActionListener, ISimpleProbe {
                 }
                 this.transducer.notifyEnvEvent("min",
                         Integer.parseInt(this.gui.getMinValue()));
-            } else if (((javax.swing.JButton) arg0.getSource()).getName()
-                    .equals("btnMax")) {
+            } else if ("btnMax".equals(((javax.swing.JButton) arg0.getSource())
+                    .getName())) {
                 if (this.transducer == null) {
                     TransducerManager.getTransducerManager();
                     this.transducer =
@@ -50,7 +50,7 @@ public class RangeProbe implements ActionListener, ISimpleProbe {
         }
     }
 
-    public ProbeId getIdentifier() {
+    public AbstractProbeId getIdentifier() {
         return this.id;
     }
 

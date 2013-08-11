@@ -16,11 +16,13 @@ import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
  * 
  */
 
-public class AG_Range extends AbstractTucsonAgent {
+public class AgentRange extends AbstractTucsonAgent {
+    
+    private static final String DEFAULT_PORT = "20504";
 
     private boolean iteraction = true;
 
-    public AG_Range(final String aid) throws TucsonInvalidAgentIdException {
+    public AgentRange(final String aid) throws TucsonInvalidAgentIdException {
         super(aid);
     }
 
@@ -38,18 +40,18 @@ public class AG_Range extends AbstractTucsonAgent {
     @Override
     protected void main() {
         final SynchACC acc = this.getContext();
-        TucsonTupleCentreId tc_intensity = null;
-        TucsonTupleCentreId tc_range = null;
+        TucsonTupleCentreId tcIntensity = null;
+        TucsonTupleCentreId tcRange = null;
         int intensity, min, max;
         LogicTuple t;
 
         try {
-            tc_intensity =
+            tcIntensity =
                     new TucsonTupleCentreId("tc_intensity", "localhost",
-                            String.valueOf(20504));
-            tc_range =
+                            DEFAULT_PORT);
+            tcRange =
                     new TucsonTupleCentreId("tc_range", "localhost",
-                            String.valueOf(20504));
+                            DEFAULT_PORT);
         } catch (final TucsonInvalidTupleCentreIdException e) {
             e.printStackTrace();
         }
@@ -57,12 +59,12 @@ public class AG_Range extends AbstractTucsonAgent {
         while (this.iteraction) {
             try {
                 t = LogicTuple.parse("range(Min,Max)");
-                t = acc.rdp(tc_range, t, null).getLogicTupleResult();
+                t = acc.rdp(tcRange, t, null).getLogicTupleResult();
                 min = t.getArg(0).intValue();
                 max = t.getArg(1).intValue();
                 t = LogicTuple.parse("intensity(X)");
                 intensity =
-                        acc.inp(tc_intensity, t, null).getLogicTupleResult()
+                        acc.inp(tcIntensity, t, null).getLogicTupleResult()
                                 .getArg(0).intValue();
 
                 if (intensity < min) {
@@ -75,11 +77,9 @@ public class AG_Range extends AbstractTucsonAgent {
                                     + intensity + "))");
                 }
 
-                acc.out(tc_intensity, t, null);
+                acc.out(tcIntensity, t, null);
             } catch (final Exception e) {
-                /*
-                 * 
-                 */
+                e.printStackTrace();
             }
         }
 

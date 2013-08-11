@@ -105,11 +105,18 @@ public final class RespectTCContainer {
         return rtc;
     }
 
+    /**
+     * 
+     * @param id
+     *            the identifier of the TuCSoN tuple centre whose environmental
+     *            context should be acquired
+     * @return the environmental context acquired
+     */
     public IEnvironmentContext getEnvironmentContext(final TupleCentreId id) {
         try {
             return ((RespectTC) this.registry.getTC(id))
                     .getEnvironmentContext();
-        } catch (final Exception e) {
+        } catch (final InstantiationNotPossibleException e) {
             final RespectTC tc =
                     new RespectTC(id, this, RespectTCContainer.QUEUE_SIZE);
             this.registry.addTC(tc);

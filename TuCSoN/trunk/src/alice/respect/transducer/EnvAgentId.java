@@ -14,6 +14,15 @@ public class EnvAgentId extends TucsonAgentId {
     /** serialVersionUID **/
     private static final long serialVersionUID = 1L;
 
+    /**
+     * 
+     * @param aid
+     *            the String representation of the environmental agent
+     *            identifier
+     * @throws TucsonInvalidAgentIdException
+     *             if the given String does not represent a valid TuCSoN agent
+     *             identifier
+     */
     public EnvAgentId(final String aid) throws TucsonInvalidAgentIdException {
         super(aid);
         // TODO Auto-generated constructor stub

@@ -16,9 +16,10 @@ import alice.tucson.network.exceptions.DialogException;
  * @author Cicora Saverio
  * @version 1.0
  */
+public abstract class TPFactory {
 
-public final class TPFactory {
-
+    private static final int MAX_UNBOUND_PORT = 64000;
+    
     /**
      * Constant indentify implementated protocol type: one constant for each
      * implemented protocol
@@ -46,7 +47,7 @@ public final class TPFactory {
         // TODO CICORA: il controllo su porta e address va fatto meglio, vedere
         // come e'
         // fatto nel resto del codice
-        if ((port < 1) || (port > 64000)) {
+        if ((port < 1) || (port > MAX_UNBOUND_PORT)) {
             throw new DialogException("Illegal port argument");
         }
         AbstractTucsonProtocol tp = null;

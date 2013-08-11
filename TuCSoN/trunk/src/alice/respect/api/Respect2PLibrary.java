@@ -29,10 +29,13 @@ import alice.respect.core.RespectOperation;
 import alice.respect.core.RespectVMContext;
 import alice.respect.core.TransducerManager;
 import alice.respect.transducer.TransducerId;
+import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
+import alice.tucson.api.exceptions.UnreachableNodeException;
 import alice.tucson.parsing.MyOpManager;
 import alice.tuplecentre.api.IId;
 import alice.tuplecentre.api.ITupleCentreOperation;
 import alice.tuplecentre.api.Tuple;
+import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 import alice.tuplecentre.core.AbstractEvent;
 import alice.tuplecentre.core.AbstractTupleCentreOperation;
 import alice.tuplecentre.core.InputEvent;
@@ -539,7 +542,16 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
                 this.vm.fetchTriggeredReactions(internalEv);
                 return true;
             }
-        } catch (final Exception e) {
+        } catch (final InvalidTupleOperationException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (final TucsonOperationNotPossibleException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (final UnreachableNodeException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (final OperationTimeOutException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
@@ -1944,7 +1956,16 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
                 this.vm.fetchTriggeredReactions(internalEv);
                 return true;
             }
-        } catch (final Exception e) {
+        } catch (final InvalidTupleOperationException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (final TucsonOperationNotPossibleException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (final UnreachableNodeException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (final OperationTimeOutException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }

@@ -1,11 +1,14 @@
 package alice.respect.core;
 
 import gnu.io.CommPortIdentifier;
+import gnu.io.PortInUseException;
 import gnu.io.SerialPort;
 import gnu.io.SerialPortEvent;
 import gnu.io.SerialPortEventListener;
+import gnu.io.UnsupportedCommOperationException;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.util.ArrayList;
@@ -13,6 +16,7 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TooManyListenersException;
 
 /**
  * 
@@ -42,7 +46,7 @@ public final class SerialComm implements SerialPortEventListener {
     private static OutputStream output;
 
     /** Default port for supported operative systems */
-    private static final String PORT_NAMES[] = { "/dev/tty.usbserial-A9007UX1", // Mac
+    private static final String[] PORT_NAMES = { "/dev/tty.usbserial-A9007UX1", // Mac
                                                                                 // OS
                                                                                 // X
             "/dev/ttyUSB0", // Linux
@@ -61,7 +65,7 @@ public final class SerialComm implements SerialPortEventListener {
      * @param l
      *            the serial event listener
      */
-    public synchronized static void addListener(final ISerialEventListener l) {
+    public static synchronized void addListener(final ISerialEventListener l) {
         SerialComm.listeners.add(l);
     }
 
@@ -79,7 +83,7 @@ public final class SerialComm implements SerialPortEventListener {
      * 
      * @return the static instance of serial communicator
      */
-    public synchronized static SerialComm getSerialComm() {
+    public static synchronized SerialComm getSerialComm() {
         if (SerialComm.comm == null) {
             SerialComm.comm = new HashMap<String, SerialComm>();
         }
@@ -108,7 +112,7 @@ public final class SerialComm implements SerialPortEventListener {
      * 
      * @return the static instance of serial communicator
      */
-    public synchronized static SerialComm getSerialComm(final String portName) {
+    public static synchronized SerialComm getSerialComm(final String portName) {
         return SerialComm.getSerialComm(portName, SerialComm.DATA_RATE);
     }
 
@@ -152,7 +156,7 @@ public final class SerialComm implements SerialPortEventListener {
      * @param l
      *            the serial event listener
      */
-    public synchronized static void
+    public static synchronized void
             removeListener(final ISerialEventListener l) {
         if (SerialComm.listeners.contains(l)) {
             SerialComm.listeners.remove(l);
@@ -285,9 +289,8 @@ public final class SerialComm implements SerialPortEventListener {
                         SerialComm.listeners.get(i).notifyEvent(value);
                     }
                 }
-
-            } catch (final Exception e) {
-                // e.printStackTrace();
+            } catch (final IOException e) {
+                e.printStackTrace();
             }
         }
     }
@@ -326,7 +329,19 @@ public final class SerialComm implements SerialPortEventListener {
             // Cleaning output stream
             SerialComm.output.flush();
             Thread.sleep(100);
-        } catch (final Exception e) {
+        } catch (final IOException e) {
+            e.printStackTrace();
+            return;
+        } catch (final PortInUseException e) {
+            e.printStackTrace();
+            return;
+        } catch (final UnsupportedCommOperationException e) {
+            e.printStackTrace();
+            return;
+        } catch (final TooManyListenersException e) {
+            e.printStackTrace();
+            return;
+        } catch (final InterruptedException e) {
             e.printStackTrace();
             return;
         }

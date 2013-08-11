@@ -4,23 +4,23 @@ import alice.respect.core.ISerialEventListener;
 import alice.respect.core.SerialComm;
 import alice.respect.core.TransducerManager;
 import alice.respect.probe.ISimpleProbe;
-import alice.respect.probe.ProbeId;
+import alice.respect.probe.AbstractProbeId;
 import alice.respect.transducer.TransducerId;
 import alice.respect.transducer.TransducerStandardInterface;
 
 public class SliderProbe implements ISerialEventListener, ISimpleProbe {
 
-    private final ProbeId id;
+    private final AbstractProbeId id;
     private TransducerId tId;
     private TransducerStandardInterface transducer;
 
-    public SliderProbe(final ProbeId i) {
+    public SliderProbe(final AbstractProbeId i) {
         this.id = i;
         SerialComm.getSerialComm();
         SerialComm.addListener(this);
     }
 
-    public ProbeId getIdentifier() {
+    public AbstractProbeId getIdentifier() {
         return this.id;
     }
 
@@ -33,8 +33,8 @@ public class SliderProbe implements ISerialEventListener, ISimpleProbe {
     }
 
     public void notifyEvent(final String value) {
-        final String[] key_value = value.split("/");
-        final int sliderValue = Integer.parseInt(key_value[1]);
+        final String[] keyValue = value.split("/");
+        final int sliderValue = Integer.parseInt(keyValue[1]);
         // valueNormalized = sliderValue/10;
         try {
             if (this.transducer == null) {
@@ -43,7 +43,7 @@ public class SliderProbe implements ISerialEventListener, ISimpleProbe {
                         TransducerManager
                                 .getTransducer(this.tId.getAgentName());
             }
-            this.transducer.notifyEnvEvent(key_value[0], sliderValue);
+            this.transducer.notifyEnvEvent(keyValue[0], sliderValue);
         } catch (final Exception e) {
             e.printStackTrace();
         }

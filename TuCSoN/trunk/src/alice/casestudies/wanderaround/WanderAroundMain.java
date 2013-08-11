@@ -22,6 +22,8 @@ import alice.tuplecentre.api.exceptions.OperationTimeOutException;
  */
 
 public class WanderAroundMain extends AbstractTucsonAgent {
+    
+    private static final String DEFAULT_PORT = "20504";
 
     // ACC
     private static SynchACC acc;
@@ -47,37 +49,37 @@ public class WanderAroundMain extends AbstractTucsonAgent {
         try {
             WanderAroundMain.tcU1 =
                     new TupleCentreId("tc_u1", "localhost",
-                            String.valueOf(20504));
+                            DEFAULT_PORT);
             WanderAroundMain.tcU2 =
                     new TupleCentreId("tc_u2", "localhost",
-                            String.valueOf(20504));
+                            DEFAULT_PORT);
             WanderAroundMain.tcU3 =
                     new TupleCentreId("tc_u3", "localhost",
-                            String.valueOf(20504));
+                            DEFAULT_PORT);
             WanderAroundMain.tcU4 =
                     new TupleCentreId("tc_u4", "localhost",
-                            String.valueOf(20504));
+                            DEFAULT_PORT);
             WanderAroundMain.tcM1 =
                     new TupleCentreId("tc_m1", "localhost",
-                            String.valueOf(20504));
+                            DEFAULT_PORT);
             WanderAroundMain.tcM2 =
                     new TupleCentreId("tc_m2", "localhost",
-                            String.valueOf(20504));
+                            DEFAULT_PORT);
             WanderAroundMain.tcSonar =
                     new TupleCentreId("tc_sonar", "localhost",
-                            String.valueOf(20504));
+                            DEFAULT_PORT);
             WanderAroundMain.tcRunAway =
                     new TupleCentreId("tc_runaway", "localhost",
-                            String.valueOf(20504));
+                            DEFAULT_PORT);
             WanderAroundMain.tcMotor =
                     new TupleCentreId("tc_motor", "localhost",
-                            String.valueOf(20504));
+                            DEFAULT_PORT);
             WanderAroundMain.tcAvoid =
                     new TupleCentreId("tc_avoid", "localhost",
-                            String.valueOf(20504));
+                            DEFAULT_PORT);
             WanderAroundMain.tcId =
                     new TupleCentreId("envConfigTC", "localhost",
-                            String.valueOf(20504));
+                            DEFAULT_PORT);
 
             // Starting test
             final WanderAroundMain mainTest = new WanderAroundMain("main");
@@ -89,14 +91,14 @@ public class WanderAroundMain extends AbstractTucsonAgent {
 
     private static void createAgents() throws TucsonInvalidAgentIdException {
         WanderAroundMain.speak("Creating agents");
-        final AG_FeelForce ag_feelforce = new AG_FeelForce("ag_feelforce");
-        final AG_Collide ag_collide = new AG_Collide("ag_collide");
-        final AG_Wander ag_wander = new AG_Wander("ag_wander");
+        final AgentFeelForce agFeelforce = new AgentFeelForce("ag_feelforce");
+        final AgentCollide agCollide = new AgentCollide("ag_collide");
+        final AgentWander agWander = new AgentWander("ag_wander");
 
         WanderAroundMain.speak("Starting agents");
-        ag_collide.go();
-        ag_feelforce.go();
-        ag_wander.go();
+        agCollide.go();
+        agFeelforce.go();
+        agWander.go();
         WanderAroundMain.speak("Agents created and started");
     }
 

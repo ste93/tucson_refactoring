@@ -30,11 +30,16 @@ import alice.tuplecentre.core.TCCycleResult.Outcome;
 import alice.tuprolog.Prolog;
 import alice.tuprolog.lib.InvalidObjectIdException;
 
+/**
+ * 
+ * @author ste (mailto: s.mariani@unibo.it) on 11/ago/2013
+ * 
+ */
 public class OperationHandler {
 
     /**
-	 * 
-	 */
+     * 
+     */
     public class Controller extends Thread {
 
         private final AbstractTucsonProtocol dialog;
@@ -65,8 +70,8 @@ public class OperationHandler {
         }
 
         /**
-		 * 
-		 */
+         * 
+         */
         @Override
         public void run() {
 
@@ -185,8 +190,8 @@ public class OperationHandler {
         }
 
         /**
-		 * 
-		 */
+         * 
+         */
         public synchronized void setStop() {
             this.stop = true;
         }
@@ -218,8 +223,8 @@ public class OperationHandler {
     }
 
     /**
-	 * 
-	 */
+     * 
+     */
     public class ControllerSession {
 
         private final Controller controller;
@@ -237,7 +242,7 @@ public class OperationHandler {
 
         /**
          * 
-         * @return
+         * @return the Controller object monitoring operation completions
          */
         public Controller getController() {
             return this.controller;
@@ -245,7 +250,8 @@ public class OperationHandler {
 
         /**
          * 
-         * @return
+         * @return the (generic) connection protocol used by this operation
+         *         handler
          */
         public AbstractTucsonProtocol getSession() {
             return this.session;
@@ -288,6 +294,9 @@ public class OperationHandler {
      */
     protected ACCDescription profile;
 
+    /**
+     * 
+     */
     public OperationHandler() {
         this.profile = new ACCDescription();
         this.events = new LinkedList<TucsonOpCompletionEvent>();
@@ -297,6 +306,13 @@ public class OperationHandler {
         this.operationExpired = new ArrayList<Long>();
     }
 
+    /**
+     * 
+     * @param id
+     *            the Long identifier of the pending operation just requested
+     * @param op
+     *            the TuCSoN operation waiting to be served
+     */
     public void addOperation(final Long id, final TucsonOperation op) {
         this.operations.put(id, op);
     }
@@ -455,6 +471,12 @@ public class OperationHandler {
 
     }
 
+    /**
+     * 
+     * @return the Map associations between the String representation of a
+     *         TuCSoN node network address and the TuCSoN protocol session
+     *         currently active toward those nodes
+     */
     public Map<String, ControllerSession> getControllerSessions() {
         return this.controllerSessions;
     }

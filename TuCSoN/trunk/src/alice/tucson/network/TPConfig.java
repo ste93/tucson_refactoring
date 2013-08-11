@@ -15,6 +15,7 @@ public final class TPConfig {
 
     // TCP configuration ----------------------------------
     private static final int DEFAULT_TCP_PORT = 20504;
+    private static final int MAX_UNBOUND_PORT = 64000;
 
     private static TPConfig singletonTPConfig = null;
 
@@ -74,14 +75,9 @@ public final class TPConfig {
      * 
      * @param portNumber
      *            the TCP listening port
-     * 
-     * @throws IllegalArgumentException
-     *             if the port value in already set OR parameter is outside the
-     *             specified range, which is between 0 and 64000, inclusive.
      */
-    public synchronized void setTcpPort(final int portNumber)
-            throws IllegalArgumentException {
-        if ((portNumber < 1) || (portNumber > 64000) || (this.tcpPort > 0)) {
+    public synchronized void setTcpPort(final int portNumber) {
+        if ((portNumber < 1) || (portNumber > MAX_UNBOUND_PORT) || (this.tcpPort > 0)) {
             throw new IllegalArgumentException();
         }
         this.tcpPort = portNumber;

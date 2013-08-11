@@ -2,7 +2,7 @@ package alice.casestudies.supervisor;
 
 import alice.respect.core.TransducerManager;
 import alice.respect.probe.ISimpleProbe;
-import alice.respect.probe.ProbeId;
+import alice.respect.probe.AbstractProbeId;
 import alice.respect.transducer.TransducerId;
 import alice.respect.transducer.TransducerStandardInterface;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
@@ -12,18 +12,18 @@ import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 public class TimerProbe extends Thread implements ISimpleProbe {
 
     private final SupervisorGUI gui;
-    private final ProbeId id;
+    private final AbstractProbeId id;
     private TransducerId tId;
     private int time = 0;
     private TransducerStandardInterface transducer;
 
-    public TimerProbe(final ProbeId i) {
+    public TimerProbe(final AbstractProbeId i) {
         super();
         this.id = i;
         this.gui = SupervisorGUI.getLightGUI();
     }
 
-    public ProbeId getIdentifier() {
+    public AbstractProbeId getIdentifier() {
         return this.id;
     }
 

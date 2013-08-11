@@ -33,20 +33,20 @@ public class DistanceGenerator extends Thread {
         while (DistanceGenerator.ITERATE) {
             try {
                 for (int i = 0; i < this.listeners.size(); i++) {
-                    if (this.listeners.get(i).getListenerName()
-                            .equals("ultrasonicSensorFront")) {
+                    if ("ultrasonicSensorFront".equals(this.listeners.get(i)
+                            .getListenerName())) {
                         this.listeners.get(i).notifyEvent("distance",
                                 this.gui.getDistance("front"));
-                    } else if (this.listeners.get(i).getListenerName()
-                            .equals("ultrasonicSensorRight")) {
+                    } else if ("ultrasonicSensorRight".equals(this.listeners
+                            .get(i).getListenerName())) {
                         this.listeners.get(i).notifyEvent("distance",
                                 this.gui.getDistance("right"));
-                    } else if (this.listeners.get(i).getListenerName()
-                            .equals("ultrasonicSensorBack")) {
+                    } else if ("ultrasonicSensorBack".equals(this.listeners
+                            .get(i).getListenerName())) {
                         this.listeners.get(i).notifyEvent("distance",
                                 this.gui.getDistance("back"));
-                    } else if (this.listeners.get(i).getListenerName()
-                            .equals("ultrasonicSensorLeft")) {
+                    } else if ("ultrasonicSensorLeft".equals(this.listeners
+                            .get(i).getListenerName())) {
                         this.listeners.get(i).notifyEvent("distance",
                                 this.gui.getDistance("left"));
                     }
@@ -54,9 +54,7 @@ public class DistanceGenerator extends Thread {
 
                 Thread.sleep(1000);
             } catch (final Exception e) {
-                /*
-                 * 
-                 */
+                e.printStackTrace();
             }
         }
     }

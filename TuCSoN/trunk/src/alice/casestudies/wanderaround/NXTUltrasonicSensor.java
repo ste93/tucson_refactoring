@@ -2,56 +2,72 @@ package alice.casestudies.wanderaround;
 
 import alice.respect.core.TransducerManager;
 import alice.respect.probe.ISimpleProbe;
-import alice.respect.probe.ProbeId;
+import alice.respect.probe.AbstractProbeId;
 import alice.respect.transducer.TransducerId;
 import alice.respect.transducer.TransducerStandardInterface;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 
-public class NXT_ServoMotorActuator implements ISimpleProbe {
+public class NXTUltrasonicSensor implements ISimpleProbe, ISensorEventListener {
 
-    private int angle = 0, power = 0;
-    private final NxtSimulatorGUI gui;
-    private final ProbeId id;
+    private int distance = 0;
+    private final AbstractProbeId id;
     private TransducerId tId;
 
     private TransducerStandardInterface transducer;
 
-    public NXT_ServoMotorActuator(final ProbeId i) {
+    public NXTUltrasonicSensor(final AbstractProbeId i) {
         this.id = i;
-        this.gui = NxtSimulatorGUI.getNxtSimulatorGUI();
+        final DistanceGenerator resource = new DistanceGenerator();
+        resource.addListener(this);
     }
 
-    public ProbeId getIdentifier() {
+    public AbstractProbeId getIdentifier() {
         return this.id;
+    }
+
+    public String getListenerName() {
+        return this.id.getLocalName();
     }
 
     public TransducerId getTransducer() {
         return this.tId;
     }
 
+    public void notifyEvent(final String key, final int value) {
+        try {
+            if ("distance".equals(key)) {
+                this.distance = value;
+                if (this.transducer == null) {
+                    TransducerManager.getTransducerManager();
+                    this.transducer =
+                            TransducerManager.getTransducer(this.tId
+                                    .getAgentName());
+                }
+                this.transducer.notifyEnvEvent(key, this.distance);
+            }
+        } catch (final TucsonOperationNotPossibleException e) {
+            e.printStackTrace();
+        } catch (final UnreachableNodeException e) {
+            e.printStackTrace();
+        } catch (final OperationTimeOutException e) {
+            e.printStackTrace();
+        }
+    }
+
     public boolean readValue(final String key) {
         try {
-            if ("power".equals(key)) {
+            if ("distance".equals(key)) {
                 if (this.transducer == null) {
                     TransducerManager.getTransducerManager();
                     this.transducer =
                             TransducerManager.getTransducer(this.tId
                                     .getAgentName());
                 }
-                this.transducer.notifyEnvEvent(key, this.power);
-                return true;
-            } else if ("angle".equals(key)) {
-                if (this.transducer == null) {
-                    TransducerManager.getTransducerManager();
-                    this.transducer =
-                            TransducerManager.getTransducer(this.tId
-                                    .getAgentName());
-                }
-                this.transducer.notifyEnvEvent(key, this.angle);
-                return true;
+                this.transducer.notifyEnvEvent(key, this.distance);
             }
+            return true;
         } catch (final TucsonOperationNotPossibleException e) {
             e.printStackTrace();
         } catch (final UnreachableNodeException e) {
@@ -67,24 +83,12 @@ public class NXT_ServoMotorActuator implements ISimpleProbe {
     }
 
     public boolean writeValue(final String key, final int value) {
-        System.err.println("WRITE REQUEST ( " + key + ", " + value + " )");
-        if ("power".equals(key)) {
-            this.power = value;
-            if (this.id.getLocalName().equals("servoMotorActuatorLeft")) {
-                this.gui.setMotorParameters("left", "power", this.power);
-            } else if (this.id.getLocalName().equals("servoMotorActuatorRight")) {
-                this.gui.setMotorParameters("right", "power", this.power);
-            }
-            return true;
-        } else if ("angle".equals(key)) {
-            this.angle = value;
-            if (this.id.getLocalName().equals("servoMotorActuatorLeft")) {
-                this.gui.setMotorParameters("left", "angle", this.angle);
-            } else if (this.id.getLocalName().equals("servoMotorActuatorRight")) {
-                this.gui.setMotorParameters("right", "angle", this.angle);
-            }
-            return true;
-        }
+        this.speakErr("I'm a sensor, I can't set values. Try asking to an actuator next time!!");
         return false;
+    }
+
+    private void speakErr(final String msg) {
+        System.err.println("[**ENVIRONMENT**][RESOURCE "
+                + this.id.getLocalName() + "] " + msg);
     }
 }

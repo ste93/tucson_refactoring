@@ -133,9 +133,7 @@ public final class TPTestDialog {
             node.end();
 
         } catch (final Exception e) {
-            /*
-             * 
-             */
+            e.printStackTrace();
         }
     }
 

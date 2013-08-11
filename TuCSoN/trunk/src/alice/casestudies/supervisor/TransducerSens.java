@@ -1,13 +1,13 @@
 package alice.casestudies.supervisor;
 
 import alice.respect.probe.ISimpleProbe;
-import alice.respect.transducer.Transducer;
+import alice.respect.transducer.AbstractTransducer;
 import alice.respect.transducer.TransducerId;
 import alice.tucson.api.ITucsonOperation;
 import alice.tuplecentre.api.TupleCentreId;
 import alice.tuplecentre.core.AbstractTupleCentreOperation;
 
-public class TransducerSens extends Transducer {
+public class TransducerSens extends AbstractTransducer {
 
     public TransducerSens(final TransducerId i, final TupleCentreId t) {
         super(i, t);

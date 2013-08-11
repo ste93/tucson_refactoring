@@ -17,8 +17,8 @@ public final class SupervisorGUI extends javax.swing.JFrame {
 
     private static SupervisorGUI lightGui;
     /**
-	 * 
-	 */
+     * 
+     */
     private static final long serialVersionUID = -5500275061372118361L;
 
     public static SupervisorGUI getLightGUI() {
@@ -115,7 +115,7 @@ public final class SupervisorGUI extends javax.swing.JFrame {
     }
 
     public boolean isConnected() {
-        if (this.jLabel11.getText().equals("OK")) {
+        if ("OK".equals(this.jLabel11.getText())) {
             return true;
         }
 
@@ -795,5 +795,5 @@ public final class SupervisorGUI extends javax.swing.JFrame {
                                 .addContainerGap()));
 
         this.pack();
-    }// </editor-fold>
+    } // </editor-fold>
 }

@@ -6,12 +6,15 @@ import alice.tucson.api.ITucsonOperation;
 import alice.tucson.api.SynchACC;
 import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
+import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 
-public class AG_Collide extends AbstractTucsonAgent {
+public class AgentWander extends AbstractTucsonAgent {
+    
+    private static final String DEFAULT_PORT = "20504";
 
     private boolean iteraction = true;
 
-    public AG_Collide(final String aid) throws TucsonInvalidAgentIdException {
+    public AgentWander(final String aid) throws TucsonInvalidAgentIdException {
         super(aid);
     }
 
@@ -28,36 +31,32 @@ public class AG_Collide extends AbstractTucsonAgent {
 
     @Override
     protected void main() {
-        TucsonTupleCentreId tc_motor = null;
-        TucsonTupleCentreId tc_sonar = null;
         final SynchACC acc = this.getContext();
+        TucsonTupleCentreId tcAvoid = null;
+        int angle, speed;
         LogicTuple t;
 
         try {
-            tc_motor =
-                    new TucsonTupleCentreId("tc_motor", "localhost",
-                            String.valueOf(20504));
-            tc_sonar =
-                    new TucsonTupleCentreId("tc_sonar", "localhost",
-                            String.valueOf(20504));
-        } catch (final Exception e) {
+            tcAvoid =
+                    new TucsonTupleCentreId("tc_avoid", "localhost",
+                            DEFAULT_PORT);
+        } catch (final TucsonInvalidTupleCentreIdException e) {
             e.printStackTrace();
         }
 
         while (this.iteraction) {
             try {
-                t = LogicTuple.parse("distance(front,X)");
-                t = acc.rdp(tc_sonar, t, null).getLogicTupleResult();
-
-                if (t.getArg(1).intValue() < 15) {
-                    t = LogicTuple.parse("data(halt)");
-                    acc.out(tc_motor, t, null);
-                }
-
+                angle = (int) (Math.random() * 360);
+                speed = (int) (Math.random() * 100);
+                t =
+                        LogicTuple.parse("data(random_direction(" + angle + ","
+                                + speed + "))");
+                acc.out(tcAvoid, t, null);
             } catch (final Exception e) {
                 System.err.println(e.toString());
             }
         }
+
     }
 
 }

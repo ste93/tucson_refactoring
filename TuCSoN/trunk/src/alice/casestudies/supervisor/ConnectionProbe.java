@@ -4,7 +4,7 @@ import alice.respect.core.ISerialEventListener;
 import alice.respect.core.SerialComm;
 import alice.respect.core.TransducerManager;
 import alice.respect.probe.ISimpleProbe;
-import alice.respect.probe.ProbeId;
+import alice.respect.probe.AbstractProbeId;
 import alice.respect.transducer.TransducerId;
 import alice.respect.transducer.TransducerStandardInterface;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
@@ -24,11 +24,11 @@ public class ConnectionProbe extends Thread implements ISimpleProbe,
         ISerialEventListener {
 
     private final SupervisorGUI gui;
-    private final ProbeId id;
+    private final AbstractProbeId id;
     private TransducerId tId;
     private TransducerStandardInterface transducer;
 
-    public ConnectionProbe(final ProbeId i) {
+    public ConnectionProbe(final AbstractProbeId i) {
         super();
         this.id = i;
         SerialComm.getSerialComm();
@@ -36,7 +36,7 @@ public class ConnectionProbe extends Thread implements ISimpleProbe,
         this.gui = SupervisorGUI.getLightGUI();
     }
 
-    public ProbeId getIdentifier() {
+    public AbstractProbeId getIdentifier() {
         return this.id;
     }
 
@@ -50,16 +50,16 @@ public class ConnectionProbe extends Thread implements ISimpleProbe,
 
     public void notifyEvent(final String value) {
         try {
-            final String[] key_value = value.split("/");
-            if (key_value[0].equals("status")) {
+            final String[] keyValue = value.split("/");
+            if ("status".equals(keyValue[0])) {
                 if (this.transducer == null) {
                     TransducerManager.getTransducerManager();
                     this.transducer =
                             TransducerManager.getTransducer(this.tId
                                     .getAgentName());
                 }
-                this.transducer.notifyEnvEvent(key_value[0],
-                        Integer.parseInt(key_value[1]));
+                this.transducer.notifyEnvEvent(keyValue[0],
+                        Integer.parseInt(keyValue[1]));
             }
         } catch (final TucsonOperationNotPossibleException e) {
             e.printStackTrace();

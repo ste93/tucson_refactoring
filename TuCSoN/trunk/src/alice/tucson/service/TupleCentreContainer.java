@@ -34,6 +34,7 @@ import alice.tucson.api.exceptions.UnreachableNodeException;
 import alice.tuplecentre.api.ITupleCentreOperation;
 import alice.tuplecentre.api.InspectableEventListener;
 import alice.tuplecentre.api.ObservableEventListener;
+import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 import alice.tuplecentre.core.InputEvent;
 import alice.tuplecentre.core.OperationCompletionListener;
 
@@ -372,15 +373,35 @@ public final class TupleCentreContainer {
         return res;
     }
 
-    /*
-     * Do an environmental operation from an agent aid to the tuple centre tid
+    /**
+     * 
+     * @param type
+     *            the type codeof the ReSpecT operation to be executed
+     * @param aid
+     *            the identifier of the TuCSoN agent requesting the operation
+     * @param tid
+     *            the identifier of the tuple centre target of the operation
+     * @param t
+     *            the tuple argument of the operation
+     * @param l
+     *            the listener for operation completion
+     * @return the Java object representing the tuple centre operation
+     * @throws InvalidTupleOperationException
+     *             if the tuple cannot be managed properly
+     * @throws TucsonOperationNotPossibleException
+     *             if the requested operation cannot be performed for some
+     *             reason
+     * @throws UnreachableNodeException
+     *             if the TuCSoN tuple centre target of the notification cannot
+     *             be reached over the network
+     * @throws OperationTimeOutException
+     *             if the notification operation expires timeout
      */
     public static ITupleCentreOperation doEnvironmentalOperation(
             final int type, final TucsonAgentId aid,
             final TucsonTupleCentreId tid, final LogicTuple t,
             final OperationCompletionListener l)
-            throws alice.tuplecentre.api.exceptions.OperationTimeOutException,
-            InvalidTupleOperationException,
+            throws OperationTimeOutException, InvalidTupleOperationException,
             TucsonOperationNotPossibleException, UnreachableNodeException {
 
         IEnvironmentContext context = null;
@@ -442,9 +463,29 @@ public final class TupleCentreContainer {
         return op;
     }
 
-    /*
-     * Do an environmental operation from a tuple centre aid to the tuple centre
-     * tid
+    /**
+     * 
+     * @param type
+     *            the type codeof the ReSpecT operation to be executed
+     * @param aid
+     *            the identifier of the tuple centre requesting the operation
+     * @param tid
+     *            the identifier of the tuple centre target of the operation
+     * @param t
+     *            the tuple argument of the operation
+     * @param l
+     *            the listener for operation completion
+     * @return the Java object representing the tuple centre operation
+     * @throws InvalidTupleOperationException
+     *             if the tuple cannot be managed properly
+     * @throws TucsonOperationNotPossibleException
+     *             if the requested operation cannot be performed for some
+     *             reason
+     * @throws UnreachableNodeException
+     *             if the TuCSoN tuple centre target of the notification cannot
+     *             be reached over the network
+     * @throws OperationTimeOutException
+     *             if the notification operation expires timeout
      */
     public static ITupleCentreOperation doEnvironmentalOperation(
             final int type, final TucsonTupleCentreId aid,
@@ -452,7 +493,7 @@ public final class TupleCentreContainer {
             final OperationCompletionListener l)
             throws InvalidTupleOperationException,
             TucsonOperationNotPossibleException, UnreachableNodeException,
-            alice.tuplecentre.api.exceptions.OperationTimeOutException {
+            OperationTimeOutException {
 
         IEnvironmentContext context = null;
         RespectOperation op = null;

@@ -16,6 +16,13 @@ public class TransducerId extends EnvAgentId {
     /** serialVersionUID **/
     private static final long serialVersionUID = 1L;
 
+    /**
+     * 
+     * @param id
+     *            the String representation of this transducer identifier
+     * @throws TucsonInvalidAgentIdException
+     *             id the given String is not a valid TuCSoN identifier
+     */
     public TransducerId(final String id) throws TucsonInvalidAgentIdException {
         super(id);
     }

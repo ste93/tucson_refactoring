@@ -33,55 +33,97 @@ import alice.tuprolog.Prolog;
 public abstract class AbstractTupleCentreOperation implements
         ITupleCentreOperation {
 
+    /**  */
     protected static final int OPTYPE_ABORT_OP = 58;
+    /**  */
     protected static final int OPTYPE_ADD_INSP = 70;
+    /**  */
     protected static final int OPTYPE_ADD_OBS = 67;
+    /**  */
     protected static final int OPTYPE_GET = 8;
+    /**  */
     protected static final int OPTYPE_GET_S = 28;
+    /**  */
     protected static final int OPTYPE_GET_TRSET = 66;
+    /**  */
     protected static final int OPTYPE_GET_TSET = 64;
+    /**  */
     protected static final int OPTYPE_GET_WSET = 65;
+    /**  */
     protected static final int OPTYPE_GO_CMD = 61;
-
+    /**  */
     protected static final int OPTYPE_HAS_INSP = 72;
-
+    /**  */
     protected static final int OPTYPE_HAS_OBS = 69;
+    /**  */
     protected static final int OPTYPE_IN = 2;
+    /**  */
     protected static final int OPTYPE_IN_ALL = 11;
+    /**  */
     protected static final int OPTYPE_IN_S = 21;
+    /**  */
     protected static final int OPTYPE_INP = 4;
+    /**  */
     protected static final int OPTYPE_INP_S = 23;
+    /**  */
     protected static final int OPTYPE_NEXT_STEP = 62;
+    /**  */
     protected static final int OPTYPE_NO = 6;
+    /**  */
     protected static final int OPTYPE_NO_ALL = 13;
+    /**  */
     protected static final int OPTYPE_NO_S = 25;
-
+    /**  */
     protected static final int OPTYPE_NOP = 7;
+    /**  */
     protected static final int OPTYPE_NOP_S = 26;
+    /**  */
     protected static final int OPTYPE_OUT = 1;
+    /**  */
     protected static final int OPTYPE_OUT_ALL = 10;
+    /**  */
     protected static final int OPTYPE_OUT_S = 20;
+    /**  */
     protected static final int OPTYPE_RD = 3;
+    /**  */
     protected static final int OPTYPE_RD_ALL = 12;
+    /**  */
     protected static final int OPTYPE_RD_S = 22;
+    /**  */
     protected static final int OPTYPE_RDP = 5;
-
+    /**  */
     protected static final int OPTYPE_RDP_S = 24;
+    /**  */
     protected static final int OPTYPE_RMV_INSP = 71;
+    /**  */
     protected static final int OPTYPE_RMV_OBS = 68;
+    /**  */
     protected static final int OPTYPE_SET = 9;
+    /**  */
     protected static final int OPTYPE_SET_MNG_MODE = 59;
+    /**  */
     protected static final int OPTYPE_SET_S = 27;
+    /**  */
     protected static final int OPTYPE_SET_SPY = 63;
+    /**  */
     protected static final int OPTYPE_SET_WSET = 73;
+    /**  */
     protected static final int OPTYPE_SPAWN = 666;
+    /**  */
     protected static final int OPTYPE_STOP_CMD = 60;
+    /**  */
     protected static final int OPTYPE_UIN = 15;
+    /**  */
     protected static final int OPTYPE_UINP = 18;
+    /**  */
     protected static final int OPTYPE_UNO = 16;
+    /**  */
     protected static final int OPTYPE_UNOP = 19;
+    /**  */
     protected static final int OPTYPE_URD = 14;
+    /**  */
     protected static final int OPTYPE_URDP = 17;
+    /**  */
     protected static final int RESET = 74;
 
     /**

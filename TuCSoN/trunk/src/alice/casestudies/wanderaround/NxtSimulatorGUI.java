@@ -19,8 +19,8 @@ public final class NxtSimulatorGUI extends javax.swing.JFrame {
 
     private static NxtSimulatorGUI gui;
     /**
-	 * 
-	 */
+     * 
+     */
     private static final long serialVersionUID = -3316296544247509843L;
 
     public static NxtSimulatorGUI getNxtSimulatorGUI() {
@@ -561,7 +561,7 @@ public final class NxtSimulatorGUI extends javax.swing.JFrame {
                                         Short.MAX_VALUE)));
 
         this.pack();
-    }// </editor-fold>
+    } // </editor-fold>
 
     private void
             jTextField1ActionPerformed(final java.awt.event.ActionEvent evt) {

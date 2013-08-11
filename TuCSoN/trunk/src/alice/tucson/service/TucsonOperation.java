@@ -49,6 +49,10 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
         return AbstractTupleCentreOperation.OPTYPE_ADD_OBS;
     }
 
+    /**
+     * 
+     * @return the type code for an environmental operation
+     */
     public static int envCode() {
         return RespectOperation.OPTYPE_ENV;
     }
@@ -71,6 +75,11 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
         return AbstractTupleCentreOperation.OPTYPE_GET;
     }
 
+    /**
+     * 
+     * @return the type code of the <code>get_env</code> environmental getter
+     *         operation
+     */
     public static int getEnvCode() {
         return RespectOperation.OPTYPE_GET_ENV;
     }
@@ -345,6 +354,11 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
         return AbstractTupleCentreOperation.OPTYPE_SET;
     }
 
+    /**
+     * 
+     * @return the type code of the <code>set_env</code> environmental setter
+     *         operation
+     */
     public static int setEnvCode() {
         return RespectOperation.OPTYPE_SET_ENV;
     }

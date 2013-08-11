@@ -1508,13 +1508,9 @@ public class RespectVMContext extends
                     info = this.core.solveNext();
                 }
             } catch (final alice.tuprolog.NoMoreSolutionException e) {
-                /*
-                 * 
-                 */
+                log("No more solutions.");
             } catch (final alice.tuprolog.NoSolutionException e) {
-                /*
-                 * 
-                 */
+                log("No solution.");
             } catch (final MalformedGoalException e) {
                 e.printStackTrace();
             }

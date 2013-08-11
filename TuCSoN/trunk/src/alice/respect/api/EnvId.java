@@ -24,6 +24,11 @@ public class EnvId implements IId {
         this.id = new Struct(i);
     }
 
+    /**
+     * 
+     * @return the String representation of the local name of an environmental
+     *         resource
+     */
     public String getLocalName() {
         return this.localName;
     }

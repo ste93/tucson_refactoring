@@ -1,17 +1,24 @@
 package alice.respect.core;
 
+import java.lang.reflect.InvocationTargetException;
+
 import alice.logictuple.LogicTuple;
+import alice.logictuple.exceptions.InvalidLogicTupleException;
+import alice.logictuple.exceptions.InvalidTupleOperationException;
 import alice.respect.api.TupleCentreId;
 import alice.respect.api.exceptions.InvalidTupleCentreIdException;
 import alice.respect.probe.ActuatorId;
 import alice.respect.probe.ISimpleProbe;
-import alice.respect.probe.ProbeId;
+import alice.respect.probe.AbstractProbeId;
 import alice.respect.probe.SensorId;
 import alice.respect.transducer.TransducerId;
 import alice.tucson.api.AbstractTucsonAgent;
 import alice.tucson.api.ITucsonOperation;
 import alice.tucson.api.SynchACC;
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
+import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
+import alice.tucson.api.exceptions.UnreachableNodeException;
+import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 
 /**
  * 
@@ -52,6 +59,18 @@ public class EnvConfigAgent extends AbstractTucsonAgent {
 
     private boolean iteraction = true;
 
+    /**
+     * 
+     * @param ipAddress
+     *            the netid of the TuCSoN Node this environment configuration
+     *            agent works with
+     * @param portno
+     *            the listening port of the TuCSoN Node this environment
+     *            configuration agent works with
+     * @throws TucsonInvalidAgentIdException
+     *             this cannot actually happen, since this agent identifier is
+     *             given, then well-formed
+     */
     public EnvConfigAgent(final String ipAddress, final int portno)
             throws TucsonInvalidAgentIdException {
         super("envConfigAgent", ipAddress, portno);
@@ -102,7 +121,8 @@ public class EnvConfigAgent extends AbstractTucsonAgent {
                                     + " TC Associated:"
                                     + t.getArg(0).toString());
                     // Obtaining resource
-                    final ProbeId pId = new SensorId(t.getArg(4).getName());
+                    final AbstractProbeId pId =
+                            new SensorId(t.getArg(4).getName());
                     ResourceManager.getResourceManager().createResource(
                             t.getArg(3).toString(), pId);
                     TransducerManager.getTransducerManager();
@@ -135,7 +155,8 @@ public class EnvConfigAgent extends AbstractTucsonAgent {
                                     + " TC Associated:"
                                     + t.getArg(0).toString());
                     // Obtaining resource
-                    final ProbeId pId = new ActuatorId(t.getArg(4).getName());
+                    final AbstractProbeId pId =
+                            new ActuatorId(t.getArg(4).getName());
                     ResourceManager.getResourceManager().createResource(
                             t.getArg(3).toString(), pId);
                     TransducerManager.getTransducerManager();
@@ -148,7 +169,8 @@ public class EnvConfigAgent extends AbstractTucsonAgent {
                     t = LogicTuple.parse("addSensor(Class,Pid,Tid)");
                     t = acc.in(this.idEnvTC, t, null).getLogicTupleResult();
                     // Creating resource
-                    final ProbeId pId = new SensorId(t.getArg(1).getName());
+                    final AbstractProbeId pId =
+                            new SensorId(t.getArg(1).getName());
                     ResourceManager.getResourceManager().createResource(
                             t.getArg(0).toString(), pId);
                     final ISimpleProbe probe =
@@ -167,7 +189,8 @@ public class EnvConfigAgent extends AbstractTucsonAgent {
                     t = LogicTuple.parse("addActuator(Class,Pid,Tid)");
                     t = acc.in(this.idEnvTC, t, null).getLogicTupleResult();
                     // Creating resource
-                    final ProbeId pId = new ActuatorId(t.getArg(1).getName());
+                    final AbstractProbeId pId =
+                            new ActuatorId(t.getArg(1).getName());
                     ResourceManager.getResourceManager().createResource(
                             t.getArg(0).toString(), pId);
                     final ISimpleProbe probe =
@@ -195,7 +218,7 @@ public class EnvConfigAgent extends AbstractTucsonAgent {
                     EnvConfigAgent.speak("Serving change transducer request");
                     t = LogicTuple.parse("changeTransducer(Pid,Tid)");
                     t = acc.in(this.idEnvTC, t, null).getLogicTupleResult();
-                    final ProbeId pId =
+                    final AbstractProbeId pId =
                             ResourceManager.getResourceManager()
                                     .getResourceByName(t.getArg(0).getName())
                                     .getIdentifier();
@@ -206,7 +229,29 @@ public class EnvConfigAgent extends AbstractTucsonAgent {
                     ResourceManager.getResourceManager()
                             .setTransducer(pId, tId);
                 }
-            } catch (final Exception e) {
+            } catch (final InvalidLogicTupleException e) {
+                e.printStackTrace();
+            } catch (final TucsonOperationNotPossibleException e) {
+                e.printStackTrace();
+            } catch (final UnreachableNodeException e) {
+                e.printStackTrace();
+            } catch (final OperationTimeOutException e) {
+                e.printStackTrace();
+            } catch (final InvalidTupleOperationException e) {
+                e.printStackTrace();
+            } catch (final TucsonInvalidAgentIdException e) {
+                e.printStackTrace();
+            } catch (final InvalidTupleCentreIdException e) {
+                e.printStackTrace();
+            } catch (final ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (final NoSuchMethodException e) {
+                e.printStackTrace();
+            } catch (final InstantiationException e) {
+                e.printStackTrace();
+            } catch (final IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (final InvocationTargetException e) {
                 e.printStackTrace();
             }
         }
@@ -218,6 +263,9 @@ public class EnvConfigAgent extends AbstractTucsonAgent {
 
     }
 
+    /**
+     * 
+     */
     public void stopIteraction() {
         this.iteraction = false;
     }

@@ -8,13 +8,15 @@ import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 
-public class AG_FeelForce extends AbstractTucsonAgent {
+public class AgentFeelForce extends AbstractTucsonAgent {
+    
+    private static final String DEFAULT_PORT = "20504";
 
     private int angle, speed;
 
     private boolean iteraction = true;
 
-    public AG_FeelForce(final String aid) throws TucsonInvalidAgentIdException {
+    public AgentFeelForce(final String aid) throws TucsonInvalidAgentIdException {
         super(aid);
     }
 
@@ -32,22 +34,22 @@ public class AG_FeelForce extends AbstractTucsonAgent {
     @Override
     protected void main() {
         final SynchACC acc = this.getContext();
-        TucsonTupleCentreId tc_sonar = null;
-        TucsonTupleCentreId tc_runaway = null;
-        TucsonTupleCentreId tc_avoid = null;
+        TucsonTupleCentreId tcSonar = null;
+        TucsonTupleCentreId tcRunaway = null;
+        TucsonTupleCentreId tcAvoid = null;
         int front, right, back, left;
         LogicTuple t;
 
         try {
-            tc_sonar =
+            tcSonar =
                     new TucsonTupleCentreId("tc_sonar", "localhost",
-                            String.valueOf(20504));
-            tc_runaway =
+                            DEFAULT_PORT);
+            tcRunaway =
                     new TucsonTupleCentreId("tc_runaway", "localhost",
-                            String.valueOf(20504));
-            tc_avoid =
+                            DEFAULT_PORT);
+            tcAvoid =
                     new TucsonTupleCentreId("tc_avoid", "localhost",
-                            String.valueOf(20504));
+                            DEFAULT_PORT);
         } catch (final TucsonInvalidTupleCentreIdException e) {
             e.printStackTrace();
         }
@@ -56,19 +58,19 @@ public class AG_FeelForce extends AbstractTucsonAgent {
             try {
                 t = LogicTuple.parse("distance(front,X)");
                 front =
-                        acc.rdp(tc_sonar, t, null).getLogicTupleResult()
+                        acc.rdp(tcSonar, t, null).getLogicTupleResult()
                                 .getArg(1).intValue();
                 t = LogicTuple.parse("distance(right,X)");
                 right =
-                        acc.rdp(tc_sonar, t, null).getLogicTupleResult()
+                        acc.rdp(tcSonar, t, null).getLogicTupleResult()
                                 .getArg(1).intValue();
                 t = LogicTuple.parse("distance(back,X)");
                 back =
-                        acc.rdp(tc_sonar, t, null).getLogicTupleResult()
+                        acc.rdp(tcSonar, t, null).getLogicTupleResult()
                                 .getArg(1).intValue();
                 t = LogicTuple.parse("distance(left,X)");
                 left =
-                        acc.rdp(tc_sonar, t, null).getLogicTupleResult()
+                        acc.rdp(tcSonar, t, null).getLogicTupleResult()
                                 .getArg(1).intValue();
 
                 // System.out.println("[AG_FEELFORCE] F: "+front+" | R: "+right+" | B: "+back+" | L: "+left);
@@ -79,8 +81,8 @@ public class AG_FeelForce extends AbstractTucsonAgent {
                 t =
                         LogicTuple.parse("data(direction(" + this.angle + ","
                                 + this.speed + "))");
-                acc.out(tc_runaway, t, null);
-                acc.out(tc_avoid, t, null);
+                acc.out(tcRunaway, t, null);
+                acc.out(tcAvoid, t, null);
 
                 Thread.sleep(1000);
             } catch (final Exception e) {

@@ -4,7 +4,7 @@ import alice.respect.core.ISerialEventListener;
 import alice.respect.core.SerialComm;
 import alice.respect.core.TransducerManager;
 import alice.respect.probe.ISimpleProbe;
-import alice.respect.probe.ProbeId;
+import alice.respect.probe.AbstractProbeId;
 import alice.respect.transducer.TransducerId;
 import alice.respect.transducer.TransducerStandardInterface;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
@@ -21,18 +21,18 @@ import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 public class LightProbe extends Thread implements ISimpleProbe,
         ISerialEventListener {
 
-    private final ProbeId id;
+    private final AbstractProbeId id;
     private TransducerId tId;
     private TransducerStandardInterface transducer;
 
-    public LightProbe(final ProbeId i) {
+    public LightProbe(final AbstractProbeId i) {
         super();
         this.id = i;
         SerialComm.getSerialComm();
         SerialComm.addListener(this);
     }
 
-    public ProbeId getIdentifier() {
+    public AbstractProbeId getIdentifier() {
         return this.id;
     }
 
@@ -46,16 +46,16 @@ public class LightProbe extends Thread implements ISimpleProbe,
 
     public void notifyEvent(final String value) {
         try {
-            final String[] key_value = value.split("/");
-            if (key_value[0].equals("intensity")) {
+            final String[] keyValue = value.split("/");
+            if ("intensity".equals(keyValue[0])) {
                 if (this.transducer == null) {
                     TransducerManager.getTransducerManager();
                     this.transducer =
                             TransducerManager.getTransducer(this.tId
                                     .getAgentName());
                 }
-                this.transducer.notifyEnvEvent(key_value[0],
-                        Integer.parseInt(key_value[1]));
+                this.transducer.notifyEnvEvent(keyValue[0],
+                        Integer.parseInt(keyValue[1]));
             }
         } catch (final TucsonOperationNotPossibleException e) {
             e.printStackTrace();

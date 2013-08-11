@@ -16,11 +16,13 @@ import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
  * 
  */
 
-public class AG_Intensity extends AbstractTucsonAgent {
+public class AgentIntensity extends AbstractTucsonAgent {
+    
+    private static final String DEFAULT_PORT = "20504";
 
     private boolean iteraction = true;
 
-    public AG_Intensity(final String aid) throws TucsonInvalidAgentIdException {
+    public AgentIntensity(final String aid) throws TucsonInvalidAgentIdException {
         super(aid);
     }
 
@@ -38,18 +40,18 @@ public class AG_Intensity extends AbstractTucsonAgent {
     protected void main() {
         // TODO Auto-generated method stub
         final SynchACC acc = this.getContext();
-        TucsonTupleCentreId tc_intensity = null;
-        TucsonTupleCentreId tc_light = null;
+        TucsonTupleCentreId tcIntensity = null;
+        TucsonTupleCentreId tcLight = null;
         int newIntensity, oldIntensity = 0;
         LogicTuple t;
 
         try {
-            tc_intensity =
+            tcIntensity =
                     new TucsonTupleCentreId("tc_intensity", "localhost",
-                            String.valueOf(20504));
-            tc_light =
+                            DEFAULT_PORT);
+            tcLight =
                     new TucsonTupleCentreId("tc_light", "localhost",
-                            String.valueOf(20504));
+                            DEFAULT_PORT);
         } catch (final TucsonInvalidTupleCentreIdException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -62,24 +64,20 @@ public class AG_Intensity extends AbstractTucsonAgent {
             try {
                 t = LogicTuple.parse("intensity_to_set(X)");
                 newIntensity =
-                        acc.inp(tc_intensity, t, null).getLogicTupleResult()
+                        acc.inp(tcIntensity, t, null).getLogicTupleResult()
                                 .getArg(0).intValue();
             } catch (final Exception e) {
-                /*
-                 * 
-                 */
+                e.printStackTrace();
             }
             try {
                 t = LogicTuple.parse("cmd(read(intensity))");
-                acc.out(tc_light, t, null);
+                acc.out(tcLight, t, null);
                 t = LogicTuple.parse("intensity_set_to(X)");
                 oldIntensity =
-                        acc.inp(tc_light, t, null).getLogicTupleResult()
+                        acc.inp(tcLight, t, null).getLogicTupleResult()
                                 .getArg(0).intValue();
             } catch (final Exception e) {
-                /*
-                 * 
-                 */
+                e.printStackTrace();
             }
             try {
                 if ((newIntensity != oldIntensity) && (newIntensity >= 0)
@@ -89,10 +87,10 @@ public class AG_Intensity extends AbstractTucsonAgent {
                     t =
                             LogicTuple.parse("cmd(set(intensity,"
                                     + newIntensity + "))");
-                    acc.out(tc_light, t, null);
+                    acc.out(tcLight, t, null);
                 }
             } catch (final Exception e) {
-                // System.err.println(e.toString());
+                e.printStackTrace();
             }
         }
 

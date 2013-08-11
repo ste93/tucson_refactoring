@@ -5,18 +5,18 @@ import java.awt.event.ActionListener;
 
 import alice.respect.core.TransducerManager;
 import alice.respect.probe.ISimpleProbe;
-import alice.respect.probe.ProbeId;
+import alice.respect.probe.AbstractProbeId;
 import alice.respect.transducer.TransducerId;
 import alice.respect.transducer.TransducerStandardInterface;
 
 public class SwitchProbe implements ActionListener, ISimpleProbe {
 
-    private final ProbeId id;
+    private final AbstractProbeId id;
     private boolean lock = false;
     private TransducerId tId;
     private TransducerStandardInterface transducer;
 
-    public SwitchProbe(final ProbeId i) {
+    public SwitchProbe(final AbstractProbeId i) {
         this.id = i;
         SupervisorGUI.getLightGUI().addSwitchActionListener(this);
     }
@@ -40,7 +40,7 @@ public class SwitchProbe implements ActionListener, ISimpleProbe {
         }
     }
 
-    public ProbeId getIdentifier() {
+    public AbstractProbeId getIdentifier() {
         return this.id;
     }
 

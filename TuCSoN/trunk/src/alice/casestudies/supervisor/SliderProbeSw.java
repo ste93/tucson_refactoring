@@ -6,24 +6,24 @@ import javax.swing.event.ChangeListener;
 
 import alice.respect.core.TransducerManager;
 import alice.respect.probe.ISimpleProbe;
-import alice.respect.probe.ProbeId;
+import alice.respect.probe.AbstractProbeId;
 import alice.respect.transducer.TransducerId;
 import alice.respect.transducer.TransducerStandardInterface;
 
 public class SliderProbeSw implements ChangeListener, ISimpleProbe {
 
-    private final ProbeId id;
+    private final AbstractProbeId id;
     private int sliderValue = 50;
     private TransducerId tId;
     private TransducerStandardInterface transducer;
 
-    public SliderProbeSw(final ProbeId i) {
+    public SliderProbeSw(final AbstractProbeId i) {
         this.id = i;
         SupervisorGUI.getLightGUI().addSliderChangeListener(this);
         this.readValue("intensity");
     }
 
-    public ProbeId getIdentifier() {
+    public AbstractProbeId getIdentifier() {
         return this.id;
     }
 

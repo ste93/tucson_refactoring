@@ -6,9 +6,10 @@ import java.util.Map;
 
 import alice.logictuple.LogicTuple;
 import alice.logictuple.Value;
+import alice.logictuple.exceptions.InvalidTupleOperationException;
 import alice.respect.core.InternalEvent;
 import alice.respect.core.RespectOperation;
-import alice.respect.probe.ProbeId;
+import alice.respect.probe.AbstractProbeId;
 import alice.tucson.api.TucsonOperationCompletionListener;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
@@ -30,8 +31,8 @@ import alice.tuplecentre.api.TupleTemplate;
  * @author Steven Maraldi
  * 
  */
-public abstract class Transducer implements TransducerStandardInterface,
-        TucsonOperationCompletionListener {
+public abstract class AbstractTransducer implements
+        TransducerStandardInterface, TucsonOperationCompletionListener {
 
     /** Class used to perform requested operation to the tuple centre **/
     protected OperationHandler executor;
@@ -39,7 +40,7 @@ public abstract class Transducer implements TransducerStandardInterface,
     protected TransducerId id;
 
     /** List of probes associated to the transducer **/
-    protected Map<ProbeId, Object> probes;
+    protected Map<AbstractProbeId, Object> probes;
 
     /** Identifier of the tuple centre associated **/
     protected TupleCentreId tcId;
@@ -52,13 +53,13 @@ public abstract class Transducer implements TransducerStandardInterface,
      * @param tc
      *            the associated tuple centre's identifier
      */
-    public Transducer(final TransducerId i, final TupleCentreId tc) {
+    public AbstractTransducer(final TransducerId i, final TupleCentreId tc) {
         this.id = i;
         this.tcId = tc;
 
         this.executor = new OperationHandler();
 
-        this.probes = new HashMap<ProbeId, Object>();
+        this.probes = new HashMap<AbstractProbeId, Object>();
     }
 
     /**
@@ -70,7 +71,7 @@ public abstract class Transducer implements TransducerStandardInterface,
      * @param probe
      *            the probe itself
      */
-    public void addProbe(final ProbeId i, final Object probe) {
+    public void addProbe(final AbstractProbeId i, final Object probe) {
         if (!this.probes.containsKey(i)) {
             this.probes.put(i, probe);
         }
@@ -80,6 +81,7 @@ public abstract class Transducer implements TransducerStandardInterface,
      * Exit procedure, called to end a session of communication
      * 
      * @throws TucsonOperationNotPossibleException
+     *             if the requested operation cannot be found
      */
     public synchronized void exit() throws TucsonOperationNotPossibleException {
 
@@ -117,6 +119,9 @@ public abstract class Transducer implements TransducerStandardInterface,
     /**
      * The behavior of the transducer when a getEnv operation is required
      * 
+     * @param key
+     *            the environmental property key whose associated value should
+     *            be percevied
      * @return true if the operation has been successfully executed
      */
     public abstract boolean getEnv(String key);
@@ -135,11 +140,11 @@ public abstract class Transducer implements TransducerStandardInterface,
      * 
      * @return array of the probes associated to the transducer
      */
-    public ProbeId[] getProbes() {
+    public AbstractProbeId[] getProbes() {
         final Object[] keySet = this.probes.keySet().toArray();
-        final ProbeId[] probeList = new ProbeId[keySet.length];
+        final AbstractProbeId[] probeList = new AbstractProbeId[keySet.length];
         for (int i = 0; i < probeList.length; i++) {
-            probeList[i] = (ProbeId) keySet[i];
+            probeList[i] = (AbstractProbeId) keySet[i];
         }
         return probeList;
     }
@@ -162,7 +167,9 @@ public abstract class Transducer implements TransducerStandardInterface,
      * @param value
      *            the value to communicate.
      * @throws UnreachableNodeException
+     *             if the target TuCSoN node cannot be reached over the network
      * @throws TucsonOperationNotPossibleException
+     *             if the requested operation cannot be successfully carried out
      */
     public void notifyEnvEvent(final String key, final int value)
             throws TucsonOperationNotPossibleException,
@@ -199,7 +206,7 @@ public abstract class Transducer implements TransducerStandardInterface,
                                 .getArgument().getArg(1).toString());
                 return this.setEnv(key, value);
             }
-        } catch (final Exception e) {
+        } catch (final InvalidTupleOperationException e) {
             e.printStackTrace();
             return false;
         }
@@ -212,10 +219,11 @@ public abstract class Transducer implements TransducerStandardInterface,
      * @param i
      *            probe's identifier
      */
-    public void removeProbe(final ProbeId i) {
+    public void removeProbe(final AbstractProbeId i) {
         final Object[] keySet = this.probes.keySet().toArray();
         for (final Object element : keySet) {
-            if (((ProbeId) element).getLocalName().equals(i.getLocalName())) {
+            if (((AbstractProbeId) element).getLocalName().equals(
+                    i.getLocalName())) {
                 this.probes.remove(element);
                 return;
             }
@@ -250,6 +258,11 @@ public abstract class Transducer implements TransducerStandardInterface,
         System.out.println("[TRANSDUCER - " + this.id.toString() + "] " + msg);
     }
 
+    /**
+     * 
+     * @param msg
+     *            the message to show on standard error
+     */
     protected void speakErr(final String msg) {
         System.err.println("[TRANSDUCER - " + this.id.toString() + "][ERROR] "
                 + msg);

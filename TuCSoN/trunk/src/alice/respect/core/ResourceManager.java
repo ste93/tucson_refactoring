@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import alice.respect.probe.ISimpleProbe;
-import alice.respect.probe.ProbeId;
+import alice.respect.probe.AbstractProbeId;
 import alice.respect.transducer.TransducerId;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 
@@ -50,10 +50,10 @@ public final class ResourceManager {
     }
 
     /** List of all probes on a single node **/
-    private final Map<ProbeId, ISimpleProbe> probeList;
+    private final Map<AbstractProbeId, ISimpleProbe> probeList;
 
     private ResourceManager() {
-        this.probeList = new HashMap<ProbeId, ISimpleProbe>();
+        this.probeList = new HashMap<AbstractProbeId, ISimpleProbe>();
     }
 
     /**
@@ -63,19 +63,25 @@ public final class ResourceManager {
      *            the concrete implementative class of the resource
      * @param id
      *            the identifier of the resource
+     * @return wether the Resource has been succesfully created.
      * 
      * @throws ClassNotFoundException
+     *             if the given Java full class name cannot be found within
+     *             known paths
      * @throws NoSuchMethodException
-     * @throws SecurityException
+     *             if the Java method name cannot be found
      * @throws InstantiationException
+     *             if the given Java class cannot be instantiated
      * @throws IllegalAccessException
-     * @throws IllegalArgumentException
+     *             if the caller has no rights to access class, methods, or
+     *             fields
      * @throws InvocationTargetException
+     *             if the callee cannot be found
      */
-    public boolean createResource(final String className, final ProbeId id)
+    public boolean createResource(final String className, final AbstractProbeId id)
             throws ClassNotFoundException, NoSuchMethodException,
-            SecurityException, InstantiationException, IllegalAccessException,
-            IllegalArgumentException, InvocationTargetException {
+            InstantiationException, IllegalAccessException,
+            InvocationTargetException {
         if (this.probeList.containsKey(id)) {
             ResourceManager.speakErr("The probe " + id.getLocalName()
                     + " already exist");
@@ -86,7 +92,7 @@ public final class ResourceManager {
                 className.substring(1, className.length() - 1);
         final Class<?> c = Class.forName(normClassName);
         final Constructor<?> ctor =
-                c.getConstructor(new Class[] { ProbeId.class });
+                c.getConstructor(new Class[] { AbstractProbeId.class });
         final ISimpleProbe probe =
                 (ISimpleProbe) ctor.newInstance(new Object[] { id });
 
@@ -101,9 +107,9 @@ public final class ResourceManager {
      * 
      * @param id
      *            the resource's identifier
-     * @return
+     * @return an interface toward the resource whose identifier has been given
      */
-    public ISimpleProbe getResource(final ProbeId id) {
+    public ISimpleProbe getResource(final AbstractProbeId id) {
         if (this.probeList.containsKey(id)) {
             return this.probeList.get(id);
         }
@@ -117,12 +123,13 @@ public final class ResourceManager {
      * 
      * @param name
      *            resource's local name
-     * @return
+     * @return an interface toward the resource whose logical name has been
+     *         given
      */
     public ISimpleProbe getResourceByName(final String name) {
         final Object[] keySet = this.probeList.keySet().toArray();
         for (final Object element : keySet) {
-            if (((ProbeId) element).getLocalName().equals(name)) {
+            if (((AbstractProbeId) element).getLocalName().equals(name)) {
                 return this.probeList.get(element);
             }
         }
@@ -135,9 +142,10 @@ public final class ResourceManager {
      * 
      * @param id
      *            the identifier of the resource to remove
+     * @return wether the resource has been successfully removed
      * @throws TucsonOperationNotPossibleException
      */
-    public boolean removeResource(final ProbeId id)
+    public boolean removeResource(final AbstractProbeId id)
             throws TucsonOperationNotPossibleException {
         ResourceManager.speak("Removing probe " + id.getLocalName()
                 + " from the resource list");
@@ -160,7 +168,7 @@ public final class ResourceManager {
      * @param tId
      *            the transducer's identifier
      */
-    public void setTransducer(final ProbeId pId, final TransducerId tId) {
+    public void setTransducer(final AbstractProbeId pId, final TransducerId tId) {
         this.getResource(pId).setTransducer(tId);
         if (tId != null) {
             ResourceManager.speak("Transducer " + tId.getAgentName()

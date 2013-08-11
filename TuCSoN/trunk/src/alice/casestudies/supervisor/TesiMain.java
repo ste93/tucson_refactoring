@@ -23,6 +23,8 @@ import alice.tuplecentre.api.exceptions.OperationTimeOutException;
  */
 
 public class TesiMain extends AbstractTucsonAgent {
+    
+    private static final String DEFAULT_PORT = "20504";
 
     // ACC
     private static SynchACC acc;
@@ -46,33 +48,33 @@ public class TesiMain extends AbstractTucsonAgent {
         try {
             TesiMain.tcPh =
                     new TupleCentreId("tc_ph", "localhost",
-                            String.valueOf(20504));
+                            DEFAULT_PORT);
             TesiMain.tcPs =
                     new TupleCentreId("tc_ps", "localhost",
-                            String.valueOf(20504));
+                            DEFAULT_PORT);
             TesiMain.tcLock =
                     new TupleCentreId("tc_lock", "localhost",
-                            String.valueOf(20504));
+                            DEFAULT_PORT);
             TesiMain.tcRange =
                     new TupleCentreId("tc_range", "localhost",
-                            String.valueOf(20504));
+                            DEFAULT_PORT);
             TesiMain.tcLight =
                     new TupleCentreId("tc_light", "localhost",
-                            String.valueOf(20504));
+                            DEFAULT_PORT);
             TesiMain.tcIntensity =
                     new TupleCentreId("tc_intensity", "localhost",
-                            String.valueOf(20504));
+                            DEFAULT_PORT);
             TesiMain.tcConnect =
                     new TupleCentreId("tc_connection", "localhost",
-                            String.valueOf(20504));
+                            DEFAULT_PORT);
             TesiMain.tcTimer =
                     new TupleCentreId("tc_timer", "localhost",
-                            String.valueOf(20504));
+                            DEFAULT_PORT);
 
             // Tuple centre for environment configuration
             TesiMain.tcId =
                     new TupleCentreId("envConfigTC", "localhost",
-                            String.valueOf(20504));
+                            DEFAULT_PORT);
 
             // Starting main test
             final TesiMain mainTest = new TesiMain("main");
@@ -84,14 +86,14 @@ public class TesiMain extends AbstractTucsonAgent {
 
     private static void createAgents() throws TucsonInvalidAgentIdException {
         TesiMain.speak("Creating agents");
-        final AG_Intensity ag_intensity = new AG_Intensity("ag_intensity");
-        final AG_Range ag_range = new AG_Range("ag_range");
-        final AG_Connection ag_connection = new AG_Connection("ag_connection");
+        final AgentIntensity agIntensity = new AgentIntensity("ag_intensity");
+        final AgentRange agRange = new AgentRange("ag_range");
+        final AgentConnection agConnection = new AgentConnection("ag_connection");
 
         TesiMain.speak("Starting agents");
-        ag_intensity.go();
-        ag_range.go();
-        ag_connection.go();
+        agIntensity.go();
+        agRange.go();
+        agConnection.go();
         TesiMain.speak("Agents created and started");
     }
 
