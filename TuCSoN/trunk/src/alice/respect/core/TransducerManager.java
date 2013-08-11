@@ -51,8 +51,8 @@ public final class TransducerManager {
      *            the probe itself
      * @return wether the resource has been successfully added
      */
-    public static boolean addResource(final AbstractProbeId id, final TransducerId tId,
-            final ISimpleProbe probe) {
+    public static boolean addResource(final AbstractProbeId id,
+            final TransducerId tId, final ISimpleProbe probe) {
         TransducerManager.speak("Adding new resource " + id.getLocalName()
                 + " to transducer " + tId.getAgentName());
         if (!TransducerManager.resourceList.containsKey(tId)) {
@@ -126,12 +126,13 @@ public final class TransducerManager {
                 c.getConstructor(new Class[] { TransducerId.class,
                         TupleCentreId.class, AbstractProbeId.class });
         final AbstractTransducer t =
-                (AbstractTransducer) ctor
-                        .newInstance(new Object[] { id, tcId, probeId });
+                (AbstractTransducer) ctor.newInstance(new Object[] { id, tcId,
+                        probeId });
         TransducerManager.transducerList.put(id, t);
 
         // Adding probe to the transducer
-        final ArrayList<AbstractProbeId> probes = new ArrayList<AbstractProbeId>();
+        final ArrayList<AbstractProbeId> probes =
+                new ArrayList<AbstractProbeId>();
         probes.add(probeId);
         TransducerManager.resourceList.put(id, probes);
         TransducerManager.addResource(probeId, id, ResourceManager
@@ -261,8 +262,8 @@ public final class TransducerManager {
     public static TupleCentreId getTupleCentreId(final TransducerId tId) {
         if (TransducerManager.tupleCentresAssociated.containsValue(tId)) {
             final TupleCentreId[] tcArray =
-                    (TupleCentreId[]) TransducerManager.tupleCentresAssociated
-                            .keySet().toArray();
+                    TransducerManager.tupleCentresAssociated.keySet().toArray(
+                            new TupleCentreId[] {});
             for (final TupleCentreId element : tcArray) {
                 if (TransducerManager.tupleCentresAssociated.get(element)
                         .contains(tId)) {
@@ -294,8 +295,8 @@ public final class TransducerManager {
         // Decouple the transducer from the probes associated.
         final Object[] pIds = TransducerManager.resourceList.get(id).toArray();
         for (final Object pId : pIds) {
-            ResourceManager.getResourceManager().getResource((AbstractProbeId) pId)
-                    .setTransducer(null);
+            ResourceManager.getResourceManager()
+                    .getResource((AbstractProbeId) pId).setTransducer(null);
         }
 
         TransducerManager.transducerList.remove(id);

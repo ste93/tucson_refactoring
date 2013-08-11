@@ -126,7 +126,7 @@ public final class SerialComm implements SerialPortEventListener {
      * 
      * @return the static instance of serial communicator
      */
-    public static SerialComm
+    public static synchronized SerialComm
             getSerialComm(final String portName, final int rate) {
         if (SerialComm.comm == null) {
             SerialComm.comm = new HashMap<String, SerialComm>();
@@ -171,6 +171,16 @@ public final class SerialComm implements SerialPortEventListener {
      */
     private static void speak(final String msg) {
         System.out.println("[Serial Communicator] " + msg);
+    }
+
+    /**
+     * Utility method to print a message to standard error
+     * 
+     * @param msg
+     *            message to print
+     */
+    private static void speakErr(final String msg) {
+        System.err.println("[Serial Communicator] " + msg);
     }
 
     /** Input stream buffered reader from the port */
@@ -275,8 +285,14 @@ public final class SerialComm implements SerialPortEventListener {
      */
     public synchronized void serialEvent(final SerialPortEvent oEvent) {
         if (oEvent.getEventType() == SerialPortEvent.DATA_AVAILABLE) {
+            String line = null;
             try {
-                final String[] inputLine = this.input.readLine().split("/");
+                line = this.input.readLine();
+            } catch (final IOException e) {
+                e.printStackTrace();
+            }
+            if (line != null) {
+                final String[] inputLine = line.split("/");
                 final String destination = inputLine[0];
                 final String value = inputLine[1] + "/" + inputLine[2];
                 for (int i = 0; i < SerialComm.listeners.size(); i++) {
@@ -289,8 +305,8 @@ public final class SerialComm implements SerialPortEventListener {
                         SerialComm.listeners.get(i).notifyEvent(value);
                     }
                 }
-            } catch (final IOException e) {
-                e.printStackTrace();
+            } else {
+                speakErr("IO Error: non data available despite event.");
             }
         }
     }

@@ -8,7 +8,7 @@ import alice.tuprolog.Term;
  * 
  * @author Steven Maraldi
  */
-public abstract class AbstractProbeId extends EnvId implements java.io.Serializable {
+public abstract class AbstractProbeId extends EnvId {
 
     private static final long serialVersionUID = -7709792820397648780L;
     /**

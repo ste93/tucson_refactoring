@@ -9,8 +9,10 @@ import alice.tuprolog.Term;
  * @author ste (mailto: s.mariani@unibo.it) on 27/giu/2013
  * 
  */
-public class EnvId implements IId {
+public class EnvId implements IId, java.io.Serializable {
 
+    /** serialVersionUID **/
+    private static final long serialVersionUID = 1L;
     private final Struct id;
     private final String localName;
 
