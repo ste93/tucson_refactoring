@@ -1,12 +1,12 @@
 package alice.casestudies.supervisor;
 
-import alice.respect.core.ISerialEventListener;
-import alice.respect.core.SerialComm;
 import alice.respect.core.TransducerManager;
-import alice.respect.probe.ISimpleProbe;
-import alice.respect.probe.AbstractProbeId;
-import alice.respect.transducer.TransducerId;
-import alice.respect.transducer.TransducerStandardInterface;
+import alice.respect.situated.AbstractProbeId;
+import alice.respect.situated.ISerialEventListener;
+import alice.respect.situated.ISimpleProbe;
+import alice.respect.situated.SerialComm;
+import alice.respect.situated.TransducerId;
+import alice.respect.situated.TransducerStandardInterface;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;

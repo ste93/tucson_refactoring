@@ -1,4 +1,4 @@
-package alice.respect.probe;
+package alice.respect.situated;
 
 import alice.respect.api.EnvId;
 import alice.tuprolog.Term;

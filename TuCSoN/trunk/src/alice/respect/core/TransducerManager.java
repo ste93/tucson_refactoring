@@ -9,11 +9,11 @@ import java.util.Map;
 import java.util.Set;
 
 import alice.respect.api.EnvId;
-import alice.respect.probe.ISimpleProbe;
-import alice.respect.probe.AbstractProbeId;
-import alice.respect.transducer.AbstractTransducer;
-import alice.respect.transducer.TransducerId;
-import alice.respect.transducer.TransducerStandardInterface;
+import alice.respect.situated.AbstractProbeId;
+import alice.respect.situated.AbstractTransducer;
+import alice.respect.situated.ISimpleProbe;
+import alice.respect.situated.TransducerId;
+import alice.respect.situated.TransducerStandardInterface;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tuplecentre.api.TupleCentreId;
 import alice.tuprolog.Term;

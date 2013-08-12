@@ -1,4 +1,4 @@
-package alice.respect.core;
+package alice.respect.situated;
 
 import gnu.io.CommPortIdentifier;
 import gnu.io.PortInUseException;

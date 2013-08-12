@@ -1,4 +1,4 @@
-package alice.respect.probe;
+package alice.respect.situated;
 
 /**
  * Actuator's identifier class

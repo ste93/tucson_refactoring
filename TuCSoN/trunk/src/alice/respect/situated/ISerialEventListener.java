@@ -1,4 +1,4 @@
-package alice.respect.core;
+package alice.respect.situated;
 
 /**
  * 

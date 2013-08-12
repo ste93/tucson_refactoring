@@ -1,4 +1,4 @@
-package alice.respect.transducer;
+package alice.respect.situated;
 
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 

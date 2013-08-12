@@ -1,4 +1,4 @@
-package alice.respect.transducer;
+package alice.respect.situated;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -9,7 +9,6 @@ import alice.logictuple.Value;
 import alice.logictuple.exceptions.InvalidTupleOperationException;
 import alice.respect.core.InternalEvent;
 import alice.respect.core.RespectOperation;
-import alice.respect.probe.AbstractProbeId;
 import alice.tucson.api.TucsonOperationCompletionListener;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;

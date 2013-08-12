@@ -68,7 +68,7 @@ public class TucsonNodeService {
     private static final String DEFAULT_BOOT_SPEC_FILE =
             "alice/tucson/service/config/boot_spec.rsp";
     private static final String DEFAULT_ENVCONFIG_SPEC_FILE =
-            "alice/respect/core/specTcEnvConfig.rsp";
+            "alice/respect/core/config/specTcEnvConfig.rsp";
     private static final String DEFAULT_OBS_SPEC_FILE =
             "alice/tucson/service/config/obs_spec.rsp";
     private static final int DEFAULT_TCP_PORT = 20504;

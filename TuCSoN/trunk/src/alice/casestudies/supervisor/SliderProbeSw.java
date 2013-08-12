@@ -5,10 +5,10 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import alice.respect.core.TransducerManager;
-import alice.respect.probe.ISimpleProbe;
-import alice.respect.probe.AbstractProbeId;
-import alice.respect.transducer.TransducerId;
-import alice.respect.transducer.TransducerStandardInterface;
+import alice.respect.situated.AbstractProbeId;
+import alice.respect.situated.ISimpleProbe;
+import alice.respect.situated.TransducerId;
+import alice.respect.situated.TransducerStandardInterface;
 
 public class SliderProbeSw implements ChangeListener, ISimpleProbe {
 

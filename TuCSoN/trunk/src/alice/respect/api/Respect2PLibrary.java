@@ -28,7 +28,7 @@ import alice.respect.core.InternalOperation;
 import alice.respect.core.RespectOperation;
 import alice.respect.core.RespectVMContext;
 import alice.respect.core.TransducerManager;
-import alice.respect.transducer.TransducerId;
+import alice.respect.situated.TransducerId;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
 import alice.tucson.parsing.MyOpManager;

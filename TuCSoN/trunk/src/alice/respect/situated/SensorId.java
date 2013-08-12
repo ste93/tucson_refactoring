@@ -1,4 +1,4 @@
-package alice.respect.probe;
+package alice.respect.situated;
 
 /**
  * Sensor's identifier class

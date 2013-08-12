@@ -1,8 +1,7 @@
-package alice.respect.transducer;
+package alice.respect.situated;
 
 import alice.logictuple.exceptions.InvalidTupleOperationException;
 import alice.respect.core.InternalEvent;
-import alice.respect.probe.AbstractProbeId;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
 import alice.tuplecentre.api.TupleCentreId;

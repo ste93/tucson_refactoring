@@ -1,8 +1,8 @@
 package alice.casestudies.supervisor;
 
-import alice.respect.probe.ISimpleProbe;
-import alice.respect.transducer.AbstractTransducer;
-import alice.respect.transducer.TransducerId;
+import alice.respect.situated.AbstractTransducer;
+import alice.respect.situated.ISimpleProbe;
+import alice.respect.situated.TransducerId;
 import alice.tucson.api.ITucsonOperation;
 import alice.tuplecentre.api.TupleCentreId;
 import alice.tuplecentre.core.AbstractTupleCentreOperation;

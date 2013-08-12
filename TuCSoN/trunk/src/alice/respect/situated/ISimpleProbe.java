@@ -1,6 +1,5 @@
-package alice.respect.probe;
+package alice.respect.situated;
 
-import alice.respect.transducer.TransducerId;
 
 /**
  * Simple interface for a generic probe.

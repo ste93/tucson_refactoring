@@ -488,7 +488,7 @@ public class OperationHandler {
      * ever established a connection toward it: if it did, the already opened
      * connection is retrieved and used, otherwise a new connection is opened
      * and stored for later use
-     * {@link alice.tucson.service.ACCProxyAgentSide#getSession getSession}.
+     * {@link alice.tucson.service.OperationHandler#getSession getSession}.
      * 
      * Then, a Tucson Operation {@link alice.tucson.service.TucsonOperation op}
      * storing any useful information about the TuCSoN primitive invocation is
