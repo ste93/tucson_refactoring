@@ -108,104 +108,104 @@ public class WanderAroundMain extends AbstractTucsonAgent {
         WanderAroundMain.speak("Creating TCs...");
         // Sensor's TCs
         WanderAroundMain
-                .speak("Injecting 'table' ReSpecT specification in tc < "
+                .speak("Injecting 'sensor' ReSpecT specification in tc < "
                         + WanderAroundMain.tcU1.toString() + " >...");
         LogicTuple specTuple =
                 new LogicTuple(
                         "spec",
                         new Value(
-                                Utils.fileToString("alice/casestudies/wanderaround/specTcSensore.rsp")));
+                                Utils.fileToString("alice/tucson/examples/situatedness/specTcSensore.rsp")));
         WanderAroundMain.acc.setS(WanderAroundMain.tcU1, specTuple, null);
         WanderAroundMain
-                .speak("Injecting 'table' ReSpecT specification in tc < "
+                .speak("Injecting 'sensor' ReSpecT specification in tc < "
                         + WanderAroundMain.tcU2.toString() + " >...");
         specTuple =
                 new LogicTuple(
                         "spec",
                         new Value(
-                                Utils.fileToString("alice/casestudies/wanderaround/specTcSensore.rsp")));
+                                Utils.fileToString("alice/tucson/examples/situatedness/specTcSensore.rsp")));
         WanderAroundMain.acc.setS(WanderAroundMain.tcU2, specTuple, null);
         WanderAroundMain
-                .speak("Injecting 'table' ReSpecT specification in tc < "
+                .speak("Injecting 'sensor' ReSpecT specification in tc < "
                         + WanderAroundMain.tcU3.toString() + " >...");
         specTuple =
                 new LogicTuple(
                         "spec",
                         new Value(
-                                Utils.fileToString("alice/casestudies/wanderaround/specTcSensore.rsp")));
+                                Utils.fileToString("alice/tucson/examples/situatedness/specTcSensore.rsp")));
         WanderAroundMain.acc.setS(WanderAroundMain.tcU3, specTuple, null);
         WanderAroundMain
-                .speak("Injecting 'table' ReSpecT specification in tc < "
+                .speak("Injecting 'sensor' ReSpecT specification in tc < "
                         + WanderAroundMain.tcU4.toString() + " >...");
         specTuple =
                 new LogicTuple(
                         "spec",
                         new Value(
-                                Utils.fileToString("alice/casestudies/wanderaround/specTcSensore.rsp")));
+                                Utils.fileToString("alice/tucson/examples/situatedness/specTcSensore.rsp")));
         WanderAroundMain.acc.setS(WanderAroundMain.tcU4, specTuple, null);
 
         // Actuator's TCs
         WanderAroundMain
-                .speak("Injecting 'table' ReSpecT specification in tc < "
+                .speak("Injecting 'left actuator' ReSpecT specification in tc < "
                         + WanderAroundMain.tcM1.toString() + " >...");
         specTuple =
                 new LogicTuple(
                         "spec",
                         new Value(
-                                Utils.fileToString("alice/casestudies/wanderaround/specTcAttuatoreLeft.rsp")));
+                                Utils.fileToString("alice/tucson/examples/situatedness/specTcAttuatoreLeft.rsp")));
         WanderAroundMain.acc.setS(WanderAroundMain.tcM1, specTuple, null);
         WanderAroundMain
-                .speak("Injecting 'table' ReSpecT specification in tc < "
+                .speak("Injecting 'right actuator' ReSpecT specification in tc < "
                         + WanderAroundMain.tcM2.toString() + " >...");
         specTuple =
                 new LogicTuple(
                         "spec",
                         new Value(
-                                Utils.fileToString("alice/casestudies/wanderaround/specTcAttuatoreRight.rsp")));
+                                Utils.fileToString("alice/tucson/examples/situatedness/specTcAttuatoreRight.rsp")));
         WanderAroundMain.acc.setS(WanderAroundMain.tcM2, specTuple, null);
 
         // TC Sonar
         WanderAroundMain
-                .speak("Injecting 'table' ReSpecT specification in tc < "
+                .speak("Injecting 'sonar' ReSpecT specification in tc < "
                         + WanderAroundMain.tcSonar.toString() + " >...");
         specTuple =
                 new LogicTuple(
                         "spec",
                         new Value(
-                                Utils.fileToString("alice/casestudies/wanderaround/specTcSonar.rsp")));
+                                Utils.fileToString("alice/tucson/examples/situatedness/specTcSonar.rsp")));
         WanderAroundMain.acc.setS(WanderAroundMain.tcSonar, specTuple, null);
 
         // TC Run Away
         WanderAroundMain
-                .speak("Injecting 'table' ReSpecT specification in tc < "
+                .speak("Injecting 'run away' ReSpecT specification in tc < "
                         + WanderAroundMain.tcRunAway.toString() + " >...");
         specTuple =
                 new LogicTuple(
                         "spec",
                         new Value(
-                                Utils.fileToString("alice/casestudies/wanderaround/specTcRunAway.rsp")));
+                                Utils.fileToString("alice/tucson/examples/situatedness/specTcRunAway.rsp")));
         WanderAroundMain.acc.setS(WanderAroundMain.tcRunAway, specTuple, null);
 
         // TC Motor
         WanderAroundMain
-                .speak("Injecting 'table' ReSpecT specification in tc < "
+                .speak("Injecting 'motion' ReSpecT specification in tc < "
                         + WanderAroundMain.tcMotor.toString() + " >...");
         specTuple =
                 new LogicTuple(
                         "spec",
                         new Value(
-                                Utils.fileToString("alice/casestudies/wanderaround/specTcMotor.rsp")));
+                                Utils.fileToString("alice/tucson/examples/situatedness/specTcMotor.rsp")));
         WanderAroundMain.acc.setS(WanderAroundMain.tcMotor, specTuple, null);
 
         // TC Avoid
         WanderAroundMain
-                .speak("Injecting 'table' ReSpecT specification in tc < "
+                .speak("Injecting 'avoidance' ReSpecT specification in tc < "
                         + WanderAroundMain.tcAvoid.toString() + " >...");
         specTuple =
                 new LogicTuple(
                         "spec",
                         new Value(
-                                Utils.fileToString("alice/casestudies/wanderaround/specTcAvoid.rsp")));
+                                Utils.fileToString("alice/tucson/examples/situatedness/specTcAvoid.rsp")));
         WanderAroundMain.acc.setS(WanderAroundMain.tcAvoid, specTuple, null);
         WanderAroundMain.speak("TCs created");
     }
@@ -219,10 +219,10 @@ public class WanderAroundMain extends AbstractTucsonAgent {
                         "createTransducerSensor",
                         new Value(WanderAroundMain.tcU1.toString()),
                         new Value(
-                                "alice.casestudies.wanderaround.TransducerSens"),
+                                "alice.tucson.examples.situatedness.TransducerSens"),
                         new Value("tSensorFront"),
                         new Value(
-                                "alice.casestudies.wanderaround.NXT_UltrasonicSensor"),
+                                "alice.tucson.examples.situatedness.NXTUltrasonicSensor"),
                         new Value("ultrasonicSensorFront"));
         WanderAroundMain.acc.out(WanderAroundMain.tcId, t, null);
         t =
@@ -230,10 +230,10 @@ public class WanderAroundMain extends AbstractTucsonAgent {
                         "createTransducerSensor",
                         new Value(WanderAroundMain.tcU2.toString()),
                         new Value(
-                                "alice.casestudies.wanderaround.TransducerSens"),
+                                "alice.tucson.examples.situatedness.TransducerSens"),
                         new Value("tSensorRight"),
                         new Value(
-                                "alice.casestudies.wanderaround.NXT_UltrasonicSensor"),
+                                "alice.tucson.examples.situatedness.NXTUltrasonicSensor"),
                         new Value("ultrasonicSensorRight"));
         WanderAroundMain.acc.out(WanderAroundMain.tcId, t, null);
         t =
@@ -241,10 +241,10 @@ public class WanderAroundMain extends AbstractTucsonAgent {
                         "createTransducerSensor",
                         new Value(WanderAroundMain.tcU3.toString()),
                         new Value(
-                                "alice.casestudies.wanderaround.TransducerSens"),
+                                "alice.tucson.examples.situatedness.TransducerSens"),
                         new Value("tSensorBack"),
                         new Value(
-                                "alice.casestudies.wanderaround.NXT_UltrasonicSensor"),
+                                "alice.tucson.examples.situatedness.NXTUltrasonicSensor"),
                         new Value("ultrasonicSensorBack"));
         WanderAroundMain.acc.out(WanderAroundMain.tcId, t, null);
         t =
@@ -252,10 +252,10 @@ public class WanderAroundMain extends AbstractTucsonAgent {
                         "createTransducerSensor",
                         new Value(WanderAroundMain.tcU4.toString()),
                         new Value(
-                                "alice.casestudies.wanderaround.TransducerSens"),
+                                "alice.tucson.examples.situatedness.TransducerSens"),
                         new Value("tSensorLeft"),
                         new Value(
-                                "alice.casestudies.wanderaround.NXT_UltrasonicSensor"),
+                                "alice.tucson.examples.situatedness.NXTUltrasonicSensor"),
                         new Value("ultrasonicSensorLeft"));
         WanderAroundMain.acc.out(WanderAroundMain.tcId, t, null);
 
@@ -264,10 +264,10 @@ public class WanderAroundMain extends AbstractTucsonAgent {
                         "createTransducerActuator",
                         new Value(WanderAroundMain.tcM1.toString()),
                         new Value(
-                                "alice.casestudies.wanderaround.TransducerAct"),
+                                "alice.tucson.examples.situatedness.TransducerAct"),
                         new Value("tMotorLeft"),
                         new Value(
-                                "alice.casestudies.wanderaround.NXT_ServoMotorActuator"),
+                                "alice.tucson.examples.situatedness.NXTServoMotorActuator"),
                         new Value("servoMotorActuatorLeft"));
         WanderAroundMain.acc.out(WanderAroundMain.tcId, t, null);
         t =
@@ -275,10 +275,10 @@ public class WanderAroundMain extends AbstractTucsonAgent {
                         "createTransducerActuator",
                         new Value(WanderAroundMain.tcM2.toString()),
                         new Value(
-                                "alice.casestudies.wanderaround.TransducerAct"),
+                                "alice.tucson.examples.situatedness.TransducerAct"),
                         new Value("tMotorRight"),
                         new Value(
-                                "alice.casestudies.wanderaround.NXT_ServoMotorActuator"),
+                                "alice.tucson.examples.situatedness.NXTServoMotorActuator"),
                         new Value("servoMotorActuatorRight"));
         WanderAroundMain.acc.out(WanderAroundMain.tcId, t, null);
         WanderAroundMain.speak("Transducers created");
