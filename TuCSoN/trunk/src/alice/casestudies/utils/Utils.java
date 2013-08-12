@@ -3,7 +3,7 @@
  * Attribution-NonCommercial-ShareAlike 3.0 Italy License. Permissions beyond
  * the scope of this license may be available at www.danilopianini.org.
  */
-package alice.casestudies.supervisor;
+package alice.casestudies.utils;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;

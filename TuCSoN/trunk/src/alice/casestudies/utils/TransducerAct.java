@@ -1,4 +1,4 @@
-package alice.casestudies.supervisor;
+package alice.casestudies.utils;
 
 import alice.respect.situated.AbstractTransducer;
 import alice.respect.situated.ISimpleProbe;
