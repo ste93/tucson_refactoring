@@ -1,4 +1,4 @@
-package alice.casestudies.utils;
+package alice.tucson.examples.situatedness;
 
 import alice.respect.situated.AbstractTransducer;
 import alice.respect.situated.ISimpleProbe;

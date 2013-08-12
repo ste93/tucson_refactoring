@@ -1,4 +1,4 @@
-package alice.casestudies.wanderaround;
+package alice.tucson.examples.situatedness;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -6,7 +6,7 @@
 /*
  * NxtSimulatorGUI.java Created on Jul 2, 2013, 3:43:39 PM
  */
-package alice.casestudies.wanderaround;
+package alice.tucson.examples.situatedness;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;

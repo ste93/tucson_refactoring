@@ -1,4 +1,4 @@
-package alice.casestudies.wanderaround;
+package alice.tucson.examples.situatedness;
 
 import alice.respect.core.TransducerManager;
 import alice.respect.situated.AbstractProbeId;

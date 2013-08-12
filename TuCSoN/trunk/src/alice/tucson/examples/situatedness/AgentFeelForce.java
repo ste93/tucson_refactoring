@@ -1,4 +1,4 @@
-package alice.casestudies.wanderaround;
+package alice.tucson.examples.situatedness;
 
 import alice.logictuple.LogicTuple;
 import alice.tucson.api.AbstractTucsonAgent;
