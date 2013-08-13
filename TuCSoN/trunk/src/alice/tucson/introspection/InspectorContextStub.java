@@ -58,6 +58,8 @@ public class InspectorContextStub implements InspectorContext {
 
     /** current observation protocol */
     private InspectorProtocol protocol;
+    
+    private boolean exitFlag;
 
     /**
      * 
@@ -81,6 +83,7 @@ public class InspectorContextStub implements InspectorContext {
         } catch (final OperationNotAllowedException e) {
             e.printStackTrace();
         }
+        this.exitFlag = false;
     }
 
     public void acceptVMEvent() throws ClassNotFoundException, IOException {
@@ -91,7 +94,9 @@ public class InspectorContextStub implements InspectorContext {
                 this.contextListeners.get(i).onContextEvent(msg);
             }
         } catch (final DialogException e) {
-            InspectorContextStub.log("Unreachable TuCSoN node.");
+            if (!this.exitFlag) {
+                InspectorContextStub.log("Unreachable TuCSoN node :(");
+            }
         }
     }
 
@@ -100,6 +105,7 @@ public class InspectorContextStub implements InspectorContext {
     }
 
     public void exit() throws IOException {
+        this.exitFlag = true;
         try {
             this.dialog.sendNodeMsg(new ShutdownMsg(this.id));
         } catch (final DialogException e) {

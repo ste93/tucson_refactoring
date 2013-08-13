@@ -119,10 +119,14 @@ public class Spawn2PLibrary extends Library {
                 return false;
             }
         }
+        System.out.println("[Spawn2PLibrary]: waiting for completion...");
         op.waitForOperationCompletion();
+        System.out.println("[Spawn2PLibrary]: completion!");
         if (op.isResultSuccess()) {
+            System.out.println("[Spawn2PLibrary]: res = " + ((Term) op.getTupleResult()));
             return this.unify(arg0, (Term) op.getTupleResult());
         }
+        System.out.println("[Spawn2PLibrary]: failing...");
         return false;
     }
 
