@@ -21,7 +21,7 @@ import alice.tuplecentre.core.TriggeredReaction;
 /**
  * Triggered Reaction Set.
  * 
- * @author aricci
+ * @author Alessandro Ricci
  */
 public class TRSet {
 

@@ -22,7 +22,7 @@ import alice.tuprolog.Var;
 /**
  * Defines the reaction type managed by ReSpect Reactor (logic reactions).
  * 
- * @author aricci
+ * @author Alessandro Ricci
  */
 public class LogicReaction implements alice.tuplecentre.core.Reaction,
         java.io.Serializable {

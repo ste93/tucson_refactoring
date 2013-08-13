@@ -19,7 +19,7 @@ import alice.logictuple.LogicTuple;
 
 /**
  * 
- * @author ste (mailto: s.mariani@unibo.it) on 03/lug/2013
+ * @author Unknown...
  * 
  */
 public class InspectorProtocol implements Serializable {

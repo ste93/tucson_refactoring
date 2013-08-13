@@ -10,7 +10,7 @@ import java.util.Map;
  * stored in a {@link List} associated whit the {@code key}. You can have
  * duplicate values associated with the same key.
  * 
- * @author ste (mailto: s.mariani@unibo.it) on 22/lug/2013
+ * @author Saverio Cicora
  * 
  * @param <K>
  *            the type of the key

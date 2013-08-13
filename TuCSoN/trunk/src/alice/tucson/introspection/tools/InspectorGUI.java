@@ -29,8 +29,8 @@ import alice.tucson.introspection.InspectorProtocol;
 
 /**
  * 
- * 
- * @author s.mariani@unibo.it
+ * @author Unknown...
+ * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public class InspectorGUI extends javax.swing.JFrame {
 

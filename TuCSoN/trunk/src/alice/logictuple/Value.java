@@ -20,8 +20,7 @@ package alice.logictuple;
  * @see TupleArgument
  * @see Var
  * 
- * @author aricci
- * @version 1.0
+ * @author Alessandro Ricci
  */
 public class Value extends TupleArgument {
 

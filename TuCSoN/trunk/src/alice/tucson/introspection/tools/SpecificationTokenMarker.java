@@ -21,8 +21,8 @@ import alice.util.jedit.TokenMarker;
 
 /**
  * 
- * @author ste (mailto: s.mariani@unibo.it) on 03/lug/2013
- * 
+ * @author Unknown...
+ * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public class SpecificationTokenMarker extends TokenMarker {
 

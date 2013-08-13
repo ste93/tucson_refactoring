@@ -16,7 +16,8 @@ package alice.tuplecentre.core;
 /**
  * This is the reset state of the TCVM
  * 
- * @author aricci
+ * @author Alessandro Ricci
+ * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public class ResetState extends AbstractTupleCentreVMState {
 

@@ -14,6 +14,11 @@ import org.junit.rules.ExpectedException;
 import alice.respect.core.collection.DoubleKeyMVMap;
 import alice.respect.core.collection.MVMap;
 
+/**
+ * 
+ * @author Saverio Cicora
+ *
+ */
 public class InnerMVmapJUnitTest {
 
     private static MVMap<String, Integer> create() {

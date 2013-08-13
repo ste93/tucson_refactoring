@@ -44,7 +44,7 @@ import alice.tuprolog.lib.InvalidObjectIdException;
 
 /**
  * 
- * @author ste (mailto: s.mariani@unibo.it) on 16/lug/2013
+ * @author ste (mailto: s.mariani@unibo.it)
  * 
  */
 public class InterTupleCentreACCProxy implements InterTupleCentreACC,

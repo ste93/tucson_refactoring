@@ -7,8 +7,8 @@ import alice.logictuple.LogicTuple;
 /**
  * ReSpecT Operation Interface.
  * 
- * @author aricci
- * 
+ * @author Alessandro Ricci
+ * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public interface IRespectOperation extends
         alice.tuplecentre.api.ITupleCentreOperation {

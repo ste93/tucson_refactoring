@@ -8,8 +8,7 @@ import alice.tuplecentre.api.exceptions.OperationNotPossibleException;
 import alice.tuplecentre.core.AbstractTupleCentreOperation;
 
 /**
- * @author aricci
- * 
+ * @author Alessandro Ricci
  */
 public interface ITupleCentre {
 

@@ -21,7 +21,7 @@ import alice.tuplecentre.api.ObservableEventListener;
  * 
  * @see alice.tuplecentre.api.ObservableEventListener ObservableEventListener
  * 
- * @author ste (mailto: s.mariani@unibo.it)
+ * @author Alessandro Ricci
  */
 public interface NodeServiceListener extends ObservableEventListener {
 

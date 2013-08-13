@@ -17,7 +17,7 @@ package alice.tuplecentre.api;
  * 
  * Represents identifier for a tuple centre
  * 
- * @author aricci
+ * @author Alessandro Ricci
  */
 public interface TupleCentreId extends IId {
     /*

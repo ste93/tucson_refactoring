@@ -80,8 +80,9 @@ import alice.tuprolog.Var;
  * 
  * @see alice.tuplecentre.core.AbstractTupleCentreVMContext
  * 
- * @author aricci
- * @version 1.0
+ * @author Alessandro Ricci
+ * @author (contributor) ste (mailto: s.mariani@unibo.it)
+ * @author (contributor) Saverio Cicora
  */
 public class RespectVMContext extends
         alice.tuplecentre.core.AbstractTupleCentreVMContext {

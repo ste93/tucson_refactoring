@@ -22,7 +22,8 @@ import alice.tuprolog.Term;
 /**
  * Agent identifier.
  * 
- * @author aricci
+ * @author Alessandro Ricci
+ * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public class AgentId implements alice.tuplecentre.api.AgentId,
         java.io.Serializable {

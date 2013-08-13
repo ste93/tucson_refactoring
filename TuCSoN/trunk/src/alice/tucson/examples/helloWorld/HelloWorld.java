@@ -17,7 +17,7 @@ import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 /**
  * Plain Java class exploiting TuCSoN library.
  * 
- * @author s.mariani@unibo.it
+ * @author ste (mailto: s.mariani@unibo.it)
  */
 public final class HelloWorld {
 

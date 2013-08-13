@@ -21,7 +21,9 @@ import alice.tucson.network.exceptions.DialogException;
 
 /**
  * 
- * @author ste (mailto: s.mariani@unibo.it) on 17/lug/2013
+ * @author Alessandro Ricci
+ * @author (contributor) ste (mailto: s.mariani@unibo.it)
+ * @author (contributor) Saverio Cicora
  * 
  */
 public class WelcomeAgent extends Thread {

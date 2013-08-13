@@ -30,7 +30,8 @@ import alice.tuplecentre.api.Tuple;
 
 /**
  * 
- * @author ste (mailto: s.mariani@unibo.it) on 03/lug/2013
+ * @author Unknown...
+ * @author (contributor) ste (mailto: s.mariani@unibo.it)
  * 
  */
 public class InspectorContextStub implements InspectorContext {

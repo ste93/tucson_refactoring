@@ -3,7 +3,7 @@
  * Attribution-NonCommercial-ShareAlike 3.0 Italy License. Permissions beyond
  * the scope of this license may be available at www.danilopianini.org.
  */
-package alice.tucson.examples.distributedDiningPhilos;
+package alice.tucson.examples.utilities;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -12,6 +12,7 @@ import java.io.IOException;
  * Credits go to the author below.
  * 
  * @author Danilo Pianini
+ * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public final class Utils {
 
@@ -26,8 +27,8 @@ public final class Utils {
      */
     public static String fileToString(final String path) throws IOException {
         final BufferedInputStream br =
-                new BufferedInputStream(Thread.currentThread()
-                        .getContextClassLoader().getResourceAsStream(path));
+                new BufferedInputStream(ClassLoader.getSystemClassLoader()
+                        .getResourceAsStream(path));
         final byte[] res = new byte[br.available()];
         br.read(res);
         br.close();

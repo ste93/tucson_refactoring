@@ -7,6 +7,11 @@ import alice.logictuple.LogicTuple;
 import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.respect.core.TupleSet;
 
+/**
+ * 
+ * @author Saverio Cicora
+ *
+ */
 public class TupleSetTest {
 
     @Test

@@ -21,7 +21,7 @@ import alice.tuprolog.Prolog;
  * Flag interface representing tuple templates.
  * 
  * @see Tuple
- * @author aricci
+ * @author Alessandro Ricci
  * 
  */
 public interface TupleTemplate extends Tuple {

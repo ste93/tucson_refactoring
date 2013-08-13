@@ -6,7 +6,8 @@ import alice.respect.api.exceptions.InstantiationNotPossibleException;
 
 /**
  * 
- * @author ste (mailto: s.mariani@unibo.it) on 28/giu/2013
+ * @author Alessandro Ricci
+ * @author (contributor) ste (mailto: s.mariani@unibo.it)
  * 
  */
 public interface ITCRegistry {

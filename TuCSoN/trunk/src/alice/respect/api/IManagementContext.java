@@ -24,7 +24,7 @@ import alice.tuplecentre.api.ObservableEventListener;
 /**
  * Basic Management Interface for a RespecT Tuple Centre.
  * 
- * @author aricci
+ * @author Alessandro Ricci
  */
 public interface IManagementContext {
 

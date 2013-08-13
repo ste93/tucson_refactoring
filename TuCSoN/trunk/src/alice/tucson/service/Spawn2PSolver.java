@@ -10,7 +10,7 @@ import alice.tuprolog.event.OutputListener;
 
 /**
  * 
- * @author ste (mailto: s.mariani@unibo.it) on 17/lug/2013
+ * @author ste (mailto: s.mariani@unibo.it)
  * 
  */
 public class Spawn2PSolver extends Thread {

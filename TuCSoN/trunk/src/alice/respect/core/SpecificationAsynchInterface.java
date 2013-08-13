@@ -12,7 +12,7 @@ import alice.tuplecentre.core.OperationCompletionListener;
 
 /**
  * 
- * @author ste (mailto: s.mariani@unibo.it) on 02/lug/2013
+ * @author ste (mailto: s.mariani@unibo.it)
  * 
  */
 public class SpecificationAsynchInterface implements

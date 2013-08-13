@@ -23,7 +23,7 @@ import alice.tuplecentre.core.TriggeredReaction;
  * 
  * @see alice.tucson.introspection.InspectorContext
  * 
- * @author ste (mailto: s.mariani@unibo.it) on 03/lug/2013
+ * @author Unknown...
  * 
  */
 public class InspectorContextEvent implements java.io.Serializable {

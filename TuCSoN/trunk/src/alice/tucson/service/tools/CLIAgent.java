@@ -32,14 +32,13 @@ import alice.tucson.service.TucsonCmd;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 import alice.tuprolog.Parser;
 
-/* MODIFIED BY <s.mariani@unibo.it> */
-
 /**
  * Command Line Interpreter TuCSoN agent. Waits for user input, properly parses
  * the issued command, then process it calling the corresponding method on the
  * ACC (gained through constructor). It blocks until TuCSoN reply comes.
  * 
- * @author ste (mailto: s.mariani@unibo.it) on 17/lug/2013
+ * @author Alessandro Ricci
+ * @author (contributor) ste (mailto: s.mariani@unibo.it)
  * 
  */
 public class CLIAgent extends alice.util.Automaton {

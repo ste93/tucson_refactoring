@@ -22,7 +22,8 @@ import alice.tuplecentre.api.TupleCentreId;
  * Represents input events of the tuple centre virtual machine (only difference
  * w.r.t. Event is the <code>isLinking</code> field)
  * 
- * @author aricci
+ * @author Alessandro Ricci
+ * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public class InputEvent extends AbstractEvent {
 

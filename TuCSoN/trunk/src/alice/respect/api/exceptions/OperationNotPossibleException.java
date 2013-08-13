@@ -7,7 +7,7 @@ package alice.respect.api.exceptions;
 
 /**
  * 
- * @author aricci
+ * @author Alessandro Ricci
  */
 public class OperationNotPossibleException extends RespectException {
 

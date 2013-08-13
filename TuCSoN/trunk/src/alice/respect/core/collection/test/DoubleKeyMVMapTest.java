@@ -9,6 +9,11 @@ import org.junit.Test;
 import alice.respect.core.collection.DoubleKeyMVMap;
 import alice.respect.core.collection.MVMap;
 
+/**
+ * 
+ * @author Saverio Cicora
+ *
+ */
 public class DoubleKeyMVMapTest {
 
     @Test

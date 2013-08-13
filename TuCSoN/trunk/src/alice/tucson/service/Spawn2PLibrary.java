@@ -17,7 +17,8 @@ import alice.tuprolog.Term;
 /**
  * 
  * 
- * @author ste
+ * @author ste (mailto: s.mariani@unibo.it)
+ * 
  */
 public class Spawn2PLibrary extends Library {
 

@@ -16,8 +16,7 @@ package alice.logictuple.exceptions;
 /**
  * Exception thrown when a not valid name for Variable is used
  * 
- * @version 1.0
- * @author aricci
+ * @author Alessandro Ricci
  */
 public class InvalidVarNameException extends LogicTupleException {
 

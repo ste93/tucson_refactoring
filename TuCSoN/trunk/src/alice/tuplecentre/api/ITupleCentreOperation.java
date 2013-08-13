@@ -7,7 +7,8 @@ import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 /**
  * Basic interface for tuple centre operations.
  * 
- * @author aricci
+ * @author Alessandro Ricci
+ * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public interface ITupleCentreOperation {
 

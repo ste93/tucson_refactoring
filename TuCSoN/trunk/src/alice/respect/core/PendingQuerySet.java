@@ -14,7 +14,8 @@ import alice.tuplecentre.core.AbstractEvent;
 /**
  * Pending Query Set.
  * 
- * @author aricci
+ * @author Alessandro Ricci
+ * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public class PendingQuerySet {
 

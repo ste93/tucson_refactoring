@@ -10,8 +10,8 @@ import alice.tuplecentre.core.OperationCompletionListener;
  * A ReSpecT Tuple Centre Interface to issue ReSpecT ordinary primitives using
  * an asynchronous semantics.
  * 
- * @author aricci
- * 
+ * @author Alessandro Ricci
+ * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public interface IOrdinaryAsynchInterface {
 

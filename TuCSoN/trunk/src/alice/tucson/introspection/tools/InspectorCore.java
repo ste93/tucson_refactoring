@@ -28,8 +28,8 @@ import alice.tuplecentre.core.TriggeredReaction;
 
 /**
  * 
- * 
- * @author s.mariani@unibo.it
+ * @author Unknown...
+ * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public class InspectorCore extends alice.tucson.introspection.Inspector {
 

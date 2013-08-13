@@ -10,7 +10,7 @@ import alice.respect.api.exceptions.InstantiationNotPossibleException;
 
 /**
  * 
- * @author ste (mailto: s.mariani@unibo.it) on 01/lug/2013
+ * @author Alessandro Ricci
  * 
  */
 public class RespectLocalRegistry implements ITCRegistry {

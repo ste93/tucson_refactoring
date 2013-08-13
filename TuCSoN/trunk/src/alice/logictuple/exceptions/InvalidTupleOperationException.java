@@ -16,8 +16,7 @@ package alice.logictuple.exceptions;
 /**
  * Exception thrown when a not valid tuple argument value is used
  * 
- * @author aricci
- * @version 1.0
+ * @author Alessandro Ricci
  */
 public class InvalidTupleOperationException extends LogicTupleException {
 

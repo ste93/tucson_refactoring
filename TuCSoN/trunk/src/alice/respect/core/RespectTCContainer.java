@@ -19,8 +19,8 @@ import alice.tucson.service.RemoteLinkProvider;
 /**
  * A Container for ReSpecT tuple centres
  * 
- * @author matteo casadei v 2.1.1
- * 
+ * @author Matteo Casadei
+ * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public final class RespectTCContainer {
 

@@ -7,12 +7,7 @@ import alice.logictuple.LogicTuple;
 /**
  * This interface representing a Tuple Set.
  * 
- * 
- * @author ????
- * @version 1.0
- * 
- * @author scicora
- * @version 1.1
+ * @author Saverio Cicora
  */
 public interface ITupleSet {
 

@@ -11,7 +11,7 @@ import alice.tucson.api.AbstractSpawnActivity;
 /**
  * 
  * 
- * @author s.mariani@unibo.it
+ * @author ste (mailto: s.mariani@unibo.it)
  */
 public class SpawnedWorkingActivity extends AbstractSpawnActivity {
 

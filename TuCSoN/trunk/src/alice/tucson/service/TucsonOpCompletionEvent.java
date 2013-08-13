@@ -5,13 +5,12 @@ import java.util.List;
 import alice.logictuple.LogicTuple;
 import alice.tucson.api.TucsonOpId;
 
-/* MODIFIED BY <s.mariani@unibo.it> */
-
 /**
  * Completion of a TuCSoN operation: such event stores the corresponding
  * operation ID, its success state, its result and other useful info.
  * 
- * @author ste (mailto: s.mariani@unibo.it) on 17/lug/2013
+ * @author Alessandro Ricci
+ * @author (contributor) ste (mailto: s.mariani@unibo.it)
  * 
  */
 public class TucsonOpCompletionEvent {

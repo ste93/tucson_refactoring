@@ -22,7 +22,7 @@ import alice.tuplecentre.api.Tuple;
 /**
  * Defines the basic context for TuCSoN Inspector
  * 
- * @author ste (mailto: s.mariani@unibo.it) on 03/lug/2013
+ * @author Unknown...
  * 
  */
 public interface InspectorContext {

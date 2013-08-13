@@ -23,7 +23,8 @@ import alice.tuprolog.Term;
  * 
  * A tuple centre identifier must be a ground logic term.
  * 
- * @author aricci
+ * @author Alessandro Ricci
+ * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public class TupleCentreId implements alice.tuplecentre.api.TupleCentreId,
         java.io.Serializable {
