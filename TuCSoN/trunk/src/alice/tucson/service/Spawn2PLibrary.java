@@ -98,7 +98,6 @@ public class Spawn2PLibrary extends Library {
                         TupleCentreContainer.doNonBlockingOperation(
                                 TucsonOperation.inCode(), this.aid,
                                 this.target, arg, null);
-                System.out.println("[Spawn2PLibrary]: op = " + op.toString());
             } catch (final TucsonInvalidLogicTupleException e) {
                 e.printStackTrace();
                 return false;
@@ -120,14 +119,11 @@ public class Spawn2PLibrary extends Library {
                 return false;
             }
         }
-        System.out.println("[Spawn2PLibrary]: waiting for completion...");
         op.waitForOperationCompletion();
-        System.out.println("[Spawn2PLibrary]: completion!");
         if (op.isResultSuccess()) {
-            System.out.println("[Spawn2PLibrary]: res = " + ((Term) op.getTupleResult()));
-            return this.unify(arg0, (Term) op.getTupleResult());
+            Term term = ((LogicTuple) op.getTupleResult()).toTerm();
+            return this.unify(arg0, term);
         }
-        System.out.println("[Spawn2PLibrary]: failing...");
         return false;
     }
 
@@ -215,7 +211,8 @@ public class Spawn2PLibrary extends Library {
         }
         op.waitForOperationCompletion();
         if (op.isResultSuccess()) {
-            return this.unify(arg0, (Term) op.getTupleResult());
+            Term term = ((LogicTuple) op.getTupleResult()).toTerm();
+            return this.unify(arg0, term);
         }
         return false;
     }
@@ -260,7 +257,8 @@ public class Spawn2PLibrary extends Library {
         if (op.isResultSuccess()) {
             return true;
         }
-        this.unify(arg0, (Term) op.getTupleResult());
+        Term term = ((LogicTuple) op.getTupleResult()).toTerm();
+        this.unify(arg0, term);
         return false;
     }
 
@@ -350,7 +348,8 @@ public class Spawn2PLibrary extends Library {
         if (op.isResultSuccess()) {
             return true;
         }
-        this.unify(arg0, (Term) op.getTupleResult());
+        Term term = ((LogicTuple) op.getTupleResult()).toTerm();
+        this.unify(arg0, term);
         return false;
     }
 
@@ -369,7 +368,6 @@ public class Spawn2PLibrary extends Library {
                         TupleCentreContainer.doNonBlockingOperation(
                                 TucsonOperation.outCode(), this.aid,
                                 this.target, arg, null);
-                System.out.println("[Spawn2PLibrary]: op = " + op.toString());
             } catch (final TucsonInvalidLogicTupleException e) {
                 e.printStackTrace();
                 return false;
@@ -473,7 +471,8 @@ public class Spawn2PLibrary extends Library {
         }
         op.waitForOperationCompletion();
         if (op.isResultSuccess()) {
-            return this.unify(arg0, (Term) op.getTupleResult());
+            Term term = ((LogicTuple) op.getTupleResult()).toTerm();
+            return this.unify(arg0, term);
         }
         return false;
     }
@@ -562,7 +561,8 @@ public class Spawn2PLibrary extends Library {
         }
         op.waitForOperationCompletion();
         if (op.isResultSuccess()) {
-            return this.unify(arg0, (Term) op.getTupleResult());
+            Term term = ((LogicTuple) op.getTupleResult()).toTerm();
+            return this.unify(arg0, term);
         }
         return false;
     }
@@ -635,7 +635,8 @@ public class Spawn2PLibrary extends Library {
         }
         op.waitForOperationCompletion();
         if (op.isResultSuccess()) {
-            return this.unify(arg0, (Term) op.getTupleResult());
+            Term term = ((LogicTuple) op.getTupleResult()).toTerm();
+            return this.unify(arg0, term);
         }
         return false;
     }
@@ -678,7 +679,8 @@ public class Spawn2PLibrary extends Library {
         }
         op.waitForOperationCompletion();
         if (op.isResultSuccess()) {
-            return this.unify(arg0, (Term) op.getTupleResult());
+            Term term = ((LogicTuple) op.getTupleResult()).toTerm();
+            return this.unify(arg0, term);
         }
         return false;
     }
@@ -723,7 +725,8 @@ public class Spawn2PLibrary extends Library {
         if (op.isResultSuccess()) {
             return true;
         }
-        this.unify(arg0, (Term) op.getTupleResult());
+        Term term = ((LogicTuple) op.getTupleResult()).toTerm();
+        this.unify(arg0, term);
         return false;
     }
 
@@ -767,7 +770,8 @@ public class Spawn2PLibrary extends Library {
         if (op.isResultSuccess()) {
             return true;
         }
-        this.unify(arg0, (Term) op.getTupleResult());
+        Term term = ((LogicTuple) op.getTupleResult()).toTerm();
+        this.unify(arg0, term);
         return false;
     }
 
@@ -809,7 +813,8 @@ public class Spawn2PLibrary extends Library {
         }
         op.waitForOperationCompletion();
         if (op.isResultSuccess()) {
-            return this.unify(arg0, (Term) op.getTupleResult());
+            Term term = ((LogicTuple) op.getTupleResult()).toTerm();
+            return this.unify(arg0, term);
         }
         return false;
     }
@@ -852,7 +857,8 @@ public class Spawn2PLibrary extends Library {
         }
         op.waitForOperationCompletion();
         if (op.isResultSuccess()) {
-            return this.unify(arg0, (Term) op.getTupleResult());
+            Term term = ((LogicTuple) op.getTupleResult()).toTerm();
+            return this.unify(arg0, term);
         }
         return false;
     }

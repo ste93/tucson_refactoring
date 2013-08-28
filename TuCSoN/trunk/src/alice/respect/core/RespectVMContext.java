@@ -15,8 +15,6 @@ package alice.respect.core;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -1572,11 +1570,11 @@ public class RespectVMContext extends
         try {
             final ClassLoader cl =
                     Thread.currentThread().getContextClassLoader();
-            final URL[] urls = ((URLClassLoader) cl).getURLs();
-            this.log("Known paths:");
-            for (final URL url : urls) {
-                System.out.println("\t" + url.getFile());
-            }
+            // final URL[] urls = ((URLClassLoader) cl).getURLs();
+            // this.log("Known paths:");
+            // for (final URL url : urls) {
+            // System.out.println("\t" + url.getFile());
+            // }
             final LogicTuple t = (LogicTuple) tuple;
             if (!("exec".equals(t.getName()) || "solve".equals(t.getName()))) {
                 this.log("spawn argument must be a tuple with functor name 'exec' or 'solve'");
