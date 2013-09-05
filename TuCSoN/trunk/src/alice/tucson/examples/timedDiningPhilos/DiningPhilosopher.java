@@ -147,7 +147,7 @@ public class DiningPhilosopher extends AbstractTucsonAgent {
         } catch (final OperationTimeOutException e) {
             e.printStackTrace();
         }
-        if (op != null) {
+        if (op != null && op.isResultSuccess()) {
             return op.isResultSuccess();
         }
         return false;
