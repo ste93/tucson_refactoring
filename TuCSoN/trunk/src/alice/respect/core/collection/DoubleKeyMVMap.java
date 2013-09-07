@@ -33,7 +33,7 @@ public class DoubleKeyMVMap<K, Q, V> {
     private class DoubleKeyMVmapIterator implements Iterator<V> {
 
         private final Iterator<Map.Entry<K, MVMap<Q, V>>> entryIterator;
-        private MVMap<Q, V> innerMap;
+        private MVMap<Q, V> _innerMap;
         private Iterator<V> valueIterator;
 
         protected DoubleKeyMVmapIterator() {
@@ -88,12 +88,6 @@ public class DoubleKeyMVMap<K, Q, V> {
          */
         public void remove() {
             this.valueIterator.remove();
-            // If the list contains no elements
-            // then remove the key from map
-            if (this.innerMap.isEmpty()) {
-                this.entryIterator.remove();
-            }
-            DoubleKeyMVMap.this.totalValuesSize--;
         }
 
         /**
@@ -102,8 +96,8 @@ public class DoubleKeyMVMap<K, Q, V> {
          */
         private void advanceEntryIterator() {
             final Map.Entry<K, MVMap<Q, V>> entry = this.entryIterator.next();
-            this.innerMap = entry.getValue();
-            this.valueIterator = this.innerMap.iterator();
+            this._innerMap = entry.getValue();
+            this.valueIterator = this._innerMap.iterator();
         }
     }
 
@@ -176,7 +170,9 @@ public class DoubleKeyMVMap<K, Q, V> {
                 // then remove the key from map
                 if (this.list.isEmpty()) {
                     this.entryIterator.remove();
+                    removeOuterKeyIfEmpty();
                 }
+                InnerMVMap.this.innerMapSize--;
                 DoubleKeyMVMap.this.totalValuesSize--;
             }
 
@@ -667,6 +663,16 @@ public class DoubleKeyMVMap<K, Q, V> {
 
         private List<V> newList() {
             return new ArrayList<V>();
+        }
+
+        /**
+         * If the innerMap contains no elements then remove the key from
+         * outerMap
+         */
+        private void removeOuterKeyIfEmpty() {
+            if (this.innerMap.isEmpty()) {
+                outerMap.remove(this.mapKey1);
+            }
         }
 
     } // InnerMap
