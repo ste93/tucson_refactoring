@@ -21,7 +21,9 @@ import alice.tucson.network.exceptions.DialogException;
 
 /**
  * 
- * @author ste (mailto: s.mariani@unibo.it) on 17/lug/2013
+ * @author Alessandro Ricci
+ * @author (contributor) ste (mailto: s.mariani@unibo.it)
+ * @author (contributor) Saverio Cicora
  * 
  */
 public class WelcomeAgent extends Thread {
@@ -72,6 +74,8 @@ public class WelcomeAgent extends Thread {
         try {
 
             while (!this.isShutdown()) {
+                
+                WelcomeAgent.log("Listening to incoming connections...");
 
                 try {
                     dialog = this.mainDialog.acceptNewDialog();

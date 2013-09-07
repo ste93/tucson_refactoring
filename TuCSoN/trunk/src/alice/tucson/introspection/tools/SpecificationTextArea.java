@@ -27,7 +27,7 @@ import alice.util.jedit.Token;
 
 /**
  * 
- * @author ste (mailto: s.mariani@unibo.it) on 03/lug/2013
+ * @author Unknown...
  * 
  */
 public class SpecificationTextArea extends TextAreaDefaults {

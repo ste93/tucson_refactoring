@@ -23,7 +23,9 @@ import alice.tucson.service.ACCDescription;
 
 /**
  * 
- * @author ste (mailto: s.mariani@unibo.it) on 03/lug/2013
+ * @author Alessandro Ricci
+ * @author (contributor) ste (mailto: s.mariani@unibo.it)
+ * @author (contributor) Saverio Cicora
  * 
  */
 public abstract class AbstractTucsonProtocol implements java.io.Serializable {

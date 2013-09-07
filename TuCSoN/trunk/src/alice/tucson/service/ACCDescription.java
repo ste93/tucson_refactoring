@@ -33,7 +33,7 @@ import java.util.Properties;
  * @see alice.tucson.service.ACCProvider ACCProvider
  * @see alice.tucson.service.TucsonNodeService TucsonNodeService
  * 
- * @author ste (mailto: s.mariani@unibo.it) on 16/lug/2013
+ * @author Alessandro Ricci
  * 
  */
 public class ACCDescription implements Serializable {

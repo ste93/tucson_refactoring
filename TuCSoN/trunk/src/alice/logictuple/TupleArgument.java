@@ -32,8 +32,9 @@ import alice.tuprolog.Term;
  * @see Value
  * @see Var
  * 
- * @author aricci
- * @version 1.0
+ * @author Alessandro Ricci
+ * @author (contributor) ste (mailto: s.mariani@unibo.it)
+ * @author (contributor) Saverio Cicora
  */
 public class TupleArgument implements java.io.Serializable {
 

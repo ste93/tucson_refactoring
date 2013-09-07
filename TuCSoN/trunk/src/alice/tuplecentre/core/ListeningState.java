@@ -18,7 +18,8 @@ import alice.respect.core.RespectOperation;
 /**
  * This is the listening state of the TCVM
  * 
- * @author aricci
+ * @author Alessandro Ricci
+ * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public class ListeningState extends AbstractTupleCentreVMState {
 

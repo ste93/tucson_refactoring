@@ -25,7 +25,8 @@ import alice.tuplecentre.api.TupleCentreId;
  * 
  * An event is always related to the operation executed by some agent.
  * 
- * @author aricci
+ * @author Alessandro Ricci
+ * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public abstract class AbstractEvent implements java.io.Serializable {
 

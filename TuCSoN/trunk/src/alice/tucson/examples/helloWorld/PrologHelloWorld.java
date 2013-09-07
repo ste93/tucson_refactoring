@@ -21,7 +21,7 @@ import alice.tuprolog.event.OutputEvent;
 import alice.tuprolog.event.OutputListener;
 
 /**
- * @author ste (mailto: s.mariani@unibo.it) on 26/lug/2013
+ * @author ste (mailto: s.mariani@unibo.it)
  * 
  */
 public final class PrologHelloWorld {

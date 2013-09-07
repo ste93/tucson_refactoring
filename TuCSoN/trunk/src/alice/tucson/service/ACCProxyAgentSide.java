@@ -80,7 +80,8 @@ import alice.tuprolog.lib.InvalidObjectIdException;
  * @see alice.tucson.network.TucsonMsgReply TucsonMsgReply
  * @see alice.tucson.api.TucsonMetaACC TucsonMetaACC
  * 
- * @author ste (mailto: s.mariani@unibo.it) on 16/lug/2013
+ * @author Alessandro Ricci
+ * @author (contributor) ste (mailto: s.mariani@unibo.it)
  * 
  */
 public class ACCProxyAgentSide implements EnhancedACC {

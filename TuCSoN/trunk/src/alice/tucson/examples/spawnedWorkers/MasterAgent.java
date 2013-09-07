@@ -23,7 +23,7 @@ import alice.tuplecentre.api.exceptions.OperationTimeOutException;
  * (hopefully up & listening), it submits jobs regarding factorial computation,
  * then collects expected results.
  * 
- * @author s.mariani@unibo.it
+ * @author ste (mailto: s.mariani@unibo.it)
  */
 public class MasterAgent extends AbstractTucsonAgent {
 

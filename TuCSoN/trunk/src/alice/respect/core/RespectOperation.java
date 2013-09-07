@@ -32,7 +32,8 @@ import alice.tuprolog.Term;
 /**
  * This class represents a ReSpecT operation.
  * 
- * @author aricci
+ * @author Alessandro Ricci
+ * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public class RespectOperation extends AbstractTupleCentreOperation implements
         IRespectOperation {

@@ -2,8 +2,7 @@ package alice.tucson.network.exceptions;
 
 /**
  * 
- * @author ste (mailto: s.mariani@unibo.it) on 22/lug/2013
- * 
+ * @author Saverio Cicora
  */
 public class DialogException extends Exception {
 

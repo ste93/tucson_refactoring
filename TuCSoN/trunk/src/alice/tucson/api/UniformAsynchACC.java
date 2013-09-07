@@ -19,7 +19,7 @@ import alice.tucson.api.exceptions.UnreachableNodeException;
 
 /**
  * 
- * @author ste (mailto: s.mariani@unibo.it) on 03/lug/2013
+ * @author ste (mailto: s.mariani@unibo.it)
  * 
  */
 public interface UniformAsynchACC extends RootACC {

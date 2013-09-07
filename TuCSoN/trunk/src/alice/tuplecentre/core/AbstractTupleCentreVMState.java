@@ -16,7 +16,8 @@ package alice.tuplecentre.core;
 /**
  * Abstract base class for Tuple Centre VM states.
  * 
- * @author aricci
+ * @author Alessandro Ricci
+ * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public abstract class AbstractTupleCentreVMState {
 

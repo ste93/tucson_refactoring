@@ -5,7 +5,7 @@ import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 
 /**
  * 
- * @author ste
+ * @author ste (mailto: s.mariani@unibo.it)
  * 
  */
 public class TupleCentreIdParser {

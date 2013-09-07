@@ -12,7 +12,7 @@ import alice.tuplecentre.core.OperationCompletionListener;
 
 /**
  * 
- * @author ste (mailto: s.mariani@unibo.it) on 01/lug/2013
+ * @author ste (mailto: s.mariani@unibo.it)
  * 
  */
 public class OrdinaryAsynchInterface extends RootInterface implements

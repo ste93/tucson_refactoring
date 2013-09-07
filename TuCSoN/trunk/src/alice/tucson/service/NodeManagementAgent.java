@@ -19,7 +19,8 @@ import alice.tuprolog.InvalidTermException;
 
 /**
  * 
- * @author ste (mailto: s.mariani@unibo.it) on 16/lug/2013
+ * @author Alessandro Ricci
+ * @author (contributor) ste (mailto: s.mariani@unibo.it)
  * 
  */
 public class NodeManagementAgent extends Thread {

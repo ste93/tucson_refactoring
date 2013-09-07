@@ -18,8 +18,8 @@ import java.lang.reflect.Method;
 /**
  * Base class for building ReSpecT agents.
  * 
- * @author aricci
- * 
+ * @author Alessandro Ricci
+ * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public abstract class AbstractAgent {
 

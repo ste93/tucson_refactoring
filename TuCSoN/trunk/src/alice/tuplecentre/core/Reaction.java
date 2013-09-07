@@ -20,7 +20,7 @@ package alice.tuplecentre.core;
  * external and internal communication events (which depends on the specific
  * tuple centre model).
  * 
- * @author aricci
+ * @author Alessandro Ricci
  */
 public interface Reaction {
     /*

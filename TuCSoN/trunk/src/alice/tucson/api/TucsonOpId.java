@@ -15,7 +15,7 @@ package alice.tucson.api;
 
 /**
  * 
- * @author ste (mailto: s.mariani@unibo.it) on 03/lug/2013
+ * @author ste (mailto: s.mariani@unibo.it)
  * 
  */
 public class TucsonOpId {

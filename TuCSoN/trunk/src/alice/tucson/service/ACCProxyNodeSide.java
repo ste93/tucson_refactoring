@@ -26,6 +26,7 @@ import alice.tucson.api.exceptions.TucsonInvalidLogicTupleException;
 import alice.tucson.api.exceptions.TucsonInvalidSpecificationException;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
+import alice.tucson.introspection.ShutdownMsg;
 import alice.tucson.network.AbstractTucsonProtocol;
 import alice.tucson.network.TucsonMsgReply;
 import alice.tucson.network.TucsonMsgRequest;
@@ -36,7 +37,8 @@ import alice.tuplecentre.core.AbstractTupleCentreOperation;
 
 /**
  * 
- * @author ste (mailto: s.mariani@unibo.it) on 16/lug/2013
+ * @author Alessandro Ricci
+ * @author (contributor) ste (mailto: s.mariani@unibo.it)
  * 
  */
 public class ACCProxyNodeSide extends AbstractACCProxyNodeSide {
@@ -100,7 +102,8 @@ public class ACCProxyNodeSide extends AbstractACCProxyNodeSide {
     }
 
     @Override
-    public synchronized void exit() {
+    public synchronized void exit(final ShutdownMsg msg) {
+        log("Shutdown request received from <" + msg.getAid() + ">...");
         this.ex = true;
         this.notify();
     }

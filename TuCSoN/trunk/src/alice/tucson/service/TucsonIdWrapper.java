@@ -2,7 +2,7 @@ package alice.tucson.service;
 
 /**
  * 
- * @author ste (mailto: s.mariani@unibo.it) on 17/lug/2013
+ * @author ste (mailto: s.mariani@unibo.it)
  * 
  * @param <I>
  *            the actual identifier Type

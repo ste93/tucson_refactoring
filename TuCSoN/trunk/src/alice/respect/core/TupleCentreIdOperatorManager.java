@@ -16,9 +16,8 @@ package alice.respect.core;
  * This class defines the operator manager used for parsing tuple centre
  * identifiers.
  * 
- * Currently, no operators are allowed in ReSpecT tuple centre identifiers
- * 
- * @author aricci
+ * @author Alessandro Ricci
+ * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public class TupleCentreIdOperatorManager extends
         alice.tuprolog.OperatorManager {

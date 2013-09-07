@@ -12,8 +12,8 @@ import alice.tuplecentre.api.IId;
  * A ReSpecT Tuple Centre Interface to issue ReSpecT specification primitives
  * using a synchronous semantics.
  * 
- * @author aricci
- * 
+ * @author Alessandro Ricci
+ * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public interface ISpecificationSynchInterface {
 

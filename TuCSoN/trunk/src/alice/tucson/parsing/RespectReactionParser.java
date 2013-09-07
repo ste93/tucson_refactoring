@@ -7,7 +7,7 @@ import alice.util.Tools;
 
 /**
  * 
- * @author ste
+ * @author ste (mailto: s.mariani@unibo.it)
  * 
  */
 public class RespectReactionParser {

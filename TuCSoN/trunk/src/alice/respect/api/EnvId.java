@@ -6,7 +6,7 @@ import alice.tuprolog.Term;
 
 /**
  * 
- * @author ste (mailto: s.mariani@unibo.it) on 27/giu/2013
+ * @author Unknown...
  * 
  */
 public class EnvId implements IId {

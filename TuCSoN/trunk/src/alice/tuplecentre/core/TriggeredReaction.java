@@ -20,7 +20,8 @@ package alice.tuplecentre.core;
  * @see Reaction
  * @see AbstractEvent
  * 
- * @author aricci
+ * @author Alessandro Ricci
+ * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public class TriggeredReaction implements java.io.Serializable {
 

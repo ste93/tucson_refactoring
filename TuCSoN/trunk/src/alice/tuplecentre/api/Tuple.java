@@ -18,7 +18,7 @@ package alice.tuplecentre.api;
  * Flag interface representing tuples.
  * 
  * @see TupleTemplate
- * @author aricci
+ * @author Alessandro Ricci
  */
 public interface Tuple {
     /*

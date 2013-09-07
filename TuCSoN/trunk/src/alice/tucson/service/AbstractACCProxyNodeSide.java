@@ -13,11 +13,13 @@
  */
 package alice.tucson.service;
 
+import alice.tucson.introspection.ShutdownMsg;
 import alice.tuplecentre.core.OperationCompletionListener;
 
 /**
  * 
- * @author ste (mailto: s.mariani@unibo.it) on 16/lug/2013
+ * @author Alessandro Ricci
+ * @author (contributor) ste (mailto: s.mariani@unibo.it)
  * 
  */
 public abstract class AbstractACCProxyNodeSide extends Thread implements
@@ -26,6 +28,6 @@ public abstract class AbstractACCProxyNodeSide extends Thread implements
     /**
      * 
      */
-    public abstract void exit();
+    public abstract void exit(final ShutdownMsg msg);
 
 }

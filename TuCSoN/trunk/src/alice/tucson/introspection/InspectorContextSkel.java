@@ -44,7 +44,8 @@ import alice.tuplecentre.core.TriggeredReaction;
 
 /**
  * 
- * @author ste (mailto: s.mariani@unibo.it) on 03/lug/2013
+ * @author Unknown...
+ * @author (contributor) ste (mailto: s.mariani@unibo.it)
  * 
  */
 public class InspectorContextSkel extends AbstractACCProxyNodeSide implements
@@ -112,7 +113,8 @@ public class InspectorContextSkel extends AbstractACCProxyNodeSide implements
     }
 
     @Override
-    public void exit() {
+    public void exit(final ShutdownMsg msg) {
+        log("Shutdown request received from <" + msg.getAid() + ">...");
         this.shutdown = true;
     }
 

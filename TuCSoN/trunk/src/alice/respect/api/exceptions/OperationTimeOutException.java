@@ -15,8 +15,7 @@ package alice.respect.api.exceptions;
 import alice.respect.api.IRespectOperation;
 
 /**
- * @author aricci
- * 
+ * @author Alessandro Ricci
  */
 public class OperationTimeOutException extends RespectException {
 

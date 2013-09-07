@@ -22,7 +22,8 @@ import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 /**
  * FSA-like TuCSoN agent.
  * 
- * @author unknown
+ * @author Alessandro Ricci
+ * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public abstract class AbstractAutomaton extends AbstractTucsonAgent {
 

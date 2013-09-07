@@ -22,7 +22,8 @@ import javax.swing.JTabbedPane;
 
 /**
  * 
- * @author ste (mailto: s.mariani@unibo.it) on 03/lug/2013
+ * @author Unknown...
+ * @author (contributor) ste (mailto: s.mariani@unibo.it)
  * 
  */
 public class ReactionViewer extends javax.swing.JFrame {

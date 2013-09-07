@@ -14,7 +14,7 @@ import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 /**
  * A Dining Philosopher: thinks and eats in an endless loop.
  * 
- * @author s.mariani@unibo.it
+ * @author ste (mailto: s.mariani@unibo.it)
  */
 public class DiningPhilosopher extends AbstractTucsonAgent {
 
@@ -147,7 +147,7 @@ public class DiningPhilosopher extends AbstractTucsonAgent {
         } catch (final OperationTimeOutException e) {
             e.printStackTrace();
         }
-        if (op != null) {
+        if (op != null && op.isResultSuccess()) {
             return op.isResultSuccess();
         }
         return false;

@@ -38,8 +38,9 @@ import alice.tuplecentre.core.InspectableEvent;
  * The behaviour reflects the operational semantic expressed in related tuple
  * centre articles.
  * 
- * @author aricci
- * @version 1.0
+ * @author Alessandro Ricci
+ * @author (contributor) ste (mailto: s.mariani@unibo.it)
+ * @author (contributor) Saverio Cicora
  */
 public class RespectVM implements Runnable {
 

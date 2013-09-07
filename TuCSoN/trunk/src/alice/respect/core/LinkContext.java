@@ -7,7 +7,7 @@ import alice.tuplecentre.core.AbstractTupleCentreOperation;
 
 /**
  * 
- * @author ste (mailto: s.mariani@unibo.it) on 01/lug/2013
+ * @author ste (mailto: s.mariani@unibo.it)
  * 
  */
 public class LinkContext implements ILinkContext {

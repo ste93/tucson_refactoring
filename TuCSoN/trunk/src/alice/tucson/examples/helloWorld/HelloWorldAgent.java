@@ -18,7 +18,7 @@ import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 /**
  * Java TuCSoN Agent extending alice.tucson.api.TucsonAgent base class.
  * 
- * @author s.mariani@unibo.it
+ * @author ste (mailto: s.mariani@unibo.it)
  */
 public class HelloWorldAgent extends AbstractTucsonAgent {
 

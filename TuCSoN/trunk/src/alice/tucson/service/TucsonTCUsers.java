@@ -22,7 +22,7 @@ import alice.tucson.api.TucsonTupleCentreId;
 
 /**
  * 
- * @author ste (mailto: s.mariani@unibo.it) on 17/lug/2013
+ * @author Alessandro Ricci
  * 
  */
 public class TucsonTCUsers {

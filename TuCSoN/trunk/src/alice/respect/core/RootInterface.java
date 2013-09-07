@@ -6,9 +6,9 @@ import alice.tuplecentre.api.Tuple;
 import alice.tuplecentre.api.TupleTemplate;
 
 /**
- * Created by Enrico Romagnoli A new abstract class for the context
+ * A new abstract class for the context
  * 
- * @author ste (mailto: s.mariani@unibo.it) on 02/lug/2013
+ * @author Unknown...
  * 
  */
 public class RootInterface {

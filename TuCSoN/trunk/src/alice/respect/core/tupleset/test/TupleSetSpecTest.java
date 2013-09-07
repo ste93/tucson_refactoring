@@ -1,4 +1,4 @@
-package alice.respect.core.tupleset;
+package alice.respect.core.tupleset.test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,14 +10,25 @@ import org.junit.Test;
 
 import alice.logictuple.LogicTuple;
 import alice.logictuple.exceptions.InvalidLogicTupleException;
+import alice.respect.core.tupleset.TupleSetSpec;
 
-public class TupleSetCoordTest {
+/**
+ * 
+ * @author Saverio Cicora
+ *
+ */
+public class TupleSetSpecTest {
 
-    private String[] t = { "a", "b", "hello", "world", "pippo(a(b),c)",
-            "pluto", "paperino", "foo", "bar", "hello(world)", "hello(a)",
-            "pippo(pluto,paperino)", "aaaa(sa,sa,e)", "hello(paperino)",
-            "lol(hello)", "world(hello)", "world(hello(a,c))", "world(hello3)",
-            "world(hello2)", "a(b)", "pippo(10)", "pippo(10.1)", "varterm(V)" };
+    private String[] t = { "reaction(out(hello),guard,body)",
+            "reaction(in(X),guard,body)",
+            "reaction(rd(hello(world)),true,in(a))", "reaction(rdp(a(b)),c,f)",
+            "reaction(rd(pluto),event,rd(asd))",
+            "reaction(inp(hello(world)),b,c)", "reaction(no(hello(a),b,m))",
+            "reaction(out(pippo(pluto,paperino),guard,body))",
+            "reaction(rdp([1,b,c]),g,b)",
+            "reaction(nop(pippo(pluto,paperino)))",
+            "reaction(inp(hello(A)),b,c)",
+            "reaction(rd(pluto(event)),event,out(asd))", };
 
     public void log(final String s) {
         System.out.println(s);
@@ -25,7 +36,7 @@ public class TupleSetCoordTest {
 
     @Test
     public void testAdd() {
-        final TupleSetCoord ts = new TupleSetCoord();
+        final TupleSetSpec ts = new TupleSetSpec();
 
         final List<String> l = Arrays.asList(this.t);
         Collections.shuffle(l);
@@ -56,77 +67,35 @@ public class TupleSetCoordTest {
 
     @Test
     public void testGetKey() {
-        final TupleSetCoord ts = new TupleSetCoord();
+        final TupleSetSpec ts = new TupleSetSpec();
 
         LogicTuple lt = null;
         String key1, key2;
         try {
             // Tuple ------------------------------------
-            lt = LogicTuple.parse("hello");
+            lt = LogicTuple.parse("reaction(out(world(10)), guard, body)");
             key1 = ts.getTupleKey1(lt);
             key2 = ts.getTupleKey2(lt);
-            Assert.assertEquals("hello/0", key1);
-            Assert.assertEquals("", key2);
-
-            lt = LogicTuple.parse("hello(world)");
-            key1 = ts.getTupleKey1(lt);
-            key2 = ts.getTupleKey2(lt);
-            Assert.assertEquals("hello/1", key1);
-            Assert.assertEquals("world/0", key2);
-
-            lt = LogicTuple.parse("hello(world(foo))");
-            key1 = ts.getTupleKey1(lt);
-            key2 = ts.getTupleKey2(lt);
-            Assert.assertEquals("hello/1", key1);
+            Assert.assertEquals("out/1", key1);
             Assert.assertEquals("world/1", key2);
 
-            lt = LogicTuple.parse("hello(world(foo, bar), b, c)");
+            lt = LogicTuple.parse("reaction(in(X),guard,body)");
             key1 = ts.getTupleKey1(lt);
             key2 = ts.getTupleKey2(lt);
-            Assert.assertEquals("hello/3", key1);
-            Assert.assertEquals("world/2", key2);
-
-            lt = LogicTuple.parse("hello(0)");
-            key1 = ts.getTupleKey1(lt);
-            key2 = ts.getTupleKey2(lt);
-            Assert.assertEquals("hello/1", key1);
-            Assert.assertEquals("0", key2);
-
-            lt = LogicTuple.parse("hello(0.10)");
-            key1 = ts.getTupleKey1(lt);
-            key2 = ts.getTupleKey2(lt);
-            Assert.assertEquals("hello/1", key1);
-            Assert.assertEquals("0.1", key2);
-
-            lt = LogicTuple.parse("hello([a,b,c])");
-            key1 = ts.getTupleKey1(lt);
-            key2 = ts.getTupleKey2(lt);
-            Assert.assertEquals("hello/1", key1);
-            Assert.assertEquals("./2", key2);
-
-            lt = LogicTuple.parse("[a(f,g,h),b,c]");
-            key1 = ts.getTupleKey1(lt);
-            key2 = ts.getTupleKey2(lt);
-            Assert.assertEquals("./2", key1);
-            Assert.assertEquals("a/3", key2);
-
-            lt = LogicTuple.parse("hello(A)");
-            key1 = ts.getTupleKey1(lt);
-            key2 = ts.getTupleKey2(lt);
-            Assert.assertEquals("hello/1", key1);
+            Assert.assertEquals("in/1", key1);
             Assert.assertEquals("VAR", key2);
 
-            lt = LogicTuple.parse("hello(world(A))");
+            lt = LogicTuple.parse("reaction(rd(a),true,in(A))");
             key1 = ts.getTupleKey1(lt);
             key2 = ts.getTupleKey2(lt);
-            Assert.assertEquals("hello/1", key1);
-            Assert.assertEquals("world/1", key2);
+            Assert.assertEquals("rd/1", key1);
+            Assert.assertEquals("a/0", key2);
 
-            lt = LogicTuple.parse("hello(world(foo, bar), A, c)");
+            lt = LogicTuple.parse("reaction(rdp([1,4]), b, c)");
             key1 = ts.getTupleKey1(lt);
             key2 = ts.getTupleKey2(lt);
-            Assert.assertEquals("hello/3", key1);
-            Assert.assertEquals("world/2", key2);
+            Assert.assertEquals("rdp/1", key1);
+            Assert.assertEquals("./2", key2);
 
         } catch (final InvalidLogicTupleException e) {
             Assert.fail("Undesiderated exception");
@@ -136,7 +105,7 @@ public class TupleSetCoordTest {
 
     @Test
     public void testGetMatchingTuple() {
-        final TupleSetCoord ts = new TupleSetCoord();
+        final TupleSetSpec ts = new TupleSetSpec();
 
         Assert.assertTrue(ts.isEmpty());
         Assert.assertTrue(ts.toArray().length == 0);
@@ -155,35 +124,29 @@ public class TupleSetCoordTest {
             LogicTuple actual;
             String txt;
 
-            txt = "a";
-            actual = ts.getMatchingTuple(LogicTuple.parse(txt));
+            txt = "reaction(out(hello),guard,body)";
+            actual = ts.readMatchingTuple(LogicTuple.parse(txt));
             Assert.assertEquals(LogicTuple.parse(txt).toString(),
                     actual.toString());
 
-            txt = "a(b)";
-            actual = ts.getMatchingTuple(LogicTuple.parse(txt));
+            txt = "reaction(rd(hello(world)),true,in(a))";
+            actual = ts.readMatchingTuple(LogicTuple.parse(txt));
             Assert.assertEquals(LogicTuple.parse(txt).toString(),
                     actual.toString());
 
-            txt = "a(A)";
-            actual = ts.getMatchingTuple(LogicTuple.parse(txt));
-            Assert.assertNull(actual);
-
-            txt = "world(hello(A,c))";
-            actual = ts.getMatchingTuple(LogicTuple.parse(txt));
-            Assert.assertEquals(LogicTuple.parse("world(hello(a,c))")
-                    .toString(), actual.toString());
-
-            txt = "world(hello(a,c))";
-            actual = ts.getMatchingTuple(LogicTuple.parse(txt));
-            Assert.assertNull(actual);
-
-            txt = "world(A)";
-            actual = ts.getMatchingTuple(LogicTuple.parse(txt));
+            txt = "reaction(out(X),guard,body)";
+            actual = ts.readMatchingTuple(LogicTuple.parse(txt));
             final String act = actual.toString();
-            Assert.assertTrue("world(hello)".equals(act)
-                    || "world(hello3)".equals(act)
-                    || "world(hello2)".equals(act));
+            Assert.assertTrue("reaction(out(hello),guard,body)".equals(act)
+                    || "reaction(out(pippo(pluto,paperino),guard,body))"
+                            .equals(act));
+
+            txt = "reaction(out(pippo(A,paperino),guard,body))";
+            actual = ts.readMatchingTuple(LogicTuple.parse(txt));
+            Assert.assertEquals(
+                    LogicTuple.parse(
+                            "reaction(out(pippo(pluto,paperino),guard,body))")
+                            .toString(), actual.toString());
 
         } catch (final Exception e) {
             e.printStackTrace();
@@ -194,7 +157,7 @@ public class TupleSetCoordTest {
     @Test
     public void testIsEmpty() {
 
-        final TupleSetCoord ts = new TupleSetCoord();
+        final TupleSetSpec ts = new TupleSetSpec();
 
         Assert.assertTrue(ts.isEmpty());
         Assert.assertTrue(ts.toArray().length == 0);
@@ -225,7 +188,7 @@ public class TupleSetCoordTest {
 
     @Test
     public void testReadMatchingTuple() {
-        final TupleSetCoord ts = new TupleSetCoord();
+        final TupleSetSpec ts = new TupleSetSpec();
 
         Assert.assertTrue(ts.isEmpty());
         Assert.assertTrue(ts.toArray().length == 0);
@@ -244,48 +207,29 @@ public class TupleSetCoordTest {
             LogicTuple actual;
             String txt;
 
-            txt = "a";
+            txt = "reaction(out(hello),guard,body)";
             actual = ts.readMatchingTuple(LogicTuple.parse(txt));
             Assert.assertEquals(LogicTuple.parse(txt).toString(),
                     actual.toString());
 
-            txt = "a(b)";
+            txt = "reaction(rd(hello(world)),true,in(a))";
             actual = ts.readMatchingTuple(LogicTuple.parse(txt));
             Assert.assertEquals(LogicTuple.parse(txt).toString(),
                     actual.toString());
 
-            txt = "a(A)";
-            actual = ts.readMatchingTuple(LogicTuple.parse(txt));
-            Assert.assertEquals(LogicTuple.parse("a(b)").toString(),
-                    actual.toString());
-
-            txt = "world(hello(a,c))";
-            actual = ts.readMatchingTuple(LogicTuple.parse(txt));
-            Assert.assertEquals(LogicTuple.parse(txt).toString(),
-                    actual.toString());
-
-            txt = "world(hello(A,c))";
-            actual = ts.readMatchingTuple(LogicTuple.parse(txt));
-            Assert.assertEquals(LogicTuple.parse("world(hello(a,c))")
-                    .toString(), actual.toString());
-
-            txt = "world(A)";
+            txt = "reaction(out(X),guard,body)";
             actual = ts.readMatchingTuple(LogicTuple.parse(txt));
             final String act = actual.toString();
-            Assert.assertTrue("world(hello)".equals(act)
-                    || "world(hello3)".equals(act)
-                    || "world(hello2)".equals(act)
-                    || "world(hello(a,c))".equals(act));
+            Assert.assertTrue("reaction(out(hello),guard,body)".equals(act)
+                    || "reaction(out(pippo(pluto,paperino),guard,body))"
+                            .equals(act));
 
-            txt = "pippo(10.10)";
+            txt = "reaction(out(pippo(A,paperino),guard,body))";
             actual = ts.readMatchingTuple(LogicTuple.parse(txt));
-            Assert.assertEquals(LogicTuple.parse(txt).toString(),
-                    actual.toString());
-
-            txt = "varterm(a)";
-            actual = ts.readMatchingTuple(LogicTuple.parse(txt));
-            Assert.assertTrue("varterm".equals(actual.getName()));
-            Assert.assertTrue(actual.getArg(0).isVar());
+            Assert.assertEquals(
+                    LogicTuple.parse(
+                            "reaction(out(pippo(pluto,paperino),guard,body))")
+                            .toString(), actual.toString());
 
         } catch (final Exception e) {
             e.printStackTrace();
@@ -297,7 +241,7 @@ public class TupleSetCoordTest {
     @Test
     public void testRemove() {
 
-        final TupleSetCoord ts = new TupleSetCoord();
+        final TupleSetSpec ts = new TupleSetSpec();
 
         final List<String> l = Arrays.asList(this.t);
         Collections.shuffle(l);
@@ -337,11 +281,11 @@ public class TupleSetCoordTest {
 
     @Test(expected = InvalidLogicTupleException.class)
     public void testTupleKeyException1() throws InvalidLogicTupleException {
-        final TupleSetCoord ts = new TupleSetCoord();
+        final TupleSetSpec ts = new TupleSetSpec();
 
         LogicTuple lt = null;
         try {
-            lt = LogicTuple.parse("A");
+            lt = LogicTuple.parse("tuple");
         } catch (final InvalidLogicTupleException e) {
             Assert.fail("Undesiderated exception");
         }
@@ -352,11 +296,11 @@ public class TupleSetCoordTest {
     @Test(expected = InvalidLogicTupleException.class)
     public void testTupleTemplateKeyException()
             throws InvalidLogicTupleException {
-        final TupleSetCoord ts = new TupleSetCoord();
+        final TupleSetSpec ts = new TupleSetSpec();
 
         LogicTuple lt = null;
         try {
-            lt = LogicTuple.parse("A");
+            lt = LogicTuple.parse("reaction(A, b, c)");
         } catch (final InvalidLogicTupleException e) {
             Assert.fail("Undesiderated exception");
         }

@@ -42,8 +42,8 @@ import alice.tuprolog.Prolog;
  * 
  * A ReSpecT tuple centre.
  * 
- * @author aricci
- * 
+ * @author Alessandro Ricci
+ * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public class RespectTC implements IRespectTC {
 

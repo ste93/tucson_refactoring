@@ -27,8 +27,9 @@ import alice.tuprolog.Term;
  * @see alice.tuplecentre.api.Tuple
  * @see alice.tuplecentre.api.TupleTemplate
  * 
- * @author aricci
- * @version 1.0
+ * @author Alessandro Ricci
+ * @author (contributor) ste (mailto: s.mariani@unibo.it)
+ * @author (contributor) Saverio Cicora
  */
 public class LogicTuple implements alice.tuplecentre.api.TupleTemplate,
         java.io.Serializable {

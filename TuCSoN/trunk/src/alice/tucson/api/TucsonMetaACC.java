@@ -20,7 +20,8 @@ import alice.tucson.service.ACCProxyAgentSide;
  * TuCSoN Meta Agent Coordination Context. It is exploited by TuCSoN agents to
  * obtain an ACC with which to interact with the TuCSoN node.
  * 
- * @author ste (mailto: s.mariani@unibo.it) on 03/lug/2013
+ * @author Alessandro Ricci
+ * @author (contributor) ste (mailto: s.mariani@unibo.it)
  * 
  */
 public final class TucsonMetaACC {

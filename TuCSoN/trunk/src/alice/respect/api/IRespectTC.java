@@ -23,8 +23,8 @@ import alice.tuplecentre.core.OperationCompletionListener;
 /**
  * Basic usage interface of a RespecT Tuple Centre
  * 
- * 
- * @author aricci
+ * @author Alessandro Ricci
+ * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public interface IRespectTC {
 
