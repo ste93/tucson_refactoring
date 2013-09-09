@@ -9,7 +9,7 @@ import alice.tuplecentre.api.TupleCentreId;
 
 /**
  * 
- * @author ste (mailto: s.mariani@unibo.it) on 17/lug/2013
+ * @author Alessandro Ricci
  * 
  */
 public class RemoteLinkProvider implements IRemoteLinkProvider {

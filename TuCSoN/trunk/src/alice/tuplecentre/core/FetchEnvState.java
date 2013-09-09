@@ -16,7 +16,7 @@ package alice.tuplecentre.core;
 /**
  * This is the listening state of the TCVM
  * 
- * @author aricci
+ * @author Alessandro Ricci
  */
 public class FetchEnvState extends AbstractTupleCentreVMState {
 

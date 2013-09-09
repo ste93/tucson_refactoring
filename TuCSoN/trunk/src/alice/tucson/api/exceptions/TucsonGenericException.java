@@ -15,7 +15,7 @@ package alice.tucson.api.exceptions;
 
 /**
  * 
- * @author ste (mailto: s.mariani@unibo.it) on 03/lug/2013
+ * @author Alessandro Ricci
  * 
  */
 public class TucsonGenericException extends Exception {

@@ -8,7 +8,8 @@ package alice.tucson.network;
  * A singleton class to manage configuration of TucsonProtocol
  * </p>
  * 
- * @author ste (mailto: s.mariani@unibo.it) on 22/lug/2013
+ * @author Saverio Cicora
+ * @author (contributor) ste (mailto: s.mariani@unibo.it)
  * 
  */
 public final class TPConfig {

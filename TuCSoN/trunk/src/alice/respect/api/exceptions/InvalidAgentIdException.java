@@ -17,7 +17,7 @@ package alice.respect.api.exceptions;
  * 
  * Agent identifier must be ground logic term.
  * 
- * @author aricci
+ * @author Alessandro Ricci
  */
 public class InvalidAgentIdException extends RespectException {
 

@@ -17,7 +17,8 @@ package alice.tuplecentre.core;
  * Represents output events of the tuple centre virtual machine (stores the
  * "connected" InputEvent)
  * 
- * @author aricci
+ * @author Alessandro Ricci
+ * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public class OutputEvent extends AbstractEvent {
 

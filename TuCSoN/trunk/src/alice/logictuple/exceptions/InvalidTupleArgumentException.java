@@ -16,9 +16,7 @@ package alice.logictuple.exceptions;
 /**
  * Exception thrown when a malformed tuple argument is created or used
  * 
- * @author aricci
- * 
- * @version 1.0
+ * @author Alessandro Ricci
  */
 public class InvalidTupleArgumentException extends LogicTupleException {
 

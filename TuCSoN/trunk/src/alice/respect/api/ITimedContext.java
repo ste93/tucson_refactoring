@@ -11,8 +11,8 @@ import alice.tuplecentre.api.IId;
 /**
  * Interface to a ReSpecT Tuple Centre with timing functionalities.
  * 
- * @author aricci
- * 
+ * @author Alessandro Ricci
+ * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public interface ITimedContext {
 

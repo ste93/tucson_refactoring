@@ -16,8 +16,7 @@ import alice.tuplecentre.core.InputEvent;
 import alice.tuplecentre.core.OutputEvent;
 
 /**
- * @author aricci
- * 
+ * @author Alessandro Ricci
  */
 public class RespectOutputEvent extends OutputEvent {
 

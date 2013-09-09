@@ -20,7 +20,8 @@ import alice.tucson.api.TucsonTupleCentreId;
 
 /**
  * 
- * @author ste (mailto: s.mariani@unibo.it) on 03/lug/2013
+ * @author Unknown...
+ * @author (contributor) ste (mailto: s.mariani@unibo.it)
  * 
  */
 public class Inspector extends Thread implements InspectorContextListener {

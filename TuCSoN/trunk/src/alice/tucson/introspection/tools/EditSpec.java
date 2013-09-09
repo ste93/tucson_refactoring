@@ -37,7 +37,8 @@ import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 
 /**
  * 
- * @author ste (mailto: s.mariani@unibo.it) on 03/lug/2013
+ * @author Unknown...
+ * @author (contributor) ste (mailto: s.mariani@unibo.it)
  * 
  */
 public class EditSpec extends javax.swing.JFrame {

@@ -13,7 +13,7 @@ import alice.tuplecentre.api.ObservableEventListener;
 
 /**
  * 
- * @author ste (mailto: s.mariani@unibo.it) on 01/lug/2013
+ * @author Alessandro Ricci
  * 
  */
 public class ManagementContext implements IManagementContext {

@@ -43,7 +43,7 @@ public class TupleSetCoord extends AbstractTupleSet {
      * arity.
      */
     @Override
-    protected String getTupleKey1(final LogicTuple t)
+    public String getTupleKey1(final LogicTuple t)
             throws alice.logictuple.exceptions.InvalidLogicTupleException {
         try {
             final TupleArgument ta = t.getVarValue(null);
@@ -63,7 +63,7 @@ public class TupleSetCoord extends AbstractTupleSet {
      * stored whit a special key.
      * */
     @Override
-    protected String getTupleKey2(final LogicTuple t)
+    public String getTupleKey2(final LogicTuple t)
             throws InvalidLogicTupleException {
 
         try {

@@ -19,7 +19,7 @@ package alice.tuplecentre.core;
  * 
  * @see AbstractEvent
  * 
- * @author aricci
+ * @author Alessandro Ricci
  */
 public interface OutputEventListener {
 

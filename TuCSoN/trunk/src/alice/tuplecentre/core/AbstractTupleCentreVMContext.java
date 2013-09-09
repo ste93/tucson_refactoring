@@ -40,7 +40,8 @@ import alice.tuplecentre.api.exceptions.OperationNotPossibleException;
  * (Omicini, Denti) - Science of Computer Programming 2001,
  * 
  * 
- * @author aricci
+ * @author Alessandro Ricci
+ * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public abstract class AbstractTupleCentreVMContext implements
         ITupleCentreManagement, ITupleCentre {

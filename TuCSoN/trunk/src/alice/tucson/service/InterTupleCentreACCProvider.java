@@ -16,7 +16,8 @@ import alice.tuplecentre.core.AbstractTupleCentreOperation;
 
 /**
  * 
- * @author ste (mailto: s.mariani@unibo.it) on 16/lug/2013
+ * @author Alessandro Ricci
+ * @author (contributor) ste (mailto: s.mariani@unibo.it)
  * 
  */
 public class InterTupleCentreACCProvider implements ILinkContext {

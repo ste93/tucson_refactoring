@@ -17,8 +17,7 @@ import alice.tuplecentre.core.AbstractBehaviourSpecification;
 /**
  * Specification of a tuple centre behaviour encoded in the ReSpecT language.
  * 
- * @author aricci
- * 
+ * @author Alessandro Ricci
  */
 public class RespectSpecification extends AbstractBehaviourSpecification {
 

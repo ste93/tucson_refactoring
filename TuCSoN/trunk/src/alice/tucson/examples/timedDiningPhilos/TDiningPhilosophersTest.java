@@ -12,6 +12,7 @@ import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
+import alice.tucson.examples.utilities.Utils;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 
 /**
@@ -19,7 +20,7 @@ import alice.tuplecentre.api.exceptions.OperationTimeOutException;
  * separation of concerns between coordinables (philosophers) and coordination
  * medium (table) thanks to TuCSoN ReSpecT tuple centres programmability.
  * 
- * @author s.mariani@unibo.it
+ * @author ste (mailto: s.mariani@unibo.it)
  */
 public class TDiningPhilosophersTest extends AbstractTucsonAgent {
 

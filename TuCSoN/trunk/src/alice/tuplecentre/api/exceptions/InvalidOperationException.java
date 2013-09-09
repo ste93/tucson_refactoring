@@ -13,7 +13,7 @@
 package alice.tuplecentre.api.exceptions;
 
 /**
- * @author aricci
+ * @author Alessandro Ricci
  * 
  */
 public class InvalidOperationException extends Exception {

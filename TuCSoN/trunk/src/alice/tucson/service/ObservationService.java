@@ -20,7 +20,7 @@ import alice.tuplecentre.api.TupleTemplate;
 
 /**
  * 
- * @author ste (mailto: s.mariani@unibo.it) on 17/lug/2013
+ * @author Alessandro Ricci
  * 
  */
 public class ObservationService implements NodeServiceListener {

@@ -9,7 +9,7 @@ import alice.tucson.service.TucsonCmd;
 
 /**
  * 
- * @author ste
+ * @author ste (mailto: s.mariani@unibo.it)
  * 
  */
 public class TucsonOpParser {

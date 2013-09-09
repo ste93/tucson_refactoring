@@ -2,7 +2,8 @@ package alice.respect.api;
 
 /**
  * 
- * @author ste (mailto: s.mariani@unibo.it) on 01/lug/2013
+ * @author Alessandro Ricci
+ * @author (contributor) ste (mailto: s.mariani@unibo.it)
  * 
  */
 public class RespectOpId {

@@ -16,7 +16,7 @@ package alice.tuplecentre.api.exceptions;
 /**
  * Exceptions thrown when a timeout occurs.
  * 
- * @author aricci
+ * @author Alessandro Ricci
  */
 public class OperationTimeOutException extends Exception {
 

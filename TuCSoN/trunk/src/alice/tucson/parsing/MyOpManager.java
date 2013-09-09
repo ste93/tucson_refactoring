@@ -6,7 +6,7 @@ import alice.tuprolog.Prolog;
 
 /**
  * 
- * @author ste (mailto: s.mariani@unibo.it) on 03/lug/2013
+ * @author ste (mailto: s.mariani@unibo.it)
  * 
  */
 public class MyOpManager extends OperatorManager {

@@ -5,8 +5,7 @@
 package alice.respect.api.exceptions;
 
 /**
- * @author aricci
- * 
+ * @author Alessandro Ricci
  */
 public class RespectException extends Exception {
 

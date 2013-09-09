@@ -37,7 +37,9 @@ import alice.tucson.network.exceptions.DialogExceptionTcp;
  */
 /**
  * 
- * @author ste (mailto: s.mariani@unibo.it) on 03/lug/2013
+ * @author Alessandro Ricci
+ * @author (contributor) ste (mailto: s.mariani@unibo.it)
+ * @author (contributor) Saverio Cicora
  * 
  */
 public class TucsonProtocolTCP extends AbstractTucsonProtocol {

@@ -1,15 +1,19 @@
 /*
- * Logic Tuple Communication Language - Copyright (C) 2001-2002 aliCE team at
- * deis.unibo.it This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation; either version 2.1 of the License,
- * or (at your option) any later version. This library is distributed in the
- * hope that it will be useful, but WITHOUT ANY WARRANTY; without even the
- * implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See
- * the GNU Lesser General Public License for more details. You should have
- * received a copy of the GNU Lesser General Public License along with this
- * library; if not, write to the Free Software Foundation, Inc., 59 Temple
- * Place, Suite 330, Boston, MA 02111-1307 USA
+ * Logic Tuple Communication Language - Copyright (C) 2001-2002  aliCE team at deis.unibo.it
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 package alice.logictuple;
 
@@ -20,6 +24,7 @@ import java.util.List;
 
 import alice.logictuple.exceptions.InvalidTupleArgumentException;
 import alice.logictuple.exceptions.InvalidTupleOperationException;
+import alice.tuprolog.InvalidTermException;
 import alice.tuprolog.Number;
 import alice.tuprolog.Prolog;
 import alice.tuprolog.Struct;
@@ -32,8 +37,9 @@ import alice.tuprolog.Term;
  * @see Value
  * @see Var
  * 
- * @author aricci
- * @version 1.0
+ * @author Alessandro Ricci
+ * @author (contributor) ste (mailto: s.mariani@unibo.it)
+ * @author (contributor) Saverio Cicora
  */
 public class TupleArgument implements java.io.Serializable {
 
@@ -53,8 +59,12 @@ public class TupleArgument implements java.io.Serializable {
      */
     public static TupleArgument parse(final String st)
             throws InvalidTupleArgumentException {
-        final Term t = alice.tuprolog.Term.createTerm(st);
-        return new TupleArgument(t);
+        try {
+            final Term t = alice.tuprolog.Term.createTerm(st);
+            return new TupleArgument(t);
+        } catch (final InvalidTermException ex) {
+            throw new InvalidTupleArgumentException();
+        }
     }
 
     /** the internal representation of the argument is a (tu)Prolog term */
@@ -87,7 +97,11 @@ public class TupleArgument implements java.io.Serializable {
      *             if the argument is not a number
      */
     public double doubleValue() throws InvalidTupleOperationException {
-        return ((Number) this.value).doubleValue();
+        if (this.value instanceof Number) {
+            return ((Number) this.value).doubleValue();
+        }
+        throw new InvalidTupleOperationException();
+
     }
 
     /**
@@ -98,7 +112,10 @@ public class TupleArgument implements java.io.Serializable {
      *             if the argument is not a number
      */
     public float floatValue() throws InvalidTupleOperationException {
-        return ((Number) this.value).floatValue();
+        if (this.value instanceof Number) {
+            return ((Number) this.value).floatValue();
+        }
+        throw new InvalidTupleOperationException();
     }
 
     /**
@@ -113,7 +130,12 @@ public class TupleArgument implements java.io.Serializable {
      */
     public TupleArgument getArg(final int index)
             throws InvalidTupleOperationException {
-        return new TupleArgument(((Struct) this.value.getTerm()).getTerm(index));
+        try {
+            return new TupleArgument(
+                    ((Struct) this.value.getTerm()).getTerm(index));
+        } catch (final Exception ex) {
+            throw new InvalidTupleOperationException();
+        }
     }
 
     /**

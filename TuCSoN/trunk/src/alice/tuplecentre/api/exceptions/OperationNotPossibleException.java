@@ -16,7 +16,7 @@ package alice.tuplecentre.api.exceptions;
 /**
  * Exception thrown when the operation execution is not allowed.
  * 
- * @author aricci
+ * @author Alessandro Ricci
  */
 public class OperationNotPossibleException extends Exception {
 

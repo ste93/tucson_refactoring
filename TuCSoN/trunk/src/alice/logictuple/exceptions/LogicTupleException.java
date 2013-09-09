@@ -16,8 +16,7 @@ package alice.logictuple.exceptions;
 /**
  * Logic Tuple root base Exception class
  * 
- * @author aricci
- * @version 1.0
+ * @author Alessandro Ricci
  */
 public class LogicTupleException extends Exception {
 

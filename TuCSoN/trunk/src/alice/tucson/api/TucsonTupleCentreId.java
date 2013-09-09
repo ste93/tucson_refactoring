@@ -22,7 +22,8 @@ import alice.tuprolog.Term;
 
 /**
  * 
- * @author ste (mailto: s.mariani@unibo.it) on 03/lug/2013
+ * @author Alessandro Ricci
+ * @author (contributor) ste (mailto: s.mariani@unibo.it)
  * 
  */
 public class TucsonTupleCentreId implements

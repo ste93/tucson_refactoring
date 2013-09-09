@@ -27,7 +27,8 @@ import alice.tuplecentre.core.AbstractTupleCentreOperation;
  * cyle, that is the method {@link alice.tucson.api.AbstractTucsonAgent#main
  * main}.
  * 
- * @author ste (mailto: s.mariani@unibo.it) on 02/lug/2013
+ * @author Alessandro Ricci
+ * @author (contributor) ste (mailto: s.mariani@unibo.it)
  * 
  */
 public abstract class AbstractTucsonAgent implements

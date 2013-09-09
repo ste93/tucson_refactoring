@@ -14,7 +14,8 @@ import alice.tuplecentre.core.OperationCompletionListener;
 
 /**
  * 
- * @author ste (mailto: s.mariani@unibo.it) on 17/lug/2013
+ * @author Alessandro Ricci
+ * @author (contributor) ste (mailto: s.mariani@unibo.it)
  * 
  */
 public class TucsonOperation extends AbstractTupleCentreOperation implements

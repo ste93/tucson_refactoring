@@ -22,7 +22,8 @@ import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 
 /**
  * 
- * @author ste (mailto: s.mariani@unibo.it) on 02/lug/2013
+ * @author Alessandro Ricci
+ * @author (contributor) ste (mailto: s.mariani@unibo.it)
  * 
  */
 public class TucsonAgentId implements alice.tuplecentre.api.AgentId,

@@ -50,7 +50,8 @@ import alice.tuprolog.Var;
  * TuProlog library defining the behaviour of ReSpecT primitives, used inside
  * ReSpecT VM.
  * 
- * @author aricci
+ * @author Alessandro Ricci
+ * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public class Respect2PLibrary extends alice.tuprolog.Library {
 

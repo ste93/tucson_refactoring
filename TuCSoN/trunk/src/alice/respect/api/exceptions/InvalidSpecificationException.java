@@ -13,8 +13,7 @@
 package alice.respect.api.exceptions;
 
 /**
- * @author aricci
- * @version 1.0
+ * @author Alessandro Ricci
  */
 public class InvalidSpecificationException extends RespectException {
 

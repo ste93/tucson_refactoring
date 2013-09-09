@@ -5,7 +5,7 @@ import alice.tuplecentre.core.InputEvent;
 
 /**
  * 
- * @author ste (mailto: s.mariani@unibo.it) on 01/lug/2013
+ * @author Unknown...
  * 
  */
 public class EnviromentContext implements IEnvironmentContext {

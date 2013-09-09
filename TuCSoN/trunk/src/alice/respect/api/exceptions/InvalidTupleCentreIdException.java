@@ -17,7 +17,7 @@ package alice.respect.api.exceptions;
  * 
  * Tuple centre identifier must be ground logic term
  * 
- * @author aricci
+ * @author Alessandro Ricci
  */
 public class InvalidTupleCentreIdException extends RespectException {
 

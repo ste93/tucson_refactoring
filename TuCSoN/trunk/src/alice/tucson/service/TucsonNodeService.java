@@ -56,7 +56,9 @@ import alice.tuprolog.lib.InvalidObjectIdException;
 
 /**
  * 
- * @author ste (mailto: s.mariani@unibo.it) on 17/lug/2013
+ * @author Alessandro Ricci
+ * @author (contributor) ste (mailto: s.mariani@unibo.it)
+ * @author (contributor) Saverio Cicora
  * 
  */
 public class TucsonNodeService {

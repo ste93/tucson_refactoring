@@ -13,7 +13,7 @@
 package alice.tuplecentre.core;
 
 /**
- * @author aricci
+ * @author Alessandro Ricci
  * 
  */
 public interface OperationCompletionListener {

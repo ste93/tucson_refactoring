@@ -27,7 +27,8 @@ import alice.tuprolog.Prolog;
 /**
  * This class represents an Operation on a tuple centre.
  * 
- * @author aricci
+ * @author Alessandro Ricci
+ * @author (contributor) ste (mailto: s.mariani@unibo.it)
  * 
  */
 public abstract class AbstractTupleCentreOperation implements

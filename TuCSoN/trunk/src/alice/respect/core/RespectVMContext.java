@@ -15,8 +15,6 @@ package alice.respect.core;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -80,8 +78,9 @@ import alice.tuprolog.Var;
  * 
  * @see alice.tuplecentre.core.AbstractTupleCentreVMContext
  * 
- * @author aricci
- * @version 1.0
+ * @author Alessandro Ricci
+ * @author (contributor) ste (mailto: s.mariani@unibo.it)
+ * @author (contributor) Saverio Cicora
  */
 public class RespectVMContext extends
         alice.tuplecentre.core.AbstractTupleCentreVMContext {
@@ -1582,11 +1581,11 @@ public class RespectVMContext extends
         try {
             final ClassLoader cl =
                     Thread.currentThread().getContextClassLoader();
-            final URL[] urls = ((URLClassLoader) cl).getURLs();
-            this.log("Known paths:");
-            for (final URL url : urls) {
-                System.out.println("\t" + url.getFile());
-            }
+            // final URL[] urls = ((URLClassLoader) cl).getURLs();
+            // this.log("Known paths:");
+            // for (final URL url : urls) {
+            // System.out.println("\t" + url.getFile());
+            // }
             final LogicTuple t = (LogicTuple) tuple;
             if (!("exec".equals(t.getName()) || "solve".equals(t.getName()))) {
                 this.log("spawn argument must be a tuple with functor name 'exec' or 'solve'");

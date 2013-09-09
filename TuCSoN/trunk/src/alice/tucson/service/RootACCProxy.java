@@ -5,7 +5,7 @@ import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 
 /**
  * 
- * @author ste (mailto: s.mariani@unibo.it) on 17/lug/2013
+ * @author ste (mailto: s.mariani@unibo.it)
  * 
  */
 public class RootACCProxy implements RootACC {

@@ -19,7 +19,7 @@ import java.util.EventObject;
  * Represents observable (by inspectors) events happening inside tuple centre
  * virtual machine
  * 
- * @author ste (mailto: s.mariani@unibo.it) on 17/lug/2013
+ * @author Alessandro Ricci
  * 
  */
 public class InspectableEvent extends EventObject {

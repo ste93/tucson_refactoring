@@ -16,7 +16,8 @@ package alice.tuplecentre.core;
 /**
  * This is the reacting state of the TCVM
  * 
- * @author aricci
+ * @author Alessandro Ricci
+ * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public class ReactingState extends AbstractTupleCentreVMState {
 

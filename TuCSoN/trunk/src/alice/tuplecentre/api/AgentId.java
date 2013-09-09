@@ -16,7 +16,7 @@ package alice.tuplecentre.api;
 /**
  * Represents an agent identifier
  * 
- * @author aricci
+ * @author Alessandro Ricci
  */
 public interface AgentId extends IId {
     /*

@@ -23,7 +23,7 @@ import alice.respect.core.collection.DoubleKeyMVMap;
 /**
  * Class representing a Tuple Set.
  * 
- * @author ste (mailto: s.mariani@unibo.it) on 22/lug/2013
+ * @author Saverio Cicora
  * 
  */
 public class TupleSetSpec extends AbstractTupleSet {
@@ -45,7 +45,7 @@ public class TupleSetSpec extends AbstractTupleSet {
     }
 
     @Override
-    protected String getTupleKey1(final LogicTuple t)
+    public String getTupleKey1(final LogicTuple t)
             throws alice.logictuple.exceptions.InvalidLogicTupleException {
         try {
             final TupleArgument event = t.getArg(0);
@@ -56,7 +56,7 @@ public class TupleSetSpec extends AbstractTupleSet {
     }
 
     @Override
-    protected String getTupleKey2(final LogicTuple t)
+    public String getTupleKey2(final LogicTuple t)
             throws InvalidLogicTupleException {
         try {
             final TupleArgument eventArg = t.getArg(0).getArg(0);

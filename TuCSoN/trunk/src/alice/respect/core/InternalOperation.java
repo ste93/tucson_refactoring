@@ -20,8 +20,8 @@ import alice.logictuple.TupleArgument;
  * 
  * The possible argument of the operation is represented by a logic tuple
  * 
- * @author aricci
- * 
+ * @author Alessandro Ricci
+ * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public final class InternalOperation {
 

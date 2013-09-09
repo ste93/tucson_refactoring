@@ -13,8 +13,8 @@ import alice.tucson.network.exceptions.DialogException;
  * TucsonProtocol
  * </p>
  * 
- * @author Cicora Saverio
- * @version 1.0
+ * @author Saverio Cicora
+ * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public abstract class TPFactory {
 

@@ -4,7 +4,7 @@ import alice.tuplecentre.core.InputEvent;
 
 /**
  * 
- * @author ste (mailto: s.mariani@unibo.it) on 27/giu/2013
+ * @author Unknown...
  * 
  */
 public interface IEnvironmentContext {

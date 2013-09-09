@@ -21,7 +21,7 @@ import alice.tuplecentre.core.InspectableEvent;
  * Defines listeners of tuple centre virtual machine observable events (actually
  * inspectors)
  * 
- * @author ste (mailto: s.mariani@unibo.it) on 17/lug/2013
+ * @author Alessandro Ricci
  * 
  */
 public interface InspectableEventListener extends EventListener {

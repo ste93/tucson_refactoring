@@ -14,7 +14,7 @@ package alice.tuplecentre.api;
 
 /**
  * 
- * @author ste (mailto: s.mariani@unibo.it) on 17/lug/2013
+ * @author Alessandro Ricci
  * 
  */
 public interface ObservableEventListener {

@@ -18,8 +18,8 @@ import alice.tuplecentre.core.InputEvent;
  * Represents an internal event of the ReSpecT VM (stores the "connected"
  * InputEvent)
  * 
- * @author aricci
- * @version 1.0
+ * @author Alessandro Ricci
+ * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public class InternalEvent extends alice.tuplecentre.core.AbstractEvent {
 

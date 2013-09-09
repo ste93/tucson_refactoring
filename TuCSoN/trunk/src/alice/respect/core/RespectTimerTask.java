@@ -6,7 +6,7 @@ import alice.tuplecentre.core.InputEvent;
 
 /**
  * 
- * @author ste (mailto: s.mariani@unibo.it) on 02/lug/2013
+ * @author Matteo Casadei
  * 
  */
 public class RespectTimerTask extends TimerTask {

@@ -16,7 +16,8 @@ package alice.tuplecentre.core;
 /**
  * This is the idle state of the tuple centre virtual machine
  * 
- * @author aricci
+ * @author Alessandro Ricci
+ * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public class IdleState extends AbstractTupleCentreVMState {
 
