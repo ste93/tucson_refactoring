@@ -1,21 +1,26 @@
 /*
- * Logic Tuple Communication Language - Copyright (C) 2001-2002 aliCE team at
- * deis.unibo.it This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation; either version 2.1 of the License,
- * or (at your option) any later version. This library is distributed in the
- * hope that it will be useful, but WITHOUT ANY WARRANTY; without even the
- * implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See
- * the GNU Lesser General Public License for more details. You should have
- * received a copy of the GNU Lesser General Public License along with this
- * library; if not, write to the Free Software Foundation, Inc., 59 Temple
- * Place, Suite 330, Boston, MA 02111-1307 USA
+ * Logic Tuple Communication Language - Copyright (C) 2001-2002  aliCE team at deis.unibo.it
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 package alice.logictuple;
 
 import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.logictuple.exceptions.InvalidTupleOperationException;
 import alice.tucson.parsing.MyOpManager;
+import alice.tuprolog.InvalidTermException;
 import alice.tuprolog.Prolog;
 import alice.tuprolog.Term;
 
@@ -50,8 +55,12 @@ public class LogicTuple implements alice.tuplecentre.api.TupleTemplate,
      */
     public static LogicTuple parse(final String st)
             throws InvalidLogicTupleException {
-        final Term t = alice.tuprolog.Term.createTerm(st, new MyOpManager());
-        return new LogicTuple(new TupleArgument(t));
+        try {
+            final Term t = alice.tuprolog.Term.createTerm(st, new MyOpManager());
+            return new LogicTuple(new TupleArgument(t));
+        } catch (final InvalidTermException ex) {
+            throw new InvalidLogicTupleException();
+        }
     }
 
     /** the information content of logic tuple */
