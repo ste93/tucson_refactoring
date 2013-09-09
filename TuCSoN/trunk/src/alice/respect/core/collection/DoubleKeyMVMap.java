@@ -671,7 +671,7 @@ public class DoubleKeyMVMap<K, Q, V> {
          */
         private void removeOuterKeyIfEmpty() {
             if (this.innerMap.isEmpty()) {
-                outerMap.remove(this.mapKey1);
+                DoubleKeyMVMap.this.outerMap.remove(this.mapKey1);
             }
         }
 
