@@ -46,7 +46,8 @@ public class DoubleKeyMVMap<K, Q, V> {
                 this.advanceEntryIterator();
             } else {
                 // else use an empty iterator
-                this.valueIterator = Collections.emptyIterator();
+//                this.valueIterator = Collections.emptyIterator();
+                this.valueIterator = Collections.<V>emptyList().iterator();
             }
         }
 
@@ -123,7 +124,8 @@ public class DoubleKeyMVMap<K, Q, V> {
                     this.advanceEntryIterator();
                 } else {
                     // else use an empty iterator
-                    this.valueIterator = Collections.emptyIterator();
+//                    this.valueIterator = Collections.emptyIterator();
+                    this.valueIterator = Collections.<V>emptyList().iterator();
                 }
             }
 
