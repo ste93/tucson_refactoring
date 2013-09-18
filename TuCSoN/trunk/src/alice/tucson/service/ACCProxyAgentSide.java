@@ -1228,7 +1228,7 @@ public class ACCProxyAgentSide implements EnhancedACC {
 //                    this.controllerSessions.get(InetAddress
 //                            .getLoopbackAddress().getHostAddress()
 //                            .concat(String.valueOf(p)));
-                    this.controllerSessions.get("127.0.0.1".concat(String.valueOf(p)));
+                    this.controllerSessions.get("127.0.0.1:".concat(String.valueOf(p)));
         }
 //        if (InetAddress.getLoopbackAddress().getHostAddress().equals(opNode)) {
         if ("127.0.0.1".equals(opNode)) {
@@ -1236,7 +1236,7 @@ public class ACCProxyAgentSide implements EnhancedACC {
 //                    this.controllerSessions.get(InetAddress
 //                            .getLoopbackAddress().getHostName()
 //                            .concat(String.valueOf(p)));
-                    this.controllerSessions.get("localhost".concat(String.valueOf(p)));
+                    this.controllerSessions.get("localhost:".concat(String.valueOf(p)));
         }
         if (tc != null) {
             return tc.getSession();
