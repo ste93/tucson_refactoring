@@ -625,17 +625,24 @@ public class OperationHandler {
         if (tc != null) {
             return tc.getSession();
         }
-        if (InetAddress.getLoopbackAddress().getHostName().equals(opNode)) {
+        // if (InetAddress.getLoopbackAddress().getHostName().equals(opNode)) {
+        if ("localhost".equals(opNode)) {
             tc =
-                    this.controllerSessions.get(InetAddress
-                            .getLoopbackAddress().getHostAddress()
-                            .concat(String.valueOf(p)));
+            // this.controllerSessions.get(InetAddress
+            // .getLoopbackAddress().getHostAddress()
+            // .concat(String.valueOf(p)));
+                    this.controllerSessions.get("127.0.0.1:".concat(String
+                            .valueOf(p)));
         }
-        if (InetAddress.getLoopbackAddress().getHostAddress().equals(opNode)) {
+        // if (InetAddress.getLoopbackAddress().getHostAddress().equals(opNode))
+        // {
+        if ("127.0.0.1".equals(opNode)) {
             tc =
-                    this.controllerSessions.get(InetAddress
-                            .getLoopbackAddress().getHostName()
-                            .concat(String.valueOf(p)));
+            // this.controllerSessions.get(InetAddress
+            // .getLoopbackAddress().getHostName()
+            // .concat(String.valueOf(p)));
+                    this.controllerSessions.get("localhost:".concat(String
+                            .valueOf(p)));
         }
         if (tc != null) {
             return tc.getSession();
