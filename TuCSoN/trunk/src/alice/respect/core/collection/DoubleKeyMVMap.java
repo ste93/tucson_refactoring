@@ -820,17 +820,11 @@ public class DoubleKeyMVMap<K, Q, V> {
 
     @Override
     public String toString() {
-        final StringBuffer ret = new StringBuffer("[");
+        final StringBuffer ret = new StringBuffer();
         final Iterator<V> it = this.iterator();
-        if (it.hasNext()) {
-            ret.append(" " + it.next().toString() + " ");
-        }
         while (it.hasNext()) {
-            ret.append(", ");
-            ret.append(it.next().toString());
-            ret.append(' ');
+            ret.append(it.next().toString() + ".");
         }
-        ret.append(']');
         return ret.toString();
     }
 
