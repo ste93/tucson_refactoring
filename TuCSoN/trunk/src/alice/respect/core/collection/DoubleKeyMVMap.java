@@ -503,6 +503,7 @@ public class DoubleKeyMVMap<K, Q, V> {
                     this.parentList.removeInnerKeyIfEmpty();
                 } else if (this.wrappedList.isEmpty()) {
                     InnerMVMap.this.innerMap.remove(this.listKey2);
+                    removeOuterKeyIfEmpty();
                 }
             }
 

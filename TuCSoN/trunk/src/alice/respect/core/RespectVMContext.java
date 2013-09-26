@@ -1354,10 +1354,8 @@ public class RespectVMContext extends
 
     @Override
     public Tuple removeMatchingSpecTuple(final TupleTemplate t) {
-        log("t = " + t);
         final Tuple tuple =
                 this.tSpecSet.getMatchingTuple((alice.logictuple.LogicTuple) t);
-        log("tuple = " + tuple);
         if (tuple != null) {
             this.setReactionSpecHelper(new alice.respect.api.RespectSpecification(
                     this.tSpecSet.toString()));
@@ -1827,12 +1825,9 @@ public class RespectVMContext extends
      * @return wether the ReSpecT specification has been succesfully overwritten
      *         or not
      */
-    // TODO Fix Maraldi problem
     protected boolean setReactionSpecHelper(
             final AbstractBehaviourSpecification spec) {
 
-        log("spec = " + spec);
-        
         if (this.transaction) {
             return false;
         }
@@ -1841,19 +1836,14 @@ public class RespectVMContext extends
 
             this.timers.clear();
             final Struct co = new Struct(spec.toString());
-            log("co = " + co);
             if (co.isAtom()) {
                 final alice.tuprolog.Theory thspec =
                         new alice.tuprolog.Theory(co.getName());
-                log("(atom) thspec = " + thspec);
                 this.core.setTheory(thspec);
-                log("CORE OK");
                 this.trigCore.setTheory(thspec);
-                log("TRIGCORE OK");
             } else if (co.isList()) {
                 final alice.tuprolog.Theory thspec =
                         new alice.tuprolog.Theory(co);
-                log("(list) thspec = " + thspec);
                 this.core.setTheory(thspec);
                 this.trigCore.setTheory(thspec);
             } else {
@@ -1866,7 +1856,6 @@ public class RespectVMContext extends
                 this.trigCore.addTheory(this.noReactionTh);
             }
             this.reactionSpec = (RespectSpecification) spec;
-            log("reactionSpec = " + this.reactionSpec);
             final Iterator<Term> it = this.findTimeReactions();
 
             while (it.hasNext()) {
