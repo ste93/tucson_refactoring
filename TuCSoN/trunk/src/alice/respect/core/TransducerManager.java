@@ -260,17 +260,23 @@ public final class TransducerManager {
      * @return the tuple centre's identifier
      */
     public static TupleCentreId getTupleCentreId(final TransducerId tId) {
-        if (TransducerManager.tupleCentresAssociated.containsValue(tId)) {
-            final TupleCentreId[] tcArray =
-                    TransducerManager.tupleCentresAssociated.keySet().toArray(
-                            new TupleCentreId[] {});
-            for (final TupleCentreId element : tcArray) {
-                if (TransducerManager.tupleCentresAssociated.get(element)
-                        .contains(tId)) {
-                    return element;
-                }
+        for (TupleCentreId t : TransducerManager.tupleCentresAssociated
+                .keySet()) {
+            if (TransducerManager.tupleCentresAssociated.get(t).contains(tId)) {
+                return t;
             }
         }
+        // if (TransducerManager.tupleCentresAssociated.containsValue(tId)) {
+        // final TupleCentreId[] tcArray =
+        // TransducerManager.tupleCentresAssociated.keySet().toArray(
+        // new TupleCentreId[] {});
+        // for (final TupleCentreId element : tcArray) {
+        // if (TransducerManager.tupleCentresAssociated.get(element)
+        // .contains(tId)) {
+        // return element;
+        // }
+        // }
+        // }
         TransducerManager.speakErr("The transducer " + tId.getAgentName()
                 + " doesn't exist");
         return null;
@@ -346,22 +352,26 @@ public final class TransducerManager {
      */
     public static boolean removeResource(final AbstractProbeId probe)
             throws TucsonOperationNotPossibleException {
-        if (!TransducerManager.resourceList.containsValue(probe)) {
-            return false;
+        for (TransducerId t : TransducerManager.resourceList.keySet()) {
+            if (TransducerManager.resourceList.get(t).contains(probe)) {
+                final TransducerId tId =
+                        TransducerManager.getTransducerId(probe);
+                TransducerManager.transducerList.get(tId).removeProbe(probe);
+                TransducerManager.resourceList.get(tId).remove(probe);
+                ResourceManager.getResourceManager().getResource(probe)
+                        .setTransducer(null);
+                // Se il transducer e' rimasto senza risorse associate viene
+                // terminato
+                if (TransducerManager.resourceList.get(tId).isEmpty()) {
+                    TransducerManager
+                            .speak("Transducer "
+                                    + tId.toString()
+                                    + " has no more resources associated. Its execution will be stopped");
+                    TransducerManager.stopTransducer(tId);
+                }
+                return true;
+            }
         }
-        final TransducerId tId = TransducerManager.getTransducerId(probe);
-        TransducerManager.transducerList.get(tId).removeProbe(probe);
-        TransducerManager.resourceList.get(tId).remove(probe);
-        ResourceManager.getResourceManager().getResource(probe)
-                .setTransducer(null);
-        // Se il transducer e' rimasto senza risorse associate viene terminato
-        if (TransducerManager.resourceList.get(tId).isEmpty()) {
-            TransducerManager
-                    .speak("Transducer "
-                            + tId.toString()
-                            + " has no more resources associated. Its execution will be stopped");
-            TransducerManager.stopTransducer(tId);
-        }
-        return true;
+        return false;
     }
 }
