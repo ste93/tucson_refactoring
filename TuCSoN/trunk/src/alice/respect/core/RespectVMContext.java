@@ -274,18 +274,21 @@ public class RespectVMContext extends
 
     @Override
     public void addSpecTuple(final Tuple t) {
-        LogicTuple tuple = null;
+        Tuple tuple = null;
         try {
             if (",".equals(((LogicTuple) t).getName())) {
                 tuple =
                         new LogicTuple("reaction", ((LogicTuple) t).getArg(0),
                                 ((LogicTuple) t).getArg(1).getArg(0),
                                 ((LogicTuple) t).getArg(1).getArg(1));
+            } else {
+                tuple = t;
             }
         } catch (final InvalidTupleOperationException e) {
             e.printStackTrace();
         }
-        this.tSpecSet.add(tuple);
+        // FIXME LogicTuple > Tuple in all Cicora's API
+        this.tSpecSet.add((LogicTuple) tuple);
         this.setReactionSpecHelper(new alice.respect.api.RespectSpecification(
                 this.tSpecSet.toString()));
     }

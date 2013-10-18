@@ -1493,7 +1493,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
             e.printStackTrace();
             return false;
         }
-
+        
         if ("this".equals(tcName)) {
             Respect2PLibrary.log("Local out_s triggered...");
             final Term newArg = goal.copyGoal(v, 0);
