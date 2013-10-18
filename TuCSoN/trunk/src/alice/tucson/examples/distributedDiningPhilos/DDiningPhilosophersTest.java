@@ -71,9 +71,6 @@ public class DDiningPhilosophersTest extends AbstractTucsonAgent {
             final TucsonTupleCentreId[] seats =
                     new TucsonTupleCentreId[DDiningPhilosophersTest.N_PHILOSOPHERS];
             for (int i = 0; i < DDiningPhilosophersTest.N_PHILOSOPHERS; i++) {
-                // seats[i] = new
-                // TucsonTupleCentreId("seat("+i+","+((i+1)%N_PHILOSOPHERS)+")",
-                // ip, (port++)+"");
                 seats[i] =
                         new TucsonTupleCentreId(
                                 "seat("
@@ -91,9 +88,11 @@ public class DDiningPhilosophersTest extends AbstractTucsonAgent {
                 acc.out(seats[i], LogicTuple.parse("philosopher(thinking)"),
                         null);
             }
+            /* MOD: begin */
             final TucsonTupleCentreId table =
                     new TucsonTupleCentreId("table", this.ip,
-                            String.valueOf(this.port));
+                            String.valueOf(this.port+1));
+            /* MOD: end */
             this.say("Injecting 'table' ReSpecT specification in tc < "
                     + table.toString() + " >...");
             acc.setS(

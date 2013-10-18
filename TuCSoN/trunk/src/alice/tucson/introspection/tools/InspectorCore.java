@@ -20,6 +20,7 @@ import java.util.Iterator;
 
 import alice.logictuple.LogicTuple;
 import alice.respect.api.AgentId;
+import alice.respect.api.TupleCentreId;
 import alice.tucson.api.TucsonAgentId;
 import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.introspection.WSetEvent;
@@ -215,9 +216,15 @@ public class InspectorCore extends alice.tucson.introspection.Inspector {
 
             while (it.hasNext()) {
                 ev = it.next();
-                st.append(ev.getOp()).append(" from <")
-                        .append(((AgentId) ev.getSource()).getLocalName())
-                        .append("> to <").append(ev.getTarget()).append(">\n");
+                if (ev.getSource().isAgent()) {
+                    st.append(ev.getOp()).append(" from <")
+                            .append(((AgentId) ev.getSource()).getLocalName())
+                            .append("> to <").append(ev.getTarget()).append(">\n");
+                } else if (ev.getSource().isTC()) {
+                    st.append(ev.getOp()).append(" from <")
+                    .append(((TucsonTupleCentreId) ev.getSource()).toString())
+                    .append("> to <").append(ev.getTarget()).append(">\n");
+                } // is Env?
                 n++;
             }
             viewer.setNItems(n);
