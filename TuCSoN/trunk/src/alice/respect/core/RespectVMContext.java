@@ -1869,9 +1869,8 @@ public class RespectVMContext extends
 
         } catch (final alice.tuprolog.InvalidTheoryException ex) {
             // FIXME Check correctness
-            this.notifyException("Invalid reaction spec: " + ex.line + " "
-                    + ex.pos);
-            this.notifyException(spec.toString());
+            this.notifyException("<!> Invalid reaction spec: " + ex.line + " "
+                    + ex.pos + "<!>");
             return false;
         }
 
