@@ -5,7 +5,9 @@ reaction(
 		in(philosopher(thinking)),
 		out(philosopher(waiting_to_eat)),
 		current_target(seat(C1,C2)@localhost:20504),
-		table@localhost:20504 ? in(chops(C1,C2))
+		% MOD: begin %
+		table@localhost:20505 ? in(chops(C1,C2))
+		% MOD: end %
 	)
 ).
 reaction(
@@ -29,7 +31,9 @@ reaction(
 		in(philosopher(eating)),
 		out(philosopher(waiting_to_think)),
 		current_target(seat(C1,C2)@localhost:20504), in(chops(C1,C2)),
-		table@localhost:20504 ? out(chops(C1,C2))
+		% MOD: begin %
+		table@localhost:20505 ? out(chops(C1,C2))
+		% MOD: end %
 	)
 ).
 reaction(

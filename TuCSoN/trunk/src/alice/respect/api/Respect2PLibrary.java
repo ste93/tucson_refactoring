@@ -1411,23 +1411,32 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
             return true;
         }
         Respect2PLibrary.log("Remote out triggered...");
+//        final InputEvent ce = this.vm.getCurrentEvent();
+//        TupleCentreId newTid = null;
+//        try {
+//            newTid =
+//                    new TupleCentreId(Term.createTerm(alice.util.Tools
+//                            .removeApices(((Struct) arg1.getTerm()).getArg(0)
+//                                    .getTerm().toString()), new MyOpManager()));
+//        } catch (final InvalidTupleCentreIdException e) {
+//            e.printStackTrace();
+//            return false;
+//        }
+//        final InputEvent outEv =
+//                new InputEvent(ce.getReactingTC(), RespectOperation.makeOut(
+//                        this.getProlog(), new LogicTuple(arg0.copyGoal(v, 0)),
+//                        null), newTid, this.vm.getCurrentTime());
+//        outEv.setIsLinking(true);
+//        outEv.setTarget(newTid);
+//        this.vm.addTemporaryOutputEvent(outEv);
+//        return true;
         final InputEvent ce = this.vm.getCurrentEvent();
-        TupleCentreId newTid = null;
-        try {
-            newTid =
-                    new TupleCentreId(Term.createTerm(alice.util.Tools
-                            .removeApices(((Struct) arg1.getTerm()).getArg(0)
-                                    .getTerm().toString()), new MyOpManager()));
-        } catch (final InvalidTupleCentreIdException e) {
-            e.printStackTrace();
-            return false;
-        }
         final InputEvent outEv =
                 new InputEvent(ce.getReactingTC(), RespectOperation.makeOut(
                         this.getProlog(), new LogicTuple(arg0.copyGoal(v, 0)),
-                        null), newTid, this.vm.getCurrentTime());
+                        null), tid, this.vm.getCurrentTime());
         outEv.setIsLinking(true);
-        outEv.setTarget(newTid);
+        outEv.setTarget(tid);
         this.vm.addTemporaryOutputEvent(outEv);
         return true;
 
@@ -1520,7 +1529,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
             e.printStackTrace();
             return false;
         }
-
+        
         if ("this".equals(tcName)) {
             Respect2PLibrary.log("Local out_s triggered...");
             final Term newArg = goal.copyGoal(v, 0);

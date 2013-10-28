@@ -75,7 +75,7 @@ reaction(
 		out(used(C1,C2,T)),
 		out_s(
 			time(T1),
-			true,
+			internal,
 			(
 				in(used(C1,C2,T)),
 				out(chop(C1)),
