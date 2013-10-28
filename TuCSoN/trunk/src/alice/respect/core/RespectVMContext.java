@@ -1084,7 +1084,7 @@ public class RespectVMContext extends
             final Struct tev =
                     new Struct("reaction", timed, new alice.tuprolog.Var("G"),
                             new alice.tuprolog.Var("R"));
-            log("theory = " + this.trigCore.getTheory());
+//            log("theory = " + this.trigCore.getTheory());
             SolveInfo info = this.trigCore.solve(tev);
             while (info.isSuccess()) {
                 foundReactions.add(info.getVarValue("Time"));
@@ -1839,22 +1839,22 @@ public class RespectVMContext extends
             if (co.isAtom()) {
                 final alice.tuprolog.Theory thspec =
                         new alice.tuprolog.Theory(co.getName());
-                int i = 0;
-                for (Iterator<? extends Term> iterator =
-                        thspec.iterator(this.trigCore); iterator.hasNext();) {
-                    Term term = iterator.next();
+//                int i = 0;
+//                for (Iterator<? extends Term> iterator =
+//                        thspec.iterator(this.trigCore); iterator.hasNext();) {
+//                    Term term = iterator.next();
 //                    log("thspec term " + i++ + " = " + term);
-                }
+//                }
 //                log("ATOM 1 > " + thspec);
                 this.core.setTheory(thspec);
                 this.trigCore.setTheory(thspec);
-                i = 0;
-                for (Iterator<? extends Term> iterator =
-                        this.trigCore.getTheory().iterator(this.trigCore); iterator
-                        .hasNext();) {
-                    Term term = iterator.next();
-                    log("term " + i++ + " = " + term);
-                }
+//                i = 0;
+//                for (Iterator<? extends Term> iterator =
+//                        this.trigCore.getTheory().iterator(this.trigCore); iterator
+//                        .hasNext();) {
+//                    Term term = iterator.next();
+//                    log("term " + i++ + " = " + term);
+//                }
 //                log("ATOM 2 > " + this.trigCore.getTheory());
             } else if (co.isList()) {
                 final alice.tuprolog.Theory thspec =
@@ -1877,7 +1877,7 @@ public class RespectVMContext extends
 
             while (it.hasNext()) {
                 final Term current = it.next();
-                log("timed = " + current);
+//                log("timed = " + current);
                 final Timer currTimer = new Timer();
                 final long timeValue =
                         ((alice.tuprolog.Number) current).longValue();
