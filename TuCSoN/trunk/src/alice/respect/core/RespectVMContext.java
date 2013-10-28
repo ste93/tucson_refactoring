@@ -374,49 +374,54 @@ public class RespectVMContext extends
     @Override
     public void fetchTimedReactions(final AbstractEvent ev) {
 
-        try {
+        if (((RespectOperation) ev.getSimpleTCEvent()).getLogicTupleArgument() != null) {
 
-            final Term timed =
-                    ((RespectOperation) ev.getSimpleTCEvent())
-                            .getLogicTupleArgument().toTerm();
-            final Struct tev =
-                    new Struct("reaction", timed, new alice.tuprolog.Var("G"),
-                            new alice.tuprolog.Var("R"));
-            SolveInfo info = this.trigCore.solve(tev);
-            alice.tuprolog.Term guard = null;
-            while (info.isSuccess()) {
-                guard = info.getVarValue("G");
-                this.currentReactionEvent = ev;
-                if (this.evalGuard(guard)) {
-                    final Term reactions = info.getVarValue("R");
-                    final Struct trigReaction =
-                            new Struct("reaction", timed, reactions);
-                    final TriggeredReaction tr =
-                            new TriggeredReaction(ev, new LogicReaction(
-                                    trigReaction));
-                    this.timeSet.add(tr);
-                    this.core.solve("retract(reaction( " + timed + ", (G),("
-                            + reactions + "))) .");
-                    this.core.solveEnd();
+            try {
+
+                final Term timed =
+                        ((RespectOperation) ev.getSimpleTCEvent())
+                                .getLogicTupleArgument().toTerm();
+                final Struct tev =
+                        new Struct("reaction", timed, new alice.tuprolog.Var(
+                                "G"), new alice.tuprolog.Var("R"));
+                SolveInfo info = this.trigCore.solve(tev);
+                alice.tuprolog.Term guard = null;
+                while (info.isSuccess()) {
+                    guard = info.getVarValue("G");
+                    this.currentReactionEvent = ev;
+                    if (this.evalGuard(guard)) {
+                        final Term reactions = info.getVarValue("R");
+                        final Struct trigReaction =
+                                new Struct("reaction", timed, reactions);
+                        final TriggeredReaction tr =
+                                new TriggeredReaction(ev, new LogicReaction(
+                                        trigReaction));
+                        this.timeSet.add(tr);
+                        this.core.solve("retract(reaction( " + timed
+                                + ", (G),(" + reactions + "))) .");
+                        this.core.solveEnd();
+                    }
+                    if (this.trigCore.hasOpenAlternatives()) {
+                        info = this.trigCore.solveNext();
+                    } else {
+                        break;
+                    }
+                    this.trigCore.solveEnd();
+                    this.trigCore.solve("retract(reaction( " + timed
+                            + ", (G),(" + info.getVarValue("R") + "))) .");
+                    this.trigCore.solveEnd();
                 }
-                if (this.trigCore.hasOpenAlternatives()) {
-                    info = this.trigCore.solveNext();
-                } else {
-                    break;
-                }
+
+            } catch (final NoMoreSolutionException e) {
                 this.trigCore.solveEnd();
-                this.trigCore.solve("retract(reaction( " + timed + ", (G),("
-                        + info.getVarValue("R") + "))) .");
+            } catch (final NoSolutionException e) {
+                this.trigCore.solveEnd();
+            } catch (final MalformedGoalException e) {
+                this.notifyException("INTERNAL ERROR: fetchTimedReactions "
+                        + ev);
                 this.trigCore.solveEnd();
             }
 
-        } catch (final NoMoreSolutionException e) {
-            this.trigCore.solveEnd();
-        } catch (final NoSolutionException e) {
-            this.trigCore.solveEnd();
-        } catch (final MalformedGoalException e) {
-            this.notifyException("INTERNAL ERROR: fetchTimedReactions " + ev);
-            this.trigCore.solveEnd();
         }
 
     }
@@ -1079,6 +1084,7 @@ public class RespectVMContext extends
             final Struct tev =
                     new Struct("reaction", timed, new alice.tuprolog.Var("G"),
                             new alice.tuprolog.Var("R"));
+            log("theory = " + this.trigCore.getTheory());
             SolveInfo info = this.trigCore.solve(tev);
             while (info.isSuccess()) {
                 foundReactions.add(info.getVarValue("Time"));
@@ -1819,6 +1825,8 @@ public class RespectVMContext extends
      */
     protected boolean setReactionSpecHelper(
             final AbstractBehaviourSpecification spec) {
+        
+//        log("spec = " + spec);
 
         if (this.transaction) {
             return false;
@@ -1831,11 +1839,27 @@ public class RespectVMContext extends
             if (co.isAtom()) {
                 final alice.tuprolog.Theory thspec =
                         new alice.tuprolog.Theory(co.getName());
+                int i = 0;
+                for (Iterator<? extends Term> iterator =
+                        thspec.iterator(this.trigCore); iterator.hasNext();) {
+                    Term term = iterator.next();
+//                    log("thspec term " + i++ + " = " + term);
+                }
+//                log("ATOM 1 > " + thspec);
                 this.core.setTheory(thspec);
                 this.trigCore.setTheory(thspec);
+                i = 0;
+                for (Iterator<? extends Term> iterator =
+                        this.trigCore.getTheory().iterator(this.trigCore); iterator
+                        .hasNext();) {
+                    Term term = iterator.next();
+                    log("term " + i++ + " = " + term);
+                }
+//                log("ATOM 2 > " + this.trigCore.getTheory());
             } else if (co.isList()) {
                 final alice.tuprolog.Theory thspec =
                         new alice.tuprolog.Theory(co);
+//                log("LIST > " + thspec);
                 this.core.setTheory(thspec);
                 this.trigCore.setTheory(thspec);
             } else {
@@ -1844,6 +1868,7 @@ public class RespectVMContext extends
             }
 
             if ((this.noReactionTh != null) && !this.isExternalSetSpec) {
+//                log("noReactionTh = " + this.noReactionTh);
                 this.core.addTheory(this.noReactionTh);
                 this.trigCore.addTheory(this.noReactionTh);
             }
@@ -1852,6 +1877,7 @@ public class RespectVMContext extends
 
             while (it.hasNext()) {
                 final Term current = it.next();
+                log("timed = " + current);
                 final Timer currTimer = new Timer();
                 final long timeValue =
                         ((alice.tuprolog.Number) current).longValue();

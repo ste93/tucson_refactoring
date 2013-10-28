@@ -823,7 +823,7 @@ public class DoubleKeyMVMap<K, Q, V> {
         final StringBuffer ret = new StringBuffer();
         final Iterator<V> it = this.iterator();
         while (it.hasNext()) {
-            ret.append(it.next().toString() + '.');
+            ret.append(it.next().toString() + ".\n");
         }
         return ret.toString();
     }

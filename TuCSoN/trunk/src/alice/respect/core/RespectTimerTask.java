@@ -30,6 +30,7 @@ public class RespectTimerTask extends TimerTask {
 
     @Override
     public void run() {
+        System.out.println("[TIME]: event = " + this.op + " at " + this.vm.getCurrentTime());
         this.vm.notifyInputEvent(new InputEvent(this.vm.getId(), this.op,
                 this.vm.getId(), this.vm.getCurrentTime()));
     }

@@ -394,7 +394,6 @@ public class SpeakingState extends AbstractTupleCentreVMState {
                 outEv.setTarget(ev.getTarget());
                 this.vm.linkOperation(outEv);
             }
-
             this.vm.fetchTriggeredReactions(outEv);
             this.noMoreSatisfiablePendingQuery = false;
             it.remove();
