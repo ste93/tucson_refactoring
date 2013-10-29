@@ -1,10 +1,10 @@
 package alice.tucson.examples.situatedness;
 
 import alice.respect.core.TransducerManager;
-import alice.respect.situated.AbstractProbeId;
-import alice.respect.situated.ISimpleProbe;
-import alice.respect.situated.TransducerId;
-import alice.respect.situated.TransducerStandardInterface;
+import alice.respect.situatedness.AbstractProbeId;
+import alice.respect.situatedness.ISimpleProbe;
+import alice.respect.situatedness.TransducerId;
+import alice.respect.situatedness.TransducerStandardInterface;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;

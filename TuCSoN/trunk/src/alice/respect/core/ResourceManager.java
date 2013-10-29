@@ -5,9 +5,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
-import alice.respect.situated.AbstractProbeId;
-import alice.respect.situated.ISimpleProbe;
-import alice.respect.situated.TransducerId;
+import alice.respect.situatedness.AbstractProbeId;
+import alice.respect.situatedness.ISimpleProbe;
+import alice.respect.situatedness.TransducerId;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 
 /**
