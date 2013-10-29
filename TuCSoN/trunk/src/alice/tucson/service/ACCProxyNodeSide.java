@@ -55,6 +55,7 @@ public class ACCProxyNodeSide extends AbstractACCProxyNodeSide {
     private final Map<Long, Long> opVsReq;
     private final Map<Long, TucsonMsgRequest> requests;
     private TucsonTupleCentreId tcId;
+    String agentName;
 
     /**
      * 
@@ -93,6 +94,7 @@ public class ACCProxyNodeSide extends AbstractACCProxyNodeSide {
                 e.printStackTrace();
             }
         }
+        this.agentName = name;
 
         this.dialog = d;
 
@@ -510,7 +512,7 @@ public class ACCProxyNodeSide extends AbstractACCProxyNodeSide {
 
     private void log(final String st) {
         System.out.println("[ACCProxyNodeSide (" + this.node.getTCPPort()
-                + ", " + this.ctxId + ")]: " + st);
+                + ", " + this.ctxId + ", " + this.agentName + ")]: " + st);
     }
 
 }

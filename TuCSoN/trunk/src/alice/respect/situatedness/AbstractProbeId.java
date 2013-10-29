@@ -14,7 +14,7 @@ public abstract class AbstractProbeId extends EnvId {
     /**
      * 
      */
-    protected Term id;
+//    protected Term id;
 
     /**
      * Constructs a probe identifier

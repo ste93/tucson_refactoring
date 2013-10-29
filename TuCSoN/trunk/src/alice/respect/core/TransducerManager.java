@@ -122,12 +122,20 @@ public final class TransducerManager {
         final String normClassName =
                 className.substring(1, className.length() - 1);
         final Class<?> c = Class.forName(normClassName);
+        TransducerManager.speak("c.getName() = " + c.getName());
+        // final Constructor<?> ctor =
+        // c.getConstructor(new Class[] { TransducerId.class,
+        // TupleCentreId.class, AbstractProbeId.class });
         final Constructor<?> ctor =
                 c.getConstructor(new Class[] { TransducerId.class,
-                        TupleCentreId.class, AbstractProbeId.class });
+                        TupleCentreId.class });
+        TransducerManager.speak("ctor = " + ctor);
+        // final AbstractTransducer t =
+        // (AbstractTransducer) ctor.newInstance(new Object[] { id, tcId,
+        // probeId });
         final AbstractTransducer t =
-                (AbstractTransducer) ctor.newInstance(new Object[] { id, tcId,
-                        probeId });
+                (AbstractTransducer) ctor
+                        .newInstance(new Object[] { id, tcId });
         TransducerManager.transducerList.put(id, t);
 
         // Adding probe to the transducer

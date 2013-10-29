@@ -1,7 +1,6 @@
 package alice.tucson.service;
 
 import java.io.IOException;
-import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -86,7 +85,7 @@ public class OperationHandler {
                 try {
                     msg = this.dialog.receiveMsgReply();
                 } catch (final DialogException e) {
-                    OperationHandler
+                    OperationHandler.this
                             .log("TuCSoN node service unavailable, nothing I can do");
                     this.setStop();
                     break;
@@ -261,24 +260,14 @@ public class OperationHandler {
     private static final int TRIES = 3;
 
     /**
-     * Method internally used to log proxy activity (could be used for debug)
-     * 
-     * @param msg
-     *            String to display on the standard output
-     */
-    private static void log(final String msg) {
-        System.out.println("[OperationHandler]: " + msg);
-    }
-
-    /**
      * Active sessions toward different nodes
      */
     protected Map<String, ControllerSession> controllerSessions;
+
     /**
      * TuCSoN requests completion events (node replies events)
      */
     protected List<TucsonOpCompletionEvent> events;
-
     /**
      * Expired TuCSoN operations
      */
@@ -567,8 +556,8 @@ public class OperationHandler {
             final TucsonMsgRequest msg =
                     new TucsonMsgRequest(op.getId(), op.getType(),
                             tcid.toString(), op.getLogicTupleArgument());
-            OperationHandler.log("requesting op " + msg.getType() + ", "
-                    + msg.getTuple() + ", " + msg.getTid());
+            this.log("requesting op " + msg.getType() + ", " + msg.getTuple()
+                    + ", " + msg.getTid());
 
             try {
                 session.sendMsgRequest(msg);
@@ -694,5 +683,16 @@ public class OperationHandler {
         synchronized (this.events) {
             this.events.add(this.events.size(), ev);
         }
+    }
+
+    /**
+     * Method internally used to log proxy activity (could be used for debug)
+     * 
+     * @param msg
+     *            String to display on the standard output
+     */
+    void log(final String msg) {
+        System.out.println("..[OperationHandler ("
+                + this.profile.getProperty("agent-identity") + ")]: " + msg);
     }
 }

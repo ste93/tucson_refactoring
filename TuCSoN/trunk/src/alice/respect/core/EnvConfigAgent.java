@@ -116,9 +116,9 @@ public class EnvConfigAgent extends AbstractTucsonAgent {
                             new TupleCentreId(tcName, tcNodeAndPort[0],
                                     tcNodeAndPort[1]);
                     EnvConfigAgent
-                            .speak("Serving create transducer request. TransducerId:"
+                            .speak("Serving create transducer request. TransducerId: "
                                     + tId
-                                    + " TC Associated:"
+                                    + " TC Associated: "
                                     + t.getArg(0).toString());
                     // Obtaining resource
                     final AbstractProbeId pId =
@@ -127,6 +127,9 @@ public class EnvConfigAgent extends AbstractTucsonAgent {
                             t.getArg(3).toString(), pId);
                     TransducerManager.getTransducerManager();
                     // Building transducer
+                    EnvConfigAgent.speak("t.getArg(1) = " + t.getArg(1)
+                            + ", tId = " + tId + ", tcId = " + tcId
+                            + ", pId = " + pId);
                     TransducerManager.createTransducer(t.getArg(1).toString(),
                             tId, tcId, pId);
                 } else if (EnvConfigAgent.CREATE_TRANSDUCER_ACTUATOR.equals(t

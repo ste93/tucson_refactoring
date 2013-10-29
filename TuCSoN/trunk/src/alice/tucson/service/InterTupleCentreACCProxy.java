@@ -91,8 +91,7 @@ public class InterTupleCentreACCProxy implements InterTupleCentreACC,
                 try {
                     msg = this.dialog.receiveMsgReply();
                 } catch (final DialogException e) {
-                    InterTupleCentreACCProxy
-                            .log("TuCSoN node service unavailable, nothing I can do");
+                    log("TuCSoN node service unavailable, nothing I can do");
                     this.setStop();
                     break;
                 }
@@ -175,14 +174,12 @@ public class InterTupleCentreACCProxy implements InterTupleCentreACC,
                 if (op.isNoAll() || op.isInAll() || op.isRdAll() || op.isGet()
                         || op.isSet() || op.isGetS() || op.isSetS()
                         || op.isOutAll()) {
-                    InterTupleCentreACCProxy.log("received completion msg "
-                            + msg.getId() + ", op " + op.getType() + ", "
-                            + op.getTupleListResult());
+                    log("received completion msg " + msg.getId() + ", op "
+                            + op.getType() + ", " + op.getTupleListResult());
                     op.setTupleListResult((List<Tuple>) msg.getTupleResult());
                 } else {
-                    InterTupleCentreACCProxy.log("received completion msg "
-                            + msg.getId() + ", op " + op.getType() + ", "
-                            + op.getTupleResult());
+                    log("received completion msg " + msg.getId() + ", op "
+                            + op.getType() + ", " + op.getTupleResult());
                     op.setTupleResult((LogicTuple) msg.getTupleResult());
                 }
                 if (msg.isResultSuccess()) {
@@ -240,8 +237,9 @@ public class InterTupleCentreACCProxy implements InterTupleCentreACC,
 
     private static final int TRIES = 3;
 
-    private static void log(final String msg) {
-        System.out.println("[InterTupleCentreACCProxy]: " + msg);
+    void log(final String msg) {
+        System.out.println("[InterTupleCentreACCProxy ("
+                + this.profile.getProperty("tc-identity") + ")]: " + msg);
     }
 
     // aid e' il tuplecentre source
@@ -352,9 +350,8 @@ public class InterTupleCentreACCProxy implements InterTupleCentreACC,
                         new TucsonMsgRequest(this.opId, type, tcid.toString(),
                                 (LogicTuple) op.getTemplateArgument());
             }
-            InterTupleCentreACCProxy.log("sending msg " + msg.getId()
-                    + ", op = " + msg.getType() + ", " + msg.getTuple() + ", "
-                    + msg.getTid());
+            this.log("sending msg " + msg.getId() + ", op = " + msg.getType()
+                    + ", " + msg.getTuple() + ", " + msg.getTid());
             try {
                 session.sendMsgRequest(msg);
             } catch (final DialogException e) {
@@ -435,22 +432,25 @@ public class InterTupleCentreACCProxy implements InterTupleCentreACC,
         if (tc != null) {
             return tc.getSession();
         }
-//      if (InetAddress.getLoopbackAddress().getHostName().equals(opNode)) {
-      if ("localhost".equals(opNode)) {
-          tc =
-//                  this.controllerSessions.get(InetAddress
-//                          .getLoopbackAddress().getHostAddress()
-//                          .concat(String.valueOf(p)));
-                  this.controllerSessions.get("127.0.0.1".concat(String.valueOf(port)));
-      }
-//      if (InetAddress.getLoopbackAddress().getHostAddress().equals(opNode)) {
-      if ("127.0.0.1".equals(opNode)) {
-          tc =
-//                  this.controllerSessions.get(InetAddress
-//                          .getLoopbackAddress().getHostName()
-//                          .concat(String.valueOf(p)));
-                  this.controllerSessions.get("localhost".concat(String.valueOf(port)));
-      }
+        // if (InetAddress.getLoopbackAddress().getHostName().equals(opNode)) {
+        if ("localhost".equals(opNode)) {
+            tc =
+            // this.controllerSessions.get(InetAddress
+            // .getLoopbackAddress().getHostAddress()
+            // .concat(String.valueOf(p)));
+                    this.controllerSessions.get("127.0.0.1".concat(String
+                            .valueOf(port)));
+        }
+        // if (InetAddress.getLoopbackAddress().getHostAddress().equals(opNode))
+        // {
+        if ("127.0.0.1".equals(opNode)) {
+            tc =
+            // this.controllerSessions.get(InetAddress
+            // .getLoopbackAddress().getHostName()
+            // .concat(String.valueOf(p)));
+                    this.controllerSessions.get("localhost".concat(String
+                            .valueOf(port)));
+        }
         if (tc != null) {
             return tc.getSession();
         }
