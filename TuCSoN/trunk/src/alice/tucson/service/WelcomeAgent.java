@@ -29,7 +29,7 @@ import alice.tucson.network.exceptions.DialogException;
 public class WelcomeAgent extends Thread {
 
     private static void log(final String st) {
-        System.out.println("[WelcomeAgent]: " + st);
+        System.out.println("..[WelcomeAgent]: " + st);
     }
 
     private final ACCProvider contextManager;

@@ -44,7 +44,7 @@ public class ACCProvider {
     private static final int WAITING_TIME = 5;
 
     private static void log(final String st) {
-        System.out.println("[ACCProvider]: " + st);
+        System.out.println("..[ACCProvider]: " + st);
     }
 
     private TucsonAgentId aid;

@@ -42,7 +42,7 @@ public final class ResourceManager {
      *            message to print
      */
     private static void speak(final String msg) {
-        System.out.println("[ResourceManager] " + msg);
+        System.out.println("..[ResourceManager] " + msg);
     }
 
     private static void speakErr(final String msg) {

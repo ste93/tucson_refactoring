@@ -122,14 +122,14 @@ public final class TransducerManager {
         final String normClassName =
                 className.substring(1, className.length() - 1);
         final Class<?> c = Class.forName(normClassName);
-        TransducerManager.speak("c.getName() = " + c.getName());
+//        TransducerManager.speak("c.getName() = " + c.getName());
         // final Constructor<?> ctor =
         // c.getConstructor(new Class[] { TransducerId.class,
         // TupleCentreId.class, AbstractProbeId.class });
         final Constructor<?> ctor =
                 c.getConstructor(new Class[] { TransducerId.class,
                         TupleCentreId.class });
-        TransducerManager.speak("ctor = " + ctor);
+//        TransducerManager.speak("ctor = " + ctor);
         // final AbstractTransducer t =
         // (AbstractTransducer) ctor.newInstance(new Object[] { id, tcId,
         // probeId });
@@ -333,7 +333,7 @@ public final class TransducerManager {
      *            message to print.
      */
     private static void speak(final String msg) {
-        System.out.println("[TransducerManager] " + msg);
+        System.out.println("..[TransducerManager] " + msg);
     }
 
     private static void speakErr(final String msg) {
