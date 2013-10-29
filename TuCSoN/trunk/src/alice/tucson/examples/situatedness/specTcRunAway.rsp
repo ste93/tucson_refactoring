@@ -76,6 +76,6 @@ reaction(
 		in(direction(Angle, Speed)), 
 		rd(threshold(Th)), 
 		Speed >= Th,
-		tc_motor ? out(data(command(Angle,Speed)))
+		tc_motor@localhost:20504 ? out(data(command(Angle,Speed)))
 	)
 ).

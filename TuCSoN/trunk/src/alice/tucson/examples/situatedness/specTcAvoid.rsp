@@ -77,7 +77,7 @@ reaction(
 		% select_direction(A,S,A1,S1,Ao,So),
 		% out(selected_direction(Ao,So)),
 		out(selected_direction(A1,S1)),
-		tc_motor ? in(can_suppress(tc_runaway,tc_avoid,5000)) 
+		tc_motor@localhost:20504 ? in(can_suppress(tc_runaway,tc_avoid,5000)) 
 	)
 ).
 
@@ -86,6 +86,6 @@ reaction(
 	(response, exo),
 	( 
 		in(selected_direction(Ao,So)),
-		tc_motor ? out(command(Ao,So)) 
+		tc_motor@localhost:20504 ? out(command(Ao,So)) 
 	)
 ).

@@ -74,10 +74,10 @@ reaction(
 	time(1000),
 	endo,
 	(
-		tc_u1 @ localhost : 20504 ? rd(reading(distance,X)),
-		tc_u2 @ localhost : 20504 ? rd(reading(distance,X)),
-		tc_u3 @ localhost : 20504 ? rd(reading(distance,X)),
-		tc_u4 @ localhost : 20504 ? rd(reading(distance,X)),
+		tc_u1@localhost:20504 ? rd(reading(distance,X)),
+		tc_u2@localhost:20504 ? rd(reading(distance,X)),
+		tc_u3@localhost:20504 ? rd(reading(distance,X)),
+		tc_u4@localhost:20504 ? rd(reading(distance,X)),
 		out(done)
 	)
 ).
@@ -92,10 +92,10 @@ reaction(
 		out_s(	time(NewTime),
 				endo,
 				(
-					tc_u1 @ localhost : 20504 ? rd(reading(distance,X)),
-					tc_u2 @ localhost : 20504 ? rd(reading(distance,X)),
-					tc_u3 @ localhost : 20504 ? rd(reading(distance,X)),
-					tc_u4 @ localhost : 20504 ? rd(reading(distance,X)),
+					tc_u1@localhost:20504 ? rd(reading(distance,X)),
+					tc_u2@localhost:20504 ? rd(reading(distance,X)),
+					tc_u3@localhost:20504 ? rd(reading(distance,X)),
+					tc_u4@localhost:20504 ? rd(reading(distance,X)),
 					out(done)
 				)
 		)
@@ -106,7 +106,7 @@ reaction(
 	rd(reading(distance,X)),
 	( link_out, success ),
 	(
-		event_target( tc_u1@localhost:20504 ),
+		event_target(tc_u1@localhost:20504),
 		in( distance(front,OldValue) ),
 		out( distance(front,X) )
 	)
@@ -116,7 +116,7 @@ reaction(
 	rd(reading(distance,X)),
 	( link_out, success ),
 	(
-		event_target( tc_u2@localhost:20504 ),
+		event_target(tc_u2@localhost:20504),
 		in( distance(right,OldValue) ),
 		out( distance(right,X) )
 	)
@@ -126,7 +126,7 @@ reaction(
 	rd(reading(distance,X)),
 	( link_out, success ),
 	(
-		event_target( tc_u3@localhost:20504 ),
+		event_target(tc_u3@localhost:20504),
 		in( distance(back,OldValue) ),
 		out( distance(back,X) )
 	)
@@ -136,7 +136,7 @@ reaction(
 	rd(reading(distance,X)),
 	( link_out, success ),
 	(
-		event_target( tc_u4@localhost:20504 ),
+		event_target(tc_u4@localhost:20504),
 		in( distance(left,OldValue) ),
 		out( distance(left,X) )
 	)
@@ -146,7 +146,7 @@ reaction(
 	rd(reading(distance,X)),
 	( link_out, success ),
 	(
-		event_target( tc_u1@localhost:20504 ),
+		event_target(tc_u1@localhost:20504),
 		no( distance(front,OldValue) ),
 		out( distance(front,X) )
 	)
@@ -156,7 +156,7 @@ reaction(
 	rd(reading(distance,X)),
 	( link_out, success ),
 	(
-		event_target( tc_u2@localhost:20504 ),
+		event_target(tc_u2@localhost:20504),
 		no( distance(right,OldValue) ),
 		out( distance(right,X) )
 	)
@@ -166,7 +166,7 @@ reaction(
 	rd(reading(distance,X)),
 	( link_out, success ),
 	(
-		event_target( tc_u3@localhost:20504 ),
+		event_target(tc_u3@localhost:20504),
 		no( distance(back,OldValue) ),
 		out( distance(back,X) )
 	)
@@ -176,7 +176,7 @@ reaction(
 	rd(reading(distance,X)),
 	( link_out, success ),
 	(
-		event_target( tc_u4@localhost:20504 ),
+		event_target(tc_u4@localhost:20504),
 		no( distance(left,OldValue) ),
 		out( distance(left,X) )
 	)

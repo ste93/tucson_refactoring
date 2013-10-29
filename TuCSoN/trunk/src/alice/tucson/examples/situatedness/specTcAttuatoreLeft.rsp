@@ -3,6 +3,6 @@ reaction(
 			response,
 			(
 				in(command(Key,Value)), 
-				servoMotorActuatorLeft ? setEnv(Key,Value)
+				servoMotorActuatorLeft@localhost:20504 ? setEnv(Key,Value)
 			)
 		).

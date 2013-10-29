@@ -441,7 +441,7 @@ public class OperationHandler {
         if ("alice.tucson.api.TucsonTupleCentreId".equals(tid.getClass()
                 .getName())) {
             tcid = (TucsonTupleCentreId) tid;
-        } else if ("alice.tucson.api.TupleCentreId".equals(tid.getClass()
+        } else if ("alice.respect.api.TupleCentreId".equals(tid.getClass()
                 .getName())) {
             tcid = new TucsonTupleCentreId((TupleCentreId) tid);
             log("tcid = " + tcid);

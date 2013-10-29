@@ -84,8 +84,8 @@ reaction(
 	endo,
 	(
 		in(halt),
-		tc_m1 ? out(command(power,0)),
-		tc_m2 ? out(command(power,0)) 
+		tc_m1@localhost:20504 ? out(command(power,0)),
+		tc_m2@localhost:20504 ? out(command(power,0)) 
 	)
 ).
 
