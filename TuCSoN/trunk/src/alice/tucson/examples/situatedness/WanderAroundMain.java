@@ -310,7 +310,7 @@ public class WanderAroundMain extends AbstractTucsonAgent {
             WanderAroundMain.createTCs();
             WanderAroundMain.createTransducers();
 
-            Thread.sleep(1500);
+            Thread.sleep(3000);
 
             WanderAroundMain.createAgents();
 

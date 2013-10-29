@@ -9,7 +9,7 @@ import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 
 public class AgentWander extends AbstractTucsonAgent {
-    
+
     private static final String DEFAULT_PORT = "20504";
 
     private boolean iteraction = true;
@@ -52,6 +52,7 @@ public class AgentWander extends AbstractTucsonAgent {
                         LogicTuple.parse("data(random_direction(" + angle + ","
                                 + speed + "))");
                 acc.out(tcAvoid, t, null);
+                Thread.sleep(5000);
             } catch (final Exception e) {
                 System.err.println(e.toString());
             }

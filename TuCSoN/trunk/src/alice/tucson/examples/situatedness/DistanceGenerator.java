@@ -52,7 +52,7 @@ public class DistanceGenerator extends Thread {
                     }
                 }
 
-                Thread.sleep(1000);
+                Thread.sleep(3000);
             } catch (final Exception e) {
                 e.printStackTrace();
             }

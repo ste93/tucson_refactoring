@@ -8,7 +8,7 @@ import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 
 public class AgentCollide extends AbstractTucsonAgent {
-    
+
     private static final String DEFAULT_PORT = "20504";
 
     private boolean iteraction = true;
@@ -51,11 +51,11 @@ public class AgentCollide extends AbstractTucsonAgent {
                 t = LogicTuple.parse("distance(front,X)");
                 t = acc.rdp(tcSonar, t, null).getLogicTupleResult();
 
-                if (t.getArg(1).intValue() < 15) {
+                if (!t.getArg(1).isVar() && t.getArg(1).intValue() < 15) {
                     t = LogicTuple.parse("data(halt)");
                     acc.out(tcMotor, t, null);
                 }
-
+                Thread.sleep(1000);
             } catch (final Exception e) {
                 System.err.println(e.toString());
             }

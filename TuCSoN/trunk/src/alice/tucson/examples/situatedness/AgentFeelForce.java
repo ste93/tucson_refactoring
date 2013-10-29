@@ -9,14 +9,15 @@ import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 
 public class AgentFeelForce extends AbstractTucsonAgent {
-    
+
     private static final String DEFAULT_PORT = "20504";
 
     private int angle, speed;
 
     private boolean iteraction = true;
 
-    public AgentFeelForce(final String aid) throws TucsonInvalidAgentIdException {
+    public AgentFeelForce(final String aid)
+            throws TucsonInvalidAgentIdException {
         super(aid);
     }
 
@@ -37,7 +38,7 @@ public class AgentFeelForce extends AbstractTucsonAgent {
         TucsonTupleCentreId tcSonar = null;
         TucsonTupleCentreId tcRunaway = null;
         TucsonTupleCentreId tcAvoid = null;
-        int front, right, back, left;
+        int front = 0, right = 0, back = 0, left = 0;
         LogicTuple t;
 
         try {
@@ -57,21 +58,25 @@ public class AgentFeelForce extends AbstractTucsonAgent {
         while (this.iteraction) {
             try {
                 t = LogicTuple.parse("distance(front,X)");
-                front =
-                        acc.rdp(tcSonar, t, null).getLogicTupleResult()
-                                .getArg(1).intValue();
+                t = acc.rdp(tcSonar, t, null).getLogicTupleResult();
+                if (!t.getArg(1).isVar()) {
+                    front = t.getArg(1).intValue();
+                }
                 t = LogicTuple.parse("distance(right,X)");
-                right =
-                        acc.rdp(tcSonar, t, null).getLogicTupleResult()
-                                .getArg(1).intValue();
+                t = acc.rdp(tcSonar, t, null).getLogicTupleResult();
+                if (!t.getArg(1).isVar()) {
+                    right = t.getArg(1).intValue();
+                }
                 t = LogicTuple.parse("distance(back,X)");
-                back =
-                        acc.rdp(tcSonar, t, null).getLogicTupleResult()
-                                .getArg(1).intValue();
+                t = acc.rdp(tcSonar, t, null).getLogicTupleResult();
+                if (!t.getArg(1).isVar()) {
+                    back = t.getArg(1).intValue();
+                }
                 t = LogicTuple.parse("distance(left,X)");
-                left =
-                        acc.rdp(tcSonar, t, null).getLogicTupleResult()
-                                .getArg(1).intValue();
+                t = acc.rdp(tcSonar, t, null).getLogicTupleResult();
+                if (!t.getArg(1).isVar()) {
+                    left = t.getArg(1).intValue();
+                }
 
                 // System.out.println("[AG_FEELFORCE] F: "+front+" | R: "+right+" | B: "+back+" | L: "+left);
                 this.computeDirection(front, right, back, left, this.angle,
@@ -84,7 +89,7 @@ public class AgentFeelForce extends AbstractTucsonAgent {
                 acc.out(tcRunaway, t, null);
                 acc.out(tcAvoid, t, null);
 
-                Thread.sleep(1000);
+                Thread.sleep(3000);
             } catch (final Exception e) {
                 System.err.println(e.toString());
             }
