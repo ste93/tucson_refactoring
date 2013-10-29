@@ -58,4 +58,9 @@ public class EnvId implements IId, java.io.Serializable {
         return this.id.getTerm();
     }
 
+    @Override
+    public String toString() {
+        return this.toTerm().toString();
+    }
+
 }

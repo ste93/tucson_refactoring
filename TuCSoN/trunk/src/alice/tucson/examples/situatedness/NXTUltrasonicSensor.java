@@ -21,6 +21,7 @@ public class NXTUltrasonicSensor implements ISimpleProbe, ISensorEventListener {
         this.id = i;
         final DistanceGenerator resource = new DistanceGenerator();
         resource.addListener(this);
+        resource.start();
     }
 
     public AbstractProbeId getIdentifier() {

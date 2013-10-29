@@ -13,7 +13,6 @@ public class DistanceGenerator extends Thread {
         super();
         this.listeners = new ArrayList<ISensorEventListener>();
         this.gui = NxtSimulatorGUI.getNxtSimulatorGUI();
-        this.start();
     }
 
     public void addListener(final ISensorEventListener l) {
@@ -32,25 +31,26 @@ public class DistanceGenerator extends Thread {
     public void run() {
         while (DistanceGenerator.ITERATE) {
             try {
-                for (int i = 0; i < this.listeners.size(); i++) {
-                    if ("ultrasonicSensorFront".equals(this.listeners.get(i)
-                            .getListenerName())) {
-                        this.listeners.get(i).notifyEvent("distance",
-                                this.gui.getDistance("front"));
-                    } else if ("ultrasonicSensorRight".equals(this.listeners
-                            .get(i).getListenerName())) {
-                        this.listeners.get(i).notifyEvent("distance",
-                                this.gui.getDistance("right"));
-                    } else if ("ultrasonicSensorBack".equals(this.listeners
-                            .get(i).getListenerName())) {
-                        this.listeners.get(i).notifyEvent("distance",
-                                this.gui.getDistance("back"));
-                    } else if ("ultrasonicSensorLeft".equals(this.listeners
-                            .get(i).getListenerName())) {
-                        this.listeners.get(i).notifyEvent("distance",
-                                this.gui.getDistance("left"));
-                    }
-                }
+                System.out.println("[GEN]: listeners = " + this.listeners.size());
+//                for (int i = 0; i < this.listeners.size(); i++) {
+//                    if ("ultrasonicSensorFront".equals(this.listeners.get(i)
+//                            .getListenerName())) {
+//                        this.listeners.get(i).notifyEvent("distance",
+//                                this.gui.getDistance("front"));
+//                    } else if ("ultrasonicSensorRight".equals(this.listeners
+//                            .get(i).getListenerName())) {
+//                        this.listeners.get(i).notifyEvent("distance",
+//                                this.gui.getDistance("right"));
+//                    } else if ("ultrasonicSensorBack".equals(this.listeners
+//                            .get(i).getListenerName())) {
+//                        this.listeners.get(i).notifyEvent("distance",
+//                                this.gui.getDistance("back"));
+//                    } else if ("ultrasonicSensorLeft".equals(this.listeners
+//                            .get(i).getListenerName())) {
+//                        this.listeners.get(i).notifyEvent("distance",
+//                                this.gui.getDistance("left"));
+//                    }
+//                }
 
                 Thread.sleep(3000);
             } catch (final Exception e) {
