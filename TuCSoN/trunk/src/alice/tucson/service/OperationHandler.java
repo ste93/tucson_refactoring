@@ -698,7 +698,7 @@ public class OperationHandler {
      *            String to display on the standard output
      */
     void log(final String msg) {
-        System.out.println("..[OperationHandler ("
+        System.out.println("....[OperationHandler ("
                 + this.profile.getProperty("agent-identity") + ")]: " + msg);
     }
 }

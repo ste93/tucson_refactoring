@@ -69,7 +69,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     }
 
     private static void log(final String s) {
-        System.out.println("....[Respect2PLibrary]: " + s);
+        System.out.println("......[Respect2PLibrary]: " + s);
     }
 
     private RespectVMContext vm;

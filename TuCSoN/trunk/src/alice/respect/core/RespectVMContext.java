@@ -1925,7 +1925,7 @@ public class RespectVMContext extends
     }
 
     private void log(final String s) {
-        System.out.println("..[RespectVMContext ("
+        System.out.println("....[RespectVMContext ("
                 + ((alice.respect.api.TupleCentreId) this.getId()).getName()
                 + "@"
                 + ((alice.respect.api.TupleCentreId) this.getId()).getNode()

@@ -511,7 +511,7 @@ public class ACCProxyNodeSide extends AbstractACCProxyNodeSide {
     }
 
     private void log(final String st) {
-        System.out.println("[ACCProxyNodeSide (" + this.node.getTCPPort()
+        System.out.println("..[ACCProxyNodeSide (" + this.node.getTCPPort()
                 + ", " + this.ctxId + ", " + this.agentName + ")]: " + st);
     }
 

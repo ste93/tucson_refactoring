@@ -238,7 +238,7 @@ public class InterTupleCentreACCProxy implements InterTupleCentreACC,
     private static final int TRIES = 3;
 
     void log(final String msg) {
-        System.out.println("[InterTupleCentreACCProxy ("
+        System.out.println("..[InterTupleCentreACCProxy ("
                 + this.profile.getProperty("tc-identity") + ")]: " + msg);
     }
 
