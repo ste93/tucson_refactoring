@@ -421,9 +421,9 @@ public final class TupleCentreContainer {
         final HashMap<String, String> eventMap = new HashMap<String, String>();
         eventMap.put("id", aid.toString());
         InputEvent event = null;
-        TransducerManager.getTransducerManager();
+        TransducerManager tm = TransducerManager.INSTANCE;
         TransducerStandardInterface transducer =
-                TransducerManager.getTransducer(aid.getAgentName());
+                tm.getTransducer(aid.getAgentName());
         if (t != null) {
             // It's an event performed by a transducer. In other words, it's an
             // environment event
@@ -443,20 +443,12 @@ public final class TupleCentreContainer {
             final InternalEvent internalEv =
                     new InternalEvent(event, InternalOperation.makeGetEnv(t));
             internalEv.setSource(tid.getInternalTupleCentreId()); // Set
-            TransducerManager.getTransducerManager();
-            // the
-            // source
-            // of
-            // the
-            // event
+            // the source of the event
             final TransducerId[] tIds =
-                    TransducerManager.getTransducerIds(tid
-                            .getInternalTupleCentreId());
+                    tm.getTransducerIds(tid.getInternalTupleCentreId());
             for (final TransducerId tId2 : tIds) {
                 internalEv.setTarget(tId2); // Set target resource
-                TransducerManager.getTransducerManager();
-                transducer =
-                        TransducerManager.getTransducer(tId2.getAgentName());
+                transducer = tm.getTransducer(tId2.getAgentName());
                 transducer.notifyOutput(internalEv);
             }
         }
@@ -522,19 +514,13 @@ public final class TupleCentreContainer {
         final InternalEvent internalEv =
                 new InternalEvent(event, InternalOperation.makeGetEnv(t));
         internalEv.setSource(tid.getInternalTupleCentreId()); // Set
-        TransducerManager.getTransducerManager();
-        // the
-        // source
-        // of
-        // the
-        // event
+        TransducerManager tm = TransducerManager.INSTANCE;
+        // the source of the event
         final TransducerId[] tIds =
-                TransducerManager.getTransducerIds(tid
-                        .getInternalTupleCentreId());
+                tm.getTransducerIds(tid.getInternalTupleCentreId());
         for (final TransducerId tId2 : tIds) {
             internalEv.setTarget(tId2); // Set target resource
-            TransducerManager.getTransducerManager();
-            transducer = TransducerManager.getTransducer(tId2.getAgentName());
+            transducer = tm.getTransducer(tId2.getAgentName());
             transducer.notifyOutput(internalEv);
         }
 

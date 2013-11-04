@@ -1,3 +1,6 @@
+/**
+ * ResourcesChief.java
+ */
 package alice.respect.core;
 
 import java.lang.reflect.Constructor;
@@ -11,29 +14,11 @@ import alice.respect.situatedness.TransducerId;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 
 /**
- * 
- * Class used for managing probes.
- * 
- * @author Steven maraldi
+ * @author ste (mailto: s.mariani@unibo.it) on 04/nov/2013
  * 
  */
-public final class ResourceManager {
-
-    /** The ResourceManager instance **/
-    private static ResourceManager rm;
-
-    /**
-     * Gets the static instance of the resource manager
-     * 
-     * @return the resource manager
-     */
-    public static ResourceManager getResourceManager() {
-        if (ResourceManager.rm == null) {
-            ResourceManager.rm = new ResourceManager();
-        }
-
-        return ResourceManager.rm;
-    }
+public enum ResourceManager {
+    INSTANCE;
 
     /**
      * Utility method used to communicate an output message to the console.
@@ -78,10 +63,10 @@ public final class ResourceManager {
      * @throws InvocationTargetException
      *             if the callee cannot be found
      */
-    public boolean createResource(final String className, final AbstractProbeId id)
-            throws ClassNotFoundException, NoSuchMethodException,
-            InstantiationException, IllegalAccessException,
-            InvocationTargetException {
+    public synchronized boolean createResource(final String className,
+            final AbstractProbeId id) throws ClassNotFoundException,
+            NoSuchMethodException, InstantiationException,
+            IllegalAccessException, InvocationTargetException {
         if (this.probeList.containsKey(id)) {
             ResourceManager.speakErr("The probe " + id.getLocalName()
                     + " already exist");
@@ -109,6 +94,7 @@ public final class ResourceManager {
      *            the resource's identifier
      * @return an interface toward the resource whose identifier has been given
      */
+    // FIXME Check correctness (synchronization needed?)
     public ISimpleProbe getResource(final AbstractProbeId id) {
         if (this.probeList.containsKey(id)) {
             return this.probeList.get(id);
@@ -126,6 +112,7 @@ public final class ResourceManager {
      * @return an interface toward the resource whose logical name has been
      *         given
      */
+    // FIXME Check correctness (synchronization needed?)
     public ISimpleProbe getResourceByName(final String name) {
         final Object[] keySet = this.probeList.keySet().toArray();
         for (final Object element : keySet) {
@@ -145,7 +132,7 @@ public final class ResourceManager {
      * @return wether the resource has been successfully removed
      * @throws TucsonOperationNotPossibleException
      */
-    public boolean removeResource(final AbstractProbeId id)
+    public synchronized boolean removeResource(final AbstractProbeId id)
             throws TucsonOperationNotPossibleException {
         ResourceManager.speak("Removing probe " + id.getLocalName()
                 + " from the resource list");
@@ -154,8 +141,8 @@ public final class ResourceManager {
                     + " doesn't exist");
             return false;
         }
-        TransducerManager.getTransducerManager();
-        TransducerManager.removeResource(id);
+        final TransducerManager tm = TransducerManager.INSTANCE;
+        tm.removeResource(id);
         this.probeList.remove(id);
         return true;
     }
@@ -168,11 +155,13 @@ public final class ResourceManager {
      * @param tId
      *            the transducer's identifier
      */
-    public void setTransducer(final AbstractProbeId pId, final TransducerId tId) {
+    public void
+            setTransducer(final AbstractProbeId pId, final TransducerId tId) {
         this.getResource(pId).setTransducer(tId);
         if (tId != null) {
             ResourceManager.speak("Transducer " + tId.getAgentName()
                     + " setted to probe " + pId.getLocalName());
         }
     }
+
 }

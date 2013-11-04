@@ -41,12 +41,11 @@ public class NXTUltrasonicSensor implements ISimpleProbe, ISensorEventListener {
             if ("distance".equals(key)) {
                 this.distance = value;
                 if (this.transducer == null) {
-                    TransducerManager.getTransducerManager();
                     this.speakErr("this.tId = " + this.tId
                             + ", this.tId.getAgentName() = "
                             + this.tId.getAgentName());
                     this.transducer =
-                            TransducerManager.getTransducer(this.tId
+                            TransducerManager.INSTANCE.getTransducer(this.tId
                                     .getAgentName());
                 }
                 this.transducer.notifyEnvEvent(key, this.distance);
@@ -64,9 +63,8 @@ public class NXTUltrasonicSensor implements ISimpleProbe, ISensorEventListener {
         try {
             if ("distance".equals(key)) {
                 if (this.transducer == null) {
-                    TransducerManager.getTransducerManager();
                     this.transducer =
-                            TransducerManager.getTransducer(this.tId
+                            TransducerManager.INSTANCE.getTransducer(this.tId
                                     .getAgentName());
                 }
                 this.transducer.notifyEnvEvent(key, this.distance);

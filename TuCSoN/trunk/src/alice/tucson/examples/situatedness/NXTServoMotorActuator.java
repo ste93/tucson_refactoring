@@ -35,18 +35,16 @@ public class NXTServoMotorActuator implements ISimpleProbe {
         try {
             if ("power".equals(key)) {
                 if (this.transducer == null) {
-                    TransducerManager.getTransducerManager();
                     this.transducer =
-                            TransducerManager.getTransducer(this.tId
+                            TransducerManager.INSTANCE.getTransducer(this.tId
                                     .getAgentName());
                 }
                 this.transducer.notifyEnvEvent(key, this.power);
                 return true;
             } else if ("angle".equals(key)) {
                 if (this.transducer == null) {
-                    TransducerManager.getTransducerManager();
                     this.transducer =
-                            TransducerManager.getTransducer(this.tId
+                            TransducerManager.INSTANCE.getTransducer(this.tId
                                     .getAgentName());
                 }
                 this.transducer.notifyEnvEvent(key, this.angle);

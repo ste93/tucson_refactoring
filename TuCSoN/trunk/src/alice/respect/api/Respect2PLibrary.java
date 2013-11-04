@@ -532,14 +532,12 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         internalEv.setTarget(envId); // Set target resource
         internalEv.setSource(this.vm.getId()); // Set the source of the event
 
-        TransducerManager.getTransducerManager();
+        TransducerManager tm = TransducerManager.INSTANCE;
         // Getting the transducer from the transducer manager
-        final TransducerId tId = TransducerManager.getTransducerId(envId);
+        final TransducerId tId = tm.getTransducerId(envId);
 
         try {
-            TransducerManager.getTransducerManager();
-            if (TransducerManager.getTransducer(tId.getAgentName())
-                    .notifyOutput(internalEv)) {
+            if (tm.getTransducer(tId.getAgentName()).notifyOutput(internalEv)) {
                 this.vm.fetchTriggeredReactions(internalEv);
                 return true;
             }
@@ -1411,25 +1409,25 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
             return true;
         }
         Respect2PLibrary.log("Remote out triggered...");
-//        final InputEvent ce = this.vm.getCurrentEvent();
-//        TupleCentreId newTid = null;
-//        try {
-//            newTid =
-//                    new TupleCentreId(Term.createTerm(alice.util.Tools
-//                            .removeApices(((Struct) arg1.getTerm()).getArg(0)
-//                                    .getTerm().toString()), new MyOpManager()));
-//        } catch (final InvalidTupleCentreIdException e) {
-//            e.printStackTrace();
-//            return false;
-//        }
-//        final InputEvent outEv =
-//                new InputEvent(ce.getReactingTC(), RespectOperation.makeOut(
-//                        this.getProlog(), new LogicTuple(arg0.copyGoal(v, 0)),
-//                        null), newTid, this.vm.getCurrentTime());
-//        outEv.setIsLinking(true);
-//        outEv.setTarget(newTid);
-//        this.vm.addTemporaryOutputEvent(outEv);
-//        return true;
+        // final InputEvent ce = this.vm.getCurrentEvent();
+        // TupleCentreId newTid = null;
+        // try {
+        // newTid =
+        // new TupleCentreId(Term.createTerm(alice.util.Tools
+        // .removeApices(((Struct) arg1.getTerm()).getArg(0)
+        // .getTerm().toString()), new MyOpManager()));
+        // } catch (final InvalidTupleCentreIdException e) {
+        // e.printStackTrace();
+        // return false;
+        // }
+        // final InputEvent outEv =
+        // new InputEvent(ce.getReactingTC(), RespectOperation.makeOut(
+        // this.getProlog(), new LogicTuple(arg0.copyGoal(v, 0)),
+        // null), newTid, this.vm.getCurrentTime());
+        // outEv.setIsLinking(true);
+        // outEv.setTarget(newTid);
+        // this.vm.addTemporaryOutputEvent(outEv);
+        // return true;
         final InputEvent ce = this.vm.getCurrentEvent();
         final InputEvent outEv =
                 new InputEvent(ce.getReactingTC(), RespectOperation.makeOut(
@@ -1529,7 +1527,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
             e.printStackTrace();
             return false;
         }
-        
+
         if ("this".equals(tcName)) {
             Respect2PLibrary.log("Local out_s triggered...");
             final Term newArg = goal.copyGoal(v, 0);
@@ -1955,14 +1953,12 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         internalEv.setTarget(envId);
         internalEv.setSource(this.vm.getId());
 
-        TransducerManager.getTransducerManager();
+        TransducerManager tm = TransducerManager.INSTANCE;
         // Getting the transducer from the transducer manager
-        final TransducerId tId = TransducerManager.getTransducerId(envId);
+        final TransducerId tId = tm.getTransducerId(envId);
 
         try {
-            TransducerManager.getTransducerManager();
-            if (TransducerManager.getTransducer(tId.getAgentName())
-                    .notifyOutput(internalEv)) {
+            if (tm.getTransducer(tId.getAgentName()).notifyOutput(internalEv)) {
                 this.vm.fetchTriggeredReactions(internalEv);
                 return true;
             }
