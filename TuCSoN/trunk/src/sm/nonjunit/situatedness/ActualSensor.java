@@ -33,7 +33,7 @@ public class ActualSensor implements ISimpleProbe {
 
     private EnhancedSynchACC acc;
     private final AbstractProbeId pid;
-    private TucsonTupleCentreId sensorTc;
+    private TucsonTupleCentreId tempTc;
     private TransducerId tid;
     private TransducerStandardInterface transducer;
 
@@ -44,8 +44,8 @@ public class ActualSensor implements ISimpleProbe {
             this.acc =
                     TucsonMetaACC.getContext(aid, ActualSensor.DEFAULT_HOST,
                             Integer.valueOf(ActualSensor.DEFAULT_PORT));
-            this.sensorTc =
-                    new TucsonTupleCentreId("sensorTc",
+            this.tempTc =
+                    new TucsonTupleCentreId("tempTc",
                             ActualSensor.DEFAULT_HOST,
                             ActualSensor.DEFAULT_PORT);
         } catch (final TucsonInvalidTupleCentreIdException e) {
@@ -101,9 +101,9 @@ public class ActualSensor implements ISimpleProbe {
         try {
             final LogicTuple template = LogicTuple.parse("temp(T)");
             final ITucsonOperation op =
-                    this.acc.rd(this.sensorTc, template, null);
+                    this.acc.rd(this.tempTc, template, null);
             if (op.isResultSuccess()) {
-                int temp = op.getLogicTupleResult().getVarValue("T").intValue();
+                int temp = op.getLogicTupleResult().getArg(0).intValue();
                 System.out.println("[" + this.pid + "]: temp is " + temp);
                 this.transducer.notifyEnvEvent(key, temp);
             }

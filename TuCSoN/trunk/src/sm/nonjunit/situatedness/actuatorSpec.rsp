@@ -1,0 +1,14 @@
+reaction(
+    out(act(temp(T))),
+    (operation, completion),
+    (
+        actuator@localhost:20504 ? setEnv(temp, T)
+    )
+).
+reaction(
+    setEnv(temp, T),
+    (from_env),
+    (
+        in(act(temp(T)))
+    )
+).

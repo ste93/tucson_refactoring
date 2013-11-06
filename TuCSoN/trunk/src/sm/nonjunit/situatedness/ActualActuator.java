@@ -32,7 +32,7 @@ public class ActualActuator implements ISimpleProbe {
     private final static String DEFAULT_PORT = "20504";
 
     private EnhancedSynchACC acc;
-    private TucsonTupleCentreId sensorTc;
+    private TucsonTupleCentreId tempTc;
     private final AbstractProbeId pid;
     private TransducerId tid;
     private TransducerStandardInterface transducer;
@@ -44,8 +44,8 @@ public class ActualActuator implements ISimpleProbe {
             this.acc =
                     TucsonMetaACC.getContext(aid, ActualActuator.DEFAULT_HOST,
                             Integer.valueOf(ActualActuator.DEFAULT_PORT));
-            this.sensorTc =
-                    new TucsonTupleCentreId("sensorTc",
+            this.tempTc =
+                    new TucsonTupleCentreId("tempTc",
                             ActualActuator.DEFAULT_HOST,
                             ActualActuator.DEFAULT_PORT);
         } catch (final TucsonInvalidTupleCentreIdException e) {
@@ -101,10 +101,10 @@ public class ActualActuator implements ISimpleProbe {
         try {
             final LogicTuple template = LogicTuple.parse("temp(T)");
             final ITucsonOperation op =
-                    this.acc.rd(this.sensorTc, template, null);
+                    this.acc.rd(this.tempTc, template, null);
             if (op.isResultSuccess()) {
                 final int temp =
-                        op.getLogicTupleResult().getVarValue("T").intValue();
+                        op.getLogicTupleResult().getArg(0).intValue();
                 System.out.println("[" + this.pid + "]: temp is " + temp);
                 this.transducer.notifyEnvEvent(key, temp);
             }
@@ -162,11 +162,11 @@ public class ActualActuator implements ISimpleProbe {
         try {
             final LogicTuple template = LogicTuple.parse("temp(T)");
             final ITucsonOperation op =
-                    this.acc.inp(this.sensorTc, template, null);
+                    this.acc.inp(this.tempTc, template, null);
             if (op.isResultSuccess()) {
                 final LogicTuple tempTuple =
                         LogicTuple.parse("temp(" + value + ")");
-                this.acc.out(this.sensorTc, tempTuple, null);
+                this.acc.out(this.tempTc, tempTuple, null);
                 System.out.println("[" + this.pid + "]: temp set to " + value);
                 this.transducer.notifyEnvEvent(key, value);
                 return true;

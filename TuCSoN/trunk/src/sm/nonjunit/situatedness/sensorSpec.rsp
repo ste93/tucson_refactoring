@@ -1,0 +1,21 @@
+reaction(
+    in(sense(temp(T))),
+    (operation, invocation),
+    (
+        sensor@localhost:20504 ? getEnv(temp, T)
+    )
+).
+reaction(
+    getEnv(temp, T),
+    (from_env),
+    (
+        out(sense(temp(T)))
+    )
+).
+reaction(
+    in(sense(temp(T))),
+    (operation, completion),
+    (
+        in(sense(temp(T)))
+    )
+).

@@ -3,6 +3,8 @@
  */
 package sm.nonjunit.situatedness;
 
+import java.io.IOException;
+
 import alice.logictuple.LogicTuple;
 import alice.logictuple.TupleArgument;
 import alice.logictuple.Value;
@@ -17,9 +19,8 @@ import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
-import alice.tucson.parsing.MyOpManager;
+import alice.tucson.examples.utilities.Utils;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
-import alice.tuprolog.Term;
 
 /**
  * @author ste (mailto: s.mariani@unibo.it) on 05/nov/2013
@@ -45,23 +46,35 @@ public class Thermostat {
             final TucsonTupleCentreId configTc =
                     new TucsonTupleCentreId("envConfigTC",
                             Thermostat.DEFAULT_HOST, Thermostat.DEFAULT_PORT);
+            /* Set up temperature */
+            final TucsonTupleCentreId tempTc =
+                    new TucsonTupleCentreId("tempTc", Thermostat.DEFAULT_HOST,
+                            Thermostat.DEFAULT_PORT);
+            final LogicTuple bootTemp =
+                    new LogicTuple("temp", new Value(Math.round((int) (Math
+                            .random() * 10)) + 15)); // 15 < temp < 25
+            acc.out(tempTc, bootTemp, null);
             /* Set up sensor */
             Thermostat.log(aid.toString(), "Set up sensor...");
             final TucsonTupleCentreId sensorTc =
                     new TucsonTupleCentreId("sensorTc",
                             Thermostat.DEFAULT_HOST, Thermostat.DEFAULT_PORT);
-            final LogicTuple bootTemp =
-                    new LogicTuple("temp", new Value(Math.round((int) (Math
-                            .random() * 10)) + 15)); // 15 < temp < 25
-            acc.out(sensorTc, bootTemp, null);
-            acc.outS(
-                    sensorTc,
-                    LogicTuple.parse("in(sense(temp(T)))"),
-                    LogicTuple.parse("(operation, invocation)"),
-                    new LogicTuple(
-                            Term.createTerm(
-                                    "(sensor@localhost:20504 ? getEnv(temp, T), out(sense(temp(T))))",
-                                    new MyOpManager())), null);
+            // acc.outS(
+            // sensorTc,
+            // LogicTuple.parse("in(sense(temp(T)))"),
+            // LogicTuple.parse("(operation, invocation)"),
+            // new LogicTuple(
+            // Term.createTerm(
+            // "(sensor@localhost:20504 ? getEnv(temp, T), out(sense(temp(T))))",
+            // new MyOpManager())), null);
+            try {
+                acc.setS(
+                        sensorTc,
+                        Utils.fileToString("sm/nonjunit/situatedness/sensorSpec.rsp"),
+                        null);
+            } catch (final IOException e) {
+                e.printStackTrace();
+            }
             final LogicTuple sensorTuple =
                     new LogicTuple("createTransducerSensor", new TupleArgument(
                             sensorTc.toTerm()), new Value(
@@ -75,13 +88,21 @@ public class Thermostat {
             final TucsonTupleCentreId actuatorTc =
                     new TucsonTupleCentreId("actuatorTc",
                             Thermostat.DEFAULT_HOST, Thermostat.DEFAULT_PORT);
-            acc.outS(
-                    sensorTc,
-                    LogicTuple.parse("out(act(temp(T)))"),
-                    LogicTuple.parse("(operation, completion)"),
-                    new LogicTuple(Term.createTerm(
-                            "actuator@localhost:20504 ? setEnv(temp, T)",
-                            new MyOpManager())), null);
+            // acc.outS(
+            // sensorTc,
+            // LogicTuple.parse("out(act(temp(T)))"),
+            // LogicTuple.parse("(operation, completion)"),
+            // new LogicTuple(Term.createTerm(
+            // "actuator@localhost:20504 ? setEnv(temp, T)",
+            // new MyOpManager())), null);
+            try {
+                acc.setS(
+                        actuatorTc,
+                        Utils.fileToString("sm/nonjunit/situatedness/actuatorSpec.rsp"),
+                        null);
+            } catch (final IOException e) {
+                e.printStackTrace();
+            }
             final LogicTuple actuatorTuple =
                     new LogicTuple(
                             "createTransducerActuator",
@@ -104,7 +125,9 @@ public class Thermostat {
                 /* Perception */
                 op = acc.in(sensorTc, template, null);
                 if (op.isResultSuccess()) {
-                    temp = op.getLogicTupleResult().getVarValue("T").intValue();
+                    temp =
+                            op.getLogicTupleResult().getArg(0).getArg(0)
+                                    .intValue();
                     Thermostat.log(aid.toString(), "temp is " + temp
                             + " hence...");
                     /* Reason */
