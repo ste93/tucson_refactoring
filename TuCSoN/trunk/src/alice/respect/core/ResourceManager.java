@@ -27,11 +27,11 @@ public enum ResourceManager {
      *            message to print
      */
     private static void speak(final String msg) {
-        System.out.println("..[ResourceManager] " + msg);
+        System.out.println("..[ResourceManager]: " + msg);
     }
 
     private static void speakErr(final String msg) {
-        System.err.println("[ResourceManager] " + msg);
+        System.err.println("[ResourceManager]: " + msg);
     }
 
     /** List of all probes on a single node **/
@@ -68,8 +68,8 @@ public enum ResourceManager {
             NoSuchMethodException, InstantiationException,
             IllegalAccessException, InvocationTargetException {
         if (this.probeList.containsKey(id)) {
-            ResourceManager.speakErr("The probe " + id.getLocalName()
-                    + " already exist");
+            ResourceManager.speakErr("Probe '" + id.getLocalName()
+                    + "' already exists!");
             return false;
         }
 
@@ -82,8 +82,8 @@ public enum ResourceManager {
                 (ISimpleProbe) ctor.newInstance(new Object[] { id });
 
         this.probeList.put(id, probe);
-        ResourceManager.speak("Resource " + id.getLocalName()
-                + " has been registered");
+        ResourceManager.speak("Resource '" + id.getLocalName()
+                + "' has been registered.");
         return true;
     }
 
@@ -99,8 +99,8 @@ public enum ResourceManager {
         if (this.probeList.containsKey(id)) {
             return this.probeList.get(id);
         }
-        ResourceManager.speakErr("Resource " + id.getLocalName()
-                + " isn't registered.");
+        ResourceManager.speakErr("Resource '" + id.getLocalName()
+                + "' isn't registered yet!");
         return null;
     }
 
@@ -120,7 +120,7 @@ public enum ResourceManager {
                 return this.probeList.get(element);
             }
         }
-        ResourceManager.speakErr("Resource " + name + " isn't registered.");
+        ResourceManager.speakErr("'Resource " + name + "' isn't registered yet!");
         return null;
     }
 
@@ -134,11 +134,11 @@ public enum ResourceManager {
      */
     public synchronized boolean removeResource(final AbstractProbeId id)
             throws TucsonOperationNotPossibleException {
-        ResourceManager.speak("Removing probe " + id.getLocalName()
-                + " from the resource list");
+        ResourceManager.speak("Removing probe '" + id.getLocalName()
+                + "'...");
         if (!this.probeList.containsKey(id)) {
-            ResourceManager.speakErr("Resource " + id.getLocalName()
-                    + " doesn't exist");
+            ResourceManager.speakErr("Resource '" + id.getLocalName()
+                    + "' doesn't exist!");
             return false;
         }
         final TransducerManager tm = TransducerManager.INSTANCE;
@@ -159,8 +159,8 @@ public enum ResourceManager {
             setTransducer(final AbstractProbeId pId, final TransducerId tId) {
         this.getResource(pId).setTransducer(tId);
         if (tId != null) {
-            ResourceManager.speak("Transducer " + tId.getAgentName()
-                    + " setted to probe " + pId.getLocalName());
+            ResourceManager.speak("...transducer '" + tId.getAgentName()
+                    + "' set to probe '" + pId.getLocalName() + "'.");
         }
     }
 

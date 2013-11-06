@@ -35,11 +35,11 @@ public enum TransducerManager {
      *            message to print.
      */
     private static void speak(final String msg) {
-        System.out.println("..[TransducerManager] " + msg);
+        System.out.println("..[TransducerManager]: " + msg);
     }
 
     private static void speakErr(final String msg) {
-        System.err.println("[TransducerManager] " + msg);
+        System.err.println("[TransducerManager]: " + msg);
     }
 
     /** List of the associations transducer/probes **/
@@ -71,15 +71,15 @@ public enum TransducerManager {
      */
     public synchronized boolean addResource(final AbstractProbeId id,
             final TransducerId tId, final ISimpleProbe probe) {
-        TransducerManager.speak("Adding new resource " + id.getLocalName()
-                + " to transducer " + tId.getAgentName());
+        TransducerManager.speak("Adding resource '" + id.getLocalName()
+                + "' to transducer '" + tId.getAgentName() + "'...");
         if (!this.resourceList.containsKey(tId)) {
-            TransducerManager.speakErr("Transducer " + tId.getAgentName()
-                    + " doesn't exist.");
+            TransducerManager.speakErr("Transducer '" + tId.getAgentName()
+                    + "' doesn't exist yet!");
             return false;
         } else if (this.resourceList.get(tId).contains(probe)) {
-            TransducerManager.speak("Transducer " + tId.getAgentName()
-                    + " is already associated to probe " + id.getLocalName());
+            TransducerManager.speak("Transducer '" + tId.getAgentName()
+                    + "' is already associated to probe '" + id.getLocalName() + "'.");
             return false;
         }
         this.transducerList.get(tId).addProbe(id, probe);
@@ -121,8 +121,8 @@ public enum TransducerManager {
             NoSuchMethodException, InvocationTargetException {
         // Checking if the transducer already exist
         if (this.transducerList.containsKey(id)) {
-            TransducerManager.speakErr("Transducer " + id.toString()
-                    + " is already been registered");
+            TransducerManager.speakErr("Transducer '" + id.toString()
+                    + "' is already registered!");
             return false;
         }
 
@@ -155,8 +155,8 @@ public enum TransducerManager {
         this.resourceList.put(id, probes);
         this.addResource(probeId, id,
                 ResourceManager.INSTANCE.getResource(probeId));
-        TransducerManager.speak("Transducer " + id.toString()
-                + " has been registered");
+        TransducerManager.speak("Transducer '" + id.toString()
+                + "' has been registered.");
         return true;
     }
 
@@ -170,8 +170,8 @@ public enum TransducerManager {
     // FIXME Check correctness (synchronization needed?)
     public AbstractProbeId[] getResources(final TransducerId tId) {
         if (!this.resourceList.containsKey(tId)) {
-            TransducerManager.speakErr("The transducer " + tId.getAgentName()
-                    + " doesn't exist");
+            TransducerManager.speakErr("Transducer '" + tId.getAgentName()
+                    + "' doesn't exist yet!");
             return null;
         }
         final Object[] values = this.resourceList.get(tId).toArray();
@@ -219,8 +219,8 @@ public enum TransducerManager {
                 }
             }
         }
-        TransducerManager.speakErr("The resource " + probe.getLocalName()
-                + " isn't associated to any transducer");
+        TransducerManager.speakErr("Resource '" + probe.getLocalName()
+                + "' isn't associated to any transducer yet!");
         return null;
     }
 
@@ -248,8 +248,8 @@ public enum TransducerManager {
             }
         }
         TransducerManager
-                .speakErr("There's no transducer associated to tuple centre "
-                        + tcId + " or it doesn't exist at all");
+                .speakErr("There's no transducer associated to tuple centre '"
+                        + tcId + "' yet (or it doesn't exist at all)!");
         return new TransducerId[] {};
     }
 
@@ -268,8 +268,8 @@ public enum TransducerManager {
                 return t;
             }
         }
-        TransducerManager.speakErr("The transducer " + tId.getAgentName()
-                + " doesn't exist");
+        TransducerManager.speakErr("Transducer '" + tId.getAgentName()
+                + "' doesn't exist yet!");
         return null;
     }
 
@@ -294,9 +294,9 @@ public enum TransducerManager {
                 // terminato
                 if (this.resourceList.get(tId).isEmpty()) {
                     TransducerManager
-                            .speak("Transducer "
+                            .speak("Transducer '"
                                     + tId.toString()
-                                    + " has no more resources associated. Its execution will be stopped");
+                                    + "' has no more resources associated. Its execution will be stopped.");
                     this.stopTransducer(tId);
                 }
                 return true;
@@ -316,8 +316,8 @@ public enum TransducerManager {
     public synchronized void stopTransducer(final TransducerId id)
             throws TucsonOperationNotPossibleException {
         if (!this.transducerList.containsKey(id)) {
-            TransducerManager.speakErr("The transducer " + id
-                    + " doesn't exist.");
+            TransducerManager.speakErr("Transducer '" + id
+                    + "' doesn't exist yet!");
             return;
         }
         this.transducerList.get(id).exit();
@@ -336,7 +336,7 @@ public enum TransducerManager {
         if (this.tupleCentresAssociated.get(tcAssociated).isEmpty()) {
             this.tupleCentresAssociated.remove(tcAssociated);
         }
-        TransducerManager.speak("Transducer " + id + " has been removed.");
+        TransducerManager.speak("Transducer '" + id + "' has been removed.");
     }
 
 }

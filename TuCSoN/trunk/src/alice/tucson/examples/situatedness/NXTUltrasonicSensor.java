@@ -41,8 +41,8 @@ public class NXTUltrasonicSensor implements ISimpleProbe, ISensorEventListener {
             if ("distance".equals(key)) {
                 this.distance = value;
                 if (this.transducer == null) {
-                    this.speakErr("this.tId = " + this.tId
-                            + ", this.tId.getAgentName() = "
+                    this.speakErr("this.tId = " + this.tId);
+                    this.speakErr("this.tId.getAgentName() = "
                             + this.tId.getAgentName());
                     this.transducer =
                             TransducerManager.INSTANCE.getTransducer(this.tId
