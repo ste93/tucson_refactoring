@@ -99,7 +99,7 @@ public class ActualSensor implements ISimpleProbe {
             }
         }
         try {
-            final LogicTuple template = LogicTuple.parse("temp(T)");
+            final LogicTuple template = LogicTuple.parse("temp(_)");
             final ITucsonOperation op =
                     this.acc.rd(this.tempTc, template, null);
             if (op.isResultSuccess()) {

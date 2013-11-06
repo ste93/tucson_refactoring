@@ -3,6 +3,7 @@
  */
 package sm.nonjunit.situatedness;
 
+import alice.respect.situatedness.AbstractProbeId;
 import alice.respect.situatedness.AbstractTransducer;
 import alice.respect.situatedness.ISimpleProbe;
 import alice.respect.situatedness.TransducerId;
@@ -78,6 +79,8 @@ public class ActuatorTransducer extends AbstractTransducer {
         boolean success = true;
         final Object[] keySet = this.probes.keySet().toArray();
         for (final Object element : keySet) {
+            System.out.println("[" + this.id + "]: probe = "
+                    + ((AbstractProbeId) element).toString());
             if (!((ISimpleProbe) this.probes.get(element)).writeValue(key,
                     value)) {
                 System.err.println("[" + this.id + "]: Write failure!");
@@ -85,6 +88,7 @@ public class ActuatorTransducer extends AbstractTransducer {
                 break;
             }
         }
+        System.out.println("[" + this.id + "]: success = " + success);
         return success;
     }
 

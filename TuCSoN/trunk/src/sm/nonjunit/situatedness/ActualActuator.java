@@ -79,48 +79,51 @@ public class ActualActuator implements ISimpleProbe {
      */
     @Override
     public boolean readValue(final String key) {
-        if (!"temp".equals(key)) {
-            System.err.println("[" + this.pid + "]: Unknown property " + key);
-            return false;
-        }
-        if (this.tid == null) {
-            System.err.println("[" + this.pid
-                    + "]: Don't have any transducer associated yet!");
-            return false;
-        }
-        if (this.transducer == null) {
-            this.transducer =
-                    TransducerManager.INSTANCE.getTransducer(this.tid
-                            .getAgentName());
-            if (this.transducer == null) {
-                System.err.println("[" + this.pid
-                        + "]: Can't retrieve my transducer!");
-                return false;
-            }
-        }
-        try {
-            final LogicTuple template = LogicTuple.parse("temp(T)");
-            final ITucsonOperation op =
-                    this.acc.rd(this.tempTc, template, null);
-            if (op.isResultSuccess()) {
-                final int temp =
-                        op.getLogicTupleResult().getArg(0).intValue();
-                System.out.println("[" + this.pid + "]: temp is " + temp);
-                this.transducer.notifyEnvEvent(key, temp);
-            }
-            return true;
-        } catch (final TucsonOperationNotPossibleException e) {
-            e.printStackTrace();
-        } catch (final UnreachableNodeException e) {
-            e.printStackTrace();
-        } catch (final OperationTimeOutException e) {
-            e.printStackTrace();
-        } catch (final InvalidTupleOperationException e) {
-            e.printStackTrace();
-        } catch (final InvalidLogicTupleException e) {
-            e.printStackTrace();
-        }
+        System.err.println("[" + this.pid
+                + "]: I'm an actuator, I can't sense values!");
         return false;
+        // if (!"temp".equals(key)) {
+        // System.err.println("[" + this.pid + "]: Unknown property " + key);
+        // return false;
+        // }
+        // if (this.tid == null) {
+        // System.err.println("[" + this.pid
+        // + "]: Don't have any transducer associated yet!");
+        // return false;
+        // }
+        // if (this.transducer == null) {
+        // this.transducer =
+        // TransducerManager.INSTANCE.getTransducer(this.tid
+        // .getAgentName());
+        // if (this.transducer == null) {
+        // System.err.println("[" + this.pid
+        // + "]: Can't retrieve my transducer!");
+        // return false;
+        // }
+        // }
+        // try {
+        // final LogicTuple template = LogicTuple.parse("temp(_)");
+        // final ITucsonOperation op =
+        // this.acc.rd(this.tempTc, template, null);
+        // if (op.isResultSuccess()) {
+        // final int temp =
+        // op.getLogicTupleResult().getArg(0).intValue();
+        // System.out.println("[" + this.pid + "]: temp is " + temp);
+        // this.transducer.notifyEnvEvent(key, temp);
+        // }
+        // return true;
+        // } catch (final TucsonOperationNotPossibleException e) {
+        // e.printStackTrace();
+        // } catch (final UnreachableNodeException e) {
+        // e.printStackTrace();
+        // } catch (final OperationTimeOutException e) {
+        // e.printStackTrace();
+        // } catch (final InvalidTupleOperationException e) {
+        // e.printStackTrace();
+        // } catch (final InvalidLogicTupleException e) {
+        // e.printStackTrace();
+        // }
+        // return false;
     }
 
     /*
@@ -160,9 +163,9 @@ public class ActualActuator implements ISimpleProbe {
             }
         }
         try {
-            final LogicTuple template = LogicTuple.parse("temp(T)");
+            final LogicTuple template = LogicTuple.parse("temp(_)");
             final ITucsonOperation op =
-                    this.acc.inp(this.tempTc, template, null);
+                    this.acc.inAll(this.tempTc, template, null);
             if (op.isResultSuccess()) {
                 final LogicTuple tempTuple =
                         LogicTuple.parse("temp(" + value + ")");

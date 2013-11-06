@@ -435,7 +435,7 @@ public class OperationHandler {
             throws TucsonOperationNotPossibleException,
             UnreachableNodeException {
 
-        log("tid.class().name() = " + tid.getClass().getName());
+//        log("tid.class().name() = " + tid.getClass().getName());
 
         TucsonTupleCentreId tcid = null;
         if ("alice.tucson.api.TucsonTupleCentreId".equals(tid.getClass()
@@ -444,7 +444,7 @@ public class OperationHandler {
         } else if ("alice.respect.api.TupleCentreId".equals(tid.getClass()
                 .getName())) {
             tcid = new TucsonTupleCentreId((TupleCentreId) tid);
-            log("tcid = " + tcid);
+//            log("tcid = " + tcid);
         } else if ("java.lang.String".equals(tid.getClass().getName())) {
             try {
                 tcid = new TucsonTupleCentreId((String) tid);

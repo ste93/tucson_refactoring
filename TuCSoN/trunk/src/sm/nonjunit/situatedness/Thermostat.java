@@ -50,23 +50,19 @@ public class Thermostat {
             final TucsonTupleCentreId tempTc =
                     new TucsonTupleCentreId("tempTc", Thermostat.DEFAULT_HOST,
                             Thermostat.DEFAULT_PORT);
+            int bootT;
+            do {
+                // 10 < bootT < LOW || HIGH < bootT < 30
+                bootT = Math.round((int) (Math.random() * 20)) + 10;
+            } while ((bootT >= Thermostat.LOW) && (bootT <= Thermostat.HIGH));
             final LogicTuple bootTemp =
-                    new LogicTuple("temp", new Value(Math.round((int) (Math
-                            .random() * 10)) + 15)); // 15 < temp < 25
+                    new LogicTuple("temp", new Value(bootT));
             acc.out(tempTc, bootTemp, null);
             /* Set up sensor */
             Thermostat.log(aid.toString(), "Set up sensor...");
             final TucsonTupleCentreId sensorTc =
                     new TucsonTupleCentreId("sensorTc",
                             Thermostat.DEFAULT_HOST, Thermostat.DEFAULT_PORT);
-            // acc.outS(
-            // sensorTc,
-            // LogicTuple.parse("in(sense(temp(T)))"),
-            // LogicTuple.parse("(operation, invocation)"),
-            // new LogicTuple(
-            // Term.createTerm(
-            // "(sensor@localhost:20504 ? getEnv(temp, T), out(sense(temp(T))))",
-            // new MyOpManager())), null);
             try {
                 acc.setS(
                         sensorTc,
@@ -88,13 +84,6 @@ public class Thermostat {
             final TucsonTupleCentreId actuatorTc =
                     new TucsonTupleCentreId("actuatorTc",
                             Thermostat.DEFAULT_HOST, Thermostat.DEFAULT_PORT);
-            // acc.outS(
-            // sensorTc,
-            // LogicTuple.parse("out(act(temp(T)))"),
-            // LogicTuple.parse("(operation, completion)"),
-            // new LogicTuple(Term.createTerm(
-            // "actuator@localhost:20504 ? setEnv(temp, T)",
-            // new MyOpManager())), null);
             try {
                 acc.setS(
                         actuatorTc,
@@ -116,13 +105,14 @@ public class Thermostat {
             /* Start perception-reason-action loop */
             Thermostat.log(aid.toString(),
                     "Start perception-reason-action loop...");
-            final LogicTuple template = LogicTuple.parse("sense(temp(T))");
+            LogicTuple template;
             ITucsonOperation op;
             int temp;
             LogicTuple action = null;
             for (int i = 0; i < Thermostat.ITERS; i++) {
                 Thread.sleep(3000);
                 /* Perception */
+                template = LogicTuple.parse("sense(temp(_))");
                 op = acc.in(sensorTc, template, null);
                 if (op.isResultSuccess()) {
                     temp =
