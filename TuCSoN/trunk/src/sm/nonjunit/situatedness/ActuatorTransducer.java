@@ -32,17 +32,20 @@ public class ActuatorTransducer extends AbstractTransducer {
      */
     @Override
     public boolean getEnv(final String key) {
-        System.out.println("[" + this.id + "]: Reading...");
-        boolean success = true;
-        final Object[] keySet = this.probes.keySet().toArray();
-        for (final Object element : keySet) {
-            if (!((ISimpleProbe) this.probes.get(element)).readValue(key)) {
-                System.err.println("[" + this.id + "]: Read failure!");
-                success = false;
-                break;
-            }
-        }
-        return success;
+        System.err.println("[" + this.id
+                + "]: I'm an actuator transducer, I can't sense values!");
+        return false;
+//        System.out.println("[" + this.id + "]: Reading...");
+//        boolean success = true;
+//        final Object[] keySet = this.probes.keySet().toArray();
+//        for (final Object element : keySet) {
+//            if (!((ISimpleProbe) this.probes.get(element)).readValue(key)) {
+//                System.err.println("[" + this.id + "]: Read failure!");
+//                success = false;
+//                break;
+//            }
+//        }
+//        return success;
     }
 
     /*

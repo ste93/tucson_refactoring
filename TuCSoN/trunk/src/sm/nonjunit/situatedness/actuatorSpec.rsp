@@ -7,8 +7,7 @@ reaction(
 ).
 reaction(
     setEnv(temp, T),
-%    getEnv(temp, T),
-    (from_env),
+    (from_env, completion),
     (
         in(act(temp(T)))
     )

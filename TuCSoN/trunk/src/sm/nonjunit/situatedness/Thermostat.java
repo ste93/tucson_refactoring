@@ -155,7 +155,7 @@ public class Thermostat {
     }
 
     private static void log(final String who, final String msg) {
-        System.out.println("[" + who + "]:" + msg);
+        System.out.println("[" + who + "]: " + msg);
     }
 
 }

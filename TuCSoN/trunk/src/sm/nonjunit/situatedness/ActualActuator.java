@@ -5,7 +5,6 @@ package sm.nonjunit.situatedness;
 
 import alice.logictuple.LogicTuple;
 import alice.logictuple.exceptions.InvalidLogicTupleException;
-import alice.logictuple.exceptions.InvalidTupleOperationException;
 import alice.respect.core.TransducerManager;
 import alice.respect.situatedness.AbstractProbeId;
 import alice.respect.situatedness.ISimpleProbe;
@@ -32,8 +31,8 @@ public class ActualActuator implements ISimpleProbe {
     private final static String DEFAULT_PORT = "20504";
 
     private EnhancedSynchACC acc;
-    private TucsonTupleCentreId tempTc;
     private final AbstractProbeId pid;
+    private TucsonTupleCentreId tempTc;
     private TransducerId tid;
     private TransducerStandardInterface transducer;
 
@@ -82,48 +81,6 @@ public class ActualActuator implements ISimpleProbe {
         System.err.println("[" + this.pid
                 + "]: I'm an actuator, I can't sense values!");
         return false;
-        // if (!"temp".equals(key)) {
-        // System.err.println("[" + this.pid + "]: Unknown property " + key);
-        // return false;
-        // }
-        // if (this.tid == null) {
-        // System.err.println("[" + this.pid
-        // + "]: Don't have any transducer associated yet!");
-        // return false;
-        // }
-        // if (this.transducer == null) {
-        // this.transducer =
-        // TransducerManager.INSTANCE.getTransducer(this.tid
-        // .getAgentName());
-        // if (this.transducer == null) {
-        // System.err.println("[" + this.pid
-        // + "]: Can't retrieve my transducer!");
-        // return false;
-        // }
-        // }
-        // try {
-        // final LogicTuple template = LogicTuple.parse("temp(_)");
-        // final ITucsonOperation op =
-        // this.acc.rd(this.tempTc, template, null);
-        // if (op.isResultSuccess()) {
-        // final int temp =
-        // op.getLogicTupleResult().getArg(0).intValue();
-        // System.out.println("[" + this.pid + "]: temp is " + temp);
-        // this.transducer.notifyEnvEvent(key, temp);
-        // }
-        // return true;
-        // } catch (final TucsonOperationNotPossibleException e) {
-        // e.printStackTrace();
-        // } catch (final UnreachableNodeException e) {
-        // e.printStackTrace();
-        // } catch (final OperationTimeOutException e) {
-        // e.printStackTrace();
-        // } catch (final InvalidTupleOperationException e) {
-        // e.printStackTrace();
-        // } catch (final InvalidLogicTupleException e) {
-        // e.printStackTrace();
-        // }
-        // return false;
     }
 
     /*

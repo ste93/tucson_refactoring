@@ -551,8 +551,8 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
     public void notifyCompletion(final boolean s, final boolean a) {
 
         if (this.listener != null) {
-            System.out.println("......[TucsonOperation]: listener is "
-                    + this.listener.getClass().getSimpleName());
+//            System.out.println("......[TucsonOperation]: listener is "
+//                    + this.listener.getClass().getSimpleName());
             this.operationCompleted = true;
             this.listener.operationCompleted(this);
         } else {

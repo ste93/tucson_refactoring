@@ -5,7 +5,6 @@ reaction(
         sensor@localhost:20504 ? getEnv(temp, T)
     )
 ).
-% Se la tolgo, non funziona, se la metto, la tupla 'sense/1' rimane...?
 reaction(
     getEnv(temp, T),
     (from_env, completion),
