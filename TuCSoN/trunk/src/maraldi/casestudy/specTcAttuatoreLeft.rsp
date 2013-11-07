@@ -1,8 +1,0 @@
-reaction(
-			out(command(Key,Value)),
-			response,
-			(
-				in(command(Key,Value)), 
-				servoMotorActuatorLeft@localhost:20504 ? setEnv(Key,Value)
-			)
-		).
