@@ -1,4 +1,4 @@
-package alice.tucson.examples.situatedness;
+package maraldi.casestudy;
 
 import java.io.IOException;
 

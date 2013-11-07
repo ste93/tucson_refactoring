@@ -1,4 +1,4 @@
-package alice.tucson.examples.situatedness;
+package maraldi.casestudy;
 
 public interface ISensorEventListener {
 

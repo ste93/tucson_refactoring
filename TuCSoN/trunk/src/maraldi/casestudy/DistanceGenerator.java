@@ -1,4 +1,4 @@
-package alice.tucson.examples.situatedness;
+package maraldi.casestudy;
 
 import java.util.ArrayList;
 import java.util.List;

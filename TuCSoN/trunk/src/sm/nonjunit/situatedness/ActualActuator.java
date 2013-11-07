@@ -7,6 +7,7 @@ import alice.logictuple.LogicTuple;
 import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.respect.core.TransducerManager;
 import alice.respect.situatedness.AbstractProbeId;
+import alice.respect.situatedness.AbstractTransducer;
 import alice.respect.situatedness.ISimpleProbe;
 import alice.respect.situatedness.TransducerId;
 import alice.respect.situatedness.TransducerStandardInterface;
@@ -128,7 +129,8 @@ public class ActualActuator implements ISimpleProbe {
                         LogicTuple.parse("temp(" + value + ")");
                 this.acc.out(this.tempTc, tempTuple, null);
                 System.out.println("[" + this.pid + "]: temp set to " + value);
-                this.transducer.notifyEnvEvent(key, value);
+                this.transducer.notifyEnvEvent(key, value,
+                        AbstractTransducer.SET_MODE);
                 return true;
             }
         } catch (final TucsonOperationNotPossibleException e) {

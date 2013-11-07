@@ -33,6 +33,9 @@ import alice.tuplecentre.api.TupleTemplate;
 public abstract class AbstractTransducer implements
         TransducerStandardInterface, TucsonOperationCompletionListener {
 
+    public final static int GET_MODE = 0;
+    public final static int SET_MODE = 1;
+
     /** Class used to perform requested operation to the tuple centre **/
     protected OperationHandler executor;
     /** Transducer's identifier **/
@@ -170,13 +173,21 @@ public abstract class AbstractTransducer implements
      * @throws TucsonOperationNotPossibleException
      *             if the requested operation cannot be successfully carried out
      */
-    public void notifyEnvEvent(final String key, final int value)
-            throws TucsonOperationNotPossibleException,
-            UnreachableNodeException {
-        final LogicTuple tupla =
-                new LogicTuple("getEnv", new Value(key), new Value(value));
-        this.executor.doNonBlockingOperation(this.id,
-                RespectOperation.OPTYPE_GET_ENV, this.tcId, tupla, this);
+    public void
+            notifyEnvEvent(final String key, final int value, final int mod)
+                    throws TucsonOperationNotPossibleException,
+                    UnreachableNodeException {
+        if (mod == AbstractTransducer.GET_MODE) {
+            final LogicTuple tupla =
+                    new LogicTuple("getEnv", new Value(key), new Value(value));
+            this.executor.doNonBlockingOperation(this.id,
+                    RespectOperation.OPTYPE_GET_ENV, this.tcId, tupla, this);
+        } else if (mod == AbstractTransducer.SET_MODE) {
+            final LogicTuple tupla =
+                    new LogicTuple("setEnv", new Value(key), new Value(value));
+            this.executor.doNonBlockingOperation(this.id,
+                    RespectOperation.OPTYPE_SET_ENV, this.tcId, tupla, this);
+        }
     }
 
     /**

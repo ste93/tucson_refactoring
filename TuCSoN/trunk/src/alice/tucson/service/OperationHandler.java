@@ -552,8 +552,7 @@ public class OperationHandler {
                     || (type == TucsonOperation.setSCode())
                     || (type == TucsonOperation.setCode())
                     || (type == TucsonOperation.outAllCode())
-                    || (type == TucsonOperation.spawnCode())
-                    || (type == TucsonOperation.setEnvCode())) {
+                    || (type == TucsonOperation.spawnCode())) {
                 op = new TucsonOperation(type, (Tuple) t, l, this);
             } else {
                 op = new TucsonOperation(type, t, l, this);

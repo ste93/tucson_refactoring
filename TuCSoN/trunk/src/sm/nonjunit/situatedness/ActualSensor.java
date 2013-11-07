@@ -8,6 +8,7 @@ import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.logictuple.exceptions.InvalidTupleOperationException;
 import alice.respect.core.TransducerManager;
 import alice.respect.situatedness.AbstractProbeId;
+import alice.respect.situatedness.AbstractTransducer;
 import alice.respect.situatedness.ISimpleProbe;
 import alice.respect.situatedness.TransducerId;
 import alice.respect.situatedness.TransducerStandardInterface;
@@ -105,7 +106,8 @@ public class ActualSensor implements ISimpleProbe {
             if (op.isResultSuccess()) {
                 int temp = op.getLogicTupleResult().getArg(0).intValue();
                 System.out.println("[" + this.pid + "]: temp is " + temp);
-                this.transducer.notifyEnvEvent(key, temp);
+                this.transducer.notifyEnvEvent(key, temp,
+                        AbstractTransducer.GET_MODE);
             }
             return true;
         } catch (final TucsonOperationNotPossibleException e) {

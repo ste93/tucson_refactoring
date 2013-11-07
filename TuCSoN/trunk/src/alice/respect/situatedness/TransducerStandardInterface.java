@@ -42,6 +42,10 @@ public interface TransducerStandardInterface {
      * @param value
      *            the <code>value</code> of the environmental property change to
      *            be notified
+     * @param mode
+     *            if the notification regards a 'sensing' operation or an
+     *            'action' operation ('getEnv' and 'setEnv' primitives
+     *            respectively)
      * @throws TucsonOperationNotPossibleException
      *             if the requested operation cannot be performed for some
      *             reason
@@ -51,7 +55,7 @@ public interface TransducerStandardInterface {
      * @throws OperationTimeOutException
      *             if the notification operation expires timeout
      */
-    void notifyEnvEvent(String key, int value)
+    void notifyEnvEvent(String key, int value, int mode)
             throws TucsonOperationNotPossibleException,
             UnreachableNodeException, OperationTimeOutException;
 
