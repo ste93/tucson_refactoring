@@ -330,6 +330,8 @@ public class OperationHandler {
      * nonBlocking} is that here we explicitly wait for completion a time
      * specified in the timeout input parameter.
      * 
+     * @param aid
+     *            the agent identifier
      * @param type
      *            TuCSoN operation type (internal integer code)
      * @param tid
@@ -406,6 +408,8 @@ public class OperationHandler {
      * primitives invocation into TuCSoN messages, then send them to the Node
      * side)
      * 
+     * @param aid
+     *            the agent identifier
      * @param type
      *            TuCSoN operation type (internal integer code)
      * @param tid
@@ -435,7 +439,7 @@ public class OperationHandler {
             throws TucsonOperationNotPossibleException,
             UnreachableNodeException {
 
-//        log("tid.class().name() = " + tid.getClass().getName());
+        // log("tid.class().name() = " + tid.getClass().getName());
 
         TucsonTupleCentreId tcid = null;
         if ("alice.tucson.api.TucsonTupleCentreId".equals(tid.getClass()
@@ -444,7 +448,7 @@ public class OperationHandler {
         } else if ("alice.respect.api.TupleCentreId".equals(tid.getClass()
                 .getName())) {
             tcid = new TucsonTupleCentreId((TupleCentreId) tid);
-//            log("tcid = " + tcid);
+            // log("tcid = " + tcid);
         } else if ("java.lang.String".equals(tid.getClass().getName())) {
             try {
                 tcid = new TucsonTupleCentreId((String) tid);
@@ -499,6 +503,8 @@ public class OperationHandler {
      * which in turn will take them in charge and notify the requestor upon
      * completion.
      * 
+     * @param aid
+     *            the agent identifier
      * @param tcid
      *            Target TuCSoN tuplecentre id
      *            {@link alice.tucson.api.TucsonTupleCentreId tid}
@@ -601,6 +607,8 @@ public class OperationHandler {
      * @param tid
      *            Target TuCSoN tuplecentre id
      *            {@link alice.tucson.api.TucsonTupleCentreId tid}
+     * @param aid
+     *            the agent identifier
      * 
      * @return The open session toward the given target tuplecentre
      * 

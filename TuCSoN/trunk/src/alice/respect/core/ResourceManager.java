@@ -132,6 +132,7 @@ public enum ResourceManager {
      *            the identifier of the resource to remove
      * @return wether the resource has been successfully removed
      * @throws TucsonOperationNotPossibleException
+     *             if the resource cannot be removed
      */
     public synchronized boolean removeResource(final AbstractProbeId id)
             throws TucsonOperationNotPossibleException {

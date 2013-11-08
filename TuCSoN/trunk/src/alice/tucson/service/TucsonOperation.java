@@ -418,6 +418,11 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
         return AbstractTupleCentreOperation.OPTYPE_STOP_CMD;
     }
 
+    /**
+     * 
+     * @return the Integer representing the type code of <code>time</code>
+     *         operation
+     */
     public static int timeCode() {
         return RespectOperation.OPTYPE_TIME;
     }
@@ -551,8 +556,8 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
     public void notifyCompletion(final boolean s, final boolean a) {
 
         if (this.listener != null) {
-//            System.out.println("......[TucsonOperation]: listener is "
-//                    + this.listener.getClass().getSimpleName());
+            // System.out.println("......[TucsonOperation]: listener is "
+            // + this.listener.getClass().getSimpleName());
             this.operationCompleted = true;
             this.listener.operationCompleted(this);
         } else {

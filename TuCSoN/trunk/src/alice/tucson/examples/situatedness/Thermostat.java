@@ -48,14 +48,15 @@ import alice.tuplecentre.api.exceptions.OperationTimeOutException;
  */
 public final class Thermostat {
 
-    private final static String DEFAULT_HOST = "localhost";
-    private final static String DEFAULT_PORT = "20504";
-    private final static int HIGH = 22;
-    private final static int ITERS = 10;
-    private final static int LOW = 18;
+    private static final String DEFAULT_HOST = "localhost";
+    private static final String DEFAULT_PORT = "20504";
+    private static final int HIGH = 22;
+    private static final int ITERS = 10;
+    private static final int LOW = 18;
 
     /**
      * @param args
+     *            no args expected
      */
     public static void main(final String[] args) {
         try {

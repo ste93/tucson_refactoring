@@ -91,7 +91,7 @@ public class DDiningPhilosophersTest extends AbstractTucsonAgent {
             /* MOD: begin */
             final TucsonTupleCentreId table =
                     new TucsonTupleCentreId("table", this.ip,
-                            String.valueOf(this.port+1));
+                            String.valueOf(this.port + 1));
             /* MOD: end */
             this.say("Injecting 'table' ReSpecT specification in tc < "
                     + table.toString() + " >...");

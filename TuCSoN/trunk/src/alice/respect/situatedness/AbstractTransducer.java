@@ -33,9 +33,9 @@ public abstract class AbstractTransducer implements
         TransducerStandardInterface, TucsonOperationCompletionListener {
 
     /** 'sensing' operation ('getEnv') */
-    public final static int GET_MODE = 0;
+    public static final int GET_MODE = 0;
     /** 'acting' operation ('setEnv') */
-    public final static int SET_MODE = 1;
+    public static final int SET_MODE = 1;
 
     /** Class used to perform requested operation to the tuple centre **/
     protected OperationHandler executor;
@@ -169,6 +169,9 @@ public abstract class AbstractTransducer implements
      *            the name of the value
      * @param value
      *            the value to communicate.
+     * @param mod
+     *            wether the environmental event is about an action operation or
+     *            a sensing operation
      * @throws UnreachableNodeException
      *             if the target TuCSoN node cannot be reached over the network
      * @throws TucsonOperationNotPossibleException

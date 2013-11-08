@@ -22,7 +22,9 @@ public class ActuatorTransducer extends AbstractTransducer {
 
     /**
      * @param i
+     *            the transducer id
      * @param tc
+     *            the tuple centre id
      */
     public ActuatorTransducer(final TransducerId i, final TupleCentreId tc) {
         super(i, tc);

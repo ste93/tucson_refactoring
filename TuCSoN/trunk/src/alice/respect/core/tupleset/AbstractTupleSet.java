@@ -244,6 +244,7 @@ public abstract class AbstractTupleSet implements ITupleSet {
      *            the LogicTuple whose first key should be retrieved
      * @return the String representation of the retrieved key
      * @throws alice.logictuple.exceptions.InvalidLogicTupleException
+     *             if the given tuple is not well formed
      */
     protected abstract String getTupleKey1(LogicTuple t)
             throws alice.logictuple.exceptions.InvalidLogicTupleException;
@@ -254,6 +255,7 @@ public abstract class AbstractTupleSet implements ITupleSet {
      *            the LogicTuple whose second key should be retrieved
      * @return the String representation of the retrieved key
      * @throws alice.logictuple.exceptions.InvalidLogicTupleException
+     *             if the given tuple is not well formed
      */
     protected abstract String getTupleKey2(LogicTuple t)
             throws alice.logictuple.exceptions.InvalidLogicTupleException;

@@ -26,6 +26,7 @@ import alice.tuprolog.Term;
  * 
  */
 public enum TransducerManager {
+    /** The singleton istance of this enum type */
     INSTANCE;
 
     /**

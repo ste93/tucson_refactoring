@@ -33,8 +33,8 @@ import alice.tuplecentre.api.exceptions.OperationTimeOutException;
  */
 public class ActualSensor implements ISimpleProbe {
 
-    private final static String DEFAULT_HOST = "localhost";
-    private final static String DEFAULT_PORT = "20504";
+    private static final String DEFAULT_HOST = "localhost";
+    private static final String DEFAULT_PORT = "20504";
 
     private EnhancedSynchACC acc;
     private final AbstractProbeId pid;

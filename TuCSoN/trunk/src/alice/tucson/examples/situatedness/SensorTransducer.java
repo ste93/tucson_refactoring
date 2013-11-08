@@ -22,7 +22,9 @@ public class SensorTransducer extends AbstractTransducer {
 
     /**
      * @param i
+     *            the transducer identifier
      * @param tc
+     *            the tuple centre identifier
      */
     public SensorTransducer(final TransducerId i, final TupleCentreId tc) {
         super(i, tc);

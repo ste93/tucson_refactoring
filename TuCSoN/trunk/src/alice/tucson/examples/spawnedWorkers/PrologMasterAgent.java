@@ -50,6 +50,7 @@ public final class PrologMasterAgent {
 
     /**
      * @param args
+     *            theory to set eand goal to run (ptionals)
      */
     public static void main(final String[] args) {
         /*
