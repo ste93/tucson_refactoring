@@ -39,7 +39,7 @@ public enum TransducerManager {
     }
 
     private static void speakErr(final String msg) {
-        System.err.println("[TransducerManager]: " + msg);
+        System.err.println("..[TransducerManager]: " + msg);
     }
 
     /** List of the associations transducer/probes **/

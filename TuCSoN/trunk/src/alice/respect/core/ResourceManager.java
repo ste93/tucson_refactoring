@@ -31,7 +31,7 @@ public enum ResourceManager {
     }
 
     private static void speakErr(final String msg) {
-        System.err.println("[ResourceManager]: " + msg);
+        System.err.println("..[ResourceManager]: " + msg);
     }
 
     /** List of all probes on a single node **/

@@ -35,7 +35,7 @@ public class ActuatorTransducer extends AbstractTransducer {
      */
     @Override
     public boolean getEnv(final String key) {
-        System.err.println("[" + this.id
+        this.speakErr("[" + this.id
                 + "]: I'm an actuator transducer, I can't sense values!");
         return false;
     }
@@ -70,7 +70,7 @@ public class ActuatorTransducer extends AbstractTransducer {
      */
     @Override
     public boolean setEnv(final String key, final int value) {
-        System.out.println("[" + this.id + "]: Writing...");
+        this.speak("[" + this.id + "]: Writing...");
         boolean success = true;
         final Object[] keySet = this.probes.keySet().toArray();
         /*
@@ -80,7 +80,7 @@ public class ActuatorTransducer extends AbstractTransducer {
         for (final Object element : keySet) {
             if (!((ISimpleProbe) this.probes.get(element)).writeValue(key,
                     value)) {
-                System.err.println("[" + this.id + "]: Write failure!");
+                this.speakErr("[" + this.id + "]: Write failure!");
                 success = false;
                 break;
             }

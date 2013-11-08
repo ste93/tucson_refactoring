@@ -24,7 +24,7 @@ import alice.tuplecentre.api.exceptions.OperationTimeOutException;
  * 
  * Environment configuration agent.
  * 
- * It checks for requests on envConfigTC and delegates them to the
+ * It checks for requests on '$ENV' and delegates them to the
  * TransducerManager.
  * 
  * @author Steven Maraldi

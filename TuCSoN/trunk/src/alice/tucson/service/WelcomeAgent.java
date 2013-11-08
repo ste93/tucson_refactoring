@@ -74,8 +74,10 @@ public class WelcomeAgent extends Thread {
         try {
 
             while (!this.isShutdown()) {
-                
+
                 WelcomeAgent.log("Listening to incoming connections...");
+                WelcomeAgent
+                        .log("--------------------------------------------------------------------------------");
 
                 try {
                     dialog = this.mainDialog.acceptNewDialog();

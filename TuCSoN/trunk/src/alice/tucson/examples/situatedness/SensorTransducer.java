@@ -35,7 +35,7 @@ public class SensorTransducer extends AbstractTransducer {
      */
     @Override
     public boolean getEnv(final String key) {
-        System.out.println("[" + this.id + "]: Reading...");
+        this.speak("[" + this.id + "]: Reading...");
         boolean success = true;
         final Object[] keySet = this.probes.keySet().toArray();
         /*
@@ -44,7 +44,7 @@ public class SensorTransducer extends AbstractTransducer {
          */
         for (final Object element : keySet) {
             if (!((ISimpleProbe) this.probes.get(element)).readValue(key)) {
-                System.err.println("[" + this.id + "]: Read failure!");
+                this.speakErr("[" + this.id + "]: Read failure!");
                 success = false;
                 break;
             }
@@ -82,7 +82,7 @@ public class SensorTransducer extends AbstractTransducer {
      */
     @Override
     public boolean setEnv(final String key, final int value) {
-        System.err.println("[" + this.id
+        this.speakErr("[" + this.id
                 + "]: I'm a sensor transducer, I can't set values!");
         return false;
     }
