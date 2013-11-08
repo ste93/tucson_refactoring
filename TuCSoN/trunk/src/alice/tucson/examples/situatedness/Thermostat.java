@@ -74,7 +74,7 @@ public final class Thermostat {
             int bootT;
             do {
                 // 10 < bootT < LOW || HIGH < bootT < 30
-                bootT = Math.round((int) (Math.random() * 20)) + 10;
+                bootT = Math.round((float) (Math.random() * 20)) + 10;
             } while ((bootT >= Thermostat.LOW) && (bootT <= Thermostat.HIGH));
             final LogicTuple bootTemp =
                     new LogicTuple("temp", new Value(bootT));
