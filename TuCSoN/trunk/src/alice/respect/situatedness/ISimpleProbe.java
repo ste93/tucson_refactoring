@@ -1,8 +1,10 @@
 package alice.respect.situatedness;
 
-
 /**
- * Simple interface for a generic probe.
+ * Interface for a generic probe. TuCSoN programmers must implement this
+ * interface when coding their own environmental resource wrappers. More
+ * specifically, they should implement all methods but the 'writeValue' for
+ * sensors, all methods but the 'readValue' for actuators.
  * 
  * @author Steven Maraldi
  * 

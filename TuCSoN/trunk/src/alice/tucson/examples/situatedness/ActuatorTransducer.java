@@ -1,7 +1,7 @@
 /**
  * ActuatorTransducer.java
  */
-package sm.nonjunit.situatedness;
+package alice.tucson.examples.situatedness;
 
 import alice.respect.situatedness.AbstractTransducer;
 import alice.respect.situatedness.ISimpleProbe;
@@ -11,6 +11,10 @@ import alice.tuplecentre.api.TupleCentreId;
 import alice.tuplecentre.core.AbstractTupleCentreOperation;
 
 /**
+ * The transducer mediating interactions to/from the actuator probe. As such,
+ * only the 'setEnv' method is implemented (furthermore, a synchronous behaviour
+ * is expected, hence no asynchronous facility is implemented).
+ * 
  * @author ste (mailto: s.mariani@unibo.it) on 05/nov/2013
  * 
  */
@@ -34,17 +38,6 @@ public class ActuatorTransducer extends AbstractTransducer {
         System.err.println("[" + this.id
                 + "]: I'm an actuator transducer, I can't sense values!");
         return false;
-//        System.out.println("[" + this.id + "]: Reading...");
-//        boolean success = true;
-//        final Object[] keySet = this.probes.keySet().toArray();
-//        for (final Object element : keySet) {
-//            if (!((ISimpleProbe) this.probes.get(element)).readValue(key)) {
-//                System.err.println("[" + this.id + "]: Read failure!");
-//                success = false;
-//                break;
-//            }
-//        }
-//        return success;
     }
 
     /*
@@ -80,6 +73,10 @@ public class ActuatorTransducer extends AbstractTransducer {
         System.out.println("[" + this.id + "]: Writing...");
         boolean success = true;
         final Object[] keySet = this.probes.keySet().toArray();
+        /*
+         * for each probe this transducer models, stimulate it to act on its
+         * environment
+         */
         for (final Object element : keySet) {
             if (!((ISimpleProbe) this.probes.get(element)).writeValue(key,
                     value)) {

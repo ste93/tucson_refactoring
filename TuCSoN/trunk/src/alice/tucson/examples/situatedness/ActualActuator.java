@@ -1,7 +1,7 @@
 /**
  * ActualActuator.java
  */
-package sm.nonjunit.situatedness;
+package alice.tucson.examples.situatedness;
 
 import alice.logictuple.LogicTuple;
 import alice.logictuple.exceptions.InvalidLogicTupleException;
@@ -23,6 +23,10 @@ import alice.tucson.api.exceptions.UnreachableNodeException;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 
 /**
+ * The 'actual' actuator probe deployed in this scenario. Although in this toy
+ * example it is only simulated, here is where you would place your code to
+ * interface with a real-world probe.
+ * 
  * @author ste (mailto: s.mariani@unibo.it) on 06/nov/2013
  * 
  */

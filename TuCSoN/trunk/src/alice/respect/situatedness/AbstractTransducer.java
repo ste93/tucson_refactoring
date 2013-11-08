@@ -21,19 +21,20 @@ import alice.tuplecentre.api.TupleCentreId;
 import alice.tuplecentre.api.TupleTemplate;
 
 /**
- * 
- * This class implements some of common behaviors of transducers and defines
- * some methods to offer the essential interface to the users. To make a
- * specific transducer you'll need to extend this one and defining the behavior
- * needed for the application.
+ * This class implements some common behavior of transducers and defines some
+ * methods to offer the essential interface to users. To make a specific
+ * transducer you'll need to extend this class and to define the behavior needed
+ * for your specific application logic.
  * 
  * @author Steven Maraldi
- * 
+ * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public abstract class AbstractTransducer implements
         TransducerStandardInterface, TucsonOperationCompletionListener {
 
+    /** 'sensing' operation ('getEnv') */
     public final static int GET_MODE = 0;
+    /** 'acting' operation ('setEnv') */
     public final static int SET_MODE = 1;
 
     /** Class used to perform requested operation to the tuple centre **/
@@ -58,9 +59,7 @@ public abstract class AbstractTransducer implements
     public AbstractTransducer(final TransducerId i, final TupleCentreId tc) {
         this.id = i;
         this.tcId = tc;
-
         this.executor = new OperationHandler();
-
         this.probes = new HashMap<AbstractProbeId, Object>();
     }
 
@@ -115,7 +114,9 @@ public abstract class AbstractTransducer implements
             } catch (final DialogException e) {
                 e.printStackTrace();
             }
+
         }
+
     }
 
     /**
@@ -265,7 +266,7 @@ public abstract class AbstractTransducer implements
      *            message to print.
      */
     protected void speak(final String msg) {
-        System.out.println("[TRANSDUCER - " + this.id.toString() + "] " + msg);
+        System.out.println("....[" + this.id + "]: " + msg);
     }
 
     /**
@@ -274,7 +275,6 @@ public abstract class AbstractTransducer implements
      *            the message to show on standard error
      */
     protected void speakErr(final String msg) {
-        System.err.println("[TRANSDUCER - " + this.id.toString() + "][ERROR] "
-                + msg);
+        System.err.println("....[" + this.id.toString() + "]: " + msg);
     }
 }

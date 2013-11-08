@@ -8,7 +8,12 @@ import alice.tuplecentre.api.TupleCentreId;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 
 /**
- * Interface providing users only the admissible operations from the transducer.
+ * Interface for a generic transducer. This interface is implemented by the
+ * AbstractTransducer class, hence TuCSoN programmers should only care of
+ * extending such abstract class with their own actual transducers
+ * implementation. In particular, this alleviates the burden of implementing
+ * 'notifyEnvEvent' and 'notifyOutput' methods, which are the same for all
+ * transducers.
  * 
  * @author Steven Maraldi
  * 

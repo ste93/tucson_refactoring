@@ -1,7 +1,7 @@
 /**
  * ActualSensor.java
  */
-package sm.nonjunit.situatedness;
+package alice.tucson.examples.situatedness;
 
 import alice.logictuple.LogicTuple;
 import alice.logictuple.exceptions.InvalidLogicTupleException;
@@ -24,6 +24,10 @@ import alice.tucson.api.exceptions.UnreachableNodeException;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 
 /**
+ * The 'actual' sensor probe deployed in this scenario. Although in this toy
+ * example it is only simulated, here is where you would place your code to
+ * interface with a real-world probe.
+ * 
  * @author ste (mailto: s.mariani@unibo.it) on 05/nov/2013
  * 
  */
@@ -104,7 +108,7 @@ public class ActualSensor implements ISimpleProbe {
             final ITucsonOperation op =
                     this.acc.rd(this.tempTc, template, null);
             if (op.isResultSuccess()) {
-                int temp = op.getLogicTupleResult().getArg(0).intValue();
+                final int temp = op.getLogicTupleResult().getArg(0).intValue();
                 System.out.println("[" + this.pid + "]: temp is " + temp);
                 this.transducer.notifyEnvEvent(key, temp,
                         AbstractTransducer.GET_MODE);

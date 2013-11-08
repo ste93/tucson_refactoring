@@ -120,7 +120,8 @@ public enum ResourceManager {
                 return this.probeList.get(element);
             }
         }
-        ResourceManager.speakErr("'Resource " + name + "' isn't registered yet!");
+        ResourceManager.speakErr("'Resource " + name
+                + "' isn't registered yet!");
         return null;
     }
 
@@ -134,8 +135,7 @@ public enum ResourceManager {
      */
     public synchronized boolean removeResource(final AbstractProbeId id)
             throws TucsonOperationNotPossibleException {
-        ResourceManager.speak("Removing probe '" + id.getLocalName()
-                + "'...");
+        ResourceManager.speak("Removing probe '" + id.getLocalName() + "'...");
         if (!this.probeList.containsKey(id)) {
             ResourceManager.speakErr("Resource '" + id.getLocalName()
                     + "' doesn't exist!");

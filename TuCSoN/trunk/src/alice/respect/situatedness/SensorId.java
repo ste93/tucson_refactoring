@@ -1,7 +1,7 @@
 package alice.respect.situatedness;
 
 /**
- * Sensor's identifier class
+ * A sensor identifier.
  * 
  * @author Steven Maraldi
  * 

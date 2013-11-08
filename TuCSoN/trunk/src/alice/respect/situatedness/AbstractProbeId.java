@@ -1,20 +1,16 @@
 package alice.respect.situatedness;
 
 import alice.respect.api.EnvId;
-import alice.tuprolog.Term;
 
 /**
- * Probe identifier.
+ * A "probe" (aka environmental resource) identifier. Being part of the MAS
+ * environment, a probe can be either a sensor or an actuator.
  * 
  * @author Steven Maraldi
  */
 public abstract class AbstractProbeId extends EnvId {
 
     private static final long serialVersionUID = -7709792820397648780L;
-    /**
-     * 
-     */
-//    protected Term id;
 
     /**
      * Constructs a probe identifier

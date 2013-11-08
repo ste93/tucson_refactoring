@@ -38,6 +38,7 @@ import alice.respect.api.exceptions.InvalidTupleCentreIdException;
 import alice.respect.core.EnvConfigAgent;
 import alice.respect.core.RespectTC;
 import alice.tucson.api.TucsonAgentId;
+import alice.tucson.api.TucsonMetaACC;
 import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.api.exceptions.InvalidConfigException;
 import alice.tucson.api.exceptions.TCInstantiationNotPossibleException;
@@ -84,7 +85,7 @@ public class TucsonNodeService {
      * @return the String representation of the TuCSoN version
      */
     public static String getVersion() {
-        return "TuCSoN-1.10.4.0207";
+        return TucsonMetaACC.getVersion();
     }
 
     /**

@@ -1,7 +1,7 @@
 package alice.respect.situatedness;
 
 /**
- * Actuator's identifier class
+ * An actuator identifier.
  * 
  * @author Steven Maraldi
  * 
@@ -21,13 +21,11 @@ public class ActuatorId extends AbstractProbeId {
 
     @Override
     public boolean isActuator() {
-        // TODO Auto-generated method stub
         return true;
     }
 
     @Override
     public boolean isSensor() {
-        // TODO Auto-generated method stub
         return false;
     }
 

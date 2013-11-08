@@ -79,7 +79,8 @@ public enum TransducerManager {
             return false;
         } else if (this.resourceList.get(tId).contains(probe)) {
             TransducerManager.speak("Transducer '" + tId.getAgentName()
-                    + "' is already associated to probe '" + id.getLocalName() + "'.");
+                    + "' is already associated to probe '" + id.getLocalName()
+                    + "'.");
             return false;
         }
         this.transducerList.get(tId).addProbe(id, probe);

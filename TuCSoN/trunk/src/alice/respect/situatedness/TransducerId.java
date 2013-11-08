@@ -5,8 +5,8 @@ import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 /**
  * A transducer identifier.
  * 
- * Transducer can be thought as agents when interact directly with tuple centres
- * but it also represents a portion of the environment.
+ * Transducers can be thought of as agents when interacting directly with tuple
+ * centres but also represent a portion of the environment.
  * 
  * @author Steven Maraldi
  * 
