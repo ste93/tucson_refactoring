@@ -421,7 +421,7 @@ public final class TupleCentreContainer {
         final HashMap<String, String> eventMap = new HashMap<String, String>();
         eventMap.put("id", aid.toString());
         InputEvent event = null;
-        TransducerManager tm = TransducerManager.INSTANCE;
+        final TransducerManager tm = TransducerManager.INSTANCE;
         TransducerStandardInterface transducer =
                 tm.getTransducer(aid.getAgentName());
         if (t != null) {
@@ -514,7 +514,7 @@ public final class TupleCentreContainer {
         final InternalEvent internalEv =
                 new InternalEvent(event, InternalOperation.makeGetEnv(t));
         internalEv.setSource(tid.getInternalTupleCentreId()); // Set
-        TransducerManager tm = TransducerManager.INSTANCE;
+        final TransducerManager tm = TransducerManager.INSTANCE;
         // the source of the event
         final TransducerId[] tIds =
                 tm.getTransducerIds(tid.getInternalTupleCentreId());

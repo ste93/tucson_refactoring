@@ -535,7 +535,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
 //        log("### DEBUG >>> target = " + envId);
         internalEv.setSource(this.vm.getId()); // Set the source of the event
 
-        TransducerManager tm = TransducerManager.INSTANCE;
+        final TransducerManager tm = TransducerManager.INSTANCE;
         // Getting the transducer from the transducer manager
         final TransducerId tId = tm.getTransducerId(envId);
 
@@ -1959,7 +1959,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
 //        log("### DEBUG >>> target = " + envId);
         internalEv.setSource(this.vm.getId());
 
-        TransducerManager tm = TransducerManager.INSTANCE;
+        final TransducerManager tm = TransducerManager.INSTANCE;
         // Getting the transducer from the transducer manager
         final TransducerId tId = tm.getTransducerId(envId);
 

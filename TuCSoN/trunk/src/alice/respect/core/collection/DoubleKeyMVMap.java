@@ -33,7 +33,7 @@ public class DoubleKeyMVMap<K, Q, V> {
     private class DoubleKeyMVmapIterator implements Iterator<V> {
 
         private final Iterator<Map.Entry<K, MVMap<Q, V>>> entryIterator;
-        private MVMap<Q, V> _innerMap;
+        private MVMap<Q, V> innerMap;
         private Iterator<V> valueIterator;
 
         protected DoubleKeyMVmapIterator() {
@@ -97,8 +97,8 @@ public class DoubleKeyMVMap<K, Q, V> {
          */
         private void advanceEntryIterator() {
             final Map.Entry<K, MVMap<Q, V>> entry = this.entryIterator.next();
-            this._innerMap = entry.getValue();
-            this.valueIterator = this._innerMap.iterator();
+            this.innerMap = entry.getValue();
+            this.valueIterator = this.innerMap.iterator();
         }
     }
 
@@ -246,7 +246,7 @@ public class DoubleKeyMVMap<K, Q, V> {
                     super(Values.this.wrappedList.listIterator(index));
                 }
 
-                private WrappedListIterator() {
+                WrappedListIterator() {
                     super();
                 }
 

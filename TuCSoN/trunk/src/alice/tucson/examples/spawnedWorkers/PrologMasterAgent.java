@@ -24,18 +24,14 @@ import alice.tuprolog.event.OutputListener;
  * @author ste (mailto: s.mariani@unibo.it) on 26/lug/2013
  * 
  */
-public class PrologMasterAgent {
+public final class PrologMasterAgent {
 
-    /*
-     * Relative path w.r.t. to running location (project root).
-     */
-    private static final String DEFAULT_THEORY_PATH =
-            "alice/tucson/examples/spawnedWorkers/masterAgent.pl";
     /*
      * Remember the dot!
      */
     private static final String DEFAULT_GOAL =
             "runMasterAgent(master-agent, [default@localhost:20504], 10, 5).";
+
     /*
      * The necessary Tucson2PLibrary...
      */
@@ -45,12 +41,17 @@ public class PrologMasterAgent {
      * ...can be found within TuCSoN .jar
      */
     private static final String DEFAULT_LIBRARY_PATH = "./";
+    /*
+     * Relative path w.r.t. to running location (project root).
+     */
+    private static final String DEFAULT_THEORY_PATH =
+            "alice/tucson/examples/spawnedWorkers/masterAgent.pl";
     private static final String ME = "PrologMasterAgent";
 
     /**
      * @param args
      */
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         /*
          * 1) Get the Prolog program (theory) to run.
          */
@@ -63,7 +64,7 @@ public class PrologMasterAgent {
                         PrologMasterAgent
                                 .fileToString(PrologMasterAgent.DEFAULT_THEORY_PATH);
             }
-        } catch (IOException e) {
+        } catch (final IOException e) {
             Logger.getLogger(PrologMasterAgent.ME).log(Level.SEVERE,
                     "IOException");
             e.printStackTrace();
@@ -73,11 +74,11 @@ public class PrologMasterAgent {
          * 2) Boot a tuProlog engine with required libraries (Tucson2PLibrary)
          * loaded.
          */
-        Prolog engine = new Prolog();
+        final Prolog engine = new Prolog();
         try {
             engine.loadLibrary(PrologMasterAgent.DEFAULT_LIBRARY_NAME,
                     new String[] { PrologMasterAgent.DEFAULT_LIBRARY_PATH });
-        } catch (InvalidLibraryException e) {
+        } catch (final InvalidLibraryException e) {
             Logger.getLogger(PrologMasterAgent.ME).log(Level.SEVERE,
                     "InvalidLibraryException");
             System.exit(-1);
@@ -87,7 +88,7 @@ public class PrologMasterAgent {
          */
         try {
             engine.setTheory(new Theory(sTheory));
-        } catch (InvalidTheoryException e) {
+        } catch (final InvalidTheoryException e) {
             Logger.getLogger(PrologMasterAgent.ME).log(Level.SEVERE,
                     "InvalidTheoryException");
             System.exit(-1);
@@ -97,7 +98,7 @@ public class PrologMasterAgent {
          */
         engine.addOutputListener(new OutputListener() {
 
-            public void onOutput(OutputEvent arg0) {
+            public void onOutput(final OutputEvent arg0) {
                 System.out.println(arg0.getMsg());
             }
         });
@@ -111,7 +112,7 @@ public class PrologMasterAgent {
             } else {
                 info = engine.solve(PrologMasterAgent.DEFAULT_GOAL);
             }
-        } catch (MalformedGoalException e) {
+        } catch (final MalformedGoalException e) {
             Logger.getLogger(PrologMasterAgent.ME).log(Level.SEVERE,
                     "MalformedGoalException");
             System.exit(-1);
@@ -122,17 +123,17 @@ public class PrologMasterAgent {
                         info.getSolution().toString());
                 engine.solveNext();
             }
-        } catch (NoSolutionException e) {
+        } catch (final NoSolutionException e) {
             Logger.getLogger(PrologMasterAgent.ME).log(Level.INFO,
                     "No solution found.");
-        } catch (NoMoreSolutionException e) {
+        } catch (final NoMoreSolutionException e) {
             Logger.getLogger(PrologMasterAgent.ME).log(Level.INFO,
                     "No more solutions to explore.");
         }
     }
 
-    private static String fileToString(String path) throws IOException {
-        InputStream in =
+    private static String fileToString(final String path) throws IOException {
+        final InputStream in =
                 Thread.currentThread().getContextClassLoader()
                         .getResourceAsStream(path);
         if (in == null) {
@@ -140,11 +141,17 @@ public class PrologMasterAgent {
                     "No input stream found.");
             System.exit(-1);
         }
-        BufferedInputStream br = new BufferedInputStream(in);
-        byte[] res = new byte[br.available()];
+        final BufferedInputStream br = new BufferedInputStream(in);
+        final byte[] res = new byte[br.available()];
         br.read(res);
         br.close();
         return new String(res);
+    }
+
+    private PrologMasterAgent() {
+        /*
+         * 
+         */
     }
 
 }

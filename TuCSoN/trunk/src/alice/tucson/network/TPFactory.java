@@ -16,7 +16,7 @@ import alice.tucson.network.exceptions.DialogException;
  * @author Saverio Cicora
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
-public abstract class TPFactory {
+public final class TPFactory {
 
     private static final int MAX_UNBOUND_PORT = 64000;
     

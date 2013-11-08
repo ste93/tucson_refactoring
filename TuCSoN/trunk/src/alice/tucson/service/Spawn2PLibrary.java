@@ -121,7 +121,7 @@ public class Spawn2PLibrary extends Library {
         }
         op.waitForOperationCompletion();
         if (op.isResultSuccess()) {
-            Term term = ((LogicTuple) op.getTupleResult()).toTerm();
+            final Term term = ((LogicTuple) op.getTupleResult()).toTerm();
             return this.unify(arg0, term);
         }
         return false;
@@ -211,7 +211,7 @@ public class Spawn2PLibrary extends Library {
         }
         op.waitForOperationCompletion();
         if (op.isResultSuccess()) {
-            Term term = ((LogicTuple) op.getTupleResult()).toTerm();
+            final Term term = ((LogicTuple) op.getTupleResult()).toTerm();
             return this.unify(arg0, term);
         }
         return false;
@@ -257,7 +257,7 @@ public class Spawn2PLibrary extends Library {
         if (op.isResultSuccess()) {
             return true;
         }
-        Term term = ((LogicTuple) op.getTupleResult()).toTerm();
+        final Term term = ((LogicTuple) op.getTupleResult()).toTerm();
         this.unify(arg0, term);
         return false;
     }
@@ -348,7 +348,7 @@ public class Spawn2PLibrary extends Library {
         if (op.isResultSuccess()) {
             return true;
         }
-        Term term = ((LogicTuple) op.getTupleResult()).toTerm();
+        final Term term = ((LogicTuple) op.getTupleResult()).toTerm();
         this.unify(arg0, term);
         return false;
     }
@@ -471,7 +471,7 @@ public class Spawn2PLibrary extends Library {
         }
         op.waitForOperationCompletion();
         if (op.isResultSuccess()) {
-            Term term = ((LogicTuple) op.getTupleResult()).toTerm();
+            final Term term = ((LogicTuple) op.getTupleResult()).toTerm();
             return this.unify(arg0, term);
         }
         return false;
@@ -561,7 +561,7 @@ public class Spawn2PLibrary extends Library {
         }
         op.waitForOperationCompletion();
         if (op.isResultSuccess()) {
-            Term term = ((LogicTuple) op.getTupleResult()).toTerm();
+            final Term term = ((LogicTuple) op.getTupleResult()).toTerm();
             return this.unify(arg0, term);
         }
         return false;
@@ -635,7 +635,7 @@ public class Spawn2PLibrary extends Library {
         }
         op.waitForOperationCompletion();
         if (op.isResultSuccess()) {
-            Term term = ((LogicTuple) op.getTupleResult()).toTerm();
+            final Term term = ((LogicTuple) op.getTupleResult()).toTerm();
             return this.unify(arg0, term);
         }
         return false;
@@ -679,7 +679,7 @@ public class Spawn2PLibrary extends Library {
         }
         op.waitForOperationCompletion();
         if (op.isResultSuccess()) {
-            Term term = ((LogicTuple) op.getTupleResult()).toTerm();
+            final Term term = ((LogicTuple) op.getTupleResult()).toTerm();
             return this.unify(arg0, term);
         }
         return false;
@@ -725,7 +725,7 @@ public class Spawn2PLibrary extends Library {
         if (op.isResultSuccess()) {
             return true;
         }
-        Term term = ((LogicTuple) op.getTupleResult()).toTerm();
+        final Term term = ((LogicTuple) op.getTupleResult()).toTerm();
         this.unify(arg0, term);
         return false;
     }
@@ -770,7 +770,7 @@ public class Spawn2PLibrary extends Library {
         if (op.isResultSuccess()) {
             return true;
         }
-        Term term = ((LogicTuple) op.getTupleResult()).toTerm();
+        final Term term = ((LogicTuple) op.getTupleResult()).toTerm();
         this.unify(arg0, term);
         return false;
     }
@@ -813,7 +813,7 @@ public class Spawn2PLibrary extends Library {
         }
         op.waitForOperationCompletion();
         if (op.isResultSuccess()) {
-            Term term = ((LogicTuple) op.getTupleResult()).toTerm();
+            final Term term = ((LogicTuple) op.getTupleResult()).toTerm();
             return this.unify(arg0, term);
         }
         return false;
@@ -857,7 +857,7 @@ public class Spawn2PLibrary extends Library {
         }
         op.waitForOperationCompletion();
         if (op.isResultSuccess()) {
-            Term term = ((LogicTuple) op.getTupleResult()).toTerm();
+            final Term term = ((LogicTuple) op.getTupleResult()).toTerm();
             return this.unify(arg0, term);
         }
         return false;

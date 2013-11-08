@@ -46,7 +46,7 @@ import alice.tuplecentre.api.exceptions.OperationTimeOutException;
  * @author ste (mailto: s.mariani@unibo.it) on 05/nov/2013
  * 
  */
-public class Thermostat {
+public final class Thermostat {
 
     private final static String DEFAULT_HOST = "localhost";
     private final static String DEFAULT_PORT = "20504";
@@ -180,6 +180,12 @@ public class Thermostat {
 
     private static void log(final String who, final String msg) {
         System.out.println("[" + who + "]: " + msg);
+    }
+
+    private Thermostat() {
+        /*
+         * 
+         */
     }
 
 }
