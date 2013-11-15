@@ -333,7 +333,7 @@ public class RespectVMContext extends
 
         final SolveInfo info = this.core.solve(goalList);
         this.core.solveEnd();
-        this.log("Reaction evaluation success = " + info.isSuccess());
+        this.log("reaction evaluation success = " + info.isSuccess());
         if (info.isSuccess()) {
             if (this.vm.hasInspectors()) {
                 this.vm.notifyInspectableEvent(new ObservableEventReactionOK(
@@ -344,7 +344,7 @@ public class RespectVMContext extends
                 final InputEvent curr =
                         (alice.tuplecentre.core.InputEvent) this.temporaryOutputEventList
                                 .get(i);
-                this.log("temporaryOutputEventList.get(i) = " + curr);
+                this.log("outgoing link: " + curr);
                 this.addPendingQueryEvent(curr);
             }
         } else {
