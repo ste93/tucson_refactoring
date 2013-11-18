@@ -160,14 +160,13 @@ public class TupleCentreId implements alice.tuplecentre.api.TupleCentreId,
      */
     public String getNode() {
         if (this.id instanceof alice.tuprolog.Struct) {
-            final Struct sid = (Struct) this.id;
+            final Struct sid = (Struct) this.id.getTerm();
             if ((sid.getArity() == 2) && "@".equals(sid.getName())) {
-                final Struct t = (Struct) sid.getArg(1);
-//                System.out.println("[DEBUG]: t = " + t);
-                if (!t.getArg(0).isCompound()) {
+                final Struct t = (Struct) sid.getArg(1).getTerm();
+                if (!t.getArg(0).getTerm().isCompound()) {
                     return t.getArg(0).getTerm().toString();
                 }
-                final Struct tt = (Struct) t.getArg(0);
+                final Struct tt = (Struct) t.getArg(0).getTerm();
                 return tt.getArg(0).getTerm().toString() + "."
                         + tt.getArg(1).getTerm().toString();
             }
