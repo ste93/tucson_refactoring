@@ -12,7 +12,12 @@
  */
 package alice.respect.api;
 
+import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.util.AbstractMap;
+import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -52,6 +57,49 @@ import alice.tuprolog.Var;
 public class Respect2PLibrary extends alice.tuprolog.Library {
 
     private static final long serialVersionUID = 7865604500315298959L;
+
+    private static String clean(final String toClean) {
+        final String[] split = toClean.split("\\|");
+        final String cleaned =
+                split[0].substring(1)
+                        .concat(".".concat(split[1].substring(0,
+                                split[1].length() - 1)));
+        return cleaned;
+    }
+
+    /**
+     * @return
+     */
+    // TODO Should return a list with all running interfaces
+    private static String getFirstActiveIP() {
+        Enumeration<NetworkInterface> interfaces;
+        try {
+            interfaces = NetworkInterface.getNetworkInterfaces();
+            while (interfaces.hasMoreElements()) {
+                final NetworkInterface current = interfaces.nextElement();
+                if (!current.isUp() || current.isLoopback()
+                        || current.isVirtual()) {
+                    continue;
+                }
+                final Enumeration<InetAddress> addresses =
+                        current.getInetAddresses();
+                while (addresses.hasMoreElements()) {
+                    final InetAddress current_addr = addresses.nextElement();
+                    if (current_addr.isLoopbackAddress()) {
+                        continue;
+                    }
+                    if (current_addr instanceof Inet4Address) {
+                        return current_addr.getHostAddress();
+                    }
+                }
+            }
+        } catch (final SocketException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            return null;
+        }
+        return null;
+    }
 
     private static Term list2tuple(final List<Tuple> list) {
         final Term[] termArray = new Term[list.size()];
@@ -307,8 +355,10 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         final AbstractEvent ev = this.vm.getCurrentReactionEvent();
         final IId source = ev.getSource();
         final IId currentTc = this.vm.getId();
-        log("#DEBUG# currentTc = " + currentTc.toString());
-        if (!currentTc.toString().equals(source.toString())) {
+        Respect2PLibrary.log("#DEBUG# currentTc = " + currentTc.toString());
+        if (!currentTc.toString().equals(source.toString())
+                && !Respect2PLibrary.getFirstActiveIP().equals(
+                        Respect2PLibrary.clean(source.toString()))) {
             return true;
         }
         return false;
@@ -355,16 +405,18 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      */
     public boolean from_tc_0() {
         final AbstractEvent ev = this.vm.getCurrentReactionEvent();
-        log("#DEBUG# ev = " + ev.toString());
+        Respect2PLibrary.log("#DEBUG# ev = " + ev.toString());
         if (ev instanceof InputEvent) {
-            log("#DEBUG# (InputEvent) ev = " + ((InputEvent) ev).toString());
+            Respect2PLibrary.log("#DEBUG# (InputEvent) ev = "
+                    + ((InputEvent) ev).toString());
         } else if (ev instanceof OutputEvent) {
-            log("#DEBUG# (OutputEvent) ev = " + ((OutputEvent) ev).toString());
+            Respect2PLibrary.log("#DEBUG# (OutputEvent) ev = "
+                    + ((OutputEvent) ev).toString());
         } else if (ev instanceof InternalEvent) {
-            log("#DEBUG# (InternalEvent) ev = "
+            Respect2PLibrary.log("#DEBUG# (InternalEvent) ev = "
                     + ((InternalEvent) ev).toString());
         } else if (ev instanceof RespectOutputEvent) {
-            log("#DEBUG# (RespectOutputEvent) ev = "
+            Respect2PLibrary.log("#DEBUG# (RespectOutputEvent) ev = "
                     + ((RespectOutputEvent) ev).toString());
         }
         final IId source = ev.getSource();
