@@ -26,6 +26,7 @@ import alice.respect.api.exceptions.InvalidTupleCentreIdException;
 import alice.respect.core.InternalEvent;
 import alice.respect.core.InternalOperation;
 import alice.respect.core.RespectOperation;
+import alice.respect.core.RespectOutputEvent;
 import alice.respect.core.RespectVMContext;
 import alice.tucson.parsing.MyOpManager;
 import alice.tuplecentre.api.IId;
@@ -306,6 +307,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         final AbstractEvent ev = this.vm.getCurrentReactionEvent();
         final IId source = ev.getSource();
         final IId currentTc = this.vm.getId();
+        log("#DEBUG# currentTc = " + currentTc.toString());
         if (!currentTc.toString().equals(source.toString())) {
             return true;
         }
@@ -353,6 +355,18 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      */
     public boolean from_tc_0() {
         final AbstractEvent ev = this.vm.getCurrentReactionEvent();
+        log("#DEBUG# ev = " + ev.toString());
+        if (ev instanceof InputEvent) {
+            log("#DEBUG# (InputEvent) ev = " + ((InputEvent) ev).toString());
+        } else if (ev instanceof OutputEvent) {
+            log("#DEBUG# (OutputEvent) ev = " + ((OutputEvent) ev).toString());
+        } else if (ev instanceof InternalEvent) {
+            log("#DEBUG# (InternalEvent) ev = "
+                    + ((InternalEvent) ev).toString());
+        } else if (ev instanceof RespectOutputEvent) {
+            log("#DEBUG# (RespectOutputEvent) ev = "
+                    + ((RespectOutputEvent) ev).toString());
+        }
         final IId source = ev.getSource();
         if (source.isTC()) {
             return true;
@@ -1375,25 +1389,25 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
             return true;
         }
         Respect2PLibrary.log("Remote out triggered...");
-//        final InputEvent ce = this.vm.getCurrentEvent();
-//        TupleCentreId newTid = null;
-//        try {
-//            newTid =
-//                    new TupleCentreId(Term.createTerm(alice.util.Tools
-//                            .removeApices(((Struct) arg1.getTerm()).getArg(0)
-//                                    .getTerm().toString()), new MyOpManager()));
-//        } catch (final InvalidTupleCentreIdException e) {
-//            e.printStackTrace();
-//            return false;
-//        }
-//        final InputEvent outEv =
-//                new InputEvent(ce.getReactingTC(), RespectOperation.makeOut(
-//                        this.getProlog(), new LogicTuple(arg0.copyGoal(v, 0)),
-//                        null), newTid, this.vm.getCurrentTime());
-//        outEv.setIsLinking(true);
-//        outEv.setTarget(newTid);
-//        this.vm.addTemporaryOutputEvent(outEv);
-//        return true;
+        // final InputEvent ce = this.vm.getCurrentEvent();
+        // TupleCentreId newTid = null;
+        // try {
+        // newTid =
+        // new TupleCentreId(Term.createTerm(alice.util.Tools
+        // .removeApices(((Struct) arg1.getTerm()).getArg(0)
+        // .getTerm().toString()), new MyOpManager()));
+        // } catch (final InvalidTupleCentreIdException e) {
+        // e.printStackTrace();
+        // return false;
+        // }
+        // final InputEvent outEv =
+        // new InputEvent(ce.getReactingTC(), RespectOperation.makeOut(
+        // this.getProlog(), new LogicTuple(arg0.copyGoal(v, 0)),
+        // null), newTid, this.vm.getCurrentTime());
+        // outEv.setIsLinking(true);
+        // outEv.setTarget(newTid);
+        // this.vm.addTemporaryOutputEvent(outEv);
+        // return true;
         final InputEvent ce = this.vm.getCurrentEvent();
         final InputEvent outEv =
                 new InputEvent(ce.getReactingTC(), RespectOperation.makeOut(
@@ -1493,7 +1507,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
             e.printStackTrace();
             return false;
         }
-        
+
         if ("this".equals(tcName)) {
             Respect2PLibrary.log("Local out_s triggered...");
             final Term newArg = goal.copyGoal(v, 0);
