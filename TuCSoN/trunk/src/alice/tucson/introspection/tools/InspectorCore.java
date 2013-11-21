@@ -20,7 +20,6 @@ import java.util.Iterator;
 
 import alice.logictuple.LogicTuple;
 import alice.respect.api.AgentId;
-import alice.respect.api.TupleCentreId;
 import alice.tucson.api.TucsonAgentId;
 import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.introspection.WSetEvent;
