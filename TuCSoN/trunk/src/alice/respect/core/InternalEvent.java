@@ -74,7 +74,8 @@ public class InternalEvent extends alice.tuplecentre.core.AbstractEvent {
 
     @Override
     public String toString() {
-        return "[ op: " + this.internalOperation + " ]";
+        return "[ op: " + this.internalOperation + ", ie: [ "
+                + this.inputEvent.toString() + " ] ]";
     }
 
 }

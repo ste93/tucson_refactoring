@@ -206,4 +206,11 @@ public abstract class AbstractEvent implements java.io.Serializable {
         this.target = t;
     }
 
+    @Override
+    public String toString() {
+        return "[ src: " + this.getSource() + ", " + "op: "
+                + this.getSimpleTCEvent() + ", " + "trg: " + this.getTarget()
+                + ", " + "tc: " + this.getReactingTC() + " ]";
+    }
+
 }

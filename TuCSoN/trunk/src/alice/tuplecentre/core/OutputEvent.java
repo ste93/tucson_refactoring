@@ -23,7 +23,7 @@ package alice.tuplecentre.core;
 public class OutputEvent extends AbstractEvent {
 
     private static final long serialVersionUID = -5521129200850527503L;
-    private final InputEvent inputEvent;
+    protected final InputEvent inputEvent;
     private boolean isLnk;
 
     /**
@@ -80,14 +80,11 @@ public class OutputEvent extends AbstractEvent {
 
     @Override
     public String toString() {
-        return "[ src: "
-                + this.getSource()
-                + ", "
-                + "op: "
+        return "[ op: "
                 + (this.getSimpleTCEvent().isResultDefined() ? this
                         .getSimpleTCEvent().getTupleResult() : this
-                        .getSimpleTCEvent()) + ", " + "trg: "
-                + this.getTarget() + " ]";
+                        .getSimpleTCEvent()) + ", ie: [ "
+                + this.inputEvent.toString() + " ] ]";
     }
 
 }

@@ -43,4 +43,10 @@ public class RespectOutputEvent extends OutputEvent {
         return this.operation;
     }
 
+    @Override
+    public String toString() {
+        return "[ op: " + this.operation + ", ie: [ "
+                + this.inputEvent.toString() + " ] ]";
+    }
+
 }

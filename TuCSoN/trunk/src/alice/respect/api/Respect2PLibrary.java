@@ -12,7 +12,12 @@
  */
 package alice.respect.api;
 
+import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.util.AbstractMap;
+import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -31,6 +36,7 @@ import alice.respect.core.TransducerManager;
 import alice.respect.situatedness.TransducerId;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
+import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.parsing.MyOpManager;
 import alice.tuplecentre.api.IId;
 import alice.tuplecentre.api.ITupleCentreOperation;
@@ -56,6 +62,61 @@ import alice.tuprolog.Var;
 public class Respect2PLibrary extends alice.tuprolog.Library {
 
     private static final long serialVersionUID = 7865604500315298959L;
+
+    /**
+     * @param source
+     */
+    private static boolean checkIP(final IId source) {
+        if (source instanceof TupleCentreId) {
+            final TupleCentreId tcid = (TupleCentreId) source;
+            if (alice.util.Tools.removeApices(tcid.getNode()).equals(
+                    Respect2PLibrary.getFirstActiveIP())) {
+                return true;
+            }
+        }
+        if (source instanceof TucsonTupleCentreId) {
+            final TucsonTupleCentreId ttcid = (TucsonTupleCentreId) source;
+            if (alice.util.Tools.removeApices(ttcid.getNode()).equals(
+                    Respect2PLibrary.getFirstActiveIP())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @return
+     */
+    // TODO Should return a list with all running interfaces
+    private static String getFirstActiveIP() {
+        Enumeration<NetworkInterface> interfaces;
+        try {
+            interfaces = NetworkInterface.getNetworkInterfaces();
+            while (interfaces.hasMoreElements()) {
+                final NetworkInterface current = interfaces.nextElement();
+                if (!current.isUp() || current.isLoopback()
+                        || current.isVirtual()) {
+                    continue;
+                }
+                final Enumeration<InetAddress> addresses =
+                        current.getInetAddresses();
+                while (addresses.hasMoreElements()) {
+                    final InetAddress current_addr = addresses.nextElement();
+                    if (current_addr.isLoopbackAddress()) {
+                        continue;
+                    }
+                    if (current_addr instanceof Inet4Address) {
+                        return current_addr.getHostAddress();
+                    }
+                }
+            }
+        } catch (final SocketException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            return null;
+        }
+        return null;
+    }
 
     private static Term list2tuple(final List<Tuple> list) {
         final Term[] termArray = new Term[list.size()];
@@ -310,11 +371,17 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     public boolean exo_0() {
         final AbstractEvent ev = this.vm.getCurrentReactionEvent();
         final IId source = ev.getSource();
-        final IId currentTc = this.vm.getId();
-        if (!currentTc.toString().equals(source.toString())) {
+        if (!source.isTC()) {
             return true;
         }
-        return false;
+        final IId currentTc = this.vm.getId();
+        if (currentTc.toString().equals(source.toString())) {
+            return false;
+        }
+        if (Respect2PLibrary.checkIP(source)) {
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -1008,8 +1075,14 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     public boolean intra_0() {
         final AbstractEvent ev = this.vm.getCurrentReactionEvent();
         final IId target = ev.getTarget();
+        if (!target.isTC()) {
+            return false;
+        }
         final IId currentTc = this.vm.getId();
         if (currentTc.toString().equals(target.toString())) {
+            return true;
+        }
+        if (Respect2PLibrary.checkIP(target)) {
             return true;
         }
         return false;
