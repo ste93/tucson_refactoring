@@ -211,7 +211,7 @@ public class OperationHandler {
          */
         private LogicTuple
                 unify(final TupleTemplate template, final Tuple tuple) {
-            final boolean res = template.propagate(this.p, tuple);
+            final boolean res = template.propagate(tuple);
             if (res) {
                 return (LogicTuple) template;
             }

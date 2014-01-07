@@ -14,7 +14,6 @@
 package alice.tucson.service;
 
 import java.io.IOException;
-import java.net.InetAddress;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -205,7 +204,7 @@ public class InterTupleCentreACCProxy implements InterTupleCentreACC,
 
         private LogicTuple
                 unify(final TupleTemplate template, final Tuple tuple) {
-            final boolean res = template.propagate(this.p, tuple);
+            final boolean res = template.propagate(tuple);
             if (res) {
                 return (LogicTuple) template;
             }

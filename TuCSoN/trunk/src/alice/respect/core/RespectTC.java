@@ -36,7 +36,6 @@ import alice.tuplecentre.api.IId;
 import alice.tuplecentre.api.Tuple;
 import alice.tuplecentre.core.OperationCompletionListener;
 import alice.tuplecentre.core.TCCycleResult.Outcome;
-import alice.tuprolog.Prolog;
 
 /**
  * 
@@ -75,8 +74,7 @@ public class RespectTC implements IRespectTC {
             final OperationCompletionListener l)
             throws OperationNotPossibleException {
         final RespectOperation op =
-                RespectOperation.makeGet(this.getProlog(),
-                        new LogicTuple("get"), l);
+                RespectOperation.makeGet(new LogicTuple("get"), l);
         this.vm.doOperation(id, op);
         return op;
     }
@@ -138,8 +136,8 @@ public class RespectTC implements IRespectTC {
             final OperationCompletionListener l)
             throws OperationNotPossibleException {
         final RespectOperation op =
-                RespectOperation.makeGetS(this.getProlog(), new LogicTuple(
-                        "spec", new Var("S")), l);
+                RespectOperation.makeGetS(new LogicTuple("spec", new Var("S")),
+                        l);
         this.vm.doOperation(aid, op);
         return op;
     }
@@ -191,8 +189,7 @@ public class RespectTC implements IRespectTC {
     public IRespectOperation in(final IId id, final LogicTuple t,
             final OperationCompletionListener l)
             throws OperationNotPossibleException {
-        final RespectOperation op =
-                RespectOperation.makeIn(this.getProlog(), t, l);
+        final RespectOperation op = RespectOperation.makeIn(t, l);
         this.vm.doOperation(id, op);
         return op;
     }
@@ -205,8 +202,7 @@ public class RespectTC implements IRespectTC {
     public IRespectOperation inAll(final IId id, final LogicTuple t,
             final OperationCompletionListener l)
             throws OperationNotPossibleException {
-        final RespectOperation op =
-                RespectOperation.makeInAll(this.getProlog(), t, l);
+        final RespectOperation op = RespectOperation.makeInAll(t, l);
         this.vm.doOperation(id, op);
         return op;
     }
@@ -219,8 +215,7 @@ public class RespectTC implements IRespectTC {
     public IRespectOperation inp(final IId id, final LogicTuple t,
             final OperationCompletionListener l)
             throws OperationNotPossibleException {
-        final RespectOperation op =
-                RespectOperation.makeInp(this.getProlog(), t, l);
+        final RespectOperation op = RespectOperation.makeInp(t, l);
         this.vm.doOperation(id, op);
         return op;
     }
@@ -233,8 +228,7 @@ public class RespectTC implements IRespectTC {
     public IRespectOperation inpS(final IId id, final LogicTuple t,
             final OperationCompletionListener l)
             throws OperationNotPossibleException {
-        final RespectOperation op =
-                RespectOperation.makeInpS(this.getProlog(), t, l);
+        final RespectOperation op = RespectOperation.makeInpS(t, l);
         this.vm.doOperation(id, op);
         return op;
     }
@@ -247,8 +241,7 @@ public class RespectTC implements IRespectTC {
     public IRespectOperation inS(final IId id, final LogicTuple t,
             final OperationCompletionListener l)
             throws OperationNotPossibleException {
-        final RespectOperation op =
-                RespectOperation.makeInS(this.getProlog(), t, l);
+        final RespectOperation op = RespectOperation.makeInS(t, l);
         this.vm.doOperation(id, op);
         return op;
     }
@@ -261,8 +254,7 @@ public class RespectTC implements IRespectTC {
     public IRespectOperation no(final IId id, final LogicTuple t,
             final OperationCompletionListener l)
             throws OperationNotPossibleException {
-        final RespectOperation op =
-                RespectOperation.makeNo(this.getProlog(), t, l);
+        final RespectOperation op = RespectOperation.makeNo(t, l);
         this.vm.doOperation(id, op);
         return op;
     }
@@ -275,8 +267,7 @@ public class RespectTC implements IRespectTC {
     public IRespectOperation noAll(final IId id, final LogicTuple t,
             final OperationCompletionListener l)
             throws OperationNotPossibleException {
-        final RespectOperation op =
-                RespectOperation.makeNoAll(this.getProlog(), t, l);
+        final RespectOperation op = RespectOperation.makeNoAll(t, l);
         this.vm.doOperation(id, op);
         return op;
     }
@@ -289,8 +280,7 @@ public class RespectTC implements IRespectTC {
     public IRespectOperation nop(final IId id, final LogicTuple t,
             final OperationCompletionListener l)
             throws OperationNotPossibleException {
-        final RespectOperation op =
-                RespectOperation.makeNop(this.getProlog(), t, l);
+        final RespectOperation op = RespectOperation.makeNop(t, l);
         this.vm.doOperation(id, op);
         return op;
     }
@@ -303,8 +293,7 @@ public class RespectTC implements IRespectTC {
     public IRespectOperation nopS(final IId id, final LogicTuple t,
             final OperationCompletionListener l)
             throws OperationNotPossibleException {
-        final RespectOperation op =
-                RespectOperation.makeNopS(this.getProlog(), t, l);
+        final RespectOperation op = RespectOperation.makeNopS(t, l);
         this.vm.doOperation(id, op);
         return op;
     }
@@ -317,8 +306,7 @@ public class RespectTC implements IRespectTC {
     public IRespectOperation noS(final IId id, final LogicTuple t,
             final OperationCompletionListener l)
             throws OperationNotPossibleException {
-        final RespectOperation op =
-                RespectOperation.makeNoS(this.getProlog(), t, l);
+        final RespectOperation op = RespectOperation.makeNoS(t, l);
         this.vm.doOperation(id, op);
         return op;
     }
@@ -339,8 +327,7 @@ public class RespectTC implements IRespectTC {
     public IRespectOperation out(final IId id, final LogicTuple t,
             final OperationCompletionListener l)
             throws OperationNotPossibleException {
-        final RespectOperation op =
-                RespectOperation.makeOut(this.getProlog(), t, l);
+        final RespectOperation op = RespectOperation.makeOut(t, l);
         this.vm.doOperation(id, op);
         return op;
     }
@@ -353,8 +340,7 @@ public class RespectTC implements IRespectTC {
     public IRespectOperation outAll(final IId id, final LogicTuple t,
             final OperationCompletionListener l)
             throws OperationNotPossibleException {
-        final RespectOperation op =
-                RespectOperation.makeOutAll(this.getProlog(), t, l);
+        final RespectOperation op = RespectOperation.makeOutAll(t, l);
         this.vm.doOperation(id, op);
         return op;
     }
@@ -375,8 +361,7 @@ public class RespectTC implements IRespectTC {
     public IRespectOperation outS(final IId id, final LogicTuple t,
             final OperationCompletionListener l)
             throws OperationNotPossibleException {
-        final RespectOperation op =
-                RespectOperation.makeOutS(this.getProlog(), t, l);
+        final RespectOperation op = RespectOperation.makeOutS(t, l);
         this.vm.doOperation(id, op);
         return op;
     }
@@ -389,8 +374,7 @@ public class RespectTC implements IRespectTC {
     public IRespectOperation rd(final IId id, final LogicTuple t,
             final OperationCompletionListener l)
             throws OperationNotPossibleException {
-        final RespectOperation op =
-                RespectOperation.makeRd(this.getProlog(), t, l);
+        final RespectOperation op = RespectOperation.makeRd(t, l);
         this.vm.doOperation(id, op);
         return op;
     }
@@ -403,8 +387,7 @@ public class RespectTC implements IRespectTC {
     public IRespectOperation rdAll(final IId id, final LogicTuple t,
             final OperationCompletionListener l)
             throws OperationNotPossibleException {
-        final RespectOperation op =
-                RespectOperation.makeRdAll(this.getProlog(), t, l);
+        final RespectOperation op = RespectOperation.makeRdAll(t, l);
         this.vm.doOperation(id, op);
         return op;
     }
@@ -417,8 +400,7 @@ public class RespectTC implements IRespectTC {
     public IRespectOperation rdp(final IId id, final LogicTuple t,
             final OperationCompletionListener l)
             throws OperationNotPossibleException {
-        final RespectOperation op =
-                RespectOperation.makeRdp(this.getProlog(), t, l);
+        final RespectOperation op = RespectOperation.makeRdp(t, l);
         this.vm.doOperation(id, op);
         return op;
     }
@@ -431,8 +413,7 @@ public class RespectTC implements IRespectTC {
     public IRespectOperation rdpS(final IId id, final LogicTuple t,
             final OperationCompletionListener l)
             throws OperationNotPossibleException {
-        final RespectOperation op =
-                RespectOperation.makeRdpS(this.getProlog(), t, l);
+        final RespectOperation op = RespectOperation.makeRdpS(t, l);
         this.vm.doOperation(id, op);
         return op;
     }
@@ -445,8 +426,7 @@ public class RespectTC implements IRespectTC {
     public IRespectOperation rdS(final IId id, final LogicTuple t,
             final OperationCompletionListener l)
             throws OperationNotPossibleException {
-        final RespectOperation op =
-                RespectOperation.makeRdS(this.getProlog(), t, l);
+        final RespectOperation op = RespectOperation.makeRdS(t, l);
         this.vm.doOperation(id, op);
         return op;
     }
@@ -459,8 +439,7 @@ public class RespectTC implements IRespectTC {
     public IRespectOperation set(final IId id, final LogicTuple tuple,
             final OperationCompletionListener l)
             throws OperationNotPossibleException, InvalidLogicTupleException {
-        final RespectOperation op =
-                RespectOperation.makeSet(this.getProlog(), tuple, l);
+        final RespectOperation op = RespectOperation.makeSet(tuple, l);
         this.vm.doOperation(id, op);
         return op;
     }
@@ -473,8 +452,7 @@ public class RespectTC implements IRespectTC {
     public IRespectOperation setS(final IId aid, final LogicTuple t,
             final OperationCompletionListener l)
             throws OperationNotPossibleException {
-        final RespectOperation op =
-                RespectOperation.makeSetS(this.getProlog(), t, l);
+        final RespectOperation op = RespectOperation.makeSetS(t, l);
         this.vm.doOperation(aid, op);
         return op;
     }
@@ -487,8 +465,7 @@ public class RespectTC implements IRespectTC {
         if (!accepted) {
             throw new InvalidSpecificationException();
         }
-        final RespectOperation op =
-                RespectOperation.makeSetS(this.getProlog(), null);
+        final RespectOperation op = RespectOperation.makeSetS(null);
         final Iterator<LogicTuple> rit =
                 this.vm.getRespectVMContext().getSpecTupleSetIterator();
         final LinkedList<Tuple> reactionList = new LinkedList<Tuple>();
@@ -504,8 +481,7 @@ public class RespectTC implements IRespectTC {
             setS(final IId aid, final RespectSpecification spec,
                     final OperationCompletionListener l)
                     throws OperationNotPossibleException {
-        final RespectOperation op =
-                RespectOperation.makeSetS(this.getProlog(), spec, l);
+        final RespectOperation op = RespectOperation.makeSetS(spec, l);
         this.vm.doOperation(aid, op);
         return op;
     }
@@ -518,8 +494,7 @@ public class RespectTC implements IRespectTC {
     public IRespectOperation spawn(final IId id, final LogicTuple t,
             final OperationCompletionListener l)
             throws OperationNotPossibleException {
-        final RespectOperation op =
-                RespectOperation.makeSpawn(this.getProlog(), t, l);
+        final RespectOperation op = RespectOperation.makeSpawn(t, l);
         this.vm.doOperation(id, op);
         return op;
     }
@@ -532,8 +507,7 @@ public class RespectTC implements IRespectTC {
     public IRespectOperation uin(final IId id, final LogicTuple t,
             final OperationCompletionListener l)
             throws OperationNotPossibleException {
-        final RespectOperation op =
-                RespectOperation.makeUin(this.getProlog(), t, l);
+        final RespectOperation op = RespectOperation.makeUin(t, l);
         this.vm.doOperation(id, op);
         return op;
     }
@@ -546,8 +520,7 @@ public class RespectTC implements IRespectTC {
     public IRespectOperation uinp(final IId id, final LogicTuple t,
             final OperationCompletionListener l)
             throws OperationNotPossibleException {
-        final RespectOperation op =
-                RespectOperation.makeUinp(this.getProlog(), t, l);
+        final RespectOperation op = RespectOperation.makeUinp(t, l);
         this.vm.doOperation(id, op);
         return op;
     }
@@ -560,8 +533,7 @@ public class RespectTC implements IRespectTC {
     public IRespectOperation uno(final IId id, final LogicTuple t,
             final OperationCompletionListener l)
             throws OperationNotPossibleException {
-        final RespectOperation op =
-                RespectOperation.makeUno(this.getProlog(), t, l);
+        final RespectOperation op = RespectOperation.makeUno(t, l);
         this.vm.doOperation(id, op);
         return op;
     }
@@ -574,8 +546,7 @@ public class RespectTC implements IRespectTC {
     public IRespectOperation unop(final IId id, final LogicTuple t,
             final OperationCompletionListener l)
             throws OperationNotPossibleException {
-        final RespectOperation op =
-                RespectOperation.makeUnop(this.getProlog(), t, l);
+        final RespectOperation op = RespectOperation.makeUnop(t, l);
         this.vm.doOperation(id, op);
         return op;
     }
@@ -588,8 +559,7 @@ public class RespectTC implements IRespectTC {
     public IRespectOperation urd(final IId id, final LogicTuple t,
             final OperationCompletionListener l)
             throws OperationNotPossibleException {
-        final RespectOperation op =
-                RespectOperation.makeUrd(this.getProlog(), t, l);
+        final RespectOperation op = RespectOperation.makeUrd(t, l);
         this.vm.doOperation(id, op);
         return op;
     }
@@ -602,14 +572,9 @@ public class RespectTC implements IRespectTC {
     public IRespectOperation urdp(final IId id, final LogicTuple t,
             final OperationCompletionListener l)
             throws OperationNotPossibleException {
-        final RespectOperation op =
-                RespectOperation.makeUrdp(this.getProlog(), t, l);
+        final RespectOperation op = RespectOperation.makeUrdp(t, l);
         this.vm.doOperation(id, op);
         return op;
-    }
-
-    private Prolog getProlog() {
-        return this.vm.getRespectVMContext().getPrologCore();
     }
 
 }

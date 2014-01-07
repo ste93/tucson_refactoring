@@ -496,7 +496,7 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
      */
     public TucsonOperation(final int type, final Tuple t,
             final OperationCompletionListener l, final OperationHandler ctx) {
-        super(null, type, t, l);
+        super(type, t, l);
         this.context = ctx;
     }
 
@@ -513,7 +513,7 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
      */
     public TucsonOperation(final int type, final TupleTemplate t,
             final OperationCompletionListener l, final OperationHandler ctx) {
-        super(null, type, t, l);
+        super(type, t, l);
         this.context = ctx;
     }
 

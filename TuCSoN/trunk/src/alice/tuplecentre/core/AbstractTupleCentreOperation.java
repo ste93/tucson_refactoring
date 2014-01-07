@@ -22,7 +22,6 @@ import alice.tuplecentre.api.Tuple;
 import alice.tuplecentre.api.TupleTemplate;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 import alice.tuplecentre.core.TCCycleResult.Outcome;
-import alice.tuprolog.Prolog;
 
 /**
  * This class represents an Operation on a tuple centre.
@@ -147,7 +146,6 @@ public abstract class AbstractTupleCentreOperation implements
      * internal identifier of the operation
      */
     private final long id;
-    private final Prolog p;
     private final TCCycleResult result;
     private TupleTemplate templateArgument;
     private Tuple tupleArgument;
@@ -163,9 +161,9 @@ public abstract class AbstractTupleCentreOperation implements
      * @param tupleList
      *            the list of tuples argument of the operation
      */
-    protected AbstractTupleCentreOperation(final Prolog prol, final int t,
+    protected AbstractTupleCentreOperation(final int t,
             final List<Tuple> tupleList) {
-        this(prol, t);
+        this(t);
         this.listener = null;
         this.tupleListArgument = tupleList;
     }
@@ -181,9 +179,9 @@ public abstract class AbstractTupleCentreOperation implements
      * @param l
      *            the listener for operation completion
      */
-    protected AbstractTupleCentreOperation(final Prolog prol, final int t,
+    protected AbstractTupleCentreOperation(final int t,
             final List<Tuple> tupleList, final OperationCompletionListener l) {
-        this(prol, t, tupleList);
+        this(t, tupleList);
         this.listener = l;
     }
 
@@ -196,9 +194,8 @@ public abstract class AbstractTupleCentreOperation implements
      * @param t
      *            the tuple argument of the operation
      */
-    protected AbstractTupleCentreOperation(final Prolog prol, final int ty,
-            final Tuple t) {
-        this(prol, ty);
+    protected AbstractTupleCentreOperation(final int ty, final Tuple t) {
+        this(ty);
         this.listener = null;
         this.tupleArgument = t;
     }
@@ -214,9 +211,9 @@ public abstract class AbstractTupleCentreOperation implements
      * @param l
      *            the listener for operation completion
      */
-    protected AbstractTupleCentreOperation(final Prolog prol, final int ty,
-            final Tuple t, final OperationCompletionListener l) {
-        this(prol, ty, t);
+    protected AbstractTupleCentreOperation(final int ty, final Tuple t,
+            final OperationCompletionListener l) {
+        this(ty, t);
         this.listener = l;
     }
 
@@ -229,9 +226,8 @@ public abstract class AbstractTupleCentreOperation implements
      * @param t
      *            the tuple template argument of the operation
      */
-    protected AbstractTupleCentreOperation(final Prolog prol, final int ty,
-            final TupleTemplate t) {
-        this(prol, ty);
+    protected AbstractTupleCentreOperation(final int ty, final TupleTemplate t) {
+        this(ty);
         this.listener = null;
         this.templateArgument = t;
     }
@@ -247,24 +243,19 @@ public abstract class AbstractTupleCentreOperation implements
      * @param l
      *            the listener for operation completion
      */
-    protected AbstractTupleCentreOperation(final Prolog prol, final int ty,
-            final TupleTemplate t, final OperationCompletionListener l) {
-        this(prol, ty, t);
+    protected AbstractTupleCentreOperation(final int ty, final TupleTemplate t,
+            final OperationCompletionListener l) {
+        this(ty, t);
         this.listener = l;
     }
 
-    private AbstractTupleCentreOperation(final Prolog prol, final int ty) {
+    private AbstractTupleCentreOperation(final int ty) {
         this.operationCompleted = false;
         this.result = new TCCycleResult();
         this.type = ty;
         this.token = new Object();
         this.id = AbstractTupleCentreOperation.idCounter;
         AbstractTupleCentreOperation.idCounter++;
-        if (prol == null) {
-            this.p = new Prolog();
-        } else {
-            this.p = prol;
-        }
     }
 
     /**
@@ -637,7 +628,7 @@ public abstract class AbstractTupleCentreOperation implements
     public void setTupleResult(final Tuple t) {
         this.result.setTupleResult(t);
         if (this.templateArgument != null) {
-            this.templateArgument.propagate(this.p, t);
+            this.templateArgument.propagate(t);
         }
         this.tupleArgument = t;
         this.result.setEndTime(System.currentTimeMillis());

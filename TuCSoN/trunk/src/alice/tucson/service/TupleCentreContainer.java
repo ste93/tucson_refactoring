@@ -412,9 +412,9 @@ public final class TupleCentreContainer {
                 RespectTCContainer.getRespectTCContainer()
                         .getEnvironmentContext(tid.getInternalTupleCentreId());
         if (type == TucsonOperation.getEnvCode()) {
-            op = RespectOperation.makeGetEnv(null, t, l);
+            op = RespectOperation.makeGetEnv(t, l);
         } else if (type == TucsonOperation.setEnvCode()) {
-            op = RespectOperation.makeSetEnv(null, t, l);
+            op = RespectOperation.makeSetEnv(t, l);
         }
 
         // Preparing the input event for the tuple centre.
@@ -495,9 +495,9 @@ public final class TupleCentreContainer {
                 RespectTCContainer.getRespectTCContainer()
                         .getEnvironmentContext(tid.getInternalTupleCentreId());
         if (type == TucsonOperation.getEnvCode()) {
-            op = RespectOperation.makeGetEnv(null, t, l);
+            op = RespectOperation.makeGetEnv(t, l);
         } else if (type == TucsonOperation.setEnvCode()) {
-            op = RespectOperation.makeSetEnv(null, t, l);
+            op = RespectOperation.makeSetEnv(t, l);
         }
 
         // Preparing the input event for the tuple centre.

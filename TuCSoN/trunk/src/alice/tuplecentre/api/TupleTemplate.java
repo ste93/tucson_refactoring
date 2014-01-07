@@ -13,8 +13,6 @@
  */
 package alice.tuplecentre.api;
 
-import alice.tuprolog.Prolog;
-
 /**
  * 
  * 
@@ -46,6 +44,6 @@ public interface TupleTemplate extends Tuple {
      *            a tuple matching the template
      * @return wether unification propagation was succesfull
      */
-    boolean propagate(Prolog p, Tuple t);
+    boolean propagate(Tuple t);
 
 }
