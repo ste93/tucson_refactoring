@@ -18,9 +18,9 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import alice.logictuple.exceptions.InvalidTupleArgumentException;
 import alice.logictuple.exceptions.InvalidTupleOperationException;
 import alice.tuplecentre.api.exceptions.InvalidOperationException;
+import alice.tuplecentre.api.exceptions.InvalidTupleException;
 import alice.tuprolog.InvalidTermException;
 import alice.tuprolog.Number;
 import alice.tuprolog.Prolog;
@@ -51,16 +51,16 @@ public class TupleArgument implements java.io.Serializable {
      * @param st
      *            the text representing the tuple argument
      * @return the tuple argument interpreted from the text
-     * @exception InvalidTupleArgumentException
+     * @exception InvalidTupleException
      *                if the text does not represent a valid tuple argument
      */
     public static TupleArgument parse(final String st)
-            throws InvalidTupleArgumentException {
+            throws InvalidTupleException {
         try {
             final Term t = alice.tuprolog.Term.createTerm(st);
             return new TupleArgument(t);
         } catch (final InvalidTermException ex) {
-            throw new InvalidTupleArgumentException();
+            throw new InvalidTupleException();
         }
     }
 

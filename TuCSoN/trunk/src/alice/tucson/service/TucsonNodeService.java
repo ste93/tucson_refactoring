@@ -33,7 +33,6 @@ import java.util.Map;
 import alice.logictuple.LogicTuple;
 import alice.logictuple.TupleArgument;
 import alice.logictuple.Value;
-import alice.logictuple.exceptions.InvalidTupleArgumentException;
 import alice.respect.api.exceptions.InvalidTupleCentreIdException;
 import alice.respect.core.EnvConfigAgent;
 import alice.respect.core.RespectTC;
@@ -49,6 +48,7 @@ import alice.tucson.api.exceptions.TucsonInvalidSpecificationException;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.network.TPConfig;
+import alice.tuplecentre.api.exceptions.InvalidTupleException;
 import alice.tuprolog.InvalidTheoryException;
 import alice.tuprolog.MalformedGoalException;
 import alice.tuprolog.Prolog;
@@ -63,7 +63,7 @@ import alice.tuprolog.lib.InvalidObjectIdException;
  * 
  */
 public class TucsonNodeService {
-    
+
     private static final int MAX_UNBOUND_PORT = 64000;
 
     private static final String BOOT_SETUP_THEORY =
@@ -150,7 +150,7 @@ public class TucsonNodeService {
             if (persistencyInfo != null) {
                 try {
                     template = TupleArgument.parse(persistencyInfo);
-                } catch (final InvalidTupleArgumentException e) {
+                } catch (final InvalidTupleException e) {
                     System.err.println("Invalid persistency template");
                     System.exit(-1);
                 }
@@ -395,7 +395,7 @@ public class TucsonNodeService {
                         new LogicTuple("is_persistent", new Value(realName)));
             } catch (final TucsonOperationNotPossibleException e) {
                 e.printStackTrace();
-            } catch (final InvalidTupleArgumentException e) {
+            } catch (final InvalidTupleException e) {
                 e.printStackTrace();
             } catch (final TucsonInvalidLogicTupleException e) {
                 e.printStackTrace();
@@ -457,7 +457,7 @@ public class TucsonNodeService {
                                 new LogicTuple("is_persistent", new Value(tc
                                         .getTucsonTupleCentreId().getName())));
                     }
-                } catch (final InvalidTupleArgumentException e) {
+                } catch (final InvalidTupleException e) {
                     e.printStackTrace();
                 } catch (final TucsonOperationNotPossibleException e) {
                     e.printStackTrace();
@@ -519,7 +519,7 @@ public class TucsonNodeService {
                             "is_persistent", new Value(tc
                                     .getTucsonTupleCentreId().getName())));
                 }
-            } catch (final InvalidTupleArgumentException e) {
+            } catch (final InvalidTupleException e) {
                 e.printStackTrace();
             } catch (final TucsonOperationNotPossibleException e) {
                 e.printStackTrace();
