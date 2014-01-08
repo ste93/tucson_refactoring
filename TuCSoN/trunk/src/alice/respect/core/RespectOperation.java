@@ -17,11 +17,11 @@ import java.util.List;
 
 import alice.logictuple.LogicTuple;
 import alice.logictuple.TupleArgument;
-import alice.logictuple.exceptions.InvalidTupleOperationException;
 import alice.respect.api.IRespectOperation;
 import alice.respect.api.RespectSpecification;
 import alice.tuplecentre.api.Tuple;
 import alice.tuplecentre.api.TupleTemplate;
+import alice.tuplecentre.api.exceptions.InvalidOperationException;
 import alice.tuplecentre.api.exceptions.InvalidTupleException;
 import alice.tuplecentre.core.AbstractTupleCentreOperation;
 import alice.tuplecentre.core.OperationCompletionListener;
@@ -395,7 +395,7 @@ public class RespectOperation extends AbstractTupleCentreOperation implements
                     }
                 }
             }
-        } catch (final InvalidTupleOperationException e) {
+        } catch (final InvalidOperationException e) {
             e.printStackTrace();
         }
         final RespectOperation temp =
@@ -461,7 +461,7 @@ public class RespectOperation extends AbstractTupleCentreOperation implements
                     }
                 }
             }
-        } catch (final InvalidTupleOperationException e) {
+        } catch (final InvalidOperationException e) {
             e.printStackTrace();
         }
         final RespectOperation temp =
@@ -748,7 +748,7 @@ public class RespectOperation extends AbstractTupleCentreOperation implements
                         new LogicTuple(opName, new TupleArgument(this
                                 .getLogicTupleArgument().getArg(0).toTerm()),
                                 new TupleArgument(new Struct(tl)));
-            } catch (final InvalidTupleOperationException e) {
+            } catch (final InvalidOperationException e) {
                 e.printStackTrace();
             }
             return lt;
@@ -766,7 +766,7 @@ public class RespectOperation extends AbstractTupleCentreOperation implements
                         new LogicTuple(opName, new TupleArgument(this
                                 .getLogicTupleArgument().getArg(0).toTerm()),
                                 new TupleArgument(new Struct(tl)));
-            } catch (final InvalidTupleOperationException e) {
+            } catch (final InvalidOperationException e) {
                 e.printStackTrace();
             }
             return lt;
@@ -784,7 +784,7 @@ public class RespectOperation extends AbstractTupleCentreOperation implements
                         new LogicTuple(opName, new TupleArgument(this
                                 .getLogicTupleArgument().getArg(0).toTerm()),
                                 new TupleArgument(new Struct(tl)));
-            } catch (final InvalidTupleOperationException e) {
+            } catch (final InvalidOperationException e) {
                 e.printStackTrace();
             }
             return lt;
@@ -802,7 +802,7 @@ public class RespectOperation extends AbstractTupleCentreOperation implements
                         new LogicTuple(opName, new TupleArgument(this
                                 .getLogicTupleArgument().getArg(0).toTerm()),
                                 new TupleArgument(new Struct(tl)));
-            } catch (final InvalidTupleOperationException e) {
+            } catch (final InvalidOperationException e) {
                 e.printStackTrace();
             }
             return lt;

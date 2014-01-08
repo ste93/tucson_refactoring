@@ -1,12 +1,12 @@
 package alice.respect.core;
 
 import alice.logictuple.LogicTuple;
-import alice.logictuple.exceptions.InvalidTupleOperationException;
 import alice.respect.api.IOrdinaryAsynchInterface;
 import alice.respect.api.IRespectOperation;
 import alice.respect.api.IRespectTC;
 import alice.respect.api.exceptions.OperationNotPossibleException;
 import alice.tuplecentre.api.IId;
+import alice.tuplecentre.api.exceptions.InvalidOperationException;
 import alice.tuplecentre.api.exceptions.InvalidTupleException;
 import alice.tuplecentre.core.OperationCompletionListener;
 
@@ -54,7 +54,7 @@ public class OrdinaryAsynchInterface extends RootInterface implements
             } else {
                 op = this.getCore().inAll(aid, t, l);
             }
-        } catch (final InvalidTupleOperationException e) {
+        } catch (final InvalidOperationException e) {
             e.printStackTrace();
         }
         return op;
@@ -90,7 +90,7 @@ public class OrdinaryAsynchInterface extends RootInterface implements
             } else {
                 op = this.getCore().noAll(aid, t, l);
             }
-        } catch (final InvalidTupleOperationException e2) {
+        } catch (final InvalidOperationException e2) {
             throw new OperationNotPossibleException();
         }
         return op;
@@ -144,7 +144,7 @@ public class OrdinaryAsynchInterface extends RootInterface implements
             } else {
                 op = this.getCore().rdAll(aid, t, l);
             }
-        } catch (final InvalidTupleOperationException e) {
+        } catch (final InvalidOperationException e) {
             e.printStackTrace();
         }
         return op;

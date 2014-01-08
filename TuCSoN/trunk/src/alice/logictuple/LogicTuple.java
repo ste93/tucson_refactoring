@@ -13,7 +13,7 @@
  */
 package alice.logictuple;
 
-import alice.logictuple.exceptions.InvalidTupleOperationException;
+import alice.tuplecentre.api.exceptions.InvalidOperationException;
 import alice.tuplecentre.api.exceptions.InvalidTupleException;
 import alice.tuprolog.InvalidTermException;
 import alice.tuprolog.Term;
@@ -258,11 +258,11 @@ public class LogicTuple implements alice.tuplecentre.api.TupleTemplate,
      * @param index
      *            the position (index) of the argument
      * @return the tuple argument if it exists, <code>null</code> otherwise
-     * @throws InvalidTupleOperationException
+     * @throws InvalidOperationException
      *             for out of bounds error
      */
     public TupleArgument getArg(final int index)
-            throws InvalidTupleOperationException {
+            throws InvalidOperationException {
         return this.info.getArg(index);
     }
 
@@ -281,11 +281,11 @@ public class LogicTuple implements alice.tuplecentre.api.TupleTemplate,
      * Gets the number of arguments of this argument supposed to be a structure
      * 
      * @return the number of arguments
-     * @throws InvalidTupleOperationException
+     * @throws InvalidOperationException
      *             if this argument is not a structure or an out of bounds index
      *             error is issued
      */
-    public int getArity() throws InvalidTupleOperationException {
+    public int getArity() throws InvalidOperationException {
         return this.info.getArity();
     }
 
@@ -293,10 +293,10 @@ public class LogicTuple implements alice.tuplecentre.api.TupleTemplate,
      * Gets the name of the logic tuple
      * 
      * @return the name of the logic tuple
-     * @throws InvalidTupleOperationException
+     * @throws InvalidOperationException
      *             if the requested operation is not allowed for this tuple
      */
-    public String getName() throws InvalidTupleOperationException {
+    public String getName() throws InvalidOperationException {
         return this.info.getName();
     }
 
@@ -307,11 +307,11 @@ public class LogicTuple implements alice.tuplecentre.api.TupleTemplate,
      * 
      * @return a {@code String} in the form nome/arity.
      * 
-     * @throws InvalidTupleOperationException
+     * @throws InvalidOperationException
      *             if the tuple is not a predicate (e.g. a tuProlog Struct)
      * 
      */
-    public String getPredicateIndicator() throws InvalidTupleOperationException {
+    public String getPredicateIndicator() throws InvalidOperationException {
         return this.info.getPredicateIndicator();
     }
 

@@ -3,7 +3,6 @@ package alice.tucson.service;
 import java.util.HashMap;
 
 import alice.logictuple.LogicTuple;
-import alice.logictuple.exceptions.InvalidTupleOperationException;
 import alice.respect.api.IEnvironmentContext;
 import alice.respect.api.IManagementContext;
 import alice.respect.api.IOrdinaryAsynchInterface;
@@ -33,6 +32,7 @@ import alice.tucson.api.exceptions.UnreachableNodeException;
 import alice.tuplecentre.api.ITupleCentreOperation;
 import alice.tuplecentre.api.InspectableEventListener;
 import alice.tuplecentre.api.ObservableEventListener;
+import alice.tuplecentre.api.exceptions.InvalidOperationException;
 import alice.tuplecentre.api.exceptions.InvalidTupleException;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 import alice.tuplecentre.core.InputEvent;
@@ -320,7 +320,7 @@ public final class TupleCentreContainer {
             throw new TucsonOperationNotPossibleException();
         } catch (final InvalidSpecificationException e) {
             throw new TucsonInvalidSpecificationException();
-        } catch (final InvalidTupleOperationException e) {
+        } catch (final InvalidOperationException e) {
             throw new TucsonOperationNotPossibleException();
         }
         return res;
@@ -368,7 +368,7 @@ public final class TupleCentreContainer {
             throw new TucsonOperationNotPossibleException();
         } catch (final InvalidSpecificationException e) {
             throw new TucsonInvalidSpecificationException();
-        } catch (final InvalidTupleOperationException e) {
+        } catch (final InvalidOperationException e) {
             throw new TucsonOperationNotPossibleException();
         }
         return res;
@@ -387,7 +387,7 @@ public final class TupleCentreContainer {
      * @param l
      *            the listener for operation completion
      * @return the Java object representing the tuple centre operation
-     * @throws InvalidTupleOperationException
+     * @throws InvalidOperationException
      *             if the tuple cannot be managed properly
      * @throws TucsonOperationNotPossibleException
      *             if the requested operation cannot be performed for some
@@ -402,7 +402,7 @@ public final class TupleCentreContainer {
             final int type, final TucsonAgentId aid,
             final TucsonTupleCentreId tid, final LogicTuple t,
             final OperationCompletionListener l)
-            throws OperationTimeOutException, InvalidTupleOperationException,
+            throws OperationTimeOutException, InvalidOperationException,
             TucsonOperationNotPossibleException, UnreachableNodeException {
 
         IEnvironmentContext context = null;
@@ -469,7 +469,7 @@ public final class TupleCentreContainer {
      * @param l
      *            the listener for operation completion
      * @return the Java object representing the tuple centre operation
-     * @throws InvalidTupleOperationException
+     * @throws InvalidOperationException
      *             if the tuple cannot be managed properly
      * @throws TucsonOperationNotPossibleException
      *             if the requested operation cannot be performed for some
@@ -484,7 +484,7 @@ public final class TupleCentreContainer {
             final int type, final TucsonTupleCentreId aid,
             final TucsonTupleCentreId tid, final LogicTuple t,
             final OperationCompletionListener l)
-            throws InvalidTupleOperationException,
+            throws InvalidOperationException,
             TucsonOperationNotPossibleException, UnreachableNodeException,
             OperationTimeOutException {
 
@@ -563,7 +563,7 @@ public final class TupleCentreContainer {
             } catch (final InvalidSpecificationException e) {
                 e.printStackTrace();
                 return false;
-            } catch (final InvalidTupleOperationException e) {
+            } catch (final InvalidOperationException e) {
                 e.printStackTrace();
                 return false;
             }

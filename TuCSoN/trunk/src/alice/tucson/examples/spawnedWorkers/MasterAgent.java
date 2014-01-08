@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import alice.logictuple.LogicTuple;
-import alice.logictuple.exceptions.InvalidTupleOperationException;
 import alice.tucson.api.AbstractTucsonAgent;
 import alice.tucson.api.EnhancedSynchACC;
 import alice.tucson.api.ITucsonOperation;
@@ -15,6 +14,7 @@ import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
+import alice.tuplecentre.api.exceptions.InvalidOperationException;
 import alice.tuplecentre.api.exceptions.InvalidTupleException;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 
@@ -232,7 +232,7 @@ public class MasterAgent extends AbstractTucsonAgent {
         } catch (final OperationTimeOutException e) {
             this.say("ERROR: Endless timeout expired!");
             e.printStackTrace();
-        } catch (final InvalidTupleOperationException e) {
+        } catch (final InvalidOperationException e) {
             this.say("ERROR: No tuple arguments to retrieve!");
             e.printStackTrace();
         } catch (final InterruptedException e) {

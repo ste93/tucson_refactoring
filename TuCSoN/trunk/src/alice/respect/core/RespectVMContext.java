@@ -28,7 +28,6 @@ import alice.logictuple.LogicTuple;
 import alice.logictuple.LogicTupleOpManager;
 import alice.logictuple.TupleArgument;
 import alice.logictuple.Value;
-import alice.logictuple.exceptions.InvalidTupleOperationException;
 import alice.respect.api.ILinkContext;
 import alice.respect.api.IRespectTC;
 import alice.respect.api.RespectSpecification;
@@ -49,6 +48,7 @@ import alice.tuplecentre.api.AgentId;
 import alice.tuplecentre.api.IId;
 import alice.tuplecentre.api.Tuple;
 import alice.tuplecentre.api.TupleTemplate;
+import alice.tuplecentre.api.exceptions.InvalidOperationException;
 import alice.tuplecentre.api.exceptions.InvalidTupleException;
 import alice.tuplecentre.core.AbstractBehaviourSpecification;
 import alice.tuplecentre.core.AbstractEvent;
@@ -260,7 +260,7 @@ public class RespectVMContext extends
                 this.tSet.add(new LogicTuple(tuple.getArg(0)));
                 list.add(new LogicTuple(tuple.getArg(0)));
                 tuple = new LogicTuple(tuple.getArg(1));
-            } catch (final InvalidTupleOperationException e) {
+            } catch (final InvalidOperationException e) {
                 e.printStackTrace();
             }
         }
@@ -284,7 +284,7 @@ public class RespectVMContext extends
             } else {
                 tuple = t;
             }
-        } catch (final InvalidTupleOperationException e) {
+        } catch (final InvalidOperationException e) {
             e.printStackTrace();
         }
         // FIXME LogicTuple > Tuple in all Cicora's API
@@ -1072,7 +1072,7 @@ public class RespectVMContext extends
                     }
                 }
 
-            } catch (final InvalidTupleOperationException e) {
+            } catch (final InvalidOperationException e) {
                 e.printStackTrace();
                 this.trigCore.solveEnd();
             } catch (final NoSolutionException e) {
@@ -1731,7 +1731,7 @@ public class RespectVMContext extends
                             + e.clause + ", l: " + e.line + ", p: " + e.pos);
             e.printStackTrace();
             return false;
-        } catch (final InvalidTupleOperationException e) {
+        } catch (final InvalidOperationException e) {
             e.printStackTrace();
             return false;
         }

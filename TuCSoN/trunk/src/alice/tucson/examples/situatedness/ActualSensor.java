@@ -4,7 +4,6 @@
 package alice.tucson.examples.situatedness;
 
 import alice.logictuple.LogicTuple;
-import alice.logictuple.exceptions.InvalidTupleOperationException;
 import alice.respect.core.TransducerManager;
 import alice.respect.situatedness.AbstractProbeId;
 import alice.respect.situatedness.AbstractTransducer;
@@ -20,6 +19,7 @@ import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
+import alice.tuplecentre.api.exceptions.InvalidOperationException;
 import alice.tuplecentre.api.exceptions.InvalidTupleException;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 
@@ -120,7 +120,7 @@ public class ActualSensor implements ISimpleProbe {
             e.printStackTrace();
         } catch (final OperationTimeOutException e) {
             e.printStackTrace();
-        } catch (final InvalidTupleOperationException e) {
+        } catch (final InvalidOperationException e) {
             e.printStackTrace();
         } catch (final InvalidTupleException e) {
             e.printStackTrace();

@@ -22,8 +22,6 @@ import alice.logictuple.LogicTuple;
 import alice.logictuple.TupleArgument;
 import alice.logictuple.Value;
 import alice.logictuple.Var;
-import alice.logictuple.exceptions.InvalidTupleOperationException;
-import alice.logictuple.exceptions.LogicTupleException;
 import alice.tucson.api.TucsonAgentId;
 import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.api.exceptions.TucsonGenericException;
@@ -32,6 +30,7 @@ import alice.tucson.api.exceptions.TucsonInvalidLogicTupleException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.introspection.InspectorContextSkel;
 import alice.tucson.network.AbstractTucsonProtocol;
+import alice.tuplecentre.api.exceptions.InvalidOperationException;
 
 /**
  * 
@@ -139,7 +138,7 @@ public class ACCProvider {
 
             return true;
 
-        } catch (final LogicTupleException e) {
+        } catch (final InvalidOperationException e) {
             profile.setProperty("failure", "generic");
             e.printStackTrace();
             return false;
@@ -213,7 +212,7 @@ public class ACCProvider {
                 return true;
             }
             return false;
-        } catch (final InvalidTupleOperationException e) {
+        } catch (final InvalidOperationException e) {
             e.printStackTrace();
             return false;
         }

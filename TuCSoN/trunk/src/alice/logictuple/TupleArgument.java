@@ -20,6 +20,7 @@ import java.util.List;
 
 import alice.logictuple.exceptions.InvalidTupleArgumentException;
 import alice.logictuple.exceptions.InvalidTupleOperationException;
+import alice.tuplecentre.api.exceptions.InvalidOperationException;
 import alice.tuprolog.InvalidTermException;
 import alice.tuprolog.Number;
 import alice.tuprolog.Prolog;
@@ -120,12 +121,12 @@ public class TupleArgument implements java.io.Serializable {
      * @param index
      *            the index of the argument
      * @return the argument of the compound
-     * @throws InvalidTupleOperationException
+     * @throws InvalidOperationException
      *             if this argument is not a compound or an out of bounds index
      *             error is issued
      */
     public TupleArgument getArg(final int index)
-            throws InvalidTupleOperationException {
+            throws InvalidOperationException {
         return new TupleArgument(((Struct) this.value.getTerm()).getTerm(index));
     }
 
@@ -148,15 +149,15 @@ public class TupleArgument implements java.io.Serializable {
      * Gets the number of arguments of this argument supposed to be a structure
      * 
      * @return the number of arguments
-     * @throws InvalidTupleOperationException
+     * @throws InvalidOperationException
      *             if this argument is not a structured or an out of bounds
      *             index error is issued
      */
-    public int getArity() throws InvalidTupleOperationException {
+    public int getArity() throws InvalidOperationException {
         if (this.value instanceof alice.tuprolog.Struct) {
             return ((Struct) this.value).getArity();
         }
-        throw new InvalidTupleOperationException();
+        throw new InvalidOperationException();
     }
 
     /**
@@ -164,33 +165,33 @@ public class TupleArgument implements java.io.Serializable {
      * atoms) or a variable
      * 
      * @return the name value
-     * @throws InvalidTupleOperationException
+     * @throws InvalidOperationException
      *             if the argument is not a structure or a variable
      */
-    public String getName() throws InvalidTupleOperationException {
+    public String getName() throws InvalidOperationException {
         if (this.value instanceof alice.tuprolog.Struct) {
             return ((Struct) this.value).getName();
         } else if (this.value instanceof alice.tuprolog.Var) {
             return ((alice.tuprolog.Var) this.value).getName();
         } else {
-            throw new InvalidTupleOperationException();
+            throw new InvalidOperationException();
         }
     }
 
     /**
      * 
      * @return the String representation of the tuProlog predicate
-     * @throws InvalidTupleOperationException
+     * @throws InvalidOperationException
      *             if this tuple is not a Prolog predicate (a Struct)
      */
-    public String getPredicateIndicator() throws InvalidTupleOperationException {
+    public String getPredicateIndicator() throws InvalidOperationException {
         if (this.value instanceof alice.tuprolog.Struct) {
             // TODO CICORA: oppure return
             // ((Struct)value).getPredicateIndicator();
             return ((alice.tuprolog.Struct) this.value).getName() + "/"
                     + ((alice.tuprolog.Struct) this.value).getArity();
         }
-        throw new InvalidTupleOperationException();
+        throw new InvalidOperationException();
     }
 
     /**
@@ -220,10 +221,10 @@ public class TupleArgument implements java.io.Serializable {
      * Gets the integer value of this argument
      * 
      * @return the integer value
-     * @throws InvalidTupleOperationException
+     * @throws InvalidOperationException
      *             if the argument is not a number
      */
-    public int intValue() throws InvalidTupleOperationException {
+    public int intValue() throws InvalidOperationException {
         return ((Number) this.value).intValue();
     }
 

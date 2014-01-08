@@ -24,7 +24,6 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import alice.logictuple.LogicTuple;
-import alice.logictuple.exceptions.InvalidTupleOperationException;
 import alice.tucson.api.EnhancedACC;
 import alice.tucson.api.TucsonAgentId;
 import alice.tucson.api.TucsonMetaACC;
@@ -32,6 +31,7 @@ import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
+import alice.tuplecentre.api.exceptions.InvalidOperationException;
 import alice.tuplecentre.api.exceptions.InvalidTupleException;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 
@@ -52,7 +52,7 @@ public class EditSpec extends javax.swing.JFrame {
             res.append(t.getArg(0)).append(",\n\t");
             res.append(t.getArg(1)).append(",\n\t");
             res.append(t.getArg(2)).append("\n).\n");
-        } catch (final InvalidTupleOperationException e) {
+        } catch (final InvalidOperationException e) {
             e.printStackTrace();
         }
         return res.toString();
@@ -67,7 +67,7 @@ public class EditSpec extends javax.swing.JFrame {
                 res.append(t.getArg(0)).append(" :-\n    ");
                 res.append(t.getArg(1)).append(".\n");
             }
-        } catch (final InvalidTupleOperationException e) {
+        } catch (final InvalidOperationException e) {
             e.printStackTrace();
         }
         return res.toString();
@@ -161,7 +161,7 @@ public class EditSpec extends javax.swing.JFrame {
             this.outputState.setText("TuCSoN Node is unreachable.");
         } catch (final OperationTimeOutException e) {
             this.outputState.setText("TuCSoN operation timeout exceeded.");
-        } catch (final InvalidTupleOperationException e) {
+        } catch (final InvalidOperationException e) {
             this.outputState.setText(e.toString());
         }
     }

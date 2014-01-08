@@ -9,12 +9,12 @@ import alice.logictuple.LogicTuple;
 import alice.logictuple.TupleArgument;
 import alice.logictuple.Value;
 import alice.logictuple.Var;
-import alice.logictuple.exceptions.InvalidTupleOperationException;
 import alice.tucson.api.TucsonAgentId;
 import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonInvalidLogicTupleException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
+import alice.tuplecentre.api.exceptions.InvalidOperationException;
 import alice.tuprolog.InvalidTermException;
 
 /**
@@ -87,15 +87,14 @@ public class NodeManagementAgent extends Thread {
         } catch (final TucsonOperationNotPossibleException e) {
             e.printStackTrace();
             this.node.removeNodeAgent(this);
-        } catch (final InvalidTupleOperationException e) {
+        } catch (final InvalidOperationException e) {
             e.printStackTrace();
             this.node.removeNodeAgent(this);
         }
     }
 
     private void execCmd(final TupleArgument cmd)
-            throws InvalidTupleOperationException,
-            TucsonInvalidLogicTupleException,
+            throws InvalidOperationException, TucsonInvalidLogicTupleException,
             TucsonOperationNotPossibleException {
 
         final String name = cmd.getName();

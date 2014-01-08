@@ -16,13 +16,13 @@ import java.util.List;
 
 import alice.logictuple.LogicTuple;
 import alice.logictuple.TupleArgument;
-import alice.logictuple.exceptions.InvalidTupleOperationException;
 import alice.respect.api.IRespectOperation;
 import alice.respect.api.IRespectTC;
 import alice.respect.api.ITimedContext;
 import alice.respect.api.exceptions.OperationNotPossibleException;
 import alice.respect.api.exceptions.OperationTimeOutException;
 import alice.tuplecentre.api.IId;
+import alice.tuplecentre.api.exceptions.InvalidOperationException;
 import alice.tuplecentre.api.exceptions.InvalidTupleException;
 
 /**
@@ -94,7 +94,7 @@ public class TimedContext extends RootInterface implements ITimedContext {
                         new TupleArgument(arg.toTerm())), op
                         .getLogicTupleResult());
             }
-        } catch (final InvalidTupleOperationException e2) {
+        } catch (final InvalidOperationException e2) {
             throw new OperationNotPossibleException();
         }
         return op.getLogicTupleResult();
@@ -154,7 +154,7 @@ public class TimedContext extends RootInterface implements ITimedContext {
                         new TupleArgument(arg.toTerm())), op
                         .getLogicTupleResult());
             }
-        } catch (final InvalidTupleOperationException e2) {
+        } catch (final InvalidOperationException e2) {
             throw new OperationNotPossibleException();
         }
         return op.getLogicTupleResult();
@@ -242,7 +242,7 @@ public class TimedContext extends RootInterface implements ITimedContext {
                         new TupleArgument(arg.toTerm())), op
                         .getLogicTupleResult());
             }
-        } catch (final InvalidTupleOperationException e2) {
+        } catch (final InvalidOperationException e2) {
             throw new OperationNotPossibleException();
         }
         return op.getLogicTupleResult();

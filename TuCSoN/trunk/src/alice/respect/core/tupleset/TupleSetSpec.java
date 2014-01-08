@@ -16,9 +16,9 @@ import java.util.LinkedList;
 
 import alice.logictuple.LogicTuple;
 import alice.logictuple.TupleArgument;
-import alice.logictuple.exceptions.InvalidLogicTupleException;
-import alice.logictuple.exceptions.InvalidTupleOperationException;
 import alice.respect.core.collection.DoubleKeyMVMap;
+import alice.tuplecentre.api.exceptions.InvalidOperationException;
+import alice.tuplecentre.api.exceptions.InvalidTupleException;
 
 /**
  * Class representing a Tuple Set.
@@ -45,19 +45,17 @@ public class TupleSetSpec extends AbstractTupleSet {
     }
 
     @Override
-    public String getTupleKey1(final LogicTuple t)
-            throws alice.logictuple.exceptions.InvalidLogicTupleException {
+    public String getTupleKey1(final LogicTuple t) throws InvalidTupleException {
         try {
             final TupleArgument event = t.getArg(0);
             return event.getPredicateIndicator();
-        } catch (final InvalidTupleOperationException e) {
-            throw new alice.logictuple.exceptions.InvalidLogicTupleException();
+        } catch (final InvalidOperationException e) {
+            throw new InvalidTupleException();
         }
     }
 
     @Override
-    public String getTupleKey2(final LogicTuple t)
-            throws InvalidLogicTupleException {
+    public String getTupleKey2(final LogicTuple t) throws InvalidTupleException {
         try {
             final TupleArgument eventArg = t.getArg(0).getArg(0);
 
@@ -69,8 +67,8 @@ public class TupleSetSpec extends AbstractTupleSet {
                 return eventArg.getPredicateIndicator();
             }
 
-        } catch (final InvalidTupleOperationException e) {
-            throw new alice.logictuple.exceptions.InvalidLogicTupleException();
+        } catch (final InvalidOperationException e) {
+            throw new InvalidTupleException();
         }
     }
 

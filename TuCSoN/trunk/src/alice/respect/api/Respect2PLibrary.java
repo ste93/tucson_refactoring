@@ -27,7 +27,6 @@ import alice.logictuple.LogicMatchingEngine;
 import alice.logictuple.LogicTuple;
 import alice.logictuple.LogicTupleOpManager;
 import alice.logictuple.TupleArgument;
-import alice.logictuple.exceptions.InvalidTupleOperationException;
 import alice.respect.api.exceptions.InvalidTupleCentreIdException;
 import alice.respect.core.InternalEvent;
 import alice.respect.core.InternalOperation;
@@ -41,6 +40,7 @@ import alice.tucson.api.exceptions.UnreachableNodeException;
 import alice.tuplecentre.api.IId;
 import alice.tuplecentre.api.ITupleCentreOperation;
 import alice.tuplecentre.api.Tuple;
+import alice.tuplecentre.api.exceptions.InvalidOperationException;
 import alice.tuplecentre.api.exceptions.InvalidTupleException;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 import alice.tuplecentre.core.AbstractEvent;
@@ -481,7 +481,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
                     return true;
                 }
                 return false;
-            } catch (final InvalidTupleOperationException e) {
+            } catch (final InvalidOperationException e) {
                 e.printStackTrace();
                 return false;
             }
@@ -552,7 +552,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
                     return true;
                 }
                 return false;
-            } catch (final InvalidTupleOperationException e) {
+            } catch (final InvalidOperationException e) {
                 e.printStackTrace();
                 return false;
             }
@@ -611,7 +611,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
                 this.vm.fetchTriggeredReactions(internalEv);
                 return true;
             }
-        } catch (final InvalidTupleOperationException e) {
+        } catch (final InvalidOperationException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (final TucsonOperationNotPossibleException e) {
@@ -2038,7 +2038,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
                 this.vm.fetchTriggeredReactions(internalEv);
                 return true;
             }
-        } catch (final InvalidTupleOperationException e) {
+        } catch (final InvalidOperationException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (final TucsonOperationNotPossibleException e) {

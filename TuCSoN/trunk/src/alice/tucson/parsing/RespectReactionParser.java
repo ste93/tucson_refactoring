@@ -2,7 +2,7 @@ package alice.tucson.parsing;
 
 import alice.logictuple.LogicTuple;
 import alice.logictuple.TupleArgument;
-import alice.logictuple.exceptions.InvalidTupleOperationException;
+import alice.tuplecentre.api.exceptions.InvalidOperationException;
 import alice.util.Tools;
 
 /**
@@ -13,7 +13,7 @@ import alice.util.Tools;
 public class RespectReactionParser {
 
     private static boolean bigFatCondition(final TupleArgument arg)
-            throws InvalidTupleOperationException {
+            throws InvalidOperationException {
         return "request".equals(arg.getName())
                 || "response".equals(arg.getName())
                 || "success".equals(arg.getName())
@@ -79,7 +79,7 @@ public class RespectReactionParser {
             for (int i = 0; i < this.t.getArity(); i++) {
                 this.parse(this.t.getArg(i));
             }
-        } catch (final InvalidTupleOperationException e) {
+        } catch (final InvalidOperationException e) {
             e.printStackTrace();
         }
         RespectReactionParser.log("spec = "
@@ -140,7 +140,7 @@ public class RespectReactionParser {
                     }
                 }
             }
-        } catch (final InvalidTupleOperationException e) {
+        } catch (final InvalidOperationException e) {
             e.printStackTrace();
         }
     }
