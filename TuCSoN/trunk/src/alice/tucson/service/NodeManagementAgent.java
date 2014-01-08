@@ -118,14 +118,14 @@ public class NodeManagementAgent extends Thread {
 
         } else if ("enable_persistency".equals(name)) {
 
-            this.node.enablePersistence(cmd.getArg(0));
+            this.node.enablePersistence(new LogicTuple(cmd.getArg(0)));
             TupleCentreContainer.doBlockingOperation(TucsonOperation.outCode(),
                     this.nodeManAid, this.config, new LogicTuple("cmd_result",
                             cmd, new Value("ok")));
 
         } else if ("disable_persistency".equals(name)) {
 
-            this.node.disablePersistence(cmd.getArg(0));
+            this.node.disablePersistence(new LogicTuple(cmd.getArg(0)));
             TupleCentreContainer.doBlockingOperation(TucsonOperation.outCode(),
                     this.nodeManAid, this.config, new LogicTuple("cmd_result",
                             new Value("disable_persistency"), new Value("ok")));

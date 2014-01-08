@@ -30,6 +30,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import alice.logictuple.LogicMatchingEngine;
 import alice.logictuple.LogicTuple;
 import alice.logictuple.TupleArgument;
 import alice.logictuple.Value;
@@ -48,6 +49,7 @@ import alice.tucson.api.exceptions.TucsonInvalidSpecificationException;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.network.TPConfig;
+import alice.tuplecentre.api.Tuple;
 import alice.tuplecentre.api.exceptions.InvalidTupleException;
 import alice.tuprolog.InvalidTheoryException;
 import alice.tuprolog.MalformedGoalException;
@@ -146,10 +148,10 @@ public class TucsonNodeService {
 
             // at least check if the config file exists...you don't say?
 
-            TupleArgument template = null;
+            Tuple template = null;
             if (persistencyInfo != null) {
                 try {
-                    template = TupleArgument.parse(persistencyInfo);
+                    template = LogicTuple.parse(persistencyInfo);
                 } catch (final InvalidTupleException e) {
                     System.err.println("Invalid persistency template");
                     System.exit(-1);
@@ -190,7 +192,7 @@ public class TucsonNodeService {
 
     private ObservationService obsService;
 
-    private TupleArgument persistencyTemplate;
+    private Tuple persistencyTemplate;
 
     private int tcpPort = TucsonNodeService.DEFAULT_TCP_PORT;
 
@@ -225,7 +227,7 @@ public class TucsonNodeService {
      *            tuples
      */
     public TucsonNodeService(final String conf, final int portNumber,
-            final TupleArgument persistTempl) {
+            final Tuple persistTempl) {
 
         TucsonNodeService
                 .log("--------------------------------------------------------------------------------");
@@ -438,7 +440,7 @@ public class TucsonNodeService {
      *            the tuple template to be used in filtering tuple centre
      *            identifiers whose persistency service should be disabled
      */
-    public synchronized void disablePersistence(final TupleArgument template) {
+    public synchronized void disablePersistence(final Tuple template) {
 
         if (this.persistencyTemplate != null) {
 
@@ -446,10 +448,11 @@ public class TucsonNodeService {
             while (it.hasNext()) {
                 final TucsonTCUsers tc = it.next();
                 try {
-                    final TupleArgument tid =
-                            TupleArgument.parse(tc.getTucsonTupleCentreId()
+                    final Tuple tid =
+                            LogicTuple.parse(tc.getTucsonTupleCentreId()
                                     .getName());
-                    if (template.match(tid)) {
+                    if (LogicMatchingEngine.match((LogicTuple) template,
+                            (LogicTuple) tid)) {
                         TupleCentreContainer.disablePersistence();
                         TupleCentreContainer.doBlockingOperation(
                                 TucsonOperation.inCode(), this.nodeAid, tc
@@ -465,7 +468,9 @@ public class TucsonNodeService {
                     e.printStackTrace();
                 }
             }
-            if (this.persistencyTemplate.match(template)) {
+            if (LogicMatchingEngine.match(
+                    (LogicTuple) this.persistencyTemplate,
+                    (LogicTuple) template)) {
                 this.persistencyTemplate = null;
             }
         }
@@ -501,17 +506,17 @@ public class TucsonNodeService {
      *            the tuple template to be used in filtering tuple centre
      *            identifiers whose persistency service should be enabled
      */
-    public synchronized void enablePersistence(final TupleArgument template) {
+    public synchronized void enablePersistence(final Tuple template) {
 
         this.persistencyTemplate = template;
         final Iterator<TucsonTCUsers> it = this.cores.values().iterator();
         while (it.hasNext()) {
             final TucsonTCUsers tc = it.next();
             try {
-                final TupleArgument tid =
-                        TupleArgument.parse(tc.getTucsonTupleCentreId()
-                                .getName());
-                if (template.match(tid)) {
+                final Tuple tid =
+                        LogicTuple.parse(tc.getTucsonTupleCentreId().getName());
+                if (LogicMatchingEngine.match((LogicTuple) template,
+                        (LogicTuple) tid)) {
                     TupleCentreContainer.enablePersistence();
                     TupleCentreContainer.doBlockingOperation(TucsonOperation
                             .outCode(), this.nodeAid, tc
