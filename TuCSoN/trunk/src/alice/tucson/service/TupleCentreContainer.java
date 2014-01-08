@@ -3,7 +3,6 @@ package alice.tucson.service;
 import java.util.HashMap;
 
 import alice.logictuple.LogicTuple;
-import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.logictuple.exceptions.InvalidTupleOperationException;
 import alice.respect.api.IEnvironmentContext;
 import alice.respect.api.IManagementContext;
@@ -34,6 +33,7 @@ import alice.tucson.api.exceptions.UnreachableNodeException;
 import alice.tuplecentre.api.ITupleCentreOperation;
 import alice.tuplecentre.api.InspectableEventListener;
 import alice.tuplecentre.api.ObservableEventListener;
+import alice.tuplecentre.api.exceptions.InvalidTupleException;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 import alice.tuplecentre.core.InputEvent;
 import alice.tuplecentre.core.OperationCompletionListener;
@@ -179,7 +179,7 @@ public final class TupleCentreContainer {
             if (type == TucsonOperation.unopCode()) {
                 return context.uin(aid.getAgentId(), (LogicTuple) o);
             }
-        } catch (final InvalidLogicTupleException e) {
+        } catch (final InvalidTupleException e) {
             throw new TucsonInvalidLogicTupleException();
         } catch (final OperationNotPossibleException e) {
             throw new TucsonOperationNotPossibleException();
@@ -266,7 +266,7 @@ public final class TupleCentreContainer {
             if (type == TucsonOperation.unopCode()) {
                 return context.uin(aid.getInternalTupleCentreId(), t);
             }
-        } catch (final InvalidLogicTupleException e) {
+        } catch (final InvalidTupleException e) {
             throw new TucsonInvalidLogicTupleException();
         } catch (final OperationNotPossibleException e) {
             throw new TucsonOperationNotPossibleException();
@@ -738,7 +738,7 @@ public final class TupleCentreContainer {
             if (type == TucsonOperation.unopCode()) {
                 return context.unop(aid.getAgentId(), t, l);
             }
-        } catch (final InvalidLogicTupleException e) {
+        } catch (final InvalidTupleException e) {
             throw new TucsonInvalidLogicTupleException();
         } catch (final OperationNotPossibleException e) {
             throw new TucsonOperationNotPossibleException();
@@ -836,7 +836,7 @@ public final class TupleCentreContainer {
             if (type == TucsonOperation.unopCode()) {
                 return context.unop(tcid, t, l);
             }
-        } catch (final InvalidLogicTupleException e) {
+        } catch (final InvalidTupleException e) {
             throw new TucsonInvalidLogicTupleException();
         } catch (final OperationNotPossibleException e) {
             throw new TucsonOperationNotPossibleException();
@@ -903,7 +903,7 @@ public final class TupleCentreContainer {
                 return context.setS(aid.getAgentId(), new RespectSpecification(
                         t.toString()), l);
             }
-        } catch (final InvalidLogicTupleException e) {
+        } catch (final InvalidTupleException e) {
             throw new TucsonInvalidLogicTupleException();
         } catch (final OperationNotPossibleException e) {
             throw new TucsonOperationNotPossibleException();
@@ -970,7 +970,7 @@ public final class TupleCentreContainer {
                 return context.setS(tcid,
                         new RespectSpecification(t.toString()), l);
             }
-        } catch (final InvalidLogicTupleException e) {
+        } catch (final InvalidTupleException e) {
             throw new TucsonInvalidLogicTupleException();
         } catch (final OperationNotPossibleException e) {
             throw new TucsonOperationNotPossibleException();

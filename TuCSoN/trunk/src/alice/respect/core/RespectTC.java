@@ -17,7 +17,6 @@ import java.util.LinkedList;
 
 import alice.logictuple.LogicTuple;
 import alice.logictuple.Var;
-import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.respect.api.IEnvironmentContext;
 import alice.respect.api.ILinkContext;
 import alice.respect.api.IManagementContext;
@@ -34,6 +33,7 @@ import alice.respect.api.exceptions.InvalidSpecificationException;
 import alice.respect.api.exceptions.OperationNotPossibleException;
 import alice.tuplecentre.api.IId;
 import alice.tuplecentre.api.Tuple;
+import alice.tuplecentre.api.exceptions.InvalidTupleException;
 import alice.tuplecentre.core.OperationCompletionListener;
 import alice.tuplecentre.core.TCCycleResult.Outcome;
 
@@ -432,13 +432,13 @@ public class RespectTC implements IRespectTC {
     }
 
     public IRespectOperation set(final IId id, final LogicTuple tuple)
-            throws OperationNotPossibleException, InvalidLogicTupleException {
+            throws OperationNotPossibleException, InvalidTupleException {
         return this.set(id, tuple, null);
     }
 
     public IRespectOperation set(final IId id, final LogicTuple tuple,
             final OperationCompletionListener l)
-            throws OperationNotPossibleException, InvalidLogicTupleException {
+            throws OperationNotPossibleException, InvalidTupleException {
         final RespectOperation op = RespectOperation.makeSet(tuple, l);
         this.vm.doOperation(id, op);
         return op;
