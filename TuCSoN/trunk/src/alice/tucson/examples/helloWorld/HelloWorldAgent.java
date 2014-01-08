@@ -1,7 +1,6 @@
 package alice.tucson.examples.helloWorld;
 
 import alice.logictuple.LogicTuple;
-import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.tucson.api.AbstractTucsonAgent;
 import alice.tucson.api.ITucsonOperation;
 import alice.tucson.api.SynchACC;
@@ -10,6 +9,7 @@ import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
+import alice.tuplecentre.api.exceptions.InvalidTupleException;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 
 /*
@@ -125,7 +125,7 @@ public class HelloWorldAgent extends AbstractTucsonAgent {
              */
         } catch (final TucsonInvalidTupleCentreIdException e) {
             e.printStackTrace();
-        } catch (final InvalidLogicTupleException e) {
+        } catch (final InvalidTupleException e) {
             /*
              * String to be parsed is not in a valid Prolog syntax.
              */

@@ -16,10 +16,10 @@ package alice.tuplecentre.core;
 import java.util.List;
 
 import alice.logictuple.LogicTuple;
-import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.tuplecentre.api.ITupleCentreOperation;
 import alice.tuplecentre.api.Tuple;
 import alice.tuplecentre.api.TupleTemplate;
+import alice.tuplecentre.api.exceptions.InvalidTupleException;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 import alice.tuplecentre.core.TCCycleResult.Outcome;
 
@@ -293,7 +293,7 @@ public abstract class AbstractTupleCentreOperation implements
             pred.append(this.getPrimitive().toString()).append('(')
                     .append(this.templateArgument).append(')');
             return LogicTuple.parse(pred.toString());
-        } catch (final InvalidLogicTupleException e) {
+        } catch (final InvalidTupleException e) {
             e.printStackTrace();
             return null;
         }

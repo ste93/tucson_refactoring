@@ -24,7 +24,6 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import alice.logictuple.LogicTuple;
-import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.logictuple.exceptions.InvalidTupleOperationException;
 import alice.tucson.api.EnhancedACC;
 import alice.tucson.api.TucsonAgentId;
@@ -33,6 +32,7 @@ import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
+import alice.tuplecentre.api.exceptions.InvalidTupleException;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 
 /**
@@ -222,7 +222,7 @@ public class EditSpec extends javax.swing.JFrame {
             this.outputState.setText("TuCSoN Node is unreachable.");
         } catch (final OperationTimeOutException e) {
             this.outputState.setText("TuCSoN operation timeout exceeded.");
-        } catch (final InvalidLogicTupleException e) {
+        } catch (final InvalidTupleException e) {
             this.outputState.setText("Invalid ReSpecT specification given.");
         }
     }

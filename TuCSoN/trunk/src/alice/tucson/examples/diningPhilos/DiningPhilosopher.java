@@ -1,7 +1,6 @@
 package alice.tucson.examples.diningPhilos;
 
 import alice.logictuple.LogicTuple;
-import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.tucson.api.AbstractTucsonAgent;
 import alice.tucson.api.ITucsonOperation;
 import alice.tucson.api.SynchACC;
@@ -9,6 +8,7 @@ import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
+import alice.tuplecentre.api.exceptions.InvalidTupleException;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 
 /**
@@ -96,7 +96,7 @@ public class DiningPhilosopher extends AbstractTucsonAgent {
                             this.myTable,
                             LogicTuple.parse("chops(" + this.chop1 + ","
                                     + this.chop2 + ")"), null);
-        } catch (final InvalidLogicTupleException e) {
+        } catch (final InvalidTupleException e) {
             e.printStackTrace();
         } catch (final TucsonOperationNotPossibleException e) {
             e.printStackTrace();
@@ -126,7 +126,7 @@ public class DiningPhilosopher extends AbstractTucsonAgent {
                     this.myTable,
                     LogicTuple.parse("chops(" + this.chop1 + "," + this.chop2
                             + ")"), null);
-        } catch (final InvalidLogicTupleException e) {
+        } catch (final InvalidTupleException e) {
             e.printStackTrace();
         } catch (final TucsonOperationNotPossibleException e) {
             e.printStackTrace();

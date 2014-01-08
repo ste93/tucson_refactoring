@@ -24,8 +24,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import alice.logictuple.LogicTuple;
+import alice.logictuple.LogicTupleOpManager;
 import alice.logictuple.TupleArgument;
-import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.logictuple.exceptions.InvalidTupleOperationException;
 import alice.respect.api.exceptions.InvalidTupleCentreIdException;
 import alice.respect.core.InternalEvent;
@@ -37,10 +37,10 @@ import alice.respect.situatedness.TransducerId;
 import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
-import alice.tucson.parsing.MyOpManager;
 import alice.tuplecentre.api.IId;
 import alice.tuplecentre.api.ITupleCentreOperation;
 import alice.tuplecentre.api.Tuple;
+import alice.tuplecentre.api.exceptions.InvalidTupleException;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 import alice.tuplecentre.core.AbstractEvent;
 import alice.tuplecentre.core.AbstractTupleCentreOperation;
@@ -820,7 +820,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         LogicTuple resultArg = null;
         try {
             resultArg = LogicTuple.parse(tuple);
-        } catch (final InvalidLogicTupleException e) {
+        } catch (final InvalidTupleException e) {
             e.printStackTrace();
             return false;
         }
@@ -866,7 +866,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
                     Term.createTerm(
                             "reaction(" + ev.getTerm() + "," + g.getTerm()
                                     + "," + r.getTerm() + ")",
-                            new MyOpManager());
+                            new LogicTupleOpManager());
         } catch (final InvalidTermException e) {
             e.printStackTrace();
             return false;
@@ -1007,7 +1007,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
                     Term.createTerm(
                             "reaction(" + ev.getTerm() + "," + g.getTerm()
                                     + "," + r.getTerm() + ")",
-                            new MyOpManager());
+                            new LogicTupleOpManager());
         } catch (final InvalidTermException e) {
             e.printStackTrace();
             return false;
@@ -1220,7 +1220,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         LogicTuple resultArg = null;
         try {
             resultArg = LogicTuple.parse(tuple);
-        } catch (final InvalidLogicTupleException e) {
+        } catch (final InvalidTupleException e) {
             e.printStackTrace();
             return false;
         }
@@ -1266,7 +1266,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
                     Term.createTerm(
                             "reaction(" + ev.getTerm() + "," + g.getTerm()
                                     + "," + r.getTerm() + ")",
-                            new MyOpManager());
+                            new LogicTupleOpManager());
         } catch (final InvalidTermException e) {
             e.printStackTrace();
             return false;
@@ -1389,7 +1389,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
                     Term.createTerm(
                             "reaction(" + ev.getTerm() + "," + g.getTerm()
                                     + "," + r.getTerm() + ")",
-                            new MyOpManager());
+                            new LogicTupleOpManager());
         } catch (final InvalidTermException e) {
             e.printStackTrace();
             return false;
@@ -1595,7 +1595,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
                     Term.createTerm(
                             "reaction(" + ev.getTerm() + "," + g.getTerm()
                                     + "," + r.getTerm() + ")",
-                            new MyOpManager());
+                            new LogicTupleOpManager());
         } catch (final InvalidTermException e) {
             e.printStackTrace();
             return false;
@@ -1743,7 +1743,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         LogicTuple resultArg = null;
         try {
             resultArg = LogicTuple.parse(tuple);
-        } catch (final InvalidLogicTupleException e) {
+        } catch (final InvalidTupleException e) {
             e.printStackTrace();
             return false;
         }
@@ -1789,7 +1789,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
                     Term.createTerm(
                             "reaction(" + ev.getTerm() + "," + g.getTerm()
                                     + "," + r.getTerm() + ")",
-                            new MyOpManager());
+                            new LogicTupleOpManager());
         } catch (final InvalidTermException e) {
             e.printStackTrace();
             return false;
@@ -1920,7 +1920,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
                     Term.createTerm(
                             "reaction(" + ev.getTerm() + "," + g.getTerm()
                                     + "," + r.getTerm() + ")",
-                            new MyOpManager());
+                            new LogicTupleOpManager());
         } catch (final InvalidTermException e) {
             e.printStackTrace();
             return false;

@@ -4,9 +4,9 @@ import java.math.BigInteger;
 
 import alice.logictuple.LogicTuple;
 import alice.logictuple.TupleArgument;
-import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.logictuple.exceptions.InvalidTupleOperationException;
 import alice.tucson.api.AbstractSpawnActivity;
+import alice.tuplecentre.api.exceptions.InvalidTupleException;
 
 /**
  * 
@@ -50,7 +50,7 @@ public class SpawnedWorkingActivity extends AbstractSpawnActivity {
                             + job.getArg("reqID").getArg(0) + ")" + ")");
             this.log("Putting result: " + res.toString());
             this.out(res);
-        } catch (final InvalidLogicTupleException e) {
+        } catch (final InvalidTupleException e) {
             this.log("ERROR: Tuple is not an admissible Prolog term!");
             e.printStackTrace();
         } catch (final InvalidTupleOperationException e) {

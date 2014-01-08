@@ -16,6 +16,7 @@ package alice.tucson.service;
 import java.util.Iterator;
 
 import alice.logictuple.LogicTuple;
+import alice.logictuple.LogicTupleOpManager;
 import alice.logictuple.Value;
 import alice.logictuple.Var;
 import alice.tucson.api.EnhancedACC;
@@ -28,7 +29,6 @@ import alice.tucson.api.exceptions.UnreachableNodeException;
 import alice.tucson.network.AbstractTucsonProtocol;
 import alice.tucson.network.TucsonMsgRequest;
 import alice.tucson.network.exceptions.DialogException;
-import alice.tucson.parsing.MyOpManager;
 import alice.tuplecentre.api.TupleTemplate;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 import alice.tuprolog.Parser;
@@ -248,7 +248,7 @@ public class ACCProxyAgentSide implements EnhancedACC {
             UnreachableNodeException, OperationTimeOutException {
         final LogicTuple tuple =
                 new LogicTuple(Parser.parseSingleTerm("reaction(" + event + ","
-                        + guards + "," + reactionBody + ")", new MyOpManager()));
+                        + guards + "," + reactionBody + ")", new LogicTupleOpManager()));
         return this.executor.doBlockingOperation(this.aid,
                 TucsonOperation.inpSCode(), tid, tuple, timeout);
     }
@@ -260,7 +260,7 @@ public class ACCProxyAgentSide implements EnhancedACC {
             UnreachableNodeException {
         final LogicTuple tuple =
                 new LogicTuple(Parser.parseSingleTerm("reaction(" + event + ","
-                        + guards + "," + reactionBody + ")", new MyOpManager()));
+                        + guards + "," + reactionBody + ")", new LogicTupleOpManager()));
         return this.executor.doNonBlockingOperation(this.aid,
                 TucsonOperation.inpSCode(), tid, tuple, l);
     }
@@ -271,7 +271,7 @@ public class ACCProxyAgentSide implements EnhancedACC {
             UnreachableNodeException, OperationTimeOutException {
         final LogicTuple tuple =
                 new LogicTuple(Parser.parseSingleTerm("reaction(" + event + ","
-                        + guards + "," + reactionBody + ")", new MyOpManager()));
+                        + guards + "," + reactionBody + ")", new LogicTupleOpManager()));
         return this.executor.doBlockingOperation(this.aid,
                 TucsonOperation.inSCode(), tid, tuple, timeout);
     }
@@ -283,7 +283,7 @@ public class ACCProxyAgentSide implements EnhancedACC {
             UnreachableNodeException {
         final LogicTuple tuple =
                 new LogicTuple(Parser.parseSingleTerm("reaction(" + event + ","
-                        + guards + "," + reactionBody + ")", new MyOpManager()));
+                        + guards + "," + reactionBody + ")", new LogicTupleOpManager()));
         return this.executor.doNonBlockingOperation(this.aid,
                 TucsonOperation.inSCode(), tid, tuple, l);
     }
@@ -339,7 +339,7 @@ public class ACCProxyAgentSide implements EnhancedACC {
             UnreachableNodeException, OperationTimeOutException {
         final LogicTuple tuple =
                 new LogicTuple(Parser.parseSingleTerm("reaction(" + event + ","
-                        + guards + "," + reactionBody + ")", new MyOpManager()));
+                        + guards + "," + reactionBody + ")", new LogicTupleOpManager()));
         return this.executor.doBlockingOperation(this.aid,
                 TucsonOperation.nopSCode(), tid, tuple, timeout);
     }
@@ -351,7 +351,7 @@ public class ACCProxyAgentSide implements EnhancedACC {
             UnreachableNodeException {
         final LogicTuple tuple =
                 new LogicTuple(Parser.parseSingleTerm("reaction(" + event + ","
-                        + guards + "," + reactionBody + ")", new MyOpManager()));
+                        + guards + "," + reactionBody + ")", new LogicTupleOpManager()));
         return this.executor.doNonBlockingOperation(this.aid,
                 TucsonOperation.nopSCode(), tid, tuple, l);
     }
@@ -362,7 +362,7 @@ public class ACCProxyAgentSide implements EnhancedACC {
             UnreachableNodeException, OperationTimeOutException {
         final LogicTuple tuple =
                 new LogicTuple(Parser.parseSingleTerm("reaction(" + event + ","
-                        + guards + "," + reactionBody + ")", new MyOpManager()));
+                        + guards + "," + reactionBody + ")", new LogicTupleOpManager()));
         return this.executor.doBlockingOperation(this.aid,
                 TucsonOperation.noSCode(), tid, tuple, timeout);
     }
@@ -374,7 +374,7 @@ public class ACCProxyAgentSide implements EnhancedACC {
             UnreachableNodeException {
         final LogicTuple tuple =
                 new LogicTuple(Parser.parseSingleTerm("reaction(" + event + ","
-                        + guards + "," + reactionBody + ")", new MyOpManager()));
+                        + guards + "," + reactionBody + ")", new LogicTupleOpManager()));
         return this.executor.doNonBlockingOperation(this.aid,
                 TucsonOperation.noSCode(), tid, tuple, l);
     }
@@ -415,7 +415,7 @@ public class ACCProxyAgentSide implements EnhancedACC {
             UnreachableNodeException, OperationTimeOutException {
         final LogicTuple tuple =
                 new LogicTuple(Parser.parseSingleTerm("reaction(" + event + ","
-                        + guards + "," + reactionBody + ")", new MyOpManager()));
+                        + guards + "," + reactionBody + ")", new LogicTupleOpManager()));
         return this.executor.doBlockingOperation(this.aid,
                 TucsonOperation.outSCode(), tid, tuple, timeout);
     }
@@ -427,7 +427,7 @@ public class ACCProxyAgentSide implements EnhancedACC {
             UnreachableNodeException {
         final LogicTuple tuple =
                 new LogicTuple(Parser.parseSingleTerm("reaction(" + event + ","
-                        + guards + "," + reactionBody + ")", new MyOpManager()));
+                        + guards + "," + reactionBody + ")", new LogicTupleOpManager()));
         return this.executor.doNonBlockingOperation(this.aid,
                 TucsonOperation.outSCode(), tid, tuple, l);
     }
@@ -483,7 +483,7 @@ public class ACCProxyAgentSide implements EnhancedACC {
             UnreachableNodeException, OperationTimeOutException {
         final LogicTuple tuple =
                 new LogicTuple(Parser.parseSingleTerm("reaction(" + event + ","
-                        + guards + "," + reactionBody + ")", new MyOpManager()));
+                        + guards + "," + reactionBody + ")", new LogicTupleOpManager()));
         return this.executor.doBlockingOperation(this.aid,
                 TucsonOperation.rdpSCode(), tid, tuple, timeout);
     }
@@ -495,7 +495,7 @@ public class ACCProxyAgentSide implements EnhancedACC {
             UnreachableNodeException {
         final LogicTuple tuple =
                 new LogicTuple(Parser.parseSingleTerm("reaction(" + event + ","
-                        + guards + "," + reactionBody + ")", new MyOpManager()));
+                        + guards + "," + reactionBody + ")", new LogicTupleOpManager()));
         return this.executor.doNonBlockingOperation(this.aid,
                 TucsonOperation.rdpSCode(), tid, tuple, l);
     }
@@ -506,7 +506,7 @@ public class ACCProxyAgentSide implements EnhancedACC {
             UnreachableNodeException, OperationTimeOutException {
         final LogicTuple tuple =
                 new LogicTuple(Parser.parseSingleTerm("reaction(" + event + ","
-                        + guards + "," + reactionBody + ")", new MyOpManager()));
+                        + guards + "," + reactionBody + ")", new LogicTupleOpManager()));
         return this.executor.doBlockingOperation(this.aid,
                 TucsonOperation.rdSCode(), tid, tuple, timeout);
     }
@@ -518,7 +518,7 @@ public class ACCProxyAgentSide implements EnhancedACC {
             UnreachableNodeException {
         final LogicTuple tuple =
                 new LogicTuple(Parser.parseSingleTerm("reaction(" + event + ","
-                        + guards + "," + reactionBody + ")", new MyOpManager()));
+                        + guards + "," + reactionBody + ")", new LogicTupleOpManager()));
         return this.executor.doNonBlockingOperation(this.aid,
                 TucsonOperation.rdSCode(), tid, tuple, l);
     }

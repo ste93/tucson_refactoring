@@ -25,9 +25,9 @@ import java.util.Random;
 import java.util.Timer;
 
 import alice.logictuple.LogicTuple;
+import alice.logictuple.LogicTupleOpManager;
 import alice.logictuple.TupleArgument;
 import alice.logictuple.Value;
-import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.logictuple.exceptions.InvalidTupleOperationException;
 import alice.respect.api.ILinkContext;
 import alice.respect.api.IRespectTC;
@@ -43,13 +43,13 @@ import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.introspection.WSetEvent;
-import alice.tucson.parsing.MyOpManager;
 import alice.tucson.service.Spawn2PLibrary;
 import alice.tucson.service.Spawn2PSolver;
 import alice.tuplecentre.api.AgentId;
 import alice.tuplecentre.api.IId;
 import alice.tuplecentre.api.Tuple;
 import alice.tuplecentre.api.TupleTemplate;
+import alice.tuplecentre.api.exceptions.InvalidTupleException;
 import alice.tuplecentre.core.AbstractBehaviourSpecification;
 import alice.tuplecentre.core.AbstractEvent;
 import alice.tuplecentre.core.AbstractTupleCentreOperation;
@@ -1479,7 +1479,7 @@ public class RespectVMContext extends
             engine.solve("retractall(reaction(X,Y,Z)).");
             engine.solveEnd();
             final Parser parser =
-                    new Parser(new MyOpManager(), spec.toString());
+                    new Parser(new LogicTupleOpManager(), spec.toString());
             Term term = parser.nextTerm(true);
             while (term != null) {
                 engine.solve("assert(" + term + ").");
@@ -1554,7 +1554,7 @@ public class RespectVMContext extends
                     final RespectOperation op =
                             RespectOperation.makeRd(logicTuple, null);
                     this.vm.doOperation(null, op);
-                } catch (final InvalidLogicTupleException e) {
+                } catch (final InvalidTupleException e) {
                     e.printStackTrace();
                 } catch (final OperationNotPossibleException e) {
                     e.printStackTrace();
@@ -1570,7 +1570,7 @@ public class RespectVMContext extends
                     final RespectOperation op =
                             RespectOperation.makeIn(logicTuple, null);
                     this.vm.doOperation(null, op);
-                } catch (final InvalidLogicTupleException e) {
+                } catch (final InvalidTupleException e) {
                     e.printStackTrace();
                 } catch (final OperationNotPossibleException e) {
                     e.printStackTrace();

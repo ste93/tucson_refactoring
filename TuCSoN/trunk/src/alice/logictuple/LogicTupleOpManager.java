@@ -1,4 +1,4 @@
-package alice.tucson.parsing;
+package alice.logictuple;
 
 import alice.tuprolog.Operator;
 import alice.tuprolog.OperatorManager;
@@ -9,7 +9,7 @@ import alice.tuprolog.Prolog;
  * @author ste (mailto: s.mariani@unibo.it)
  * 
  */
-public class MyOpManager extends OperatorManager {
+public class LogicTupleOpManager extends OperatorManager {
 
     /**
      * 
@@ -19,7 +19,7 @@ public class MyOpManager extends OperatorManager {
     /**
      * 
      */
-    public MyOpManager() {
+    public LogicTupleOpManager() {
         super();
         for (final Operator op : new Prolog().getOperatorManager()
                 .getOperators()) {

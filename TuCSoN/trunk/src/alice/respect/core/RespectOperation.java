@@ -17,12 +17,12 @@ import java.util.List;
 
 import alice.logictuple.LogicTuple;
 import alice.logictuple.TupleArgument;
-import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.logictuple.exceptions.InvalidTupleOperationException;
 import alice.respect.api.IRespectOperation;
 import alice.respect.api.RespectSpecification;
 import alice.tuplecentre.api.Tuple;
 import alice.tuplecentre.api.TupleTemplate;
+import alice.tuplecentre.api.exceptions.InvalidTupleException;
 import alice.tuplecentre.core.AbstractTupleCentreOperation;
 import alice.tuplecentre.core.OperationCompletionListener;
 import alice.tuprolog.Struct;
@@ -373,7 +373,7 @@ public class RespectOperation extends AbstractTupleCentreOperation implements
         LogicTuple cpy = null;
         try {
             cpy = LogicTuple.parse(t.toString());
-        } catch (final InvalidLogicTupleException e) {
+        } catch (final InvalidTupleException e) {
             e.printStackTrace();
             return null;
         }
@@ -439,7 +439,7 @@ public class RespectOperation extends AbstractTupleCentreOperation implements
         LogicTuple cpy = null;
         try {
             cpy = LogicTuple.parse(t.toString());
-        } catch (final InvalidLogicTupleException e) {
+        } catch (final InvalidTupleException e) {
             e.printStackTrace();
             return null;
         }
@@ -498,7 +498,7 @@ public class RespectOperation extends AbstractTupleCentreOperation implements
                     new RespectOperation(
                             AbstractTupleCentreOperation.OPTYPE_SET_S,
                             (Tuple) LogicTuple.parse(spec.toString()), l);
-        } catch (final InvalidLogicTupleException e) {
+        } catch (final InvalidTupleException e) {
             e.printStackTrace();
         }
         return temp;

@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import alice.logictuple.LogicTuple;
-import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.logictuple.exceptions.InvalidTupleOperationException;
 import alice.tucson.api.AbstractTucsonAgent;
 import alice.tucson.api.EnhancedSynchACC;
@@ -16,6 +15,7 @@ import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
+import alice.tuplecentre.api.exceptions.InvalidTupleException;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 
 /**
@@ -220,7 +220,7 @@ public class MasterAgent extends AbstractTucsonAgent {
                 }
             }
             this.say("Someone killed me, bye!");
-        } catch (final InvalidLogicTupleException e) {
+        } catch (final InvalidTupleException e) {
             this.say("ERROR: Tuple is not an admissible Prolog term!");
             e.printStackTrace();
         } catch (final TucsonOperationNotPossibleException e) {

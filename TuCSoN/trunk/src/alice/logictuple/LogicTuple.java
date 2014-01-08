@@ -13,9 +13,8 @@
  */
 package alice.logictuple;
 
-import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.logictuple.exceptions.InvalidTupleOperationException;
-import alice.tucson.parsing.MyOpManager;
+import alice.tuplecentre.api.exceptions.InvalidTupleException;
 import alice.tuprolog.InvalidTermException;
 import alice.tuprolog.Term;
 
@@ -45,17 +44,18 @@ public class LogicTuple implements alice.tuplecentre.api.TupleTemplate,
      * @param st
      *            the text representing the tuple
      * @return the logic tuple interpreted from the text
-     * @exception InvalidLogicTupleException
+     * @exception InvalidTupleException
      *                if the text does not represent a valid logic tuple
      */
     public static LogicTuple parse(final String st)
-            throws InvalidLogicTupleException {
+            throws InvalidTupleException {
         try {
             final Term t =
-                    alice.tuprolog.Term.createTerm(st, new MyOpManager());
+                    alice.tuprolog.Term.createTerm(st,
+                            new LogicTupleOpManager());
             return new LogicTuple(new TupleArgument(t));
         } catch (final InvalidTermException ex) {
-            throw new InvalidLogicTupleException();
+            throw new InvalidTupleException();
         }
     }
 

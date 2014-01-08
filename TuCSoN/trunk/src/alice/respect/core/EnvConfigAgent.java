@@ -3,7 +3,6 @@ package alice.respect.core;
 import java.lang.reflect.InvocationTargetException;
 
 import alice.logictuple.LogicTuple;
-import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.logictuple.exceptions.InvalidTupleOperationException;
 import alice.respect.api.TupleCentreId;
 import alice.respect.api.exceptions.InvalidTupleCentreIdException;
@@ -18,14 +17,14 @@ import alice.tucson.api.SynchACC;
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
+import alice.tuplecentre.api.exceptions.InvalidTupleException;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 
 /**
  * 
  * Environment configuration agent.
  * 
- * It checks for requests on '$ENV' and delegates them to the
- * TransducerManager.
+ * It checks for requests on '$ENV' and delegates them to the TransducerManager.
  * 
  * @author Steven Maraldi
  * 
@@ -216,7 +215,7 @@ public class EnvConfigAgent extends AbstractTucsonAgent {
                             + pId + ", new transducer=" + tId + " >...");
                     rm.setTransducer(pId, tId);
                 }
-            } catch (final InvalidLogicTupleException e) {
+            } catch (final InvalidTupleException e) {
                 e.printStackTrace();
             } catch (final TucsonOperationNotPossibleException e) {
                 e.printStackTrace();
