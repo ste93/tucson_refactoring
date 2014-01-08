@@ -281,7 +281,7 @@ public abstract class AbstractTupleCentreOperation implements
      * @return the tuple representing the whole invocation predicate (primitive
      *         + tuple argument)
      */
-    public LogicTuple getPredicate() {
+    public Tuple getPredicate() {
         final StringBuffer pred = new StringBuffer();
         try {
             if (this.isOut() || this.isOutS() || this.isOutAll()
@@ -303,7 +303,7 @@ public abstract class AbstractTupleCentreOperation implements
      * 
      * @return the tuple representing the primitive invoked
      */
-    public LogicTuple getPrimitive() {
+    public Tuple getPrimitive() {
         switch (this.type) {
             case OPTYPE_OUT:
                 return new LogicTuple("out");

@@ -23,6 +23,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 
+import alice.logictuple.LogicMatchingEngine;
 import alice.logictuple.LogicTuple;
 import alice.logictuple.LogicTupleOpManager;
 import alice.logictuple.TupleArgument;
@@ -2114,13 +2115,15 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         final AbstractEvent e = this.vm.getCurrentReactionEvent();
         if (e.isInternal()) {
             final InternalEvent ie = (InternalEvent) e;
-            return this.unify(predicate, ie.getInputEvent().getSimpleTCEvent()
-                    .getPredicate().toTerm());
+            return LogicMatchingEngine.propagate(new LogicTuple(predicate),
+                    (LogicTuple) ie.getInputEvent().getSimpleTCEvent()
+                            .getPredicate());
         }
         if (e.isOutput()) {
             final OutputEvent oe = (OutputEvent) e;
-            return this.unify(predicate, oe.getInputEvent().getSimpleTCEvent()
-                    .getPredicate().toTerm());
+            return LogicMatchingEngine.propagate(new LogicTuple(predicate),
+                    (LogicTuple) oe.getInputEvent().getSimpleTCEvent()
+                            .getPredicate());
         }
         return this
                 .unify(predicate, this.vm.getCurrentReactionTerm().getTerm());
