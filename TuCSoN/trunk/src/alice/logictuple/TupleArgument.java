@@ -90,14 +90,14 @@ public class TupleArgument implements java.io.Serializable {
      * Gets the double value of this argument
      * 
      * @return the double value
-     * @throws InvalidTupleOperationException
+     * @throws InvalidOperationException
      *             if the argument is not a number
      */
-    public double doubleValue() throws InvalidTupleOperationException {
+    public double doubleValue() throws InvalidOperationException {
         if (this.value instanceof Number) {
             return ((Number) this.value).doubleValue();
         }
-        throw new InvalidTupleOperationException();
+        throw new InvalidOperationException();
 
     }
 
@@ -105,14 +105,14 @@ public class TupleArgument implements java.io.Serializable {
      * Gets the float value of this argument
      * 
      * @return the float value
-     * @throws InvalidTupleOperationException
+     * @throws InvalidOperationException
      *             if the argument is not a number
      */
-    public float floatValue() throws InvalidTupleOperationException {
+    public float floatValue() throws InvalidOperationException {
         if (this.value instanceof Number) {
             return ((Number) this.value).floatValue();
         }
-        throw new InvalidTupleOperationException();
+        throw new InvalidOperationException();
     }
 
     /**
@@ -368,10 +368,10 @@ public class TupleArgument implements java.io.Serializable {
      * Gets the long value of this argument
      * 
      * @return the long value
-     * @throws InvalidTupleOperationException
+     * @throws InvalidOperationException
      *             if the argument is not a number
      */
-    public long longValue() throws InvalidTupleOperationException {
+    public long longValue() throws InvalidOperationException {
         return ((Number) this.value).longValue();
     }
 

@@ -1,42 +1,39 @@
 /**
- * JavaTuple.java
+ * JavaTupleVar.java
  */
 package alice.tuples.javatuples;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import alice.logictuple.TupleArgument;
+import alice.logictuple.Var;
 import alice.tuplecentre.api.Tuple;
-import alice.tuplecentre.api.exceptions.InvalidTupleException;
+import alice.tuplecentre.api.exceptions.InvalidVarNameException;
 
 /**
  * @author ste (mailto: s.mariani@unibo.it) on 09/gen/2014
  * 
  */
-public class JavaTuple implements IJavaTuple {
+public class JavaTupleVar implements IJavaTuple {
 
-    private final static int AVG_ARG_LENGTH = 10;
-    private final List<IJavaTuple> args;
-    private final String name;
+    private final TupleArgument ta;
 
-    public JavaTuple(final String tupleName, final IJavaTuple arg)
-            throws InvalidTupleException {
-        if (!tupleName.matches("[a-zA-z]+")) {
-            throw new InvalidTupleException();
+    public JavaTupleVar(final String varName) throws InvalidVarNameException {
+        // should begin with a letter or _, then letters or numbers (no numbers
+        // alone, no letters after numbers, no _ after anything)
+        if (!varName.matches("_?[a-zA-Z]*[0-9]*")) {
+            throw new InvalidVarNameException();
         }
-        this.name = tupleName.toLowerCase();
-        this.args = new ArrayList<IJavaTuple>(1);
-        this.args.add(arg);
+        this.ta = new Var(varName.toUpperCase());
     }
 
     /*
      * (non-Javadoc)
      * @see
-     * alice.tuples.javatuples.IJavaTuple#addArg(alice.tuplecentre.api.Tuple)
+     * alice.tuples.javatuples.IJavaTuple#addArg(alice.tuples.javatuples.IJavaTuple
+     * )
      */
     @Override
-    public void addArg(final IJavaTuple t) {
-        this.args.add(t);
+    public void addArg(final IJavaTuple t) throws NonCompositeException {
+        throw new NonCompositeException();
     }
 
     /*
@@ -45,7 +42,12 @@ public class JavaTuple implements IJavaTuple {
      */
     @Override
     public IJavaTuple getArg(final int i) {
-        return this.args.get(i);
+        try {
+            return new JavaTupleVar(this.ta.toString());
+        } catch (InvalidVarNameException e) {
+            // cannot happen
+        }
+        return null;
     }
 
     /*
@@ -53,8 +55,8 @@ public class JavaTuple implements IJavaTuple {
      * @see alice.tuples.javatuples.IJavaTuple#getName()
      */
     @Override
-    public String getName() {
-        return this.name;
+    public String getName() throws NonCompositeException {
+        throw new NonCompositeException();
     }
 
     /*
@@ -63,7 +65,7 @@ public class JavaTuple implements IJavaTuple {
      */
     @Override
     public boolean isComposite() {
-        return true;
+        return false;
     }
 
     /*
@@ -81,7 +83,7 @@ public class JavaTuple implements IJavaTuple {
      */
     @Override
     public boolean isVar() {
-        return false;
+        return true;
     }
 
     /*
@@ -113,18 +115,7 @@ public class JavaTuple implements IJavaTuple {
      */
     @Override
     public String toString() {
-        final StringBuffer sb =
-                new StringBuffer(this.name.length()
-                        + (this.args.size() * JavaTuple.AVG_ARG_LENGTH));
-        sb.append(this.name);
-        sb.append('(');
-        for (final IJavaTuple arg : this.args) {
-            sb.append(arg.toString());
-            sb.append(',');
-        }
-        sb.deleteCharAt(sb.length() - 1);
-        sb.append(')');
-        return sb.toString();
+        return this.ta.toString();
     }
 
 }
