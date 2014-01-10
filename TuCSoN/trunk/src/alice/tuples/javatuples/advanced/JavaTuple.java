@@ -1,7 +1,7 @@
 /**
  * JavaTuple.java
  */
-package alice.tuples.javatuples;
+package alice.tuples.javatuples.advanced;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +15,8 @@ import alice.tuplecentre.api.exceptions.InvalidTupleException;
  */
 public class JavaTuple implements IJavaTuple {
 
-    private final static int AVG_ARG_LENGTH = 10;
+    // default visibility (package-private) to allow usage in JavaTupleList
+    final static int AVG_ARG_LENGTH = 10;
     private final List<IJavaTuple> args;
     private final String name;
 
@@ -50,6 +51,15 @@ public class JavaTuple implements IJavaTuple {
 
     /*
      * (non-Javadoc)
+     * @see alice.tuples.javatuples.IJavaTuple#getArity()
+     */
+    @Override
+    public int getArity() {
+        return this.args.size();
+    }
+
+    /*
+     * (non-Javadoc)
      * @see alice.tuples.javatuples.IJavaTuple#getName()
      */
     @Override
@@ -64,6 +74,15 @@ public class JavaTuple implements IJavaTuple {
     @Override
     public boolean isComposite() {
         return true;
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see alice.tuples.javatuples.IJavaTuple#isList()
+     */
+    @Override
+    public boolean isList() {
+        return false;
     }
 
     /*

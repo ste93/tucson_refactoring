@@ -1,7 +1,7 @@
 /**
  * CannotAddJavaTupleArgumentException.java
  */
-package alice.tuples.javatuples;
+package alice.tuples.javatuples.advanced;
 
 /**
  * @author ste (mailto: s.mariani@unibo.it) on 09/gen/2014

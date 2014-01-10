@@ -1,7 +1,7 @@
 /**
  * JavaTupleArgument.java
  */
-package alice.tuples.javatuples;
+package alice.tuples.javatuples.advanced;
 
 import alice.logictuple.TupleArgument;
 import alice.logictuple.Value;
@@ -74,6 +74,15 @@ public class JavaTupleValue implements IJavaTuple {
 
     /*
      * (non-Javadoc)
+     * @see alice.tuples.javatuples.IJavaTuple#getArity()
+     */
+    @Override
+    public int getArity() {
+        return 0;
+    }
+
+    /*
+     * (non-Javadoc)
      * @see alice.tuples.javatuples.IJavaTuple#getName()
      */
     @Override
@@ -87,6 +96,15 @@ public class JavaTupleValue implements IJavaTuple {
      */
     @Override
     public boolean isComposite() {
+        return false;
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see alice.tuples.javatuples.IJavaTuple#isList()
+     */
+    @Override
+    public boolean isList() {
         return false;
     }
 
