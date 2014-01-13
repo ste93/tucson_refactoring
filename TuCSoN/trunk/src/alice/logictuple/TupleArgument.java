@@ -406,10 +406,10 @@ public class TupleArgument implements java.io.Serializable {
      * array of values
      * 
      * @return an array of Tuple Arguments
-     * @throws InvalidTupleOperationException
+     * @throws InvalidOperationException
      *             if the argument is not a list
      */
-    public TupleArgument[] toArray() throws InvalidTupleOperationException {
+    public TupleArgument[] toArray() throws InvalidOperationException {
         final ArrayList<Term> list = new ArrayList<Term>();
         final Iterator<? extends Term> it =
                 ((Struct) this.value).listIterator();

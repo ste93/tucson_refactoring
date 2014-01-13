@@ -1,23 +1,23 @@
 /**
- * JavaTupleList.java
+ * JavaTuple.java
  */
-package alice.tuples.javatuples.advanced;
+package alice.tuples.javatuples.basic;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import alice.tuplecentre.api.Tuple;
-import alice.tuples.javatuples.basic.NonCompositeException;
 
 /**
  * @author ste (mailto: s.mariani@unibo.it) on 09/gen/2014
  * 
  */
-public class JavaTupleList implements IJavaTuple {
+public class JavaTuple implements IJavaTuple {
 
+    private final static int AVG_ARG_LENGTH = 10;
     private final List<IJavaTuple> args;
 
-    public JavaTupleList(final IJavaTuple arg) {
+    public JavaTuple(final IJavaTuple arg) {
         this.args = new ArrayList<IJavaTuple>(1);
         this.args.add(arg);
     }
@@ -25,11 +25,10 @@ public class JavaTupleList implements IJavaTuple {
     /*
      * (non-Javadoc)
      * @see
-     * alice.tuples.javatuples.IJavaTuple#addArg(alice.tuples.javatuples.IJavaTuple
-     * )
+     * alice.tuples.javatuples.IJavaTuple#addArg(alice.tuplecentre.api.Tuple)
      */
     @Override
-    public void addArg(final IJavaTuple t) throws NonCompositeException {
+    public void addArg(final IJavaTuple t) {
         this.args.add(t);
     }
 
@@ -53,28 +52,10 @@ public class JavaTupleList implements IJavaTuple {
 
     /*
      * (non-Javadoc)
-     * @see alice.tuples.javatuples.IJavaTuple#getName()
-     */
-    @Override
-    public String getName() throws NonCompositeException {
-        throw new NonCompositeException();
-    }
-
-    /*
-     * (non-Javadoc)
      * @see alice.tuples.javatuples.IJavaTuple#isComposite()
      */
     @Override
     public boolean isComposite() {
-        return false;
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see alice.tuples.javatuples.IJavaTuple#isList()
-     */
-    @Override
-    public boolean isList() {
         return true;
     }
 
@@ -127,13 +108,13 @@ public class JavaTupleList implements IJavaTuple {
     public String toString() {
         final StringBuffer sb =
                 new StringBuffer(this.args.size() * JavaTuple.AVG_ARG_LENGTH);
-        sb.append('[');
+        sb.append("$javatuple(");
         for (final IJavaTuple arg : this.args) {
             sb.append(arg.toString());
             sb.append(',');
         }
         sb.deleteCharAt(sb.length() - 1);
-        sb.append(']');
+        sb.append(')');
         return sb.toString();
     }
 

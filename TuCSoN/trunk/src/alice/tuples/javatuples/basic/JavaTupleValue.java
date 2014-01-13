@@ -1,25 +1,40 @@
 /**
- * JavaTupleList.java
+ * JavaTupleArgument.java
  */
-package alice.tuples.javatuples.advanced;
+package alice.tuples.javatuples.basic;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import alice.logictuple.TupleArgument;
+import alice.logictuple.Value;
 import alice.tuplecentre.api.Tuple;
-import alice.tuples.javatuples.basic.NonCompositeException;
+import alice.tuplecentre.api.exceptions.InvalidOperationException;
 
 /**
  * @author ste (mailto: s.mariani@unibo.it) on 09/gen/2014
  * 
  */
-public class JavaTupleList implements IJavaTuple {
+public class JavaTupleValue implements IJavaTuple {
 
-    private final List<IJavaTuple> args;
+    private final TupleArgument ta;
 
-    public JavaTupleList(final IJavaTuple arg) {
-        this.args = new ArrayList<IJavaTuple>(1);
-        this.args.add(arg);
+    public JavaTupleValue(final double arg) {
+        this.ta = new Value(arg);
+    }
+
+    public JavaTupleValue(final float arg) {
+        this.ta = new Value(arg);
+    }
+
+    public JavaTupleValue(final int arg) {
+        this.ta = new Value(arg);
+    }
+
+    public JavaTupleValue(final long arg) {
+        this.ta = new Value(arg);
+    }
+
+    // ANY string is parsed as literal (even with parentheses!) ?
+    public JavaTupleValue(final String arg) {
+        this.ta = new Value(arg);
     }
 
     /*
@@ -30,7 +45,7 @@ public class JavaTupleList implements IJavaTuple {
      */
     @Override
     public void addArg(final IJavaTuple t) throws NonCompositeException {
-        this.args.add(t);
+        throw new NonCompositeException();
     }
 
     /*
@@ -38,8 +53,8 @@ public class JavaTupleList implements IJavaTuple {
      * @see alice.tuples.javatuples.IJavaTuple#getArg(int)
      */
     @Override
-    public IJavaTuple getArg(final int i) {
-        return this.args.get(i);
+    public IJavaTuple getArg(final int i) throws NonCompositeException {
+        throw new NonCompositeException();
     }
 
     /*
@@ -48,16 +63,7 @@ public class JavaTupleList implements IJavaTuple {
      */
     @Override
     public int getArity() {
-        return this.args.size();
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see alice.tuples.javatuples.IJavaTuple#getName()
-     */
-    @Override
-    public String getName() throws NonCompositeException {
-        throw new NonCompositeException();
+        return 0;
     }
 
     /*
@@ -69,13 +75,20 @@ public class JavaTupleList implements IJavaTuple {
         return false;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see alice.tuples.javatuples.IJavaTuple#isList()
-     */
-    @Override
-    public boolean isList() {
-        return true;
+    public boolean isDouble() {
+        return this.ta.isDouble();
+    }
+
+    public boolean isFloat() {
+        return this.ta.isFloat();
+    }
+
+    public boolean isInt() {
+        return this.ta.isInt();
+    }
+
+    public boolean isLong() {
+        return this.ta.isLong();
     }
 
     /*
@@ -84,7 +97,7 @@ public class JavaTupleList implements IJavaTuple {
      */
     @Override
     public boolean isValue() {
-        return false;
+        return true;
     }
 
     /*
@@ -119,22 +132,29 @@ public class JavaTupleList implements IJavaTuple {
         return false;
     }
 
+    public double toDouble() throws InvalidOperationException {
+        return this.ta.doubleValue();
+    }
+
+    public float toFloat() throws InvalidOperationException {
+        return this.ta.floatValue();
+    }
+
+    public int toInt() throws InvalidOperationException {
+        return this.ta.intValue();
+    }
+
+    public long toLong() throws InvalidOperationException {
+        return this.ta.longValue();
+    }
+
     /*
      * (non-Javadoc)
      * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {
-        final StringBuffer sb =
-                new StringBuffer(this.args.size() * JavaTuple.AVG_ARG_LENGTH);
-        sb.append('[');
-        for (final IJavaTuple arg : this.args) {
-            sb.append(arg.toString());
-            sb.append(',');
-        }
-        sb.deleteCharAt(sb.length() - 1);
-        sb.append(']');
-        return sb.toString();
+        return this.ta.toString();
     }
 
 }

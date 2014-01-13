@@ -7,6 +7,7 @@ import alice.logictuple.TupleArgument;
 import alice.logictuple.Value;
 import alice.tuplecentre.api.Tuple;
 import alice.tuplecentre.api.exceptions.InvalidOperationException;
+import alice.tuples.javatuples.basic.NonCompositeException;
 
 /**
  * @author ste (mailto: s.mariani@unibo.it) on 09/gen/2014

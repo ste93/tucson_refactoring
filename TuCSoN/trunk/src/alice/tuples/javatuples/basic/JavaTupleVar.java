@@ -1,25 +1,23 @@
 /**
- * JavaTupleList.java
+ * JavaTupleVar.java
  */
-package alice.tuples.javatuples.advanced;
+package alice.tuples.javatuples.basic;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import alice.logictuple.TupleArgument;
+import alice.logictuple.Var;
 import alice.tuplecentre.api.Tuple;
-import alice.tuples.javatuples.basic.NonCompositeException;
+import alice.tuples.javatuples.basic.JavaTuplesEngine.VarType;
 
 /**
  * @author ste (mailto: s.mariani@unibo.it) on 09/gen/2014
  * 
  */
-public class JavaTupleList implements IJavaTuple {
+public class JavaTupleVar implements IJavaTuple {
 
-    private final List<IJavaTuple> args;
+    private final TupleArgument ta;
 
-    public JavaTupleList(final IJavaTuple arg) {
-        this.args = new ArrayList<IJavaTuple>(1);
-        this.args.add(arg);
+    public JavaTupleVar(final VarType t) {
+        this.ta = new Var();
     }
 
     /*
@@ -30,7 +28,7 @@ public class JavaTupleList implements IJavaTuple {
      */
     @Override
     public void addArg(final IJavaTuple t) throws NonCompositeException {
-        this.args.add(t);
+        throw new NonCompositeException();
     }
 
     /*
@@ -38,8 +36,8 @@ public class JavaTupleList implements IJavaTuple {
      * @see alice.tuples.javatuples.IJavaTuple#getArg(int)
      */
     @Override
-    public IJavaTuple getArg(final int i) {
-        return this.args.get(i);
+    public IJavaTuple getArg(final int i) throws NonCompositeException {
+        throw new NonCompositeException();
     }
 
     /*
@@ -48,16 +46,7 @@ public class JavaTupleList implements IJavaTuple {
      */
     @Override
     public int getArity() {
-        return this.args.size();
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see alice.tuples.javatuples.IJavaTuple#getName()
-     */
-    @Override
-    public String getName() throws NonCompositeException {
-        throw new NonCompositeException();
+        return 0;
     }
 
     /*
@@ -67,15 +56,6 @@ public class JavaTupleList implements IJavaTuple {
     @Override
     public boolean isComposite() {
         return false;
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see alice.tuples.javatuples.IJavaTuple#isList()
-     */
-    @Override
-    public boolean isList() {
-        return true;
     }
 
     /*
@@ -93,7 +73,7 @@ public class JavaTupleList implements IJavaTuple {
      */
     @Override
     public boolean isVar() {
-        return false;
+        return true;
     }
 
     /*
@@ -125,16 +105,7 @@ public class JavaTupleList implements IJavaTuple {
      */
     @Override
     public String toString() {
-        final StringBuffer sb =
-                new StringBuffer(this.args.size() * JavaTuple.AVG_ARG_LENGTH);
-        sb.append('[');
-        for (final IJavaTuple arg : this.args) {
-            sb.append(arg.toString());
-            sb.append(',');
-        }
-        sb.deleteCharAt(sb.length() - 1);
-        sb.append(']');
-        return sb.toString();
+        return this.ta.toString();
     }
 
 }

@@ -1,10 +1,9 @@
 /**
  * IJavaTuple.java
  */
-package alice.tuples.javatuples.advanced;
+package alice.tuples.javatuples.basic;
 
 import alice.tuplecentre.api.TupleTemplate;
-import alice.tuples.javatuples.basic.NonCompositeException;
 
 /**
  * @author ste (mailto: s.mariani@unibo.it) on 09/gen/2014
@@ -14,15 +13,11 @@ public interface IJavaTuple extends TupleTemplate {
 
     public void addArg(IJavaTuple t) throws NonCompositeException;
 
-    public IJavaTuple getArg(int i);
+    public IJavaTuple getArg(int i) throws NonCompositeException;
 
     public int getArity();
 
-    public String getName() throws NonCompositeException;
-
     public boolean isComposite();
-
-    public boolean isList();
 
     public boolean isValue();
 

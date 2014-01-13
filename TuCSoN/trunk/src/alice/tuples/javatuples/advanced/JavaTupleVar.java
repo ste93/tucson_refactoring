@@ -8,6 +8,7 @@ import alice.logictuple.Var;
 import alice.tuplecentre.api.Tuple;
 import alice.tuplecentre.api.exceptions.InvalidOperationException;
 import alice.tuplecentre.api.exceptions.InvalidVarNameException;
+import alice.tuples.javatuples.basic.NonCompositeException;
 
 /**
  * @author ste (mailto: s.mariani@unibo.it) on 09/gen/2014
