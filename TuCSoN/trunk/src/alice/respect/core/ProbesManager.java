@@ -17,7 +17,7 @@ import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
  * @author ste (mailto: s.mariani@unibo.it) on 04/nov/2013
  * 
  */
-public enum ResourceManager {
+public enum ProbesManager {
     INSTANCE;
 
     /**
@@ -35,10 +35,10 @@ public enum ResourceManager {
     }
 
     /** List of all probes on a single node **/
-    private final Map<AbstractProbeId, ISimpleProbe> probeList;
+    private final Map<AbstractProbeId, ISimpleProbe> probesList;
 
-    private ResourceManager() {
-        this.probeList = new HashMap<AbstractProbeId, ISimpleProbe>();
+    private ProbesManager() {
+        this.probesList = new HashMap<AbstractProbeId, ISimpleProbe>();
     }
 
     /**
@@ -63,12 +63,12 @@ public enum ResourceManager {
      * @throws InvocationTargetException
      *             if the callee cannot be found
      */
-    public synchronized boolean createResource(final String className,
+    public synchronized boolean createProbe(final String className,
             final AbstractProbeId id) throws ClassNotFoundException,
             NoSuchMethodException, InstantiationException,
             IllegalAccessException, InvocationTargetException {
-        if (this.probeList.containsKey(id)) {
-            ResourceManager.speakErr("Probe '" + id.getLocalName()
+        if (this.probesList.containsKey(id)) {
+            ProbesManager.speakErr("Probe '" + id.getLocalName()
                     + "' already exists!");
             return false;
         }
@@ -81,8 +81,8 @@ public enum ResourceManager {
         final ISimpleProbe probe =
                 (ISimpleProbe) ctor.newInstance(new Object[] { id });
 
-        this.probeList.put(id, probe);
-        ResourceManager.speak("Resource '" + id.getLocalName()
+        this.probesList.put(id, probe);
+        ProbesManager.speak("Resource '" + id.getLocalName()
                 + "' has been registered.");
         return true;
     }
@@ -95,11 +95,11 @@ public enum ResourceManager {
      * @return an interface toward the resource whose identifier has been given
      */
     // FIXME Check correctness (synchronization needed?)
-    public ISimpleProbe getResource(final AbstractProbeId id) {
-        if (this.probeList.containsKey(id)) {
-            return this.probeList.get(id);
+    public ISimpleProbe getProbe(final AbstractProbeId id) {
+        if (this.probesList.containsKey(id)) {
+            return this.probesList.get(id);
         }
-        ResourceManager.speakErr("Resource '" + id.getLocalName()
+        ProbesManager.speakErr("Resource '" + id.getLocalName()
                 + "' isn't registered yet!");
         return null;
     }
@@ -113,14 +113,14 @@ public enum ResourceManager {
      *         given
      */
     // FIXME Check correctness (synchronization needed?)
-    public ISimpleProbe getResourceByName(final String name) {
-        final Object[] keySet = this.probeList.keySet().toArray();
+    public ISimpleProbe getProbeByName(final String name) {
+        final Object[] keySet = this.probesList.keySet().toArray();
         for (final Object element : keySet) {
             if (((AbstractProbeId) element).getLocalName().equals(name)) {
-                return this.probeList.get(element);
+                return this.probesList.get(element);
             }
         }
-        ResourceManager.speakErr("'Resource " + name
+        ProbesManager.speakErr("'Resource " + name
                 + "' isn't registered yet!");
         return null;
     }
@@ -134,17 +134,17 @@ public enum ResourceManager {
      * @throws TucsonOperationNotPossibleException
      *             if the resource cannot be removed
      */
-    public synchronized boolean removeResource(final AbstractProbeId id)
+    public synchronized boolean removeProbe(final AbstractProbeId id)
             throws TucsonOperationNotPossibleException {
-        ResourceManager.speak("Removing probe '" + id.getLocalName() + "'...");
-        if (!this.probeList.containsKey(id)) {
-            ResourceManager.speakErr("Resource '" + id.getLocalName()
+        ProbesManager.speak("Removing probe '" + id.getLocalName() + "'...");
+        if (!this.probesList.containsKey(id)) {
+            ProbesManager.speakErr("Resource '" + id.getLocalName()
                     + "' doesn't exist!");
             return false;
         }
-        final TransducerManager tm = TransducerManager.INSTANCE;
-        tm.removeResource(id);
-        this.probeList.remove(id);
+        final TransducersManager tm = TransducersManager.INSTANCE;
+        tm.removeProbe(id);
+        this.probesList.remove(id);
         return true;
     }
 
@@ -158,9 +158,9 @@ public enum ResourceManager {
      */
     public void
             setTransducer(final AbstractProbeId pId, final TransducerId tId) {
-        this.getResource(pId).setTransducer(tId);
+        this.getProbe(pId).setTransducer(tId);
         if (tId != null) {
-            ResourceManager.speak("...transducer '" + tId.getAgentName()
+            ProbesManager.speak("...transducer '" + tId.getAgentName()
                     + "' set to probe '" + pId.getLocalName() + "'.");
         }
     }

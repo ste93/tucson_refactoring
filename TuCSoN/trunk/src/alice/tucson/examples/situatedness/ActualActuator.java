@@ -4,7 +4,7 @@
 package alice.tucson.examples.situatedness;
 
 import alice.logictuple.LogicTuple;
-import alice.respect.core.TransducerManager;
+import alice.respect.core.TransducersManager;
 import alice.respect.situatedness.AbstractProbeId;
 import alice.respect.situatedness.AbstractTransducer;
 import alice.respect.situatedness.ISimpleProbe;
@@ -116,7 +116,7 @@ public class ActualActuator implements ISimpleProbe {
         }
         if (this.transducer == null) {
             this.transducer =
-                    TransducerManager.INSTANCE.getTransducer(this.tid
+                    TransducersManager.INSTANCE.getTransducer(this.tid
                             .getAgentName());
             if (this.transducer == null) {
                 System.err.println("[" + this.pid

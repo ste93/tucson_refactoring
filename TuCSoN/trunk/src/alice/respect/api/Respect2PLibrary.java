@@ -32,7 +32,7 @@ import alice.respect.core.InternalEvent;
 import alice.respect.core.InternalOperation;
 import alice.respect.core.RespectOperation;
 import alice.respect.core.RespectVMContext;
-import alice.respect.core.TransducerManager;
+import alice.respect.core.TransducersManager;
 import alice.respect.situatedness.TransducerId;
 import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
@@ -602,7 +602,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         // log("### DEBUG >>> target = " + envId);
         internalEv.setSource(this.vm.getId()); // Set the source of the event
 
-        final TransducerManager tm = TransducerManager.INSTANCE;
+        final TransducersManager tm = TransducersManager.INSTANCE;
         // Getting the transducer from the transducer manager
         final TransducerId tId = tm.getTransducerId(envId);
 
@@ -2029,7 +2029,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         // log("### DEBUG >>> target = " + envId);
         internalEv.setSource(this.vm.getId());
 
-        final TransducerManager tm = TransducerManager.INSTANCE;
+        final TransducersManager tm = TransducersManager.INSTANCE;
         // Getting the transducer from the transducer manager
         final TransducerId tId = tm.getTransducerId(envId);
 

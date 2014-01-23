@@ -20,7 +20,7 @@ import alice.respect.core.RespectOperation;
 import alice.respect.core.RespectTC;
 import alice.respect.core.RespectTCContainer;
 import alice.respect.core.SpecificationSynchInterface;
-import alice.respect.core.TransducerManager;
+import alice.respect.core.TransducersManager;
 import alice.respect.situatedness.TransducerId;
 import alice.respect.situatedness.TransducerStandardInterface;
 import alice.tucson.api.TucsonAgentId;
@@ -421,7 +421,7 @@ public final class TupleCentreContainer {
         final HashMap<String, String> eventMap = new HashMap<String, String>();
         eventMap.put("id", aid.toString());
         InputEvent event = null;
-        final TransducerManager tm = TransducerManager.INSTANCE;
+        final TransducersManager tm = TransducersManager.INSTANCE;
         TransducerStandardInterface transducer =
                 tm.getTransducer(aid.getAgentName());
         if (t != null) {
@@ -514,7 +514,7 @@ public final class TupleCentreContainer {
         final InternalEvent internalEv =
                 new InternalEvent(event, InternalOperation.makeGetEnv(t));
         internalEv.setSource(tid.getInternalTupleCentreId()); // Set
-        final TransducerManager tm = TransducerManager.INSTANCE;
+        final TransducersManager tm = TransducersManager.INSTANCE;
         // the source of the event
         final TransducerId[] tIds =
                 tm.getTransducerIds(tid.getInternalTupleCentreId());
