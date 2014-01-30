@@ -67,7 +67,7 @@ public class Tucson2PLibrary extends Library {
      * @return <code>true</code> if the operation succeed, <code>false</code>
      *         otherwise
      */
-    public boolean exit_0() {
+    public boolean release_acc_0() {
         try {
             this.context.exit();
         } catch (final TucsonOperationNotPossibleException e) {
@@ -136,7 +136,7 @@ public class Tucson2PLibrary extends Library {
      * @see alice.tucson.api.EnhancedACC EnhancedACC
      * @see alice.tucson.api.TucsonAgentId TucsonAgentId
      */
-    public boolean get_context_1(final Term id) {
+    public boolean acquire_acc_1(final Term id) {
         TucsonAgentId agentId;
         if (this.context != null) {
             try {

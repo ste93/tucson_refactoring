@@ -154,8 +154,6 @@ public abstract class AbstractTupleCentreOperation implements
 
     /**
      * 
-     * @param prol
-     *            the 2p engine to be used for tuples parsing
      * @param t
      *            the type code of the operation
      * @param tupleList
@@ -170,8 +168,6 @@ public abstract class AbstractTupleCentreOperation implements
 
     /**
      * 
-     * @param prol
-     *            the 2p engine to be used for tuples parsing
      * @param t
      *            the type code of the operation
      * @param tupleList
@@ -187,8 +183,6 @@ public abstract class AbstractTupleCentreOperation implements
 
     /**
      * 
-     * @param prol
-     *            the 2p engine to be used for tuples parsing
      * @param ty
      *            the type code of the operation
      * @param t
@@ -202,8 +196,6 @@ public abstract class AbstractTupleCentreOperation implements
 
     /**
      * 
-     * @param prol
-     *            the 2p engine to be used for tuples parsing
      * @param ty
      *            the type code of the operation
      * @param t
@@ -219,8 +211,6 @@ public abstract class AbstractTupleCentreOperation implements
 
     /**
      * 
-     * @param prol
-     *            the 2p engine to be used for tuples parsing
      * @param ty
      *            the type code of the operation
      * @param t
@@ -234,8 +224,6 @@ public abstract class AbstractTupleCentreOperation implements
 
     /**
      * 
-     * @param prol
-     *            the 2p engine to be used for tuples parsing
      * @param ty
      *            the type code of the operation
      * @param t

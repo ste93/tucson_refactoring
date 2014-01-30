@@ -12,7 +12,7 @@ runMasterAgent(Aid, Where, Iters, MaxFact):-
 % interact with a TuCSoN node.
 acquireACC(Aid):-
 	write("Acquiring ACC as <"), write(Aid), write(">..."), nl,
-	get_context(Aid),
+	acquire_acc(Aid),
 	write("ACC acquired."), nl.
 	
 % submitJobs(+Where, +Iters, +MaxFact):- submits <Iters> jobs regarding factorial computations
@@ -68,5 +68,5 @@ collectResults([Tc|List], Iters):-
 % releaseACC:- releases the ACC held, if any.
 releaseACC:-
 	write("Releasing ACC..."), nl,
-	exit,
+	release_acc,
 	write("ACC released."), nl.

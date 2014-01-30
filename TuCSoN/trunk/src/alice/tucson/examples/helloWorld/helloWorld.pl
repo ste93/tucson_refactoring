@@ -18,7 +18,7 @@ runHelloWorld(Aid, Where):-
 % interact with a TuCSoN node.
 acquireACC(Aid):-
 	write("Acquiring ACC as <"), write(Aid), write(">..."), nl,
-	get_context(Aid),
+	acquire_acc(Aid),
 	write("ACC acquired."), nl.
 	
 % writeHello(+Where):- writes the <hello(world)> tuple in the
@@ -39,5 +39,5 @@ readHello(Where, Res):-
 % releaseACC:- releases the ACC held, if any.
 releaseACC:-
 	write("Releasing ACC..."), nl,
-	exit,
+	release_acc,
 	write("ACC released."), nl.

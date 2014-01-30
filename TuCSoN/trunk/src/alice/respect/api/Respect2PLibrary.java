@@ -580,7 +580,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      *            the value sensed
      * @return <code>true</code> if the operation is successfull
      */
-    public boolean getEnv_3(final Term env, final Term key, final Term val) {
+    public boolean get_env_3(final Term env, final Term key, final Term val) {
         // Get engine's copy of key and val
         final AbstractMap<Var, Var> v = new LinkedHashMap<Var, Var>();
         final AbstractMap<Var, Var> v1 = new LinkedHashMap<Var, Var>();
@@ -590,16 +590,16 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
 
         // Building internal event
         final InputEvent ev = this.vm.getCurrentEvent();
-        // log("### DEBUG >>> ev = " + ev);
+        // log("### DEBUG >>> ev = " + ev);
         final InternalEvent internalEv =
                 new InternalEvent(ev, InternalOperation.makeGetEnv(lt));
-        // log("### DEBUG >>> iev = " + internalEv);
+        // log("### DEBUG >>> iev = " + internalEv);
         final String normEnv =
                 env.toString().substring(env.toString().indexOf("(") + 1,
                         env.toString().indexOf(","));
         final EnvId envId = new EnvId(normEnv);
         internalEv.setTarget(envId); // Set target resource
-        // log("### DEBUG >>> target = " + envId);
+        // log("### DEBUG >>> target = " + envId);
         internalEv.setSource(this.vm.getId()); // Set the source of the event
 
         final TransducersManager tm = TransducersManager.INSTANCE;
@@ -2006,7 +2006,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      *            the value modified
      * @return <code>true</code> if the operation is successfull
      */
-    public boolean setEnv_3(final Term env, final Term key, final Term val) {
+    public boolean set_env_3(final Term env, final Term key, final Term val) {
 
         // Get engine's copy of key and val
         final AbstractMap<Var, Var> v = new LinkedHashMap<Var, Var>();
@@ -2017,16 +2017,16 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
 
         // Building internal event
         final InputEvent ev = this.vm.getCurrentEvent();
-        // log("### DEBUG >>> ev = " + ev);
+        // log("### DEBUG >>> ev = " + ev);
         final InternalEvent internalEv =
                 new InternalEvent(ev, InternalOperation.makeSetEnv(lt));
-        // log("### DEBUG >>> iev = " + internalEv);
+        // log("### DEBUG >>> iev = " + internalEv);
         final String normEnv =
                 env.toString().substring(env.toString().indexOf("(") + 1,
                         env.toString().indexOf(","));
         final EnvId envId = new EnvId(normEnv);
         internalEv.setTarget(envId);
-        // log("### DEBUG >>> target = " + envId);
+        // log("### DEBUG >>> target = " + envId);
         internalEv.setSource(this.vm.getId());
 
         final TransducersManager tm = TransducersManager.INSTANCE;
