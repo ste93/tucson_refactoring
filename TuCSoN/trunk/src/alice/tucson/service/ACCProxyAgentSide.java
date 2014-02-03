@@ -14,6 +14,8 @@
 package alice.tucson.service;
 
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import alice.logictuple.LogicTuple;
 import alice.logictuple.Value;
@@ -556,6 +558,16 @@ public class ACCProxyAgentSide implements EnhancedACC {
                 TucsonOperation.setSCode(), tid, specT, timeout);
     }
 
+	@Override  //edit sangio
+	public ITucsonOperation setS(Object tid, LogicTuple spec,
+			TucsonOperationCompletionListener l)
+			throws TucsonOperationNotPossibleException,
+			UnreachableNodeException, OperationTimeOutException {
+	        return this.executor.doNonBlockingOperation(this.aid,
+	                TucsonOperation.setSCode(), tid, spec, l);
+	}
+
+    
     public ITucsonOperation setS(final Object tid, final String spec,
             final TucsonOperationCompletionListener l)
             throws TucsonOperationNotPossibleException,
@@ -679,5 +691,21 @@ public class ACCProxyAgentSide implements EnhancedACC {
     protected void log(final String msg) {
         System.out.println("[ACCProxyAgentSide]: " + msg);
     }
+    
+    //edited by sangio
+    //restituzione della lista delle operazioni asincrone completate e non ancora gestite("consumate) dall'agente
+	@Override
+	public List<TucsonOpCompletionEvent> getListEventsCompletition() {
+		// TODO Auto-generated method stub
+		return executor.events;
+	}
 
+	//edited by sangio
+	//restituzione della lista delle operazioni pendenti per il quale non si è ancora ricevuto un risultato
+	//per navigare la lista bisogna usare un metodo di mutua esclusione es. synchronized
+	@Override
+	public Map<Long, TucsonOperation> getListPendingOperations() {
+		// TODO Auto-generated method stub
+		return executor.operations;
+	}
 }

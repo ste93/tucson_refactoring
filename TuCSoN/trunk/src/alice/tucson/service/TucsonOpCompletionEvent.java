@@ -19,6 +19,7 @@ public class TucsonOpCompletionEvent {
     private final TucsonOpId opId;
     private String spec;
     private final boolean success;
+    private final boolean resultSuccess;
     private LogicTuple tuple;
     private List<LogicTuple> tupleList;
 
@@ -30,12 +31,15 @@ public class TucsonOpCompletionEvent {
      *            wether the operation is allowed
      * @param s
      *            wether the operation succeded
+     * @param resultSuccess
+     * 			  wether the result operation succeded
      */
     public TucsonOpCompletionEvent(final TucsonOpId id, final boolean a,
-            final boolean s) {
+            final boolean s, final boolean resultSuccess) {
         this.opId = id;
         this.allowed = a;
         this.success = s;
+        this.resultSuccess = resultSuccess;
     }
 
     /**
@@ -46,14 +50,17 @@ public class TucsonOpCompletionEvent {
      *            wether the operation is allowed
      * @param s
      *            wether the operation succeded
+     * @param resultSuccess
+     * 			  wether the result operation succeded
      * @param tl
      *            the list of tuples result of the oepration
      */
     public TucsonOpCompletionEvent(final TucsonOpId id, final boolean a,
-            final boolean s, final List<LogicTuple> tl) {
+            final boolean s,final boolean resultSuccess, final List<LogicTuple> tl) {
         this.opId = id;
         this.allowed = a;
         this.success = s;
+        this.resultSuccess = resultSuccess;
         this.tupleList = tl;
     }
 
@@ -69,10 +76,11 @@ public class TucsonOpCompletionEvent {
      *            the tuple result of the operation
      */
     public TucsonOpCompletionEvent(final TucsonOpId id, final boolean a,
-            final boolean s, final LogicTuple t) {
+            final boolean s, final boolean resultSuccess, final LogicTuple t) {
         this.opId = id;
         this.allowed = a;
         this.success = s;
+        this.resultSuccess = resultSuccess;
         this.tuple = t;
     }
 
@@ -84,14 +92,17 @@ public class TucsonOpCompletionEvent {
      *            wether the operation is allowed
      * @param s
      *            wether the operation succeded
+     * @param resultSuccess
+     * 			  wether the result operation succeded
      * @param sp
      *            the String representation of the ReSpecT specification used
      */
     public TucsonOpCompletionEvent(final TucsonOpId id, final boolean a,
-            final boolean s, final String sp) {
+            final boolean s, final boolean resultSuccess, final String sp) {
         this.opId = id;
         this.allowed = a;
         this.success = s;
+        this.resultSuccess = resultSuccess;
         this.spec = sp;
     }
 
@@ -141,6 +152,14 @@ public class TucsonOpCompletionEvent {
      */
     public boolean operationSucceeded() {
         return this.success;
+    }
+    
+    /**
+     * 
+     * @return  wether the result operation succeeded
+     */
+    public boolean resultOperationSucceeded(){
+    	return this.resultSuccess;
     }
 
 }

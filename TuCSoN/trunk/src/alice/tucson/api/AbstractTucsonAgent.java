@@ -13,12 +13,14 @@
  */
 package alice.tucson.api;
 
+import java.util.List;
 import java.util.Map;
 
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.service.TucsonOpCompletionEvent;
 import alice.tuplecentre.core.AbstractTupleCentreOperation;
+import alice.tuplecentre.core.OperationCompletionListener;
 
 /**
  * Base class to extend to implement TuCSoN Agents. Once created, the method
@@ -31,8 +33,9 @@ import alice.tuplecentre.core.AbstractTupleCentreOperation;
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
  * 
  */
-public abstract class AbstractTucsonAgent implements
-        TucsonOperationCompletionListener {
+//modified by SANGIO
+//il tipo di intefaccia ora è OperationCompletionListener e non TucsonOperationCompletionListener perchè ..
+public abstract class AbstractTucsonAgent implements TucsonOperationCompletionListener {
 
     /**
      * Internal Thread responsible for ACC acquisition and main cycle execution.
@@ -68,7 +71,9 @@ public abstract class AbstractTucsonAgent implements
     /**
      * 
      */
-    protected Map<TucsonOpId, TucsonOpCompletionEvent> events = null;
+    //modified by sangio
+    //protected Map<TucsonOpId, TucsonOpCompletionEvent> events = null;
+    protected List<TucsonOpCompletionEvent> events; 
     private final TucsonAgentId aid;
     private EnhancedACC context;
     private final String node;
@@ -192,13 +197,12 @@ public abstract class AbstractTucsonAgent implements
         return this.port;
     }
 
-    public final void operationCompleted(final AbstractTupleCentreOperation op) {
-        /*
-         * FIXME Find cause of double inheritance
-         */
-    }
+    //modified by SANGIO
+    //perche si usa AbstractTupleCentreOperation e non ITucsonOperation dato che l'operazione ha quella interfaccia?
+    public abstract void operationCompleted(AbstractTupleCentreOperation op);
 
-    public abstract void operationCompleted(ITucsonOperation op);
+    //modified by SANGIO
+    //public abstract void operationCompleted(ITucsonOperation op);
 
     /**
      * Getter for the ACC. At the moment the TucsonAgent base class always ask

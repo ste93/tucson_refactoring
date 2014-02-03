@@ -129,12 +129,12 @@ public class InterTupleCentreACCProxy implements InterTupleCentreACC,
                                     this.unify(tupleReq, tupleRes);
                             ev =
                                     new TucsonOpCompletionEvent(new TucsonOpId(
-                                            msg.getId()), ok, true, res);
+                                            msg.getId()), ok, true, msg.isResultSuccess() , res);
 
                         } else {
                             ev =
                                     new TucsonOpCompletionEvent(new TucsonOpId(
-                                            msg.getId()), ok, false);
+                                            msg.getId()), ok, false, msg.isResultSuccess());
                         }
 
                     } else if ((type == TucsonOperation.setCode())
@@ -145,7 +145,7 @@ public class InterTupleCentreACCProxy implements InterTupleCentreACC,
                             || (type == TucsonOperation.spawnCode())) {
                         ev =
                                 new TucsonOpCompletionEvent(new TucsonOpId(
-                                        msg.getId()), ok, msg.isSuccess());
+                                        msg.getId()), ok, msg.isSuccess(), msg.isResultSuccess());
                     } else if ((type == TucsonOperation.inAllCode())
                             || (type == TucsonOperation.rdAllCode())
                             || (type == TucsonOperation.noAllCode())
@@ -155,7 +155,7 @@ public class InterTupleCentreACCProxy implements InterTupleCentreACC,
                                 (List<LogicTuple>) msg.getTupleResult();
                         ev =
                                 new TucsonOpCompletionEvent(new TucsonOpId(
-                                        msg.getId()), ok, msg.isSuccess(),
+                                        msg.getId()), ok, msg.isSuccess(), msg.isResultSuccess(),
                                         tupleSetRes);
                     } else if (type == TucsonOperation.exitCode()) {
                         this.setStop();
@@ -165,7 +165,7 @@ public class InterTupleCentreACCProxy implements InterTupleCentreACC,
                 } else {
                     ev =
                             new TucsonOpCompletionEvent(new TucsonOpId(
-                                    msg.getId()), false, false);
+                                    msg.getId()), false, false, msg.isResultSuccess());
                 }
 
                 final AbstractTupleCentreOperation op =

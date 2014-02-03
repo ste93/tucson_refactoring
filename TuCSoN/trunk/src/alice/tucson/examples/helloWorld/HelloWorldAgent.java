@@ -11,6 +11,7 @@ import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
+import alice.tuplecentre.core.AbstractTupleCentreOperation;
 
 /*
  * 1) Extend alice.tucson.api.AbstractTucsonAgent class.
@@ -138,5 +139,12 @@ public class HelloWorldAgent extends AbstractTucsonAgent {
             e.printStackTrace();
         }
     }
+
+  //modified by SANGIO
+	@Override
+	public void operationCompleted(AbstractTupleCentreOperation op) {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

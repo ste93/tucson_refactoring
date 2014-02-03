@@ -1,5 +1,7 @@
 package alice.tucson.service;
 
+import java.util.Map;
+
 import alice.tucson.api.RootACC;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 
@@ -15,5 +17,11 @@ public class RootACCProxy implements RootACC {
          * 
          */
     }
+
+	@Override
+	public Map<Long, TucsonOperation> getListPendingOperations() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

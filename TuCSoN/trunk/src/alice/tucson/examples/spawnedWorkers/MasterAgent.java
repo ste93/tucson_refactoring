@@ -17,6 +17,7 @@ import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
+import alice.tuplecentre.core.AbstractTupleCentreOperation;
 
 /**
  * Master thread of a master-worker architecture. Given a list of TuCSoN Nodes
@@ -244,5 +245,12 @@ public class MasterAgent extends AbstractTucsonAgent {
     private int drawRandomInt() {
         return (int) Math.round(Math.random() * this.maxFactorial);
     }
+
+  //modified by SANGIO
+	@Override
+	public void operationCompleted(AbstractTupleCentreOperation op) {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

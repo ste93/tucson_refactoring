@@ -71,7 +71,7 @@ public class TucsonNodeService {
     private static final String DEFAULT_BOOT_SPEC_FILE =
             "alice/tucson/service/config/boot_spec.rsp";
     private static final String DEFAULT_ENVCONFIG_SPEC_FILE =
-            "alice/tucson/service/config/env_spec.rsp";
+            "alice/tucson/service/config/specTcEnvConfig.rsp";
     private static final String DEFAULT_OBS_SPEC_FILE =
             "alice/tucson/service/config/obs_spec.rsp";
     private static final int DEFAULT_TCP_PORT = 20504;
@@ -247,7 +247,7 @@ public class TucsonNodeService {
                     new TucsonTupleCentreId("'$OBS'", "localhost",
                             String.valueOf(this.tcpPort));
             this.idEnvTC =
-                    new TucsonTupleCentreId("'$ENV'", "localhost",
+                    new TucsonTupleCentreId("envConfigTC", "localhost",
                             String.valueOf(this.tcpPort));
         } catch (final TucsonInvalidAgentIdException e) {
             e.printStackTrace();
@@ -728,13 +728,16 @@ public class TucsonNodeService {
         TucsonNodeService.log("Spawning Node Management Agent...");
         this.nodeAgents.add(new NodeManagementAgent(this.idConfigTC, this));
 
+        TucsonNodeService
+                .log("--------------------------------------------------------------------------------");
+
         TucsonNodeService.log("Spawning ACC Provider Agent...");
         this.ctxman = new ACCProvider(this, this.idConfigTC);
 
         TucsonNodeService.log("Spawning Welcome Agent...");
         this.welcome = new WelcomeAgent(this, this.ctxman);
 
-        TucsonNodeService.log("Spawning Environmental Agent...");
+        TucsonNodeService.log("Spawning EnvConfig Agent...");
         try {
             this.envAgent = new EnvConfigAgent("localhost", this.tcpPort);
         } catch (final TucsonInvalidAgentIdException e) {

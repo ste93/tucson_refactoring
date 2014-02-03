@@ -13,9 +13,12 @@
  */
 package alice.tucson.api;
 
+import java.util.List;
+
 import alice.logictuple.LogicTuple;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
+import alice.tucson.service.TucsonOpCompletionEvent;
 
 /**
  * Bulk Asynchronous ACC. Can act on the ordinary tuple space. Only bulk
@@ -158,4 +161,6 @@ public interface BulkAsynchACC extends RootACC {
             throws TucsonOperationNotPossibleException,
             UnreachableNodeException;
 
+    //edited by sangio
+    List<TucsonOpCompletionEvent> getListEventsCompletition();
 }
