@@ -33,7 +33,12 @@ public interface RootACC {
      *             if the requested operation cannot be carried out
      */
     void exit() throws TucsonOperationNotPossibleException;
-    
+
+    /**
+     * 
+     * @return the Map associating operation ids with the actual TuCSoN
+     *         operation
+     */
     Map<Long, TucsonOperation> getListPendingOperations();
 
 }

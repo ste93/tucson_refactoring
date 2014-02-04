@@ -61,6 +61,13 @@ public class HelloWorldAgent extends AbstractTucsonAgent {
         super(aid);
     }
 
+    // modified by SANGIO
+    @Override
+    public void operationCompleted(final AbstractTupleCentreOperation op) {
+        // TODO Auto-generated method stub
+
+    }
+
     /*
      * To override only for asynchronous coordination operations.
      */
@@ -139,12 +146,5 @@ public class HelloWorldAgent extends AbstractTucsonAgent {
             e.printStackTrace();
         }
     }
-
-  //modified by SANGIO
-	@Override
-	public void operationCompleted(AbstractTupleCentreOperation op) {
-		// TODO Auto-generated method stub
-		
-	}
 
 }

@@ -28,6 +28,13 @@ import alice.tucson.service.TucsonOpCompletionEvent;
  */
 public interface BulkAsynchACC extends RootACC {
 
+    // edited by sangio
+    /**
+     * 
+     * @return the List of the events regarding TuCSoN operations completion
+     */
+    List<TucsonOpCompletionEvent> getListEventsCompletition();
+
     /**
      * Withdraws from the space all the tuples matching the given template in
      * one shot (a single transition step). The empty list may be returned in
@@ -160,7 +167,4 @@ public interface BulkAsynchACC extends RootACC {
             TucsonOperationCompletionListener l)
             throws TucsonOperationNotPossibleException,
             UnreachableNodeException;
-
-    //edited by sangio
-    List<TucsonOpCompletionEvent> getListEventsCompletition();
 }

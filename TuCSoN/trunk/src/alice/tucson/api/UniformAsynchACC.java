@@ -27,6 +27,13 @@ import alice.tucson.service.TucsonOpCompletionEvent;
  */
 public interface UniformAsynchACC extends RootACC {
 
+    // edited by sangio
+    /**
+     * 
+     * @return the List of the events regarding TuCSoN operations completion
+     */
+    List<TucsonOpCompletionEvent> getListEventsCompletition();
+
     /**
      * <code>uin</code> TuCSoN primitive, retrieves the specified tuple from the
      * given target tuplecentre. If more than one tuple matches the template,
@@ -250,8 +257,5 @@ public interface UniformAsynchACC extends RootACC {
             TucsonOperationCompletionListener l)
             throws TucsonOperationNotPossibleException,
             UnreachableNodeException;
-    
-    //edited by sangio
-    List<TucsonOpCompletionEvent> getListEventsCompletition();
 
 }

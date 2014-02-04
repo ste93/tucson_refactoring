@@ -50,6 +50,13 @@ public class DiningPhilosopher extends AbstractTucsonAgent {
         this.chop2 = right;
     }
 
+    // modified by SANGIO
+    @Override
+    public void operationCompleted(final AbstractTupleCentreOperation op) {
+        // TODO Auto-generated method stub
+
+    }
+
     @Override
     public void operationCompleted(final ITucsonOperation arg0) {
         /*
@@ -146,12 +153,5 @@ public class DiningPhilosopher extends AbstractTucsonAgent {
             e.printStackTrace();
         }
     }
-
-  //modified by SANGIO
-	@Override
-	public void operationCompleted(AbstractTupleCentreOperation op) {
-		// TODO Auto-generated method stub
-		
-	}
 
 }

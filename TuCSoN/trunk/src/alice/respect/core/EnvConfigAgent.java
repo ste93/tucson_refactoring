@@ -25,8 +25,7 @@ import alice.tuplecentre.core.AbstractTupleCentreOperation;
  * 
  * Environment configuration agent.
  * 
- * It checks for requests on '$ENV' and delegates them to the
- * TransducerManager.
+ * It checks for requests on '$ENV' and delegates them to the TransducerManager.
  * 
  * @author Steven Maraldi
  * 
@@ -245,6 +244,13 @@ public class EnvConfigAgent extends AbstractTucsonAgent {
         }
     }
 
+    // modified by SANGIO
+    @Override
+    public void operationCompleted(final AbstractTupleCentreOperation op) {
+        // TODO Auto-generated method stub
+
+    }
+
     @Override
     public void operationCompleted(final ITucsonOperation op) {
         // TODO Auto-generated method stub
@@ -261,12 +267,4 @@ public class EnvConfigAgent extends AbstractTucsonAgent {
     private void speak(final Object msg) {
         System.out.println("..[$EnvAgent (" + this.idEnvTC + ")]: " + msg);
     }
-
-    
-    //modified by SANGIO
-	@Override
-	public void operationCompleted(AbstractTupleCentreOperation op) {
-		// TODO Auto-generated method stub
-		
-	}
 }

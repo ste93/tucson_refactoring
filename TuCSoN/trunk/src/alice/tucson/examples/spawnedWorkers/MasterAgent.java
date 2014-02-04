@@ -91,6 +91,13 @@ public class MasterAgent extends AbstractTucsonAgent {
         this.pendings = new HashMap<Integer, Integer>();
     }
 
+    // modified by SANGIO
+    @Override
+    public void operationCompleted(final AbstractTupleCentreOperation op) {
+        // TODO Auto-generated method stub
+
+    }
+
     @Override
     public void operationCompleted(final ITucsonOperation op) {
         /*
@@ -245,12 +252,5 @@ public class MasterAgent extends AbstractTucsonAgent {
     private int drawRandomInt() {
         return (int) Math.round(Math.random() * this.maxFactorial);
     }
-
-  //modified by SANGIO
-	@Override
-	public void operationCompleted(AbstractTupleCentreOperation op) {
-		// TODO Auto-generated method stub
-		
-	}
 
 }

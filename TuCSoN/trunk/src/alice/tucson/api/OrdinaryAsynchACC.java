@@ -63,6 +63,13 @@ public interface OrdinaryAsynchACC extends RootACC {
             throws TucsonOperationNotPossibleException,
             UnreachableNodeException;
 
+    // edited by sangio
+    /**
+     * 
+     * @return the List of the events regarding TuCSoN operations completion
+     */
+    List<TucsonOpCompletionEvent> getListEventsCompletition();
+
     /**
      * <code>in</code> Linda primitive, retrieves the specified tuple from the
      * given target tuplecentre.
@@ -373,8 +380,5 @@ public interface OrdinaryAsynchACC extends RootACC {
             TucsonOperationCompletionListener l)
             throws TucsonOperationNotPossibleException,
             UnreachableNodeException;
-
-    //edited by sangio
-    List<TucsonOpCompletionEvent> getListEventsCompletition();
 
 }

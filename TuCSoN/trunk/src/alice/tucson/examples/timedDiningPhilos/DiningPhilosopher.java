@@ -57,6 +57,13 @@ public class DiningPhilosopher extends AbstractTucsonAgent {
         this.step = eatingStep;
     }
 
+    // modified by SANGIO
+    @Override
+    public void operationCompleted(final AbstractTupleCentreOperation op) {
+        // TODO Auto-generated method stub
+
+    }
+
     @Override
     public void operationCompleted(final ITucsonOperation arg0) {
         /*
@@ -148,7 +155,7 @@ public class DiningPhilosopher extends AbstractTucsonAgent {
         } catch (final OperationTimeOutException e) {
             e.printStackTrace();
         }
-        if (op != null && op.isResultSuccess()) {
+        if ((op != null) && op.isResultSuccess()) {
             return op.isResultSuccess();
         }
         return false;
@@ -179,12 +186,5 @@ public class DiningPhilosopher extends AbstractTucsonAgent {
             e.printStackTrace();
         }
     }
-
-  //modified by SANGIO
-	@Override
-	public void operationCompleted(AbstractTupleCentreOperation op) {
-		// TODO Auto-generated method stub
-		
-	}
 
 }

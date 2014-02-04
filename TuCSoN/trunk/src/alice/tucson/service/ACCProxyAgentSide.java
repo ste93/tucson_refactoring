@@ -77,6 +77,9 @@ public class ACCProxyAgentSide implements EnhancedACC {
      * TuCSoN Agent Identifier
      */
     protected TucsonAgentId aid;
+    /**
+     * 
+     */
     protected OperationHandler executor;
 
     /**
@@ -180,6 +183,24 @@ public class ACCProxyAgentSide implements EnhancedACC {
             UnreachableNodeException {
         return this.executor.doNonBlockingOperation(this.aid,
                 TucsonOperation.getCode(), tid, null, l);
+    }
+
+    // edited by sangio
+    // restituzione della lista delle operazioni asincrone completate e non
+    // ancora gestite("consumate) dall'agente
+    public List<TucsonOpCompletionEvent> getListEventsCompletition() {
+        // TODO Auto-generated method stub
+        return this.executor.events;
+    }
+
+    // edited by sangio
+    // restituzione della lista delle operazioni pendenti per il quale non si è
+    // ancora ricevuto un risultato
+    // per navigare la lista bisogna usare un metodo di mutua esclusione es.
+    // synchronized
+    public Map<Long, TucsonOperation> getListPendingOperations() {
+        // TODO Auto-generated method stub
+        return this.executor.operations;
     }
 
     public ITucsonOperation getS(final Object tid, final Long timeout)
@@ -547,6 +568,14 @@ public class ACCProxyAgentSide implements EnhancedACC {
                 TucsonOperation.setSCode(), tid, spec, timeout);
     }
 
+    public ITucsonOperation setS(final Object tid, final LogicTuple spec,
+            final TucsonOperationCompletionListener l)
+            throws TucsonOperationNotPossibleException,
+            UnreachableNodeException, OperationTimeOutException {
+        return this.executor.doNonBlockingOperation(this.aid,
+                TucsonOperation.setSCode(), tid, spec, l);
+    }
+
     public ITucsonOperation setS(final Object tid, final String spec,
             final Long timeout) throws TucsonOperationNotPossibleException,
             UnreachableNodeException, OperationTimeOutException {
@@ -558,16 +587,6 @@ public class ACCProxyAgentSide implements EnhancedACC {
                 TucsonOperation.setSCode(), tid, specT, timeout);
     }
 
-	@Override  //edit sangio
-	public ITucsonOperation setS(Object tid, LogicTuple spec,
-			TucsonOperationCompletionListener l)
-			throws TucsonOperationNotPossibleException,
-			UnreachableNodeException, OperationTimeOutException {
-	        return this.executor.doNonBlockingOperation(this.aid,
-	                TucsonOperation.setSCode(), tid, spec, l);
-	}
-
-    
     public ITucsonOperation setS(final Object tid, final String spec,
             final TucsonOperationCompletionListener l)
             throws TucsonOperationNotPossibleException,
@@ -691,21 +710,4 @@ public class ACCProxyAgentSide implements EnhancedACC {
     protected void log(final String msg) {
         System.out.println("[ACCProxyAgentSide]: " + msg);
     }
-    
-    //edited by sangio
-    //restituzione della lista delle operazioni asincrone completate e non ancora gestite("consumate) dall'agente
-	@Override
-	public List<TucsonOpCompletionEvent> getListEventsCompletition() {
-		// TODO Auto-generated method stub
-		return executor.events;
-	}
-
-	//edited by sangio
-	//restituzione della lista delle operazioni pendenti per il quale non si è ancora ricevuto un risultato
-	//per navigare la lista bisogna usare un metodo di mutua esclusione es. synchronized
-	@Override
-	public Map<Long, TucsonOperation> getListPendingOperations() {
-		// TODO Auto-generated method stub
-		return executor.operations;
-	}
 }

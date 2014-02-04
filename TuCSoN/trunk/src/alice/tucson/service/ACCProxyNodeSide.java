@@ -55,7 +55,7 @@ public class ACCProxyNodeSide extends AbstractACCProxyNodeSide {
     private final Map<Long, Long> opVsReq;
     private final Map<Long, TucsonMsgRequest> requests;
     private TucsonTupleCentreId tcId;
-    private String agentName;
+    private final String agentName;
 
     /**
      * 

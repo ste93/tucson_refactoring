@@ -36,6 +36,13 @@ import alice.tuplecentre.api.exceptions.OperationTimeOutException;
  */
 public interface SpecificationAsynchACC extends RootACC {
 
+    // edited by sangio
+    /**
+     * 
+     * @return the List of the events regarding TuCSoN operations completion
+     */
+    List<TucsonOpCompletionEvent> getListEventsCompletition();
+
     /**
      * <code>get_s</code> specification primitive, reads (w/o removing) all the
      * ReSpecT specification tuples from the given target tuplecentre
@@ -366,7 +373,7 @@ public interface SpecificationAsynchACC extends RootACC {
      * @param spec
      *            the new ReSpecT specification to replace the current
      *            specification space
-     *@param l
+     * @param l
      *            the listener who should be notified upon operation completion
      * 
      * @return the interface to access the data about TuCSoN operations outcome.
@@ -382,10 +389,12 @@ public interface SpecificationAsynchACC extends RootACC {
      * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
      * @see alice.tucson.api.ITucsonOperation ITucsonOperation
      */
-    ITucsonOperation setS(Object tid, LogicTuple spec, TucsonOperationCompletionListener l)
+    ITucsonOperation setS(Object tid, LogicTuple spec,
+            TucsonOperationCompletionListener l)
             throws TucsonOperationNotPossibleException,
-            UnreachableNodeException, OperationTimeOutException;  //edited by sangio
-    
+            UnreachableNodeException, OperationTimeOutException; // edited by
+                                                                 // sangio
+
     /**
      * <code>set_s</code> specification primitive, to replace all the ReSpecT
      * specification tuples in the given target tuplecentre specification space
@@ -417,7 +426,4 @@ public interface SpecificationAsynchACC extends RootACC {
             TucsonOperationCompletionListener l)
             throws TucsonOperationNotPossibleException,
             UnreachableNodeException;
-
-    //edited by sangio
-    List<TucsonOpCompletionEvent> getListEventsCompletition();
 }

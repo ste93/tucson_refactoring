@@ -87,15 +87,15 @@ public interface ITupleCentreOperation {
 
     /**
      * 
+     * @return wether this operation is a <code>noall</code> operation
+     */
+    boolean isNoAll(); // edited Sangio
+
+    /**
+     * 
      * @return wether this operation is a <code>nop</code> operation
      */
     boolean isNop();
-    
-    /**
-     * 
-     * @return wether this operation is a <code>noall</code> operation
-     */
-    boolean isNoAll();   //edited Sangio
 
     /**
      * Tests if the operation is completed

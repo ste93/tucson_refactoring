@@ -18,10 +18,10 @@ public class RootACCProxy implements RootACC {
          */
     }
 
-	@Override
-	public Map<Long, TucsonOperation> getListPendingOperations() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public Map<Long, TucsonOperation> getListPendingOperations() {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
 }
