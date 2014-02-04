@@ -19,7 +19,6 @@ import alice.logictuple.LogicTuple;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
 import alice.tucson.service.TucsonOpCompletionEvent;
-import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 
 /**
  * Agent Coordination Context enabling interaction with the ReSpecT
@@ -382,18 +381,14 @@ public interface SpecificationAsynchACC extends RootACC {
      *             if the requested operation cannot be carried out
      * @throws UnreachableNodeException
      *             if the target tuple centre is not reachable over the network
-     * @throws OperationTimeOutException
-     *             if the operation timeout expired prior to operation
-     *             completion
-     * 
      * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
      * @see alice.tucson.api.ITucsonOperation ITucsonOperation
      */
     ITucsonOperation setS(Object tid, LogicTuple spec,
             TucsonOperationCompletionListener l)
             throws TucsonOperationNotPossibleException,
-            UnreachableNodeException, OperationTimeOutException; // edited by
-                                                                 // sangio
+            UnreachableNodeException; // edited by
+                                      // sangio
 
     /**
      * <code>set_s</code> specification primitive, to replace all the ReSpecT

@@ -571,7 +571,7 @@ public class ACCProxyAgentSide implements EnhancedACC {
     public ITucsonOperation setS(final Object tid, final LogicTuple spec,
             final TucsonOperationCompletionListener l)
             throws TucsonOperationNotPossibleException,
-            UnreachableNodeException, OperationTimeOutException {
+            UnreachableNodeException {
         return this.executor.doNonBlockingOperation(this.aid,
                 TucsonOperation.setSCode(), tid, spec, l);
     }
