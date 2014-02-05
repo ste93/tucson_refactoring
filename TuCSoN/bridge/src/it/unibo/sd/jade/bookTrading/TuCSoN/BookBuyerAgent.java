@@ -21,7 +21,7 @@
 
 package it.unibo.sd.jade.bookTrading.TuCSoN;
 
-import it.unibo.sd.jade.exceptions.NoTucsonAuthenticationException;
+import it.unibo.sd.jade.exceptions.CannotAcquireACCException;
 import it.unibo.sd.jade.glue.BridgeToTucson;
 import it.unibo.sd.jade.operations.bulk.OutAll;
 import it.unibo.sd.jade.operations.bulk.RdAll;
@@ -92,7 +92,7 @@ public class BookBuyerAgent extends Agent {
                         sellers.add(res.getArg(0).toString()); // idSeller
                     }
 
-                    if (sellers.isEmpty()) { // there are some sellers
+                    if (!sellers.isEmpty()) { // there are some sellers
 
                         // send cfp
                         String t = "";
@@ -392,7 +392,7 @@ public class BookBuyerAgent extends Agent {
             e.printStackTrace();
         } catch (final TucsonInvalidTupleCentreIdException e) {
             e.printStackTrace();
-        } catch (final NoTucsonAuthenticationException e) {
+        } catch (final CannotAcquireACCException e) {
             e.printStackTrace();
         }
 

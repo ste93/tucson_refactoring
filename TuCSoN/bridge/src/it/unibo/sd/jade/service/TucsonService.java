@@ -2,7 +2,7 @@ package it.unibo.sd.jade.service;
 
 import it.unibo.sd.jade.coordination.TucsonACCsManager;
 import it.unibo.sd.jade.coordination.TucsonNodeLifecycleManager;
-import it.unibo.sd.jade.exceptions.NoTucsonAuthenticationException;
+import it.unibo.sd.jade.exceptions.CannotAcquireACCException;
 import it.unibo.sd.jade.glue.BridgeToTucson;
 import it.unibo.sd.jade.operations.AbstractTucsonAction;
 import jade.core.AID;
@@ -200,9 +200,9 @@ public class TucsonService extends BaseService {
 
         @Override
         public BridgeToTucson getBridgeToTucson(final Agent agent)
-                throws NoTucsonAuthenticationException {
+                throws CannotAcquireACCException {
             if (!TucsonService.this.mAccManager.hasAcc(agent)) {
-                throw new NoTucsonAuthenticationException(
+                throw new CannotAcquireACCException(
                         "The agent does not hold an ACC");
             }
             // Controllo se esiste già un OperationHandler per l'agente,

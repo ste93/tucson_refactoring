@@ -1,6 +1,6 @@
 package it.unibo.sd.jade.service;
 
-import it.unibo.sd.jade.exceptions.NoTucsonAuthenticationException;
+import it.unibo.sd.jade.exceptions.CannotAcquireACCException;
 import it.unibo.sd.jade.glue.BridgeToTucson;
 import jade.core.Agent;
 import jade.core.ServiceHelper;
@@ -59,11 +59,11 @@ public interface TucsonHelper extends ServiceHelper {
      * @param agent
      *            L'agente che richiede il TucsonOperationHandler.
      * @return Il BridgeJadeTuCSoN che permette l'interazione con TuCSoN.
-     * @throws NoTucsonAuthenticationException
+     * @throws CannotAcquireACCException
      *             Se l'agente <code>agent</code> non ha ottenuto un ACC.
      */
     BridgeToTucson getBridgeToTucson(Agent agent)
-            throws NoTucsonAuthenticationException;
+            throws CannotAcquireACCException;
 
     /**
      * Permette di ottenere il {@link alice.tucson.api.TucsonTupleCentreId}

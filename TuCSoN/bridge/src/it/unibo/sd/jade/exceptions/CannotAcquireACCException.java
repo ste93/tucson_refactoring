@@ -5,7 +5,7 @@ package it.unibo.sd.jade.exceptions;
  * @author Luca Sangiorgi (mailto: luca.sangiorgi6@studio.unibo.it)
  * 
  */
-public class NoTucsonAuthenticationException extends Exception {
+public class CannotAcquireACCException extends Exception {
 
     /** serialVersionUID **/
     private static final long serialVersionUID = 1L;
@@ -15,7 +15,7 @@ public class NoTucsonAuthenticationException extends Exception {
      * @param msg
      *            the message describign the exception
      */
-    public NoTucsonAuthenticationException(final String msg) {
+    public CannotAcquireACCException(final String msg) {
         super(msg);
     }
 }
