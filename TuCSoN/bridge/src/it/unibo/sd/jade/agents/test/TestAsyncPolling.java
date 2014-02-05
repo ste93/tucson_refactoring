@@ -18,7 +18,7 @@ import alice.tucson.service.TucsonOpCompletionEvent;
  * @author lucasangiorgi
  * 
  */
-public class TestJadeAgent_AsyncPolling extends Agent {
+public class TestAsyncPolling extends Agent {
 
     @SuppressWarnings("serial")
     private class TucsonTestBehaviour extends SimpleBehaviour {
@@ -28,7 +28,7 @@ public class TestJadeAgent_AsyncPolling extends Agent {
             try {
                 System.out.println("Hello, i am " + this.myAgent.getName());
                 final TucsonHelper helper =
-                        (TucsonHelper) TestJadeAgent_AsyncPolling.this
+                        (TucsonHelper) TestAsyncPolling.this
                                 .getHelper(TucsonService.NAME);
                 // Ottengo ACC
                 helper.authenticate(this.myAgent);
@@ -41,20 +41,20 @@ public class TestJadeAgent_AsyncPolling extends Agent {
                         helper.getBridgeJADETuCSoN(this.myAgent);
                 final AsyncOpResultData result = bridge.executeAsynch(op);
                 // controllo a polling se l'operazione è stata completata o meno
-                while (!TestJadeAgent_AsyncPolling.this.done) {
+                while (!TestAsyncPolling.this.done) {
                     final TucsonOpCompletionEvent ev =
                             result.getEventComplete(result.getOpId());
                     if (ev != null) { // risultato operazione acquisito
                         // gestione risultato
-                        TestJadeAgent_AsyncPolling.this
+                        TestAsyncPolling.this
                                 .log("\n\n\n\n Result = " + ev.getTuple()
                                         + "\n\n\n\n");
-                        TestJadeAgent_AsyncPolling.this.done = true;
+                        TestAsyncPolling.this.done = true;
                         bridge.cleanCoordinationStructure(this);
                     } else { // risultato non acquisito
-                        TestJadeAgent_AsyncPolling.this
+                        TestAsyncPolling.this
                                 .log("risultato non pronto");
-                        TestJadeAgent_AsyncPolling.this.done = false;
+                        TestAsyncPolling.this.done = false;
                     }
                 }
             } catch (final Exception ex) {
@@ -65,7 +65,7 @@ public class TestJadeAgent_AsyncPolling extends Agent {
         @Override
         public boolean done() {
             // TODO Auto-generated method stub
-            return TestJadeAgent_AsyncPolling.this.done;
+            return TestAsyncPolling.this.done;
         }
     }
 

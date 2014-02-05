@@ -18,6 +18,7 @@
  * along with this library; if not, write to the Free Software Foundation, Inc.,
  * 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  *****************************************************************/
+
 package it.unibo.sd.jade.bookTrading.TuCSoN;
 
 import it.unibo.sd.jade.exceptions.NoTucsonAuthenticationException;
@@ -28,6 +29,7 @@ import it.unibo.sd.jade.service.TucsonHelper;
 import it.unibo.sd.jade.service.TucsonService;
 import jade.core.Agent;
 import jade.core.ServiceException;
+import jade.core.behaviours.CyclicBehaviour;
 import jade.core.behaviours.SimpleBehaviour;
 
 import java.io.BufferedReader;
@@ -41,213 +43,306 @@ import java.util.StringTokenizer;
 
 import alice.logictuple.LogicTuple;
 import alice.logictuple.exceptions.InvalidLogicTupleException;
+import alice.logictuple.exceptions.InvalidTupleOperationException;
 import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.service.TucsonOpCompletionEvent;
 
 /**
- * Adapted from Giovanni Caire's Book Trading example in examples.bookTrading
- * within JADE distribution. This is the seller agent, showing how to register
- * to JADE DF in order to offer a service.
  * 
- * @author s.mariani@unibo.it
+ * @author lucasangiorgi
+ * 
  */
+@SuppressWarnings("serial")
 public class BookSellerAgent extends Agent {
 
-    @SuppressWarnings("serial")
-    private class BookSellerBehaviour extends SimpleBehaviour {
+    /*
+     * behavior that wait for request of service from buyer
+     */
+    private class BookSellerBehaviour extends CyclicBehaviour {
 
         @Override
         public void action() {
-            // Attesa richiesta del servizio
+
             LogicTuple tuple;
+
             try {
                 tuple =
                         LogicTuple.parse("cfp(" + BookSellerAgent.this.idSeller
-                                + ",sellbook,I,B)");
+                                + ",bookselling,I,B)");
                 final In op = new In(BookSellerAgent.this.tcid, tuple);
-                TucsonOpCompletionEvent result =
+                final TucsonOpCompletionEvent result =
                         BookSellerAgent.this.bridge
                                 .executeSynch(op, null, this);
-                if (result != null) { // operazione completata
-                    final String bookTitle =
-                            result.getTuple().getArg(3).toString(); // value of
-                                                                    // B
-                    final String idClient =
-                            result.getTuple().getArg(2).toString(); // value of
-                                                                    // I
-                    // check disponibilità libro
-                    final Float price =
-                            BookSellerAgent.this.catalogue.get(bookTitle);
-                    if (price != null) {
-                        /*
-                         * The requested book is available, reply with its
-                         * price.
-                         */
-                        BookSellerAgent.this.log("Book '" + bookTitle
-                                + "' available, proposing price...");
-                        tuple =
-                                LogicTuple.parse("responsecfp(propose,"
-                                        + idClient + "," + bookTitle + ","
-                                        + String.valueOf(price) + ","
-                                        + BookSellerAgent.this.idSeller + ")");
-                        final Out op1 =
-                                new Out(BookSellerAgent.this.tcid, tuple);
-                        BookSellerAgent.this.bridge.executeSynch(op1, null,
-                                this);
-                        tuple =
-                                LogicTuple.parse("proposal(X," + idClient + ","
-                                        + BookSellerAgent.this.idSeller + ","
-                                        + bookTitle + ")"); // x -> accept or
-                                                            // reject
-                        final In op2 = new In(BookSellerAgent.this.tcid, tuple);
-                        result =
-                                BookSellerAgent.this.bridge.executeSynch(op2,
-                                        null, this);
-                        if (result != null) {
-                            final String proposal =
-                                    result.getTuple().getArg(0).toString();
-                            if ("accept".equals(proposal)) { // accept
-                                final Float priceBook =
-                                        BookSellerAgent.this.catalogue
-                                                .remove(bookTitle);
-                                /*
-                                 * The requested book may be sold to another
-                                 * buyer in the meanwhile...
-                                 */
-                                if (priceBook != null) {
-                                    BookSellerAgent.this.log("Selling book '"
-                                            + bookTitle + "' to agent '"
-                                            + idClient + "'...");
-                                    tuple =
-                                            LogicTuple
-                                                    .parse("performative(inform,"
-                                                            + idClient
-                                                            + ","
-                                                            + bookTitle
-                                                            + ","
-                                                            + BookSellerAgent.this.idSeller
-                                                            + ")");
-                                } else {
-                                    BookSellerAgent.this.log("Sorry, book '"
-                                            + bookTitle
-                                            + "' is not available anymore.");
-                                    tuple =
-                                            LogicTuple
-                                                    .parse("performative(failure,"
-                                                            + idClient
-                                                            + ","
-                                                            + bookTitle
-                                                            + ","
-                                                            + BookSellerAgent.this.idSeller
-                                                            + ")");
-                                }
-                                final Out op3 =
-                                        new Out(BookSellerAgent.this.tcid,
-                                                tuple);
-                                BookSellerAgent.this.bridge.executeSynch(op3,
-                                        null, this);
-                            } else { // reject
-                                BookSellerAgent.this.log("Client '" + idClient
-                                        + "' reject '" + bookTitle + "'...");
-                            }
-                        } else {
-                            BookSellerAgent.this.log("mi blocco");
-                            this.block();
-                        }
-                    } else {
-                        /*
-                         * The requested book is NOT available, reply
-                         * accordingly.
-                         */
-                        BookSellerAgent.this.log("Book '" + bookTitle
-                                + "' NOT available, informing client...");
-                        tuple =
-                                LogicTuple.parse("responsecfp(refuse,"
-                                        + idClient + "," + bookTitle
-                                        + ",not-available,"
-                                        + BookSellerAgent.this.idSeller + ")");
-                        final Out op1 =
-                                new Out(BookSellerAgent.this.tcid, tuple);
-                        BookSellerAgent.this.bridge.executeSynch(op1, null,
-                                this);
-                    }
-                } else { // operazione pendente
-                    BookSellerAgent.this.log("mi blocco");
+                if (result != null) { // operation complete
+
+                    this.myAgent.addBehaviour(new ContractWithBuyerBehaviour(
+                            result.getTuple().getArg(2).toString(), result
+                                    .getTuple().getArg(3).toString()));
+
+                    BookSellerAgent.this.bridge
+                            .cleanCoordinationStructure(this); // clean
+                                                               // coordination
+                                                               // structure to
+                                                               // don't evaluate
+                                                               // the same
+                                                               // operation and
+                                                               // so return the
+                                                               // same result
+
+                } else { // pending operation
+
+                    BookSellerAgent.this.log("block() in(cfp)");
                     this.block();
                 }
-            } catch (final Exception e) {
-                // TODO Auto-generated catch block
+            } catch (final InvalidLogicTupleException e) {
                 e.printStackTrace();
-            } // idSeller,sellbook,idUtente,booktitle
+            } catch (final ServiceException e) {
+                e.printStackTrace();
+            } catch (final InvalidTupleOperationException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+    /*
+     * behaviour that contract with only one buyer
+     */
+    private class ContractWithBuyerBehaviour extends SimpleBehaviour {
+
+        private boolean ok;
+        private final String idBuyer;
+        private final String targetBookTitle;
+
+        public ContractWithBuyerBehaviour(final String id, final String tit) {
+            super();
+            this.idBuyer = id;
+            this.targetBookTitle = tit;
+        }
+
+        @Override
+        public void action() {
+
+            LogicTuple tuple;
+
+            try {
+
+                // check availability of the book
+                final Float price =
+                        BookSellerAgent.this.catalogue
+                                .get(this.targetBookTitle);
+                if (price != null) {
+                    /*
+                     * The requested book is available, reply with its price.
+                     */
+                    BookSellerAgent.this.log("Book '" + this.targetBookTitle
+                            + "' available, proposing price..." + price);
+                    tuple =
+                            LogicTuple.parse("responsecfp(propose,"
+                                    + this.idBuyer + "," + this.targetBookTitle
+                                    + "," + BookSellerAgent.this.idSeller + ","
+                                    + price + ")");
+                    final Out op1 = new Out(BookSellerAgent.this.tcid, tuple);
+                    BookSellerAgent.this.bridge.executeSynch(op1, null, this);
+
+                    /*
+                     * wait for the buyer's proposal
+                     */
+                    tuple =
+                            LogicTuple.parse("proposal(X," + this.idBuyer
+                                    + ",bookselling,"
+                                    + BookSellerAgent.this.idSeller + ","
+                                    + this.targetBookTitle + ")"); // x ->
+                                                                   // accept or
+                                                                   // reject
+                    final In op2 = new In(BookSellerAgent.this.tcid, tuple);
+                    final TucsonOpCompletionEvent result =
+                            BookSellerAgent.this.bridge.executeSynch(op2, null,
+                                    this);
+                    if (result != null) {
+
+                        final String proposal =
+                                result.getTuple().getArg(0).toString();
+                        if ("accept".equals(proposal)) { // accept
+
+                            final Float priceBook =
+                                    BookSellerAgent.this.catalogue
+                                            .remove(this.targetBookTitle);
+                            /*
+                             * The requested book may be sold to another buyer
+                             * in the meanwhile...
+                             */
+                            if (priceBook != null) {
+                                BookSellerAgent.this.log("Selling book '"
+                                        + this.targetBookTitle + "' to agent '"
+                                        + this.idBuyer + "'...");
+                                tuple =
+                                        LogicTuple.parse("performative(inform,"
+                                                + this.idBuyer
+                                                + ",bookselling,"
+                                                + BookSellerAgent.this.idSeller
+                                                + "," + this.targetBookTitle
+                                                + ")");
+
+                            } else {
+                                BookSellerAgent.this.log("Sorry, book '"
+                                        + this.targetBookTitle
+                                        + "' is not available anymore.");
+                                tuple =
+                                        LogicTuple
+                                                .parse("performative(failure,"
+                                                        + this.idBuyer
+                                                        + ",bookselling,"
+                                                        + BookSellerAgent.this.idSeller
+                                                        + ","
+                                                        + this.targetBookTitle
+                                                        + ")");
+
+                            }
+                            /*
+                             * sending performative
+                             */
+                            final Out op3 =
+                                    new Out(BookSellerAgent.this.tcid, tuple);
+                            BookSellerAgent.this.bridge.executeSynch(op3, null,
+                                    this);
+                            this.ok = true;
+                            BookSellerAgent.this.bridge
+                                    .cleanCoordinationStructure(this);
+
+                        } else { // reject
+
+                            BookSellerAgent.this.log("Client '" + this.idBuyer
+                                    + "' reject '" + this.targetBookTitle
+                                    + "'...");
+                            this.ok = true;
+                            BookSellerAgent.this.bridge
+                                    .cleanCoordinationStructure(this);
+
+                        }
+
+                    } else {
+
+                        BookSellerAgent.this.log("block() in(proposal)");
+                        this.block();
+                        this.ok = false;
+
+                    }
+
+                } else {
+                    /*
+                     * The requested book is NOT available, reply accordingly.
+                     */
+                    BookSellerAgent.this.log("Book '" + this.targetBookTitle
+                            + "' NOT available, informing client...");
+                    tuple =
+                            LogicTuple.parse("responsecfp(refuse,"
+                                    + this.idBuyer + "," + this.targetBookTitle
+                                    + "," + BookSellerAgent.this.idSeller
+                                    + ",not-available)");
+
+                    final Out op1 = new Out(BookSellerAgent.this.tcid, tuple);
+                    BookSellerAgent.this.bridge.executeSynch(op1, null, this);
+                    this.ok = true;
+                    BookSellerAgent.this.bridge
+                            .cleanCoordinationStructure(this);
+
+                }
+
+            } catch (final InvalidLogicTupleException e) {
+                e.printStackTrace();
+            } catch (final InvalidTupleOperationException e) {
+                e.printStackTrace();
+            } catch (final ServiceException e) {
+                e.printStackTrace();
+            }
+
         }
 
         @Override
         public boolean done() {
-            // TODO Auto-generated method stub
-            return false;
+            return this.ok;
         }
+
     }
 
-    /** serialVersionUID **/
-    private static final long serialVersionUID = 1L;
+    /*
+     * The class to execute TuCSoN operations
+     */
     private BridgeJADETuCSoN bridge;
     /*
      * The catalogue of books for sale (maps the title of a book to its price).
      */
     private Hashtable<String, Float> catalogue;
-    private TucsonHelper helper;
+
+    /*
+     * AID of seller
+     */
     private String idSeller;
+
+    /*
+     * ID of tuple centre
+     */
     private TucsonTupleCentreId tcid;
 
     @Override
     protected void setup() {
+
         this.log("I'm started.");
+
+        this.idSeller = this.getAID().getName();
         this.catalogue = new Hashtable<String, Float>();
-        this.idSeller = this.getAID().toString();
         /*
          * Boot catalogue from .catalog file (drawing random prices) and print
          * out the outcome.
          */
         this.bootCatalogue();
         this.printCatalogue();
+
         try {
-            this.helper = (TucsonHelper) this.getHelper(TucsonService.NAME);
-            // Ottengo ACC
-            this.helper.authenticate(this);
-            // Creo operazione
-            this.tcid =
-                    this.helper.getTupleCentreId("default", "localhost", 20504);
-            LogicTuple tuple = null;
-            // acquisizione del bridge univoco per l'agente
-            this.bridge = this.helper.getBridgeJADETuCSoN(this);
-            // registrazione al servizio
-            tuple =
-                    LogicTuple.parse("service(" + this.toString()
-                            + ",book-selling)");
+            final TucsonHelper helper =
+                    (TucsonHelper) this.getHelper(TucsonService.NAME);
+            /*
+             * Obtain ACC
+             */
+            helper.authenticate(this);
+            /*
+             * get tuple centre id
+             */
+            this.tcid = helper.getTupleCentreId("default", "localhost", 20504);
+
+            /*
+             * get the univocal bridge for the agent
+             */
+            this.bridge = helper.getBridgeJADETuCSoN(this);
+
+            /*
+             * registration of the service
+             */
+            final LogicTuple tuple =
+                    LogicTuple.parse("service(" + this.idSeller
+                            + ",bookselling)");
             final Out op = new Out(this.tcid, tuple);
-            this.bridge.executeSynch(op, null);
+            this.bridge.executeAsynch(op);
+
             this.addBehaviour(new BookSellerBehaviour());
+
+        } catch (final ServiceException e) {
+            e.printStackTrace();
         } catch (final TucsonInvalidAgentIdException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (final TucsonInvalidTupleCentreIdException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (final NoTucsonAuthenticationException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (final ServiceException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (final InvalidLogicTupleException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (final Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
+
     }
 
     /*
@@ -256,7 +351,21 @@ public class BookSellerAgent extends Agent {
      */
     @Override
     protected void takeDown() {
-        this.log("I'm done. Remember to deregire the service!!");
+
+        LogicTuple tuple;
+        try {
+            /*
+             * deregistration of the service
+             */
+            tuple =
+                    LogicTuple.parse("service(" + this.idSeller
+                            + ",bookselling)");
+            final In op = new In(this.tcid, tuple);
+            this.bridge.executeAsynch(op);
+        } catch (final Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     /*
@@ -267,7 +376,7 @@ public class BookSellerAgent extends Agent {
             final BufferedReader br =
                     new BufferedReader(
                             new FileReader(
-                                    "bin/ds/lab/jade/bookTrading/contractNet/books.cat"));
+                                    "bin/it/unibo/sd/jade/bookTrading/TuCSoN/books.cat"));
             String line;
             StringTokenizer st;
             String title;
@@ -310,4 +419,5 @@ public class BookSellerAgent extends Agent {
                     + this.catalogue.get(key));
         }
     }
+
 }

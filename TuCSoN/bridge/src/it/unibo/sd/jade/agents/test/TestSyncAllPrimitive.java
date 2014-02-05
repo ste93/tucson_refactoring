@@ -17,7 +17,7 @@ import alice.tucson.service.TucsonOpCompletionEvent;
  * @author lucasangiorgi
  * 
  */
-public class TestJadeAgent_Sync_All_Primitive extends Agent {
+public class TestSyncAllPrimitive extends Agent {
 
     @SuppressWarnings("serial")
     private class TucsonTestBehaviour extends SimpleBehaviour {
@@ -29,7 +29,7 @@ public class TestJadeAgent_Sync_All_Primitive extends Agent {
             try {
                 System.out.println("Hello, i am " + this.myAgent.getName());
                 final TucsonHelper helper =
-                        (TucsonHelper) TestJadeAgent_Sync_All_Primitive.this
+                        (TucsonHelper) TestSyncAllPrimitive.this
                                 .getHelper(TucsonService.NAME);
                 // Ottengo ACC
                 helper.authenticate(this.myAgent);
@@ -51,15 +51,15 @@ public class TestJadeAgent_Sync_All_Primitive extends Agent {
                         this.bridge.executeSynch(op, null, this);
                 if (result != null) { // risultato operazione acquisito
                     // gestione risultato
-                    TestJadeAgent_Sync_All_Primitive.this.log("\n\n--> "
+                    TestSyncAllPrimitive.this.log("\n\n--> "
                             + (result.resultOperationSucceeded() ? "success"
                                     : "failure") + ": " + result.getTuple()
                             + "\n\n");
-                    TestJadeAgent_Sync_All_Primitive.this.done = true;
+                    TestSyncAllPrimitive.this.done = true;
                     helper.deauthenticate(this.myAgent);
                 } else { // risultato non acquisito
-                    TestJadeAgent_Sync_All_Primitive.this.log("mi blocco");
-                    TestJadeAgent_Sync_All_Primitive.this.done = false;
+                    TestSyncAllPrimitive.this.log("mi blocco");
+                    TestSyncAllPrimitive.this.done = false;
                     this.block();
                 }
                 /*-----------------RD------------------------*/
@@ -424,7 +424,7 @@ public class TestJadeAgent_Sync_All_Primitive extends Agent {
         @Override
         public boolean done() {
             // TODO Auto-generated method stub
-            return TestJadeAgent_Sync_All_Primitive.this.done;
+            return TestSyncAllPrimitive.this.done;
         }
     }
 

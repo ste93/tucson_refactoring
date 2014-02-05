@@ -20,7 +20,7 @@ import alice.tucson.service.TucsonOpCompletionEvent;
  * @author lucasangiorgi
  * 
  */
-public class TestJadeAgent_AsyncWithBehav extends Agent {
+public class TestAsyncWithBehaviour extends Agent {
 
     @SuppressWarnings("serial")
     private class ResultCompleteBehaviour extends OneShotBehaviour implements
@@ -31,14 +31,14 @@ public class TestJadeAgent_AsyncWithBehav extends Agent {
         @Override
         public void action() {
             // TODO Auto-generated method stub
-            TestJadeAgent_AsyncWithBehav.this
+            TestAsyncWithBehaviour.this
                     .log(" behaviour risultato ricevuto");
             if (this.ev != null) { // risultato operazione acquisito
                 // gestione risultato
-                TestJadeAgent_AsyncWithBehav.this.log("\n\n\n\n Result = "
+                TestAsyncWithBehaviour.this.log("\n\n\n\n Result = "
                         + this.ev.getTuple() + "\n\n\n\n");
             } else { // risultato non acquisito
-                TestJadeAgent_AsyncWithBehav.this.log("risultato non pronto");
+                TestAsyncWithBehaviour.this.log("risultato non pronto");
             }
         }
 
@@ -57,7 +57,7 @@ public class TestJadeAgent_AsyncWithBehav extends Agent {
             try {
                 System.out.println("Hello, i am " + this.myAgent.getName());
                 final TucsonHelper helper =
-                        (TucsonHelper) TestJadeAgent_AsyncWithBehav.this
+                        (TucsonHelper) TestAsyncWithBehaviour.this
                                 .getHelper(TucsonService.NAME);
                 // Ottengo ACC
                 helper.authenticate(this.myAgent);

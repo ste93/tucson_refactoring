@@ -18,7 +18,7 @@ import alice.tucson.service.TucsonOpCompletionEvent;
  * @author lucasangiorgi
  * 
  */
-public class TestJadeAgent_Sync extends Agent {
+public class TestSync extends Agent {
 
     @SuppressWarnings("serial")
     private class TucsonTestBehaviour extends SimpleBehaviour {
@@ -28,7 +28,7 @@ public class TestJadeAgent_Sync extends Agent {
             try {
                 System.out.println("Hello, i am " + this.myAgent.getName());
                 final TucsonHelper helper =
-                        (TucsonHelper) TestJadeAgent_Sync.this
+                        (TucsonHelper) TestSync.this
                                 .getHelper(TucsonService.NAME);
                 // Acquisizione ACC
                 helper.authenticate(this.myAgent);
@@ -56,20 +56,20 @@ public class TestJadeAgent_Sync extends Agent {
                     result = bridge.executeSynch(op1, null, this);
                     if (result != null) { // operazione completata
                         // gestione risultato
-                        TestJadeAgent_Sync.this.done = true; // terminazione
+                        TestSync.this.done = true; // terminazione
                                                              // behaviour
                         bridge.cleanCoordinationStructure(this); // pulizia
                                                                  // strutture
                                                                  // condivise
                     } else { // operazione non completata, blocco behaviour
                              // corrente
-                        TestJadeAgent_Sync.this.log("mi blocco");
-                        TestJadeAgent_Sync.this.done = false;
+                        TestSync.this.log("mi blocco");
+                        TestSync.this.done = false;
                         this.block();
                     }
                 } else { // risultato non acquisito
-                    TestJadeAgent_Sync.this.log("mi blocco");
-                    TestJadeAgent_Sync.this.done = false;
+                    TestSync.this.log("mi blocco");
+                    TestSync.this.done = false;
                     this.block();
                 }
             } catch (final Exception ex) {
@@ -80,7 +80,7 @@ public class TestJadeAgent_Sync extends Agent {
         @Override
         public boolean done() {
             // TODO Auto-generated method stub
-            return TestJadeAgent_Sync.this.done;
+            return TestSync.this.done;
         }
     }
 
