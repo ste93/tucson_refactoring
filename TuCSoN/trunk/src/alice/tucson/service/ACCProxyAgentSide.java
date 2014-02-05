@@ -188,7 +188,7 @@ public class ACCProxyAgentSide implements EnhancedACC {
     // edited by sangio
     // restituzione della lista delle operazioni asincrone completate e non
     // ancora gestite("consumate) dall'agente
-    public List<TucsonOpCompletionEvent> getListEventsCompletition() {
+    public List<TucsonOpCompletionEvent> getCompletionEventsList() {
         // TODO Auto-generated method stub
         return this.executor.events;
     }
@@ -198,7 +198,7 @@ public class ACCProxyAgentSide implements EnhancedACC {
     // ancora ricevuto un risultato
     // per navigare la lista bisogna usare un metodo di mutua esclusione es.
     // synchronized
-    public Map<Long, TucsonOperation> getListPendingOperations() {
+    public Map<Long, TucsonOperation> getPendingOperationsMap() {
         // TODO Auto-generated method stub
         return this.executor.operations;
     }

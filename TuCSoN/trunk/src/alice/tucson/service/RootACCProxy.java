@@ -12,16 +12,15 @@ import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
  */
 public class RootACCProxy implements RootACC {
 
-    public void exit() throws TucsonOperationNotPossibleException {
-        /*
+	public void exit() throws TucsonOperationNotPossibleException {
+		/*
          * 
          */
-    }
+	}
 
-    @Override
-    public Map<Long, TucsonOperation> getListPendingOperations() {
-        // TODO Auto-generated method stub
-        return null;
-    }
+	@Override
+	public Map<Long, TucsonOperation> getPendingOperationsMap() {
+		return null;
+	}
 
 }

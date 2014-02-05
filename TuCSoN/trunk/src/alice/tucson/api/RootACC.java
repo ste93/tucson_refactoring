@@ -26,19 +26,19 @@ import alice.tucson.service.TucsonOperation;
  */
 public interface RootACC {
 
-    /**
-     * Release of the ACC and exit from the TuCSoN system.
-     * 
-     * @throws TucsonOperationNotPossibleException
-     *             if the requested operation cannot be carried out
-     */
-    void exit() throws TucsonOperationNotPossibleException;
+	/**
+	 * Release of the ACC and exit from the TuCSoN system.
+	 * 
+	 * @throws TucsonOperationNotPossibleException
+	 *             if the requested operation cannot be carried out
+	 */
+	void exit() throws TucsonOperationNotPossibleException;
 
-    /**
-     * 
-     * @return the Map associating operation ids with the actual TuCSoN
-     *         operation
-     */
-    Map<Long, TucsonOperation> getListPendingOperations();
+	/**
+	 * 
+	 * @return the Map associating operation ids with the actual TuCSoN
+	 *         operation
+	 */
+	Map<Long, TucsonOperation> getPendingOperationsMap();
 
 }

@@ -74,7 +74,7 @@ public class TucsonAgentAsync extends AbstractTucsonAgent {
     public void operationCompleted(final AbstractTupleCentreOperation op) {
         final EnhancedAsynchACC acc = (EnhancedAsynchACC) this.cmd.getParam(1);
         final List<TucsonOpCompletionEvent> list =
-                acc.getListEventsCompletition();
+                acc.getCompletionEventsList();
         // ricerca del risultato dell'operazione richiesta contenuto nella
         // risposta della chiamata asincrona di oggetto ITucsonOperation
         boolean trovato = false;

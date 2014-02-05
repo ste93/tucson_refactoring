@@ -95,8 +95,8 @@ public class BridgeJADETuCSoN {
         // controllare se l'operazione è completata, e l'id della op
         final AsyncOpResultData asyncData =
                 new AsyncOpResultData(op.getId(),
-                        this.acc.getListEventsCompletition(),
-                        this.acc.getListPendingOperations());
+                        this.acc.getCompletionEventsList(),
+                        this.acc.getPendingOperationsMap());
         return asyncData;
     }
 

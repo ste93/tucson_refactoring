@@ -79,7 +79,7 @@ public class TucsonAgentAsyncBehavoiur extends AbstractTucsonAgent {
         // ros.list.add((ITucsonOperation)result);
         final EnhancedAsynchACC acc = (EnhancedAsynchACC) this.cmd.getParam(1);
         final List<TucsonOpCompletionEvent> list =
-                acc.getListEventsCompletition();
+                acc.getCompletionEventsList();
         TucsonOpCompletionEvent ev = null;
         // ricerca del risultato dell'operazione richiesta contenuto nella
         // risposta della chiamata asincrona di oggetto ITucsonOperation
