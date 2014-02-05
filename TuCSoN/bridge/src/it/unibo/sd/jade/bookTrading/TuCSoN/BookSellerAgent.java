@@ -22,7 +22,7 @@
 package it.unibo.sd.jade.bookTrading.TuCSoN;
 
 import it.unibo.sd.jade.exceptions.NoTucsonAuthenticationException;
-import it.unibo.sd.jade.glue.BridgeJADETuCSoN;
+import it.unibo.sd.jade.glue.BridgeToTucson;
 import it.unibo.sd.jade.operations.ordinary.In;
 import it.unibo.sd.jade.operations.ordinary.Out;
 import it.unibo.sd.jade.service.TucsonHelper;
@@ -74,7 +74,7 @@ public class BookSellerAgent extends Agent {
                 final In op = new In(BookSellerAgent.this.tcid, tuple);
                 final TucsonOpCompletionEvent result =
                         BookSellerAgent.this.bridge
-                                .executeSynch(op, null, this);
+                                .synchronousInvocation(op, null, this);
                 if (result != null) { // operation complete
 
                     this.myAgent.addBehaviour(new ContractWithBuyerBehaviour(
@@ -82,7 +82,7 @@ public class BookSellerAgent extends Agent {
                                     .getTuple().getArg(3).toString()));
 
                     BookSellerAgent.this.bridge
-                            .cleanCoordinationStructure(this); // clean
+                            .clearTucsonOpResult(this); // clean
                                                                // coordination
                                                                // structure to
                                                                // don't evaluate
@@ -145,7 +145,7 @@ public class BookSellerAgent extends Agent {
                                     + "," + BookSellerAgent.this.idSeller + ","
                                     + price + ")");
                     final Out op1 = new Out(BookSellerAgent.this.tcid, tuple);
-                    BookSellerAgent.this.bridge.executeSynch(op1, null, this);
+                    BookSellerAgent.this.bridge.synchronousInvocation(op1, null, this);
 
                     /*
                      * wait for the buyer's proposal
@@ -159,7 +159,7 @@ public class BookSellerAgent extends Agent {
                                                                    // reject
                     final In op2 = new In(BookSellerAgent.this.tcid, tuple);
                     final TucsonOpCompletionEvent result =
-                            BookSellerAgent.this.bridge.executeSynch(op2, null,
+                            BookSellerAgent.this.bridge.synchronousInvocation(op2, null,
                                     this);
                     if (result != null) {
 
@@ -206,11 +206,11 @@ public class BookSellerAgent extends Agent {
                              */
                             final Out op3 =
                                     new Out(BookSellerAgent.this.tcid, tuple);
-                            BookSellerAgent.this.bridge.executeSynch(op3, null,
+                            BookSellerAgent.this.bridge.synchronousInvocation(op3, null,
                                     this);
                             this.ok = true;
                             BookSellerAgent.this.bridge
-                                    .cleanCoordinationStructure(this);
+                                    .clearTucsonOpResult(this);
 
                         } else { // reject
 
@@ -219,7 +219,7 @@ public class BookSellerAgent extends Agent {
                                     + "'...");
                             this.ok = true;
                             BookSellerAgent.this.bridge
-                                    .cleanCoordinationStructure(this);
+                                    .clearTucsonOpResult(this);
 
                         }
 
@@ -244,10 +244,10 @@ public class BookSellerAgent extends Agent {
                                     + ",not-available)");
 
                     final Out op1 = new Out(BookSellerAgent.this.tcid, tuple);
-                    BookSellerAgent.this.bridge.executeSynch(op1, null, this);
+                    BookSellerAgent.this.bridge.synchronousInvocation(op1, null, this);
                     this.ok = true;
                     BookSellerAgent.this.bridge
-                            .cleanCoordinationStructure(this);
+                            .clearTucsonOpResult(this);
 
                 }
 
@@ -271,7 +271,7 @@ public class BookSellerAgent extends Agent {
     /*
      * The class to execute TuCSoN operations
      */
-    private BridgeJADETuCSoN bridge;
+    private BridgeToTucson bridge;
     /*
      * The catalogue of books for sale (maps the title of a book to its price).
      */
@@ -307,16 +307,16 @@ public class BookSellerAgent extends Agent {
             /*
              * Obtain ACC
              */
-            helper.authenticate(this);
+            helper.acquireACC(this);
             /*
              * get tuple centre id
              */
-            this.tcid = helper.getTupleCentreId("default", "localhost", 20504);
+            this.tcid = helper.getTucsonTupleCentreId("default", "localhost", 20504);
 
             /*
              * get the univocal bridge for the agent
              */
-            this.bridge = helper.getBridgeJADETuCSoN(this);
+            this.bridge = helper.getBridgeToTucson(this);
 
             /*
              * registration of the service
@@ -325,7 +325,7 @@ public class BookSellerAgent extends Agent {
                     LogicTuple.parse("service(" + this.idSeller
                             + ",bookselling)");
             final Out op = new Out(this.tcid, tuple);
-            this.bridge.executeAsynch(op);
+            this.bridge.asynchronousInvocation(op);
 
             this.addBehaviour(new BookSellerBehaviour());
 
@@ -361,7 +361,7 @@ public class BookSellerAgent extends Agent {
                     LogicTuple.parse("service(" + this.idSeller
                             + ",bookselling)");
             final In op = new In(this.tcid, tuple);
-            this.bridge.executeAsynch(op);
+            this.bridge.asynchronousInvocation(op);
         } catch (final Exception e) {
             e.printStackTrace();
         }

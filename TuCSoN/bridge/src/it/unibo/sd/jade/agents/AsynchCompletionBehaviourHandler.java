@@ -1,6 +1,6 @@
 package it.unibo.sd.jade.agents;
 
-import it.unibo.sd.jade.coordination.ICompletitionOpAsync;
+import it.unibo.sd.jade.coordination.IAsynchCompletionBehaviour;
 import it.unibo.sd.jade.service.TucsonService;
 import jade.core.Agent;
 import jade.core.GenericCommand;
@@ -24,7 +24,7 @@ import alice.tuplecentre.core.AbstractTupleCentreOperation;
  * @author lucasangiorgi
  * 
  */
-public class TucsonAgentAsyncBehavoiur extends AbstractTucsonAgent {
+public class AsynchCompletionBehaviourHandler extends AbstractTucsonAgent {
 
     private final Behaviour behav; // nuovo comportamento da aggiungere
                                    // all'agente JADE
@@ -54,9 +54,9 @@ public class TucsonAgentAsyncBehavoiur extends AbstractTucsonAgent {
      *             if the given String is not a valid representation of a TuCSoN
      *             agent id
      */
-    public TucsonAgentAsyncBehavoiur(final String id, final GenericCommand c,
-            final TucsonService s, final Agent a, final Behaviour b)
-            throws TucsonInvalidAgentIdException {
+    public AsynchCompletionBehaviourHandler(final String id,
+            final GenericCommand c, final TucsonService s, final Agent a,
+            final Behaviour b) throws TucsonInvalidAgentIdException {
         super(id);
         this.cmd = c;
         this.service = s;
@@ -96,8 +96,8 @@ public class TucsonAgentAsyncBehavoiur extends AbstractTucsonAgent {
             }
         }
         // controllo se il behaviour passato rispetta il contratto richiesto
-        if (this.behav instanceof ICompletitionOpAsync) {
-            final ICompletitionOpAsync b = (ICompletitionOpAsync) this.behav;
+        if (this.behav instanceof IAsynchCompletionBehaviour) {
+            final IAsynchCompletionBehaviour b = (IAsynchCompletionBehaviour) this.behav;
             b.setTucsonOpCompletionEvent(ev);
             this.myAgent.addBehaviour(this.behav); // non ci sono problemi
                                                    // accessi concorrenti!å
@@ -109,7 +109,9 @@ public class TucsonAgentAsyncBehavoiur extends AbstractTucsonAgent {
 
     @Override
     public void operationCompleted(final ITucsonOperation arg0) {
-        // TODO Auto-generated method stub
+        /*
+         * not used atm
+         */
     }
 
     @Override
@@ -122,7 +124,7 @@ public class TucsonAgentAsyncBehavoiur extends AbstractTucsonAgent {
                                                                             // di
                                                                             // coordinazione
         } catch (final ServiceException e) {
-            System.err.println(e);
+            e.printStackTrace();
         }
     }
 }

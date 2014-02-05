@@ -1,6 +1,6 @@
 package it.unibo.sd.jade.agents.test;
 
-import it.unibo.sd.jade.glue.BridgeJADETuCSoN;
+import it.unibo.sd.jade.glue.BridgeToTucson;
 import it.unibo.sd.jade.operations.ordinary.Out;
 import it.unibo.sd.jade.operations.ordinary.Rd;
 import it.unibo.sd.jade.service.TucsonHelper;
@@ -31,20 +31,20 @@ public class TestSync extends Agent {
                         (TucsonHelper) TestSync.this
                                 .getHelper(TucsonService.NAME);
                 // Acquisizione ACC
-                helper.authenticate(this.myAgent);
+                helper.acquireACC(this.myAgent);
                 // Id tuple centre
                 final TucsonTupleCentreId tcid =
-                        helper.getTupleCentreId("default", "localhost", 20504);
+                        helper.getTucsonTupleCentreId("default", "localhost", 20504);
                 // Creazione operazione di read
                 LogicTuple tuple = LogicTuple.parse("nome(X)");
                 final Rd op = new Rd(tcid, tuple);
                 // acquisizione del bridge univoco per l'agente
-                final BridgeJADETuCSoN bridge =
-                        helper.getBridgeJADETuCSoN(this.myAgent);
+                final BridgeToTucson bridge =
+                        helper.getBridgeToTucson(this.myAgent);
                 // esecuzione operazione di coordinazione TuCSoN dal "mondo"
                 // JADE
                 TucsonOpCompletionEvent result =
-                        bridge.executeSynch(op, null, this);
+                        bridge.synchronousInvocation(op, null, this);
                 if (result != null) { // operazione completata
                     // gestione risultato
                     final String name = result.getTuple().getArg(0).toString(); // value
@@ -53,12 +53,12 @@ public class TestSync extends Agent {
                     tuple = LogicTuple.parse("ciao(" + name + ")");
                     final Out op1 = new Out(tcid, tuple);
                     // esecuzione seconda operazione di coordinazione
-                    result = bridge.executeSynch(op1, null, this);
+                    result = bridge.synchronousInvocation(op1, null, this);
                     if (result != null) { // operazione completata
                         // gestione risultato
                         TestSync.this.done = true; // terminazione
                                                              // behaviour
-                        bridge.cleanCoordinationStructure(this); // pulizia
+                        bridge.clearTucsonOpResult(this); // pulizia
                                                                  // strutture
                                                                  // condivise
                     } else { // operazione non completata, blocco behaviour

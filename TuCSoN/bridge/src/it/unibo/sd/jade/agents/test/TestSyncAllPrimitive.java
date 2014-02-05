@@ -1,6 +1,6 @@
 package it.unibo.sd.jade.agents.test;
 
-import it.unibo.sd.jade.glue.BridgeJADETuCSoN;
+import it.unibo.sd.jade.glue.BridgeToTucson;
 import it.unibo.sd.jade.operations.ordinary.Out;
 import it.unibo.sd.jade.service.TucsonHelper;
 import it.unibo.sd.jade.service.TucsonService;
@@ -22,7 +22,7 @@ public class TestSyncAllPrimitive extends Agent {
     @SuppressWarnings("serial")
     private class TucsonTestBehaviour extends SimpleBehaviour {
 
-        private BridgeJADETuCSoN bridge;
+        private BridgeToTucson bridge;
 
         @Override
         public void action() {
@@ -32,13 +32,13 @@ public class TestSyncAllPrimitive extends Agent {
                         (TucsonHelper) TestSyncAllPrimitive.this
                                 .getHelper(TucsonService.NAME);
                 // Ottengo ACC
-                helper.authenticate(this.myAgent);
+                helper.acquireACC(this.myAgent);
                 // Creo operazione
                 final TucsonTupleCentreId tcid =
-                        helper.getTupleCentreId("default", "localhost", 20504);
+                        helper.getTucsonTupleCentreId("default", "localhost", 20504);
                 LogicTuple tuple = null;
                 // acquisizione del bridge univoco per l'agente
-                this.bridge = helper.getBridgeJADETuCSoN(this.myAgent);
+                this.bridge = helper.getBridgeToTucson(this.myAgent);
                 /*
                  * ********************* ORDINARY PRIMITIVE
                  * **************************
@@ -48,7 +48,7 @@ public class TestSyncAllPrimitive extends Agent {
                 final Out op = new Out(tcid, tuple);
                 // esecuzione operazione dal "mondo Jade"
                 final TucsonOpCompletionEvent result =
-                        this.bridge.executeSynch(op, null, this);
+                        this.bridge.synchronousInvocation(op, null, this);
                 if (result != null) { // risultato operazione acquisito
                     // gestione risultato
                     TestSyncAllPrimitive.this.log("\n\n--> "
@@ -56,7 +56,7 @@ public class TestSyncAllPrimitive extends Agent {
                                     : "failure") + ": " + result.getTuple()
                             + "\n\n");
                     TestSyncAllPrimitive.this.done = true;
-                    helper.deauthenticate(this.myAgent);
+                    helper.releaseACC(this.myAgent);
                 } else { // risultato non acquisito
                     TestSyncAllPrimitive.this.log("mi blocco");
                     TestSyncAllPrimitive.this.done = false;

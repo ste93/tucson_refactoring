@@ -13,22 +13,22 @@ import alice.tucson.api.EnhancedACC;
  * 
  * @author Luca Sangiorgi (mailto: luca.sangiorgi6@studio.unibo.it)
  */
-public class TucsonAccManager {
+public class TucsonACCsManager {
 
     /**
      * 
      */
-    protected static TucsonAccManager instance;
+    protected static TucsonACCsManager instance;
 
     /**
      * 
      * @return the singleton instance of this ACC manager entity
      */
-    public static TucsonAccManager getInstance() {
-        if (TucsonAccManager.instance == null) {
-            TucsonAccManager.instance = new TucsonAccManager();
+    public static TucsonACCsManager getInstance() {
+        if (TucsonACCsManager.instance == null) {
+            TucsonACCsManager.instance = new TucsonACCsManager();
         }
-        return TucsonAccManager.instance;
+        return TucsonACCsManager.instance;
     }
 
     /**
@@ -39,7 +39,7 @@ public class TucsonAccManager {
     /**
      * 
      */
-    protected TucsonAccManager() {
+    protected TucsonACCsManager() {
         this.mAccs = new LinkedHashMap<AID, EnhancedACC>();
     }
 

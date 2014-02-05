@@ -9,15 +9,15 @@ import alice.tucson.service.TucsonOperation;
 /**
  * AsyncOpResultData: classe usata per rappresentare la struttura dati con la
  * quale controllare se il risultato dell'operazione di coordinazione in
- * modalità sincrona con tecnica di polling è stata completata o è pendente
+ * modalità asincrona con tecnica di polling è stata completata o è pendente
  * 
  * @author lucasangiorgi
  * 
  */
-public class AsyncOpResultData {
+public class AsynchTucsonOpResult {
 
-    private List<TucsonOpCompletionEvent> events;
-    private Map<Long, TucsonOperation> mapOpPend;
+    private List<TucsonOpCompletionEvent> tucsonCompletionEvents;
+    private Map<Long, TucsonOperation> pendingOps;
     private long opId;
 
     /**
@@ -29,12 +29,12 @@ public class AsyncOpResultData {
      * @param p
      *            the map of pending operations
      */
-    public AsyncOpResultData(final long o,
+    public AsynchTucsonOpResult(final long o,
             final List<TucsonOpCompletionEvent> e,
             final Map<Long, TucsonOperation> p) {
         this.opId = o;
-        this.events = e;
-        this.mapOpPend = p;
+        this.tucsonCompletionEvents = e;
+        this.pendingOps = p;
     }
 
     /**
@@ -46,17 +46,17 @@ public class AsyncOpResultData {
      * @return TucsonOpCompletionEvent se l'operazione è stata completata,
      *         altrimenti null
      */
-    public TucsonOpCompletionEvent getEventComplete(final long o) {
+    public TucsonOpCompletionEvent getTucsonCompletionEvent(final long o) {
         TucsonOpCompletionEvent ev = null;
-        synchronized (this.events) {
+        synchronized (this.tucsonCompletionEvents) {
             final boolean trovato = false;
-            for (int i = 0; (i < this.events.size()) && !trovato; i++) {
-                if (this.events.get(i).getOpId().getId() == o) { // operazione
+            for (int i = 0; (i < this.tucsonCompletionEvents.size()) && !trovato; i++) {
+                if (this.tucsonCompletionEvents.get(i).getOpId().getId() == o) { // operazione
                                                                  // richiesta
                                                                  // trovata
                     // prelevo l'operazione completata dalla coda dei messaggi
                     // completati
-                    ev = this.events.remove(i);
+                    ev = this.tucsonCompletionEvents.remove(i);
                 }
             }
         }
@@ -67,16 +67,16 @@ public class AsyncOpResultData {
      * 
      * @return the List of TuCSoN completion events
      */
-    public List<TucsonOpCompletionEvent> getListEvents() {
-        return this.events;
+    public List<TucsonOpCompletionEvent> getTucsonCompletionEvents() {
+        return this.tucsonCompletionEvents;
     }
 
     /**
      * 
      * @return the Map of pending operations
      */
-    public Map<Long, TucsonOperation> getMapOpPend() {
-        return this.mapOpPend;
+    public Map<Long, TucsonOperation> getPendingOperations() {
+        return this.pendingOps;
     }
 
     /**
@@ -95,9 +95,9 @@ public class AsyncOpResultData {
      * @return true se è nella lista delle operazioni pendenti, false se non lo
      *         è
      */
-    public boolean isPendant(final long o) {
-        synchronized (this.mapOpPend) {
-            final TucsonOperation op1 = this.mapOpPend.get(o);
+    public boolean isPending(final long o) {
+        synchronized (this.pendingOps) {
+            final TucsonOperation op1 = this.pendingOps.get(o);
             if (op1 != null) { // operazione nella lista delle operazioni
                                // pendenti
                 return false;
@@ -111,8 +111,8 @@ public class AsyncOpResultData {
      * @param e
      *            the List of completion events
      */
-    public void setListEvents(final List<TucsonOpCompletionEvent> e) {
-        this.events = e;
+    public void setTucsonCompletionEvents(final List<TucsonOpCompletionEvent> e) {
+        this.tucsonCompletionEvents = e;
     }
 
     /**
@@ -120,8 +120,8 @@ public class AsyncOpResultData {
      * @param p
      *            the map of pending operations
      */
-    public void setMapOpPend(final Map<Long, TucsonOperation> p) {
-        this.mapOpPend = p;
+    public void setPendingOperations(final Map<Long, TucsonOperation> p) {
+        this.pendingOps = p;
     }
 
     /**

@@ -1,9 +1,9 @@
 package it.unibo.sd.jade.service;
 
-import it.unibo.sd.jade.coordination.TucsonAccManager;
-import it.unibo.sd.jade.coordination.TucsonNodeUtility;
+import it.unibo.sd.jade.coordination.TucsonACCsManager;
+import it.unibo.sd.jade.coordination.TucsonNodeLifecycleManager;
 import it.unibo.sd.jade.exceptions.NoTucsonAuthenticationException;
-import it.unibo.sd.jade.glue.BridgeJADETuCSoN;
+import it.unibo.sd.jade.glue.BridgeToTucson;
 import it.unibo.sd.jade.operations.AbstractTucsonAction;
 import jade.core.AID;
 import jade.core.Agent;
@@ -153,7 +153,7 @@ public class TucsonService extends BaseService {
         private Agent myAgent;
 
         @Override
-        public void authenticate(final Agent agent)
+        public void acquireACC(final Agent agent)
                 throws TucsonInvalidAgentIdException {
             if (TucsonService.this.mAccManager.hasAcc(agent)) {
                 System.out
@@ -167,7 +167,7 @@ public class TucsonService extends BaseService {
         }
 
         @Override
-        public void authenticate(final Agent agent, final String netid,
+        public void acquireACC(final Agent agent, final String netid,
                 final int portno) throws TucsonInvalidAgentIdException {
             if (TucsonService.this.mAccManager.hasAcc(agent)) {
                 System.out
@@ -181,7 +181,7 @@ public class TucsonService extends BaseService {
         }
 
         @Override
-        public void deauthenticate(final Agent agent) {
+        public void releaseACC(final Agent agent) {
             // Esco dall'acc
             final EnhancedACC acc =
                     TucsonService.this.mAccManager.getAcc(agent);
@@ -199,7 +199,7 @@ public class TucsonService extends BaseService {
         }
 
         @Override
-        public BridgeJADETuCSoN getBridgeJADETuCSoN(final Agent agent)
+        public BridgeToTucson getBridgeToTucson(final Agent agent)
                 throws NoTucsonAuthenticationException {
             if (!TucsonService.this.mAccManager.hasAcc(agent)) {
                 throw new NoTucsonAuthenticationException(
@@ -207,11 +207,11 @@ public class TucsonService extends BaseService {
             }
             // Controllo se esiste già un OperationHandler per l'agente,
             // altrimenti lo creo
-            BridgeJADETuCSoN bridge =
+            BridgeToTucson bridge =
                     TucsonService.this.mOperationHandlers.get(agent.getAID());
             if (bridge == null) {
                 bridge =
-                        new BridgeJADETuCSoN(
+                        new BridgeToTucson(
                                 TucsonService.this.mAccManager.getAcc(agent),
                                 TucsonService.this);
                 TucsonService.this.mOperationHandlers.put(agent.getAID(),
@@ -221,7 +221,7 @@ public class TucsonService extends BaseService {
         }
 
         @Override
-        public TucsonTupleCentreId getTupleCentreId(
+        public TucsonTupleCentreId getTucsonTupleCentreId(
                 final String tupleCentreName, final String netid,
                 final int portno) throws TucsonInvalidTupleCentreIdException {
             final TucsonTupleCentreId tcid =
@@ -237,12 +237,12 @@ public class TucsonService extends BaseService {
 
         @Override
         public void startTucsonNode(final int port) {
-            TucsonNodeUtility.startTucsonNode(port);
+            TucsonNodeLifecycleManager.startTucsonNode(port);
         }
 
         @Override
         public void stopTucsonNode(final int port) {
-            TucsonNodeUtility.stopTucsonNode(port);
+            TucsonNodeLifecycleManager.stopTucsonNode(port);
         }
 
         private EnhancedACC obtainAcc(final Agent agent)
@@ -283,12 +283,12 @@ public class TucsonService extends BaseService {
     /*
      * Gestisce gli acc posseduti dagli agenti
      */
-    private final TucsonAccManager mAccManager = TucsonAccManager.getInstance();
+    private final TucsonACCsManager mAccManager = TucsonACCsManager.getInstance();
     /*
      * Gestisce il mapping Agente-OperationHandler
      */
-    private final Map<AID, BridgeJADETuCSoN> mOperationHandlers =
-            new HashMap<AID, BridgeJADETuCSoN>();
+    private final Map<AID, BridgeToTucson> mOperationHandlers =
+            new HashMap<AID, BridgeToTucson>();
     /*
      * Gestisce il mapping nodeName-InetAddress
      */
@@ -335,7 +335,7 @@ public class TucsonService extends BaseService {
     @Override
     public void shutdown() {
         System.out.println("[TuCSoNService] Shutting down TuCSoN node");
-        TucsonNodeUtility.stopTucsonNode(TucsonService.TUCSON_DEF_PORT);
+        TucsonNodeLifecycleManager.stopTucsonNode(TucsonService.TUCSON_DEF_PORT);
         super.shutdown();
     }
 }

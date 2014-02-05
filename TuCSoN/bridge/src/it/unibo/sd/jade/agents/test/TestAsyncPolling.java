@@ -1,7 +1,7 @@
 package it.unibo.sd.jade.agents.test;
 
-import it.unibo.sd.jade.coordination.AsyncOpResultData;
-import it.unibo.sd.jade.glue.BridgeJADETuCSoN;
+import it.unibo.sd.jade.coordination.AsynchTucsonOpResult;
+import it.unibo.sd.jade.glue.BridgeToTucson;
 import it.unibo.sd.jade.operations.ordinary.Rd;
 import it.unibo.sd.jade.service.TucsonHelper;
 import it.unibo.sd.jade.service.TucsonService;
@@ -31,26 +31,26 @@ public class TestAsyncPolling extends Agent {
                         (TucsonHelper) TestAsyncPolling.this
                                 .getHelper(TucsonService.NAME);
                 // Ottengo ACC
-                helper.authenticate(this.myAgent);
+                helper.acquireACC(this.myAgent);
                 // Creo operazione
                 final TucsonTupleCentreId tcid =
-                        helper.getTupleCentreId("default", "localhost", 20504);
+                        helper.getTucsonTupleCentreId("default", "localhost", 20504);
                 final LogicTuple tuple = LogicTuple.parse("nome(X)");
                 final Rd op = new Rd(tcid, tuple);
-                final BridgeJADETuCSoN bridge =
-                        helper.getBridgeJADETuCSoN(this.myAgent);
-                final AsyncOpResultData result = bridge.executeAsynch(op);
+                final BridgeToTucson bridge =
+                        helper.getBridgeToTucson(this.myAgent);
+                final AsynchTucsonOpResult result = bridge.asynchronousInvocation(op);
                 // controllo a polling se l'operazione è stata completata o meno
                 while (!TestAsyncPolling.this.done) {
                     final TucsonOpCompletionEvent ev =
-                            result.getEventComplete(result.getOpId());
+                            result.getTucsonCompletionEvent(result.getOpId());
                     if (ev != null) { // risultato operazione acquisito
                         // gestione risultato
                         TestAsyncPolling.this
                                 .log("\n\n\n\n Result = " + ev.getTuple()
                                         + "\n\n\n\n");
                         TestAsyncPolling.this.done = true;
-                        bridge.cleanCoordinationStructure(this);
+                        bridge.clearTucsonOpResult(this);
                     } else { // risultato non acquisito
                         TestAsyncPolling.this
                                 .log("risultato non pronto");

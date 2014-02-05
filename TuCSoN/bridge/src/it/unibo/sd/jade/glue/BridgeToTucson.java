@@ -1,9 +1,9 @@
 package it.unibo.sd.jade.glue;
 
-import it.unibo.sd.jade.agents.TucsonAgentAsync;
-import it.unibo.sd.jade.agents.TucsonAgentAsyncBehavoiur;
-import it.unibo.sd.jade.coordination.AsyncOpResultData;
-import it.unibo.sd.jade.coordination.ResultOpStorage;
+import it.unibo.sd.jade.agents.AsynchCompletionBehaviourHandler;
+import it.unibo.sd.jade.agents.SynchCompletionBehaviourHandler;
+import it.unibo.sd.jade.coordination.AsynchTucsonOpResult;
+import it.unibo.sd.jade.coordination.TucsonOpResult;
 import it.unibo.sd.jade.operations.AbstractTucsonAction;
 import it.unibo.sd.jade.operations.bulk.OutAll;
 import it.unibo.sd.jade.operations.ordinary.Out;
@@ -34,10 +34,10 @@ import alice.tucson.service.TucsonOpCompletionEvent;
  * @author lucasangiorgi
  * 
  */
-public class BridgeJADETuCSoN {
+public class BridgeToTucson {
 
     private final EnhancedACC acc;
-    private final Map<Behaviour, ResultOpStorage> mResultOpBehaviour;
+    private final Map<Behaviour, TucsonOpResult> tucsonOpResultsMap;
     private final TucsonService service;
 
     /**
@@ -47,10 +47,10 @@ public class BridgeJADETuCSoN {
      * @param s
      *            the TuCSoN service this bridge is interacting with
      */
-    public BridgeJADETuCSoN(final EnhancedACC a, final TucsonService s) {
+    public BridgeToTucson(final EnhancedACC a, final TucsonService s) {
         this.acc = a;
         this.service = s;
-        this.mResultOpBehaviour = new HashMap<Behaviour, ResultOpStorage>();
+        this.tucsonOpResultsMap = new HashMap<Behaviour, TucsonOpResult>();
     }
 
     /**
@@ -66,13 +66,13 @@ public class BridgeJADETuCSoN {
      *            condivisa associata al behaviour (behaviour da cui si sono
      *            invocate le operazioni di cooridnazione)
      */
-    public void cleanCoordinationStructure(final Behaviour b) {
-        this.mResultOpBehaviour.remove(b);
+    public void clearTucsonOpResult(final Behaviour b) {
+        this.tucsonOpResultsMap.remove(b);
     }
 
     /**
      * metodo asyncrono dove il programmatore controlla se il risultato è pronto
-     * a runtime
+     * a runtime (controllo a polling)
      * 
      * @param action
      *            the TuCSoN action to be carried out
@@ -81,8 +81,8 @@ public class BridgeJADETuCSoN {
      * @throws ServiceException
      *             if the service cannot be contacted
      */
-    public AsyncOpResultData executeAsynch(final AbstractTucsonAction action)
-            throws ServiceException {
+    public AsynchTucsonOpResult asynchronousInvocation(
+            final AbstractTucsonAction action) throws ServiceException {
         // Creo il comando verticale
         // chiamata asincrona senza settare il listener perchè il controllo del
         // completamento dell'operazione è a carico del programmatore tramite
@@ -95,20 +95,25 @@ public class BridgeJADETuCSoN {
         cmd.addParam(null);
         final Object result = this.service.submit(cmd);
 
-        final ITucsonOperation op = (ITucsonOperation) result;
-        // si deve ritornare un oggetto che contiene la lista dove si andrà a
-        // controllare se l'operazione è completata, e l'id della op
-        final AsyncOpResultData asyncData =
-                new AsyncOpResultData(op.getId(),
-                        this.acc.getCompletionEventsList(),
-                        this.acc.getPendingOperationsMap());
+        if (result instanceof ITucsonOperation) {
+            final ITucsonOperation op = (ITucsonOperation) result;
+            // si deve ritornare un oggetto che contiene la lista dove si andrà
+            // a
+            // controllare se l'operazione è completata, e l'id della op
+            final AsynchTucsonOpResult asyncData =
+                    new AsynchTucsonOpResult(op.getId(),
+                            this.acc.getCompletionEventsList(),
+                            this.acc.getPendingOperationsMap());
 
-        return asyncData;
+            return asyncData;
+        }
+        return null;
     }
 
     /**
      * metodo asyncrono dove il programmatore crea precedentemente il behaviour
-     * che verrà attivato nell'agente quando il risultato è pronto
+     * che verrà attivato nell'agente quando il risultato è pronto (controllo a
+     * interrupt)
      * 
      * @param action
      *            the TuCSoN action to be carried out
@@ -117,7 +122,7 @@ public class BridgeJADETuCSoN {
      * @param myAgent
      *            the JADE agent responsible for execution of the behaviour
      */
-    public void executeAsynch(final AbstractTucsonAction action,
+    public void asynchronousInvocation(final AbstractTucsonAction action,
             final Behaviour behav, final Agent myAgent) {
         // Creo il comando verticale
         final GenericCommand cmd =
@@ -127,7 +132,7 @@ public class BridgeJADETuCSoN {
         cmd.addParam(this.acc);
 
         try {
-            new TucsonAgentAsyncBehavoiur("tucsonAgentAsync", cmd,
+            new AsynchCompletionBehaviourHandler("tucsonAgentAsync", cmd,
                     this.service, myAgent, behav).go();
         } catch (TucsonInvalidAgentIdException e) {
             /*
@@ -150,24 +155,24 @@ public class BridgeJADETuCSoN {
      * @throws ServiceException
      *             if the service cannot be contacted
      */
-    public TucsonOpCompletionEvent executeSynch(
+    public TucsonOpCompletionEvent synchronousInvocation(
             final AbstractTucsonAction action, final Long timeout,
             final Behaviour behav) throws ServiceException {
 
-        ResultOpStorage ros;
+        TucsonOpResult ros;
 
-        if (this.mResultOpBehaviour.get(behav) == null) { // ottengo o creo il
+        if (this.tucsonOpResultsMap.get(behav) == null) { // ottengo o creo il
             // gestore di
             // memorizzazione dei
             // risultati delle
             // operazioni di
             // coordinazione
-            ros = new ResultOpStorage();
-            this.mResultOpBehaviour.put(behav, ros);
+            ros = new TucsonOpResult();
+            this.tucsonOpResultsMap.put(behav, ros);
         } else {
-            ros = this.mResultOpBehaviour.get(behav);
+            ros = this.tucsonOpResultsMap.get(behav);
             if (!ros.isReady()) {
-                BridgeJADETuCSoN
+                BridgeToTucson
                         .log("\n\n comportamento sbloccato da messaggio ricevuto\n\n");
                 return null; // il comportamento è stato sbloccato da un
                              // messaggio ricevuto dall'agente e non da un
@@ -177,78 +182,74 @@ public class BridgeJADETuCSoN {
 
         // controllo se l'op è già stata eseguita e ritorna subito il risultato
         // memorizzato in mResultOpBehaviour
-        final List<TucsonOpCompletionEvent> list = ros.getList();
+        final List<TucsonOpCompletionEvent> list =
+                ros.getTucsonCompletionEvents();
         int nextRes = ros.getNextRes();
 
         if (list.size() > nextRes) { // sono già presenti dei risultati vecchi
-            if (list.size() > nextRes) { // è un'operazione già eseguita e di
-                                         // cui si ha il risultato
-                ros.setNextRes(++nextRes); // si incrementa la prossima
-                                           // operazione che si deve eseguire
-                return ros.getList().get(nextRes - 1);
-            }
+            ros.setNextRes(++nextRes); // si incrementa la prossima
+                                       // operazione che si deve eseguire
+            return ros.getTucsonCompletionEvents().get(nextRes - 1);
 
-        } else { // è la prima volta che si esegue l'operazione
+        }
+        // è la prima volta che si esegue l'operazione
+        // controllo se l'operazione richiesta ha bisogno di attendere la
+        // risposta
+        if ((action instanceof Out) || (action instanceof OutS)
+                || (action instanceof OutAll) || (action instanceof Spawn)
+                || (action instanceof Set) || (action instanceof SetS)) {
 
-            // controllo se l'operazione richiesta ha bisogno di attendere la
-            // risposta
-            if ((action instanceof Out) || (action instanceof OutS)
-                    || (action instanceof OutAll) || (action instanceof Spawn)
-                    || (action instanceof Set) || (action instanceof SetS)) {
-
-                // Creo il comando verticale
-                final GenericCommand cmd =
-                        new GenericCommand(TucsonSlice.EXECUTE_SYNCH,
-                                TucsonService.NAME, null);
-                cmd.addParam(action);
-                cmd.addParam(this.acc);
-                cmd.addParam(timeout);
-
-                Object result;
-                result = this.service.submit(cmd); // eseguo comando
-                                                   // verticale
-
-                final ITucsonOperation op = (ITucsonOperation) result;
-
-                // creo il TucsonOpCompletionEvent per salvarlo nella struttura
-                // condivisa
-                // utilizzato della funzione fromITucsonOpToTucsonOpComp perchè
-                // i risultati vengono restituiti rispetto al contratto
-                // ITucsonOperation
-                final TucsonOpCompletionEvent res =
-                        BridgeJADETuCSoN.fromITucsonOpToTucsonOpComp(op);
-
-                // aggiorno struttura condivisa
-                ros.getList().add(res);
-                ros.setNextRes(ros.getNextRes() + 1);
-                ros.setReady(true);
-                return res;
-
-            }
-            // operazioni che necessitano di sospendere il behaviour
+            // Creo il comando verticale
             final GenericCommand cmd =
-                    new GenericCommand(TucsonSlice.EXECUTE_ASYNCH,
+                    new GenericCommand(TucsonSlice.EXECUTE_SYNCH,
                             TucsonService.NAME, null);
             cmd.addParam(action);
             cmd.addParam(this.acc);
-            TucsonAgentAsync ta = null;
-            try {
-                ta =
-                        new TucsonAgentAsync("tucsonAgentAsync", ros, cmd,
-                                this.service, behav);
-            } catch (TucsonInvalidAgentIdException e) {
-                /*
-                 * cannot really happen
-                 */
-            }
-            ros.setNextRes(0); // setto a 0 perchè l'agente si bloccherà e
-                               // quando verrà riavviato ricomincerà da capo
-                               // l'esecuzione
-            ros.setReady(false);
-            ta.go(); // avvio dell'agente tucson incaricato ad eseguire l'op
-                     // e gestire il risultato
+            cmd.addParam(timeout);
+
+            Object result;
+            result = this.service.submit(cmd); // eseguo comando
+                                               // verticale
+
+            final ITucsonOperation op = (ITucsonOperation) result;
+
+            // creo il TucsonOpCompletionEvent per salvarlo nella struttura
+            // condivisa
+            // utilizzato della funzione fromITucsonOpToTucsonOpComp perchè
+            // i risultati vengono restituiti rispetto al contratto
+            // ITucsonOperation
+            final TucsonOpCompletionEvent res =
+                    BridgeToTucson.toTucsonCompletionEvent(op);
+
+            // aggiorno struttura condivisa
+            ros.getTucsonCompletionEvents().add(res);
+            ros.setNextRes(ros.getNextRes() + 1);
+            ros.setReady(true);
+            return res;
 
         }
+        // operazioni che necessitano di sospendere il behaviour
+        final GenericCommand cmd =
+                new GenericCommand(TucsonSlice.EXECUTE_ASYNCH,
+                        TucsonService.NAME, null);
+        cmd.addParam(action);
+        cmd.addParam(this.acc);
+        SynchCompletionBehaviourHandler ta = null;
+        try {
+            ta =
+                    new SynchCompletionBehaviourHandler("tucsonAgentAsync",
+                            ros, cmd, this.service, behav);
+        } catch (TucsonInvalidAgentIdException e) {
+            /*
+             * cannot really happen
+             */
+        }
+        ros.setNextRes(0); // setto a 0 perchè l'agente si bloccherà e
+                           // quando verrà riavviato ricomincerà da capo
+                           // l'esecuzione
+        ros.setReady(false);
+        ta.go(); // avvio dell'agente tucson incaricato ad eseguire l'op
+                 // e gestire il risultato
         return null; // se si ritorna null vuol dire che il risultato non è
                      // pronto e di conseguenza si adotta il protocollo di
                      // sospensione e riattivazione del behaviour
@@ -261,7 +262,7 @@ public class BridgeJADETuCSoN {
      * @param op
      * @return
      */
-    private static TucsonOpCompletionEvent fromITucsonOpToTucsonOpComp(
+    private static TucsonOpCompletionEvent toTucsonCompletionEvent(
             final ITucsonOperation op) {
 
         TucsonOpCompletionEvent ev;

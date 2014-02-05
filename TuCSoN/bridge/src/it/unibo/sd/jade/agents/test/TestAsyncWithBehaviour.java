@@ -1,7 +1,7 @@
 package it.unibo.sd.jade.agents.test;
 
-import it.unibo.sd.jade.coordination.ICompletitionOpAsync;
-import it.unibo.sd.jade.glue.BridgeJADETuCSoN;
+import it.unibo.sd.jade.coordination.IAsynchCompletionBehaviour;
+import it.unibo.sd.jade.glue.BridgeToTucson;
 import it.unibo.sd.jade.operations.ordinary.Rd;
 import it.unibo.sd.jade.service.TucsonHelper;
 import it.unibo.sd.jade.service.TucsonService;
@@ -24,7 +24,7 @@ public class TestAsyncWithBehaviour extends Agent {
 
     @SuppressWarnings("serial")
     private class ResultCompleteBehaviour extends OneShotBehaviour implements
-            ICompletitionOpAsync {
+            IAsynchCompletionBehaviour {
 
         private TucsonOpCompletionEvent ev = null;
 
@@ -60,20 +60,20 @@ public class TestAsyncWithBehaviour extends Agent {
                         (TucsonHelper) TestAsyncWithBehaviour.this
                                 .getHelper(TucsonService.NAME);
                 // Ottengo ACC
-                helper.authenticate(this.myAgent);
+                helper.acquireACC(this.myAgent);
                 // Creo operazione
                 final TucsonTupleCentreId tcid =
-                        helper.getTupleCentreId("default", "localhost", 20504);
+                        helper.getTucsonTupleCentreId("default", "localhost", 20504);
                 final LogicTuple tuple = LogicTuple.parse("nome(X)");
                 final Rd op = new Rd(tcid, tuple);
-                final BridgeJADETuCSoN bridge =
-                        helper.getBridgeJADETuCSoN(this.myAgent);
+                final BridgeToTucson bridge =
+                        helper.getBridgeToTucson(this.myAgent);
                 // creazione behaviour delegato alla gestione del risultato
                 // dell'operazione di coordinazione
                 final ResultCompleteBehaviour behav =
                         new ResultCompleteBehaviour();
-                bridge.executeAsynch(op, behav, this.myAgent);
-                bridge.cleanCoordinationStructure(this);
+                bridge.asynchronousInvocation(op, behav, this.myAgent);
+                bridge.clearTucsonOpResult(this);
             } catch (final Exception ex) {
                 ex.printStackTrace();
             }

@@ -7,7 +7,7 @@ import alice.tucson.service.TucsonNodeService;
  * @author Luca Sangiorgi (mailto: luca.sangiorgi6@studio.unibo.it)
  * 
  */
-public final class TucsonNodeUtility {
+public final class TucsonNodeLifecycleManager {
 
     /*
      * The node service is in charge of listening to incoming operation
@@ -32,8 +32,8 @@ public final class TucsonNodeUtility {
         // System.err.println("[TucsonNodeUtility]: "+e);
         // e.printStackTrace();
         // }
-        TucsonNodeUtility.tns = new TucsonNodeService(port);
-        TucsonNodeUtility.tns.install();
+        TucsonNodeLifecycleManager.tns = new TucsonNodeService(port);
+        TucsonNodeLifecycleManager.tns.install();
     }
 
     /**
@@ -50,10 +50,10 @@ public final class TucsonNodeUtility {
         // System.err.println("[TucsonNodeUtility]: "+e);
         // e.printStackTrace();
         // }
-        TucsonNodeUtility.tns.shutdown();
+        TucsonNodeLifecycleManager.tns.shutdown();
     }
 
-    private TucsonNodeUtility() {
+    private TucsonNodeLifecycleManager() {
         /*
          * Enforce non-instantiability
          */

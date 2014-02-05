@@ -12,9 +12,9 @@ import alice.tucson.service.TucsonOpCompletionEvent;
  * @author lucasangiorgi
  * 
  */
-public class ResultOpStorage {
+public class TucsonOpResult {
 
-    private final List<TucsonOpCompletionEvent> list;
+    private final List<TucsonOpCompletionEvent> tucsonCompletionEvents;
     // prossimo risultato da usare, utilizzato per restituire il risultato
     // corretto o per sapere se quel risultato non è presente e quindì procedere
     // con l'operazione
@@ -32,8 +32,8 @@ public class ResultOpStorage {
     /**
      * 
      */
-    public ResultOpStorage() {
-        this.list = new LinkedList<TucsonOpCompletionEvent>();
+    public TucsonOpResult() {
+        this.tucsonCompletionEvents = new LinkedList<TucsonOpCompletionEvent>();
         this.nextRes = 0;
         this.ready = false;
     }
@@ -41,8 +41,8 @@ public class ResultOpStorage {
     /**
      * @return the list
      */
-    public List<TucsonOpCompletionEvent> getList() {
-        return this.list;
+    public List<TucsonOpCompletionEvent> getTucsonCompletionEvents() {
+        return this.tucsonCompletionEvents;
     }
 
     /**

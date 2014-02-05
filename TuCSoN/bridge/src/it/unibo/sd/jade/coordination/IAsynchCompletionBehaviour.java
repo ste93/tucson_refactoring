@@ -10,7 +10,7 @@ import alice.tucson.service.TucsonOpCompletionEvent;
  * @author lucasangiorgi
  * 
  */
-public interface ICompletitionOpAsync {
+public interface IAsynchCompletionBehaviour {
 
     /**
      * 

@@ -1,7 +1,7 @@
 package it.unibo.sd.jade.service;
 
 import it.unibo.sd.jade.exceptions.NoTucsonAuthenticationException;
-import it.unibo.sd.jade.glue.BridgeJADETuCSoN;
+import it.unibo.sd.jade.glue.BridgeToTucson;
 import jade.core.Agent;
 import jade.core.ServiceHelper;
 import alice.tucson.api.TucsonTupleCentreId;
@@ -18,7 +18,7 @@ public interface TucsonHelper extends ServiceHelper {
 
     /**
      * Permette di effettuare l'autenticazione per il nodo TuCSoN locale.
-     * Equivale a {@link #authenticate(Agent, String, int)} con i parametri
+     * Equivale a {@link #acquireACC(Agent, String, int)} con i parametri
      * relativi al nodo locale.
      * 
      * @param agent
@@ -26,7 +26,7 @@ public interface TucsonHelper extends ServiceHelper {
      * @throws TucsonInvalidAgentIdException
      *             Se il nome dell'agente non soddisfa i requisiti di TuCSoN.
      */
-    void authenticate(Agent agent) throws TucsonInvalidAgentIdException;
+    void acquireACC(Agent agent) throws TucsonInvalidAgentIdException;
 
     /**
      * Permette di effettuare l'autenticazione per il nodo TuCSoN specificato.
@@ -40,7 +40,7 @@ public interface TucsonHelper extends ServiceHelper {
      * @throws TucsonInvalidAgentIdException
      *             Se il nome dell'agente non soddisfa i requisiti di TuCSoN.
      */
-    void authenticate(Agent agent, String netid, int portno)
+    void acquireACC(Agent agent, String netid, int portno)
             throws TucsonInvalidAgentIdException;
 
     /**
@@ -50,10 +50,10 @@ public interface TucsonHelper extends ServiceHelper {
      * @param agent
      *            L'agente che richiede la deautenticazione.
      */
-    void deauthenticate(Agent agent);
+    void releaseACC(Agent agent);
 
     /**
-     * Permette di ottenere il {@link BridgeJADETuCSoN} tramite il quale
+     * Permette di ottenere il {@link BridgeToTucson} tramite il quale
      * &egrave; possibile interagire con TuCSoN.
      * 
      * @param agent
@@ -62,7 +62,7 @@ public interface TucsonHelper extends ServiceHelper {
      * @throws NoTucsonAuthenticationException
      *             Se l'agente <code>agent</code> non ha ottenuto un ACC.
      */
-    BridgeJADETuCSoN getBridgeJADETuCSoN(Agent agent)
+    BridgeToTucson getBridgeToTucson(Agent agent)
             throws NoTucsonAuthenticationException;
 
     /**
@@ -80,7 +80,7 @@ public interface TucsonHelper extends ServiceHelper {
      * @throws TucsonInvalidTupleCentreIdException
      *             Se il tuple centre non &egrave; valido.
      */
-    TucsonTupleCentreId getTupleCentreId(String tupleCentreName, String netid,
+    TucsonTupleCentreId getTucsonTupleCentreId(String tupleCentreName, String netid,
             int portno) throws TucsonInvalidTupleCentreIdException;
 
     /**

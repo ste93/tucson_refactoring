@@ -1,6 +1,6 @@
 package it.unibo.sd.jade.agents;
 
-import it.unibo.sd.jade.coordination.ResultOpStorage;
+import it.unibo.sd.jade.coordination.TucsonOpResult;
 import it.unibo.sd.jade.service.TucsonService;
 import jade.core.GenericCommand;
 import jade.core.ServiceException;
@@ -23,7 +23,7 @@ import alice.tuplecentre.core.AbstractTupleCentreOperation;
  * @author lucasangiorgi
  * 
  */
-public class TucsonAgentAsync extends AbstractTucsonAgent {
+public class SynchCompletionBehaviourHandler extends AbstractTucsonAgent {
 
     private final Behaviour behav; // comportamento da "riavviare" comando
                                    // restart()
@@ -32,8 +32,8 @@ public class TucsonAgentAsync extends AbstractTucsonAgent {
                                       // coordinazione sospensiva)
     private ITucsonOperation result; // risultato operazione dell'operazione di
                                      // coordianzione sospensiva
-    private final ResultOpStorage ros; // struttura condivisa dove memorizzare
-                                       // il risultato
+    private final TucsonOpResult ros; // struttura condivisa dove memorizzare
+                                      // il risultato
     private final TucsonService service; // servizio incaricato ad eseguire il
                                          // comando
 
@@ -53,8 +53,9 @@ public class TucsonAgentAsync extends AbstractTucsonAgent {
      *             if the given String is not a valid representation of a TuCSoN
      *             agent id
      */
-    public TucsonAgentAsync(final String id, final ResultOpStorage r,
-            final GenericCommand c, final TucsonService s, final Behaviour b)
+    public SynchCompletionBehaviourHandler(final String id,
+            final TucsonOpResult r, final GenericCommand c,
+            final TucsonService s, final Behaviour b)
             throws TucsonInvalidAgentIdException {
         super(id);
         this.ros = r;
@@ -92,7 +93,9 @@ public class TucsonAgentAsync extends AbstractTucsonAgent {
                                                                        // dei
                                                                        // messaggi
                                                                        // completati
-                    this.ros.getList().add(ev); // salvare il risultato nella
+                    this.ros.getTucsonCompletionEvents().add(ev); // salvare il
+                                                                  // risultato
+                                                                  // nella
                     // struttura dedicata
                     this.ros.setReady(true); // segnalo che al behaviour JADE
                                              // che
@@ -106,7 +109,9 @@ public class TucsonAgentAsync extends AbstractTucsonAgent {
 
     @Override
     public void operationCompleted(final ITucsonOperation arg0) {
-        // TODO Auto-generated method stub
+        /*
+         * not used atm
+         */
     }
 
     @Override
