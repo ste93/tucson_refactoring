@@ -47,6 +47,11 @@ public class EnvId implements IId, java.io.Serializable {
         return false;
     }
 
+    @Override
+    public String toString() {
+        return this.toTerm().toString();
+    }
+
     /**
      * 
      * @return the term representation of this identifier
@@ -56,11 +61,6 @@ public class EnvId implements IId, java.io.Serializable {
             return this.id.getArg(0).getTerm();
         }
         return this.id.getTerm();
-    }
-
-    @Override
-    public String toString() {
-        return this.toTerm().toString();
     }
 
 }

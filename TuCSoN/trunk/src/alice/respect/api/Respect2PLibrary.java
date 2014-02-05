@@ -34,9 +34,9 @@ import alice.respect.core.RespectOperation;
 import alice.respect.core.RespectVMContext;
 import alice.respect.core.TransducerManager;
 import alice.respect.situatedness.TransducerId;
+import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
-import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.parsing.MyOpManager;
 import alice.tuplecentre.api.IId;
 import alice.tuplecentre.api.ITupleCentreOperation;
@@ -590,16 +590,16 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
 
         // Building internal event
         final InputEvent ev = this.vm.getCurrentEvent();
-//        log("### DEBUG >>> ev = " + ev);
+        // log("### DEBUG >>> ev = " + ev);
         final InternalEvent internalEv =
                 new InternalEvent(ev, InternalOperation.makeGetEnv(lt));
-//        log("### DEBUG >>> iev = " + internalEv);
+        // log("### DEBUG >>> iev = " + internalEv);
         final String normEnv =
                 env.toString().substring(env.toString().indexOf("(") + 1,
                         env.toString().indexOf(","));
         final EnvId envId = new EnvId(normEnv);
         internalEv.setTarget(envId); // Set target resource
-//        log("### DEBUG >>> target = " + envId);
+        // log("### DEBUG >>> target = " + envId);
         internalEv.setSource(this.vm.getId()); // Set the source of the event
 
         final TransducerManager tm = TransducerManager.INSTANCE;
@@ -2020,16 +2020,16 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
 
         // Building internal event
         final InputEvent ev = this.vm.getCurrentEvent();
-//        log("### DEBUG >>> ev = " + ev);
+        // log("### DEBUG >>> ev = " + ev);
         final InternalEvent internalEv =
                 new InternalEvent(ev, InternalOperation.makeSetEnv(lt));
-//        log("### DEBUG >>> iev = " + internalEv);
+        // log("### DEBUG >>> iev = " + internalEv);
         final String normEnv =
                 env.toString().substring(env.toString().indexOf("(") + 1,
                         env.toString().indexOf(","));
         final EnvId envId = new EnvId(normEnv);
         internalEv.setTarget(envId);
-//        log("### DEBUG >>> target = " + envId);
+        // log("### DEBUG >>> target = " + envId);
         internalEv.setSource(this.vm.getId());
 
         final TransducerManager tm = TransducerManager.INSTANCE;

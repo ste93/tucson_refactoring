@@ -47,6 +47,7 @@ import alice.tuplecentre.core.AbstractTupleCentreOperation;
 public class ACCProxyNodeSide extends AbstractACCProxyNodeSide {
 
     private TucsonAgentId agentId;
+    private final String agentName;
     private final int ctxId;
     private final AbstractTucsonProtocol dialog;
     private boolean ex = false;
@@ -55,7 +56,6 @@ public class ACCProxyNodeSide extends AbstractACCProxyNodeSide {
     private final Map<Long, Long> opVsReq;
     private final Map<Long, TucsonMsgRequest> requests;
     private TucsonTupleCentreId tcId;
-    private final String agentName;
 
     /**
      * 
@@ -108,7 +108,7 @@ public class ACCProxyNodeSide extends AbstractACCProxyNodeSide {
 
     @Override
     public synchronized void exit(final ShutdownMsg msg) {
-        log("Shutdown request received from <" + msg.getAid() + ">...");
+        this.log("Shutdown request received from <" + msg.getAid() + ">...");
         this.ex = true;
         this.notify();
     }
@@ -478,13 +478,13 @@ public class ACCProxyNodeSide extends AbstractACCProxyNodeSide {
                     } catch (final TucsonOperationNotPossibleException e) {
                         System.err.println("[ACCProxyNodeSide]: " + e);
                         break;
-                    } catch (InvalidTupleOperationException e) {
+                    } catch (final InvalidTupleOperationException e) {
                         System.err.println("[ACCProxyNodeSide]: " + e);
                         break;
-                    } catch (OperationTimeOutException e) {
+                    } catch (final OperationTimeOutException e) {
                         System.err.println("[ACCProxyNodeSide]: " + e);
                         break;
-                    } catch (UnreachableNodeException e) {
+                    } catch (final UnreachableNodeException e) {
                         System.err.println("[ACCProxyNodeSide]: " + e);
                         break;
                     }

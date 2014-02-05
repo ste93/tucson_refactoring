@@ -27,11 +27,6 @@ import alice.tuprolog.event.OutputListener;
 public final class PrologHelloWorld {
 
     /*
-     * Relative path w.r.t. to running location (project root).
-     */
-    private static final String DEFAULT_THEORY_PATH =
-            "alice/tucson/examples/helloWorld/helloWorld.pl";
-    /*
      * Remember the dot!
      */
     private static final String DEFAULT_GOAL =
@@ -46,6 +41,11 @@ public final class PrologHelloWorld {
      * have direct access).
      */
     private static final String DEFAULT_LIBRARY_PATH = "./";
+    /*
+     * Relative path w.r.t. to running location (project root).
+     */
+    private static final String DEFAULT_THEORY_PATH =
+            "alice/tucson/examples/helloWorld/helloWorld.pl";
     private static final String ME = "PrologHelloWorld";
 
     /**
@@ -66,7 +66,7 @@ public final class PrologHelloWorld {
                         PrologHelloWorld
                                 .fileToString(PrologHelloWorld.DEFAULT_THEORY_PATH);
             }
-        } catch (IOException e) {
+        } catch (final IOException e) {
             Logger.getLogger(PrologHelloWorld.ME).log(Level.SEVERE,
                     "IOException");
             e.printStackTrace();
@@ -80,7 +80,7 @@ public final class PrologHelloWorld {
         try {
             engine.loadLibrary(PrologHelloWorld.DEFAULT_LIBRARY_NAME,
                     new String[] { PrologHelloWorld.DEFAULT_LIBRARY_PATH });
-        } catch (InvalidLibraryException e) {
+        } catch (final InvalidLibraryException e) {
             Logger.getLogger(PrologHelloWorld.ME).log(Level.SEVERE,
                     "InvalidLibraryException");
             System.exit(-1);
@@ -90,7 +90,7 @@ public final class PrologHelloWorld {
          */
         try {
             engine.setTheory(new Theory(sTheory));
-        } catch (InvalidTheoryException e) {
+        } catch (final InvalidTheoryException e) {
             Logger.getLogger(PrologHelloWorld.ME).log(Level.SEVERE,
                     "InvalidTheoryException");
             System.exit(-1);
@@ -114,7 +114,7 @@ public final class PrologHelloWorld {
             } else {
                 info = engine.solve(PrologHelloWorld.DEFAULT_GOAL);
             }
-        } catch (MalformedGoalException e) {
+        } catch (final MalformedGoalException e) {
             Logger.getLogger(PrologHelloWorld.ME).log(Level.SEVERE,
                     "MalformedGoalException");
             System.exit(-1);
@@ -125,10 +125,10 @@ public final class PrologHelloWorld {
                         info.getSolution().toString());
                 engine.solveNext();
             }
-        } catch (NoSolutionException e) {
+        } catch (final NoSolutionException e) {
             Logger.getLogger(PrologHelloWorld.ME).log(Level.INFO,
                     "Unsatisfiable goal.");
-        } catch (NoMoreSolutionException e) {
+        } catch (final NoMoreSolutionException e) {
             Logger.getLogger(PrologHelloWorld.ME).log(Level.INFO,
                     "No more solutions to explore.");
         }

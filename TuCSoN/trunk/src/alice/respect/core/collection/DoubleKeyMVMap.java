@@ -46,8 +46,8 @@ public class DoubleKeyMVMap<K, Q, V> {
                 this.advanceEntryIterator();
             } else {
                 // else use an empty iterator
-//                this.valueIterator = Collections.emptyIterator();
-                this.valueIterator = Collections.<V>emptyList().iterator();
+                // this.valueIterator = Collections.emptyIterator();
+                this.valueIterator = Collections.<V> emptyList().iterator();
             }
         }
 
@@ -124,8 +124,8 @@ public class DoubleKeyMVMap<K, Q, V> {
                     this.advanceEntryIterator();
                 } else {
                     // else use an empty iterator
-//                    this.valueIterator = Collections.emptyIterator();
-                    this.valueIterator = Collections.<V>emptyList().iterator();
+                    // this.valueIterator = Collections.emptyIterator();
+                    this.valueIterator = Collections.<V> emptyList().iterator();
                 }
             }
 
@@ -172,7 +172,7 @@ public class DoubleKeyMVMap<K, Q, V> {
                 // then remove the key from map
                 if (this.list.isEmpty()) {
                     this.entryIterator.remove();
-                    removeOuterKeyIfEmpty();
+                    InnerMVMap.this.removeOuterKeyIfEmpty();
                 }
                 InnerMVMap.this.innerMapSize--;
                 DoubleKeyMVMap.this.totalValuesSize--;
@@ -503,7 +503,7 @@ public class DoubleKeyMVMap<K, Q, V> {
                     this.parentList.removeInnerKeyIfEmpty();
                 } else if (this.wrappedList.isEmpty()) {
                     InnerMVMap.this.innerMap.remove(this.listKey2);
-                    removeOuterKeyIfEmpty();
+                    InnerMVMap.this.removeOuterKeyIfEmpty();
                 }
             }
 

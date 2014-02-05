@@ -114,7 +114,7 @@ public class InspectorContextSkel extends AbstractACCProxyNodeSide implements
 
     @Override
     public void exit(final ShutdownMsg msg) {
-        log("Shutdown request received from <" + msg.getAid() + ">...");
+        this.log("Shutdown request received from <" + msg.getAid() + ">...");
         this.shutdown = true;
     }
 

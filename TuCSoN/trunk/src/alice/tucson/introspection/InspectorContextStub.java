@@ -52,6 +52,8 @@ public class InspectorContextStub implements InspectorContext {
 
     private AbstractTucsonProtocol dialog;
 
+    private boolean exitFlag;
+
     /** user id */
     private final TucsonAgentId id;
 
@@ -59,8 +61,6 @@ public class InspectorContextStub implements InspectorContext {
 
     /** current observation protocol */
     private InspectorProtocol protocol;
-    
-    private boolean exitFlag;
 
     /**
      * 

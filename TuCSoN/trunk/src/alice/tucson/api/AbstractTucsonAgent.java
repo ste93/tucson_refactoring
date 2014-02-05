@@ -32,207 +32,207 @@ import alice.tuplecentre.core.AbstractTupleCentreOperation;
  * 
  */
 public abstract class AbstractTucsonAgent implements
-		TucsonOperationCompletionListener {
+        TucsonOperationCompletionListener {
 
-	/**
-	 * Internal Thread responsible for ACC acquisition and main cycle execution.
-	 * Notice that the ACC is demanded to the TuCSoN Node Service hosted at the
-	 * construction-time defined ip address and listening on the
-	 * construction-time defined port.
-	 */
-	final class AgentThread extends Thread {
-		private final AbstractTucsonAgent agent;
+    /**
+     * Internal Thread responsible for ACC acquisition and main cycle execution.
+     * Notice that the ACC is demanded to the TuCSoN Node Service hosted at the
+     * construction-time defined ip address and listening on the
+     * construction-time defined port.
+     */
+    final class AgentThread extends Thread {
+        private final AbstractTucsonAgent agent;
 
-		AgentThread(final AbstractTucsonAgent a) {
-			super();
-			this.agent = a;
-		}
+        AgentThread(final AbstractTucsonAgent a) {
+            super();
+            this.agent = a;
+        }
 
-		@Override
-		public void run() {
-			try {
-				this.agent.setContext(TucsonMetaACC.getContext(
-						this.agent.getTucsonAgentId(),
-						AbstractTucsonAgent.this.node,
-						AbstractTucsonAgent.this.port));
-				this.agent.main();
-				this.agent.getContext().exit();
-			} catch (final TucsonOperationNotPossibleException e) {
-				e.printStackTrace();
-			}
-		}
-	}
+        @Override
+        public void run() {
+            try {
+                this.agent.setContext(TucsonMetaACC.getContext(
+                        this.agent.getTucsonAgentId(),
+                        AbstractTucsonAgent.this.node,
+                        AbstractTucsonAgent.this.port));
+                this.agent.main();
+                this.agent.getContext().exit();
+            } catch (final TucsonOperationNotPossibleException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
-	private static final int DEFAULT_PORT = 20504;
+    private static final int DEFAULT_PORT = 20504;
 
-	/**
+    /**
      * 
      */
-	protected List<TucsonOpCompletionEvent> completionEvents;
-	private final TucsonAgentId aid;
-	private EnhancedACC context;
-	private final String node;
+    protected List<TucsonOpCompletionEvent> completionEvents;
+    private final TucsonAgentId aid;
+    private EnhancedACC context;
+    private final String node;
 
-	private final int port;
+    private final int port;
 
-	/**
-	 * Same as before, this time using the passed String to create the
-	 * TucsonAgentId from scratch
-	 * 
-	 * @param id
-	 *            The String to use to build the TucsonAgentIdentifier
-	 * 
-	 * @throws TucsonInvalidAgentIdException
-	 *             if the String given is not a valid representation of a TuCSoN
-	 *             agent identifier
-	 */
-	public AbstractTucsonAgent(final String id)
-			throws TucsonInvalidAgentIdException {
-		this(new TucsonAgentId(id), "localhost",
-				AbstractTucsonAgent.DEFAULT_PORT);
-	}
+    /**
+     * Same as before, this time using the passed String to create the
+     * TucsonAgentId from scratch
+     * 
+     * @param id
+     *            The String to use to build the TucsonAgentIdentifier
+     * 
+     * @throws TucsonInvalidAgentIdException
+     *             if the String given is not a valid representation of a TuCSoN
+     *             agent identifier
+     */
+    public AbstractTucsonAgent(final String id)
+            throws TucsonInvalidAgentIdException {
+        this(new TucsonAgentId(id), "localhost",
+                AbstractTucsonAgent.DEFAULT_PORT);
+    }
 
-	/**
-	 * Again we assume default port (which is 20504), so we skip that parameter
-	 * (String aid version).
-	 * 
-	 * @param id
-	 *            The String to use to build the TucsonAgentIdentifier
-	 * @param netid
-	 *            The ip address of the TuCSoN Node to contact
-	 * 
-	 * @throws TucsonInvalidAgentIdException
-	 *             if the String given is not a valid representation of a TuCSoN
-	 *             agent identifier
-	 */
-	public AbstractTucsonAgent(final String id, final String netid)
-			throws TucsonInvalidAgentIdException {
-		this(new TucsonAgentId(id), netid, AbstractTucsonAgent.DEFAULT_PORT);
-	}
+    /**
+     * Again we assume default port (which is 20504), so we skip that parameter
+     * (String aid version).
+     * 
+     * @param id
+     *            The String to use to build the TucsonAgentIdentifier
+     * @param netid
+     *            The ip address of the TuCSoN Node to contact
+     * 
+     * @throws TucsonInvalidAgentIdException
+     *             if the String given is not a valid representation of a TuCSoN
+     *             agent identifier
+     */
+    public AbstractTucsonAgent(final String id, final String netid)
+            throws TucsonInvalidAgentIdException {
+        this(new TucsonAgentId(id), netid, AbstractTucsonAgent.DEFAULT_PORT);
+    }
 
-	/**
-	 * Same as first one, but takes a String in place of a TucsonAgentId that is
-	 * created from scratch using such string.
-	 * 
-	 * @param id
-	 *            The String to use to build the TucsonAgentIdentifier
-	 * @param netid
-	 *            The ip address of the TuCSoN Node to contact
-	 * @param p
-	 *            The listening port of the TuCSoN Node to contact
-	 * 
-	 * @throws TucsonInvalidAgentIdException
-	 *             if the String given is not a valid representation of a TuCSoN
-	 *             agent identifier
-	 */
-	public AbstractTucsonAgent(final String id, final String netid, final int p)
-			throws TucsonInvalidAgentIdException {
-		this(new TucsonAgentId(id), netid, p);
-	}
+    /**
+     * Same as first one, but takes a String in place of a TucsonAgentId that is
+     * created from scratch using such string.
+     * 
+     * @param id
+     *            The String to use to build the TucsonAgentIdentifier
+     * @param netid
+     *            The ip address of the TuCSoN Node to contact
+     * @param p
+     *            The listening port of the TuCSoN Node to contact
+     * 
+     * @throws TucsonInvalidAgentIdException
+     *             if the String given is not a valid representation of a TuCSoN
+     *             agent identifier
+     */
+    public AbstractTucsonAgent(final String id, final String netid, final int p)
+            throws TucsonInvalidAgentIdException {
+        this(new TucsonAgentId(id), netid, p);
+    }
 
-	/**
-	 * Most complete constructor, allows to specify the ip address where the
-	 * TuCSoN node to whom ask for an ACC resides and its listening port.
-	 * 
-	 * @param id
-	 *            The TucsonAgent Identifier
-	 * @param netid
-	 *            The ip address of the TuCSoN Node to contact
-	 * @param p
-	 *            The listening port of the TuCSoN Node to contact
-	 */
-	private AbstractTucsonAgent(final TucsonAgentId id, final String netid,
-			final int p) {
-		this.aid = id;
-		this.node = netid;
-		this.port = p;
-	}
+    /**
+     * Most complete constructor, allows to specify the ip address where the
+     * TuCSoN node to whom ask for an ACC resides and its listening port.
+     * 
+     * @param id
+     *            The TucsonAgent Identifier
+     * @param netid
+     *            The ip address of the TuCSoN Node to contact
+     * @param p
+     *            The listening port of the TuCSoN Node to contact
+     */
+    private AbstractTucsonAgent(final TucsonAgentId id, final String netid,
+            final int p) {
+        this.aid = id;
+        this.node = netid;
+        this.port = p;
+    }
 
-	/**
-	 * Getter for the TucsonAgent identifier
-	 * 
-	 * @return The TucsonAgentId for this agent
-	 */
-	public final TucsonAgentId getTucsonAgentId() {
-		return this.aid;
-	}
+    /**
+     * Getter for the TucsonAgent identifier
+     * 
+     * @return The TucsonAgentId for this agent
+     */
+    public final TucsonAgentId getTucsonAgentId() {
+        return this.aid;
+    }
 
-	/**
-	 * Starts main execution cycle
-	 * {@link alice.tucson.api.AbstractTucsonAgent#main main}
-	 */
-	public final void go() {
-		new AgentThread(this).start();
-	}
+    /**
+     * Starts main execution cycle
+     * {@link alice.tucson.api.AbstractTucsonAgent#main main}
+     */
+    public final void go() {
+        new AgentThread(this).start();
+    }
 
-	/**
-	 * Returns local agent name
-	 * 
-	 * @return The String name of the agent
-	 */
-	public final String myName() {
-		return this.aid.getAgentName();
-	}
+    /**
+     * Returns local agent name
+     * 
+     * @return The String name of the agent
+     */
+    public final String myName() {
+        return this.aid.getAgentName();
+    }
 
-	/**
-	 * Returns agent default node.
-	 * 
-	 * @return The default node of the agent
-	 */
-	public final String myNode() {
-		return this.node;
-	}
+    /**
+     * Returns agent default node.
+     * 
+     * @return The default node of the agent
+     */
+    public final String myNode() {
+        return this.node;
+    }
 
-	/**
-	 * Returns agent default port
-	 * 
-	 * @return The default port of the agent
-	 */
-	public final int myport() {
-		return this.port;
-	}
+    /**
+     * Returns agent default port
+     * 
+     * @return The default port of the agent
+     */
+    public final int myport() {
+        return this.port;
+    }
 
-	public abstract void operationCompleted(AbstractTupleCentreOperation op);
+    public abstract void operationCompleted(AbstractTupleCentreOperation op);
 
-	public abstract void operationCompleted(ITucsonOperation op);
+    public abstract void operationCompleted(ITucsonOperation op);
 
-	/**
-	 * Getter for the ACC. At the moment the TucsonAgent base class always ask
-	 * for the most comprehensive ACC (that is the DefaultACC): it's up to the
-	 * user agent wether to use a more restrictive one (properly declaring its
-	 * reference)
-	 * 
-	 * @return The DefaultACC
-	 */
-	protected EnhancedACC getContext() {
-		return this.context;
-	}
+    /**
+     * Getter for the ACC. At the moment the TucsonAgent base class always ask
+     * for the most comprehensive ACC (that is the DefaultACC): it's up to the
+     * user agent wether to use a more restrictive one (properly declaring its
+     * reference)
+     * 
+     * @return The DefaultACC
+     */
+    protected EnhancedACC getContext() {
+        return this.context;
+    }
 
-	/**
-	 * Main execution cycle, user-defined.
-	 */
-	protected abstract void main();
+    /**
+     * Main execution cycle, user-defined.
+     */
+    protected abstract void main();
 
-	/**
-	 * Utility method to print on standard output the user agent activity.
-	 * 
-	 * @param msg
-	 *            The message to print
-	 */
-	protected void say(final String msg) {
-		System.out.println("[" + this.getTucsonAgentId().getAgentName() + "]: "
-				+ msg);
-	}
+    /**
+     * Utility method to print on standard output the user agent activity.
+     * 
+     * @param msg
+     *            The message to print
+     */
+    protected void say(final String msg) {
+        System.out.println("[" + this.getTucsonAgentId().getAgentName() + "]: "
+                + msg);
+    }
 
-	/**
-	 * Setter for the ACC. Takes the most comprehensive one, hence even a
-	 * less-powerful can be passed.
-	 * 
-	 * @param ctx
-	 *            The ACC to use
-	 */
-	protected void setContext(final EnhancedACC ctx) {
-		this.context = ctx;
-	}
+    /**
+     * Setter for the ACC. Takes the most comprehensive one, hence even a
+     * less-powerful can be passed.
+     * 
+     * @param ctx
+     *            The ACC to use
+     */
+    protected void setContext(final EnhancedACC ctx) {
+        this.context = ctx;
+    }
 
 }
