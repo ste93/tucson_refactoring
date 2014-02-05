@@ -41,8 +41,6 @@ import alice.tuplecentre.api.exceptions.OperationTimeOutException;
  */
 public class TucsonService extends BaseService {
 
-    private static final int TUCSON_DEF_PORT = 20504;
-
     /*
      * Classe interna che ha il compito di eseguire i comandi verticali
      * "interni", ovvero quelli gestiti direttamente dal servizio (quelli
@@ -67,15 +65,15 @@ public class TucsonService extends BaseService {
                     // TucsonOperationHandler dove
                     // si esegue il comando
                     // verticale
-                } catch (TucsonOperationNotPossibleException e) {
+                } catch (final TucsonOperationNotPossibleException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                     cmd.setReturnValue(e);
-                } catch (UnreachableNodeException e) {
+                } catch (final UnreachableNodeException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                     cmd.setReturnValue(e);
-                } catch (OperationTimeOutException e) {
+                } catch (final OperationTimeOutException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                     cmd.setReturnValue(e);
@@ -91,11 +89,11 @@ public class TucsonService extends BaseService {
                 try {
                     result = action.executeAsynch(acc, listener);
                     cmd.setReturnValue(result);
-                } catch (TucsonOperationNotPossibleException e) {
+                } catch (final TucsonOperationNotPossibleException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                     cmd.setReturnValue(e);
-                } catch (UnreachableNodeException e) {
+                } catch (final UnreachableNodeException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                     cmd.setReturnValue(e);
@@ -267,12 +265,14 @@ public class TucsonService extends BaseService {
      * Service name
      */
     public static final String NAME = "it.unibo.sd.jade.service.TucsonService";
+
     /*
      * L'insieme dei comandi verticali che il servizio è in grado di soddisfare
      * autonomamente
      */
     private static final String[] OWNED_COMMANDS = { TucsonSlice.EXECUTE_SYNCH,
             TucsonSlice.EXECUTE_ASYNCH };
+    private static final int TUCSON_DEF_PORT = 20504;
     /*
      * L'helper del servizio
      */
@@ -335,7 +335,7 @@ public class TucsonService extends BaseService {
     @Override
     public void shutdown() {
         System.out.println("[TuCSoNService] Shutting down TuCSoN node");
-        TucsonNodeUtility.stopTucsonNode(TUCSON_DEF_PORT);
+        TucsonNodeUtility.stopTucsonNode(TucsonService.TUCSON_DEF_PORT);
         super.shutdown();
     }
 }

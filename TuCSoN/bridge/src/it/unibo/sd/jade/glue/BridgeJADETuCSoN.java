@@ -36,8 +36,39 @@ import alice.tucson.service.TucsonOpCompletionEvent;
  */
 public class BridgeJADETuCSoN {
 
+    /**
+     * metodo utilizzato per poter uniformare il tipo di ritorno delle
+     * operazioni di coordinazione eseguite dall'agente jade
+     * 
+     * @param op
+     * @return
+     */
+    private static TucsonOpCompletionEvent fromITucsonOpToTucsonOpComp(
+            final ITucsonOperation op) {
+        TucsonOpCompletionEvent ev;
+        if (op.isInAll() // caso in cui ricevo una lista di tuple
+                || op.isRdAll() || op.isGet() || op.isGetS() || op.isNoAll()) {
+            ev =
+                    new TucsonOpCompletionEvent(new TucsonOpId(op.getId()),
+                            true, op.isOperationCompleted(),
+                            op.isResultSuccess(), op.getLogicTupleListResult());
+        } else { // caso in cui ricevo una tupla come risultato
+            ev =
+                    new TucsonOpCompletionEvent(new TucsonOpId(op.getId()),
+                            true, op.isOperationCompleted(),
+                            op.isResultSuccess(), op.getLogicTupleResult());
+        }
+        return ev;
+    }
+
+    private static void log(final String msg) {
+        System.out.println("\n[BRIDGE]: " + msg);
+    }
+
     private final EnhancedACC acc;
+
     private final Map<Behaviour, ResultOpStorage> mResultOpBehaviour;
+
     private final TucsonService service;
 
     /**
@@ -122,7 +153,7 @@ public class BridgeJADETuCSoN {
         try {
             new TucsonAgentAsyncBehavoiur("tucsonAgentAsync", cmd,
                     this.service, myAgent, behav).go();
-        } catch (TucsonInvalidAgentIdException e) {
+        } catch (final TucsonInvalidAgentIdException e) {
             /*
              * cannot really happen
              */
@@ -251,34 +282,5 @@ public class BridgeJADETuCSoN {
         return null; // se si ritorna null vuol dire che il risultato non è
                      // pronto e di conseguenza si adotta il protocollo di
                      // sospensione e riattivazione del behaviour
-    }
-
-    /**
-     * metodo utilizzato per poter uniformare il tipo di ritorno delle
-     * operazioni di coordinazione eseguite dall'agente jade
-     * 
-     * @param op
-     * @return
-     */
-    private static TucsonOpCompletionEvent fromITucsonOpToTucsonOpComp(
-            final ITucsonOperation op) {
-        TucsonOpCompletionEvent ev;
-        if (op.isInAll() // caso in cui ricevo una lista di tuple
-                || op.isRdAll() || op.isGet() || op.isGetS() || op.isNoAll()) {
-            ev =
-                    new TucsonOpCompletionEvent(new TucsonOpId(op.getId()),
-                            true, op.isOperationCompleted(),
-                            op.isResultSuccess(), op.getLogicTupleListResult());
-        } else { // caso in cui ricevo una tupla come risultato
-            ev =
-                    new TucsonOpCompletionEvent(new TucsonOpId(op.getId()),
-                            true, op.isOperationCompleted(),
-                            op.isResultSuccess(), op.getLogicTupleResult());
-        }
-        return ev;
-    }
-
-    private static void log(final String msg) {
-        System.out.println("\n[BRIDGE]: " + msg);
     }
 }

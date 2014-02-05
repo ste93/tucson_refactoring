@@ -53,18 +53,18 @@ public class ResultOpStorage {
     }
 
     /**
+     * @return the ready
+     */
+    public boolean isReady() {
+        return this.ready;
+    }
+
+    /**
      * @param n
      *            the next_res to set
      */
     public void setNextRes(final int n) {
         this.nextRes = n;
-    }
-
-    /**
-     * @return the ready
-     */
-    public boolean isReady() {
-        return this.ready;
     }
 
     /**

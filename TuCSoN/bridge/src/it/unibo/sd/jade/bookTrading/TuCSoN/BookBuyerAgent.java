@@ -159,7 +159,7 @@ public class BookBuyerAgent extends Agent {
                  * If we found at least one agent offering the desired service,
                  * we try to buy the book using a custom FSM-like behaviour.
                  */
-                if (result != null && result.length != 0) {
+                if ((result != null) && (result.length != 0)) {
                     final ACLMessage cfp = new ACLMessage(ACLMessage.CFP);
                     cfp.setProtocol(FIPANames.InteractionProtocol.FIPA_CONTRACT_NET);
                     for (final AID sellerAgent : BookBuyerAgent.this.sellerAgents) {
