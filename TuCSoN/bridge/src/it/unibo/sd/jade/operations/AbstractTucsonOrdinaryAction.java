@@ -29,11 +29,11 @@ public abstract class AbstractTucsonOrdinaryAction extends AbstractTucsonAction 
         this.tuple = t;
     }
 
-    /**
-     * 
-     * @return the Logic Tuple argument of the coordination operation
-     */
-    public LogicTuple getTuple() {
-        return this.tuple;
-    }
+    // /**
+    // *
+    // * @return the Logic Tuple argument of the coordination operation
+    // */
+    // public LogicTuple getTuple() {
+    // return this.tuple;
+    // }
 }

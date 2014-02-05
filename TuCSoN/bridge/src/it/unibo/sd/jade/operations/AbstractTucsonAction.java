@@ -72,11 +72,11 @@ public abstract class AbstractTucsonAction {
             Long timeout) throws TucsonOperationNotPossibleException,
             UnreachableNodeException, OperationTimeOutException;
 
-    /**
-     * 
-     * @return the TuCSoN tuple centre id target of the coordination operation
-     */
-    public TucsonTupleCentreId getTcid() {
-        return this.tcid;
-    }
+    // /**
+    // *
+    // * @return the TuCSoN tuple centre id target of the coordination operation
+    // */
+    // public TucsonTupleCentreId getTcid() {
+    // return this.tcid;
+    // }
 }
