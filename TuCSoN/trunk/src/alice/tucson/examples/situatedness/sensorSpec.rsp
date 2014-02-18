@@ -4,12 +4,12 @@ reaction(
     in(sense(temp(T))),
     (operation, invocation),
     (
-        sensor@localhost:20504 ? get_env(temp, T)
+        sensor@localhost:20504 ? getEnv(temp, T)
     )
 ).
 % Delete garbage tuple.
 reaction(
-    get_env(temp, T),
+    getEnv(temp, T),
     (from_env, completion),
     (
         out(sense(temp(T)))

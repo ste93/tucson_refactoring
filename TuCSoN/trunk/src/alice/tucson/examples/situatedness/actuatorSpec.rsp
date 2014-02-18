@@ -4,12 +4,12 @@ reaction(
     out(act(temp(T))),
     (operation, completion),
     (
-        actuator@localhost:20504 ? set_env(temp, T)
+        actuator@localhost:20504 ? setEnv(temp, T)
     )
 ).
 % Delete garbage tuple.
 reaction(
-    set_env(temp, T),
+    setEnv(temp, T),
     (from_env, completion),
     (
         in(act(temp(T)))

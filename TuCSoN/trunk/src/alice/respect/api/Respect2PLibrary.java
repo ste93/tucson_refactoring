@@ -580,7 +580,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      *            the value sensed
      * @return <code>true</code> if the operation is successfull
      */
-    public boolean get_env_3(final Term env, final Term key, final Term val) {
+    public boolean getEnv_3(final Term env, final Term key, final Term val) {
         // Get engine's copy of key and val
         final AbstractMap<Var, Var> v = new LinkedHashMap<Var, Var>();
         final AbstractMap<Var, Var> v1 = new LinkedHashMap<Var, Var>();
@@ -2006,7 +2006,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      *            the value modified
      * @return <code>true</code> if the operation is successfull
      */
-    public boolean set_env_3(final Term env, final Term key, final Term val) {
+    public boolean setEnv_3(final Term env, final Term key, final Term val) {
 
         // Get engine's copy of key and val
         final AbstractMap<Var, Var> v = new LinkedHashMap<Var, Var>();
