@@ -108,7 +108,7 @@ public class JavaTuple implements IJavaTuple {
     public String toString() {
         final StringBuffer sb =
                 new StringBuffer(this.args.size() * JavaTuple.AVG_ARG_LENGTH);
-        sb.append("$javatuple(");
+        sb.append("javatuple(");
         for (final IJavaTuple arg : this.args) {
             sb.append(arg.toString());
             sb.append(',');

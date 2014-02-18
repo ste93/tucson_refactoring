@@ -3,6 +3,7 @@
  */
 package alice.tuples.javatuples.basic;
 
+import alice.logictuple.LogicMatchingEngine;
 import alice.logictuple.LogicTuple;
 import alice.logictuple.TupleArgument;
 import alice.tuplecentre.api.exceptions.InvalidOperationException;
@@ -19,12 +20,37 @@ public class JavaTuplesEngine {
     }
 
     public static boolean match(final IJavaTuple arg1, final IJavaTuple arg2) {
-        
-        return false;
+        if (arg1.isComposite() && arg2.isComposite()) {
+            if (arg1.getArity() == arg2.getArity()) {
+                for (int i = 0; i < arg1.getArity(); i++) {
+                    try {
+                        if (JavaTuplesEngine.match(arg1.getArg(i),
+                                arg2.getArg(i))) {
+                            continue;
+                        }
+                        return false;
+                    } catch (final NonCompositeException e) {
+                        // cannot happen
+                    }
+                }
+                return true;
+            }
+            return false;
+        } else if (arg1.isComposite() || arg2.isComposite()) {
+            return false;
+        }
+        try {
+            return LogicMatchingEngine.match(LogicTuple.parse(arg1.toString()),
+                    LogicTuple.parse(arg2.toString()));
+        } catch (final InvalidTupleException e) {
+            // cannot happen
+            return false;
+        }
     }
 
     public static IJavaTuple propagate(final IJavaTuple arg1,
             final IJavaTuple arg2) {
+
         return null;
     }
 

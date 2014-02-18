@@ -15,9 +15,33 @@ import alice.tuples.javatuples.basic.JavaTuplesEngine.VarType;
 public class JavaTupleVar implements IJavaTuple {
 
     private final TupleArgument ta;
+    private final VarType type;
 
     public JavaTupleVar(final VarType t) {
-        this.ta = new Var();
+        this.type = t;
+        switch (this.type) {
+            case ANY:
+                this.ta = new Var("_");
+                break;
+            case DOUBLE:
+                this.ta = new Var("double(_)");
+                break;
+            case FLOAT:
+                this.ta = new Var("float(_)");
+                break;
+            case INT:
+                this.ta = new Var("int(_)");
+                break;
+            case LONG:
+                this.ta = new Var("long(_)");
+                break;
+            case LITERAL:
+                this.ta = new Var("literal(_)");
+                break;
+            default:
+                this.ta = new Var("_");
+                break;
+        }
     }
 
     /*
@@ -47,6 +71,13 @@ public class JavaTupleVar implements IJavaTuple {
     @Override
     public int getArity() {
         return 0;
+    }
+
+    /**
+     * @return the type
+     */
+    public VarType getType() {
+        return this.type;
     }
 
     /*

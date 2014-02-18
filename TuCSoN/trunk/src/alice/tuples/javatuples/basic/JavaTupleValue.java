@@ -17,24 +17,24 @@ public class JavaTupleValue implements IJavaTuple {
     private final TupleArgument ta;
 
     public JavaTupleValue(final double arg) {
-        this.ta = new Value(arg);
+        this.ta = new Value("double", new Value(arg));
     }
 
     public JavaTupleValue(final float arg) {
-        this.ta = new Value(arg);
+        this.ta = new Value("float", new Value(arg));
     }
 
     public JavaTupleValue(final int arg) {
-        this.ta = new Value(arg);
+        this.ta = new Value("int", new Value(arg));
     }
 
     public JavaTupleValue(final long arg) {
-        this.ta = new Value(arg);
+        this.ta = new Value("long", new Value(arg));
     }
 
     // ANY string is parsed as literal (even with parentheses!) ?
     public JavaTupleValue(final String arg) {
-        this.ta = new Value(arg);
+        this.ta = new Value("literal", new Value(arg));
     }
 
     /*
@@ -76,19 +76,39 @@ public class JavaTupleValue implements IJavaTuple {
     }
 
     public boolean isDouble() {
-        return this.ta.isDouble();
+        try {
+            return this.ta.getArg(1).isDouble();
+        } catch (final InvalidOperationException e) {
+            // cannot happen
+            return false;
+        }
     }
 
     public boolean isFloat() {
-        return this.ta.isFloat();
+        try {
+            return this.ta.getArg(1).isFloat();
+        } catch (final InvalidOperationException e) {
+            // cannot happen
+            return false;
+        }
     }
 
     public boolean isInt() {
-        return this.ta.isInt();
+        try {
+            return this.ta.getArg(1).isInt();
+        } catch (final InvalidOperationException e) {
+            // cannot happen
+            return false;
+        }
     }
 
     public boolean isLong() {
-        return this.ta.isLong();
+        try {
+            return this.ta.getArg(1).isLong();
+        } catch (final InvalidOperationException e) {
+            // cannot happen
+            return false;
+        }
     }
 
     /*
@@ -133,19 +153,23 @@ public class JavaTupleValue implements IJavaTuple {
     }
 
     public double toDouble() throws InvalidOperationException {
-        return this.ta.doubleValue();
+        return this.ta.getArg(1).doubleValue();
     }
 
     public float toFloat() throws InvalidOperationException {
-        return this.ta.floatValue();
+        return this.ta.getArg(1).floatValue();
     }
 
     public int toInt() throws InvalidOperationException {
-        return this.ta.intValue();
+        return this.ta.getArg(1).intValue();
+    }
+
+    public String toLiteral() throws InvalidOperationException {
+        return this.ta.getArg(1).toString();
     }
 
     public long toLong() throws InvalidOperationException {
-        return this.ta.longValue();
+        return this.ta.getArg(1).longValue();
     }
 
     /*
