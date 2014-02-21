@@ -1,7 +1,7 @@
 /**
  * JTupleTemplate.java
  */
-package alice.tuples.javatuples;
+package alice.tuples.javatuples.impl;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -10,6 +10,10 @@ import java.util.List;
 import alice.tuplecentre.api.Tuple;
 import alice.tuplecentre.api.exceptions.InvalidOperationException;
 import alice.tuplecentre.api.exceptions.InvalidTupleException;
+import alice.tuples.javatuples.api.IJArg;
+import alice.tuples.javatuples.api.IJTuple;
+import alice.tuples.javatuples.api.IJTupleTemplate;
+import alice.tuples.javatuples.api.IJVal;
 
 /**
  * @author ste (mailto: s.mariani@unibo.it) on 21/feb/2014
@@ -21,6 +25,13 @@ public class JTupleTemplate implements Iterable<IJArg>, IJTupleTemplate {
     private static final int AVG_CHARS = 1;
     private List<IJArg> args;
 
+    /**
+     * 
+     * @param arg
+     *            the JArg to add to this JTupleTemplate
+     * @throws InvalidTupleException
+     *             if the given JArg is invalid (e.g. null)
+     */
     public JTupleTemplate(final IJArg arg) throws InvalidTupleException {
         if (arg != null) {
             this.args = new ArrayList<IJArg>(JTupleTemplate.AVG_CAP);
@@ -82,7 +93,9 @@ public class JTupleTemplate implements Iterable<IJArg>, IJTupleTemplate {
      */
     @Override
     public boolean match(final Tuple t) {
-        // TODO Auto-generated method stub
+        if (t instanceof IJTuple) {
+            return JTuplesEngine.match(this, (IJTuple) t);
+        }
         return false;
     }
 
@@ -94,7 +107,16 @@ public class JTupleTemplate implements Iterable<IJArg>, IJTupleTemplate {
      */
     @Override
     public boolean propagate(final Tuple t) {
-        // TODO Auto-generated method stub
+        if (t instanceof JTuple) {
+            final JTuple jt = (JTuple) t;
+            if (JTuplesEngine.propagate(this, jt)) {
+                this.args.clear();
+                for (final IJVal val : jt) {
+                    this.args.add(val);
+                }
+                return true;
+            }
+        }
         return false;
     }
 
@@ -103,7 +125,7 @@ public class JTupleTemplate implements Iterable<IJArg>, IJTupleTemplate {
         final StringBuffer sb =
                 new StringBuffer(JTupleTemplate.AVG_CAP
                         * JTupleTemplate.AVG_CHARS);
-        sb.append("$javat(");
+        sb.append("javat(");
         for (final IJArg arg : this.args) {
             sb.append(arg.toString());
             sb.append(',');

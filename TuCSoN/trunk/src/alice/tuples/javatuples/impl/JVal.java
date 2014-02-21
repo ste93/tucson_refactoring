@@ -1,12 +1,15 @@
 /**
  * JArg.java
  */
-package alice.tuples.javatuples;
+package alice.tuples.javatuples.impl;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import alice.tuplecentre.api.exceptions.InvalidOperationException;
+import alice.tuples.javatuples.api.IJVal;
+import alice.tuples.javatuples.api.JArgType;
+import alice.tuples.javatuples.exceptions.InvalidJValException;
 
 /**
  * @author ste (mailto: s.mariani@unibo.it) on 21/feb/2014
@@ -17,26 +20,53 @@ public class JVal implements IJVal {
     private final Object arg;
     private final JArgType type;
 
+    /**
+     * 
+     * @param v
+     *            the double value of this JVal
+     */
     public JVal(final double v) {
         this.type = JArgType.DOUBLE;
         this.arg = v;
     }
 
+    /**
+     * 
+     * @param v
+     *            the float value of this JVal
+     */
     public JVal(final float v) {
         this.type = JArgType.FLOAT;
         this.arg = v;
     }
 
+    /**
+     * 
+     * @param v
+     *            the int value of this JVal
+     */
     public JVal(final int v) {
         this.type = JArgType.INT;
         this.arg = v;
     }
 
+    /**
+     * 
+     * @param v
+     *            the long value of this JVal
+     */
     public JVal(final long v) {
         this.type = JArgType.LONG;
         this.arg = v;
     }
 
+    /**
+     * 
+     * @param v
+     *            the literal (Java String) value of this JVal
+     * @throws InvalidJValException
+     *             if the given literal (Java String) is invalid (e.g. null)
+     */
     public JVal(final String v) throws InvalidJValException {
         if (v != null) {
             this.type = JArgType.LITERAL;
@@ -175,28 +205,28 @@ public class JVal implements IJVal {
      */
     @Override
     public String toString() {
-        StringBuffer sb = new StringBuffer(10);
+        final StringBuffer sb = new StringBuffer(10);
         switch (this.type) {
             case DOUBLE:
-                sb.append("$double(")
+                sb.append("double(")
                         .append(String.valueOf(((Double) this.arg)
                                 .doubleValue())).append(')');
                 break;
             case FLOAT:
-                sb.append("$float(")
+                sb.append("float(")
                         .append(String.valueOf(((Float) this.arg).floatValue()))
                         .append(')');
                 break;
             case INT:
-                sb.append("$int(")
+                sb.append("int(")
                         .append(String.valueOf(((Integer) this.arg).intValue()))
                         .append(')');
                 break;
             case LITERAL:
-                sb.append("$literal(").append(this.arg).append(')');
+                sb.append("literal(").append(this.arg.toString()).append(')');
                 break;
             case LONG:
-                sb.append("$long(")
+                sb.append("long(")
                         .append(String.valueOf(((Long) this.arg).longValue()))
                         .append(')');
                 break;

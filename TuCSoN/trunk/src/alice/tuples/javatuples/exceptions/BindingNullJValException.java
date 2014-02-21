@@ -1,7 +1,7 @@
 /**
  * BindingNullJValException.java
  */
-package alice.tuples.javatuples;
+package alice.tuples.javatuples.exceptions;
 
 /**
  * @author ste (mailto: s.mariani@unibo.it) on 21/feb/2014

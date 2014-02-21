@@ -1,7 +1,7 @@
 /**
  * JTuple.java
  */
-package alice.tuples.javatuples;
+package alice.tuples.javatuples.impl;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -9,6 +9,8 @@ import java.util.List;
 
 import alice.tuplecentre.api.exceptions.InvalidOperationException;
 import alice.tuplecentre.api.exceptions.InvalidTupleException;
+import alice.tuples.javatuples.api.IJTuple;
+import alice.tuples.javatuples.api.IJVal;
 
 /**
  * @author ste (mailto: s.mariani@unibo.it) on 21/feb/2014
@@ -20,6 +22,13 @@ public class JTuple implements Iterable<IJVal>, IJTuple {
     private static final int AVG_CHARS = 15;
     private List<IJVal> args;
 
+    /**
+     * 
+     * @param arg
+     *            the JVal to add to this JTuple
+     * @throws InvalidTupleException
+     *             if the given JVal is invalid (e.g. null)
+     */
     public JTuple(final IJVal arg) throws InvalidTupleException {
         if (arg != null) {
             this.args = new ArrayList<IJVal>(JTuple.AVG_CAP);
@@ -72,7 +81,7 @@ public class JTuple implements Iterable<IJVal>, IJTuple {
     public String toString() {
         final StringBuffer sb =
                 new StringBuffer(JTuple.AVG_CAP * JTuple.AVG_CHARS);
-        sb.append("$javat(");
+        sb.append("javat(");
         for (final IJVal arg : this.args) {
             sb.append(arg.toString());
             sb.append(',');
