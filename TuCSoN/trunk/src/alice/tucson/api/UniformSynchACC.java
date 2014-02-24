@@ -13,9 +13,10 @@
  */
 package alice.tucson.api;
 
-import alice.logictuple.LogicTuple;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
+import alice.tuplecentre.api.Tuple;
+import alice.tuplecentre.api.TupleCentreId;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 
 /**
@@ -59,10 +60,10 @@ public interface UniformSynchACC extends RootACC {
      *             if the operation timeout expired prior to operation
      *             completion
      * 
-     * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
+     * @see alice.tuplecentre.api.TupleCentreId TupleCentreId
      * @see alice.tucson.api.ITucsonOperation ITucsonOperation
      */
-    ITucsonOperation uin(Object tid, LogicTuple tuple, Long timeout)
+    ITucsonOperation uin(TupleCentreId tid, Tuple tuple, Long timeout)
             throws TucsonOperationNotPossibleException,
             UnreachableNodeException, OperationTimeOutException;
 
@@ -99,10 +100,10 @@ public interface UniformSynchACC extends RootACC {
      *             if the operation timeout expired prior to operation
      *             completion
      * 
-     * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
+     * @see alice.tuplecentre.api.TupleCentreId TupleCentreId
      * @see alice.tucson.api.ITucsonOperation ITucsonOperation
      */
-    ITucsonOperation uinp(Object tid, LogicTuple tuple, Long timeout)
+    ITucsonOperation uinp(TupleCentreId tid, Tuple tuple, Long timeout)
             throws TucsonOperationNotPossibleException,
             UnreachableNodeException, OperationTimeOutException;
 
@@ -141,10 +142,10 @@ public interface UniformSynchACC extends RootACC {
      *             if the operation timeout expired prior to operation
      *             completion
      * 
-     * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
+     * @see alice.tuplecentre.api.TupleCentreId TupleCentreId
      * @see alice.tucson.api.ITucsonOperation ITucsonOperation
      */
-    ITucsonOperation uno(Object tid, LogicTuple tuple, Long timeout)
+    ITucsonOperation uno(TupleCentreId tid, Tuple tuple, Long timeout)
             throws TucsonOperationNotPossibleException,
             UnreachableNodeException, OperationTimeOutException;
 
@@ -182,10 +183,10 @@ public interface UniformSynchACC extends RootACC {
      *             if the operation timeout expired prior to operation
      *             completion
      * 
-     * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
+     * @see alice.tuplecentre.api.TupleCentreId TupleCentreId
      * @see alice.tucson.api.ITucsonOperation ITucsonOperation
      */
-    ITucsonOperation unop(Object tid, LogicTuple tuple, Long timeout)
+    ITucsonOperation unop(TupleCentreId tid, Tuple tuple, Long timeout)
             throws TucsonOperationNotPossibleException,
             UnreachableNodeException, OperationTimeOutException;
 
@@ -223,10 +224,10 @@ public interface UniformSynchACC extends RootACC {
      *             if the operation timeout expired prior to operation
      *             completion
      * 
-     * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
+     * @see alice.tuplecentre.api.TupleCentreId TupleCentreId
      * @see alice.tucson.api.ITucsonOperation ITucsonOperation
      */
-    ITucsonOperation urd(Object tid, LogicTuple tuple, Long timeout)
+    ITucsonOperation urd(TupleCentreId tid, Tuple tuple, Long timeout)
             throws TucsonOperationNotPossibleException,
             UnreachableNodeException, OperationTimeOutException;
 
@@ -263,10 +264,10 @@ public interface UniformSynchACC extends RootACC {
      *             if the operation timeout expired prior to operation
      *             completion
      * 
-     * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
+     * @see alice.tuplecentre.api.TupleCentreId TupleCentreId
      * @see alice.tucson.api.ITucsonOperation ITucsonOperation
      */
-    ITucsonOperation urdp(Object tid, LogicTuple tuple, Long timeout)
+    ITucsonOperation urdp(TupleCentreId tid, Tuple tuple, Long timeout)
             throws TucsonOperationNotPossibleException,
             UnreachableNodeException, OperationTimeOutException;
 

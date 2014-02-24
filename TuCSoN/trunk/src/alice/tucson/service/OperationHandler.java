@@ -357,7 +357,7 @@ public class OperationHandler {
      */
     public ITucsonOperation
             doBlockingOperation(final TucsonAgentId aid, final int type,
-                    final Object tid, final LogicTuple t, final Long ms)
+                    final Object tid, final Tuple t, final Long ms)
                     throws TucsonOperationNotPossibleException,
                     UnreachableNodeException, OperationTimeOutException {
 
@@ -434,7 +434,7 @@ public class OperationHandler {
      * @see alice.tucson.api.ITucsonOperation ITucsonOperation
      */
     public ITucsonOperation doNonBlockingOperation(final TucsonAgentId aid,
-            final int type, final Object tid, final LogicTuple t,
+            final int type, final Object tid, final Tuple t,
             final TucsonOperationCompletionListener l)
             throws TucsonOperationNotPossibleException,
             UnreachableNodeException {
@@ -531,7 +531,7 @@ public class OperationHandler {
      */
     protected synchronized ITucsonOperation doOperation(
             final TucsonAgentId aid, final TucsonTupleCentreId tcid,
-            final int type, final LogicTuple t,
+            final int type, final Tuple t,
             final TucsonOperationCompletionListener l)
             throws TucsonOperationNotPossibleException,
             UnreachableNodeException {
