@@ -1,5 +1,6 @@
 package alice.tucson.service;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -8,9 +9,11 @@ import alice.respect.core.RespectOperation;
 import alice.tucson.api.ITucsonOperation;
 import alice.tuplecentre.api.Tuple;
 import alice.tuplecentre.api.TupleTemplate;
+import alice.tuplecentre.api.exceptions.InvalidTupleException;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 import alice.tuplecentre.core.AbstractTupleCentreOperation;
 import alice.tuplecentre.core.OperationCompletionListener;
+import alice.tuples.javatuples.impl.JTuplesEngine;
 
 /**
  * 
@@ -598,6 +601,67 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
                 throw new OperationTimeOutException();
             }
         }
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see alice.tucson.api.ITucsonOperation#getJTupleArgument()
+     */
+    @Override
+    public Tuple getJTupleArgument() {
+        final LogicTuple lt = this.getLogicTupleArgument();
+        try {
+            if (JTuplesEngine.isTemplate(lt)) {
+                return JTuplesEngine.toJavaTupleTemplate(lt);
+            }
+            return JTuplesEngine.toJavaTuple(lt);
+        } catch (InvalidTupleException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see alice.tucson.api.ITucsonOperation#getJTupleListResult()
+     */
+    @Override
+    public List<Tuple> getJTupleListResult() {
+        final List<LogicTuple> lts = this.getLogicTupleListResult();
+        List<Tuple> jts = new ArrayList<Tuple>(lts.size());
+        try {
+            for (LogicTuple t : lts) {
+                if (JTuplesEngine.isTemplate(t)) {
+                    jts.add(JTuplesEngine.toJavaTupleTemplate(t));
+                } else {
+                    jts.add(JTuplesEngine.toJavaTuple(t));
+                }
+            }
+        } catch (InvalidTupleException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return jts;
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see alice.tucson.api.ITucsonOperation#getJTupleResult()
+     */
+    @Override
+    public Tuple getJTupleResult() {
+        final LogicTuple lt = this.getLogicTupleArgument();
+        try {
+            if (JTuplesEngine.isTemplate(lt)) {
+                return JTuplesEngine.toJavaTupleTemplate(lt);
+            }
+            return JTuplesEngine.toJavaTuple(lt);
+        } catch (InvalidTupleException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return null;
     }
 
 }
