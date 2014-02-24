@@ -26,6 +26,9 @@ import alice.tuplecentre.api.Tuple;
 import alice.tuplecentre.api.TupleTemplate;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 import alice.tuplecentre.core.TCCycleResult.Outcome;
+import alice.tuples.javatuples.impl.JTuple;
+import alice.tuples.javatuples.impl.JTupleTemplate;
+import alice.tuples.javatuples.impl.JTuplesEngine;
 import alice.tuprolog.Prolog;
 import alice.tuprolog.lib.InvalidObjectIdException;
 
@@ -355,11 +358,10 @@ public class OperationHandler {
      * 
      * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
      */
-    public ITucsonOperation
-            doBlockingOperation(final TucsonAgentId aid, final int type,
-                    final Object tid, final Tuple t, final Long ms)
-                    throws TucsonOperationNotPossibleException,
-                    UnreachableNodeException, OperationTimeOutException {
+    public ITucsonOperation doBlockingOperation(final TucsonAgentId aid,
+            final int type, final Object tid, final Tuple t, final Long ms)
+            throws TucsonOperationNotPossibleException,
+            UnreachableNodeException, OperationTimeOutException {
 
         TucsonTupleCentreId tcid = null;
         if ("alice.tucson.api.TucsonTupleCentreId".equals(tid.getClass()
@@ -536,6 +538,17 @@ public class OperationHandler {
             throws TucsonOperationNotPossibleException,
             UnreachableNodeException {
 
+        Tuple tupl = null;
+        if (t instanceof LogicTuple) {
+            tupl = t;
+        } else if (t instanceof JTuple) {
+            tupl = JTuplesEngine.toLogicTuple((JTuple) t);
+        } else if (t instanceof JTupleTemplate) {
+            tupl = JTuplesEngine.toLogicTuple((JTupleTemplate) t);
+        } else {
+            this.log("wtf");
+        }
+
         int nTry = 0;
         boolean exception;
 
@@ -559,9 +572,10 @@ public class OperationHandler {
                     || (type == TucsonOperation.setCode())
                     || (type == TucsonOperation.outAllCode())
                     || (type == TucsonOperation.spawnCode())) {
-                op = new TucsonOperation(type, (Tuple) t, l, this);
+                // maybe tupl should be TupleTemplate, thus here cast to Tuple
+                op = new TucsonOperation(type, tupl, l, this);
             } else {
-                op = new TucsonOperation(type, t, l, this);
+                op = new TucsonOperation(type, tupl, l, this);
             }
             this.operations.put(op.getId(), op);
             final TucsonMsgRequest msg =

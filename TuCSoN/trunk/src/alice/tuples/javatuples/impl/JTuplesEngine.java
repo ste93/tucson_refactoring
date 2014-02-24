@@ -34,6 +34,35 @@ public final class JTuplesEngine {
         // to prevent instantiation
     }
 
+    public static boolean isTemplate(final LogicTuple lt)
+            throws InvalidTupleException {
+        try {
+            if ("javat".equals(lt.getName())) {
+                final int a = lt.getArity();
+                for (int i = 0; i < a; i++) {
+                    final TupleArgument ta = lt.getArg(i);
+                    if (ta.getArity() == 0) {
+                        if (ta.isVar()) {
+                            return true;
+                        }
+                        throw new InvalidTupleException();
+                    } else if (ta.getArity() == 1) {
+                        final TupleArgument ta2 = ta.getArg(0);
+                        if (ta2.isVar()) {
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            }
+            throw new InvalidTupleException();
+        } catch (InvalidOperationException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     /**
      * Tests if the given arguments matches according to tuProlog matching rules
      * for LogicTuples
