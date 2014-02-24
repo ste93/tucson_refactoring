@@ -29,10 +29,10 @@ import alice.tuples.javatuples.impl.JVar;
  * @author ste (mailto: s.mariani@unibo.it) on 24/feb/2014
  * 
  */
-public class HelloWorldJTuples {
+public final class HelloWorldJTuples {
 
     /**
-     * @param args
+     * @param args program arguments (none expected)
      */
     public static void main(final String[] args) {
         /*

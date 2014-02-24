@@ -30,10 +30,22 @@ import alice.tuplecentre.api.Tuple;
  */
 public interface ITucsonOperation extends ITupleCentreOperation {
 
+    /**
+     * 
+     * @return the JTuple argument of this TuCSoN operation
+     */
     Tuple getJTupleArgument();
 
+    /**
+     * 
+     * @return the list if JTuples result of this TuCSoN operation
+     */
     List<Tuple> getJTupleListResult();
 
+    /**
+     * 
+     * @return the JTuple result of this TuCSoN operation
+     */
     Tuple getJTupleResult();
 
     /**

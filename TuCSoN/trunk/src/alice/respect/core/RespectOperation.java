@@ -658,11 +658,9 @@ public class RespectOperation extends AbstractTupleCentreOperation implements
 
     public LogicTuple getLogicTupleArgument() {
         if (this.isOut() || this.isOutS() || this.isOutAll() || this.isSpawn()) {
-            final LogicTuple lt = (LogicTuple) this.getTupleArgument();
-            return lt;
+            return (LogicTuple) this.getTupleArgument();
         }
-        final LogicTuple lt = (LogicTuple) this.getTemplateArgument();
-        return lt;
+        return (LogicTuple) this.getTemplateArgument();
     }
 
     public List<LogicTuple> getLogicTupleListResult() {

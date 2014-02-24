@@ -30,6 +30,16 @@ import alice.tuples.javatuples.exceptions.InvalidJVarException;
  */
 public final class JTuplesEngine {
 
+    /**
+     * 
+     * @param lt
+     *            the tuProlog LogicTuple to be checked
+     * @return wether the given tuProlog LogicTuple represents a template
+     *         (namely, wether it contains any variable)
+     * @throws InvalidTupleException
+     *             if the given tuProlog LogicTuple is not convertible into a
+     *             JTuple (too much expressive)
+     */
     public static boolean isTemplate(final LogicTuple lt)
             throws InvalidTupleException {
         try {
