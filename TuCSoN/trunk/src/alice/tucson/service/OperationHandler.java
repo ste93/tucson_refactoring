@@ -538,6 +538,7 @@ public class OperationHandler {
             throws TucsonOperationNotPossibleException,
             UnreachableNodeException {
 
+        // this.log("t = " + t);
         Tuple tupl = null;
         if (t instanceof LogicTuple) {
             tupl = t;
@@ -548,6 +549,7 @@ public class OperationHandler {
         } else {
             this.log("wtf");
         }
+        // this.log("tupl = " + tupl);
 
         int nTry = 0;
         boolean exception;
@@ -575,7 +577,7 @@ public class OperationHandler {
                 // maybe tupl should be TupleTemplate, thus here cast to Tuple
                 op = new TucsonOperation(type, tupl, l, this);
             } else {
-                op = new TucsonOperation(type, tupl, l, this);
+                op = new TucsonOperation(type, (TupleTemplate) tupl, l, this);
             }
             this.operations.put(op.getId(), op);
             final TucsonMsgRequest msg =
