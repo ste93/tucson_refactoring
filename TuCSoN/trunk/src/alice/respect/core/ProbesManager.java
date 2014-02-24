@@ -120,8 +120,7 @@ public enum ProbesManager {
                 return this.probesList.get(element);
             }
         }
-        ProbesManager.speakErr("'Resource " + name
-                + "' isn't registered yet!");
+        ProbesManager.speakErr("'Resource " + name + "' isn't registered yet!");
         return null;
     }
 

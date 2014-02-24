@@ -6,9 +6,9 @@ import java.util.Map;
 
 /**
  * A MVmap (multi-value map) is similar to a {@link Map} but, unlike this, it
- * allows to map multiple values for the same {@code key}. This value are
- * stored in a {@link List} associated whit the {@code key}. You can have
- * duplicate values associated with the same key.
+ * allows to map multiple values for the same {@code key}. This value are stored
+ * in a {@link List} associated whit the {@code key}. You can have duplicate
+ * values associated with the same key.
  * 
  * @author Saverio Cicora
  * 

@@ -218,11 +218,14 @@ public class InspectorCore extends alice.tucson.introspection.Inspector {
                 if (ev.getSource().isAgent()) {
                     st.append(ev.getOp()).append(" from <")
                             .append(((AgentId) ev.getSource()).getLocalName())
-                            .append("> to <").append(ev.getTarget()).append(">\n");
+                            .append("> to <").append(ev.getTarget())
+                            .append(">\n");
                 } else if (ev.getSource().isTC()) {
-                    st.append(ev.getOp()).append(" from <")
-                    .append(((TucsonTupleCentreId) ev.getSource()).toString())
-                    .append("> to <").append(ev.getTarget()).append(">\n");
+                    st.append(ev.getOp())
+                            .append(" from <")
+                            .append(((TucsonTupleCentreId) ev.getSource())
+                                    .toString()).append("> to <")
+                            .append(ev.getTarget()).append(">\n");
                 } // is Env?
                 n++;
             }

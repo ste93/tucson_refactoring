@@ -30,10 +30,6 @@ import alice.tuples.javatuples.exceptions.InvalidJVarException;
  */
 public final class JTuplesEngine {
 
-    private JTuplesEngine() {
-        // to prevent instantiation
-    }
-
     public static boolean isTemplate(final LogicTuple lt)
             throws InvalidTupleException {
         try {
@@ -56,7 +52,7 @@ public final class JTuplesEngine {
                 return false;
             }
             throw new InvalidTupleException();
-        } catch (InvalidOperationException e) {
+        } catch (final InvalidOperationException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
@@ -337,6 +333,10 @@ public final class JTuplesEngine {
             Logger.getLogger("JTuplesEngine").log(Level.FINEST, "wtf");
         }
         return new LogicTuple("javat", tas);
+    }
+
+    private JTuplesEngine() {
+        // to prevent instantiation
     }
 
 }

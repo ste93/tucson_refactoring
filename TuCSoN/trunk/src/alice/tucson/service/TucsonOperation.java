@@ -520,6 +520,67 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
         this.context = ctx;
     }
 
+    /*
+     * (non-Javadoc)
+     * @see alice.tucson.api.ITucsonOperation#getJTupleArgument()
+     */
+    @Override
+    public Tuple getJTupleArgument() {
+        final LogicTuple lt = this.getLogicTupleArgument();
+        try {
+            if (JTuplesEngine.isTemplate(lt)) {
+                return JTuplesEngine.toJavaTupleTemplate(lt);
+            }
+            return JTuplesEngine.toJavaTuple(lt);
+        } catch (final InvalidTupleException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see alice.tucson.api.ITucsonOperation#getJTupleListResult()
+     */
+    @Override
+    public List<Tuple> getJTupleListResult() {
+        final List<LogicTuple> lts = this.getLogicTupleListResult();
+        final List<Tuple> jts = new ArrayList<Tuple>(lts.size());
+        try {
+            for (final LogicTuple t : lts) {
+                if (JTuplesEngine.isTemplate(t)) {
+                    jts.add(JTuplesEngine.toJavaTupleTemplate(t));
+                } else {
+                    jts.add(JTuplesEngine.toJavaTuple(t));
+                }
+            }
+        } catch (final InvalidTupleException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return jts;
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see alice.tucson.api.ITucsonOperation#getJTupleResult()
+     */
+    @Override
+    public Tuple getJTupleResult() {
+        final LogicTuple lt = this.getLogicTupleArgument();
+        try {
+            if (JTuplesEngine.isTemplate(lt)) {
+                return JTuplesEngine.toJavaTupleTemplate(lt);
+            }
+            return JTuplesEngine.toJavaTuple(lt);
+        } catch (final InvalidTupleException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     /**
      * 
      * @return the listener for operation completion
@@ -601,67 +662,6 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
                 throw new OperationTimeOutException();
             }
         }
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see alice.tucson.api.ITucsonOperation#getJTupleArgument()
-     */
-    @Override
-    public Tuple getJTupleArgument() {
-        final LogicTuple lt = this.getLogicTupleArgument();
-        try {
-            if (JTuplesEngine.isTemplate(lt)) {
-                return JTuplesEngine.toJavaTupleTemplate(lt);
-            }
-            return JTuplesEngine.toJavaTuple(lt);
-        } catch (InvalidTupleException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see alice.tucson.api.ITucsonOperation#getJTupleListResult()
-     */
-    @Override
-    public List<Tuple> getJTupleListResult() {
-        final List<LogicTuple> lts = this.getLogicTupleListResult();
-        List<Tuple> jts = new ArrayList<Tuple>(lts.size());
-        try {
-            for (LogicTuple t : lts) {
-                if (JTuplesEngine.isTemplate(t)) {
-                    jts.add(JTuplesEngine.toJavaTupleTemplate(t));
-                } else {
-                    jts.add(JTuplesEngine.toJavaTuple(t));
-                }
-            }
-        } catch (InvalidTupleException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        return jts;
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see alice.tucson.api.ITucsonOperation#getJTupleResult()
-     */
-    @Override
-    public Tuple getJTupleResult() {
-        final LogicTuple lt = this.getLogicTupleArgument();
-        try {
-            if (JTuplesEngine.isTemplate(lt)) {
-                return JTuplesEngine.toJavaTupleTemplate(lt);
-            }
-            return JTuplesEngine.toJavaTuple(lt);
-        } catch (InvalidTupleException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        return null;
     }
 
 }

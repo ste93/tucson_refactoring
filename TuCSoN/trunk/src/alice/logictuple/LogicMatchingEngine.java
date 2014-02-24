@@ -14,9 +14,6 @@ public class LogicMatchingEngine {
 
     private static final Prolog MATCHING_ENGINE = new Prolog();
 
-    private LogicMatchingEngine() {
-    }
-
     static public boolean
             match(final LogicTuple tupleA, final LogicTuple tupleB) {
         final Term a = tupleA.toTerm().getTerm();
@@ -24,10 +21,14 @@ public class LogicMatchingEngine {
         return a.match(b);
     }
 
-    static public boolean propagate(LogicTuple tupleA, LogicTuple tupleB) {
+    static public boolean propagate(final LogicTuple tupleA,
+            final LogicTuple tupleB) {
         final Term a = tupleA.toTerm().getTerm();
         final Term b = tupleB.toTerm().getTerm();
         return a.unify(LogicMatchingEngine.MATCHING_ENGINE, b);
+    }
+
+    private LogicMatchingEngine() {
     }
 
 }

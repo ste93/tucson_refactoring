@@ -54,7 +54,8 @@ public enum TransducersManager {
 
     private TransducersManager() {
         this.transducersList = new HashMap<TransducerId, AbstractTransducer>();
-        this.probesToTransducersMap = new HashMap<TransducerId, List<AbstractProbeId>>();
+        this.probesToTransducersMap =
+                new HashMap<TransducerId, List<AbstractProbeId>>();
         this.transducersToTupleCentresMap =
                 new HashMap<TupleCentreId, List<TransducerId>>();
     }
@@ -155,8 +156,7 @@ public enum TransducersManager {
                 new ArrayList<AbstractProbeId>();
         probes.add(probeId);
         this.probesToTransducersMap.put(id, probes);
-        this.addProbe(probeId, id,
-                ProbesManager.INSTANCE.getProbe(probeId));
+        this.addProbe(probeId, id, ProbesManager.INSTANCE.getProbe(probeId));
         TransducersManager.speak("Transducer '" + id.toString()
                 + "' has been registered.");
         return true;
@@ -215,7 +215,9 @@ public enum TransducersManager {
         final Object[] keySet = set.toArray();
         for (final Object element : keySet) {
             for (int j = 0; j < this.probesToTransducersMap.get(element).size(); j++) {
-                final Term pId = this.probesToTransducersMap.get(element).get(j).toTerm();
+                final Term pId =
+                        this.probesToTransducersMap.get(element).get(j)
+                                .toTerm();
                 if (pId.equals(probe.toTerm())) {
                     return (TransducerId) element;
                 }
@@ -236,7 +238,8 @@ public enum TransducersManager {
      */
     // FIXME Check correctness (synchronization needed?)
     public TransducerId[] getTransducerIds(final TupleCentreId tcId) {
-        final Object[] tcIds = this.transducersToTupleCentresMap.keySet().toArray();
+        final Object[] tcIds =
+                this.transducersToTupleCentresMap.keySet().toArray();
         for (final Object tcId2 : tcIds) {
             if (((TupleCentreId) tcId2).toString().equals(tcId.toString())) {
                 final Object[] values =

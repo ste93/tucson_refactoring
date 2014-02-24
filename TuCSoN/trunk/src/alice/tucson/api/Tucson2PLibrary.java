@@ -61,19 +61,36 @@ public class Tucson2PLibrary extends Library {
     private EnhancedACC context;
 
     /**
-     * When leaving the TuCSoN system, any agent is kindly requested to release
-     * its ACC.
+     * To be enabled to interact with any TuCSoN system, an ACC must be acquired
+     * first.
+     * 
+     * @param id
+     *            the TucsonAgentId of the tuProlog agent willing to interact
+     *            with TuCSoN
      * 
      * @return <code>true</code> if the operation succeed, <code>false</code>
      *         otherwise
+     * 
+     * @see alice.tucson.api.EnhancedACC EnhancedACC
+     * @see alice.tucson.api.TucsonAgentId TucsonAgentId
      */
-    public boolean release_acc_0() {
+    public boolean acquire_acc_1(final Term id) {
+        TucsonAgentId agentId;
+        if (this.context != null) {
+            try {
+                this.context.exit();
+            } catch (final TucsonOperationNotPossibleException e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
         try {
-            this.context.exit();
-        } catch (final TucsonOperationNotPossibleException e) {
+            agentId = new TucsonAgentId(id.getTerm().toString());
+        } catch (final TucsonInvalidAgentIdException e) {
             e.printStackTrace();
             return false;
         }
+        this.context = TucsonMetaACC.getContext(agentId);
         return true;
     }
 
@@ -120,40 +137,6 @@ public class Tucson2PLibrary extends Library {
                     Tucson2PLibrary.list2tuple(op.getLogicTupleListResult()));
         }
         return op.isResultSuccess();
-    }
-
-    /**
-     * To be enabled to interact with any TuCSoN system, an ACC must be acquired
-     * first.
-     * 
-     * @param id
-     *            the TucsonAgentId of the tuProlog agent willing to interact
-     *            with TuCSoN
-     * 
-     * @return <code>true</code> if the operation succeed, <code>false</code>
-     *         otherwise
-     * 
-     * @see alice.tucson.api.EnhancedACC EnhancedACC
-     * @see alice.tucson.api.TucsonAgentId TucsonAgentId
-     */
-    public boolean acquire_acc_1(final Term id) {
-        TucsonAgentId agentId;
-        if (this.context != null) {
-            try {
-                this.context.exit();
-            } catch (final TucsonOperationNotPossibleException e) {
-                e.printStackTrace();
-                return false;
-            }
-        }
-        try {
-            agentId = new TucsonAgentId(id.getTerm().toString());
-        } catch (final TucsonInvalidAgentIdException e) {
-            e.printStackTrace();
-            return false;
-        }
-        this.context = TucsonMetaACC.getContext(agentId);
-        return true;
     }
 
     /**
@@ -1173,6 +1156,23 @@ public class Tucson2PLibrary extends Library {
             this.unify(event, op.getLogicTupleResult().toTerm());
         }
         return op.isResultSuccess();
+    }
+
+    /**
+     * When leaving the TuCSoN system, any agent is kindly requested to release
+     * its ACC.
+     * 
+     * @return <code>true</code> if the operation succeed, <code>false</code>
+     *         otherwise
+     */
+    public boolean release_acc_0() {
+        try {
+            this.context.exit();
+        } catch (final TucsonOperationNotPossibleException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
     /**

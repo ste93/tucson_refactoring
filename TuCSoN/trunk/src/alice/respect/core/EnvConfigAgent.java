@@ -118,8 +118,8 @@ public class EnvConfigAgent extends AbstractTucsonAgent {
                     // Obtaining resource
                     final AbstractProbeId pId =
                             new SensorId(t.getArg(4).getName());
-                    ProbesManager.INSTANCE.createProbe(t.getArg(3)
-                            .toString(), pId);
+                    ProbesManager.INSTANCE.createProbe(t.getArg(3).toString(),
+                            pId);
                     final TransducersManager tm = TransducersManager.INSTANCE;
                     tm.createTransducer(t.getArg(1).toString(), tId, tcId, pId);
                 } else if (EnvConfigAgent.CREATE_TRANSDUCER_ACTUATOR.equals(t
@@ -150,8 +150,8 @@ public class EnvConfigAgent extends AbstractTucsonAgent {
                     // Obtaining resource
                     final AbstractProbeId pId =
                             new ActuatorId(t.getArg(4).getName());
-                    ProbesManager.INSTANCE.createProbe(t.getArg(3)
-                            .toString(), pId);
+                    ProbesManager.INSTANCE.createProbe(t.getArg(3).toString(),
+                            pId);
                     final TransducersManager tm = TransducersManager.INSTANCE;
                     // Building transducer
                     tm.createTransducer(t.getArg(1).toString(), tId, tcId, pId);

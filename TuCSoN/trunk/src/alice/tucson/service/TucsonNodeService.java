@@ -66,10 +66,9 @@ import alice.tuprolog.lib.InvalidObjectIdException;
  */
 public class TucsonNodeService {
 
-    private static final int MAX_UNBOUND_PORT = 64000;
-
     private static final String BOOT_SETUP_THEORY =
             "alice/tucson/service/config/boot.pl";
+
     private static final String DEFAULT_BOOT_SPEC_FILE =
             "alice/tucson/service/config/boot_spec.rsp";
     private static final String DEFAULT_ENVCONFIG_SPEC_FILE =
@@ -77,9 +76,10 @@ public class TucsonNodeService {
     private static final String DEFAULT_OBS_SPEC_FILE =
             "alice/tucson/service/config/obs_spec.rsp";
     private static final int DEFAULT_TCP_PORT = 20504;
-
     // how to set a "proper" number?
     private static final int MAX_EVENT_QUEUE_SIZE = 1000;
+
+    private static final int MAX_UNBOUND_PORT = 64000;
     private static final String PERSISTENCY_PATH = "./persistent/";
 
     /**
@@ -134,7 +134,8 @@ public class TucsonNodeService {
             if (portInfo != null) {
                 try {
                     portNumber = Integer.parseInt(portInfo);
-                    if ((portNumber > 0) || (portNumber < MAX_UNBOUND_PORT)) {
+                    if ((portNumber > 0)
+                            || (portNumber < TucsonNodeService.MAX_UNBOUND_PORT)) {
                         TPConfig.getInstance().setTcpPort(portNumber);
                     } else {
                         System.err.println("Invalid port number");

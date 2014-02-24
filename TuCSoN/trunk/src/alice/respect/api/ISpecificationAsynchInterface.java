@@ -47,8 +47,7 @@ public interface ISpecificationAsynchInterface {
      */
     IRespectOperation
             inpS(IId aid, LogicTuple t, OperationCompletionListener l)
-                    throws InvalidTupleException,
-                    OperationNotPossibleException;
+                    throws InvalidTupleException, OperationNotPossibleException;
 
     /**
      * 
@@ -83,8 +82,7 @@ public interface ISpecificationAsynchInterface {
      */
     IRespectOperation
             nopS(IId aid, LogicTuple t, OperationCompletionListener l)
-                    throws InvalidTupleException,
-                    OperationNotPossibleException;
+                    throws InvalidTupleException, OperationNotPossibleException;
 
     /**
      * 
@@ -119,8 +117,7 @@ public interface ISpecificationAsynchInterface {
      */
     IRespectOperation
             outS(IId aid, LogicTuple t, OperationCompletionListener l)
-                    throws InvalidTupleException,
-                    OperationNotPossibleException;
+                    throws InvalidTupleException, OperationNotPossibleException;
 
     /**
      * 
@@ -138,8 +135,7 @@ public interface ISpecificationAsynchInterface {
      */
     IRespectOperation
             rdpS(IId aid, LogicTuple t, OperationCompletionListener l)
-                    throws InvalidTupleException,
-                    OperationNotPossibleException;
+                    throws InvalidTupleException, OperationNotPossibleException;
 
     /**
      * 

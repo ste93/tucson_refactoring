@@ -90,7 +90,8 @@ public class InterTupleCentreACCProxy implements InterTupleCentreACC,
                 try {
                     msg = this.dialog.receiveMsgReply();
                 } catch (final DialogException e) {
-                    log("TuCSoN node service unavailable, nothing I can do");
+                    InterTupleCentreACCProxy.this
+                            .log("TuCSoN node service unavailable, nothing I can do");
                     this.setStop();
                     break;
                 }
@@ -173,12 +174,16 @@ public class InterTupleCentreACCProxy implements InterTupleCentreACC,
                 if (op.isNoAll() || op.isInAll() || op.isRdAll() || op.isGet()
                         || op.isSet() || op.isGetS() || op.isSetS()
                         || op.isOutAll()) {
-                    log("received completion msg " + msg.getId() + ", op "
-                            + op.getType() + ", " + op.getTupleListResult());
+                    InterTupleCentreACCProxy.this
+                            .log("received completion msg " + msg.getId()
+                                    + ", op " + op.getType() + ", "
+                                    + op.getTupleListResult());
                     op.setTupleListResult((List<Tuple>) msg.getTupleResult());
                 } else {
-                    log("received completion msg " + msg.getId() + ", op "
-                            + op.getType() + ", " + op.getTupleResult());
+                    InterTupleCentreACCProxy.this
+                            .log("received completion msg " + msg.getId()
+                                    + ", op " + op.getType() + ", "
+                                    + op.getTupleResult());
                     op.setTupleResult((LogicTuple) msg.getTupleResult());
                 }
                 if (msg.isResultSuccess()) {
@@ -236,16 +241,11 @@ public class InterTupleCentreACCProxy implements InterTupleCentreACC,
 
     private static final int TRIES = 3;
 
-    private void log(final String msg) {
-        System.out.println("..[InterTupleCentreACCProxy ("
-                + this.profile.getProperty("tc-identity") + ")]: " + msg);
-    }
-
     // aid e' il tuplecentre source
     private TucsonTupleCentreId aid;
+
     private final Map<String, ControllerSession> controllerSessions;
     private final List<TucsonOpCompletionEvent> events;
-
     private final Map<Long, AbstractTupleCentreOperation> operations;
 
     private long opId;
@@ -482,6 +482,11 @@ public class InterTupleCentreACCProxy implements InterTupleCentreACC,
 
         return null;
 
+    }
+
+    private void log(final String msg) {
+        System.out.println("..[InterTupleCentreACCProxy ("
+                + this.profile.getProperty("tc-identity") + ")]: " + msg);
     }
 
     private void postEvent(final TucsonOpCompletionEvent ev) {

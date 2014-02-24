@@ -34,7 +34,7 @@ public class HelloWorldJTuples {
     /**
      * @param args
      */
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         /*
          * 1) Build a TuCSoN Agent identifier to contact the TuCSoN system.
          */
@@ -126,13 +126,13 @@ public class HelloWorldJTuples {
              * Operation timeout expired.
              */
             e.printStackTrace();
-        } catch (InvalidTupleException e) {
+        } catch (final InvalidTupleException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-        } catch (InvalidJValException e) {
+        } catch (final InvalidJValException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-        } catch (InvalidJVarException e) {
+        } catch (final InvalidJVarException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
