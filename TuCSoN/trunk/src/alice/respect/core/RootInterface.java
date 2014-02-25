@@ -41,9 +41,7 @@ public class RootInterface {
      * @return the tuple result of the unification process
      */
     protected LogicTuple unify(final TupleTemplate template, final Tuple tuple) {
-        final boolean res =
-                template.propagate(this.core.getVM().getRespectVMContext()
-                        .getPrologCore(), tuple);
+        final boolean res = template.propagate(tuple);
         if (res) {
             return (LogicTuple) template;
         }

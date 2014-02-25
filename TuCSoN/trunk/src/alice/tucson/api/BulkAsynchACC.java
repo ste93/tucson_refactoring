@@ -15,10 +15,11 @@ package alice.tucson.api;
 
 import java.util.List;
 
-import alice.logictuple.LogicTuple;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
 import alice.tucson.service.TucsonOpCompletionEvent;
+import alice.tuplecentre.api.Tuple;
+import alice.tuplecentre.api.TupleCentreId;
 
 /**
  * Bulk Asynchronous ACC. Can act on the ordinary tuple space. Only bulk
@@ -40,7 +41,7 @@ public interface BulkAsynchACC extends RootACC {
      * case no tuples match. Matching tuples are removed from the space.
      * 
      * @param tid
-     *            the TucsonTupleCentreId of the target tuple centre
+     *            the TupleCentreId of the target tuple centre
      * @param tuple
      *            the tuple template to be used to retrieve tuples
      * @param l
@@ -56,13 +57,13 @@ public interface BulkAsynchACC extends RootACC {
      * @throws UnreachableNodeException
      *             if the target tuple centre is not reachable over the network
      * 
-     * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
+     * @see alice.tuplecentre.api.TupleCentreId TupleCentreId
      * @see alice.tucson.api.TucsonOperationCompletionListener
      *      TucsonOperationCompletionListener
      * @see alice.tucson.api.ITucsonOperation ITucsonOperation
      * @see alice.tuprolog.Struct Struct
      */
-    ITucsonOperation inAll(Object tid, LogicTuple tuple,
+    ITucsonOperation inAll(TupleCentreId tid, Tuple tuple,
             TucsonOperationCompletionListener l)
             throws TucsonOperationNotPossibleException,
             UnreachableNodeException;
@@ -75,7 +76,7 @@ public interface BulkAsynchACC extends RootACC {
      * only one non-deterministically selected is returned).
      * 
      * @param tid
-     *            the TucsonTupleCentreId of the target tuple centre
+     *            the TupleCentreId of the target tuple centre
      * @param tuple
      *            the tuple template to be used to check absence
      * @param l
@@ -91,13 +92,13 @@ public interface BulkAsynchACC extends RootACC {
      * @throws UnreachableNodeException
      *             if the target tuple centre is not reachable over the network
      * 
-     * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
+     * @see alice.tuplecentre.api.TupleCentreId TupleCentreId
      * @see alice.tucson.api.TucsonOperationCompletionListener
      *      TucsonOperationCompletionListener
      * @see alice.tucson.api.ITucsonOperation ITucsonOperation
      * @see alice.tuprolog.Struct Struct
      */
-    ITucsonOperation noAll(Object tid, LogicTuple tuple,
+    ITucsonOperation noAll(TupleCentreId tid, Tuple tuple,
             TucsonOperationCompletionListener l)
             throws TucsonOperationNotPossibleException,
             UnreachableNodeException;
@@ -107,7 +108,7 @@ public interface BulkAsynchACC extends RootACC {
      * step).
      * 
      * @param tid
-     *            the TucsonTupleCentreId of the target tuple centre
+     *            the TupleCentreId of the target tuple centre
      * @param tuple
      *            the list of tuples to inject (must be a Prolog list)
      * @param l
@@ -123,13 +124,13 @@ public interface BulkAsynchACC extends RootACC {
      * @throws UnreachableNodeException
      *             if the target tuple centre is not reachable over the network
      * 
-     * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
+     * @see alice.tuplecentre.api.TupleCentreId TupleCentreId
      * @see alice.tucson.api.TucsonOperationCompletionListener
      *      TucsonOperationCompletionListener
      * @see alice.tucson.api.ITucsonOperation ITucsonOperation
      * @see alice.tuprolog.Struct Struct
      */
-    ITucsonOperation outAll(Object tid, LogicTuple tuple,
+    ITucsonOperation outAll(TupleCentreId tid, Tuple tuple,
             TucsonOperationCompletionListener l)
             throws TucsonOperationNotPossibleException,
             UnreachableNodeException;
@@ -140,7 +141,7 @@ public interface BulkAsynchACC extends RootACC {
      * no tuples match. Matching tuples are NOT removed from the space.
      * 
      * @param tid
-     *            the TucsonTupleCentreId of the target tuple centre
+     *            the TupleCentreId of the target tuple centre
      * @param tuple
      *            the tuple template to be used to observe tuples
      * @param l
@@ -156,13 +157,13 @@ public interface BulkAsynchACC extends RootACC {
      * @throws UnreachableNodeException
      *             if the target tuple centre is not reachable over the network
      * 
-     * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
+     * @see alice.tuplecentre.api.TupleCentreId TupleCentreId
      * @see alice.tucson.api.TucsonOperationCompletionListener
      *      TucsonOperationCompletionListener
      * @see alice.tucson.api.ITucsonOperation ITucsonOperation
      * @see alice.tuprolog.Struct Struct
      */
-    ITucsonOperation rdAll(Object tid, LogicTuple tuple,
+    ITucsonOperation rdAll(TupleCentreId tid, Tuple tuple,
             TucsonOperationCompletionListener l)
             throws TucsonOperationNotPossibleException,
             UnreachableNodeException;

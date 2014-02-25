@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.Map;
 
 import alice.logictuple.LogicTuple;
-import alice.logictuple.exceptions.InvalidTupleOperationException;
 import alice.tucson.api.TucsonAgentId;
 import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
@@ -35,6 +34,7 @@ import alice.tucson.network.TucsonMsgRequest;
 import alice.tucson.network.exceptions.DialogException;
 import alice.tuplecentre.api.ITupleCentreOperation;
 import alice.tuplecentre.api.Tuple;
+import alice.tuplecentre.api.exceptions.InvalidOperationException;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 import alice.tuplecentre.core.AbstractTupleCentreOperation;
 
@@ -478,7 +478,7 @@ public class ACCProxyNodeSide extends AbstractACCProxyNodeSide {
                     } catch (final TucsonOperationNotPossibleException e) {
                         System.err.println("[ACCProxyNodeSide]: " + e);
                         break;
-                    } catch (final InvalidTupleOperationException e) {
+                    } catch (final InvalidOperationException e) {
                         System.err.println("[ACCProxyNodeSide]: " + e);
                         break;
                     } catch (final OperationTimeOutException e) {

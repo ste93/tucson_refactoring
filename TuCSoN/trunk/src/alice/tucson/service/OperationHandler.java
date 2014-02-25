@@ -26,6 +26,9 @@ import alice.tuplecentre.api.Tuple;
 import alice.tuplecentre.api.TupleTemplate;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 import alice.tuplecentre.core.TCCycleResult.Outcome;
+import alice.tuples.javatuples.impl.JTuple;
+import alice.tuples.javatuples.impl.JTupleTemplate;
+import alice.tuples.javatuples.impl.JTuplesEngine;
 import alice.tuprolog.Prolog;
 import alice.tuprolog.lib.InvalidObjectIdException;
 
@@ -229,7 +232,7 @@ public class OperationHandler {
          */
         private LogicTuple
                 unify(final TupleTemplate template, final Tuple tuple) {
-            final boolean res = template.propagate(this.p, tuple);
+            final boolean res = template.propagate(tuple);
             if (res) {
                 return (LogicTuple) template;
             }
@@ -374,11 +377,10 @@ public class OperationHandler {
      * 
      * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
      */
-    public ITucsonOperation
-            doBlockingOperation(final TucsonAgentId aid, final int type,
-                    final Object tid, final LogicTuple t, final Long ms)
-                    throws TucsonOperationNotPossibleException,
-                    UnreachableNodeException, OperationTimeOutException {
+    public ITucsonOperation doBlockingOperation(final TucsonAgentId aid,
+            final int type, final Object tid, final Tuple t, final Long ms)
+            throws TucsonOperationNotPossibleException,
+            UnreachableNodeException, OperationTimeOutException {
 
         TucsonTupleCentreId tcid = null;
         if ("alice.tucson.api.TucsonTupleCentreId".equals(tid.getClass()
@@ -453,7 +455,7 @@ public class OperationHandler {
      * @see alice.tucson.api.ITucsonOperation ITucsonOperation
      */
     public ITucsonOperation doNonBlockingOperation(final TucsonAgentId aid,
-            final int type, final Object tid, final LogicTuple t,
+            final int type, final Object tid, final Tuple t,
             final TucsonOperationCompletionListener l)
             throws TucsonOperationNotPossibleException,
             UnreachableNodeException {
@@ -550,10 +552,23 @@ public class OperationHandler {
      */
     protected synchronized ITucsonOperation doOperation(
             final TucsonAgentId aid, final TucsonTupleCentreId tcid,
-            final int type, final LogicTuple t,
+            final int type, final Tuple t,
             final TucsonOperationCompletionListener l)
             throws TucsonOperationNotPossibleException,
             UnreachableNodeException {
+
+        // this.log("t = " + t);
+        Tuple tupl = null;
+        if (t instanceof LogicTuple) {
+            tupl = t;
+        } else if (t instanceof JTuple) {
+            tupl = JTuplesEngine.toLogicTuple((JTuple) t);
+        } else if (t instanceof JTupleTemplate) {
+            tupl = JTuplesEngine.toLogicTuple((JTupleTemplate) t);
+        } else {
+            this.log("wtf");
+        }
+        // this.log("tupl = " + tupl);
 
         int nTry = 0;
         boolean exception;
@@ -578,9 +593,10 @@ public class OperationHandler {
                     || (type == TucsonOperation.setCode())
                     || (type == TucsonOperation.outAllCode())
                     || (type == TucsonOperation.spawnCode())) {
-                op = new TucsonOperation(type, (Tuple) t, l, this);
+                // maybe tupl should be TupleTemplate, thus here cast to Tuple
+                op = new TucsonOperation(type, tupl, l, this);
             } else {
-                op = new TucsonOperation(type, t, l, this);
+                op = new TucsonOperation(type, (TupleTemplate) tupl, l, this);
             }
             // put invoked ops in pending list
             synchronized (this.operations) {

@@ -23,9 +23,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 
 import alice.logictuple.LogicTuple;
-import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.tucson.introspection.GetSnapshotMsg;
 import alice.tucson.introspection.InspectorProtocol;
+import alice.tuplecentre.api.exceptions.InvalidTupleException;
 
 /**
  * 
@@ -123,7 +123,7 @@ public class EventViewer extends javax.swing.JFrame {
         LogicTuple t = null;
         try {
             t = LogicTuple.parse(st);
-        } catch (final InvalidLogicTupleException e) {
+        } catch (final InvalidTupleException e) {
             this.outputState
                     .setText("Please input an admissible tuple template...");
         }
@@ -148,7 +148,7 @@ public class EventViewer extends javax.swing.JFrame {
                 this.context.setProtocol(this.mainForm.protocol);
             }
             this.buttonGetActionPerformed();
-        } catch (final InvalidLogicTupleException e) {
+        } catch (final InvalidTupleException e) {
             this.outputState
                     .setText("Given template is not an admissible Prolog term.");
         } catch (final IOException e) {

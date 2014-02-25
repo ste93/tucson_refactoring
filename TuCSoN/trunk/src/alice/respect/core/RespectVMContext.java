@@ -25,10 +25,9 @@ import java.util.Random;
 import java.util.Timer;
 
 import alice.logictuple.LogicTuple;
+import alice.logictuple.LogicTupleOpManager;
 import alice.logictuple.TupleArgument;
 import alice.logictuple.Value;
-import alice.logictuple.exceptions.InvalidLogicTupleException;
-import alice.logictuple.exceptions.InvalidTupleOperationException;
 import alice.respect.api.ILinkContext;
 import alice.respect.api.IRespectTC;
 import alice.respect.api.RespectSpecification;
@@ -43,13 +42,14 @@ import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.introspection.WSetEvent;
-import alice.tucson.parsing.MyOpManager;
 import alice.tucson.service.Spawn2PLibrary;
 import alice.tucson.service.Spawn2PSolver;
 import alice.tuplecentre.api.AgentId;
 import alice.tuplecentre.api.IId;
 import alice.tuplecentre.api.Tuple;
 import alice.tuplecentre.api.TupleTemplate;
+import alice.tuplecentre.api.exceptions.InvalidOperationException;
+import alice.tuplecentre.api.exceptions.InvalidTupleException;
 import alice.tuplecentre.core.AbstractBehaviourSpecification;
 import alice.tuplecentre.core.AbstractEvent;
 import alice.tuplecentre.core.AbstractTupleCentreOperation;
@@ -260,7 +260,7 @@ public class RespectVMContext extends
                 this.tSet.add(new LogicTuple(tuple.getArg(0)));
                 list.add(new LogicTuple(tuple.getArg(0)));
                 tuple = new LogicTuple(tuple.getArg(1));
-            } catch (final InvalidTupleOperationException e) {
+            } catch (final InvalidOperationException e) {
                 e.printStackTrace();
             }
         }
@@ -284,7 +284,7 @@ public class RespectVMContext extends
             } else {
                 tuple = t;
             }
-        } catch (final InvalidTupleOperationException e) {
+        } catch (final InvalidOperationException e) {
             e.printStackTrace();
         }
         // FIXME LogicTuple > Tuple in all Cicora's API
@@ -1072,7 +1072,7 @@ public class RespectVMContext extends
                     }
                 }
 
-            } catch (final InvalidTupleOperationException e) {
+            } catch (final InvalidOperationException e) {
                 e.printStackTrace();
                 this.trigCore.solveEnd();
             } catch (final NoSolutionException e) {
@@ -1479,7 +1479,7 @@ public class RespectVMContext extends
             engine.solve("retractall(reaction(X,Y,Z)).");
             engine.solveEnd();
             final Parser parser =
-                    new Parser(new MyOpManager(), spec.toString());
+                    new Parser(new LogicTupleOpManager(), spec.toString());
             Term term = parser.nextTerm(true);
             while (term != null) {
                 engine.solve("assert(" + term + ").");
@@ -1552,10 +1552,9 @@ public class RespectVMContext extends
                 try {
                     logicTuple = LogicTuple.parse(tupla);
                     final RespectOperation op =
-                            RespectOperation.makeRd(this.getPrologCore(),
-                                    logicTuple, null);
+                            RespectOperation.makeRd(logicTuple, null);
                     this.vm.doOperation(null, op);
-                } catch (final InvalidLogicTupleException e) {
+                } catch (final InvalidTupleException e) {
                     e.printStackTrace();
                 } catch (final OperationNotPossibleException e) {
                     e.printStackTrace();
@@ -1569,10 +1568,9 @@ public class RespectVMContext extends
                 try {
                     logicTuple = LogicTuple.parse(tupla);
                     final RespectOperation op =
-                            RespectOperation.makeIn(this.getPrologCore(),
-                                    logicTuple, null);
+                            RespectOperation.makeIn(logicTuple, null);
                     this.vm.doOperation(null, op);
-                } catch (final InvalidLogicTupleException e) {
+                } catch (final InvalidTupleException e) {
                     e.printStackTrace();
                 } catch (final OperationNotPossibleException e) {
                     e.printStackTrace();
@@ -1733,7 +1731,7 @@ public class RespectVMContext extends
                             + e.clause + ", l: " + e.line + ", p: " + e.pos);
             e.printStackTrace();
             return false;
-        } catch (final InvalidTupleOperationException e) {
+        } catch (final InvalidOperationException e) {
             e.printStackTrace();
             return false;
         }
@@ -1811,9 +1809,8 @@ public class RespectVMContext extends
                 }
                 currTimer.schedule(
                         new RespectTimerTask(this, RespectOperation.makeTime(
-                                this.getPrologCore(), new LogicTuple("time",
-                                        new TupleArgument(current)), null)),
-                        delay);
+                                new LogicTuple("time", new TupleArgument(
+                                        current)), null)), delay);
             }
             return true;
 
@@ -1901,9 +1898,8 @@ public class RespectVMContext extends
                 }
                 currTimer.schedule(
                         new RespectTimerTask(this, RespectOperation.makeTime(
-                                this.getPrologCore(), new LogicTuple("time",
-                                        new TupleArgument(current)), null)),
-                        delay);
+                                new LogicTuple("time", new TupleArgument(
+                                        current)), null)), delay);
             }
             return true;
 

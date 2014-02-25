@@ -16,14 +16,14 @@ import java.util.List;
 
 import alice.logictuple.LogicTuple;
 import alice.logictuple.TupleArgument;
-import alice.logictuple.exceptions.InvalidLogicTupleException;
-import alice.logictuple.exceptions.InvalidTupleOperationException;
 import alice.respect.api.IRespectOperation;
 import alice.respect.api.IRespectTC;
 import alice.respect.api.ITimedContext;
 import alice.respect.api.exceptions.OperationNotPossibleException;
 import alice.respect.api.exceptions.OperationTimeOutException;
 import alice.tuplecentre.api.IId;
+import alice.tuplecentre.api.exceptions.InvalidOperationException;
+import alice.tuplecentre.api.exceptions.InvalidTupleException;
 
 /**
  * 
@@ -56,10 +56,10 @@ public class TimedContext extends RootInterface implements ITimedContext {
     }
 
     public LogicTuple in(final IId id, final LogicTuple t, final long ms)
-            throws InvalidLogicTupleException, OperationNotPossibleException,
+            throws InvalidTupleException, OperationNotPossibleException,
             OperationTimeOutException {
         if (t == null) {
-            throw new InvalidLogicTupleException();
+            throw new InvalidTupleException();
         }
         final IRespectOperation op = this.getCore().in(id, t);
         try {
@@ -71,13 +71,13 @@ public class TimedContext extends RootInterface implements ITimedContext {
     }
 
     public LogicTuple inAll(final IId aid, final LogicTuple t, final long ms)
-            throws InvalidLogicTupleException, OperationNotPossibleException,
+            throws InvalidTupleException, OperationNotPossibleException,
             OperationTimeOutException {
         IRespectOperation op = null;
         TupleArgument arg = null;
         try {
             if (t == null) {
-                throw new InvalidLogicTupleException();
+                throw new InvalidTupleException();
             } else if (",".equals(t.getName()) && (t.getArity() == 2)) {
                 op = this.getCore().inAll(aid, new LogicTuple(t.getArg(0)));
             } else {
@@ -94,17 +94,17 @@ public class TimedContext extends RootInterface implements ITimedContext {
                         new TupleArgument(arg.toTerm())), op
                         .getLogicTupleResult());
             }
-        } catch (final InvalidTupleOperationException e2) {
+        } catch (final InvalidOperationException e2) {
             throw new OperationNotPossibleException();
         }
         return op.getLogicTupleResult();
     }
 
     public LogicTuple inp(final IId id, final LogicTuple t, final long ms)
-            throws InvalidLogicTupleException, OperationNotPossibleException,
+            throws InvalidTupleException, OperationNotPossibleException,
             OperationTimeOutException {
         if (t == null) {
-            throw new InvalidLogicTupleException();
+            throw new InvalidTupleException();
         }
         final IRespectOperation op = this.getCore().inp(id, t);
         try {
@@ -116,10 +116,10 @@ public class TimedContext extends RootInterface implements ITimedContext {
     }
 
     public LogicTuple no(final IId id, final LogicTuple t, final long ms)
-            throws InvalidLogicTupleException, OperationNotPossibleException,
+            throws InvalidTupleException, OperationNotPossibleException,
             OperationTimeOutException {
         if (t == null) {
-            throw new InvalidLogicTupleException();
+            throw new InvalidTupleException();
         }
         final IRespectOperation op = this.getCore().no(id, t);
         try {
@@ -131,13 +131,13 @@ public class TimedContext extends RootInterface implements ITimedContext {
     }
 
     public LogicTuple noAll(final IId aid, final LogicTuple t, final long ms)
-            throws InvalidLogicTupleException, OperationNotPossibleException,
+            throws InvalidTupleException, OperationNotPossibleException,
             OperationTimeOutException {
         IRespectOperation op = null;
         TupleArgument arg = null;
         try {
             if (t == null) {
-                throw new InvalidLogicTupleException();
+                throw new InvalidTupleException();
             } else if (",".equals(t.getName()) && (t.getArity() == 2)) {
                 op = this.getCore().noAll(aid, new LogicTuple(t.getArg(0)));
             } else {
@@ -154,17 +154,17 @@ public class TimedContext extends RootInterface implements ITimedContext {
                         new TupleArgument(arg.toTerm())), op
                         .getLogicTupleResult());
             }
-        } catch (final InvalidTupleOperationException e2) {
+        } catch (final InvalidOperationException e2) {
             throw new OperationNotPossibleException();
         }
         return op.getLogicTupleResult();
     }
 
     public LogicTuple nop(final IId id, final LogicTuple t, final long ms)
-            throws InvalidLogicTupleException, OperationNotPossibleException,
+            throws InvalidTupleException, OperationNotPossibleException,
             OperationTimeOutException {
         if (t == null) {
-            throw new InvalidLogicTupleException();
+            throw new InvalidTupleException();
         }
         final IRespectOperation op = this.getCore().nop(id, t);
         try {
@@ -176,10 +176,10 @@ public class TimedContext extends RootInterface implements ITimedContext {
     }
 
     public void out(final IId id, final LogicTuple t, final long ms)
-            throws InvalidLogicTupleException, OperationNotPossibleException,
+            throws InvalidTupleException, OperationNotPossibleException,
             OperationTimeOutException {
         if (t == null) {
-            throw new InvalidLogicTupleException();
+            throw new InvalidTupleException();
         }
         final IRespectOperation op = this.getCore().out(id, t);
         try {
@@ -190,10 +190,10 @@ public class TimedContext extends RootInterface implements ITimedContext {
     }
 
     public void outAll(final IId id, final LogicTuple t, final long ms)
-            throws InvalidLogicTupleException, OperationNotPossibleException,
+            throws InvalidTupleException, OperationNotPossibleException,
             OperationTimeOutException {
         if (t == null) {
-            throw new InvalidLogicTupleException();
+            throw new InvalidTupleException();
         }
         final IRespectOperation op = this.getCore().outAll(id, t);
         try {
@@ -204,10 +204,10 @@ public class TimedContext extends RootInterface implements ITimedContext {
     }
 
     public LogicTuple rd(final IId id, final LogicTuple t, final long ms)
-            throws InvalidLogicTupleException, OperationNotPossibleException,
+            throws InvalidTupleException, OperationNotPossibleException,
             OperationTimeOutException {
         if (t == null) {
-            throw new InvalidLogicTupleException();
+            throw new InvalidTupleException();
         }
         final IRespectOperation op = this.getCore().rd(id, t);
         try {
@@ -219,13 +219,13 @@ public class TimedContext extends RootInterface implements ITimedContext {
     }
 
     public LogicTuple rdAll(final IId aid, final LogicTuple t, final long ms)
-            throws InvalidLogicTupleException, OperationNotPossibleException,
+            throws InvalidTupleException, OperationNotPossibleException,
             OperationTimeOutException {
         IRespectOperation op = null;
         TupleArgument arg = null;
         try {
             if (t == null) {
-                throw new InvalidLogicTupleException();
+                throw new InvalidTupleException();
             } else if (",".equals(t.getName()) && (t.getArity() == 2)) {
                 op = this.getCore().rdAll(aid, new LogicTuple(t.getArg(0)));
             } else {
@@ -242,17 +242,17 @@ public class TimedContext extends RootInterface implements ITimedContext {
                         new TupleArgument(arg.toTerm())), op
                         .getLogicTupleResult());
             }
-        } catch (final InvalidTupleOperationException e2) {
+        } catch (final InvalidOperationException e2) {
             throw new OperationNotPossibleException();
         }
         return op.getLogicTupleResult();
     }
 
     public LogicTuple rdp(final IId id, final LogicTuple t, final long ms)
-            throws InvalidLogicTupleException, OperationNotPossibleException,
+            throws InvalidTupleException, OperationNotPossibleException,
             OperationTimeOutException {
         if (t == null) {
-            throw new InvalidLogicTupleException();
+            throw new InvalidTupleException();
         }
         final IRespectOperation op = this.getCore().rdp(id, t);
         try {
@@ -265,7 +265,7 @@ public class TimedContext extends RootInterface implements ITimedContext {
 
     public List<LogicTuple> set(final IId aid, final LogicTuple tuple,
             final long ms) throws OperationNotPossibleException,
-            InvalidLogicTupleException, OperationTimeOutException {
+            InvalidTupleException, OperationTimeOutException {
         final IRespectOperation op = this.getCore().set(aid, tuple);
         try {
             op.waitForOperationCompletion(ms);
@@ -276,10 +276,10 @@ public class TimedContext extends RootInterface implements ITimedContext {
     }
 
     public LogicTuple spawn(final IId aid, final LogicTuple t, final long ms)
-            throws InvalidLogicTupleException, OperationNotPossibleException,
+            throws InvalidTupleException, OperationNotPossibleException,
             OperationTimeOutException {
         if (t == null) {
-            throw new InvalidLogicTupleException();
+            throw new InvalidTupleException();
         }
         final IRespectOperation op = this.getCore().spawn(aid, t);
         try {
@@ -291,10 +291,10 @@ public class TimedContext extends RootInterface implements ITimedContext {
     }
 
     public LogicTuple uin(final IId id, final LogicTuple t, final long ms)
-            throws InvalidLogicTupleException, OperationNotPossibleException,
+            throws InvalidTupleException, OperationNotPossibleException,
             OperationTimeOutException {
         if (t == null) {
-            throw new InvalidLogicTupleException();
+            throw new InvalidTupleException();
         }
         final IRespectOperation op = this.getCore().uin(id, t);
         try {
@@ -306,10 +306,10 @@ public class TimedContext extends RootInterface implements ITimedContext {
     }
 
     public LogicTuple uinp(final IId id, final LogicTuple t, final long ms)
-            throws InvalidLogicTupleException, OperationNotPossibleException,
+            throws InvalidTupleException, OperationNotPossibleException,
             OperationTimeOutException {
         if (t == null) {
-            throw new InvalidLogicTupleException();
+            throw new InvalidTupleException();
         }
         final IRespectOperation op = this.getCore().uinp(id, t);
         try {
@@ -322,10 +322,10 @@ public class TimedContext extends RootInterface implements ITimedContext {
     }
 
     public LogicTuple uno(final IId id, final LogicTuple t, final long ms)
-            throws InvalidLogicTupleException, OperationNotPossibleException,
+            throws InvalidTupleException, OperationNotPossibleException,
             OperationTimeOutException {
         if (t == null) {
-            throw new InvalidLogicTupleException();
+            throw new InvalidTupleException();
         }
         final IRespectOperation op = this.getCore().uno(id, t);
         try {
@@ -337,10 +337,10 @@ public class TimedContext extends RootInterface implements ITimedContext {
     }
 
     public LogicTuple unop(final IId id, final LogicTuple t, final long ms)
-            throws InvalidLogicTupleException, OperationNotPossibleException,
+            throws InvalidTupleException, OperationNotPossibleException,
             OperationTimeOutException {
         if (t == null) {
-            throw new InvalidLogicTupleException();
+            throw new InvalidTupleException();
         }
         final IRespectOperation op = this.getCore().unop(id, t);
         try {
@@ -353,10 +353,10 @@ public class TimedContext extends RootInterface implements ITimedContext {
     }
 
     public LogicTuple urd(final IId id, final LogicTuple t, final long ms)
-            throws InvalidLogicTupleException, OperationNotPossibleException,
+            throws InvalidTupleException, OperationNotPossibleException,
             OperationTimeOutException {
         if (t == null) {
-            throw new InvalidLogicTupleException();
+            throw new InvalidTupleException();
         }
         final IRespectOperation op = this.getCore().urd(id, t);
         try {
@@ -368,10 +368,10 @@ public class TimedContext extends RootInterface implements ITimedContext {
     }
 
     public LogicTuple urdp(final IId id, final LogicTuple t, final long ms)
-            throws InvalidLogicTupleException, OperationNotPossibleException,
+            throws InvalidTupleException, OperationNotPossibleException,
             OperationTimeOutException {
         if (t == null) {
-            throw new InvalidLogicTupleException();
+            throw new InvalidTupleException();
         }
         final IRespectOperation op = this.getCore().urdp(id, t);
         try {

@@ -4,9 +4,9 @@ import java.math.BigInteger;
 
 import alice.logictuple.LogicTuple;
 import alice.logictuple.TupleArgument;
-import alice.logictuple.exceptions.InvalidLogicTupleException;
-import alice.logictuple.exceptions.InvalidTupleOperationException;
 import alice.tucson.api.AbstractSpawnActivity;
+import alice.tuplecentre.api.exceptions.InvalidOperationException;
+import alice.tuplecentre.api.exceptions.InvalidTupleException;
 
 /**
  * 
@@ -50,10 +50,10 @@ public class SpawnedWorkingActivity extends AbstractSpawnActivity {
                             + job.getArg("reqID").getArg(0) + ")" + ")");
             this.log("Putting result: " + res.toString());
             this.out(res);
-        } catch (final InvalidLogicTupleException e) {
+        } catch (final InvalidTupleException e) {
             this.log("ERROR: Tuple is not an admissible Prolog term!");
             e.printStackTrace();
-        } catch (final InvalidTupleOperationException e) {
+        } catch (final InvalidOperationException e) {
             this.log("ERROR: No tuple arguments to retrieve!");
             e.printStackTrace();
         }
@@ -64,7 +64,7 @@ public class SpawnedWorkingActivity extends AbstractSpawnActivity {
             final int num = varValue.intValue();
             this.log("Computing factorial for: " + num + "...");
             return this.factorial(num);
-        } catch (final InvalidTupleOperationException e) {
+        } catch (final InvalidOperationException e) {
             this.log("Not an Integer value, killing myself...");
             return new BigInteger("-1");
         }

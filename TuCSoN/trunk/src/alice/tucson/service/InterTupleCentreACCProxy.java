@@ -213,7 +213,7 @@ public class InterTupleCentreACCProxy implements InterTupleCentreACC,
 
         private LogicTuple
                 unify(final TupleTemplate template, final Tuple tuple) {
-            final boolean res = template.propagate(this.p, tuple);
+            final boolean res = template.propagate(tuple);
             if (res) {
                 return (LogicTuple) template;
             }

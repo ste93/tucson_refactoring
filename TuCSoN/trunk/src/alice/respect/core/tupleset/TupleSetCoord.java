@@ -16,9 +16,9 @@ import java.util.LinkedList;
 
 import alice.logictuple.LogicTuple;
 import alice.logictuple.TupleArgument;
-import alice.logictuple.exceptions.InvalidLogicTupleException;
-import alice.logictuple.exceptions.InvalidTupleOperationException;
 import alice.respect.core.collection.DoubleKeyMVMap;
+import alice.tuplecentre.api.exceptions.InvalidOperationException;
+import alice.tuplecentre.api.exceptions.InvalidTupleException;
 
 /**
  * 
@@ -43,8 +43,7 @@ public class TupleSetCoord extends AbstractTupleSet {
      * arity.
      */
     @Override
-    public String getTupleKey1(final LogicTuple t)
-            throws alice.logictuple.exceptions.InvalidLogicTupleException {
+    public String getTupleKey1(final LogicTuple t) throws InvalidTupleException {
         try {
             final TupleArgument ta = t.getVarValue(null);
             if (ta != null) {
@@ -52,8 +51,8 @@ public class TupleSetCoord extends AbstractTupleSet {
             }
             return t.getPredicateIndicator();
 
-        } catch (final InvalidTupleOperationException e) {
-            throw new alice.logictuple.exceptions.InvalidLogicTupleException();
+        } catch (final InvalidOperationException e) {
+            throw new InvalidTupleException();
         }
     }
 
@@ -63,8 +62,7 @@ public class TupleSetCoord extends AbstractTupleSet {
      * stored whit a special key.
      * */
     @Override
-    public String getTupleKey2(final LogicTuple t)
-            throws InvalidLogicTupleException {
+    public String getTupleKey2(final LogicTuple t) throws InvalidTupleException {
 
         try {
             TupleArgument tArg = t.getVarValue(null);
@@ -98,8 +96,8 @@ public class TupleSetCoord extends AbstractTupleSet {
                 return "";
             }
 
-        } catch (final InvalidTupleOperationException e) {
-            throw new alice.logictuple.exceptions.InvalidLogicTupleException();
+        } catch (final InvalidOperationException e) {
+            throw new InvalidTupleException();
         }
     }
 

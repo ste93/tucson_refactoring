@@ -17,6 +17,7 @@ import java.util.List;
 
 import alice.logictuple.LogicTuple;
 import alice.tuplecentre.api.ITupleCentreOperation;
+import alice.tuplecentre.api.Tuple;
 
 /**
  * TucsonOperation interface, to access the data about TuCSoN operations
@@ -28,6 +29,24 @@ import alice.tuplecentre.api.ITupleCentreOperation;
  * @author ste (mailto: s.mariani@unibo.it)
  */
 public interface ITucsonOperation extends ITupleCentreOperation {
+
+    /**
+     * 
+     * @return the JTuple argument of this TuCSoN operation
+     */
+    Tuple getJTupleArgument();
+
+    /**
+     * 
+     * @return the list if JTuples result of this TuCSoN operation
+     */
+    List<Tuple> getJTupleListResult();
+
+    /**
+     * 
+     * @return the JTuple result of this TuCSoN operation
+     */
+    Tuple getJTupleResult();
 
     /**
      * Gets the tuple argument used in the operation.

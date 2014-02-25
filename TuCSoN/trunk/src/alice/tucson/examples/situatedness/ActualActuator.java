@@ -4,8 +4,7 @@
 package alice.tucson.examples.situatedness;
 
 import alice.logictuple.LogicTuple;
-import alice.logictuple.exceptions.InvalidLogicTupleException;
-import alice.respect.core.TransducerManager;
+import alice.respect.core.TransducersManager;
 import alice.respect.situatedness.AbstractProbeId;
 import alice.respect.situatedness.AbstractTransducer;
 import alice.respect.situatedness.ISimpleProbe;
@@ -20,6 +19,7 @@ import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
+import alice.tuplecentre.api.exceptions.InvalidTupleException;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 
 /**
@@ -116,7 +116,7 @@ public class ActualActuator implements ISimpleProbe {
         }
         if (this.transducer == null) {
             this.transducer =
-                    TransducerManager.INSTANCE.getTransducer(this.tid
+                    TransducersManager.INSTANCE.getTransducer(this.tid
                             .getAgentName());
             if (this.transducer == null) {
                 System.err.println("[" + this.pid
@@ -143,7 +143,7 @@ public class ActualActuator implements ISimpleProbe {
             e.printStackTrace();
         } catch (final OperationTimeOutException e) {
             e.printStackTrace();
-        } catch (final InvalidLogicTupleException e) {
+        } catch (final InvalidTupleException e) {
             e.printStackTrace();
         }
         return false;

@@ -6,7 +6,6 @@ import java.util.Map;
 
 import alice.logictuple.LogicTuple;
 import alice.logictuple.Value;
-import alice.logictuple.exceptions.InvalidTupleOperationException;
 import alice.respect.core.InternalEvent;
 import alice.respect.core.RespectOperation;
 import alice.tucson.api.TucsonOperationCompletionListener;
@@ -19,6 +18,7 @@ import alice.tucson.service.OperationHandler;
 import alice.tucson.service.TucsonOperation;
 import alice.tuplecentre.api.TupleCentreId;
 import alice.tuplecentre.api.TupleTemplate;
+import alice.tuplecentre.api.exceptions.InvalidOperationException;
 
 /**
  * This class implements some common behavior of transducers and defines some
@@ -220,7 +220,7 @@ public abstract class AbstractTransducer implements
                                 .getArgument().getArg(1).toString());
                 return this.setEnv(key, value);
             }
-        } catch (final InvalidTupleOperationException e) {
+        } catch (final InvalidOperationException e) {
             e.printStackTrace();
             return false;
         }

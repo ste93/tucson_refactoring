@@ -13,21 +13,21 @@ runHelloWorld(Aid, Where):-
         write("Failure:("), nl
     ),
     releaseACC.
-
+    
 % acquireACC(+Aid):- acquires the (default) ACC, necessary to 
 % interact with a TuCSoN node.
 acquireACC(Aid):-
     write("Acquiring ACC as <"), write(Aid), write(">..."), nl,
-    get_context(Aid),
+    acquire_acc(Aid),
     write("ACC acquired."), nl.
-
+    
 % writeHello(+Where):- writes the <hello(world)> tuple in the
 % given TuCSoN tuple centre.
 writeHello(Where):-
     write("Writing tuple..."), nl,
     out(hello(world), Where),
     write("Tuple written."), nl.
-
+    
 % readHello(+Where, -Res):- reads the <hello(world)> tuple from
 % the given TuCSoN tuple centre, blocking if necessary.
 readHello(Where, Res):-
@@ -35,9 +35,9 @@ readHello(Where, Res):-
     rd(hello(world), Where),
     write("Tuple read."), nl,
     Res = hello(world).
-
+    
 % releaseACC:- releases the ACC held, if any.
 releaseACC:-
     write("Releasing ACC..."), nl,
-    exit,
+    release_acc,
     write("ACC released."), nl.

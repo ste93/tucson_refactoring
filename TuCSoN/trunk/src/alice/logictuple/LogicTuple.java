@@ -13,11 +13,9 @@
  */
 package alice.logictuple;
 
-import alice.logictuple.exceptions.InvalidLogicTupleException;
-import alice.logictuple.exceptions.InvalidTupleOperationException;
-import alice.tucson.parsing.MyOpManager;
+import alice.tuplecentre.api.exceptions.InvalidOperationException;
+import alice.tuplecentre.api.exceptions.InvalidTupleException;
 import alice.tuprolog.InvalidTermException;
-import alice.tuprolog.Prolog;
 import alice.tuprolog.Term;
 
 /**
@@ -46,17 +44,18 @@ public class LogicTuple implements alice.tuplecentre.api.TupleTemplate,
      * @param st
      *            the text representing the tuple
      * @return the logic tuple interpreted from the text
-     * @exception InvalidLogicTupleException
+     * @exception InvalidTupleException
      *                if the text does not represent a valid logic tuple
      */
     public static LogicTuple parse(final String st)
-            throws InvalidLogicTupleException {
+            throws InvalidTupleException {
         try {
             final Term t =
-                    alice.tuprolog.Term.createTerm(st, new MyOpManager());
+                    alice.tuprolog.Term.createTerm(st,
+                            new LogicTupleOpManager());
             return new LogicTuple(new TupleArgument(t));
         } catch (final InvalidTermException ex) {
-            throw new InvalidLogicTupleException();
+            throw new InvalidTupleException();
         }
     }
 
@@ -259,11 +258,11 @@ public class LogicTuple implements alice.tuplecentre.api.TupleTemplate,
      * @param index
      *            the position (index) of the argument
      * @return the tuple argument if it exists, <code>null</code> otherwise
-     * @throws InvalidTupleOperationException
+     * @throws InvalidOperationException
      *             for out of bounds error
      */
     public TupleArgument getArg(final int index)
-            throws InvalidTupleOperationException {
+            throws InvalidOperationException {
         return this.info.getArg(index);
     }
 
@@ -282,11 +281,11 @@ public class LogicTuple implements alice.tuplecentre.api.TupleTemplate,
      * Gets the number of arguments of this argument supposed to be a structure
      * 
      * @return the number of arguments
-     * @throws InvalidTupleOperationException
+     * @throws InvalidOperationException
      *             if this argument is not a structure or an out of bounds index
      *             error is issued
      */
-    public int getArity() throws InvalidTupleOperationException {
+    public int getArity() throws InvalidOperationException {
         return this.info.getArity();
     }
 
@@ -294,10 +293,10 @@ public class LogicTuple implements alice.tuplecentre.api.TupleTemplate,
      * Gets the name of the logic tuple
      * 
      * @return the name of the logic tuple
-     * @throws InvalidTupleOperationException
+     * @throws InvalidOperationException
      *             if the requested operation is not allowed for this tuple
      */
-    public String getName() throws InvalidTupleOperationException {
+    public String getName() throws InvalidOperationException {
         return this.info.getName();
     }
 
@@ -308,11 +307,11 @@ public class LogicTuple implements alice.tuplecentre.api.TupleTemplate,
      * 
      * @return a {@code String} in the form nome/arity.
      * 
-     * @throws InvalidTupleOperationException
+     * @throws InvalidOperationException
      *             if the tuple is not a predicate (e.g. a tuProlog Struct)
      * 
      */
-    public String getPredicateIndicator() throws InvalidTupleOperationException {
+    public String getPredicateIndicator() throws InvalidOperationException {
         return this.info.getPredicateIndicator();
     }
 
@@ -335,19 +334,12 @@ public class LogicTuple implements alice.tuplecentre.api.TupleTemplate,
 
     public boolean match(final alice.tuplecentre.api.Tuple t) {
         final LogicTuple tu = (LogicTuple) t;
-        final Term termA = this.info.toTerm();
-        final Term termB = tu.info.toTerm();
-        return termA.match(termB);
+        return LogicMatchingEngine.match(this, tu);
     }
 
-    public boolean
-            propagate(final Prolog p, final alice.tuplecentre.api.Tuple t) {
+    public boolean propagate(final alice.tuplecentre.api.Tuple t) {
         final LogicTuple tu = (LogicTuple) t;
-        final Term termA = this.info.toTerm();
-        final Term termB = tu.info.toTerm();
-        final boolean result = termA.unify(p, termB);
-
-        return result;
+        return LogicMatchingEngine.propagate(this, tu);
     }
 
     /**

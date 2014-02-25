@@ -10,9 +10,7 @@
 reaction(
     out( createTransducerSensor(Tcid,Tclass,Tid,Pclass,Pid) ),
     response,
-    (
-        out( cmd(createTransducerSensor) )
-    )
+    out( cmd(createTransducerSensor) )
 ).
 
 % Used to create a transducer and an actuator. 
@@ -24,9 +22,7 @@ reaction(
 reaction(
     out( createTransducerActuator(Tcid,Tclass,Tid,Pclass,Pid) ),
     response,
-    (
-        out( cmd(createTransducerActuator) )
-    )
+    out( cmd(createTransducerActuator) )
 ).
 
 % Used to add a sensor. 
@@ -36,9 +32,7 @@ reaction(
 reaction(
     out( addSensor(Class,Pid,Tid) ),
     response,
-    (
-        out( cmd(addSensor) )
-    )
+    out( cmd(addSensor) )
 ).
 
 % Used to add an actuator. 
@@ -48,9 +42,7 @@ reaction(
 reaction(
     out( addActuator(Class,Pid,Tid) ),
     response,
-    (
-        out( cmd(addActuator) )
-    )
+    out( cmd(addActuator) )
 ).
 
 % Used to remove a probe. 
@@ -58,9 +50,7 @@ reaction(
 reaction(
     out( removeResource(Pid) ),
     response,
-    (
-        out( cmd(removeResource) )
-    )
+    out( cmd(removeResource) )
 ).
 
 % Used to change the transducer associated to a probe. 
@@ -69,7 +59,5 @@ reaction(
 reaction(
     out( changeTransducer(Pid,Tid) ),
     response,
-    (
-        out( cmd(changeTransducer) )
-    )
+    out( cmd(changeTransducer) )
 ).

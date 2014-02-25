@@ -18,17 +18,17 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import alice.logictuple.LogicTuple;
-import alice.logictuple.exceptions.InvalidLogicTupleException;
-import alice.logictuple.exceptions.InvalidTupleOperationException;
+import alice.logictuple.LogicTupleOpManager;
 import alice.tucson.api.EnhancedACC;
 import alice.tucson.api.ITucsonOperation;
 import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
-import alice.tucson.parsing.MyOpManager;
 import alice.tucson.parsing.TucsonOpParser;
 import alice.tucson.service.TucsonCmd;
+import alice.tuplecentre.api.exceptions.InvalidOperationException;
+import alice.tuplecentre.api.exceptions.InvalidTupleException;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 import alice.tuprolog.Parser;
 
@@ -368,7 +368,7 @@ public class CLIAgent extends alice.util.Automaton {
                 } else if ("out_s".equals(methodName)) {
                     final LogicTuple t =
                             new LogicTuple(Parser.parseSingleTerm("reaction("
-                                    + tuple + ")", new MyOpManager()));
+                                    + tuple + ")", new LogicTupleOpManager()));
                     CLIAgent.busy();
                     final ITucsonOperation op =
                             this.context
@@ -384,7 +384,7 @@ public class CLIAgent extends alice.util.Automaton {
                 } else if ("in_s".equals(methodName)) {
                     final LogicTuple templ =
                             new LogicTuple(Parser.parseSingleTerm("reaction("
-                                    + tuple + ")", new MyOpManager()));
+                                    + tuple + ")", new LogicTupleOpManager()));
                     CLIAgent.busy();
                     final ITucsonOperation op =
                             this.context.inS(tid,
@@ -400,7 +400,7 @@ public class CLIAgent extends alice.util.Automaton {
                 } else if ("rd_s".equals(methodName)) {
                     final LogicTuple templ =
                             new LogicTuple(Parser.parseSingleTerm("reaction("
-                                    + tuple + ")", new MyOpManager()));
+                                    + tuple + ")", new LogicTupleOpManager()));
                     CLIAgent.busy();
                     final ITucsonOperation op =
                             this.context.rdS(tid,
@@ -416,7 +416,7 @@ public class CLIAgent extends alice.util.Automaton {
                 } else if ("inp_s".equals(methodName)) {
                     final LogicTuple templ =
                             new LogicTuple(Parser.parseSingleTerm("reaction("
-                                    + tuple + ")", new MyOpManager()));
+                                    + tuple + ")", new LogicTupleOpManager()));
                     CLIAgent.busy();
                     final ITucsonOperation op =
                             this.context.inpS(tid,
@@ -432,7 +432,7 @@ public class CLIAgent extends alice.util.Automaton {
                 } else if ("rdp_s".equals(methodName)) {
                     final LogicTuple templ =
                             new LogicTuple(Parser.parseSingleTerm("reaction("
-                                    + tuple + ")", new MyOpManager()));
+                                    + tuple + ")", new LogicTupleOpManager()));
                     CLIAgent.busy();
                     final ITucsonOperation op =
                             this.context.rdpS(tid,
@@ -448,7 +448,7 @@ public class CLIAgent extends alice.util.Automaton {
                 } else if ("no_s".equals(methodName)) {
                     final LogicTuple templ =
                             new LogicTuple(Parser.parseSingleTerm("reaction("
-                                    + tuple + ")", new MyOpManager()));
+                                    + tuple + ")", new LogicTupleOpManager()));
                     CLIAgent.busy();
                     final ITucsonOperation op =
                             this.context.noS(tid,
@@ -464,7 +464,7 @@ public class CLIAgent extends alice.util.Automaton {
                 } else if ("nop_s".equals(methodName)) {
                     final LogicTuple templ =
                             new LogicTuple(Parser.parseSingleTerm("reaction("
-                                    + tuple + ")", new MyOpManager()));
+                                    + tuple + ")", new LogicTupleOpManager()));
                     CLIAgent.busy();
                     final ITucsonOperation op =
                             this.context.nopS(tid,
@@ -480,7 +480,7 @@ public class CLIAgent extends alice.util.Automaton {
                 } else if ("set_s".equals(methodName)) {
                     final LogicTuple templ =
                             new LogicTuple(Parser.parseSingleTerm(tuple,
-                                    new MyOpManager()));
+                                    new LogicTupleOpManager()));
                     CLIAgent.busy();
                     final ITucsonOperation op =
                             this.context.setS(tid, templ, Long.MAX_VALUE);
@@ -551,7 +551,7 @@ public class CLIAgent extends alice.util.Automaton {
                     CLIAgent.error(methodName);
                 }
 
-            } catch (final InvalidLogicTupleException e) {
+            } catch (final InvalidTupleException e) {
                 e.printStackTrace();
             } catch (final TucsonOperationNotPossibleException e) {
                 e.printStackTrace();
@@ -559,7 +559,7 @@ public class CLIAgent extends alice.util.Automaton {
                 e.printStackTrace();
             } catch (final OperationTimeOutException e) {
                 e.printStackTrace();
-            } catch (final InvalidTupleOperationException e) {
+            } catch (final InvalidOperationException e) {
                 e.printStackTrace();
             }
 

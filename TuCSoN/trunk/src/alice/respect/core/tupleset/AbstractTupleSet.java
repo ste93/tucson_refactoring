@@ -6,9 +6,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import alice.logictuple.LogicTuple;
-import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.respect.core.collection.DoubleKeyMVMap;
 import alice.respect.core.collection.MVMap;
+import alice.tuplecentre.api.exceptions.InvalidTupleException;
 import alice.tuprolog.Var;
 
 /**
@@ -91,7 +91,7 @@ public abstract class AbstractTupleSet implements ITupleSet {
             if (this.transaction) {
                 this.tAdded.add(e);
             }
-        } catch (final InvalidLogicTupleException e) {
+        } catch (final InvalidTupleException e) {
             e.printStackTrace();
         }
     }
@@ -160,7 +160,7 @@ public abstract class AbstractTupleSet implements ITupleSet {
                     return new LogicTuple(tu.toTerm().copyGoal(v, 0));
                 }
             }
-        } catch (final InvalidLogicTupleException e) {
+        } catch (final InvalidTupleException e) {
             e.printStackTrace();
         }
         return null;
@@ -205,7 +205,7 @@ public abstract class AbstractTupleSet implements ITupleSet {
                     return new LogicTuple(tu.toTerm().copyGoal(v, 0));
                 }
             }
-        } catch (final InvalidLogicTupleException e) {
+        } catch (final InvalidTupleException e) {
             e.printStackTrace();
         }
         return null;
@@ -219,7 +219,7 @@ public abstract class AbstractTupleSet implements ITupleSet {
             if (res && this.transaction) {
                 this.tRemoved.add(this.createEntry(t));
             }
-        } catch (final InvalidLogicTupleException e) {
+        } catch (final InvalidTupleException e) {
             System.out.println(t.toString());
             e.printStackTrace();
         }
@@ -243,25 +243,25 @@ public abstract class AbstractTupleSet implements ITupleSet {
      * @param t
      *            the LogicTuple whose first key should be retrieved
      * @return the String representation of the retrieved key
-     * @throws alice.logictuple.exceptions.InvalidLogicTupleException
+     * @throws alice.tuplecentre.api.exceptions.InvalidTupleException
      *             if the given tuple is not well formed
      */
     protected abstract String getTupleKey1(LogicTuple t)
-            throws alice.logictuple.exceptions.InvalidLogicTupleException;
+            throws InvalidTupleException;
 
     /**
      * 
      * @param t
      *            the LogicTuple whose second key should be retrieved
      * @return the String representation of the retrieved key
-     * @throws alice.logictuple.exceptions.InvalidLogicTupleException
+     * @throws alice.tuplecentre.api.exceptions.InvalidTupleException
      *             if the given tuple is not well formed
      */
     protected abstract String getTupleKey2(LogicTuple t)
-            throws alice.logictuple.exceptions.InvalidLogicTupleException;
+            throws InvalidTupleException;
 
     private LTEntry createEntry(final LogicTuple t)
-            throws InvalidLogicTupleException {
+            throws InvalidTupleException {
         return new LTEntry(this.getTupleKey1(t), this.getTupleKey2(t), t);
     }
 

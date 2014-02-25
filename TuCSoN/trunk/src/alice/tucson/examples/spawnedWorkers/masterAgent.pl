@@ -7,14 +7,14 @@ runMasterAgent(Aid, Where, Iters, MaxFact):-
     spawnWorkers(Where, Iters),
     collectResults(Where, Iters),
     releaseACC.
-
+    
 % acquireACC(+Aid):- acquires the (default) ACC, necessary to 
 % interact with a TuCSoN node.
 acquireACC(Aid):-
     write("Acquiring ACC as <"), write(Aid), write(">..."), nl,
-    get_context(Aid),
+    acquire_acc(Aid),
     write("ACC acquired."), nl.
-
+    
 % submitJobs(+Where, +Iters, +MaxFact):- submits <Iters> jobs regarding factorial computations
 % (up to <MaxFact>) into <Where> tuple centres.
 submitJobs([], _, _).
@@ -23,7 +23,7 @@ submitJobs([Tc|List], Iters, MaxFact):-
     submit(Tc, Iters, MaxFact),
     write("Jobs submitted."), nl,
     submitJobs(List, Iters, MaxFact).
-
+    
     submit(_, Left, _):- Left =< 0, !.
     submit(Tc, Left, MaxFact):- Left > 0,
         Left2 is Left-1,
@@ -57,7 +57,7 @@ collectResults([Tc|List], Iters):-
     collect(Tc, Iters),
     write("Results collected."), nl,
     collectResults(List, Iters).
-
+    
     collect(_, Left):- Left =< 0, !.
     collect(Tc, Left):- Left > 0,
         in(res(fact(R)), Tc),
@@ -68,5 +68,5 @@ collectResults([Tc|List], Iters):-
 % releaseACC:- releases the ACC held, if any.
 releaseACC:-
     write("Releasing ACC..."), nl,
-    exit,
+    release_acc,
     write("ACC released."), nl.
