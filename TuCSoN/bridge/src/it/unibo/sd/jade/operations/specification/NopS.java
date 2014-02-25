@@ -43,13 +43,15 @@ public class NopS extends AbstractTucsonSpecificationAction {
             final TucsonOperationCompletionListener listener)
             throws TucsonOperationNotPossibleException,
             UnreachableNodeException {
-        return acc.nopS(acc, this.event, this.guards, this.reaction, listener);
+        return acc.nopS(this.tcid, this.event, this.guards, this.reaction,
+                listener);
     }
 
     @Override
     public ITucsonOperation executeSynch(final EnhancedSynchACC acc,
             final Long timeout) throws TucsonOperationNotPossibleException,
             UnreachableNodeException, OperationTimeOutException {
-        return acc.nopS(acc, this.event, this.guards, this.reaction, timeout);
+        return acc.nopS(this.tcid, this.event, this.guards, this.reaction,
+                timeout);
     }
 }

@@ -43,13 +43,15 @@ public class NoS extends AbstractTucsonSpecificationAction {
             final TucsonOperationCompletionListener listener)
             throws TucsonOperationNotPossibleException,
             UnreachableNodeException {
-        return acc.noS(acc, this.event, this.guards, this.reaction, listener);
+        return acc.noS(this.tcid, this.event, this.guards, this.reaction,
+                listener);
     }
 
     @Override
     public ITucsonOperation executeSynch(final EnhancedSynchACC acc,
             final Long timeout) throws TucsonOperationNotPossibleException,
             UnreachableNodeException, OperationTimeOutException {
-        return acc.noS(acc, this.event, this.guards, this.reaction, timeout);
+        return acc.noS(this.tcid, this.event, this.guards, this.reaction,
+                timeout);
     }
 }

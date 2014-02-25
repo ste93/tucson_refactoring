@@ -43,13 +43,15 @@ public class InpS extends AbstractTucsonSpecificationAction {
             final TucsonOperationCompletionListener listener)
             throws TucsonOperationNotPossibleException,
             UnreachableNodeException {
-        return acc.inpS(acc, this.event, this.guards, this.reaction, listener);
+        return acc.inpS(this.tcid, this.event, this.guards, this.reaction,
+                listener);
     }
 
     @Override
     public ITucsonOperation executeSynch(final EnhancedSynchACC acc,
             final Long timeout) throws TucsonOperationNotPossibleException,
             UnreachableNodeException, OperationTimeOutException {
-        return acc.inpS(acc, this.event, this.guards, this.reaction, timeout);
+        return acc.inpS(this.tcid, this.event, this.guards, this.reaction,
+                timeout);
     }
 }

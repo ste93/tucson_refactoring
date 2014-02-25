@@ -41,7 +41,6 @@ import java.util.LinkedList;
 import java.util.StringTokenizer;
 
 import alice.logictuple.LogicTuple;
-import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
@@ -80,8 +79,8 @@ public class BookBuyerAgent extends Agent {
                  * empty if there aren't services available
                  */
                 TucsonOpCompletionEvent result =
-                        BookBuyerAgent.this.bridge
-                                .synchronousInvocation(op1, null, this);
+                        BookBuyerAgent.this.bridge.synchronousInvocation(op1,
+                                null, this);
                 if (result != null) { // operation complete
 
                     /*
@@ -122,8 +121,8 @@ public class BookBuyerAgent extends Agent {
                         tuple = LogicTuple.parse("[" + t + "]");
                         final OutAll op2 =
                                 new OutAll(BookBuyerAgent.this.tcid, tuple);
-                        BookBuyerAgent.this.bridge
-                                .synchronousInvocation(op2, null, this);
+                        BookBuyerAgent.this.bridge.synchronousInvocation(op2,
+                                null, this);
 
                         Float maxPrice = new Float(0);
                         int idxBestSeller = -1;
@@ -144,8 +143,9 @@ public class BookBuyerAgent extends Agent {
                             final In op3 =
                                     new In(BookBuyerAgent.this.tcid, tuple);
                             result =
-                                    BookBuyerAgent.this.bridge.synchronousInvocation(
-                                            op3, null, this);
+                                    BookBuyerAgent.this.bridge
+                                            .synchronousInvocation(op3, null,
+                                                    this);
                             if (result != null) { // operation complete
                                 /*
                                  * get the value of X from the tuple
@@ -244,8 +244,8 @@ public class BookBuyerAgent extends Agent {
                             tuple = LogicTuple.parse("[" + s + "]");
                             final OutAll op3 =
                                     new OutAll(BookBuyerAgent.this.tcid, tuple);
-                            BookBuyerAgent.this.bridge.synchronousInvocation(op3, null,
-                                    this);
+                            BookBuyerAgent.this.bridge.synchronousInvocation(
+                                    op3, null, this);
 
                             /*
                              * confirm from bestseller X->inform/failuer
@@ -263,8 +263,9 @@ public class BookBuyerAgent extends Agent {
                             final In op4 =
                                     new In(BookBuyerAgent.this.tcid, tuple);
                             result =
-                                    BookBuyerAgent.this.bridge.synchronousInvocation(
-                                            op4, null, this);
+                                    BookBuyerAgent.this.bridge
+                                            .synchronousInvocation(op4, null,
+                                                    this);
                             if (result != null) { // operation complete
 
                                 if ("inform".equals(result.getTuple().getArg(0)
@@ -303,8 +304,7 @@ public class BookBuyerAgent extends Agent {
                     } else {
                         BookBuyerAgent.this
                                 .log("there aren't sellers available!!");
-                        BookBuyerAgent.this.bridge
-                                .clearTucsonOpResult(this);
+                        BookBuyerAgent.this.bridge.clearTucsonOpResult(this);
                         this.ok = true;
                     }
 
@@ -314,9 +314,6 @@ public class BookBuyerAgent extends Agent {
                     this.block();
                 }
 
-            } catch (final InvalidLogicTupleException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
             } catch (final Exception e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -369,7 +366,8 @@ public class BookBuyerAgent extends Agent {
             /*
              * get tuple centre id
              */
-            this.tcid = helper.getTucsonTupleCentreId("default", "localhost", 20504);
+            this.tcid =
+                    helper.getTucsonTupleCentreId("default", "localhost", 20504);
 
             /*
              * get the univocal bridge for the agent
