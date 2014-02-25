@@ -32,7 +32,8 @@ import alice.tuples.javatuples.impl.JVar;
 public final class HelloWorldJTuples {
 
     /**
-     * @param args program arguments (none expected)
+     * @param args
+     *            program arguments (none expected)
      */
     public static void main(final String[] args) {
         /*
@@ -87,7 +88,7 @@ public final class HelloWorldJTuples {
              */
             final IJTupleTemplate template =
                     new JTupleTemplate(new JVal("hello"));
-            template.addArg(new JVar(JArgType.LITERAL, "who"));
+            template.addArg(new JVar(JArgType.LITERAL));
             op = acc.rdp(tid, template, null);
             if (op.isResultSuccess()) {
                 res = op.getJTupleResult();

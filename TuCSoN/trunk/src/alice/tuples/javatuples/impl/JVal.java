@@ -3,9 +3,6 @@
  */
 package alice.tuples.javatuples.impl;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import alice.tuplecentre.api.exceptions.InvalidOperationException;
 import alice.tuples.javatuples.api.IJVal;
 import alice.tuples.javatuples.api.JArgType;
@@ -205,37 +202,38 @@ public class JVal implements IJVal {
      */
     @Override
     public String toString() {
-        final StringBuffer sb = new StringBuffer(10);
-        switch (this.type) {
-            case DOUBLE:
-                sb.append("double(")
-                        .append(String.valueOf(((Double) this.arg)
-                                .doubleValue())).append(')');
-                break;
-            case FLOAT:
-                sb.append("float(")
-                        .append(String.valueOf(((Float) this.arg).floatValue()))
-                        .append(')');
-                break;
-            case INT:
-                sb.append("int(")
-                        .append(String.valueOf(((Integer) this.arg).intValue()))
-                        .append(')');
-                break;
-            case LITERAL:
-                sb.append("literal(").append(this.arg.toString()).append(')');
-                break;
-            case LONG:
-                sb.append("long(")
-                        .append(String.valueOf(((Long) this.arg).longValue()))
-                        .append(')');
-                break;
-            default:
-                // cannot happen
-                Logger.getLogger("JVal").log(Level.FINEST, "wtf");
-                break;
-        }
-        return sb.toString();
+        return this.arg.toString();
+        // final StringBuffer sb = new StringBuffer(10);
+        // switch (this.type) {
+        // case DOUBLE:
+        // sb.append("double(")
+        // .append(String.valueOf(((Double) this.arg)
+        // .doubleValue())).append(')');
+        // break;
+        // case FLOAT:
+        // sb.append("float(")
+        // .append(String.valueOf(((Float) this.arg).floatValue()))
+        // .append(')');
+        // break;
+        // case INT:
+        // sb.append("int(")
+        // .append(String.valueOf(((Integer) this.arg).intValue()))
+        // .append(')');
+        // break;
+        // case LITERAL:
+        // sb.append("literal(").append(this.arg.toString()).append(')');
+        // break;
+        // case LONG:
+        // sb.append("long(")
+        // .append(String.valueOf(((Long) this.arg).longValue()))
+        // .append(')');
+        // break;
+        // default:
+        // // cannot happen
+        // Logger.getLogger("JVal").log(Level.FINEST, "wtf");
+        // break;
+        // }
+        // return sb.toString();
     }
 
 }

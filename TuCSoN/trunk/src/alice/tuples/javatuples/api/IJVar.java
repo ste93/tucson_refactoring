@@ -11,12 +11,6 @@ public interface IJVar extends IJArg {
 
     /**
      * 
-     * @return the name of the JVar
-     */
-    String getName();
-
-    /**
-     * 
      * @return the type of the JVar
      */
     JArgType getType();

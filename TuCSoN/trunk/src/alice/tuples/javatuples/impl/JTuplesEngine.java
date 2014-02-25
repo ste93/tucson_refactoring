@@ -183,7 +183,7 @@ public final class JTuplesEngine {
                     ta = template.getArg(i);
                     if (ta.getArity() == 0) {
                         if (ta.isVar()) {
-                            args.add(new JVar(JArgType.ANY, ta.getName()));
+                            args.add(new JVar(JArgType.ANY));
                         } else {
                             throw new InvalidTupleException();
                         }
@@ -191,17 +191,15 @@ public final class JTuplesEngine {
                         ta2 = ta.getArg(0);
                         if (ta2.isVar()) {
                             if ("double".equals(ta.getName())) {
-                                args.add(new JVar(JArgType.DOUBLE, ta2
-                                        .getName()));
+                                args.add(new JVar(JArgType.DOUBLE));
                             } else if ("float".equals(ta.getName())) {
-                                args.add(new JVar(JArgType.FLOAT, ta2.getName()));
+                                args.add(new JVar(JArgType.FLOAT));
                             } else if ("int".equals(ta.getName())) {
-                                args.add(new JVar(JArgType.INT, ta2.getName()));
+                                args.add(new JVar(JArgType.INT));
                             } else if ("literal".equals(ta.getName())) {
-                                args.add(new JVar(JArgType.LITERAL, ta2
-                                        .getName()));
+                                args.add(new JVar(JArgType.LITERAL));
                             } else if ("long".equals(ta.getName())) {
-                                args.add(new JVar(JArgType.LONG, ta2.getName()));
+                                args.add(new JVar(JArgType.LONG));
                             }
                         } else {
                             if ("double".equals(ta.getName())) {
@@ -302,32 +300,22 @@ public final class JTuplesEngine {
                     final IJVar var = (IJVar) arg;
                     switch (var.getType()) {
                         case ANY:
-                            tas[i] = new Var(var.getName().toUpperCase());
+                            tas[i] = new Var();
                             break;
                         case DOUBLE:
-                            tas[i] =
-                                    new Value("double", new Var(var.getName()
-                                            .toUpperCase()));
+                            tas[i] = new Value("double", new Var());
                             break;
                         case FLOAT:
-                            tas[i] =
-                                    new Value("float", new Var(var.getName()
-                                            .toUpperCase()));
+                            tas[i] = new Value("float", new Var());
                             break;
                         case INT:
-                            tas[i] =
-                                    new Value("int", new Var(var.getName()
-                                            .toUpperCase()));
+                            tas[i] = new Value("int", new Var());
                             break;
                         case LITERAL:
-                            tas[i] =
-                                    new Value("literal", new Var(var.getName()
-                                            .toUpperCase()));
+                            tas[i] = new Value("literal", new Var());
                             break;
                         case LONG:
-                            tas[i] =
-                                    new Value("long", new Var(var.getName()
-                                            .toUpperCase()));
+                            tas[i] = new Value("long", new Var());
                             break;
                         default:
                             // cannot happen

@@ -125,13 +125,13 @@ public class JTupleTemplate implements Iterable<IJArg>, IJTupleTemplate {
         final StringBuffer sb =
                 new StringBuffer(JTupleTemplate.AVG_CAP
                         * JTupleTemplate.AVG_CHARS);
-        sb.append("javat(");
+        sb.append("< ");
         for (final IJArg arg : this.args) {
             sb.append(arg.toString());
-            sb.append(',');
+            sb.append(", ");
         }
-        sb.deleteCharAt(sb.length() - 1);
-        sb.append(')');
+        sb.deleteCharAt(sb.length() - 2);
+        sb.append(">");
         return sb.toString();
     }
 

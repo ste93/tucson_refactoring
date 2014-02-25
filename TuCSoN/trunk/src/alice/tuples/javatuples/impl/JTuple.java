@@ -81,13 +81,13 @@ public class JTuple implements Iterable<IJVal>, IJTuple {
     public String toString() {
         final StringBuffer sb =
                 new StringBuffer(JTuple.AVG_CAP * JTuple.AVG_CHARS);
-        sb.append("javat(");
+        sb.append("< ");
         for (final IJVal arg : this.args) {
             sb.append(arg.toString());
-            sb.append(',');
+            sb.append(", ");
         }
-        sb.deleteCharAt(sb.length() - 1);
-        sb.append(')');
+        sb.deleteCharAt(sb.length() - 2);
+        sb.append(">");
         return sb.toString();
     }
 }
