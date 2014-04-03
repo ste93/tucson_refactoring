@@ -13,8 +13,11 @@
  */
 package alice.tucson.api;
 
+import java.util.List;
+
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
+import alice.tucson.service.TucsonOpCompletionEvent;
 import alice.tuplecentre.api.Tuple;
 import alice.tuplecentre.api.TupleCentreId;
 
@@ -61,6 +64,12 @@ public interface OrdinaryAsynchACC extends RootACC {
             get(TupleCentreId tid, TucsonOperationCompletionListener l)
                     throws TucsonOperationNotPossibleException,
                     UnreachableNodeException;
+
+    /**
+     * 
+     * @return the List of the events regarding TuCSoN operations completion
+     */
+    List<TucsonOpCompletionEvent> getCompletionEventsList();
 
     /**
      * <code>in</code> Linda primitive, retrieves the specified tuple from the

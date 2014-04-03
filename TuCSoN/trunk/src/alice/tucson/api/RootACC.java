@@ -13,7 +13,10 @@
  */
 package alice.tucson.api;
 
+import java.util.Map;
+
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
+import alice.tucson.service.TucsonOperation;
 
 /**
  * Root ACC, no Linda nor TuCSoN operations available, only ACC release back to
@@ -30,5 +33,12 @@ public interface RootACC {
      *             if the requested operation cannot be carried out
      */
     void exit() throws TucsonOperationNotPossibleException;
+
+    /**
+     * 
+     * @return the Map associating operation ids with the actual TuCSoN
+     *         operation
+     */
+    Map<Long, TucsonOperation> getPendingOperationsMap();
 
 }

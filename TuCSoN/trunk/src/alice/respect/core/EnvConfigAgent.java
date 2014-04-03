@@ -19,6 +19,7 @@ import alice.tucson.api.exceptions.UnreachableNodeException;
 import alice.tuplecentre.api.exceptions.InvalidOperationException;
 import alice.tuplecentre.api.exceptions.InvalidTupleException;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
+import alice.tuplecentre.core.AbstractTupleCentreOperation;
 
 /**
  * 
@@ -244,9 +245,17 @@ public class EnvConfigAgent extends AbstractTucsonAgent {
     }
 
     @Override
-    public void operationCompleted(final ITucsonOperation op) {
-        // TODO Auto-generated method stub
+    public void operationCompleted(final AbstractTupleCentreOperation op) {
+        /*
+         * not used atm
+         */
+    }
 
+    @Override
+    public void operationCompleted(final ITucsonOperation op) {
+        /*
+         * not used atm
+         */
     }
 
     /**

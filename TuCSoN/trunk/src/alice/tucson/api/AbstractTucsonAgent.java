@@ -13,7 +13,7 @@
  */
 package alice.tucson.api;
 
-import java.util.Map;
+import java.util.List;
 
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
@@ -68,7 +68,7 @@ public abstract class AbstractTucsonAgent implements
     /**
      * 
      */
-    protected Map<TucsonOpId, TucsonOpCompletionEvent> events = null;
+    protected List<TucsonOpCompletionEvent> completionEvents;
     private final TucsonAgentId aid;
     private EnhancedACC context;
     private final String node;
@@ -192,11 +192,7 @@ public abstract class AbstractTucsonAgent implements
         return this.port;
     }
 
-    public final void operationCompleted(final AbstractTupleCentreOperation op) {
-        /*
-         * FIXME Find cause of double inheritance
-         */
-    }
+    public abstract void operationCompleted(AbstractTupleCentreOperation op);
 
     public abstract void operationCompleted(ITucsonOperation op);
 

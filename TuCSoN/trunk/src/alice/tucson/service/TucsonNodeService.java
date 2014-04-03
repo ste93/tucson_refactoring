@@ -734,6 +734,9 @@ public class TucsonNodeService {
         TucsonNodeService.log("Spawning Node Management Agent...");
         this.nodeAgents.add(new NodeManagementAgent(this.idConfigTC, this));
 
+        TucsonNodeService
+                .log("--------------------------------------------------------------------------------");
+
         TucsonNodeService.log("Spawning ACC Provider Agent...");
         this.ctxman = new ACCProvider(this, this.idConfigTC);
 

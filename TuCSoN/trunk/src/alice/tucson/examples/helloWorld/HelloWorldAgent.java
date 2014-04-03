@@ -11,6 +11,7 @@ import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
 import alice.tuplecentre.api.exceptions.InvalidTupleException;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
+import alice.tuplecentre.core.AbstractTupleCentreOperation;
 
 /*
  * 1) Extend alice.tucson.api.AbstractTucsonAgent class.
@@ -60,13 +61,20 @@ public class HelloWorldAgent extends AbstractTucsonAgent {
         super(aid);
     }
 
+    @Override
+    public void operationCompleted(final AbstractTupleCentreOperation op) {
+        /*
+         * not used atm
+         */
+    }
+
     /*
      * To override only for asynchronous coordination operations.
      */
     @Override
     public void operationCompleted(final ITucsonOperation arg0) {
         /*
-         * 
+         * not used atm
          */
     }
 

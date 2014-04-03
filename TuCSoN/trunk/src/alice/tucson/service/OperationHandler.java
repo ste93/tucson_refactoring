@@ -80,8 +80,14 @@ public class OperationHandler {
             TucsonOpCompletionEvent ev = null;
             while (!this.isStopped()) {
 
-                for (final Long operation : OperationHandler.this.operationExpired) {
-                    OperationHandler.this.operations.remove(operation);
+                /*
+                 * FIXME possibile errore di accesso concorrente a operations
+                 * dal thr controller e dal addOperation usato in doOperation?
+                 */
+                synchronized (OperationHandler.this.operations) {
+                    for (final Long operation : OperationHandler.this.operationExpired) {
+                        OperationHandler.this.operations.remove(operation);
+                    }
                 }
 
                 TucsonMsgReply msg = null;
@@ -128,25 +134,28 @@ public class OperationHandler {
                                     this.unify(tupleReq, tupleRes);
                             ev =
                                     new TucsonOpCompletionEvent(new TucsonOpId(
-                                            msg.getId()), ok, true, res);
+                                            msg.getId()), ok, true,
+                                            msg.isResultSuccess(), res);
 
                         } else {
                             ev =
                                     new TucsonOpCompletionEvent(new TucsonOpId(
-                                            msg.getId()), ok, false);
+                                            msg.getId()), ok, false,
+                                            msg.isResultSuccess());
                         }
 
-                    } else if ((type == TucsonOperation.setCode())
-                            || (type == TucsonOperation.setSCode())
-                            || (type == TucsonOperation.outCode())
-                            || (type == TucsonOperation.outSCode())
+                    } else if ((type == TucsonOperation.outCode())
                             || (type == TucsonOperation.outAllCode())
+                            || (type == TucsonOperation.outSCode())
                             || (type == TucsonOperation.spawnCode())
+                            || (type == TucsonOperation.setCode())
+                            || (type == TucsonOperation.setSCode())
                             || (type == TucsonOperation.getEnvCode())
                             || (type == TucsonOperation.setEnvCode())) {
                         ev =
                                 new TucsonOpCompletionEvent(new TucsonOpId(
-                                        msg.getId()), ok, msg.isSuccess());
+                                        msg.getId()), ok, msg.isSuccess(),
+                                        msg.isResultSuccess());
                     } else if ((type == TucsonOperation.inAllCode())
                             || (type == TucsonOperation.rdAllCode())
                             || (type == TucsonOperation.noAllCode())
@@ -157,7 +166,7 @@ public class OperationHandler {
                         ev =
                                 new TucsonOpCompletionEvent(new TucsonOpId(
                                         msg.getId()), ok, msg.isSuccess(),
-                                        tupleSetRes);
+                                        msg.isResultSuccess(), tupleSetRes);
                     } else if (type == TucsonOperation.exitCode()) {
                         this.setStop();
                         break;
@@ -166,11 +175,14 @@ public class OperationHandler {
                 } else {
                     ev =
                             new TucsonOpCompletionEvent(new TucsonOpId(
-                                    msg.getId()), false, false);
+                                    msg.getId()), false, false,
+                                    msg.isResultSuccess());
                 }
-
-                final TucsonOperation op =
-                        OperationHandler.this.operations.remove(msg.getId());
+                final TucsonOperation op;
+                // removing completed op from pending list
+                synchronized (OperationHandler.this.operations) {
+                    op = OperationHandler.this.operations.remove(msg.getId());
+                }
                 if (op.isNoAll() || op.isInAll() || op.isRdAll() || op.isGet()
                         || op.isSet() || op.isGetS() || op.isSetS()
                         || op.isOutAll()) {
@@ -181,11 +193,17 @@ public class OperationHandler {
                 }
                 if (msg.isResultSuccess()) {
                     op.setOpResult(Outcome.SUCCESS);
+
                 } else {
                     op.setOpResult(Outcome.FAILURE);
                 }
-                op.notifyCompletion(ev.operationSucceeded(), msg.isAllowed());
+                /*
+                 * modifica dell'ordine delle chiamate in modo da consentire
+                 * all'operationhandler di aggiungere l'evento nella lista prima
+                 * della notifica
+                 */
                 OperationHandler.this.postEvent(ev);
+                op.notifyCompletion(ev.operationSucceeded(), msg.isAllowed());
 
             }
 
@@ -306,6 +324,7 @@ public class OperationHandler {
      *            the TuCSoN operation waiting to be served
      */
     public void addOperation(final Long id, final TucsonOperation op) {
+
         this.operations.put(id, op);
     }
 
@@ -579,7 +598,10 @@ public class OperationHandler {
             } else {
                 op = new TucsonOperation(type, (TupleTemplate) tupl, l, this);
             }
-            this.operations.put(op.getId(), op);
+            // put invoked ops in pending list
+            synchronized (this.operations) {
+                this.operations.put(op.getId(), op);
+            }
             final TucsonMsgRequest msg =
                     new TucsonMsgRequest(op.getId(), op.getType(),
                             tcid.toString(), op.getLogicTupleArgument());

@@ -14,6 +14,8 @@
 package alice.tucson.service;
 
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import alice.logictuple.LogicTuple;
 import alice.logictuple.LogicTupleOpManager;
@@ -77,6 +79,9 @@ public class ACCProxyAgentSide implements EnhancedACC {
      * TuCSoN Agent Identifier
      */
     protected TucsonAgentId aid;
+    /**
+     * 
+     */
     protected OperationHandler executor;
 
     /**
@@ -180,6 +185,24 @@ public class ACCProxyAgentSide implements EnhancedACC {
             UnreachableNodeException {
         return this.executor.doNonBlockingOperation(this.aid,
                 TucsonOperation.getCode(), tid, null, l);
+    }
+
+    // edited by sangio
+    // restituzione della lista delle operazioni asincrone completate e non
+    // ancora gestite("consumate) dall'agente
+    public List<TucsonOpCompletionEvent> getCompletionEventsList() {
+        // TODO Auto-generated method stub
+        return this.executor.events;
+    }
+
+    // edited by sangio
+    // restituzione della lista delle operazioni pendenti per il quale non si è
+    // ancora ricevuto un risultato
+    // per navigare la lista bisogna usare un metodo di mutua esclusione es.
+    // synchronized
+    public Map<Long, TucsonOperation> getPendingOperationsMap() {
+        // TODO Auto-generated method stub
+        return this.executor.operations;
     }
 
     public ITucsonOperation getS(final TupleCentreId tid, final Long timeout)
@@ -576,6 +599,14 @@ public class ACCProxyAgentSide implements EnhancedACC {
                 TucsonOperation.setSCode(), tid, spec, timeout);
     }
 
+    public ITucsonOperation setS(final TupleCentreId tid,
+            final LogicTuple spec, final TucsonOperationCompletionListener l)
+            throws TucsonOperationNotPossibleException,
+            UnreachableNodeException {
+        return this.executor.doNonBlockingOperation(this.aid,
+                TucsonOperation.setSCode(), tid, spec, l);
+    }
+
     public ITucsonOperation setS(final TupleCentreId tid, final String spec,
             final Long timeout) throws TucsonOperationNotPossibleException,
             UnreachableNodeException, OperationTimeOutException {
@@ -710,5 +741,4 @@ public class ACCProxyAgentSide implements EnhancedACC {
     protected void log(final String msg) {
         System.out.println("[ACCProxyAgentSide]: " + msg);
     }
-
 }

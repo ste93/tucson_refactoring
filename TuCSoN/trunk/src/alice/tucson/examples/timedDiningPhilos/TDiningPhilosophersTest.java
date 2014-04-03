@@ -14,6 +14,7 @@ import alice.tucson.api.exceptions.UnreachableNodeException;
 import alice.tucson.examples.utilities.Utils;
 import alice.tuplecentre.api.exceptions.InvalidTupleException;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
+import alice.tuplecentre.core.AbstractTupleCentreOperation;
 
 /**
  * Classic Dining Philosophers coordination problem tackled by adopting a clear
@@ -73,9 +74,16 @@ public class TDiningPhilosophersTest extends AbstractTucsonAgent {
     }
 
     @Override
+    public void operationCompleted(final AbstractTupleCentreOperation op) {
+        /*
+         * not used atm
+         */
+    }
+
+    @Override
     public void operationCompleted(final ITucsonOperation arg0) {
         /*
-         * 
+         * not used atm
          */
     }
 

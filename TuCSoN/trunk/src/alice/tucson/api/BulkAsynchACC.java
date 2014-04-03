@@ -13,8 +13,11 @@
  */
 package alice.tucson.api;
 
+import java.util.List;
+
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
+import alice.tucson.service.TucsonOpCompletionEvent;
 import alice.tuplecentre.api.Tuple;
 import alice.tuplecentre.api.TupleCentreId;
 
@@ -25,6 +28,12 @@ import alice.tuplecentre.api.TupleCentreId;
  * @author ste (mailto: s.mariani@unibo.it)
  */
 public interface BulkAsynchACC extends RootACC {
+
+    /**
+     * 
+     * @return the List of the events regarding TuCSoN operations completion
+     */
+    List<TucsonOpCompletionEvent> getCompletionEventsList();
 
     /**
      * Withdraws from the space all the tuples matching the given template in
@@ -158,5 +167,4 @@ public interface BulkAsynchACC extends RootACC {
             TucsonOperationCompletionListener l)
             throws TucsonOperationNotPossibleException,
             UnreachableNodeException;
-
 }

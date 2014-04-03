@@ -10,6 +10,7 @@ import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
 import alice.tuplecentre.api.exceptions.InvalidTupleException;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
+import alice.tuplecentre.core.AbstractTupleCentreOperation;
 
 /**
  * A Dining Philosopher: thinks and eats in an endless loop.
@@ -50,9 +51,16 @@ public class DiningPhilosopher extends AbstractTucsonAgent {
     }
 
     @Override
+    public void operationCompleted(final AbstractTupleCentreOperation op) {
+        /*
+         * not used atm
+         */
+    }
+
+    @Override
     public void operationCompleted(final ITucsonOperation arg0) {
         /*
-         * 
+         * not used atm
          */
     }
 

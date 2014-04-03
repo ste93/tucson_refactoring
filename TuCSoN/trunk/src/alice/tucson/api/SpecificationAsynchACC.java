@@ -13,9 +13,12 @@
  */
 package alice.tucson.api;
 
+import java.util.List;
+
 import alice.logictuple.LogicTuple;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
+import alice.tucson.service.TucsonOpCompletionEvent;
 import alice.tuplecentre.api.TupleCentreId;
 
 /**
@@ -32,6 +35,12 @@ import alice.tuplecentre.api.TupleCentreId;
  * @author ste (mailto: s.mariani@unibo.it)
  */
 public interface SpecificationAsynchACC extends RootACC {
+
+    /**
+     * 
+     * @return the List of the events regarding TuCSoN operations completion
+     */
+    List<TucsonOpCompletionEvent> getCompletionEventsList();
 
     /**
      * <code>get_s</code> specification primitive, reads (w/o removing) all the
@@ -360,6 +369,37 @@ public interface SpecificationAsynchACC extends RootACC {
     /**
      * <code>set_s</code> specification primitive, to replace all the ReSpecT
      * specification tuples in the given target tuplecentre specification space
+     * with that specified in the given tuple. The ReSpecT specification tuple
+     * should be formatted as a Prolog list of the kind [(E1,G1,R1), ...,
+     * (En,Gn,Rn)] where <code>E = events</code>, <code>G = guards</code>,
+     * <code>R = reactionBody</code>.
+     * 
+     * @param tid
+     *            the target TuCSoN tuplecentre id
+     *            {@link alice.tucson.api.TucsonTupleCentreId tid}
+     * @param spec
+     *            the new ReSpecT specification to replace the current
+     *            specification space
+     * @param l
+     *            the listener who should be notified upon operation completion
+     * 
+     * @return the interface to access the data about TuCSoN operations outcome.
+     * 
+     * @throws TucsonOperationNotPossibleException
+     *             if the requested operation cannot be carried out
+     * @throws UnreachableNodeException
+     *             if the target tuple centre is not reachable over the network
+     * @see alice.tuplecentre.api.TupleCentreId TupleCentreId
+     * @see alice.tucson.api.ITucsonOperation ITucsonOperation
+     */
+    ITucsonOperation setS(TupleCentreId tid, LogicTuple spec,
+            TucsonOperationCompletionListener l)
+            throws TucsonOperationNotPossibleException,
+            UnreachableNodeException;
+
+    /**
+     * <code>set_s</code> specification primitive, to replace all the ReSpecT
+     * specification tuples in the given target tuplecentre specification space
      * with that specified in the given String. The ReSpecT specification string
      * should be formatted according to Prolog theory syntax.
      * 
@@ -388,5 +428,4 @@ public interface SpecificationAsynchACC extends RootACC {
             TucsonOperationCompletionListener l)
             throws TucsonOperationNotPossibleException,
             UnreachableNodeException;
-
 }
