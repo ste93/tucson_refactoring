@@ -3,7 +3,6 @@ package alice.tucson.service;
 import java.util.Map;
 
 import alice.tucson.api.RootACC;
-import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 
 /**
  * 
@@ -12,7 +11,7 @@ import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
  */
 public class RootACCProxy implements RootACC {
 
-    public void exit() throws TucsonOperationNotPossibleException {
+    public void exit() {
         /*
          * 
          */

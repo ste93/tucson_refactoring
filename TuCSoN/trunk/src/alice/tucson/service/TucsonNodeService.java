@@ -41,7 +41,6 @@ import alice.tucson.api.TucsonAgentId;
 import alice.tucson.api.TucsonMetaACC;
 import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.api.exceptions.InvalidConfigException;
-import alice.tucson.api.exceptions.TCInstantiationNotPossibleException;
 import alice.tucson.api.exceptions.TucsonGenericException;
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonInvalidLogicTupleException;
@@ -271,17 +270,11 @@ public class TucsonNodeService {
     public synchronized void activateObservability() {
         this.observed = true;
         final Iterator<TucsonTCUsers> it = this.cores.values().iterator();
-        try {
-            while (it.hasNext()) {
-                final TucsonTCUsers tc = it.next();
-                TupleCentreContainer.doManagementOperation(
-                        TucsonOperation.addObsCode(),
-                        tc.getTucsonTupleCentreId(), this.obsService);
-            }
-        } catch (final TucsonOperationNotPossibleException e) {
-            e.printStackTrace();
-        } catch (final TucsonInvalidLogicTupleException e) {
-            e.printStackTrace();
+        while (it.hasNext()) {
+            final TucsonTCUsers tc = it.next();
+            TupleCentreContainer.doManagementOperation(
+                    TucsonOperation.addObsCode(), tc.getTucsonTupleCentreId(),
+                    this.obsService);
         }
     }
 
@@ -336,17 +329,11 @@ public class TucsonNodeService {
     public synchronized void deactivateObservability() {
         this.observed = false;
         final Iterator<TucsonTCUsers> it = this.cores.values().iterator();
-        try {
-            while (it.hasNext()) {
-                final TucsonTCUsers tc = it.next();
-                TupleCentreContainer.doManagementOperation(
-                        TucsonOperation.rmvObsCode(),
-                        tc.getTucsonTupleCentreId(), this.obsService);
-            }
-        } catch (final TucsonOperationNotPossibleException e) {
-            e.printStackTrace();
-        } catch (final TucsonInvalidLogicTupleException e) {
-            e.printStackTrace();
+        while (it.hasNext()) {
+            final TucsonTCUsers tc = it.next();
+            TupleCentreContainer.doManagementOperation(
+                    TucsonOperation.rmvObsCode(), tc.getTucsonTupleCentreId(),
+                    this.obsService);
         }
     }
 
@@ -676,9 +663,6 @@ public class TucsonNodeService {
             } catch (final TucsonInvalidTupleCentreIdException e) {
                 e.printStackTrace();
                 return null;
-            } catch (final TCInstantiationNotPossibleException e) {
-                e.printStackTrace();
-                return null;
             }
 
         }
@@ -758,11 +742,9 @@ public class TucsonNodeService {
      * @param name
      * @return
      * @throws TucsonInvalidTupleCentreIdException
-     * @throws TCInstantiationNotPossibleException
      */
     private TucsonTCUsers bootTupleCentre(final String n)
-            throws TucsonInvalidTupleCentreIdException,
-            TCInstantiationNotPossibleException {
+            throws TucsonInvalidTupleCentreIdException {
 
         final StringBuffer name = new StringBuffer(n);
 
@@ -783,14 +765,8 @@ public class TucsonNodeService {
         }
 
         if (this.observed) {
-            try {
-                TupleCentreContainer.doManagementOperation(
-                        TucsonOperation.addObsCode(), id, this.obsService);
-            } catch (final TucsonOperationNotPossibleException e) {
-                e.printStackTrace();
-            } catch (final TucsonInvalidLogicTupleException e) {
-                e.printStackTrace();
-            }
+            TupleCentreContainer.doManagementOperation(
+                    TucsonOperation.addObsCode(), id, this.obsService);
             this.obsService.tcCreated(id);
         }
 
@@ -816,8 +792,6 @@ public class TucsonNodeService {
                     try {
                         this.bootTupleCentre(tcName);
                     } catch (final TucsonInvalidTupleCentreIdException e) {
-                        e.printStackTrace();
-                    } catch (final TCInstantiationNotPossibleException e) {
                         e.printStackTrace();
                     }
                     TupleCentreContainer.loadPersistentInformation();
@@ -866,8 +840,6 @@ public class TucsonNodeService {
                     new LogicTuple("boot"), null);
             this.addAgent(this.nodeAid);
         } catch (final TucsonInvalidTupleCentreIdException e) {
-            e.printStackTrace();
-        } catch (final TCInstantiationNotPossibleException e) {
             e.printStackTrace();
         } catch (final IOException e) {
             e.printStackTrace();
@@ -968,12 +940,6 @@ public class TucsonNodeService {
         } catch (final TucsonInvalidTupleCentreIdException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-        } catch (final TCInstantiationNotPossibleException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (final TucsonInvalidLogicTupleException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
         } catch (final TucsonOperationNotPossibleException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -1011,8 +977,6 @@ public class TucsonNodeService {
                     new LogicTuple("boot"), null);
             this.obsService = new ObservationService(this.idObsTC);
         } catch (final TucsonInvalidTupleCentreIdException e) {
-            e.printStackTrace();
-        } catch (final TCInstantiationNotPossibleException e) {
             e.printStackTrace();
         } catch (final IOException e) {
             e.printStackTrace();

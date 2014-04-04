@@ -137,7 +137,7 @@ public class ACCProxyAgentSide implements EnhancedACC {
 
     }
 
-    public synchronized void exit() throws TucsonOperationNotPossibleException {
+    public synchronized void exit() {
 
         final Iterator<OperationHandler.ControllerSession> it =
                 this.executor.getControllerSessions().values().iterator();

@@ -54,7 +54,6 @@ import alice.tuplecentre.api.exceptions.InvalidTupleException;
  * @author lucasangiorgi
  * 
  */
-@SuppressWarnings("serial")
 public class BookSellerAgent extends Agent {
 
     /*

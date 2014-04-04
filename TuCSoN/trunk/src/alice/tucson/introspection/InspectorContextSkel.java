@@ -134,18 +134,10 @@ public class InspectorContextSkel extends AbstractACCProxyNodeSide implements
 
             msg.setTuples(new LinkedList<LogicTuple>());
             LogicTuple[] tSet = null;
-            try {
-                tSet =
-                        (LogicTuple[]) TupleCentreContainer
-                                .doManagementOperation(
-                                        TucsonOperation.getTSetCode(),
-                                        this.tcId,
-                                        this.protocol.getTsetFilter());
-            } catch (final TucsonOperationNotPossibleException e) {
-                e.printStackTrace();
-            } catch (final TucsonInvalidLogicTupleException e) {
-                e.printStackTrace();
-            }
+            tSet =
+                    (LogicTuple[]) TupleCentreContainer.doManagementOperation(
+                            TucsonOperation.getTSetCode(), this.tcId,
+                            this.protocol.getTsetFilter());
             if (tSet != null) {
                 for (final LogicTuple lt : tSet) {
                     msg.getTuples().add(lt);
@@ -155,18 +147,10 @@ public class InspectorContextSkel extends AbstractACCProxyNodeSide implements
         } else if (m.getWhat() == GetSnapshotMsg.WSET) {
 
             WSetEvent[] ltSet = null;
-            try {
-                ltSet =
-                        (WSetEvent[]) TupleCentreContainer
-                                .doManagementOperation(
-                                        TucsonOperation.getWSetCode(),
-                                        this.tcId,
-                                        this.protocol.getWsetFilter());
-            } catch (final TucsonOperationNotPossibleException e) {
-                e.printStackTrace();
-            } catch (final TucsonInvalidLogicTupleException e) {
-                e.printStackTrace();
-            }
+            ltSet =
+                    (WSetEvent[]) TupleCentreContainer.doManagementOperation(
+                            TucsonOperation.getWSetCode(), this.tcId,
+                            this.protocol.getWsetFilter());
             msg.setWnEvents(new LinkedList<WSetEvent>());
             if (ltSet != null) {
                 for (final WSetEvent lt : ltSet) {
@@ -266,10 +250,6 @@ public class InspectorContextSkel extends AbstractACCProxyNodeSide implements
 
         } catch (final InterruptedException e) {
             e.printStackTrace();
-        } catch (final TucsonOperationNotPossibleException e) {
-            e.printStackTrace();
-        } catch (final TucsonInvalidLogicTupleException e) {
-            e.printStackTrace();
         } catch (final DialogException e) {
             this.log("Inspector quit");
         }
@@ -284,14 +264,8 @@ public class InspectorContextSkel extends AbstractACCProxyNodeSide implements
      * reset the tuple centre VM
      */
     public synchronized void reset() {
-        try {
-            TupleCentreContainer.doManagementOperation(TucsonOperation.reset(),
-                    this.tcId, null);
-        } catch (final TucsonOperationNotPossibleException e) {
-            e.printStackTrace();
-        } catch (final TucsonInvalidLogicTupleException e) {
-            e.printStackTrace();
-        }
+        TupleCentreContainer.doManagementOperation(TucsonOperation.reset(),
+                this.tcId, null);
     }
 
     @Override
@@ -321,10 +295,6 @@ public class InspectorContextSkel extends AbstractACCProxyNodeSide implements
             e.printStackTrace();
         } catch (final InvocationTargetException e) {
             e.printStackTrace();
-        } catch (final TucsonOperationNotPossibleException e) {
-            e.printStackTrace();
-        } catch (final TucsonInvalidLogicTupleException e) {
-            e.printStackTrace();
         } catch (final DialogException e) {
             e.printStackTrace();
         }
@@ -340,15 +310,8 @@ public class InspectorContextSkel extends AbstractACCProxyNodeSide implements
      *            the set InQ message
      */
     public synchronized void setEventSet(final SetEventSetMsg m) {
-        try {
-            TupleCentreContainer
-                    .doManagementOperation(TucsonOperation.setWSetCode(),
-                            this.tcId, m.getEventWnSet());
-        } catch (final TucsonInvalidLogicTupleException e) {
-            e.printStackTrace();
-        } catch (final TucsonOperationNotPossibleException e) {
-            e.printStackTrace();
-        }
+        TupleCentreContainer.doManagementOperation(
+                TucsonOperation.setWSetCode(), this.tcId, m.getEventWnSet());
     }
 
     /**

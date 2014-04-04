@@ -30,8 +30,8 @@ public class SpecificationAsynchInterface implements
     }
 
     public IRespectOperation getS(final IId aid,
-            final OperationCompletionListener l) throws InvalidTupleException,
-            OperationNotPossibleException {
+            final OperationCompletionListener l)
+            throws OperationNotPossibleException {
         return this.core.get(aid, l);
     }
 

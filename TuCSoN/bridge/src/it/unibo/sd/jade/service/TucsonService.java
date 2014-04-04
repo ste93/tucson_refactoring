@@ -12,7 +12,6 @@ import jade.core.HorizontalCommand;
 import jade.core.IMTPException;
 import jade.core.Node;
 import jade.core.Service;
-import jade.core.ServiceException;
 import jade.core.ServiceHelper;
 import jade.core.Sink;
 import jade.core.VerticalCommand;
@@ -313,7 +312,7 @@ public class TucsonService extends BaseService {
     }
 
     @Override
-    public ServiceHelper getHelper(final Agent a) throws ServiceException {
+    public ServiceHelper getHelper(final Agent a) {
         return this.helperService;
     }
 

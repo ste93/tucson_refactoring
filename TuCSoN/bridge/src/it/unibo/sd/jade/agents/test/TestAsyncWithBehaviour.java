@@ -22,7 +22,6 @@ import alice.tucson.service.TucsonOpCompletionEvent;
  */
 public class TestAsyncWithBehaviour extends Agent {
 
-    @SuppressWarnings("serial")
     private class ResultCompleteBehaviour extends OneShotBehaviour implements
             IAsynchCompletionBehaviour {
 
@@ -52,7 +51,6 @@ public class TestAsyncWithBehaviour extends Agent {
         }
     }
 
-    @SuppressWarnings("serial")
     private class TucsonTestBehaviour extends SimpleBehaviour {
 
         /**

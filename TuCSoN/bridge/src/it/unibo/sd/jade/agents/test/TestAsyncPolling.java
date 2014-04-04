@@ -20,7 +20,6 @@ import alice.tucson.service.TucsonOpCompletionEvent;
  */
 public class TestAsyncPolling extends Agent {
 
-    @SuppressWarnings("serial")
     private class TucsonTestBehaviour extends SimpleBehaviour {
 
         /**

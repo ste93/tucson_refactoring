@@ -14,7 +14,6 @@ import alice.respect.api.ISpecificationSynchInterface;
 import alice.respect.api.ITCRegistry;
 import alice.respect.api.TupleCentreId;
 import alice.respect.api.exceptions.InstantiationNotPossibleException;
-import alice.respect.api.exceptions.OperationNotPossibleException;
 import alice.tucson.service.RemoteLinkProvider;
 
 /**
@@ -130,11 +129,8 @@ public final class RespectTCContainer {
      * @param id
      *            the identifier of the tuple centre target (local or remote)
      * @return the linking context toward the given tuple centre
-     * @throws OperationNotPossibleException
-     *             if the requested operation cannot be carried out
      */
-    public ILinkContext getLinkContext(final TupleCentreId id)
-            throws OperationNotPossibleException {
+    public ILinkContext getLinkContext(final TupleCentreId id) {
         if ((this.hostname.equals(id.getNode()) || this.loopback.equals(id
                 .getNode()))
                 && (id.getPort() == RespectTCContainer.defaultport)) {

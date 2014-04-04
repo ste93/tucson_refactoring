@@ -285,8 +285,6 @@ public final class TupleCentreContainer {
      * @param t
      *            the tuple argument of the operation
      * @return the tuple or tuples list result of the operation
-     * @throws TucsonInvalidLogicTupleException
-     *             if the given argument is not a valid tuple or tuples list
      * @throws TucsonOperationNotPossibleException
      *             if the operation cannot be performed
      * @throws TucsonInvalidSpecificationException
@@ -295,8 +293,7 @@ public final class TupleCentreContainer {
      */
     public static Object doBlockingSpecOperation(final int type,
             final TucsonAgentId aid, final TucsonTupleCentreId tid,
-            final LogicTuple t) throws TucsonInvalidLogicTupleException,
-            TucsonOperationNotPossibleException,
+            final LogicTuple t) throws TucsonOperationNotPossibleException,
             TucsonInvalidSpecificationException {
         final LogicTuple res = null;
         ISpecificationSynchInterface context = null;
@@ -536,15 +533,9 @@ public final class TupleCentreContainer {
      * @param obj
      *            the argument of the management operation
      * @return the result of the operation
-     * @throws TucsonInvalidLogicTupleException
-     *             if the given argument is not a valid tuple or tuples list
-     * @throws TucsonOperationNotPossibleException
-     *             if the operation cannot be performed
      */
     public static Object doManagementOperation(final int type,
-            final TucsonTupleCentreId tid, final Object obj)
-            throws TucsonOperationNotPossibleException,
-            TucsonInvalidLogicTupleException {
+            final TucsonTupleCentreId tid, final Object obj) {
 
         IManagementContext context = null;
         context =

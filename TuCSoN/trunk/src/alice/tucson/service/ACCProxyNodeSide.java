@@ -233,9 +233,6 @@ public class ACCProxyNodeSide extends AbstractACCProxyNodeSide {
                 } catch (final TucsonOperationNotPossibleException e) {
                     e.printStackTrace();
                     break;
-                } catch (final TucsonInvalidLogicTupleException e) {
-                    e.printStackTrace();
-                    break;
                 } catch (final TucsonInvalidSpecificationException e) {
                     e.printStackTrace();
                     break;
@@ -346,9 +343,6 @@ public class ACCProxyNodeSide extends AbstractACCProxyNodeSide {
                     e.printStackTrace();
                     break;
                 } catch (final TucsonInvalidSpecificationException e) {
-                    e.printStackTrace();
-                    break;
-                } catch (final TucsonInvalidLogicTupleException e) {
                     e.printStackTrace();
                     break;
                 }

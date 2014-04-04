@@ -17,7 +17,6 @@ import alice.respect.situatedness.AbstractTransducer;
 import alice.respect.situatedness.ISimpleProbe;
 import alice.respect.situatedness.TransducerId;
 import alice.respect.situatedness.TransducerStandardInterface;
-import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tuplecentre.api.TupleCentreId;
 import alice.tuprolog.Term;
 
@@ -284,11 +283,8 @@ public enum TransducersManager {
      * @param probe
      *            the resource's identifier to remove
      * @return wether the resource has been succesfully removed
-     * @throws TucsonOperationNotPossibleException
-     *             if the requested operation cannot be succesfully carried out
      */
-    public synchronized boolean removeProbe(final AbstractProbeId probe)
-            throws TucsonOperationNotPossibleException {
+    public synchronized boolean removeProbe(final AbstractProbeId probe) {
         for (final TransducerId t : this.probesToTransducersMap.keySet()) {
             if (this.probesToTransducersMap.get(t).contains(probe)) {
                 final TransducerId tId = this.getTransducerId(probe);
@@ -315,11 +311,8 @@ public enum TransducersManager {
      * 
      * @param id
      *            the transducer identifier
-     * @throws TucsonOperationNotPossibleException
-     *             if the requested operation cannot be successfully performed
      */
-    public synchronized void stopTransducer(final TransducerId id)
-            throws TucsonOperationNotPossibleException {
+    public synchronized void stopTransducer(final TransducerId id) {
         if (!this.transducersList.containsKey(id)) {
             TransducersManager.speakErr("Transducer '" + id
                     + "' doesn't exist yet!");

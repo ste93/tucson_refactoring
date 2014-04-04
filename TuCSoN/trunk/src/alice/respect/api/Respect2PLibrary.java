@@ -101,12 +101,12 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
                 final Enumeration<InetAddress> addresses =
                         current.getInetAddresses();
                 while (addresses.hasMoreElements()) {
-                    final InetAddress current_addr = addresses.nextElement();
-                    if (current_addr.isLoopbackAddress()) {
+                    final InetAddress currentAddress = addresses.nextElement();
+                    if (currentAddress.isLoopbackAddress()) {
                         continue;
                     }
-                    if (current_addr instanceof Inet4Address) {
-                        return current_addr.getHostAddress();
+                    if (currentAddress instanceof Inet4Address) {
+                        return currentAddress.getHostAddress();
                     }
                 }
             }

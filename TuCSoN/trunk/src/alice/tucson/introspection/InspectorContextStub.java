@@ -87,7 +87,7 @@ public class InspectorContextStub implements InspectorContext {
         this.exitFlag = false;
     }
 
-    public void acceptVMEvent() throws ClassNotFoundException, IOException {
+    public void acceptVMEvent() {
         try {
             final InspectorContextEvent msg =
                     this.dialog.receiveInspectorEvent();

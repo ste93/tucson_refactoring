@@ -80,11 +80,8 @@ public abstract class AbstractTransducer implements
 
     /**
      * Exit procedure, called to end a session of communication
-     * 
-     * @throws TucsonOperationNotPossibleException
-     *             if the requested operation cannot be found
      */
-    public synchronized void exit() throws TucsonOperationNotPossibleException {
+    public synchronized void exit() {
 
         final Iterator<OperationHandler.ControllerSession> it =
                 this.executor.getControllerSessions().values().iterator();

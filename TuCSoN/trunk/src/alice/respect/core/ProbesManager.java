@@ -11,7 +11,6 @@ import java.util.Map;
 import alice.respect.situatedness.AbstractProbeId;
 import alice.respect.situatedness.ISimpleProbe;
 import alice.respect.situatedness.TransducerId;
-import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 
 /**
  * @author ste (mailto: s.mariani@unibo.it) on 04/nov/2013
@@ -130,11 +129,8 @@ public enum ProbesManager {
      * @param id
      *            the identifier of the resource to remove
      * @return wether the resource has been successfully removed
-     * @throws TucsonOperationNotPossibleException
-     *             if the resource cannot be removed
      */
-    public synchronized boolean removeProbe(final AbstractProbeId id)
-            throws TucsonOperationNotPossibleException {
+    public synchronized boolean removeProbe(final AbstractProbeId id) {
         ProbesManager.speak("Removing probe '" + id.getLocalName() + "'...");
         if (!this.probesList.containsKey(id)) {
             ProbesManager.speakErr("Resource '" + id.getLocalName()

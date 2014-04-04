@@ -33,7 +33,6 @@ import alice.respect.api.exceptions.InvalidSpecificationException;
 import alice.respect.api.exceptions.OperationNotPossibleException;
 import alice.tuplecentre.api.IId;
 import alice.tuplecentre.api.Tuple;
-import alice.tuplecentre.api.exceptions.InvalidTupleException;
 import alice.tuplecentre.core.OperationCompletionListener;
 import alice.tuplecentre.core.TCCycleResult.Outcome;
 
@@ -432,13 +431,13 @@ public class RespectTC implements IRespectTC {
     }
 
     public IRespectOperation set(final IId id, final LogicTuple tuple)
-            throws OperationNotPossibleException, InvalidTupleException {
+            throws OperationNotPossibleException {
         return this.set(id, tuple, null);
     }
 
     public IRespectOperation set(final IId id, final LogicTuple tuple,
             final OperationCompletionListener l)
-            throws OperationNotPossibleException, InvalidTupleException {
+            throws OperationNotPossibleException {
         final RespectOperation op = RespectOperation.makeSet(tuple, l);
         this.vm.doOperation(id, op);
         return op;
@@ -459,8 +458,7 @@ public class RespectTC implements IRespectTC {
 
     public IRespectOperation
             setS(final IId aid, final RespectSpecification spec)
-                    throws OperationNotPossibleException,
-                    InvalidSpecificationException {
+                    throws InvalidSpecificationException {
         final boolean accepted = this.vm.setReactionSpec(spec);
         if (!accepted) {
             throw new InvalidSpecificationException();

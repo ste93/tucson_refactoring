@@ -51,7 +51,6 @@ import alice.tucson.service.TucsonOpCompletionEvent;
  * @author lucasangiorgi
  * 
  */
-@SuppressWarnings("serial")
 public class BookBuyerAgent extends Agent {
     /**
      * 

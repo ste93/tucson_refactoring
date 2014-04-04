@@ -7,7 +7,6 @@ import java.util.concurrent.Executors;
 
 import alice.respect.api.ILinkContext;
 import alice.respect.api.TupleCentreId;
-import alice.respect.api.exceptions.OperationNotPossibleException;
 import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
@@ -103,8 +102,7 @@ public class InterTupleCentreACCProvider implements ILinkContext {
     }
 
     public synchronized void doOperation(final TupleCentreId id,
-            final AbstractTupleCentreOperation op)
-            throws OperationNotPossibleException {
+            final AbstractTupleCentreOperation op) {
         // id e' il tuplecentre source
         final Executor ex =
                 new Executor(this.idTo, id, op,

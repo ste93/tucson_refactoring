@@ -28,8 +28,8 @@ public class OrdinaryAsynchInterface extends RootInterface implements
     }
 
     public IRespectOperation get(final IId aid,
-            final OperationCompletionListener l) throws InvalidTupleException,
-            OperationNotPossibleException {
+            final OperationCompletionListener l)
+            throws OperationNotPossibleException {
         return this.getCore().get(aid, l);
     }
 

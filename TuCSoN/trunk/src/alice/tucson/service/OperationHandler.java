@@ -403,8 +403,6 @@ public class OperationHandler {
         ITucsonOperation op = null;
         try {
             op = this.doOperation(aid, tcid, type, t, null);
-        } catch (final TucsonOperationNotPossibleException e) {
-            throw new TucsonOperationNotPossibleException();
         } catch (final UnreachableNodeException e) {
             throw new UnreachableNodeException();
         }
@@ -483,8 +481,6 @@ public class OperationHandler {
 
         try {
             return this.doOperation(aid, tcid, type, t, l);
-        } catch (final TucsonOperationNotPossibleException e) {
-            throw new TucsonOperationNotPossibleException();
         } catch (final UnreachableNodeException e) {
             throw new UnreachableNodeException();
         }
@@ -550,8 +546,6 @@ public class OperationHandler {
      * @return An object representing the primitive invocation on the TuCSoN
      *         infrastructure which will store its result
      * 
-     * @throws TucsonOperationNotPossibleException
-     *             if the operation requested cannot be performed
      * @throws UnreachableNodeException
      *             if the target tuple centre cannot be reached over the network
      * 
@@ -565,8 +559,7 @@ public class OperationHandler {
             final TucsonAgentId aid, final TucsonTupleCentreId tcid,
             final int type, final Tuple t,
             final TucsonOperationCompletionListener l)
-            throws TucsonOperationNotPossibleException,
-            UnreachableNodeException {
+            throws UnreachableNodeException {
 
         // this.log("t = " + t);
         Tuple tupl = null;
