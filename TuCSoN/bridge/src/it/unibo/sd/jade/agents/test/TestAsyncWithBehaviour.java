@@ -26,13 +26,16 @@ public class TestAsyncWithBehaviour extends Agent {
     private class ResultCompleteBehaviour extends OneShotBehaviour implements
             IAsynchCompletionBehaviour {
 
+        /**
+         * 
+         */
+        private static final long serialVersionUID = 1L;
         private TucsonOpCompletionEvent ev = null;
 
         @Override
         public void action() {
             // TODO Auto-generated method stub
-            TestAsyncWithBehaviour.this
-                    .log(" behaviour risultato ricevuto");
+            TestAsyncWithBehaviour.this.log(" behaviour risultato ricevuto");
             if (this.ev != null) { // risultato operazione acquisito
                 // gestione risultato
                 TestAsyncWithBehaviour.this.log("\n\n\n\n Result = "
@@ -52,6 +55,11 @@ public class TestAsyncWithBehaviour extends Agent {
     @SuppressWarnings("serial")
     private class TucsonTestBehaviour extends SimpleBehaviour {
 
+        /**
+         * 
+         */
+        private static final long serialVersionUID = 1L;
+
         @Override
         public void action() {
             try {
@@ -63,7 +71,8 @@ public class TestAsyncWithBehaviour extends Agent {
                 helper.acquireACC(this.myAgent);
                 // Creo operazione
                 final TucsonTupleCentreId tcid =
-                        helper.getTucsonTupleCentreId("default", "localhost", 20504);
+                        helper.getTucsonTupleCentreId("default", "localhost",
+                                20504);
                 final LogicTuple tuple = LogicTuple.parse("nome(X)");
                 final Rd op = new Rd(tcid, tuple);
                 final BridgeToTucson bridge =
@@ -88,14 +97,14 @@ public class TestAsyncWithBehaviour extends Agent {
 
     private static final long serialVersionUID = 1L;
 
+    private void log(final String msg) {
+        System.out.println("/***[JADEAGENT-" + this.getName() + "]: " + msg);
+    }
+
     @Override
     protected void setup() {
         super.setup();
         System.out.println("Agent " + this.getLocalName() + " started!");
         this.addBehaviour(new TucsonTestBehaviour());
-    }
-
-    private void log(final String msg) {
-        System.out.println("/***[JADEAGENT-" + this.getName() + "]: " + msg);
     }
 }

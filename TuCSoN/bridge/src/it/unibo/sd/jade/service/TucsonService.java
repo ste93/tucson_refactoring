@@ -181,24 +181,6 @@ public class TucsonService extends BaseService {
         }
 
         @Override
-        public void releaseACC(final Agent agent) {
-            // Esco dall'acc
-            final EnhancedACC acc =
-                    TucsonService.this.mAccManager.getAcc(agent);
-            if (acc != null) {
-                try {
-                    acc.exit();
-                } catch (final TucsonOperationNotPossibleException e) {
-                    e.printStackTrace();
-                }
-            }
-            // Rimuovo l'ACC
-            TucsonService.this.mAccManager.removeAcc(agent);
-            // Rimuovo eventuali TucsonOperationHandler
-            TucsonService.this.mOperationHandlers.remove(this.myAgent.getAID());
-        }
-
-        @Override
         public BridgeToTucson getBridgeToTucson(final Agent agent)
                 throws CannotAcquireACCException {
             if (!TucsonService.this.mAccManager.hasAcc(agent)) {
@@ -233,6 +215,24 @@ public class TucsonService extends BaseService {
         @Override
         public void init(final Agent agent) {
             this.myAgent = agent;
+        }
+
+        @Override
+        public void releaseACC(final Agent agent) {
+            // Esco dall'acc
+            final EnhancedACC acc =
+                    TucsonService.this.mAccManager.getAcc(agent);
+            if (acc != null) {
+                try {
+                    acc.exit();
+                } catch (final TucsonOperationNotPossibleException e) {
+                    e.printStackTrace();
+                }
+            }
+            // Rimuovo l'ACC
+            TucsonService.this.mAccManager.removeAcc(agent);
+            // Rimuovo eventuali TucsonOperationHandler
+            TucsonService.this.mOperationHandlers.remove(this.myAgent.getAID());
         }
 
         @Override
@@ -283,7 +283,8 @@ public class TucsonService extends BaseService {
     /*
      * Gestisce gli acc posseduti dagli agenti
      */
-    private final TucsonACCsManager mAccManager = TucsonACCsManager.getInstance();
+    private final TucsonACCsManager mAccManager = TucsonACCsManager
+            .getInstance();
     /*
      * Gestisce il mapping Agente-OperationHandler
      */
@@ -335,7 +336,8 @@ public class TucsonService extends BaseService {
     @Override
     public void shutdown() {
         System.out.println("[TuCSoNService] Shutting down TuCSoN node");
-        TucsonNodeLifecycleManager.stopTucsonNode(TucsonService.TUCSON_DEF_PORT);
+        TucsonNodeLifecycleManager
+                .stopTucsonNode(TucsonService.TUCSON_DEF_PORT);
         super.shutdown();
     }
 }

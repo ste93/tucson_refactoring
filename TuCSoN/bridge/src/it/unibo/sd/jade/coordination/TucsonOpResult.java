@@ -14,7 +14,6 @@ import alice.tucson.service.TucsonOpCompletionEvent;
  */
 public class TucsonOpResult {
 
-    private final List<TucsonOpCompletionEvent> tucsonCompletionEvents;
     // prossimo risultato da usare, utilizzato per restituire il risultato
     // corretto o per sapere se quel risultato non è presente e quindì procedere
     // con l'operazione
@@ -28,6 +27,7 @@ public class TucsonOpResult {
      * l'operazione tornando null e rimettendo nella BlockQueue il comportamento
      */
     private boolean ready;
+    private final List<TucsonOpCompletionEvent> tucsonCompletionEvents;
 
     /**
      * 
@@ -39,17 +39,17 @@ public class TucsonOpResult {
     }
 
     /**
-     * @return the list
-     */
-    public List<TucsonOpCompletionEvent> getTucsonCompletionEvents() {
-        return this.tucsonCompletionEvents;
-    }
-
-    /**
      * @return the next_res
      */
     public int getNextRes() {
         return this.nextRes;
+    }
+
+    /**
+     * @return the list
+     */
+    public List<TucsonOpCompletionEvent> getTucsonCompletionEvents() {
+        return this.tucsonCompletionEvents;
     }
 
     /**

@@ -33,6 +33,10 @@ import alice.tuplecentre.core.TCCycleResult.Outcome;
 public abstract class AbstractTupleCentreOperation implements
         ITupleCentreOperation {
 
+    /**
+     * shared id counter
+     */
+    private static long idCounter = 0;
     /**  */
     protected static final int OPTYPE_ABORT_OP = 58;
     /**  */
@@ -123,13 +127,18 @@ public abstract class AbstractTupleCentreOperation implements
     protected static final int OPTYPE_URD = 14;
     /**  */
     protected static final int OPTYPE_URDP = 17;
+
     /**  */
     protected static final int RESET = 74;
-
     /**
-     * shared id counter
+     * internal identifier of the operation
      */
-    private static long idCounter = 0;
+    private final long id;
+    private final TCCycleResult result;
+    private TupleTemplate templateArgument;
+    private Tuple tupleArgument;
+    private List<Tuple> tupleListArgument;
+    private final int type;
     /**
      * 
      */
@@ -142,15 +151,15 @@ public abstract class AbstractTupleCentreOperation implements
      * used for possible synchronisation
      */
     protected Object token;
-    /**
-     * internal identifier of the operation
-     */
-    private final long id;
-    private final TCCycleResult result;
-    private TupleTemplate templateArgument;
-    private Tuple tupleArgument;
-    private List<Tuple> tupleListArgument;
-    private final int type;
+
+    private AbstractTupleCentreOperation(final int ty) {
+        this.operationCompleted = false;
+        this.result = new TCCycleResult();
+        this.type = ty;
+        this.token = new Object();
+        this.id = AbstractTupleCentreOperation.idCounter;
+        AbstractTupleCentreOperation.idCounter++;
+    }
 
     /**
      * 
@@ -235,15 +244,6 @@ public abstract class AbstractTupleCentreOperation implements
             final OperationCompletionListener l) {
         this(ty, t);
         this.listener = l;
-    }
-
-    private AbstractTupleCentreOperation(final int ty) {
-        this.operationCompleted = false;
-        this.result = new TCCycleResult();
-        this.type = ty;
-        this.token = new Object();
-        this.id = AbstractTupleCentreOperation.idCounter;
-        AbstractTupleCentreOperation.idCounter++;
     }
 
     /**

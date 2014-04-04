@@ -23,6 +23,11 @@ public class TestSync extends Agent {
     @SuppressWarnings("serial")
     private class TucsonTestBehaviour extends SimpleBehaviour {
 
+        /**
+         * 
+         */
+        private static final long serialVersionUID = 1L;
+
         @Override
         public void action() {
             try {
@@ -34,7 +39,8 @@ public class TestSync extends Agent {
                 helper.acquireACC(this.myAgent);
                 // Id tuple centre
                 final TucsonTupleCentreId tcid =
-                        helper.getTucsonTupleCentreId("default", "localhost", 20504);
+                        helper.getTucsonTupleCentreId("default", "localhost",
+                                20504);
                 // Creazione operazione di read
                 LogicTuple tuple = LogicTuple.parse("nome(X)");
                 final Rd op = new Rd(tcid, tuple);
@@ -57,10 +63,10 @@ public class TestSync extends Agent {
                     if (result != null) { // operazione completata
                         // gestione risultato
                         TestSync.this.done = true; // terminazione
-                                                             // behaviour
+                                                   // behaviour
                         bridge.clearTucsonOpResult(this); // pulizia
-                                                                 // strutture
-                                                                 // condivise
+                                                          // strutture
+                                                          // condivise
                     } else { // operazione non completata, blocco behaviour
                              // corrente
                         TestSync.this.log("mi blocco");
@@ -87,14 +93,14 @@ public class TestSync extends Agent {
     private static final long serialVersionUID = 1L;
     private boolean done = false;
 
+    private void log(final String msg) {
+        System.out.println("[JADEAGENT-" + this.getName() + "]: " + msg);
+    }
+
     @Override
     protected void setup() {
         super.setup();
         System.out.println("Agent " + this.getLocalName() + " started!");
         this.addBehaviour(new TucsonTestBehaviour());
-    }
-
-    private void log(final String msg) {
-        System.out.println("[JADEAGENT-" + this.getName() + "]: " + msg);
     }
 }

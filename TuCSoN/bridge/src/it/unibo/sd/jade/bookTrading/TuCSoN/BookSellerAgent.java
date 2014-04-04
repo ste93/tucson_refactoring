@@ -62,6 +62,11 @@ public class BookSellerAgent extends Agent {
      */
     private class BookSellerBehaviour extends CyclicBehaviour {
 
+        /**
+         * 
+         */
+        private static final long serialVersionUID = 1L;
+
         @Override
         public void action() {
 
@@ -104,10 +109,10 @@ public class BookSellerAgent extends Agent {
                 }
             } catch (final ServiceException e) {
                 e.printStackTrace();
-            } catch (InvalidTupleException e) {
+            } catch (final InvalidTupleException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
-            } catch (InvalidOperationException e) {
+            } catch (final InvalidOperationException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
@@ -120,8 +125,12 @@ public class BookSellerAgent extends Agent {
      */
     private class ContractWithBuyerBehaviour extends SimpleBehaviour {
 
-        private boolean ok;
+        /**
+         * 
+         */
+        private static final long serialVersionUID = 1L;
         private final String idBuyer;
+        private boolean ok;
         private final String targetBookTitle;
 
         public ContractWithBuyerBehaviour(final String id, final String tit) {
@@ -262,10 +271,10 @@ public class BookSellerAgent extends Agent {
 
             } catch (final ServiceException e) {
                 e.printStackTrace();
-            } catch (InvalidTupleException e) {
+            } catch (final InvalidTupleException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
-            } catch (InvalidOperationException e) {
+            } catch (final InvalidOperationException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
@@ -278,6 +287,11 @@ public class BookSellerAgent extends Agent {
         }
 
     }
+
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 
     /*
      * The class to execute TuCSoN operations
@@ -297,6 +311,58 @@ public class BookSellerAgent extends Agent {
      * ID of tuple centre
      */
     private TucsonTupleCentreId tcid;
+
+    /*
+     * Just reads books and random prices from an input file.
+     */
+    private void bootCatalogue() {
+        try {
+            final BufferedReader br =
+                    new BufferedReader(
+                            new FileReader(
+                                    "bin/it/unibo/sd/jade/bookTrading/TuCSoN/books.cat"));
+            String line;
+            StringTokenizer st;
+            String title;
+            LinkedList<Float> prices;
+            line = br.readLine();
+            while (line != null) {
+                st = new StringTokenizer(line, ";");
+                title = st.nextToken();
+                prices = new LinkedList<Float>();
+                while (st.hasMoreTokens()) {
+                    prices.add(Float.parseFloat(st.nextToken()));
+                }
+                this.catalogue.put(
+                        title,
+                        prices.get((int) Math.round(Math.random()
+                                * (prices.size() - 1))));
+                line = br.readLine();
+            }
+            br.close();
+        } catch (final FileNotFoundException e) {
+            e.printStackTrace();
+            this.doDelete();
+        } catch (final IOException e) {
+            e.printStackTrace();
+            this.doDelete();
+        }
+    }
+
+    private void log(final String msg) {
+        System.out.println("[" + this.getName() + "]: " + msg);
+    }
+
+    private void printCatalogue() {
+        final Enumeration<String> keys = this.catalogue.keys();
+        String key;
+        this.log("My catalogue is:");
+        for (int i = 0; i < this.catalogue.size(); i++) {
+            key = keys.nextElement();
+            System.out.println("\ttitle: " + key + " price: "
+                    + this.catalogue.get(key));
+        }
+    }
 
     @Override
     protected void setup() {
@@ -376,58 +442,6 @@ public class BookSellerAgent extends Agent {
             e.printStackTrace();
         }
 
-    }
-
-    /*
-     * Just reads books and random prices from an input file.
-     */
-    private void bootCatalogue() {
-        try {
-            final BufferedReader br =
-                    new BufferedReader(
-                            new FileReader(
-                                    "bin/it/unibo/sd/jade/bookTrading/TuCSoN/books.cat"));
-            String line;
-            StringTokenizer st;
-            String title;
-            LinkedList<Float> prices;
-            line = br.readLine();
-            while (line != null) {
-                st = new StringTokenizer(line, ";");
-                title = st.nextToken();
-                prices = new LinkedList<Float>();
-                while (st.hasMoreTokens()) {
-                    prices.add(Float.parseFloat(st.nextToken()));
-                }
-                this.catalogue.put(
-                        title,
-                        prices.get((int) Math.round(Math.random()
-                                * (prices.size() - 1))));
-                line = br.readLine();
-            }
-            br.close();
-        } catch (final FileNotFoundException e) {
-            e.printStackTrace();
-            this.doDelete();
-        } catch (final IOException e) {
-            e.printStackTrace();
-            this.doDelete();
-        }
-    }
-
-    private void log(final String msg) {
-        System.out.println("[" + this.getName() + "]: " + msg);
-    }
-
-    private void printCatalogue() {
-        final Enumeration<String> keys = this.catalogue.keys();
-        String key;
-        this.log("My catalogue is:");
-        for (int i = 0; i < this.catalogue.size(); i++) {
-            key = keys.nextElement();
-            System.out.println("\ttitle: " + key + " price: "
-                    + this.catalogue.get(key));
-        }
     }
 
 }

@@ -97,7 +97,8 @@ public class AsynchCompletionBehaviourHandler extends AbstractTucsonAgent {
         }
         // controllo se il behaviour passato rispetta il contratto richiesto
         if (this.behav instanceof IAsynchCompletionBehaviour) {
-            final IAsynchCompletionBehaviour b = (IAsynchCompletionBehaviour) this.behav;
+            final IAsynchCompletionBehaviour b =
+                    (IAsynchCompletionBehaviour) this.behav;
             b.setTucsonOpCompletionEvent(ev);
             this.myAgent.addBehaviour(this.behav); // non ci sono problemi
                                                    // accessi concorrenti!å

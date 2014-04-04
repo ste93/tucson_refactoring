@@ -43,9 +43,6 @@ public class InspectorContextStub implements InspectorContext {
         System.out.println("[InspectorContextStub]: " + msg);
     }
 
-    /** id of the tuple centre to be observed */
-    protected TucsonTupleCentreId tid;
-
     /** listeners registrated for virtual machine output events */
     private final List<InspectorContextListener> contextListeners =
             new ArrayList<InspectorContextListener>();
@@ -61,6 +58,9 @@ public class InspectorContextStub implements InspectorContext {
 
     /** current observation protocol */
     private InspectorProtocol protocol;
+
+    /** id of the tuple centre to be observed */
+    protected TucsonTupleCentreId tid;
 
     /**
      * 
@@ -180,22 +180,6 @@ public class InspectorContextStub implements InspectorContext {
     }
 
     /**
-     * resolve information about a tuple centre
-     * 
-     * @param titcd
-     *            the identifier of the tuple centre to be resolved
-     */
-    protected void resolveTupleCentreInfo(final TucsonTupleCentreId titcd) {
-        try {
-            this.getTupleCentreInfo(titcd);
-        } catch (final UnreachableNodeException e) {
-            e.printStackTrace();
-        } catch (final OperationNotAllowedException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
      * if request to a new tuple centre -> create new connection to target
      * daemon providing the tuple centre otherwise return the already
      * established connection
@@ -228,6 +212,22 @@ public class InspectorContextStub implements InspectorContext {
 
         throw new alice.tucson.api.exceptions.OperationNotAllowedException();
 
+    }
+
+    /**
+     * resolve information about a tuple centre
+     * 
+     * @param titcd
+     *            the identifier of the tuple centre to be resolved
+     */
+    protected void resolveTupleCentreInfo(final TucsonTupleCentreId titcd) {
+        try {
+            this.getTupleCentreInfo(titcd);
+        } catch (final UnreachableNodeException e) {
+            e.printStackTrace();
+        } catch (final OperationNotAllowedException e) {
+            e.printStackTrace();
+        }
     }
 
 }

@@ -44,16 +44,16 @@ import alice.tuplecentre.core.InspectableEvent;
  */
 public class RespectVM implements Runnable {
 
+    private final RespectTCContainer container;
+    private final RespectVMContext context;
+    private final Object idle;
+    private final EventMonitor news;
     /** listener to VM inspectable events */
     protected List<InspectableEventListener> inspectors;
     /**
      * 
      */
     protected List<ObservableEventListener> observers;
-    private final RespectTCContainer container;
-    private final RespectVMContext context;
-    private final Object idle;
-    private final EventMonitor news;
 
     /**
      * 

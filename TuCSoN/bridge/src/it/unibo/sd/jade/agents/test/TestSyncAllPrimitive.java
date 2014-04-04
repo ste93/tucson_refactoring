@@ -22,6 +22,10 @@ public class TestSyncAllPrimitive extends Agent {
     @SuppressWarnings("serial")
     private class TucsonTestBehaviour extends SimpleBehaviour {
 
+        /**
+         * 
+         */
+        private static final long serialVersionUID = 1L;
         private BridgeToTucson bridge;
 
         @Override
@@ -35,7 +39,8 @@ public class TestSyncAllPrimitive extends Agent {
                 helper.acquireACC(this.myAgent);
                 // Creo operazione
                 final TucsonTupleCentreId tcid =
-                        helper.getTucsonTupleCentreId("default", "localhost", 20504);
+                        helper.getTucsonTupleCentreId("default", "localhost",
+                                20504);
                 LogicTuple tuple = null;
                 // acquisizione del bridge univoco per l'agente
                 this.bridge = helper.getBridgeToTucson(this.myAgent);
@@ -431,14 +436,14 @@ public class TestSyncAllPrimitive extends Agent {
     private static final long serialVersionUID = 1L;
     private boolean done = false;
 
+    private void log(final String msg) {
+        System.out.println("/***[JADEAGENT-" + this.getName() + "]: " + msg);
+    }
+
     @Override
     protected void setup() {
         super.setup();
         System.out.println("Agent " + this.getLocalName() + " started!");
         this.addBehaviour(new TucsonTestBehaviour());
-    }
-
-    private void log(final String msg) {
-        System.out.println("/***[JADEAGENT-" + this.getName() + "]: " + msg);
     }
 }

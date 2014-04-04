@@ -23,6 +23,11 @@ public class TestAsyncPolling extends Agent {
     @SuppressWarnings("serial")
     private class TucsonTestBehaviour extends SimpleBehaviour {
 
+        /**
+         * 
+         */
+        private static final long serialVersionUID = 1L;
+
         @Override
         public void action() {
             try {
@@ -34,26 +39,26 @@ public class TestAsyncPolling extends Agent {
                 helper.acquireACC(this.myAgent);
                 // Creo operazione
                 final TucsonTupleCentreId tcid =
-                        helper.getTucsonTupleCentreId("default", "localhost", 20504);
+                        helper.getTucsonTupleCentreId("default", "localhost",
+                                20504);
                 final LogicTuple tuple = LogicTuple.parse("nome(X)");
                 final Rd op = new Rd(tcid, tuple);
                 final BridgeToTucson bridge =
                         helper.getBridgeToTucson(this.myAgent);
-                final AsynchTucsonOpResult result = bridge.asynchronousInvocation(op);
+                final AsynchTucsonOpResult result =
+                        bridge.asynchronousInvocation(op);
                 // controllo a polling se l'operazione è stata completata o meno
                 while (!TestAsyncPolling.this.done) {
                     final TucsonOpCompletionEvent ev =
                             result.getTucsonCompletionEvent(result.getOpId());
                     if (ev != null) { // risultato operazione acquisito
                         // gestione risultato
-                        TestAsyncPolling.this
-                                .log("\n\n\n\n Result = " + ev.getTuple()
-                                        + "\n\n\n\n");
+                        TestAsyncPolling.this.log("\n\n\n\n Result = "
+                                + ev.getTuple() + "\n\n\n\n");
                         TestAsyncPolling.this.done = true;
                         bridge.clearTucsonOpResult(this);
                     } else { // risultato non acquisito
-                        TestAsyncPolling.this
-                                .log("risultato non pronto");
+                        TestAsyncPolling.this.log("risultato non pronto");
                         TestAsyncPolling.this.done = false;
                     }
                 }
@@ -72,14 +77,14 @@ public class TestAsyncPolling extends Agent {
     private static final long serialVersionUID = 1L;
     private boolean done = false;
 
+    private void log(final String msg) {
+        System.out.println("/***[JADEAGENT-" + this.getName() + "]: " + msg);
+    }
+
     @Override
     protected void setup() {
         super.setup();
         System.out.println("Agent " + this.getLocalName() + " started!");
         this.addBehaviour(new TucsonTestBehaviour());
-    }
-
-    private void log(final String msg) {
-        System.out.println("/***[JADEAGENT-" + this.getName() + "]: " + msg);
     }
 }

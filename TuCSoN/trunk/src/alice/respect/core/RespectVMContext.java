@@ -1758,6 +1758,24 @@ public class RespectVMContext extends
         this.removeMatchingSpecTuple(new LogicTuple(rg));
     }
 
+    private boolean evalGuard(final Term g) {
+        this.log("guard = " + g);
+        final SolveInfo info = this.core.solve(g);
+        this.core.solveEnd();
+        this.log("evaluation = " + info.isSuccess());
+        return info.isSuccess();
+    }
+
+    private void log(final String s) {
+        System.out.println("....[RespectVMContext ("
+                + ((alice.respect.api.TupleCentreId) this.getId()).getName()
+                + "@"
+                + ((alice.respect.api.TupleCentreId) this.getId()).getNode()
+                + ":"
+                + ((alice.respect.api.TupleCentreId) this.getId()).getPort()
+                + ")]: " + s);
+    }
+
     /**
      * 
      * @param spec
@@ -1910,24 +1928,6 @@ public class RespectVMContext extends
             return false;
         }
 
-    }
-
-    private boolean evalGuard(final Term g) {
-        this.log("guard = " + g);
-        final SolveInfo info = this.core.solve(g);
-        this.core.solveEnd();
-        this.log("evaluation = " + info.isSuccess());
-        return info.isSuccess();
-    }
-
-    private void log(final String s) {
-        System.out.println("....[RespectVMContext ("
-                + ((alice.respect.api.TupleCentreId) this.getId()).getName()
-                + "@"
-                + ((alice.respect.api.TupleCentreId) this.getId()).getNode()
-                + ":"
-                + ((alice.respect.api.TupleCentreId) this.getId()).getPort()
-                + ")]: " + s);
     }
 
 }

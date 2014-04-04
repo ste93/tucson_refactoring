@@ -44,17 +44,8 @@ public interface TucsonHelper extends ServiceHelper {
             throws TucsonInvalidAgentIdException;
 
     /**
-     * Permette di effettuare la deautenticazione per il nodo TuCSoN sul quale
-     * si era precedentemente autenticati.
-     * 
-     * @param agent
-     *            L'agente che richiede la deautenticazione.
-     */
-    void releaseACC(Agent agent);
-
-    /**
-     * Permette di ottenere il {@link BridgeToTucson} tramite il quale
-     * &egrave; possibile interagire con TuCSoN.
+     * Permette di ottenere il {@link BridgeToTucson} tramite il quale &egrave;
+     * possibile interagire con TuCSoN.
      * 
      * @param agent
      *            L'agente che richiede il TucsonOperationHandler.
@@ -80,8 +71,18 @@ public interface TucsonHelper extends ServiceHelper {
      * @throws TucsonInvalidTupleCentreIdException
      *             Se il tuple centre non &egrave; valido.
      */
-    TucsonTupleCentreId getTucsonTupleCentreId(String tupleCentreName, String netid,
-            int portno) throws TucsonInvalidTupleCentreIdException;
+    TucsonTupleCentreId getTucsonTupleCentreId(String tupleCentreName,
+            String netid, int portno)
+            throws TucsonInvalidTupleCentreIdException;
+
+    /**
+     * Permette di effettuare la deautenticazione per il nodo TuCSoN sul quale
+     * si era precedentemente autenticati.
+     * 
+     * @param agent
+     *            L'agente che richiede la deautenticazione.
+     */
+    void releaseACC(Agent agent);
 
     /**
      * Permette di avviare un {@link alice.tucson.service.TucsonNodeService}

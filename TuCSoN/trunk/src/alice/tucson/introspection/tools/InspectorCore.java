@@ -33,26 +33,26 @@ import alice.tuplecentre.core.TriggeredReaction;
  */
 public class InspectorCore extends alice.tucson.introspection.Inspector {
 
-    protected boolean loggingQueries = false;
-
-    protected boolean loggingReactions = false;
-    protected boolean loggingTuples = false;
-    protected LogicTuple logOpFilter;
-    protected String logQueryFilename;
-    protected FileWriter logQueryWriter;
-
-    protected String logReactionFilename;
-    protected FileWriter logReactionWriter;
-    protected String logTupleFilename;
-
-    protected LogicTuple logTupleFilter;
-    protected FileWriter logTupleWriter;
     /*
      * Used when logging tuples/operations/reactions.
      */
     private Calendar cal;
 
     private final InspectorGUI form;
+    protected boolean loggingQueries = false;
+    protected boolean loggingReactions = false;
+    protected boolean loggingTuples = false;
+    protected LogicTuple logOpFilter;
+
+    protected String logQueryFilename;
+    protected FileWriter logQueryWriter;
+    protected String logReactionFilename;
+
+    protected FileWriter logReactionWriter;
+    protected String logTupleFilename;
+    protected LogicTuple logTupleFilter;
+
+    protected FileWriter logTupleWriter;
 
     /**
      * 

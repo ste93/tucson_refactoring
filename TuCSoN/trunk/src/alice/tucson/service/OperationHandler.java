@@ -502,6 +502,17 @@ public class OperationHandler {
     }
 
     /**
+     * Method internally used to log proxy activity (could be used for debug)
+     * 
+     * @param msg
+     *            String to display on the standard output
+     */
+    private void log(final String msg) {
+        System.out.println("....[OperationHandler ("
+                + this.profile.getProperty("agent-identity") + ")]: " + msg);
+    }
+
+    /**
      * This method is the real responsible of TuCSoN operations execution.
      * 
      * First, it takes the target tuplecentre and checks wether this proxy has
@@ -734,16 +745,5 @@ public class OperationHandler {
         synchronized (this.events) {
             this.events.add(this.events.size(), ev);
         }
-    }
-
-    /**
-     * Method internally used to log proxy activity (could be used for debug)
-     * 
-     * @param msg
-     *            String to display on the standard output
-     */
-    private void log(final String msg) {
-        System.out.println("....[OperationHandler ("
-                + this.profile.getProperty("agent-identity") + ")]: " + msg);
     }
 }

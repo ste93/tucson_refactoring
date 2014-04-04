@@ -36,9 +36,42 @@ import alice.tucson.service.TucsonOpCompletionEvent;
  */
 public class BridgeToTucson {
 
+    private static void log(final String msg) {
+        System.out.println("\n[BRIDGE]: " + msg);
+    }
+
+    /**
+     * metodo utilizzato per poter uniformare il tipo di ritorno delle
+     * operazioni di coordinazione eseguite dall'agente jade
+     * 
+     * @param op
+     * @return
+     */
+    private static TucsonOpCompletionEvent toTucsonCompletionEvent(
+            final ITucsonOperation op) {
+
+        TucsonOpCompletionEvent ev;
+        if (op.isInAll() // caso in cui ricevo una lista di tuple
+                || op.isRdAll() || op.isGet() || op.isGetS() || op.isNoAll()) {
+
+            ev =
+                    new TucsonOpCompletionEvent(new TucsonOpId(op.getId()),
+                            true, op.isOperationCompleted(),
+                            op.isResultSuccess(), op.getLogicTupleListResult());
+        } else { // caso in cui ricevo una tupla come risultato
+            ev =
+                    new TucsonOpCompletionEvent(new TucsonOpId(op.getId()),
+                            true, op.isOperationCompleted(),
+                            op.isResultSuccess(), op.getLogicTupleResult());
+        }
+        return ev;
+    }
+
     private final EnhancedACC acc;
-    private final Map<Behaviour, TucsonOpResult> tucsonOpResultsMap;
+
     private final TucsonService service;
+
+    private final Map<Behaviour, TucsonOpResult> tucsonOpResultsMap;
 
     /**
      * 
@@ -51,23 +84,6 @@ public class BridgeToTucson {
         this.acc = a;
         this.service = s;
         this.tucsonOpResultsMap = new HashMap<Behaviour, TucsonOpResult>();
-    }
-
-    /**
-     * metodo utilizzato per eliminare la struttura condivisa non più utilizzata
-     * (il metodo deve essere chiamato appena prima della terminazione del
-     * behaviour) o quando si vuole chiamare una stessa operazione in un
-     * cyclebehaviour perchè altrimenti questa operazione verrebbe eseguita una
-     * sola volta e restituirebbe sempre lo stesso risultato anche se la si
-     * richiama più volte
-     * 
-     * @param b
-     *            behaviour tramite il quale si identifica la struttura
-     *            condivisa associata al behaviour (behaviour da cui si sono
-     *            invocate le operazioni di cooridnazione)
-     */
-    public void clearTucsonOpResult(final Behaviour b) {
-        this.tucsonOpResultsMap.remove(b);
     }
 
     /**
@@ -134,12 +150,29 @@ public class BridgeToTucson {
         try {
             new AsynchCompletionBehaviourHandler("tucsonAgentAsync", cmd,
                     this.service, myAgent, behav).go();
-        } catch (TucsonInvalidAgentIdException e) {
+        } catch (final TucsonInvalidAgentIdException e) {
             /*
              * cannot really happen
              */
         }
 
+    }
+
+    /**
+     * metodo utilizzato per eliminare la struttura condivisa non più utilizzata
+     * (il metodo deve essere chiamato appena prima della terminazione del
+     * behaviour) o quando si vuole chiamare una stessa operazione in un
+     * cyclebehaviour perchè altrimenti questa operazione verrebbe eseguita una
+     * sola volta e restituirebbe sempre lo stesso risultato anche se la si
+     * richiama più volte
+     * 
+     * @param b
+     *            behaviour tramite il quale si identifica la struttura
+     *            condivisa associata al behaviour (behaviour da cui si sono
+     *            invocate le operazioni di cooridnazione)
+     */
+    public void clearTucsonOpResult(final Behaviour b) {
+        this.tucsonOpResultsMap.remove(b);
     }
 
     /**
@@ -239,7 +272,7 @@ public class BridgeToTucson {
             ta =
                     new SynchCompletionBehaviourHandler("tucsonAgentAsync",
                             ros, cmd, this.service, behav);
-        } catch (TucsonInvalidAgentIdException e) {
+        } catch (final TucsonInvalidAgentIdException e) {
             /*
              * cannot really happen
              */
@@ -253,36 +286,5 @@ public class BridgeToTucson {
         return null; // se si ritorna null vuol dire che il risultato non è
                      // pronto e di conseguenza si adotta il protocollo di
                      // sospensione e riattivazione del behaviour
-    }
-
-    /**
-     * metodo utilizzato per poter uniformare il tipo di ritorno delle
-     * operazioni di coordinazione eseguite dall'agente jade
-     * 
-     * @param op
-     * @return
-     */
-    private static TucsonOpCompletionEvent toTucsonCompletionEvent(
-            final ITucsonOperation op) {
-
-        TucsonOpCompletionEvent ev;
-        if (op.isInAll() // caso in cui ricevo una lista di tuple
-                || op.isRdAll() || op.isGet() || op.isGetS() || op.isNoAll()) {
-
-            ev =
-                    new TucsonOpCompletionEvent(new TucsonOpId(op.getId()),
-                            true, op.isOperationCompleted(),
-                            op.isResultSuccess(), op.getLogicTupleListResult());
-        } else { // caso in cui ricevo una tupla come risultato
-            ev =
-                    new TucsonOpCompletionEvent(new TucsonOpId(op.getId()),
-                            true, op.isOperationCompleted(),
-                            op.isResultSuccess(), op.getLogicTupleResult());
-        }
-        return ev;
-    }
-
-    private static void log(final String msg) {
-        System.out.println("\n[BRIDGE]: " + msg);
     }
 }

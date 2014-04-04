@@ -65,15 +65,15 @@ public abstract class AbstractTucsonAgent implements
 
     private static final int DEFAULT_PORT = 20504;
 
+    private final TucsonAgentId aid;
+    private EnhancedACC context;
+    private final String node;
+    private final int port;
+
     /**
      * 
      */
     protected List<TucsonOpCompletionEvent> completionEvents;
-    private final TucsonAgentId aid;
-    private EnhancedACC context;
-    private final String node;
-
-    private final int port;
 
     /**
      * Same as before, this time using the passed String to create the

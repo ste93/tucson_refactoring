@@ -109,6 +109,25 @@ public class InspectorGUI extends javax.swing.JFrame {
 
     }
 
+    private final TucsonAgentId aid;
+    private javax.swing.JButton buttonInspect;
+    private javax.swing.JButton buttonNextStep;
+    private javax.swing.JCheckBox checkStepExecution;
+    private javax.swing.JPanel chooseTC;
+    private InspectorContext context;
+    private javax.swing.JTabbedPane controlPanel;
+    private final Object exit = new Object();
+    private javax.swing.JPanel imgPanel;
+    private javax.swing.JTextField inputName;
+
+    private javax.swing.JTextField inputNode;
+    private javax.swing.JTextField inputPort;
+    private boolean isSessionOpen;
+    private EventViewer pendingQueryForm;
+    private ReactionViewer reactionForm;
+    private EditSpec specForm;
+    private javax.swing.JTextField stateBar;
+    private TupleViewer tupleForm;
     /**
      * Package-visible reference to the Inspector core machinery.
      */
@@ -121,25 +140,6 @@ public class InspectorGUI extends javax.swing.JFrame {
      * Package-visible reference to the inspected tuplecentre.
      */
     protected TucsonTupleCentreId tid;
-    private final TucsonAgentId aid;
-    private javax.swing.JButton buttonInspect;
-    private javax.swing.JButton buttonNextStep;
-    private javax.swing.JCheckBox checkStepExecution;
-    private javax.swing.JPanel chooseTC;
-    private InspectorContext context;
-    private javax.swing.JTabbedPane controlPanel;
-
-    private final Object exit = new Object();
-    private javax.swing.JPanel imgPanel;
-    private javax.swing.JTextField inputName;
-    private javax.swing.JTextField inputNode;
-    private javax.swing.JTextField inputPort;
-    private boolean isSessionOpen;
-    private EventViewer pendingQueryForm;
-    private ReactionViewer reactionForm;
-    private EditSpec specForm;
-    private javax.swing.JTextField stateBar;
-    private TupleViewer tupleForm;
 
     /**
      * Called when no default tuplecentre to monitor is given.
@@ -177,42 +177,6 @@ public class InspectorGUI extends javax.swing.JFrame {
     public void onEventViewerExit() {
         this.protocol
                 .setPendingQueryObservType(InspectorProtocol.NO_OBSERVATION);
-        try {
-            this.context.setProtocol(this.protocol);
-        } catch (final IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    protected EventViewer getQueryForm() {
-        return this.pendingQueryForm;
-    }
-
-    protected ReactionViewer getReactionForm() {
-        return this.reactionForm;
-    }
-
-    /*
-     * Forms getter.
-     */
-    protected TupleViewer getTupleForm() {
-        return this.tupleForm;
-    }
-
-    protected void onReactionViewerExit() {
-        this.protocol.setReactionsObservType(InspectorProtocol.NO_OBSERVATION);
-        try {
-            this.context.setProtocol(this.protocol);
-        } catch (final IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /*
-     * 'On-exit' callbacks.
-     */
-    protected void onTupleViewerExit() {
-        this.protocol.setTsetObservType(InspectorProtocol.NO_OBSERVATION);
         try {
             this.context.setProtocol(this.protocol);
         } catch (final IOException e) {
@@ -665,6 +629,42 @@ public class InspectorGUI extends javax.swing.JFrame {
             e.printStackTrace();
         }
         this.tupleForm.setVisible(true);
+    }
+
+    protected EventViewer getQueryForm() {
+        return this.pendingQueryForm;
+    }
+
+    protected ReactionViewer getReactionForm() {
+        return this.reactionForm;
+    }
+
+    /*
+     * Forms getter.
+     */
+    protected TupleViewer getTupleForm() {
+        return this.tupleForm;
+    }
+
+    protected void onReactionViewerExit() {
+        this.protocol.setReactionsObservType(InspectorProtocol.NO_OBSERVATION);
+        try {
+            this.context.setProtocol(this.protocol);
+        } catch (final IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /*
+     * 'On-exit' callbacks.
+     */
+    protected void onTupleViewerExit() {
+        this.protocol.setTsetObservType(InspectorProtocol.NO_OBSERVATION);
+        try {
+            this.context.setProtocol(this.protocol);
+        } catch (final IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

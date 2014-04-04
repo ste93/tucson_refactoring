@@ -105,6 +105,10 @@ public class MasterAgent extends AbstractTucsonAgent {
          */
     }
 
+    private int drawRandomInt() {
+        return (int) Math.round(Math.random() * this.maxFactorial);
+    }
+
     @Override
     protected void main() {
         this.say("I'm started.");
@@ -247,10 +251,6 @@ public class MasterAgent extends AbstractTucsonAgent {
             this.say("ERROR: Sleep interrupted!");
             e.printStackTrace();
         }
-    }
-
-    private int drawRandomInt() {
-        return (int) Math.round(Math.random() * this.maxFactorial);
     }
 
 }

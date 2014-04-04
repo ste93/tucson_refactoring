@@ -55,6 +55,24 @@ public class DiningPhilosopher extends AbstractTucsonAgent {
          */
     }
 
+    private void eating() {
+        this.say("...gnam gnam...chomp chomp...munch munch...");
+        try {
+            Thread.sleep(DiningPhilosopher.EATING_TIME);
+        } catch (final InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void think() {
+        this.say("...mumble mumble...rat rat...mumble mumble...");
+        try {
+            Thread.sleep(DiningPhilosopher.THINKING_TIME);
+        } catch (final InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     protected void main() {
         final SynchACC acc = this.getContext();
@@ -92,24 +110,6 @@ public class DiningPhilosopher extends AbstractTucsonAgent {
             } catch (final OperationTimeOutException e) {
                 e.printStackTrace();
             }
-        }
-    }
-
-    private void eating() {
-        this.say("...gnam gnam...chomp chomp...munch munch...");
-        try {
-            Thread.sleep(DiningPhilosopher.EATING_TIME);
-        } catch (final InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void think() {
-        this.say("...mumble mumble...rat rat...mumble mumble...");
-        try {
-            Thread.sleep(DiningPhilosopher.THINKING_TIME);
-        } catch (final InterruptedException e) {
-            e.printStackTrace();
         }
     }
 

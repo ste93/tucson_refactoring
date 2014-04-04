@@ -53,11 +53,20 @@ import alice.tucson.service.TucsonOpCompletionEvent;
  */
 @SuppressWarnings("serial")
 public class BookBuyerAgent extends Agent {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
     /*
      * Behaviour that search the services and try to buy a book
      */
     private class BookBuyerBehaviour extends SimpleBehaviour {
 
+        /**
+         * 
+         */
+        private static final long serialVersionUID = 1L;
         /*
          * condition to terminate behaviour
          */
@@ -350,6 +359,41 @@ public class BookBuyerAgent extends Agent {
      */
     private TucsonTupleCentreId tcid;
 
+    /*
+     * Just draw a random book title from an input file.
+     */
+    private String bootBookTitle() {
+        try {
+            final BufferedReader br =
+                    new BufferedReader(
+                            new FileReader(
+                                    "bin/it/unibo/sd/jade/bookTrading/TuCSoN/books.cat"));
+            String line;
+            StringTokenizer st;
+            final LinkedList<String> titles = new LinkedList<String>();
+            line = br.readLine();
+            while (line != null) {
+                st = new StringTokenizer(line, ";");
+                titles.add(st.nextToken());
+                line = br.readLine();
+            }
+            br.close();
+            return titles.get((int) Math.round(Math.random()
+                    * (titles.size() - 1)));
+        } catch (final FileNotFoundException e) {
+            e.printStackTrace();
+            this.doDelete();
+        } catch (final IOException e) {
+            e.printStackTrace();
+            this.doDelete();
+        }
+        return "";
+    }
+
+    private void log(final String msg) {
+        System.out.println("[" + this.getName() + "]: " + msg);
+    }
+
     @Override
     protected void setup() {
 
@@ -394,41 +438,6 @@ public class BookBuyerAgent extends Agent {
             e.printStackTrace();
         }
 
-    }
-
-    /*
-     * Just draw a random book title from an input file.
-     */
-    private String bootBookTitle() {
-        try {
-            final BufferedReader br =
-                    new BufferedReader(
-                            new FileReader(
-                                    "bin/it/unibo/sd/jade/bookTrading/TuCSoN/books.cat"));
-            String line;
-            StringTokenizer st;
-            final LinkedList<String> titles = new LinkedList<String>();
-            line = br.readLine();
-            while (line != null) {
-                st = new StringTokenizer(line, ";");
-                titles.add(st.nextToken());
-                line = br.readLine();
-            }
-            br.close();
-            return titles.get((int) Math.round(Math.random()
-                    * (titles.size() - 1)));
-        } catch (final FileNotFoundException e) {
-            e.printStackTrace();
-            this.doDelete();
-        } catch (final IOException e) {
-            e.printStackTrace();
-            this.doDelete();
-        }
-        return "";
-    }
-
-    private void log(final String msg) {
-        System.out.println("[" + this.getName() + "]: " + msg);
     }
 
 }

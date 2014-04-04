@@ -238,6 +238,11 @@ public abstract class AbstractTupleSet implements ITupleSet {
         return this.tuples.toString();
     }
 
+    private LTEntry createEntry(final LogicTuple t)
+            throws InvalidTupleException {
+        return new LTEntry(this.getTupleKey1(t), this.getTupleKey2(t), t);
+    }
+
     /**
      * 
      * @param t
@@ -259,10 +264,5 @@ public abstract class AbstractTupleSet implements ITupleSet {
      */
     protected abstract String getTupleKey2(LogicTuple t)
             throws InvalidTupleException;
-
-    private LTEntry createEntry(final LogicTuple t)
-            throws InvalidTupleException {
-        return new LTEntry(this.getTupleKey1(t), this.getTupleKey2(t), t);
-    }
 
 }

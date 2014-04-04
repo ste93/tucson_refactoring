@@ -23,8 +23,8 @@ package alice.tuplecentre.core;
 public class OutputEvent extends AbstractEvent {
 
     private static final long serialVersionUID = -5521129200850527503L;
-    protected final InputEvent inputEvent;
     private boolean isLnk;
+    protected final InputEvent inputEvent;
 
     /**
      * 

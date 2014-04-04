@@ -71,36 +71,6 @@ public class DiningPhilosopher extends AbstractTucsonAgent {
          */
     }
 
-    @Override
-    protected void main() {
-        this.acc = this.getContext();
-        // Ugly but effective, pardon me...
-        while (true) {
-            this.say("Now thinking...");
-            this.think();
-            this.say("I'm hungry, let's try to eat something...");
-            /*
-             * Try to get needed chopsticks.
-             */
-            if (this.acquireChops()) {
-                /*
-                 * If successful eat.
-                 */
-                if (this.eat()) {
-                    this.say("I'm done, wonderful meal :)");
-                    /*
-                     * Then release chops.
-                     */
-                    this.releaseChops();
-                } else {
-                    this.say("OMG my chopsticks disappeared!");
-                }
-            } else {
-                this.say("I'm starving!");
-            }
-        }
-    }
-
     private boolean acquireChops() {
         ITucsonOperation op = null;
         try {
@@ -184,6 +154,36 @@ public class DiningPhilosopher extends AbstractTucsonAgent {
             Thread.sleep(DiningPhilosopher.THINK_TIME);
         } catch (final InterruptedException e) {
             e.printStackTrace();
+        }
+    }
+
+    @Override
+    protected void main() {
+        this.acc = this.getContext();
+        // Ugly but effective, pardon me...
+        while (true) {
+            this.say("Now thinking...");
+            this.think();
+            this.say("I'm hungry, let's try to eat something...");
+            /*
+             * Try to get needed chopsticks.
+             */
+            if (this.acquireChops()) {
+                /*
+                 * If successful eat.
+                 */
+                if (this.eat()) {
+                    this.say("I'm done, wonderful meal :)");
+                    /*
+                     * Then release chops.
+                     */
+                    this.releaseChops();
+                } else {
+                    this.say("OMG my chopsticks disappeared!");
+                }
+            } else {
+                this.say("I'm starving!");
+            }
         }
     }
 

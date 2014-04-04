@@ -16,9 +16,9 @@ import alice.tucson.service.TucsonOperation;
  */
 public class AsynchTucsonOpResult {
 
-    private List<TucsonOpCompletionEvent> tucsonCompletionEvents;
-    private Map<Long, TucsonOperation> pendingOps;
     private long opId;
+    private Map<Long, TucsonOperation> pendingOps;
+    private List<TucsonOpCompletionEvent> tucsonCompletionEvents;
 
     /**
      * 
@@ -38,6 +38,22 @@ public class AsynchTucsonOpResult {
     }
 
     /**
+     * 
+     * @return the operation id
+     */
+    public long getOpId() {
+        return this.opId;
+    }
+
+    /**
+     * 
+     * @return the Map of pending operations
+     */
+    public Map<Long, TucsonOperation> getPendingOperations() {
+        return this.pendingOps;
+    }
+
+    /**
      * cerca e restituisce in modo mutuamente esclusivo l'evento riguardante
      * l'operazione richiesta
      * 
@@ -50,10 +66,11 @@ public class AsynchTucsonOpResult {
         TucsonOpCompletionEvent ev = null;
         synchronized (this.tucsonCompletionEvents) {
             final boolean trovato = false;
-            for (int i = 0; (i < this.tucsonCompletionEvents.size()) && !trovato; i++) {
+            for (int i = 0; (i < this.tucsonCompletionEvents.size())
+                    && !trovato; i++) {
                 if (this.tucsonCompletionEvents.get(i).getOpId().getId() == o) { // operazione
-                                                                 // richiesta
-                                                                 // trovata
+                    // richiesta
+                    // trovata
                     // prelevo l'operazione completata dalla coda dei messaggi
                     // completati
                     ev = this.tucsonCompletionEvents.remove(i);
@@ -69,22 +86,6 @@ public class AsynchTucsonOpResult {
      */
     public List<TucsonOpCompletionEvent> getTucsonCompletionEvents() {
         return this.tucsonCompletionEvents;
-    }
-
-    /**
-     * 
-     * @return the Map of pending operations
-     */
-    public Map<Long, TucsonOperation> getPendingOperations() {
-        return this.pendingOps;
-    }
-
-    /**
-     * 
-     * @return the operation id
-     */
-    public long getOpId() {
-        return this.opId;
     }
 
     /**
@@ -108,11 +109,11 @@ public class AsynchTucsonOpResult {
 
     /**
      * 
-     * @param e
-     *            the List of completion events
+     * @param id
+     *            the operation id
      */
-    public void setTucsonCompletionEvents(final List<TucsonOpCompletionEvent> e) {
-        this.tucsonCompletionEvents = e;
+    public void setOpId(final long id) {
+        this.opId = id;
     }
 
     /**
@@ -126,10 +127,11 @@ public class AsynchTucsonOpResult {
 
     /**
      * 
-     * @param id
-     *            the operation id
+     * @param e
+     *            the List of completion events
      */
-    public void setOpId(final long id) {
-        this.opId = id;
+    public void
+            setTucsonCompletionEvents(final List<TucsonOpCompletionEvent> e) {
+        this.tucsonCompletionEvents = e;
     }
 }
