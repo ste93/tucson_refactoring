@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import alice.logictuple.LogicMatchingEngine;
 import alice.logictuple.LogicTuple;
 import alice.logictuple.TupleArgument;
@@ -29,7 +28,6 @@ import alice.tuples.javatuples.exceptions.InvalidJVarException;
  * 
  */
 public final class JTuplesEngine {
-
     /**
      * 
      * @param lt
@@ -168,9 +166,8 @@ public final class JTuplesEngine {
      *             if the given tuProlog LogicTuple template is more expressive
      *             w.r.t. JTupleTemplate language, hence, not convertible
      */
-    public static IJTupleTemplate
-            toJavaTupleTemplate(final LogicTuple template)
-                    throws InvalidTupleException {
+    public static IJTupleTemplate toJavaTupleTemplate(final LogicTuple template)
+            throws InvalidTupleException {
         TupleArgument ta;
         TupleArgument ta2;
         List<IJArg> args = null;
@@ -291,8 +288,8 @@ public final class JTuplesEngine {
                     } else if (val.isInt()) {
                         tas[i] = new Value("int", new Value(val.toInt()));
                     } else if (val.isLiteral()) {
-                        tas[i] =
-                                new Value("literal", new Value(val.toLiteral()));
+                        tas[i] = new Value("literal",
+                                new Value(val.toLiteral()));
                     } else if (val.isLong()) {
                         tas[i] = new Value("long", new Value(val.toLong()));
                     }
@@ -336,5 +333,4 @@ public final class JTuplesEngine {
     private JTuplesEngine() {
         // to prevent instantiation
     }
-
 }

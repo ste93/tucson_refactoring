@@ -11,7 +11,6 @@ import alice.tuplecentre.core.AbstractTupleCentreOperation;
  * @author Alessandro Ricci
  */
 public interface ITupleCentre {
-
     /**
      * 
      * @param who
@@ -23,5 +22,4 @@ public interface ITupleCentre {
      */
     void doOperation(IId who, AbstractTupleCentreOperation op)
             throws OperationNotPossibleException;
-
 }

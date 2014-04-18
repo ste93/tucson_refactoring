@@ -2,7 +2,6 @@ package alice.respect.core;
 
 import java.util.HashMap;
 import java.util.Map;
-
 import alice.respect.api.IRespectTC;
 import alice.respect.api.ITCRegistry;
 import alice.respect.api.TupleCentreId;
@@ -14,7 +13,6 @@ import alice.respect.api.exceptions.InstantiationNotPossibleException;
  * 
  */
 public class RespectLocalRegistry implements ITCRegistry {
-
     /**
      * internal representation of the registry, keys are tuple centre id (as
      * String)
@@ -28,12 +26,14 @@ public class RespectLocalRegistry implements ITCRegistry {
         this.reg = new HashMap<String, IRespectTC>();
     }
 
+    @Override
     public void addTC(final IRespectTC tc) {
         if (!this.reg.containsKey(tc.getId().getName())) {
             this.reg.put(tc.getId().getName(), tc);
         }
     }
 
+    @Override
     public Map<String, IRespectTC> getMap() {
         return this.reg;
     }
@@ -46,6 +46,7 @@ public class RespectLocalRegistry implements ITCRegistry {
         return this.reg.size();
     }
 
+    @Override
     public IRespectTC getTC(final TupleCentreId id)
             throws InstantiationNotPossibleException {
         if (!this.reg.containsKey(id.getName())) {
@@ -53,5 +54,4 @@ public class RespectLocalRegistry implements ITCRegistry {
         }
         return this.reg.get(id.getName());
     }
-
 }

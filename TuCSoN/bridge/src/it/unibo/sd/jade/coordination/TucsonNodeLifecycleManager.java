@@ -8,7 +8,6 @@ import alice.tucson.service.TucsonNodeService;
  * 
  */
 public final class TucsonNodeLifecycleManager {
-
     /*
      * The node service is in charge of listening to incoming operation
      * invocations on the associated port of the device dispatching them to the

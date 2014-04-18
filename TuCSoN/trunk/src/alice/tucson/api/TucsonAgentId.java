@@ -15,7 +15,6 @@ package alice.tucson.api;
 
 import java.io.Serializable;
 import java.util.UUID;
-
 import alice.respect.api.AgentId;
 import alice.respect.api.exceptions.InvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
@@ -28,7 +27,6 @@ import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
  */
 public class TucsonAgentId implements alice.tuplecentre.api.AgentId,
         Serializable {
-
     private static final long serialVersionUID = -5788843633820003843L;
 
     private static String dropMinus(final UUID uuid) {
@@ -46,7 +44,6 @@ public class TucsonAgentId implements alice.tuplecentre.api.AgentId,
     }
 
     private AgentId aid;
-
     private UUID uuid;
 
     /**
@@ -87,9 +84,8 @@ public class TucsonAgentId implements alice.tuplecentre.api.AgentId,
         if (this.uuid == null) {
             this.uuid = UUID.randomUUID();
             try {
-                this.aid =
-                        new AgentId(this.aid + ":uuid"
-                                + TucsonAgentId.dropMinus(this.uuid));
+                this.aid = new AgentId(this.aid + ":uuid"
+                        + TucsonAgentId.dropMinus(this.uuid));
             } catch (final InvalidAgentIdException e) {
                 // FIXME This cannot happen
             }
@@ -123,14 +119,17 @@ public class TucsonAgentId implements alice.tuplecentre.api.AgentId,
         return this.uuid.toString();
     }
 
+    @Override
     public boolean isAgent() {
         return true;
     }
 
+    @Override
     public boolean isEnv() {
         return false;
     }
 
+    @Override
     public boolean isTC() {
         return false;
     }
@@ -139,5 +138,4 @@ public class TucsonAgentId implements alice.tuplecentre.api.AgentId,
     public String toString() {
         return this.aid.toString();
     }
-
 }

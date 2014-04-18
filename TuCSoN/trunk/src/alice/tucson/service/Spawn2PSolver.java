@@ -12,7 +12,6 @@ import alice.tuprolog.event.OutputListener;
  * 
  */
 public class Spawn2PSolver extends Thread {
-
     private final Term goal;
     private final Prolog solver;
 
@@ -32,7 +31,7 @@ public class Spawn2PSolver extends Thread {
     @Override
     public void run() {
         this.solver.addOutputListener(new OutputListener() {
-
+            @Override
             public void onOutput(final OutputEvent arg0) {
                 System.out.println("[Spawn2PSolver]: " + arg0.getMsg());
             }
@@ -52,5 +51,4 @@ public class Spawn2PSolver extends Thread {
             System.out.println("[Spawn2PSolver]: No more solutions.");
         }
     }
-
 }

@@ -1,7 +1,6 @@
 package alice.tuplecentre.api;
 
 import java.util.List;
-
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 
 /**
@@ -11,7 +10,6 @@ import alice.tuplecentre.api.exceptions.OperationTimeOutException;
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public interface ITupleCentreOperation {
-
     /**
      * Get operation identifier
      * 
@@ -201,5 +199,4 @@ public interface ITupleCentreOperation {
      *             if the given timeout expires prior to operation completion
      */
     void waitForOperationCompletion(long ms) throws OperationTimeOutException;
-
 }

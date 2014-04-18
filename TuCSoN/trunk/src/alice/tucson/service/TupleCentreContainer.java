@@ -1,7 +1,6 @@
 package alice.tucson.service;
 
 import java.util.HashMap;
-
 import alice.logictuple.LogicTuple;
 import alice.respect.api.IEnvironmentContext;
 import alice.respect.api.IManagementContext;
@@ -45,7 +44,6 @@ import alice.tuplecentre.core.OperationCompletionListener;
  * 
  */
 public final class TupleCentreContainer {
-
     private static int defaultport;
 
     /**
@@ -65,12 +63,11 @@ public final class TupleCentreContainer {
             final int defPort) throws InvalidTupleCentreIdException {
         TupleCentreContainer.defaultport = defPort;
         try {
-            final RespectTCContainer rtcc =
-                    RespectTCContainer.getRespectTCContainer();
+            final RespectTCContainer rtcc = RespectTCContainer
+                    .getRespectTCContainer();
             RespectTCContainer.setDefPort(TupleCentreContainer.defaultport);
-            final TupleCentreId tid =
-                    new TupleCentreId(id.getName(), id.getNode(),
-                            String.valueOf(id.getPort()));
+            final TupleCentreId tid = new TupleCentreId(id.getName(),
+                    id.getNode(), String.valueOf(id.getPort()));
             return rtcc.createRespectTC(tid, q);
         } catch (final InvalidTupleCentreIdException e) {
             throw new InvalidTupleCentreIdException();
@@ -117,10 +114,8 @@ public final class TupleCentreContainer {
             TucsonOperationNotPossibleException {
         IOrdinarySynchInterface context = null;
         try {
-            context =
-                    RespectTCContainer.getRespectTCContainer()
-                            .getOrdinarySynchInterface(
-                                    tid.getInternalTupleCentreId());
+            context = RespectTCContainer.getRespectTCContainer()
+                    .getOrdinarySynchInterface(tid.getInternalTupleCentreId());
             if (type == TucsonOperation.getCode()) {
                 return context.get(aid.getAgentId());
             }
@@ -210,10 +205,8 @@ public final class TupleCentreContainer {
             TucsonOperationNotPossibleException {
         IOrdinarySynchInterface context = null;
         try {
-            context =
-                    RespectTCContainer.getRespectTCContainer()
-                            .getOrdinarySynchInterface(
-                                    tid.getInternalTupleCentreId());
+            context = RespectTCContainer.getRespectTCContainer()
+                    .getOrdinarySynchInterface(tid.getInternalTupleCentreId());
             if (type == TucsonOperation.outCode()) {
                 context.out(aid.getInternalTupleCentreId(), t);
                 return t;
@@ -298,10 +291,9 @@ public final class TupleCentreContainer {
         final LogicTuple res = null;
         ISpecificationSynchInterface context = null;
         try {
-            context =
-                    RespectTCContainer.getRespectTCContainer()
-                            .getSpecificationSynchInterface(
-                                    tid.getInternalTupleCentreId());
+            context = RespectTCContainer.getRespectTCContainer()
+                    .getSpecificationSynchInterface(
+                            tid.getInternalTupleCentreId());
             if (type == TucsonOperation.setSCode()) {
                 if ("spec".equals(t.getName())) {
                     return ((SpecificationSynchInterface) context).setS(aid
@@ -347,10 +339,9 @@ public final class TupleCentreContainer {
         final LogicTuple res = null;
         ISpecificationSynchInterface context = null;
         try {
-            context =
-                    RespectTCContainer.getRespectTCContainer()
-                            .getSpecificationSynchInterface(
-                                    tid.getInternalTupleCentreId());
+            context = RespectTCContainer.getRespectTCContainer()
+                    .getSpecificationSynchInterface(
+                            tid.getInternalTupleCentreId());
             if (type == TucsonOperation.setSCode()) {
                 if ("spec".equals(t.getName())) {
                     return ((SpecificationSynchInterface) context).setS(tcid,
@@ -401,55 +392,48 @@ public final class TupleCentreContainer {
             final OperationCompletionListener l)
             throws OperationTimeOutException, InvalidOperationException,
             TucsonOperationNotPossibleException, UnreachableNodeException {
-
         IEnvironmentContext context = null;
         RespectOperation op = null;
-
-        context =
-                RespectTCContainer.getRespectTCContainer()
-                        .getEnvironmentContext(tid.getInternalTupleCentreId());
+        context = RespectTCContainer.getRespectTCContainer()
+                .getEnvironmentContext(tid.getInternalTupleCentreId());
         if (type == TucsonOperation.getEnvCode()) {
             op = RespectOperation.makeGetEnv(t, l);
         } else if (type == TucsonOperation.setEnvCode()) {
             op = RespectOperation.makeSetEnv(t, l);
         }
-
         // Preparing the input event for the tuple centre.
         final HashMap<String, String> eventMap = new HashMap<String, String>();
         eventMap.put("id", aid.toString());
         InputEvent event = null;
         final TransducersManager tm = TransducersManager.INSTANCE;
-        TransducerStandardInterface transducer =
-                tm.getTransducer(aid.getAgentName());
+        TransducerStandardInterface transducer = tm.getTransducer(aid
+                .getAgentName());
         if (t != null) {
             // It's an event performed by a transducer. In other words, it's an
             // environment event
-            event =
-                    new InputEvent(transducer.getIdentifier(), op,
-                            tid.getInternalTupleCentreId(),
-                            context.getCurrentTime(), eventMap);
+            event = new InputEvent(transducer.getIdentifier(), op,
+                    tid.getInternalTupleCentreId(), context.getCurrentTime(),
+                    eventMap);
             // Sending the event
             event.setSource(transducer.getIdentifier());
             event.setTarget(tid.getInternalTupleCentreId());
             context.notifyInputEnvEvent(event);
         } else {
             // It's an agent request of environment properties
-            event =
-                    new InputEvent(aid, op, tid.getInternalTupleCentreId(),
-                            context.getCurrentTime(), eventMap);
-            final InternalEvent internalEv =
-                    new InternalEvent(event, InternalOperation.makeGetEnv(t));
+            event = new InputEvent(aid, op, tid.getInternalTupleCentreId(),
+                    context.getCurrentTime(), eventMap);
+            final InternalEvent internalEv = new InternalEvent(event,
+                    InternalOperation.makeGetEnv(t));
             internalEv.setSource(tid.getInternalTupleCentreId()); // Set
             // the source of the event
-            final TransducerId[] tIds =
-                    tm.getTransducerIds(tid.getInternalTupleCentreId());
+            final TransducerId[] tIds = tm.getTransducerIds(tid
+                    .getInternalTupleCentreId());
             for (final TransducerId tId2 : tIds) {
                 internalEv.setTarget(tId2); // Set target resource
                 transducer = tm.getTransducer(tId2.getAgentName());
                 transducer.notifyOutput(internalEv);
             }
         }
-
         return op;
     }
 
@@ -484,43 +468,36 @@ public final class TupleCentreContainer {
             throws InvalidOperationException,
             TucsonOperationNotPossibleException, UnreachableNodeException,
             OperationTimeOutException {
-
         IEnvironmentContext context = null;
         RespectOperation op = null;
-
-        context =
-                RespectTCContainer.getRespectTCContainer()
-                        .getEnvironmentContext(tid.getInternalTupleCentreId());
+        context = RespectTCContainer.getRespectTCContainer()
+                .getEnvironmentContext(tid.getInternalTupleCentreId());
         if (type == TucsonOperation.getEnvCode()) {
             op = RespectOperation.makeGetEnv(t, l);
         } else if (type == TucsonOperation.setEnvCode()) {
             op = RespectOperation.makeSetEnv(t, l);
         }
-
         // Preparing the input event for the tuple centre.
         final HashMap<String, String> eventMap = new HashMap<String, String>();
         eventMap.put("id", aid.toString());
-        InputEvent event =
-                new InputEvent(aid, op, tid.getInternalTupleCentreId(),
-                        context.getCurrentTime(), eventMap);
-
+        InputEvent event = new InputEvent(aid, op,
+                tid.getInternalTupleCentreId(), context.getCurrentTime(),
+                eventMap);
         TransducerStandardInterface transducer;
-        event =
-                new InputEvent(aid, op, tid.getInternalTupleCentreId(),
-                        context.getCurrentTime(), eventMap);
-        final InternalEvent internalEv =
-                new InternalEvent(event, InternalOperation.makeGetEnv(t));
+        event = new InputEvent(aid, op, tid.getInternalTupleCentreId(),
+                context.getCurrentTime(), eventMap);
+        final InternalEvent internalEv = new InternalEvent(event,
+                InternalOperation.makeGetEnv(t));
         internalEv.setSource(tid.getInternalTupleCentreId()); // Set
         final TransducersManager tm = TransducersManager.INSTANCE;
         // the source of the event
-        final TransducerId[] tIds =
-                tm.getTransducerIds(tid.getInternalTupleCentreId());
+        final TransducerId[] tIds = tm.getTransducerIds(tid
+                .getInternalTupleCentreId());
         for (final TransducerId tId2 : tIds) {
             internalEv.setTarget(tId2); // Set target resource
             transducer = tm.getTransducer(tId2.getAgentName());
             transducer.notifyOutput(internalEv);
         }
-
         return op;
     }
 
@@ -536,16 +513,12 @@ public final class TupleCentreContainer {
      */
     public static Object doManagementOperation(final int type,
             final TucsonTupleCentreId tid, final Object obj) {
-
         IManagementContext context = null;
-        context =
-                RespectTCContainer.getRespectTCContainer()
-                        .getManagementContext(tid.getInternalTupleCentreId());
-
+        context = RespectTCContainer.getRespectTCContainer()
+                .getManagementContext(tid.getInternalTupleCentreId());
         if (type == TucsonOperation.abortOpCode()) {
             return context.abortOperation((Long) obj);
         }
-
         if (type == TucsonOperation.setSCode()) {
             try {
                 context.setSpec(new RespectSpecification(((LogicTuple) obj)
@@ -562,7 +535,6 @@ public final class TupleCentreContainer {
         if (type == TucsonOperation.getSCode()) {
             return new LogicTuple(context.getSpec().toString());
         }
-
         if (type == TucsonOperation.getTRSetCode()) {
             return context.getTRSet((LogicTuple) obj);
         }
@@ -572,7 +544,6 @@ public final class TupleCentreContainer {
         if (type == TucsonOperation.getWSetCode()) {
             return context.getWSet((LogicTuple) obj);
         }
-
         if (type == TucsonOperation.goCmdCode()) {
             try {
                 context.goCommand();
@@ -600,12 +571,10 @@ public final class TupleCentreContainer {
                 return false;
             }
         }
-
         if (type == TucsonOperation.setMngModeCode()) {
             context.setManagementMode((Boolean) obj);
             return true;
         }
-
         if (type == TucsonOperation.addObsCode()) {
             context.addObserver((ObservableEventListener) obj);
             return true;
@@ -621,7 +590,6 @@ public final class TupleCentreContainer {
             context.addInspector((InspectableEventListener) obj);
             return true;
         }
-
         if (type == TucsonOperation.rmvInspCode()) {
             context.removeInspector((InspectableEventListener) obj);
             return true;
@@ -629,14 +597,11 @@ public final class TupleCentreContainer {
         if (type == TucsonOperation.hasInspCode()) {
             return context.hasInspectors();
         }
-
         // I don't think this is finished...
         if (type == TucsonOperation.reset()) {
             return context.hasInspectors();
         }
-
         return null;
-
     }
 
     /**
@@ -665,10 +630,8 @@ public final class TupleCentreContainer {
         final ITupleCentreOperation res = null;
         IOrdinaryAsynchInterface context = null;
         try {
-            context =
-                    RespectTCContainer.getRespectTCContainer()
-                            .getOrdinaryAsynchInterface(
-                                    tid.getInternalTupleCentreId());
+            context = RespectTCContainer.getRespectTCContainer()
+                    .getOrdinaryAsynchInterface(tid.getInternalTupleCentreId());
             if (type == TucsonOperation.spawnCode()) {
                 return context.spawn(aid.getAgentId(), t, l);
             }
@@ -763,10 +726,8 @@ public final class TupleCentreContainer {
         final ITupleCentreOperation res = null;
         IOrdinaryAsynchInterface context = null;
         try {
-            context =
-                    RespectTCContainer.getRespectTCContainer()
-                            .getOrdinaryAsynchInterface(
-                                    tid.getInternalTupleCentreId());
+            context = RespectTCContainer.getRespectTCContainer()
+                    .getOrdinaryAsynchInterface(tid.getInternalTupleCentreId());
             if (type == TucsonOperation.spawnCode()) {
                 return context.spawn(tcid, t, l);
             }
@@ -862,10 +823,9 @@ public final class TupleCentreContainer {
         final ITupleCentreOperation res = null;
         ISpecificationAsynchInterface context = null;
         try {
-            context =
-                    RespectTCContainer.getRespectTCContainer()
-                            .getSpecificationAsynchInterface(
-                                    tid.getInternalTupleCentreId());
+            context = RespectTCContainer.getRespectTCContainer()
+                    .getSpecificationAsynchInterface(
+                            tid.getInternalTupleCentreId());
             if (type == TucsonOperation.noSCode()) {
                 return context.noS(aid.getAgentId(), t, l);
             }
@@ -929,10 +889,9 @@ public final class TupleCentreContainer {
         final ITupleCentreOperation res = null;
         ISpecificationAsynchInterface context = null;
         try {
-            context =
-                    RespectTCContainer.getRespectTCContainer()
-                            .getSpecificationAsynchInterface(
-                                    tid.getInternalTupleCentreId());
+            context = RespectTCContainer.getRespectTCContainer()
+                    .getSpecificationAsynchInterface(
+                            tid.getInternalTupleCentreId());
             if (type == TucsonOperation.noSCode()) {
                 return context.noS(tcid, t, l);
             }
@@ -993,5 +952,4 @@ public final class TupleCentreContainer {
          * 
          */
     }
-
 }

@@ -15,7 +15,6 @@ package alice.tuplecentre.core;
 
 import java.util.HashMap;
 import java.util.Map;
-
 import alice.tuplecentre.api.IId;
 import alice.tuplecentre.api.Tuple;
 import alice.tuplecentre.api.TupleCentreId;
@@ -29,9 +28,7 @@ import alice.tuplecentre.api.TupleCentreId;
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public abstract class AbstractEvent implements java.io.Serializable {
-
     private static final long serialVersionUID = 5233628097824741218L;
-
     private final Map<String, String> evProp;
     /** the current tuple centre (VM) where this event is managed **/
     private TupleCentreId reactingTC;
@@ -41,7 +38,6 @@ public abstract class AbstractEvent implements java.io.Serializable {
     private IId source;
     /** represent the target entity that could be an agent or a TC **/
     private IId target;
-
     /** time at which this event occurs */
     private final long time;
 
@@ -145,7 +141,6 @@ public abstract class AbstractEvent implements java.io.Serializable {
      */
     public Tuple getTuple() {
         return this.simpleTCEvent.getTupleArgument();
-
     }
 
     /**
@@ -212,5 +207,4 @@ public abstract class AbstractEvent implements java.io.Serializable {
                 + this.getSimpleTCEvent() + ", " + "trg: " + this.getTarget()
                 + ", " + "tc: " + this.getReactingTC() + " ]";
     }
-
 }

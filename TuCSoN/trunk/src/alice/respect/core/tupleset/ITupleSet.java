@@ -1,7 +1,6 @@
 package alice.respect.core.tupleset;
 
 import java.util.Iterator;
-
 import alice.logictuple.LogicTuple;
 
 /**
@@ -10,7 +9,6 @@ import alice.logictuple.LogicTuple;
  * @author Saverio Cicora
  */
 public interface ITupleSet {
-
     /**
      * Add a logic tuple to tuple set.
      * 
@@ -107,6 +105,6 @@ public interface ITupleSet {
      * 
      * @return a textual representation in the form of a prolog theory.
      */
+    @Override
     String toString();
-
 }

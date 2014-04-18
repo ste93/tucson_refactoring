@@ -18,7 +18,6 @@ import alice.tuplecentre.core.AbstractTupleCentreOperation;
  * @author ste (mailto: s.mariani@unibo.it)
  */
 public class DiningPhilosopher extends AbstractTucsonAgent {
-
     private static final int EATING_TIME = 5000;
     private static final int THINKING_TIME = 5000;
     private SynchACC acc;
@@ -72,11 +71,10 @@ public class DiningPhilosopher extends AbstractTucsonAgent {
              * the philosophers, while the coordination medium correctly handle
              * them separately.
              */
-            op =
-                    this.acc.in(
-                            this.myTable,
-                            LogicTuple.parse("chops(" + this.chop1 + ","
-                                    + this.chop2 + ")"), null);
+            op = this.acc.in(
+                    this.myTable,
+                    LogicTuple.parse("chops(" + this.chop1 + "," + this.chop2
+                            + ")"), null);
         } catch (final InvalidTupleException e) {
             e.printStackTrace();
         } catch (final TucsonOperationNotPossibleException e) {
@@ -153,5 +151,4 @@ public class DiningPhilosopher extends AbstractTucsonAgent {
             }
         }
     }
-
 }

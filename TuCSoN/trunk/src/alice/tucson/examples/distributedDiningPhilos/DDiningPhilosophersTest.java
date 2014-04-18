@@ -1,7 +1,6 @@
 package alice.tucson.examples.distributedDiningPhilos;
 
 import java.io.IOException;
-
 import alice.logictuple.LogicTuple;
 import alice.tucson.api.AbstractTucsonAgent;
 import alice.tucson.api.ITucsonOperation;
@@ -22,7 +21,6 @@ import alice.tuplecentre.core.AbstractTupleCentreOperation;
  * @author ste (mailto: s.mariani@unibo.it)
  */
 public class DDiningPhilosophersTest extends AbstractTucsonAgent {
-
     private static final int DEF_PORT = 20504;
     private static final int N_PHILOSOPHERS = 5;
 
@@ -40,7 +38,6 @@ public class DDiningPhilosophersTest extends AbstractTucsonAgent {
     }
 
     private final String ip;
-
     private final int port;
 
     /**
@@ -76,17 +73,11 @@ public class DDiningPhilosophersTest extends AbstractTucsonAgent {
     protected void main() {
         final SynchACC acc = this.getContext();
         try {
-            final TucsonTupleCentreId[] seats =
-                    new TucsonTupleCentreId[DDiningPhilosophersTest.N_PHILOSOPHERS];
+            final TucsonTupleCentreId[] seats = new TucsonTupleCentreId[DDiningPhilosophersTest.N_PHILOSOPHERS];
             for (int i = 0; i < DDiningPhilosophersTest.N_PHILOSOPHERS; i++) {
-                seats[i] =
-                        new TucsonTupleCentreId(
-                                "seat("
-                                        + i
-                                        + ","
-                                        + ((i + 1) % DDiningPhilosophersTest.N_PHILOSOPHERS)
-                                        + ")", this.ip,
-                                String.valueOf(this.port));
+                seats[i] = new TucsonTupleCentreId("seat(" + i + "," + (i + 1)
+                        % DDiningPhilosophersTest.N_PHILOSOPHERS + ")",
+                        this.ip, String.valueOf(this.port));
                 this.say("Injecting 'seat' ReSpecT specification in tc < "
                         + seats[i].toString() + " >...");
                 acc.setS(
@@ -97,9 +88,8 @@ public class DDiningPhilosophersTest extends AbstractTucsonAgent {
                         null);
             }
             /* MOD: begin */
-            final TucsonTupleCentreId table =
-                    new TucsonTupleCentreId("table", this.ip,
-                            String.valueOf(this.port + 1));
+            final TucsonTupleCentreId table = new TucsonTupleCentreId("table",
+                    this.ip, String.valueOf(this.port + 1));
             /* MOD: end */
             this.say("Injecting 'table' ReSpecT specification in tc < "
                     + table.toString() + " >...");
@@ -130,5 +120,4 @@ public class DDiningPhilosophersTest extends AbstractTucsonAgent {
             e.printStackTrace();
         }
     }
-
 }

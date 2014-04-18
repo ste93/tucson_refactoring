@@ -23,9 +23,7 @@ package alice.tucson.api;
  * @author ste (mailto: s.mariani@unibo.it)
  */
 public interface AsynchACC extends OrdinaryAsynchACC, SpecificationAsynchACC {
-
     /*
      * Convenience interface
      */
-
 }

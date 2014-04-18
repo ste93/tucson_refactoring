@@ -20,7 +20,5 @@ package alice.respect.api.exceptions;
  * @author Alessandro Ricci
  */
 public class InvalidTupleCentreIdException extends RespectException {
-
     private static final long serialVersionUID = 2253131762919089633L;
-
 }

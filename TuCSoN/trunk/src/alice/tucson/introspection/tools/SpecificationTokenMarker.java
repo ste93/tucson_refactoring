@@ -14,7 +14,6 @@
 package alice.tucson.introspection.tools;
 
 import javax.swing.text.Segment;
-
 import alice.util.jedit.KeywordMap;
 import alice.util.jedit.Token;
 import alice.util.jedit.TokenMarker;
@@ -25,7 +24,6 @@ import alice.util.jedit.TokenMarker;
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public class SpecificationTokenMarker extends TokenMarker {
-
     private static KeywordMap respectKeywords;
 
     /**
@@ -34,13 +32,10 @@ public class SpecificationTokenMarker extends TokenMarker {
      *         representation of keywords and keywords token
      */
     public static synchronized KeywordMap getKeywords() {
-
         if (SpecificationTokenMarker.respectKeywords == null) {
-
             SpecificationTokenMarker.respectKeywords = new KeywordMap(false);
             SpecificationTokenMarker.respectKeywords.add("reaction",
                     Token.KEYWORD1);
-
             SpecificationTokenMarker.respectKeywords.add("out", Token.KEYWORD3);
             SpecificationTokenMarker.respectKeywords.add("in", Token.KEYWORD3);
             SpecificationTokenMarker.respectKeywords.add("rd", Token.KEYWORD3);
@@ -50,7 +45,6 @@ public class SpecificationTokenMarker extends TokenMarker {
             SpecificationTokenMarker.respectKeywords.add("nop", Token.KEYWORD3);
             SpecificationTokenMarker.respectKeywords.add("get", Token.KEYWORD3);
             SpecificationTokenMarker.respectKeywords.add("set", Token.KEYWORD3);
-
             SpecificationTokenMarker.respectKeywords.add("uin", Token.KEYWORD3);
             SpecificationTokenMarker.respectKeywords.add("urd", Token.KEYWORD3);
             SpecificationTokenMarker.respectKeywords
@@ -68,10 +62,8 @@ public class SpecificationTokenMarker extends TokenMarker {
                     Token.KEYWORD3);
             SpecificationTokenMarker.respectKeywords.add("no_all",
                     Token.KEYWORD3);
-
             SpecificationTokenMarker.respectKeywords.add("spawn",
                     Token.KEYWORD3);
-
             SpecificationTokenMarker.respectKeywords.add("current_predicate",
                     Token.KEYWORD3);
             SpecificationTokenMarker.respectKeywords.add("current_tuple",
@@ -102,7 +94,6 @@ public class SpecificationTokenMarker extends TokenMarker {
                     Token.KEYWORD3);
             SpecificationTokenMarker.respectKeywords.add("start_time",
                     Token.KEYWORD3);
-
             SpecificationTokenMarker.respectKeywords.add("pre", Token.KEYWORD2);
             SpecificationTokenMarker.respectKeywords.add("req", Token.KEYWORD2);
             SpecificationTokenMarker.respectKeywords.add("request",
@@ -110,7 +101,6 @@ public class SpecificationTokenMarker extends TokenMarker {
             SpecificationTokenMarker.respectKeywords.add("inv", Token.KEYWORD2);
             SpecificationTokenMarker.respectKeywords.add("invocation",
                     Token.KEYWORD2);
-
             SpecificationTokenMarker.respectKeywords
                     .add("post", Token.KEYWORD2);
             SpecificationTokenMarker.respectKeywords
@@ -121,7 +111,6 @@ public class SpecificationTokenMarker extends TokenMarker {
                     Token.KEYWORD2);
             SpecificationTokenMarker.respectKeywords.add("completion",
                     Token.KEYWORD2);
-
             SpecificationTokenMarker.respectKeywords.add("success",
                     Token.KEYWORD2);
             SpecificationTokenMarker.respectKeywords.add("failure",
@@ -145,7 +134,6 @@ public class SpecificationTokenMarker extends TokenMarker {
                     Token.KEYWORD2);
             SpecificationTokenMarker.respectKeywords.add("after",
                     Token.KEYWORD2);
-
             SpecificationTokenMarker.respectKeywords.add("operation",
                     Token.KEYWORD2);
             SpecificationTokenMarker.respectKeywords.add("internal",
@@ -156,23 +144,17 @@ public class SpecificationTokenMarker extends TokenMarker {
                     Token.KEYWORD2);
             SpecificationTokenMarker.respectKeywords.add("between",
                     Token.KEYWORD2);
-
             SpecificationTokenMarker.respectKeywords.add("is", Token.KEYWORD3);
-
             SpecificationTokenMarker.respectKeywords
                     .add("exec", Token.LITERAL1);
             SpecificationTokenMarker.respectKeywords.add("solve",
                     Token.LITERAL1);
-
         }
-
         return SpecificationTokenMarker.respectKeywords;
-
     }
 
     private final KeywordMap keywords;
     private int lastKeyword;
-
     private int lastOffset;
 
     /**
@@ -195,29 +177,22 @@ public class SpecificationTokenMarker extends TokenMarker {
     @Override
     public byte markTokensImpl(final byte token, final Segment line,
             final int lineIndex) {
-
         final char[] array = line.array;
         final int offset = line.offset;
         this.lastOffset = offset;
         this.lastKeyword = offset;
         final int len = line.count + offset;
         boolean backslash = false;
-
         loop: for (int i = offset; i < len; i++) {
-
-            final int i1 = (i + 1);
+            final int i1 = i + 1;
             final char c = array[i];
             if (c == '\\') {
                 backslash ^= true;
                 continue;
             }
-
             switch (token) {
-
                 case Token.NULL:
-
                     switch (c) {
-
                         case '%':
                             if (backslash) {
                                 backslash = false;
@@ -228,7 +203,6 @@ public class SpecificationTokenMarker extends TokenMarker {
                             this.lastOffset = len;
                             this.lastKeyword = len;
                             break loop;
-
                         case '#':
                             if (backslash) {
                                 backslash = false;
@@ -243,18 +217,15 @@ public class SpecificationTokenMarker extends TokenMarker {
                                 break loop;
                             }
                             break;
-
                         default:
                             backslash = false;
-                            if (!Character.isLetterOrDigit(c) && (c != '_')) {
+                            if (!Character.isLetterOrDigit(c) && c != '_') {
                                 this.doKeyword(line, i);
                             }
                             break;
                     }
                     break;
-
                 case Token.COMMENT1:
-
                 case Token.LITERAL1:
                     if (backslash) {
                         backslash = false;
@@ -265,7 +236,6 @@ public class SpecificationTokenMarker extends TokenMarker {
                         this.lastKeyword = i1;
                     }
                     break;
-
                 case Token.LITERAL2:
                     if (backslash) {
                         backslash = false;
@@ -276,19 +246,14 @@ public class SpecificationTokenMarker extends TokenMarker {
                         this.lastKeyword = i1;
                     }
                     break;
-
                 default:
                     throw new InternalError("Invalid state: " + token);
             }
-
         }
-
         if (token == Token.NULL) {
             this.doKeyword(line, len);
         }
-
         switch (token) {
-
             case Token.LITERAL1:
             case Token.LITERAL2:
                 this.addToken(len - this.lastOffset, Token.INVALID);
@@ -301,9 +266,7 @@ public class SpecificationTokenMarker extends TokenMarker {
                 this.addToken(len - this.lastOffset, token);
                 break;
         }
-
         return token;
-
     }
 
     private boolean doKeyword(final Segment line, final int i) {
@@ -320,5 +283,4 @@ public class SpecificationTokenMarker extends TokenMarker {
         this.lastKeyword = i1;
         return false;
     }
-
 }

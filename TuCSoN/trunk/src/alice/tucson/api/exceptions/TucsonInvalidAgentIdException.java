@@ -19,7 +19,5 @@ package alice.tucson.api.exceptions;
  * 
  */
 public class TucsonInvalidAgentIdException extends Exception {
-
     private static final long serialVersionUID = 8104145392771421793L;
-
 }

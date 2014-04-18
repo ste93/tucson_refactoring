@@ -17,7 +17,6 @@ import alice.tuplecentre.api.exceptions.OperationTimeOutException;
  * 
  */
 public class OutAll extends AbstractTucsonOrdinaryAction {
-
     /**
      * 
      * @param tc

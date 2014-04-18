@@ -14,7 +14,6 @@ package alice.respect.core;
 
 import java.util.LinkedList;
 import java.util.List;
-
 import alice.logictuple.LogicTuple;
 import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.respect.api.AgentId;
@@ -36,7 +35,6 @@ import alice.tuplecentre.api.IId;
  */
 public class SpecificationSynchInterface extends RootInterface implements
         ISpecificationSynchInterface {
-
     /**
      * 
      * @param core
@@ -46,6 +44,7 @@ public class SpecificationSynchInterface extends RootInterface implements
         super(core);
     }
 
+    @Override
     public List<LogicTuple> getS(final IId aid)
             throws OperationNotPossibleException {
         final IRespectOperation op = this.getCore().getS(aid);
@@ -53,6 +52,7 @@ public class SpecificationSynchInterface extends RootInterface implements
         return op.getLogicTupleListResult();
     }
 
+    @Override
     public LogicTuple inpS(final AgentId id, final LogicTuple t)
             throws InvalidLogicTupleException, OperationNotPossibleException {
         if (t == null) {
@@ -63,6 +63,7 @@ public class SpecificationSynchInterface extends RootInterface implements
         return this.unify(t, op.getLogicTupleResult());
     }
 
+    @Override
     public LogicTuple inS(final AgentId id, final LogicTuple t)
             throws InvalidLogicTupleException, OperationNotPossibleException {
         if (t == null) {
@@ -73,6 +74,7 @@ public class SpecificationSynchInterface extends RootInterface implements
         return this.unify(t, op.getLogicTupleResult());
     }
 
+    @Override
     public LogicTuple nopS(final AgentId id, final LogicTuple t)
             throws InvalidLogicTupleException, OperationNotPossibleException {
         if (t == null) {
@@ -83,6 +85,7 @@ public class SpecificationSynchInterface extends RootInterface implements
         return this.unify(t, op.getLogicTupleResult());
     }
 
+    @Override
     public LogicTuple noS(final AgentId id, final LogicTuple t)
             throws InvalidLogicTupleException, OperationNotPossibleException {
         if (t == null) {
@@ -93,6 +96,7 @@ public class SpecificationSynchInterface extends RootInterface implements
         return this.unify(t, op.getLogicTupleResult());
     }
 
+    @Override
     public void outS(final AgentId id, final LogicTuple t)
             throws InvalidLogicTupleException, OperationNotPossibleException {
         if (t == null) {
@@ -102,6 +106,7 @@ public class SpecificationSynchInterface extends RootInterface implements
         op.waitForOperationCompletion();
     }
 
+    @Override
     public LogicTuple rdpS(final AgentId id, final LogicTuple t)
             throws InvalidLogicTupleException, OperationNotPossibleException {
         if (t == null) {
@@ -112,6 +117,7 @@ public class SpecificationSynchInterface extends RootInterface implements
         return this.unify(t, op.getLogicTupleResult());
     }
 
+    @Override
     public LogicTuple rdS(final AgentId id, final LogicTuple t)
             throws InvalidLogicTupleException, OperationNotPossibleException {
         if (t == null) {
@@ -122,6 +128,7 @@ public class SpecificationSynchInterface extends RootInterface implements
         return this.unify(t, op.getLogicTupleResult());
     }
 
+    @Override
     public List<LogicTuple> setS(final IId aid, final LogicTuple t)
             throws OperationNotPossibleException {
         final IRespectOperation op = this.getCore().setS(aid, t);
@@ -129,10 +136,9 @@ public class SpecificationSynchInterface extends RootInterface implements
         return op.getLogicTupleListResult();
     }
 
-    public List<LogicTuple>
-            setS(final IId aid, final RespectSpecification spec)
-                    throws OperationNotPossibleException,
-                    InvalidSpecificationException {
+    @Override
+    public List<LogicTuple> setS(final IId aid, final RespectSpecification spec)
+            throws OperationNotPossibleException, InvalidSpecificationException {
         final IRespectOperation op = this.getCore().setS(aid, spec);
         if ("'$TucsonNodeService-Agent'".equals(aid.toString())
                 || aid.toString().startsWith("'$Inspector-'")) {
@@ -140,5 +146,4 @@ public class SpecificationSynchInterface extends RootInterface implements
         }
         return op.getLogicTupleListResult();
     }
-
 }

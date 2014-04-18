@@ -13,7 +13,6 @@
 package alice.respect.api;
 
 import java.util.List;
-
 import alice.logictuple.LogicTuple;
 import alice.respect.api.exceptions.InvalidSpecificationException;
 import alice.respect.api.exceptions.OperationNotPossibleException;
@@ -27,7 +26,6 @@ import alice.tuplecentre.api.ObservableEventListener;
  * @author Alessandro Ricci
  */
 public interface IManagementContext {
-
     /**
      * Abort a previously executed in or rd operation
      * 
@@ -174,5 +172,4 @@ public interface IManagementContext {
      *             state
      */
     void stopCommand() throws OperationNotPossibleException;
-
 }

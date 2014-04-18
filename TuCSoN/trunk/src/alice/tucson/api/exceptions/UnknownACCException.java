@@ -19,7 +19,5 @@ package alice.tucson.api.exceptions;
  * 
  */
 public class UnknownACCException extends Exception {
-
     private static final long serialVersionUID = -5745885540401721380L;
-
 }

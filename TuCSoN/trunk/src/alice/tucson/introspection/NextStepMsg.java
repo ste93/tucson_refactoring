@@ -21,7 +21,6 @@ import alice.tucson.api.TucsonAgentId;
  * 
  */
 public class NextStepMsg extends NodeMsg {
-
     private static final long serialVersionUID = 3967973492584768476L;
 
     /**
@@ -32,5 +31,4 @@ public class NextStepMsg extends NodeMsg {
     public NextStepMsg(final TucsonAgentId id) {
         super(id, "nextStep");
     }
-
 }

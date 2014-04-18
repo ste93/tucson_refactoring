@@ -18,7 +18,6 @@ package alice.tuplecentre.core;
  * 
  */
 public class ObservableEventReactionFail extends ObservableEventExt {
-
     private static final long serialVersionUID = 5378208360215769012L;
     private TriggeredReaction z;
 
@@ -49,5 +48,4 @@ public class ObservableEventReactionFail extends ObservableEventExt {
     public void setZ(final TriggeredReaction tr) {
         this.z = tr;
     }
-
 }

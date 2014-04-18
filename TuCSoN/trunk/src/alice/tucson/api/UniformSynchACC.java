@@ -25,7 +25,6 @@ import alice.tuplecentre.api.exceptions.OperationTimeOutException;
  * 
  */
 public interface UniformSynchACC extends RootACC {
-
     /**
      * <code>uin</code> TuCSoN primitive, retrieves the specified tuple from the
      * given target tuplecentre. If more than one tuple matches the template,
@@ -270,5 +269,4 @@ public interface UniformSynchACC extends RootACC {
     ITucsonOperation urdp(TupleCentreId tid, Tuple tuple, Long timeout)
             throws TucsonOperationNotPossibleException,
             UnreachableNodeException, OperationTimeOutException;
-
 }

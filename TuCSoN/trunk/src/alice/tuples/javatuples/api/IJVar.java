@@ -8,11 +8,9 @@ package alice.tuples.javatuples.api;
  * 
  */
 public interface IJVar extends IJArg {
-
     /**
      * 
      * @return the type of the JVar
      */
     JArgType getType();
-
 }

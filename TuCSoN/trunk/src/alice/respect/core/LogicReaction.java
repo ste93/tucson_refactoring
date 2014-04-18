@@ -14,7 +14,6 @@ package alice.respect.core;
 
 import java.util.AbstractMap;
 import java.util.LinkedHashMap;
-
 import alice.tuprolog.Struct;
 import alice.tuprolog.Term;
 import alice.tuprolog.Var;
@@ -26,7 +25,6 @@ import alice.tuprolog.Var;
  */
 public class LogicReaction implements alice.tuplecentre.core.Reaction,
         java.io.Serializable {
-
     private static final long serialVersionUID = -930986977792219715L;
     private Struct reaction;
 
@@ -69,5 +67,4 @@ public class LogicReaction implements alice.tuplecentre.core.Reaction,
     public String toString() {
         return this.reaction.toString();
     }
-
 }

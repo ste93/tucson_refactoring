@@ -6,7 +6,6 @@ package it.unibo.sd.jade.exceptions;
  * 
  */
 public class CannotAcquireACCException extends Exception {
-
     /** serialVersionUID **/
     private static final long serialVersionUID = 1L;
 

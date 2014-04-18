@@ -18,7 +18,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-
 import alice.respect.api.IRespectTC;
 import alice.tuplecentre.api.AgentId;
 import alice.tuplecentre.api.IId;
@@ -45,7 +44,6 @@ import alice.tuplecentre.api.exceptions.OperationNotPossibleException;
  */
 public abstract class AbstractTupleCentreVMContext implements
         ITupleCentreManagement, ITupleCentre {
-
     private long bootTime;
     private InputEvent currentEvent;
     private AbstractTupleCentreVMState currentState;
@@ -71,27 +69,19 @@ public abstract class AbstractTupleCentreVMContext implements
      */
     public AbstractTupleCentreVMContext(final TupleCentreId id,
             final int ieSize, final IRespectTC rtc) {
-
         this.management = false;
-
         this.inputEvents = new LinkedList<AbstractEvent>();
         this.inputEnvEvents = new LinkedList<AbstractEvent>();
-
         this.tid = id;
         this.maxPendingInputEventNumber = ieSize;
-
         final AbstractTupleCentreVMState resetState = new ResetState(this);
         final AbstractTupleCentreVMState idleState = new IdleState(this);
-        final AbstractTupleCentreVMState listeningState =
-                new ListeningState(this);
+        final AbstractTupleCentreVMState listeningState = new ListeningState(
+                this);
         final AbstractTupleCentreVMState fetchState = new FetchState(this);
-        final AbstractTupleCentreVMState fetchEnvState =
-                new FetchEnvState(this);
-        final AbstractTupleCentreVMState reactingState =
-                new ReactingState(this);
-        final AbstractTupleCentreVMState speakingState =
-                new SpeakingState(this);
-
+        final AbstractTupleCentreVMState fetchEnvState = new FetchEnvState(this);
+        final AbstractTupleCentreVMState reactingState = new ReactingState(this);
+        final AbstractTupleCentreVMState speakingState = new SpeakingState(this);
         this.states = new HashMap<String, AbstractTupleCentreVMState>();
         this.states.put("ResetState", resetState);
         this.states.put("IdleState", idleState);
@@ -100,16 +90,13 @@ public abstract class AbstractTupleCentreVMContext implements
         this.states.put("FetchEnvState", fetchEnvState);
         this.states.put("ReactingState", reactingState);
         this.states.put("SpeakingState", speakingState);
-
-        final Iterator<AbstractTupleCentreVMState> it =
-                this.states.values().iterator();
+        final Iterator<AbstractTupleCentreVMState> it = this.states.values()
+                .iterator();
         while (it.hasNext()) {
             it.next().resolveLinks();
         }
         this.currentState = resetState;
-
         this.respectTC = rtc;
-
     }
 
     /**
@@ -167,11 +154,11 @@ public abstract class AbstractTupleCentreVMContext implements
      */
     public abstract void addTuple(Tuple t);
 
-    public void
-            doOperation(final IId who, final AbstractTupleCentreOperation op)
-                    throws OperationNotPossibleException {
-        final InputEvent ev =
-                new InputEvent(who, op, this.tid, this.getCurrentTime());
+    @Override
+    public void doOperation(final IId who, final AbstractTupleCentreOperation op)
+            throws OperationNotPossibleException {
+        final InputEvent ev = new InputEvent(who, op, this.tid,
+                this.getCurrentTime());
         synchronized (this.inputEvents) {
             if (this.inputEvents.size() > this.maxPendingInputEventNumber) {
                 throw new OperationNotPossibleException();
@@ -197,7 +184,6 @@ public abstract class AbstractTupleCentreVMContext implements
      * Executes a virtual machine behaviour cycle
      */
     public void execute() {
-
         if (this.management && this.stop) {
             if (!this.doStep) {
                 return;
@@ -214,7 +200,6 @@ public abstract class AbstractTupleCentreVMContext implements
                 this.doStep = false;
             }
         }
-
     }
 
     /**
@@ -223,8 +208,7 @@ public abstract class AbstractTupleCentreVMContext implements
     public void fetchPendingEnvEvent() {
         if (this.pendingEnvEvents()) {
             synchronized (this.inputEnvEvents) {
-                this.currentEvent =
-                        (InputEvent) (this.inputEnvEvents.remove(0));
+                this.currentEvent = (InputEvent) this.inputEnvEvents.remove(0);
             }
         }
     }
@@ -238,7 +222,7 @@ public abstract class AbstractTupleCentreVMContext implements
      */
     public void fetchPendingEvent() {
         synchronized (this.inputEvents) {
-            this.currentEvent = (InputEvent) (this.inputEvents.remove(0));
+            this.currentEvent = (InputEvent) this.inputEvents.remove(0);
         }
     }
 
@@ -322,8 +306,7 @@ public abstract class AbstractTupleCentreVMContext implements
      * 
      * @return the iterator
      */
-    public abstract Iterator<? extends AbstractEvent>
-            getPendingQuerySetIterator();
+    public abstract Iterator<? extends AbstractEvent> getPendingQuerySetIterator();
 
     /**
      * 
@@ -355,8 +338,7 @@ public abstract class AbstractTupleCentreVMContext implements
      * 
      * @return the iterator
      */
-    public abstract Iterator<? extends TriggeredReaction>
-            getTriggeredReactionSetIterator();
+    public abstract Iterator<? extends TriggeredReaction> getTriggeredReactionSetIterator();
 
     /**
      * Gets an iterator over the tuple set (T)
@@ -365,6 +347,7 @@ public abstract class AbstractTupleCentreVMContext implements
      */
     public abstract Iterator<? extends Tuple> getTupleSetIterator();
 
+    @Override
     public void goCommand() throws OperationNotPossibleException {
         if (!this.management) {
             throw new OperationNotPossibleException();
@@ -388,6 +371,7 @@ public abstract class AbstractTupleCentreVMContext implements
      */
     public abstract void linkOperation(OutputEvent out);
 
+    @Override
     public void nextStepCommand() throws OperationNotPossibleException {
         if (!this.management) {
             throw new OperationNotPossibleException();
@@ -481,8 +465,7 @@ public abstract class AbstractTupleCentreVMContext implements
      *            the tuple template to be used
      * @return the tuple representation of the ReSpecT specification
      */
-    public abstract Tuple
-            removeMatchingSpecTuple(TupleTemplate templateArgument);
+    public abstract Tuple removeMatchingSpecTuple(TupleTemplate templateArgument);
 
     /**
      * Removes (not deterministically) from the tuple set a tuple that matches
@@ -546,6 +529,7 @@ public abstract class AbstractTupleCentreVMContext implements
      */
     public abstract void setAllTuples(List<Tuple> tupleList);
 
+    @Override
     public void setManagementMode(final boolean activate) {
         this.management = activate;
     }
@@ -562,6 +546,7 @@ public abstract class AbstractTupleCentreVMContext implements
      */
     public abstract boolean spawnActivity(Tuple t, IId owner, IId targetTC);
 
+    @Override
     public void stopCommand() throws OperationNotPossibleException {
         if (!this.management) {
             throw new OperationNotPossibleException();
@@ -604,5 +589,4 @@ public abstract class AbstractTupleCentreVMContext implements
     protected void setBootTime() {
         this.bootTime = System.currentTimeMillis();
     }
-
 }

@@ -3,7 +3,6 @@ package alice.tucson.service;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-
 import alice.logictuple.LogicTuple;
 import alice.respect.core.RespectOperation;
 import alice.tucson.api.ITucsonOperation;
@@ -23,7 +22,6 @@ import alice.tuples.javatuples.impl.JTuplesEngine;
  */
 public class TucsonOperation extends AbstractTupleCentreOperation implements
         ITucsonOperation {
-
     private static final int OPTYPE_EXIT = 310;
 
     /**
@@ -589,6 +587,7 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
         return this.listener;
     }
 
+    @Override
     public LogicTuple getLogicTupleArgument() {
         if (this.isOut() || this.isOutS() || this.isSetS() || this.isSet()
                 || this.isOutAll() || this.isSpawn()) {
@@ -597,6 +596,7 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
         return (LogicTuple) this.getTemplateArgument();
     }
 
+    @Override
     public List<LogicTuple> getLogicTupleListResult() {
         final List<Tuple> tl = this.getTupleListResult();
         final List<LogicTuple> tll = new LinkedList<LogicTuple>();
@@ -606,6 +606,7 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
         return tll;
     }
 
+    @Override
     public LogicTuple getLogicTupleResult() {
         return (LogicTuple) this.getTupleResult();
     }
@@ -618,7 +619,6 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
      *            wether the operation was allowed
      */
     public void notifyCompletion(final boolean s, final boolean a) {
-
         if (this.listener != null) {
             // System.out.println("......[TucsonOperation]: listener is "
             // + this.listener.getClass().getSimpleName());
@@ -630,7 +630,6 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
                 this.token.notifyAll();
             }
         }
-
     }
 
     /**
@@ -663,5 +662,4 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
             }
         }
     }
-
 }

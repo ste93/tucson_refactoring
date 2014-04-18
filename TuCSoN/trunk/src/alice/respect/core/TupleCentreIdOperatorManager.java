@@ -21,7 +21,6 @@ package alice.respect.core;
  */
 public class TupleCentreIdOperatorManager extends
         alice.tuprolog.OperatorManager {
-
     private static final int IP_DELIMITER_PRIO = 548;
     private static final int NETID_DELIMITER_PRIO = 550;
     private static final int PORT_DELIMITER_PRIO = 549;
@@ -37,5 +36,4 @@ public class TupleCentreIdOperatorManager extends
         this.opNew(":", "xfx", TupleCentreIdOperatorManager.PORT_DELIMITER_PRIO);
         this.opNew(".", "xfx", TupleCentreIdOperatorManager.IP_DELIMITER_PRIO);
     }
-
 }

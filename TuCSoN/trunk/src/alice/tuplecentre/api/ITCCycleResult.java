@@ -1,7 +1,6 @@
 package alice.tuplecentre.api;
 
 import java.util.List;
-
 import alice.tuplecentre.core.TCCycleResult.Outcome;
 
 /**
@@ -11,7 +10,6 @@ import alice.tuplecentre.core.TCCycleResult.Outcome;
  * 
  */
 public interface ITCCycleResult {
-
     /**
      * 
      * @return the time the operation was completed
@@ -87,5 +85,4 @@ public interface ITCCycleResult {
      *            the tuple result of the operation
      */
     void setTupleResult(Tuple res);
-
 }

@@ -2,7 +2,6 @@ package alice.respect.core;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-
 import alice.respect.api.IEnvironmentContext;
 import alice.respect.api.ILinkContext;
 import alice.respect.api.IManagementContext;
@@ -23,7 +22,6 @@ import alice.tucson.service.RemoteLinkProvider;
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public final class RespectTCContainer {
-
     private static RespectTCContainer container;
     private static int defaultport;
     private static final int QUEUE_SIZE = 1000;
@@ -57,19 +55,16 @@ public final class RespectTCContainer {
     }
 
     private String hostname;
-
     private String loopback;
-
     private final ITCRegistry registry;
-
     private IRemoteLinkProvider stub;
 
     private RespectTCContainer() {
         this.registry = new RespectLocalRegistry();
         this.stub = null;
         try {
-            this.loopback =
-                    InetAddress.getLocalHost().getHostAddress().toString();
+            this.loopback = InetAddress.getLocalHost().getHostAddress()
+                    .toString();
             this.hostname = InetAddress.getLocalHost().getHostName().toString();
         } catch (final UnknownHostException e) {
             e.printStackTrace();
@@ -116,8 +111,8 @@ public final class RespectTCContainer {
             return ((RespectTC) this.registry.getTC(id))
                     .getEnvironmentContext();
         } catch (final InstantiationNotPossibleException e) {
-            final RespectTC tc =
-                    new RespectTC(id, this, RespectTCContainer.QUEUE_SIZE);
+            final RespectTC tc = new RespectTC(id, this,
+                    RespectTCContainer.QUEUE_SIZE);
             this.registry.addTC(tc);
             return tc.getEnvironmentContext();
         }
@@ -132,13 +127,12 @@ public final class RespectTCContainer {
      */
     public ILinkContext getLinkContext(final TupleCentreId id) {
         if ((this.hostname.equals(id.getNode()) || this.loopback.equals(id
-                .getNode()))
-                && (id.getPort() == RespectTCContainer.defaultport)) {
+                .getNode())) && id.getPort() == RespectTCContainer.defaultport) {
             try {
                 return ((RespectTC) this.registry.getTC(id)).getLinkContext();
             } catch (final InstantiationNotPossibleException e) {
-                final RespectTC tc =
-                        new RespectTC(id, this, RespectTCContainer.QUEUE_SIZE);
+                final RespectTC tc = new RespectTC(id, this,
+                        RespectTCContainer.QUEUE_SIZE);
                 this.registry.addTC(tc);
                 return tc.getLinkContext();
             }
@@ -159,8 +153,8 @@ public final class RespectTCContainer {
         try {
             return ((RespectTC) this.registry.getTC(id)).getManagementContext();
         } catch (final InstantiationNotPossibleException e) {
-            final RespectTC tc =
-                    new RespectTC(id, this, RespectTCContainer.QUEUE_SIZE);
+            final RespectTC tc = new RespectTC(id, this,
+                    RespectTCContainer.QUEUE_SIZE);
             this.registry.addTC(tc);
             return tc.getManagementContext();
         }
@@ -178,8 +172,8 @@ public final class RespectTCContainer {
             return ((RespectTC) this.registry.getTC(id))
                     .getOrdinaryAsynchInterface();
         } catch (final InstantiationNotPossibleException e) {
-            final RespectTC tc =
-                    new RespectTC(id, this, RespectTCContainer.QUEUE_SIZE);
+            final RespectTC tc = new RespectTC(id, this,
+                    RespectTCContainer.QUEUE_SIZE);
             this.registry.addTC(tc);
             return tc.getOrdinaryAsynchInterface();
         }
@@ -197,8 +191,8 @@ public final class RespectTCContainer {
             return ((RespectTC) this.registry.getTC(id))
                     .getOrdinarySynchInterface();
         } catch (final InstantiationNotPossibleException e) {
-            final RespectTC tc =
-                    new RespectTC(id, this, RespectTCContainer.QUEUE_SIZE);
+            final RespectTC tc = new RespectTC(id, this,
+                    RespectTCContainer.QUEUE_SIZE);
             this.registry.addTC(tc);
             return tc.getOrdinarySynchInterface();
         }
@@ -225,8 +219,8 @@ public final class RespectTCContainer {
             return ((RespectTC) this.registry.getTC(id))
                     .getSpecificationAsynchInterface();
         } catch (final InstantiationNotPossibleException e) {
-            final RespectTC tc =
-                    new RespectTC(id, this, RespectTCContainer.QUEUE_SIZE);
+            final RespectTC tc = new RespectTC(id, this,
+                    RespectTCContainer.QUEUE_SIZE);
             this.registry.addTC(tc);
             return tc.getSpecificationAsynchInterface();
         }
@@ -245,11 +239,10 @@ public final class RespectTCContainer {
             return ((RespectTC) this.registry.getTC(id))
                     .getSpecificationSynchInterface();
         } catch (final InstantiationNotPossibleException e) {
-            final RespectTC tc =
-                    new RespectTC(id, this, RespectTCContainer.QUEUE_SIZE);
+            final RespectTC tc = new RespectTC(id, this,
+                    RespectTCContainer.QUEUE_SIZE);
             this.registry.addTC(tc);
             return tc.getSpecificationSynchInterface();
         }
     }
-
 }

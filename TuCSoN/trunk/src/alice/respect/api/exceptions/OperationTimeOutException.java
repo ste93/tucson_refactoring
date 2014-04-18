@@ -18,7 +18,6 @@ import alice.respect.api.IRespectOperation;
  * @author Alessandro Ricci
  */
 public class OperationTimeOutException extends RespectException {
-
     private static final long serialVersionUID = 582402145982163993L;
     private final IRespectOperation op;
 
@@ -39,5 +38,4 @@ public class OperationTimeOutException extends RespectException {
     public IRespectOperation getOperation() {
         return this.op;
     }
-
 }

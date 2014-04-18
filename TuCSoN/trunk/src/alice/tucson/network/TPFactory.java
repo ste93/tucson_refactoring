@@ -17,13 +17,11 @@ import alice.tucson.network.exceptions.DialogException;
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public final class TPFactory {
-
     /**
      * Constant indentify implementated protocol type: one constant for each
      * implemented protocol
      */
     public static final int DIALOG_TYPE_TCP = 0;
-
     private static final int MAX_UNBOUND_PORT = 64000;
 
     /**
@@ -43,11 +41,10 @@ public final class TPFactory {
             throws DialogException, UnreachableNodeException {
         final String node = alice.util.Tools.removeApices(tid.getNode());
         final int port = tid.getPort();
-
         // TODO CICORA: il controllo su porta e address va fatto meglio, vedere
         // come e'
         // fatto nel resto del codice
-        if ((port < 1) || (port > TPFactory.MAX_UNBOUND_PORT)) {
+        if (port < 1 || port > TPFactory.MAX_UNBOUND_PORT) {
             throw new DialogException("Illegal port argument");
         }
         AbstractTucsonProtocol tp = null;
@@ -56,7 +53,6 @@ public final class TPFactory {
         } else {
             throw new DialogException("Unsupported protocol type");
         }
-
         return tp;
     }
 
@@ -73,7 +69,6 @@ public final class TPFactory {
     public static AbstractTucsonProtocol getDialogAgentSide(
             final TucsonTupleCentreId tid) throws DialogException,
             UnreachableNodeException {
-
         final TPConfig config = TPConfig.getInstance();
         return TPFactory.getDialogAgentSide(config.getDefaultProtocolType(),
                 tid);
@@ -88,7 +83,6 @@ public final class TPFactory {
      */
     public static AbstractTucsonProtocol getDialogNodeSide()
             throws DialogException {
-
         final TPConfig config = TPConfig.getInstance();
         return TPFactory.getDialogNodeSide(config.getDefaultProtocolType());
     }
@@ -104,16 +98,13 @@ public final class TPFactory {
      */
     public static AbstractTucsonProtocol getDialogNodeSide(
             final int tucsonProtocolType) throws DialogException {
-
         AbstractTucsonProtocol tp = null;
-
         if (tucsonProtocolType == TPFactory.DIALOG_TYPE_TCP) {
             final TPConfig config = TPConfig.getInstance();
             tp = new TucsonProtocolTCP(config.getNodeTcpPort());
         } else {
             throw new DialogException("Unsupported protocol type");
         }
-
         return tp;
     }
 
@@ -122,5 +113,4 @@ public final class TPFactory {
          * 
          */
     }
-
 }

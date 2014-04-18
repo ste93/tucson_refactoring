@@ -17,11 +17,9 @@ import jade.core.Agent;
 import jade.core.GenericCommand;
 import jade.core.ServiceException;
 import jade.core.behaviours.Behaviour;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import alice.tucson.api.EnhancedACC;
 import alice.tucson.api.ITucsonOperation;
 import alice.tucson.api.TucsonOpId;
@@ -35,7 +33,6 @@ import alice.tucson.service.TucsonOpCompletionEvent;
  * 
  */
 public class BridgeToTucson {
-
     private static void log(final String msg) {
         System.out.println("\n[BRIDGE]: " + msg);
     }
@@ -49,28 +46,22 @@ public class BridgeToTucson {
      */
     private static TucsonOpCompletionEvent toTucsonCompletionEvent(
             final ITucsonOperation op) {
-
         TucsonOpCompletionEvent ev;
         if (op.isInAll() // caso in cui ricevo una lista di tuple
                 || op.isRdAll() || op.isGet() || op.isGetS() || op.isNoAll()) {
-
-            ev =
-                    new TucsonOpCompletionEvent(new TucsonOpId(op.getId()),
-                            true, op.isOperationCompleted(),
-                            op.isResultSuccess(), op.getLogicTupleListResult());
+            ev = new TucsonOpCompletionEvent(new TucsonOpId(op.getId()), true,
+                    op.isOperationCompleted(), op.isResultSuccess(),
+                    op.getLogicTupleListResult());
         } else { // caso in cui ricevo una tupla come risultato
-            ev =
-                    new TucsonOpCompletionEvent(new TucsonOpId(op.getId()),
-                            true, op.isOperationCompleted(),
-                            op.isResultSuccess(), op.getLogicTupleResult());
+            ev = new TucsonOpCompletionEvent(new TucsonOpId(op.getId()), true,
+                    op.isOperationCompleted(), op.isResultSuccess(),
+                    op.getLogicTupleResult());
         }
         return ev;
     }
 
     private final EnhancedACC acc;
-
     private final TucsonService service;
-
     private final Map<Behaviour, TucsonOpResult> tucsonOpResultsMap;
 
     /**
@@ -103,24 +94,20 @@ public class BridgeToTucson {
         // chiamata asincrona senza settare il listener perchè il controllo del
         // completamento dell'operazione è a carico del programmatore tramite
         // la struttura ritornata AsyncOpResultData
-        final GenericCommand cmd =
-                new GenericCommand(TucsonSlice.EXECUTE_ASYNCH,
-                        TucsonService.NAME, null);
+        final GenericCommand cmd = new GenericCommand(
+                TucsonSlice.EXECUTE_ASYNCH, TucsonService.NAME, null);
         cmd.addParam(action);
         cmd.addParam(this.acc);
         cmd.addParam(null);
         final Object result = this.service.submit(cmd);
-
         if (result instanceof ITucsonOperation) {
             final ITucsonOperation op = (ITucsonOperation) result;
             // si deve ritornare un oggetto che contiene la lista dove si andrà
             // a
             // controllare se l'operazione è completata, e l'id della op
-            final AsynchTucsonOpResult asyncData =
-                    new AsynchTucsonOpResult(op.getId(),
-                            this.acc.getCompletionEventsList(),
-                            this.acc.getPendingOperationsMap());
-
+            final AsynchTucsonOpResult asyncData = new AsynchTucsonOpResult(
+                    op.getId(), this.acc.getCompletionEventsList(),
+                    this.acc.getPendingOperationsMap());
             return asyncData;
         }
         return null;
@@ -141,12 +128,10 @@ public class BridgeToTucson {
     public void asynchronousInvocation(final AbstractTucsonAction action,
             final Behaviour behav, final Agent myAgent) {
         // Creo il comando verticale
-        final GenericCommand cmd =
-                new GenericCommand(TucsonSlice.EXECUTE_ASYNCH,
-                        TucsonService.NAME, null);
+        final GenericCommand cmd = new GenericCommand(
+                TucsonSlice.EXECUTE_ASYNCH, TucsonService.NAME, null);
         cmd.addParam(action);
         cmd.addParam(this.acc);
-
         try {
             new AsynchCompletionBehaviourHandler("tucsonAgentAsync", cmd,
                     this.service, myAgent, behav).go();
@@ -155,7 +140,6 @@ public class BridgeToTucson {
              * cannot really happen
              */
         }
-
     }
 
     /**
@@ -191,9 +175,7 @@ public class BridgeToTucson {
     public TucsonOpCompletionEvent synchronousInvocation(
             final AbstractTucsonAction action, final Long timeout,
             final Behaviour behav) throws ServiceException {
-
         TucsonOpResult ros;
-
         if (this.tucsonOpResultsMap.get(behav) == null) { // ottengo o creo il
             // gestore di
             // memorizzazione dei
@@ -212,66 +194,54 @@ public class BridgeToTucson {
                              // restart del thread delegato a questo.
             }
         }
-
         // controllo se l'op è già stata eseguita e ritorna subito il risultato
         // memorizzato in mResultOpBehaviour
-        final List<TucsonOpCompletionEvent> list =
-                ros.getTucsonCompletionEvents();
+        final List<TucsonOpCompletionEvent> list = ros
+                .getTucsonCompletionEvents();
         int nextRes = ros.getNextRes();
-
         if (list.size() > nextRes) { // sono già presenti dei risultati vecchi
             ros.setNextRes(++nextRes); // si incrementa la prossima
                                        // operazione che si deve eseguire
             return ros.getTucsonCompletionEvents().get(nextRes - 1);
-
         }
         // è la prima volta che si esegue l'operazione
         // controllo se l'operazione richiesta ha bisogno di attendere la
         // risposta
-        if ((action instanceof Out) || (action instanceof OutS)
-                || (action instanceof OutAll) || (action instanceof Spawn)
-                || (action instanceof Set) || (action instanceof SetS)) {
-
+        if (action instanceof Out || action instanceof OutS
+                || action instanceof OutAll || action instanceof Spawn
+                || action instanceof Set || action instanceof SetS) {
             // Creo il comando verticale
-            final GenericCommand cmd =
-                    new GenericCommand(TucsonSlice.EXECUTE_SYNCH,
-                            TucsonService.NAME, null);
+            final GenericCommand cmd = new GenericCommand(
+                    TucsonSlice.EXECUTE_SYNCH, TucsonService.NAME, null);
             cmd.addParam(action);
             cmd.addParam(this.acc);
             cmd.addParam(timeout);
-
             Object result;
             result = this.service.submit(cmd); // eseguo comando
                                                // verticale
-
             final ITucsonOperation op = (ITucsonOperation) result;
-
             // creo il TucsonOpCompletionEvent per salvarlo nella struttura
             // condivisa
             // utilizzato della funzione fromITucsonOpToTucsonOpComp perchè
             // i risultati vengono restituiti rispetto al contratto
             // ITucsonOperation
-            final TucsonOpCompletionEvent res =
-                    BridgeToTucson.toTucsonCompletionEvent(op);
-
+            final TucsonOpCompletionEvent res = BridgeToTucson
+                    .toTucsonCompletionEvent(op);
             // aggiorno struttura condivisa
             ros.getTucsonCompletionEvents().add(res);
             ros.setNextRes(ros.getNextRes() + 1);
             ros.setReady(true);
             return res;
-
         }
         // operazioni che necessitano di sospendere il behaviour
-        final GenericCommand cmd =
-                new GenericCommand(TucsonSlice.EXECUTE_ASYNCH,
-                        TucsonService.NAME, null);
+        final GenericCommand cmd = new GenericCommand(
+                TucsonSlice.EXECUTE_ASYNCH, TucsonService.NAME, null);
         cmd.addParam(action);
         cmd.addParam(this.acc);
         SynchCompletionBehaviourHandler ta = null;
         try {
-            ta =
-                    new SynchCompletionBehaviourHandler("tucsonAgentAsync",
-                            ros, cmd, this.service, behav);
+            ta = new SynchCompletionBehaviourHandler("tucsonAgentAsync", ros,
+                    cmd, this.service, behav);
         } catch (final TucsonInvalidAgentIdException e) {
             /*
              * cannot really happen

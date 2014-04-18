@@ -21,7 +21,6 @@ package alice.tuplecentre.core;
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public class OutputEvent extends AbstractEvent {
-
     private static final long serialVersionUID = -5521129200850527503L;
     private boolean isLnk;
     protected final InputEvent inputEvent;
@@ -86,5 +85,4 @@ public class OutputEvent extends AbstractEvent {
                         .getSimpleTCEvent()) + ", ie: [ "
                 + this.inputEvent.toString() + " ] ]";
     }
-
 }

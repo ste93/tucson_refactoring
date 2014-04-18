@@ -17,12 +17,10 @@ package alice.tuplecentre.core;
  * 
  */
 public interface OperationCompletionListener {
-
     /**
      * 
      * @param op
      *            the operation completed
      */
     void operationCompleted(AbstractTupleCentreOperation op);
-
 }

@@ -1,7 +1,6 @@
 package alice.respect.api;
 
 import java.util.List;
-
 import alice.logictuple.LogicTuple;
 import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.respect.api.exceptions.InvalidSpecificationException;
@@ -16,7 +15,6 @@ import alice.tuplecentre.api.IId;
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public interface ISpecificationSynchInterface {
-
     /**
      * 
      * @param aid
@@ -159,5 +157,4 @@ public interface ISpecificationSynchInterface {
      */
     List<LogicTuple> setS(final IId aid, final RespectSpecification spec)
             throws OperationNotPossibleException, InvalidSpecificationException;
-
 }

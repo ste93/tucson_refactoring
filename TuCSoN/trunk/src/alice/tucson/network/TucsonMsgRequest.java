@@ -1,7 +1,6 @@
 package alice.tucson.network;
 
 import java.io.Serializable;
-
 import alice.logictuple.LogicTuple;
 
 /**
@@ -12,15 +11,11 @@ import alice.logictuple.LogicTuple;
  * 
  */
 public class TucsonMsgRequest implements Serializable {
-
     /** serialVersionUID **/
     private static final long serialVersionUID = 1L;
-
     private long id;
     private String tid;
-
     private LogicTuple tuple;
-
     private int type;
 
     /**
@@ -96,5 +91,4 @@ public class TucsonMsgRequest implements Serializable {
         s.append(this.tuple);
         return s.toString();
     }
-
 }

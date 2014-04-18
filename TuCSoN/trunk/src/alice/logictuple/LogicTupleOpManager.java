@@ -10,7 +10,6 @@ import alice.tuprolog.Prolog;
  * 
  */
 public class LogicTupleOpManager extends OperatorManager {
-
     /**
      * 
      */
@@ -30,5 +29,4 @@ public class LogicTupleOpManager extends OperatorManager {
         this.opNew(":", "xfx", 549);
         this.opNew(".", "xfx", 548);
     }
-
 }

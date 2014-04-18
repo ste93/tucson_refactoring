@@ -27,7 +27,6 @@ import alice.tuplecentre.core.OperationCompletionListener;
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public interface IRespectTC {
-
     /**
      * 
      * @param id
@@ -145,9 +144,8 @@ public interface IRespectTC {
      * @throws OperationNotPossibleException
      *             if the requested operation cannot be carried out
      */
-    IRespectOperation
-            inAll(IId id, LogicTuple t, OperationCompletionListener l)
-                    throws OperationNotPossibleException;
+    IRespectOperation inAll(IId id, LogicTuple t, OperationCompletionListener l)
+            throws OperationNotPossibleException;
 
     /**
      * 
@@ -291,9 +289,8 @@ public interface IRespectTC {
      * @throws OperationNotPossibleException
      *             if the requested operation cannot be carried out
      */
-    IRespectOperation
-            noAll(IId id, LogicTuple t, OperationCompletionListener l)
-                    throws OperationNotPossibleException;
+    IRespectOperation noAll(IId id, LogicTuple t, OperationCompletionListener l)
+            throws OperationNotPossibleException;
 
     /**
      * 
@@ -348,9 +345,8 @@ public interface IRespectTC {
      * @throws OperationNotPossibleException
      *             if the requested operation cannot be carried out
      */
-    IRespectOperation
-            nopS(IId aid, LogicTuple t, OperationCompletionListener l)
-                    throws OperationNotPossibleException;
+    IRespectOperation nopS(IId aid, LogicTuple t, OperationCompletionListener l)
+            throws OperationNotPossibleException;
 
     /**
      * 
@@ -433,9 +429,8 @@ public interface IRespectTC {
      * @throws OperationNotPossibleException
      *             if the requested operation cannot be carried out
      */
-    IRespectOperation
-            outAll(IId id, LogicTuple t, OperationCompletionListener l)
-                    throws OperationNotPossibleException;
+    IRespectOperation outAll(IId id, LogicTuple t, OperationCompletionListener l)
+            throws OperationNotPossibleException;
 
     /**
      * 
@@ -522,9 +517,8 @@ public interface IRespectTC {
      * @throws OperationNotPossibleException
      *             if the requested operation cannot be carried out
      */
-    IRespectOperation
-            rdAll(IId id, LogicTuple t, OperationCompletionListener l)
-                    throws OperationNotPossibleException;
+    IRespectOperation rdAll(IId id, LogicTuple t, OperationCompletionListener l)
+            throws OperationNotPossibleException;
 
     /**
      * 
@@ -728,9 +722,8 @@ public interface IRespectTC {
      * @throws OperationNotPossibleException
      *             if the requested operation cannot be carried out
      */
-    IRespectOperation
-            spawn(IId id, LogicTuple t, OperationCompletionListener l)
-                    throws OperationNotPossibleException;
+    IRespectOperation spawn(IId id, LogicTuple t, OperationCompletionListener l)
+            throws OperationNotPossibleException;
 
     /**
      * Retrieves all tuples in the tuple centre matching the template
@@ -903,5 +896,4 @@ public interface IRespectTC {
      */
     IRespectOperation urdp(IId id, LogicTuple t, OperationCompletionListener l)
             throws OperationNotPossibleException;
-
 }

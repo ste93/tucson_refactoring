@@ -19,7 +19,5 @@ package alice.tucson.api.exceptions;
  * 
  */
 public class TucsonOperationNotPossibleException extends Exception {
-
     private static final long serialVersionUID = 4453940618890077229L;
-
 }

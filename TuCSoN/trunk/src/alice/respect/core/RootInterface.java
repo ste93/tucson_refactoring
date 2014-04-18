@@ -12,7 +12,6 @@ import alice.tuplecentre.api.TupleTemplate;
  * 
  */
 public class RootInterface {
-
     private final IRespectTC core;
 
     /**
@@ -47,5 +46,4 @@ public class RootInterface {
         }
         return null;
     }
-
 }

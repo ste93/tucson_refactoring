@@ -1,7 +1,6 @@
 package alice.tucson.examples.timedDiningPhilos;
 
 import java.io.IOException;
-
 import alice.logictuple.LogicTuple;
 import alice.tucson.api.AbstractTucsonAgent;
 import alice.tucson.api.ITucsonOperation;
@@ -24,7 +23,6 @@ import alice.tuplecentre.core.AbstractTupleCentreOperation;
  * @author ste (mailto: s.mariani@unibo.it)
  */
 public class TDiningPhilosophersTest extends AbstractTucsonAgent {
-
     private static final int EATING_STEP = 1000;
     /*
      * Should be exactly divisible.
@@ -51,7 +49,6 @@ public class TDiningPhilosophersTest extends AbstractTucsonAgent {
     }
 
     private final String ip;
-
     private final String port;
 
     /**
@@ -91,8 +88,8 @@ public class TDiningPhilosophersTest extends AbstractTucsonAgent {
     protected void main() {
         final SynchACC acc = this.getContext();
         try {
-            final TucsonTupleCentreId table =
-                    new TucsonTupleCentreId("table", this.ip, this.port);
+            final TucsonTupleCentreId table = new TucsonTupleCentreId("table",
+                    this.ip, this.port);
             this.say("Injecting 'table' ReSpecT specification in tc < "
                     + table.toString() + " >...");
             /*
@@ -116,7 +113,7 @@ public class TDiningPhilosophersTest extends AbstractTucsonAgent {
                  */
                 acc.out(table, LogicTuple.parse("chop(" + i + ")"), null);
             }
-            for (int i = 0; i < (TDiningPhilosophersTest.N_PHILOSOPHERS - 1); i++) {
+            for (int i = 0; i < TDiningPhilosophersTest.N_PHILOSOPHERS - 1; i++) {
                 /*
                  * Start philosophers by telling them which chopsticks pair they
                  * need.
@@ -151,5 +148,4 @@ public class TDiningPhilosophersTest extends AbstractTucsonAgent {
             e.printStackTrace();
         }
     }
-
 }

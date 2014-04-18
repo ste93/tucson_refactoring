@@ -15,7 +15,6 @@ import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
  * 
  */
 public interface TucsonHelper extends ServiceHelper {
-
     /**
      * Permette di effettuare l'autenticazione per il nodo TuCSoN locale.
      * Equivale a {@link #acquireACC(Agent, String, int)} con i parametri

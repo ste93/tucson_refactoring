@@ -8,7 +8,6 @@ import alice.tucson.service.TucsonCmd;
  * 
  */
 public class TucsonPrimitiveParser {
-
     private final String input;
 
     /**
@@ -55,5 +54,4 @@ public class TucsonPrimitiveParser {
         }
         return new TucsonCmd(primitive, arg);
     }
-
 }

@@ -24,7 +24,6 @@ import alice.tuplecentre.core.AbstractTupleCentreOperation;
  * @author ste (mailto: s.mariani@unibo.it)
  */
 public interface InterTupleCentreACC {
-
     /**
      * 
      * 
@@ -62,5 +61,4 @@ public interface InterTupleCentreACC {
      * @return the Object representing operation completion
      */
     TucsonOpCompletionEvent waitForCompletion(TucsonOpId id, int timeout);
-
 }

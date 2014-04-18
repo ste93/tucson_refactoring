@@ -18,9 +18,7 @@ import alice.tuplecentre.core.AbstractTupleCentreOperation;
  * @author ste (mailto: s.mariani@unibo.it)
  */
 public class DiningPhilosopher extends AbstractTucsonAgent {
-
     private static final int THINK_TIME = 5000;
-
     private SynchACC acc;
     private final int chop1, chop2;
     private final TucsonTupleCentreId myTable;
@@ -79,11 +77,10 @@ public class DiningPhilosopher extends AbstractTucsonAgent {
              * the philosophers, while the coordination medium correctly handle
              * them separately.
              */
-            op =
-                    this.acc.in(
-                            this.myTable,
-                            LogicTuple.parse("chops(" + this.chop1 + ","
-                                    + this.chop2 + ")"), null);
+            op = this.acc.in(
+                    this.myTable,
+                    LogicTuple.parse("chops(" + this.chop1 + "," + this.chop2
+                            + ")"), null);
         } catch (final InvalidTupleException e) {
             e.printStackTrace();
         } catch (final TucsonOperationNotPossibleException e) {
@@ -103,13 +100,12 @@ public class DiningPhilosopher extends AbstractTucsonAgent {
         this.say("...gnam gnam...chomp chomp...munch munch...");
         ITucsonOperation op = null;
         try {
-            for (int i = 0; i < (this.time / this.step); i++) {
+            for (int i = 0; i < this.time / this.step; i++) {
                 Thread.sleep(this.step);
-                op =
-                        this.acc.rdp(
-                                this.myTable,
-                                LogicTuple.parse("used(" + this.chop1 + ","
-                                        + this.chop2 + ",_)"), null);
+                op = this.acc.rdp(
+                        this.myTable,
+                        LogicTuple.parse("used(" + this.chop1 + ","
+                                + this.chop2 + ",_)"), null);
                 if (!op.isResultSuccess()) {
                     break;
                 }
@@ -125,7 +121,7 @@ public class DiningPhilosopher extends AbstractTucsonAgent {
         } catch (final OperationTimeOutException e) {
             e.printStackTrace();
         }
-        if ((op != null) && op.isResultSuccess()) {
+        if (op != null && op.isResultSuccess()) {
             return op.isResultSuccess();
         }
         return false;
@@ -186,5 +182,4 @@ public class DiningPhilosopher extends AbstractTucsonAgent {
             }
         }
     }
-
 }

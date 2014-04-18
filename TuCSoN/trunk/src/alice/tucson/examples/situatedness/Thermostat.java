@@ -4,7 +4,6 @@
 package alice.tucson.examples.situatedness;
 
 import java.io.IOException;
-
 import alice.logictuple.LogicTuple;
 import alice.logictuple.TupleArgument;
 import alice.logictuple.Value;
@@ -47,7 +46,6 @@ import alice.tuplecentre.api.exceptions.OperationTimeOutException;
  * 
  */
 public final class Thermostat {
-
     private static final String DEFAULT_HOST = "localhost";
     private static final String DEFAULT_PORT = "20504";
     private static final int HIGH = 22;
@@ -61,29 +59,26 @@ public final class Thermostat {
     public static void main(final String[] args) {
         try {
             final TucsonAgentId aid = new TucsonAgentId("thermostat");
-            final EnhancedSynchACC acc =
-                    TucsonMetaACC.getContext(aid, Thermostat.DEFAULT_HOST,
-                            Integer.valueOf(Thermostat.DEFAULT_PORT));
-            final TucsonTupleCentreId configTc =
-                    new TucsonTupleCentreId("'$ENV'", Thermostat.DEFAULT_HOST,
-                            Thermostat.DEFAULT_PORT);
+            final EnhancedSynchACC acc = TucsonMetaACC.getContext(aid,
+                    Thermostat.DEFAULT_HOST,
+                    Integer.valueOf(Thermostat.DEFAULT_PORT));
+            final TucsonTupleCentreId configTc = new TucsonTupleCentreId(
+                    "'$ENV'", Thermostat.DEFAULT_HOST, Thermostat.DEFAULT_PORT);
             /* Set up temperature */
-            final TucsonTupleCentreId tempTc =
-                    new TucsonTupleCentreId("tempTc", Thermostat.DEFAULT_HOST,
-                            Thermostat.DEFAULT_PORT);
+            final TucsonTupleCentreId tempTc = new TucsonTupleCentreId(
+                    "tempTc", Thermostat.DEFAULT_HOST, Thermostat.DEFAULT_PORT);
             int bootT;
             do {
                 // 10 < bootT < LOW || HIGH < bootT < 30
                 bootT = Math.round((float) (Math.random() * 20)) + 10;
-            } while ((bootT >= Thermostat.LOW) && (bootT <= Thermostat.HIGH));
-            final LogicTuple bootTemp =
-                    new LogicTuple("temp", new Value(bootT));
+            } while (bootT >= Thermostat.LOW && bootT <= Thermostat.HIGH);
+            final LogicTuple bootTemp = new LogicTuple("temp", new Value(bootT));
             acc.out(tempTc, bootTemp, null);
             /* Set up sensor */
             Thermostat.log(aid.toString(), "Set up sensor...");
-            final TucsonTupleCentreId sensorTc =
-                    new TucsonTupleCentreId("sensorTc",
-                            Thermostat.DEFAULT_HOST, Thermostat.DEFAULT_PORT);
+            final TucsonTupleCentreId sensorTc = new TucsonTupleCentreId(
+                    "sensorTc", Thermostat.DEFAULT_HOST,
+                    Thermostat.DEFAULT_PORT);
             try {
                 acc.setS(
                         sensorTc,
@@ -92,22 +87,20 @@ public final class Thermostat {
             } catch (final IOException e) {
                 e.printStackTrace();
             }
-            final LogicTuple sensorTuple =
-                    new LogicTuple(
-                            "createTransducerSensor",
-                            new TupleArgument(sensorTc.toTerm()),
-                            new Value(
-                                    "alice.tucson.examples.situatedness.SensorTransducer"),
-                            new Value("sensorTransducer"),
-                            new Value(
-                                    "alice.tucson.examples.situatedness.ActualSensor"),
-                            new Value("sensor"));
+            final LogicTuple sensorTuple = new LogicTuple(
+                    "createTransducerSensor",
+                    new TupleArgument(sensorTc.toTerm()),
+                    new Value(
+                            "alice.tucson.examples.situatedness.SensorTransducer"),
+                    new Value("sensorTransducer"), new Value(
+                            "alice.tucson.examples.situatedness.ActualSensor"),
+                    new Value("sensor"));
             acc.out(configTc, sensorTuple, null);
             /* Set up actuator */
             Thermostat.log(aid.toString(), "Set up actuator...");
-            final TucsonTupleCentreId actuatorTc =
-                    new TucsonTupleCentreId("actuatorTc",
-                            Thermostat.DEFAULT_HOST, Thermostat.DEFAULT_PORT);
+            final TucsonTupleCentreId actuatorTc = new TucsonTupleCentreId(
+                    "actuatorTc", Thermostat.DEFAULT_HOST,
+                    Thermostat.DEFAULT_PORT);
             try {
                 acc.setS(
                         actuatorTc,
@@ -116,16 +109,15 @@ public final class Thermostat {
             } catch (final IOException e) {
                 e.printStackTrace();
             }
-            final LogicTuple actuatorTuple =
-                    new LogicTuple(
-                            "createTransducerActuator",
-                            new TupleArgument(actuatorTc.toTerm()),
-                            new Value(
-                                    "alice.tucson.examples.situatedness.ActuatorTransducer"),
-                            new Value("actuatorTransducer"),
-                            new Value(
-                                    "alice.tucson.examples.situatedness.ActualActuator"),
-                            new Value("actuator"));
+            final LogicTuple actuatorTuple = new LogicTuple(
+                    "createTransducerActuator",
+                    new TupleArgument(actuatorTc.toTerm()),
+                    new Value(
+                            "alice.tucson.examples.situatedness.ActuatorTransducer"),
+                    new Value("actuatorTransducer"),
+                    new Value(
+                            "alice.tucson.examples.situatedness.ActualActuator"),
+                    new Value("actuator"));
             acc.out(configTc, actuatorTuple, null);
             /* Start perception-reason-action loop */
             Thermostat.log(aid.toString(),
@@ -140,13 +132,12 @@ public final class Thermostat {
                 template = LogicTuple.parse("sense(temp(_))");
                 op = acc.in(sensorTc, template, null);
                 if (op.isResultSuccess()) {
-                    temp =
-                            op.getLogicTupleResult().getArg(0).getArg(0)
-                                    .intValue();
+                    temp = op.getLogicTupleResult().getArg(0).getArg(0)
+                            .intValue();
                     Thermostat.log(aid.toString(), "temp is " + temp
                             + " hence...");
                     /* Reason */
-                    if ((temp >= Thermostat.LOW) && (temp <= Thermostat.HIGH)) {
+                    if (temp >= Thermostat.LOW && temp <= Thermostat.HIGH) {
                         Thermostat.log(aid.toString(), "...nothing to do");
                         continue;
                     } else if (temp < Thermostat.LOW) {
@@ -188,5 +179,4 @@ public final class Thermostat {
          * 
          */
     }
-
 }

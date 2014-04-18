@@ -13,11 +13,9 @@ package alice.tucson.network;
  * 
  */
 public final class TPConfig {
-
     // TCP configuration ----------------------------------
     private static final int DEFAULT_TCP_PORT = 20504;
     private static final int MAX_UNBOUND_PORT = 64000;
-
     private static TPConfig singletonTPConfig = null;
 
     /**
@@ -43,7 +41,6 @@ public final class TPConfig {
 
     // Generic configuration ------------------------------
     private final int defProtType = TPFactory.DIALOG_TYPE_TCP;
-
     private int tcpPort = -1;
 
     private TPConfig() {
@@ -78,11 +75,10 @@ public final class TPConfig {
      *            the TCP listening port
      */
     public synchronized void setTcpPort(final int portNumber) {
-        if ((portNumber < 1) || (portNumber > TPConfig.MAX_UNBOUND_PORT)
-                || (this.tcpPort > 0)) {
+        if (portNumber < 1 || portNumber > TPConfig.MAX_UNBOUND_PORT
+                || this.tcpPort > 0) {
             throw new IllegalArgumentException();
         }
         this.tcpPort = portNumber;
     }
-
 }

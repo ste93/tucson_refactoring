@@ -19,10 +19,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
-
 import javax.swing.JButton;
 import javax.swing.JPanel;
-
 import alice.logictuple.LogicTuple;
 import alice.tucson.api.EnhancedACC;
 import alice.tucson.api.TucsonAgentId;
@@ -42,7 +40,6 @@ import alice.tuplecentre.api.exceptions.OperationTimeOutException;
  * 
  */
 public class EditSpec extends javax.swing.JFrame {
-
     private static final long serialVersionUID = 2491540632593263750L;
 
     private static String format(final LogicTuple t) {
@@ -77,9 +74,7 @@ public class EditSpec extends javax.swing.JFrame {
     private EnhancedACC context;
     private final alice.util.jedit.JEditTextArea inputSpec;
     private javax.swing.JTextField outputState;
-
     private String specFileName = "default.rsp";
-
     private final TucsonTupleCentreId tid;
 
     /**
@@ -89,44 +84,37 @@ public class EditSpec extends javax.swing.JFrame {
      *            the identifier of the tuple centre under inspection
      */
     public EditSpec(final TucsonTupleCentreId t) {
-
         super();
         this.initComponents();
         this.setTitle("ReSpecT specification tuples of tuplecentre < "
                 + t.getName() + "@" + t.getNode() + ":" + t.getPort() + " >");
-        this.inputSpec =
-                new alice.util.jedit.JEditTextArea(new SpecificationTextArea());
+        this.inputSpec = new alice.util.jedit.JEditTextArea(
+                new SpecificationTextArea());
         this.inputSpec.setTokenMarker(new SpecificationTokenMarker());
         this.inputSpec.setPreferredSize(new java.awt.Dimension(800, 600));
-
-        final java.awt.GridBagConstraints gridBagConstraints1 =
-                new java.awt.GridBagConstraints();
-
+        final java.awt.GridBagConstraints gridBagConstraints1 = new java.awt.GridBagConstraints();
         gridBagConstraints1.gridx = 0;
         gridBagConstraints1.gridy = 0;
         gridBagConstraints1.gridwidth = 2;
         gridBagConstraints1.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints1.weightx = 100.0;
         gridBagConstraints1.weighty = 95.0;
-
         this.getContentPane().add(this.inputSpec, gridBagConstraints1);
         this.inputSpec.addCaretListener(new javax.swing.event.CaretListener() {
+            @Override
             public void caretUpdate(final javax.swing.event.CaretEvent evt) {
                 EditSpec.this.caretPosition.setText("line "
                         + (EditSpec.this.inputSpec.getCaretLine() + 1) + "   ");
             }
         });
         this.pack();
-
         this.tid = t;
         try {
-            this.context =
-                    TucsonMetaACC.getContext(new TucsonAgentId("'$Inspector-"
-                            + System.currentTimeMillis() + "'"));
+            this.context = TucsonMetaACC.getContext(new TucsonAgentId(
+                    "'$Inspector-" + System.currentTimeMillis() + "'"));
         } catch (final TucsonInvalidAgentIdException e) {
             e.printStackTrace();
         }
-
     }
 
     /**
@@ -143,9 +131,8 @@ public class EditSpec extends javax.swing.JFrame {
     private void bGetActionPerformed() {
         try {
             final StringBuffer spec = new StringBuffer();
-            final List<LogicTuple> list =
-                    this.context.getS(this.tid, (Long) null)
-                            .getLogicTupleListResult();
+            final List<LogicTuple> list = this.context.getS(this.tid,
+                    (Long) null).getLogicTupleListResult();
             for (final LogicTuple t : list) {
                 if ("reaction".equals(t.getName())) {
                     spec.append(EditSpec.format(t));
@@ -167,7 +154,6 @@ public class EditSpec extends javax.swing.JFrame {
     }
 
     private void bLoadActionPerformed() {
-
         final javax.swing.JFileChooser chooser = new javax.swing.JFileChooser();
         final int returnVal = chooser.showOpenDialog(this);
         if (returnVal == javax.swing.JFileChooser.APPROVE_OPTION) {
@@ -203,7 +189,6 @@ public class EditSpec extends javax.swing.JFrame {
                 }
             }
         }
-
     }
 
     private void bOkActionPerformed() {
@@ -255,7 +240,6 @@ public class EditSpec extends javax.swing.JFrame {
     }
 
     private void bSaveAsActionPerformed() {
-
         final javax.swing.JFileChooser chooser = new javax.swing.JFileChooser();
         final int returnVal = chooser.showSaveDialog(this);
         if (returnVal == javax.swing.JFileChooser.APPROVE_OPTION) {
@@ -289,14 +273,12 @@ public class EditSpec extends javax.swing.JFrame {
                 }
             }
         }
-
     }
 
     private void formComponentShown() {
         try {
-            final String spec =
-                    this.context.getS(this.tid, (Long) null)
-                            .getLogicTupleListResult().toString();
+            final String spec = this.context.getS(this.tid, (Long) null)
+                    .getLogicTupleListResult().toString();
             this.inputSpec.setText(spec);
             this.outputState.setText("ReSpecT specification read.");
         } catch (final TucsonOperationNotPossibleException e) {
@@ -306,13 +288,10 @@ public class EditSpec extends javax.swing.JFrame {
         } catch (final OperationTimeOutException e) {
             this.outputState.setText("TuCSoN operation timeout exceeded.");
         }
-
     }
 
     private void initComponents() {
-
         java.awt.GridBagConstraints gridBagConstraints;
-
         this.outputState = new javax.swing.JTextField();
         final JPanel jPanel2 = new JPanel();
         final JPanel jPanel1 = new JPanel();
@@ -323,9 +302,7 @@ public class EditSpec extends javax.swing.JFrame {
         final JButton bOk = new JButton();
         final JButton bGet = new JButton();
         this.caretPosition = new javax.swing.JTextField();
-
         this.getContentPane().setLayout(new java.awt.GridBagLayout());
-
         this.setTitle("S Inspector");
         this.addComponentListener(new java.awt.event.ComponentAdapter() {
             @Override
@@ -333,7 +310,6 @@ public class EditSpec extends javax.swing.JFrame {
                 EditSpec.this.formComponentShown();
             }
         });
-
         this.outputState.setBackground(Color.CYAN);
         this.outputState.setEditable(false);
         this.outputState.setBorder(new javax.swing.border.LineBorder(
@@ -344,105 +320,94 @@ public class EditSpec extends javax.swing.JFrame {
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
         this.getContentPane().add(this.outputState, gridBagConstraints);
-
         jPanel2.setLayout(new java.awt.GridBagLayout());
-
         jPanel1.setLayout(new java.awt.GridBagLayout());
-
         bLoad.setFont(new java.awt.Font("Arial", 0, 11));
         bLoad.setText("Load");
         bLoad.setToolTipText("Load the specification from the chosen file");
         bLoad.setFocusPainted(false);
         bLoad.setPreferredSize(new java.awt.Dimension(80, 30));
         bLoad.addActionListener(new java.awt.event.ActionListener() {
+            @Override
             public void actionPerformed(final java.awt.event.ActionEvent evt) {
                 EditSpec.this.bLoadActionPerformed();
             }
         });
-
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         jPanel1.add(bLoad, gridBagConstraints);
-
         bSave.setFont(new java.awt.Font("Arial", 0, 11));
         bSave.setText("Save");
         bSave.setToolTipText("Save the specification to the previously (default) chosen file");
         bSave.setFocusPainted(false);
         bSave.setPreferredSize(new java.awt.Dimension(80, 30));
         bSave.addActionListener(new java.awt.event.ActionListener() {
+            @Override
             public void actionPerformed(final java.awt.event.ActionEvent evt) {
                 EditSpec.this.bSaveActionPerformed();
             }
         });
-
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
         jPanel1.add(bSave, gridBagConstraints);
-
         bSaveAs.setFont(new java.awt.Font("Arial", 0, 11));
         bSaveAs.setText("Save As");
         bSaveAs.setToolTipText("Save the specification to the chosen file");
         bSaveAs.setFocusPainted(false);
         bSaveAs.setPreferredSize(new java.awt.Dimension(80, 30));
         bSaveAs.addActionListener(new java.awt.event.ActionListener() {
+            @Override
             public void actionPerformed(final java.awt.event.ActionEvent evt) {
                 EditSpec.this.bSaveAsActionPerformed();
             }
         });
-
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
         jPanel1.add(bSaveAs, gridBagConstraints);
-
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.weightx = 1.0;
         jPanel2.add(jPanel1, gridBagConstraints);
-
         jPanel3.setLayout(new java.awt.GridBagLayout());
-
         bOk.setFont(new java.awt.Font("Arial", 0, 11));
         bOk.setText("< set_s >");
         bOk.setToolTipText("Sets the specification space of the tuplecentre");
         bOk.setFocusPainted(false);
         bOk.setPreferredSize(new java.awt.Dimension(70, 30));
         bOk.addActionListener(new java.awt.event.ActionListener() {
+            @Override
             public void actionPerformed(final java.awt.event.ActionEvent evt) {
                 EditSpec.this.bOkActionPerformed();
             }
         });
-
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
         jPanel3.add(bOk, gridBagConstraints);
-
         bGet.setFont(new java.awt.Font("Arial", 0, 11));
         bGet.setText("< get_s >");
         bGet.setToolTipText("Gets the specification space of the tuplecentre");
         bGet.setActionCommand("bRefresh");
         bGet.setPreferredSize(new java.awt.Dimension(70, 30));
         bGet.addActionListener(new java.awt.event.ActionListener() {
+            @Override
             public void actionPerformed(final java.awt.event.ActionEvent evt) {
                 EditSpec.this.bGetActionPerformed();
             }
         });
-
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
         jPanel3.add(bGet, gridBagConstraints);
-
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.weightx = 1.0;
         jPanel2.add(jPanel3, gridBagConstraints);
-
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
@@ -451,7 +416,6 @@ public class EditSpec extends javax.swing.JFrame {
         gridBagConstraints.weightx = 100.0;
         gridBagConstraints.weighty = 10.0;
         this.getContentPane().add(jPanel2, gridBagConstraints);
-
         this.caretPosition.setBackground(Color.CYAN);
         this.caretPosition.setEditable(false);
         this.caretPosition.setBorder(new javax.swing.border.LineBorder(
@@ -464,7 +428,5 @@ public class EditSpec extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 0);
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         this.getContentPane().add(this.caretPosition, gridBagConstraints);
-
     }
-
 }

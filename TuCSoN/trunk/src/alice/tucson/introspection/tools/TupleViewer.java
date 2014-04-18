@@ -15,13 +15,11 @@ package alice.tucson.introspection.tools;
 
 import java.awt.Color;
 import java.io.IOException;
-
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
-
 import alice.logictuple.LogicTuple;
 import alice.tucson.introspection.GetSnapshotMsg;
 import alice.tucson.introspection.InspectorProtocol;
@@ -34,11 +32,9 @@ import alice.tuplecentre.api.exceptions.InvalidTupleException;
  * 
  */
 public class TupleViewer extends javax.swing.JFrame {
-
     private static final long serialVersionUID = 194179541036841578L;
     private javax.swing.JButton buttonAcceptFilterLog;
     private javax.swing.JButton buttonAcceptPattern;
-
     private javax.swing.JButton buttonGet;
     private javax.swing.JCheckBox checkFilterLog;
     private javax.swing.JCheckBox checkFilterView;
@@ -219,9 +215,7 @@ public class TupleViewer extends javax.swing.JFrame {
     }
 
     private void initComponents() {
-
         java.awt.GridBagConstraints gridBagConstraints;
-
         final JScrollPane jScrollPane1 = new JScrollPane();
         this.tupleArea = new javax.swing.JTextArea();
         final JTabbedPane settingsPane = new JTabbedPane();
@@ -253,9 +247,7 @@ public class TupleViewer extends javax.swing.JFrame {
         final JLabel jLabel2 = new JLabel();
         this.outputNoItems = new javax.swing.JTextField();
         this.outputVmTime = new javax.swing.JTextField();
-
         this.getContentPane().setLayout(new java.awt.GridBagLayout());
-
         this.setTitle("T Inspector");
         this.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
@@ -263,11 +255,9 @@ public class TupleViewer extends javax.swing.JFrame {
                 TupleViewer.this.exitForm();
             }
         });
-
         this.tupleArea.setEditable(false);
         this.tupleArea.setFont(new java.awt.Font("Courier New", 0, 12));
         jScrollPane1.setViewportView(this.tupleArea);
-
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
@@ -276,12 +266,9 @@ public class TupleViewer extends javax.swing.JFrame {
         gridBagConstraints.weightx = 100.0;
         gridBagConstraints.weighty = 100.0;
         this.getContentPane().add(jScrollPane1, gridBagConstraints);
-
         settingsPane.setFont(new java.awt.Font("Arial", 0, 11));
         jPanel1.setLayout(new java.awt.GridBagLayout());
-
         jPanel2.setLayout(new java.awt.GridBagLayout());
-
         jPanel2.setBorder(new javax.swing.border.TitledBorder(
                 new javax.swing.border.EtchedBorder(), " Proactiveness: "));
         jPanel2.setFont(new java.awt.Font("Arial", 0, 11));
@@ -292,19 +279,18 @@ public class TupleViewer extends javax.swing.JFrame {
                 .setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         this.radioReactive
                 .addActionListener(new java.awt.event.ActionListener() {
+                    @Override
                     public void actionPerformed(
                             final java.awt.event.ActionEvent evt) {
                         TupleViewer.this.radioReactiveActionPerformed();
                     }
                 });
-
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 30.0;
         jPanel2.add(this.radioReactive, gridBagConstraints);
-
         this.radioProactive.setFont(new java.awt.Font("Arial", 0, 11));
         this.radioProactive
                 .setText("PROACTIVE: update observations as soon as events happen.");
@@ -312,12 +298,12 @@ public class TupleViewer extends javax.swing.JFrame {
                 .setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         this.radioProactive
                 .addActionListener(new java.awt.event.ActionListener() {
+                    @Override
                     public void actionPerformed(
                             final java.awt.event.ActionEvent evt) {
                         TupleViewer.this.radioProactiveActionPerformed();
                     }
                 });
-
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
@@ -325,23 +311,21 @@ public class TupleViewer extends javax.swing.JFrame {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 100.0;
         jPanel2.add(this.radioProactive, gridBagConstraints);
-
         this.buttonGet.setFont(new java.awt.Font("Arial", 0, 11));
         this.buttonGet.setText("Observe!");
         this.buttonGet
                 .setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         this.buttonGet.addActionListener(new java.awt.event.ActionListener() {
+            @Override
             public void actionPerformed(final java.awt.event.ActionEvent evt) {
                 TupleViewer.this.buttonGetActionPerformed();
             }
         });
-
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.weightx = 70.0;
         jPanel2.add(this.buttonGet, gridBagConstraints);
-
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -349,13 +333,9 @@ public class TupleViewer extends javax.swing.JFrame {
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
         jPanel1.add(jPanel2, gridBagConstraints);
-
         settingsPane.addTab("Observation", null, jPanel1, "");
-
         filterPane.setLayout(new java.awt.GridBagLayout());
-
         jPanel4.setLayout(new java.awt.GridBagLayout());
-
         jPanel4.setBorder(new javax.swing.border.TitledBorder(
                 new javax.swing.border.EtchedBorder(), " Template: "));
         this.checkFilterView.setFont(new java.awt.Font("Arial", 0, 11));
@@ -363,12 +343,12 @@ public class TupleViewer extends javax.swing.JFrame {
                 .setText("Filter observed tuples using the following template:");
         this.checkFilterView
                 .addActionListener(new java.awt.event.ActionListener() {
+                    @Override
                     public void actionPerformed(
                             final java.awt.event.ActionEvent evt) {
                         TupleViewer.this.checkFilterViewActionPerformed();
                     }
                 });
-
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
@@ -376,22 +356,20 @@ public class TupleViewer extends javax.swing.JFrame {
         gridBagConstraints.weightx = 100.0;
         gridBagConstraints.weighty = 10.0;
         jPanel4.add(this.checkFilterView, gridBagConstraints);
-
         this.buttonAcceptPattern.setFont(new java.awt.Font("Arial", 0, 11));
         this.buttonAcceptPattern.setText("Match!");
         this.buttonAcceptPattern
                 .addActionListener(new java.awt.event.ActionListener() {
+                    @Override
                     public void actionPerformed(
                             final java.awt.event.ActionEvent evt) {
                         TupleViewer.this.buttonAcceptPatternActionPerformed();
                     }
                 });
-
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 1;
         jPanel4.add(this.buttonAcceptPattern, gridBagConstraints);
-
         this.inputFilterView.setFont(new java.awt.Font("Courier New", 0, 12));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -401,7 +379,6 @@ public class TupleViewer extends javax.swing.JFrame {
         gridBagConstraints.weightx = 100.0;
         gridBagConstraints.weighty = 50.0;
         jPanel4.add(this.inputFilterView, gridBagConstraints);
-
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
@@ -409,13 +386,9 @@ public class TupleViewer extends javax.swing.JFrame {
         gridBagConstraints.weightx = 100.0;
         gridBagConstraints.weighty = 100.0;
         filterPane.add(jPanel4, gridBagConstraints);
-
         settingsPane.addTab("Filter", null, filterPane, "");
-
         jPanel5.setLayout(new java.awt.GridBagLayout());
-
         jPanel6.setLayout(new java.awt.GridBagLayout());
-
         jPanel6.setBorder(new javax.swing.border.TitledBorder(
                 new javax.swing.border.EtchedBorder(), " Template: "));
         jPanel6.setFont(new java.awt.Font("Arial", 0, 11));
@@ -424,12 +397,12 @@ public class TupleViewer extends javax.swing.JFrame {
                 .setText("Filter observed tuples using the following template:");
         this.checkFilterLog
                 .addActionListener(new java.awt.event.ActionListener() {
+                    @Override
                     public void actionPerformed(
                             final java.awt.event.ActionEvent evt) {
                         TupleViewer.this.checkFilterLogActionPerformed();
                     }
                 });
-
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
@@ -437,22 +410,20 @@ public class TupleViewer extends javax.swing.JFrame {
         gridBagConstraints.weightx = 100.0;
         gridBagConstraints.weighty = 10.0;
         jPanel6.add(this.checkFilterLog, gridBagConstraints);
-
         this.buttonAcceptFilterLog.setFont(new java.awt.Font("Arial", 0, 11));
         this.buttonAcceptFilterLog.setText("Match!");
         this.buttonAcceptFilterLog
                 .addActionListener(new java.awt.event.ActionListener() {
+                    @Override
                     public void actionPerformed(
                             final java.awt.event.ActionEvent evt) {
                         TupleViewer.this.buttonAcceptFilterLogActionPerformed();
                     }
                 });
-
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 1;
         jPanel6.add(this.buttonAcceptFilterLog, gridBagConstraints);
-
         this.inputFilterLog.setFont(new java.awt.Font("Courier New", 0, 12));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -461,7 +432,6 @@ public class TupleViewer extends javax.swing.JFrame {
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 100.0;
         jPanel6.add(this.inputFilterLog, gridBagConstraints);
-
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
@@ -470,9 +440,7 @@ public class TupleViewer extends javax.swing.JFrame {
         gridBagConstraints.weightx = 100.0;
         gridBagConstraints.weighty = 70.0;
         jPanel5.add(jPanel6, gridBagConstraints);
-
         jPanel8.setLayout(new java.awt.GridBagLayout());
-
         jPanel8.setBorder(new javax.swing.border.TitledBorder(
                 new javax.swing.border.EtchedBorder(), " Output: "));
         jPanel8.setFont(new java.awt.Font("Arial", 0, 11));
@@ -485,50 +453,46 @@ public class TupleViewer extends javax.swing.JFrame {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 10.0;
         jPanel8.add(jLabel3, gridBagConstraints);
-
         this.inputFileLog.setFont(new java.awt.Font("Courier New", 0, 12));
         this.inputFileLog
                 .addActionListener(new java.awt.event.ActionListener() {
+                    @Override
                     public void actionPerformed(
                             final java.awt.event.ActionEvent evt) {
                         TupleViewer.this.inputFileLogActionPerformed();
                     }
                 });
-
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 100.0;
         jPanel8.add(this.inputFileLog, gridBagConstraints);
-
         buttonBrowse.setFont(new java.awt.Font("Arial", 0, 11));
         buttonBrowse.setText("Browse");
         buttonBrowse.addActionListener(new java.awt.event.ActionListener() {
+            @Override
             public void actionPerformed(final java.awt.event.ActionEvent evt) {
                 TupleViewer.this.buttonBrowseActionPerformed();
             }
         });
-
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 5;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.weightx = 5.0;
         jPanel8.add(buttonBrowse, gridBagConstraints);
-
         this.checkLogEnable
                 .addActionListener(new java.awt.event.ActionListener() {
+                    @Override
                     public void actionPerformed(
                             final java.awt.event.ActionEvent evt) {
                         TupleViewer.this.checkLogEnableActionPerformed();
                     }
                 });
-
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 1;
         jPanel8.add(this.checkLogEnable, gridBagConstraints);
-
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 1;
@@ -536,11 +500,8 @@ public class TupleViewer extends javax.swing.JFrame {
         gridBagConstraints.weightx = 90.0;
         gridBagConstraints.weighty = 30.0;
         jPanel5.add(jPanel8, gridBagConstraints);
-
         settingsPane.addTab("Log", null, jPanel5, "");
-
         jPanel11.setLayout(new java.awt.GridBagLayout());
-
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 3;
@@ -549,9 +510,7 @@ public class TupleViewer extends javax.swing.JFrame {
         gridBagConstraints.weightx = 100.0;
         gridBagConstraints.weighty = 10.0;
         this.getContentPane().add(settingsPane, gridBagConstraints);
-
         jPanel10.setLayout(new java.awt.GridBagLayout());
-
         this.outputState.setBackground(Color.CYAN);
         this.outputState.setEditable(false);
         this.outputState.setBorder(new javax.swing.border.LineBorder(
@@ -563,7 +522,6 @@ public class TupleViewer extends javax.swing.JFrame {
         gridBagConstraints.weightx = 100.0;
         gridBagConstraints.weighty = 100.0;
         jPanel10.add(this.outputState, gridBagConstraints);
-
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 4;
@@ -571,9 +529,7 @@ public class TupleViewer extends javax.swing.JFrame {
         gridBagConstraints.weightx = 100.0;
         gridBagConstraints.weighty = 5.0;
         this.getContentPane().add(jPanel10, gridBagConstraints);
-
         jPanel9.setLayout(new java.awt.GridBagLayout());
-
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel2.setText("# observations: ");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -582,7 +538,6 @@ public class TupleViewer extends javax.swing.JFrame {
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 20.0;
         jPanel9.add(jLabel2, gridBagConstraints);
-
         this.outputNoItems.setEditable(false);
         this.outputNoItems.setFont(new java.awt.Font("Courier New", 0, 12));
         this.outputNoItems
@@ -593,7 +548,6 @@ public class TupleViewer extends javax.swing.JFrame {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 20.0;
         jPanel9.add(this.outputNoItems, gridBagConstraints);
-
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
@@ -601,7 +555,6 @@ public class TupleViewer extends javax.swing.JFrame {
         gridBagConstraints.weightx = 100.0;
         gridBagConstraints.weighty = 5.0;
         this.getContentPane().add(jPanel9, gridBagConstraints);
-
     }
 
     private void inputFileLogActionPerformed() {
@@ -634,5 +587,4 @@ public class TupleViewer extends javax.swing.JFrame {
             this.outputState.setText(e.toString());
         }
     }
-
 }

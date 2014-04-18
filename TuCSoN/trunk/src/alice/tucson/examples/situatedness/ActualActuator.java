@@ -31,10 +31,8 @@ import alice.tuplecentre.api.exceptions.OperationTimeOutException;
  * 
  */
 public class ActualActuator implements ISimpleProbe {
-
     private static final String DEFAULT_HOST = "localhost";
     private static final String DEFAULT_PORT = "20504";
-
     private EnhancedSynchACC acc;
     private final AbstractProbeId pid;
     private TucsonTupleCentreId tempTc;
@@ -45,13 +43,11 @@ public class ActualActuator implements ISimpleProbe {
         this.pid = i;
         try {
             final TucsonAgentId aid = new TucsonAgentId("actuator");
-            this.acc =
-                    TucsonMetaACC.getContext(aid, ActualActuator.DEFAULT_HOST,
-                            Integer.valueOf(ActualActuator.DEFAULT_PORT));
-            this.tempTc =
-                    new TucsonTupleCentreId("tempTc",
-                            ActualActuator.DEFAULT_HOST,
-                            ActualActuator.DEFAULT_PORT);
+            this.acc = TucsonMetaACC.getContext(aid,
+                    ActualActuator.DEFAULT_HOST,
+                    Integer.valueOf(ActualActuator.DEFAULT_PORT));
+            this.tempTc = new TucsonTupleCentreId("tempTc",
+                    ActualActuator.DEFAULT_HOST, ActualActuator.DEFAULT_PORT);
         } catch (final TucsonInvalidTupleCentreIdException e) {
             e.printStackTrace();
         } catch (final TucsonInvalidAgentIdException e) {
@@ -115,9 +111,8 @@ public class ActualActuator implements ISimpleProbe {
             return false;
         }
         if (this.transducer == null) {
-            this.transducer =
-                    TransducersManager.INSTANCE.getTransducer(this.tid
-                            .getAgentName());
+            this.transducer = TransducersManager.INSTANCE
+                    .getTransducer(this.tid.getAgentName());
             if (this.transducer == null) {
                 System.err.println("[" + this.pid
                         + "]: Can't retrieve my transducer!");
@@ -126,11 +121,11 @@ public class ActualActuator implements ISimpleProbe {
         }
         try {
             final LogicTuple template = LogicTuple.parse("temp(_)");
-            final ITucsonOperation op =
-                    this.acc.inAll(this.tempTc, template, null);
+            final ITucsonOperation op = this.acc.inAll(this.tempTc, template,
+                    null);
             if (op.isResultSuccess()) {
-                final LogicTuple tempTuple =
-                        LogicTuple.parse("temp(" + value + ")");
+                final LogicTuple tempTuple = LogicTuple.parse("temp(" + value
+                        + ")");
                 this.acc.out(this.tempTc, tempTuple, null);
                 System.out.println("[" + this.pid + "]: temp set to " + value);
                 this.transducer.notifyEnvEvent(key, value,
@@ -148,5 +143,4 @@ public class ActualActuator implements ISimpleProbe {
         }
         return false;
     }
-
 }

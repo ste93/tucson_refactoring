@@ -14,7 +14,6 @@
 package alice.tucson.introspection;
 
 import java.io.Serializable;
-
 import alice.logictuple.LogicTuple;
 
 /**
@@ -23,33 +22,23 @@ import alice.logictuple.LogicTuple;
  * 
  */
 public class InspectorProtocol implements Serializable {
-
     /** don't observe */
     public static final byte NO_OBSERVATION = 1;
-
     /** observe continuosly */
     public static final byte PROACTIVE_OBSERVATION = 3;
-
     /** observe only when asked by inspector */
     public static final byte REACTIVE_OBSERVATION = 2;
-
     private static final long serialVersionUID = -6842026459178793395L;
-
     /** defining W set observation */
     private byte pendingQueryObservType = InspectorProtocol.NO_OBSERVATION;
-
     /** defining T set observation */
     private byte reactionsObservType = InspectorProtocol.NO_OBSERVATION;
-
     /** desired tracing state for the vm */
     private boolean tracing = false;
-
     /** filter for tuple observed */
     private LogicTuple tsetFilter = null;
-
     /** defining T set observation */
     private byte tsetObservType = InspectorProtocol.NO_OBSERVATION;
-
     /** filter for query observed */
     private LogicTuple wsetFilter = null;
 
@@ -142,5 +131,4 @@ public class InspectorProtocol implements Serializable {
     public void setWsetFilter(final LogicTuple filter) {
         this.wsetFilter = filter;
     }
-
 }

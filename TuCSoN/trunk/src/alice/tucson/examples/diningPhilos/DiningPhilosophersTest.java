@@ -1,7 +1,6 @@
 package alice.tucson.examples.diningPhilos;
 
 import java.io.IOException;
-
 import alice.logictuple.LogicTuple;
 import alice.tucson.api.AbstractTucsonAgent;
 import alice.tucson.api.ITucsonOperation;
@@ -24,7 +23,6 @@ import alice.tuplecentre.core.AbstractTupleCentreOperation;
  * @author ste (mailto: s.mariani@unibo.it)
  */
 public class DiningPhilosophersTest extends AbstractTucsonAgent {
-
     /*
      * Max number of simultaneously eating philosophers should be
      * N_PHILOSOPHERS-2.
@@ -45,7 +43,6 @@ public class DiningPhilosophersTest extends AbstractTucsonAgent {
     }
 
     private final String ip;
-
     private final String port;
 
     /**
@@ -85,8 +82,8 @@ public class DiningPhilosophersTest extends AbstractTucsonAgent {
     protected void main() {
         final SynchACC acc = this.getContext();
         try {
-            final TucsonTupleCentreId table =
-                    new TucsonTupleCentreId("table", this.ip, this.port);
+            final TucsonTupleCentreId table = new TucsonTupleCentreId("table",
+                    this.ip, this.port);
             this.say("Injecting 'table' ReSpecT specification in tc < "
                     + table.toString() + " >...");
             /*
@@ -128,5 +125,4 @@ public class DiningPhilosophersTest extends AbstractTucsonAgent {
             e.printStackTrace();
         }
     }
-
 }

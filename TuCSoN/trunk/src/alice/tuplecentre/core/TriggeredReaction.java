@@ -24,7 +24,6 @@ package alice.tuplecentre.core;
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public class TriggeredReaction implements java.io.Serializable {
-
     private static final long serialVersionUID = -2906772411975529805L;
     /** the event triggering the reaction */
     private final AbstractEvent event;
@@ -58,5 +57,4 @@ public class TriggeredReaction implements java.io.Serializable {
     public Reaction getReaction() {
         return this.reaction;
     }
-
 }

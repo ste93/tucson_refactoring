@@ -14,7 +14,6 @@
 package alice.tucson.service.tools;
 
 import java.util.Date;
-
 import alice.tucson.api.EnhancedACC;
 import alice.tucson.api.TucsonAgentId;
 import alice.tucson.api.TucsonMetaACC;
@@ -30,7 +29,6 @@ import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
  * 
  */
 public final class CommandLineInterpreter {
-
     private static final int DEF_PORT = 20504;
 
     /**
@@ -39,41 +37,33 @@ public final class CommandLineInterpreter {
      *            the arguments to be given to the CLI
      */
     public static void main(final String[] args) {
-
         CommandLineInterpreter
                 .log("--------------------------------------------------------------------------------");
         CommandLineInterpreter.log("Booting TuCSoN Command Line Intepreter...");
-
         if (alice.util.Tools.isOpt(args, "-?")
                 || alice.util.Tools.isOpt(args, "-help")) {
             CommandLineInterpreter
                     .log("Arguments: {-aid <agent_identifier>} {-netid <node_address>} {-portno <portno>} {-? | -help}");
         } else {
-
             String aid = null;
             String node = null;
             int port;
-
             if (alice.util.Tools.isOpt(args, "-aid")) {
                 aid = alice.util.Tools.getOpt(args, "-aid");
             } else {
                 aid = "cli" + System.currentTimeMillis();
             }
-
             if (alice.util.Tools.isOpt(args, "-netid")) {
                 node = alice.util.Tools.getOpt(args, "-netid");
             } else {
                 node = "localhost";
             }
-
             if (alice.util.Tools.isOpt(args, "-portno")) {
-                port =
-                        Integer.parseInt(alice.util.Tools.getOpt(args,
-                                "-portno"));
+                port = Integer.parseInt(alice.util.Tools
+                        .getOpt(args, "-portno"));
             } else {
                 port = CommandLineInterpreter.DEF_PORT;
             }
-
             CommandLineInterpreter.log("Version "
                     + alice.tucson.api.TucsonMetaACC.getVersion());
             CommandLineInterpreter
@@ -82,17 +72,14 @@ public final class CommandLineInterpreter {
             CommandLineInterpreter
                     .log("Demanding for TuCSoN default ACC on port < " + port
                             + " >...");
-
             EnhancedACC context = null;
             try {
-                context =
-                        TucsonMetaACC.getContext(new TucsonAgentId(aid), node,
-                                port);
+                context = TucsonMetaACC.getContext(new TucsonAgentId(aid),
+                        node, port);
             } catch (final TucsonInvalidAgentIdException e) {
                 e.printStackTrace();
                 System.exit(-1);
             }
-
             if (context != null) {
                 CommandLineInterpreter.log("Spawning CLI TuCSoN agent...");
                 CommandLineInterpreter
@@ -102,9 +89,7 @@ public final class CommandLineInterpreter {
                 System.err
                         .println("[CommandLineInterpreter]: Context not available now, please re-try.");
             }
-
         }
-
     }
 
     private static void log(final String s) {
@@ -116,5 +101,4 @@ public final class CommandLineInterpreter {
          * 
          */
     }
-
 }

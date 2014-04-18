@@ -15,7 +15,6 @@ import java.io.IOException;
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public final class Utils {
-
     /**
      * 
      * @param path
@@ -26,9 +25,8 @@ public final class Utils {
      *             allow reading
      */
     public static String fileToString(final String path) throws IOException {
-        final BufferedInputStream br =
-                new BufferedInputStream(ClassLoader.getSystemClassLoader()
-                        .getResourceAsStream(path));
+        final BufferedInputStream br = new BufferedInputStream(ClassLoader
+                .getSystemClassLoader().getResourceAsStream(path));
         final byte[] res = new byte[br.available()];
         br.read(res);
         br.close();
@@ -40,5 +38,4 @@ public final class Utils {
          * 
          */
     }
-
 }

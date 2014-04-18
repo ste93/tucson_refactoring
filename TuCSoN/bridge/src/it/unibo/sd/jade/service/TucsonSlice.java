@@ -8,7 +8,6 @@ import jade.core.Service.Slice;
  * 
  */
 public interface TucsonSlice extends Slice {
-
     /**
      * 
      */

@@ -15,7 +15,6 @@ package alice.respect.core;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-
 import alice.tuplecentre.core.TriggeredReaction;
 
 /**
@@ -24,7 +23,6 @@ import alice.tuplecentre.core.TriggeredReaction;
  * @author Alessandro Ricci
  */
 public class TRSet {
-
     private final List<TriggeredReaction> tAdded;
     private boolean transaction;
     private final List<TriggeredReaction> tRemoved;
@@ -139,5 +137,4 @@ public class TRSet {
         }
         return trArray;
     }
-
 }

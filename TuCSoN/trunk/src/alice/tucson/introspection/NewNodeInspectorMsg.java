@@ -21,7 +21,6 @@ import alice.tucson.api.TucsonAgentId;
  * 
  */
 public class NewNodeInspectorMsg extends NodeMsg {
-
     private static final long serialVersionUID = 6582272720835623886L;
 
     /**
@@ -32,5 +31,4 @@ public class NewNodeInspectorMsg extends NodeMsg {
     public NewNodeInspectorMsg(final TucsonAgentId i) {
         super(i, "newNodeInspector");
     }
-
 }

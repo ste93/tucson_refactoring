@@ -21,7 +21,6 @@ import alice.logictuple.exceptions.LogicTupleException;
  * @author Alessandro Ricci
  */
 public class InvalidVarNameException extends LogicTupleException {
-
     /**
      * 
      */

@@ -26,7 +26,6 @@ import alice.tuplecentre.api.exceptions.OperationTimeOutException;
  * @author ste (mailto: s.mariani@unibo.it)
  */
 public interface BulkSynchACC extends RootACC {
-
     /**
      * Withdraws from the space all the tuples matching the given template in
      * one shot (a single transition step). The empty list may be returned in
@@ -179,5 +178,4 @@ public interface BulkSynchACC extends RootACC {
     ITucsonOperation rdAll(TupleCentreId tid, Tuple tuple, Long timeout)
             throws TucsonOperationNotPossibleException,
             UnreachableNodeException, OperationTimeOutException;
-
 }

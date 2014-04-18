@@ -32,7 +32,6 @@ import alice.tuprolog.Term;
  */
 public class LogicTuple implements alice.tuplecentre.api.TupleTemplate,
         java.io.Serializable {
-
     /**
      * 
      */
@@ -50,9 +49,8 @@ public class LogicTuple implements alice.tuplecentre.api.TupleTemplate,
     public static LogicTuple parse(final String st)
             throws InvalidTupleException {
         try {
-            final Term t =
-                    alice.tuprolog.Term.createTerm(st,
-                            new LogicTupleOpManager());
+            final Term t = alice.tuprolog.Term.createTerm(st,
+                    new LogicTupleOpManager());
             return new LogicTuple(new TupleArgument(t));
         } catch (final InvalidTermException ex) {
             throw new InvalidTupleException();
@@ -332,11 +330,13 @@ public class LogicTuple implements alice.tuplecentre.api.TupleTemplate,
         return this.info.getVarValue(varName);
     }
 
+    @Override
     public boolean match(final alice.tuplecentre.api.Tuple t) {
         final LogicTuple tu = (LogicTuple) t;
         return LogicMatchingEngine.match(this, tu);
     }
 
+    @Override
     public boolean propagate(final alice.tuplecentre.api.Tuple t) {
         final LogicTuple tu = (LogicTuple) t;
         return LogicMatchingEngine.propagate(this, tu);
@@ -360,5 +360,4 @@ public class LogicTuple implements alice.tuplecentre.api.TupleTemplate,
     public Term toTerm() {
         return this.info.toTerm();
     }
-
 }

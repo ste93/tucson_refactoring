@@ -2,7 +2,6 @@ package alice.tucson.api;
 
 import java.io.Serializable;
 import java.util.List;
-
 import alice.logictuple.LogicTuple;
 import alice.tucson.api.exceptions.TucsonInvalidLogicTupleException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
@@ -22,7 +21,6 @@ import alice.tucson.service.TupleCentreContainer;
  * @author ste (mailto: s.mariani@unibo.it)
  */
 public abstract class AbstractSpawnActivity implements Serializable, Runnable {
-
     private static final long serialVersionUID = -6354837455366449916L;
     private TucsonAgentId aid;
     private TucsonTupleCentreId target;
@@ -34,8 +32,7 @@ public abstract class AbstractSpawnActivity implements Serializable, Runnable {
      * @return true if instantiation is complete, false otherwise.
      */
     public final boolean checkInstantiation() {
-        if (((this.aid != null) || (this.tcid != null))
-                && (this.target != null)) {
+        if ((this.aid != null || this.tcid != null) && this.target != null) {
             return true;
         }
         return false;
@@ -75,6 +72,7 @@ public abstract class AbstractSpawnActivity implements Serializable, Runnable {
     /**
      * Called by the ReSpecT engine.
      */
+    @Override
     public final void run() {
         if (this.checkInstantiation()) {
             this.doActivity();
@@ -657,5 +655,4 @@ public abstract class AbstractSpawnActivity implements Serializable, Runnable {
         }
         return null;
     }
-
 }

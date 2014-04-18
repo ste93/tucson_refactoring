@@ -14,7 +14,6 @@
 package alice.tucson.api;
 
 import java.util.Map;
-
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.service.TucsonOperation;
 
@@ -25,7 +24,6 @@ import alice.tucson.service.TucsonOperation;
  * @author ste (mailto: s.mariani@unibo.it)
  */
 public interface RootACC {
-
     /**
      * Release of the ACC and exit from the TuCSoN system.
      * 
@@ -40,5 +38,4 @@ public interface RootACC {
      *         operation
      */
     Map<Long, TucsonOperation> getPendingOperationsMap();
-
 }

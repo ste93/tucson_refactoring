@@ -20,7 +20,6 @@ package alice.tuplecentre.core;
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public class IdleState extends AbstractTupleCentreVMState {
-
     private AbstractTupleCentreVMState fetchEnvState;
     private AbstractTupleCentreVMState listeningState;
 
@@ -52,7 +51,7 @@ public class IdleState extends AbstractTupleCentreVMState {
 
     @Override
     public boolean isIdle() {
-        return (!this.vm.pendingEvents()) && (!this.vm.pendingEnvEvents());
+        return !this.vm.pendingEvents() && !this.vm.pendingEnvEvents();
     }
 
     @Override
@@ -61,5 +60,4 @@ public class IdleState extends AbstractTupleCentreVMState {
         this.vm.getState("FetchState");
         this.fetchEnvState = this.vm.getState("FetchEnvState");
     }
-
 }

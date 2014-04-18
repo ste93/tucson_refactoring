@@ -5,9 +5,7 @@ import it.unibo.sd.jade.service.TucsonService;
 import jade.core.GenericCommand;
 import jade.core.ServiceException;
 import jade.core.behaviours.Behaviour;
-
 import java.util.List;
-
 import alice.tucson.api.AbstractTucsonAgent;
 import alice.tucson.api.EnhancedAsynchACC;
 import alice.tucson.api.ITucsonOperation;
@@ -24,7 +22,6 @@ import alice.tuplecentre.core.AbstractTupleCentreOperation;
  * 
  */
 public class SynchCompletionBehaviourHandler extends AbstractTucsonAgent {
-
     private final Behaviour behav; // comportamento da "riavviare" comando
                                    // restart()
     private final GenericCommand cmd; // comando verticale da
@@ -74,13 +71,13 @@ public class SynchCompletionBehaviourHandler extends AbstractTucsonAgent {
     @Override
     public void operationCompleted(final AbstractTupleCentreOperation op) {
         final EnhancedAsynchACC acc = (EnhancedAsynchACC) this.cmd.getParam(1);
-        final List<TucsonOpCompletionEvent> list =
-                acc.getCompletionEventsList();
+        final List<TucsonOpCompletionEvent> list = acc
+                .getCompletionEventsList();
         // ricerca del risultato dell'operazione richiesta contenuto nella
         // risposta della chiamata asincrona di oggetto ITucsonOperation
         boolean trovato = false;
         synchronized (list) {
-            for (int i = 0; (i < list.size()) && !trovato; i++) {
+            for (int i = 0; i < list.size() && !trovato; i++) {
                 if (list.get(i).getOpId().getId() == this.result.getId()) { // operazione
                                                                             // richiesta
                                                                             // trovata

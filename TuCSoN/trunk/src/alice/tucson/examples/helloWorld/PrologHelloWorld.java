@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import alice.tuprolog.InvalidLibraryException;
 import alice.tuprolog.InvalidTheoryException;
 import alice.tuprolog.MalformedGoalException;
@@ -25,17 +24,14 @@ import alice.tuprolog.event.OutputListener;
  * 
  */
 public final class PrologHelloWorld {
-
     /*
      * Remember the dot!
      */
-    private static final String DEFAULT_GOAL =
-            "runHelloWorld(agent-test, default@localhost:20504).";
+    private static final String DEFAULT_GOAL = "runHelloWorld(agent-test, default@localhost:20504).";
     /*
      * The necessary Tucson2PLibrary...
      */
-    private static final String DEFAULT_LIBRARY_NAME =
-            "alice.tucson.api.Tucson2PLibrary";
+    private static final String DEFAULT_LIBRARY_NAME = "alice.tucson.api.Tucson2PLibrary";
     /*
      * ...can be found within TuCSoN .jar, hence: "path/to/jar.jar" (here we
      * have direct access).
@@ -44,8 +40,7 @@ public final class PrologHelloWorld {
     /*
      * Relative path w.r.t. to running location (project root).
      */
-    private static final String DEFAULT_THEORY_PATH =
-            "alice/tucson/examples/helloWorld/helloWorld.pl";
+    private static final String DEFAULT_THEORY_PATH = "alice/tucson/examples/helloWorld/helloWorld.pl";
     private static final String ME = "PrologHelloWorld";
 
     /**
@@ -62,9 +57,8 @@ public final class PrologHelloWorld {
             if (args.length > 0) {
                 sTheory = PrologHelloWorld.fileToString(args[0]);
             } else {
-                sTheory =
-                        PrologHelloWorld
-                                .fileToString(PrologHelloWorld.DEFAULT_THEORY_PATH);
+                sTheory = PrologHelloWorld
+                        .fileToString(PrologHelloWorld.DEFAULT_THEORY_PATH);
             }
         } catch (final IOException e) {
             Logger.getLogger(PrologHelloWorld.ME).log(Level.SEVERE,
@@ -99,7 +93,7 @@ public final class PrologHelloWorld {
          * 4) [OPTIONAL] Capture tuProlog output and redirect it to Java Logger.
          */
         engine.addOutputListener(new OutputListener() {
-
+            @Override
             public void onOutput(final OutputEvent arg0) {
                 System.out.println(arg0.getMsg());
             }
@@ -135,9 +129,8 @@ public final class PrologHelloWorld {
     }
 
     private static String fileToString(final String path) throws IOException {
-        final InputStream in =
-                Thread.currentThread().getContextClassLoader()
-                        .getResourceAsStream(path);
+        final InputStream in = Thread.currentThread().getContextClassLoader()
+                .getResourceAsStream(path);
         if (in == null) {
             Logger.getLogger(PrologHelloWorld.ME).log(Level.SEVERE,
                     "No input stream found.");
@@ -153,5 +146,4 @@ public final class PrologHelloWorld {
     private PrologHelloWorld() {
         super();
     }
-
 }

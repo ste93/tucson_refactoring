@@ -14,7 +14,6 @@ package alice.tucson.api;
 
 import java.util.Iterator;
 import java.util.List;
-
 import alice.logictuple.LogicTuple;
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
@@ -36,7 +35,6 @@ import alice.tuprolog.Term;
  * @author ste (mailto: s.mariani@unibo.it)
  */
 public class Tucson2PLibrary extends Library {
-
     private static final long serialVersionUID = 6716779172091533171L;
 
     /**
@@ -202,7 +200,6 @@ public class Tucson2PLibrary extends Library {
                 + ":- op(550, xfx, '@'). \n"
                 + ":- op(549, xfx, ':'). \n"
                 + ":- op(548, xfx, '.'). \n"
-
                 + "spawn(T) :- spawn(T, default@localhost:20504). \n"
                 + "out(T) :- out(T, default@localhost:20504). \n"
                 + "in(T) :- in(T, default@localhost:20504). \n"
@@ -213,7 +210,6 @@ public class Tucson2PLibrary extends Library {
                 + "nop(T) :- nop(T, default@localhost:20504). \n"
                 + "get(T) :- get(T, default@localhost:20504). \n"
                 + "set(T) :- set(T, default@localhost:20504). \n"
-
                 + "uin(T) :- uin(T, default@localhost:20504). \n"
                 + "uinp(T) :- uinp(T, default@localhost:20504). \n"
                 + "urd(T) :- urd(T, default@localhost:20504). \n"
@@ -224,7 +220,6 @@ public class Tucson2PLibrary extends Library {
                 + "in_all(T,L) :- in_all(T, L, default@localhost:20504). \n"
                 + "rd_all(T,L) :- rd_all(T, L, default@localhost:20504). \n"
                 + "no_all(T,L) :- no_all(T, L, default@localhost:20504). \n"
-
                 + "out_s(E,G,R) :- out_s(E,G,R, default@localhost:20504). \n"
                 + "in_s(E,G,R) :- in_s(E,G,R, default@localhost:20504). \n"
                 + "inp_s(E,G,R) :- inp_s(E,G,R, default@localhost:20504). \n"
@@ -234,7 +229,6 @@ public class Tucson2PLibrary extends Library {
                 + "nop_s(E,G,R) :- nop_s(E,G,R, default@localhost:20504). \n"
                 + "get_s(L) :- get_s(L, default@localhost:20504). \n"
                 + "set_s(L) :- set_s(L, default@localhost:20504). \n"
-
                 + "TC@Netid:Port ? spawn(T) :- !, spawn(T, TC@Netid:Port). \n"
                 + "TC@Netid:Port ? out(T) :- !, out(T, TC@Netid:Port). \n"
                 + "TC@Netid:Port ? in(T) :- !, in(T, TC@Netid:Port). \n"
@@ -245,7 +239,6 @@ public class Tucson2PLibrary extends Library {
                 + "TC@Netid:Port ? nop(T) :- !, nop(T, TC@Netid:Port). \n"
                 + "TC@Netid:Port ? get(L) :- !, get(L, TC@Netid:Port). \n"
                 + "TC@Netid:Port ? set(L) :- !, set(L, TC@Netid:Port). \n"
-
                 + "TC@Netid:Port ? uin(T) :- uin(T, TC@Netid:Port). \n"
                 + "TC@Netid:Port ? uinp(T) :- uinp(T, TC@Netid:Port). \n"
                 + "TC@Netid:Port ? urd(T) :- urd(T, TC@Netid:Port). \n"
@@ -256,7 +249,6 @@ public class Tucson2PLibrary extends Library {
                 + "TC@Netid:Port ? in_all(T,L) :- in_all(T, L, TC@Netid:Port). \n"
                 + "TC@Netid:Port ? rd_all(T,L) :- rd_all(T, L, TC@Netid:Port). \n"
                 + "TC@Netid:Port ? no_all(T,L) :- no_all(T, L, TC@Netid:Port). \n"
-
                 + "TC@Netid:Port ? out_s(E,G,R) :- !, out_s(E,G,R, TC@Netid:Port). \n"
                 + "TC@Netid:Port ? in_s(E,G,R) :- !, in_s(E,G,R, TC@Netid:Port). \n"
                 + "TC@Netid:Port ? inp_s(E,G,R) :- !, inp_s(E,G,R, TC@Netid:Port). \n"
@@ -295,9 +287,8 @@ public class Tucson2PLibrary extends Library {
         }
         ITucsonOperation op;
         try {
-            op =
-                    this.context.in(tid, new LogicTuple(arg0.getTerm()),
-                            (Long) null);
+            op = this.context.in(tid, new LogicTuple(arg0.getTerm()),
+                    (Long) null);
         } catch (final TucsonOperationNotPossibleException e) {
             e.printStackTrace();
             return false;
@@ -343,9 +334,8 @@ public class Tucson2PLibrary extends Library {
         }
         ITucsonOperation op;
         try {
-            op =
-                    this.context.inAll(tid, new LogicTuple(arg0.getTerm()),
-                            (Long) null);
+            op = this.context.inAll(tid, new LogicTuple(arg0.getTerm()),
+                    (Long) null);
         } catch (final TucsonOperationNotPossibleException e) {
             e.printStackTrace();
             return false;
@@ -398,10 +388,9 @@ public class Tucson2PLibrary extends Library {
         }
         ITucsonOperation op;
         try {
-            op =
-                    this.context.inS(tid, new LogicTuple(event.getTerm()),
-                            new LogicTuple(guards.getTerm()), new LogicTuple(
-                                    reactionBody.getTerm()), (Long) null);
+            op = this.context.inS(tid, new LogicTuple(event.getTerm()),
+                    new LogicTuple(guards.getTerm()), new LogicTuple(
+                            reactionBody.getTerm()), (Long) null);
         } catch (final TucsonOperationNotPossibleException e) {
             e.printStackTrace();
             return false;
@@ -445,9 +434,8 @@ public class Tucson2PLibrary extends Library {
         }
         ITucsonOperation op;
         try {
-            op =
-                    this.context.inp(tid, new LogicTuple(arg0.getTerm()),
-                            (Long) null);
+            op = this.context.inp(tid, new LogicTuple(arg0.getTerm()),
+                    (Long) null);
         } catch (final TucsonOperationNotPossibleException e) {
             e.printStackTrace();
             return false;
@@ -499,10 +487,9 @@ public class Tucson2PLibrary extends Library {
         }
         ITucsonOperation op;
         try {
-            op =
-                    this.context.inpS(tid, new LogicTuple(event.getTerm()),
-                            new LogicTuple(guards.getTerm()), new LogicTuple(
-                                    reactionBody.getTerm()), (Long) null);
+            op = this.context.inpS(tid, new LogicTuple(event.getTerm()),
+                    new LogicTuple(guards.getTerm()), new LogicTuple(
+                            reactionBody.getTerm()), (Long) null);
         } catch (final TucsonOperationNotPossibleException e) {
             e.printStackTrace();
             return false;
@@ -546,9 +533,8 @@ public class Tucson2PLibrary extends Library {
         }
         ITucsonOperation op;
         try {
-            op =
-                    this.context.no(tid, new LogicTuple(arg0.getTerm()),
-                            (Long) null);
+            op = this.context.no(tid, new LogicTuple(arg0.getTerm()),
+                    (Long) null);
         } catch (final TucsonOperationNotPossibleException e) {
             e.printStackTrace();
             return false;
@@ -594,9 +580,8 @@ public class Tucson2PLibrary extends Library {
         }
         ITucsonOperation op;
         try {
-            op =
-                    this.context.noAll(tid, new LogicTuple(arg0.getTerm()),
-                            (Long) null);
+            op = this.context.noAll(tid, new LogicTuple(arg0.getTerm()),
+                    (Long) null);
         } catch (final TucsonOperationNotPossibleException e) {
             e.printStackTrace();
             return false;
@@ -649,10 +634,9 @@ public class Tucson2PLibrary extends Library {
         }
         ITucsonOperation op;
         try {
-            op =
-                    this.context.noS(tid, new LogicTuple(event.getTerm()),
-                            new LogicTuple(guards.getTerm()), new LogicTuple(
-                                    reactionBody.getTerm()), (Long) null);
+            op = this.context.noS(tid, new LogicTuple(event.getTerm()),
+                    new LogicTuple(guards.getTerm()), new LogicTuple(
+                            reactionBody.getTerm()), (Long) null);
         } catch (final TucsonOperationNotPossibleException e) {
             e.printStackTrace();
             return false;
@@ -696,9 +680,8 @@ public class Tucson2PLibrary extends Library {
         }
         ITucsonOperation op;
         try {
-            op =
-                    this.context.nop(tid, new LogicTuple(arg0.getTerm()),
-                            (Long) null);
+            op = this.context.nop(tid, new LogicTuple(arg0.getTerm()),
+                    (Long) null);
         } catch (final TucsonOperationNotPossibleException e) {
             e.printStackTrace();
             return false;
@@ -750,10 +733,9 @@ public class Tucson2PLibrary extends Library {
         }
         ITucsonOperation op;
         try {
-            op =
-                    this.context.nopS(tid, new LogicTuple(event.getTerm()),
-                            new LogicTuple(guards.getTerm()), new LogicTuple(
-                                    reactionBody.getTerm()), (Long) null);
+            op = this.context.nopS(tid, new LogicTuple(event.getTerm()),
+                    new LogicTuple(guards.getTerm()), new LogicTuple(
+                            reactionBody.getTerm()), (Long) null);
         } catch (final TucsonOperationNotPossibleException e) {
             e.printStackTrace();
             return false;
@@ -797,9 +779,8 @@ public class Tucson2PLibrary extends Library {
         }
         ITucsonOperation op;
         try {
-            op =
-                    this.context.out(tid, new LogicTuple(arg0.getTerm()),
-                            (Long) null);
+            op = this.context.out(tid, new LogicTuple(arg0.getTerm()),
+                    (Long) null);
         } catch (final TucsonOperationNotPossibleException e) {
             e.printStackTrace();
             return false;
@@ -840,9 +821,8 @@ public class Tucson2PLibrary extends Library {
         }
         ITucsonOperation op;
         try {
-            op =
-                    this.context.outAll(tid, new LogicTuple(arg0.getTerm()),
-                            (Long) null);
+            op = this.context.outAll(tid, new LogicTuple(arg0.getTerm()),
+                    (Long) null);
         } catch (final TucsonOperationNotPossibleException e) {
             e.printStackTrace();
             return false;
@@ -890,10 +870,9 @@ public class Tucson2PLibrary extends Library {
         }
         ITucsonOperation op;
         try {
-            op =
-                    this.context.outS(tid, new LogicTuple(event.getTerm()),
-                            new LogicTuple(guards.getTerm()), new LogicTuple(
-                                    reactionBody.getTerm()), (Long) null);
+            op = this.context.outS(tid, new LogicTuple(event.getTerm()),
+                    new LogicTuple(guards.getTerm()), new LogicTuple(
+                            reactionBody.getTerm()), (Long) null);
         } catch (final TucsonOperationNotPossibleException e) {
             e.printStackTrace();
             return false;
@@ -934,9 +913,8 @@ public class Tucson2PLibrary extends Library {
         }
         ITucsonOperation op;
         try {
-            op =
-                    this.context.rd(tid, new LogicTuple(arg0.getTerm()),
-                            (Long) null);
+            op = this.context.rd(tid, new LogicTuple(arg0.getTerm()),
+                    (Long) null);
         } catch (final TucsonOperationNotPossibleException e) {
             e.printStackTrace();
             return false;
@@ -982,9 +960,8 @@ public class Tucson2PLibrary extends Library {
         }
         ITucsonOperation op;
         try {
-            op =
-                    this.context.rdAll(tid, new LogicTuple(arg0.getTerm()),
-                            (Long) null);
+            op = this.context.rdAll(tid, new LogicTuple(arg0.getTerm()),
+                    (Long) null);
         } catch (final TucsonOperationNotPossibleException e) {
             e.printStackTrace();
             return false;
@@ -1037,10 +1014,9 @@ public class Tucson2PLibrary extends Library {
         }
         ITucsonOperation op;
         try {
-            op =
-                    this.context.rdS(tid, new LogicTuple(event.getTerm()),
-                            new LogicTuple(guards.getTerm()), new LogicTuple(
-                                    reactionBody.getTerm()), (Long) null);
+            op = this.context.rdS(tid, new LogicTuple(event.getTerm()),
+                    new LogicTuple(guards.getTerm()), new LogicTuple(
+                            reactionBody.getTerm()), (Long) null);
         } catch (final TucsonOperationNotPossibleException e) {
             e.printStackTrace();
             return false;
@@ -1084,9 +1060,8 @@ public class Tucson2PLibrary extends Library {
         }
         ITucsonOperation op;
         try {
-            op =
-                    this.context.rdp(tid, new LogicTuple(arg0.getTerm()),
-                            (Long) null);
+            op = this.context.rdp(tid, new LogicTuple(arg0.getTerm()),
+                    (Long) null);
         } catch (final TucsonOperationNotPossibleException e) {
             e.printStackTrace();
             return false;
@@ -1138,10 +1113,9 @@ public class Tucson2PLibrary extends Library {
         }
         ITucsonOperation op;
         try {
-            op =
-                    this.context.rdpS(tid, new LogicTuple(event.getTerm()),
-                            new LogicTuple(guards.getTerm()), new LogicTuple(
-                                    reactionBody.getTerm()), (Long) null);
+            op = this.context.rdpS(tid, new LogicTuple(event.getTerm()),
+                    new LogicTuple(guards.getTerm()), new LogicTuple(
+                            reactionBody.getTerm()), (Long) null);
         } catch (final TucsonOperationNotPossibleException e) {
             e.printStackTrace();
             return false;
@@ -1202,9 +1176,8 @@ public class Tucson2PLibrary extends Library {
         }
         ITucsonOperation op;
         try {
-            op =
-                    this.context.set(tid, new LogicTuple(arg0.getTerm()),
-                            (Long) null);
+            op = this.context.set(tid, new LogicTuple(arg0.getTerm()),
+                    (Long) null);
         } catch (final TucsonOperationNotPossibleException e) {
             e.printStackTrace();
             return false;
@@ -1246,9 +1219,8 @@ public class Tucson2PLibrary extends Library {
         }
         ITucsonOperation op;
         try {
-            op =
-                    this.context.setS(tid, new LogicTuple(arg0.getTerm()),
-                            (Long) null);
+            op = this.context.setS(tid, new LogicTuple(arg0.getTerm()),
+                    (Long) null);
         } catch (final TucsonOperationNotPossibleException e) {
             e.printStackTrace();
             return false;
@@ -1289,9 +1261,8 @@ public class Tucson2PLibrary extends Library {
         }
         ITucsonOperation op;
         try {
-            op =
-                    this.context.spawn(tid, new LogicTuple(arg0.getTerm()),
-                            (Long) null);
+            op = this.context.spawn(tid, new LogicTuple(arg0.getTerm()),
+                    (Long) null);
         } catch (final TucsonOperationNotPossibleException e) {
             e.printStackTrace();
             return false;
@@ -1332,9 +1303,8 @@ public class Tucson2PLibrary extends Library {
         }
         ITucsonOperation op;
         try {
-            op =
-                    this.context.uin(tid, new LogicTuple(arg0.getTerm()),
-                            (Long) null);
+            op = this.context.uin(tid, new LogicTuple(arg0.getTerm()),
+                    (Long) null);
         } catch (final TucsonOperationNotPossibleException e) {
             e.printStackTrace();
             return false;
@@ -1378,9 +1348,8 @@ public class Tucson2PLibrary extends Library {
         }
         ITucsonOperation op;
         try {
-            op =
-                    this.context.uinp(tid, new LogicTuple(arg0.getTerm()),
-                            (Long) null);
+            op = this.context.uinp(tid, new LogicTuple(arg0.getTerm()),
+                    (Long) null);
         } catch (final TucsonOperationNotPossibleException e) {
             e.printStackTrace();
             return false;
@@ -1424,9 +1393,8 @@ public class Tucson2PLibrary extends Library {
         }
         ITucsonOperation op;
         try {
-            op =
-                    this.context.uno(tid, new LogicTuple(arg0.getTerm()),
-                            (Long) null);
+            op = this.context.uno(tid, new LogicTuple(arg0.getTerm()),
+                    (Long) null);
         } catch (final TucsonOperationNotPossibleException e) {
             e.printStackTrace();
             return false;
@@ -1470,9 +1438,8 @@ public class Tucson2PLibrary extends Library {
         }
         ITucsonOperation op;
         try {
-            op =
-                    this.context.unop(tid, new LogicTuple(arg0.getTerm()),
-                            (Long) null);
+            op = this.context.unop(tid, new LogicTuple(arg0.getTerm()),
+                    (Long) null);
         } catch (final TucsonOperationNotPossibleException e) {
             e.printStackTrace();
             return false;
@@ -1516,9 +1483,8 @@ public class Tucson2PLibrary extends Library {
         }
         ITucsonOperation op;
         try {
-            op =
-                    this.context.urd(tid, new LogicTuple(arg0.getTerm()),
-                            (Long) null);
+            op = this.context.urd(tid, new LogicTuple(arg0.getTerm()),
+                    (Long) null);
         } catch (final TucsonOperationNotPossibleException e) {
             e.printStackTrace();
             return false;
@@ -1562,9 +1528,8 @@ public class Tucson2PLibrary extends Library {
         }
         ITucsonOperation op;
         try {
-            op =
-                    this.context.urdp(tid, new LogicTuple(arg0.getTerm()),
-                            (Long) null);
+            op = this.context.urdp(tid, new LogicTuple(arg0.getTerm()),
+                    (Long) null);
         } catch (final TucsonOperationNotPossibleException e) {
             e.printStackTrace();
             return false;
@@ -1580,5 +1545,4 @@ public class Tucson2PLibrary extends Library {
         }
         return op.isResultSuccess();
     }
-
 }

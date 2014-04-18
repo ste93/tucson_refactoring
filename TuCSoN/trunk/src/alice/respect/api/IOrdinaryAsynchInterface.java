@@ -14,7 +14,6 @@ import alice.tuplecentre.core.OperationCompletionListener;
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public interface IOrdinaryAsynchInterface {
-
     /**
      * 
      * @param aid
@@ -64,9 +63,8 @@ public interface IOrdinaryAsynchInterface {
      * @throws OperationNotPossibleException
      *             if the operation requested cannot be carried out
      */
-    IRespectOperation
-            inAll(IId aid, LogicTuple t, OperationCompletionListener l)
-                    throws InvalidTupleException, OperationNotPossibleException;
+    IRespectOperation inAll(IId aid, LogicTuple t, OperationCompletionListener l)
+            throws InvalidTupleException, OperationNotPossibleException;
 
     /**
      * 
@@ -116,9 +114,8 @@ public interface IOrdinaryAsynchInterface {
      * @throws OperationNotPossibleException
      *             if the operation requested cannot be carried out
      */
-    IRespectOperation
-            noAll(IId aid, LogicTuple t, OperationCompletionListener l)
-                    throws InvalidTupleException, OperationNotPossibleException;
+    IRespectOperation noAll(IId aid, LogicTuple t, OperationCompletionListener l)
+            throws InvalidTupleException, OperationNotPossibleException;
 
     /**
      * 
@@ -203,9 +200,8 @@ public interface IOrdinaryAsynchInterface {
      * @throws OperationNotPossibleException
      *             if the operation requested cannot be carried out
      */
-    IRespectOperation
-            rdAll(IId aid, LogicTuple t, OperationCompletionListener l)
-                    throws InvalidTupleException, OperationNotPossibleException;
+    IRespectOperation rdAll(IId aid, LogicTuple t, OperationCompletionListener l)
+            throws InvalidTupleException, OperationNotPossibleException;
 
     /**
      * 
@@ -255,9 +251,8 @@ public interface IOrdinaryAsynchInterface {
      * @throws OperationNotPossibleException
      *             if the operation requested cannot be carried out
      */
-    IRespectOperation
-            spawn(IId aid, LogicTuple t, OperationCompletionListener l)
-                    throws InvalidTupleException, OperationNotPossibleException;
+    IRespectOperation spawn(IId aid, LogicTuple t, OperationCompletionListener l)
+            throws InvalidTupleException, OperationNotPossibleException;
 
     /**
      * 
@@ -290,9 +285,8 @@ public interface IOrdinaryAsynchInterface {
      * @throws OperationNotPossibleException
      *             if the operation requested cannot be carried out
      */
-    IRespectOperation
-            uinp(IId aid, LogicTuple t, OperationCompletionListener l)
-                    throws InvalidTupleException, OperationNotPossibleException;
+    IRespectOperation uinp(IId aid, LogicTuple t, OperationCompletionListener l)
+            throws InvalidTupleException, OperationNotPossibleException;
 
     /**
      * 
@@ -325,9 +319,8 @@ public interface IOrdinaryAsynchInterface {
      * @throws OperationNotPossibleException
      *             if the operation requested cannot be carried out
      */
-    IRespectOperation
-            unop(IId aid, LogicTuple t, OperationCompletionListener l)
-                    throws InvalidTupleException, OperationNotPossibleException;
+    IRespectOperation unop(IId aid, LogicTuple t, OperationCompletionListener l)
+            throws InvalidTupleException, OperationNotPossibleException;
 
     /**
      * 
@@ -360,8 +353,6 @@ public interface IOrdinaryAsynchInterface {
      * @throws OperationNotPossibleException
      *             if the operation requested cannot be carried out
      */
-    IRespectOperation
-            urdp(IId aid, LogicTuple t, OperationCompletionListener l)
-                    throws InvalidTupleException, OperationNotPossibleException;
-
+    IRespectOperation urdp(IId aid, LogicTuple t, OperationCompletionListener l)
+            throws InvalidTupleException, OperationNotPossibleException;
 }

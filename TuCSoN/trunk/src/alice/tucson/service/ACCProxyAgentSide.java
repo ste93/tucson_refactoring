@@ -16,7 +16,6 @@ package alice.tucson.service;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
 import alice.logictuple.LogicTuple;
 import alice.logictuple.LogicTupleOpManager;
 import alice.logictuple.Value;
@@ -73,7 +72,6 @@ import alice.tuprolog.Parser;
  * 
  */
 public class ACCProxyAgentSide implements EnhancedACC {
-
     private static final int DEFAULT_PORT = 20504;
     /**
      * TuCSoN Agent Identifier
@@ -83,12 +81,10 @@ public class ACCProxyAgentSide implements EnhancedACC {
      * 
      */
     protected OperationHandler executor;
-
     /**
      * TuCSoN Node Service ip address
      */
     protected String node;
-
     /**
      * TuCSoN Node Service listening port
      */
@@ -127,51 +123,41 @@ public class ACCProxyAgentSide implements EnhancedACC {
      */
     public ACCProxyAgentSide(final String id, final String n, final int p)
             throws TucsonInvalidAgentIdException {
-
         this.aid = new TucsonAgentId(id);
         this.node = n;
         this.port = p;
-
         // Class used to perform tucson operations
         this.executor = new OperationHandler();
-
     }
 
+    @Override
     public synchronized void exit() {
-
-        final Iterator<OperationHandler.ControllerSession> it =
-                this.executor.getControllerSessions().values().iterator();
+        final Iterator<OperationHandler.ControllerSession> it = this.executor
+                .getControllerSessions().values().iterator();
         OperationHandler.ControllerSession cs;
         OperationHandler.Controller contr;
         AbstractTucsonProtocol info;
         TucsonOperation op;
         TucsonMsgRequest exit;
-
         while (it.hasNext()) {
-
             cs = it.next();
             info = cs.getSession();
             contr = cs.getController();
             contr.setStop();
-
-            op =
-                    new TucsonOperation(TucsonOperation.exitCode(),
-                            (TupleTemplate) null, null, this.executor /* this */);
+            op = new TucsonOperation(TucsonOperation.exitCode(),
+                    (TupleTemplate) null, null, this.executor /* this */);
             this.executor.addOperation(op.getId(), op);
-
-            exit =
-                    new TucsonMsgRequest((int) op.getId(), op.getType(), null,
-                            op.getLogicTupleArgument());
+            exit = new TucsonMsgRequest((int) op.getId(), op.getType(), null,
+                    op.getLogicTupleArgument());
             try {
                 info.sendMsgRequest(exit);
             } catch (final DialogException e) {
                 e.printStackTrace();
             }
-
         }
-
     }
 
+    @Override
     public ITucsonOperation get(final TupleCentreId tid, final Long timeout)
             throws TucsonOperationNotPossibleException,
             UnreachableNodeException, OperationTimeOutException {
@@ -179,6 +165,7 @@ public class ACCProxyAgentSide implements EnhancedACC {
                 TucsonOperation.getCode(), tid, null, timeout);
     }
 
+    @Override
     public ITucsonOperation get(final TupleCentreId tid,
             final TucsonOperationCompletionListener l)
             throws TucsonOperationNotPossibleException,
@@ -190,6 +177,7 @@ public class ACCProxyAgentSide implements EnhancedACC {
     // edited by sangio
     // restituzione della lista delle operazioni asincrone completate e non
     // ancora gestite("consumate) dall'agente
+    @Override
     public List<TucsonOpCompletionEvent> getCompletionEventsList() {
         // TODO Auto-generated method stub
         return this.executor.events;
@@ -200,11 +188,13 @@ public class ACCProxyAgentSide implements EnhancedACC {
     // ancora ricevuto un risultato
     // per navigare la lista bisogna usare un metodo di mutua esclusione es.
     // synchronized
+    @Override
     public Map<Long, TucsonOperation> getPendingOperationsMap() {
         // TODO Auto-generated method stub
         return this.executor.operations;
     }
 
+    @Override
     public ITucsonOperation getS(final TupleCentreId tid, final Long timeout)
             throws TucsonOperationNotPossibleException,
             UnreachableNodeException, OperationTimeOutException {
@@ -213,6 +203,7 @@ public class ACCProxyAgentSide implements EnhancedACC {
                 TucsonOperation.getSCode(), tid, spec, timeout);
     }
 
+    @Override
     public ITucsonOperation getS(final TupleCentreId tid,
             final TucsonOperationCompletionListener l)
             throws TucsonOperationNotPossibleException,
@@ -222,6 +213,7 @@ public class ACCProxyAgentSide implements EnhancedACC {
                 TucsonOperation.getSCode(), tid, spec, l);
     }
 
+    @Override
     public ITucsonOperation in(final TupleCentreId tid, final Tuple tuple,
             final Long timeout) throws TucsonOperationNotPossibleException,
             UnreachableNodeException, OperationTimeOutException {
@@ -229,6 +221,7 @@ public class ACCProxyAgentSide implements EnhancedACC {
                 TucsonOperation.inCode(), tid, tuple, timeout);
     }
 
+    @Override
     public ITucsonOperation in(final TupleCentreId tid, final Tuple tuple,
             final TucsonOperationCompletionListener l)
             throws TucsonOperationNotPossibleException,
@@ -237,6 +230,7 @@ public class ACCProxyAgentSide implements EnhancedACC {
                 TucsonOperation.inCode(), tid, tuple, l);
     }
 
+    @Override
     public ITucsonOperation inAll(final TupleCentreId tid, final Tuple tuple,
             final Long timeout) throws TucsonOperationNotPossibleException,
             UnreachableNodeException, OperationTimeOutException {
@@ -244,6 +238,7 @@ public class ACCProxyAgentSide implements EnhancedACC {
                 TucsonOperation.inAllCode(), tid, tuple, timeout);
     }
 
+    @Override
     public ITucsonOperation inAll(final TupleCentreId tid, final Tuple tuple,
             final TucsonOperationCompletionListener l)
             throws TucsonOperationNotPossibleException,
@@ -252,6 +247,7 @@ public class ACCProxyAgentSide implements EnhancedACC {
                 TucsonOperation.inAllCode(), tid, tuple, l);
     }
 
+    @Override
     public ITucsonOperation inp(final TupleCentreId tid, final Tuple tuple,
             final Long timeout) throws TucsonOperationNotPossibleException,
             UnreachableNodeException, OperationTimeOutException {
@@ -259,6 +255,7 @@ public class ACCProxyAgentSide implements EnhancedACC {
                 TucsonOperation.inpCode(), tid, tuple, timeout);
     }
 
+    @Override
     public ITucsonOperation inp(final TupleCentreId tid, final Tuple tuple,
             final TucsonOperationCompletionListener l)
             throws TucsonOperationNotPossibleException,
@@ -267,60 +264,61 @@ public class ACCProxyAgentSide implements EnhancedACC {
                 TucsonOperation.inpCode(), tid, tuple, l);
     }
 
+    @Override
     public ITucsonOperation inpS(final TupleCentreId tid,
             final LogicTuple event, final LogicTuple guards,
             final LogicTuple reactionBody, final Long timeout)
             throws TucsonOperationNotPossibleException,
             UnreachableNodeException, OperationTimeOutException {
-        final LogicTuple tuple =
-                new LogicTuple(Parser.parseSingleTerm("reaction(" + event + ","
-                        + guards + "," + reactionBody + ")",
-                        new LogicTupleOpManager()));
+        final LogicTuple tuple = new LogicTuple(Parser.parseSingleTerm(
+                "reaction(" + event + "," + guards + "," + reactionBody + ")",
+                new LogicTupleOpManager()));
         return this.executor.doBlockingOperation(this.aid,
                 TucsonOperation.inpSCode(), tid, tuple, timeout);
     }
 
+    @Override
     public ITucsonOperation inpS(final TupleCentreId tid,
             final LogicTuple event, final LogicTuple guards,
             final LogicTuple reactionBody,
             final TucsonOperationCompletionListener l)
             throws TucsonOperationNotPossibleException,
             UnreachableNodeException {
-        final LogicTuple tuple =
-                new LogicTuple(Parser.parseSingleTerm("reaction(" + event + ","
-                        + guards + "," + reactionBody + ")",
-                        new LogicTupleOpManager()));
+        final LogicTuple tuple = new LogicTuple(Parser.parseSingleTerm(
+                "reaction(" + event + "," + guards + "," + reactionBody + ")",
+                new LogicTupleOpManager()));
         return this.executor.doNonBlockingOperation(this.aid,
                 TucsonOperation.inpSCode(), tid, tuple, l);
     }
 
+    @Override
     public ITucsonOperation inS(final TupleCentreId tid,
             final LogicTuple event, final LogicTuple guards,
             final LogicTuple reactionBody, final Long timeout)
             throws TucsonOperationNotPossibleException,
             UnreachableNodeException, OperationTimeOutException {
-        final LogicTuple tuple =
-                new LogicTuple(Parser.parseSingleTerm("reaction(" + event + ","
-                        + guards + "," + reactionBody + ")",
-                        new LogicTupleOpManager()));
+        final LogicTuple tuple = new LogicTuple(Parser.parseSingleTerm(
+                "reaction(" + event + "," + guards + "," + reactionBody + ")",
+                new LogicTupleOpManager()));
         return this.executor.doBlockingOperation(this.aid,
                 TucsonOperation.inSCode(), tid, tuple, timeout);
     }
 
+    @Override
     public ITucsonOperation inS(final TupleCentreId tid,
             final LogicTuple event, final LogicTuple guards,
             final LogicTuple reactionBody,
             final TucsonOperationCompletionListener l)
             throws TucsonOperationNotPossibleException,
             UnreachableNodeException {
-        final LogicTuple tuple =
-                new LogicTuple(Parser.parseSingleTerm("reaction(" + event + ","
-                        + guards + "," + reactionBody + ")",
-                        new LogicTupleOpManager()));
+        final LogicTuple tuple = new LogicTuple(Parser.parseSingleTerm(
+                "reaction(" + event + "," + guards + "," + reactionBody + ")",
+                new LogicTupleOpManager()));
         return this.executor.doNonBlockingOperation(this.aid,
                 TucsonOperation.inSCode(), tid, tuple, l);
     }
 
+    @Override
     public ITucsonOperation no(final TupleCentreId tid, final Tuple tuple,
             final Long timeout) throws TucsonOperationNotPossibleException,
             UnreachableNodeException, OperationTimeOutException {
@@ -328,6 +326,7 @@ public class ACCProxyAgentSide implements EnhancedACC {
                 TucsonOperation.noCode(), tid, tuple, timeout);
     }
 
+    @Override
     public ITucsonOperation no(final TupleCentreId tid, final Tuple tuple,
             final TucsonOperationCompletionListener l)
             throws TucsonOperationNotPossibleException,
@@ -336,6 +335,7 @@ public class ACCProxyAgentSide implements EnhancedACC {
                 TucsonOperation.noCode(), tid, tuple, l);
     }
 
+    @Override
     public ITucsonOperation noAll(final TupleCentreId tid, final Tuple tuple,
             final Long timeout) throws TucsonOperationNotPossibleException,
             UnreachableNodeException, OperationTimeOutException {
@@ -343,6 +343,7 @@ public class ACCProxyAgentSide implements EnhancedACC {
                 TucsonOperation.noAllCode(), tid, tuple, timeout);
     }
 
+    @Override
     public ITucsonOperation noAll(final TupleCentreId tid, final Tuple tuple,
             final TucsonOperationCompletionListener l)
             throws TucsonOperationNotPossibleException,
@@ -351,6 +352,7 @@ public class ACCProxyAgentSide implements EnhancedACC {
                 TucsonOperation.noAllCode(), tid, tuple, l);
     }
 
+    @Override
     public ITucsonOperation nop(final TupleCentreId tid, final Tuple tuple,
             final Long timeout) throws TucsonOperationNotPossibleException,
             UnreachableNodeException, OperationTimeOutException {
@@ -358,6 +360,7 @@ public class ACCProxyAgentSide implements EnhancedACC {
                 TucsonOperation.nopCode(), tid, tuple, timeout);
     }
 
+    @Override
     public ITucsonOperation nop(final TupleCentreId tid, final Tuple tuple,
             final TucsonOperationCompletionListener l)
             throws TucsonOperationNotPossibleException,
@@ -366,60 +369,61 @@ public class ACCProxyAgentSide implements EnhancedACC {
                 TucsonOperation.nopCode(), tid, tuple, l);
     }
 
+    @Override
     public ITucsonOperation nopS(final TupleCentreId tid,
             final LogicTuple event, final LogicTuple guards,
             final LogicTuple reactionBody, final Long timeout)
             throws TucsonOperationNotPossibleException,
             UnreachableNodeException, OperationTimeOutException {
-        final LogicTuple tuple =
-                new LogicTuple(Parser.parseSingleTerm("reaction(" + event + ","
-                        + guards + "," + reactionBody + ")",
-                        new LogicTupleOpManager()));
+        final LogicTuple tuple = new LogicTuple(Parser.parseSingleTerm(
+                "reaction(" + event + "," + guards + "," + reactionBody + ")",
+                new LogicTupleOpManager()));
         return this.executor.doBlockingOperation(this.aid,
                 TucsonOperation.nopSCode(), tid, tuple, timeout);
     }
 
+    @Override
     public ITucsonOperation nopS(final TupleCentreId tid,
             final LogicTuple event, final LogicTuple guards,
             final LogicTuple reactionBody,
             final TucsonOperationCompletionListener l)
             throws TucsonOperationNotPossibleException,
             UnreachableNodeException {
-        final LogicTuple tuple =
-                new LogicTuple(Parser.parseSingleTerm("reaction(" + event + ","
-                        + guards + "," + reactionBody + ")",
-                        new LogicTupleOpManager()));
+        final LogicTuple tuple = new LogicTuple(Parser.parseSingleTerm(
+                "reaction(" + event + "," + guards + "," + reactionBody + ")",
+                new LogicTupleOpManager()));
         return this.executor.doNonBlockingOperation(this.aid,
                 TucsonOperation.nopSCode(), tid, tuple, l);
     }
 
+    @Override
     public ITucsonOperation noS(final TupleCentreId tid,
             final LogicTuple event, final LogicTuple guards,
             final LogicTuple reactionBody, final Long timeout)
             throws TucsonOperationNotPossibleException,
             UnreachableNodeException, OperationTimeOutException {
-        final LogicTuple tuple =
-                new LogicTuple(Parser.parseSingleTerm("reaction(" + event + ","
-                        + guards + "," + reactionBody + ")",
-                        new LogicTupleOpManager()));
+        final LogicTuple tuple = new LogicTuple(Parser.parseSingleTerm(
+                "reaction(" + event + "," + guards + "," + reactionBody + ")",
+                new LogicTupleOpManager()));
         return this.executor.doBlockingOperation(this.aid,
                 TucsonOperation.noSCode(), tid, tuple, timeout);
     }
 
+    @Override
     public ITucsonOperation noS(final TupleCentreId tid,
             final LogicTuple event, final LogicTuple guards,
             final LogicTuple reactionBody,
             final TucsonOperationCompletionListener l)
             throws TucsonOperationNotPossibleException,
             UnreachableNodeException {
-        final LogicTuple tuple =
-                new LogicTuple(Parser.parseSingleTerm("reaction(" + event + ","
-                        + guards + "," + reactionBody + ")",
-                        new LogicTupleOpManager()));
+        final LogicTuple tuple = new LogicTuple(Parser.parseSingleTerm(
+                "reaction(" + event + "," + guards + "," + reactionBody + ")",
+                new LogicTupleOpManager()));
         return this.executor.doNonBlockingOperation(this.aid,
                 TucsonOperation.noSCode(), tid, tuple, l);
     }
 
+    @Override
     public ITucsonOperation out(final TupleCentreId tid, final Tuple tuple,
             final Long timeout) throws TucsonOperationNotPossibleException,
             UnreachableNodeException, OperationTimeOutException {
@@ -427,6 +431,7 @@ public class ACCProxyAgentSide implements EnhancedACC {
                 TucsonOperation.outCode(), tid, tuple, timeout);
     }
 
+    @Override
     public ITucsonOperation out(final TupleCentreId tid, final Tuple tuple,
             final TucsonOperationCompletionListener l)
             throws TucsonOperationNotPossibleException,
@@ -435,6 +440,7 @@ public class ACCProxyAgentSide implements EnhancedACC {
                 TucsonOperation.outCode(), tid, tuple, l);
     }
 
+    @Override
     public ITucsonOperation outAll(final TupleCentreId tid, final Tuple tuple,
             final Long timeout) throws TucsonOperationNotPossibleException,
             UnreachableNodeException, OperationTimeOutException {
@@ -442,6 +448,7 @@ public class ACCProxyAgentSide implements EnhancedACC {
                 TucsonOperation.outAllCode(), tid, tuple, timeout);
     }
 
+    @Override
     public ITucsonOperation outAll(final TupleCentreId tid, final Tuple tuple,
             final TucsonOperationCompletionListener l)
             throws TucsonOperationNotPossibleException,
@@ -450,33 +457,34 @@ public class ACCProxyAgentSide implements EnhancedACC {
                 TucsonOperation.outAllCode(), tid, tuple, l);
     }
 
+    @Override
     public ITucsonOperation outS(final TupleCentreId tid,
             final LogicTuple event, final LogicTuple guards,
             final LogicTuple reactionBody, final Long timeout)
             throws TucsonOperationNotPossibleException,
             UnreachableNodeException, OperationTimeOutException {
-        final LogicTuple tuple =
-                new LogicTuple(Parser.parseSingleTerm("reaction(" + event + ","
-                        + guards + "," + reactionBody + ")",
-                        new LogicTupleOpManager()));
+        final LogicTuple tuple = new LogicTuple(Parser.parseSingleTerm(
+                "reaction(" + event + "," + guards + "," + reactionBody + ")",
+                new LogicTupleOpManager()));
         return this.executor.doBlockingOperation(this.aid,
                 TucsonOperation.outSCode(), tid, tuple, timeout);
     }
 
+    @Override
     public ITucsonOperation outS(final TupleCentreId tid,
             final LogicTuple event, final LogicTuple guards,
             final LogicTuple reactionBody,
             final TucsonOperationCompletionListener l)
             throws TucsonOperationNotPossibleException,
             UnreachableNodeException {
-        final LogicTuple tuple =
-                new LogicTuple(Parser.parseSingleTerm("reaction(" + event + ","
-                        + guards + "," + reactionBody + ")",
-                        new LogicTupleOpManager()));
+        final LogicTuple tuple = new LogicTuple(Parser.parseSingleTerm(
+                "reaction(" + event + "," + guards + "," + reactionBody + ")",
+                new LogicTupleOpManager()));
         return this.executor.doNonBlockingOperation(this.aid,
                 TucsonOperation.outSCode(), tid, tuple, l);
     }
 
+    @Override
     public ITucsonOperation rd(final TupleCentreId tid, final Tuple tuple,
             final Long timeout) throws TucsonOperationNotPossibleException,
             UnreachableNodeException, OperationTimeOutException {
@@ -484,6 +492,7 @@ public class ACCProxyAgentSide implements EnhancedACC {
                 TucsonOperation.rdCode(), tid, tuple, timeout);
     }
 
+    @Override
     public ITucsonOperation rd(final TupleCentreId tid, final Tuple tuple,
             final TucsonOperationCompletionListener l)
             throws TucsonOperationNotPossibleException,
@@ -492,6 +501,7 @@ public class ACCProxyAgentSide implements EnhancedACC {
                 TucsonOperation.rdCode(), tid, tuple, l);
     }
 
+    @Override
     public ITucsonOperation rdAll(final TupleCentreId tid, final Tuple tuple,
             final Long timeout) throws TucsonOperationNotPossibleException,
             UnreachableNodeException, OperationTimeOutException {
@@ -499,6 +509,7 @@ public class ACCProxyAgentSide implements EnhancedACC {
                 TucsonOperation.rdAllCode(), tid, tuple, timeout);
     }
 
+    @Override
     public ITucsonOperation rdAll(final TupleCentreId tid, final Tuple tuple,
             final TucsonOperationCompletionListener l)
             throws TucsonOperationNotPossibleException,
@@ -507,6 +518,7 @@ public class ACCProxyAgentSide implements EnhancedACC {
                 TucsonOperation.rdAllCode(), tid, tuple, l);
     }
 
+    @Override
     public ITucsonOperation rdp(final TupleCentreId tid, final Tuple tuple,
             final Long timeout) throws TucsonOperationNotPossibleException,
             UnreachableNodeException, OperationTimeOutException {
@@ -514,6 +526,7 @@ public class ACCProxyAgentSide implements EnhancedACC {
                 TucsonOperation.rdpCode(), tid, tuple, timeout);
     }
 
+    @Override
     public ITucsonOperation rdp(final TupleCentreId tid, final Tuple tuple,
             final TucsonOperationCompletionListener l)
             throws TucsonOperationNotPossibleException,
@@ -522,60 +535,61 @@ public class ACCProxyAgentSide implements EnhancedACC {
                 TucsonOperation.rdpCode(), tid, tuple, l);
     }
 
+    @Override
     public ITucsonOperation rdpS(final TupleCentreId tid,
             final LogicTuple event, final LogicTuple guards,
             final LogicTuple reactionBody, final Long timeout)
             throws TucsonOperationNotPossibleException,
             UnreachableNodeException, OperationTimeOutException {
-        final LogicTuple tuple =
-                new LogicTuple(Parser.parseSingleTerm("reaction(" + event + ","
-                        + guards + "," + reactionBody + ")",
-                        new LogicTupleOpManager()));
+        final LogicTuple tuple = new LogicTuple(Parser.parseSingleTerm(
+                "reaction(" + event + "," + guards + "," + reactionBody + ")",
+                new LogicTupleOpManager()));
         return this.executor.doBlockingOperation(this.aid,
                 TucsonOperation.rdpSCode(), tid, tuple, timeout);
     }
 
+    @Override
     public ITucsonOperation rdpS(final TupleCentreId tid,
             final LogicTuple event, final LogicTuple guards,
             final LogicTuple reactionBody,
             final TucsonOperationCompletionListener l)
             throws TucsonOperationNotPossibleException,
             UnreachableNodeException {
-        final LogicTuple tuple =
-                new LogicTuple(Parser.parseSingleTerm("reaction(" + event + ","
-                        + guards + "," + reactionBody + ")",
-                        new LogicTupleOpManager()));
+        final LogicTuple tuple = new LogicTuple(Parser.parseSingleTerm(
+                "reaction(" + event + "," + guards + "," + reactionBody + ")",
+                new LogicTupleOpManager()));
         return this.executor.doNonBlockingOperation(this.aid,
                 TucsonOperation.rdpSCode(), tid, tuple, l);
     }
 
+    @Override
     public ITucsonOperation rdS(final TupleCentreId tid,
             final LogicTuple event, final LogicTuple guards,
             final LogicTuple reactionBody, final Long timeout)
             throws TucsonOperationNotPossibleException,
             UnreachableNodeException, OperationTimeOutException {
-        final LogicTuple tuple =
-                new LogicTuple(Parser.parseSingleTerm("reaction(" + event + ","
-                        + guards + "," + reactionBody + ")",
-                        new LogicTupleOpManager()));
+        final LogicTuple tuple = new LogicTuple(Parser.parseSingleTerm(
+                "reaction(" + event + "," + guards + "," + reactionBody + ")",
+                new LogicTupleOpManager()));
         return this.executor.doBlockingOperation(this.aid,
                 TucsonOperation.rdSCode(), tid, tuple, timeout);
     }
 
+    @Override
     public ITucsonOperation rdS(final TupleCentreId tid,
             final LogicTuple event, final LogicTuple guards,
             final LogicTuple reactionBody,
             final TucsonOperationCompletionListener l)
             throws TucsonOperationNotPossibleException,
             UnreachableNodeException {
-        final LogicTuple tuple =
-                new LogicTuple(Parser.parseSingleTerm("reaction(" + event + ","
-                        + guards + "," + reactionBody + ")",
-                        new LogicTupleOpManager()));
+        final LogicTuple tuple = new LogicTuple(Parser.parseSingleTerm(
+                "reaction(" + event + "," + guards + "," + reactionBody + ")",
+                new LogicTupleOpManager()));
         return this.executor.doNonBlockingOperation(this.aid,
                 TucsonOperation.rdSCode(), tid, tuple, l);
     }
 
+    @Override
     public ITucsonOperation set(final TupleCentreId tid, final Tuple tuple,
             final Long timeout) throws TucsonOperationNotPossibleException,
             UnreachableNodeException, OperationTimeOutException {
@@ -583,6 +597,7 @@ public class ACCProxyAgentSide implements EnhancedACC {
                 TucsonOperation.setCode(), tid, tuple, timeout);
     }
 
+    @Override
     public ITucsonOperation set(final TupleCentreId tid, final Tuple tuple,
             final TucsonOperationCompletionListener l)
             throws TucsonOperationNotPossibleException,
@@ -591,6 +606,7 @@ public class ACCProxyAgentSide implements EnhancedACC {
                 TucsonOperation.setCode(), tid, tuple, l);
     }
 
+    @Override
     public ITucsonOperation setS(final TupleCentreId tid,
             final LogicTuple spec, final Long timeout)
             throws TucsonOperationNotPossibleException,
@@ -599,6 +615,7 @@ public class ACCProxyAgentSide implements EnhancedACC {
                 TucsonOperation.setSCode(), tid, spec, timeout);
     }
 
+    @Override
     public ITucsonOperation setS(final TupleCentreId tid,
             final LogicTuple spec, final TucsonOperationCompletionListener l)
             throws TucsonOperationNotPossibleException,
@@ -607,6 +624,7 @@ public class ACCProxyAgentSide implements EnhancedACC {
                 TucsonOperation.setSCode(), tid, spec, l);
     }
 
+    @Override
     public ITucsonOperation setS(final TupleCentreId tid, final String spec,
             final Long timeout) throws TucsonOperationNotPossibleException,
             UnreachableNodeException, OperationTimeOutException {
@@ -618,6 +636,7 @@ public class ACCProxyAgentSide implements EnhancedACC {
                 TucsonOperation.setSCode(), tid, specT, timeout);
     }
 
+    @Override
     public ITucsonOperation setS(final TupleCentreId tid, final String spec,
             final TucsonOperationCompletionListener l)
             throws TucsonOperationNotPossibleException,
@@ -627,6 +646,7 @@ public class ACCProxyAgentSide implements EnhancedACC {
                 TucsonOperation.setSCode(), tid, specT, l);
     }
 
+    @Override
     public ITucsonOperation spawn(final TupleCentreId tid, final Tuple toSpawn,
             final Long timeout) throws TucsonOperationNotPossibleException,
             UnreachableNodeException, OperationTimeOutException {
@@ -634,6 +654,7 @@ public class ACCProxyAgentSide implements EnhancedACC {
                 TucsonOperation.spawnCode(), tid, toSpawn, timeout);
     }
 
+    @Override
     public ITucsonOperation spawn(final TupleCentreId tid, final Tuple toSpawn,
             final TucsonOperationCompletionListener l)
             throws TucsonOperationNotPossibleException,
@@ -642,6 +663,7 @@ public class ACCProxyAgentSide implements EnhancedACC {
                 TucsonOperation.spawnCode(), tid, toSpawn, l);
     }
 
+    @Override
     public ITucsonOperation uin(final TupleCentreId tid, final Tuple tuple,
             final Long timeout) throws TucsonOperationNotPossibleException,
             UnreachableNodeException, OperationTimeOutException {
@@ -649,6 +671,7 @@ public class ACCProxyAgentSide implements EnhancedACC {
                 TucsonOperation.uinCode(), tid, tuple, timeout);
     }
 
+    @Override
     public ITucsonOperation uin(final TupleCentreId tid, final Tuple tuple,
             final TucsonOperationCompletionListener l)
             throws TucsonOperationNotPossibleException,
@@ -657,6 +680,7 @@ public class ACCProxyAgentSide implements EnhancedACC {
                 TucsonOperation.uinCode(), tid, tuple, l);
     }
 
+    @Override
     public ITucsonOperation uinp(final TupleCentreId tid, final Tuple tuple,
             final Long timeout) throws TucsonOperationNotPossibleException,
             UnreachableNodeException, OperationTimeOutException {
@@ -664,6 +688,7 @@ public class ACCProxyAgentSide implements EnhancedACC {
                 TucsonOperation.uinpCode(), tid, tuple, timeout);
     }
 
+    @Override
     public ITucsonOperation uinp(final TupleCentreId tid, final Tuple tuple,
             final TucsonOperationCompletionListener l)
             throws TucsonOperationNotPossibleException,
@@ -672,6 +697,7 @@ public class ACCProxyAgentSide implements EnhancedACC {
                 TucsonOperation.uinpCode(), tid, tuple, l);
     }
 
+    @Override
     public ITucsonOperation uno(final TupleCentreId tid, final Tuple tuple,
             final Long timeout) throws TucsonOperationNotPossibleException,
             UnreachableNodeException, OperationTimeOutException {
@@ -679,6 +705,7 @@ public class ACCProxyAgentSide implements EnhancedACC {
                 TucsonOperation.unoCode(), tid, tuple, timeout);
     }
 
+    @Override
     public ITucsonOperation uno(final TupleCentreId tid, final Tuple tuple,
             final TucsonOperationCompletionListener l)
             throws TucsonOperationNotPossibleException,
@@ -687,6 +714,7 @@ public class ACCProxyAgentSide implements EnhancedACC {
                 TucsonOperation.unoCode(), tid, tuple, l);
     }
 
+    @Override
     public ITucsonOperation unop(final TupleCentreId tid, final Tuple tuple,
             final Long timeout) throws TucsonOperationNotPossibleException,
             UnreachableNodeException, OperationTimeOutException {
@@ -694,6 +722,7 @@ public class ACCProxyAgentSide implements EnhancedACC {
                 TucsonOperation.unopCode(), tid, tuple, timeout);
     }
 
+    @Override
     public ITucsonOperation unop(final TupleCentreId tid, final Tuple tuple,
             final TucsonOperationCompletionListener l)
             throws TucsonOperationNotPossibleException,
@@ -702,6 +731,7 @@ public class ACCProxyAgentSide implements EnhancedACC {
                 TucsonOperation.unopCode(), tid, tuple, l);
     }
 
+    @Override
     public ITucsonOperation urd(final TupleCentreId tid, final Tuple tuple,
             final Long timeout) throws TucsonOperationNotPossibleException,
             UnreachableNodeException, OperationTimeOutException {
@@ -709,6 +739,7 @@ public class ACCProxyAgentSide implements EnhancedACC {
                 TucsonOperation.urdCode(), tid, tuple, timeout);
     }
 
+    @Override
     public ITucsonOperation urd(final TupleCentreId tid, final Tuple tuple,
             final TucsonOperationCompletionListener l)
             throws TucsonOperationNotPossibleException,
@@ -717,6 +748,7 @@ public class ACCProxyAgentSide implements EnhancedACC {
                 TucsonOperation.urdCode(), tid, tuple, l);
     }
 
+    @Override
     public ITucsonOperation urdp(final TupleCentreId tid, final Tuple tuple,
             final Long timeout) throws TucsonOperationNotPossibleException,
             UnreachableNodeException, OperationTimeOutException {
@@ -724,6 +756,7 @@ public class ACCProxyAgentSide implements EnhancedACC {
                 TucsonOperation.urdpCode(), tid, tuple, timeout);
     }
 
+    @Override
     public ITucsonOperation urdp(final TupleCentreId tid, final Tuple tuple,
             final TucsonOperationCompletionListener l)
             throws TucsonOperationNotPossibleException,

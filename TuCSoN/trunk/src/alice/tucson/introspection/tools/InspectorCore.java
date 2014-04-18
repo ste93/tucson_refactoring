@@ -17,7 +17,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Iterator;
-
 import alice.logictuple.LogicTuple;
 import alice.respect.api.AgentId;
 import alice.tucson.api.TucsonAgentId;
@@ -32,26 +31,21 @@ import alice.tuplecentre.core.TriggeredReaction;
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public class InspectorCore extends alice.tucson.introspection.Inspector {
-
     /*
      * Used when logging tuples/operations/reactions.
      */
     private Calendar cal;
-
     private final InspectorGUI form;
     protected boolean loggingQueries = false;
     protected boolean loggingReactions = false;
     protected boolean loggingTuples = false;
     protected LogicTuple logOpFilter;
-
     protected String logQueryFilename;
     protected FileWriter logQueryWriter;
     protected String logReactionFilename;
-
     protected FileWriter logReactionWriter;
     protected String logTupleFilename;
     protected LogicTuple logTupleFilter;
-
     protected FileWriter logTupleWriter;
 
     /**
@@ -74,8 +68,8 @@ public class InspectorCore extends alice.tucson.introspection.Inspector {
         try {
             this.logTupleWriter = new FileWriter(this.logTupleFilename, true);
             this.logQueryWriter = new FileWriter(this.logQueryFilename, true);
-            this.logReactionWriter =
-                    new FileWriter(this.logReactionFilename, true);
+            this.logReactionWriter = new FileWriter(this.logReactionFilename,
+                    true);
         } catch (final IOException e) {
             e.printStackTrace();
         }
@@ -107,8 +101,8 @@ public class InspectorCore extends alice.tucson.introspection.Inspector {
             }
         }
         try {
-            this.logReactionWriter =
-                    new FileWriter(this.logReactionFilename, true);
+            this.logReactionWriter = new FileWriter(this.logReactionFilename,
+                    true);
         } catch (final IOException e) {
             e.printStackTrace();
         }
@@ -133,25 +127,19 @@ public class InspectorCore extends alice.tucson.introspection.Inspector {
     @Override
     public void onContextEvent(
             final alice.tucson.introspection.InspectorContextEvent msg) {
-
         if (msg.getTuples() != null) {
-
             final TupleViewer viewer = this.form.getTupleForm();
             final StringBuffer st = new StringBuffer();
             Iterator<? extends Tuple> it = msg.getTuples().iterator();
             int n = 0;
-
             while (it.hasNext()) {
                 st.append(it.next().toString()).append('\n');
                 n++;
             }
             viewer.setNItems(n);
             viewer.setText(st.toString());
-
             if (this.loggingTuples) {
-
                 try {
-
                     this.cal = Calendar.getInstance();
                     st.delete(0, st.length());
                     this.logTupleWriter.write("snapshot(\n" + "localtime(date("
@@ -162,7 +150,6 @@ public class InspectorCore extends alice.tucson.introspection.Inspector {
                             + this.cal.get(Calendar.MINUTE) + ":"
                             + this.cal.get(Calendar.SECOND) + ")"
                             + "),\n\ttuples([\n");
-
                     it = msg.getTuples().iterator();
                     if (this.logTupleFilter == null) {
                         if (it.hasNext()) {
@@ -193,26 +180,19 @@ public class InspectorCore extends alice.tucson.introspection.Inspector {
                             }
                         }
                     }
-
                     this.logTupleWriter.write(st + "\n\t])\n).\n");
                     this.logTupleWriter.flush();
-
                 } catch (final IOException e) {
                     e.printStackTrace();
                 }
-
             }
-
         }
-
         if (msg.getWnEvents() != null) {
-
             final EventViewer viewer = this.form.getQueryForm();
             final StringBuffer st = new StringBuffer();
             Iterator<WSetEvent> it = msg.getWnEvents().iterator();
             int n = 0;
             WSetEvent ev;
-
             while (it.hasNext()) {
                 ev = it.next();
                 if (ev.getSource().isAgent()) {
@@ -231,7 +211,6 @@ public class InspectorCore extends alice.tucson.introspection.Inspector {
             }
             viewer.setNItems(n);
             viewer.setText(st.toString());
-
             if (this.loggingQueries) {
                 try {
                     this.cal = Calendar.getInstance();
@@ -308,11 +287,8 @@ public class InspectorCore extends alice.tucson.introspection.Inspector {
                     e.printStackTrace();
                 }
             }
-
         }
-
         if (msg.getReactionOk() != null) {
-
             this.cal = Calendar.getInstance();
             final ReactionViewer viewer = this.form.getReactionForm();
             final TriggeredReaction tr = msg.getReactionOk();
@@ -337,9 +313,7 @@ public class InspectorCore extends alice.tucson.introspection.Inspector {
                     e.printStackTrace();
                 }
             }
-
         } else if (msg.getReactionFailed() != null) {
-
             this.cal = Calendar.getInstance();
             final ReactionViewer viewer = this.form.getReactionForm();
             final TriggeredReaction tr = msg.getReactionFailed();
@@ -363,9 +337,6 @@ public class InspectorCore extends alice.tucson.introspection.Inspector {
                     e.printStackTrace();
                 }
             }
-
         }
-
     }
-
 }

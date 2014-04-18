@@ -21,10 +21,8 @@ import alice.tucson.service.TucsonOpCompletionEvent;
  * 
  */
 public class TestAsyncWithBehaviour extends Agent {
-
     private class ResultCompleteBehaviour extends OneShotBehaviour implements
             IAsynchCompletionBehaviour {
-
         /**
          * 
          */
@@ -52,7 +50,6 @@ public class TestAsyncWithBehaviour extends Agent {
     }
 
     private class TucsonTestBehaviour extends SimpleBehaviour {
-
         /**
          * 
          */
@@ -62,23 +59,20 @@ public class TestAsyncWithBehaviour extends Agent {
         public void action() {
             try {
                 System.out.println("Hello, i am " + this.myAgent.getName());
-                final TucsonHelper helper =
-                        (TucsonHelper) TestAsyncWithBehaviour.this
-                                .getHelper(TucsonService.NAME);
+                final TucsonHelper helper = (TucsonHelper) TestAsyncWithBehaviour.this
+                        .getHelper(TucsonService.NAME);
                 // Ottengo ACC
                 helper.acquireACC(this.myAgent);
                 // Creo operazione
-                final TucsonTupleCentreId tcid =
-                        helper.getTucsonTupleCentreId("default", "localhost",
-                                20504);
+                final TucsonTupleCentreId tcid = helper.getTucsonTupleCentreId(
+                        "default", "localhost", 20504);
                 final LogicTuple tuple = LogicTuple.parse("nome(X)");
                 final Rd op = new Rd(tcid, tuple);
-                final BridgeToTucson bridge =
-                        helper.getBridgeToTucson(this.myAgent);
+                final BridgeToTucson bridge = helper
+                        .getBridgeToTucson(this.myAgent);
                 // creazione behaviour delegato alla gestione del risultato
                 // dell'operazione di coordinazione
-                final ResultCompleteBehaviour behav =
-                        new ResultCompleteBehaviour();
+                final ResultCompleteBehaviour behav = new ResultCompleteBehaviour();
                 bridge.asynchronousInvocation(op, behav, this.myAgent);
                 bridge.clearTucsonOpResult(this);
             } catch (final Exception ex) {

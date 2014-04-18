@@ -6,7 +6,6 @@ package alice.tucson.service;
  * 
  */
 public class TucsonCmd {
-
     private final String arg;
     private final String primitive;
 
@@ -37,5 +36,4 @@ public class TucsonCmd {
     public String getPrimitive() {
         return this.primitive;
     }
-
 }

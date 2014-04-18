@@ -2,7 +2,6 @@ package it.unibo.sd.jade.coordination;
 
 import java.util.LinkedList;
 import java.util.List;
-
 import alice.tucson.service.TucsonOpCompletionEvent;
 
 /**
@@ -13,7 +12,6 @@ import alice.tucson.service.TucsonOpCompletionEvent;
  * 
  */
 public class TucsonOpResult {
-
     // prossimo risultato da usare, utilizzato per restituire il risultato
     // corretto o per sapere se quel risultato non è presente e quindì procedere
     // con l'operazione

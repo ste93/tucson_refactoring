@@ -16,7 +16,6 @@ package alice.tuplecentre.core;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-
 import alice.respect.core.RespectOperation;
 import alice.respect.core.RespectVMContext;
 import alice.tuplecentre.api.Tuple;
@@ -30,7 +29,6 @@ import alice.tuplecentre.core.TCCycleResult.Outcome;
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public class SpeakingState extends AbstractTupleCentreVMState {
-
     private AbstractTupleCentreVMState idleState;
     private boolean noMoreSatisfiablePendingQuery;
     private AbstractTupleCentreVMState reactingState;
@@ -46,28 +44,21 @@ public class SpeakingState extends AbstractTupleCentreVMState {
 
     @Override
     public void execute() {
-
         final Iterator<?> it = this.vm.getPendingQuerySetIterator();
         InputEvent ev = null;
         OutputEvent outEv = null;
         this.noMoreSatisfiablePendingQuery = true;
         boolean foundSatisfied = false;
-
         Tuple tuple = null;
         List<Tuple> tupleList = null;
         AbstractTupleCentreOperation op = null;
-
         while (it.hasNext() && !foundSatisfied) {
-
             try {
-
-                ev = (InputEvent) (it.next());
+                ev = (InputEvent) it.next();
                 op = ev.getSimpleTCEvent();
-
                 if (op.isResultDefined() || ev.isLinking()) {
                     foundSatisfied = true;
                 } else {
-
                     if (op.isSpawn()) {
                         tuple = op.getTupleArgument();
                         if (this.vm.spawnActivity(tuple, ev.getSource(),
@@ -85,9 +76,8 @@ public class SpeakingState extends AbstractTupleCentreVMState {
                         op.setTupleResult(tuple);
                         foundSatisfied = true;
                     } else if (op.isIn()) {
-                        tuple =
-                                this.vm.removeMatchingTuple(op
-                                        .getTemplateArgument());
+                        tuple = this.vm.removeMatchingTuple(op
+                                .getTemplateArgument());
                         if (tuple != null) {
                             op.setOpResult(Outcome.SUCCESS);
                             op.setTupleResult(tuple);
@@ -95,9 +85,8 @@ public class SpeakingState extends AbstractTupleCentreVMState {
                         } // we do nothing: in is suspensive hence we cannot
                           // conclude FAILURE yet!
                     } else if (op.isRd()) {
-                        tuple =
-                                this.vm.readMatchingTuple(op
-                                        .getTemplateArgument());
+                        tuple = this.vm.readMatchingTuple(op
+                                .getTemplateArgument());
                         if (tuple != null) {
                             op.setOpResult(Outcome.SUCCESS);
                             op.setTupleResult(tuple);
@@ -105,9 +94,8 @@ public class SpeakingState extends AbstractTupleCentreVMState {
                         } // we do nothing: rd is suspensive hence we cannot
                           // conclude FAILURE yet!
                     } else if (op.isInp()) {
-                        tuple =
-                                this.vm.removeMatchingTuple(op
-                                        .getTemplateArgument());
+                        tuple = this.vm.removeMatchingTuple(op
+                                .getTemplateArgument());
                         if (tuple != null) {
                             op.setOpResult(Outcome.SUCCESS);
                             op.setTupleResult(tuple);
@@ -117,9 +105,8 @@ public class SpeakingState extends AbstractTupleCentreVMState {
                         }
                         foundSatisfied = true;
                     } else if (op.isRdp()) {
-                        tuple =
-                                this.vm.readMatchingTuple(op
-                                        .getTemplateArgument());
+                        tuple = this.vm.readMatchingTuple(op
+                                .getTemplateArgument());
                         if (tuple != null) {
                             op.setOpResult(Outcome.SUCCESS);
                             op.setTupleResult(tuple);
@@ -129,9 +116,8 @@ public class SpeakingState extends AbstractTupleCentreVMState {
                         }
                         foundSatisfied = true;
                     } else if (op.isNo()) {
-                        tuple =
-                                this.vm.readMatchingTuple(op
-                                        .getTemplateArgument());
+                        tuple = this.vm.readMatchingTuple(op
+                                .getTemplateArgument());
                         if (tuple == null) {
                             op.setOpResult(Outcome.SUCCESS);
                             op.setTupleResult(op.getTemplateArgument());
@@ -139,9 +125,8 @@ public class SpeakingState extends AbstractTupleCentreVMState {
                         } // we do nothing: no is suspensive hence we cannot
                           // conclude FAILURE yet!
                     } else if (op.isNop()) {
-                        tuple =
-                                this.vm.readMatchingTuple(op
-                                        .getTemplateArgument());
+                        tuple = this.vm.readMatchingTuple(op
+                                .getTemplateArgument());
                         if (tuple == null) {
                             op.setOpResult(Outcome.SUCCESS);
                             op.setTupleResult(op.getTemplateArgument());
@@ -176,16 +161,16 @@ public class SpeakingState extends AbstractTupleCentreVMState {
                         foundSatisfied = true;
                     } else if (op.isRdAll()) {
                         List<Tuple> tuples = new LinkedList<Tuple>();
-                        tuples =
-                                this.vm.readAllTuples(op.getTemplateArgument());
+                        tuples = this.vm
+                                .readAllTuples(op.getTemplateArgument());
                         op.setOpResult(Outcome.SUCCESS);
                         op.setTupleListResult(tuples);
                         foundSatisfied = true;
                     } else if (op.isNoAll()) {
                         List<Tuple> tuples = new LinkedList<Tuple>();
-                        tuples =
-                                this.vm.readAllTuples(op.getTemplateArgument());
-                        if ((tuples == null) || tuples.isEmpty()) {
+                        tuples = this.vm
+                                .readAllTuples(op.getTemplateArgument());
+                        if (tuples == null || tuples.isEmpty()) {
                             op.setOpResult(Outcome.SUCCESS);
                         } else {
                             op.setOpResult(Outcome.FAILURE);
@@ -193,9 +178,8 @@ public class SpeakingState extends AbstractTupleCentreVMState {
                         op.setTupleListResult(tuples);
                         foundSatisfied = true;
                     } else if (op.isUrd()) {
-                        tuple =
-                                this.vm.readUniformTuple(op
-                                        .getTemplateArgument());
+                        tuple = this.vm.readUniformTuple(op
+                                .getTemplateArgument());
                         if (tuple != null) {
                             op.setOpResult(Outcome.SUCCESS);
                             op.setTupleResult(tuple);
@@ -203,9 +187,8 @@ public class SpeakingState extends AbstractTupleCentreVMState {
                         } // we do nothing: urd is suspensive hence we cannot
                           // conclude FAILURE yet!
                     } else if (op.isUin()) {
-                        tuple =
-                                this.vm.removeUniformTuple(op
-                                        .getTemplateArgument());
+                        tuple = this.vm.removeUniformTuple(op
+                                .getTemplateArgument());
                         if (tuple != null) {
                             op.setOpResult(Outcome.SUCCESS);
                             op.setTupleResult(tuple);
@@ -213,9 +196,8 @@ public class SpeakingState extends AbstractTupleCentreVMState {
                         } // we do nothing: uin is suspensive hence we cannot
                           // conclude FAILURE yet!
                     } else if (op.isUno()) {
-                        tuple =
-                                this.vm.readUniformTuple(op
-                                        .getTemplateArgument());
+                        tuple = this.vm.readUniformTuple(op
+                                .getTemplateArgument());
                         if (tuple == null) {
                             op.setOpResult(Outcome.SUCCESS);
                             op.setTupleResult(op.getTemplateArgument());
@@ -223,9 +205,8 @@ public class SpeakingState extends AbstractTupleCentreVMState {
                         } // we do nothing: urd is suspensive hence we cannot
                           // conclude FAILURE yet!
                     } else if (op.isUrdp()) {
-                        tuple =
-                                this.vm.readUniformTuple(op
-                                        .getTemplateArgument());
+                        tuple = this.vm.readUniformTuple(op
+                                .getTemplateArgument());
                         if (tuple != null) {
                             op.setOpResult(Outcome.SUCCESS);
                             op.setTupleResult(tuple);
@@ -235,9 +216,8 @@ public class SpeakingState extends AbstractTupleCentreVMState {
                         }
                         foundSatisfied = true;
                     } else if (op.isUinp()) {
-                        tuple =
-                                this.vm.removeUniformTuple(op
-                                        .getTemplateArgument());
+                        tuple = this.vm.removeUniformTuple(op
+                                .getTemplateArgument());
                         if (tuple != null) {
                             op.setOpResult(Outcome.SUCCESS);
                             op.setTupleResult(tuple);
@@ -247,9 +227,8 @@ public class SpeakingState extends AbstractTupleCentreVMState {
                         }
                         foundSatisfied = true;
                     } else if (op.isUnop()) {
-                        tuple =
-                                this.vm.readUniformTuple(op
-                                        .getTemplateArgument());
+                        tuple = this.vm.readUniformTuple(op
+                                .getTemplateArgument());
                         if (tuple == null) {
                             op.setOpResult(Outcome.SUCCESS);
                             op.setTupleResult(op.getTemplateArgument());
@@ -265,9 +244,8 @@ public class SpeakingState extends AbstractTupleCentreVMState {
                         op.setTupleResult(tuple);
                         foundSatisfied = true;
                     } else if (op.isInS()) {
-                        tuple =
-                                this.vm.removeMatchingSpecTuple(op
-                                        .getTemplateArgument());
+                        tuple = this.vm.removeMatchingSpecTuple(op
+                                .getTemplateArgument());
                         if (tuple != null) {
                             op.setOpResult(Outcome.SUCCESS);
                             op.setTupleResult(tuple);
@@ -275,9 +253,8 @@ public class SpeakingState extends AbstractTupleCentreVMState {
                         } // we do nothing: in_s is suspensive hence we cannot
                           // conclude FAILURE yet!
                     } else if (op.isRdS()) {
-                        tuple =
-                                this.vm.readMatchingSpecTuple(op
-                                        .getTemplateArgument());
+                        tuple = this.vm.readMatchingSpecTuple(op
+                                .getTemplateArgument());
                         if (tuple != null) {
                             op.setOpResult(Outcome.SUCCESS);
                             op.setTupleResult(tuple);
@@ -285,9 +262,8 @@ public class SpeakingState extends AbstractTupleCentreVMState {
                         } // we do nothing: rd_s is suspensive hence we cannot
                           // conclude FAILURE yet!
                     } else if (op.isInpS()) {
-                        tuple =
-                                this.vm.removeMatchingSpecTuple(op
-                                        .getTemplateArgument());
+                        tuple = this.vm.removeMatchingSpecTuple(op
+                                .getTemplateArgument());
                         if (tuple != null) {
                             op.setOpResult(Outcome.SUCCESS);
                             op.setTupleResult(tuple);
@@ -297,9 +273,8 @@ public class SpeakingState extends AbstractTupleCentreVMState {
                         }
                         foundSatisfied = true;
                     } else if (op.isRdpS()) {
-                        tuple =
-                                this.vm.readMatchingSpecTuple(op
-                                        .getTemplateArgument());
+                        tuple = this.vm.readMatchingSpecTuple(op
+                                .getTemplateArgument());
                         if (tuple != null) {
                             op.setOpResult(Outcome.SUCCESS);
                             op.setTupleResult(tuple);
@@ -309,9 +284,8 @@ public class SpeakingState extends AbstractTupleCentreVMState {
                         }
                         foundSatisfied = true;
                     } else if (op.isNoS()) {
-                        tuple =
-                                this.vm.readMatchingSpecTuple(op
-                                        .getTemplateArgument());
+                        tuple = this.vm.readMatchingSpecTuple(op
+                                .getTemplateArgument());
                         if (tuple == null) {
                             op.setOpResult(Outcome.SUCCESS);
                             op.setTupleResult(op.getTemplateArgument());
@@ -319,9 +293,8 @@ public class SpeakingState extends AbstractTupleCentreVMState {
                         } // we do nothing: no_s is suspensive hence we cannot
                           // conclude FAILURE yet!
                     } else if (op.isNopS()) {
-                        tuple =
-                                this.vm.readMatchingSpecTuple(op
-                                        .getTemplateArgument());
+                        tuple = this.vm.readMatchingSpecTuple(op
+                                .getTemplateArgument());
                         if (tuple == null) {
                             op.setOpResult(Outcome.SUCCESS);
                             op.setTupleResult(op.getTemplateArgument());
@@ -331,16 +304,14 @@ public class SpeakingState extends AbstractTupleCentreVMState {
                         }
                         foundSatisfied = true;
                     } else if (op.isGetS()) {
-                        final Iterator<? extends Tuple> rit =
-                                this.vm.getSpecTupleSetIterator();
-                        final LinkedList<Tuple> reactionList =
-                                new LinkedList<Tuple>();
+                        final Iterator<? extends Tuple> rit = this.vm
+                                .getSpecTupleSetIterator();
+                        final LinkedList<Tuple> reactionList = new LinkedList<Tuple>();
                         while (rit.hasNext()) {
                             reactionList.add(rit.next());
                         }
-                        final Iterator<? extends Tuple> pit =
-                                ((RespectVMContext) this.vm)
-                                        .getPrologPredicatesIterator();
+                        final Iterator<? extends Tuple> pit = ((RespectVMContext) this.vm)
+                                .getPrologPredicatesIterator();
                         while (pit.hasNext()) {
                             reactionList.add(pit.next());
                         }
@@ -372,25 +343,19 @@ public class SpeakingState extends AbstractTupleCentreVMState {
                     } else {
                         throw new InvalidOperationException();
                     }
-
                     if (((RespectVMContext) this.vm).getRespectVM()
                             .getObservers().size() > 0) {
                         ((RespectVMContext) this.vm).getRespectVM()
                                 .notifyObservableEvent(ev);
                     }
                 }
-
             } catch (final InvalidOperationException ex) {
                 this.vm.notifyException(ex);
                 it.remove();
             }
-
         }
-
         if (foundSatisfied) {
-
             outEv = new OutputEvent(ev);
-
             if (!ev.isLinking()) {
                 this.vm.notifyOutputEvent(outEv);
                 if (((RespectVMContext) this.vm).getRespectVM().getObservers()
@@ -399,7 +364,6 @@ public class SpeakingState extends AbstractTupleCentreVMState {
                             .notifyObservableEvent(outEv);
                 }
             }
-
             if (ev.isLinking() && !op.isResultDefined()) {
                 outEv.setTarget(ev.getTarget());
                 this.vm.linkOperation(outEv);
@@ -407,9 +371,7 @@ public class SpeakingState extends AbstractTupleCentreVMState {
             this.vm.fetchTriggeredReactions(outEv);
             this.noMoreSatisfiablePendingQuery = false;
             it.remove();
-
         }
-
     }
 
     @Override
@@ -437,5 +399,4 @@ public class SpeakingState extends AbstractTupleCentreVMState {
         this.reactingState = this.vm.getState("ReactingState");
         this.idleState = this.vm.getState("IdleState");
     }
-
 }

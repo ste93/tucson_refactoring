@@ -37,9 +37,7 @@ import java.util.Properties;
  * 
  */
 public class ACCDescription implements Serializable {
-
     private static final long serialVersionUID = -8231854077657631541L;
-
     private final java.util.Properties properties;
 
     /**
@@ -86,5 +84,4 @@ public class ACCDescription implements Serializable {
     public void setProperty(final String name, final String value) {
         this.properties.setProperty(name, value);
     }
-
 }

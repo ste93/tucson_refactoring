@@ -24,11 +24,9 @@ import alice.tuplecentre.core.OperationCompletionListener;
  */
 public abstract class AbstractACCProxyNodeSide extends Thread implements
         OperationCompletionListener {
-
     /**
      * @param msg
      *            the shutdown message
      */
     public abstract void exit(final ShutdownMsg msg);
-
 }

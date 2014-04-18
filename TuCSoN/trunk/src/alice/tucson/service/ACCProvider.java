@@ -17,7 +17,6 @@ import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-
 import alice.logictuple.LogicTuple;
 import alice.logictuple.TupleArgument;
 import alice.logictuple.Value;
@@ -39,7 +38,6 @@ import alice.tuplecentre.api.exceptions.InvalidOperationException;
  * 
  */
 public class ACCProvider {
-
     private static final int WAITING_TIME = 5;
 
     private static void log(final String st) {
@@ -49,7 +47,6 @@ public class ACCProvider {
     private TucsonAgentId aid;
     private final TucsonTupleCentreId config;
     private final ExecutorService exec;
-
     private final TucsonNodeService node;
 
     /**
@@ -85,59 +82,47 @@ public class ACCProvider {
     // exception handling is a mess, need to review it...
     public synchronized boolean processContextRequest(
             final ACCDescription profile, final AbstractTucsonProtocol dialog) {
-
         ACCProvider.log("Processing ACC request...");
-
         try {
             String agentName = profile.getProperty("agent-identity");
             if (agentName == null) {
                 agentName = profile.getProperty("tc-identity");
             }
-            final LogicTuple req =
-                    new LogicTuple("context_request", new Value(agentName),
-                            new Var("CtxId"));
-            final LogicTuple result =
-                    (LogicTuple) TupleCentreContainer.doBlockingOperation(
-                            TucsonOperation.inpCode(), this.aid, this.config,
-                            req);
-
+            final LogicTuple req = new LogicTuple("context_request", new Value(
+                    agentName), new Var("CtxId"));
+            final LogicTuple result = (LogicTuple) TupleCentreContainer
+                    .doBlockingOperation(TucsonOperation.inpCode(), this.aid,
+                            this.config, req);
             if (result == null) {
                 profile.setProperty("failure", "context not available");
                 dialog.sendEnterRequestRefused();
                 return false;
             }
-
             final TupleArgument res = result.getArg(1);
-
             if ("failed".equals(res.getName())) {
                 profile.setProperty("failure", res.getArg(0).getName());
                 dialog.sendEnterRequestRefused();
                 return false;
             }
-
             final TupleArgument ctxId = res.getArg(0);
             profile.setProperty("context-id", ctxId.toString());
             ACCProvider.log("ACC request accepted, ACC id is < "
                     + ctxId.toString() + " >");
             dialog.sendEnterRequestAccepted();
             final String agentRole = profile.getProperty("agent-role");
-
             if ("$inspector".equals(agentRole)) {
-                final AbstractACCProxyNodeSide skel =
-                        new InspectorContextSkel(this, dialog, this.node,
-                                profile);
+                final AbstractACCProxyNodeSide skel = new InspectorContextSkel(
+                        this, dialog, this.node, profile);
                 this.node.addNodeAgent(skel);
                 skel.start();
             } else {
                 // should I pass here the TuCSoN node port?
-                final AbstractACCProxyNodeSide skel =
-                        new ACCProxyNodeSide(this, dialog, this.node, profile);
+                final AbstractACCProxyNodeSide skel = new ACCProxyNodeSide(
+                        this, dialog, this.node, profile);
                 this.node.addNodeAgent(skel);
                 this.exec.execute(skel);
             }
-
             return true;
-
         } catch (final InvalidOperationException e) {
             profile.setProperty("failure", "generic");
             e.printStackTrace();
@@ -159,7 +144,6 @@ public class ACCProvider {
             e.printStackTrace();
             return false;
         }
-
     }
 
     /**
@@ -189,16 +173,12 @@ public class ACCProvider {
     // exception handling is a mess, need to review it...
     public synchronized boolean shutdownContext(final int ctxId,
             final TucsonAgentId id) {
-
-        final LogicTuple req =
-                new LogicTuple("context_shutdown", new Value(ctxId), new Value(
-                        id.toString()), new Var("CtxId"));
+        final LogicTuple req = new LogicTuple("context_shutdown", new Value(
+                ctxId), new Value(id.toString()), new Var("CtxId"));
         LogicTuple result;
         try {
-            result =
-                    (LogicTuple) TupleCentreContainer.doBlockingOperation(
-                            TucsonOperation.inpCode(), this.aid, this.config,
-                            req);
+            result = (LogicTuple) TupleCentreContainer.doBlockingOperation(
+                    TucsonOperation.inpCode(), this.aid, this.config, req);
         } catch (final TucsonInvalidLogicTupleException e) {
             e.printStackTrace();
             return false;
@@ -206,7 +186,6 @@ public class ACCProvider {
             e.printStackTrace();
             return false;
         }
-
         try {
             if ("ok".equals(result.getArg(2).getName())) {
                 return true;
@@ -216,7 +195,5 @@ public class ACCProvider {
             e.printStackTrace();
             return false;
         }
-
     }
-
 }

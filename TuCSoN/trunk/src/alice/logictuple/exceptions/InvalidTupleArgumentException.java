@@ -19,7 +19,6 @@ package alice.logictuple.exceptions;
  * @author Alessandro Ricci
  */
 public class InvalidTupleArgumentException extends LogicTupleException {
-
     /**
      * 
      */

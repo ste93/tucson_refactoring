@@ -1,7 +1,6 @@
 package alice.respect.api;
 
 import java.util.Map;
-
 import alice.respect.api.exceptions.InstantiationNotPossibleException;
 
 /**
@@ -11,7 +10,6 @@ import alice.respect.api.exceptions.InstantiationNotPossibleException;
  * 
  */
 public interface ITCRegistry {
-
     /**
      * 
      * @param tc
@@ -34,5 +32,4 @@ public interface ITCRegistry {
      *             if the tuple centre cannot be instantiated
      */
     IRespectTC getTC(TupleCentreId id) throws InstantiationNotPossibleException;
-
 }

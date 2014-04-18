@@ -13,7 +13,6 @@
 package alice.respect.core.tupleset;
 
 import java.util.LinkedList;
-
 import alice.logictuple.LogicTuple;
 import alice.logictuple.TupleArgument;
 import alice.respect.core.collection.DoubleKeyMVMap;
@@ -26,7 +25,6 @@ import alice.tuplecentre.api.exceptions.InvalidTupleException;
  * 
  */
 public class TupleSetCoord extends AbstractTupleSet {
-
     /**
      * 
      */
@@ -50,7 +48,6 @@ public class TupleSetCoord extends AbstractTupleSet {
                 return ta.getPredicateIndicator();
             }
             return t.getPredicateIndicator();
-
         } catch (final InvalidOperationException e) {
             throw new InvalidTupleException();
         }
@@ -63,7 +60,6 @@ public class TupleSetCoord extends AbstractTupleSet {
      * */
     @Override
     public String getTupleKey2(final LogicTuple t) throws InvalidTupleException {
-
         try {
             TupleArgument tArg = t.getVarValue(null);
             // Check if the term as a value assigned to a variable
@@ -81,7 +77,6 @@ public class TupleSetCoord extends AbstractTupleSet {
                     }
                 }
                 return "";
-
             } else if (t.getArity() > 0) {
                 tArg = t.getArg(0);
                 if (tArg.isNumber()) {
@@ -91,14 +86,11 @@ public class TupleSetCoord extends AbstractTupleSet {
                 } else {
                     return tArg.getPredicateIndicator();
                 }
-
             } else {
                 return "";
             }
-
         } catch (final InvalidOperationException e) {
             throw new InvalidTupleException();
         }
     }
-
 }

@@ -11,7 +11,6 @@ import alice.tuplecentre.core.AbstractTupleCentreOperation;
  * 
  */
 public class LinkContext implements ILinkContext {
-
     private final RespectVM vm;
 
     /**
@@ -23,10 +22,10 @@ public class LinkContext implements ILinkContext {
         this.vm = rvm;
     }
 
+    @Override
     public void doOperation(final TupleCentreId id,
             final AbstractTupleCentreOperation op)
             throws OperationNotPossibleException {
         this.vm.doOperation(id, (RespectOperation) op);
     }
-
 }

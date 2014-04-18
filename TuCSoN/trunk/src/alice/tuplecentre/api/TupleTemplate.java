@@ -23,7 +23,6 @@ package alice.tuplecentre.api;
  * 
  */
 public interface TupleTemplate extends Tuple {
-
     /**
      * specifies if the tuple template matches the tuple, or rather if tuples
      * belongs to the set identified by the template.
@@ -43,5 +42,4 @@ public interface TupleTemplate extends Tuple {
      * @return wether unification propagation was succesfull
      */
     boolean propagate(Tuple t);
-
 }

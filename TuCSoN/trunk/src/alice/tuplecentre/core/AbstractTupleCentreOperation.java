@@ -14,7 +14,6 @@
 package alice.tuplecentre.core;
 
 import java.util.List;
-
 import alice.logictuple.LogicTuple;
 import alice.tuplecentre.api.ITupleCentreOperation;
 import alice.tuplecentre.api.Tuple;
@@ -32,7 +31,6 @@ import alice.tuplecentre.core.TCCycleResult.Outcome;
  */
 public abstract class AbstractTupleCentreOperation implements
         ITupleCentreOperation {
-
     /**
      * shared id counter
      */
@@ -127,7 +125,6 @@ public abstract class AbstractTupleCentreOperation implements
     protected static final int OPTYPE_URD = 14;
     /**  */
     protected static final int OPTYPE_URDP = 17;
-
     /**  */
     protected static final int RESET = 74;
     /**
@@ -260,6 +257,7 @@ public abstract class AbstractTupleCentreOperation implements
      * 
      * @return Operation identifier
      */
+    @Override
     public long getId() {
         return this.id;
     }
@@ -356,22 +354,27 @@ public abstract class AbstractTupleCentreOperation implements
         }
     }
 
+    @Override
     public TupleTemplate getTemplateArgument() {
         return this.templateArgument;
     }
 
+    @Override
     public Tuple getTupleArgument() {
         return this.tupleArgument;
     }
 
+    @Override
     public List<Tuple> getTupleListArgument() {
         return this.tupleListArgument;
     }
 
+    @Override
     public List<Tuple> getTupleListResult() {
         return this.result.getTupleListResult();
     }
 
+    @Override
     public Tuple getTupleResult() {
         return this.result.getTupleResult();
     }
@@ -384,22 +387,27 @@ public abstract class AbstractTupleCentreOperation implements
         return this.type;
     }
 
+    @Override
     public boolean isGet() {
         return this.type == AbstractTupleCentreOperation.OPTYPE_GET;
     }
 
+    @Override
     public boolean isGetS() {
         return this.type == AbstractTupleCentreOperation.OPTYPE_GET_S;
     }
 
+    @Override
     public boolean isIn() {
         return this.type == AbstractTupleCentreOperation.OPTYPE_IN;
     }
 
+    @Override
     public boolean isInAll() {
         return this.type == AbstractTupleCentreOperation.OPTYPE_IN_ALL;
     }
 
+    @Override
     public boolean isInp() {
         return this.type == AbstractTupleCentreOperation.OPTYPE_INP;
     }
@@ -420,6 +428,7 @@ public abstract class AbstractTupleCentreOperation implements
         return this.type == AbstractTupleCentreOperation.OPTYPE_IN_S;
     }
 
+    @Override
     public boolean isNo() {
         return this.type == AbstractTupleCentreOperation.OPTYPE_NO;
     }
@@ -428,10 +437,12 @@ public abstract class AbstractTupleCentreOperation implements
      * 
      * @return wether this operation is a <code>no_all</code>
      */
+    @Override
     public boolean isNoAll() {
         return this.type == AbstractTupleCentreOperation.OPTYPE_NO_ALL;
     }
 
+    @Override
     public boolean isNop() {
         return this.type == AbstractTupleCentreOperation.OPTYPE_NOP;
     }
@@ -452,14 +463,17 @@ public abstract class AbstractTupleCentreOperation implements
         return this.type == AbstractTupleCentreOperation.OPTYPE_NO_S;
     }
 
+    @Override
     public boolean isOperationCompleted() {
         return this.operationCompleted;
     }
 
+    @Override
     public boolean isOut() {
         return this.type == AbstractTupleCentreOperation.OPTYPE_OUT;
     }
 
+    @Override
     public boolean isOutAll() {
         return this.type == AbstractTupleCentreOperation.OPTYPE_OUT_ALL;
     }
@@ -472,14 +486,17 @@ public abstract class AbstractTupleCentreOperation implements
         return this.type == AbstractTupleCentreOperation.OPTYPE_OUT_S;
     }
 
+    @Override
     public boolean isRd() {
         return this.type == AbstractTupleCentreOperation.OPTYPE_RD;
     }
 
+    @Override
     public boolean isRdAll() {
         return this.type == AbstractTupleCentreOperation.OPTYPE_RD_ALL;
     }
 
+    @Override
     public boolean isRdp() {
         return this.type == AbstractTupleCentreOperation.OPTYPE_RDP;
     }
@@ -509,18 +526,22 @@ public abstract class AbstractTupleCentreOperation implements
         return this.result.isResultDefined();
     }
 
+    @Override
     public boolean isResultFailure() {
         return this.result.isResultFailure();
     }
 
+    @Override
     public boolean isResultSuccess() {
         return this.result.isResultSuccess();
     }
 
+    @Override
     public boolean isSet() {
         return this.type == AbstractTupleCentreOperation.OPTYPE_SET;
     }
 
+    @Override
     public boolean isSetS() {
         return this.type == AbstractTupleCentreOperation.OPTYPE_SET_S;
     }
@@ -533,10 +554,12 @@ public abstract class AbstractTupleCentreOperation implements
         return this.type == AbstractTupleCentreOperation.OPTYPE_SPAWN;
     }
 
+    @Override
     public boolean isUin() {
         return this.type == AbstractTupleCentreOperation.OPTYPE_UIN;
     }
 
+    @Override
     public boolean isUinp() {
         return this.type == AbstractTupleCentreOperation.OPTYPE_UINP;
     }
@@ -549,10 +572,12 @@ public abstract class AbstractTupleCentreOperation implements
         return this.type == AbstractTupleCentreOperation.OPTYPE_UNOP;
     }
 
+    @Override
     public boolean isUrd() {
         return this.type == AbstractTupleCentreOperation.OPTYPE_URD;
     }
 
+    @Override
     public boolean isUrdp() {
         return this.type == AbstractTupleCentreOperation.OPTYPE_URDP;
     }
@@ -622,6 +647,7 @@ public abstract class AbstractTupleCentreOperation implements
         this.result.setEndTime(System.currentTimeMillis());
     }
 
+    @Override
     public void waitForOperationCompletion() {
         try {
             synchronized (this.token) {
@@ -634,6 +660,7 @@ public abstract class AbstractTupleCentreOperation implements
         }
     }
 
+    @Override
     public void waitForOperationCompletion(final long ms)
             throws OperationTimeOutException {
         synchronized (this.token) {
@@ -649,5 +676,4 @@ public abstract class AbstractTupleCentreOperation implements
             }
         }
     }
-
 }

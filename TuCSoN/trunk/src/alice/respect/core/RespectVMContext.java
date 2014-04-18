@@ -23,7 +23,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 import java.util.Timer;
-
 import alice.logictuple.LogicTuple;
 import alice.logictuple.LogicTupleOpManager;
 import alice.logictuple.TupleArgument;
@@ -84,15 +83,14 @@ import alice.tuprolog.Var;
  */
 public class RespectVMContext extends
         alice.tuplecentre.core.AbstractTupleCentreVMContext {
-
     class CompletionListener implements OperationCompletionListener {
-
         private final OutputEvent oe;
 
         public CompletionListener(final OutputEvent o) {
             this.oe = o;
         }
 
+        @Override
         public void operationCompleted(final AbstractTupleCentreOperation arg0) {
             arg0.removeListener();
             // oe.getTarget() == oeTarget by construction (loc 1201)!
@@ -101,13 +99,11 @@ public class RespectVMContext extends
                     + this.oe.getSource() + ", to = " + this.oe.getTarget()
                     + ", arg = " + arg0.getTupleResult() + " / "
                     + arg0.getTupleListResult());
-            final InputEvent res =
-                    new InputEvent(this.oe.getSource(), arg0,
-                            (TupleCentreId) this.oe.getTarget(),
-                            RespectVMContext.this.getCurrentTime());
+            final InputEvent res = new InputEvent(this.oe.getSource(), arg0,
+                    (TupleCentreId) this.oe.getTarget(),
+                    RespectVMContext.this.getCurrentTime());
             RespectVMContext.this.notifyInputEvent(res);
         }
-
     }
 
     /**
@@ -127,12 +123,12 @@ public class RespectVMContext extends
         try {
             final Struct co = new Struct(spec);
             if (co.isAtom()) {
-                final alice.tuprolog.Theory thspec =
-                        new alice.tuprolog.Theory(co.getName());
+                final alice.tuprolog.Theory thspec = new alice.tuprolog.Theory(
+                        co.getName());
                 core.setTheory(thspec);
             } else if (co.isList()) {
-                final alice.tuprolog.Theory thspec =
-                        new alice.tuprolog.Theory(co);
+                final alice.tuprolog.Theory thspec = new alice.tuprolog.Theory(
+                        co);
                 core.setTheory(thspec);
             } else {
                 core = null;
@@ -185,12 +181,9 @@ public class RespectVMContext extends
     private final ITupleSet tSet;
     /** multiset of specification tuple Sigma */
     private final ITupleSet tSpecSet;
-
     private final RespectVM vm;
-
     /** multiset of pending query set */
     private final PendingQuerySet wSet;
-
     /** multiset of triggered reactions Z */
     private final TRSet zSet;
 
@@ -207,7 +200,6 @@ public class RespectVMContext extends
      */
     public RespectVMContext(final RespectVM rvm, final TupleCentreId tid,
             final int queueSize, final IRespectTC respectTC) {
-
         super(tid, queueSize, respectTC);
         this.timers = new ArrayList<Timer>();
         this.semaphore = new Object();
@@ -220,13 +212,12 @@ public class RespectVMContext extends
         this.vm = rvm;
         this.temporaryOutputEventList = new ArrayList<AbstractEvent>();
         this.core = new Prolog();
-        final alice.tuprolog.event.OutputListener l =
-                new alice.tuprolog.event.OutputListener() {
-                    public void onOutput(
-                            final alice.tuprolog.event.OutputEvent ev) {
-                        System.out.print(ev.getMsg());
-                    }
-                };
+        final alice.tuprolog.event.OutputListener l = new alice.tuprolog.event.OutputListener() {
+            @Override
+            public void onOutput(final alice.tuprolog.event.OutputEvent ev) {
+                System.out.print(ev.getMsg());
+            }
+        };
         this.core.addOutputListener(l);
         try {
             ((alice.respect.api.Respect2PLibrary) this.core
@@ -244,18 +235,16 @@ public class RespectVMContext extends
         } catch (final InvalidLibraryException e) {
             e.printStackTrace();
         }
-
         this.reactionSpec = new RespectSpecification("");
         this.reset();
         this.isExternalSetSpec = false;
-
     }
 
     @Override
     public List<Tuple> addListTuple(final Tuple t) {
         final List<Tuple> list = new LinkedList<Tuple>();
         LogicTuple tuple = (LogicTuple) t;
-        while (!("[]".equals(tuple.toString()))) {
+        while (!"[]".equals(tuple.toString())) {
             try {
                 this.tSet.add(new LogicTuple(tuple.getArg(0)));
                 list.add(new LogicTuple(tuple.getArg(0)));
@@ -277,10 +266,9 @@ public class RespectVMContext extends
         Tuple tuple = null;
         try {
             if (",".equals(((LogicTuple) t).getName())) {
-                tuple =
-                        new LogicTuple("reaction", ((LogicTuple) t).getArg(0),
-                                ((LogicTuple) t).getArg(1).getArg(0),
-                                ((LogicTuple) t).getArg(1).getArg(1));
+                tuple = new LogicTuple("reaction", ((LogicTuple) t).getArg(0),
+                        ((LogicTuple) t).getArg(1).getArg(0), ((LogicTuple) t)
+                                .getArg(1).getArg(1));
             } else {
                 tuple = t;
             }
@@ -316,21 +304,16 @@ public class RespectVMContext extends
 
     @Override
     public void evalReaction(final TriggeredReaction z) {
-
         this.transaction = true;
         this.tSet.beginTransaction();
         this.tSpecSet.beginTransaction();
         this.wSet.beginTransaction();
         this.zSet.beginTransaction();
         this.timeSet.beginTransaction();
-
         this.temporaryOutputEventList.clear();
-
-        final Term goalList =
-                ((LogicReaction) z.getReaction()).getStructReaction()
-                        .getTerm(1);
+        final Term goalList = ((LogicReaction) z.getReaction())
+                .getStructReaction().getTerm(1);
         this.currentReactionEvent = z.getEvent();
-
         final SolveInfo info = this.core.solve(goalList);
         this.core.solveEnd();
         this.log("reaction evaluation success = " + info.isSuccess());
@@ -341,9 +324,8 @@ public class RespectVMContext extends
             }
             final int n = this.temporaryOutputEventList.size();
             for (int i = 0; i < n; i++) {
-                final InputEvent curr =
-                        (alice.tuplecentre.core.InputEvent) this.temporaryOutputEventList
-                                .get(i);
+                final InputEvent curr = (alice.tuplecentre.core.InputEvent) this.temporaryOutputEventList
+                        .get(i);
                 this.log("outgoing link: " + curr);
                 this.addPendingQueryEvent(curr);
             }
@@ -355,9 +337,7 @@ public class RespectVMContext extends
         }
         final boolean success = info.isSuccess();
         final boolean specModified = this.tSpecSet.operationsPending();
-
         this.temporaryOutputEventList.clear();
-
         this.zSet.endTransaction(success);
         this.wSet.endTransaction(success);
         this.tSet.endTransaction(success);
@@ -368,22 +348,17 @@ public class RespectVMContext extends
             this.setReactionSpecHelper(new RespectSpecification(this.tSpecSet
                     .toString()));
         }
-
     }
 
     @Override
     public void fetchTimedReactions(final AbstractEvent ev) {
-
         if (((RespectOperation) ev.getSimpleTCEvent()).getLogicTupleArgument() != null) {
-
             try {
-
-                final Term timed =
-                        ((RespectOperation) ev.getSimpleTCEvent())
-                                .getLogicTupleArgument().toTerm();
-                final Struct tev =
-                        new Struct("reaction", timed, new alice.tuprolog.Var(
-                                "G"), new alice.tuprolog.Var("R"));
+                final Term timed = ((RespectOperation) ev.getSimpleTCEvent())
+                        .getLogicTupleArgument().toTerm();
+                final Struct tev = new Struct("reaction", timed,
+                        new alice.tuprolog.Var("G"),
+                        new alice.tuprolog.Var("R"));
                 SolveInfo info = this.trigCore.solve(tev);
                 alice.tuprolog.Term guard = null;
                 while (info.isSuccess()) {
@@ -391,11 +366,10 @@ public class RespectVMContext extends
                     this.currentReactionEvent = ev;
                     if (this.evalGuard(guard)) {
                         final Term reactions = info.getVarValue("R");
-                        final Struct trigReaction =
-                                new Struct("reaction", timed, reactions);
-                        final TriggeredReaction tr =
-                                new TriggeredReaction(ev, new LogicReaction(
-                                        trigReaction));
+                        final Struct trigReaction = new Struct("reaction",
+                                timed, reactions);
+                        final TriggeredReaction tr = new TriggeredReaction(ev,
+                                new LogicReaction(trigReaction));
                         this.timeSet.add(tr);
                         this.core.solve("retract(reaction( " + timed
                                 + ", (G),(" + reactions + "))) .");
@@ -411,7 +385,6 @@ public class RespectVMContext extends
                             + ", (G),(" + info.getVarValue("R") + "))) .");
                     this.trigCore.solveEnd();
                 }
-
             } catch (final NoMoreSolutionException e) {
                 this.trigCore.solveEnd();
             } catch (final NoSolutionException e) {
@@ -421,645 +394,512 @@ public class RespectVMContext extends
                         + ev);
                 this.trigCore.solveEnd();
             }
-
         }
-
     }
 
     @Override
     public void fetchTriggeredReactions(final AbstractEvent ev) {
-
         synchronized (this.semaphore) {
             try {
                 this.currentReactionTerm = null;
-
                 if (ev.isInput()) {
-
                     final InputEvent ie = (InputEvent) ev;
                     this.log("INVOCATION phase: " + ie);
-                    final RespectOperation op =
-                            (RespectOperation) ev.getSimpleTCEvent();
-
+                    final RespectOperation op = (RespectOperation) ev
+                            .getSimpleTCEvent();
                     if (op.isSpawn()) {
-                        this.currentReactionTerm =
-                                new Struct("spawn", op.getLogicTupleArgument()
-                                        .toTerm());
+                        this.currentReactionTerm = new Struct("spawn", op
+                                .getLogicTupleArgument().toTerm());
                     } else if (op.isOut()) {
-                        this.currentReactionTerm =
-                                new Struct("out", op.getLogicTupleArgument()
-                                        .toTerm());
+                        this.currentReactionTerm = new Struct("out", op
+                                .getLogicTupleArgument().toTerm());
                     } else if (op.isIn()) {
-                        this.currentReactionTerm =
-                                new Struct("in", op.getLogicTupleArgument()
-                                        .toTerm());
+                        this.currentReactionTerm = new Struct("in", op
+                                .getLogicTupleArgument().toTerm());
                     } else if (op.isRd()) {
-                        this.currentReactionTerm =
-                                new Struct("rd", op.getLogicTupleArgument()
-                                        .toTerm());
+                        this.currentReactionTerm = new Struct("rd", op
+                                .getLogicTupleArgument().toTerm());
                     } else if (op.isInp()) {
-                        this.currentReactionTerm =
-                                new Struct("inp", op.getLogicTupleArgument()
-                                        .toTerm());
+                        this.currentReactionTerm = new Struct("inp", op
+                                .getLogicTupleArgument().toTerm());
                     } else if (op.isRdp()) {
-                        this.currentReactionTerm =
-                                new Struct("rdp", op.getLogicTupleArgument()
-                                        .toTerm());
+                        this.currentReactionTerm = new Struct("rdp", op
+                                .getLogicTupleArgument().toTerm());
                     } else if (op.isNo()) {
-                        this.currentReactionTerm =
-                                new Struct("no", op.getLogicTupleArgument()
-                                        .toTerm());
+                        this.currentReactionTerm = new Struct("no", op
+                                .getLogicTupleArgument().toTerm());
                     } else if (op.isNop()) {
-                        this.currentReactionTerm =
-                                new Struct("nop", op.getLogicTupleArgument()
-                                        .toTerm());
+                        this.currentReactionTerm = new Struct("nop", op
+                                .getLogicTupleArgument().toTerm());
                     } else if (op.isOutS()) {
-                        this.currentReactionTerm =
-                                new Struct("out_s", op.getLogicTupleArgument()
-                                        .toTerm());
+                        this.currentReactionTerm = new Struct("out_s", op
+                                .getLogicTupleArgument().toTerm());
                     } else if (op.isRdS()) {
-                        this.currentReactionTerm =
-                                new Struct("rd_s", op.getLogicTupleArgument()
-                                        .toTerm());
+                        this.currentReactionTerm = new Struct("rd_s", op
+                                .getLogicTupleArgument().toTerm());
                     } else if (op.isInS()) {
-                        this.currentReactionTerm =
-                                new Struct("in_s", op.getLogicTupleArgument()
-                                        .toTerm());
+                        this.currentReactionTerm = new Struct("in_s", op
+                                .getLogicTupleArgument().toTerm());
                     } else if (op.isRdpS()) {
-                        this.currentReactionTerm =
-                                new Struct("rdp_s", op.getLogicTupleArgument()
-                                        .toTerm());
+                        this.currentReactionTerm = new Struct("rdp_s", op
+                                .getLogicTupleArgument().toTerm());
                     } else if (op.isInpS()) {
-                        this.currentReactionTerm =
-                                new Struct("inp_s", op.getLogicTupleArgument()
-                                        .toTerm());
+                        this.currentReactionTerm = new Struct("inp_s", op
+                                .getLogicTupleArgument().toTerm());
                     } else if (op.isNoS()) {
-                        this.currentReactionTerm =
-                                new Struct("no_s", op.getLogicTupleArgument()
-                                        .toTerm());
+                        this.currentReactionTerm = new Struct("no_s", op
+                                .getLogicTupleArgument().toTerm());
                     } else if (op.isNopS()) {
-                        this.currentReactionTerm =
-                                new Struct("nop_s", op.getLogicTupleArgument()
-                                        .toTerm());
+                        this.currentReactionTerm = new Struct("nop_s", op
+                                .getLogicTupleArgument().toTerm());
                     } else if (op.isGetEnv()) {
-                        this.currentReactionTerm =
-                                new Struct("getEnv", op.getLogicTupleArgument()
-                                        .getArg(0).toTerm(), op
-                                        .getLogicTupleArgument().getArg(1)
-                                        .toTerm());
+                        this.currentReactionTerm = new Struct("getEnv", op
+                                .getLogicTupleArgument().getArg(0).toTerm(), op
+                                .getLogicTupleArgument().getArg(1).toTerm());
                     } else if (op.isSetEnv()) {
-                        this.currentReactionTerm =
-                                new Struct("setEnv", op.getLogicTupleArgument()
-                                        .getArg(0).toTerm(), op
-                                        .getLogicTupleArgument().getArg(1)
-                                        .toTerm());
+                        this.currentReactionTerm = new Struct("setEnv", op
+                                .getLogicTupleArgument().getArg(0).toTerm(), op
+                                .getLogicTupleArgument().getArg(1).toTerm());
                     } else if (op.isTime()) {
-                        this.currentReactionTerm =
-                                new Struct("time", op.getLogicTupleArgument()
-                                        .toTerm());
+                        this.currentReactionTerm = new Struct("time", op
+                                .getLogicTupleArgument().toTerm());
                     } else if (op.isUrd()) {
-                        this.currentReactionTerm =
-                                new Struct("urd", op.getLogicTupleArgument()
-                                        .toTerm());
+                        this.currentReactionTerm = new Struct("urd", op
+                                .getLogicTupleArgument().toTerm());
                     } else if (op.isUno()) {
-                        this.currentReactionTerm =
-                                new Struct("uno", op.getLogicTupleArgument()
-                                        .toTerm());
+                        this.currentReactionTerm = new Struct("uno", op
+                                .getLogicTupleArgument().toTerm());
                     } else if (op.isUin()) {
-                        this.currentReactionTerm =
-                                new Struct("uin", op.getLogicTupleArgument()
-                                        .toTerm());
+                        this.currentReactionTerm = new Struct("uin", op
+                                .getLogicTupleArgument().toTerm());
                     } else if (op.isUrdp()) {
-                        this.currentReactionTerm =
-                                new Struct("urdp", op.getLogicTupleArgument()
-                                        .toTerm());
+                        this.currentReactionTerm = new Struct("urdp", op
+                                .getLogicTupleArgument().toTerm());
                     } else if (op.isUnop()) {
-                        this.currentReactionTerm =
-                                new Struct("unop", op.getLogicTupleArgument()
-                                        .toTerm());
+                        this.currentReactionTerm = new Struct("unop", op
+                                .getLogicTupleArgument().toTerm());
                     } else if (op.isUinp()) {
-                        this.currentReactionTerm =
-                                new Struct("uinp", op.getLogicTupleArgument()
-                                        .toTerm());
+                        this.currentReactionTerm = new Struct("uinp", op
+                                .getLogicTupleArgument().toTerm());
                     } else if (op.isOutAll()) {
-                        this.currentReactionTerm =
-                                new Struct("out_all", op
-                                        .getLogicTupleArgument().toTerm());
+                        this.currentReactionTerm = new Struct("out_all", op
+                                .getLogicTupleArgument().toTerm());
                     } else if (op.isInAll()) {
                         if (op.getLogicTupleListResult() == null) {
-                            this.currentReactionTerm =
-                                    new Struct("in_all", op
-                                            .getLogicTupleArgument().getArg(0)
+                            this.currentReactionTerm = new Struct("in_all",
+                                    op.getLogicTupleArgument().getArg(0)
                                             .toTerm(), op
                                             .getLogicTupleArgument().getArg(1)
                                             .toTerm());
                         } else {
-                            this.currentReactionTerm =
-                                    new Struct("in_all", op
-                                            .getLogicTupleArgument().getArg(0)
+                            this.currentReactionTerm = new Struct("in_all",
+                                    op.getLogicTupleArgument().getArg(0)
                                             .toTerm(),
-                                            RespectVMContext.list2tuple(op
-                                                    .getLogicTupleListResult()));
+                                    RespectVMContext.list2tuple(op
+                                            .getLogicTupleListResult()));
                         }
                     } else if (op.isRdAll()) {
                         if (op.getLogicTupleListResult() == null) {
-                            this.currentReactionTerm =
-                                    new Struct("rd_all", op
-                                            .getLogicTupleArgument().getArg(0)
+                            this.currentReactionTerm = new Struct("rd_all",
+                                    op.getLogicTupleArgument().getArg(0)
                                             .toTerm(), op
                                             .getLogicTupleArgument().getArg(1)
                                             .toTerm());
                         } else {
-                            this.currentReactionTerm =
-                                    new Struct("rd_all", op
-                                            .getLogicTupleArgument().getArg(0)
+                            this.currentReactionTerm = new Struct("rd_all",
+                                    op.getLogicTupleArgument().getArg(0)
                                             .toTerm(),
-                                            RespectVMContext.list2tuple(op
-                                                    .getLogicTupleListResult()));
+                                    RespectVMContext.list2tuple(op
+                                            .getLogicTupleListResult()));
                         }
                     } else if (op.isNoAll()) {
                         if (op.getLogicTupleListResult() == null) {
-                            this.currentReactionTerm =
-                                    new Struct("no_all", op
-                                            .getLogicTupleArgument().getArg(0)
+                            this.currentReactionTerm = new Struct("no_all",
+                                    op.getLogicTupleArgument().getArg(0)
                                             .toTerm(), op
                                             .getLogicTupleArgument().getArg(1)
                                             .toTerm());
                         } else {
-                            this.currentReactionTerm =
-                                    new Struct("no_all", op
-                                            .getLogicTupleArgument().getArg(0)
+                            this.currentReactionTerm = new Struct("no_all",
+                                    op.getLogicTupleArgument().getArg(0)
                                             .toTerm(),
-                                            RespectVMContext.list2tuple(op
-                                                    .getLogicTupleListResult()));
+                                    RespectVMContext.list2tuple(op
+                                            .getLogicTupleListResult()));
                         }
                     }
-
                 } else if (ev.isOutput()) {
-
-                    final alice.tuplecentre.core.OutputEvent oe =
-                            (alice.tuplecentre.core.OutputEvent) ev;
-                    final RespectOperation op =
-                            (RespectOperation) ev.getSimpleTCEvent();
-
+                    final alice.tuplecentre.core.OutputEvent oe = (alice.tuplecentre.core.OutputEvent) ev;
+                    final RespectOperation op = (RespectOperation) ev
+                            .getSimpleTCEvent();
                     if (((OutputEvent) ev).isLinking()) {
                         this.log("linking event processing: " + oe);
-
                         if (op.isSpawn()) {
-                            this.currentReactionTerm =
-                                    new Struct("spawn", op
-                                            .getLogicTupleArgument().toTerm());
+                            this.currentReactionTerm = new Struct("spawn", op
+                                    .getLogicTupleArgument().toTerm());
                         } else if (op.isOut()) {
-                            this.currentReactionTerm =
-                                    new Struct("out", op
-                                            .getLogicTupleArgument().toTerm());
+                            this.currentReactionTerm = new Struct("out", op
+                                    .getLogicTupleArgument().toTerm());
                         } else if (op.isIn()) {
-                            this.currentReactionTerm =
-                                    new Struct("in", op.getLogicTupleArgument()
-                                            .toTerm());
+                            this.currentReactionTerm = new Struct("in", op
+                                    .getLogicTupleArgument().toTerm());
                         } else if (op.isRd()) {
-                            this.currentReactionTerm =
-                                    new Struct("rd", op.getLogicTupleArgument()
-                                            .toTerm());
+                            this.currentReactionTerm = new Struct("rd", op
+                                    .getLogicTupleArgument().toTerm());
                         } else if (op.isInp()) {
-                            this.currentReactionTerm =
-                                    new Struct("inp", op
-                                            .getLogicTupleArgument().toTerm());
+                            this.currentReactionTerm = new Struct("inp", op
+                                    .getLogicTupleArgument().toTerm());
                         } else if (op.isRdp()) {
-                            this.currentReactionTerm =
-                                    new Struct("rdp", op
-                                            .getLogicTupleArgument().toTerm());
+                            this.currentReactionTerm = new Struct("rdp", op
+                                    .getLogicTupleArgument().toTerm());
                         } else if (op.isNo()) {
-                            this.currentReactionTerm =
-                                    new Struct("no", op.getLogicTupleArgument()
-                                            .toTerm());
+                            this.currentReactionTerm = new Struct("no", op
+                                    .getLogicTupleArgument().toTerm());
                         } else if (op.isNop()) {
-                            this.currentReactionTerm =
-                                    new Struct("nop", op
-                                            .getLogicTupleArgument().toTerm());
+                            this.currentReactionTerm = new Struct("nop", op
+                                    .getLogicTupleArgument().toTerm());
                         } else if (op.isOutS()) {
-                            this.currentReactionTerm =
-                                    new Struct("out_s", op
-                                            .getLogicTupleArgument().toTerm());
+                            this.currentReactionTerm = new Struct("out_s", op
+                                    .getLogicTupleArgument().toTerm());
                         } else if (op.isInS()) {
-                            this.currentReactionTerm =
-                                    new Struct("in_s", op
-                                            .getLogicTupleArgument().toTerm());
+                            this.currentReactionTerm = new Struct("in_s", op
+                                    .getLogicTupleArgument().toTerm());
                         } else if (op.isRdS()) {
-                            this.currentReactionTerm =
-                                    new Struct("rd_s", op
-                                            .getLogicTupleArgument().toTerm());
+                            this.currentReactionTerm = new Struct("rd_s", op
+                                    .getLogicTupleArgument().toTerm());
                         } else if (op.isInpS()) {
-                            this.currentReactionTerm =
-                                    new Struct("inp_s", op
-                                            .getLogicTupleArgument().toTerm());
+                            this.currentReactionTerm = new Struct("inp_s", op
+                                    .getLogicTupleArgument().toTerm());
                         } else if (op.isRdpS()) {
-                            this.currentReactionTerm =
-                                    new Struct("rdp_s", op
-                                            .getLogicTupleArgument().toTerm());
+                            this.currentReactionTerm = new Struct("rdp_s", op
+                                    .getLogicTupleArgument().toTerm());
                         } else if (op.isNoS()) {
-                            this.currentReactionTerm =
-                                    new Struct("no_s", op
-                                            .getLogicTupleArgument().toTerm());
+                            this.currentReactionTerm = new Struct("no_s", op
+                                    .getLogicTupleArgument().toTerm());
                         } else if (op.isNopS()) {
-                            this.currentReactionTerm =
-                                    new Struct("nop_s", op
-                                            .getLogicTupleArgument().toTerm());
+                            this.currentReactionTerm = new Struct("nop_s", op
+                                    .getLogicTupleArgument().toTerm());
                         } else if (op.isUrd()) {
-                            this.currentReactionTerm =
-                                    new Struct("urd", op
-                                            .getLogicTupleArgument().toTerm());
+                            this.currentReactionTerm = new Struct("urd", op
+                                    .getLogicTupleArgument().toTerm());
                         } else if (op.isUno()) {
-                            this.currentReactionTerm =
-                                    new Struct("uno", op
-                                            .getLogicTupleArgument().toTerm());
+                            this.currentReactionTerm = new Struct("uno", op
+                                    .getLogicTupleArgument().toTerm());
                         } else if (op.isUin()) {
-                            this.currentReactionTerm =
-                                    new Struct("uin", op
-                                            .getLogicTupleArgument().toTerm());
+                            this.currentReactionTerm = new Struct("uin", op
+                                    .getLogicTupleArgument().toTerm());
                         } else if (op.isUrdp()) {
-                            this.currentReactionTerm =
-                                    new Struct("urdp", op
-                                            .getLogicTupleArgument().toTerm());
+                            this.currentReactionTerm = new Struct("urdp", op
+                                    .getLogicTupleArgument().toTerm());
                         } else if (op.isUnop()) {
-                            this.currentReactionTerm =
-                                    new Struct("unop", op
-                                            .getLogicTupleArgument().toTerm());
+                            this.currentReactionTerm = new Struct("unop", op
+                                    .getLogicTupleArgument().toTerm());
                         } else if (op.isUinp()) {
-                            this.currentReactionTerm =
-                                    new Struct("uinp", op
-                                            .getLogicTupleArgument().toTerm());
+                            this.currentReactionTerm = new Struct("uinp", op
+                                    .getLogicTupleArgument().toTerm());
                         } else if (op.isOutAll()) {
-                            this.currentReactionTerm =
-                                    new Struct("out_all", op
-                                            .getLogicTupleArgument().toTerm());
+                            this.currentReactionTerm = new Struct("out_all", op
+                                    .getLogicTupleArgument().toTerm());
                         } else if (op.isInAll()) {
                             if (op.getLogicTupleListResult() == null) {
-                                this.currentReactionTerm =
-                                        new Struct("in_all", op
-                                                .getLogicTupleArgument()
-                                                .getArg(0).toTerm(), op
+                                this.currentReactionTerm = new Struct("in_all",
+                                        op.getLogicTupleArgument().getArg(0)
+                                                .toTerm(), op
                                                 .getLogicTupleArgument()
                                                 .getArg(1).toTerm());
                             } else {
-                                this.currentReactionTerm =
-                                        new Struct(
-                                                "in_all",
-                                                op.getLogicTupleArgument()
-                                                        .getArg(0).toTerm(),
-                                                RespectVMContext.list2tuple(op
-                                                        .getLogicTupleListResult()));
+                                this.currentReactionTerm = new Struct("in_all",
+                                        op.getLogicTupleArgument().getArg(0)
+                                                .toTerm(),
+                                        RespectVMContext.list2tuple(op
+                                                .getLogicTupleListResult()));
                             }
                         } else if (op.isRdAll()) {
                             if (op.getLogicTupleListResult() == null) {
-                                this.currentReactionTerm =
-                                        new Struct("rd_all", op
-                                                .getLogicTupleArgument()
-                                                .getArg(0).toTerm(), op
+                                this.currentReactionTerm = new Struct("rd_all",
+                                        op.getLogicTupleArgument().getArg(0)
+                                                .toTerm(), op
                                                 .getLogicTupleArgument()
                                                 .getArg(1).toTerm());
                             } else {
-                                this.currentReactionTerm =
-                                        new Struct(
-                                                "rd_all",
-                                                op.getLogicTupleArgument()
-                                                        .getArg(0).toTerm(),
-                                                RespectVMContext.list2tuple(op
-                                                        .getLogicTupleListResult()));
+                                this.currentReactionTerm = new Struct("rd_all",
+                                        op.getLogicTupleArgument().getArg(0)
+                                                .toTerm(),
+                                        RespectVMContext.list2tuple(op
+                                                .getLogicTupleListResult()));
                             }
                         } else if (op.isNoAll()) {
                             if (op.getLogicTupleListResult() == null) {
-                                this.currentReactionTerm =
-                                        new Struct("no_all", op
-                                                .getLogicTupleArgument()
-                                                .getArg(0).toTerm(), op
+                                this.currentReactionTerm = new Struct("no_all",
+                                        op.getLogicTupleArgument().getArg(0)
+                                                .toTerm(), op
                                                 .getLogicTupleArgument()
                                                 .getArg(1).toTerm());
                             } else {
-                                this.currentReactionTerm =
-                                        new Struct(
-                                                "no_all",
-                                                op.getLogicTupleArgument()
-                                                        .getArg(0).toTerm(),
-                                                RespectVMContext.list2tuple(op
-                                                        .getLogicTupleListResult()));
+                                this.currentReactionTerm = new Struct("no_all",
+                                        op.getLogicTupleArgument().getArg(0)
+                                                .toTerm(),
+                                        RespectVMContext.list2tuple(op
+                                                .getLogicTupleListResult()));
                             }
                         }
-
                     } else {
-
                         this.log("COMPLETION phase: " + oe);
-
                         if (op.isSpawn()) {
-                            this.currentReactionTerm =
-                                    new Struct("spawn", op
-                                            .getLogicTupleResult().toTerm());
+                            this.currentReactionTerm = new Struct("spawn", op
+                                    .getLogicTupleResult().toTerm());
                         } else if (op.isOut()) {
-                            this.currentReactionTerm =
-                                    new Struct("out", op.getLogicTupleResult()
-                                            .toTerm());
+                            this.currentReactionTerm = new Struct("out", op
+                                    .getLogicTupleResult().toTerm());
                         } else if (op.isIn()) {
-                            this.currentReactionTerm =
-                                    new Struct("in", op.getLogicTupleResult()
-                                            .toTerm());
+                            this.currentReactionTerm = new Struct("in", op
+                                    .getLogicTupleResult().toTerm());
                         } else if (op.isRd()) {
-                            this.currentReactionTerm =
-                                    new Struct("rd", op.getLogicTupleResult()
-                                            .toTerm());
+                            this.currentReactionTerm = new Struct("rd", op
+                                    .getLogicTupleResult().toTerm());
                         } else if (op.isInp()) {
                             final LogicTuple result = op.getLogicTupleResult();
                             if (result != null) {
-                                this.currentReactionTerm =
-                                        new Struct("inp", result.toTerm());
+                                this.currentReactionTerm = new Struct("inp",
+                                        result.toTerm());
                             } else {
-                                this.currentReactionTerm =
-                                        new Struct("inp", op
-                                                .getLogicTupleArgument()
-                                                .toTerm());
+                                this.currentReactionTerm = new Struct("inp", op
+                                        .getLogicTupleArgument().toTerm());
                             }
                         } else if (op.isRdp()) {
                             final LogicTuple result = op.getLogicTupleResult();
                             if (result != null) {
-                                this.currentReactionTerm =
-                                        new Struct("rdp", result.toTerm());
+                                this.currentReactionTerm = new Struct("rdp",
+                                        result.toTerm());
                             } else {
-                                this.currentReactionTerm =
-                                        new Struct("rdp", op
-                                                .getLogicTupleArgument()
-                                                .toTerm());
+                                this.currentReactionTerm = new Struct("rdp", op
+                                        .getLogicTupleArgument().toTerm());
                             }
                         } else if (op.isNo()) {
-                            this.currentReactionTerm =
-                                    new Struct("no", op.getLogicTupleArgument()
-                                            .toTerm());
+                            this.currentReactionTerm = new Struct("no", op
+                                    .getLogicTupleArgument().toTerm());
                         } else if (op.isNop()) {
                             final LogicTuple result = op.getLogicTupleResult();
                             if (result != null) {
-                                this.currentReactionTerm =
-                                        new Struct("nop", result.toTerm());
+                                this.currentReactionTerm = new Struct("nop",
+                                        result.toTerm());
                             } else {
-                                this.currentReactionTerm =
-                                        new Struct("nop", op
-                                                .getLogicTupleArgument()
-                                                .toTerm());
+                                this.currentReactionTerm = new Struct("nop", op
+                                        .getLogicTupleArgument().toTerm());
                             }
                         } else if (op.isOutS()) {
-                            this.currentReactionTerm =
-                                    new Struct("out_s", op
-                                            .getLogicTupleResult().toTerm());
+                            this.currentReactionTerm = new Struct("out_s", op
+                                    .getLogicTupleResult().toTerm());
                         } else if (op.isInS()) {
-                            this.currentReactionTerm =
-                                    new Struct("in_s", op.getLogicTupleResult()
-                                            .toTerm());
+                            this.currentReactionTerm = new Struct("in_s", op
+                                    .getLogicTupleResult().toTerm());
                         } else if (op.isRdS()) {
-                            this.currentReactionTerm =
-                                    new Struct("rd_s", op.getLogicTupleResult()
-                                            .toTerm());
+                            this.currentReactionTerm = new Struct("rd_s", op
+                                    .getLogicTupleResult().toTerm());
                         } else if (op.isInpS()) {
                             final LogicTuple result = op.getLogicTupleResult();
                             if (result != null) {
-                                this.currentReactionTerm =
-                                        new Struct("inp_s", result.toTerm());
+                                this.currentReactionTerm = new Struct("inp_s",
+                                        result.toTerm());
                             } else {
-                                this.currentReactionTerm =
-                                        new Struct("inp_s", op
-                                                .getLogicTupleArgument()
-                                                .toTerm());
+                                this.currentReactionTerm = new Struct("inp_s",
+                                        op.getLogicTupleArgument().toTerm());
                             }
                         } else if (op.isRdpS()) {
                             final LogicTuple result = op.getLogicTupleResult();
                             if (result != null) {
-                                this.currentReactionTerm =
-                                        new Struct("rdp_s", result.toTerm());
+                                this.currentReactionTerm = new Struct("rdp_s",
+                                        result.toTerm());
                             } else {
-                                this.currentReactionTerm =
-                                        new Struct("rdp_s", op
-                                                .getLogicTupleArgument()
-                                                .toTerm());
+                                this.currentReactionTerm = new Struct("rdp_s",
+                                        op.getLogicTupleArgument().toTerm());
                             }
                         } else if (op.isNoS()) {
-                            this.currentReactionTerm =
-                                    new Struct("no_s", op
-                                            .getLogicTupleArgument().toTerm());
+                            this.currentReactionTerm = new Struct("no_s", op
+                                    .getLogicTupleArgument().toTerm());
                         } else if (op.isNopS()) {
                             final LogicTuple result = op.getLogicTupleResult();
                             if (result != null) {
-                                this.currentReactionTerm =
-                                        new Struct("nop_s", result.toTerm());
+                                this.currentReactionTerm = new Struct("nop_s",
+                                        result.toTerm());
                             } else {
-                                this.currentReactionTerm =
-                                        new Struct("nop_s", op
-                                                .getLogicTupleArgument()
-                                                .toTerm());
+                                this.currentReactionTerm = new Struct("nop_s",
+                                        op.getLogicTupleArgument().toTerm());
                             }
                         } else if (op.isUrd()) {
-                            this.currentReactionTerm =
-                                    new Struct("urd", op
-                                            .getLogicTupleArgument().toTerm());
+                            this.currentReactionTerm = new Struct("urd", op
+                                    .getLogicTupleArgument().toTerm());
                         } else if (op.isUno()) {
-                            this.currentReactionTerm =
-                                    new Struct("uno", op
-                                            .getLogicTupleArgument().toTerm());
+                            this.currentReactionTerm = new Struct("uno", op
+                                    .getLogicTupleArgument().toTerm());
                         } else if (op.isUin()) {
-                            this.currentReactionTerm =
-                                    new Struct("uin", op
-                                            .getLogicTupleArgument().toTerm());
+                            this.currentReactionTerm = new Struct("uin", op
+                                    .getLogicTupleArgument().toTerm());
                         } else if (op.isUrdp()) {
                             final LogicTuple result = op.getLogicTupleResult();
                             if (result != null) {
-                                this.currentReactionTerm =
-                                        new Struct("urdp", result.toTerm());
+                                this.currentReactionTerm = new Struct("urdp",
+                                        result.toTerm());
                             } else {
-                                this.currentReactionTerm =
-                                        new Struct("urdp", op
-                                                .getLogicTupleArgument()
-                                                .toTerm());
+                                this.currentReactionTerm = new Struct("urdp",
+                                        op.getLogicTupleArgument().toTerm());
                             }
                         } else if (op.isUnop()) {
                             final LogicTuple result = op.getLogicTupleResult();
                             if (result != null) {
-                                this.currentReactionTerm =
-                                        new Struct("unop", result.toTerm());
+                                this.currentReactionTerm = new Struct("unop",
+                                        result.toTerm());
                             } else {
-                                this.currentReactionTerm =
-                                        new Struct("unop", op
-                                                .getLogicTupleArgument()
-                                                .toTerm());
+                                this.currentReactionTerm = new Struct("unop",
+                                        op.getLogicTupleArgument().toTerm());
                             }
                         } else if (op.isUinp()) {
                             final LogicTuple result = op.getLogicTupleResult();
                             if (result != null) {
-                                this.currentReactionTerm =
-                                        new Struct("uinp", result.toTerm());
+                                this.currentReactionTerm = new Struct("uinp",
+                                        result.toTerm());
                             } else {
-                                this.currentReactionTerm =
-                                        new Struct("uinp", op
-                                                .getLogicTupleArgument()
-                                                .toTerm());
+                                this.currentReactionTerm = new Struct("uinp",
+                                        op.getLogicTupleArgument().toTerm());
                             }
                         } else if (op.isOutAll()) {
-                            this.currentReactionTerm =
-                                    new Struct("out_all", op
-                                            .getLogicTupleArgument().toTerm());
+                            this.currentReactionTerm = new Struct("out_all", op
+                                    .getLogicTupleArgument().toTerm());
                         } else if (op.isInAll()) {
                             if (op.getLogicTupleListResult() == null) {
-                                this.currentReactionTerm =
-                                        new Struct("in_all", op
-                                                .getLogicTupleArgument()
-                                                .getArg(0).toTerm(), op
+                                this.currentReactionTerm = new Struct("in_all",
+                                        op.getLogicTupleArgument().getArg(0)
+                                                .toTerm(), op
                                                 .getLogicTupleArgument()
                                                 .getArg(1).toTerm());
                             } else {
-                                this.currentReactionTerm =
-                                        new Struct(
-                                                "in_all",
-                                                op.getLogicTupleArgument()
-                                                        .getArg(0).toTerm(),
-                                                RespectVMContext.list2tuple(op
-                                                        .getLogicTupleListResult()));
+                                this.currentReactionTerm = new Struct("in_all",
+                                        op.getLogicTupleArgument().getArg(0)
+                                                .toTerm(),
+                                        RespectVMContext.list2tuple(op
+                                                .getLogicTupleListResult()));
                             }
                         } else if (op.isRdAll()) {
                             if (op.getLogicTupleListResult() == null) {
-                                this.currentReactionTerm =
-                                        new Struct("rd_all", op
-                                                .getLogicTupleArgument()
-                                                .getArg(0).toTerm(), op
+                                this.currentReactionTerm = new Struct("rd_all",
+                                        op.getLogicTupleArgument().getArg(0)
+                                                .toTerm(), op
                                                 .getLogicTupleArgument()
                                                 .getArg(1).toTerm());
                             } else {
-                                this.currentReactionTerm =
-                                        new Struct(
-                                                "rd_all",
-                                                op.getLogicTupleArgument()
-                                                        .getArg(0).toTerm(),
-                                                RespectVMContext.list2tuple(op
-                                                        .getLogicTupleListResult()));
+                                this.currentReactionTerm = new Struct("rd_all",
+                                        op.getLogicTupleArgument().getArg(0)
+                                                .toTerm(),
+                                        RespectVMContext.list2tuple(op
+                                                .getLogicTupleListResult()));
                             }
                         } else if (op.isNoAll()) {
                             if (op.getLogicTupleListResult() == null) {
-                                this.currentReactionTerm =
-                                        new Struct("no_all", op
-                                                .getLogicTupleArgument()
-                                                .getArg(0).toTerm(), op
+                                this.currentReactionTerm = new Struct("no_all",
+                                        op.getLogicTupleArgument().getArg(0)
+                                                .toTerm(), op
                                                 .getLogicTupleArgument()
                                                 .getArg(1).toTerm());
                             } else {
-                                this.currentReactionTerm =
-                                        new Struct(
-                                                "no_all",
-                                                op.getLogicTupleArgument()
-                                                        .getArg(0).toTerm(),
-                                                RespectVMContext.list2tuple(op
-                                                        .getLogicTupleListResult()));
+                                this.currentReactionTerm = new Struct("no_all",
+                                        op.getLogicTupleArgument().getArg(0)
+                                                .toTerm(),
+                                        RespectVMContext.list2tuple(op
+                                                .getLogicTupleListResult()));
                             }
                         } else if (op.isGetEnv()) {
-                            this.currentReactionTerm =
-                                    new Struct("getEnv", op
-                                            .getLogicTupleArgument().getArg(0)
+                            this.currentReactionTerm = new Struct("getEnv",
+                                    op.getLogicTupleArgument().getArg(0)
                                             .toTerm(), op
                                             .getLogicTupleArgument().getArg(1)
                                             .toTerm());
                         } else if (op.isSetEnv()) {
-                            this.currentReactionTerm =
-                                    new Struct("setEnv", op
-                                            .getLogicTupleArgument().getArg(0)
+                            this.currentReactionTerm = new Struct("setEnv",
+                                    op.getLogicTupleArgument().getArg(0)
                                             .toTerm(), op
                                             .getLogicTupleArgument().getArg(1)
                                             .toTerm());
                         }
-
                     }
-
                 } else if (ev.isInternal()) {
-
                     final InternalEvent ev1 = (InternalEvent) ev;
                     this.log("internal event processing: " + ev1);
                     final InternalOperation rop = ev1.getInternalOperation();
-
                     if (rop.isSpawnR()) {
-                        this.currentReactionTerm =
-                                new Struct("spawn", rop.getArgument().toTerm());
+                        this.currentReactionTerm = new Struct("spawn", rop
+                                .getArgument().toTerm());
                     } else if (rop.isOutR()) {
-                        this.currentReactionTerm =
-                                new Struct("out", rop.getArgument().toTerm());
+                        this.currentReactionTerm = new Struct("out", rop
+                                .getArgument().toTerm());
                     } else if (rop.isInR()) {
-                        this.currentReactionTerm =
-                                new Struct("in", rop.getArgument().toTerm());
+                        this.currentReactionTerm = new Struct("in", rop
+                                .getArgument().toTerm());
                     } else if (rop.isRdR()) {
-                        this.currentReactionTerm =
-                                new Struct("rd", rop.getArgument().toTerm());
+                        this.currentReactionTerm = new Struct("rd", rop
+                                .getArgument().toTerm());
                     } else if (rop.isNoR()) {
-                        this.currentReactionTerm =
-                                new Struct("no", rop.getArgument().toTerm());
+                        this.currentReactionTerm = new Struct("no", rop
+                                .getArgument().toTerm());
                     } else if (rop.isOutSR()) {
-                        this.currentReactionTerm =
-                                new Struct("out_s", rop.getArgument().toTerm());
+                        this.currentReactionTerm = new Struct("out_s", rop
+                                .getArgument().toTerm());
                     } else if (rop.isInSR()) {
-                        this.currentReactionTerm =
-                                new Struct("in_s", rop.getArgument().toTerm());
+                        this.currentReactionTerm = new Struct("in_s", rop
+                                .getArgument().toTerm());
                     } else if (rop.isRdSR()) {
-                        this.currentReactionTerm =
-                                new Struct("rd_s", rop.getArgument().toTerm());
+                        this.currentReactionTerm = new Struct("rd_s", rop
+                                .getArgument().toTerm());
                     } else if (rop.isNoSR()) {
-                        this.currentReactionTerm =
-                                new Struct("no_s", rop.getArgument().toTerm());
+                        this.currentReactionTerm = new Struct("no_s", rop
+                                .getArgument().toTerm());
                     } else if (rop.isGetEnv()) {
-                        this.currentReactionTerm =
-                                new Struct("getEnv", rop.getArgument()
-                                        .getArg(0).toTerm(), rop.getArgument()
-                                        .getArg(1).toTerm());
+                        this.currentReactionTerm = new Struct("getEnv", rop
+                                .getArgument().getArg(0).toTerm(), rop
+                                .getArgument().getArg(1).toTerm());
                     } else if (rop.isSetEnv()) {
-                        this.currentReactionTerm =
-                                new Struct("setEnv", rop.getArgument()
-                                        .getArg(0).toTerm(), rop.getArgument()
-                                        .getArg(1).toTerm());
+                        this.currentReactionTerm = new Struct("setEnv", rop
+                                .getArgument().getArg(0).toTerm(), rop
+                                .getArgument().getArg(1).toTerm());
                     } else if (rop.isUrdR()) {
-                        this.currentReactionTerm =
-                                new Struct("urd", rop.getArgument().toTerm());
+                        this.currentReactionTerm = new Struct("urd", rop
+                                .getArgument().toTerm());
                     } else if (rop.isUnoR()) {
-                        this.currentReactionTerm =
-                                new Struct("uno", rop.getArgument().toTerm());
+                        this.currentReactionTerm = new Struct("uno", rop
+                                .getArgument().toTerm());
                     } else if (rop.isUinR()) {
-                        this.currentReactionTerm =
-                                new Struct("uin", rop.getArgument().toTerm());
+                        this.currentReactionTerm = new Struct("uin", rop
+                                .getArgument().toTerm());
                     } else if (rop.isOutAllR()) {
-                        this.currentReactionTerm =
-                                new Struct("out_all", rop.getArgument()
-                                        .toTerm());
+                        this.currentReactionTerm = new Struct("out_all", rop
+                                .getArgument().toTerm());
                     } else if (rop.isInAllR()) {
-                        this.currentReactionTerm =
-                                new Struct("in_all", rop.getArgument().toTerm());
+                        this.currentReactionTerm = new Struct("in_all", rop
+                                .getArgument().toTerm());
                     } else if (rop.isRdAllR()) {
-                        this.currentReactionTerm =
-                                new Struct("rd_all", rop.getArgument().toTerm());
+                        this.currentReactionTerm = new Struct("rd_all", rop
+                                .getArgument().toTerm());
                     } else if (rop.isNoAllR()) {
-                        this.currentReactionTerm =
-                                new Struct("no_all", rop.getArgument().toTerm());
+                        this.currentReactionTerm = new Struct("no_all", rop
+                                .getArgument().toTerm());
                     }
-
                 }
-
                 if (this.currentReactionTerm != null) {
-                    final AbstractMap<Var, Var> v =
-                            new LinkedHashMap<Var, Var>();
-                    this.currentReactionTerm =
-                            (Struct) this.currentReactionTerm.copyGoal(v, 0);
-                    final Struct tev =
-                            new Struct("reaction", this.currentReactionTerm,
-                                    new alice.tuprolog.Var("G"),
-                                    new alice.tuprolog.Var("R"));
+                    final AbstractMap<Var, Var> v = new LinkedHashMap<Var, Var>();
+                    this.currentReactionTerm = (Struct) this.currentReactionTerm
+                            .copyGoal(v, 0);
+                    final Struct tev = new Struct("reaction",
+                            this.currentReactionTerm, new alice.tuprolog.Var(
+                                    "G"), new alice.tuprolog.Var("R"));
                     SolveInfo info = this.trigCore.solve(tev);
                     alice.tuprolog.Term guard = null;
                     while (info.isSuccess()) {
                         guard = info.getVarValue("G");
                         this.currentReactionEvent = ev;
                         if (this.evalGuard(guard)) {
-                            final Struct trigReaction =
-                                    new Struct("reaction",
-                                            this.currentReactionTerm,
-                                            info.getVarValue("R"));
-                            final TriggeredReaction tr =
-                                    new TriggeredReaction(ev,
-                                            new LogicReaction(trigReaction));
+                            final Struct trigReaction = new Struct("reaction",
+                                    this.currentReactionTerm,
+                                    info.getVarValue("R"));
+                            final TriggeredReaction tr = new TriggeredReaction(
+                                    ev, new LogicReaction(trigReaction));
                             this.zSet.add(tr);
                             this.log("triggered reaction = " + tr.getReaction());
                         }
@@ -1071,7 +911,6 @@ public class RespectVMContext extends
                         this.trigCore.solveEnd();
                     }
                 }
-
             } catch (final InvalidOperationException e) {
                 e.printStackTrace();
                 this.trigCore.solveEnd();
@@ -1080,9 +919,7 @@ public class RespectVMContext extends
             } catch (final NoMoreSolutionException e) {
                 this.trigCore.solveEnd();
             }
-
         }
-
     }
 
     /**
@@ -1091,14 +928,12 @@ public class RespectVMContext extends
      *         found
      */
     public Iterator<Term> findTimeReactions() {
-
         final List<Term> foundReactions = new ArrayList<Term>();
         try {
-            final Struct timed =
-                    new Struct("time", new alice.tuprolog.Var("Time"));
-            final Struct tev =
-                    new Struct("reaction", timed, new alice.tuprolog.Var("G"),
-                            new alice.tuprolog.Var("R"));
+            final Struct timed = new Struct("time", new alice.tuprolog.Var(
+                    "Time"));
+            final Struct tev = new Struct("reaction", timed,
+                    new alice.tuprolog.Var("G"), new alice.tuprolog.Var("R"));
             // log("theory = " + this.trigCore.getTheory());
             SolveInfo info = this.trigCore.solve(tev);
             while (info.isSuccess()) {
@@ -1118,7 +953,6 @@ public class RespectVMContext extends
             this.trigCore.solveEnd();
         }
         return foundReactions.iterator();
-
     }
 
     @Override
@@ -1170,6 +1004,7 @@ public class RespectVMContext extends
         return this.prologPredicates.getIterator();
     }
 
+    @Override
     public AbstractBehaviourSpecification getReactionSpec() {
         return this.reactionSpec;
     }
@@ -1188,8 +1023,7 @@ public class RespectVMContext extends
     }
 
     @Override
-    public Iterator<? extends TriggeredReaction>
-            getTriggeredReactionSetIterator() {
+    public Iterator<? extends TriggeredReaction> getTriggeredReactionSetIterator() {
         return this.zSet.getIterator();
     }
 
@@ -1201,9 +1035,8 @@ public class RespectVMContext extends
         final TriggeredReaction[] trig = this.zSet.toArray();
         final LogicTuple[] tuples = new LogicTuple[trig.length];
         for (int i = 0; i < tuples.length; i++) {
-            final Term term =
-                    ((LogicReaction) trig[i].getReaction()).getStructReaction()
-                            .getTerm();
+            final Term term = ((LogicReaction) trig[i].getReaction())
+                    .getStructReaction().getTerm();
             tuples[i] = new LogicTuple(term);
         }
         return tuples;
@@ -1286,9 +1119,8 @@ public class RespectVMContext extends
         try {
             final AbstractTupleCentreOperation op = oe.getSimpleTCEvent();
             op.addListener(new CompletionListener(oe));
-            final ILinkContext link =
-                    RespectTCContainer.getRespectTCContainer().getLinkContext(
-                            target);
+            final ILinkContext link = RespectTCContainer
+                    .getRespectTCContainer().getLinkContext(target);
             link.doOperation((TupleCentreId) oe.getSource(), op);
         } catch (final OperationNotPossibleException e) {
             e.printStackTrace();
@@ -1354,7 +1186,7 @@ public class RespectVMContext extends
     public Tuple readUniformTuple(final TupleTemplate t) {
         List<Tuple> tl = new LinkedList<Tuple>();
         tl = this.readAllTuples(t);
-        if ((tl == null) || tl.isEmpty()) {
+        if (tl == null || tl.isEmpty()) {
             return null;
         }
         final int extracted = new Random().nextInt(tl.size());
@@ -1363,8 +1195,8 @@ public class RespectVMContext extends
 
     @Override
     public Tuple removeMatchingSpecTuple(final TupleTemplate t) {
-        final Tuple tuple =
-                this.tSpecSet.getMatchingTuple((alice.logictuple.LogicTuple) t);
+        final Tuple tuple = this.tSpecSet
+                .getMatchingTuple((alice.logictuple.LogicTuple) t);
         if (tuple != null) {
             this.setReactionSpecHelper(new alice.respect.api.RespectSpecification(
                     this.tSpecSet.toString()));
@@ -1374,8 +1206,8 @@ public class RespectVMContext extends
 
     @Override
     public Tuple removeMatchingTuple(final TupleTemplate t) {
-        final Tuple tuple =
-                this.tSet.getMatchingTuple((alice.logictuple.LogicTuple) t);
+        final Tuple tuple = this.tSet
+                .getMatchingTuple((alice.logictuple.LogicTuple) t);
         return tuple;
     }
 
@@ -1431,7 +1263,7 @@ public class RespectVMContext extends
     public Tuple removeUniformTuple(final TupleTemplate t) {
         List<Tuple> tl = new LinkedList<Tuple>();
         tl = this.readAllTuples(t);
-        if ((tl == null) || tl.isEmpty()) {
+        if (tl == null || tl.isEmpty()) {
             return null;
         }
         final int extracted = new Random().nextInt(tl.size());
@@ -1468,18 +1300,17 @@ public class RespectVMContext extends
         }
     }
 
+    @Override
     public boolean setReactionSpec(final AbstractBehaviourSpecification spec) {
-
         this.isExternalSetSpec = true;
         this.noReactionTh = null;
         this.prologPredicates = new TupleSet();
         final Prolog engine = new Prolog();
-
         try {
             engine.solve("retractall(reaction(X,Y,Z)).");
             engine.solveEnd();
-            final Parser parser =
-                    new Parser(new LogicTupleOpManager(), spec.toString());
+            final Parser parser = new Parser(new LogicTupleOpManager(),
+                    spec.toString());
             Term term = parser.nextTerm(true);
             while (term != null) {
                 engine.solve("assert(" + term + ").");
@@ -1502,14 +1333,12 @@ public class RespectVMContext extends
             e.printStackTrace();
             this.log("clause: " + e.clause + ", l: " + e.line + ", p: " + e.pos);
         }
-
         final boolean result = this.setReactionSpecHelper(spec);
-
         if (result) {
             this.tSpecSet.empty();
             try {
-                alice.tuprolog.SolveInfo info =
-                        this.core.solve("reaction(X,Y,Z).");
+                alice.tuprolog.SolveInfo info = this.core
+                        .solve("reaction(X,Y,Z).");
                 while (true) {
                     final alice.tuprolog.Term solution = info.getSolution();
                     this.tSpecSet.add(new LogicTuple(solution));
@@ -1523,10 +1352,8 @@ public class RespectVMContext extends
                 e.printStackTrace();
             }
         }
-
         this.isExternalSetSpec = false;
         return result;
-
     }
 
     /**
@@ -1536,58 +1363,48 @@ public class RespectVMContext extends
      *            InQ with
      */
     public void setWSet(final List<LogicTuple> set) {
-
         this.wSet.empty();
-
         for (final LogicTuple t : set) {
-
             final String operation = t.toString();
             final String opKind = operation.substring(0, 2);
-
             if ("rd".equals(opKind)) {
-
-                final String tupla =
-                        operation.substring(3, operation.length() - 1);
+                final String tupla = operation.substring(3,
+                        operation.length() - 1);
                 LogicTuple logicTuple = null;
                 try {
                     logicTuple = LogicTuple.parse(tupla);
-                    final RespectOperation op =
-                            RespectOperation.makeRd(logicTuple, null);
+                    final RespectOperation op = RespectOperation.makeRd(
+                            logicTuple, null);
                     this.vm.doOperation(null, op);
                 } catch (final InvalidTupleException e) {
                     e.printStackTrace();
                 } catch (final OperationNotPossibleException e) {
                     e.printStackTrace();
                 }
-
             } else if ("in".equals(opKind)) {
-
-                final String tupla =
-                        operation.substring(3, operation.length() - 1);
+                final String tupla = operation.substring(3,
+                        operation.length() - 1);
                 LogicTuple logicTuple = null;
                 try {
                     logicTuple = LogicTuple.parse(tupla);
-                    final RespectOperation op =
-                            RespectOperation.makeIn(logicTuple, null);
+                    final RespectOperation op = RespectOperation.makeIn(
+                            logicTuple, null);
                     this.vm.doOperation(null, op);
                 } catch (final InvalidTupleException e) {
                     e.printStackTrace();
                 } catch (final OperationNotPossibleException e) {
                     e.printStackTrace();
                 }
-
             }
-
         }
-
     }
 
     @Override
     public boolean spawnActivity(final Tuple tuple, final IId owner,
             final IId targetTC) {
         try {
-            final ClassLoader cl =
-                    Thread.currentThread().getContextClassLoader();
+            final ClassLoader cl = Thread.currentThread()
+                    .getContextClassLoader();
             // final URL[] urls = ((URLClassLoader) cl).getURLs();
             // this.log("Known paths:");
             // for (final URL url : urls) {
@@ -1604,40 +1421,37 @@ public class RespectVMContext extends
                     this.log("Prolog spawn argument must be a tuple with functor name 'solve'");
                     return false;
                 }
-                final String theoryPath =
-                        alice.util.Tools.removeApices(t.getArg(0).toString());
+                final String theoryPath = alice.util.Tools.removeApices(t
+                        .getArg(0).toString());
                 final Term goal = t.getArg(1).toTerm();
                 if (theoryPath.endsWith(".pl")) {
                     final Prolog solver = new Prolog();
                     final Spawn2PLibrary s2pLib = new Spawn2PLibrary();
                     if (owner.isAgent()) {
-                        final TucsonAgentId aid =
-                                new TucsonAgentId(((AgentId) owner).toString());
+                        final TucsonAgentId aid = new TucsonAgentId(
+                                ((AgentId) owner).toString());
                         this.log("spawnActivity.aid = " + aid);
                         s2pLib.setSpawnerId(aid);
                     } else {
-                        final TucsonTupleCentreId tcid =
-                                new TucsonTupleCentreId(
-                                        ((TupleCentreId) owner).getName(),
-                                        ((TupleCentreId) owner).getNode(),
-                                        String.valueOf(((TupleCentreId) owner)
-                                                .getPort()));
+                        final TucsonTupleCentreId tcid = new TucsonTupleCentreId(
+                                ((TupleCentreId) owner).getName(),
+                                ((TupleCentreId) owner).getNode(),
+                                String.valueOf(((TupleCentreId) owner)
+                                        .getPort()));
                         this.log("spawnActivity.tcid = " + tcid);
                         s2pLib.setSpawnerId(tcid);
                     }
-                    final TucsonTupleCentreId target =
-                            new TucsonTupleCentreId(
-                                    ((TupleCentreId) targetTC).getName(),
-                                    ((TupleCentreId) targetTC).getNode(),
-                                    String.valueOf(((TupleCentreId) targetTC)
-                                            .getPort()));
+                    final TucsonTupleCentreId target = new TucsonTupleCentreId(
+                            ((TupleCentreId) targetTC).getName(),
+                            ((TupleCentreId) targetTC).getNode(),
+                            String.valueOf(((TupleCentreId) targetTC).getPort()));
                     this.log("spawnActivity.target = " + target);
                     s2pLib.setTargetTC(target);
                     solver.loadLibrary(s2pLib);
                     // theoryPath should be a pathname but it is not now!!
                     final InputStream is = cl.getResourceAsStream(theoryPath);
-                    final Theory toSpawn =
-                            new Theory(new BufferedInputStream(is));
+                    final Theory toSpawn = new Theory(new BufferedInputStream(
+                            is));
                     solver.setTheory(toSpawn);
                     // final String[] libs = solver.getCurrentLibraries();
                     // this.log("Known libs:");
@@ -1655,37 +1469,33 @@ public class RespectVMContext extends
                     this.log("Java spawn argument must be a tuple with functor name 'exec'");
                     return false;
                 }
-                final String className =
-                        alice.util.Tools.removeApices(t.getArg(0).toString());
+                final String className = alice.util.Tools.removeApices(t
+                        .getArg(0).toString());
                 if (className.endsWith(".class")) {
-                    final Class<?> toSpawn =
-                            cl.loadClass(className.substring(0,
-                                    className.length() - 6));
+                    final Class<?> toSpawn = cl.loadClass(className.substring(
+                            0, className.length() - 6));
                     if (AbstractSpawnActivity.class.isAssignableFrom(toSpawn)) {
-                        final AbstractSpawnActivity instance =
-                                (AbstractSpawnActivity) toSpawn.newInstance();
+                        final AbstractSpawnActivity instance = (AbstractSpawnActivity) toSpawn
+                                .newInstance();
                         if (owner.isAgent()) {
-                            final TucsonAgentId aid =
-                                    new TucsonAgentId(
-                                            ((AgentId) owner).toString());
+                            final TucsonAgentId aid = new TucsonAgentId(
+                                    ((AgentId) owner).toString());
                             this.log("spawnActivity.aid = " + aid);
                             instance.setSpawnerId(aid);
                         } else {
-                            final TucsonTupleCentreId tcid =
-                                    new TucsonTupleCentreId(
-                                            ((TupleCentreId) owner).getName(),
-                                            ((TupleCentreId) owner).getNode(),
-                                            String.valueOf(((TupleCentreId) owner)
-                                                    .getPort()));
+                            final TucsonTupleCentreId tcid = new TucsonTupleCentreId(
+                                    ((TupleCentreId) owner).getName(),
+                                    ((TupleCentreId) owner).getNode(),
+                                    String.valueOf(((TupleCentreId) owner)
+                                            .getPort()));
                             this.log("spawnActivity.tcid = " + tcid);
                             instance.setSpawnerId(tcid);
                         }
-                        final TucsonTupleCentreId target =
-                                new TucsonTupleCentreId(
-                                        ((TupleCentreId) targetTC).getName(),
-                                        ((TupleCentreId) targetTC).getNode(),
-                                        String.valueOf(((TupleCentreId) targetTC)
-                                                .getPort()));
+                        final TucsonTupleCentreId target = new TucsonTupleCentreId(
+                                ((TupleCentreId) targetTC).getName(),
+                                ((TupleCentreId) targetTC).getNode(),
+                                String.valueOf(((TupleCentreId) targetTC)
+                                        .getPort()));
                         this.log("spawnActivity.target = " + target);
                         instance.setTargetTC(target);
                         if (instance.checkInstantiation()) {
@@ -1752,9 +1562,8 @@ public class RespectVMContext extends
     public void updateSpecAfterTimedReaction(final TriggeredReaction tr) {
         final LogicReaction lr = (LogicReaction) tr.getReaction();
         final Struct rStruct = lr.getStructReaction();
-        final Struct rg =
-                new Struct(rStruct.getName(), rStruct.getArg(0), new Var(),
-                        rStruct.getArg(1));
+        final Struct rg = new Struct(rStruct.getName(), rStruct.getArg(0),
+                new Var(), rStruct.getArg(1));
         this.removeMatchingSpecTuple(new LogicTuple(rg));
     }
 
@@ -1786,38 +1595,34 @@ public class RespectVMContext extends
      */
     protected boolean addReactionSpecHelper(
             final AbstractBehaviourSpecification spec) {
-
         if (this.transaction) {
             return false;
         }
-
         try {
-
             this.timers.clear();
             final Struct co = new Struct(spec.toString());
             if (co.isAtom()) {
-                final alice.tuprolog.Theory thspec =
-                        new alice.tuprolog.Theory(co.getName());
+                final alice.tuprolog.Theory thspec = new alice.tuprolog.Theory(
+                        co.getName());
                 this.core.addTheory(thspec);
                 this.trigCore.addTheory(thspec);
             } else if (co.isList()) {
-                final alice.tuprolog.Theory thspec =
-                        new alice.tuprolog.Theory(co);
+                final alice.tuprolog.Theory thspec = new alice.tuprolog.Theory(
+                        co);
                 this.core.addTheory(thspec);
                 this.trigCore.addTheory(thspec);
             } else {
                 this.notifyException("Invalid reaction spec:\n" + co);
                 return false;
             }
-
             this.reactionSpec = (RespectSpecification) spec;
             Iterator<Term> it;
             it = this.findTimeReactions();
             while (it.hasNext()) {
                 final Term current = it.next();
                 final Timer currTimer = new Timer();
-                final long timeValue =
-                        ((alice.tuprolog.Number) current).longValue();
+                final long timeValue = ((alice.tuprolog.Number) current)
+                        .longValue();
                 final long currLocalTime = this.getCurrentTime();
                 long delay;
                 if (timeValue > currLocalTime) {
@@ -1831,14 +1636,12 @@ public class RespectVMContext extends
                                         current)), null)), delay);
             }
             return true;
-
         } catch (final alice.tuprolog.InvalidTheoryException ex) {
             this.notifyException("Invalid reaction spec. " + ex.line + " "
                     + ex.pos);
             this.notifyException(spec.toString());
             return false;
         }
-
     }
 
     /**
@@ -1851,20 +1654,16 @@ public class RespectVMContext extends
      */
     protected boolean setReactionSpecHelper(
             final AbstractBehaviourSpecification spec) {
-
         // log("spec = " + spec);
-
         if (this.transaction) {
             return false;
         }
-
         try {
-
             this.timers.clear();
             final Struct co = new Struct(spec.toString());
             if (co.isAtom()) {
-                final alice.tuprolog.Theory thspec =
-                        new alice.tuprolog.Theory(co.getName());
+                final alice.tuprolog.Theory thspec = new alice.tuprolog.Theory(
+                        co.getName());
                 // int i = 0;
                 // for (Iterator<? extends Term> iterator =
                 // thspec.iterator(this.trigCore); iterator.hasNext();) {
@@ -1883,8 +1682,8 @@ public class RespectVMContext extends
                 // }
                 // log("ATOM 2 > " + this.trigCore.getTheory());
             } else if (co.isList()) {
-                final alice.tuprolog.Theory thspec =
-                        new alice.tuprolog.Theory(co);
+                final alice.tuprolog.Theory thspec = new alice.tuprolog.Theory(
+                        co);
                 // log("LIST > " + thspec);
                 this.core.setTheory(thspec);
                 this.trigCore.setTheory(thspec);
@@ -1892,21 +1691,19 @@ public class RespectVMContext extends
                 this.notifyException("Invalid reaction spec:\n" + co);
                 return false;
             }
-
-            if ((this.noReactionTh != null) && !this.isExternalSetSpec) {
+            if (this.noReactionTh != null && !this.isExternalSetSpec) {
                 // log("noReactionTh = " + this.noReactionTh);
                 this.core.addTheory(this.noReactionTh);
                 this.trigCore.addTheory(this.noReactionTh);
             }
             this.reactionSpec = (RespectSpecification) spec;
             final Iterator<Term> it = this.findTimeReactions();
-
             while (it.hasNext()) {
                 final Term current = it.next();
                 // log("timed = " + current);
                 final Timer currTimer = new Timer();
-                final long timeValue =
-                        ((alice.tuprolog.Number) current).longValue();
+                final long timeValue = ((alice.tuprolog.Number) current)
+                        .longValue();
                 final long currLocalTime = this.getCurrentTime();
                 long delay;
                 if (timeValue > currLocalTime) {
@@ -1920,14 +1717,11 @@ public class RespectVMContext extends
                                         current)), null)), delay);
             }
             return true;
-
         } catch (final alice.tuprolog.InvalidTheoryException ex) {
             // FIXME Check correctness
             this.notifyException("<!> Invalid reaction spec: " + ex.line + " "
                     + ex.pos + " <!>");
             return false;
         }
-
     }
-
 }

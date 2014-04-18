@@ -14,7 +14,6 @@
 package alice.tucson.introspection;
 
 import java.util.List;
-
 import alice.logictuple.LogicTuple;
 import alice.tuplecentre.core.TriggeredReaction;
 
@@ -27,24 +26,17 @@ import alice.tuplecentre.core.TriggeredReaction;
  * 
  */
 public class InspectorContextEvent implements java.io.Serializable {
-
     private static final long serialVersionUID = -5586328696570013265L;
-
     /** observer time */
     private long localTime;
-
     /** observed a reaction failure */
     private TriggeredReaction reactionFailed = null;
-
     /** observed a reaction ok */
     private TriggeredReaction reactionOk = null;
-
     /** tuple observed or to set */
     private List<LogicTuple> tuples = null;
-
     /** virtual machine time */
     private long vmTime;
-
     /** events observed */
     private List<WSetEvent> wnEvents = null;
 
@@ -137,5 +129,4 @@ public class InspectorContextEvent implements java.io.Serializable {
     public void setWnEvents(final List<WSetEvent> wne) {
         this.wnEvents = wne;
     }
-
 }

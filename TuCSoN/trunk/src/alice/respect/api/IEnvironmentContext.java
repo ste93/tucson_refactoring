@@ -8,7 +8,6 @@ import alice.tuplecentre.core.InputEvent;
  * 
  */
 public interface IEnvironmentContext {
-
     /**
      * 
      * @return the current time
@@ -28,5 +27,4 @@ public interface IEnvironmentContext {
      *            the input event to notify
      */
     void notifyInputEvent(InputEvent ev);
-
 }

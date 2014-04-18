@@ -17,7 +17,6 @@ import alice.tuplecentre.core.OperationCompletionListener;
  */
 public class SpecificationAsynchInterface implements
         ISpecificationAsynchInterface {
-
     private final IRespectTC core;
 
     /**
@@ -29,12 +28,14 @@ public class SpecificationAsynchInterface implements
         this.core = c;
     }
 
+    @Override
     public IRespectOperation getS(final IId aid,
             final OperationCompletionListener l)
             throws OperationNotPossibleException {
         return this.core.get(aid, l);
     }
 
+    @Override
     public IRespectOperation inpS(final IId id, final LogicTuple t,
             final OperationCompletionListener l) throws InvalidTupleException,
             OperationNotPossibleException {
@@ -44,6 +45,7 @@ public class SpecificationAsynchInterface implements
         return this.core.inpS(id, t, l);
     }
 
+    @Override
     public IRespectOperation inS(final IId id, final LogicTuple t,
             final OperationCompletionListener l) throws InvalidTupleException,
             OperationNotPossibleException {
@@ -53,6 +55,7 @@ public class SpecificationAsynchInterface implements
         return this.core.inS(id, t, l);
     }
 
+    @Override
     public IRespectOperation nopS(final IId aid, final LogicTuple t,
             final OperationCompletionListener l) throws InvalidTupleException,
             OperationNotPossibleException {
@@ -62,6 +65,7 @@ public class SpecificationAsynchInterface implements
         return this.core.nopS(aid, t, l);
     }
 
+    @Override
     public IRespectOperation noS(final IId aid, final LogicTuple t,
             final OperationCompletionListener l) throws InvalidTupleException,
             OperationNotPossibleException {
@@ -71,6 +75,7 @@ public class SpecificationAsynchInterface implements
         return this.core.noS(aid, t, l);
     }
 
+    @Override
     public IRespectOperation outS(final IId id, final LogicTuple t,
             final OperationCompletionListener l) throws InvalidTupleException,
             OperationNotPossibleException {
@@ -80,6 +85,7 @@ public class SpecificationAsynchInterface implements
         return this.core.outS(id, t, l);
     }
 
+    @Override
     public IRespectOperation rdpS(final IId id, final LogicTuple t,
             final OperationCompletionListener l) throws InvalidTupleException,
             OperationNotPossibleException {
@@ -89,6 +95,7 @@ public class SpecificationAsynchInterface implements
         return this.core.rdpS(id, t, l);
     }
 
+    @Override
     public IRespectOperation rdS(final IId id, final LogicTuple t,
             final OperationCompletionListener l) throws InvalidTupleException,
             OperationNotPossibleException {
@@ -98,14 +105,13 @@ public class SpecificationAsynchInterface implements
         return this.core.rdS(id, t, l);
     }
 
-    public IRespectOperation
-            setS(final IId aid, final RespectSpecification spec,
-                    final OperationCompletionListener l)
-                    throws InvalidTupleException, OperationNotPossibleException {
+    @Override
+    public IRespectOperation setS(final IId aid,
+            final RespectSpecification spec, final OperationCompletionListener l)
+            throws InvalidTupleException, OperationNotPossibleException {
         if (spec == null) {
             throw new InvalidTupleException();
         }
         return this.core.setS(aid, spec, l);
     }
-
 }

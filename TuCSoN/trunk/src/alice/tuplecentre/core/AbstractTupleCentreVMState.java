@@ -20,7 +20,6 @@ package alice.tuplecentre.core;
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public abstract class AbstractTupleCentreVMState {
-
     /**
      * 
      */
@@ -56,5 +55,4 @@ public abstract class AbstractTupleCentreVMState {
      * 
      */
     public abstract void resolveLinks();
-
 }

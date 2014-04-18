@@ -24,7 +24,6 @@ import alice.tuplecentre.api.TupleTemplate;
  * 
  */
 public class ObservationService implements NodeServiceListener {
-
     private TucsonAgentId obsAid;
     private final TucsonTupleCentreId obsContext;
 
@@ -42,6 +41,7 @@ public class ObservationService implements NodeServiceListener {
         }
     }
 
+    @Override
     public void accEntered(final TucsonAgentId aid) {
         try {
             TupleCentreContainer.doBlockingOperation(TucsonOperation.outCode(),
@@ -55,6 +55,7 @@ public class ObservationService implements NodeServiceListener {
         }
     }
 
+    @Override
     public void accQuit(final TucsonAgentId aid) {
         try {
             TupleCentreContainer.doBlockingOperation(TucsonOperation.outCode(),
@@ -68,6 +69,7 @@ public class ObservationService implements NodeServiceListener {
         }
     }
 
+    @Override
     public void getSpecCompleted(final TupleCentreId tid, final IId id,
             final String spec) {
         try {
@@ -85,6 +87,7 @@ public class ObservationService implements NodeServiceListener {
         }
     }
 
+    @Override
     public void getSpecRequested(final TupleCentreId tid, final IId id) {
         try {
             TupleCentreContainer.doBlockingOperation(TucsonOperation.outCode(),
@@ -100,8 +103,8 @@ public class ObservationService implements NodeServiceListener {
         }
     }
 
-    public void
-            inCompleted(final TupleCentreId tid, final IId id, final Tuple t) {
+    @Override
+    public void inCompleted(final TupleCentreId tid, final IId id, final Tuple t) {
         try {
             TupleCentreContainer.doBlockingOperation(TucsonOperation.outCode(),
                     this.obsAid, this.obsContext,
@@ -117,6 +120,7 @@ public class ObservationService implements NodeServiceListener {
         }
     }
 
+    @Override
     public void inpCompleted(final TupleCentreId tid, final IId id,
             final Tuple t) {
         try {
@@ -145,6 +149,7 @@ public class ObservationService implements NodeServiceListener {
         }
     }
 
+    @Override
     public void inpRequested(final TupleCentreId tid, final IId id,
             final TupleTemplate t) {
         try {
@@ -162,6 +167,7 @@ public class ObservationService implements NodeServiceListener {
         }
     }
 
+    @Override
     public void inRequested(final TupleCentreId tid, final IId id,
             final TupleTemplate t) {
         try {
@@ -179,6 +185,7 @@ public class ObservationService implements NodeServiceListener {
         }
     }
 
+    @Override
     public void outRequested(final TupleCentreId tid, final IId id,
             final Tuple t) {
         try {
@@ -196,8 +203,8 @@ public class ObservationService implements NodeServiceListener {
         }
     }
 
-    public void
-            rdCompleted(final TupleCentreId tid, final IId id, final Tuple t) {
+    @Override
+    public void rdCompleted(final TupleCentreId tid, final IId id, final Tuple t) {
         try {
             TupleCentreContainer.doBlockingOperation(TucsonOperation.outCode(),
                     this.obsAid, this.obsContext,
@@ -213,6 +220,7 @@ public class ObservationService implements NodeServiceListener {
         }
     }
 
+    @Override
     public void rdpCompleted(final TupleCentreId tid, final IId id,
             final Tuple t) {
         try {
@@ -241,6 +249,7 @@ public class ObservationService implements NodeServiceListener {
         }
     }
 
+    @Override
     public void rdpRequested(final TupleCentreId tid, final IId id,
             final TupleTemplate t) {
         try {
@@ -258,6 +267,7 @@ public class ObservationService implements NodeServiceListener {
         }
     }
 
+    @Override
     public void rdRequested(final TupleCentreId tid, final IId id,
             final TupleTemplate t) {
         try {
@@ -275,6 +285,7 @@ public class ObservationService implements NodeServiceListener {
         }
     }
 
+    @Override
     public void setSpecCompleted(final TupleCentreId tid, final IId id) {
         try {
             TupleCentreContainer.doBlockingOperation(TucsonOperation.outCode(),
@@ -290,6 +301,7 @@ public class ObservationService implements NodeServiceListener {
         }
     }
 
+    @Override
     public void setSpecRequested(final TupleCentreId tid, final IId id,
             final String spec) {
         try {
@@ -307,6 +319,7 @@ public class ObservationService implements NodeServiceListener {
         }
     }
 
+    @Override
     public void tcCreated(final TucsonTupleCentreId tid) {
         try {
             TupleCentreContainer.doBlockingOperation(TucsonOperation.outCode(),
@@ -320,6 +333,7 @@ public class ObservationService implements NodeServiceListener {
         }
     }
 
+    @Override
     public void tcDestroyed(final TucsonTupleCentreId tid) {
         try {
             TupleCentreContainer.doBlockingOperation(TucsonOperation.outCode(),
@@ -332,5 +346,4 @@ public class ObservationService implements NodeServiceListener {
             e.printStackTrace();
         }
     }
-
 }

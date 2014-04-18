@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-
 import alice.logictuple.exceptions.InvalidTupleOperationException;
 import alice.tuplecentre.api.exceptions.InvalidOperationException;
 import alice.tuplecentre.api.exceptions.InvalidTupleException;
@@ -39,7 +38,6 @@ import alice.tuprolog.Term;
  * @author (contributor) Saverio Cicora
  */
 public class TupleArgument implements java.io.Serializable {
-
     /**
      * 
      */
@@ -98,7 +96,6 @@ public class TupleArgument implements java.io.Serializable {
             return ((Number) this.value).doubleValue();
         }
         throw new InvalidOperationException();
-
     }
 
     /**
@@ -235,7 +232,7 @@ public class TupleArgument implements java.io.Serializable {
      */
     public boolean isAtom() {
         return this.value.isAtom()
-                && (this.value instanceof alice.tuprolog.Struct);
+                && this.value instanceof alice.tuprolog.Struct;
     }
 
     /**
@@ -253,8 +250,8 @@ public class TupleArgument implements java.io.Serializable {
      * @return <code>true</code> if this argument is a double
      */
     public boolean isDouble() {
-        return (this.value instanceof alice.tuprolog.Number)
-                && (((Number) this.value) instanceof alice.tuprolog.Double);
+        return this.value instanceof alice.tuprolog.Number
+                && (Number) this.value instanceof alice.tuprolog.Double;
     }
 
     /**
@@ -263,8 +260,8 @@ public class TupleArgument implements java.io.Serializable {
      * @return <code>true</code> if this argument is a float
      */
     public boolean isFloat() {
-        return (this.value instanceof alice.tuprolog.Number)
-                && (((Number) this.value) instanceof alice.tuprolog.Float);
+        return this.value instanceof alice.tuprolog.Number
+                && (Number) this.value instanceof alice.tuprolog.Float;
     }
 
     /**
@@ -273,8 +270,8 @@ public class TupleArgument implements java.io.Serializable {
      * @return <code>true</code> if this argument is an int
      */
     public boolean isInt() {
-        return (this.value instanceof alice.tuprolog.Number)
-                && (((Number) this.value) instanceof alice.tuprolog.Int);
+        return this.value instanceof alice.tuprolog.Number
+                && (Number) this.value instanceof alice.tuprolog.Int;
     }
 
     /**
@@ -283,7 +280,7 @@ public class TupleArgument implements java.io.Serializable {
      * @return <code>true</code> if this argument is an integer
      */
     public boolean isInteger() {
-        return (this.value instanceof alice.tuprolog.Number)
+        return this.value instanceof alice.tuprolog.Number
                 && ((Number) this.value).isInteger();
     }
 
@@ -302,8 +299,8 @@ public class TupleArgument implements java.io.Serializable {
      * @return <code>true</code> if this argument is a long
      */
     public boolean isLong() {
-        return (this.value instanceof alice.tuprolog.Number)
-                && (((Number) this.value) instanceof alice.tuprolog.Long);
+        return this.value instanceof alice.tuprolog.Number
+                && (Number) this.value instanceof alice.tuprolog.Long;
     }
 
     /**
@@ -312,7 +309,7 @@ public class TupleArgument implements java.io.Serializable {
      * @return <code>true</code> if this argument is a number
      */
     public boolean isNumber() {
-        return (this.value instanceof alice.tuprolog.Number);
+        return this.value instanceof alice.tuprolog.Number;
     }
 
     /**
@@ -321,7 +318,7 @@ public class TupleArgument implements java.io.Serializable {
      * @return <code>true</code> if this argument is a real
      */
     public boolean isReal() {
-        return (this.value instanceof alice.tuprolog.Number)
+        return this.value instanceof alice.tuprolog.Number
                 && ((Number) this.value).isReal();
     }
 
@@ -349,7 +346,7 @@ public class TupleArgument implements java.io.Serializable {
      * @return <code>true</code> if this argument is a var
      */
     public boolean isVar() {
-        return (this.value instanceof alice.tuprolog.Var);
+        return this.value instanceof alice.tuprolog.Var;
     }
 
     /**
@@ -411,8 +408,8 @@ public class TupleArgument implements java.io.Serializable {
      */
     public TupleArgument[] toArray() throws InvalidOperationException {
         final ArrayList<Term> list = new ArrayList<Term>();
-        final Iterator<? extends Term> it =
-                ((Struct) this.value).listIterator();
+        final Iterator<? extends Term> it = ((Struct) this.value)
+                .listIterator();
         while (it.hasNext()) {
             list.add(it.next());
         }
@@ -433,8 +430,8 @@ public class TupleArgument implements java.io.Serializable {
      */
     public List<Term> toList() throws InvalidTupleOperationException {
         final LinkedList<Term> list = new LinkedList<Term>();
-        final Iterator<? extends Term> it =
-                ((Struct) this.value).listIterator();
+        final Iterator<? extends Term> it = ((Struct) this.value)
+                .listIterator();
         while (it.hasNext()) {
             list.add(it.next());
         }
@@ -470,7 +467,7 @@ public class TupleArgument implements java.io.Serializable {
                     return v.getTerm();
                 }
             } else if (arg instanceof alice.tuprolog.Struct) {
-                final Term t = this.getVarValue(name, ((Struct) arg));
+                final Term t = this.getVarValue(name, (Struct) arg);
                 if (t != null) {
                     return t;
                 }
@@ -478,5 +475,4 @@ public class TupleArgument implements java.io.Serializable {
         }
         return null;
     }
-
 }

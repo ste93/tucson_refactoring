@@ -32,7 +32,6 @@ import alice.tuplecentre.api.exceptions.OperationTimeOutException;
  * @author ste (mailto: s.mariani@unibo.it)
  */
 public interface OrdinarySynchACC extends RootACC {
-
     /**
      * <code>get</code> TuCSoN primitive, reads (w/o removing) all the tuples in
      * the given target tuplecentre.
@@ -410,5 +409,4 @@ public interface OrdinarySynchACC extends RootACC {
     ITucsonOperation spawn(TupleCentreId tid, Tuple toSpawn, Long timeout)
             throws TucsonOperationNotPossibleException,
             UnreachableNodeException, OperationTimeOutException;
-
 }

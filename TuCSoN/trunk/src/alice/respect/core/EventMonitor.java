@@ -9,7 +9,6 @@ import java.util.concurrent.locks.ReentrantLock;
  * 
  */
 public class EventMonitor {
-
     private final Condition canCompute;
     private boolean event;
     private final ReentrantLock lock;
@@ -66,5 +65,4 @@ public class EventMonitor {
             this.lock.unlock();
         }
     }
-
 }

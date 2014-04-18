@@ -10,7 +10,6 @@ package alice.respect.situatedness;
  * 
  */
 public interface ISimpleProbe {
-
     /**
      * Get the probe's identifier
      * 

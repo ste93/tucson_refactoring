@@ -19,7 +19,5 @@ package alice.tucson.api.exceptions;
  * 
  */
 public class InvalidConfigException extends Exception {
-
     private static final long serialVersionUID = 64577175499227678L;
-
 }

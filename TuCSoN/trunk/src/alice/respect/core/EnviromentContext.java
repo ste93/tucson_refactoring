@@ -9,7 +9,6 @@ import alice.tuplecentre.core.InputEvent;
  * 
  */
 public class EnviromentContext implements IEnvironmentContext {
-
     private final RespectVMContext vm;
 
     /**
@@ -21,16 +20,18 @@ public class EnviromentContext implements IEnvironmentContext {
         this.vm = rvm;
     }
 
+    @Override
     public long getCurrentTime() {
         return this.vm.getCurrentTime();
     }
 
+    @Override
     public void notifyInputEnvEvent(final InputEvent ev) {
         this.vm.notifyInputEnvEvent(ev);
     }
 
+    @Override
     public void notifyInputEvent(final InputEvent ev) {
         this.vm.notifyInputEvent(ev);
     }
-
 }

@@ -16,7 +16,6 @@ import alice.tuplecentre.api.exceptions.OperationTimeOutException;
  * 
  */
 public class GetS extends AbstractTucsonSpecificationAction {
-
     /**
      * 
      * @param t

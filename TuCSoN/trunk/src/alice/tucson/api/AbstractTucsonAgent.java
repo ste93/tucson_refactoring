@@ -14,7 +14,6 @@
 package alice.tucson.api;
 
 import java.util.List;
-
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.service.TucsonOpCompletionEvent;
@@ -33,7 +32,6 @@ import alice.tuplecentre.core.AbstractTupleCentreOperation;
  */
 public abstract class AbstractTucsonAgent implements
         TucsonOperationCompletionListener {
-
     /**
      * Internal Thread responsible for ACC acquisition and main cycle execution.
      * Notice that the ACC is demanded to the TuCSoN Node Service hosted at the
@@ -64,12 +62,10 @@ public abstract class AbstractTucsonAgent implements
     }
 
     private static final int DEFAULT_PORT = 20504;
-
     private final TucsonAgentId aid;
     private EnhancedACC context;
     private final String node;
     private final int port;
-
     /**
      * 
      */
@@ -192,8 +188,10 @@ public abstract class AbstractTucsonAgent implements
         return this.port;
     }
 
+    @Override
     public abstract void operationCompleted(AbstractTupleCentreOperation op);
 
+    @Override
     public abstract void operationCompleted(ITucsonOperation op);
 
     /**
@@ -234,5 +232,4 @@ public abstract class AbstractTucsonAgent implements
     protected void setContext(final EnhancedACC ctx) {
         this.context = ctx;
     }
-
 }

@@ -2,7 +2,6 @@ package alice.tucson.service;
 
 import java.util.Iterator;
 import java.util.List;
-
 import alice.logictuple.LogicTuple;
 import alice.tucson.api.TucsonAgentId;
 import alice.tucson.api.TucsonTupleCentreId;
@@ -21,7 +20,6 @@ import alice.tuprolog.Term;
  * 
  */
 public class Spawn2PLibrary extends Library {
-
     private static final long serialVersionUID = 3019036120338145017L;
 
     /**
@@ -45,7 +43,6 @@ public class Spawn2PLibrary extends Library {
 
     private TucsonAgentId aid;
     private TucsonTupleCentreId target;
-
     private TucsonTupleCentreId tcid;
 
     /**
@@ -94,10 +91,9 @@ public class Spawn2PLibrary extends Library {
         final LogicTuple arg = new LogicTuple(arg0);
         if (this.aid != null) {
             try {
-                op =
-                        TupleCentreContainer.doNonBlockingOperation(
-                                TucsonOperation.inCode(), this.aid,
-                                this.target, arg, null);
+                op = TupleCentreContainer.doNonBlockingOperation(
+                        TucsonOperation.inCode(), this.aid, this.target, arg,
+                        null);
             } catch (final TucsonInvalidLogicTupleException e) {
                 e.printStackTrace();
                 return false;
@@ -107,10 +103,9 @@ public class Spawn2PLibrary extends Library {
             }
         } else {
             try {
-                op =
-                        TupleCentreContainer.doNonBlockingOperation(
-                                TucsonOperation.inCode(), this.tcid,
-                                this.target, arg, null);
+                op = TupleCentreContainer.doNonBlockingOperation(
+                        TucsonOperation.inCode(), this.tcid, this.target, arg,
+                        null);
             } catch (final TucsonInvalidLogicTupleException e) {
                 e.printStackTrace();
                 return false;
@@ -140,10 +135,9 @@ public class Spawn2PLibrary extends Library {
         final LogicTuple arg = new LogicTuple(arg0);
         if (this.aid != null) {
             try {
-                op =
-                        TupleCentreContainer.doNonBlockingOperation(
-                                TucsonOperation.inAllCode(), this.aid,
-                                this.target, arg, null);
+                op = TupleCentreContainer.doNonBlockingOperation(
+                        TucsonOperation.inAllCode(), this.aid, this.target,
+                        arg, null);
             } catch (final TucsonInvalidLogicTupleException e) {
                 e.printStackTrace();
                 return false;
@@ -153,10 +147,9 @@ public class Spawn2PLibrary extends Library {
             }
         } else {
             try {
-                op =
-                        TupleCentreContainer.doNonBlockingOperation(
-                                TucsonOperation.inAllCode(), this.tcid,
-                                this.target, arg, null);
+                op = TupleCentreContainer.doNonBlockingOperation(
+                        TucsonOperation.inAllCode(), this.tcid, this.target,
+                        arg, null);
             } catch (final TucsonInvalidLogicTupleException e) {
                 e.printStackTrace();
                 return false;
@@ -184,10 +177,9 @@ public class Spawn2PLibrary extends Library {
         final LogicTuple arg = new LogicTuple(arg0);
         if (this.aid != null) {
             try {
-                op =
-                        TupleCentreContainer.doNonBlockingOperation(
-                                TucsonOperation.inpCode(), this.aid,
-                                this.target, arg, null);
+                op = TupleCentreContainer.doNonBlockingOperation(
+                        TucsonOperation.inpCode(), this.aid, this.target, arg,
+                        null);
             } catch (final TucsonInvalidLogicTupleException e) {
                 e.printStackTrace();
                 return false;
@@ -197,10 +189,9 @@ public class Spawn2PLibrary extends Library {
             }
         } else {
             try {
-                op =
-                        TupleCentreContainer.doNonBlockingOperation(
-                                TucsonOperation.inpCode(), this.tcid,
-                                this.target, arg, null);
+                op = TupleCentreContainer.doNonBlockingOperation(
+                        TucsonOperation.inpCode(), this.tcid, this.target, arg,
+                        null);
             } catch (final TucsonInvalidLogicTupleException e) {
                 e.printStackTrace();
                 return false;
@@ -228,10 +219,9 @@ public class Spawn2PLibrary extends Library {
         final LogicTuple arg = new LogicTuple(arg0);
         if (this.aid != null) {
             try {
-                op =
-                        TupleCentreContainer.doNonBlockingOperation(
-                                TucsonOperation.noCode(), this.aid,
-                                this.target, arg, null);
+                op = TupleCentreContainer.doNonBlockingOperation(
+                        TucsonOperation.noCode(), this.aid, this.target, arg,
+                        null);
             } catch (final TucsonInvalidLogicTupleException e) {
                 e.printStackTrace();
                 return false;
@@ -241,10 +231,9 @@ public class Spawn2PLibrary extends Library {
             }
         } else {
             try {
-                op =
-                        TupleCentreContainer.doNonBlockingOperation(
-                                TucsonOperation.noCode(), this.tcid,
-                                this.target, arg, null);
+                op = TupleCentreContainer.doNonBlockingOperation(
+                        TucsonOperation.noCode(), this.tcid, this.target, arg,
+                        null);
             } catch (final TucsonInvalidLogicTupleException e) {
                 e.printStackTrace();
                 return false;
@@ -275,10 +264,9 @@ public class Spawn2PLibrary extends Library {
         final LogicTuple arg = new LogicTuple(arg0);
         if (this.aid != null) {
             try {
-                op =
-                        TupleCentreContainer.doNonBlockingOperation(
-                                TucsonOperation.noAllCode(), this.aid,
-                                this.target, arg, null);
+                op = TupleCentreContainer.doNonBlockingOperation(
+                        TucsonOperation.noAllCode(), this.aid, this.target,
+                        arg, null);
             } catch (final TucsonInvalidLogicTupleException e) {
                 e.printStackTrace();
                 return false;
@@ -288,10 +276,9 @@ public class Spawn2PLibrary extends Library {
             }
         } else {
             try {
-                op =
-                        TupleCentreContainer.doNonBlockingOperation(
-                                TucsonOperation.noAllCode(), this.tcid,
-                                this.target, arg, null);
+                op = TupleCentreContainer.doNonBlockingOperation(
+                        TucsonOperation.noAllCode(), this.tcid, this.target,
+                        arg, null);
             } catch (final TucsonInvalidLogicTupleException e) {
                 e.printStackTrace();
                 return false;
@@ -319,10 +306,9 @@ public class Spawn2PLibrary extends Library {
         final LogicTuple arg = new LogicTuple(arg0);
         if (this.aid != null) {
             try {
-                op =
-                        TupleCentreContainer.doNonBlockingOperation(
-                                TucsonOperation.nopCode(), this.aid,
-                                this.target, arg, null);
+                op = TupleCentreContainer.doNonBlockingOperation(
+                        TucsonOperation.nopCode(), this.aid, this.target, arg,
+                        null);
             } catch (final TucsonInvalidLogicTupleException e) {
                 e.printStackTrace();
                 return false;
@@ -332,10 +318,9 @@ public class Spawn2PLibrary extends Library {
             }
         } else {
             try {
-                op =
-                        TupleCentreContainer.doNonBlockingOperation(
-                                TucsonOperation.nopCode(), this.tcid,
-                                this.target, arg, null);
+                op = TupleCentreContainer.doNonBlockingOperation(
+                        TucsonOperation.nopCode(), this.tcid, this.target, arg,
+                        null);
             } catch (final TucsonInvalidLogicTupleException e) {
                 e.printStackTrace();
                 return false;
@@ -364,10 +349,9 @@ public class Spawn2PLibrary extends Library {
         final LogicTuple arg = new LogicTuple(arg0);
         if (this.aid != null) {
             try {
-                op =
-                        TupleCentreContainer.doNonBlockingOperation(
-                                TucsonOperation.outCode(), this.aid,
-                                this.target, arg, null);
+                op = TupleCentreContainer.doNonBlockingOperation(
+                        TucsonOperation.outCode(), this.aid, this.target, arg,
+                        null);
             } catch (final TucsonInvalidLogicTupleException e) {
                 e.printStackTrace();
                 return false;
@@ -377,10 +361,9 @@ public class Spawn2PLibrary extends Library {
             }
         } else {
             try {
-                op =
-                        TupleCentreContainer.doNonBlockingOperation(
-                                TucsonOperation.outCode(), this.tcid,
-                                this.target, arg, null);
+                op = TupleCentreContainer.doNonBlockingOperation(
+                        TucsonOperation.outCode(), this.tcid, this.target, arg,
+                        null);
             } catch (final TucsonInvalidLogicTupleException e) {
                 e.printStackTrace();
                 return false;
@@ -404,10 +387,9 @@ public class Spawn2PLibrary extends Library {
         final LogicTuple arg = new LogicTuple(arg0);
         if (this.aid != null) {
             try {
-                op =
-                        TupleCentreContainer.doNonBlockingOperation(
-                                TucsonOperation.outAllCode(), this.aid,
-                                this.target, arg, null);
+                op = TupleCentreContainer.doNonBlockingOperation(
+                        TucsonOperation.outAllCode(), this.aid, this.target,
+                        arg, null);
             } catch (final TucsonInvalidLogicTupleException e) {
                 e.printStackTrace();
                 return false;
@@ -417,10 +399,9 @@ public class Spawn2PLibrary extends Library {
             }
         } else {
             try {
-                op =
-                        TupleCentreContainer.doNonBlockingOperation(
-                                TucsonOperation.outAllCode(), this.tcid,
-                                this.target, arg, null);
+                op = TupleCentreContainer.doNonBlockingOperation(
+                        TucsonOperation.outAllCode(), this.tcid, this.target,
+                        arg, null);
             } catch (final TucsonInvalidLogicTupleException e) {
                 e.printStackTrace();
                 return false;
@@ -444,10 +425,9 @@ public class Spawn2PLibrary extends Library {
         final LogicTuple arg = new LogicTuple(arg0);
         if (this.aid != null) {
             try {
-                op =
-                        TupleCentreContainer.doNonBlockingOperation(
-                                TucsonOperation.rdCode(), this.aid,
-                                this.target, arg, null);
+                op = TupleCentreContainer.doNonBlockingOperation(
+                        TucsonOperation.rdCode(), this.aid, this.target, arg,
+                        null);
             } catch (final TucsonInvalidLogicTupleException e) {
                 e.printStackTrace();
                 return false;
@@ -457,10 +437,9 @@ public class Spawn2PLibrary extends Library {
             }
         } else {
             try {
-                op =
-                        TupleCentreContainer.doNonBlockingOperation(
-                                TucsonOperation.rdCode(), this.tcid,
-                                this.target, arg, null);
+                op = TupleCentreContainer.doNonBlockingOperation(
+                        TucsonOperation.rdCode(), this.tcid, this.target, arg,
+                        null);
             } catch (final TucsonInvalidLogicTupleException e) {
                 e.printStackTrace();
                 return false;
@@ -490,10 +469,9 @@ public class Spawn2PLibrary extends Library {
         final LogicTuple arg = new LogicTuple(arg0);
         if (this.aid != null) {
             try {
-                op =
-                        TupleCentreContainer.doNonBlockingOperation(
-                                TucsonOperation.rdAllCode(), this.aid,
-                                this.target, arg, null);
+                op = TupleCentreContainer.doNonBlockingOperation(
+                        TucsonOperation.rdAllCode(), this.aid, this.target,
+                        arg, null);
             } catch (final TucsonInvalidLogicTupleException e) {
                 e.printStackTrace();
                 return false;
@@ -503,10 +481,9 @@ public class Spawn2PLibrary extends Library {
             }
         } else {
             try {
-                op =
-                        TupleCentreContainer.doNonBlockingOperation(
-                                TucsonOperation.rdAllCode(), this.tcid,
-                                this.target, arg, null);
+                op = TupleCentreContainer.doNonBlockingOperation(
+                        TucsonOperation.rdAllCode(), this.tcid, this.target,
+                        arg, null);
             } catch (final TucsonInvalidLogicTupleException e) {
                 e.printStackTrace();
                 return false;
@@ -534,10 +511,9 @@ public class Spawn2PLibrary extends Library {
         final LogicTuple arg = new LogicTuple(arg0);
         if (this.aid != null) {
             try {
-                op =
-                        TupleCentreContainer.doNonBlockingOperation(
-                                TucsonOperation.rdpCode(), this.aid,
-                                this.target, arg, null);
+                op = TupleCentreContainer.doNonBlockingOperation(
+                        TucsonOperation.rdpCode(), this.aid, this.target, arg,
+                        null);
             } catch (final TucsonInvalidLogicTupleException e) {
                 e.printStackTrace();
                 return false;
@@ -547,10 +523,9 @@ public class Spawn2PLibrary extends Library {
             }
         } else {
             try {
-                op =
-                        TupleCentreContainer.doNonBlockingOperation(
-                                TucsonOperation.rdpCode(), this.tcid,
-                                this.target, arg, null);
+                op = TupleCentreContainer.doNonBlockingOperation(
+                        TucsonOperation.rdpCode(), this.tcid, this.target, arg,
+                        null);
             } catch (final TucsonInvalidLogicTupleException e) {
                 e.printStackTrace();
                 return false;
@@ -608,10 +583,9 @@ public class Spawn2PLibrary extends Library {
         final LogicTuple arg = new LogicTuple(arg0);
         if (this.aid != null) {
             try {
-                op =
-                        TupleCentreContainer.doNonBlockingOperation(
-                                TucsonOperation.uinCode(), this.aid,
-                                this.target, arg, null);
+                op = TupleCentreContainer.doNonBlockingOperation(
+                        TucsonOperation.uinCode(), this.aid, this.target, arg,
+                        null);
             } catch (final TucsonInvalidLogicTupleException e) {
                 e.printStackTrace();
                 return false;
@@ -621,10 +595,9 @@ public class Spawn2PLibrary extends Library {
             }
         } else {
             try {
-                op =
-                        TupleCentreContainer.doNonBlockingOperation(
-                                TucsonOperation.uinCode(), this.tcid,
-                                this.target, arg, null);
+                op = TupleCentreContainer.doNonBlockingOperation(
+                        TucsonOperation.uinCode(), this.tcid, this.target, arg,
+                        null);
             } catch (final TucsonInvalidLogicTupleException e) {
                 e.printStackTrace();
                 return false;
@@ -652,10 +625,9 @@ public class Spawn2PLibrary extends Library {
         final LogicTuple arg = new LogicTuple(arg0);
         if (this.aid != null) {
             try {
-                op =
-                        TupleCentreContainer.doNonBlockingOperation(
-                                TucsonOperation.uinpCode(), this.aid,
-                                this.target, arg, null);
+                op = TupleCentreContainer.doNonBlockingOperation(
+                        TucsonOperation.uinpCode(), this.aid, this.target, arg,
+                        null);
             } catch (final TucsonInvalidLogicTupleException e) {
                 e.printStackTrace();
                 return false;
@@ -665,10 +637,9 @@ public class Spawn2PLibrary extends Library {
             }
         } else {
             try {
-                op =
-                        TupleCentreContainer.doNonBlockingOperation(
-                                TucsonOperation.uinpCode(), this.tcid,
-                                this.target, arg, null);
+                op = TupleCentreContainer.doNonBlockingOperation(
+                        TucsonOperation.uinpCode(), this.tcid, this.target,
+                        arg, null);
             } catch (final TucsonInvalidLogicTupleException e) {
                 e.printStackTrace();
                 return false;
@@ -696,10 +667,9 @@ public class Spawn2PLibrary extends Library {
         final LogicTuple arg = new LogicTuple(arg0);
         if (this.aid != null) {
             try {
-                op =
-                        TupleCentreContainer.doNonBlockingOperation(
-                                TucsonOperation.unoCode(), this.aid,
-                                this.target, arg, null);
+                op = TupleCentreContainer.doNonBlockingOperation(
+                        TucsonOperation.unoCode(), this.aid, this.target, arg,
+                        null);
             } catch (final TucsonInvalidLogicTupleException e) {
                 e.printStackTrace();
                 return false;
@@ -709,10 +679,9 @@ public class Spawn2PLibrary extends Library {
             }
         } else {
             try {
-                op =
-                        TupleCentreContainer.doNonBlockingOperation(
-                                TucsonOperation.unoCode(), this.tcid,
-                                this.target, arg, null);
+                op = TupleCentreContainer.doNonBlockingOperation(
+                        TucsonOperation.unoCode(), this.tcid, this.target, arg,
+                        null);
             } catch (final TucsonInvalidLogicTupleException e) {
                 e.printStackTrace();
                 return false;
@@ -741,10 +710,9 @@ public class Spawn2PLibrary extends Library {
         final LogicTuple arg = new LogicTuple(arg0);
         if (this.aid != null) {
             try {
-                op =
-                        TupleCentreContainer.doNonBlockingOperation(
-                                TucsonOperation.unopCode(), this.aid,
-                                this.target, arg, null);
+                op = TupleCentreContainer.doNonBlockingOperation(
+                        TucsonOperation.unopCode(), this.aid, this.target, arg,
+                        null);
             } catch (final TucsonInvalidLogicTupleException e) {
                 e.printStackTrace();
                 return false;
@@ -754,10 +722,9 @@ public class Spawn2PLibrary extends Library {
             }
         } else {
             try {
-                op =
-                        TupleCentreContainer.doNonBlockingOperation(
-                                TucsonOperation.unopCode(), this.tcid,
-                                this.target, arg, null);
+                op = TupleCentreContainer.doNonBlockingOperation(
+                        TucsonOperation.unopCode(), this.tcid, this.target,
+                        arg, null);
             } catch (final TucsonInvalidLogicTupleException e) {
                 e.printStackTrace();
                 return false;
@@ -786,10 +753,9 @@ public class Spawn2PLibrary extends Library {
         final LogicTuple arg = new LogicTuple(arg0);
         if (this.aid != null) {
             try {
-                op =
-                        TupleCentreContainer.doNonBlockingOperation(
-                                TucsonOperation.urdCode(), this.aid,
-                                this.target, arg, null);
+                op = TupleCentreContainer.doNonBlockingOperation(
+                        TucsonOperation.urdCode(), this.aid, this.target, arg,
+                        null);
             } catch (final TucsonInvalidLogicTupleException e) {
                 e.printStackTrace();
                 return false;
@@ -799,10 +765,9 @@ public class Spawn2PLibrary extends Library {
             }
         } else {
             try {
-                op =
-                        TupleCentreContainer.doNonBlockingOperation(
-                                TucsonOperation.urdCode(), this.tcid,
-                                this.target, arg, null);
+                op = TupleCentreContainer.doNonBlockingOperation(
+                        TucsonOperation.urdCode(), this.tcid, this.target, arg,
+                        null);
             } catch (final TucsonInvalidLogicTupleException e) {
                 e.printStackTrace();
                 return false;
@@ -830,10 +795,9 @@ public class Spawn2PLibrary extends Library {
         final LogicTuple arg = new LogicTuple(arg0);
         if (this.aid != null) {
             try {
-                op =
-                        TupleCentreContainer.doNonBlockingOperation(
-                                TucsonOperation.urdpCode(), this.aid,
-                                this.target, arg, null);
+                op = TupleCentreContainer.doNonBlockingOperation(
+                        TucsonOperation.urdpCode(), this.aid, this.target, arg,
+                        null);
             } catch (final TucsonInvalidLogicTupleException e) {
                 e.printStackTrace();
                 return false;
@@ -843,10 +807,9 @@ public class Spawn2PLibrary extends Library {
             }
         } else {
             try {
-                op =
-                        TupleCentreContainer.doNonBlockingOperation(
-                                TucsonOperation.urdpCode(), this.tcid,
-                                this.target, arg, null);
+                op = TupleCentreContainer.doNonBlockingOperation(
+                        TucsonOperation.urdpCode(), this.tcid, this.target,
+                        arg, null);
             } catch (final TucsonInvalidLogicTupleException e) {
                 e.printStackTrace();
                 return false;
@@ -862,5 +825,4 @@ public class Spawn2PLibrary extends Library {
         }
         return false;
     }
-
 }

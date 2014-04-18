@@ -21,7 +21,6 @@ import alice.tucson.api.TucsonAgentId;
  * 
  */
 public class SetProtocolMsg extends NodeMsg {
-
     private static final long serialVersionUID = 7284025970406889712L;
     private InspectorProtocol info;
 
@@ -51,5 +50,4 @@ public class SetProtocolMsg extends NodeMsg {
     public void setInfo(final InspectorProtocol i) {
         this.info = i;
     }
-
 }

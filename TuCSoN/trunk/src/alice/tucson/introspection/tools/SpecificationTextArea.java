@@ -18,7 +18,6 @@
 package alice.tucson.introspection.tools;
 
 import java.awt.Color;
-
 import alice.util.jedit.DefaultInputHandler;
 import alice.util.jedit.SyntaxDocument;
 import alice.util.jedit.SyntaxStyle;
@@ -31,20 +30,18 @@ import alice.util.jedit.Token;
  * 
  */
 public class SpecificationTextArea extends TextAreaDefaults {
-
     private static SyntaxStyle[] getSyntaxStyles() {
         final SyntaxStyle[] styles = new SyntaxStyle[Token.ID_COUNT];
-        styles[Token.COMMENT1] =
-                new SyntaxStyle(new Color(0x808080), true, false);
-        styles[Token.COMMENT2] =
-                new SyntaxStyle(new Color(0x990033), true, false);
+        styles[Token.COMMENT1] = new SyntaxStyle(new Color(0x808080), true,
+                false);
+        styles[Token.COMMENT2] = new SyntaxStyle(new Color(0x990033), true,
+                false);
         styles[Token.KEYWORD1] = new SyntaxStyle(Color.blue, false, true);
         styles[Token.KEYWORD2] = new SyntaxStyle(Color.green, false, true);
         styles[Token.KEYWORD3] = new SyntaxStyle(Color.black, false, true);
         styles[Token.LITERAL1] = new SyntaxStyle(Color.BLUE, true, false);
         styles[Token.LITERAL2] = new SyntaxStyle(Color.BLUE, true, false);
-        styles[Token.LABEL] =
-                new SyntaxStyle(new Color(0x008000), false, false);
+        styles[Token.LABEL] = new SyntaxStyle(new Color(0x008000), false, false);
         styles[Token.OPERATOR] = new SyntaxStyle(Color.black, false, true);
         styles[Token.INVALID] = new SyntaxStyle(Color.red, false, false);
         return styles;
@@ -54,18 +51,14 @@ public class SpecificationTextArea extends TextAreaDefaults {
      * 
      */
     public SpecificationTextArea() {
-
         super();
-
         this.inputHandler = new DefaultInputHandler();
         this.inputHandler.addDefaultKeyBindings();
         this.document = new SyntaxDocument();
         this.editable = true;
-
         this.caretVisible = true;
         this.caretBlinks = true;
         this.electricScroll = 3;
-
         this.cols = 80;
         this.rows = 25;
         this.styles = SpecificationTextArea.getSyntaxStyles();
@@ -78,7 +71,5 @@ public class SpecificationTextArea extends TextAreaDefaults {
         this.eolMarkerColor = new Color(0x009999);
         this.eolMarkers = false;
         this.paintInvalid = true;
-
     }
-
 }

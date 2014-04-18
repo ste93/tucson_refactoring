@@ -20,7 +20,6 @@ package alice.tuplecentre.core;
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public class ResetState extends AbstractTupleCentreVMState {
-
     private AbstractTupleCentreVMState idleState;
 
     /**
@@ -55,5 +54,4 @@ public class ResetState extends AbstractTupleCentreVMState {
     public void resolveLinks() {
         this.idleState = this.vm.getState("IdleState");
     }
-
 }

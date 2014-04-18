@@ -22,12 +22,10 @@ import java.util.EventListener;
  * 
  */
 public interface InspectorContextListener extends EventListener {
-
     /**
      * 
      * @param msg
      *            the inspection event generated
      */
     void onContextEvent(InspectorContextEvent msg);
-
 }

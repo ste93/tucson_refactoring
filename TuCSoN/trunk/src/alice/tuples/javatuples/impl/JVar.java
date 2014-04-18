@@ -12,12 +12,10 @@ import alice.tuples.javatuples.exceptions.InvalidJVarException;
  * 
  */
 public class JVar implements IJVar {
-
     // private final String arg;
     private final JArgType type;
 
     // private IJVal val;
-
     /**
      * 
      * @param t
@@ -46,7 +44,6 @@ public class JVar implements IJVar {
     // }
     // throw new BindingNullJValException();
     // }
-
     /*
      * (non-Javadoc)
      * @see alice.tuples.javatuples.IJVar#getBoundVal()
@@ -54,7 +51,6 @@ public class JVar implements IJVar {
     // public IJVal getBoundVal() {
     // return this.val;
     // }
-
     /*
      * (non-Javadoc)
      * @see alice.tuples.javatuples.IJVar#getName()
@@ -62,7 +58,6 @@ public class JVar implements IJVar {
     // public String getName() {
     // return this.arg;
     // }
-
     /*
      * (non-Javadoc)
      * @see alice.tuples.javatuples.IJVar#getType()
@@ -117,5 +112,4 @@ public class JVar implements IJVar {
         // }
         // return null;
     }
-
 }

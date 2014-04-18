@@ -14,7 +14,6 @@
 package alice.tuplecentre.core;
 
 import java.util.Map;
-
 import alice.tuplecentre.api.IId;
 import alice.tuplecentre.api.TupleCentreId;
 
@@ -26,7 +25,6 @@ import alice.tuplecentre.api.TupleCentreId;
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public class InputEvent extends AbstractEvent {
-
     private static final long serialVersionUID = -6321543805920861915L;
     private boolean isLnk;
 
@@ -105,5 +103,4 @@ public class InputEvent extends AbstractEvent {
                 + this.getSimpleTCEvent() + ", " + "trg: " + this.getTarget()
                 + ", " + "tc: " + this.getReactingTC() + " ]";
     }
-
 }

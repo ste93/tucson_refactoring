@@ -12,7 +12,6 @@ import alice.tuplecentre.api.exceptions.InvalidTupleException;
  * 
  */
 public interface IJTupleTemplate extends TupleTemplate {
-
     /**
      * 
      * @param arg
@@ -38,5 +37,4 @@ public interface IJTupleTemplate extends TupleTemplate {
      * @return the number of JArg in this JTupleTemplate
      */
     int getNArgs();
-
 }

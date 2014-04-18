@@ -18,7 +18,6 @@ package alice.tuplecentre.core;
  * 
  */
 public class ObservableEventExt extends InspectableEvent {
-
     /**
      * 
      */
@@ -39,5 +38,4 @@ public class ObservableEventExt extends InspectableEvent {
     public ObservableEventExt(final Object src, final int code) {
         super(src, code);
     }
-
 }

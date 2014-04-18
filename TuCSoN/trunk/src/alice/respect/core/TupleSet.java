@@ -18,7 +18,6 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
-
 import alice.logictuple.LogicTuple;
 import alice.tuprolog.Var;
 
@@ -31,7 +30,6 @@ import alice.tuprolog.Var;
  * 
  */
 public class TupleSet {
-
     private final List<LogicTuple> tAdded;
     private boolean transaction;
     private final List<LogicTuple> tRemoved;
@@ -212,5 +210,4 @@ public class TupleSet {
         }
         return str;
     }
-
 }

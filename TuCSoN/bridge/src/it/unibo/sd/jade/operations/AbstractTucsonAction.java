@@ -15,7 +15,6 @@ import alice.tuplecentre.api.exceptions.OperationTimeOutException;
  * 
  */
 public abstract class AbstractTucsonAction {
-
     /**
      * 
      */
@@ -71,7 +70,6 @@ public abstract class AbstractTucsonAction {
     public abstract ITucsonOperation executeSynch(EnhancedSynchACC acc,
             Long timeout) throws TucsonOperationNotPossibleException,
             UnreachableNodeException, OperationTimeOutException;
-
     // /**
     // *
     // * @return the TuCSoN tuple centre id target of the coordination operation

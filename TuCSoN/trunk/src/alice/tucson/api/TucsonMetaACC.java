@@ -25,7 +25,6 @@ import alice.tucson.service.ACCProxyAgentSide;
  * 
  */
 public final class TucsonMetaACC {
-
     private static final int DEFAULT_PORT = 20504;
 
     /**
@@ -81,5 +80,4 @@ public final class TucsonMetaACC {
          * 
          */
     }
-
 }

@@ -6,7 +6,6 @@ package alice.tuples.javatuples.impl;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
 import alice.tuplecentre.api.exceptions.InvalidOperationException;
 import alice.tuplecentre.api.exceptions.InvalidTupleException;
 import alice.tuples.javatuples.api.IJTuple;
@@ -17,7 +16,6 @@ import alice.tuples.javatuples.api.IJVal;
  * 
  */
 public class JTuple implements Iterable<IJVal>, IJTuple {
-
     private static final int AVG_CAP = 5;
     private static final int AVG_CHARS = 15;
     private List<IJVal> args;
@@ -79,8 +77,8 @@ public class JTuple implements Iterable<IJVal>, IJTuple {
      */
     @Override
     public String toString() {
-        final StringBuffer sb =
-                new StringBuffer(JTuple.AVG_CAP * JTuple.AVG_CHARS);
+        final StringBuffer sb = new StringBuffer(JTuple.AVG_CAP
+                * JTuple.AVG_CHARS);
         sb.append("< ");
         for (final IJVal arg : this.args) {
             sb.append(arg.toString());

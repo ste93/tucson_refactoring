@@ -8,7 +8,6 @@ import jade.core.SliceProxy;
  * 
  */
 public class TucsonServiceProxy extends SliceProxy implements TucsonSlice {
-
     /**
      * Default serialVersionUID
      */

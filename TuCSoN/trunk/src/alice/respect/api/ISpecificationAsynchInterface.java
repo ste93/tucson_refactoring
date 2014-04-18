@@ -14,7 +14,6 @@ import alice.tuplecentre.core.OperationCompletionListener;
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public interface ISpecificationAsynchInterface {
-
     /**
      * 
      * @param aid
@@ -45,9 +44,8 @@ public interface ISpecificationAsynchInterface {
      * @throws OperationNotPossibleException
      *             if the operation requested cannot be carried out
      */
-    IRespectOperation
-            inpS(IId aid, LogicTuple t, OperationCompletionListener l)
-                    throws InvalidTupleException, OperationNotPossibleException;
+    IRespectOperation inpS(IId aid, LogicTuple t, OperationCompletionListener l)
+            throws InvalidTupleException, OperationNotPossibleException;
 
     /**
      * 
@@ -80,9 +78,8 @@ public interface ISpecificationAsynchInterface {
      * @throws OperationNotPossibleException
      *             if the operation requested cannot be carried out
      */
-    IRespectOperation
-            nopS(IId aid, LogicTuple t, OperationCompletionListener l)
-                    throws InvalidTupleException, OperationNotPossibleException;
+    IRespectOperation nopS(IId aid, LogicTuple t, OperationCompletionListener l)
+            throws InvalidTupleException, OperationNotPossibleException;
 
     /**
      * 
@@ -115,9 +112,8 @@ public interface ISpecificationAsynchInterface {
      * @throws OperationNotPossibleException
      *             if the operation requested cannot be carried out
      */
-    IRespectOperation
-            outS(IId aid, LogicTuple t, OperationCompletionListener l)
-                    throws InvalidTupleException, OperationNotPossibleException;
+    IRespectOperation outS(IId aid, LogicTuple t, OperationCompletionListener l)
+            throws InvalidTupleException, OperationNotPossibleException;
 
     /**
      * 
@@ -133,9 +129,8 @@ public interface ISpecificationAsynchInterface {
      * @throws OperationNotPossibleException
      *             if the operation requested cannot be carried out
      */
-    IRespectOperation
-            rdpS(IId aid, LogicTuple t, OperationCompletionListener l)
-                    throws InvalidTupleException, OperationNotPossibleException;
+    IRespectOperation rdpS(IId aid, LogicTuple t, OperationCompletionListener l)
+            throws InvalidTupleException, OperationNotPossibleException;
 
     /**
      * 
@@ -171,5 +166,4 @@ public interface ISpecificationAsynchInterface {
     IRespectOperation setS(IId aid, RespectSpecification spec,
             OperationCompletionListener l) throws InvalidTupleException,
             OperationNotPossibleException;
-
 }

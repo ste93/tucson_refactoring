@@ -8,7 +8,6 @@ import alice.tuplecentre.api.TupleCentreId;
  * 
  */
 public interface IRemoteLinkProvider {
-
     /**
      * 
      * @param id
@@ -16,5 +15,4 @@ public interface IRemoteLinkProvider {
      * @return the linking context toward the target tuple centre
      */
     ILinkContext getRemoteLinkContext(TupleCentreId id);
-
 }

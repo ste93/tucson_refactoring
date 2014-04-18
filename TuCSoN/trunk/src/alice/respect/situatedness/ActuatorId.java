@@ -7,7 +7,6 @@ package alice.respect.situatedness;
  * 
  */
 public class ActuatorId extends AbstractProbeId {
-
     private static final long serialVersionUID = 4412594143980641593L;
 
     /**
@@ -28,5 +27,4 @@ public class ActuatorId extends AbstractProbeId {
     public boolean isSensor() {
         return false;
     }
-
 }

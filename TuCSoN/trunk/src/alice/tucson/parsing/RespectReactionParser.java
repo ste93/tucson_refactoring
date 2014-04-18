@@ -11,7 +11,6 @@ import alice.util.Tools;
  * 
  */
 public class RespectReactionParser {
-
     private static boolean bigFatCondition(final TupleArgument arg)
             throws InvalidOperationException {
         return "request".equals(arg.getName())
@@ -48,9 +47,7 @@ public class RespectReactionParser {
     private boolean flag;
     private int nGuards;
     private int nTimes;
-
     private String spec;
-
     private final LogicTuple t;
 
     /**
@@ -91,13 +88,11 @@ public class RespectReactionParser {
         try {
             if ("[]".equals(arg.toString())) {
                 if (this.nTimes == 1) {
-                    this.spec =
-                            (this.spec.substring(0, this.spec.length() - 1))
-                                    + ")).'";
+                    this.spec = this.spec.substring(0, this.spec.length() - 1)
+                            + ")).'";
                 } else {
-                    this.spec =
-                            (this.spec.substring(0, this.spec.length() - 1))
-                                    + ".'";
+                    this.spec = this.spec.substring(0, this.spec.length() - 1)
+                            + ".'";
                 }
             } else if (",".equals(Tools.removeApices(arg.getName()))) {
                 for (int i = 0; i < arg.getArity(); i++) {
@@ -106,8 +101,8 @@ public class RespectReactionParser {
                 if (this.flag) {
                     this.nTimes++;
                     if (this.nTimes == 1) {
-                        this.spec =
-                                this.spec.substring(0, this.spec.length() - 1);
+                        this.spec = this.spec.substring(0,
+                                this.spec.length() - 1);
                         this.spec += ")).";
                     }
                 }
@@ -132,8 +127,8 @@ public class RespectReactionParser {
                     if (this.nGuards > 0) {
                         this.nGuards = 0;
                         this.flag = true;
-                        this.spec =
-                                this.spec.substring(0, this.spec.length() - 1);
+                        this.spec = this.spec.substring(0,
+                                this.spec.length() - 1);
                         this.spec += "),(" + arg + ",";
                     } else {
                         this.spec += arg + ",";
@@ -144,5 +139,4 @@ public class RespectReactionParser {
             e.printStackTrace();
         }
     }
-
 }

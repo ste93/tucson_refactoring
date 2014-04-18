@@ -1,7 +1,6 @@
 package alice.respect.api;
 
 import java.util.List;
-
 import alice.logictuple.LogicTuple;
 import alice.respect.api.exceptions.OperationNotPossibleException;
 import alice.tuplecentre.api.IId;
@@ -15,7 +14,6 @@ import alice.tuplecentre.api.exceptions.InvalidTupleException;
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public interface IOrdinarySynchInterface {
-
     /**
      * 
      * @param aid
@@ -313,5 +311,4 @@ public interface IOrdinarySynchInterface {
      */
     LogicTuple urdp(IId aid, LogicTuple t) throws InvalidTupleException,
             OperationNotPossibleException;
-
 }

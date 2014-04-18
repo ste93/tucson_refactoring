@@ -24,7 +24,6 @@ import alice.tuplecentre.api.ObservableEventListener;
  * @author Alessandro Ricci
  */
 public interface NodeServiceListener extends ObservableEventListener {
-
     /**
      * Reacts to ACC release from node to agent.
      * 
@@ -56,5 +55,4 @@ public interface NodeServiceListener extends ObservableEventListener {
      *            the destroyed tuplecentre identifier
      */
     void tcDestroyed(TucsonTupleCentreId tid);
-
 }

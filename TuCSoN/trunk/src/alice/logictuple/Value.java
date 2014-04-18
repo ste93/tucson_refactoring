@@ -23,7 +23,6 @@ package alice.logictuple;
  * @author Alessandro Ricci
  */
 public class Value extends TupleArgument {
-
     /**
      * 
      */
@@ -131,9 +130,8 @@ public class Value extends TupleArgument {
     public Value(final String f, final TupleArgument at0,
             final TupleArgument at1, final TupleArgument at2) {
         super();
-        this.value =
-                new alice.tuprolog.Struct(f, at0.toTerm(), at1.toTerm(),
-                        at2.toTerm());
+        this.value = new alice.tuprolog.Struct(f, at0.toTerm(), at1.toTerm(),
+                at2.toTerm());
     }
 
     /**
@@ -155,9 +153,8 @@ public class Value extends TupleArgument {
             final TupleArgument at1, final TupleArgument at2,
             final TupleArgument at3) {
         super();
-        this.value =
-                new alice.tuprolog.Struct(f, at0.toTerm(), at1.toTerm(),
-                        at2.toTerm(), at3.toTerm());
+        this.value = new alice.tuprolog.Struct(f, at0.toTerm(), at1.toTerm(),
+                at2.toTerm(), at3.toTerm());
     }
 
     /**
@@ -181,9 +178,8 @@ public class Value extends TupleArgument {
             final TupleArgument at1, final TupleArgument at2,
             final TupleArgument at3, final TupleArgument at4) {
         super();
-        this.value =
-                new alice.tuprolog.Struct(f, at0.toTerm(), at1.toTerm(),
-                        at2.toTerm(), at3.toTerm(), at4.toTerm());
+        this.value = new alice.tuprolog.Struct(f, at0.toTerm(), at1.toTerm(),
+                at2.toTerm(), at3.toTerm(), at4.toTerm());
     }
 
     /**
@@ -210,9 +206,8 @@ public class Value extends TupleArgument {
             final TupleArgument at3, final TupleArgument at4,
             final TupleArgument at5) {
         super();
-        this.value =
-                new alice.tuprolog.Struct(f, at0.toTerm(), at1.toTerm(),
-                        at2.toTerm(), at3.toTerm(), at4.toTerm(), at5.toTerm());
+        this.value = new alice.tuprolog.Struct(f, at0.toTerm(), at1.toTerm(),
+                at2.toTerm(), at3.toTerm(), at4.toTerm(), at5.toTerm());
     }
 
     /**
@@ -241,10 +236,9 @@ public class Value extends TupleArgument {
             final TupleArgument at3, final TupleArgument at4,
             final TupleArgument at5, final TupleArgument at6) {
         super();
-        this.value =
-                new alice.tuprolog.Struct(f, at0.toTerm(), at1.toTerm(),
-                        at2.toTerm(), at3.toTerm(), at4.toTerm(), at5.toTerm(),
-                        at6.toTerm());
+        this.value = new alice.tuprolog.Struct(f, at0.toTerm(), at1.toTerm(),
+                at2.toTerm(), at3.toTerm(), at4.toTerm(), at5.toTerm(),
+                at6.toTerm());
     }
 
     /**
@@ -258,8 +252,7 @@ public class Value extends TupleArgument {
      */
     public Value(final String f, final TupleArgument[] argList) {
         super();
-        final alice.tuprolog.Term[] list =
-                new alice.tuprolog.Term[argList.length];
+        final alice.tuprolog.Term[] list = new alice.tuprolog.Term[argList.length];
         for (int i = 0; i < list.length; i++) {
             list[i] = argList[i].toTerm();
         }
@@ -274,12 +267,10 @@ public class Value extends TupleArgument {
      */
     public Value(final TupleArgument[] argList) {
         super();
-        final alice.tuprolog.Term[] list =
-                new alice.tuprolog.Term[argList.length];
+        final alice.tuprolog.Term[] list = new alice.tuprolog.Term[argList.length];
         for (int i = 0; i < list.length; i++) {
             list[i] = argList[i].toTerm();
         }
         this.value = new alice.tuprolog.Struct(list);
     }
-
 }

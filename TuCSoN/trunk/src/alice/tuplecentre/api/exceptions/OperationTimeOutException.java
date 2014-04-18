@@ -19,7 +19,5 @@ package alice.tuplecentre.api.exceptions;
  * @author Alessandro Ricci
  */
 public class OperationTimeOutException extends Exception {
-
     private static final long serialVersionUID = -8964988995107906719L;
-
 }

@@ -19,7 +19,5 @@ package alice.tucson.api.exceptions;
  * 
  */
 public class UnreachableNodeException extends Exception {
-
     private static final long serialVersionUID = -6521929430059926716L;
-
 }

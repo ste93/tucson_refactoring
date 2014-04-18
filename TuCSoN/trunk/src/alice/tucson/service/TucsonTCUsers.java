@@ -16,7 +16,6 @@ package alice.tucson.service;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
-
 import alice.tucson.api.TucsonAgentId;
 import alice.tucson.api.TucsonTupleCentreId;
 
@@ -26,7 +25,6 @@ import alice.tucson.api.TucsonTupleCentreId;
  * 
  */
 public class TucsonTCUsers {
-
     private final Date creationDate;
     private final List<TucsonAgentId> currentAidUsers;
     private final TucsonTupleCentreId tid;
@@ -93,5 +91,4 @@ public class TucsonTCUsers {
             }
         }
     }
-
 }

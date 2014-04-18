@@ -18,7 +18,6 @@ import alice.tuplecentre.core.AbstractTupleCentreOperation;
  * 
  */
 public class DiningPhilosopher extends AbstractTucsonAgent {
-
     private static final int EATING_TIME = 5000;
     private static final int THINKING_TIME = 5000;
     private final TucsonTupleCentreId mySeat;
@@ -80,9 +79,8 @@ public class DiningPhilosopher extends AbstractTucsonAgent {
         // Ugly but effective, pardon me...
         while (true) {
             try {
-                op =
-                        acc.rd(this.mySeat,
-                                LogicTuple.parse("philosopher(thinking)"), null);
+                op = acc.rd(this.mySeat,
+                        LogicTuple.parse("philosopher(thinking)"), null);
                 if (op.isResultSuccess()) {
                     this.say("Now thinking...");
                     this.think();
@@ -91,9 +89,8 @@ public class DiningPhilosopher extends AbstractTucsonAgent {
                 }
                 this.say("I'm hungry, let's try to eat something...");
                 acc.out(this.mySeat, LogicTuple.parse("wanna_eat"), null);
-                op =
-                        acc.rd(this.mySeat,
-                                LogicTuple.parse("philosopher(eating)"), null);
+                op = acc.rd(this.mySeat,
+                        LogicTuple.parse("philosopher(eating)"), null);
                 if (op.isResultSuccess()) {
                     this.eating();
                     this.say("I'm done, wonderful meal :)");
@@ -112,5 +109,4 @@ public class DiningPhilosopher extends AbstractTucsonAgent {
             }
         }
     }
-
 }

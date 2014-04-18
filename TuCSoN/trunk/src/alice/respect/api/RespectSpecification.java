@@ -20,7 +20,6 @@ import alice.tuplecentre.core.AbstractBehaviourSpecification;
  * @author Alessandro Ricci
  */
 public class RespectSpecification extends AbstractBehaviourSpecification {
-
     private final String spec;
 
     /**
@@ -37,5 +36,4 @@ public class RespectSpecification extends AbstractBehaviourSpecification {
     public String toString() {
         return this.spec;
     }
-
 }

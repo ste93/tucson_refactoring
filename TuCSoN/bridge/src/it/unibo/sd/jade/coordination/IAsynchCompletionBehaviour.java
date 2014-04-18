@@ -11,7 +11,6 @@ import alice.tucson.service.TucsonOpCompletionEvent;
  * 
  */
 public interface IAsynchCompletionBehaviour {
-
     /**
      * 
      * @param ev

@@ -16,7 +16,6 @@ package alice.tucson.introspection;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 import alice.tucson.api.TucsonAgentId;
 import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.api.exceptions.OperationNotAllowedException;
@@ -35,7 +34,6 @@ import alice.tuplecentre.api.Tuple;
  * 
  */
 public class InspectorContextStub implements InspectorContext {
-
     /**
      * @param msg
      */
@@ -44,21 +42,14 @@ public class InspectorContextStub implements InspectorContext {
     }
 
     /** listeners registrated for virtual machine output events */
-    private final List<InspectorContextListener> contextListeners =
-            new ArrayList<InspectorContextListener>();
-
+    private final List<InspectorContextListener> contextListeners = new ArrayList<InspectorContextListener>();
     private AbstractTucsonProtocol dialog;
-
     private boolean exitFlag;
-
     /** user id */
     private final TucsonAgentId id;
-
     private final ACCDescription profile;
-
     /** current observation protocol */
     private InspectorProtocol protocol;
-
     /** id of the tuple centre to be observed */
     protected TucsonTupleCentreId tid;
 
@@ -87,10 +78,11 @@ public class InspectorContextStub implements InspectorContext {
         this.exitFlag = false;
     }
 
+    @Override
     public void acceptVMEvent() {
         try {
-            final InspectorContextEvent msg =
-                    this.dialog.receiveInspectorEvent();
+            final InspectorContextEvent msg = this.dialog
+                    .receiveInspectorEvent();
             for (int i = 0; i < this.contextListeners.size(); i++) {
                 this.contextListeners.get(i).onContextEvent(msg);
             }
@@ -101,10 +93,12 @@ public class InspectorContextStub implements InspectorContext {
         }
     }
 
+    @Override
     public void addInspectorContextListener(final InspectorContextListener l) {
         this.contextListeners.add(l);
     }
 
+    @Override
     public void exit() throws IOException {
         this.exitFlag = true;
         try {
@@ -114,6 +108,7 @@ public class InspectorContextStub implements InspectorContext {
         }
     }
 
+    @Override
     public void getSnapshot(final byte snapshotMsg) throws IOException {
         try {
             this.dialog.sendNodeMsg(new GetSnapshotMsg(this.id, snapshotMsg));
@@ -122,10 +117,12 @@ public class InspectorContextStub implements InspectorContext {
         }
     }
 
+    @Override
     public TucsonTupleCentreId getTid() {
         return this.tid;
     }
 
+    @Override
     public void nextStep() throws IOException {
         try {
             this.dialog.sendNodeMsg(new NextStepMsg(this.id));
@@ -134,11 +131,12 @@ public class InspectorContextStub implements InspectorContext {
         }
     }
 
-    public void
-            removeInspectorContextListener(final InspectorContextListener l) {
+    @Override
+    public void removeInspectorContextListener(final InspectorContextListener l) {
         this.contextListeners.remove(l);
     }
 
+    @Override
     public void reset() throws IOException {
         try {
             this.dialog.sendNodeMsg(new ResetMsg(this.id));
@@ -147,6 +145,7 @@ public class InspectorContextStub implements InspectorContext {
         }
     }
 
+    @Override
     public void setEventSet(final List<Tuple> wset) throws IOException {
         try {
             this.dialog.sendNodeMsg(new SetEventSetMsg(this.id, wset));
@@ -155,6 +154,7 @@ public class InspectorContextStub implements InspectorContext {
         }
     }
 
+    @Override
     public void setProtocol(final InspectorProtocol p) throws IOException {
         final InspectorProtocol newp = new InspectorProtocol();
         newp.setTsetObservType(p.getTsetObservType());
@@ -171,6 +171,7 @@ public class InspectorContextStub implements InspectorContext {
         this.protocol = p;
     }
 
+    @Override
     public void setTupleSet(final List<Tuple> tset) throws IOException {
         try {
             this.dialog.sendNodeMsg(new SetTupleSetMsg(this.id, tset));
@@ -187,7 +188,6 @@ public class InspectorContextStub implements InspectorContext {
     private AbstractTucsonProtocol getTupleCentreInfo(
             final TucsonTupleCentreId tc) throws UnreachableNodeException,
             OperationNotAllowedException {
-
         try {
             final String node = alice.util.Tools.removeApices(tc.getNode());
             final int port = tc.getPort();
@@ -196,9 +196,8 @@ public class InspectorContextStub implements InspectorContext {
             this.dialog.receiveEnterRequestAnswer();
             if (this.dialog.isEnterRequestAccepted()) {
                 this.protocol = new InspectorProtocol();
-                final NewInspectorMsg msg =
-                        new NewInspectorMsg(this.id, tc.getName(),
-                                this.protocol);
+                final NewInspectorMsg msg = new NewInspectorMsg(this.id,
+                        tc.getName(), this.protocol);
                 this.dialog.sendInspectorMsg(msg);
                 return this.dialog;
             }
@@ -209,9 +208,7 @@ public class InspectorContextStub implements InspectorContext {
         } catch (final DialogException e) {
             e.printStackTrace();
         }
-
         throw new alice.tucson.api.exceptions.OperationNotAllowedException();
-
     }
 
     /**
@@ -229,5 +226,4 @@ public class InspectorContextStub implements InspectorContext {
             e.printStackTrace();
         }
     }
-
 }

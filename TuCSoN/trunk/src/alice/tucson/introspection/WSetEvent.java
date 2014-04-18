@@ -1,7 +1,6 @@
 package alice.tucson.introspection;
 
 import java.io.Serializable;
-
 import alice.logictuple.LogicTuple;
 import alice.tuplecentre.api.IId;
 
@@ -12,7 +11,6 @@ import alice.tuplecentre.api.IId;
  * 
  */
 public class WSetEvent implements Serializable {
-
     /**
      * 
      */
@@ -80,5 +78,4 @@ public class WSetEvent implements Serializable {
     public void setTarget(final IId t) {
         this.target = t;
     }
-
 }

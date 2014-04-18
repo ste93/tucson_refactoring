@@ -3,7 +3,6 @@ package alice.respect.situatedness;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-
 import alice.logictuple.LogicTuple;
 import alice.logictuple.Value;
 import alice.respect.core.InternalEvent;
@@ -31,20 +30,16 @@ import alice.tuplecentre.api.exceptions.InvalidOperationException;
  */
 public abstract class AbstractTransducer implements
         TransducerStandardInterface, TucsonOperationCompletionListener {
-
     /** 'sensing' operation ('getEnv') */
     public static final int GET_MODE = 0;
     /** 'acting' operation ('setEnv') */
     public static final int SET_MODE = 1;
-
     /** Class used to perform requested operation to the tuple centre **/
     protected OperationHandler executor;
     /** Transducer's identifier **/
     protected TransducerId id;
-
     /** List of probes associated to the transducer **/
     protected Map<AbstractProbeId, Object> probes;
-
     /** Identifier of the tuple centre associated **/
     protected TupleCentreId tcId;
 
@@ -82,38 +77,29 @@ public abstract class AbstractTransducer implements
      * Exit procedure, called to end a session of communication
      */
     public synchronized void exit() {
-
-        final Iterator<OperationHandler.ControllerSession> it =
-                this.executor.getControllerSessions().values().iterator();
+        final Iterator<OperationHandler.ControllerSession> it = this.executor
+                .getControllerSessions().values().iterator();
         OperationHandler.ControllerSession cs;
         AbstractTucsonProtocol info;
         OperationHandler.Controller contr;
         TucsonOperation op;
         TucsonMsgRequest exit;
-
         while (it.hasNext()) {
-
             cs = it.next();
             info = cs.getSession();
             contr = cs.getController();
             contr.setStop();
-
-            op =
-                    new TucsonOperation(TucsonOperation.exitCode(),
-                            (TupleTemplate) null, null, this.executor);
+            op = new TucsonOperation(TucsonOperation.exitCode(),
+                    (TupleTemplate) null, null, this.executor);
             this.executor.addOperation(op.getId(), op);
-
-            exit =
-                    new TucsonMsgRequest((int) op.getId(), op.getType(), null,
-                            op.getLogicTupleArgument());
+            exit = new TucsonMsgRequest((int) op.getId(), op.getType(), null,
+                    op.getLogicTupleArgument());
             try {
                 info.sendMsgRequest(exit);
             } catch (final DialogException e) {
                 e.printStackTrace();
             }
-
         }
-
     }
 
     /**
@@ -131,6 +117,7 @@ public abstract class AbstractTransducer implements
      * 
      * @return the transducer's identifier
      */
+    @Override
     public TransducerId getIdentifier() {
         return this.id;
     }
@@ -140,6 +127,7 @@ public abstract class AbstractTransducer implements
      * 
      * @return array of the probes associated to the transducer
      */
+    @Override
     public AbstractProbeId[] getProbes() {
         final Object[] keySet = this.probes.keySet().toArray();
         final AbstractProbeId[] probeList = new AbstractProbeId[keySet.length];
@@ -154,6 +142,7 @@ public abstract class AbstractTransducer implements
      * 
      * @return the tuple centre identifier.
      */
+    @Override
     public TupleCentreId getTCId() {
         return this.tcId;
     }
@@ -174,18 +163,18 @@ public abstract class AbstractTransducer implements
      * @throws TucsonOperationNotPossibleException
      *             if the requested operation cannot be successfully carried out
      */
-    public void
-            notifyEnvEvent(final String key, final int value, final int mod)
-                    throws TucsonOperationNotPossibleException,
-                    UnreachableNodeException {
+    @Override
+    public void notifyEnvEvent(final String key, final int value, final int mod)
+            throws TucsonOperationNotPossibleException,
+            UnreachableNodeException {
         if (mod == AbstractTransducer.GET_MODE) {
-            final LogicTuple tupla =
-                    new LogicTuple("getEnv", new Value(key), new Value(value));
+            final LogicTuple tupla = new LogicTuple("getEnv", new Value(key),
+                    new Value(value));
             this.executor.doNonBlockingOperation(this.id,
                     RespectOperation.OPTYPE_GET_ENV, this.tcId, tupla, this);
         } else if (mod == AbstractTransducer.SET_MODE) {
-            final LogicTuple tupla =
-                    new LogicTuple("setEnv", new Value(key), new Value(value));
+            final LogicTuple tupla = new LogicTuple("setEnv", new Value(key),
+                    new Value(value));
             this.executor.doNonBlockingOperation(this.id,
                     RespectOperation.OPTYPE_SET_ENV, this.tcId, tupla, this);
         }
@@ -203,18 +192,17 @@ public abstract class AbstractTransducer implements
      * @return true if the operation required is getEnv or setEnv and it's been
      *         successfully executed.
      */
+    @Override
     public boolean notifyOutput(final InternalEvent ev) {
         try {
             if (ev.getInternalOperation().isGetEnv()) {
                 return this.getEnv(ev.getInternalOperation().getArgument()
                         .getArg(0).toString());
             } else if (ev.getInternalOperation().isSetEnv()) {
-                final String key =
-                        ev.getInternalOperation().getArgument().getArg(0)
-                                .toString();
-                final int value =
-                        Integer.parseInt(ev.getInternalOperation()
-                                .getArgument().getArg(1).toString());
+                final String key = ev.getInternalOperation().getArgument()
+                        .getArg(0).toString();
+                final int value = Integer.parseInt(ev.getInternalOperation()
+                        .getArgument().getArg(1).toString());
                 return this.setEnv(key, value);
             }
         } catch (final InvalidOperationException e) {
@@ -258,7 +246,6 @@ public abstract class AbstractTransducer implements
      * ==================================
      * =======================================================
      */
-
     /**
      * Utility methods used to communicate an output message to the console.
      * 

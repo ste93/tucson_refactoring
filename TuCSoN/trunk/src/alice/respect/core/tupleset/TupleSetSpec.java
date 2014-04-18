@@ -13,7 +13,6 @@
 package alice.respect.core.tupleset;
 
 import java.util.LinkedList;
-
 import alice.logictuple.LogicTuple;
 import alice.logictuple.TupleArgument;
 import alice.respect.core.collection.DoubleKeyMVMap;
@@ -27,12 +26,10 @@ import alice.tuplecentre.api.exceptions.InvalidTupleException;
  * 
  */
 public class TupleSetSpec extends AbstractTupleSet {
-
     // TODO CICORA: ha senso avere due reaction perfettamente uguali nella
     // lista?
     // due normali tuple devono rimanere distinte anche se sono identiche, ma
     // per le reaction potrebbe essere un problema.
-
     /**
      * 
      */
@@ -58,7 +55,6 @@ public class TupleSetSpec extends AbstractTupleSet {
     public String getTupleKey2(final LogicTuple t) throws InvalidTupleException {
         try {
             final TupleArgument eventArg = t.getArg(0).getArg(0);
-
             if (eventArg.isNumber()) {
                 return eventArg.toString();
             } else if (eventArg.isVar()) {
@@ -66,10 +62,8 @@ public class TupleSetSpec extends AbstractTupleSet {
             } else {
                 return eventArg.getPredicateIndicator();
             }
-
         } catch (final InvalidOperationException e) {
             throw new InvalidTupleException();
         }
     }
-
 }

@@ -1,7 +1,6 @@
 package alice.respect.api;
 
 import java.util.List;
-
 import alice.logictuple.LogicTuple;
 
 /**
@@ -12,7 +11,6 @@ import alice.logictuple.LogicTuple;
  */
 public interface IRespectOperation extends
         alice.tuplecentre.api.ITupleCentreOperation {
-
     /**
      * Gets the argument of the operation
      * 
@@ -57,5 +55,4 @@ public interface IRespectOperation extends
      * @return <code>true</code> if this is a time operation
      */
     boolean isTime();
-
 }

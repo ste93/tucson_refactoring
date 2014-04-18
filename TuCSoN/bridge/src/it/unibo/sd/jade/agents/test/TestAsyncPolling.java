@@ -19,9 +19,7 @@ import alice.tucson.service.TucsonOpCompletionEvent;
  * 
  */
 public class TestAsyncPolling extends Agent {
-
     private class TucsonTestBehaviour extends SimpleBehaviour {
-
         /**
          * 
          */
@@ -31,25 +29,23 @@ public class TestAsyncPolling extends Agent {
         public void action() {
             try {
                 System.out.println("Hello, i am " + this.myAgent.getName());
-                final TucsonHelper helper =
-                        (TucsonHelper) TestAsyncPolling.this
-                                .getHelper(TucsonService.NAME);
+                final TucsonHelper helper = (TucsonHelper) TestAsyncPolling.this
+                        .getHelper(TucsonService.NAME);
                 // Ottengo ACC
                 helper.acquireACC(this.myAgent);
                 // Creo operazione
-                final TucsonTupleCentreId tcid =
-                        helper.getTucsonTupleCentreId("default", "localhost",
-                                20504);
+                final TucsonTupleCentreId tcid = helper.getTucsonTupleCentreId(
+                        "default", "localhost", 20504);
                 final LogicTuple tuple = LogicTuple.parse("nome(X)");
                 final Rd op = new Rd(tcid, tuple);
-                final BridgeToTucson bridge =
-                        helper.getBridgeToTucson(this.myAgent);
-                final AsynchTucsonOpResult result =
-                        bridge.asynchronousInvocation(op);
+                final BridgeToTucson bridge = helper
+                        .getBridgeToTucson(this.myAgent);
+                final AsynchTucsonOpResult result = bridge
+                        .asynchronousInvocation(op);
                 // controllo a polling se l'operazione è stata completata o meno
                 while (!TestAsyncPolling.this.done) {
-                    final TucsonOpCompletionEvent ev =
-                            result.getTucsonCompletionEvent(result.getOpId());
+                    final TucsonOpCompletionEvent ev = result
+                            .getTucsonCompletionEvent(result.getOpId());
                     if (ev != null) { // risultato operazione acquisito
                         // gestione risultato
                         TestAsyncPolling.this.log("\n\n\n\n Result = "

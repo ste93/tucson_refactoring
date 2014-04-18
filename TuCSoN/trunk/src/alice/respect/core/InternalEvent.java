@@ -22,7 +22,6 @@ import alice.tuplecentre.core.InputEvent;
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public class InternalEvent extends alice.tuplecentre.core.AbstractEvent {
-
     private static final long serialVersionUID = 8362450931717138730L;
     private final InputEvent inputEvent;
     private final InternalOperation internalOperation;
@@ -77,5 +76,4 @@ public class InternalEvent extends alice.tuplecentre.core.AbstractEvent {
         return "[ op: " + this.internalOperation + ", ie: [ "
                 + this.inputEvent.toString() + " ] ]";
     }
-
 }

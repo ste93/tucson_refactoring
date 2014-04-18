@@ -1,7 +1,6 @@
 package alice.respect.core;
 
 import java.util.List;
-
 import alice.logictuple.LogicTuple;
 import alice.respect.api.IManagementContext;
 import alice.respect.api.RespectSpecification;
@@ -17,7 +16,6 @@ import alice.tuplecentre.api.ObservableEventListener;
  * 
  */
 public class ManagementContext implements IManagementContext {
-
     private final RespectVM vm;
 
     /**
@@ -29,66 +27,82 @@ public class ManagementContext implements IManagementContext {
         this.vm = rvm;
     }
 
+    @Override
     public boolean abortOperation(final long opId) {
         return this.vm.abortOperation(opId);
     }
 
+    @Override
     public void addInspector(final InspectableEventListener l) {
         this.vm.addInspector(l);
     }
 
+    @Override
     public void addObserver(final ObservableEventListener l) {
         this.vm.addObserver(l);
     }
 
+    @Override
     public RespectSpecification getSpec() {
         return (RespectSpecification) this.vm.getReactionSpec();
     }
 
+    @Override
     public LogicTuple[] getTRSet(final LogicTuple t) {
         return this.vm.getTRSet();
     }
 
+    @Override
     public LogicTuple[] getTSet(final LogicTuple t) {
         return this.vm.getTSet(t);
     }
 
+    @Override
     public WSetEvent[] getWSet(final LogicTuple t) {
         return this.vm.getWSet(t);
     }
 
+    @Override
     public void goCommand() throws OperationNotPossibleException {
         this.vm.goCommand();
     }
 
+    @Override
     public boolean hasInspectors() {
         return this.vm.hasInspectors();
     }
 
+    @Override
     public boolean hasObservers() {
         return this.vm.hasObservers();
     }
 
+    @Override
     public void nextStepCommand() throws OperationNotPossibleException {
         this.vm.nextStepCommand();
     }
 
+    @Override
     public void removeInspector(final InspectableEventListener l) {
         this.vm.removeInspector(l);
     }
 
+    @Override
     public void removeObserver(final ObservableEventListener l) {
         this.vm.removeObserver(l);
     }
 
+    @Override
     public void reset() {
         this.vm.reset();
     }
 
+    @Override
     public void setManagementMode(final boolean activate) {
         this.vm.setManagementMode(activate);
     }
 
+    @Override
     public void setSpec(final RespectSpecification spec)
             throws InvalidSpecificationException {
         final boolean accepted = this.vm.setReactionSpec(spec);
@@ -97,12 +111,13 @@ public class ManagementContext implements IManagementContext {
         }
     }
 
+    @Override
     public void setWSet(final List<LogicTuple> wSet) {
         this.vm.setWSet(wSet);
     }
 
+    @Override
     public void stopCommand() throws OperationNotPossibleException {
         this.vm.stopCommand();
     }
-
 }

@@ -22,7 +22,6 @@ import alice.tuplecentre.api.Tuple;
  * 
  */
 public class SetTupleSetMsg extends NodeMsg {
-
     private static final long serialVersionUID = 3683932175338169242L;
     private java.util.List<? extends Tuple> tupleSet;
 
@@ -53,5 +52,4 @@ public class SetTupleSetMsg extends NodeMsg {
     public void setTupleSet(final java.util.List<? extends Tuple> set) {
         this.tupleSet = set;
     }
-
 }

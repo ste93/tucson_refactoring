@@ -14,7 +14,6 @@
 package alice.tucson.service;
 
 import java.io.IOException;
-
 import alice.tucson.network.AbstractTucsonProtocol;
 import alice.tucson.network.TPFactory;
 import alice.tucson.network.exceptions.DialogException;
@@ -27,7 +26,6 @@ import alice.tucson.network.exceptions.DialogException;
  * 
  */
 public class WelcomeAgent extends Thread {
-
     private static void log(final String st) {
         System.out.println("..[WelcomeAgent]: " + st);
     }
@@ -35,7 +33,6 @@ public class WelcomeAgent extends Thread {
     private final ACCProvider contextManager;
     private AbstractTucsonProtocol mainDialog;
     private final TucsonNodeService node;
-
     private boolean shut;
 
     /**
@@ -59,26 +56,21 @@ public class WelcomeAgent extends Thread {
      */
     @Override
     public void run() {
-
         try {
-            this.mainDialog =
-                    TPFactory.getDialogNodeSide(TPFactory.DIALOG_TYPE_TCP);
+            this.mainDialog = TPFactory
+                    .getDialogNodeSide(TPFactory.DIALOG_TYPE_TCP);
         } catch (final DialogException e) {
             // TODO CICORA: what is the correct behavior when a port is already
             // used?
             e.printStackTrace();
             this.shut = true;
         }
-
         AbstractTucsonProtocol dialog = null;
         try {
-
             while (!this.isShutdown()) {
-
                 WelcomeAgent.log("Listening to incoming connections...");
                 WelcomeAgent
                         .log("--------------------------------------------------------------------------------");
-
                 try {
                     dialog = this.mainDialog.acceptNewDialog();
                 } catch (final DialogException e) {
@@ -92,7 +84,6 @@ public class WelcomeAgent extends Thread {
                     this.shut = true;
                     break;
                 }
-
                 dialog.receiveFirstRequest();
                 if (dialog.isEnterRequest()) {
                     dialog.receiveEnterRequest();
@@ -101,17 +92,13 @@ public class WelcomeAgent extends Thread {
                             .log("Delegating ACCProvider received enter request...");
                     this.contextManager.processContextRequest(desc, dialog);
                 }
-
             }
-
         } catch (final IOException e) {
             e.printStackTrace();
         } catch (final ClassNotFoundException e) {
             e.printStackTrace();
         }
-
         this.node.removeNodeAgent(this);
-
     }
 
     /**
@@ -136,5 +123,4 @@ public class WelcomeAgent extends Thread {
     private synchronized boolean isShutdown() {
         return this.shut;
     }
-
 }

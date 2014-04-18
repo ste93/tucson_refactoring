@@ -14,7 +14,6 @@ package alice.respect.core;
 
 import java.util.Iterator;
 import java.util.List;
-
 import alice.logictuple.LogicTuple;
 import alice.logictuple.TupleArgument;
 import alice.respect.api.IOrdinarySynchInterface;
@@ -37,7 +36,6 @@ import alice.tuprolog.Term;
  */
 public class OrdinarySynchInterface extends RootInterface implements
         IOrdinarySynchInterface {
-
     private static Term list2tuple(final List<LogicTuple> list) {
         final Term[] termArray = new Term[list.size()];
         final Iterator<LogicTuple> it = list.iterator();
@@ -58,6 +56,7 @@ public class OrdinarySynchInterface extends RootInterface implements
         super(core);
     }
 
+    @Override
     public List<LogicTuple> get(final IId aid)
             throws OperationNotPossibleException {
         final IRespectOperation op = this.getCore().get(aid);
@@ -65,6 +64,7 @@ public class OrdinarySynchInterface extends RootInterface implements
         return op.getLogicTupleListResult();
     }
 
+    @Override
     public LogicTuple in(final IId id, final LogicTuple t)
             throws InvalidTupleException, OperationNotPossibleException {
         if (t == null) {
@@ -75,6 +75,7 @@ public class OrdinarySynchInterface extends RootInterface implements
         return this.unify(t, op.getLogicTupleResult());
     }
 
+    @Override
     public List<LogicTuple> inAll(final IId aid, final LogicTuple t)
             throws InvalidTupleException, OperationNotPossibleException {
         IRespectOperation op = null;
@@ -82,13 +83,13 @@ public class OrdinarySynchInterface extends RootInterface implements
         try {
             if (t == null) {
                 throw new InvalidTupleException();
-            } else if (",".equals(t.getName()) && (t.getArity() == 2)) {
+            } else if (",".equals(t.getName()) && t.getArity() == 2) {
                 op = this.getCore().inAll(aid, new LogicTuple(t.getArg(0)));
             } else {
                 op = this.getCore().inAll(aid, t);
             }
             op.waitForOperationCompletion();
-            if (",".equals(t.getName()) && (t.getArity() == 2)) {
+            if (",".equals(t.getName()) && t.getArity() == 2) {
                 arg = t.getArg(1);
                 this.unify(
                         new LogicTuple(new TupleArgument(arg.toTerm())),
@@ -102,6 +103,7 @@ public class OrdinarySynchInterface extends RootInterface implements
         return op.getLogicTupleListResult();
     }
 
+    @Override
     public LogicTuple inp(final IId id, final LogicTuple t)
             throws InvalidTupleException, OperationNotPossibleException {
         if (t == null) {
@@ -112,6 +114,7 @@ public class OrdinarySynchInterface extends RootInterface implements
         return this.unify(t, op.getLogicTupleResult());
     }
 
+    @Override
     public LogicTuple no(final IId id, final LogicTuple t)
             throws InvalidTupleException, OperationNotPossibleException {
         if (t == null) {
@@ -122,6 +125,7 @@ public class OrdinarySynchInterface extends RootInterface implements
         return this.unify(t, op.getLogicTupleResult());
     }
 
+    @Override
     public List<LogicTuple> noAll(final IId aid, final LogicTuple t)
             throws InvalidTupleException, OperationNotPossibleException {
         IRespectOperation op = null;
@@ -129,13 +133,13 @@ public class OrdinarySynchInterface extends RootInterface implements
         try {
             if (t == null) {
                 throw new InvalidTupleException();
-            } else if (",".equals(t.getName()) && (t.getArity() == 2)) {
+            } else if (",".equals(t.getName()) && t.getArity() == 2) {
                 op = this.getCore().noAll(aid, new LogicTuple(t.getArg(0)));
             } else {
                 op = this.getCore().noAll(aid, t);
             }
             op.waitForOperationCompletion();
-            if (",".equals(t.getName()) && (t.getArity() == 2)) {
+            if (",".equals(t.getName()) && t.getArity() == 2) {
                 arg = t.getArg(1);
                 this.unify(
                         new LogicTuple(new TupleArgument(arg.toTerm())),
@@ -149,6 +153,7 @@ public class OrdinarySynchInterface extends RootInterface implements
         return op.getLogicTupleListResult();
     }
 
+    @Override
     public LogicTuple nop(final IId id, final LogicTuple t)
             throws InvalidTupleException, OperationNotPossibleException {
         if (t == null) {
@@ -159,6 +164,7 @@ public class OrdinarySynchInterface extends RootInterface implements
         return this.unify(t, op.getLogicTupleResult());
     }
 
+    @Override
     public void out(final IId id, final LogicTuple t)
             throws InvalidTupleException, OperationNotPossibleException {
         if (t == null) {
@@ -168,6 +174,7 @@ public class OrdinarySynchInterface extends RootInterface implements
         op.waitForOperationCompletion();
     }
 
+    @Override
     public List<LogicTuple> outAll(final IId id, final LogicTuple t)
             throws InvalidTupleException, OperationNotPossibleException {
         if (t == null) {
@@ -178,6 +185,7 @@ public class OrdinarySynchInterface extends RootInterface implements
         return op.getLogicTupleListResult();
     }
 
+    @Override
     public LogicTuple rd(final IId id, final LogicTuple t)
             throws InvalidTupleException, OperationNotPossibleException {
         if (t == null) {
@@ -188,6 +196,7 @@ public class OrdinarySynchInterface extends RootInterface implements
         return this.unify(t, op.getLogicTupleResult());
     }
 
+    @Override
     public List<LogicTuple> rdAll(final IId aid, final LogicTuple t)
             throws InvalidTupleException, OperationNotPossibleException {
         IRespectOperation op = null;
@@ -195,13 +204,13 @@ public class OrdinarySynchInterface extends RootInterface implements
         try {
             if (t == null) {
                 throw new InvalidTupleException();
-            } else if (",".equals(t.getName()) && (t.getArity() == 2)) {
+            } else if (",".equals(t.getName()) && t.getArity() == 2) {
                 op = this.getCore().rdAll(aid, new LogicTuple(t.getArg(0)));
             } else {
                 op = this.getCore().rdAll(aid, t);
             }
             op.waitForOperationCompletion();
-            if (",".equals(t.getName()) && (t.getArity() == 2)) {
+            if (",".equals(t.getName()) && t.getArity() == 2) {
                 arg = t.getArg(1);
                 this.unify(
                         new LogicTuple(new TupleArgument(arg.toTerm())),
@@ -215,6 +224,7 @@ public class OrdinarySynchInterface extends RootInterface implements
         return op.getLogicTupleListResult();
     }
 
+    @Override
     public LogicTuple rdp(final IId id, final LogicTuple t)
             throws InvalidTupleException, OperationNotPossibleException {
         if (t == null) {
@@ -225,6 +235,7 @@ public class OrdinarySynchInterface extends RootInterface implements
         return this.unify(t, op.getLogicTupleResult());
     }
 
+    @Override
     public List<LogicTuple> set(final IId aid, final LogicTuple tuple)
             throws OperationNotPossibleException, InvalidTupleException {
         final IRespectOperation op = this.getCore().set(aid, tuple);
@@ -232,6 +243,7 @@ public class OrdinarySynchInterface extends RootInterface implements
         return op.getLogicTupleListResult();
     }
 
+    @Override
     public LogicTuple spawn(final IId aid, final LogicTuple t)
             throws InvalidTupleException, OperationNotPossibleException {
         if (t == null) {
@@ -242,6 +254,7 @@ public class OrdinarySynchInterface extends RootInterface implements
         return t;
     }
 
+    @Override
     public LogicTuple uin(final IId id, final LogicTuple t)
             throws InvalidTupleException, OperationNotPossibleException {
         if (t == null) {
@@ -252,6 +265,7 @@ public class OrdinarySynchInterface extends RootInterface implements
         return this.unify(t, op.getLogicTupleResult());
     }
 
+    @Override
     public LogicTuple uinp(final IId id, final LogicTuple t)
             throws InvalidTupleException, OperationNotPossibleException {
         if (t == null) {
@@ -263,6 +277,7 @@ public class OrdinarySynchInterface extends RootInterface implements
         return this.unify(t, result);
     }
 
+    @Override
     public LogicTuple uno(final IId id, final LogicTuple t)
             throws InvalidTupleException, OperationNotPossibleException {
         if (t == null) {
@@ -273,6 +288,7 @@ public class OrdinarySynchInterface extends RootInterface implements
         return this.unify(t, op.getLogicTupleResult());
     }
 
+    @Override
     public LogicTuple unop(final IId id, final LogicTuple t)
             throws InvalidTupleException, OperationNotPossibleException {
         if (t == null) {
@@ -284,6 +300,7 @@ public class OrdinarySynchInterface extends RootInterface implements
         return this.unify(t, result);
     }
 
+    @Override
     public LogicTuple urd(final IId id, final LogicTuple t)
             throws InvalidTupleException, OperationNotPossibleException {
         if (t == null) {
@@ -294,6 +311,7 @@ public class OrdinarySynchInterface extends RootInterface implements
         return this.unify(t, op.getLogicTupleResult());
     }
 
+    @Override
     public LogicTuple urdp(final IId id, final LogicTuple t)
             throws InvalidTupleException, OperationNotPossibleException {
         if (t == null) {
@@ -304,5 +322,4 @@ public class OrdinarySynchInterface extends RootInterface implements
         final LogicTuple result = op.getLogicTupleResult();
         return this.unify(t, result);
     }
-
 }

@@ -18,7 +18,6 @@ package alice.tuplecentre.api;
  * 
  */
 public interface ObservableEventListener {
-
     /**
      * 
      * @param tid
@@ -157,5 +156,4 @@ public interface ObservableEventListener {
      *            the ReSpecT specification argument of the observed operation
      */
     void setSpecRequested(TupleCentreId tid, IId id, String spec);
-
 }

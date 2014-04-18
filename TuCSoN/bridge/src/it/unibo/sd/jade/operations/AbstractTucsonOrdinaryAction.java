@@ -9,7 +9,6 @@ import alice.tucson.api.TucsonTupleCentreId;
  * 
  */
 public abstract class AbstractTucsonOrdinaryAction extends AbstractTucsonAction {
-
     /**
      * 
      */
@@ -28,7 +27,6 @@ public abstract class AbstractTucsonOrdinaryAction extends AbstractTucsonAction 
         super(tc);
         this.tuple = t;
     }
-
     // /**
     // *
     // * @return the Logic Tuple argument of the coordination operation

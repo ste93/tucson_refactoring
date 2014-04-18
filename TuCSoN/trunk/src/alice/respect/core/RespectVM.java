@@ -15,7 +15,6 @@ package alice.respect.core;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
 import alice.logictuple.LogicTuple;
 import alice.respect.api.IRespectTC;
 import alice.respect.api.TupleCentreId;
@@ -43,7 +42,6 @@ import alice.tuplecentre.core.InspectableEvent;
  * @author (contributor) Saverio Cicora
  */
 public class RespectVM implements Runnable {
-
     private final RespectTCContainer container;
     private final RespectVMContext context;
     private final Object idle;
@@ -251,8 +249,8 @@ public class RespectVM implements Runnable {
      *            the inpsectable event to notify to listeners
      */
     public void notifyInspectableEvent(final InspectableEvent e) {
-        final Iterator<? extends InspectableEventListener> it =
-                this.inspectors.iterator();
+        final Iterator<? extends InspectableEventListener> it = this.inspectors
+                .iterator();
         while (it.hasNext()) {
             ((InspectableEventListener) it.next()).onInspectableEvent(e);
         }
@@ -376,7 +374,6 @@ public class RespectVM implements Runnable {
                 }
             }
         }
-
     }
 
     /**
@@ -407,6 +404,7 @@ public class RespectVM implements Runnable {
     /**
      * 
      */
+    @Override
     public void run() {
         while (true) {
             synchronized (this.idle) {
@@ -473,5 +471,4 @@ public class RespectVM implements Runnable {
             throw new OperationNotPossibleException();
         }
     }
-
 }

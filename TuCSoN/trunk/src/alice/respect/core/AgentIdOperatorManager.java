@@ -18,7 +18,6 @@ package alice.respect.core;
  * @author ste (mailto: s.mariani@unibo.it)
  */
 public class AgentIdOperatorManager extends alice.tuprolog.OperatorManager {
-
     private static final long serialVersionUID = 2427403369706472143L;
     private static final int UUID_DELIMITER_PRIO = 549;
 
@@ -29,5 +28,4 @@ public class AgentIdOperatorManager extends alice.tuprolog.OperatorManager {
         super();
         this.opNew(":", "xfx", AgentIdOperatorManager.UUID_DELIMITER_PRIO);
     }
-
 }

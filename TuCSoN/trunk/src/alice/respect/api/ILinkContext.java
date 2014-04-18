@@ -9,7 +9,6 @@ import alice.tuplecentre.core.AbstractTupleCentreOperation;
  * 
  */
 public interface ILinkContext {
-
     /**
      * 
      * @param id
@@ -21,5 +20,4 @@ public interface ILinkContext {
      */
     void doOperation(TupleCentreId id, AbstractTupleCentreOperation op)
             throws OperationNotPossibleException;
-
 }

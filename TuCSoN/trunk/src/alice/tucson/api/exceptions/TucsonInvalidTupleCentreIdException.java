@@ -19,7 +19,5 @@ package alice.tucson.api.exceptions;
  * 
  */
 public class TucsonInvalidTupleCentreIdException extends Exception {
-
     private static final long serialVersionUID = 2610089235090717405L;
-
 }

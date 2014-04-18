@@ -10,7 +10,6 @@ import alice.tucson.api.TucsonTupleCentreId;
  */
 public abstract class AbstractTucsonSpecificationAction extends
         AbstractTucsonAction {
-
     /**
      * 
      */

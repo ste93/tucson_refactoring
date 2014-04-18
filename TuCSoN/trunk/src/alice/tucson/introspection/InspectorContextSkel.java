@@ -16,7 +16,6 @@ package alice.tucson.introspection;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.LinkedList;
-
 import alice.logictuple.LogicTuple;
 import alice.tucson.api.TucsonAgentId;
 import alice.tucson.api.TucsonTupleCentreId;
@@ -50,12 +49,9 @@ import alice.tuplecentre.core.TriggeredReaction;
  */
 public class InspectorContextSkel extends AbstractACCProxyNodeSide implements
         InspectableEventListener {
-
     private TucsonAgentId agentId;
     private int ctxId;
-
     private final AbstractTucsonProtocol dialog;
-
     private final ACCProvider manager;
     private boolean nStep;
     /** current observation protocol */
@@ -79,7 +75,6 @@ public class InspectorContextSkel extends AbstractACCProxyNodeSide implements
     public InspectorContextSkel(final ACCProvider man,
             final AbstractTucsonProtocol d, final TucsonNodeService node,
             final ACCDescription p) throws TucsonGenericException {
-
         super();
         this.dialog = d;
         this.manager = man;
@@ -88,7 +83,6 @@ public class InspectorContextSkel extends AbstractACCProxyNodeSide implements
             this.ctxId = Integer.parseInt(p.getProperty("context-id"));
             final String name = p.getProperty("agent-identity");
             this.agentId = new TucsonAgentId(name);
-
             msg = this.dialog.receiveInspectorMsg();
             this.tcId = new TucsonTupleCentreId(msg.getTcName());
         } catch (final NumberFormatException e) {
@@ -100,7 +94,6 @@ public class InspectorContextSkel extends AbstractACCProxyNodeSide implements
         } catch (final DialogException e) {
             e.printStackTrace();
         }
-
         if (msg != null) {
             final TucsonTCUsers coreInfo = node.resolveCore(msg.getTcName());
             if (coreInfo == null) {
@@ -109,7 +102,6 @@ public class InspectorContextSkel extends AbstractACCProxyNodeSide implements
             }
             this.protocol = msg.getInfo();
         }
-
     }
 
     @Override
@@ -125,47 +117,37 @@ public class InspectorContextSkel extends AbstractACCProxyNodeSide implements
      *            the snapshot message
      */
     public void getSnapshot(final GetSnapshotMsg m) {
-
         final InspectorContextEvent msg = new InspectorContextEvent();
         msg.setVmTime(System.currentTimeMillis());
         msg.setLocalTime(System.currentTimeMillis());
-
         if (m.getWhat() == GetSnapshotMsg.TSET) {
-
             msg.setTuples(new LinkedList<LogicTuple>());
             LogicTuple[] tSet = null;
-            tSet =
-                    (LogicTuple[]) TupleCentreContainer.doManagementOperation(
-                            TucsonOperation.getTSetCode(), this.tcId,
-                            this.protocol.getTsetFilter());
+            tSet = (LogicTuple[]) TupleCentreContainer.doManagementOperation(
+                    TucsonOperation.getTSetCode(), this.tcId,
+                    this.protocol.getTsetFilter());
             if (tSet != null) {
                 for (final LogicTuple lt : tSet) {
                     msg.getTuples().add(lt);
                 }
             }
-
         } else if (m.getWhat() == GetSnapshotMsg.WSET) {
-
             WSetEvent[] ltSet = null;
-            ltSet =
-                    (WSetEvent[]) TupleCentreContainer.doManagementOperation(
-                            TucsonOperation.getWSetCode(), this.tcId,
-                            this.protocol.getWsetFilter());
+            ltSet = (WSetEvent[]) TupleCentreContainer.doManagementOperation(
+                    TucsonOperation.getWSetCode(), this.tcId,
+                    this.protocol.getWsetFilter());
             msg.setWnEvents(new LinkedList<WSetEvent>());
             if (ltSet != null) {
                 for (final WSetEvent lt : ltSet) {
                     msg.getWnEvents().add(lt);
                 }
             }
-
         }
-
         try {
             this.dialog.sendInspectorEvent(msg);
         } catch (final DialogException e) {
             e.printStackTrace();
         }
-
     }
 
     /**
@@ -178,28 +160,22 @@ public class InspectorContextSkel extends AbstractACCProxyNodeSide implements
         }
     }
 
+    @Override
     public synchronized void onInspectableEvent(final InspectableEvent ev) {
-
         try {
-
             while (this.protocol.isTracing() && !this.nStep) {
                 this.wait();
             }
             this.nStep = false;
-
             final InspectorContextEvent msg = new InspectorContextEvent();
             msg.setLocalTime(System.currentTimeMillis());
             msg.setVmTime(ev.getTime());
-
             if (ev.getType() == InspectableEvent.TYPE_NEWSTATE) {
-
                 if (this.protocol.getTsetObservType() == InspectorProtocol.PROACTIVE_OBSERVATION) {
-                    final LogicTuple[] ltSet =
-                            (LogicTuple[]) TupleCentreContainer
-                                    .doManagementOperation(
-                                            TucsonOperation.getTSetCode(),
-                                            this.tcId,
-                                            this.protocol.getTsetFilter());
+                    final LogicTuple[] ltSet = (LogicTuple[]) TupleCentreContainer
+                            .doManagementOperation(
+                                    TucsonOperation.getTSetCode(), this.tcId,
+                                    this.protocol.getTsetFilter());
                     msg.setTuples(new LinkedList<LogicTuple>());
                     if (ltSet != null) {
                         for (final LogicTuple lt : ltSet) {
@@ -207,14 +183,11 @@ public class InspectorContextSkel extends AbstractACCProxyNodeSide implements
                         }
                     }
                 }
-
                 if (this.protocol.getPendingQueryObservType() == InspectorProtocol.PROACTIVE_OBSERVATION) {
-                    final WSetEvent[] ltSet =
-                            (WSetEvent[]) TupleCentreContainer
-                                    .doManagementOperation(
-                                            TucsonOperation.getWSetCode(),
-                                            this.tcId,
-                                            this.protocol.getWsetFilter());
+                    final WSetEvent[] ltSet = (WSetEvent[]) TupleCentreContainer
+                            .doManagementOperation(
+                                    TucsonOperation.getWSetCode(), this.tcId,
+                                    this.protocol.getWsetFilter());
                     msg.setWnEvents(new LinkedList<WSetEvent>());
                     if (ltSet != null) {
                         for (final WSetEvent lt : ltSet) {
@@ -222,40 +195,30 @@ public class InspectorContextSkel extends AbstractACCProxyNodeSide implements
                         }
                     }
                 }
-
                 this.dialog.sendInspectorEvent(msg);
-
             } else if (ev.getType() == ObservableEventExt.TYPE_REACTIONOK) {
-
                 if (this.protocol.getReactionsObservType() != InspectorProtocol.NO_OBSERVATION) {
-                    final TriggeredReaction zCopy =
-                            new TriggeredReaction(null,
-                                    ((ObservableEventReactionOK) ev).getZ()
-                                            .getReaction());
+                    final TriggeredReaction zCopy = new TriggeredReaction(null,
+                            ((ObservableEventReactionOK) ev).getZ()
+                                    .getReaction());
                     msg.setReactionOk(zCopy);
                     this.dialog.sendInspectorEvent(msg);
                 }
-
-            } else if ((ev.getType() == ObservableEventExt.TYPE_REACTIONFAIL)
-                    && (this.protocol.getReactionsObservType() != InspectorProtocol.NO_OBSERVATION)) {
-
-                final TriggeredReaction zCopy =
-                        new TriggeredReaction(null,
-                                ((ObservableEventReactionFail) ev).getZ()
-                                        .getReaction());
+            } else if (ev.getType() == ObservableEventExt.TYPE_REACTIONFAIL
+                    && this.protocol.getReactionsObservType() != InspectorProtocol.NO_OBSERVATION) {
+                final TriggeredReaction zCopy = new TriggeredReaction(null,
+                        ((ObservableEventReactionFail) ev).getZ().getReaction());
                 msg.setReactionFailed(zCopy);
                 this.dialog.sendInspectorEvent(msg);
-
             }
-
         } catch (final InterruptedException e) {
             e.printStackTrace();
         } catch (final DialogException e) {
             this.log("Inspector quit");
         }
-
     }
 
+    @Override
     public void operationCompleted(final AbstractTupleCentreOperation op) {
         // FIXME What to do here?
     }
@@ -270,16 +233,14 @@ public class InspectorContextSkel extends AbstractACCProxyNodeSide implements
 
     @Override
     public void run() {
-
         try {
             TupleCentreContainer.doManagementOperation(
                     TucsonOperation.addInspCode(), this.tcId, this);
             while (!this.shutdown) {
                 final NodeMsg msg = this.dialog.receiveNodeMsg();
                 final Class<?> cl = msg.getClass();
-                final Method m =
-                        this.getClass().getMethod(msg.getAction(),
-                                new Class[] { cl });
+                final Method m = this.getClass().getMethod(msg.getAction(),
+                        new Class[] { cl });
                 m.invoke(this, new Object[] { msg });
             }
             this.dialog.end();
@@ -298,9 +259,7 @@ public class InspectorContextSkel extends AbstractACCProxyNodeSide implements
         } catch (final DialogException e) {
             e.printStackTrace();
         }
-
         this.manager.shutdownContext(this.ctxId, this.agentId);
-
     }
 
     /**
@@ -357,5 +316,4 @@ public class InspectorContextSkel extends AbstractACCProxyNodeSide implements
     protected void log(final String st) {
         System.out.println("[InspectorContextSkel]: " + st);
     }
-
 }

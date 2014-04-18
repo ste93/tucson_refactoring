@@ -1,7 +1,6 @@
 package alice.respect.core;
 
 import java.lang.reflect.InvocationTargetException;
-
 import alice.logictuple.LogicTuple;
 import alice.respect.api.TupleCentreId;
 import alice.respect.api.exceptions.InvalidTupleCentreIdException;
@@ -30,29 +29,21 @@ import alice.tuplecentre.core.AbstractTupleCentreOperation;
  * @author Steven Maraldi
  * 
  */
-
 public class EnvConfigAgent extends AbstractTucsonAgent {
-
     /** Add an actuator request's type **/
     private static final String ADD_ACTUATOR = "addActuator";
-
     /** Add a sensor request's type **/
     private static final String ADD_SENSOR = "addSensor";
-
     /** Change the transducer associated to a resource request's type **/
     private static final String CHANGE_TRANSDUCER = "changeTransducer";
     /** Create transducer actuator request's type **/
-    private static final String CREATE_TRANSDUCER_ACTUATOR =
-            "createTransducerActuator";
+    private static final String CREATE_TRANSDUCER_ACTUATOR = "createTransducerActuator";
     /** Create transducer sensor request's type **/
-    private static final String CREATE_TRANSDUCER_SENSOR =
-            "createTransducerSensor";
+    private static final String CREATE_TRANSDUCER_SENSOR = "createTransducerSensor";
     /** Remove a resource request's type **/
     private static final String REMOVE_RESOURCE = "removeResource";
-
     /** The tuple centre used for environment configuration **/
     private TupleCentreId idEnvTC;
-
     private boolean iteraction = true;
 
     /**
@@ -71,9 +62,8 @@ public class EnvConfigAgent extends AbstractTucsonAgent {
             throws TucsonInvalidAgentIdException {
         super("'$EnvAgent'", ipAddress, portno);
         try {
-            this.idEnvTC =
-                    new TupleCentreId("'$ENV'", ipAddress,
-                            String.valueOf(portno));
+            this.idEnvTC = new TupleCentreId("'$ENV'", ipAddress,
+                    String.valueOf(portno));
         } catch (final InvalidTupleCentreIdException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -84,73 +74,65 @@ public class EnvConfigAgent extends AbstractTucsonAgent {
     @Override
     public void main() {
         final SynchACC acc = this.getContext();
-
         while (this.iteraction) {
             try {
                 // Gets the command from the tuple space
                 LogicTuple t = LogicTuple.parse("cmd(Type)");
                 t = acc.in(this.idEnvTC, t, null).getLogicTupleResult();
-
                 if (EnvConfigAgent.CREATE_TRANSDUCER_SENSOR.equals(t.getArg(0)
                         .toString())) {
-                    t =
-                            LogicTuple
-                                    .parse("createTransducerSensor(Tcid,Tclass,Tid,Pclass,Pid)");
+                    t = LogicTuple
+                            .parse("createTransducerSensor(Tcid,Tclass,Tid,Pclass,Pid)");
                     t = acc.in(this.idEnvTC, t, null).getLogicTupleResult();
                     // Obtaining transducer
-                    final TransducerId tId =
-                            new TransducerId(t.getArg(2).getName());
+                    final TransducerId tId = new TransducerId(t.getArg(2)
+                            .getName());
                     // Obtaining tuple centre and its properties
                     final String[] sTcId = t.getArg(0).toString().split(":"); // '@'(name,':'(node,port))
-                    final String tcName =
-                            sTcId[0].substring(sTcId[0].indexOf('(') + 1,
-                                    sTcId[0].indexOf(','));
-                    final String[] tcNodeAndPort =
-                            sTcId[1].substring(sTcId[1].indexOf('(') + 1,
-                                    sTcId[1].indexOf(')')).split(",");
-                    final TupleCentreId tcId =
-                            new TupleCentreId(tcName, tcNodeAndPort[0],
-                                    tcNodeAndPort[1]);
+                    final String tcName = sTcId[0].substring(
+                            sTcId[0].indexOf('(') + 1, sTcId[0].indexOf(','));
+                    final String[] tcNodeAndPort = sTcId[1].substring(
+                            sTcId[1].indexOf('(') + 1, sTcId[1].indexOf(')'))
+                            .split(",");
+                    final TupleCentreId tcId = new TupleCentreId(tcName,
+                            tcNodeAndPort[0], tcNodeAndPort[1]);
                     this.speak("Serving 'createTransducer' request < TransducerId="
                             + tId
                             + ", associated TC="
                             + t.getArg(0).toString()
                             + " >...");
                     // Obtaining resource
-                    final AbstractProbeId pId =
-                            new SensorId(t.getArg(4).getName());
+                    final AbstractProbeId pId = new SensorId(t.getArg(4)
+                            .getName());
                     ProbesManager.INSTANCE.createProbe(t.getArg(3).toString(),
                             pId);
                     final TransducersManager tm = TransducersManager.INSTANCE;
                     tm.createTransducer(t.getArg(1).toString(), tId, tcId, pId);
                 } else if (EnvConfigAgent.CREATE_TRANSDUCER_ACTUATOR.equals(t
                         .getArg(0).toString())) {
-                    t =
-                            LogicTuple
-                                    .parse("createTransducerActuator(Tcid,Tclass,Tid,Pclass,Pid)");
+                    t = LogicTuple
+                            .parse("createTransducerActuator(Tcid,Tclass,Tid,Pclass,Pid)");
                     t = acc.in(this.idEnvTC, t, null).getLogicTupleResult();
                     // Obtaining transducer
-                    final TransducerId tId =
-                            new TransducerId(t.getArg(2).getName());
+                    final TransducerId tId = new TransducerId(t.getArg(2)
+                            .getName());
                     // Obtaining tuple centre and its properties
                     final String[] sTcId = t.getArg(0).toString().split(":"); // '@'(name,':'(node,port))
-                    final String tcName =
-                            sTcId[0].substring(sTcId[0].indexOf('(') + 1,
-                                    sTcId[0].indexOf(','));
-                    final String[] tcNodeAndPort =
-                            sTcId[1].substring(sTcId[1].indexOf('(') + 1,
-                                    sTcId[1].indexOf(')')).split(",");
-                    final TupleCentreId tcId =
-                            new TupleCentreId(tcName, tcNodeAndPort[0],
-                                    tcNodeAndPort[1]);
+                    final String tcName = sTcId[0].substring(
+                            sTcId[0].indexOf('(') + 1, sTcId[0].indexOf(','));
+                    final String[] tcNodeAndPort = sTcId[1].substring(
+                            sTcId[1].indexOf('(') + 1, sTcId[1].indexOf(')'))
+                            .split(",");
+                    final TupleCentreId tcId = new TupleCentreId(tcName,
+                            tcNodeAndPort[0], tcNodeAndPort[1]);
                     this.speak("Serving 'createTransducer' request < TransducerId="
                             + tId
                             + ", associated TC="
                             + t.getArg(0).toString()
                             + " >...");
                     // Obtaining resource
-                    final AbstractProbeId pId =
-                            new ActuatorId(t.getArg(4).getName());
+                    final AbstractProbeId pId = new ActuatorId(t.getArg(4)
+                            .getName());
                     ProbesManager.INSTANCE.createProbe(t.getArg(3).toString(),
                             pId);
                     final TransducersManager tm = TransducersManager.INSTANCE;
@@ -161,15 +143,14 @@ public class EnvConfigAgent extends AbstractTucsonAgent {
                     t = LogicTuple.parse("addSensor(Class,Pid,Tid)");
                     t = acc.in(this.idEnvTC, t, null).getLogicTupleResult();
                     // Creating resource
-                    final AbstractProbeId pId =
-                            new SensorId(t.getArg(1).getName());
+                    final AbstractProbeId pId = new SensorId(t.getArg(1)
+                            .getName());
                     final ProbesManager rm = ProbesManager.INSTANCE;
                     rm.createProbe(t.getArg(0).toString(), pId);
                     final ISimpleProbe probe = rm.getProbe(pId);
                     final TransducersManager tm = TransducersManager.INSTANCE;
-                    final TransducerId tId =
-                            tm.getTransducer(t.getArg(2).getName())
-                                    .getIdentifier();
+                    final TransducerId tId = tm.getTransducer(
+                            t.getArg(2).getName()).getIdentifier();
                     this.speak("Serving 'addSensor' request < ProbeId=" + pId
                             + ", associated transducer=" + tId + " >...");
                     tm.addProbe(probe.getIdentifier(), tId, probe);
@@ -178,15 +159,14 @@ public class EnvConfigAgent extends AbstractTucsonAgent {
                     t = LogicTuple.parse("addActuator(Class,Pid,Tid)");
                     t = acc.in(this.idEnvTC, t, null).getLogicTupleResult();
                     // Creating resource
-                    final AbstractProbeId pId =
-                            new ActuatorId(t.getArg(1).getName());
+                    final AbstractProbeId pId = new ActuatorId(t.getArg(1)
+                            .getName());
                     final ProbesManager rm = ProbesManager.INSTANCE;
                     rm.createProbe(t.getArg(0).toString(), pId);
                     final ISimpleProbe probe = rm.getProbe(pId);
                     final TransducersManager tm = TransducersManager.INSTANCE;
-                    final TransducerId tId =
-                            tm.getTransducer(t.getArg(2).getName())
-                                    .getIdentifier();
+                    final TransducerId tId = tm.getTransducer(
+                            t.getArg(2).getName()).getIdentifier();
                     this.speak("Serving 'addActuator' request < ProbeId=" + pId
                             + ", associated transducer=" + tId + " >...");
                     tm.addProbe(probe.getIdentifier(), tId, probe);
@@ -197,21 +177,19 @@ public class EnvConfigAgent extends AbstractTucsonAgent {
                     t = LogicTuple.parse("removeResource(Pid)");
                     t = acc.in(this.idEnvTC, t, null).getLogicTupleResult();
                     final ProbesManager rm = ProbesManager.INSTANCE;
-                    final ISimpleProbe probe =
-                            rm.getProbeByName(t.getArg(0).getName());
+                    final ISimpleProbe probe = rm.getProbeByName(t.getArg(0)
+                            .getName());
                     rm.removeProbe(probe.getIdentifier());
                 } else if (EnvConfigAgent.CHANGE_TRANSDUCER.equals(t.getArg(0)
                         .toString())) {
                     t = LogicTuple.parse("changeTransducer(Pid,Tid)");
                     t = acc.in(this.idEnvTC, t, null).getLogicTupleResult();
                     final ProbesManager rm = ProbesManager.INSTANCE;
-                    final AbstractProbeId pId =
-                            rm.getProbeByName(t.getArg(0).getName())
-                                    .getIdentifier();
+                    final AbstractProbeId pId = rm.getProbeByName(
+                            t.getArg(0).getName()).getIdentifier();
                     final TransducersManager tm = TransducersManager.INSTANCE;
-                    final TransducerId tId =
-                            tm.getTransducer(t.getArg(1).getName())
-                                    .getIdentifier();
+                    final TransducerId tId = tm.getTransducer(
+                            t.getArg(1).getName()).getIdentifier();
                     this.speak("Serving 'changeTransducer' request < ProbeId="
                             + pId + ", new transducer=" + tId + " >...");
                     rm.setTransducer(pId, tId);

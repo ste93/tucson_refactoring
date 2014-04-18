@@ -20,7 +20,5 @@ package alice.respect.api.exceptions;
  * @author Alessandro Ricci
  */
 public class InvalidAgentIdException extends RespectException {
-
     private static final long serialVersionUID = 7316848513690643990L;
-
 }

@@ -2,7 +2,6 @@ package it.unibo.sd.jade.coordination;
 
 import java.util.List;
 import java.util.Map;
-
 import alice.tucson.service.TucsonOpCompletionEvent;
 import alice.tucson.service.TucsonOperation;
 
@@ -15,7 +14,6 @@ import alice.tucson.service.TucsonOperation;
  * 
  */
 public class AsynchTucsonOpResult {
-
     private long opId;
     private Map<Long, TucsonOperation> pendingOps;
     private List<TucsonOpCompletionEvent> tucsonCompletionEvents;
@@ -66,8 +64,7 @@ public class AsynchTucsonOpResult {
         TucsonOpCompletionEvent ev = null;
         synchronized (this.tucsonCompletionEvents) {
             final boolean trovato = false;
-            for (int i = 0; (i < this.tucsonCompletionEvents.size())
-                    && !trovato; i++) {
+            for (int i = 0; i < this.tucsonCompletionEvents.size() && !trovato; i++) {
                 if (this.tucsonCompletionEvents.get(i).getOpId().getId() == o) { // operazione
                     // richiesta
                     // trovata
@@ -130,8 +127,7 @@ public class AsynchTucsonOpResult {
      * @param e
      *            the List of completion events
      */
-    public void
-            setTucsonCompletionEvents(final List<TucsonOpCompletionEvent> e) {
+    public void setTucsonCompletionEvents(final List<TucsonOpCompletionEvent> e) {
         this.tucsonCompletionEvents = e;
     }
 }

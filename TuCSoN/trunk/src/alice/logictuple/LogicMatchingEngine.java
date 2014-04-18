@@ -11,7 +11,6 @@ import alice.tuprolog.Term;
  * 
  */
 public final class LogicMatchingEngine {
-
     private static final Prolog MATCHING_ENGINE = new Prolog();
 
     /**
@@ -27,8 +26,7 @@ public final class LogicMatchingEngine {
      * @return wether the given LogicTuples match (according to tuProlog
      *         matching rules for LogicTuples)
      */
-    public static boolean
-            match(final LogicTuple tupleA, final LogicTuple tupleB) {
+    public static boolean match(final LogicTuple tupleA, final LogicTuple tupleB) {
         final Term a = tupleA.toTerm().getTerm();
         final Term b = tupleB.toTerm().getTerm();
         return a.match(b);
@@ -53,5 +51,4 @@ public final class LogicMatchingEngine {
 
     private LogicMatchingEngine() {
     }
-
 }

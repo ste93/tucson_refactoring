@@ -22,7 +22,6 @@ import alice.tuplecentre.core.AbstractTupleCentreOperation;
  * @author ste (mailto: s.mariani@unibo.it)
  */
 public class HelloWorldAgent extends AbstractTucsonAgent {
-
     /**
      * @param args
      *            the name of the TuCSoN coordinable (optional).
@@ -92,8 +91,8 @@ public class HelloWorldAgent extends AbstractTucsonAgent {
          * 5) Define the tuplecentre target of your coordination operations.
          */
         try {
-            final TucsonTupleCentreId tid =
-                    new TucsonTupleCentreId("default", "localhost", "20504");
+            final TucsonTupleCentreId tid = new TucsonTupleCentreId("default",
+                    "localhost", "20504");
             /*
              * 6) Build the tuple e.g. using TuCSoN parsing facilities.
              */
@@ -146,5 +145,4 @@ public class HelloWorldAgent extends AbstractTucsonAgent {
             e.printStackTrace();
         }
     }
-
 }

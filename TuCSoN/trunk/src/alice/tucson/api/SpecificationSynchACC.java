@@ -32,7 +32,6 @@ import alice.tuplecentre.api.exceptions.OperationTimeOutException;
  * @author ste (mailto: s.mariani@unibo.it)
  */
 public interface SpecificationSynchACC extends RootACC {
-
     /**
      * <code>get_s</code> specification primitive, reads (w/o removing) all the
      * ReSpecT specification tuples from the given target tuplecentre
@@ -461,5 +460,4 @@ public interface SpecificationSynchACC extends RootACC {
     ITucsonOperation setS(TupleCentreId tid, String spec, Long timeout)
             throws TucsonOperationNotPossibleException,
             UnreachableNodeException, OperationTimeOutException;
-
 }

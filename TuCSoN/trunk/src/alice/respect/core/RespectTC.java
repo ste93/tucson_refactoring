@@ -14,7 +14,6 @@ package alice.respect.core;
 
 import java.util.Iterator;
 import java.util.LinkedList;
-
 import alice.logictuple.LogicTuple;
 import alice.logictuple.Var;
 import alice.respect.api.IEnvironmentContext;
@@ -44,7 +43,6 @@ import alice.tuplecentre.core.TCCycleResult.Outcome;
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public class RespectTC implements IRespectTC {
-
     private final RespectVM vm;
     private final Thread vmThread;
 
@@ -64,16 +62,18 @@ public class RespectTC implements IRespectTC {
         this.vmThread.start();
     }
 
+    @Override
     public IRespectOperation get(final IId id)
             throws OperationNotPossibleException {
         return this.get(id, null);
     }
 
+    @Override
     public IRespectOperation get(final IId id,
             final OperationCompletionListener l)
             throws OperationNotPossibleException {
-        final RespectOperation op =
-                RespectOperation.makeGet(new LogicTuple("get"), l);
+        final RespectOperation op = RespectOperation.makeGet(new LogicTuple(
+                "get"), l);
         this.vm.doOperation(id, op);
         return op;
     }
@@ -86,6 +86,7 @@ public class RespectTC implements IRespectTC {
         return new EnviromentContext(this.vm.getRespectVMContext());
     }
 
+    @Override
     public TupleCentreId getId() {
         return this.vm.getId();
     }
@@ -126,17 +127,18 @@ public class RespectTC implements IRespectTC {
         return new OrdinarySynchInterface(this);
     }
 
+    @Override
     public IRespectOperation getS(final IId aid)
             throws OperationNotPossibleException {
         return this.getS(aid, null);
     }
 
+    @Override
     public IRespectOperation getS(final IId aid,
             final OperationCompletionListener l)
             throws OperationNotPossibleException {
-        final RespectOperation op =
-                RespectOperation.makeGetS(new LogicTuple("spec", new Var("S")),
-                        l);
+        final RespectOperation op = RespectOperation.makeGetS(new LogicTuple(
+                "spec", new Var("S")), l);
         this.vm.doOperation(aid, op);
         return op;
     }
@@ -167,6 +169,7 @@ public class RespectTC implements IRespectTC {
         return new TimedContext(this);
     }
 
+    @Override
     public RespectVM getVM() {
         return this.vm;
     }
@@ -180,11 +183,13 @@ public class RespectTC implements IRespectTC {
         return this.vmThread;
     }
 
+    @Override
     public IRespectOperation in(final IId id, final LogicTuple t)
             throws OperationNotPossibleException {
         return this.in(id, t, null);
     }
 
+    @Override
     public IRespectOperation in(final IId id, final LogicTuple t,
             final OperationCompletionListener l)
             throws OperationNotPossibleException {
@@ -193,11 +198,13 @@ public class RespectTC implements IRespectTC {
         return op;
     }
 
+    @Override
     public IRespectOperation inAll(final IId id, final LogicTuple t)
             throws OperationNotPossibleException {
         return this.inAll(id, t, null);
     }
 
+    @Override
     public IRespectOperation inAll(final IId id, final LogicTuple t,
             final OperationCompletionListener l)
             throws OperationNotPossibleException {
@@ -206,11 +213,13 @@ public class RespectTC implements IRespectTC {
         return op;
     }
 
+    @Override
     public IRespectOperation inp(final IId id, final LogicTuple t)
             throws OperationNotPossibleException {
         return this.inp(id, t, null);
     }
 
+    @Override
     public IRespectOperation inp(final IId id, final LogicTuple t,
             final OperationCompletionListener l)
             throws OperationNotPossibleException {
@@ -219,11 +228,13 @@ public class RespectTC implements IRespectTC {
         return op;
     }
 
+    @Override
     public IRespectOperation inpS(final IId id, final LogicTuple t)
             throws OperationNotPossibleException {
         return this.inpS(id, t, null);
     }
 
+    @Override
     public IRespectOperation inpS(final IId id, final LogicTuple t,
             final OperationCompletionListener l)
             throws OperationNotPossibleException {
@@ -232,11 +243,13 @@ public class RespectTC implements IRespectTC {
         return op;
     }
 
+    @Override
     public IRespectOperation inS(final IId id, final LogicTuple t)
             throws OperationNotPossibleException {
         return this.inS(id, t, null);
     }
 
+    @Override
     public IRespectOperation inS(final IId id, final LogicTuple t,
             final OperationCompletionListener l)
             throws OperationNotPossibleException {
@@ -245,11 +258,13 @@ public class RespectTC implements IRespectTC {
         return op;
     }
 
+    @Override
     public IRespectOperation no(final IId id, final LogicTuple t)
             throws OperationNotPossibleException {
         return this.no(id, t, null);
     }
 
+    @Override
     public IRespectOperation no(final IId id, final LogicTuple t,
             final OperationCompletionListener l)
             throws OperationNotPossibleException {
@@ -258,11 +273,13 @@ public class RespectTC implements IRespectTC {
         return op;
     }
 
+    @Override
     public IRespectOperation noAll(final IId id, final LogicTuple t)
             throws OperationNotPossibleException {
         return this.noAll(id, t, null);
     }
 
+    @Override
     public IRespectOperation noAll(final IId id, final LogicTuple t,
             final OperationCompletionListener l)
             throws OperationNotPossibleException {
@@ -271,11 +288,13 @@ public class RespectTC implements IRespectTC {
         return op;
     }
 
+    @Override
     public IRespectOperation nop(final IId id, final LogicTuple t)
             throws OperationNotPossibleException {
         return this.nop(id, t, null);
     }
 
+    @Override
     public IRespectOperation nop(final IId id, final LogicTuple t,
             final OperationCompletionListener l)
             throws OperationNotPossibleException {
@@ -284,11 +303,13 @@ public class RespectTC implements IRespectTC {
         return op;
     }
 
+    @Override
     public IRespectOperation nopS(final IId id, final LogicTuple t)
             throws OperationNotPossibleException {
         return this.nopS(id, t, null);
     }
 
+    @Override
     public IRespectOperation nopS(final IId id, final LogicTuple t,
             final OperationCompletionListener l)
             throws OperationNotPossibleException {
@@ -297,11 +318,13 @@ public class RespectTC implements IRespectTC {
         return op;
     }
 
+    @Override
     public IRespectOperation noS(final IId id, final LogicTuple t)
             throws OperationNotPossibleException {
         return this.noS(id, t, null);
     }
 
+    @Override
     public IRespectOperation noS(final IId id, final LogicTuple t,
             final OperationCompletionListener l)
             throws OperationNotPossibleException {
@@ -313,7 +336,7 @@ public class RespectTC implements IRespectTC {
     /**
      * ORDINARY primitives SYNCH semantics
      */
-
+    @Override
     public IRespectOperation out(final IId id, final LogicTuple t)
             throws OperationNotPossibleException {
         return this.out(id, t, null);
@@ -322,7 +345,7 @@ public class RespectTC implements IRespectTC {
     /**
      * ORDINARY primitives ASYNCH semantics
      */
-
+    @Override
     public IRespectOperation out(final IId id, final LogicTuple t,
             final OperationCompletionListener l)
             throws OperationNotPossibleException {
@@ -331,11 +354,13 @@ public class RespectTC implements IRespectTC {
         return op;
     }
 
+    @Override
     public IRespectOperation outAll(final IId id, final LogicTuple t)
             throws OperationNotPossibleException {
         return this.outAll(id, t, null);
     }
 
+    @Override
     public IRespectOperation outAll(final IId id, final LogicTuple t,
             final OperationCompletionListener l)
             throws OperationNotPossibleException {
@@ -347,7 +372,7 @@ public class RespectTC implements IRespectTC {
     /**
      * SPECIFICATION primitives SYNCH semantics
      */
-
+    @Override
     public IRespectOperation outS(final IId id, final LogicTuple t)
             throws OperationNotPossibleException {
         return this.outS(id, t, null);
@@ -356,7 +381,7 @@ public class RespectTC implements IRespectTC {
     /**
      * SPECIFICATION primitives ASYNCH semantics
      */
-
+    @Override
     public IRespectOperation outS(final IId id, final LogicTuple t,
             final OperationCompletionListener l)
             throws OperationNotPossibleException {
@@ -365,11 +390,13 @@ public class RespectTC implements IRespectTC {
         return op;
     }
 
+    @Override
     public IRespectOperation rd(final IId id, final LogicTuple t)
             throws OperationNotPossibleException {
         return this.rd(id, t, null);
     }
 
+    @Override
     public IRespectOperation rd(final IId id, final LogicTuple t,
             final OperationCompletionListener l)
             throws OperationNotPossibleException {
@@ -378,11 +405,13 @@ public class RespectTC implements IRespectTC {
         return op;
     }
 
+    @Override
     public IRespectOperation rdAll(final IId id, final LogicTuple t)
             throws OperationNotPossibleException {
         return this.rdAll(id, t, null);
     }
 
+    @Override
     public IRespectOperation rdAll(final IId id, final LogicTuple t,
             final OperationCompletionListener l)
             throws OperationNotPossibleException {
@@ -391,11 +420,13 @@ public class RespectTC implements IRespectTC {
         return op;
     }
 
+    @Override
     public IRespectOperation rdp(final IId id, final LogicTuple t)
             throws OperationNotPossibleException {
         return this.rdp(id, t, null);
     }
 
+    @Override
     public IRespectOperation rdp(final IId id, final LogicTuple t,
             final OperationCompletionListener l)
             throws OperationNotPossibleException {
@@ -404,11 +435,13 @@ public class RespectTC implements IRespectTC {
         return op;
     }
 
+    @Override
     public IRespectOperation rdpS(final IId id, final LogicTuple t)
             throws OperationNotPossibleException {
         return this.rdpS(id, t, null);
     }
 
+    @Override
     public IRespectOperation rdpS(final IId id, final LogicTuple t,
             final OperationCompletionListener l)
             throws OperationNotPossibleException {
@@ -417,11 +450,13 @@ public class RespectTC implements IRespectTC {
         return op;
     }
 
+    @Override
     public IRespectOperation rdS(final IId id, final LogicTuple t)
             throws OperationNotPossibleException {
         return this.rdS(id, t, null);
     }
 
+    @Override
     public IRespectOperation rdS(final IId id, final LogicTuple t,
             final OperationCompletionListener l)
             throws OperationNotPossibleException {
@@ -430,11 +465,13 @@ public class RespectTC implements IRespectTC {
         return op;
     }
 
+    @Override
     public IRespectOperation set(final IId id, final LogicTuple tuple)
             throws OperationNotPossibleException {
         return this.set(id, tuple, null);
     }
 
+    @Override
     public IRespectOperation set(final IId id, final LogicTuple tuple,
             final OperationCompletionListener l)
             throws OperationNotPossibleException {
@@ -443,11 +480,13 @@ public class RespectTC implements IRespectTC {
         return op;
     }
 
+    @Override
     public IRespectOperation setS(final IId aid, final LogicTuple t)
             throws OperationNotPossibleException {
         return this.setS(aid, t, null);
     }
 
+    @Override
     public IRespectOperation setS(final IId aid, final LogicTuple t,
             final OperationCompletionListener l)
             throws OperationNotPossibleException {
@@ -456,16 +495,16 @@ public class RespectTC implements IRespectTC {
         return op;
     }
 
-    public IRespectOperation
-            setS(final IId aid, final RespectSpecification spec)
-                    throws InvalidSpecificationException {
+    @Override
+    public IRespectOperation setS(final IId aid, final RespectSpecification spec)
+            throws InvalidSpecificationException {
         final boolean accepted = this.vm.setReactionSpec(spec);
         if (!accepted) {
             throw new InvalidSpecificationException();
         }
         final RespectOperation op = RespectOperation.makeSetS(null);
-        final Iterator<LogicTuple> rit =
-                this.vm.getRespectVMContext().getSpecTupleSetIterator();
+        final Iterator<LogicTuple> rit = this.vm.getRespectVMContext()
+                .getSpecTupleSetIterator();
         final LinkedList<Tuple> reactionList = new LinkedList<Tuple>();
         while (rit.hasNext()) {
             reactionList.add(rit.next());
@@ -475,20 +514,22 @@ public class RespectTC implements IRespectTC {
         return op;
     }
 
-    public IRespectOperation
-            setS(final IId aid, final RespectSpecification spec,
-                    final OperationCompletionListener l)
-                    throws OperationNotPossibleException {
+    @Override
+    public IRespectOperation setS(final IId aid,
+            final RespectSpecification spec, final OperationCompletionListener l)
+            throws OperationNotPossibleException {
         final RespectOperation op = RespectOperation.makeSetS(spec, l);
         this.vm.doOperation(aid, op);
         return op;
     }
 
+    @Override
     public IRespectOperation spawn(final IId id, final LogicTuple t)
             throws OperationNotPossibleException {
         return this.spawn(id, t, null);
     }
 
+    @Override
     public IRespectOperation spawn(final IId id, final LogicTuple t,
             final OperationCompletionListener l)
             throws OperationNotPossibleException {
@@ -497,11 +538,13 @@ public class RespectTC implements IRespectTC {
         return op;
     }
 
+    @Override
     public IRespectOperation uin(final IId id, final LogicTuple t)
             throws OperationNotPossibleException {
         return this.uin(id, t, null);
     }
 
+    @Override
     public IRespectOperation uin(final IId id, final LogicTuple t,
             final OperationCompletionListener l)
             throws OperationNotPossibleException {
@@ -510,11 +553,13 @@ public class RespectTC implements IRespectTC {
         return op;
     }
 
+    @Override
     public IRespectOperation uinp(final IId id, final LogicTuple t)
             throws OperationNotPossibleException {
         return this.uinp(id, t, null);
     }
 
+    @Override
     public IRespectOperation uinp(final IId id, final LogicTuple t,
             final OperationCompletionListener l)
             throws OperationNotPossibleException {
@@ -523,11 +568,13 @@ public class RespectTC implements IRespectTC {
         return op;
     }
 
+    @Override
     public IRespectOperation uno(final IId id, final LogicTuple t)
             throws OperationNotPossibleException {
         return this.uno(id, t, null);
     }
 
+    @Override
     public IRespectOperation uno(final IId id, final LogicTuple t,
             final OperationCompletionListener l)
             throws OperationNotPossibleException {
@@ -536,11 +583,13 @@ public class RespectTC implements IRespectTC {
         return op;
     }
 
+    @Override
     public IRespectOperation unop(final IId id, final LogicTuple t)
             throws OperationNotPossibleException {
         return this.unop(id, t, null);
     }
 
+    @Override
     public IRespectOperation unop(final IId id, final LogicTuple t,
             final OperationCompletionListener l)
             throws OperationNotPossibleException {
@@ -549,11 +598,13 @@ public class RespectTC implements IRespectTC {
         return op;
     }
 
+    @Override
     public IRespectOperation urd(final IId id, final LogicTuple t)
             throws OperationNotPossibleException {
         return this.urd(id, t, null);
     }
 
+    @Override
     public IRespectOperation urd(final IId id, final LogicTuple t,
             final OperationCompletionListener l)
             throws OperationNotPossibleException {
@@ -562,11 +613,13 @@ public class RespectTC implements IRespectTC {
         return op;
     }
 
+    @Override
     public IRespectOperation urdp(final IId id, final LogicTuple t)
             throws OperationNotPossibleException {
         return this.urdp(id, t, null);
     }
 
+    @Override
     public IRespectOperation urdp(final IId id, final LogicTuple t,
             final OperationCompletionListener l)
             throws OperationNotPossibleException {
@@ -574,5 +627,4 @@ public class RespectTC implements IRespectTC {
         this.vm.doOperation(id, op);
         return op;
     }
-
 }

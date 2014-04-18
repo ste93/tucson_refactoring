@@ -13,7 +13,6 @@ import alice.tuples.javatuples.exceptions.InvalidJValException;
  * 
  */
 public class JVal implements IJVal {
-
     private final Object arg;
     private final JArgType type;
 
@@ -235,5 +234,4 @@ public class JVal implements IJVal {
         // }
         // return sb.toString();
     }
-
 }

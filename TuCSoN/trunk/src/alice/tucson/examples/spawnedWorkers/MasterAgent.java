@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-
 import alice.logictuple.LogicTuple;
 import alice.tucson.api.AbstractTucsonAgent;
 import alice.tucson.api.EnhancedSynchACC;
@@ -27,7 +26,6 @@ import alice.tuplecentre.core.AbstractTupleCentreOperation;
  * @author ste (mailto: s.mariani@unibo.it)
  */
 public class MasterAgent extends AbstractTucsonAgent {
-
     private static final int ITERS = 10;
     private static final int MAX_FACT = 10;
     private static final int SLEEP = 1000;
@@ -54,7 +52,6 @@ public class MasterAgent extends AbstractTucsonAgent {
     private final int nIters;
     private final Map<Integer, Integer> pendings;
     private int reqID;
-
     private final List<TucsonTupleCentreId> tids;
 
     /**
@@ -95,7 +92,6 @@ public class MasterAgent extends AbstractTucsonAgent {
     @Override
     public void operationCompleted(final AbstractTupleCentreOperation op) {
         // TODO Auto-generated method stub
-
     }
 
     @Override
@@ -123,10 +119,9 @@ public class MasterAgent extends AbstractTucsonAgent {
             while (!this.die) {
                 this.say("Checking termination...");
                 for (int i = 0; i < this.tids.size(); i++) {
-                    op =
-                            acc.inp(this.tids.get(i),
-                                    LogicTuple.parse("die(" + this.myName()
-                                            + ")"), (Long) null);
+                    op = acc.inp(this.tids.get(i),
+                            LogicTuple.parse("die(" + this.myName() + ")"),
+                            (Long) null);
                     /*
                      * Only upon success the searched tuple was found. NB: we do
                      * not <break> cycle to consume all termination tuples if
@@ -153,11 +148,9 @@ public class MasterAgent extends AbstractTucsonAgent {
                          * ...to put in each <ITERs> jobs.
                          */
                         num = this.drawRandomInt();
-                        job =
-                                LogicTuple.parse("fact(" + "master("
-                                        + this.myName() + ")," + "num(" + num
-                                        + ")," + "reqID(" + this.reqID + ")"
-                                        + ")");
+                        job = LogicTuple.parse("fact(" + "master("
+                                + this.myName() + ")," + "num(" + num + "),"
+                                + "reqID(" + this.reqID + ")" + ")");
                         this.say("Putting job: " + job.toString());
                         /*
                          * Only non-reachability of target tuplecentre may cause
@@ -193,10 +186,9 @@ public class MasterAgent extends AbstractTucsonAgent {
                         /*
                          * ...this time to retrieve factorial results.
                          */
-                        templ =
-                                LogicTuple.parse("res(" + "master("
-                                        + this.myName() + ")," + "fact(F),"
-                                        + "reqID(N)" + ")");
+                        templ = LogicTuple.parse("res(" + "master("
+                                + this.myName() + ")," + "fact(F),"
+                                + "reqID(N)" + ")");
                         /*
                          * No longer a suspensive primitive. We need to keep
                          * track of collected results.
@@ -213,10 +205,9 @@ public class MasterAgent extends AbstractTucsonAgent {
                                     /*
                                      * We remove corresponding pending job.
                                      */
-                                    num =
-                                            this.pendings.remove(lt
-                                                    .getArg("reqID").getArg(0)
-                                                    .intValue());
+                                    num = this.pendings.remove(lt
+                                            .getArg("reqID").getArg(0)
+                                            .intValue());
                                     this.say("\tFactorial of " + num + " is "
                                             + lt.getArg("fact").getArg(0));
                                     j++;
@@ -252,5 +243,4 @@ public class MasterAgent extends AbstractTucsonAgent {
             e.printStackTrace();
         }
     }
-
 }

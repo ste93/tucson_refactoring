@@ -13,7 +13,6 @@ import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
  * 
  */
 public class EnvAgentId extends TucsonAgentId {
-
     /** serialVersionUID **/
     private static final long serialVersionUID = 1L;
 
@@ -44,5 +43,4 @@ public class EnvAgentId extends TucsonAgentId {
     public boolean isTC() {
         return false;
     }
-
 }

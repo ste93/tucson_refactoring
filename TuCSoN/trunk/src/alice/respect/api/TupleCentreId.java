@@ -28,10 +28,8 @@ import alice.tuprolog.Term;
  */
 public class TupleCentreId implements alice.tuplecentre.api.TupleCentreId,
         java.io.Serializable {
-
     private static final int DEFAULT_PORT = 20504;
-    private static TupleCentreIdOperatorManager opManager =
-            new TupleCentreIdOperatorManager();
+    private static TupleCentreIdOperatorManager opManager = new TupleCentreIdOperatorManager();
     private static final long serialVersionUID = 1L;
     /**
      * 
@@ -75,13 +73,11 @@ public class TupleCentreId implements alice.tuplecentre.api.TupleCentreId,
         final String host = hostName.trim();
         final String port = portName.trim();
         try {
-            this.id =
-                    Term.createTerm(tc + "@" + host + ":" + port,
-                            TupleCentreId.opManager);
+            this.id = Term.createTerm(tc + "@" + host + ":" + port,
+                    TupleCentreId.opManager);
         } catch (final InvalidTermException e) {
             throw new InvalidTupleCentreIdException();
         }
-
         if (!this.id.isGround()) {
             throw new InvalidTupleCentreIdException();
         }
@@ -146,7 +142,7 @@ public class TupleCentreId implements alice.tuplecentre.api.TupleCentreId,
     public String getName() {
         if (this.id instanceof alice.tuprolog.Struct) {
             final Struct sid = (Struct) this.id;
-            if ((sid.getArity() == 2) && "@".equals(sid.getName())) {
+            if (sid.getArity() == 2 && "@".equals(sid.getName())) {
                 return sid.getArg(0).getTerm().toString();
             }
         }
@@ -161,7 +157,7 @@ public class TupleCentreId implements alice.tuplecentre.api.TupleCentreId,
     public String getNode() {
         if (this.id instanceof alice.tuprolog.Struct) {
             final Struct sid = (Struct) this.id.getTerm();
-            if ((sid.getArity() == 2) && "@".equals(sid.getName())) {
+            if (sid.getArity() == 2 && "@".equals(sid.getName())) {
                 final Struct t = (Struct) sid.getArg(1).getTerm();
                 if (!t.getArg(0).getTerm().isCompound()) {
                     return t.getArg(0).getTerm().toString();
@@ -181,7 +177,7 @@ public class TupleCentreId implements alice.tuplecentre.api.TupleCentreId,
     public int getPort() {
         if (this.id instanceof alice.tuprolog.Struct) {
             final Struct sid = (Struct) this.id;
-            if ((sid.getArity() == 2) && "@".equals(sid.getName())) {
+            if (sid.getArity() == 2 && "@".equals(sid.getName())) {
                 final Struct t = (Struct) sid.getArg(1);
                 return Integer.parseInt(t.getArg(1).getTerm().toString());
             }
@@ -197,19 +193,21 @@ public class TupleCentreId implements alice.tuplecentre.api.TupleCentreId,
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result =
-                (prime * result) + ((this.id == null) ? 0 : this.id.hashCode());
+        result = prime * result + (this.id == null ? 0 : this.id.hashCode());
         return result;
     }
 
+    @Override
     public boolean isAgent() {
         return false;
     }
 
+    @Override
     public boolean isEnv() {
         return false;
     }
 
+    @Override
     public boolean isTC() {
         return true;
     }
@@ -227,5 +225,4 @@ public class TupleCentreId implements alice.tuplecentre.api.TupleCentreId,
     public Term toTerm() {
         return this.id;
     }
-
 }

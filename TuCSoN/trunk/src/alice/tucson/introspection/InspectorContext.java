@@ -15,7 +15,6 @@ package alice.tucson.introspection;
 
 import java.io.IOException;
 import java.util.List;
-
 import alice.tucson.api.TucsonTupleCentreId;
 import alice.tuplecentre.api.Tuple;
 
@@ -26,7 +25,6 @@ import alice.tuplecentre.api.Tuple;
  * 
  */
 public interface InspectorContext {
-
     /**
      * waits and processes TuCSoN virtual machine events
      * 
@@ -123,5 +121,4 @@ public interface InspectorContext {
      *             if some I/O error occurs
      */
     void setTupleSet(List<Tuple> tset) throws IOException;
-
 }

@@ -8,7 +8,6 @@ package alice.tucson.service;
  *            the actual identifier Type
  */
 public class TucsonIdWrapper<I> {
-
     private final I id;
 
     /**
@@ -27,5 +26,4 @@ public class TucsonIdWrapper<I> {
     public I getId() {
         return this.id;
     }
-
 }

@@ -24,14 +24,12 @@ import alice.tuprolog.InvalidTermException;
  * 
  */
 public class NodeManagementAgent extends Thread {
-
     private static void log(final String s) {
         System.out.println("[NodeManagementAgent]: " + s);
     }
 
     private final TucsonTupleCentreId config;
     private final TucsonNodeService node;
-
     private TucsonAgentId nodeManAid;
 
     /**
@@ -63,11 +61,9 @@ public class NodeManagementAgent extends Thread {
         try {
             while (true) {
                 LogicTuple cmd;
-                cmd =
-                        (LogicTuple) TupleCentreContainer.doBlockingOperation(
-                                TucsonOperation.inCode(), this.nodeManAid,
-                                this.config,
-                                new LogicTuple("cmd", new Var("X")));
+                cmd = (LogicTuple) TupleCentreContainer.doBlockingOperation(
+                        TucsonOperation.inCode(), this.nodeManAid, this.config,
+                        new LogicTuple("cmd", new Var("X")));
                 if (cmd != null) {
                     this.execCmd(cmd.getArg(0));
                 } else {
@@ -96,12 +92,9 @@ public class NodeManagementAgent extends Thread {
     private void execCmd(final TupleArgument cmd)
             throws InvalidOperationException, TucsonInvalidLogicTupleException,
             TucsonOperationNotPossibleException {
-
         final String name = cmd.getName();
         NodeManagementAgent.log("Executing command " + name);
-
         if ("destroy".equals(name)) {
-
             final String tcName = cmd.getArg(0).getName();
             final boolean result = this.node.destroyCore(tcName);
             if (result) {
@@ -115,31 +108,20 @@ public class NodeManagementAgent extends Thread {
                         new LogicTuple("cmd_result", new Value("destroy"),
                                 new Value("failed")));
             }
-
         } else if ("enable_persistency".equals(name)) {
-
             this.node.enablePersistence(new LogicTuple(cmd.getArg(0)));
             TupleCentreContainer.doBlockingOperation(TucsonOperation.outCode(),
                     this.nodeManAid, this.config, new LogicTuple("cmd_result",
                             cmd, new Value("ok")));
-
         } else if ("disable_persistency".equals(name)) {
-
             this.node.disablePersistence(new LogicTuple(cmd.getArg(0)));
             TupleCentreContainer.doBlockingOperation(TucsonOperation.outCode(),
                     this.nodeManAid, this.config, new LogicTuple("cmd_result",
                             new Value("disable_persistency"), new Value("ok")));
-
         } else if ("enable_observability".equals(name)) {
-
             this.node.activateObservability();
-
         } else if ("disable_observability".equals(name)) {
-
             this.node.deactivateObservability();
-
         }
-
     }
-
 }

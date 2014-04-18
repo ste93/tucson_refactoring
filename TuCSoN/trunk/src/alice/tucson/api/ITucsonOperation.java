@@ -14,7 +14,6 @@
 package alice.tucson.api;
 
 import java.util.List;
-
 import alice.logictuple.LogicTuple;
 import alice.tuplecentre.api.ITupleCentreOperation;
 import alice.tuplecentre.api.Tuple;
@@ -29,7 +28,6 @@ import alice.tuplecentre.api.Tuple;
  * @author ste (mailto: s.mariani@unibo.it)
  */
 public interface ITucsonOperation extends ITupleCentreOperation {
-
     /**
      * 
      * @return the JTuple argument of this TuCSoN operation
@@ -76,6 +74,6 @@ public interface ITucsonOperation extends ITupleCentreOperation {
      * @return <code>true</code> if the operation succeeded, <code>false</code>
      *         otherwise (failure or undefined)
      */
+    @Override
     boolean isResultSuccess();
-
 }

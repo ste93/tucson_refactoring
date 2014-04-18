@@ -18,7 +18,6 @@ import java.util.Map;
  *            the type of the value
  */
 public interface MVMap<K, V> extends Iterable<V> {
-
     /** Remove all element from the MVMap */
     void clear();
 
@@ -78,6 +77,7 @@ public interface MVMap<K, V> extends Iterable<V> {
      */
     boolean isEmpty();
 
+    @Override
     Iterator<V> iterator();
 
     /**
@@ -157,5 +157,4 @@ public interface MVMap<K, V> extends Iterable<V> {
      * @return the list of values
      */
     List<V> values();
-
 }

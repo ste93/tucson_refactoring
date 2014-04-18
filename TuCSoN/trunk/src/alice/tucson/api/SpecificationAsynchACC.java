@@ -14,7 +14,6 @@
 package alice.tucson.api;
 
 import java.util.List;
-
 import alice.logictuple.LogicTuple;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
@@ -35,7 +34,6 @@ import alice.tuplecentre.api.TupleCentreId;
  * @author ste (mailto: s.mariani@unibo.it)
  */
 public interface SpecificationAsynchACC extends RootACC {
-
     /**
      * 
      * @return the List of the events regarding TuCSoN operations completion
@@ -67,10 +65,9 @@ public interface SpecificationAsynchACC extends RootACC {
      *      TucsonOperationCompletionListener
      * @see alice.tucson.api.ITucsonOperation ITucsonOperation
      */
-    ITucsonOperation
-            getS(TupleCentreId tid, TucsonOperationCompletionListener l)
-                    throws TucsonOperationNotPossibleException,
-                    UnreachableNodeException;
+    ITucsonOperation getS(TupleCentreId tid, TucsonOperationCompletionListener l)
+            throws TucsonOperationNotPossibleException,
+            UnreachableNodeException;
 
     /**
      * <code>inp_s</code> specification primitive, retrieves a ReSpecT Reaction

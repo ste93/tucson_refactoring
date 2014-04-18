@@ -24,7 +24,6 @@ import alice.tuprolog.InvalidTermException;
  * @author Alessandro Ricci
  */
 public class Var extends TupleArgument {
-
     /**
      * 
      */

@@ -8,7 +8,6 @@ package alice.respect.core;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-
 import alice.tuplecentre.core.AbstractEvent;
 
 /**
@@ -18,7 +17,6 @@ import alice.tuplecentre.core.AbstractEvent;
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public class PendingQuerySet {
-
     private final List<AbstractEvent> evAdded;
     private final List<AbstractEvent> events;
     private final List<AbstractEvent> evRemoved;
@@ -178,12 +176,10 @@ public class PendingQuerySet {
      */
     public alice.tuplecentre.core.AbstractEvent[] toArray() {
         final int size = this.events.size();
-        final alice.tuplecentre.core.AbstractEvent[] evArray =
-                new alice.tuplecentre.core.AbstractEvent[size];
+        final alice.tuplecentre.core.AbstractEvent[] evArray = new alice.tuplecentre.core.AbstractEvent[size];
         for (int i = 0; i < size; i++) {
             evArray[i] = this.events.get(i);
         }
         return evArray;
     }
-
 }

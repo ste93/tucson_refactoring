@@ -8,7 +8,6 @@ package alice.tuples.javatuples.api;
  * 
  */
 public interface IJArg {
-
     /**
      * 
      * @return wether this JArg is a JVal
@@ -20,5 +19,4 @@ public interface IJArg {
      * @return wether this JArg is a JVar
      */
     boolean isVar();
-
 }

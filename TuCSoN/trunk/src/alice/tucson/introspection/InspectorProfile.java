@@ -23,7 +23,6 @@ import alice.tucson.service.ACCDescription;
  * 
  */
 public class InspectorProfile extends ACCDescription {
-
     private static final long serialVersionUID = 4542989407611049869L;
 
     /**
@@ -41,5 +40,4 @@ public class InspectorProfile extends ACCDescription {
         this.setProperty("tuple-centre", tid.getName());
         this.setProperty("node", tid.getNode());
     }
-
 }

@@ -14,7 +14,6 @@
 package alice.tucson.api;
 
 import java.io.Serializable;
-
 import alice.respect.api.TupleCentreId;
 import alice.respect.api.exceptions.InvalidTupleCentreIdException;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
@@ -28,7 +27,6 @@ import alice.tuprolog.Term;
  */
 public class TucsonTupleCentreId implements
         alice.tuplecentre.api.TupleCentreId, Serializable {
-
     private static final long serialVersionUID = -4503481713163088789L;
     private TupleCentreId tid;
 
@@ -113,14 +111,17 @@ public class TucsonTupleCentreId implements
         return this.tid.getPort();
     }
 
+    @Override
     public boolean isAgent() {
         return false;
     }
 
+    @Override
     public boolean isEnv() {
         return false;
     }
 
+    @Override
     public boolean isTC() {
         return true;
     }
@@ -137,5 +138,4 @@ public class TucsonTupleCentreId implements
     public Term toTerm() {
         return alice.tuprolog.Term.createTerm(this.tid.toString());
     }
-
 }

@@ -19,7 +19,6 @@ import alice.tuplecentre.core.AbstractTupleCentreOperation;
  * 
  */
 public class SensorTransducer extends AbstractTransducer {
-
     /**
      * @param i
      *            the transducer identifier
@@ -88,5 +87,4 @@ public class SensorTransducer extends AbstractTransducer {
                 + "]: I'm a sensor transducer, I can't set values!");
         return false;
     }
-
 }

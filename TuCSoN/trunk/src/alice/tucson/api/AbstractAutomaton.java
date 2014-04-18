@@ -15,7 +15,6 @@ package alice.tucson.api;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 
@@ -26,7 +25,6 @@ import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public abstract class AbstractAutomaton extends AbstractTucsonAgent {
-
     /**
      * 
      */
@@ -113,25 +111,22 @@ public abstract class AbstractAutomaton extends AbstractTucsonAgent {
      */
     @Override
     protected final void main() {
-
         // FIXME I don't think the string is correct...
         try {
-            AbstractAutomaton.argType =
-                    new Class[] { Class.forName("java.lang.Object") };
+            AbstractAutomaton.argType = new Class[] { Class
+                    .forName("java.lang.Object") };
         } catch (final ClassNotFoundException e) {
             System.err.println("[Automaton]: " + e);
             e.printStackTrace();
             this.error();
         }
-
         while (true) {
             if (!this.state.equals("end")) {
                 if (this.arguments == null) {
                     Method m;
                     try {
-                        m =
-                                this.getClass().getDeclaredMethod(this.state,
-                                        (Class<?>[]) null);
+                        m = this.getClass().getDeclaredMethod(this.state,
+                                (Class<?>[]) null);
                         m.setAccessible(true);
                         m.invoke(this, (Object[]) null);
                     } catch (final SecurityException e) {
@@ -153,9 +148,8 @@ public abstract class AbstractAutomaton extends AbstractTucsonAgent {
                 } else {
                     Method m;
                     try {
-                        m =
-                                this.getClass().getDeclaredMethod(this.state,
-                                        AbstractAutomaton.argType);
+                        m = this.getClass().getDeclaredMethod(this.state,
+                                AbstractAutomaton.argType);
                         m.setAccessible(true);
                         m.invoke(this, this.arguments);
                     } catch (final SecurityException e) {
@@ -185,7 +179,5 @@ public abstract class AbstractAutomaton extends AbstractTucsonAgent {
                 break;
             }
         }
-
     }
-
 }

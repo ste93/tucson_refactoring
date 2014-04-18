@@ -2,10 +2,8 @@ package it.unibo.sd.jade.coordination;
 
 import jade.core.AID;
 import jade.core.Agent;
-
 import java.util.LinkedHashMap;
 import java.util.Map;
-
 import alice.tucson.api.EnhancedACC;
 
 /**
@@ -14,7 +12,6 @@ import alice.tucson.api.EnhancedACC;
  * @author Luca Sangiorgi (mailto: luca.sangiorgi6@studio.unibo.it)
  */
 public class TucsonACCsManager {
-
     /**
      * 
      */

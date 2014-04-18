@@ -23,7 +23,6 @@ import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
-
 import alice.tucson.api.exceptions.UnreachableNodeException;
 import alice.tucson.introspection.InspectorContextEvent;
 import alice.tucson.introspection.NewInspectorMsg;
@@ -43,7 +42,6 @@ import alice.tucson.network.exceptions.DialogExceptionTcp;
  * 
  */
 public class TucsonProtocolTCP extends AbstractTucsonProtocol {
-
     /** serialVersionUID **/
     private static final long serialVersionUID = 1L;
     private ObjectInputStream inStream;
@@ -77,7 +75,6 @@ public class TucsonProtocolTCP extends AbstractTucsonProtocol {
         } catch (final IOException e) {
             throw new DialogExceptionTcp();
         }
-
     }
 
     /**
@@ -113,13 +110,11 @@ public class TucsonProtocolTCP extends AbstractTucsonProtocol {
          * before creating the input stream.
          */
         try {
-            this.outStream =
-                    new ObjectOutputStream(new BufferedOutputStream(
-                            this.socket.getOutputStream()));
+            this.outStream = new ObjectOutputStream(new BufferedOutputStream(
+                    this.socket.getOutputStream()));
             this.outStream.flush();
-            this.inStream =
-                    new ObjectInputStream(new BufferedInputStream(
-                            this.socket.getInputStream()));
+            this.inStream = new ObjectInputStream(new BufferedInputStream(
+                    this.socket.getInputStream()));
         } catch (final IOException e) {
             throw new DialogExceptionTcp();
         }
@@ -133,13 +128,11 @@ public class TucsonProtocolTCP extends AbstractTucsonProtocol {
          * before creating the input stream.
          */
         try {
-            this.outStream =
-                    new ObjectOutputStream(new BufferedOutputStream(
-                            this.socket.getOutputStream()));
+            this.outStream = new ObjectOutputStream(new BufferedOutputStream(
+                    this.socket.getOutputStream()));
             this.outStream.flush();
-            this.inStream =
-                    new ObjectInputStream(new BufferedInputStream(
-                            this.socket.getInputStream()));
+            this.inStream = new ObjectInputStream(new BufferedInputStream(
+                    this.socket.getInputStream()));
         } catch (final IOException e) {
             throw new DialogExceptionTcp();
         }
@@ -225,7 +218,6 @@ public class TucsonProtocolTCP extends AbstractTucsonProtocol {
 
     @Override
     public TucsonMsgReply receiveMsgReply() throws DialogExceptionTcp {
-
         TucsonMsgReply msg = new TucsonMsgReply();
         try {
             msg = (TucsonMsgReply) this.inStream.readObject();
@@ -320,13 +312,11 @@ public class TucsonProtocolTCP extends AbstractTucsonProtocol {
         } catch (final IOException e) {
             throw new DialogExceptionTcp();
         }
-
     }
 
     @Override
     public void sendMsgRequest(final TucsonMsgRequest request)
             throws DialogExceptionTcp {
-
         try {
             this.outStream.writeObject(request);
             this.outStream.flush();
@@ -400,5 +390,4 @@ public class TucsonProtocolTCP extends AbstractTucsonProtocol {
     protected void send(final String value) throws IOException {
         this.outStream.writeUTF(value);
     }
-
 }

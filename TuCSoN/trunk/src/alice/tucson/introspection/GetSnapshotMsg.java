@@ -21,7 +21,6 @@ import alice.tucson.api.TucsonAgentId;
  * 
  */
 public class GetSnapshotMsg extends NodeMsg {
-
     /**
      * 
      */
@@ -31,7 +30,6 @@ public class GetSnapshotMsg extends NodeMsg {
      */
     public static final byte WSET = 2;
     private static final long serialVersionUID = -7715943663646624722L;
-
     private byte what;
 
     /**
@@ -60,5 +58,4 @@ public class GetSnapshotMsg extends NodeMsg {
     public void setWhat(final byte w) {
         this.what = w;
     }
-
 }

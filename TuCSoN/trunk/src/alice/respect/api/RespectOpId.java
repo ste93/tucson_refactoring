@@ -7,7 +7,6 @@ package alice.respect.api;
  * 
  */
 public class RespectOpId {
-
     private final long id;
 
     /**
@@ -57,7 +56,7 @@ public class RespectOpId {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = (prime * result) + (int) (this.id ^ (this.id >>> 32));
+        result = prime * result + (int) (this.id ^ this.id >>> 32);
         return result;
     }
 
@@ -65,5 +64,4 @@ public class RespectOpId {
     public String toString() {
         return String.valueOf(this.id);
     }
-
 }

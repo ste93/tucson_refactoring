@@ -24,17 +24,14 @@ import alice.logictuple.TupleArgument;
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public final class InternalOperation {
-
     private static final int OPTYPE_GET_ENV = 77;
     private static final int OPTYPE_GET_R = 5;
-
     private static final int OPTYPE_GET_S_R = 18;
     private static final int OPTYPE_IN_ALLR = 11;
     private static final int OPTYPE_IN_SR = 15;
     private static final int OPTYPE_INR = 2;
     private static final int OPTYPE_NO_ALLR = 13;
     private static final int OPTYPE_NO_SR = 17;
-
     private static final int OPTYPE_NOR = 4;
     private static final int OPTYPE_OUT_ALLR = 10;
     private static final int OPTYPE_OUT_SR = 14;
@@ -42,9 +39,7 @@ public final class InternalOperation {
     private static final int OPTYPE_RD_ALLR = 12;
     private static final int OPTYPE_RD_SR = 16;
     private static final int OPTYPE_RDR = 3;
-
     private static final int OPTYPE_SET_ENV = 78;
-
     private static final int OPTYPE_SET_R = 6;
     private static final int OPTYPE_SET_S_R = 19;
     private static final int OPTYPE_SPAWN_R = 66;
@@ -273,9 +268,7 @@ public final class InternalOperation {
     }
 
     private final LogicTuple arg;
-
     private LogicTuple result;
-
     private final int type;
 
     private InternalOperation(final int t, final LogicTuple a) {
@@ -409,7 +402,6 @@ public final class InternalOperation {
      */
     public boolean isRdR() {
         return this.type == InternalOperation.OPTYPE_RDR;
-
     }
 
     /**
@@ -551,5 +543,4 @@ public final class InternalOperation {
         }
         return new LogicTuple(opName, new TupleArgument(t.toTerm()));
     }
-
 }

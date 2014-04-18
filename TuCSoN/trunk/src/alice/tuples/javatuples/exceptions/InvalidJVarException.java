@@ -8,8 +8,6 @@ package alice.tuples.javatuples.exceptions;
  * 
  */
 public class InvalidJVarException extends Exception {
-
     /** serialVersionUID **/
     private static final long serialVersionUID = 1L;
-
 }

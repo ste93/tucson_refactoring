@@ -19,9 +19,7 @@ import alice.tucson.service.TucsonOpCompletionEvent;
  * 
  */
 public class TestSync extends Agent {
-
     private class TucsonTestBehaviour extends SimpleBehaviour {
-
         /**
          * 
          */
@@ -31,25 +29,23 @@ public class TestSync extends Agent {
         public void action() {
             try {
                 System.out.println("Hello, i am " + this.myAgent.getName());
-                final TucsonHelper helper =
-                        (TucsonHelper) TestSync.this
-                                .getHelper(TucsonService.NAME);
+                final TucsonHelper helper = (TucsonHelper) TestSync.this
+                        .getHelper(TucsonService.NAME);
                 // Acquisizione ACC
                 helper.acquireACC(this.myAgent);
                 // Id tuple centre
-                final TucsonTupleCentreId tcid =
-                        helper.getTucsonTupleCentreId("default", "localhost",
-                                20504);
+                final TucsonTupleCentreId tcid = helper.getTucsonTupleCentreId(
+                        "default", "localhost", 20504);
                 // Creazione operazione di read
                 LogicTuple tuple = LogicTuple.parse("nome(X)");
                 final Rd op = new Rd(tcid, tuple);
                 // acquisizione del bridge univoco per l'agente
-                final BridgeToTucson bridge =
-                        helper.getBridgeToTucson(this.myAgent);
+                final BridgeToTucson bridge = helper
+                        .getBridgeToTucson(this.myAgent);
                 // esecuzione operazione di coordinazione TuCSoN dal "mondo"
                 // JADE
-                TucsonOpCompletionEvent result =
-                        bridge.synchronousInvocation(op, null, this);
+                TucsonOpCompletionEvent result = bridge.synchronousInvocation(
+                        op, null, this);
                 if (result != null) { // operazione completata
                     // gestione risultato
                     final String name = result.getTuple().getArg(0).toString(); // value

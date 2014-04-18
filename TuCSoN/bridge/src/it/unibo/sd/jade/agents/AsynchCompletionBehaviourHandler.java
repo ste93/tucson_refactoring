@@ -6,9 +6,7 @@ import jade.core.Agent;
 import jade.core.GenericCommand;
 import jade.core.ServiceException;
 import jade.core.behaviours.Behaviour;
-
 import java.util.List;
-
 import alice.tucson.api.AbstractTucsonAgent;
 import alice.tucson.api.EnhancedAsynchACC;
 import alice.tucson.api.ITucsonOperation;
@@ -25,7 +23,6 @@ import alice.tuplecentre.core.AbstractTupleCentreOperation;
  * 
  */
 public class AsynchCompletionBehaviourHandler extends AbstractTucsonAgent {
-
     private final Behaviour behav; // nuovo comportamento da aggiungere
                                    // all'agente JADE
     private final GenericCommand cmd; // comando verticale da
@@ -78,14 +75,14 @@ public class AsynchCompletionBehaviourHandler extends AbstractTucsonAgent {
                 .println("\n\n\n[TucsonAgent]RISULTATO RICEVUTO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         // ros.list.add((ITucsonOperation)result);
         final EnhancedAsynchACC acc = (EnhancedAsynchACC) this.cmd.getParam(1);
-        final List<TucsonOpCompletionEvent> list =
-                acc.getCompletionEventsList();
+        final List<TucsonOpCompletionEvent> list = acc
+                .getCompletionEventsList();
         TucsonOpCompletionEvent ev = null;
         // ricerca del risultato dell'operazione richiesta contenuto nella
         // risposta della chiamata asincrona di oggetto ITucsonOperation
         boolean trovato = false;
         synchronized (list) {
-            for (int i = 0; (i < list.size()) && !trovato; i++) {
+            for (int i = 0; i < list.size() && !trovato; i++) {
                 if (list.get(i).getOpId().getId() == this.result.getId()) { // operazione
                                                                             // richiesta
                                                                             // trovata
@@ -97,8 +94,7 @@ public class AsynchCompletionBehaviourHandler extends AbstractTucsonAgent {
         }
         // controllo se il behaviour passato rispetta il contratto richiesto
         if (this.behav instanceof IAsynchCompletionBehaviour) {
-            final IAsynchCompletionBehaviour b =
-                    (IAsynchCompletionBehaviour) this.behav;
+            final IAsynchCompletionBehaviour b = (IAsynchCompletionBehaviour) this.behav;
             b.setTucsonOpCompletionEvent(ev);
             this.myAgent.addBehaviour(this.behav); // non ci sono problemi
                                                    // accessi concorrenti!å

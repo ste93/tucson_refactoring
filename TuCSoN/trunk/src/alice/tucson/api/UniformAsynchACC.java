@@ -14,7 +14,6 @@
 package alice.tucson.api;
 
 import java.util.List;
-
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
 import alice.tucson.service.TucsonOpCompletionEvent;
@@ -27,7 +26,6 @@ import alice.tuplecentre.api.TupleCentreId;
  * 
  */
 public interface UniformAsynchACC extends RootACC {
-
     /**
      * 
      * @return the List of the events regarding TuCSoN operations completion
@@ -257,5 +255,4 @@ public interface UniformAsynchACC extends RootACC {
             TucsonOperationCompletionListener l)
             throws TucsonOperationNotPossibleException,
             UnreachableNodeException;
-
 }

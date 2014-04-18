@@ -12,7 +12,6 @@ import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
  * 
  */
 public class TransducerId extends EnvAgentId {
-
     /** serialVersionUID **/
     private static final long serialVersionUID = 1L;
 

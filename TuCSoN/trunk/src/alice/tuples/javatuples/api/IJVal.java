@@ -10,7 +10,6 @@ import alice.tuplecentre.api.exceptions.InvalidOperationException;
  * 
  */
 public interface IJVal extends IJArg {
-
     /**
      * 
      * @return wether the JVal is a double
@@ -80,5 +79,4 @@ public interface IJVal extends IJArg {
      *             if the JVal is not a long
      */
     long toLong() throws InvalidOperationException;
-
 }

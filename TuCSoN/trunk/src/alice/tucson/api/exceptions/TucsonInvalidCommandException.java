@@ -19,7 +19,5 @@ package alice.tucson.api.exceptions;
  * 
  */
 public class TucsonInvalidCommandException extends Exception {
-
     private static final long serialVersionUID = -3816363677020991384L;
-
 }

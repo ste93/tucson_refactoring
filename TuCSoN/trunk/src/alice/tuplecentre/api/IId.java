@@ -8,7 +8,6 @@ package alice.tuplecentre.api;
  * 
  */
 public interface IId {
-
     /**
      * 
      * @return wether this identifier is an agent identifier
@@ -26,5 +25,4 @@ public interface IId {
      * @return wether this identifier is a tuple centre identifier
      */
     boolean isTC();
-
 }

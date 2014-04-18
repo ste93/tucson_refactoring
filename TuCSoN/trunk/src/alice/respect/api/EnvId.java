@@ -10,7 +10,6 @@ import alice.tuprolog.Term;
  * 
  */
 public class EnvId implements IId, java.io.Serializable {
-
     /** serialVersionUID **/
     private static final long serialVersionUID = 1L;
     private final Struct id;
@@ -35,14 +34,17 @@ public class EnvId implements IId, java.io.Serializable {
         return this.localName;
     }
 
+    @Override
     public boolean isAgent() {
         return false;
     }
 
+    @Override
     public boolean isEnv() {
         return true;
     }
 
+    @Override
     public boolean isTC() {
         return false;
     }
@@ -62,5 +64,4 @@ public class EnvId implements IId, java.io.Serializable {
         }
         return this.id.getTerm();
     }
-
 }

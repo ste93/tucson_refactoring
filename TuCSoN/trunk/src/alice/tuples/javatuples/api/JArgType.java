@@ -8,7 +8,6 @@ package alice.tuples.javatuples.api;
  * 
  */
 public enum JArgType {
-
     /**
      * 
      */
@@ -33,5 +32,4 @@ public enum JArgType {
      * 
      */
     LONG
-
 }

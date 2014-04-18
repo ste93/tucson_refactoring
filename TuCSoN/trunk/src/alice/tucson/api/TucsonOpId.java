@@ -19,7 +19,6 @@ package alice.tucson.api;
  * 
  */
 public class TucsonOpId {
-
     private final long id;
 
     /**
@@ -70,7 +69,7 @@ public class TucsonOpId {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = (prime * result) + (int) (this.id ^ (this.id >>> 32));
+        result = prime * result + (int) (this.id ^ this.id >>> 32);
         return result;
     }
 
@@ -78,5 +77,4 @@ public class TucsonOpId {
     public String toString() {
         return String.valueOf(this.id);
     }
-
 }

@@ -27,9 +27,7 @@ import alice.tuprolog.Term;
  */
 public class AgentId implements alice.tuplecentre.api.AgentId,
         java.io.Serializable {
-
-    private static AgentIdOperatorManager opManager =
-            new AgentIdOperatorManager();
+    private static AgentIdOperatorManager opManager = new AgentIdOperatorManager();
     /**
      * 
      */
@@ -106,14 +104,17 @@ public class AgentId implements alice.tuplecentre.api.AgentId,
         return this.id.toString();
     }
 
+    @Override
     public boolean isAgent() {
         return true;
     }
 
+    @Override
     public boolean isEnv() {
         return false;
     }
 
+    @Override
     public boolean isTC() {
         return false;
     }
@@ -131,5 +132,4 @@ public class AgentId implements alice.tuplecentre.api.AgentId,
     public Term toTerm() {
         return this.id;
     }
-
 }

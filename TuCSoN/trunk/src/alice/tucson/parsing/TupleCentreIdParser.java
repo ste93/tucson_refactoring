@@ -9,7 +9,6 @@ import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
  * 
  */
 public class TupleCentreIdParser {
-
     private final String defPort;
     private final String input;
     private final String node;
@@ -48,40 +47,33 @@ public class TupleCentreIdParser {
             tcName = "default";
             if (iCol != -1) {
                 hostName = this.input.substring(iAt + 1, iCol).trim();
-                portName =
-                        this.input.substring(iCol + 1, this.input.length())
-                                .trim();
+                portName = this.input.substring(iCol + 1, this.input.length())
+                        .trim();
             } else {
-                hostName =
-                        this.input.substring(iAt + 1, this.input.length())
-                                .trim();
+                hostName = this.input.substring(iAt + 1, this.input.length())
+                        .trim();
             }
         } else if (iAt != -1) {
             tcName = this.input.substring(0, iAt).trim();
             if (iCol != -1) {
                 hostName = this.input.substring(iAt + 1, iCol).trim();
-                portName =
-                        this.input.substring(iCol + 1, this.input.length())
-                                .trim();
+                portName = this.input.substring(iCol + 1, this.input.length())
+                        .trim();
             } else {
-                hostName =
-                        this.input.substring(iAt + 1, this.input.length())
-                                .trim();
+                hostName = this.input.substring(iAt + 1, this.input.length())
+                        .trim();
             }
         } else {
             if (iCol == 0) {
                 tcName = "default";
-                portName =
-                        this.input.substring(iCol + 1, this.input.length())
-                                .trim();
+                portName = this.input.substring(iCol + 1, this.input.length())
+                        .trim();
             } else if (iCol != -1) {
                 tcName = this.input.substring(0, iCol).trim();
-                portName =
-                        this.input.substring(iCol + 1, this.input.length())
-                                .trim();
+                portName = this.input.substring(iCol + 1, this.input.length())
+                        .trim();
             }
         }
         return new TucsonTupleCentreId(tcName, hostName, portName);
     }
-
 }

@@ -19,7 +19,6 @@ package alice.tuplecentre.core;
  * @author Alessandro Ricci
  */
 public class FetchEnvState extends AbstractTupleCentreVMState {
-
     private AbstractTupleCentreVMState reactingState;
     private AbstractTupleCentreVMState speakingState;
 
@@ -62,5 +61,4 @@ public class FetchEnvState extends AbstractTupleCentreVMState {
         this.reactingState = this.vm.getState("ReactingState");
         this.speakingState = this.vm.getState("SpeakingState");
     }
-
 }

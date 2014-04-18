@@ -21,7 +21,6 @@ import alice.tucson.api.TucsonAgentId;
  * 
  */
 public class ResetMsg extends NodeMsg {
-
     private static final long serialVersionUID = 5161921319537355981L;
 
     /**
@@ -32,5 +31,4 @@ public class ResetMsg extends NodeMsg {
     public ResetMsg(final TucsonAgentId id) {
         super(id, "reset");
     }
-
 }

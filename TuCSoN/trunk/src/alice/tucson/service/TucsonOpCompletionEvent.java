@@ -1,7 +1,6 @@
 package alice.tucson.service;
 
 import java.util.List;
-
 import alice.logictuple.LogicTuple;
 import alice.tucson.api.TucsonOpId;
 
@@ -14,7 +13,6 @@ import alice.tucson.api.TucsonOpId;
  * 
  */
 public class TucsonOpCompletionEvent {
-
     private final boolean allowed;
     private final TucsonOpId opId;
     private final boolean resultSuccess;
@@ -164,5 +162,4 @@ public class TucsonOpCompletionEvent {
     public boolean resultOperationSucceeded() {
         return this.resultSuccess;
     }
-
 }

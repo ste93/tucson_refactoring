@@ -19,7 +19,6 @@ import alice.tuplecentre.core.AbstractTupleCentreOperation;
  * 
  */
 public class ActuatorTransducer extends AbstractTransducer {
-
     /**
      * @param i
      *            the transducer id
@@ -89,5 +88,4 @@ public class ActuatorTransducer extends AbstractTransducer {
         }
         return success;
     }
-
 }

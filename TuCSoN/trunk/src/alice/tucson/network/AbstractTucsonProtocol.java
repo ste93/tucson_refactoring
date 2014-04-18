@@ -14,7 +14,6 @@ package alice.tucson.network;
 
 import java.io.IOException;
 import java.util.Properties;
-
 import alice.tucson.introspection.InspectorContextEvent;
 import alice.tucson.introspection.NewInspectorMsg;
 import alice.tucson.introspection.NodeMsg;
@@ -29,16 +28,11 @@ import alice.tucson.service.ACCDescription;
  * 
  */
 public abstract class AbstractTucsonProtocol implements java.io.Serializable {
-
     private static final int REQ_ENTERCONTEXT = 1;
-
     /** serialVersionUID **/
     private static final long serialVersionUID = 1L;
-
     private ACCDescription context;
-
     private boolean reqAllowed;
-
     private int reqType;
 
     /**
@@ -69,7 +63,6 @@ public abstract class AbstractTucsonProtocol implements java.io.Serializable {
      * public abstract ObjectInputStream getInputStream(); public abstract
      * ObjectOutputStream getOutputStream();
      */
-
     /**
      * 
      * @return wether the received request is an ACC acquisition request
@@ -185,9 +178,7 @@ public abstract class AbstractTucsonProtocol implements java.io.Serializable {
      *             if some network problems arise
      */
     public void sendEnterRequest(final ACCDescription ctx) throws IOException {
-
         this.send(AbstractTucsonProtocol.REQ_ENTERCONTEXT);
-
         String agentName = ctx.getProperty("agent-identity");
         if (agentName == null) {
             agentName = ctx.getProperty("tc-identity");
@@ -196,21 +187,17 @@ public abstract class AbstractTucsonProtocol implements java.io.Serializable {
             }
         }
         this.send(agentName);
-
         String agentProfile = ctx.getProperty("agent-role");
         if (agentProfile == null) {
             agentProfile = "default";
         }
         this.send(agentProfile);
-
         String tcName = ctx.getProperty("tuple-centre");
         if (tcName == null) {
             tcName = "_";
         }
         this.send(tcName);
-
         this.flush();
-
     }
 
     /**
@@ -380,5 +367,4 @@ public abstract class AbstractTucsonProtocol implements java.io.Serializable {
      *             if some network problems arise
      */
     protected abstract void send(String value) throws IOException;
-
 }

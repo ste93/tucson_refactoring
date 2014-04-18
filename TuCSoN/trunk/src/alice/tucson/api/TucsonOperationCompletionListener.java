@@ -22,12 +22,10 @@ import alice.tuplecentre.core.OperationCompletionListener;
  */
 public interface TucsonOperationCompletionListener extends
         OperationCompletionListener {
-
     /**
      * 
      * @param op
      *            the TuCSoN operation just completed
      */
     void operationCompleted(ITucsonOperation op);
-
 }

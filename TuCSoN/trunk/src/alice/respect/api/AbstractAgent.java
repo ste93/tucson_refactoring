@@ -22,7 +22,6 @@ import java.lang.reflect.Method;
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public abstract class AbstractAgent {
-
     final class PlanExecutor extends Thread {
         private final Method activity;
         private final AbstractAgent agent;
@@ -51,7 +50,6 @@ public abstract class AbstractAgent {
     @SuppressWarnings("unchecked")
     private static final Class<? extends Object>[] ARGS_CLASS = new Class[] {};
     private final AgentId id;
-
     private IRespectTC tc;
 
     /**
@@ -113,9 +111,8 @@ public abstract class AbstractAgent {
     protected final void execPlan(final String name) {
         Method m = null;
         try {
-            m =
-                    this.getClass().getDeclaredMethod(name,
-                            AbstractAgent.ARGS_CLASS);
+            m = this.getClass().getDeclaredMethod(name,
+                    AbstractAgent.ARGS_CLASS);
         } catch (final NoSuchMethodException e) {
             e.printStackTrace();
         } catch (final SecurityException e) {
@@ -131,5 +128,4 @@ public abstract class AbstractAgent {
      * Body of the agent
      */
     protected abstract void mainPlan();
-
 }

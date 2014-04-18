@@ -24,9 +24,7 @@ package alice.tucson.api;
  * @author ste (mailto: s.mariani@unibo.it)
  */
 public interface EnhancedACC extends EnhancedSynchACC, EnhancedAsynchACC {
-
     /*
      * Convenience interface
      */
-
 }

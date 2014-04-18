@@ -2,7 +2,6 @@ package alice.tucson.parsing;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.service.TucsonCmd;
@@ -13,10 +12,9 @@ import alice.tucson.service.TucsonCmd;
  * 
  */
 public class TucsonOpParser {
-
     private static boolean insideReaction(final String in) {
-        final Pattern pattern =
-                Pattern.compile("((out|in|rd|no|inp|rdp|nop|get|set)_s)+?");
+        final Pattern pattern = Pattern
+                .compile("((out|in|rd|no|inp|rdp|nop|get|set)_s)+?");
         final Matcher matcher = pattern.matcher(in);
         return matcher.find();
     }
@@ -27,7 +25,6 @@ public class TucsonOpParser {
     private final String node;
     private TucsonCmd tcmd;
     private TucsonTupleCentreId tid;
-
     private TupleCentreIdParser tidParser;
 
     /**
@@ -78,13 +75,13 @@ public class TucsonOpParser {
         String tc = "default";
         final int iOp = this.input.indexOf('?');
         final int iBra = this.input.indexOf('(');
-        if ((iOp != -1)
+        if (iOp != -1
                 && !TucsonOpParser.insideReaction(this.input.substring(0, iOp)
                         .trim())) {
-            if ((iBra != -1) && (iBra < iOp)) {
+            if (iBra != -1 && iBra < iOp) {
                 cmd = this.input.substring(iOp + 1, this.input.length()).trim();
                 tc = this.input.substring(0, iOp).trim();
-            } else if ((iBra == -1) || (iOp < iBra)) {
+            } else if (iBra == -1 || iOp < iBra) {
                 cmd = this.input.substring(iOp + 1, this.input.length()).trim();
                 tc = this.input.substring(0, iOp).trim();
             }
@@ -94,5 +91,4 @@ public class TucsonOpParser {
         this.tcmd = this.cmdParser.parse();
         this.tid = this.tidParser.parse();
     }
-
 }

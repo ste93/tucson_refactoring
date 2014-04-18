@@ -23,7 +23,6 @@ import java.util.EventObject;
  * 
  */
 public class InspectableEvent extends EventObject {
-
     /**
      * 
      */
@@ -65,5 +64,4 @@ public class InspectableEvent extends EventObject {
     public int getType() {
         return this.type;
     }
-
 }

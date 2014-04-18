@@ -30,7 +30,6 @@ import alice.tuples.javatuples.impl.JVar;
  * 
  */
 public final class HelloWorldJTuples {
-
     /**
      * @param args
      *            program arguments (none expected)
@@ -54,8 +53,8 @@ public final class HelloWorldJTuples {
             /*
              * 3) Define the tuplecentre target of your coordination operations.
              */
-            final TucsonTupleCentreId tid =
-                    new TucsonTupleCentreId("default", "localhost", "20504");
+            final TucsonTupleCentreId tid = new TucsonTupleCentreId("default",
+                    "localhost", "20504");
             /*
              * 4) Build the tuple using the communication language.
              */
@@ -86,8 +85,8 @@ public final class HelloWorldJTuples {
             /*
              * Another success test to be sure.
              */
-            final IJTupleTemplate template =
-                    new JTupleTemplate(new JVal("hello"));
+            final IJTupleTemplate template = new JTupleTemplate(new JVal(
+                    "hello"));
             template.addArg(new JVar(JArgType.LITERAL));
             op = acc.rdp(tid, template, null);
             if (op.isResultSuccess()) {
@@ -144,5 +143,4 @@ public final class HelloWorldJTuples {
          * 
          */
     }
-
 }

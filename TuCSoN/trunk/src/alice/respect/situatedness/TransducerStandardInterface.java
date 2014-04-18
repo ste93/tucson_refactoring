@@ -19,7 +19,6 @@ import alice.tuplecentre.api.exceptions.OperationTimeOutException;
  * 
  */
 public interface TransducerStandardInterface {
-
     /**
      * 
      * @return the identifier of the transducer

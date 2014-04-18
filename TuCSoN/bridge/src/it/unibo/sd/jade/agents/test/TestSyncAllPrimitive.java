@@ -18,9 +18,7 @@ import alice.tucson.service.TucsonOpCompletionEvent;
  * 
  */
 public class TestSyncAllPrimitive extends Agent {
-
     private class TucsonTestBehaviour extends SimpleBehaviour {
-
         /**
          * 
          */
@@ -31,15 +29,13 @@ public class TestSyncAllPrimitive extends Agent {
         public void action() {
             try {
                 System.out.println("Hello, i am " + this.myAgent.getName());
-                final TucsonHelper helper =
-                        (TucsonHelper) TestSyncAllPrimitive.this
-                                .getHelper(TucsonService.NAME);
+                final TucsonHelper helper = (TucsonHelper) TestSyncAllPrimitive.this
+                        .getHelper(TucsonService.NAME);
                 // Ottengo ACC
                 helper.acquireACC(this.myAgent);
                 // Creo operazione
-                final TucsonTupleCentreId tcid =
-                        helper.getTucsonTupleCentreId("default", "localhost",
-                                20504);
+                final TucsonTupleCentreId tcid = helper.getTucsonTupleCentreId(
+                        "default", "localhost", 20504);
                 LogicTuple tuple = null;
                 // acquisizione del bridge univoco per l'agente
                 this.bridge = helper.getBridgeToTucson(this.myAgent);
@@ -51,8 +47,8 @@ public class TestSyncAllPrimitive extends Agent {
                 tuple = LogicTuple.parse("nome(luca)");
                 final Out op = new Out(tcid, tuple);
                 // esecuzione operazione dal "mondo Jade"
-                final TucsonOpCompletionEvent result =
-                        this.bridge.synchronousInvocation(op, null, this);
+                final TucsonOpCompletionEvent result = this.bridge
+                        .synchronousInvocation(op, null, this);
                 if (result != null) { // risultato operazione acquisito
                     // gestione risultato
                     TestSyncAllPrimitive.this.log("\n\n--> "

@@ -20,13 +20,11 @@ import alice.tuplecentre.api.exceptions.OperationTimeOutException;
  * @author ste (mailto: s.mariani@unibo.it)
  */
 public final class HelloWorld {
-
     /**
      * @param args
      *            the name of the TuCSoN coordinable (optional).
      */
     public static void main(final String[] args) {
-
         /*
          * 1) Build a TuCSoN Agent identifier to contact the TuCSoN system.
          */
@@ -45,13 +43,12 @@ public final class HelloWorld {
             /*
              * 3) Define the tuplecentre target of your coordination operations.
              */
-            final TucsonTupleCentreId tid =
-                    new TucsonTupleCentreId("default", "localhost", "20504");
+            final TucsonTupleCentreId tid = new TucsonTupleCentreId("default",
+                    "localhost", "20504");
             /*
              * 4) Build the tuple using the communication language.
              */
-            final LogicTuple tuple =
-                    new LogicTuple("hello", new Value("world"));
+            final LogicTuple tuple = new LogicTuple("hello", new Value("world"));
             /*
              * 5) Perform the coordination operation using the preferred
              * coordination primitive.
@@ -117,7 +114,6 @@ public final class HelloWorld {
              */
             e.printStackTrace();
         }
-
     }
 
     private HelloWorld() {
@@ -125,5 +121,4 @@ public final class HelloWorld {
          * 
          */
     }
-
 }

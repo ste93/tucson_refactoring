@@ -17,7 +17,5 @@ package alice.tuplecentre.api.exceptions;
  * 
  */
 public class InvalidOperationException extends Exception {
-
     private static final long serialVersionUID = 2834213882766578233L;
-
 }

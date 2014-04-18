@@ -1,7 +1,6 @@
 package alice.tucson.service;
 
 import java.util.Map;
-
 import alice.tucson.api.RootACC;
 
 /**
@@ -10,7 +9,7 @@ import alice.tucson.api.RootACC;
  * 
  */
 public class RootACCProxy implements RootACC {
-
+    @Override
     public void exit() {
         /*
          * 
@@ -21,5 +20,4 @@ public class RootACCProxy implements RootACC {
     public Map<Long, TucsonOperation> getPendingOperationsMap() {
         return null;
     }
-
 }

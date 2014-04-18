@@ -1,7 +1,6 @@
 package alice.respect.api;
 
 import java.util.List;
-
 import alice.logictuple.LogicTuple;
 import alice.respect.api.exceptions.OperationNotPossibleException;
 import alice.respect.api.exceptions.OperationTimeOutException;
@@ -15,7 +14,6 @@ import alice.tuplecentre.api.exceptions.InvalidTupleException;
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public interface ITimedContext {
-
     /**
      * 
      * @param id
@@ -397,5 +395,4 @@ public interface ITimedContext {
     LogicTuple urdp(IId id, LogicTuple t, long ms)
             throws InvalidTupleException, OperationNotPossibleException,
             OperationTimeOutException;
-
 }

@@ -14,7 +14,6 @@ package alice.respect.core;
 
 import java.util.LinkedList;
 import java.util.List;
-
 import alice.logictuple.LogicTuple;
 import alice.logictuple.TupleArgument;
 import alice.respect.api.IRespectOperation;
@@ -36,7 +35,6 @@ import alice.tuprolog.Term;
  */
 public class RespectOperation extends AbstractTupleCentreOperation implements
         IRespectOperation {
-
     /**
      * 
      */
@@ -64,9 +62,8 @@ public class RespectOperation extends AbstractTupleCentreOperation implements
      */
     public static RespectOperation makeGet(final LogicTuple t,
             final OperationCompletionListener l) {
-        final RespectOperation temp =
-                new RespectOperation(AbstractTupleCentreOperation.OPTYPE_GET,
-                        (Tuple) t, l);
+        final RespectOperation temp = new RespectOperation(
+                AbstractTupleCentreOperation.OPTYPE_GET, (Tuple) t, l);
         return temp;
     }
 
@@ -80,8 +77,8 @@ public class RespectOperation extends AbstractTupleCentreOperation implements
      */
     public static RespectOperation makeGetEnv(final LogicTuple t,
             final OperationCompletionListener l) {
-        final RespectOperation temp =
-                new RespectOperation(RespectOperation.OPTYPE_GET_ENV, t, l);
+        final RespectOperation temp = new RespectOperation(
+                RespectOperation.OPTYPE_GET_ENV, t, l);
         temp.setTupleResult(t);
         return temp;
     }
@@ -96,9 +93,8 @@ public class RespectOperation extends AbstractTupleCentreOperation implements
      */
     public static RespectOperation makeGetS(final LogicTuple t,
             final OperationCompletionListener l) {
-        final RespectOperation temp =
-                new RespectOperation(AbstractTupleCentreOperation.OPTYPE_GET_S,
-                        (Tuple) t, l);
+        final RespectOperation temp = new RespectOperation(
+                AbstractTupleCentreOperation.OPTYPE_GET_S, (Tuple) t, l);
         return temp;
     }
 
@@ -398,9 +394,8 @@ public class RespectOperation extends AbstractTupleCentreOperation implements
         } catch (final InvalidOperationException e) {
             e.printStackTrace();
         }
-        final RespectOperation temp =
-                new RespectOperation(AbstractTupleCentreOperation.OPTYPE_SET,
-                        list, l);
+        final RespectOperation temp = new RespectOperation(
+                AbstractTupleCentreOperation.OPTYPE_SET, list, l);
         return temp;
     }
 
@@ -414,8 +409,8 @@ public class RespectOperation extends AbstractTupleCentreOperation implements
      */
     public static RespectOperation makeSetEnv(final LogicTuple t,
             final OperationCompletionListener l) {
-        final RespectOperation temp =
-                new RespectOperation(RespectOperation.OPTYPE_SET_ENV, t, l);
+        final RespectOperation temp = new RespectOperation(
+                RespectOperation.OPTYPE_SET_ENV, t, l);
         temp.setTupleResult(t);
         return temp;
     }
@@ -464,9 +459,8 @@ public class RespectOperation extends AbstractTupleCentreOperation implements
         } catch (final InvalidOperationException e) {
             e.printStackTrace();
         }
-        final RespectOperation temp =
-                new RespectOperation(AbstractTupleCentreOperation.OPTYPE_SET_S,
-                        list, l);
+        final RespectOperation temp = new RespectOperation(
+                AbstractTupleCentreOperation.OPTYPE_SET_S, list, l);
         return temp;
     }
 
@@ -476,8 +470,7 @@ public class RespectOperation extends AbstractTupleCentreOperation implements
      *            the listener for operation completion
      * @return the ReSpecT operation built
      */
-    public static RespectOperation
-            makeSetS(final OperationCompletionListener l) {
+    public static RespectOperation makeSetS(final OperationCompletionListener l) {
         return new RespectOperation(AbstractTupleCentreOperation.OPTYPE_SET_S,
                 new LogicTuple(), l);
     }
@@ -494,10 +487,9 @@ public class RespectOperation extends AbstractTupleCentreOperation implements
             final OperationCompletionListener l) {
         RespectOperation temp = null;
         try {
-            temp =
-                    new RespectOperation(
-                            AbstractTupleCentreOperation.OPTYPE_SET_S,
-                            (Tuple) LogicTuple.parse(spec.toString()), l);
+            temp = new RespectOperation(
+                    AbstractTupleCentreOperation.OPTYPE_SET_S,
+                    (Tuple) LogicTuple.parse(spec.toString()), l);
         } catch (final InvalidTupleException e) {
             e.printStackTrace();
         }
@@ -656,6 +648,7 @@ public class RespectOperation extends AbstractTupleCentreOperation implements
         super(type, t, l);
     }
 
+    @Override
     public LogicTuple getLogicTupleArgument() {
         if (this.isOut() || this.isOutS() || this.isOutAll() || this.isSpawn()) {
             return (LogicTuple) this.getTupleArgument();
@@ -663,6 +656,7 @@ public class RespectOperation extends AbstractTupleCentreOperation implements
         return (LogicTuple) this.getTemplateArgument();
     }
 
+    @Override
     public List<LogicTuple> getLogicTupleListResult() {
         final List<Tuple> tl = this.getTupleListResult();
         final List<LogicTuple> tll = new LinkedList<LogicTuple>();
@@ -672,22 +666,27 @@ public class RespectOperation extends AbstractTupleCentreOperation implements
         return tll;
     }
 
+    @Override
     public LogicTuple getLogicTupleResult() {
         return (LogicTuple) this.getTupleResult();
     }
 
+    @Override
     public boolean isEnv() {
         return this.getType() == RespectOperation.OPTYPE_ENV;
     }
 
+    @Override
     public boolean isGetEnv() {
         return this.getType() == RespectOperation.OPTYPE_GET_ENV;
     }
 
+    @Override
     public boolean isSetEnv() {
         return this.getType() == RespectOperation.OPTYPE_SET_ENV;
     }
 
+    @Override
     public boolean isTime() {
         return this.getType() == RespectOperation.OPTYPE_TIME;
     }
@@ -736,10 +735,9 @@ public class RespectOperation extends AbstractTupleCentreOperation implements
             }
             LogicTuple lt = null;
             try {
-                lt =
-                        new LogicTuple(opName, new TupleArgument(this
-                                .getLogicTupleArgument().getArg(0).toTerm()),
-                                new TupleArgument(new Struct(tl)));
+                lt = new LogicTuple(opName, new TupleArgument(this
+                        .getLogicTupleArgument().getArg(0).toTerm()),
+                        new TupleArgument(new Struct(tl)));
             } catch (final InvalidOperationException e) {
                 e.printStackTrace();
             }
@@ -754,10 +752,9 @@ public class RespectOperation extends AbstractTupleCentreOperation implements
             }
             LogicTuple lt = null;
             try {
-                lt =
-                        new LogicTuple(opName, new TupleArgument(this
-                                .getLogicTupleArgument().getArg(0).toTerm()),
-                                new TupleArgument(new Struct(tl)));
+                lt = new LogicTuple(opName, new TupleArgument(this
+                        .getLogicTupleArgument().getArg(0).toTerm()),
+                        new TupleArgument(new Struct(tl)));
             } catch (final InvalidOperationException e) {
                 e.printStackTrace();
             }
@@ -772,10 +769,9 @@ public class RespectOperation extends AbstractTupleCentreOperation implements
             }
             LogicTuple lt = null;
             try {
-                lt =
-                        new LogicTuple(opName, new TupleArgument(this
-                                .getLogicTupleArgument().getArg(0).toTerm()),
-                                new TupleArgument(new Struct(tl)));
+                lt = new LogicTuple(opName, new TupleArgument(this
+                        .getLogicTupleArgument().getArg(0).toTerm()),
+                        new TupleArgument(new Struct(tl)));
             } catch (final InvalidOperationException e) {
                 e.printStackTrace();
             }
@@ -790,10 +786,9 @@ public class RespectOperation extends AbstractTupleCentreOperation implements
             }
             LogicTuple lt = null;
             try {
-                lt =
-                        new LogicTuple(opName, new TupleArgument(this
-                                .getLogicTupleArgument().getArg(0).toTerm()),
-                                new TupleArgument(new Struct(tl)));
+                lt = new LogicTuple(opName, new TupleArgument(this
+                        .getLogicTupleArgument().getArg(0).toTerm()),
+                        new TupleArgument(new Struct(tl)));
             } catch (final InvalidOperationException e) {
                 e.printStackTrace();
             }
@@ -870,5 +865,4 @@ public class RespectOperation extends AbstractTupleCentreOperation implements
         return new LogicTuple(opName, new TupleArgument(
                 tl != null ? new Struct(tl) : t.toTerm()));
     }
-
 }

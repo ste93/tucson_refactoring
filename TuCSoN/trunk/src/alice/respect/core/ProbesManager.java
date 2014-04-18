@@ -7,7 +7,6 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
-
 import alice.respect.situatedness.AbstractProbeId;
 import alice.respect.situatedness.ISimpleProbe;
 import alice.respect.situatedness.TransducerId;
@@ -18,7 +17,6 @@ import alice.respect.situatedness.TransducerId;
  */
 public enum ProbesManager {
     INSTANCE;
-
     /**
      * Utility method used to communicate an output message to the console.
      * 
@@ -71,15 +69,13 @@ public enum ProbesManager {
                     + "' already exists!");
             return false;
         }
-
-        final String normClassName =
-                className.substring(1, className.length() - 1);
+        final String normClassName = className.substring(1,
+                className.length() - 1);
         final Class<?> c = Class.forName(normClassName);
-        final Constructor<?> ctor =
-                c.getConstructor(new Class[] { AbstractProbeId.class });
-        final ISimpleProbe probe =
-                (ISimpleProbe) ctor.newInstance(new Object[] { id });
-
+        final Constructor<?> ctor = c
+                .getConstructor(new Class[] { AbstractProbeId.class });
+        final ISimpleProbe probe = (ISimpleProbe) ctor
+                .newInstance(new Object[] { id });
         this.probesList.put(id, probe);
         ProbesManager.speak("Resource '" + id.getLocalName()
                 + "' has been registered.");
@@ -151,13 +147,11 @@ public enum ProbesManager {
      * @param tId
      *            the transducer's identifier
      */
-    public void
-            setTransducer(final AbstractProbeId pId, final TransducerId tId) {
+    public void setTransducer(final AbstractProbeId pId, final TransducerId tId) {
         this.getProbe(pId).setTransducer(tId);
         if (tId != null) {
             ProbesManager.speak("...transducer '" + tId.getAgentName()
                     + "' set to probe '" + pId.getLocalName() + "'.");
         }
     }
-
 }

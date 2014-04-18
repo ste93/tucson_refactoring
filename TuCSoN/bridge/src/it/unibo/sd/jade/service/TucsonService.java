@@ -15,10 +15,8 @@ import jade.core.Service;
 import jade.core.ServiceHelper;
 import jade.core.Sink;
 import jade.core.VerticalCommand;
-
 import java.util.HashMap;
 import java.util.Map;
-
 import alice.tucson.api.EnhancedACC;
 import alice.tucson.api.EnhancedAsynchACC;
 import alice.tucson.api.EnhancedSynchACC;
@@ -39,7 +37,6 @@ import alice.tuplecentre.api.exceptions.OperationTimeOutException;
  * 
  */
 public class TucsonService extends BaseService {
-
     /*
      * Classe interna che ha il compito di eseguire i comandi verticali
      * "interni", ovvero quelli gestiti direttamente dal servizio (quelli
@@ -47,13 +44,12 @@ public class TucsonService extends BaseService {
      * verticali che implementa effettivamente il comando verticale
      */
     private class CommandSourceSink implements Sink {
-
         @Override
         public void consume(final VerticalCommand cmd) {
             final String cmdName = cmd.getName();
             if (cmdName.equals(TucsonSlice.EXECUTE_SYNCH)) {
-                final AbstractTucsonAction action =
-                        (AbstractTucsonAction) cmd.getParam(0);
+                final AbstractTucsonAction action = (AbstractTucsonAction) cmd
+                        .getParam(0);
                 final EnhancedSynchACC acc = (EnhancedSynchACC) cmd.getParam(1);
                 final Long timeout = (Long) cmd.getParam(2);
                 ITucsonOperation result;
@@ -78,12 +74,12 @@ public class TucsonService extends BaseService {
                     cmd.setReturnValue(e);
                 }
             } else if (cmdName.equals(TucsonSlice.EXECUTE_ASYNCH)) {
-                final AbstractTucsonAction action =
-                        (AbstractTucsonAction) cmd.getParam(0);
-                final EnhancedAsynchACC acc =
-                        (EnhancedAsynchACC) cmd.getParam(1);
-                final TucsonOperationCompletionListener listener =
-                        (TucsonOperationCompletionListener) cmd.getParam(2);
+                final AbstractTucsonAction action = (AbstractTucsonAction) cmd
+                        .getParam(0);
+                final EnhancedAsynchACC acc = (EnhancedAsynchACC) cmd
+                        .getParam(1);
+                final TucsonOperationCompletionListener listener = (TucsonOperationCompletionListener) cmd
+                        .getParam(2);
                 ITucsonOperation result;
                 try {
                     result = action.executeAsynch(acc, listener);
@@ -106,7 +102,6 @@ public class TucsonService extends BaseService {
      * dal ServiceComponent (al momento nessuno)
      */
     private class CommandTargetSink implements Sink {
-
         @Override
         public void consume(final VerticalCommand cmd) {
             /*
@@ -116,7 +111,6 @@ public class TucsonService extends BaseService {
     }
 
     private class ServiceComponent implements Service.Slice {
-
         /** serialVersionUID **/
         private static final long serialVersionUID = 1L;
 
@@ -148,7 +142,6 @@ public class TucsonService extends BaseService {
      * L'implementazione del TuCSoNHelper
      */
     private class TucsonHelperImpl implements TucsonHelper {
-
         private Agent myAgent;
 
         @Override
@@ -188,13 +181,12 @@ public class TucsonService extends BaseService {
             }
             // Controllo se esiste già un OperationHandler per l'agente,
             // altrimenti lo creo
-            BridgeToTucson bridge =
-                    TucsonService.this.mOperationHandlers.get(agent.getAID());
+            BridgeToTucson bridge = TucsonService.this.mOperationHandlers
+                    .get(agent.getAID());
             if (bridge == null) {
-                bridge =
-                        new BridgeToTucson(
-                                TucsonService.this.mAccManager.getAcc(agent),
-                                TucsonService.this);
+                bridge = new BridgeToTucson(
+                        TucsonService.this.mAccManager.getAcc(agent),
+                        TucsonService.this);
                 TucsonService.this.mOperationHandlers.put(agent.getAID(),
                         bridge);
             }
@@ -205,9 +197,8 @@ public class TucsonService extends BaseService {
         public TucsonTupleCentreId getTucsonTupleCentreId(
                 final String tupleCentreName, final String netid,
                 final int portno) throws TucsonInvalidTupleCentreIdException {
-            final TucsonTupleCentreId tcid =
-                    new TucsonTupleCentreId(tupleCentreName, netid,
-                            String.valueOf(portno));
+            final TucsonTupleCentreId tcid = new TucsonTupleCentreId(
+                    tupleCentreName, netid, String.valueOf(portno));
             return tcid;
         }
 
@@ -219,8 +210,8 @@ public class TucsonService extends BaseService {
         @Override
         public void releaseACC(final Agent agent) {
             // Esco dall'acc
-            final EnhancedACC acc =
-                    TucsonService.this.mAccManager.getAcc(agent);
+            final EnhancedACC acc = TucsonService.this.mAccManager
+                    .getAcc(agent);
             if (acc != null) {
                 try {
                     acc.exit();
@@ -254,8 +245,8 @@ public class TucsonService extends BaseService {
         private EnhancedACC obtainAcc(final Agent agent, final String netid,
                 final int portno) throws TucsonInvalidAgentIdException {
             final TucsonAgentId taid = new TucsonAgentId(agent.getLocalName());
-            final EnhancedACC acc =
-                    TucsonMetaACC.getContext(taid, netid, portno);
+            final EnhancedACC acc = TucsonMetaACC.getContext(taid, netid,
+                    portno);
             return acc;
         }
     }
@@ -264,7 +255,6 @@ public class TucsonService extends BaseService {
      * Service name
      */
     public static final String NAME = "it.unibo.sd.jade.service.TucsonService";
-
     /*
      * L'insieme dei comandi verticali che il servizio è in grado di soddisfare
      * autonomamente
@@ -287,8 +277,7 @@ public class TucsonService extends BaseService {
     /*
      * Gestisce il mapping Agente-OperationHandler
      */
-    private final Map<AID, BridgeToTucson> mOperationHandlers =
-            new HashMap<AID, BridgeToTucson>();
+    private final Map<AID, BridgeToTucson> mOperationHandlers = new HashMap<AID, BridgeToTucson>();
     /*
      * Gestisce il mapping nodeName-InetAddress
      */

@@ -14,7 +14,6 @@
 package alice.tucson.introspection;
 
 import java.io.Serializable;
-
 import alice.tucson.api.TucsonAgentId;
 
 /**
@@ -23,7 +22,6 @@ import alice.tucson.api.TucsonAgentId;
  * 
  */
 public class NodeMsg implements Serializable {
-
     private static final long serialVersionUID = -3499870079832457223L;
     private String action;
     private TucsonAgentId aid;
@@ -85,5 +83,4 @@ public class NodeMsg implements Serializable {
     public void setAid(final TucsonAgentId id) {
         this.aid = id;
     }
-
 }

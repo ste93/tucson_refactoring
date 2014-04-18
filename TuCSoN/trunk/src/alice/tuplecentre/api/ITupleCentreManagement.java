@@ -11,7 +11,6 @@ import alice.tuplecentre.core.AbstractBehaviourSpecification;
  * @author Alessandro Ricci
  */
 public interface ITupleCentreManagement {
-
     /**
      * 
      * @return the ReSpecT specification retrieved
@@ -53,5 +52,4 @@ public interface ITupleCentreManagement {
      *             if the operation cannot be performed
      */
     void stopCommand() throws OperationNotPossibleException;
-
 }

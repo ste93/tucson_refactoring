@@ -14,7 +14,6 @@
 package alice.tucson.introspection;
 
 import java.io.IOException;
-
 import alice.tucson.api.TucsonAgentId;
 import alice.tucson.api.TucsonTupleCentreId;
 
@@ -25,7 +24,6 @@ import alice.tucson.api.TucsonTupleCentreId;
  * 
  */
 public class Inspector extends Thread implements InspectorContextListener {
-
     /**
      * 
      */
@@ -57,6 +55,7 @@ public class Inspector extends Thread implements InspectorContextListener {
         return this.context;
     }
 
+    @Override
     public void onContextEvent(final InspectorContextEvent ev) {
         /*
          * FIXME What to do here?
@@ -98,5 +97,4 @@ public class Inspector extends Thread implements InspectorContextListener {
                 + this.context.getTid().getNode() + ":"
                 + this.context.getTid().getPort() + " >");
     }
-
 }
