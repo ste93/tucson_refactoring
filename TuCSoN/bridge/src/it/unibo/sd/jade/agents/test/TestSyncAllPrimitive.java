@@ -423,7 +423,6 @@ public class TestSyncAllPrimitive extends Agent {
 
         @Override
         public boolean done() {
-            // TODO Auto-generated method stub
             return TestSyncAllPrimitive.this.done;
         }
     }

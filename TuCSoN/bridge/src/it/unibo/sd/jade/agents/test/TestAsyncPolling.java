@@ -64,7 +64,6 @@ public class TestAsyncPolling extends Agent {
 
         @Override
         public boolean done() {
-            // TODO Auto-generated method stub
             return TestAsyncPolling.this.done;
         }
     }

@@ -82,7 +82,6 @@ public class TestAsyncWithBehaviour extends Agent {
 
         @Override
         public boolean done() {
-            // TODO Auto-generated method stub
             return true;
         }
     }
