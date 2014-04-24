@@ -70,9 +70,9 @@ public class BookSellerAgent extends Agent {
             BookSellerAgent.this.log("Waiting for CFP messages...");
             LogicTuple cfp = null;
             try {
-                cfp = LogicTuple.parse("cfp("
+                cfp = LogicTuple.parse("cfp(to("
                         + BookSellerAgent.this.getAID().getName()
-                        + ", service(book-trading), from(B), book(T))");
+                        + "), from(B), book(T))");
             } catch (InvalidTupleException e) {
                 // should not happen
                 e.printStackTrace();
@@ -89,7 +89,7 @@ public class BookSellerAgent extends Agent {
             }
             try {
                 if (result != null) {
-                    String buyer = result.getTuple().getArg(2).getArg(0)
+                    String buyer = result.getTuple().getArg(1).getArg(0)
                             .toString();
                     BookSellerAgent.this.log("Received CFP from '" + buyer
                             + "'.");
@@ -97,7 +97,7 @@ public class BookSellerAgent extends Agent {
                      * We expect the title of the book as the content of the
                      * message.
                      */
-                    final String title = result.getTuple().getArg(3).getArg(0)
+                    final String title = result.getTuple().getArg(2).getArg(0)
                             .toString();
                     /*
                      * We check availability of the requested book.
@@ -178,10 +178,9 @@ public class BookSellerAgent extends Agent {
             BookSellerAgent.this.log("Waiting for purchase orders...");
             LogicTuple order = null;
             try {
-                order = LogicTuple
-                        .parse("order(X, from(B), service(book-trading), to("
-                                + BookSellerAgent.this.getAID().getName()
-                                + "), book(T))");
+                order = LogicTuple.parse("order(X, from(B), to("
+                        + BookSellerAgent.this.getAID().getName()
+                        + "), book(T))");
             } catch (InvalidTupleException e) {
                 // should not happen
                 e.printStackTrace();
@@ -201,7 +200,7 @@ public class BookSellerAgent extends Agent {
                     final String reply = result.getTuple().getArg(0).toString();
                     String buyer = result.getTuple().getArg(1).getArg(0)
                             .toString();
-                    String title = result.getTuple().getArg(4).getArg(0)
+                    String title = result.getTuple().getArg(3).getArg(0)
                             .toString();
                     if (BookSellerAgent.this.buyers.contains(buyer)) {
                         BookSellerAgent.this.buyers.remove(buyer);
@@ -232,7 +231,7 @@ public class BookSellerAgent extends Agent {
                                             + c
                                             + ", to("
                                             + buyer
-                                            + "), service(book-trading), from("
+                                            + "), from("
                                             + BookSellerAgent.this.getAID()
                                                     .getName() + "), book("
                                             + title + "))");
@@ -337,7 +336,7 @@ public class BookSellerAgent extends Agent {
              */
             this.log("Advertising 'book-trading' service to the 'default' tuple centre...");
             this.adv = LogicTuple.parse("advertise(provider("
-                    + this.getAID().getName() + "), service(book-trading))");
+                    + this.getAID().getName() + "), service('book-trading'))");
             final Out out = new Out(this.tcid, this.adv);
             this.bridge.asynchronousInvocation(out);
         } catch (ServiceException e) {
