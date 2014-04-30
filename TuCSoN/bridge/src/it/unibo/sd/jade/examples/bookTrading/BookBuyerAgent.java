@@ -394,7 +394,7 @@ public class BookBuyerAgent extends Agent {
         /*
          * Periodic behaviour performing random book requests.
          */
-        this.addBehaviour(new TickerBehaviour(this, 10000) {
+        this.addBehaviour(new TickerBehaviour(this, 30000) {
             /** serialVersionUID **/
             private static final long serialVersionUID = 1L;
 
@@ -449,6 +449,10 @@ public class BookBuyerAgent extends Agent {
                     log(">>> No TuCSoN service active, reboot JADE with -services it.unibo.sd.jade.service.TucsonService option <<<");
                     BookBuyerAgent.this.doDelete();
                 }
+                /*
+                 * res può essere non null ma contenere una lista vuota di
+                 * sellers! (è la semantica delle xxx_all)
+                 */
                 if (res != null) {
                     try {
                         for (LogicTuple t : res.getTupleList()) {
