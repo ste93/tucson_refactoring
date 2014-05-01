@@ -29,9 +29,7 @@ import it.unibo.sd.jade.service.TucsonService;
 import jade.core.Agent;
 import jade.core.ServiceException;
 import jade.core.behaviours.Behaviour;
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.util.Enumeration;
 import java.util.Hashtable;
@@ -309,31 +307,32 @@ public class BookSellerAgent extends Agent {
      */
     private void bootCatalogue() {
         try {
-            final BufferedReader br = new BufferedReader(new FileReader(
-                    "bin/it/unibo/sd/jade/examples/bookTrading/books.cat"));
+            final BufferedInputStream br = new BufferedInputStream(ClassLoader
+                    .getSystemClassLoader().getResourceAsStream(
+                            "it/unibo/sd/jade/examples/bookTrading/books.cat"));
+            final byte[] res = new byte[br.available()];
+            br.read(res);
+            br.close();
+            String whole = new String(res);
             String line;
-            StringTokenizer st;
+            StringTokenizer st1 = new StringTokenizer(whole, "\n");
+            StringTokenizer st2;
             String title;
             LinkedList<Float> prices;
-            line = br.readLine();
-            while (line != null) {
-                st = new StringTokenizer(line, ";");
-                title = st.nextToken();
+            while (st1.hasMoreTokens()) {
+                line = st1.nextToken();
+                st2 = new StringTokenizer(line, ";");
+                title = st2.nextToken();
                 prices = new LinkedList<Float>();
-                while (st.hasMoreTokens()) {
-                    prices.add(Float.parseFloat(st.nextToken()));
+                while (st2.hasMoreTokens()) {
+                    prices.add(Float.parseFloat(st2.nextToken()));
                 }
                 this.catalogue.put(
                         title,
                         prices.get((int) Math.round(Math.random()
                                 * (prices.size() - 1))));
-                line = br.readLine();
             }
-            br.close();
-        } catch (final FileNotFoundException e) {
-            e.printStackTrace();
-            this.doDelete();
-        } catch (final IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
             this.doDelete();
         }

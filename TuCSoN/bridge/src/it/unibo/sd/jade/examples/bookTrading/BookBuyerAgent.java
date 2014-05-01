@@ -34,9 +34,8 @@ import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.FSMBehaviour;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.core.behaviours.TickerBehaviour;
-import java.io.BufferedReader;
+import java.io.BufferedInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
@@ -373,18 +372,22 @@ public class BookBuyerAgent extends Agent {
      */
     private String bootBookTitle() {
         try {
-            final BufferedReader br = new BufferedReader(new FileReader(
-                    "bin/it/unibo/sd/jade/examples/bookTrading/books.cat"));
-            String line;
-            StringTokenizer st;
-            final LinkedList<String> titles = new LinkedList<String>();
-            line = br.readLine();
-            while (line != null) {
-                st = new StringTokenizer(line, ";");
-                titles.add(st.nextToken());
-                line = br.readLine();
-            }
+            final BufferedInputStream br = new BufferedInputStream(ClassLoader
+                    .getSystemClassLoader().getResourceAsStream(
+                            "it/unibo/sd/jade/examples/bookTrading/books.cat"));
+            final byte[] res = new byte[br.available()];
+            br.read(res);
             br.close();
+            String whole = new String(res);
+            String line;
+            StringTokenizer st1 = new StringTokenizer(whole, "\n");
+            StringTokenizer st2;
+            final LinkedList<String> titles = new LinkedList<String>();
+            while (st1.hasMoreTokens()) {
+                line = st1.nextToken();
+                st2 = new StringTokenizer(line, ";");
+                titles.add(st2.nextToken());
+            }
             return titles.get((int) Math.round(Math.random()
                     * (titles.size() - 1)));
         } catch (final FileNotFoundException e) {
