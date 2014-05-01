@@ -43,4 +43,13 @@ public class InAll extends AbstractTucsonOrdinaryAction {
             UnreachableNodeException, OperationTimeOutException {
         return acc.inAll(this.tcid, this.tuple, timeout);
     }
+
+    /*
+     * (non-Javadoc)
+     * @see it.unibo.sd.jade.operations.AbstractTucsonOrdinaryAction#toString()
+     */
+    @Override
+    public String toString() {
+        return "in_all" + super.toString();
+    }
 }

@@ -43,4 +43,13 @@ public class Set extends AbstractTucsonOrdinaryAction {
             UnreachableNodeException, OperationTimeOutException {
         return acc.set(this.tcid, this.tuple, timeout);
     }
+
+    /*
+     * (non-Javadoc)
+     * @see it.unibo.sd.jade.operations.AbstractTucsonOrdinaryAction#toString()
+     */
+    @Override
+    public String toString() {
+        return "set" + super.toString();
+    }
 }

@@ -43,4 +43,13 @@ public class Rdp extends AbstractTucsonOrdinaryAction {
             UnreachableNodeException, OperationTimeOutException {
         return acc.rdp(this.tcid, this.tuple, timeout);
     }
+
+    /*
+     * (non-Javadoc)
+     * @see it.unibo.sd.jade.operations.AbstractTucsonOrdinaryAction#toString()
+     */
+    @Override
+    public String toString() {
+        return "rdp" + super.toString();
+    }
 }

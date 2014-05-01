@@ -41,4 +41,14 @@ public class GetS extends AbstractTucsonSpecificationAction {
             UnreachableNodeException, OperationTimeOutException {
         return acc.getS(this.tcid, timeout);
     }
+
+    /*
+     * (non-Javadoc)
+     * @see
+     * it.unibo.sd.jade.operations.AbstractTucsonSpecificationAction#toString()
+     */
+    @Override
+    public String toString() {
+        return "get_s" + super.toString();
+    }
 }

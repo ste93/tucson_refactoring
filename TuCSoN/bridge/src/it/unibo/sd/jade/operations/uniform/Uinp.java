@@ -43,4 +43,13 @@ public class Uinp extends AbstractTucsonOrdinaryAction {
             UnreachableNodeException, OperationTimeOutException {
         return acc.uinp(this.tcid, this.tuple, timeout);
     }
+
+    /*
+     * (non-Javadoc)
+     * @see it.unibo.sd.jade.operations.AbstractTucsonOrdinaryAction#toString()
+     */
+    @Override
+    public String toString() {
+        return "uinp" + super.toString();
+    }
 }

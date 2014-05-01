@@ -43,4 +43,13 @@ public class Spawn extends AbstractTucsonOrdinaryAction {
             UnreachableNodeException, OperationTimeOutException {
         return acc.spawn(this.tcid, this.tuple, timeout);
     }
+
+    /*
+     * (non-Javadoc)
+     * @see it.unibo.sd.jade.operations.AbstractTucsonOrdinaryAction#toString()
+     */
+    @Override
+    public String toString() {
+        return "spawn" + super.toString();
+    }
 }

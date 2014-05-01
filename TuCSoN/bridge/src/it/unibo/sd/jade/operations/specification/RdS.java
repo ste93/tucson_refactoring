@@ -53,4 +53,14 @@ public class RdS extends AbstractTucsonSpecificationAction {
         return acc.rdS(this.tcid, this.event, this.guards, this.reaction,
                 timeout);
     }
+
+    /*
+     * (non-Javadoc)
+     * @see
+     * it.unibo.sd.jade.operations.AbstractTucsonSpecificationAction#toString()
+     */
+    @Override
+    public String toString() {
+        return "rd_s" + super.toString();
+    }
 }

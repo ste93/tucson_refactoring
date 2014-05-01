@@ -261,7 +261,6 @@ public class BookBuyerAgent extends Agent {
          */
         @Override
         public boolean done() {
-            BookBuyerAgent.this.log("All proposals received :)");
             return BookBuyerAgent.this.repliesCnt >= BookBuyerAgent.this.sellerAgents
                     .size();
         }
@@ -272,6 +271,7 @@ public class BookBuyerAgent extends Agent {
         @Override
         public int onEnd() {
             if (BookBuyerAgent.this.bestSeller != null) {
+                BookBuyerAgent.this.log("All proposals received :)");
                 BookBuyerAgent.this.sellerAgents
                         .remove(BookBuyerAgent.this.bestSeller);
                 return 0;

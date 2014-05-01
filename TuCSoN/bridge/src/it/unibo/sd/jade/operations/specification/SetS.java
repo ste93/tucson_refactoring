@@ -44,4 +44,14 @@ public class SetS extends AbstractTucsonSpecificationAction {
             UnreachableNodeException, OperationTimeOutException {
         return acc.setS(this.tcid, this.reaction, timeout);
     }
+
+    /*
+     * (non-Javadoc)
+     * @see
+     * it.unibo.sd.jade.operations.AbstractTucsonSpecificationAction#toString()
+     */
+    @Override
+    public String toString() {
+        return "set_s" + super.toString();
+    }
 }

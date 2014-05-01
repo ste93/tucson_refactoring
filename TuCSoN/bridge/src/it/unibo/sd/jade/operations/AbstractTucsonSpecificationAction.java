@@ -37,4 +37,14 @@ public abstract class AbstractTucsonSpecificationAction extends
         this.guards = g;
         this.reaction = r;
     }
+
+    /*
+     * (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        return "(reaction(" + this.event + ", " + this.guards + ", "
+                + this.reaction + "), " + this.tcid + ")";
+    }
 }

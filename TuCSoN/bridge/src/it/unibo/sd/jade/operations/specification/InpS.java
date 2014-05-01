@@ -53,4 +53,14 @@ public class InpS extends AbstractTucsonSpecificationAction {
         return acc.inpS(this.tcid, this.event, this.guards, this.reaction,
                 timeout);
     }
+
+    /*
+     * (non-Javadoc)
+     * @see
+     * it.unibo.sd.jade.operations.AbstractTucsonSpecificationAction#toString()
+     */
+    @Override
+    public String toString() {
+        return "inp_s" + super.toString();
+    }
 }

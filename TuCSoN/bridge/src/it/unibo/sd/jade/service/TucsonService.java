@@ -151,7 +151,8 @@ public class TucsonService extends BaseService {
             }
             final EnhancedACC acc = this.obtainAcc(agent);
             TucsonService.this.mAccManager.addAcc(agent, acc);
-            this.log("Giving ACC '" + acc.getClass().getSimpleName()
+            this.log("Giving ACC '"
+                    + acc.getClass().getInterfaces()[0].getSimpleName()
                     + "' to agent " + agent.getLocalName());
         }
 
@@ -164,7 +165,8 @@ public class TucsonService extends BaseService {
             }
             final EnhancedACC acc = this.obtainAcc(agent, netid, portno);
             TucsonService.this.mAccManager.addAcc(agent, acc);
-            this.log("Giving ACC '" + acc.getClass().getSimpleName()
+            this.log("Giving ACC '"
+                    + acc.getClass().getInterfaces()[0].getSimpleName()
                     + "' to agent " + agent.getLocalName()
                     + "' toward TuCSoN Node @" + netid + ":" + portno);
         }

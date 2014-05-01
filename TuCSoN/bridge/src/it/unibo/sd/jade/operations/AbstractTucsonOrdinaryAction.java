@@ -27,6 +27,7 @@ public abstract class AbstractTucsonOrdinaryAction extends AbstractTucsonAction 
         super(tc);
         this.tuple = t;
     }
+
     // /**
     // *
     // * @return the Logic Tuple argument of the coordination operation
@@ -34,4 +35,12 @@ public abstract class AbstractTucsonOrdinaryAction extends AbstractTucsonAction 
     // public LogicTuple getTuple() {
     // return this.tuple;
     // }
+    /*
+     * (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        return "(" + this.tuple + ", " + this.tcid + ")";
+    }
 }

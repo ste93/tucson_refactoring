@@ -53,4 +53,14 @@ public class OutS extends AbstractTucsonSpecificationAction {
         return acc.outS(this.tcid, this.event, this.guards, this.reaction,
                 timeout);
     }
+
+    /*
+     * (non-Javadoc)
+     * @see
+     * it.unibo.sd.jade.operations.AbstractTucsonSpecificationAction#toString()
+     */
+    @Override
+    public String toString() {
+        return "out_s" + super.toString();
+    }
 }

@@ -53,4 +53,14 @@ public class NoS extends AbstractTucsonSpecificationAction {
         return acc.noS(this.tcid, this.event, this.guards, this.reaction,
                 timeout);
     }
+
+    /*
+     * (non-Javadoc)
+     * @see
+     * it.unibo.sd.jade.operations.AbstractTucsonSpecificationAction#toString()
+     */
+    @Override
+    public String toString() {
+        return "no_s" + super.toString();
+    }
 }
