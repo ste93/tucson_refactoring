@@ -67,22 +67,24 @@ public class BookBuyerAgent extends Agent {
         @Override
         public void action() {
             String cfp = "";
-            BookBuyerAgent.this.log("Sending CFP for book '"
-                    + BookBuyerAgent.this.targetBookTitle + "' to agents...");
-            for (String p : BookBuyerAgent.this.sellerAgents) {
+            BookBuyerAgent.this.log("Sending CFP for book "
+                    + BookBuyerAgent.this.targetBookTitle + " to agents...");
+            for (final String p : BookBuyerAgent.this.sellerAgents) {
                 cfp += "cfp(to(" + p + "), from("
                         + BookBuyerAgent.this.getAID().getName() + "), book("
                         + BookBuyerAgent.this.targetBookTitle + ")),";
+                System.out.println("\t ..." + p);
             }
             cfp = cfp.substring(0, cfp.length() - 1);
             try {
                 final OutAll outall = new OutAll(BookBuyerAgent.this.tcid,
                         LogicTuple.parse("[" + cfp + "]"));
                 BookBuyerAgent.this.bridge.asynchronousInvocation(outall);
-            } catch (ServiceException e) {
-                log(">>> No TuCSoN service active, reboot JADE with -services it.unibo.sd.jade.service.TucsonService option <<<");
+            } catch (final ServiceException e) {
+                BookBuyerAgent.this
+                        .log(">>> No TuCSoN service active, reboot JADE with -services it.unibo.sd.jade.service.TucsonService option <<<");
                 BookBuyerAgent.this.doDelete();
-            } catch (InvalidTupleException e) {
+            } catch (final InvalidTupleException e) {
                 // should not happen
                 e.printStackTrace();
                 BookBuyerAgent.this.doDelete();
@@ -104,14 +106,14 @@ public class BookBuyerAgent extends Agent {
         @Override
         public void action() {
             BookBuyerAgent.this
-                    .log("Waiting for purchase confirmation messages...");
+                    .log("Waiting for purchase confirmation message...");
             LogicTuple confirmation = null;
             try {
                 confirmation = LogicTuple.parse("purchase(C, to("
                         + BookBuyerAgent.this.getAID().getName() + "), from("
                         + BookBuyerAgent.this.bestSeller + "), book("
                         + BookBuyerAgent.this.targetBookTitle + "))");
-            } catch (InvalidTupleException e) {
+            } catch (final InvalidTupleException e) {
                 // should not happen
                 e.printStackTrace();
                 BookBuyerAgent.this.doDelete();
@@ -121,14 +123,15 @@ public class BookBuyerAgent extends Agent {
             try {
                 result = BookBuyerAgent.this.bridge.synchronousInvocation(in,
                         null, this);
-            } catch (ServiceException e) {
-                log(">>> No TuCSoN service active, reboot JADE with -services it.unibo.sd.jade.service.TucsonService option <<<");
+            } catch (final ServiceException e) {
+                BookBuyerAgent.this
+                        .log(">>> No TuCSoN service active, reboot JADE with -services it.unibo.sd.jade.service.TucsonService option <<<");
                 BookBuyerAgent.this.doDelete();
             }
             if (result != null) { // operation complete
                 this.flag = true;
-                BookBuyerAgent.this.log("Received confirmation from '"
-                        + BookBuyerAgent.this.bestSeller + "'.");
+                BookBuyerAgent.this.log("Received confirmation from "
+                        + BookBuyerAgent.this.bestSeller);
                 try {
                     if ("confirm"
                             .equals(result.getTuple().getArg(0).toString())) { // book
@@ -136,26 +139,26 @@ public class BookBuyerAgent extends Agent {
                         /*
                          * In case of positive answer, purchase succeeded.
                          */
-                        BookBuyerAgent.this.log("Book '"
+                        BookBuyerAgent.this.log("Book "
                                 + BookBuyerAgent.this.targetBookTitle
-                                + "' has been successfully purchased"
-                                + " from agent '"
-                                + BookBuyerAgent.this.bestSeller + "'.");
+                                + " has been successfully purchased"
+                                + " from agent "
+                                + BookBuyerAgent.this.bestSeller);
                     } else {
                         /*
                          * Otherwise, purchase failed.
                          */
-                        BookBuyerAgent.this.log("Book '"
+                        BookBuyerAgent.this.log("Book "
                                 + BookBuyerAgent.this.targetBookTitle
-                                + "' has been already sold :(");
+                                + " has been already sold :(");
                     }
-                } catch (InvalidOperationException e) {
+                } catch (final InvalidOperationException e) {
                     // should not happen
                     e.printStackTrace();
                     BookBuyerAgent.this.doDelete();
                 }
             } else {
-                BookBuyerAgent.this.log("Waiting for confrimation...");
+                BookBuyerAgent.this.log("Waiting for confirmation...");
                 this.block();
             }
         }
@@ -204,7 +207,7 @@ public class BookBuyerAgent extends Agent {
                         + BookBuyerAgent.this.getAID().getName() + "), book("
                         + BookBuyerAgent.this.targetBookTitle
                         + "), from(S), price(P))");
-            } catch (InvalidTupleException e) {
+            } catch (final InvalidTupleException e) {
                 // should not happen
                 e.printStackTrace();
                 BookBuyerAgent.this.doDelete();
@@ -214,8 +217,9 @@ public class BookBuyerAgent extends Agent {
             try {
                 res = BookBuyerAgent.this.bridge.synchronousInvocation(in,
                         null, this);
-            } catch (ServiceException e) {
-                log(">>> No TuCSoN service active, reboot JADE with -services it.unibo.sd.jade.service.TucsonService option <<<");
+            } catch (final ServiceException e) {
+                BookBuyerAgent.this
+                        .log(">>> No TuCSoN service active, reboot JADE with -services it.unibo.sd.jade.service.TucsonService option <<<");
                 BookBuyerAgent.this.doDelete();
             }
             if (res != null) {
@@ -223,10 +227,9 @@ public class BookBuyerAgent extends Agent {
                 String p = null;
                 try {
                     from = res.getTuple().getArg(2).getArg(0).toString();
-                    BookBuyerAgent.this.log("Received proposal from '" + from
-                            + "'.");
+                    BookBuyerAgent.this.log("Received proposal from " + from);
                     p = res.getTuple().getArg(3).getArg(0).toString();
-                } catch (InvalidOperationException e) {
+                } catch (final InvalidOperationException e) {
                     // should not happen
                     e.printStackTrace();
                     BookBuyerAgent.this.doDelete();
@@ -237,8 +240,8 @@ public class BookBuyerAgent extends Agent {
                      * based upon proposed book price.
                      */
                     final float price = Float.parseFloat(p);
-                    if ((BookBuyerAgent.this.bestSeller == null)
-                            || (price < BookBuyerAgent.this.bestPrice)) {
+                    if (BookBuyerAgent.this.bestSeller == null
+                            || price < BookBuyerAgent.this.bestPrice) {
                         BookBuyerAgent.this.bestPrice = price;
                         BookBuyerAgent.this.bestSeller = from;
                     }
@@ -258,6 +261,7 @@ public class BookBuyerAgent extends Agent {
          */
         @Override
         public boolean done() {
+            BookBuyerAgent.this.log("All proposals received :)");
             return BookBuyerAgent.this.repliesCnt >= BookBuyerAgent.this.sellerAgents
                     .size();
         }
@@ -295,28 +299,31 @@ public class BookBuyerAgent extends Agent {
                         + BookBuyerAgent.this.getAID().getName() + "), to("
                         + BookBuyerAgent.this.bestSeller + "), book("
                         + BookBuyerAgent.this.targetBookTitle + "))");
-                BookBuyerAgent.this.log("Sending purchase order for book '"
-                        + BookBuyerAgent.this.targetBookTitle + "' to agent '"
-                        + BookBuyerAgent.this.bestSeller + "'...");
+                BookBuyerAgent.this.log("Sending purchase order for book "
+                        + BookBuyerAgent.this.targetBookTitle + " to agent "
+                        + BookBuyerAgent.this.bestSeller);
                 final Out out = new Out(BookBuyerAgent.this.tcid, order);
                 BookBuyerAgent.this.bridge.asynchronousInvocation(out);
-                for (String r : BookBuyerAgent.this.sellerAgents) {
-                    LogicTuple reject = LogicTuple.parse("order(reject, from("
-                            + BookBuyerAgent.this.getAID().getName() + "), to("
-                            + r + "), book("
-                            + BookBuyerAgent.this.targetBookTitle + "))");
-                    BookBuyerAgent.this.log("Sending reject for book '"
+                for (final String r : BookBuyerAgent.this.sellerAgents) {
+                    final LogicTuple reject = LogicTuple
+                            .parse("order(reject, from("
+                                    + BookBuyerAgent.this.getAID().getName()
+                                    + "), to(" + r + "), book("
+                                    + BookBuyerAgent.this.targetBookTitle
+                                    + "))");
+                    BookBuyerAgent.this.log("Sending reject for book "
                             + BookBuyerAgent.this.targetBookTitle
-                            + "' to agent '" + r + "'...");
+                            + " to agent " + r);
                     final Out outi = new Out(BookBuyerAgent.this.tcid, reject);
                     BookBuyerAgent.this.bridge.asynchronousInvocation(outi);
                 }
-            } catch (InvalidTupleException e) {
+            } catch (final InvalidTupleException e) {
                 // should not happen
                 e.printStackTrace();
                 BookBuyerAgent.this.doDelete();
-            } catch (ServiceException e) {
-                log(">>> No TuCSoN service active, reboot JADE with -services it.unibo.sd.jade.service.TucsonService option <<<");
+            } catch (final ServiceException e) {
+                BookBuyerAgent.this
+                        .log(">>> No TuCSoN service active, reboot JADE with -services it.unibo.sd.jade.service.TucsonService option <<<");
                 BookBuyerAgent.this.doDelete();
             }
         }
@@ -332,6 +339,10 @@ public class BookBuyerAgent extends Agent {
      * The agent who provides the best offer.
      */
     private String bestSeller;
+    /*
+     * The bridge class to execute TuCSoN operations
+     */
+    private BridgeToTucson bridge;
     /*
      * Overall number of book trading attempts, used for termination.
      */
@@ -349,164 +360,9 @@ public class BookBuyerAgent extends Agent {
      */
     private String targetBookTitle;
     /*
-     * The bridge class to execute TuCSoN operations
-     */
-    private BridgeToTucson bridge;
-    /*
      * ID of tuple centre used for objective coordination
      */
     private TucsonTupleCentreId tcid;
-
-    @Override
-    protected void setup() {
-        this.log("I'm started.");
-        TucsonHelper helper;
-        try {
-            helper = (TucsonHelper) this.getHelper(TucsonService.NAME);
-            /*
-             * Obtain ACC
-             */
-            helper.acquireACC(this);
-            /*
-             * get tuple centre id
-             */
-            this.tcid = helper.getTucsonTupleCentreId("default", "localhost",
-                    20504);
-            /*
-             * get the univocal bridge for the agent
-             */
-            this.bridge = helper.getBridgeToTucson(this);
-        } catch (ServiceException e) {
-            log(">>> No TuCSoN service active, reboot JADE with -services it.unibo.sd.jade.service.TucsonService option <<<");
-            this.doDelete();
-        } catch (TucsonInvalidAgentIdException e) {
-            log(">>> TuCSoN Agent ids should be compliant with Prolog sytnax (start with lowercase letter, no special symbols), choose another agent id <<<");
-            this.doDelete();
-        } catch (TucsonInvalidTupleCentreIdException e) {
-            // should not happen
-            e.printStackTrace();
-            this.doDelete();
-        } catch (CannotAcquireACCException e) {
-            // should not happen
-            e.printStackTrace();
-            this.doDelete();
-        }
-        /*
-         * Periodic behaviour performing random book requests.
-         */
-        this.addBehaviour(new TickerBehaviour(this, 30000) {
-            /** serialVersionUID **/
-            private static final long serialVersionUID = 1L;
-
-            @Override
-            public int onEnd() {
-                BookBuyerAgent.this.log("Terminating...");
-                this.myAgent.doDelete();
-                return super.onEnd();
-            }
-
-            @Override
-            protected void onTick() {
-                /*
-                 * Termination condition.
-                 */
-                if (BookBuyerAgent.this.overallAttempts == 30) {
-                    this.stop();
-                }
-                /*
-                 * Randomly draw the book to buy from .catalog file.
-                 */
-                BookBuyerAgent.this.targetBookTitle = BookBuyerAgent.this
-                        .bootBookTitle();
-                /*
-                 * Resets fields and increase attempts counter.
-                 */
-                BookBuyerAgent.this.bestSeller = null;
-                BookBuyerAgent.this.bestPrice = 0f;
-                BookBuyerAgent.this.repliesCnt = 0;
-                BookBuyerAgent.this.overallAttempts++;
-                BookBuyerAgent.this.sellerAgents = new LinkedList<String>();
-                BookBuyerAgent.this.log("Trying to buy '"
-                        + BookBuyerAgent.this.targetBookTitle + "'...");
-                /*
-                 * 6- Query the DF about the service you look for.
-                 */
-                BookBuyerAgent.this
-                        .log("Searching 'book-trading' services in the 'default' tuple centre...");
-                LogicTuple adv;
-                TucsonOpCompletionEvent res = null;
-                try {
-                    adv = LogicTuple
-                            .parse("advertise(provider(S), service('book-trading'))");
-                    final RdAll rdall = new RdAll(BookBuyerAgent.this.tcid, adv);
-                    res = BookBuyerAgent.this.bridge.synchronousInvocation(
-                            rdall, null, this);
-                } catch (InvalidTupleException e) {
-                    // should not happen
-                    e.printStackTrace();
-                    BookBuyerAgent.this.doDelete();
-                } catch (ServiceException e) {
-                    log(">>> No TuCSoN service active, reboot JADE with -services it.unibo.sd.jade.service.TucsonService option <<<");
-                    BookBuyerAgent.this.doDelete();
-                }
-                /*
-                 * res può essere non null ma contenere una lista vuota di
-                 * sellers! (è la semantica delle xxx_all)
-                 */
-                if (res != null) {
-                    try {
-                        for (LogicTuple t : res.getTupleList()) {
-                            BookBuyerAgent.this.sellerAgents.add(t.getArg(0)
-                                    .getArg(0).toString());
-                            BookBuyerAgent.this.log("Agent '"
-                                    + BookBuyerAgent.this.sellerAgents.get(0)
-                                    + "' found.");
-                        }
-                    } catch (InvalidOperationException e) {
-                        // should not happen
-                        e.printStackTrace();
-                        BookBuyerAgent.this.doDelete();
-                    }
-                    /*
-                     * If we found at least one agent offering the desired
-                     * service, we try to buy the book using a custom FSM-like
-                     * behaviour.
-                     */
-                    if (!BookBuyerAgent.this.sellerAgents.isEmpty()) {
-                        final FSMBehaviour fsm = new FSMBehaviour(this.myAgent);
-                        this.configureFSM(fsm);
-                        this.myAgent.addBehaviour(fsm);
-                    } else {
-                        BookBuyerAgent.this
-                                .log("No suitable services found, retrying in 10 seconds...");
-                    }
-                } else {
-                    BookBuyerAgent.this
-                            .log("No 'book-trading' services available yet...");
-                    this.block();
-                }
-            }
-
-            private void configureFSM(final FSMBehaviour fsm) {
-                fsm.registerFirstState(new CFPSender(), "CFPState");
-                fsm.registerState(new ProposalsCollector(), "ProposalsState");
-                fsm.registerState(new Purchaser(), "PurchaseState");
-                fsm.registerLastState(new ConfirmationReceiver(),
-                        "ConfirmationState");
-                fsm.registerLastState(new NoProposals(), "NoProposalsState");
-                fsm.registerDefaultTransition("CFPState", "ProposalsState");
-                fsm.registerTransition("ProposalsState", "PurchaseState", 0);
-                fsm.registerTransition("ProposalsState", "NoProposalsState", 1);
-                fsm.registerDefaultTransition("PurchaseState",
-                        "ConfirmationState");
-            }
-        });
-    }
-
-    @Override
-    protected void takeDown() {
-        this.log("I'm done.");
-    }
 
     /*
      * Just draw a random book title from an input file.
@@ -539,5 +395,157 @@ public class BookBuyerAgent extends Agent {
 
     private void log(final String msg) {
         System.out.println("[" + this.getName() + "]: " + msg);
+    }
+
+    @Override
+    protected void setup() {
+        this.log("I'm started.");
+        TucsonHelper helper;
+        try {
+            helper = (TucsonHelper) this.getHelper(TucsonService.NAME);
+            /*
+             * Obtain ACC
+             */
+            helper.acquireACC(this);
+            /*
+             * get tuple centre id
+             */
+            this.tcid = helper.buildTucsonTupleCentreId("default", "localhost",
+                    20504);
+            /*
+             * get the univocal bridge for the agent
+             */
+            this.bridge = helper.getBridgeToTucson(this);
+        } catch (final ServiceException e) {
+            this.log(">>> No TuCSoN service active, reboot JADE with -services it.unibo.sd.jade.service.TucsonService option <<<");
+            this.doDelete();
+        } catch (final TucsonInvalidAgentIdException e) {
+            this.log(">>> TuCSoN Agent ids should be compliant with Prolog sytnax (start with lowercase letter, no special symbols), choose another agent id <<<");
+            this.doDelete();
+        } catch (final TucsonInvalidTupleCentreIdException e) {
+            // should not happen
+            e.printStackTrace();
+            this.doDelete();
+        } catch (final CannotAcquireACCException e) {
+            // should not happen
+            e.printStackTrace();
+            this.doDelete();
+        }
+        /*
+         * Periodic behaviour performing random book requests.
+         */
+        this.addBehaviour(new TickerBehaviour(this, 10000) {
+            /** serialVersionUID **/
+            private static final long serialVersionUID = 1L;
+
+            @Override
+            public int onEnd() {
+                BookBuyerAgent.this.log("Terminating...");
+                this.myAgent.doDelete();
+                return super.onEnd();
+            }
+
+            private void configureFSM(final FSMBehaviour fsm) {
+                fsm.registerFirstState(new CFPSender(), "CFPState");
+                fsm.registerState(new ProposalsCollector(), "ProposalsState");
+                fsm.registerState(new Purchaser(), "PurchaseState");
+                fsm.registerLastState(new ConfirmationReceiver(),
+                        "ConfirmationState");
+                fsm.registerLastState(new NoProposals(), "NoProposalsState");
+                fsm.registerDefaultTransition("CFPState", "ProposalsState");
+                fsm.registerTransition("ProposalsState", "PurchaseState", 0);
+                fsm.registerTransition("ProposalsState", "NoProposalsState", 1);
+                fsm.registerDefaultTransition("PurchaseState",
+                        "ConfirmationState");
+            }
+
+            @Override
+            protected void onTick() {
+                /*
+                 * Termination condition.
+                 */
+                if (BookBuyerAgent.this.overallAttempts == 10) {
+                    this.stop();
+                }
+                /*
+                 * Randomly draw the book to buy from .catalog file.
+                 */
+                BookBuyerAgent.this.targetBookTitle = BookBuyerAgent.this
+                        .bootBookTitle();
+                /*
+                 * Resets fields and increase attempts counter.
+                 */
+                BookBuyerAgent.this.bestSeller = null;
+                BookBuyerAgent.this.bestPrice = 0f;
+                BookBuyerAgent.this.repliesCnt = 0;
+                BookBuyerAgent.this.overallAttempts++;
+                BookBuyerAgent.this.sellerAgents = new LinkedList<String>();
+                BookBuyerAgent.this.log("Trying to buy "
+                        + BookBuyerAgent.this.targetBookTitle);
+                /*
+                 * 6- Query the DF about the service you look for.
+                 */
+                BookBuyerAgent.this
+                        .log("Searching 'book-trading' services in the 'default' tuple centre...");
+                LogicTuple adv;
+                TucsonOpCompletionEvent res = null;
+                try {
+                    adv = LogicTuple
+                            .parse("advertise(provider(S), service('book-trading'))");
+                    final RdAll rdall = new RdAll(BookBuyerAgent.this.tcid, adv);
+                    res = BookBuyerAgent.this.bridge.synchronousInvocation(
+                            rdall, null, this);
+                } catch (final InvalidTupleException e) {
+                    // should not happen
+                    e.printStackTrace();
+                    BookBuyerAgent.this.doDelete();
+                } catch (final ServiceException e) {
+                    BookBuyerAgent.this
+                            .log(">>> No TuCSoN service active, reboot JADE with -services it.unibo.sd.jade.service.TucsonService option <<<");
+                    BookBuyerAgent.this.doDelete();
+                }
+                /*
+                 * res può essere non null ma contenere una lista vuota di
+                 * sellers! (è la semantica delle xxx_all)
+                 */
+                if (res != null) {
+                    try {
+                        for (final LogicTuple t : res.getTupleList()) {
+                            BookBuyerAgent.this.sellerAgents.add(t.getArg(0)
+                                    .getArg(0).toString());
+                            BookBuyerAgent.this.log("Agent '"
+                                    + BookBuyerAgent.this.sellerAgents.get(0)
+                                    + "' found.");
+                        }
+                    } catch (final InvalidOperationException e) {
+                        // should not happen
+                        e.printStackTrace();
+                        BookBuyerAgent.this.doDelete();
+                    }
+                    /*
+                     * If we found at least one agent offering the desired
+                     * service, we try to buy the book using a custom FSM-like
+                     * behaviour.
+                     */
+                    if (!BookBuyerAgent.this.sellerAgents.isEmpty()) {
+                        final FSMBehaviour fsm = new FSMBehaviour(this.myAgent);
+                        this.configureFSM(fsm);
+                        this.myAgent.addBehaviour(fsm);
+                    } else {
+                        BookBuyerAgent.this
+                                .log("No suitable services found, retrying in 10 seconds...");
+                    }
+                } else {
+                    BookBuyerAgent.this
+                            .log("No 'book-trading' services available yet...");
+                    this.block();
+                }
+            }
+        });
+    }
+
+    @Override
+    protected void takeDown() {
+        this.log("I'm done.");
     }
 }

@@ -23,15 +23,19 @@ import alice.tuplecentre.core.AbstractTupleCentreOperation;
  * 
  */
 public class AsynchCompletionBehaviourHandler extends AbstractTucsonAgent {
+    private static final void log(final String msg) {
+        System.out.println("..[AsynchHandler]: " + msg);
+    }
+
     private final Behaviour behav; // nuovo comportamento da aggiungere
-                                   // all'agente JADE
+    // all'agente JADE
     private final GenericCommand cmd; // comando verticale da
-                                      // eseguire(esecuzione dell'operazione di
-                                      // coordinazione sospensiva)
+    // eseguire(esecuzione dell'operazione di
+    // coordinazione sospensiva)
     private final Agent myAgent; // agente JADE a cui aggiungere il
                                  // comportamento
     private ITucsonOperation result; // risultato operazione dell'operazione di
-                                     // coordianzione sospensiva
+    // coordianzione sospensiva
     private final TucsonService service; // servizio incaricato ad eseguire il
                                          // comando
 
@@ -70,9 +74,6 @@ public class AsynchCompletionBehaviourHandler extends AbstractTucsonAgent {
      */
     @Override
     public void operationCompleted(final AbstractTupleCentreOperation op) {
-        // TODO Auto-generated method stub
-        System.out
-                .println("\n\n\n[TucsonAgent]RISULTATO RICEVUTO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         // ros.list.add((ITucsonOperation)result);
         final EnhancedAsynchACC acc = (EnhancedAsynchACC) this.cmd.getParam(1);
         final List<TucsonOpCompletionEvent> list = acc
@@ -99,8 +100,8 @@ public class AsynchCompletionBehaviourHandler extends AbstractTucsonAgent {
             this.myAgent.addBehaviour(this.behav); // non ci sono problemi
                                                    // accessi concorrenti!å
         } else {
-            System.err
-                    .println("behaviour non implementa interfaccia \"ICompletitionOpAsync\"");
+            AsynchCompletionBehaviourHandler
+                    .log("The given result-handling behaviour does not implement interface 'IAsynchCompletionBehaviour'!");
         }
     }
 

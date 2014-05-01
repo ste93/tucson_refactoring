@@ -73,7 +73,7 @@ public class BookSellerAgent extends Agent {
                 cfp = LogicTuple.parse("cfp(to("
                         + BookSellerAgent.this.getAID().getName()
                         + "), from(B), book(T))");
-            } catch (InvalidTupleException e) {
+            } catch (final InvalidTupleException e) {
                 // should not happen
                 e.printStackTrace();
                 BookSellerAgent.this.doDelete();
@@ -83,16 +83,16 @@ public class BookSellerAgent extends Agent {
             try {
                 result = BookSellerAgent.this.bridge.synchronousInvocation(in,
                         null, this);
-            } catch (ServiceException e) {
-                log(">>> No TuCSoN service active, reboot JADE with -services it.unibo.sd.jade.service.TucsonService option <<<");
+            } catch (final ServiceException e) {
+                BookSellerAgent.this
+                        .log(">>> No TuCSoN service active, reboot JADE with -services it.unibo.sd.jade.service.TucsonService option <<<");
                 BookSellerAgent.this.doDelete();
             }
             try {
                 if (result != null) {
-                    String buyer = result.getTuple().getArg(1).getArg(0)
+                    final String buyer = result.getTuple().getArg(1).getArg(0)
                             .toString();
-                    BookSellerAgent.this.log("Received CFP from '" + buyer
-                            + "'.");
+                    BookSellerAgent.this.log("Received CFP from " + buyer);
                     /*
                      * We expect the title of the book as the content of the
                      * message.
@@ -102,8 +102,8 @@ public class BookSellerAgent extends Agent {
                     /*
                      * We check availability of the requested book.
                      */
-                    BookSellerAgent.this.log("Checking availability for book '"
-                            + title + "'...");
+                    BookSellerAgent.this.log("Checking availability for book "
+                            + title);
                     final Float price = BookSellerAgent.this.catalogue
                             .get(title);
                     String p;
@@ -113,20 +113,19 @@ public class BookSellerAgent extends Agent {
                          * The requested book is available, reply with its
                          * price.
                          */
-                        BookSellerAgent.this.log("Book '" + title
-                                + "' available, proposing price '" + price
-                                + "'...");
+                        BookSellerAgent.this.log("Book " + title
+                                + " available, proposing price > " + price);
                         p = String.valueOf(price);
                     } else {
                         /*
                          * The requested book is NOT available, reply
                          * accordingly.
                          */
-                        BookSellerAgent.this.log("Book '" + title
-                                + "' NOT available, informing client...");
+                        BookSellerAgent.this.log("Book " + title
+                                + " NOT available, informing client...");
                         p = "unavailable";
                     }
-                    LogicTuple proposal = LogicTuple.parse("proposal(to("
+                    final LogicTuple proposal = LogicTuple.parse("proposal(to("
                             + buyer + "), book(" + title + "), from("
                             + BookSellerAgent.this.getAID().getName()
                             + "), price(" + p + "))");
@@ -136,16 +135,17 @@ public class BookSellerAgent extends Agent {
                     BookSellerAgent.this.log("No CFP yet...");
                     this.block();
                 }
-            } catch (InvalidOperationException e) {
+            } catch (final InvalidOperationException e) {
                 // should not happen
                 e.printStackTrace();
                 BookSellerAgent.this.doDelete();
-            } catch (InvalidTupleException e) {
+            } catch (final InvalidTupleException e) {
                 // should not happen
                 e.printStackTrace();
                 BookSellerAgent.this.doDelete();
-            } catch (ServiceException e) {
-                log(">>> No TuCSoN service active, reboot JADE with -services it.unibo.sd.jade.service.TucsonService option <<<");
+            } catch (final ServiceException e) {
+                BookSellerAgent.this
+                        .log(">>> No TuCSoN service active, reboot JADE with -services it.unibo.sd.jade.service.TucsonService option <<<");
                 BookSellerAgent.this.doDelete();
             }
         }
@@ -181,7 +181,7 @@ public class BookSellerAgent extends Agent {
                 order = LogicTuple.parse("order(X, from(B), to("
                         + BookSellerAgent.this.getAID().getName()
                         + "), book(T))");
-            } catch (InvalidTupleException e) {
+            } catch (final InvalidTupleException e) {
                 // should not happen
                 e.printStackTrace();
                 BookSellerAgent.this.doDelete();
@@ -191,23 +191,24 @@ public class BookSellerAgent extends Agent {
             try {
                 result = BookSellerAgent.this.bridge.synchronousInvocation(in,
                         null, this);
-            } catch (ServiceException e) {
-                log(">>> No TuCSoN service active, reboot JADE with -services it.unibo.sd.jade.service.TucsonService option <<<");
+            } catch (final ServiceException e) {
+                BookSellerAgent.this
+                        .log(">>> No TuCSoN service active, reboot JADE with -services it.unibo.sd.jade.service.TucsonService option <<<");
                 BookSellerAgent.this.doDelete();
             }
             if (result != null) {
                 try {
                     final String reply = result.getTuple().getArg(0).toString();
-                    String buyer = result.getTuple().getArg(1).getArg(0)
+                    final String buyer = result.getTuple().getArg(1).getArg(0)
                             .toString();
-                    String title = result.getTuple().getArg(3).getArg(0)
+                    final String title = result.getTuple().getArg(3).getArg(0)
                             .toString();
                     if (BookSellerAgent.this.buyers.contains(buyer)) {
                         BookSellerAgent.this.buyers.remove(buyer);
                         if ("accept".equals(reply)) { // accept
                             BookSellerAgent.this
-                                    .log("Received purchase order from '"
-                                            + buyer + "'.");
+                                    .log("Received purchase order from "
+                                            + buyer);
                             final Float priceBook = BookSellerAgent.this.catalogue
                                     .remove(title);
                             /*
@@ -216,17 +217,15 @@ public class BookSellerAgent extends Agent {
                              */
                             String c;
                             if (priceBook != null) {
-                                BookSellerAgent.this.log("Selling book '"
-                                        + title + "' to agent '" + buyer
-                                        + "'...");
+                                BookSellerAgent.this.log("Selling book "
+                                        + title + " to agent " + buyer);
                                 c = "confirm";
                             } else {
-                                BookSellerAgent.this
-                                        .log("Sorry, book '" + title
-                                                + "' is not available anymore.");
+                                BookSellerAgent.this.log("Sorry, book " + title
+                                        + " is not available anymore :(");
                                 c = "failure";
                             }
-                            LogicTuple confirmation = LogicTuple
+                            final LogicTuple confirmation = LogicTuple
                                     .parse("purchase("
                                             + c
                                             + ", to("
@@ -243,23 +242,24 @@ public class BookSellerAgent extends Agent {
                             BookSellerAgent.this.bridge
                                     .asynchronousInvocation(out);
                         } else { // reject
-                            BookSellerAgent.this.log("Client '" + buyer
-                                    + "' rejected '" + title + "'...");
+                            BookSellerAgent.this.log("Client " + buyer
+                                    + " rejected " + title);
                         }
                     } else {
-                        BookSellerAgent.this.log("Client '" + buyer
-                                + "' is cheating!");
+                        BookSellerAgent.this.log("Client " + buyer
+                                + " is cheating :O");
                     }
-                } catch (InvalidOperationException e) {
+                } catch (final InvalidOperationException e) {
                     // should not happen
                     e.printStackTrace();
                     BookSellerAgent.this.doDelete();
-                } catch (InvalidTupleException e) {
+                } catch (final InvalidTupleException e) {
                     // should not happen
                     e.printStackTrace();
                     BookSellerAgent.this.doDelete();
-                } catch (ServiceException e) {
-                    log(">>> No TuCSoN service active, reboot JADE with -services it.unibo.sd.jade.service.TucsonService option <<<");
+                } catch (final ServiceException e) {
+                    BookSellerAgent.this
+                            .log(">>> No TuCSoN service active, reboot JADE with -services it.unibo.sd.jade.service.TucsonService option <<<");
                     BookSellerAgent.this.doDelete();
                 }
             } else {
@@ -284,109 +284,25 @@ public class BookSellerAgent extends Agent {
     /** serialVersionUID **/
     private static final long serialVersionUID = 1L;
     /*
-     * The catalogue of books for sale (maps the title of a book to its price).
+     * Advertisement tuple
      */
-    private Hashtable<String, Float> catalogue;
+    private LogicTuple adv;
     /*
      * The bridge class to execute TuCSoN operations
      */
     private BridgeToTucson bridge;
     /*
-     * ID of tuple centre used for objective coordination
-     */
-    private TucsonTupleCentreId tcid;
-    /*
-     * Advertisement tuple
-     */
-    private LogicTuple adv;
-    /*
      * list of potential buyers
      */
     private Queue<String> buyers;
-
-    @Override
-    protected void setup() {
-        this.log("I'm started.");
-        this.catalogue = new Hashtable<String, Float>();
-        this.buyers = new ConcurrentLinkedQueue<String>();
-        /*
-         * Boot catalogue from .catalog file (drawing random prices) and print
-         * out the outcome.
-         */
-        this.bootCatalogue();
-        this.printCatalogue();
-        TucsonHelper helper;
-        try {
-            helper = (TucsonHelper) this.getHelper(TucsonService.NAME);
-            /*
-             * Obtain ACC
-             */
-            helper.acquireACC(this);
-            /*
-             * get tuple centre id
-             */
-            this.tcid = helper.getTucsonTupleCentreId("default", "localhost",
-                    20504);
-            /*
-             * get the univocal bridge for the agent
-             */
-            this.bridge = helper.getBridgeToTucson(this);
-            /*
-             * advertisment of the service provided
-             */
-            this.log("Advertising 'book-trading' service to the 'default' tuple centre...");
-            this.adv = LogicTuple.parse("advertise(provider("
-                    + this.getAID().getName() + "), service('book-trading'))");
-            final Out out = new Out(this.tcid, this.adv);
-            this.bridge.asynchronousInvocation(out);
-        } catch (ServiceException e) {
-            log(">>> No TuCSoN service active, reboot JADE with -services it.unibo.sd.jade.service.TucsonService option <<<");
-            this.doDelete();
-        } catch (TucsonInvalidAgentIdException e) {
-            log(">>> TuCSoN Agent ids should be compliant with Prolog sytnax (start with lowercase letter, no special symbols), choose another agent id <<<");
-            this.doDelete();
-        } catch (TucsonInvalidTupleCentreIdException e) {
-            // should not happen
-            e.printStackTrace();
-            this.doDelete();
-        } catch (CannotAcquireACCException e) {
-            // should not happen
-            e.printStackTrace();
-            this.doDelete();
-        } catch (InvalidTupleException e) {
-            // should not happen
-            e.printStackTrace();
-            this.doDelete();
-        }
-        /*
-         * Add the behaviour serving CFPs from buyer agents.
-         */
-        this.addBehaviour(new OfferRequestsServer());
-        /*
-         * Add the behaviour serving purchase orders from buyer agents.
-         */
-        this.addBehaviour(new PurchaseOrdersServer());
-    }
-
     /*
-     * Remember to deregister the services offered by the agent upon shutdown,
-     * because the JADE platform does not do it by itself!
+     * The catalogue of books for sale (maps the title of a book to its price).
      */
-    @Override
-    protected void takeDown() {
-        /*
-         * deregistration of the service
-         */
-        this.log("De-advertising myself from the 'default' tuple centre...");
-        final In in = new In(this.tcid, this.adv);
-        try {
-            this.bridge.asynchronousInvocation(in);
-            this.log("I'm done.");
-        } catch (ServiceException e) {
-            log(">>> No TuCSoN service active, reboot JADE with -services it.unibo.sd.jade.service.TucsonService option <<<");
-            this.doDelete();
-        }
-    }
+    private Hashtable<String, Float> catalogue;
+    /*
+     * ID of tuple centre used for objective coordination
+     */
+    private TucsonTupleCentreId tcid;
 
     /*
      * Just reads books and random prices from an input file.
@@ -433,8 +349,92 @@ public class BookSellerAgent extends Agent {
         this.log("My catalogue is:");
         for (int i = 0; i < this.catalogue.size(); i++) {
             key = keys.nextElement();
-            System.out.println("	title: " + key + " price: "
+            System.out.println("\t title: " + key + "\t\t price: "
                     + this.catalogue.get(key));
+        }
+    }
+
+    @Override
+    protected void setup() {
+        this.log("I'm started.");
+        this.catalogue = new Hashtable<String, Float>();
+        this.buyers = new ConcurrentLinkedQueue<String>();
+        /*
+         * Boot catalogue from .catalog file (drawing random prices) and print
+         * out the outcome.
+         */
+        this.bootCatalogue();
+        this.printCatalogue();
+        TucsonHelper helper;
+        try {
+            helper = (TucsonHelper) this.getHelper(TucsonService.NAME);
+            /*
+             * Obtain ACC
+             */
+            helper.acquireACC(this);
+            /*
+             * get tuple centre id
+             */
+            this.tcid = helper.buildTucsonTupleCentreId("default", "localhost",
+                    20504);
+            /*
+             * get the univocal bridge for the agent
+             */
+            this.bridge = helper.getBridgeToTucson(this);
+            /*
+             * advertisment of the service provided
+             */
+            this.log("Advertising 'book-trading' service to the 'default' tuple centre...");
+            this.adv = LogicTuple.parse("advertise(provider("
+                    + this.getAID().getName() + "), service('book-trading'))");
+            final Out out = new Out(this.tcid, this.adv);
+            this.bridge.asynchronousInvocation(out);
+        } catch (final ServiceException e) {
+            this.log(">>> No TuCSoN service active, reboot JADE with -services it.unibo.sd.jade.service.TucsonService option <<<");
+            this.doDelete();
+        } catch (final TucsonInvalidAgentIdException e) {
+            this.log(">>> TuCSoN Agent ids should be compliant with Prolog sytnax (start with lowercase letter, no special symbols), choose another agent id <<<");
+            this.doDelete();
+        } catch (final TucsonInvalidTupleCentreIdException e) {
+            // should not happen
+            e.printStackTrace();
+            this.doDelete();
+        } catch (final CannotAcquireACCException e) {
+            // should not happen
+            e.printStackTrace();
+            this.doDelete();
+        } catch (final InvalidTupleException e) {
+            // should not happen
+            e.printStackTrace();
+            this.doDelete();
+        }
+        /*
+         * Add the behaviour serving CFPs from buyer agents.
+         */
+        this.addBehaviour(new OfferRequestsServer());
+        /*
+         * Add the behaviour serving purchase orders from buyer agents.
+         */
+        this.addBehaviour(new PurchaseOrdersServer());
+    }
+
+    /*
+     * Remember to deregister the services offered by the agent upon shutdown,
+     * because the JADE platform does not do it by itself!
+     */
+    @Override
+    protected void takeDown() {
+        /*
+         * deregistration of the service
+         */
+        this.log("De-advertising myself from the 'default' tuple centre...");
+        final In in = new In(this.tcid, this.adv);
+        try {
+            this.bridge.asynchronousInvocation(in);
+            this.log("I'm done.");
+        } catch (final ServiceException e) {
+            this.log(">>> No TuCSoN service active, reboot JADE with -services it.unibo.sd.jade.service.TucsonService option <<<");
+            this.doDelete();
         }
     }
 }

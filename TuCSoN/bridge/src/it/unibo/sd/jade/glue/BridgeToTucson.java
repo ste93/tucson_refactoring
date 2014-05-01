@@ -34,7 +34,7 @@ import alice.tucson.service.TucsonOpCompletionEvent;
  */
 public class BridgeToTucson {
     private static void log(final String msg) {
-        System.out.println("\n[BRIDGE]: " + msg);
+        System.out.println("..[T4J Bridge]: " + msg);
     }
 
     /**
@@ -99,6 +99,9 @@ public class BridgeToTucson {
         cmd.addParam(action);
         cmd.addParam(this.acc);
         cmd.addParam(null);
+        BridgeToTucson
+                .log("Asynchronous (polling mode) invocation of operation "
+                        + action);
         final Object result = this.service.submit(cmd);
         if (result instanceof ITucsonOperation) {
             final ITucsonOperation op = (ITucsonOperation) result;
@@ -132,6 +135,9 @@ public class BridgeToTucson {
                 TucsonSlice.EXECUTE_ASYNCH, TucsonService.NAME, null);
         cmd.addParam(action);
         cmd.addParam(this.acc);
+        BridgeToTucson
+                .log("Asynchronous (interrupt mode) invocation of operation "
+                        + action);
         try {
             new AsynchCompletionBehaviourHandler("tucsonAgentAsync", cmd,
                     this.service, myAgent, behav).go();
@@ -187,8 +193,6 @@ public class BridgeToTucson {
         } else {
             ros = this.tucsonOpResultsMap.get(behav);
             if (!ros.isReady()) {
-                BridgeToTucson
-                        .log("\n\n comportamento sbloccato da messaggio ricevuto\n\n");
                 return null; // il comportamento è stato sbloccato da un
                              // messaggio ricevuto dall'agente e non da un
                              // restart del thread delegato a questo.
@@ -217,6 +221,7 @@ public class BridgeToTucson {
             cmd.addParam(this.acc);
             cmd.addParam(timeout);
             Object result;
+            BridgeToTucson.log("Synchronous invocation of operation " + action);
             result = this.service.submit(cmd); // eseguo comando
                                                // verticale
             final ITucsonOperation op = (ITucsonOperation) result;
@@ -238,6 +243,7 @@ public class BridgeToTucson {
                 TucsonSlice.EXECUTE_ASYNCH, TucsonService.NAME, null);
         cmd.addParam(action);
         cmd.addParam(this.acc);
+        BridgeToTucson.log("Synchronous invocation of operation " + action);
         SynchCompletionBehaviourHandler ta = null;
         try {
             ta = new SynchCompletionBehaviourHandler("tucsonAgentAsync", ros,

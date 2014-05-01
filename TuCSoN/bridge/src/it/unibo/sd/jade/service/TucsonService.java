@@ -127,13 +127,11 @@ public class TucsonService extends BaseService {
 
         @Override
         public Service getService() {
-            // TODO Auto-generated method stub
             return TucsonService.this;
         }
 
         @Override
         public VerticalCommand serve(final HorizontalCommand arg0) {
-            // TODO Auto-generated method stub
             return null;
         }
     }
@@ -148,28 +146,36 @@ public class TucsonService extends BaseService {
         public void acquireACC(final Agent agent)
                 throws TucsonInvalidAgentIdException {
             if (TucsonService.this.mAccManager.hasAcc(agent)) {
-                System.out
-                        .println("[TuCSoNHelper] L'agente possiede già un ACC");
+                this.log("Agent '" + agent.getName() + "' already has an ACC.");
                 return;
             }
             final EnhancedACC acc = this.obtainAcc(agent);
             TucsonService.this.mAccManager.addAcc(agent, acc);
-            System.out.println("[TuCSoNHelper] Ottenuto acc " + acc
-                    + " per l'agente " + agent.getLocalName());
+            this.log("Giving ACC '" + acc.getClass().getSimpleName()
+                    + "' to agent " + agent.getLocalName());
         }
 
         @Override
         public void acquireACC(final Agent agent, final String netid,
                 final int portno) throws TucsonInvalidAgentIdException {
             if (TucsonService.this.mAccManager.hasAcc(agent)) {
-                System.out
-                        .println("[TuCSoNHelper] L'agente possiede già un ACC");
+                this.log("Agent '" + agent.getName() + "' already has an ACC.");
                 return;
             }
             final EnhancedACC acc = this.obtainAcc(agent, netid, portno);
             TucsonService.this.mAccManager.addAcc(agent, acc);
-            System.out.println("[TuCSoNHelper] Ottenuto acc " + acc
-                    + " per l'agente " + agent.getLocalName());
+            this.log("Giving ACC '" + acc.getClass().getSimpleName()
+                    + "' to agent " + agent.getLocalName()
+                    + "' toward TuCSoN Node @" + netid + ":" + portno);
+        }
+
+        @Override
+        public TucsonTupleCentreId buildTucsonTupleCentreId(
+                final String tupleCentreName, final String netid,
+                final int portno) throws TucsonInvalidTupleCentreIdException {
+            final TucsonTupleCentreId tcid = new TucsonTupleCentreId(
+                    tupleCentreName, netid, String.valueOf(portno));
+            return tcid;
         }
 
         @Override
@@ -190,16 +196,8 @@ public class TucsonService extends BaseService {
                 TucsonService.this.mOperationHandlers.put(agent.getAID(),
                         bridge);
             }
+            this.log("Booting TuCSoN bridge for agent " + agent.getName());
             return bridge;
-        }
-
-        @Override
-        public TucsonTupleCentreId getTucsonTupleCentreId(
-                final String tupleCentreName, final String netid,
-                final int portno) throws TucsonInvalidTupleCentreIdException {
-            final TucsonTupleCentreId tcid = new TucsonTupleCentreId(
-                    tupleCentreName, netid, String.valueOf(portno));
-            return tcid;
         }
 
         @Override
@@ -223,31 +221,36 @@ public class TucsonService extends BaseService {
             TucsonService.this.mAccManager.removeAcc(agent);
             // Rimuovo eventuali TucsonOperationHandler
             TucsonService.this.mOperationHandlers.remove(this.myAgent.getAID());
+            this.log("Releasing ACC and TuCSoN bridge for agent "
+                    + agent.getName());
         }
 
         @Override
         public void startTucsonNode(final int port) {
+            this.log("Booting local TuCSoN Node Service on port " + port);
             TucsonNodeLifecycleManager.startTucsonNode(port);
         }
 
         @Override
         public void stopTucsonNode(final int port) {
+            this.log("Stopping local TuCSoN Node Service on port " + port);
             TucsonNodeLifecycleManager.stopTucsonNode(port);
+        }
+
+        private final void log(final String msg) {
+            System.out.println("[TuCSoN Service Helper]: " + msg);
         }
 
         private EnhancedACC obtainAcc(final Agent agent)
                 throws TucsonInvalidAgentIdException {
             final TucsonAgentId taid = new TucsonAgentId(agent.getLocalName());
-            System.out.println("****[TucsonService] ID agente: " + taid);
             return TucsonMetaACC.getContext(taid);
         }
 
         private EnhancedACC obtainAcc(final Agent agent, final String netid,
                 final int portno) throws TucsonInvalidAgentIdException {
             final TucsonAgentId taid = new TucsonAgentId(agent.getLocalName());
-            final EnhancedACC acc = TucsonMetaACC.getContext(taid, netid,
-                    portno);
-            return acc;
+            return TucsonMetaACC.getContext(taid, netid, portno);
         }
     }
 
@@ -323,7 +326,6 @@ public class TucsonService extends BaseService {
 
     @Override
     public void shutdown() {
-        System.out.println("[TuCSoNService] Shutting down TuCSoN node");
         TucsonNodeLifecycleManager
                 .stopTucsonNode(TucsonService.TUCSON_DEF_PORT);
         super.shutdown();

@@ -43,19 +43,6 @@ public interface TucsonHelper extends ServiceHelper {
             throws TucsonInvalidAgentIdException;
 
     /**
-     * Permette di ottenere il {@link BridgeToTucson} tramite il quale &egrave;
-     * possibile interagire con TuCSoN.
-     * 
-     * @param agent
-     *            L'agente che richiede il TucsonOperationHandler.
-     * @return Il BridgeJadeTuCSoN che permette l'interazione con TuCSoN.
-     * @throws CannotAcquireACCException
-     *             Se l'agente <code>agent</code> non ha ottenuto un ACC.
-     */
-    BridgeToTucson getBridgeToTucson(Agent agent)
-            throws CannotAcquireACCException;
-
-    /**
      * Permette di ottenere il {@link alice.tucson.api.TucsonTupleCentreId}
      * TucsonTupleCentreId relativo al <code>tupleCentreName</code>,
      * <code>netid</code> e <code>portno</code> specificati
@@ -70,9 +57,22 @@ public interface TucsonHelper extends ServiceHelper {
      * @throws TucsonInvalidTupleCentreIdException
      *             Se il tuple centre non &egrave; valido.
      */
-    TucsonTupleCentreId getTucsonTupleCentreId(String tupleCentreName,
+    TucsonTupleCentreId buildTucsonTupleCentreId(String tupleCentreName,
             String netid, int portno)
             throws TucsonInvalidTupleCentreIdException;
+
+    /**
+     * Permette di ottenere il {@link BridgeToTucson} tramite il quale &egrave;
+     * possibile interagire con TuCSoN.
+     * 
+     * @param agent
+     *            L'agente che richiede il TucsonOperationHandler.
+     * @return Il BridgeJadeTuCSoN che permette l'interazione con TuCSoN.
+     * @throws CannotAcquireACCException
+     *             Se l'agente <code>agent</code> non ha ottenuto un ACC.
+     */
+    BridgeToTucson getBridgeToTucson(Agent agent)
+            throws CannotAcquireACCException;
 
     /**
      * Permette di effettuare la deautenticazione per il nodo TuCSoN sul quale
