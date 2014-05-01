@@ -45,6 +45,6 @@ public abstract class AbstractTucsonSpecificationAction extends
     @Override
     public String toString() {
         return "(reaction(" + this.event + ", " + this.guards + ", "
-                + this.reaction + "), " + this.tcid + ")";
+                + this.reaction + ")) to " + this.tcid;
     }
 }

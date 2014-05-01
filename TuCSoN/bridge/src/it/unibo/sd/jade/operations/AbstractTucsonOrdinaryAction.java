@@ -41,6 +41,6 @@ public abstract class AbstractTucsonOrdinaryAction extends AbstractTucsonAction 
      */
     @Override
     public String toString() {
-        return "(" + this.tuple + ", " + this.tcid + ")";
+        return "(" + this.tuple + ") to " + this.tcid;
     }
 }
