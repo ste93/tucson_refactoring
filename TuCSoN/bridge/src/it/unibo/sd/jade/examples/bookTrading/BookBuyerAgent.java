@@ -227,7 +227,11 @@ public class BookBuyerAgent extends Agent {
                 String p = null;
                 try {
                     from = res.getTuple().getArg(2).getArg(0).toString();
-                    BookBuyerAgent.this.log("Received proposal from " + from);
+                    BookBuyerAgent.this.log("Received proposal from '" + from
+                            + "' for book "
+                            + res.getTuple().getArg(1).getArg(0)
+                            + " (target is "
+                            + BookBuyerAgent.this.targetBookTitle + ")");
                     p = res.getTuple().getArg(3).getArg(0).toString();
                 } catch (final InvalidOperationException e) {
                     // should not happen
@@ -509,12 +513,12 @@ public class BookBuyerAgent extends Agent {
                  * sellers! (è la semantica delle xxx_all)
                  */
                 if (res != null) {
+                    String agent;
                     try {
                         for (final LogicTuple t : res.getTupleList()) {
-                            BookBuyerAgent.this.sellerAgents.add(t.getArg(0)
-                                    .getArg(0).toString());
-                            BookBuyerAgent.this.log("Agent '"
-                                    + BookBuyerAgent.this.sellerAgents.get(0)
+                            agent = t.getArg(0).getArg(0).toString();
+                            BookBuyerAgent.this.sellerAgents.add(agent);
+                            BookBuyerAgent.this.log("Agent '" + agent
                                     + "' found.");
                         }
                     } catch (final InvalidOperationException e) {
