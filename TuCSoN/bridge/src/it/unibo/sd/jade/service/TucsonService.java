@@ -239,7 +239,7 @@ public class TucsonService extends BaseService {
             TucsonNodeLifecycleManager.stopTucsonNode(port);
         }
 
-        private final void log(final String msg) {
+        private void log(final String msg) {
             System.out.println("[TuCSoN Service Helper]: " + msg);
         }
 
