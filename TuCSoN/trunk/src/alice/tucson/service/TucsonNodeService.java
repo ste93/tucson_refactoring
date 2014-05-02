@@ -207,7 +207,7 @@ public class TucsonNodeService {
         TucsonNodeService
                 .log("--------------------------------------------------------------------------------");
         TucsonNodeService.log("Welcome to the TuCSoN infrastructure :)");
-        TucsonNodeService.log("Version " + TucsonNodeService.getVersion());
+        TucsonNodeService.log("  Version " + TucsonNodeService.getVersion());
         TucsonNodeService
                 .log("--------------------------------------------------------------------------------");
         this.configFile = conf;

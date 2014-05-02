@@ -75,6 +75,14 @@ public interface TucsonHelper extends ServiceHelper {
             throws CannotAcquireACCException;
 
     /**
+     * Checks if a TuCSoN Node is active on the given port
+     * 
+     * @param port
+     * @return wether a TuCSoN Node is active on the given port
+     */
+    boolean isActive(int port);
+
+    /**
      * Permette di effettuare la deautenticazione per il nodo TuCSoN sul quale
      * si era precedentemente autenticati.
      * 

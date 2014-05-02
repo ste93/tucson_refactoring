@@ -15,6 +15,7 @@ import jade.core.Service;
 import jade.core.ServiceHelper;
 import jade.core.Sink;
 import jade.core.VerticalCommand;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import alice.tucson.api.EnhancedACC;
@@ -29,6 +30,7 @@ import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
+import alice.tucson.service.TucsonNodeService;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 
 /**
@@ -207,6 +209,21 @@ public class TucsonService extends BaseService {
             this.myAgent = agent;
         }
 
+        /*
+         * (non-Javadoc)
+         * @see it.unibo.sd.jade.service.TucsonHelper#isActive(int)
+         */
+        @Override
+        public boolean isActive(final int port) {
+            try {
+                return TucsonNodeService.isInstalled(port);
+            } catch (final IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            return false;
+        }
+
         @Override
         public void releaseACC(final Agent agent) {
             // Esco dall'acc
@@ -267,6 +284,21 @@ public class TucsonService extends BaseService {
     private static final String[] OWNED_COMMANDS = { TucsonSlice.EXECUTE_SYNCH,
             TucsonSlice.EXECUTE_ASYNCH };
     private static final int TUCSON_DEF_PORT = 20504;
+
+    /**
+     * @return
+     */
+    private static String getVersion() {
+        return "TuCSoN4JADE-1.0";
+    }
+
+    /**
+     * @param string
+     */
+    private static void log(final String msg) {
+        System.out.println("[TuCSoN Service]: " + msg);
+    }
+
     /*
      * L'helper del servizio
      */
@@ -295,6 +327,17 @@ public class TucsonService extends BaseService {
     // The source and target sinks
     private final Sink sourceSink = new CommandSourceSink();
     private final Sink targetSink = new CommandTargetSink(); // Al momento non è
+
+    public TucsonService() {
+        super();
+        TucsonService
+                .log("--------------------------------------------------------------------------------");
+        TucsonService.log("Welcome to the TuCSoN4JADE (T4J) bridge :)");
+        TucsonService.log("  T4J version " + TucsonService.getVersion());
+        TucsonService.log("  TuCSoN version " + TucsonNodeService.getVersion());
+        TucsonService
+                .log("--------------------------------------------------------------------------------");
+    }
 
     // utilizzato
     @Override

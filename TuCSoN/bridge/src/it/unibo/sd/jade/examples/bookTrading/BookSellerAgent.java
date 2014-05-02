@@ -41,6 +41,7 @@ import alice.logictuple.LogicTuple;
 import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
+import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.service.TucsonOpCompletionEvent;
 import alice.tuplecentre.api.exceptions.InvalidOperationException;
 import alice.tuplecentre.api.exceptions.InvalidTupleException;
@@ -297,6 +298,7 @@ public class BookSellerAgent extends Agent {
      * The catalogue of books for sale (maps the title of a book to its price).
      */
     private Hashtable<String, Float> catalogue;
+    private TucsonHelper helper;
     /*
      * ID of tuple centre used for objective coordination
      */
@@ -313,9 +315,9 @@ public class BookSellerAgent extends Agent {
             final byte[] res = new byte[br.available()];
             br.read(res);
             br.close();
-            String whole = new String(res);
+            final String whole = new String(res);
             String line;
-            StringTokenizer st1 = new StringTokenizer(whole, "\n");
+            final StringTokenizer st1 = new StringTokenizer(whole, "\n");
             StringTokenizer st2;
             String title;
             LinkedList<Float> prices;
@@ -332,7 +334,7 @@ public class BookSellerAgent extends Agent {
                         prices.get((int) Math.round(Math.random()
                                 * (prices.size() - 1))));
             }
-        } catch (IOException e) {
+        } catch (final IOException e) {
             e.printStackTrace();
             this.doDelete();
         }
@@ -364,22 +366,25 @@ public class BookSellerAgent extends Agent {
          */
         this.bootCatalogue();
         this.printCatalogue();
-        TucsonHelper helper;
         try {
-            helper = (TucsonHelper) this.getHelper(TucsonService.NAME);
+            this.helper = (TucsonHelper) this.getHelper(TucsonService.NAME);
+            if (!this.helper.isActive(20504)) {
+                this.log("Booting local TuCSoN Node on default port...");
+                this.helper.startTucsonNode(20504);
+            }
             /*
              * Obtain ACC
              */
-            helper.acquireACC(this);
+            this.helper.acquireACC(this);
             /*
              * get tuple centre id
              */
-            this.tcid = helper.buildTucsonTupleCentreId("default", "localhost",
-                    20504);
+            this.tcid = this.helper.buildTucsonTupleCentreId("default",
+                    "localhost", 20504);
             /*
              * get the univocal bridge for the agent
              */
-            this.bridge = helper.getBridgeToTucson(this);
+            this.bridge = this.helper.getBridgeToTucson(this);
             /*
              * advertisment of the service provided
              */
@@ -405,6 +410,9 @@ public class BookSellerAgent extends Agent {
         } catch (final InvalidTupleException e) {
             // should not happen
             e.printStackTrace();
+            this.doDelete();
+        } catch (final TucsonOperationNotPossibleException e) {
+            this.log(">>> TuCSoN Node cannot be installed, check if given port is already in use <<<");
             this.doDelete();
         }
         /*
@@ -434,6 +442,10 @@ public class BookSellerAgent extends Agent {
         } catch (final ServiceException e) {
             this.log(">>> No TuCSoN service active, reboot JADE with -services it.unibo.sd.jade.service.TucsonService option <<<");
             this.doDelete();
+        }
+        if (this.helper.isActive(20504)) {
+            this.log("Stopping local TuCSoN Node on default port...");
+            this.helper.stopTucsonNode(20504);
         }
     }
 }

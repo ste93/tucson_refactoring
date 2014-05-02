@@ -44,6 +44,7 @@ import alice.logictuple.LogicTuple;
 import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
+import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.service.TucsonOpCompletionEvent;
 import alice.tuplecentre.api.exceptions.InvalidOperationException;
 import alice.tuplecentre.api.exceptions.InvalidTupleException;
@@ -346,6 +347,7 @@ public class BookBuyerAgent extends Agent {
      * The bridge class to execute TuCSoN operations
      */
     private BridgeToTucson bridge;
+    private TucsonHelper helper;
     /*
      * Overall number of book trading attempts, used for termination.
      */
@@ -378,9 +380,9 @@ public class BookBuyerAgent extends Agent {
             final byte[] res = new byte[br.available()];
             br.read(res);
             br.close();
-            String whole = new String(res);
+            final String whole = new String(res);
             String line;
-            StringTokenizer st1 = new StringTokenizer(whole, "\n");
+            final StringTokenizer st1 = new StringTokenizer(whole, "\n");
             StringTokenizer st2;
             final LinkedList<String> titles = new LinkedList<String>();
             while (st1.hasMoreTokens()) {
@@ -407,22 +409,26 @@ public class BookBuyerAgent extends Agent {
     @Override
     protected void setup() {
         this.log("I'm started.");
-        TucsonHelper helper;
         try {
-            helper = (TucsonHelper) this.getHelper(TucsonService.NAME);
+            this.helper = (TucsonHelper) this.getHelper(TucsonService.NAME);
+            this.helper = (TucsonHelper) this.getHelper(TucsonService.NAME);
+            if (!this.helper.isActive(20504)) {
+                this.log("Booting local TuCSoN Node on default port...");
+                this.helper.startTucsonNode(20504);
+            }
             /*
              * Obtain ACC
              */
-            helper.acquireACC(this);
+            this.helper.acquireACC(this);
             /*
              * get tuple centre id
              */
-            this.tcid = helper.buildTucsonTupleCentreId("default", "localhost",
-                    20504);
+            this.tcid = this.helper.buildTucsonTupleCentreId("default",
+                    "localhost", 20504);
             /*
              * get the univocal bridge for the agent
              */
-            this.bridge = helper.getBridgeToTucson(this);
+            this.bridge = this.helper.getBridgeToTucson(this);
         } catch (final ServiceException e) {
             this.log(">>> No TuCSoN service active, reboot JADE with -services it.unibo.sd.jade.service.TucsonService option <<<");
             this.doDelete();
@@ -436,6 +442,9 @@ public class BookBuyerAgent extends Agent {
         } catch (final CannotAcquireACCException e) {
             // should not happen
             e.printStackTrace();
+            this.doDelete();
+        } catch (final TucsonOperationNotPossibleException e) {
+            this.log(">>> TuCSoN Node cannot be installed, check if given port is already in use <<<");
             this.doDelete();
         }
         /*
