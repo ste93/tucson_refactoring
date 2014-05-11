@@ -96,7 +96,7 @@ public class TucsonNodeService {
     public static boolean isInstalled(final String netid, final int port)
             throws IOException {
         final Socket test = new Socket(netid, port);
-        test.setSoTimeout(3000);
+        test.setSoTimeout(10000);
         final ObjectInputStream ois = new ObjectInputStream(
                 new BufferedInputStream(test.getInputStream()));
         final ObjectOutputStream oos = new ObjectOutputStream(
