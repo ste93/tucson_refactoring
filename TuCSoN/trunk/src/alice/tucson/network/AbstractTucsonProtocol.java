@@ -14,6 +14,7 @@ package alice.tucson.network;
 
 import java.io.IOException;
 import java.util.Properties;
+import alice.tucson.api.TucsonMetaACC;
 import alice.tucson.introspection.InspectorContextEvent;
 import alice.tucson.introspection.NewInspectorMsg;
 import alice.tucson.introspection.NodeMsg;
@@ -29,6 +30,7 @@ import alice.tucson.service.ACCDescription;
  */
 public abstract class AbstractTucsonProtocol implements java.io.Serializable {
     private static final int REQ_ENTERCONTEXT = 1;
+    public static final int NODE_ACTIVE_QUERY = 2;
     /** serialVersionUID **/
     private static final long serialVersionUID = 1L;
     private ACCDescription context;
@@ -367,4 +369,20 @@ public abstract class AbstractTucsonProtocol implements java.io.Serializable {
      *             if some network problems arise
      */
     protected abstract void send(String value) throws IOException;
+
+    /**
+     * @return wether the request received last is a "NODE_ACTIVE_QUERY" query
+     */
+    public boolean isNodeActiveQuery() {
+        return this.reqType == AbstractTucsonProtocol.NODE_ACTIVE_QUERY;
+    }
+
+    /**
+     * @throws IOException
+     *             if the message cannot be sent due to network problems
+     */
+    public void sendNodeActiveReply() throws IOException {
+        this.send(TucsonMetaACC.getVersion());
+        this.flush();
+    }
 }

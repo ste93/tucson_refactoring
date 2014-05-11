@@ -14,14 +14,15 @@
 package alice.tucson.service;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.InetSocketAddress;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.net.SocketAddress;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -45,6 +46,7 @@ import alice.tucson.api.exceptions.TucsonInvalidLogicTupleException;
 import alice.tucson.api.exceptions.TucsonInvalidSpecificationException;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
+import alice.tucson.network.AbstractTucsonProtocol;
 import alice.tucson.network.TPConfig;
 import alice.tuplecentre.api.Tuple;
 import alice.tuplecentre.api.exceptions.InvalidTupleException;
@@ -82,24 +84,26 @@ public class TucsonNodeService {
 
     /**
      * 
+     * @param netid
+     *            the IP address where to test if a TuCSoN node is up & running
      * @param port
      *            the listening port where to test if a TuCSoN node is up &
-     *            running on
+     *            running
      * @return whether a TuCSoN node is up & active on the given port
      * @throws IOException
      *             if the given port cannot be reached over the network
      */
-    public static boolean isInstalled(final int port) throws IOException {
-        final SocketAddress addr = new InetSocketAddress(port);
-        final Socket sock = new Socket();
-        try {
-            sock.bind(addr);
-        } catch (final IOException e) {
-            return true;
-        } finally {
-            sock.close();
-        }
-        return false;
+    public static boolean isInstalled(final String netid, final int port)
+            throws IOException {
+        final Socket test = new Socket(netid, port);
+        final ObjectInputStream ois = new ObjectInputStream(
+                new BufferedInputStream(test.getInputStream()));
+        final ObjectOutputStream oos = new ObjectOutputStream(
+                new BufferedOutputStream(test.getOutputStream()));
+        oos.writeInt(AbstractTucsonProtocol.NODE_ACTIVE_QUERY);
+        oos.flush();
+        final String reply = ois.readUTF();
+        return reply.equals(TucsonMetaACC.getVersion());
     }
 
     /**

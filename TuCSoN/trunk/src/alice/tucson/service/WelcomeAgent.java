@@ -91,6 +91,8 @@ public class WelcomeAgent extends Thread {
                     WelcomeAgent
                             .log("Delegating ACCProvider received enter request...");
                     this.contextManager.processContextRequest(desc, dialog);
+                } else if (dialog.isNodeActiveQuery()) {
+                    dialog.sendNodeActiveReply();
                 }
             }
         } catch (final IOException e) {
