@@ -106,9 +106,10 @@ public class TucsonNodeService {
         String reply;
         try {
             reply = ois.readUTF();
-            TucsonNodeService.log("reply is " + reply);
         } catch (final java.net.SocketTimeoutException e) {
             reply = "";
+        } finally {
+            test.close();
         }
         return reply.equals(TucsonMetaACC.getVersion());
     }
@@ -215,12 +216,6 @@ public class TucsonNodeService {
      */
     public TucsonNodeService(final String conf, final int portNumber,
             final Tuple persistTempl) {
-        TucsonNodeService
-                .log("--------------------------------------------------------------------------------");
-        TucsonNodeService.log("Welcome to the TuCSoN infrastructure :)");
-        TucsonNodeService.log("  Version " + TucsonNodeService.getVersion());
-        TucsonNodeService
-                .log("--------------------------------------------------------------------------------");
         this.configFile = conf;
         this.tcpPort = portNumber;
         this.persistencyTemplate = persistTempl;
@@ -241,6 +236,7 @@ public class TucsonNodeService {
         this.agents = new ArrayList<TucsonAgentId>();
         this.nodeAgents = new ArrayList<Thread>();
         this.tcs = new ArrayList<RespectTC>();
+        TPConfig.getInstance().setTcpPort(this.tcpPort);
     }
 
     /**
@@ -517,6 +513,12 @@ public class TucsonNodeService {
      * 
      */
     public synchronized void install() {
+        TucsonNodeService
+                .log("--------------------------------------------------------------------------------");
+        TucsonNodeService.log("Welcome to the TuCSoN infrastructure :)");
+        TucsonNodeService.log("  Version " + TucsonNodeService.getVersion());
+        TucsonNodeService
+                .log("--------------------------------------------------------------------------------");
         TucsonNodeService.log("Beginning TuCSoN Node Service installation...");
         TucsonNodeService.log(new Date().toString());
         this.configManager = new Prolog();
