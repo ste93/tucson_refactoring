@@ -96,13 +96,20 @@ public class TucsonNodeService {
     public static boolean isInstalled(final String netid, final int port)
             throws IOException {
         final Socket test = new Socket(netid, port);
+        test.setSoTimeout(3000);
         final ObjectInputStream ois = new ObjectInputStream(
                 new BufferedInputStream(test.getInputStream()));
         final ObjectOutputStream oos = new ObjectOutputStream(
                 new BufferedOutputStream(test.getOutputStream()));
         oos.writeInt(AbstractTucsonProtocol.NODE_ACTIVE_QUERY);
         oos.flush();
-        final String reply = ois.readUTF();
+        String reply;
+        try {
+            reply = ois.readUTF();
+            TucsonNodeService.log("reply is " + reply);
+        } catch (final java.net.SocketTimeoutException e) {
+            reply = "";
+        }
         return reply.equals(TucsonMetaACC.getVersion());
     }
 
