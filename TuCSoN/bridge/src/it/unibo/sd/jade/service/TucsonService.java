@@ -214,9 +214,9 @@ public class TucsonService extends BaseService {
          * @see it.unibo.sd.jade.service.TucsonHelper#isActive(int)
          */
         @Override
-        public boolean isActive(final int port) {
+        public boolean isActive(final String netid, final int port) {
             try {
-                return TucsonNodeService.isInstalled(port);
+                return TucsonNodeService.isInstalled(netid, port);
             } catch (final IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();

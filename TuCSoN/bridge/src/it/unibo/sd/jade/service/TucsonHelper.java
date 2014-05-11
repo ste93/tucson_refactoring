@@ -76,11 +76,11 @@ public interface TucsonHelper extends ServiceHelper {
 
     /**
      * Checks if a TuCSoN Node is active on the given port
-     * 
+     * @param netid 
      * @param port
      * @return wether a TuCSoN Node is active on the given port
      */
-    boolean isActive(int port);
+    boolean isActive(String netid, int port);
 
     /**
      * Permette di effettuare la deautenticazione per il nodo TuCSoN sul quale

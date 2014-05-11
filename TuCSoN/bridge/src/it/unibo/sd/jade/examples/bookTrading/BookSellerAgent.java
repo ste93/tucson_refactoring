@@ -368,7 +368,7 @@ public class BookSellerAgent extends Agent {
         this.printCatalogue();
         try {
             this.helper = (TucsonHelper) this.getHelper(TucsonService.NAME);
-            if (!this.helper.isActive(20504)) {
+            if (!this.helper.isActive("localhost", 20504)) {
                 this.log("Booting local TuCSoN Node on default port...");
                 this.helper.startTucsonNode(20504);
             }
@@ -443,7 +443,7 @@ public class BookSellerAgent extends Agent {
             this.log(">>> No TuCSoN service active, reboot JADE with -services it.unibo.sd.jade.service.TucsonService option <<<");
             this.doDelete();
         }
-        if (this.helper.isActive(20504)) {
+        if (this.helper.isActive("localhost", 20504)) {
             this.log("Stopping local TuCSoN Node on default port...");
             this.helper.stopTucsonNode(20504);
         }
