@@ -51,8 +51,8 @@ import alice.tuplecentre.api.exceptions.InvalidTupleException;
 
 /**
  * Adapted from Giovanni Caire's Book Trading example in examples.bookTrading
- * within JADE distribution. This is the buyer agent, showing how to query JADE
- * DF in order to look for a desired service.
+ * within JADE distribution. This is the buyer agent, showing how to exploit
+ * TuCSoN4JADE integration services.
  * 
  * @author s.mariani@unibo.it
  */
@@ -69,6 +69,7 @@ public class BookBuyerAgent extends Agent {
             String cfp = "";
             BookBuyerAgent.this.log("Sending CFP for book "
                     + BookBuyerAgent.this.targetBookTitle + " to agents...");
+            // TODO one only cfp tuple to be read by all the sellers
             for (final String p : BookBuyerAgent.this.sellerAgents) {
                 cfp += "cfp(to(" + p + "), from("
                         + BookBuyerAgent.this.getAID().getName() + "), book("
@@ -190,7 +191,7 @@ public class BookBuyerAgent extends Agent {
     /*
      * Behaviour collecting the Proposals (possibly) sent by advertising agents.
      */
-    private class ProposalsCollector extends Behaviour {
+    private class CFPHandler extends Behaviour {
         /** serialVersionUID **/
         private static final long serialVersionUID = 1L;
 
@@ -287,7 +288,7 @@ public class BookBuyerAgent extends Agent {
     /*
      * Behaviour performing the attempt to buy the searched book.
      */
-    private class Purchaser extends OneShotBehaviour {
+    private class PurchaseHandler extends OneShotBehaviour {
         /** serialVersionUID **/
         private static final long serialVersionUID = 1L;
 
@@ -410,25 +411,33 @@ public class BookBuyerAgent extends Agent {
     protected void setup() {
         this.log("I'm started.");
         try {
+            /*
+             * First of all, get the helper for the service you want to exploit
+             */
             this.helper = (TucsonHelper) this.getHelper(TucsonService.NAME);
-            this.helper = (TucsonHelper) this.getHelper(TucsonService.NAME);
+            /*
+             * Then, start a TuCSoN Node (if not already up) as the actual
+             * executor of the service
+             */
             if (!this.helper.isActive("localhost", 20504, 10000)) {
                 this.log("Booting local TuCSoN Node on default port...");
                 this.helper.startTucsonNode(20504);
             }
             /*
-             * Obtain ACC
+             * Obtain ACC (which is actually given to the bridge, not directly
+             * to your agent)
              */
             this.helper.acquireACC(this);
             /*
-             * get tuple centre id
+             * Get the univocal bridge for the agent. Now, mandatory, set-up
+             * actions have been carried out and you are ready to coordinate
+             */
+            this.bridge = this.helper.getBridgeToTucson(this);
+            /*
+             * build a tuple centre id
              */
             this.tcid = this.helper.buildTucsonTupleCentreId("default",
                     "localhost", 20504);
-            /*
-             * get the univocal bridge for the agent
-             */
-            this.bridge = this.helper.getBridgeToTucson(this);
         } catch (final ServiceException e) {
             this.log(">>> No TuCSoN service active, reboot JADE with -services it.unibo.sd.jade.service.TucsonService option <<<");
             this.doDelete();
@@ -463,8 +472,8 @@ public class BookBuyerAgent extends Agent {
 
             private void configureFSM(final FSMBehaviour fsm) {
                 fsm.registerFirstState(new CFPSender(), "CFPState");
-                fsm.registerState(new ProposalsCollector(), "ProposalsState");
-                fsm.registerState(new Purchaser(), "PurchaseState");
+                fsm.registerState(new CFPHandler(), "ProposalsState");
+                fsm.registerState(new PurchaseHandler(), "PurchaseState");
                 fsm.registerLastState(new ConfirmationReceiver(),
                         "ConfirmationState");
                 fsm.registerLastState(new NoProposals(), "NoProposalsState");
@@ -499,7 +508,7 @@ public class BookBuyerAgent extends Agent {
                 BookBuyerAgent.this.log("Trying to buy "
                         + BookBuyerAgent.this.targetBookTitle);
                 /*
-                 * 6- Query the DF about the service you look for.
+                 * Exploit TuCSoN services to find a seller
                  */
                 BookBuyerAgent.this
                         .log("Searching 'book-trading' services in the 'default' tuple centre...");
@@ -520,10 +529,6 @@ public class BookBuyerAgent extends Agent {
                             .log(">>> No TuCSoN service active, reboot JADE with -services it.unibo.sd.jade.service.TucsonService option <<<");
                     BookBuyerAgent.this.doDelete();
                 }
-                /*
-                 * res può essere non null ma contenere una lista vuota di
-                 * sellers! (è la semantica delle xxx_all)
-                 */
                 if (res != null) {
                     String agent;
                     try {

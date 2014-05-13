@@ -60,7 +60,7 @@ public class BookSellerAgent extends Agent {
      * PROPOSE message specifying the price. Otherwise a REFUSE message is sent
      * back.
      */
-    private class OfferRequestsServer extends Behaviour {
+    private class CFPHandler extends Behaviour {
         /** serialVersionUID **/
         private static final long serialVersionUID = 1L;
 
@@ -69,6 +69,7 @@ public class BookSellerAgent extends Agent {
             BookSellerAgent.this.log("Waiting for CFP messages...");
             LogicTuple cfp = null;
             try {
+                // TODO one only cfp tuple to be read by all the sellers
                 cfp = LogicTuple.parse("cfp(to("
                         + BookSellerAgent.this.getAID().getName()
                         + "), from(B), book(T))");
@@ -88,7 +89,7 @@ public class BookSellerAgent extends Agent {
                 BookSellerAgent.this.doDelete();
             }
             try {
-                if (result != null) {
+                if (result != null) { // a cfp is already available
                     final String buyer = result.getTuple().getArg(1).getArg(0)
                             .toString();
                     BookSellerAgent.this.log("Received CFP from " + buyer);
@@ -106,7 +107,7 @@ public class BookSellerAgent extends Agent {
                     final Float price = BookSellerAgent.this.catalogue
                             .get(title);
                     String p;
-                    if (price != null) {
+                    if (price != null) { // book available
                         BookSellerAgent.this.buyers.add(buyer);
                         /*
                          * The requested book is available, reply with its
@@ -115,7 +116,7 @@ public class BookSellerAgent extends Agent {
                         BookSellerAgent.this.log("Book " + title
                                 + " available, proposing price > " + price);
                         p = String.valueOf(price);
-                    } else {
+                    } else { // book already sold
                         /*
                          * The requested book is NOT available, reply
                          * accordingly.
@@ -130,7 +131,7 @@ public class BookSellerAgent extends Agent {
                             + "), price(" + p + "))");
                     final Out out = new Out(BookSellerAgent.this.tcid, proposal);
                     BookSellerAgent.this.bridge.asynchronousInvocation(out);
-                } else {
+                } else { // cfp not available yet, BLOCK ONLY THIS BEHAVIOUR
                     BookSellerAgent.this.log("No CFP yet...");
                     this.block();
                 }
@@ -168,7 +169,7 @@ public class BookSellerAgent extends Agent {
      * message to notify the buyer that the purchase has been successfully
      * completed.
      */
-    private class PurchaseOrdersServer extends Behaviour {
+    private class PurchaseHandler extends Behaviour {
         /** serialVersionUID **/
         private static final long serialVersionUID = 1L;
 
@@ -202,6 +203,8 @@ public class BookSellerAgent extends Agent {
                             .toString();
                     final String title = result.getTuple().getArg(3).getArg(0)
                             .toString();
+                    // someone is trying to fool me: he never didi a cfp, but he
+                    // is trying to buy something!
                     if (BookSellerAgent.this.buyers.contains(buyer)) {
                         BookSellerAgent.this.buyers.remove(buyer);
                         if ("accept".equals(reply)) { // accept
@@ -367,24 +370,33 @@ public class BookSellerAgent extends Agent {
         this.bootCatalogue();
         this.printCatalogue();
         try {
+            /*
+             * First of all, get the helper for the service you want to exploit
+             */
             this.helper = (TucsonHelper) this.getHelper(TucsonService.NAME);
+            /*
+             * Then, start a TuCSoN Node (if not already up) as the actual
+             * executor of the service
+             */
             if (!this.helper.isActive("localhost", 20504, 10000)) {
                 this.log("Booting local TuCSoN Node on default port...");
                 this.helper.startTucsonNode(20504);
             }
             /*
-             * Obtain ACC
+             * Obtain ACC (which is actually given to the bridge, not directly
+             * to your agent)
              */
             this.helper.acquireACC(this);
             /*
-             * get tuple centre id
+             * Get the univocal bridge for the agent. Now, mandatory, set-up
+             * actions have been carried out and you are ready to coordinate
+             */
+            this.bridge = this.helper.getBridgeToTucson(this);
+            /*
+             * build a tuple centre id
              */
             this.tcid = this.helper.buildTucsonTupleCentreId("default",
                     "localhost", 20504);
-            /*
-             * get the univocal bridge for the agent
-             */
-            this.bridge = this.helper.getBridgeToTucson(this);
             /*
              * advertisment of the service provided
              */
@@ -392,6 +404,10 @@ public class BookSellerAgent extends Agent {
             this.adv = LogicTuple.parse("advertise(provider("
                     + this.getAID().getName() + "), service('book-trading'))");
             final Out out = new Out(this.tcid, this.adv);
+            /*
+             * asynchronous, polling mode invocation (it's an out, so it is
+             * successful unless some network problems arise)
+             */
             this.bridge.asynchronousInvocation(out);
         } catch (final ServiceException e) {
             this.log(">>> No TuCSoN service active, reboot JADE with -services it.unibo.sd.jade.service.TucsonService option <<<");
@@ -418,11 +434,11 @@ public class BookSellerAgent extends Agent {
         /*
          * Add the behaviour serving CFPs from buyer agents.
          */
-        this.addBehaviour(new OfferRequestsServer());
+        this.addBehaviour(new CFPHandler());
         /*
          * Add the behaviour serving purchase orders from buyer agents.
          */
-        this.addBehaviour(new PurchaseOrdersServer());
+        this.addBehaviour(new PurchaseHandler());
     }
 
     /*
