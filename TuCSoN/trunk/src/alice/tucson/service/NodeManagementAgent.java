@@ -60,10 +60,10 @@ public class NodeManagementAgent extends Thread {
     public void run() {
         try {
             while (true) {
-                LogicTuple cmd;
-                cmd = (LogicTuple) TupleCentreContainer.doBlockingOperation(
-                        TucsonOperation.inCode(), this.nodeManAid, this.config,
-                        new LogicTuple("cmd", new Var("X")));
+                LogicTuple cmd = (LogicTuple) TupleCentreContainer
+                        .doBlockingOperation(TucsonOperation.inCode(),
+                                this.nodeManAid, this.config, new LogicTuple(
+                                        "cmd", new Var("X")));
                 if (cmd != null) {
                     this.execCmd(cmd.getArg(0));
                 } else {

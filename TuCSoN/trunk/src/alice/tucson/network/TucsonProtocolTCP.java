@@ -148,7 +148,8 @@ public class TucsonProtocolTCP extends AbstractTucsonProtocol {
         } catch (final IOException e) {
             // FIXME What to do here?
             if (this.serverSocketClosed) {
-                System.out.println("SocketClosed...");
+                System.out.println("[TuCSoN protocol]: Socket "
+                        + this.mainSocket.getLocalPort() + " closed");
             } else {
                 System.err.println("Generic IO error: " + e);
             }
