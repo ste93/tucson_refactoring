@@ -82,6 +82,15 @@ public class TucsonNodeService {
         return TucsonMetaACC.getVersion();
     }
 
+    public static boolean isInstalled(final int timeout) throws IOException {
+        return TucsonNodeService.isInstalled("localhost", 20504, timeout);
+    }
+
+    public static boolean isInstalled(final int port, final int timeout)
+            throws IOException {
+        return TucsonNodeService.isInstalled("localhost", port, timeout);
+    }
+
     /**
      * 
      * @param netid
@@ -89,14 +98,17 @@ public class TucsonNodeService {
      * @param port
      *            the listening port where to test if a TuCSoN node is up &
      *            running
+     * @param timeout
+     *            the maximum waiting time the caller agent can afford to wait
+     *            for a response
      * @return whether a TuCSoN node is up & active on the given port
      * @throws IOException
      *             if the given port cannot be reached over the network
      */
-    public static boolean isInstalled(final String netid, final int port)
-            throws IOException {
+    public static boolean isInstalled(final String netid, final int port,
+            final int timeout) throws IOException {
         final Socket test = new Socket(netid, port);
-        test.setSoTimeout(10000);
+        test.setSoTimeout(timeout);
         final ObjectInputStream ois = new ObjectInputStream(
                 new BufferedInputStream(test.getInputStream()));
         final ObjectOutputStream oos = new ObjectOutputStream(

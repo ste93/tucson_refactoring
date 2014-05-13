@@ -412,7 +412,7 @@ public class BookBuyerAgent extends Agent {
         try {
             this.helper = (TucsonHelper) this.getHelper(TucsonService.NAME);
             this.helper = (TucsonHelper) this.getHelper(TucsonService.NAME);
-            if (!this.helper.isActive("localhost", 20504)) {
+            if (!this.helper.isActive("localhost", 20504, 10000)) {
                 this.log("Booting local TuCSoN Node on default port...");
                 this.helper.startTucsonNode(20504);
             }
