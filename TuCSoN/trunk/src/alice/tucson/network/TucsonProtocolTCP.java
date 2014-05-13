@@ -69,10 +69,13 @@ public class TucsonProtocolTCP extends AbstractTucsonProtocol {
             this.mainSocket.setReuseAddress(true);
             this.mainSocket.bind(new InetSocketAddress(port));
         } catch (final IllegalArgumentException e) {
+            this.clean();
             throw new DialogExceptionTcp();
         } catch (final BindException e) {
+            this.clean();
             throw new DialogExceptionTcp();
         } catch (final IOException e) {
+            this.clean();
             throw new DialogExceptionTcp();
         }
     }
@@ -338,6 +341,18 @@ public class TucsonProtocolTCP extends AbstractTucsonProtocol {
             this.outStream.flush();
         } catch (final IOException e) {
             throw new DialogExceptionTcp();
+        }
+    }
+
+    /**
+     * 
+     */
+    private void clean() {
+        try {
+            this.mainSocket.close();
+        } catch (final IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
     }
 

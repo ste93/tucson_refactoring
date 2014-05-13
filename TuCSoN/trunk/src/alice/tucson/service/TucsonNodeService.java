@@ -107,21 +107,29 @@ public class TucsonNodeService {
      */
     public static boolean isInstalled(final String netid, final int port,
             final int timeout) throws IOException {
-        final Socket test = new Socket(netid, port);
-        test.setSoTimeout(timeout);
-        final ObjectInputStream ois = new ObjectInputStream(
-                new BufferedInputStream(test.getInputStream()));
-        final ObjectOutputStream oos = new ObjectOutputStream(
-                new BufferedOutputStream(test.getOutputStream()));
-        oos.writeInt(AbstractTucsonProtocol.NODE_ACTIVE_QUERY);
-        oos.flush();
-        String reply;
+        Socket test = null;
+        String reply = "";
         try {
-            reply = ois.readUTF();
-        } catch (final java.net.SocketTimeoutException e) {
+            test = new Socket(netid, port);
+        } catch (final java.net.ConnectException e) {
             reply = "";
-        } finally {
-            test.close();
+        }
+        if (test != null) {
+            test.setReuseAddress(true);
+            test.setSoTimeout(timeout);
+            final ObjectInputStream ois = new ObjectInputStream(
+                    new BufferedInputStream(test.getInputStream()));
+            final ObjectOutputStream oos = new ObjectOutputStream(
+                    new BufferedOutputStream(test.getOutputStream()));
+            oos.writeInt(AbstractTucsonProtocol.NODE_ACTIVE_QUERY);
+            oos.flush();
+            try {
+                reply = ois.readUTF();
+            } catch (final java.net.SocketTimeoutException e) {
+                reply = "";
+            } finally {
+                test.close();
+            }
         }
         return reply.equals(TucsonMetaACC.getVersion());
     }
