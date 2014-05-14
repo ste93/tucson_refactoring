@@ -149,14 +149,12 @@ public class TucsonNodeService {
             final String configInfo = alice.util.Tools.getOpt(args, "-config");
             final String persistencyInfo = alice.util.Tools.getOpt(args,
                     "-persistency");
-            int portNumber;
+            int portNumber = TucsonNodeService.DEFAULT_TCP_PORT;
             if (portInfo != null) {
                 try {
                     portNumber = Integer.parseInt(portInfo);
-                    if (portNumber > 0
-                            || portNumber < TucsonNodeService.MAX_UNBOUND_PORT) {
-                        TPConfig.getInstance().setTcpPort(portNumber);
-                    } else {
+                    if (portNumber < 0
+                            || portNumber > TucsonNodeService.MAX_UNBOUND_PORT) {
                         System.err.println("Invalid port number");
                         System.exit(-1);
                     }
@@ -179,7 +177,6 @@ public class TucsonNodeService {
              * TODO CICORA: Only for compatibility, this code should be removed
              * TPConfigNodeSide is a singleton
              */
-            portNumber = TPConfig.getInstance().getNodeTcpPort();
             new TucsonNodeService(configInfo, portNumber, template).install();
         }
     }

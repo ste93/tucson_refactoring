@@ -41,7 +41,6 @@ import alice.logictuple.LogicTuple;
 import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
-import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.service.TucsonOpCompletionEvent;
 import alice.tuplecentre.api.exceptions.InvalidOperationException;
 import alice.tuplecentre.api.exceptions.InvalidTupleException;
@@ -378,10 +377,10 @@ public class BookSellerAgent extends Agent {
              * Then, start a TuCSoN Node (if not already up) as the actual
              * executor of the service
              */
-            if (!this.helper.isActive("localhost", 20504, 10000)) {
-                this.log("Booting local TuCSoN Node on default port...");
-                this.helper.startTucsonNode(20504);
-            }
+            // if (!this.helper.isActive("localhost", 20504, 10000)) {
+            // this.log("Booting local TuCSoN Node on default port...");
+            // this.helper.startTucsonNode(20504);
+            // }
             /*
              * Obtain ACC (which is actually given to the bridge, not directly
              * to your agent)
@@ -427,9 +426,9 @@ public class BookSellerAgent extends Agent {
             // should not happen
             e.printStackTrace();
             this.doDelete();
-        } catch (final TucsonOperationNotPossibleException e) {
-            this.log(">>> TuCSoN Node cannot be installed, check if given port is already in use <<<");
-            this.doDelete();
+            // } catch (final TucsonOperationNotPossibleException e) {
+            // this.log(">>> TuCSoN Node cannot be installed, check if given port is already in use <<<");
+            // this.doDelete();
         }
         /*
          * Add the behaviour serving CFPs from buyer agents.
@@ -459,9 +458,9 @@ public class BookSellerAgent extends Agent {
             this.log(">>> No TuCSoN service active, reboot JADE with -services it.unibo.sd.jade.service.TucsonService option <<<");
             this.doDelete();
         }
-        if (this.helper.isActive("localhost", 20504, 10000)) {
-            this.log("Stopping local TuCSoN Node on default port...");
-            this.helper.stopTucsonNode(20504);
-        }
+        // if (this.helper.isActive("localhost", 20504, 10000)) {
+        // this.log("Stopping local TuCSoN Node on default port...");
+        // this.helper.stopTucsonNode(20504);
+        // }
     }
 }
