@@ -120,4 +120,34 @@ public class ManagementContext implements IManagementContext {
     public void stopCommand() throws OperationNotPossibleException {
         this.vm.stopCommand();
     }
+
+    /*
+     * (non-Javadoc)
+     * @see
+     * alice.respect.api.IManagementContext#enablePersistence(alice.tucson.api
+     * .TucsonTupleCentreId)
+     */
+    public void enablePersistence(final String path, final String fileName) {
+        this.vm.enablePersistence(path, fileName);
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see
+     * alice.respect.api.IManagementContext#disablePersistence(alice.tucson.
+     * api.TucsonTupleCentreId)
+     */
+    public void disablePersistence(final String path, final String fileName) {
+        this.vm.disablePersistence(path, fileName);
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see
+     * alice.respect.api.IManagementContext#recoveryPersistent(alice.tucson.
+     * api.TucsonTupleCentreId)
+     */
+    public void recoveryPersistent(final String path, final String fileName) {
+        this.vm.recoveryPersistent(path, fileName);
+    }
 }

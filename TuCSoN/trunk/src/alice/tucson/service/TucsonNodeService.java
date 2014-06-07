@@ -387,8 +387,10 @@ public class TucsonNodeService {
      */
     public synchronized void disablePersistence(final String tc) {
         final TucsonTCUsers tar = this.cores.get(tc);
-        TupleCentreContainer.disablePersistence();
         try {
+            TupleCentreContainer.disablePersistence(
+                    new TucsonTupleCentreId(tc),
+                    TucsonNodeService.PERSISTENCY_PATH);
             TupleCentreContainer.doBlockingOperation(TucsonOperation.inCode(),
                     this.nodeAid, tar.getTucsonTupleCentreId(), new LogicTuple(
                             "is_persistent", new Value(tar
@@ -396,6 +398,8 @@ public class TucsonNodeService {
         } catch (final TucsonOperationNotPossibleException e) {
             e.printStackTrace();
         } catch (final TucsonInvalidLogicTupleException e) {
+            e.printStackTrace();
+        } catch (TucsonInvalidTupleCentreIdException e) {
             e.printStackTrace();
         }
     }
@@ -412,16 +416,22 @@ public class TucsonNodeService {
             while (it.hasNext()) {
                 final TucsonTCUsers tc = it.next();
                 try {
-                    final Tuple tid = LogicTuple.parse(tc
-                            .getTucsonTupleCentreId().getName());
+                    final TucsonTupleCentreId ttcid = tc
+                            .getTucsonTupleCentreId();
+                    final Tuple tid = LogicTuple.parse(ttcid.getName());
+                    log(">>> Found tid: " + tid);
                     if (LogicMatchingEngine.match((LogicTuple) template,
                             (LogicTuple) tid)) {
-                        TupleCentreContainer.disablePersistence();
+                        log(">>> It matches: disabling persistency...");
+                        TupleCentreContainer.disablePersistence(ttcid,
+                                TucsonNodeService.PERSISTENCY_PATH);
                         TupleCentreContainer.doBlockingOperation(
-                                TucsonOperation.inCode(), this.nodeAid, tc
-                                        .getTucsonTupleCentreId(),
-                                new LogicTuple("is_persistent", new Value(tc
-                                        .getTucsonTupleCentreId().getName())));
+                                TucsonOperation.inCode(),
+                                this.nodeAid,
+                                ttcid,
+                                new LogicTuple("is_persistent", new Value(ttcid
+                                        .getName())));
+                        log(">>> persistency disabled.");
                     }
                 } catch (final InvalidTupleException e) {
                     e.printStackTrace();
@@ -447,8 +457,9 @@ public class TucsonNodeService {
      */
     public synchronized void enablePersistence(final String tc) {
         final TucsonTCUsers tar = this.cores.get(tc);
-        TupleCentreContainer.enablePersistence();
         try {
+            TupleCentreContainer.enablePersistence(new TucsonTupleCentreId(tc),
+                    TucsonNodeService.PERSISTENCY_PATH);
             TupleCentreContainer.doBlockingOperation(TucsonOperation.outCode(),
                     this.nodeAid, tar.getTucsonTupleCentreId(), new LogicTuple(
                             "is_persistent", new Value(tar
@@ -456,6 +467,8 @@ public class TucsonNodeService {
         } catch (final TucsonOperationNotPossibleException e) {
             e.printStackTrace();
         } catch (final TucsonInvalidLogicTupleException e) {
+            e.printStackTrace();
+        } catch (TucsonInvalidTupleCentreIdException e) {
             e.printStackTrace();
         }
     }
@@ -472,16 +485,18 @@ public class TucsonNodeService {
         while (it.hasNext()) {
             final TucsonTCUsers tc = it.next();
             try {
-                final Tuple tid = LogicTuple.parse(tc.getTucsonTupleCentreId()
-                        .getName());
+                final TucsonTupleCentreId ttcid = tc.getTucsonTupleCentreId();
+                final Tuple tid = LogicTuple.parse(ttcid.getName());
+                log(">>> Found tid: " + tid);
                 if (LogicMatchingEngine.match((LogicTuple) template,
                         (LogicTuple) tid)) {
-                    TupleCentreContainer.enablePersistence();
+                    log(">>> It matches: enabling persistency...");
+                    TupleCentreContainer.enablePersistence(ttcid,
+                            TucsonNodeService.PERSISTENCY_PATH);
                     TupleCentreContainer.doBlockingOperation(TucsonOperation
-                            .outCode(), this.nodeAid, tc
-                            .getTucsonTupleCentreId(), new LogicTuple(
-                            "is_persistent", new Value(tc
-                                    .getTucsonTupleCentreId().getName())));
+                            .outCode(), this.nodeAid, ttcid, new LogicTuple(
+                            "is_persistent", new Value(ttcid.getName())));
+                    log(">>> persistency enabled.");
                 }
             } catch (final InvalidTupleException e) {
                 e.printStackTrace();
@@ -738,8 +753,13 @@ public class TucsonNodeService {
                     } catch (final TucsonInvalidTupleCentreIdException e) {
                         e.printStackTrace();
                     }
-                    TupleCentreContainer.loadPersistentInformation();
-                    TupleCentreContainer.enablePersistence();
+                    log(">>> Recovering persistent tc < " + tcName + " >...");
+                    TupleCentreContainer.recoveryPersistent(
+                            this.cores.get(tcName).getTucsonTupleCentreId(),
+                            TucsonNodeService.PERSISTENCY_PATH);
+                    TupleCentreContainer.enablePersistence(
+                            this.cores.get(tcName).getTucsonTupleCentreId(),
+                            TucsonNodeService.PERSISTENCY_PATH);
                     try {
                         TupleCentreContainer
                                 .doBlockingOperation(TucsonOperation.outCode(),
@@ -747,6 +767,8 @@ public class TucsonNodeService {
                                                 .getTucsonTupleCentreId(),
                                         new LogicTuple("is_persistent",
                                                 new Value(tcName)));
+                        log(">>> ...persistent tc < " + tcName
+                                + " > recovered.");
                     } catch (final TucsonOperationNotPossibleException e) {
                         e.printStackTrace();
                     } catch (final TucsonInvalidLogicTupleException e) {

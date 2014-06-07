@@ -84,12 +84,18 @@ public final class TupleCentreContainer {
     }
 
     /**
+     * @param ttcid
+     *            the id of the tuple centre to make persistent
+     * @param persistencyPath
+     *            the path where to store persistency information
      * 
      */
-    public static synchronized void disablePersistence() {
-        /*
-         * 
-         */
+    public static synchronized void disablePersistence(
+            final TucsonTupleCentreId ttcid, final String persistencyPath) {
+        IManagementContext context = null;
+        context = RespectTCContainer.getRespectTCContainer()
+                .getManagementContext(ttcid.getInternalTupleCentreId());
+        context.disablePersistence(persistencyPath, ttcid.getName());
     }
 
     /**
@@ -929,22 +935,33 @@ public final class TupleCentreContainer {
     }
 
     /**
+     * @param ttcid
+     *            the id of the tuple centre to make persistent
+     * @param persistencyPath
+     *            the path where to store persistency information
      * 
      */
-    // why are these methods not implemented yet?
-    public static synchronized void enablePersistence() {
-        /*
-         * 
-         */
+    public static synchronized void enablePersistence(
+            final TucsonTupleCentreId ttcid, final String persistencyPath) {
+        IManagementContext context = null;
+        context = RespectTCContainer.getRespectTCContainer()
+                .getManagementContext(ttcid.getInternalTupleCentreId());
+        context.enablePersistence(persistencyPath, ttcid.getName());
     }
 
     /**
+     * @param ttcid
+     *            the id of the tuple centre to make persistent
+     * @param persistencyPath
+     *            the path where to store persistency information
      * 
      */
-    public static void loadPersistentInformation() {
-        /*
-         * 
-         */
+    public static void recoveryPersistent(final TucsonTupleCentreId ttcid,
+            final String persistencyPath) {
+        IManagementContext context = null;
+        context = RespectTCContainer.getRespectTCContainer()
+                .getManagementContext(ttcid.getInternalTupleCentreId());
+        context.recoveryPersistent(persistencyPath, ttcid.getName());
     }
 
     private TupleCentreContainer() {

@@ -26,6 +26,12 @@ import alice.tuplecentre.api.ObservableEventListener;
  * @author Alessandro Ricci
  */
 public interface IManagementContext {
+    void enablePersistence(String path, String fileName);
+
+    void disablePersistence(String path, String fileName);
+
+    void recoveryPersistent(String path, String fileName);
+
     /**
      * Abort a previously executed in or rd operation
      * 

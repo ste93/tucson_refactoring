@@ -471,4 +471,38 @@ public class RespectVM implements Runnable {
             throw new OperationNotPossibleException();
         }
     }
+
+    /**
+     * @param path
+     *            the path where to store persistency information
+     * @param fileName
+     *            the name of the file to create for storing persistency
+     *            information
+     * 
+     */
+    public void enablePersistence(final String path, final String fileName) {
+        this.context.enablePersistence(path, fileName);
+    }
+
+    /**
+     * @param path
+     *            the path where persistency information is stored
+     * @param fileName
+     *            the name of the file where persistency information is stored
+     * 
+     */
+    public void disablePersistence(final String path, final String fileName) {
+        this.context.disablePersistence(path, fileName);
+    }
+
+    /**
+     * @param path
+     *            the path where persistency information is stored
+     * @param fileName
+     *            the name of the file where persistency information is stored
+     * 
+     */
+    public void recoveryPersistent(final String path, final String fileName) {
+        this.context.recoveryPersistent(path, fileName);
+    }
 }

@@ -13,8 +13,11 @@
 package alice.respect.core;
 
 import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -186,6 +189,7 @@ public class RespectVMContext extends
     private final PendingQuerySet wSet;
     /** multiset of triggered reactions Z */
     private final TRSet zSet;
+    private boolean isPersistent;
 
     /**
      * 
@@ -238,6 +242,7 @@ public class RespectVMContext extends
         this.reactionSpec = new RespectSpecification("");
         this.reset();
         this.isExternalSetSpec = false;
+        this.isPersistent = false;
     }
 
     @Override
@@ -1723,5 +1728,75 @@ public class RespectVMContext extends
                     + ex.pos + " <!>");
             return false;
         }
+    }
+
+    /**
+     * @param path
+     *            the path where to store persistency information
+     * @param fileName
+     *            the name of the file to create for storing persistency
+     *            information
+     * 
+     */
+    public void enablePersistence(String path, String fileName) {
+        final File f = new File(path, "tc_" + fileName + ".dat");
+        PrintWriter pw = null;
+        try {
+            pw = new PrintWriter(new FileWriter(f, true), true);
+            pw.printf("<snapshot tc=%s time=%c>%n", fileName,
+                    System.currentTimeMillis());
+            pw.printf("\t<tuples>%n");
+            Iterator<LogicTuple> it = this.tSet.getIterator();
+            while (it.hasNext()) {
+                pw.println("\t\t" + it.next().toString());
+            }
+            pw.printf("\t</tuples>%n");
+            pw.printf("\t<specTuples>%n");
+            Iterator<LogicTuple> itS = this.tSpecSet.getIterator();
+            while (itS.hasNext()) {
+                pw.println("\t\t" + itS.next().toString());
+            }
+            pw.printf("\t</specTuples>%n");
+            pw.printf("\t<predicates>%n");
+            Iterator<LogicTuple> itP = this.prologPredicates.getIterator();
+            while (itP.hasNext()) {
+                pw.println("\t\t" + itP.next().toString());
+            }
+            pw.printf("\t</predicates>%n");
+            pw.printf("</snapshot tc=%s time=%c>%n", fileName,
+                    System.currentTimeMillis());
+            pw.printf("\t<updates>%n");
+            pw.flush();
+            pw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (pw != null) {
+                pw.close();
+            }
+        }
+        this.isPersistent = true;
+    }
+
+    /**
+     * @param path
+     *            the path where persistency information is stored
+     * @param fileName
+     *            the name of the file where persistency information is stored
+     * 
+     */
+    public void disablePersistence(String path, String fileName) {
+        // TODO Auto-generated method stub
+    }
+
+    /**
+     * @param path
+     *            the path where persistency information is stored
+     * @param fileName
+     *            the name of the file where persistency information is stored
+     * 
+     */
+    public void recoveryPersistent(String path, String fileName) {
+        // TODO Auto-generated method stub
     }
 }
