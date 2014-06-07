@@ -109,6 +109,17 @@ public class RespectVM implements Runnable {
     }
 
     /**
+     * @param path
+     *            the path where persistency information is stored
+     * @param fileName
+     *            the name of the file where persistency information is stored
+     * 
+     */
+    public void disablePersistency(final String path, final String fileName) {
+        this.context.disablePersistency(path, fileName);
+    }
+
+    /**
      * 
      * @param id
      *            the identifier of who is issuing the operation
@@ -125,6 +136,18 @@ public class RespectVM implements Runnable {
         } catch (final alice.tuplecentre.api.exceptions.OperationNotPossibleException e) {
             throw new OperationNotPossibleException();
         }
+    }
+
+    /**
+     * @param path
+     *            the path where to store persistency information
+     * @param fileName
+     *            the name of the file to create for storing persistency
+     *            information
+     * 
+     */
+    public void enablePersistency(final String path, final String fileName) {
+        this.context.enablePersistency(path, fileName);
     }
 
     /**
@@ -377,6 +400,17 @@ public class RespectVM implements Runnable {
     }
 
     /**
+     * @param path
+     *            the path where persistency information is stored
+     * @param fileName
+     *            the name of the file where persistency information is stored
+     * 
+     */
+    public void recoveryPersistent(final String path, final String fileName) {
+        this.context.recoveryPersistent(path, fileName);
+    }
+
+    /**
      * 
      * @param l
      *            the inspectable events listener to remove
@@ -470,39 +504,5 @@ public class RespectVM implements Runnable {
         } catch (final alice.tuplecentre.api.exceptions.OperationNotPossibleException e) {
             throw new OperationNotPossibleException();
         }
-    }
-
-    /**
-     * @param path
-     *            the path where to store persistency information
-     * @param fileName
-     *            the name of the file to create for storing persistency
-     *            information
-     * 
-     */
-    public void enablePersistence(final String path, final String fileName) {
-        this.context.enablePersistence(path, fileName);
-    }
-
-    /**
-     * @param path
-     *            the path where persistency information is stored
-     * @param fileName
-     *            the name of the file where persistency information is stored
-     * 
-     */
-    public void disablePersistence(final String path, final String fileName) {
-        this.context.disablePersistence(path, fileName);
-    }
-
-    /**
-     * @param path
-     *            the path where persistency information is stored
-     * @param fileName
-     *            the name of the file where persistency information is stored
-     * 
-     */
-    public void recoveryPersistent(final String path, final String fileName) {
-        this.context.recoveryPersistent(path, fileName);
     }
 }

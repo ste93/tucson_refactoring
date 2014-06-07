@@ -42,6 +42,28 @@ public class ManagementContext implements IManagementContext {
         this.vm.addObserver(l);
     }
 
+    /*
+     * (non-Javadoc)
+     * @see
+     * alice.respect.api.IManagementContext#disablePersistence(alice.tucson.
+     * api.TucsonTupleCentreId)
+     */
+    @Override
+    public void disablePersistency(final String path, final String fileName) {
+        this.vm.disablePersistency(path, fileName);
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see
+     * alice.respect.api.IManagementContext#enablePersistence(alice.tucson.api
+     * .TucsonTupleCentreId)
+     */
+    @Override
+    public void enablePersistency(final String path, final String fileName) {
+        this.vm.enablePersistency(path, fileName);
+    }
+
     @Override
     public RespectSpecification getSpec() {
         return (RespectSpecification) this.vm.getReactionSpec();
@@ -82,6 +104,17 @@ public class ManagementContext implements IManagementContext {
         this.vm.nextStepCommand();
     }
 
+    /*
+     * (non-Javadoc)
+     * @see
+     * alice.respect.api.IManagementContext#recoveryPersistent(alice.tucson.
+     * api.TucsonTupleCentreId)
+     */
+    @Override
+    public void recoveryPersistent(final String path, final String fileName) {
+        this.vm.recoveryPersistent(path, fileName);
+    }
+
     @Override
     public void removeInspector(final InspectableEventListener l) {
         this.vm.removeInspector(l);
@@ -119,35 +152,5 @@ public class ManagementContext implements IManagementContext {
     @Override
     public void stopCommand() throws OperationNotPossibleException {
         this.vm.stopCommand();
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see
-     * alice.respect.api.IManagementContext#enablePersistence(alice.tucson.api
-     * .TucsonTupleCentreId)
-     */
-    public void enablePersistence(final String path, final String fileName) {
-        this.vm.enablePersistence(path, fileName);
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see
-     * alice.respect.api.IManagementContext#disablePersistence(alice.tucson.
-     * api.TucsonTupleCentreId)
-     */
-    public void disablePersistence(final String path, final String fileName) {
-        this.vm.disablePersistence(path, fileName);
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see
-     * alice.respect.api.IManagementContext#recoveryPersistent(alice.tucson.
-     * api.TucsonTupleCentreId)
-     */
-    public void recoveryPersistent(final String path, final String fileName) {
-        this.vm.recoveryPersistent(path, fileName);
     }
 }

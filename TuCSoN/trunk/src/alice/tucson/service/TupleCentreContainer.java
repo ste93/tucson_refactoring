@@ -90,12 +90,12 @@ public final class TupleCentreContainer {
      *            the path where to store persistency information
      * 
      */
-    public static synchronized void disablePersistence(
+    public static synchronized void disablePersistency(
             final TucsonTupleCentreId ttcid, final String persistencyPath) {
         IManagementContext context = null;
         context = RespectTCContainer.getRespectTCContainer()
                 .getManagementContext(ttcid.getInternalTupleCentreId());
-        context.disablePersistence(persistencyPath, ttcid.getName());
+        context.disablePersistency(persistencyPath, ttcid.getName());
     }
 
     /**
@@ -941,12 +941,12 @@ public final class TupleCentreContainer {
      *            the path where to store persistency information
      * 
      */
-    public static synchronized void enablePersistence(
+    public static synchronized void enablePersistency(
             final TucsonTupleCentreId ttcid, final String persistencyPath) {
         IManagementContext context = null;
         context = RespectTCContainer.getRespectTCContainer()
                 .getManagementContext(ttcid.getInternalTupleCentreId());
-        context.enablePersistence(persistencyPath, ttcid.getName());
+        context.enablePersistency(persistencyPath, ttcid.getName());
     }
 
     /**

@@ -180,7 +180,7 @@ public class RespectTC implements IRespectTC {
      *         centre
      */
     public Thread getVMThread() {
-        // TODO close persistency updates?
+        this.vm.getRespectVMContext().closePersistencyUpdates();
         return this.vmThread;
     }
 
