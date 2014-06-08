@@ -342,7 +342,7 @@ public class RespectVMContext extends
         PrintWriter pw = null;
         try {
             pw = new PrintWriter(new FileWriter(f, true), true);
-            pw.printf("\t</updates time=%s>%n", ds);
+            pw.printf("</updates time=%s>%n", ds);
             pw.flush();
             pw.close();
         } catch (final IOException e) {
@@ -418,7 +418,7 @@ public class RespectVMContext extends
             d = new Date(now);
             date = sdf.format(d);
             pw.printf("</snapshot tc=%s time=%s>%n", fileName, date);
-            pw.printf("\t<updates time=%s>%n", date);
+            pw.printf("<updates time=%s>%n", date);
             pw.flush();
             pw.close();
         } catch (final IOException e) {
@@ -1782,16 +1782,16 @@ public class RespectVMContext extends
             pw = new PrintWriter(new FileWriter(f, true), true);
             switch (mode) {
                 case RespectVMContext.ADDITION:
-                    pw.println("\t\t(+) " + update);
+                    pw.println("\t(+) " + update);
                     break;
                 case RespectVMContext.DELETION:
-                    pw.println("\t\t(-) " + update);
+                    pw.println("\t(-) " + update);
                     break;
                 case RespectVMContext.EMPTY_SPEC:
-                    pw.println("\t\t(es)");
+                    pw.println("\t(es)");
                     break;
                 case RespectVMContext.EMPTY_TUPLES:
-                    pw.println("\t\t(et)");
+                    pw.println("\t(et)");
                     break;
                 default:
                     break;
