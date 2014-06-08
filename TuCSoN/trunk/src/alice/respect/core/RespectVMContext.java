@@ -382,6 +382,7 @@ public class RespectVMContext extends
      * 
      */
     public void enablePersistency(final String path, final String fileName) {
+        this.isPersistent = true;
         this.pPath = path;
         this.pFileName = fileName;
         long now = System.currentTimeMillis();
@@ -427,7 +428,6 @@ public class RespectVMContext extends
                 pw.close();
             }
         }
-        this.isPersistent = true;
     }
 
     @Override
@@ -1354,7 +1354,7 @@ public class RespectVMContext extends
     public Tuple removeMatchingTuple(final TupleTemplate t) {
         final Tuple tuple = this.tSet.getMatchingTuple((LogicTuple) t);
         if (this.isPersistent) {
-            this.writePersistencyUpdate((LogicTuple) t,
+            this.writePersistencyUpdate((LogicTuple) tuple,
                     RespectVMContext.DELETION);
         }
         return tuple;
