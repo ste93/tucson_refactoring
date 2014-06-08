@@ -424,14 +424,14 @@ public class TucsonNodeService {
                             (LogicTuple) tid)) {
                         TucsonNodeService
                                 .log(">>> It matches: disabling persistency...");
-                        TupleCentreContainer.disablePersistency(ttcid,
-                                TucsonNodeService.PERSISTENCY_PATH);
                         TupleCentreContainer.doBlockingOperation(
                                 TucsonOperation.inCode(),
                                 this.nodeAid,
                                 ttcid,
                                 new LogicTuple("is_persistent", new Value(ttcid
                                         .getName())));
+                        TupleCentreContainer.disablePersistency(ttcid,
+                                TucsonNodeService.PERSISTENCY_PATH);
                         TucsonNodeService.log(">>> persistency disabled.");
                     }
                 } catch (final InvalidTupleException e) {

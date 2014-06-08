@@ -47,7 +47,7 @@ public final class PersistencyTester {
             final EnhancedACC acc = TucsonMetaACC.getContext(aid);
             // spec addition
             String spec = Utils
-                    .fileToString("tucson/persistency/aggregation.rsp");
+                    .fileToString("alice/tucson/examples/persistency/aggregation.rsp");
             acc.setS(ttcid, spec, Long.MAX_VALUE);
             // tuples addition
             int i = 0;
@@ -60,7 +60,8 @@ public final class PersistencyTester {
                     "enable_persistency", new Value("default"))),
                     Long.MAX_VALUE);
             // spec addition
-            spec = Utils.fileToString("tucson/persistency/repulsion.rsp");
+            spec = Utils
+                    .fileToString("alice/tucson/examples/persistency/repulsion.rsp");
             acc.setS(ttcid, spec, Long.MAX_VALUE);
             // tuples addition
             for (; i < 2000; i++) {
@@ -78,6 +79,15 @@ public final class PersistencyTester {
                     LogicTuple
                             .parse("(rd_all(neighbour(_), NBRS),multiread(NBRS, repulse(INFO)))"),
                     Long.MAX_VALUE);
+            // disable persistency test
+            acc.out(ttcidOrg, new LogicTuple("cmd", new Value(
+                    "disable_persistency", new Value("default"))),
+                    Long.MAX_VALUE);
+            // tuples addition
+            for (; i < 2000; i++) {
+                acc.out(ttcid, new LogicTuple("ttt", new Value(i)),
+                        Long.MAX_VALUE);
+            }
             acc.exit();
             tns.shutdown();
         } catch (final TucsonInvalidTupleCentreIdException e) {
