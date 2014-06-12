@@ -13,7 +13,10 @@
 package alice.respect.core;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -88,6 +91,10 @@ import alice.tuprolog.Var;
  */
 public class RespectVMContext extends
         alice.tuplecentre.core.AbstractTupleCentreVMContext {
+    private enum ModType {
+        ADD_PRED, ADD_SPEC, ADD_TUPLE, DEL_PRED, DEL_SPEC, DEL_TUPLE, EMPTY_PRED, EMPTY_SPEC, EMPTY_TUPLES
+    }
+
     class CompletionListener implements OperationCompletionListener {
         private final OutputEvent oe;
 
@@ -110,11 +117,6 @@ public class RespectVMContext extends
             RespectVMContext.this.notifyInputEvent(res);
         }
     }
-
-    private static final int ADDITION = 1;
-    private static final int DELETION = 2;
-    private static final int EMPTY_SPEC = 4;
-    private static final int EMPTY_TUPLES = 3;
 
     /**
      * Static services that checks if a source text contains a valid ReSpecT
@@ -268,8 +270,7 @@ public class RespectVMContext extends
                 toAdd = new LogicTuple(tuple.getArg(0));
                 this.tSet.add(toAdd);
                 if (this.isPersistent) {
-                    this.writePersistencyUpdate(toAdd,
-                            RespectVMContext.ADDITION);
+                    this.writePersistencyUpdate(toAdd, ModType.ADD_TUPLE);
                 }
                 list.add(new LogicTuple(tuple.getArg(0)));
                 tuple = new LogicTuple(tuple.getArg(1));
@@ -302,8 +303,7 @@ public class RespectVMContext extends
         // FIXME LogicTuple > Tuple in all Cicora's API
         this.tSpecSet.add((LogicTuple) tuple);
         if (this.isPersistent) {
-            this.writePersistencyUpdate((LogicTuple) tuple,
-                    RespectVMContext.ADDITION);
+            this.writePersistencyUpdate((LogicTuple) tuple, ModType.ADD_SPEC);
         }
         this.setReactionSpecHelper(new alice.respect.api.RespectSpecification(
                 this.tSpecSet.toString()));
@@ -324,8 +324,7 @@ public class RespectVMContext extends
     public void addTuple(final Tuple t) {
         this.tSet.add((LogicTuple) t);
         if (this.isPersistent) {
-            this.writePersistencyUpdate((LogicTuple) t,
-                    RespectVMContext.ADDITION);
+            this.writePersistencyUpdate((LogicTuple) t, ModType.ADD_TUPLE);
         }
     }
 
@@ -361,7 +360,8 @@ public class RespectVMContext extends
      *            the name of the file where persistency information is stored
      * 
      */
-    public void disablePersistency(final String path, final String fileName) {
+    public void disablePersistency(final String path,
+            final TucsonTupleCentreId fileName) {
         this.isPersistent = false;
     }
 
@@ -369,7 +369,7 @@ public class RespectVMContext extends
     public void emptyTupleSet() {
         this.tSet.empty();
         if (this.isPersistent) {
-            this.writePersistencyUpdate(null, RespectVMContext.EMPTY_TUPLES);
+            this.writePersistencyUpdate(null, ModType.EMPTY_TUPLES);
         }
     }
 
@@ -381,17 +381,21 @@ public class RespectVMContext extends
      *            information
      * 
      */
-    public void enablePersistency(final String path, final String fileName) {
+    public void enablePersistency(final String path,
+            final TucsonTupleCentreId fileName) {
         this.isPersistent = true;
         this.pPath = path;
-        this.pFileName = fileName;
+        this.pFileName = fileName.getName() + "_at_" + fileName.getNode()
+                + "_at_" + fileName.getPort();
         long now = System.currentTimeMillis();
         Date d = new Date(now);
-        final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH.mm.ss");
         String date = sdf.format(d);
         this.pDate = date;
-        final File f = new File(path, "tc_" + fileName + "_" + date + ".dat");
+        final File f = new File(path, "tc_" + this.pFileName + "_" + date
+                + ".dat");
         PrintWriter pw = null;
+        this.log(">>> Taking persistency snapshot...");
         try {
             pw = new PrintWriter(new FileWriter(f, true), true);
             pw.printf("<snapshot tc=%s time=%s>%n", fileName, date);
@@ -421,6 +425,7 @@ public class RespectVMContext extends
             pw.printf("<updates time=%s>%n", date);
             pw.flush();
             pw.close();
+            this.log(">>> ...persistency snapshot taken!");
         } catch (final IOException e) {
             e.printStackTrace();
         } finally {
@@ -1236,7 +1241,7 @@ public class RespectVMContext extends
         while (tuple != null) {
             if (this.isPersistent) {
                 this.writePersistencyUpdate((LogicTuple) tuple,
-                        RespectVMContext.DELETION);
+                        ModType.DEL_TUPLE);
             }
             t2 = t;
             tl.add(tuple);
@@ -1328,12 +1333,155 @@ public class RespectVMContext extends
     /**
      * @param path
      *            the path where persistency information is stored
-     * @param fileName
+     * @param file
      *            the name of the file where persistency information is stored
+     * @param tcName
+     *            the name of the tuple centre to be recovered
      * 
      */
-    public void recoveryPersistent(final String path, final String fileName) {
-        // TODO Auto-generated method stub
+    public void recoveryPersistent(final String path, final String file,
+            final TucsonTupleCentreId tcName) {
+        BufferedReader br = null;
+        try {
+            final File f = new File(path.concat(file));
+            br = new BufferedReader(new FileReader(f));
+            String line = br.readLine();
+            List<String> tuples = null;
+            List<String> specs = null;
+            List<String> predicates = null;
+            List<String> updates = null;
+            // read snapshot
+            if (line != null && line.startsWith("<snapshot")) {
+                this.log(">>> Snapshot begins!");
+                line = br.readLine();
+                // read tuples
+                if (line != null && line.startsWith("\t<tuples>")) {
+                    this.log(">>> Tuples begin!");
+                    tuples = new LinkedList<String>();
+                    line = br.readLine();
+                    while (line != null && !line.startsWith("\t</tuples>")) {
+                        tuples.add(line.trim());
+                        line = br.readLine();
+                    }
+                    this.log(">>> Tuples end!");
+                    line = br.readLine(); // skip "\t</tuples>" line
+                }
+                // read specs
+                if (line != null && line.startsWith("\t<specTuples>")) {
+                    this.log(">>> Specs begin!");
+                    specs = new LinkedList<String>();
+                    line = br.readLine();
+                    while (line != null && !line.startsWith("\t</specTuples>")) {
+                        specs.add(line.trim());
+                        line = br.readLine();
+                    }
+                    this.log(">>> Specs end!");
+                    line = br.readLine(); // skip "\t</specTuples>" line
+                }
+                // read predicates
+                if (line != null && line.startsWith("\t<predicates>")) {
+                    this.log(">>> Predicates begin!");
+                    predicates = new LinkedList<String>();
+                    line = br.readLine();
+                    while (line != null && !line.startsWith("\t</predicates>")) {
+                        predicates.add(line.trim());
+                        line = br.readLine();
+                    }
+                    this.log(">>> Predicates end!");
+                    line = br.readLine(); // skip "\t</predicates>" line
+                }
+                this.log(">>> Snapshot end!");
+                line = br.readLine(); // skip "</snapshot ...>" line
+                // read updates
+                if (line != null && line.startsWith("<updates")) {
+                    this.log(">>> Updates begin!");
+                    updates = new LinkedList<String>();
+                    line = br.readLine();
+                    while (line != null && !line.startsWith("</updates")) {
+                        updates.add(line.trim());
+                        line = br.readLine();
+                    }
+                    this.log(">>> Updates end!");
+                }
+            }
+            br.close();
+            // recover tuples
+            if (tuples != null && !tuples.isEmpty()) {
+                this.log(">>> Recovering tuples...");
+                for (final String t : tuples) {
+                    this.addTuple(LogicTuple.parse(t));
+                }
+                this.log(">>> ...tuples recovered!");
+            }
+            // recover specs
+            if (specs != null && !specs.isEmpty()) {
+                this.log(">>> Recovering specs...");
+                for (final String s : specs) {
+                    this.addSpecTuple(LogicTuple.parse(s));
+                }
+                this.log(">>> ...specs recovered!");
+            }
+            // recover predicates
+            if (predicates != null && !predicates.isEmpty()) {
+                this.log(">>> Recovering predicates...");
+                for (final String p : predicates) {
+                    this.prologPredicates.add(LogicTuple.parse(p));
+                }
+                this.log(">>> ...predicates recovered!");
+            }
+            // recover updates
+            if (updates != null && !updates.isEmpty()) {
+                this.log(">>> Recovering updates...");
+                String[] split = null;
+                for (final String p : updates) {
+                    split = p.trim().split(" ");
+                    // this.log("split[0] = " + split[0]);
+                    // if (split.length == 2) {
+                    // this.log("split[1] = " + split[1]);
+                    // }
+                    if ("(+t)".equals(split[0])) {
+                        this.addTuple(LogicTuple.parse(split[1]));
+                    } else if ("(-t)".equals(split[0])) {
+                        this.removeMatchingTuple(LogicTuple.parse(split[1]));
+                    } else if ("(+s)".equals(split[0])) {
+                        this.addSpecTuple(LogicTuple.parse(split[1]));
+                    } else if ("(-s)".equals(split[0])) {
+                        this.removeMatchingSpecTuple(LogicTuple.parse(split[1]));
+                    } else if ("(+p)".equals(split[0])) {
+                        this.prologPredicates.add(LogicTuple.parse(split[1]));
+                    } else if ("(-p)".equals(split[0])) {
+                        this.prologPredicates.getMatchingTuple(LogicTuple
+                                .parse(split[1]));
+                    } else if ("(et)".equals(split[0])) {
+                        this.emptyTupleSet();
+                    } else if ("(ep)".equals(split[0])) {
+                        this.prologPredicates.empty();
+                    } else if ("(es)".equals(split[0])) {
+                        this.removeReactionSpec();
+                    }
+                }
+                this.log(">>> ...updates recovered!");
+            }
+            br.close();
+            if (!f.delete()) {
+                this.log(">>> Old persistency file could NOT be deleted!");
+            }
+            this.enablePersistency(path, tcName);
+        } catch (final FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (final IOException e) {
+            e.printStackTrace();
+        } catch (final InvalidTupleException e) {
+            e.printStackTrace();
+        } finally {
+            if (br != null) {
+                try {
+                    br.close();
+                } catch (final IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     @Override
@@ -1342,7 +1490,7 @@ public class RespectVMContext extends
         if (tuple != null) {
             if (this.isPersistent) {
                 this.writePersistencyUpdate((LogicTuple) tuple,
-                        RespectVMContext.DELETION);
+                        ModType.DEL_SPEC);
             }
             this.setReactionSpecHelper(new alice.respect.api.RespectSpecification(
                     this.tSpecSet.toString()));
@@ -1354,8 +1502,7 @@ public class RespectVMContext extends
     public Tuple removeMatchingTuple(final TupleTemplate t) {
         final Tuple tuple = this.tSet.getMatchingTuple((LogicTuple) t);
         if (this.isPersistent) {
-            this.writePersistencyUpdate((LogicTuple) tuple,
-                    RespectVMContext.DELETION);
+            this.writePersistencyUpdate((LogicTuple) tuple, ModType.DEL_TUPLE);
         }
         return tuple;
     }
@@ -1391,7 +1538,8 @@ public class RespectVMContext extends
         this.trigCore.clearTheory();
         this.tSpecSet.empty();
         if (this.isPersistent) {
-            this.writePersistencyUpdate(null, RespectVMContext.EMPTY_SPEC);
+            this.writePersistencyUpdate(null, ModType.EMPTY_SPEC);
+            this.writePersistencyUpdate(null, ModType.EMPTY_PRED);
         }
     }
 
@@ -1423,7 +1571,7 @@ public class RespectVMContext extends
         this.tSet.getMatchingTuple((LogicTuple) toRemove);
         if (this.isPersistent) {
             this.writePersistencyUpdate((LogicTuple) toRemove,
-                    RespectVMContext.DELETION);
+                    ModType.DEL_TUPLE);
         }
         return toRemove;
     }
@@ -1444,13 +1592,13 @@ public class RespectVMContext extends
     public void setAllSpecTuples(final List<Tuple> tupleList) {
         this.tSpecSet.empty();
         if (this.isPersistent) {
-            this.writePersistencyUpdate(null, RespectVMContext.EMPTY_SPEC);
+            this.writePersistencyUpdate(null, ModType.EMPTY_SPEC);
+            this.writePersistencyUpdate(null, ModType.EMPTY_PRED);
         }
         for (final Tuple t : tupleList) {
             this.addSpecTuple(t);
             if (this.isPersistent) {
-                this.writePersistencyUpdate((LogicTuple) t,
-                        RespectVMContext.ADDITION);
+                this.writePersistencyUpdate((LogicTuple) t, ModType.ADD_SPEC);
             }
         }
     }
@@ -1459,13 +1607,12 @@ public class RespectVMContext extends
     public void setAllTuples(final List<Tuple> tupleList) {
         this.tSet.empty();
         if (this.isPersistent) {
-            this.writePersistencyUpdate(null, RespectVMContext.EMPTY_TUPLES);
+            this.writePersistencyUpdate(null, ModType.EMPTY_TUPLES);
         }
         for (final Tuple t : tupleList) {
             this.addTuple(t);
             if (this.isPersistent) {
-                this.writePersistencyUpdate((LogicTuple) t,
-                        RespectVMContext.ADDITION);
+                this.writePersistencyUpdate((LogicTuple) t, ModType.ADD_TUPLE);
             }
         }
     }
@@ -1475,6 +1622,9 @@ public class RespectVMContext extends
         this.isExternalSetSpec = true;
         this.noReactionTh = null;
         this.prologPredicates = new TupleSet();
+        if (this.isPersistent) {
+            this.writePersistencyUpdate(null, ModType.EMPTY_PRED);
+        }
         final Prolog engine = new Prolog();
         try {
             engine.solve("retractall(reaction(X,Y,Z)).");
@@ -1489,8 +1639,7 @@ public class RespectVMContext extends
                     pp = new LogicTuple(term);
                     this.prologPredicates.add(pp);
                     if (this.isPersistent) {
-                        this.writePersistencyUpdate(pp,
-                                RespectVMContext.ADDITION);
+                        this.writePersistencyUpdate(pp, ModType.ADD_PRED);
                     }
                 }
                 term = parser.nextTerm(true);
@@ -1513,7 +1662,7 @@ public class RespectVMContext extends
         if (result) {
             this.tSpecSet.empty();
             if (this.isPersistent) {
-                this.writePersistencyUpdate(null, RespectVMContext.EMPTY_SPEC);
+                this.writePersistencyUpdate(null, ModType.EMPTY_SPEC);
             }
             try {
                 alice.tuprolog.SolveInfo info = this.core
@@ -1524,8 +1673,7 @@ public class RespectVMContext extends
                     st = new LogicTuple(solution);
                     this.tSpecSet.add(st);
                     if (this.isPersistent) {
-                        this.writePersistencyUpdate(st,
-                                RespectVMContext.ADDITION);
+                        this.writePersistencyUpdate(st, ModType.ADD_SPEC);
                     }
                     info = this.core.solveNext();
                 }
@@ -1774,24 +1922,40 @@ public class RespectVMContext extends
      * @param toAdd
      * @param addition2
      */
-    private void writePersistencyUpdate(final LogicTuple update, final int mode) {
+    private void writePersistencyUpdate(final LogicTuple update,
+            final ModType mode) {
         final File f = new File(this.pPath, "tc_" + this.pFileName + "_"
                 + this.pDate + ".dat");
         PrintWriter pw = null;
         try {
             pw = new PrintWriter(new FileWriter(f, true), true);
             switch (mode) {
-                case RespectVMContext.ADDITION:
-                    pw.println("\t(+) " + update);
+                case ADD_TUPLE:
+                    pw.println("\t(+t) " + update);
                     break;
-                case RespectVMContext.DELETION:
-                    pw.println("\t(-) " + update);
+                case ADD_SPEC:
+                    pw.println("\t(+s) " + update);
                     break;
-                case RespectVMContext.EMPTY_SPEC:
+                case ADD_PRED:
+                    pw.println("\t(+p) " + update);
+                    break;
+                case DEL_TUPLE:
+                    pw.println("\t(-t) " + update);
+                    break;
+                case DEL_SPEC:
+                    pw.println("\t(-s) " + update);
+                    break;
+                case DEL_PRED:
+                    pw.println("\t(-p) " + update);
+                    break;
+                case EMPTY_TUPLES:
+                    pw.println("\t(et)");
+                    break;
+                case EMPTY_SPEC:
                     pw.println("\t(es)");
                     break;
-                case RespectVMContext.EMPTY_TUPLES:
-                    pw.println("\t(et)");
+                case EMPTY_PRED:
+                    pw.println("\t(ep)");
                     break;
                 default:
                     break;

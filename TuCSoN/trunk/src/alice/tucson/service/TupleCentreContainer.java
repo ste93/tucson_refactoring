@@ -95,7 +95,7 @@ public final class TupleCentreContainer {
         IManagementContext context = null;
         context = RespectTCContainer.getRespectTCContainer()
                 .getManagementContext(ttcid.getInternalTupleCentreId());
-        context.disablePersistency(persistencyPath, ttcid.getName());
+        context.disablePersistency(persistencyPath, ttcid);
     }
 
     /**
@@ -946,7 +946,7 @@ public final class TupleCentreContainer {
         IManagementContext context = null;
         context = RespectTCContainer.getRespectTCContainer()
                 .getManagementContext(ttcid.getInternalTupleCentreId());
-        context.enablePersistency(persistencyPath, ttcid.getName());
+        context.enablePersistency(persistencyPath, ttcid);
     }
 
     /**
@@ -954,14 +954,16 @@ public final class TupleCentreContainer {
      *            the id of the tuple centre to make persistent
      * @param persistencyPath
      *            the path where to store persistency information
+     * @param file
+     *            the name of the file to recover
      * 
      */
     public static void recoveryPersistent(final TucsonTupleCentreId ttcid,
-            final String persistencyPath) {
+            final String persistencyPath, final String file) {
         IManagementContext context = null;
         context = RespectTCContainer.getRespectTCContainer()
                 .getManagementContext(ttcid.getInternalTupleCentreId());
-        context.recoveryPersistent(persistencyPath, ttcid.getName());
+        context.recoveryPersistent(persistencyPath, file, ttcid);
     }
 
     private TupleCentreContainer() {

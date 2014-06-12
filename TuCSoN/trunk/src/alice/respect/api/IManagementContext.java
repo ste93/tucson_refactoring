@@ -16,6 +16,7 @@ import java.util.List;
 import alice.logictuple.LogicTuple;
 import alice.respect.api.exceptions.InvalidSpecificationException;
 import alice.respect.api.exceptions.OperationNotPossibleException;
+import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.introspection.WSetEvent;
 import alice.tuplecentre.api.InspectableEventListener;
 import alice.tuplecentre.api.ObservableEventListener;
@@ -51,9 +52,9 @@ public interface IManagementContext {
      */
     void addObserver(ObservableEventListener l);
 
-    void disablePersistency(String path, String fileName);
+    void disablePersistency(String path, TucsonTupleCentreId ttcid);
 
-    void enablePersistency(String path, String fileName);
+    void enablePersistency(String path, TucsonTupleCentreId ttcid);
 
     /**
      * Get current behaviour specification
@@ -121,7 +122,7 @@ public interface IManagementContext {
      */
     void nextStepCommand() throws OperationNotPossibleException;
 
-    void recoveryPersistent(String path, String fileName);
+    void recoveryPersistent(String path, String file, TucsonTupleCentreId ttcid);
 
     /**
      * 

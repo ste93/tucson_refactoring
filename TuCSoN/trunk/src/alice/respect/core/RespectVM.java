@@ -19,6 +19,7 @@ import alice.logictuple.LogicTuple;
 import alice.respect.api.IRespectTC;
 import alice.respect.api.TupleCentreId;
 import alice.respect.api.exceptions.OperationNotPossibleException;
+import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.introspection.WSetEvent;
 import alice.tuplecentre.api.IId;
 import alice.tuplecentre.api.InspectableEventListener;
@@ -115,7 +116,8 @@ public class RespectVM implements Runnable {
      *            the name of the file where persistency information is stored
      * 
      */
-    public void disablePersistency(final String path, final String fileName) {
+    public void disablePersistency(final String path,
+            final TucsonTupleCentreId fileName) {
         this.context.disablePersistency(path, fileName);
     }
 
@@ -146,7 +148,8 @@ public class RespectVM implements Runnable {
      *            information
      * 
      */
-    public void enablePersistency(final String path, final String fileName) {
+    public void enablePersistency(final String path,
+            final TucsonTupleCentreId fileName) {
         this.context.enablePersistency(path, fileName);
     }
 
@@ -402,12 +405,15 @@ public class RespectVM implements Runnable {
     /**
      * @param path
      *            the path where persistency information is stored
-     * @param fileName
+     * @param file
      *            the name of the file where persistency information is stored
+     * @param tcName
+     *            the name of the tuple centre to be recovered
      * 
      */
-    public void recoveryPersistent(final String path, final String fileName) {
-        this.context.recoveryPersistent(path, fileName);
+    public void recoveryPersistent(final String path, final String file,
+            final TucsonTupleCentreId tcName) {
+        this.context.recoveryPersistent(path, file, tcName);
     }
 
     /**

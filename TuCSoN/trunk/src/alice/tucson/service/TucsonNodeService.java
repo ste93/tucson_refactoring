@@ -29,6 +29,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.StringTokenizer;
 import alice.logictuple.LogicMatchingEngine;
 import alice.logictuple.LogicTuple;
 import alice.logictuple.TupleArgument;
@@ -46,6 +47,7 @@ import alice.tucson.api.exceptions.TucsonInvalidLogicTupleException;
 import alice.tucson.api.exceptions.TucsonInvalidSpecificationException;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
+import alice.tucson.examples.utilities.Utils;
 import alice.tucson.network.AbstractTucsonProtocol;
 import alice.tucson.network.TPConfig;
 import alice.tuplecentre.api.Tuple;
@@ -83,7 +85,8 @@ public class TucsonNodeService {
     }
 
     public static boolean isInstalled(final int timeout) throws IOException {
-        return TucsonNodeService.isInstalled("localhost", 20504, timeout);
+        return TucsonNodeService.isInstalled("localhost",
+                TucsonNodeService.DEFAULT_TCP_PORT, timeout);
     }
 
     public static boolean isInstalled(final int port, final int timeout)
@@ -549,6 +552,19 @@ public class TucsonNodeService {
     public synchronized void install() {
         TucsonNodeService
                 .log("--------------------------------------------------------------------------------");
+        try {
+            final StringTokenizer st = new StringTokenizer(
+                    Utils.fileToString("alice/tucson/service/config/tucsonCLIlogo3.txt"),
+                    "\n");
+            while (st.hasMoreTokens()) {
+                TucsonNodeService.log(st.nextToken());
+            }
+        } catch (final IOException e) {
+            // should not happen
+            e.printStackTrace();
+        }
+        TucsonNodeService
+                .log("--------------------------------------------------------------------------------");
         TucsonNodeService.log("Welcome to the TuCSoN infrastructure :)");
         TucsonNodeService.log("  Version " + TucsonNodeService.getVersion());
         TucsonNodeService
@@ -749,29 +765,38 @@ public class TucsonNodeService {
             final String[] files = dir.list();
             for (final String file : files) {
                 if (file.startsWith("tc_") && file.endsWith(".dat")) {
-                    final String tcName = file.substring(3, file.length() - 4);
+                    final int start = file.indexOf("_");
+                    int end = file.lastIndexOf("_");
+                    String toParse = file.substring(start + 1, end);
+                    end = toParse.lastIndexOf("_");
+                    toParse = toParse.substring(0, end);
+                    final String[] split = toParse.split("_at_");
+                    final String tcName = split[0];
+                    final String fullTcName = split[0] + "@" + split[1] + ":"
+                            + split[2];
+                    TucsonNodeService.log(">>> Persistent tc found: "
+                            + fullTcName);
                     try {
                         this.bootTupleCentre(tcName);
                     } catch (final TucsonInvalidTupleCentreIdException e) {
                         e.printStackTrace();
                     }
                     TucsonNodeService.log(">>> Recovering persistent tc < "
-                            + tcName + " >...");
-                    TupleCentreContainer.recoveryPersistent(
-                            this.cores.get(tcName).getTucsonTupleCentreId(),
-                            TucsonNodeService.PERSISTENCY_PATH);
-                    TupleCentreContainer.enablePersistency(
-                            this.cores.get(tcName).getTucsonTupleCentreId(),
-                            TucsonNodeService.PERSISTENCY_PATH);
+                            + fullTcName + " >...");
+                    final TucsonTupleCentreId ttcid = this.cores.get(tcName)
+                            .getTucsonTupleCentreId();
+                    TupleCentreContainer.recoveryPersistent(ttcid,
+                            TucsonNodeService.PERSISTENCY_PATH, file);
+                    // TupleCentreContainer.enablePersistency(
+                    // this.cores.get(tcName).getTucsonTupleCentreId(),
+                    // TucsonNodeService.PERSISTENCY_PATH);
                     try {
-                        TupleCentreContainer
-                                .doBlockingOperation(TucsonOperation.outCode(),
-                                        this.nodeAid, this.cores.get(tcName)
-                                                .getTucsonTupleCentreId(),
-                                        new LogicTuple("is_persistent",
-                                                new Value(tcName)));
+                        TupleCentreContainer.doBlockingOperation(
+                                TucsonOperation.outCode(), this.nodeAid, ttcid,
+                                new LogicTuple("is_persistent", new Value(
+                                        tcName)));
                         TucsonNodeService.log(">>> ...persistent tc < "
-                                + tcName + " > recovered.");
+                                + fullTcName + " > recovered.");
                     } catch (final TucsonOperationNotPossibleException e) {
                         e.printStackTrace();
                     } catch (final TucsonInvalidLogicTupleException e) {
