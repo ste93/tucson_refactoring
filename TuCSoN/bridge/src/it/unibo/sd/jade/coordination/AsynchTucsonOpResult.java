@@ -8,7 +8,7 @@ import alice.tucson.service.TucsonOperation;
 /**
  * AsyncOpResultData: classe usata per rappresentare la struttura dati con la
  * quale controllare se il risultato dell'operazione di coordinazione in
- * modalità asincrona con tecnica di polling è stata completata o è pendente
+ * modalita' asincrona con tecnica di polling e' stata completata o e' pendente
  * 
  * @author lucasangiorgi
  * 
@@ -57,7 +57,7 @@ public class AsynchTucsonOpResult {
      * 
      * @param o
      *            id dell'operazione che si vuole cercare
-     * @return TucsonOpCompletionEvent se l'operazione è stata completata,
+     * @return TucsonOpCompletionEvent se l'operazione e' stata completata,
      *         altrimenti null
      */
     public TucsonOpCompletionEvent getTucsonCompletionEvent(final long o) {
@@ -86,12 +86,12 @@ public class AsynchTucsonOpResult {
     }
 
     /**
-     * controlla se l'operazione richiesta è ancora pendente o meno
+     * controlla se l'operazione richiesta e' ancora pendente o meno
      * 
      * @param o
      *            id dell'operazione che si vuole controllare
-     * @return true se è nella lista delle operazioni pendenti, false se non lo
-     *         è
+     * @return true se e' nella lista delle operazioni pendenti, false se non lo
+     *         e'
      */
     public boolean isPending(final long o) {
         synchronized (this.pendingOps) {

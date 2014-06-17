@@ -5,7 +5,7 @@ import alice.tucson.service.TucsonOpCompletionEvent;
 /**
  * Interfaccia utilizzata per poter "ignettare" nel comportamento che implementa
  * questa interfaccia il risultato dell'operazione di coordinazione sospensiva
- * in modalit� asincrona.
+ * in modalita' asincrona.
  * 
  * @author lucasangiorgi
  * 

@@ -13,14 +13,15 @@ import alice.tucson.service.TucsonOpCompletionEvent;
  */
 public class TucsonOpResult {
     // prossimo risultato da usare, utilizzato per restituire il risultato
-    // corretto o per sapere se quel risultato non è presente e quindì procedere
+    // corretto o per sapere se quel risultato non e' presente e quindi
+    // procedere
     // con l'operazione
     private int nextRes;
     /*
      * variabile utilizzata per sapere se i risultati sono stati ottenuti o ce
-     * ne sono ancora di pendenti (es se è si allora è nella fase in cui è stata
-     * chiamata l'asincrona ma il comportamento che è stato bloccato si
-     * risveglia perchè è stato ricevuto un messaggio dall'agente senza che
+     * ne sono ancora di pendenti (es se e' si allora e' nella fase in cui e'
+     * stata chiamata l'asincrona ma il comportamento che e' stato bloccato si
+     * risveglia perche' e' stato ricevuto un messaggio dall'agente senza che
      * l'operazione sia stata completata, questo permette di interrompere subito
      * l'operazione tornando null e rimettendo nella BlockQueue il comportamento
      */

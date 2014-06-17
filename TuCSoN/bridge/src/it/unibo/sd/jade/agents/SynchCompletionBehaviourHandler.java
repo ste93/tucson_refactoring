@@ -15,7 +15,7 @@ import alice.tuplecentre.core.AbstractTupleCentreOperation;
 
 /**
  * TucsonAgentAsync: agente TuCSoN che esegue operazioni di coordinazione in
- * modalità asincrona e gestisce il suo completamento riavviando il behaviour
+ * modalita' asincrona e gestisce il suo completamento riavviando il behaviour
  * JADE chiamante
  * 
  * @author lucasangiorgi
@@ -96,7 +96,7 @@ public class SynchCompletionBehaviourHandler extends AbstractTucsonAgent {
                     // struttura dedicata
                     this.ros.setReady(true); // segnalo che al behaviour JADE
                                              // che
-                                             // è pronto il risultato
+                                             // e' pronto il risultato
                                              // dell'operazione pendente
                 }
             }

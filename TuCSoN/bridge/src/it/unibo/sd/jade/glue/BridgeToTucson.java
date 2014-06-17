@@ -78,21 +78,21 @@ public class BridgeToTucson {
     }
 
     /**
-     * metodo asyncrono dove il programmatore controlla se il risultato è pronto
-     * a runtime (controllo a polling)
+     * metodo asyncrono dove il programmatore controlla se il risultato e'
+     * pronto a runtime (controllo a polling)
      * 
      * @param action
      *            the TuCSoN action to be carried out
-     * @return struttura che permette di controllare se il risultato è stato
-     *         ricevuto o è ancora pendente
+     * @return struttura che permette di controllare se il risultato e' stato
+     *         ricevuto o e' ancora pendente
      * @throws ServiceException
      *             if the service cannot be contacted
      */
     public AsynchTucsonOpResult asynchronousInvocation(
             final AbstractTucsonAction action) throws ServiceException {
         // Creo il comando verticale
-        // chiamata asincrona senza settare il listener perchè il controllo del
-        // completamento dell'operazione è a carico del programmatore tramite
+        // chiamata asincrona senza settare il listener perche' il controllo del
+        // completamento dell'operazione e' a carico del programmatore tramite
         // la struttura ritornata AsyncOpResultData
         final GenericCommand cmd = new GenericCommand(
                 TucsonSlice.EXECUTE_ASYNCH, TucsonService.NAME, null);
@@ -105,9 +105,9 @@ public class BridgeToTucson {
         final Object result = this.service.submit(cmd);
         if (result instanceof ITucsonOperation) {
             final ITucsonOperation op = (ITucsonOperation) result;
-            // si deve ritornare un oggetto che contiene la lista dove si andrà
+            // si deve ritornare un oggetto che contiene la lista dove si andra'
             // a
-            // controllare se l'operazione è completata, e l'id della op
+            // controllare se l'operazione e' completata, e l'id della op
             final AsynchTucsonOpResult asyncData = new AsynchTucsonOpResult(
                     op.getId(), this.acc.getCompletionEventsList(),
                     this.acc.getPendingOperationsMap());
@@ -118,8 +118,8 @@ public class BridgeToTucson {
 
     /**
      * metodo asyncrono dove il programmatore crea precedentemente il behaviour
-     * che verrà attivato nell'agente quando il risultato è pronto (controllo a
-     * interrupt)
+     * che verra' attivato nell'agente quando il risultato e' pronto (controllo
+     * a interrupt)
      * 
      * @param action
      *            the TuCSoN action to be carried out
@@ -149,12 +149,12 @@ public class BridgeToTucson {
     }
 
     /**
-     * metodo utilizzato per eliminare la struttura condivisa non più utilizzata
-     * (il metodo deve essere chiamato appena prima della terminazione del
-     * behaviour) o quando si vuole chiamare una stessa operazione in un
-     * cyclebehaviour perchè altrimenti questa operazione verrebbe eseguita una
-     * sola volta e restituirebbe sempre lo stesso risultato anche se la si
-     * richiama più volte
+     * metodo utilizzato per eliminare la struttura condivisa non piu'
+     * utilizzata (il metodo deve essere chiamato appena prima della
+     * terminazione del behaviour) o quando si vuole chiamare una stessa
+     * operazione in un cyclebehaviour perche' altrimenti questa operazione
+     * verrebbe eseguita una sola volta e restituirebbe sempre lo stesso
+     * risultato anche se la si richiama piu' volte
      * 
      * @param b
      *            behaviour tramite il quale si identifica la struttura
@@ -166,7 +166,7 @@ public class BridgeToTucson {
     }
 
     /**
-     * esecuzione operazioni di coordinazione sospensive in modalità sincrona
+     * esecuzione operazioni di coordinazione sospensive in modalita' sincrona
      * 
      * @param action
      *            the TuCSoN action to be carried out
@@ -193,22 +193,23 @@ public class BridgeToTucson {
         } else {
             ros = this.tucsonOpResultsMap.get(behav);
             if (!ros.isReady()) {
-                return null; // il comportamento è stato sbloccato da un
+                return null; // il comportamento e' stato sbloccato da un
                              // messaggio ricevuto dall'agente e non da un
                              // restart del thread delegato a questo.
             }
         }
-        // controllo se l'op è già stata eseguita e ritorna subito il risultato
+        // controllo se l'op e' gia' stata eseguita e ritorna subito il
+        // risultato
         // memorizzato in mResultOpBehaviour
         final List<TucsonOpCompletionEvent> list = ros
                 .getTucsonCompletionEvents();
         int nextRes = ros.getNextRes();
-        if (list.size() > nextRes) { // sono già presenti dei risultati vecchi
+        if (list.size() > nextRes) { // sono gia' presenti dei risultati vecchi
             ros.setNextRes(++nextRes); // si incrementa la prossima
                                        // operazione che si deve eseguire
             return ros.getTucsonCompletionEvents().get(nextRes - 1);
         }
-        // è la prima volta che si esegue l'operazione
+        // e' la prima volta che si esegue l'operazione
         // controllo se l'operazione richiesta ha bisogno di attendere la
         // risposta
         if (action instanceof Out || action instanceof OutS
@@ -227,7 +228,7 @@ public class BridgeToTucson {
             final ITucsonOperation op = (ITucsonOperation) result;
             // creo il TucsonOpCompletionEvent per salvarlo nella struttura
             // condivisa
-            // utilizzato della funzione fromITucsonOpToTucsonOpComp perchè
+            // utilizzato della funzione fromITucsonOpToTucsonOpComp perche'
             // i risultati vengono restituiti rispetto al contratto
             // ITucsonOperation
             final TucsonOpCompletionEvent res = BridgeToTucson
@@ -253,13 +254,13 @@ public class BridgeToTucson {
              * cannot really happen
              */
         }
-        ros.setNextRes(0); // setto a 0 perchè l'agente si bloccherà e
-                           // quando verrà riavviato ricomincerà da capo
+        ros.setNextRes(0); // setto a 0 perche' l'agente si blocchera' e
+                           // quando verra' riavviato ricomincera' da capo
                            // l'esecuzione
         ros.setReady(false);
         ta.go(); // avvio dell'agente tucson incaricato ad eseguire l'op
                  // e gestire il risultato
-        return null; // se si ritorna null vuol dire che il risultato non è
+        return null; // se si ritorna null vuol dire che il risultato non e'
                      // pronto e di conseguenza si adotta il protocollo di
                      // sospensione e riattivazione del behaviour
     }

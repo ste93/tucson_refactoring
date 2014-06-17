@@ -38,7 +38,7 @@ import alice.tuplecentre.api.exceptions.InvalidOperationException;
  * 
  */
 public class ACCProvider {
-    private static final int WAITING_TIME = 5;
+    private static final int WAITING_TIME = 10;
 
     private static void log(final String st) {
         System.out.println("..[ACCProvider]: " + st);

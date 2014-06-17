@@ -183,11 +183,6 @@ public class ACCProxyAgentSide implements EnhancedACC {
         return this.executor.events;
     }
 
-    // edited by sangio
-    // restituzione della lista delle operazioni pendenti per il quale non si è
-    // ancora ricevuto un risultato
-    // per navigare la lista bisogna usare un metodo di mutua esclusione es.
-    // synchronized
     @Override
     public Map<Long, TucsonOperation> getPendingOperationsMap() {
         // TODO Auto-generated method stub

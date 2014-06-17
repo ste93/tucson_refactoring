@@ -16,7 +16,7 @@ import alice.tuplecentre.core.AbstractTupleCentreOperation;
 
 /**
  * TucsonAgentAsyncBehavoiur:agente TuCSoN che esegue operazioni di
- * coordinazione in modalità asincrona e gestisce il suo completamento avviando
+ * coordinazione in modalita' asincrona e gestisce il suo completamento avviando
  * un nuovo behaviour JADE predefinito
  * 
  * @author lucasangiorgi
@@ -98,7 +98,7 @@ public class AsynchCompletionBehaviourHandler extends AbstractTucsonAgent {
             final IAsynchCompletionBehaviour b = (IAsynchCompletionBehaviour) this.behav;
             b.setTucsonOpCompletionEvent(ev);
             this.myAgent.addBehaviour(this.behav); // non ci sono problemi
-                                                   // accessi concorrenti!å
+                                                   // accessi concorrenti
         } else {
             AsynchCompletionBehaviourHandler
                     .log("The given result-handling behaviour does not implement interface 'IAsynchCompletionBehaviour'!");

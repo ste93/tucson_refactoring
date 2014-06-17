@@ -170,7 +170,7 @@ public class TucsonService extends BaseService {
             this.log("Giving ACC '"
                     + acc.getClass().getInterfaces()[0].getSimpleName()
                     + "' to agent " + agent.getLocalName()
-                    + "' toward TuCSoN Node @" + netid + ":" + portno);
+                    + "' toward TuCSoN Node @" + netid + ":" + portno);
         }
 
         @Override
@@ -189,7 +189,7 @@ public class TucsonService extends BaseService {
                 throw new CannotAcquireACCException(
                         "The agent does not hold an ACC");
             }
-            // Controllo se esiste già un OperationHandler per l'agente,
+            // Controllo se esiste gia' un OperationHandler per l'agente,
             // altrimenti lo creo
             BridgeToTucson bridge = TucsonService.this.mOperationHandlers
                     .get(agent.getAID());
@@ -279,7 +279,7 @@ public class TucsonService extends BaseService {
      */
     public static final String NAME = "it.unibo.sd.jade.service.TucsonService";
     /*
-     * L'insieme dei comandi verticali che il servizio è in grado di soddisfare
+     * L'insieme dei comandi verticali che il servizio e' in grado di soddisfare
      * autonomamente
      */
     private static final String[] OWNED_COMMANDS = { TucsonSlice.EXECUTE_SYNCH,
@@ -327,7 +327,8 @@ public class TucsonService extends BaseService {
     // }
     // The source and target sinks
     private final Sink sourceSink = new CommandSourceSink();
-    private final Sink targetSink = new CommandTargetSink(); // Al momento non è
+    private final Sink targetSink = new CommandTargetSink(); // Al momento non
+                                                             // e'
 
     public TucsonService() {
         super();
