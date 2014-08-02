@@ -568,19 +568,17 @@ public final class TupleCentreContainer {
                 return false;
             }
         }
-        if (type == TucsonOperation.nextStepCode()) {
-            try {
-                context.nextStepCommand();
+        if (type == TucsonOperation.StepModeCode()) {
+                context.stepModeCommand();
                 return true;
-            } catch (final OperationNotPossibleException e) {
-                e.printStackTrace();
-                return false;
-            }
         }
-        if (type == TucsonOperation.setMngModeCode()) {
+        if (type == TucsonOperation.nextStepCode()) {
+        	//TODO
+        }
+       /*TODO must be delete... if (type == TucsonOperation.setMngModeCode()) {
             context.setManagementMode((Boolean) obj);
             return true;
-        }
+        }*/
         if (type == TucsonOperation.addObsCode()) {
             context.addObserver((ObservableEventListener) obj);
             return true;

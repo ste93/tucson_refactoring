@@ -151,8 +151,18 @@ public class InspectorContextSkel extends AbstractACCProxyNodeSide implements
     }
 
     /**
+     * enable/disable VM step Mode
+     * @param m
+     *            the step mode message
+     */
+    public void stepMode(final StepModeMsg m){
+    	TupleCentreContainer.doManagementOperation(TucsonOperation.StepModeCode(), this.tcId, null);
+    }
+
+    /**
      * ask a new step for a tuple centre vm during tracing
      */
+    //TODO must be delete
     public synchronized void nextStep() {
         if (this.protocol.isTracing()) {
             this.nStep = true;
@@ -237,7 +247,7 @@ public class InspectorContextSkel extends AbstractACCProxyNodeSide implements
             TupleCentreContainer.doManagementOperation(
                     TucsonOperation.addInspCode(), this.tcId, this);
             while (!this.shutdown) {
-                final NodeMsg msg = this.dialog.receiveNodeMsg();
+                final NodeMsg msg = this.dialog.receiveNodeMsg();   
                 final Class<?> cl = msg.getClass();
                 final Method m = this.getClass().getMethod(msg.getAction(),
                         new Class[] { cl });

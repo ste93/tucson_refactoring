@@ -19,6 +19,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import alice.respect.api.IRespectTC;
+import alice.respect.core.EventMonitor;
+import alice.respect.core.StepMonitor;
 import alice.tuplecentre.api.AgentId;
 import alice.tuplecentre.api.IId;
 import alice.tuplecentre.api.ITupleCentre;
@@ -50,7 +52,10 @@ public abstract class AbstractTupleCentreVMContext implements
     private boolean doStep;
     private final List<AbstractEvent> inputEnvEvents;
     private final List<AbstractEvent> inputEvents;
+    //TODO must be delete
     private boolean management;
+    private boolean stepMode;
+    private StepMonitor step;
     private final int maxPendingInputEventNumber;
     private final IRespectTC respectTC;
     private final Map<String, AbstractTupleCentreVMState> states;
@@ -70,6 +75,8 @@ public abstract class AbstractTupleCentreVMContext implements
     public AbstractTupleCentreVMContext(final TupleCentreId id,
             final int ieSize, final IRespectTC rtc) {
         this.management = false;
+        this.stepMode = false;
+        this.step = new StepMonitor();
         this.inputEvents = new LinkedList<AbstractEvent>();
         this.inputEnvEvents = new LinkedList<AbstractEvent>();
         this.tid = id;
@@ -184,21 +191,32 @@ public abstract class AbstractTupleCentreVMContext implements
      * Executes a virtual machine behaviour cycle
      */
     public void execute() {
-        if (this.management && this.stop) {
+       /*old
+        *  if (this.management && this.stop) {
             if (!this.doStep) {
                 return;
             }
             this.doStep = false;
-        }
+        }*/
+    	if(this.stepMode){
+    		try {
+    			System.out.println("s˜ qua dentro!");
+				this.step.awaitEvent();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    	}
         while (!this.currentState.isIdle()) {
             this.currentState.execute();
             this.currentState = this.currentState.getNextState();
-            if (this.management && this.stop) {
+           /*old
+            *  if (this.management && this.stop) {
                 if (!this.doStep) {
                     break;
                 }
                 this.doStep = false;
-            }
+            }*/
         }
     }
 
@@ -532,6 +550,16 @@ public abstract class AbstractTupleCentreVMContext implements
     @Override
     public void setManagementMode(final boolean activate) {
         this.management = activate;
+    }
+    
+    @Override
+    public void setStepMode() {
+    	if (this.stepMode) {
+    		this.stepMode = false;
+    		this.step.signalEvent();
+    		return;
+    	}
+    	this.stepMode = true;
     }
 
     /**

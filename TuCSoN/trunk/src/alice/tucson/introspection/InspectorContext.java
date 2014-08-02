@@ -121,4 +121,9 @@ public interface InspectorContext {
      *             if some I/O error occurs
      */
     void setTupleSet(List<Tuple> tset) throws IOException;
+    
+    /**
+     * do the next step of the VM
+     */
+	void VmStepMode() throws IOException;
 }

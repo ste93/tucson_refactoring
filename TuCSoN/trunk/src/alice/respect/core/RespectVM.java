@@ -47,6 +47,8 @@ public class RespectVM implements Runnable {
     private final RespectVMContext context;
     private final Object idle;
     private final EventMonitor news;
+    private final EventMonitor step;
+    private boolean stepMode;
     /** listener to VM inspectable events */
     protected List<InspectableEventListener> inspectors;
     /**
@@ -74,6 +76,8 @@ public class RespectVM implements Runnable {
         this.idle = new Object();
         this.inspectors = new ArrayList<InspectableEventListener>();
         this.observers = new ArrayList<ObservableEventListener>();
+        this.stepMode = false;
+        this.step = new EventMonitor();
     }
 
     /**
@@ -255,18 +259,22 @@ public class RespectVM implements Runnable {
         return this.observers.size() > 0;
     }
 
+    public void stepModeCommand(){
+    	this.context.setStepMode();
+    }
+
     /**
-     * 
      * @throws OperationNotPossibleException
      *             if the requested operation cannot be carried out
      */
     public void nextStepCommand() throws OperationNotPossibleException {
-        try {
+    	//TODO
+        /*try {
             this.context.nextStepCommand();
             this.news.signalEvent();
         } catch (final alice.tuplecentre.api.exceptions.OperationNotPossibleException e) {
             throw new OperationNotPossibleException();
-        }
+        }*/
     }
 
     /**
@@ -447,6 +455,14 @@ public class RespectVM implements Runnable {
     @Override
     public void run() {
         while (true) {
+        	/*if(this.stepMode){
+        		try {
+					this.step.awaitEvent();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+        	}*/
             synchronized (this.idle) {
                 this.context.execute();
             }

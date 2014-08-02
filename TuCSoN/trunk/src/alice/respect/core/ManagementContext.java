@@ -157,4 +157,10 @@ public class ManagementContext implements IManagementContext {
     public void stopCommand() throws OperationNotPossibleException {
         this.vm.stopCommand();
     }
+
+	@Override
+	public void stepModeCommand() {
+		this.vm.stepModeCommand();
+		
+	}
 }

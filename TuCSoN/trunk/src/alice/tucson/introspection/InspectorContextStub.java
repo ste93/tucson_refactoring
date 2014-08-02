@@ -54,7 +54,6 @@ public class InspectorContextStub implements InspectorContext {
     protected TucsonTupleCentreId tid;
 
     /**
-     * 
      * @param i
      *            the agent identifier to be used by this inspector
      * @param tc
@@ -213,7 +212,6 @@ public class InspectorContextStub implements InspectorContext {
 
     /**
      * resolve information about a tuple centre
-     * 
      * @param titcd
      *            the identifier of the tuple centre to be resolved
      */
@@ -226,4 +224,13 @@ public class InspectorContextStub implements InspectorContext {
             e.printStackTrace();
         }
     }
+
+	@Override
+	public void VmStepMode() throws IOException{
+		try {
+			this.dialog.sendNodeMsg(new StepModeMsg(this.id));
+		} catch (DialogException e) {
+			throw new IOException();
+		}
+	}
 }

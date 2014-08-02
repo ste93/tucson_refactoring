@@ -32,11 +32,16 @@ public interface ITupleCentreManagement {
     void nextStepCommand() throws OperationNotPossibleException;
 
     /**
-     * 
+     * old
      * @param activate
      *            wether the 'management mode' should be activated or not
      */
     void setManagementMode(boolean activate);
+ 
+    /**
+     * enable/disable step mode
+     */
+    void setStepMode();
 
     /**
      * 

@@ -193,6 +193,15 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
     public static int inSCode() {
         return AbstractTupleCentreOperation.OPTYPE_IN_S;
     }
+    
+    /**
+     * 
+     * @return the Integer representing the type code of <code>step_mode</code>
+     *         operation
+     */
+    public static int StepModeCode() {
+        return AbstractTupleCentreOperation.OPTYPE_STEP_MODE;
+    }
 
     /**
      * 
@@ -370,9 +379,10 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
      * @return the Integer representing the type code of
      *         <code>set_mgm_mode</code> operation
      */
-    public static int setMngModeCode() {
+  /*  TODO must be delete...
+   * public static int setMngModeCode() {
         return AbstractTupleCentreOperation.OPTYPE_SET_MNG_MODE;
-    }
+    }*/
 
     /**
      * 

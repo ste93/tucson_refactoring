@@ -68,6 +68,8 @@ public abstract class AbstractTupleCentreOperation implements
     /**  */
     protected static final int OPTYPE_INP_S = 23;
     /**  */
+    protected static final int OPTYPE_STEP_MODE = 59;
+    /**  */
     protected static final int OPTYPE_NEXT_STEP = 62;
     /**  */
     protected static final int OPTYPE_NO = 6;
@@ -102,7 +104,7 @@ public abstract class AbstractTupleCentreOperation implements
     /**  */
     protected static final int OPTYPE_SET = 9;
     /**  */
-    protected static final int OPTYPE_SET_MNG_MODE = 59;
+   // TODO must be delete.. protected static final int OPTYPE_SET_MNG_MODE = 59;
     /**  */
     protected static final int OPTYPE_SET_S = 27;
     /**  */

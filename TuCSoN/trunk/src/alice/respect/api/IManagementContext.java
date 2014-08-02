@@ -112,9 +112,14 @@ public interface IManagementContext {
      *         listening
      */
     boolean hasObservers();
+    
+    /**
+     * enable/disable VM step mode
+     */
+    void stepModeCommand();
 
     /**
-     * Executes a single execution step (management mode)
+     * Executes a single execution step (step mode)
      * 
      * @throws OperationNotPossibleException
      *             if the operation is not possible according to current VM
@@ -149,6 +154,7 @@ public interface IManagementContext {
      * @param activate
      *            true to swith to management mode
      */
+    //TODO must be delete
     void setManagementMode(boolean activate);
 
     /**
