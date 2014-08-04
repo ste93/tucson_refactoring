@@ -264,17 +264,10 @@ public class RespectVM implements Runnable {
     }
 
     /**
-     * @throws OperationNotPossibleException
-     *             if the requested operation cannot be carried out
+     * @throws alice.tuplecentre.api.exceptions.OperationNotPossibleException
      */
-    public void nextStepCommand() throws OperationNotPossibleException {
-    	//TODO
-        /*try {
-            this.context.nextStepCommand();
-            this.news.signalEvent();
-        } catch (final alice.tuplecentre.api.exceptions.OperationNotPossibleException e) {
-            throw new OperationNotPossibleException();
-        }*/
+    public void nextStepCommand() throws alice.tuplecentre.api.exceptions.OperationNotPossibleException {
+    	this.context.nextStepCommand();
     }
 
     /**
@@ -455,14 +448,6 @@ public class RespectVM implements Runnable {
     @Override
     public void run() {
         while (true) {
-        	/*if(this.stepMode){
-        		try {
-					this.step.awaitEvent();
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-        	}*/
             synchronized (this.idle) {
                 this.context.execute();
             }
@@ -485,7 +470,6 @@ public class RespectVM implements Runnable {
     }
 
     /**
-     * 
      * @param activate
      *            toggles management mode on and off
      */

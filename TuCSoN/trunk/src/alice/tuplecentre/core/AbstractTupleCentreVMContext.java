@@ -52,7 +52,6 @@ public abstract class AbstractTupleCentreVMContext implements
     private boolean doStep;
     private final List<AbstractEvent> inputEnvEvents;
     private final List<AbstractEvent> inputEvents;
-    //TODO must be delete
     private boolean management;
     private boolean stepMode;
     private StepMonitor step;
@@ -198,18 +197,17 @@ public abstract class AbstractTupleCentreVMContext implements
             }
             this.doStep = false;
         }*/
-    	if(this.stepMode){
-    		try {
-    			System.out.println("s˜ qua dentro!");
-				this.step.awaitEvent();
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-    	}
         while (!this.currentState.isIdle()) {
             this.currentState.execute();
             this.currentState = this.currentState.getNextState();
+            if(this.stepMode){
+        		try {
+    				this.step.awaitEvent();
+    			} catch (InterruptedException e) {
+    				// TODO Auto-generated catch block
+    				e.printStackTrace();
+    			}
+        	}
            /*old
             *  if (this.management && this.stop) {
                 if (!this.doStep) {
@@ -391,10 +389,10 @@ public abstract class AbstractTupleCentreVMContext implements
 
     @Override
     public void nextStepCommand() throws OperationNotPossibleException {
-        if (!this.management) {
+        if (!this.stepMode) {
             throw new OperationNotPossibleException();
         }
-        this.doStep = true;
+        this.step.signalEvent();
     }
 
     /**

@@ -569,11 +569,18 @@ public final class TupleCentreContainer {
             }
         }
         if (type == TucsonOperation.StepModeCode()) {
-                context.stepModeCommand();
-                return true;
+            context.stepModeCommand();
+            return true;
         }
         if (type == TucsonOperation.nextStepCode()) {
-        	//TODO
+				try {
+					context.nextStepCommand();
+					return true;
+				} catch (alice.tuplecentre.api.exceptions.OperationNotPossibleException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					return false;
+				}
         }
        /*TODO must be delete... if (type == TucsonOperation.setMngModeCode()) {
             context.setManagementMode((Boolean) obj);

@@ -14,6 +14,8 @@
 package alice.tucson.introspection.tools;
 
 import java.awt.Color;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.color.CMMException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -108,8 +110,6 @@ public class InspectorGUI extends javax.swing.JFrame {
 
     private final TucsonAgentId aid;
     private javax.swing.JButton buttonInspect;
-    private javax.swing.JButton buttonNextStep;
-    private javax.swing.JCheckBox checkStepExecution;
     private javax.swing.JPanel chooseTC;
     private InspectorContext context;
     private javax.swing.JTabbedPane controlPanel;
@@ -199,8 +199,6 @@ public class InspectorGUI extends javax.swing.JFrame {
                         .getNode()));
                 this.inputPort.setText(alice.util.Tools.removeApices(String
                         .valueOf(this.tid.getPort())));
-                this.checkStepExecution.setSelected(false);
-                this.buttonNextStep.setEnabled(false);
                 this.inputName.setEditable(false);
                 this.inputNode.setEditable(false);
                 this.inputPort.setEditable(false);
@@ -295,14 +293,15 @@ public class InspectorGUI extends javax.swing.JFrame {
         java.awt.GridBagConstraints gridBagConstraints;
         this.controlPanel = new javax.swing.JTabbedPane();
         final JPanel respectSetsPanel = new JPanel();
+        final JPanel stepModePanel = new JPanel();
         final JButton tuplesBtn = new JButton();
         final JButton pendingBtn = new JButton();
         final JButton reactionsBtn = new JButton();
         final JButton specBtn = new JButton();
         final JCheckBox vmStepCB = new JCheckBox();
         final JButton vmStepBtn = new JButton();
-        this.checkStepExecution = new javax.swing.JCheckBox();
-        this.buttonNextStep = new javax.swing.JButton();
+        final JButton buttonNextStep = new JButton();
+        final JCheckBox checkStepExecution = new JCheckBox();
         this.chooseTC = new javax.swing.JPanel();
         final JLabel tname = new JLabel();
         final JLabel netid = new JLabel();
@@ -332,6 +331,9 @@ public class InspectorGUI extends javax.swing.JFrame {
                 .setToolTipText("Now inspecting TuCSoN tuplecentre sets");
         respectSetsPanel.setMinimumSize(new java.awt.Dimension(240, 100));
         respectSetsPanel.setPreferredSize(new java.awt.Dimension(240, 100));
+        stepModePanel.setLayout(new GridBagLayout());
+        stepModePanel.setMinimumSize(new java.awt.Dimension(240, 100));
+        stepModePanel.setPreferredSize(new java.awt.Dimension(240, 100));
         tuplesBtn.setFont(new java.awt.Font("Arial", 0, 11));
         tuplesBtn.setText("Tuple Space");
         tuplesBtn.setToolTipText("Inspect logic tuples set");
@@ -406,15 +408,23 @@ public class InspectorGUI extends javax.swing.JFrame {
         respectSetsPanel.add(specBtn, gridBagConstraints);
         vmStepCB.setFont(new java.awt.Font("Arial", 0, 11));
         vmStepCB.setText("Step Mode");
+        vmStepCB.setToolTipText("Enable/Disable step mode");
+        vmStepCB.setSelected(false);
         vmStepCB.addItemListener(new ItemListener() {
         	@Override
-			public void itemStateChanged(final ItemEvent e) {
+			public void itemStateChanged(final ItemEvent e) {      		
+        		if(specForm.isVisible()){
+        			vmStepCB.setSelected(false);
+        			return;
+        		}
 				try {
 					if (vmStepCB.isSelected()) {
 						vmStepBtn.setEnabled(true);
+						specBtn.setEnabled(false);
 						context.VmStepMode();
 					} else {
 						vmStepBtn.setEnabled(false);
+						specBtn.setEnabled(true);
 						context.VmStepMode();
 					}
 				} catch (IOException e1) {
@@ -423,17 +433,17 @@ public class InspectorGUI extends javax.swing.JFrame {
 				}
 			}
 		});
-        // TODO set the appropiate constrains
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 1;
         gridBagConstraints.weightx = 50.0;
         gridBagConstraints.weighty = 100.0;
-        respectSetsPanel.add(vmStepCB, gridBagConstraints);
+        stepModePanel.add(vmStepCB, gridBagConstraints);
         vmStepBtn.setEnabled(false);
         vmStepBtn.setFont(new java.awt.Font("Arial", 0, 11));
         vmStepBtn.setText("Next Step");
-        vmStepBtn.setToolTipText("Got to the next respect vm step");
+        vmStepBtn.setEnabled(false);
+        vmStepBtn.setToolTipText("Go to the next respect vm step");
         vmStepBtn.setMaximumSize(new java.awt.Dimension(130, 25));
         vmStepBtn.setMinimumSize(new java.awt.Dimension(130, 25));
         vmStepBtn.setPreferredSize(new java.awt.Dimension(130, 25));
@@ -443,15 +453,16 @@ public class InspectorGUI extends javax.swing.JFrame {
 				vmStepBtnActionPerformed();
 			}
 		});
-        // TODO set the appropiate constrains  
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 1;
         gridBagConstraints.weightx = 50.0;
         gridBagConstraints.weighty = 100.0;
-        respectSetsPanel.add(vmStepBtn, gridBagConstraints);
+        stepModePanel.add(vmStepBtn, gridBagConstraints);
         this.controlPanel.addTab("Sets", null, respectSetsPanel,
                 "Now inspecting TuCSoN tuplecentre sets");
+        this.controlPanel.addTab("StepMode", null, stepModePanel,
+                "Now managing ReSpecT VM");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
@@ -638,7 +649,12 @@ public class InspectorGUI extends javax.swing.JFrame {
      *
      */
     private void vmStepBtnActionPerformed() {
-
+    	try {
+			this.context.nextStep();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 
     protected EventViewer getQueryForm() {

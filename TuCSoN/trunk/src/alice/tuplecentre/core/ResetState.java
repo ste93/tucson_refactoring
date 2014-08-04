@@ -33,6 +33,7 @@ public class ResetState extends AbstractTupleCentreVMState {
 
     @Override
     public void execute() {
+    	System.out.println("reset state");
         this.vm.reset();
     }
 

@@ -120,12 +120,9 @@ public interface IManagementContext {
 
     /**
      * Executes a single execution step (step mode)
-     * 
-     * @throws OperationNotPossibleException
-     *             if the operation is not possible according to current VM
-     *             state
+     * @throws alice.tuplecentre.api.exceptions.OperationNotPossibleException 
      */
-    void nextStepCommand() throws OperationNotPossibleException;
+    void nextStepCommand() throws alice.tuplecentre.api.exceptions.OperationNotPossibleException;
 
     void recoveryPersistent(String path, String file, TucsonTupleCentreId ttcid);
 
@@ -147,15 +144,6 @@ public interface IManagementContext {
      * 
      */
     void reset();
-
-    /**
-     * Enables/Disables the management mode
-     * 
-     * @param activate
-     *            true to swith to management mode
-     */
-    //TODO must be delete
-    void setManagementMode(boolean activate);
 
     /**
      * Specify the behaviour of the tuple centre
@@ -185,4 +173,6 @@ public interface IManagementContext {
      *             state
      */
     void stopCommand() throws OperationNotPossibleException;
+
+	void setManagementMode(boolean activate);
 }

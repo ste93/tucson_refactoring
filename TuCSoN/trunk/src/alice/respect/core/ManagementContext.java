@@ -103,7 +103,7 @@ public class ManagementContext implements IManagementContext {
     }
 
     @Override
-    public void nextStepCommand() throws OperationNotPossibleException {
+    public void nextStepCommand() throws alice.tuplecentre.api.exceptions.OperationNotPossibleException {
         this.vm.nextStepCommand();
     }
 
@@ -135,11 +135,6 @@ public class ManagementContext implements IManagementContext {
     }
 
     @Override
-    public void setManagementMode(final boolean activate) {
-        this.vm.setManagementMode(activate);
-    }
-
-    @Override
     public void setSpec(final RespectSpecification spec)
             throws InvalidSpecificationException {
         final boolean accepted = this.vm.setReactionSpec(spec);
@@ -157,7 +152,12 @@ public class ManagementContext implements IManagementContext {
     public void stopCommand() throws OperationNotPossibleException {
         this.vm.stopCommand();
     }
-
+    
+    @Override
+    public void setManagementMode(final boolean activate) {
+        this.vm.setManagementMode(activate);
+    }
+    
 	@Override
 	public void stepModeCommand() {
 		this.vm.stepModeCommand();

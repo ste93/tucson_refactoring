@@ -163,11 +163,21 @@ public class InspectorContextSkel extends AbstractACCProxyNodeSide implements
      * ask a new step for a tuple centre vm during tracing
      */
     //TODO must be delete
+    /**
+     * old
     public synchronized void nextStep() {
         if (this.protocol.isTracing()) {
             this.nStep = true;
             this.notifyAll();
         }
+    }
+    **/
+
+    /**
+     * ask a new step for a tuple centre vm during step mode
+     */
+    public void nextStep(final NextStepMsg m){
+    	TupleCentreContainer.doManagementOperation(TucsonOperation.nextStepCode(), this.tcId, null);
     }
 
     @Override
