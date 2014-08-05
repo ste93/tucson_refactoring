@@ -126,4 +126,9 @@ public interface InspectorContext {
      * do the next step of the VM
      */
 	void VmStepMode() throws IOException;
+	
+    /**
+     * verify is step mode
+     */
+	void isStepMode();
 }

@@ -48,6 +48,7 @@ import alice.tucson.api.exceptions.TucsonInvalidSpecificationException;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.examples.utilities.Utils;
+import alice.tucson.introspection.InspectorContextSkel;
 import alice.tucson.network.AbstractTucsonProtocol;
 import alice.tucson.network.TPConfig;
 import alice.tuplecentre.api.Tuple;
@@ -189,6 +190,7 @@ public class TucsonNodeService {
     }
 
     private final List<TucsonAgentId> agents;
+    private ArrayList<InspectorContextSkel> inspectorAgents;
     private final String configFile;
     private Prolog configManager;
     private Map<String, TucsonTCUsers> cores;
@@ -199,7 +201,7 @@ public class TucsonNodeService {
     // configuration
     private TucsonTupleCentreId idObsTC;
     private Date installationDate;
-    private final List<Thread> nodeAgents;
+    private final List<Thread> nodeAgents;    
     private TucsonAgentId nodeAid;
     private boolean observed;
     private ObservationService obsService;
@@ -255,6 +257,7 @@ public class TucsonNodeService {
         this.observed = false;
         this.agents = new ArrayList<TucsonAgentId>();
         this.nodeAgents = new ArrayList<Thread>();
+        this.inspectorAgents = new ArrayList<InspectorContextSkel>();
         this.tcs = new ArrayList<RespectTC>();
         TPConfig.getInstance().setTcpPort(this.tcpPort);
     }
@@ -536,6 +539,29 @@ public class TucsonNodeService {
      */
     public NodeServiceListener getListener() {
         return this.obsService;
+    }
+    
+    /** 
+     * @return node agents list
+     */
+    public ArrayList<InspectorContextSkel> getInspectorAgents() {	
+    	return this.inspectorAgents;
+    }
+    
+    /**
+     * @param i
+     * 			the inspector agent to add
+     */
+    public void addInspectorAgent(InspectorContextSkel i) {	
+    	this.inspectorAgents.add(i);
+    }
+    
+    /**
+     * @param i
+     * 			the InspectorContextSkel to eliminate
+     */
+    public void removeInspectorAgent(InspectorContextSkel i) {
+    	this.inspectorAgents.remove(i);
     }
 
     /**

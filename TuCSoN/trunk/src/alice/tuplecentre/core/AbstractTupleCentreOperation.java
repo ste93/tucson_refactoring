@@ -62,11 +62,15 @@ public abstract class AbstractTupleCentreOperation implements
     /**  */
     protected static final int OPTYPE_IN_ALL = 11;
     /**  */
+    protected static final int OPTYPE_GET_INSPS = 29;
+    /**  */
     protected static final int OPTYPE_IN_S = 21;
     /**  */
     protected static final int OPTYPE_INP = 4;
     /**  */
     protected static final int OPTYPE_INP_S = 23;
+    /**  */
+	public static final int OPTYPE_IS_STEP_MODE = 57;
     /**  */
     protected static final int OPTYPE_STEP_MODE = 59;
     /**  */

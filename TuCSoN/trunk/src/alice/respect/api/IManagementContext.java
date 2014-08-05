@@ -12,6 +12,7 @@
  */
 package alice.respect.api;
 
+import java.util.ArrayList;
 import java.util.List;
 import alice.logictuple.LogicTuple;
 import alice.respect.api.exceptions.InvalidSpecificationException;
@@ -115,6 +116,13 @@ public interface IManagementContext {
     
     /**
      * enable/disable VM step mode
+     * @return true if stepMode is active
+     */
+    boolean isStepModeCommand();
+    
+    /**
+     * enable/disable VM step mode
+     * @return true if stepMode is enable, else false
      */
     void stepModeCommand();
 
@@ -175,4 +183,7 @@ public interface IManagementContext {
     void stopCommand() throws OperationNotPossibleException;
 
 	void setManagementMode(boolean activate);
+
+	ArrayList<InspectableEventListener> getInspectors();
+
 }

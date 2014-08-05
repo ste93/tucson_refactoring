@@ -233,4 +233,13 @@ public class InspectorContextStub implements InspectorContext {
 			throw new IOException();
 		}
 	}
+
+	@Override
+	public void isStepMode() {
+		try {
+			this.dialog.sendNodeMsg(new IsActiveStepModeMsg(this.id));
+		} catch (DialogException e) {
+			e.printStackTrace();
+		}
+	}
 }

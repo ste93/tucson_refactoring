@@ -568,6 +568,9 @@ public final class TupleCentreContainer {
                 return false;
             }
         }
+        if (type == TucsonOperation.isStepModeCode()) {
+            return context.isStepModeCommand();
+        }
         if (type == TucsonOperation.StepModeCode()) {
             context.stepModeCommand();
             return true;
@@ -604,6 +607,9 @@ public final class TupleCentreContainer {
         if (type == TucsonOperation.rmvInspCode()) {
             context.removeInspector((InspectableEventListener) obj);
             return true;
+        }
+        if (type == TucsonOperation.getInspectorsCode()) {
+           return context.getInspectors();
         }
         if (type == TucsonOperation.hasInspCode()) {
             return context.hasInspectors();

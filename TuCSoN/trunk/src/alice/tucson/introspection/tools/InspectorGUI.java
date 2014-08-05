@@ -15,8 +15,6 @@ package alice.tucson.introspection.tools;
 
 import java.awt.Color;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
-import java.awt.color.CMMException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -26,6 +24,8 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
+
 import alice.tucson.api.TucsonAgentId;
 import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
@@ -40,6 +40,13 @@ import alice.tucson.introspection.InspectorProtocol;
  */
 public class InspectorGUI extends javax.swing.JFrame {
     private static final long serialVersionUID = -3765811664087552414L;
+    
+    private final JButton specBtn = new JButton();
+    private final JCheckBox vmStepCB = new JCheckBox();
+    private final JButton vmStepBtn = new JButton();
+    private boolean onRefreshCB = false;
+    /**if we do a quit in inspector, this flag became true */
+    private boolean afterQuit = false;
 
     /**
      * 
@@ -210,6 +217,14 @@ public class InspectorGUI extends javax.swing.JFrame {
                 this.stateBar.setText("Operation Failed: " + e);
                 e.printStackTrace();
             }
+            if(this.afterQuit){
+            	deselectStepModeCB();
+            }
+        	this.context.isStepMode();
+        	if(!this.afterQuit){
+            	this.afterQuit = true;
+            }
+            
         } else {
             this.specForm.exit();
             this.agent.quit();
@@ -297,9 +312,9 @@ public class InspectorGUI extends javax.swing.JFrame {
         final JButton tuplesBtn = new JButton();
         final JButton pendingBtn = new JButton();
         final JButton reactionsBtn = new JButton();
-        final JButton specBtn = new JButton();
-        final JCheckBox vmStepCB = new JCheckBox();
-        final JButton vmStepBtn = new JButton();
+       // final JButton specBtn = new JButton();
+       // final JCheckBox vmStepCB = new JCheckBox();
+       // final JButton vmStepBtn = new JButton();
         final JButton buttonNextStep = new JButton();
         final JCheckBox checkStepExecution = new JCheckBox();
         this.chooseTC = new javax.swing.JPanel();
@@ -412,23 +427,32 @@ public class InspectorGUI extends javax.swing.JFrame {
         vmStepCB.setSelected(false);
         vmStepCB.addItemListener(new ItemListener() {
         	@Override
-			public void itemStateChanged(final ItemEvent e) {      		
-        		if(specForm.isVisible()){
+			public void itemStateChanged(final ItemEvent e) {
+        		
+        		if (specForm.isVisible()) {
         			vmStepCB.setSelected(false);
         			return;
         		}
 				try {
 					if (vmStepCB.isSelected()) {
+						
 						vmStepBtn.setEnabled(true);
 						specBtn.setEnabled(false);
+						if (onRefreshCB){
+							onRefreshCB = false;
+							return;
+						}
 						context.VmStepMode();
 					} else {
 						vmStepBtn.setEnabled(false);
 						specBtn.setEnabled(true);
+						if (onRefreshCB){
+							onRefreshCB = false;
+							return;
+						}
 						context.VmStepMode();
 					}
 				} catch (IOException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 			}
@@ -652,7 +676,6 @@ public class InspectorGUI extends javax.swing.JFrame {
     	try {
 			this.context.nextStep();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
     }
@@ -692,4 +715,36 @@ public class InspectorGUI extends javax.swing.JFrame {
             e.printStackTrace();
         }
     }
+
+    /**
+     *  updating stepMode CheckBox when start inspecting a
+     *  tuple centre with stepMode already active
+     */
+	public void selectStepModeCB() {
+				onRefreshCB = true;
+				vmStepCB.setSelected(true);
+	}
+	
+    /**
+     *  updating stepMode CheckBox when start inspecting a
+     *  tuple centre after a quit
+     */
+	public void deselectStepModeCB() {
+				onRefreshCB = true;
+				vmStepCB.setSelected(false);
+	}
+	
+    /**
+     *  updating stepMode CheckBox when VM mode change 
+     *  due to another inspector
+     */
+	public void changeStepModeCB() {
+		if (vmStepCB.isSelected()) {
+				onRefreshCB = true;
+				vmStepCB.setSelected(false);
+		}else{
+			onRefreshCB = true;
+			vmStepCB.setSelected(true);
+		}
+	}
 }

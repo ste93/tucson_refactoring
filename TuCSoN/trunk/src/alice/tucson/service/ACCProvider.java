@@ -114,6 +114,7 @@ public class ACCProvider {
                 final AbstractACCProxyNodeSide skel = new InspectorContextSkel(
                         this, dialog, this.node, profile);
                 this.node.addNodeAgent(skel);
+                this.node.addInspectorAgent((InspectorContextSkel)skel);
                 skel.start();
             } else {
                 // should I pass here the TuCSoN node port?

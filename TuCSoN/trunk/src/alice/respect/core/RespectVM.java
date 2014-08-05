@@ -172,6 +172,14 @@ public class RespectVM implements Runnable {
     public TupleCentreId getId() {
         return (TupleCentreId) this.context.getId();
     }
+    
+    /**
+     * 
+     * @return the list of inspector
+     */
+    public ArrayList<InspectableEventListener> getInspectors() {
+    	return (ArrayList<InspectableEventListener>) this.inspectors;
+    }
 
     /**
      * 
@@ -259,7 +267,7 @@ public class RespectVM implements Runnable {
         return this.observers.size() > 0;
     }
 
-    public void stepModeCommand(){
+    public void stepModeCommand() {
     	this.context.setStepMode();
     }
 
@@ -268,6 +276,13 @@ public class RespectVM implements Runnable {
      */
     public void nextStepCommand() throws alice.tuplecentre.api.exceptions.OperationNotPossibleException {
     	this.context.nextStepCommand();
+    }
+    
+    /**
+     * @return if stepMode is active or not
+     */
+    public boolean isStepModeCommand() {
+    	return this.context.isStepMode();
     }
 
     /**

@@ -1,5 +1,6 @@
 package alice.respect.core;
 
+import java.util.ArrayList;
 import java.util.List;
 import alice.logictuple.LogicTuple;
 import alice.respect.api.IManagementContext;
@@ -162,5 +163,16 @@ public class ManagementContext implements IManagementContext {
 	public void stepModeCommand() {
 		this.vm.stepModeCommand();
 		
+	}
+	
+	@Override
+	public boolean isStepModeCommand() {
+		return this.vm.isStepModeCommand();
+		
+	}
+
+	@Override
+	public ArrayList<InspectableEventListener> getInspectors() {
+		return this.vm.getInspectors();
 	}
 }

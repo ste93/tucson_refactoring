@@ -15,6 +15,7 @@ package alice.tucson.introspection;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import alice.logictuple.LogicTuple;
 import alice.tucson.api.TucsonAgentId;
@@ -155,28 +156,49 @@ public class InspectorContextSkel extends AbstractACCProxyNodeSide implements
      * @param m
      *            the step mode message
      */
-    public void stepMode(final StepModeMsg m){
+    public void stepMode(final StepModeMsg m) {
     	TupleCentreContainer.doManagementOperation(TucsonOperation.StepModeCode(), this.tcId, null);
+    	ArrayList<InspectableEventListener> inspectors = 
+    			(ArrayList<InspectableEventListener>) TupleCentreContainer.doManagementOperation(TucsonOperation.getInspectorsCode(), this.tcId, null);
+    	for (InspectableEventListener insp : inspectors) {
+    		InspectorContextSkel skel = (InspectorContextSkel)insp;
+    		if (skel.getId() == this.getId()) {
+    			//System.out.println("not send to my self");
+    			continue;
+    		}
+    		System.out.println("send msg");
+    		InspectorContextEvent msg = new InspectorContextEvent();
+    		msg.setModeChanged(true);
+    		try {
+    			skel.getDialog().sendInspectorEvent(msg);
+			} catch (DialogException e) {
+				e.printStackTrace();
+			}
+    	}
     }
 
     /**
-     * ask a new step for a tuple centre vm during tracing
+     * verify if VM step mode is already active
+     * @param m
+     * 			the IsActiveStepModeMsg
      */
-    //TODO must be delete
-    /**
-     * old
-    public synchronized void nextStep() {
-        if (this.protocol.isTracing()) {
-            this.nStep = true;
-            this.notifyAll();
-        }
+    public void isStepMode(final IsActiveStepModeMsg m) {
+    	boolean isActive = (boolean)TupleCentreContainer.doManagementOperation(TucsonOperation.isStepModeCode(), this.tcId, null);
+    	InspectorContextEvent msg = new InspectorContextEvent();
+    	msg.setStepMode(isActive);
+    	try {
+			this.dialog.sendInspectorEvent(msg);
+		} catch (DialogException e) {
+			e.printStackTrace();
+		}
     }
-    **/
 
     /**
      * ask a new step for a tuple centre vm during step mode
+     * @param m
+     * 			the NxtStepMsg
      */
-    public void nextStep(final NextStepMsg m){
+    public void nextStep(final NextStepMsg m) {
     	TupleCentreContainer.doManagementOperation(TucsonOperation.nextStepCode(), this.tcId, null);
     }
 
@@ -335,5 +357,13 @@ public class InspectorContextSkel extends AbstractACCProxyNodeSide implements
      */
     protected void log(final String st) {
         System.out.println("[InspectorContextSkel]: " + st);
+    }
+    
+    /**
+     * 
+     * @return InspectorContextSke dialog
+     */
+    private AbstractTucsonProtocol getDialog() {
+    	return this.dialog;
     }
 }

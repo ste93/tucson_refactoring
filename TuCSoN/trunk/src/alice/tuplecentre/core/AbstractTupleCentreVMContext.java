@@ -190,21 +190,13 @@ public abstract class AbstractTupleCentreVMContext implements
      * Executes a virtual machine behaviour cycle
      */
     public void execute() {
-       /*old
-        *  if (this.management && this.stop) {
-            if (!this.doStep) {
-                return;
-            }
-            this.doStep = false;
-        }*/
         while (!this.currentState.isIdle()) {
             this.currentState.execute();
             this.currentState = this.currentState.getNextState();
-            if(this.stepMode){
+            if(isStepMode()){
         		try {
     				this.step.awaitEvent();
     			} catch (InterruptedException e) {
-    				// TODO Auto-generated catch block
     				e.printStackTrace();
     			}
         	}
@@ -551,13 +543,19 @@ public abstract class AbstractTupleCentreVMContext implements
     }
     
     @Override
-    public void setStepMode() {
-    	if (this.stepMode) {
+    public boolean setStepMode() {
+    	if (isStepMode()) {
     		this.stepMode = false;
     		this.step.signalEvent();
-    		return;
+    		return false;
     	}
     	this.stepMode = true;
+    	return true;
+    }
+    
+    @Override
+    public boolean isStepMode(){
+    	return this.stepMode;
     }
 
     /**

@@ -40,8 +40,16 @@ public interface ITupleCentreManagement {
  
     /**
      * enable/disable step mode
+     * @return 
      */
-    void setStepMode();
+    boolean setStepMode();
+    
+    /**
+     * verify if stepMode is active or not
+     * 
+     * @return if stepMode is active or not
+     */
+    boolean isStepMode();
 
     /**
      * 

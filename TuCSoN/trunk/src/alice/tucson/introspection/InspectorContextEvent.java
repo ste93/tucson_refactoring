@@ -39,6 +39,11 @@ public class InspectorContextEvent implements java.io.Serializable {
     private long vmTime;
     /** events observed */
     private List<WSetEvent> wnEvents = null;
+    /** verify step mode activation */
+    private boolean stepMode = false;
+    /** verify if VM mode changed */
+    private boolean modeChanged= false;
+    
 
     /**
      * @return the localTime
@@ -128,5 +133,39 @@ public class InspectorContextEvent implements java.io.Serializable {
      */
     public void setWnEvents(final List<WSetEvent> wne) {
         this.wnEvents = wne;
+    }
+    
+    /**
+     * 
+     * @param a
+     * 			set step mode as active
+     */
+    public void setStepMode(boolean a) {
+    	this.stepMode = a;
+    }
+    
+    /**
+     * 
+     * @return verify if step mode is active
+     */
+    public boolean getStepMode() {
+    	return this.stepMode;
+    }
+    
+    /**
+     * 
+     * @param a
+     * 			set modeChanged
+     */
+    public void setModeChanged(boolean a) {
+    	this.modeChanged = a;
+    }
+    
+    /**
+     * 
+     * @return verify if VM mode changed
+     */
+    public boolean getModeChanged() {
+    	return this.modeChanged;
     }
 }

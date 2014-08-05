@@ -202,6 +202,14 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
     public static int StepModeCode() {
         return AbstractTupleCentreOperation.OPTYPE_STEP_MODE;
     }
+    
+    /**
+     * 
+     * @return true if steMode is active
+     */
+	public static int isStepModeCode() {
+		return AbstractTupleCentreOperation.OPTYPE_IS_STEP_MODE;
+	}
 
     /**
      * 
@@ -672,4 +680,8 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
             }
         }
     }
+
+	public static int getInspectorsCode() {
+		return AbstractTupleCentreOperation.OPTYPE_GET_INSPS;
+	}
 }
