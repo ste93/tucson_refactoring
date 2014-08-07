@@ -163,10 +163,8 @@ public class InspectorContextSkel extends AbstractACCProxyNodeSide implements
     	for (InspectableEventListener insp : inspectors) {
     		InspectorContextSkel skel = (InspectorContextSkel)insp;
     		if (skel.getId() == this.getId()) {
-    			//System.out.println("not send to my self");
     			continue;
     		}
-    		System.out.println("send msg");
     		InspectorContextEvent msg = new InspectorContextEvent();
     		msg.setModeChanged(true);
     		try {

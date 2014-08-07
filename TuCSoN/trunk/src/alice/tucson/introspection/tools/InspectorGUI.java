@@ -219,6 +219,7 @@ public class InspectorGUI extends javax.swing.JFrame {
             }
             if(this.afterQuit){
             	deselectStepModeCB();
+            	afterQuit = false;
             }
         	this.context.isStepMode();
         	if(!this.afterQuit){
