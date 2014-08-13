@@ -99,9 +99,14 @@ public final class TPFactory {
     public static AbstractTucsonProtocol getDialogNodeSide(
             final int tucsonProtocolType) throws DialogException {
         AbstractTucsonProtocol tp = null;
+        
         if (tucsonProtocolType == TPFactory.DIALOG_TYPE_TCP) {
             final TPConfig config = TPConfig.getInstance();
-            tp = new TucsonProtocolTCP(config.getNodeTcpPort());
+            final int port = config.getNodeTcpPort();
+            if (port < 1 || port > TPFactory.MAX_UNBOUND_PORT) {
+                throw new DialogException("Illegal port argument");
+            }
+            tp = new TucsonProtocolTCP(port);
         } else {
             throw new DialogException("Unsupported protocol type");
         }

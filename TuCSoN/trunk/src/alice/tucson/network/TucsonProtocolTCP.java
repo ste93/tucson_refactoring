@@ -68,9 +68,6 @@ public class TucsonProtocolTCP extends AbstractTucsonProtocol {
             this.mainSocket = new ServerSocket();
             this.mainSocket.setReuseAddress(true);
             this.mainSocket.bind(new InetSocketAddress(port));
-        } catch (final IllegalArgumentException e) {
-            this.clean();
-            throw new DialogExceptionTcp(e);
         } catch (final BindException e) {
             this.clean();
             throw new DialogExceptionTcp(e);
