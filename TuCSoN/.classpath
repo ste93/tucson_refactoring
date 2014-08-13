@@ -5,5 +5,7 @@
 	<classpathentry kind="lib" path="D:/workspace/jade.jar"/>
 	<classpathentry kind="lib" path="D:/workspace/2p-2.8.0.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="C:/Users/Mattia/workspace/2p.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Mattia/workspace/jade.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

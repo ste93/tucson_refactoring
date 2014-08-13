@@ -22,4 +22,8 @@ public class DialogException extends Exception {
     public DialogException(final String message) {
         super(message);
     }
+    
+    public DialogException(final Throwable cause){
+    	super(cause);
+    }
 }
