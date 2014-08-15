@@ -91,11 +91,11 @@ public class TupleArgument implements java.io.Serializable {
      * @throws InvalidOperationException
      *             if the argument is not a number
      */
-    public double doubleValue() throws InvalidOperationException {
-        if (this.value instanceof Number) {
+    public double doubleValue() {
+        if (isNumber()) {
             return ((Number) this.value).doubleValue();
         }
-        throw new InvalidOperationException();
+        throw new InvalidOperationException("The argument is not a Number");
     }
 
     /**
@@ -105,11 +105,11 @@ public class TupleArgument implements java.io.Serializable {
      * @throws InvalidOperationException
      *             if the argument is not a number
      */
-    public float floatValue() throws InvalidOperationException {
-        if (this.value instanceof Number) {
+    public float floatValue() {
+        if (isNumber()) {
             return ((Number) this.value).floatValue();
         }
-        throw new InvalidOperationException();
+        throw new InvalidOperationException("The argument is not a Number");
     }
 
     /**
@@ -118,12 +118,8 @@ public class TupleArgument implements java.io.Serializable {
      * @param index
      *            the index of the argument
      * @return the argument of the compound
-     * @throws InvalidOperationException
-     *             if this argument is not a compound or an out of bounds index
-     *             error is issued
      */
-    public TupleArgument getArg(final int index)
-            throws InvalidOperationException {
+    public TupleArgument getArg(final int index){
         return new TupleArgument(((Struct) this.value.getTerm()).getTerm(index));
     }
 
@@ -150,11 +146,11 @@ public class TupleArgument implements java.io.Serializable {
      *             if this argument is not a structured or an out of bounds
      *             index error is issued
      */
-    public int getArity() throws InvalidOperationException {
-        if (this.value instanceof alice.tuprolog.Struct) {
+    public int getArity() {
+        if (isStruct()) {
             return ((Struct) this.value).getArity();
         }
-        throw new InvalidOperationException();
+        throw new InvalidOperationException("The argument is not a Struct");
     }
 
     /**
@@ -165,13 +161,13 @@ public class TupleArgument implements java.io.Serializable {
      * @throws InvalidOperationException
      *             if the argument is not a structure or a variable
      */
-    public String getName() throws InvalidOperationException {
-        if (this.value instanceof alice.tuprolog.Struct) {
+    public String getName() {
+        if (isStruct()) {
             return ((Struct) this.value).getName();
-        } else if (this.value instanceof alice.tuprolog.Var) {
+        } else if (isVar()) {
             return ((alice.tuprolog.Var) this.value).getName();
         } else {
-            throw new InvalidOperationException();
+            throw new InvalidOperationException("The argument is not a Struct or a Var");
         }
     }
 
@@ -181,14 +177,14 @@ public class TupleArgument implements java.io.Serializable {
      * @throws InvalidOperationException
      *             if this tuple is not a Prolog predicate (a Struct)
      */
-    public String getPredicateIndicator() throws InvalidOperationException {
-        if (this.value instanceof alice.tuprolog.Struct) {
+    public String getPredicateIndicator() {
+        if (isStruct()) {
             // TODO CICORA: oppure return
             // ((Struct)value).getPredicateIndicator();
             return ((alice.tuprolog.Struct) this.value).getName() + "/"
                     + ((alice.tuprolog.Struct) this.value).getArity();
         }
-        throw new InvalidOperationException();
+        throw new InvalidOperationException("The argument is not a Struct");
     }
 
     /**
@@ -221,8 +217,11 @@ public class TupleArgument implements java.io.Serializable {
      * @throws InvalidOperationException
      *             if the argument is not a number
      */
-    public int intValue() throws InvalidOperationException {
-        return ((Number) this.value).intValue();
+    public int intValue() {
+    	if(isNumber()){
+    		return ((Number) this.value).intValue();
+    	}
+    	throw new InvalidOperationException("The argument is not a Number");
     }
 
     /**
@@ -327,8 +326,9 @@ public class TupleArgument implements java.io.Serializable {
      * 
      * @return <code>true</code> if this argument is a struct
      */
-    public boolean isStruct() {
-        return this.value.isCompound();
+    public boolean isStruct() {    	
+        //return this.value.isCompound(); why?
+    	return this.value instanceof alice.tuprolog.Struct;
     }
 
     /**
@@ -368,8 +368,11 @@ public class TupleArgument implements java.io.Serializable {
      * @throws InvalidOperationException
      *             if the argument is not a number
      */
-    public long longValue() throws InvalidOperationException {
-        return ((Number) this.value).longValue();
+    public long longValue() {
+    	if(isLong()){
+    		return ((Number) this.value).longValue();
+    	}
+    	throw new InvalidOperationException("The argument is not a Long");
     }
 
     /**
@@ -406,18 +409,21 @@ public class TupleArgument implements java.io.Serializable {
      * @throws InvalidOperationException
      *             if the argument is not a list
      */
-    public TupleArgument[] toArray() throws InvalidOperationException {
-        final ArrayList<Term> list = new ArrayList<Term>();
-        final Iterator<? extends Term> it = ((Struct) this.value)
-                .listIterator();
-        while (it.hasNext()) {
-            list.add(it.next());
-        }
-        final TupleArgument[] vect = new TupleArgument[list.size()];
-        for (int i = 0; i < vect.length; i++) {
-            vect[i] = new TupleArgument(list.get(i));
-        }
-        return vect;
+    public TupleArgument[] toArray() {
+    	if(isList()){
+	    	final ArrayList<Term> list = new ArrayList<Term>();
+	        final Iterator<? extends Term> it = ((Struct) this.value)
+	                .listIterator();
+	        while (it.hasNext()) {
+	            list.add(it.next());
+	        }
+	        final TupleArgument[] vect = new TupleArgument[list.size()];
+	        for (int i = 0; i < vect.length; i++) {
+	            vect[i] = new TupleArgument(list.get(i));
+	        }
+	        return vect;
+    	}
+    	throw new InvalidOperationException("The argument is not a List");
     }
 
     /**
@@ -429,13 +435,16 @@ public class TupleArgument implements java.io.Serializable {
      *             if the argument is not a list
      */
     public List<Term> toList() throws InvalidTupleOperationException {
-        final LinkedList<Term> list = new LinkedList<Term>();
-        final Iterator<? extends Term> it = ((Struct) this.value)
-                .listIterator();
-        while (it.hasNext()) {
-            list.add(it.next());
+        if(isList()){
+	    	final LinkedList<Term> list = new LinkedList<Term>();
+	        final Iterator<? extends Term> it = ((Struct) this.value)
+	                .listIterator();
+	        while (it.hasNext()) {
+	            list.add(it.next());
+	        }
+	        return list;
         }
-        return list;
+        throw new InvalidOperationException("The argument is not a List");
     }
 
     /**

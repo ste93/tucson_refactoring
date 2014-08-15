@@ -253,9 +253,9 @@ public class TucsonProtocolTCP extends AbstractTucsonProtocol {
         try {
             msg = (NodeMsg) this.inStream.readObject();
         } catch (final IOException e) {
-            throw new DialogExceptionTcp();
+            throw new DialogExceptionTcp(e);
         } catch (final ClassNotFoundException e) {
-            throw new DialogExceptionTcp();
+            throw new DialogExceptionTcp(e);
         }
         return msg;
     }
@@ -300,7 +300,7 @@ public class TucsonProtocolTCP extends AbstractTucsonProtocol {
             this.outStream.writeObject(msg);
             this.outStream.flush();
         } catch (final IOException e) {
-            throw new DialogExceptionTcp();
+            throw new DialogExceptionTcp(e);
         }
     }
 

@@ -16,6 +16,14 @@ package alice.tuplecentre.api.exceptions;
  * @author Alessandro Ricci
  * 
  */
-public class InvalidOperationException extends Exception {
+public class InvalidOperationException extends RuntimeException {
     private static final long serialVersionUID = 2834213882766578233L;
+    
+    public InvalidOperationException(){
+    	super();
+    }
+    
+    public InvalidOperationException(final String message){
+    	super(message);
+    }
 }
