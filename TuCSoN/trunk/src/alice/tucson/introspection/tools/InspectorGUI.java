@@ -24,7 +24,6 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 
 import alice.tucson.api.TucsonAgentId;
 import alice.tucson.api.TucsonTupleCentreId;
@@ -313,11 +312,6 @@ public class InspectorGUI extends javax.swing.JFrame {
         final JButton tuplesBtn = new JButton();
         final JButton pendingBtn = new JButton();
         final JButton reactionsBtn = new JButton();
-       // final JButton specBtn = new JButton();
-       // final JCheckBox vmStepCB = new JCheckBox();
-       // final JButton vmStepBtn = new JButton();
-        final JButton buttonNextStep = new JButton();
-        final JCheckBox checkStepExecution = new JCheckBox();
         this.chooseTC = new javax.swing.JPanel();
         final JLabel tname = new JLabel();
         final JLabel netid = new JLabel();
@@ -429,16 +423,9 @@ public class InspectorGUI extends javax.swing.JFrame {
         vmStepCB.addItemListener(new ItemListener() {
         	@Override
 			public void itemStateChanged(final ItemEvent e) {
-        		
-        		if (specForm.isVisible()) {
-        			vmStepCB.setSelected(false);
-        			return;
-        		}
 				try {
-					if (vmStepCB.isSelected()) {
-						
+					if (vmStepCB.isSelected()) {						
 						vmStepBtn.setEnabled(true);
-						specBtn.setEnabled(false);
 						if (onRefreshCB){
 							onRefreshCB = false;
 							return;
@@ -446,7 +433,6 @@ public class InspectorGUI extends javax.swing.JFrame {
 						context.VmStepMode();
 					} else {
 						vmStepBtn.setEnabled(false);
-						specBtn.setEnabled(true);
 						if (onRefreshCB){
 							onRefreshCB = false;
 							return;
