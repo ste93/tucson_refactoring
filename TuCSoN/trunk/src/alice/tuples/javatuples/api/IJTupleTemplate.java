@@ -30,7 +30,7 @@ public interface IJTupleTemplate extends TupleTemplate {
      *             if the given index is invalid (e.g. >
      *             JTupleTemplate.getNArgs())
      */
-    IJArg getArg(int i) throws InvalidOperationException;
+    IJArg getArg(int i);
 
     /**
      * 

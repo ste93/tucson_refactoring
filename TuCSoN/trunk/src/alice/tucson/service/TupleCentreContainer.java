@@ -471,8 +471,7 @@ public final class TupleCentreContainer {
             final int type, final TucsonTupleCentreId aid,
             final TucsonTupleCentreId tid, final LogicTuple t,
             final OperationCompletionListener l)
-            throws InvalidOperationException,
-            TucsonOperationNotPossibleException, UnreachableNodeException,
+            throws TucsonOperationNotPossibleException, UnreachableNodeException,
             OperationTimeOutException {
         IEnvironmentContext context = null;
         RespectOperation op = null;

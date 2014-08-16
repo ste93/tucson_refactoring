@@ -46,7 +46,7 @@ public interface IJVal extends IJArg {
      * @throws InvalidOperationException
      *             if the JVal is not a double
      */
-    double toDouble() throws InvalidOperationException;
+    double toDouble();
 
     /**
      * 
@@ -54,7 +54,7 @@ public interface IJVal extends IJArg {
      * @throws InvalidOperationException
      *             if the JVal is not a float
      */
-    float toFloat() throws InvalidOperationException;
+    float toFloat();
 
     /**
      * 
@@ -62,7 +62,7 @@ public interface IJVal extends IJArg {
      * @throws InvalidOperationException
      *             if the JVal is not a int
      */
-    int toInt() throws InvalidOperationException;
+    int toInt();
 
     /**
      * 
@@ -70,7 +70,7 @@ public interface IJVal extends IJArg {
      * @throws InvalidOperationException
      *             if the JVal is not a literal (Java String)
      */
-    String toLiteral() throws InvalidOperationException;
+    String toLiteral();
 
     /**
      * 
@@ -78,5 +78,5 @@ public interface IJVal extends IJArg {
      * @throws InvalidOperationException
      *             if the JVal is not a long
      */
-    long toLong() throws InvalidOperationException;
+    long toLong();
 }

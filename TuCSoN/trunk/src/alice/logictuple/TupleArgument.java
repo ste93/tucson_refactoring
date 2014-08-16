@@ -431,10 +431,10 @@ public class TupleArgument implements java.io.Serializable {
      * list of values
      * 
      * @return the list (actually a LinkedList)
-     * @throws InvalidTupleOperationException
+     * @throws InvalidOperationException
      *             if the argument is not a list
      */
-    public List<Term> toList() throws InvalidTupleOperationException {
+    public List<Term> toList() {
         if(isList()){
 	    	final LinkedList<Term> list = new LinkedList<Term>();
 	        final Iterator<? extends Term> it = ((Struct) this.value)

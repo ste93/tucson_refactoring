@@ -259,8 +259,7 @@ public class LogicTuple implements alice.tuplecentre.api.TupleTemplate,
      * @throws InvalidOperationException
      *             for out of bounds error
      */
-    public TupleArgument getArg(final int index)
-            throws InvalidOperationException {
+    public TupleArgument getArg(final int index) {
         return this.info.getArg(index);
     }
 
@@ -269,7 +268,7 @@ public class LogicTuple implements alice.tuplecentre.api.TupleTemplate,
      * 
      * @param name
      *            name of the argument
-     * @return the argument (a structured Value) or null if not presemt
+     * @return the argument (a structured Value) or null if not present
      */
     public TupleArgument getArg(final String name) {
         return this.info.getArg(name);
@@ -283,7 +282,7 @@ public class LogicTuple implements alice.tuplecentre.api.TupleTemplate,
      *             if this argument is not a structure or an out of bounds index
      *             error is issued
      */
-    public int getArity() throws InvalidOperationException {
+    public int getArity() {
         return this.info.getArity();
     }
 
@@ -294,7 +293,7 @@ public class LogicTuple implements alice.tuplecentre.api.TupleTemplate,
      * @throws InvalidOperationException
      *             if the requested operation is not allowed for this tuple
      */
-    public String getName() throws InvalidOperationException {
+    public String getName() {
         return this.info.getName();
     }
 
@@ -309,7 +308,7 @@ public class LogicTuple implements alice.tuplecentre.api.TupleTemplate,
      *             if the tuple is not a predicate (e.g. a tuProlog Struct)
      * 
      */
-    public String getPredicateIndicator() throws InvalidOperationException {
+    public String getPredicateIndicator() {
         return this.info.getPredicateIndicator();
     }
 
@@ -323,7 +322,7 @@ public class LogicTuple implements alice.tuplecentre.api.TupleTemplate,
      * 
      * @param varName
      *            is the name of the variable
-     * @return the value linked to the variable, in the case tha the variable
+     * @return the value linked to the variable, in the case that the variable
      *         exits inside the tuple, null otherwise
      */
     public TupleArgument getVarValue(final String varName) {

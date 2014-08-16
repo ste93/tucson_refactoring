@@ -245,25 +245,21 @@ public final class JTuplesEngine {
         final JTuple jt = (JTuple) tuple;
         final TupleArgument[] tas = new TupleArgument[jt.getNArgs()];
         int i = 0;
-        try {
-            for (final IJVal val : jt) {
-                if (val.isDouble()) {
-                    tas[i] = new Value("double", new Value(val.toDouble()));
-                } else if (val.isFloat()) {
-                    tas[i] = new Value("float", new Value(val.toFloat()));
-                } else if (val.isInt()) {
-                    tas[i] = new Value("int", new Value(val.toInt()));
-                } else if (val.isLiteral()) {
-                    tas[i] = new Value("literal", new Value(val.toLiteral()));
-                } else if (val.isLong()) {
-                    tas[i] = new Value("long", new Value(val.toLong()));
-                }
-                i++;
+        for (final IJVal val : jt) {
+            if (val.isDouble()) {
+                tas[i] = new Value("double", new Value(val.toDouble()));
+            } else if (val.isFloat()) {
+                tas[i] = new Value("float", new Value(val.toFloat()));
+            } else if (val.isInt()) {
+                tas[i] = new Value("int", new Value(val.toInt()));
+            } else if (val.isLiteral()) {
+                tas[i] = new Value("literal", new Value(val.toLiteral()));
+            } else if (val.isLong()) {
+                tas[i] = new Value("long", new Value(val.toLong()));
             }
-        } catch (final InvalidOperationException e) {
-            // cannot happen
-            Logger.getLogger("JTuplesEngine").log(Level.FINEST, "wtf");
+            i++;
         }
+        
         return new LogicTuple("javat", tas);
     }
 
@@ -277,56 +273,51 @@ public final class JTuplesEngine {
         final JTupleTemplate jt = (JTupleTemplate) template;
         final TupleArgument[] tas = new TupleArgument[jt.getNArgs()];
         int i = 0;
-        try {
-            for (final IJArg arg : jt) {
-                if (arg.isVal()) {
-                    final IJVal val = (IJVal) arg;
-                    if (val.isDouble()) {
-                        tas[i] = new Value("double", new Value(val.toDouble()));
-                    } else if (val.isFloat()) {
-                        tas[i] = new Value("float", new Value(val.toFloat()));
-                    } else if (val.isInt()) {
-                        tas[i] = new Value("int", new Value(val.toInt()));
-                    } else if (val.isLiteral()) {
-                        tas[i] = new Value("literal",
-                                new Value(val.toLiteral()));
-                    } else if (val.isLong()) {
-                        tas[i] = new Value("long", new Value(val.toLong()));
-                    }
-                } else if (arg.isVar()) {
-                    final IJVar var = (IJVar) arg;
-                    switch (var.getType()) {
-                        case ANY:
-                            tas[i] = new Var();
-                            break;
-                        case DOUBLE:
-                            tas[i] = new Value("double", new Var());
-                            break;
-                        case FLOAT:
-                            tas[i] = new Value("float", new Var());
-                            break;
-                        case INT:
-                            tas[i] = new Value("int", new Var());
-                            break;
-                        case LITERAL:
-                            tas[i] = new Value("literal", new Var());
-                            break;
-                        case LONG:
-                            tas[i] = new Value("long", new Var());
-                            break;
-                        default:
-                            // cannot happen
-                            Logger.getLogger("JTuplesEngine").log(Level.FINEST,
-                                    "wtf");
-                            break;
-                    }
+        for (final IJArg arg : jt) {
+            if (arg.isVal()) {
+                final IJVal val = (IJVal) arg;
+                if (val.isDouble()) {
+                    tas[i] = new Value("double", new Value(val.toDouble()));
+                } else if (val.isFloat()) {
+                    tas[i] = new Value("float", new Value(val.toFloat()));
+                } else if (val.isInt()) {
+                    tas[i] = new Value("int", new Value(val.toInt()));
+                } else if (val.isLiteral()) {
+                    tas[i] = new Value("literal",
+                            new Value(val.toLiteral()));
+                } else if (val.isLong()) {
+                    tas[i] = new Value("long", new Value(val.toLong()));
                 }
-                i++;
+            } else if (arg.isVar()) {
+                final IJVar var = (IJVar) arg;
+                switch (var.getType()) {
+                    case ANY:
+                        tas[i] = new Var();
+                        break;
+                    case DOUBLE:
+                        tas[i] = new Value("double", new Var());
+                        break;
+                    case FLOAT:
+                        tas[i] = new Value("float", new Var());
+                        break;
+                    case INT:
+                        tas[i] = new Value("int", new Var());
+                        break;
+                    case LITERAL:
+                        tas[i] = new Value("literal", new Var());
+                        break;
+                    case LONG:
+                        tas[i] = new Value("long", new Var());
+                        break;
+                    default:
+                        // cannot happen
+                        Logger.getLogger("JTuplesEngine").log(Level.FINEST,
+                                "wtf");
+                        break;
+                }
             }
-        } catch (final InvalidOperationException e) {
-            // cannot happen
-            Logger.getLogger("JTuplesEngine").log(Level.FINEST, "wtf");
-        }
+            i++;
+        }        
         return new LogicTuple("javat", tas);
     }
 

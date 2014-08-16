@@ -11,8 +11,7 @@ import alice.util.Tools;
  * 
  */
 public class RespectReactionParser {
-    private static boolean bigFatCondition(final TupleArgument arg)
-            throws InvalidOperationException {
+    private static boolean bigFatCondition(final TupleArgument arg){
         return "request".equals(arg.getName())
                 || "response".equals(arg.getName())
                 || "success".equals(arg.getName())

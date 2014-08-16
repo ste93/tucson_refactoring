@@ -46,11 +46,11 @@ public class JTuple implements Iterable<IJVal>, IJTuple {
     }
 
     @Override
-    public IJVal getArg(final int i) throws InvalidOperationException {
-        if (i < this.args.size()) {
+    public IJVal getArg(final int i) {
+        if (i >= 0 && i < this.args.size()) {
             return this.args.get(i);
         }
-        throw new InvalidOperationException();
+        throw new InvalidOperationException("Index out of bounds. Value of the index i: "+i);
     }
 
     /*

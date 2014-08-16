@@ -90,7 +90,7 @@ public class NodeManagementAgent extends Thread {
     }
 
     private void execCmd(final TupleArgument cmd)
-            throws InvalidOperationException, TucsonInvalidLogicTupleException,
+            throws TucsonInvalidLogicTupleException,
             TucsonOperationNotPossibleException {
         final String name = cmd.getName();
         NodeManagementAgent.log("Executing command " + name);

@@ -29,7 +29,7 @@ public interface IJTuple extends Tuple {
      * @throws InvalidOperationException
      *             if the given index is invalid (e.g. > JTuple.getNArgs())
      */
-    IJVal getArg(int i) throws InvalidOperationException;
+    IJVal getArg(int i);
 
     /**
      * 
