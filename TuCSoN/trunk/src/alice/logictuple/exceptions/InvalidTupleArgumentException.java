@@ -23,4 +23,17 @@ public class InvalidTupleArgumentException extends LogicTupleException {
      * 
      */
     private static final long serialVersionUID = 1L;
+
+	public InvalidTupleArgumentException() {
+		super();
+	}
+
+	public InvalidTupleArgumentException(String arg0) {
+		super(arg0);
+	}
+
+	public InvalidTupleArgumentException(String message, Throwable cause) {
+		super(message, cause);
+	}    
+    
 }

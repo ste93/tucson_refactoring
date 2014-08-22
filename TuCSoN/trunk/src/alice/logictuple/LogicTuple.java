@@ -13,8 +13,8 @@
  */
 package alice.logictuple;
 
+import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.tuplecentre.api.exceptions.InvalidOperationException;
-import alice.tuplecentre.api.exceptions.InvalidTupleException;
 import alice.tuprolog.InvalidTermException;
 import alice.tuprolog.Term;
 
@@ -43,17 +43,17 @@ public class LogicTuple implements alice.tuplecentre.api.TupleTemplate,
      * @param st
      *            the text representing the tuple
      * @return the logic tuple interpreted from the text
-     * @exception InvalidTupleException
+     * @exception InvalidLogicTupleException
      *                if the text does not represent a valid logic tuple
      */
     public static LogicTuple parse(final String st)
-            throws InvalidTupleException {
+            throws InvalidLogicTupleException {
         try {
             final Term t = alice.tuprolog.Term.createTerm(st,
                     new LogicTupleOpManager());
             return new LogicTuple(new TupleArgument(t));
         } catch (final InvalidTermException ex) {
-            throw new InvalidTupleException();
+            throw new InvalidLogicTupleException("Exception occurred while parsing the string: \""+st+"\"",ex);
         }
     }
 

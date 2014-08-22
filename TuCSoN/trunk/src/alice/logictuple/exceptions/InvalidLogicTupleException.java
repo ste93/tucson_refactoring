@@ -14,7 +14,7 @@
 package alice.logictuple.exceptions;
 
 /**
- * Exception thrown when a malformed logic logic tuple is created or used
+ * Exception thrown when a malformed logic tuple is created or used
  * 
  * @author Alessandro Ricci
  */
@@ -23,4 +23,17 @@ public class InvalidLogicTupleException extends LogicTupleException {
      * 
      */
     private static final long serialVersionUID = 1L;
+
+	public InvalidLogicTupleException() {
+		super();
+	}
+
+	public InvalidLogicTupleException(String arg0) {
+		super(arg0);
+	}
+
+	public InvalidLogicTupleException(String message, Throwable cause) {
+		super(message, cause);
+	}
+    
 }

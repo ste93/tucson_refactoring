@@ -23,4 +23,19 @@ public class LogicTupleException extends Exception {
      * 
      */
     private static final long serialVersionUID = 1L;
+
+	public LogicTupleException() {
+		super();
+	}
+
+	public LogicTupleException(String arg0) {
+		super(arg0);
+	}
+
+	public LogicTupleException(String message, Throwable cause) {
+		super(message, cause);
+	}
+    
+	
+    
 }
