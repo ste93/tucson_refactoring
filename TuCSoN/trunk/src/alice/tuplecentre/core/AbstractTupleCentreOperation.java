@@ -673,7 +673,7 @@ public abstract class AbstractTupleCentreOperation implements
                 }
             }
             if (!this.operationCompleted) {
-                throw new OperationTimeOutException();
+                throw new OperationTimeOutException(ms);
             }
         }
     }

@@ -22,10 +22,12 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
+
 import alice.logictuple.LogicMatchingEngine;
 import alice.logictuple.LogicTuple;
 import alice.logictuple.LogicTupleOpManager;
 import alice.logictuple.TupleArgument;
+import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.respect.api.exceptions.InvalidTupleCentreIdException;
 import alice.respect.core.InternalEvent;
 import alice.respect.core.InternalOperation;
@@ -434,17 +436,14 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      *            the Prolog variable to unify the result with
      * @param arg1
      *            the identifier of the target tuple centre
+     * @throws InvalidTupleCentreIdException
+     * 			  if arg1 (tuple centre's id) is not a well-formed ground logic term 
      * @return <code>true</code> if the operation is successfull
      */
-    public boolean get_2(final Term arg0, final Term arg1) {
+    public boolean get_2(final Term arg0, final Term arg1) throws InvalidTupleCentreIdException{
         String tcName = null;
         TupleCentreId tid = null;
-        try {
-            tid = new TupleCentreId(arg1);
-        } catch (final InvalidTupleCentreIdException e) {
-            e.printStackTrace();
-            return false;
-        }
+        tid = new TupleCentreId(arg1);
         tcName = tid.getName();
         final AbstractMap<Var, Var> v = new LinkedHashMap<Var, Var>();
         if ("this".equals(tcName)) {
@@ -458,24 +457,20 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
             }
             final alice.tuplecentre.api.Tuple tuple = new LogicTuple("get",
                     array);
-            try {
-                if (((LogicTuple) tuple).getArg(0) != null) {
-                    final Term term = ((LogicTuple) tuple).toTerm();
-                    this.unify(arg0, term.copyGoal(v, 0));
-                    final InputEvent ce = this.vm.getCurrentEvent();
-                    final InternalEvent ev = new InternalEvent(ce,
-                            InternalOperation.makeGetR(new LogicTuple(arg0
-                                    .copyGoal(v, 0))));
-                    ev.setSource(ce.getReactingTC());
-                    ev.setTarget(ce.getReactingTC());
-                    this.vm.fetchTriggeredReactions(ev);
-                    return true;
-                }
-                return false;
-            } catch (final InvalidOperationException e) {
-                e.printStackTrace();
-                return false;
+            
+            if (((LogicTuple) tuple).getArg(0) != null) {
+                final Term term = ((LogicTuple) tuple).toTerm();
+                this.unify(arg0, term.copyGoal(v, 0));
+                final InputEvent ce = this.vm.getCurrentEvent();
+                final InternalEvent ev = new InternalEvent(ce,
+                        InternalOperation.makeGetR(new LogicTuple(arg0
+                                .copyGoal(v, 0))));
+                ev.setSource(ce.getReactingTC());
+                ev.setTarget(ce.getReactingTC());
+                this.vm.fetchTriggeredReactions(ev);
+                return true;
             }
+            return false;            
         }
         Respect2PLibrary.log("Remote get triggered...");
         final InputEvent ce = this.vm.getCurrentEvent();
@@ -494,17 +489,15 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      *            the Prolog variable to unify the result with
      * @param arg1
      *            the identifier of the target tuple centre
+     * @throws InvalidTupleCentreIdException
+     * 			  if arg1 (tuple centre's id) is not a well-formed ground logic term 
+     *            
      * @return <code>true</code> if the operation is successfull
      */
-    public boolean get_s_2(final Term arg0, final Term arg1) {
+    public boolean get_s_2(final Term arg0, final Term arg1) throws InvalidTupleCentreIdException {
         String tcName = null;
         TupleCentreId tid = null;
-        try {
-            tid = new TupleCentreId(arg1);
-        } catch (final InvalidTupleCentreIdException e) {
-            e.printStackTrace();
-            return false;
-        }
+        tid = new TupleCentreId(arg1);
         tcName = tid.getName();
         final AbstractMap<Var, Var> v = new LinkedHashMap<Var, Var>();
         if ("this".equals(tcName)) {
@@ -522,24 +515,19 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
             }
             final alice.tuplecentre.api.Tuple tuple = new LogicTuple("get_s",
                     array);
-            try {
-                if (((LogicTuple) tuple).getArg(0) != null) {
-                    final Term term = ((LogicTuple) tuple).toTerm();
-                    this.unify(arg0, term.copyGoal(v, 0));
-                    final InputEvent ce = this.vm.getCurrentEvent();
-                    final InternalEvent ev = new InternalEvent(ce,
-                            InternalOperation.makeGetSR(new LogicTuple(arg0
-                                    .copyGoal(v, 0))));
-                    ev.setSource(ce.getReactingTC());
-                    ev.setTarget(ce.getReactingTC());
-                    this.vm.fetchTriggeredReactions(ev);
-                    return true;
-                }
-                return false;
-            } catch (final InvalidOperationException e) {
-                e.printStackTrace();
-                return false;
+            if (((LogicTuple) tuple).getArg(0) != null) {
+                final Term term = ((LogicTuple) tuple).toTerm();
+                this.unify(arg0, term.copyGoal(v, 0));
+                final InputEvent ce = this.vm.getCurrentEvent();
+                final InternalEvent ev = new InternalEvent(ce,
+                        InternalOperation.makeGetSR(new LogicTuple(arg0
+                                .copyGoal(v, 0))));
+                ev.setSource(ce.getReactingTC());
+                ev.setTarget(ce.getReactingTC());
+                this.vm.fetchTriggeredReactions(ev);
+                return true;
             }
+            return false;            
         }
         Respect2PLibrary.log("Remote get_s triggered...");
         final InputEvent ce = this.vm.getCurrentEvent();
@@ -588,9 +576,6 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
                 this.vm.fetchTriggeredReactions(internalEv);
                 return true;
             }
-        } catch (final InvalidOperationException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
         } catch (final TucsonOperationNotPossibleException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -689,17 +674,14 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      *            the Prolog variable to unify the result with
      * @param arg1
      *            the identifier of the target tuple centre
+     * @throws InvalidTupleCentreIdException
+     * 			  if arg1 (tuple centre's id) is not a well-formed ground logic term 
      * @return <code>true</code> if the operation is successfull
      */
-    public boolean in_2(final Term arg0, final Term arg1) {
+    public boolean in_2(final Term arg0, final Term arg1) throws InvalidTupleCentreIdException{
         String tcName = null;
         TupleCentreId tid = null;
-        try {
-            tid = new TupleCentreId(arg1);
-        } catch (final InvalidTupleCentreIdException e) {
-            e.printStackTrace();
-            return false;
-        }
+        tid = new TupleCentreId(arg1);
         tcName = tid.getName();
         final LogicTuple tuArg = new LogicTuple(arg0);
         final AbstractMap<Var, Var> v = new LinkedHashMap<Var, Var>();
@@ -741,17 +723,15 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      *            the Prolog variable to unify the result with
      * @param arg2
      *            the identifier of the target tuple centre
+     * @throws InvalidTupleCentreIdException
+     * 			  if arg2 (tuple centre's id) is not a well-formed ground logic term 
+     * 
      * @return <code>true</code> if the operation is successfull
      */
-    public boolean in_all_3(final Term arg0, final Term arg1, final Term arg2) {
+    public boolean in_all_3(final Term arg0, final Term arg1, final Term arg2) throws InvalidTupleCentreIdException{
         String tcName = null;
         TupleCentreId tid = null;
-        try {
-            tid = new TupleCentreId(arg2);
-        } catch (final InvalidTupleCentreIdException e) {
-            e.printStackTrace();
-            return false;
-        }
+        tid = new TupleCentreId(arg2);
         tcName = tid.getName();
         final LogicTuple tuArg = new LogicTuple(arg0);
         final AbstractMap<Var, Var> v = new LinkedHashMap<Var, Var>();
@@ -772,7 +752,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         LogicTuple resultArg = null;
         try {
             resultArg = LogicTuple.parse(tuple);
-        } catch (final InvalidTupleException e) {
+        } catch (final InvalidLogicTupleException e) {
             e.printStackTrace();
             return false;
         }
@@ -785,6 +765,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         return true;
     }
 
+    
     /**
      * 
      * @param ev

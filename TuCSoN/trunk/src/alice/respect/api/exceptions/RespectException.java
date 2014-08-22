@@ -9,4 +9,14 @@ package alice.respect.api.exceptions;
  */
 public class RespectException extends Exception {
     private static final long serialVersionUID = -5787504397253347897L;
+
+	public RespectException() {
+		super();
+	}
+
+	public RespectException(String arg0) {
+		super(arg0);
+	}
+    
+    
 }
