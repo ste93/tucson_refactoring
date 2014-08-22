@@ -19,7 +19,7 @@ import java.util.List;
 import alice.respect.core.RespectOperation;
 import alice.respect.core.RespectVMContext;
 import alice.tuplecentre.api.Tuple;
-import alice.tuplecentre.api.exceptions.InvalidOperationException;
+import alice.tuplecentre.api.exceptions.InvalidCoordinationOperationException;
 import alice.tuplecentre.core.TCCycleResult.Outcome;
 
 /**
@@ -341,7 +341,8 @@ public class SpeakingState extends AbstractTupleCentreVMState {
                         op.setTupleResult(tuple);
                         foundSatisfied = true;
                     } else {
-                        throw new InvalidOperationException();
+                        throw new InvalidCoordinationOperationException("The coordination operation requested does not exist. "
+                    			+ "Operation id: "+ op.getId()+", Operation type: "+op.getType());
                     }
                     if (((RespectVMContext) this.vm).getRespectVM()
                             .getObservers().size() > 0) {
@@ -349,7 +350,7 @@ public class SpeakingState extends AbstractTupleCentreVMState {
                                 .notifyObservableEvent(ev);
                     }
                 }
-            } catch (final InvalidOperationException ex) {
+            } catch (final InvalidCoordinationOperationException ex) {
                 this.vm.notifyException(ex);
                 it.remove();
             }
