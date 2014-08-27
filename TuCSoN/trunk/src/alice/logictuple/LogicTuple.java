@@ -256,8 +256,6 @@ public class LogicTuple implements alice.tuplecentre.api.TupleTemplate,
      * @param index
      *            the position (index) of the argument
      * @return the tuple argument if it exists, <code>null</code> otherwise
-     * @throws InvalidOperationException
-     *             for out of bounds error
      */
     public TupleArgument getArg(final int index) {
         return this.info.getArg(index);
@@ -283,7 +281,10 @@ public class LogicTuple implements alice.tuplecentre.api.TupleTemplate,
      *             error is issued
      */
     public int getArity() {
-        return this.info.getArity();
+    	if(this.info.isStruct())
+    		return this.info.getArity();
+    	else 
+    		throw OperationNotPossibleException("blabla");
     }
 
     /**

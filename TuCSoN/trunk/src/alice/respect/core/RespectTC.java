@@ -14,8 +14,10 @@ package alice.respect.core;
 
 import java.util.Iterator;
 import java.util.LinkedList;
+
 import alice.logictuple.LogicTuple;
 import alice.logictuple.Var;
+import alice.logictuple.exceptions.InvalidVarNameException;
 import alice.respect.api.IEnvironmentContext;
 import alice.respect.api.ILinkContext;
 import alice.respect.api.IManagementContext;
@@ -137,10 +139,16 @@ public class RespectTC implements IRespectTC {
     public IRespectOperation getS(final IId aid,
             final OperationCompletionListener l)
             throws OperationNotPossibleException {
-        final RespectOperation op = RespectOperation.makeGetS(new LogicTuple(
-                "spec", new Var("S")), l);
-        this.vm.doOperation(aid, op);
-        return op;
+        RespectOperation op = null;
+		try {
+			op = RespectOperation.makeGetS(new LogicTuple(
+			        "spec", new Var("S")), l);
+	        this.vm.doOperation(aid, op);
+		} catch (InvalidVarNameException e) {
+			//cannot happen because it's specified here
+			e.printStackTrace();
+		}
+		return op;
     }
 
     /**
@@ -501,7 +509,7 @@ public class RespectTC implements IRespectTC {
             throws InvalidSpecificationException {
         final boolean accepted = this.vm.setReactionSpec(spec);
         if (!accepted) {
-            throw new InvalidSpecificationException();
+            throw new InvalidSpecificationException("RespectSpecification value :"+spec.toString());
         }
         final RespectOperation op = RespectOperation.makeSetS(null);
         final Iterator<LogicTuple> rit = this.vm.getRespectVMContext()

@@ -50,7 +50,7 @@ public class RespectLocalRegistry implements ITCRegistry {
     public IRespectTC getTC(final TupleCentreId id)
             throws InstantiationNotPossibleException {
         if (!this.reg.containsKey(id.getName())) {
-            throw new InstantiationNotPossibleException();
+            throw new InstantiationNotPossibleException("The string "+id.getName() + " is not contained in the registry");
         }
         return this.reg.get(id.getName());
     }

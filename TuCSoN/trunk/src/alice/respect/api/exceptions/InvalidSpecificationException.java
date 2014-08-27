@@ -17,4 +17,14 @@ package alice.respect.api.exceptions;
  */
 public class InvalidSpecificationException extends RespectException {
     private static final long serialVersionUID = -7960971278428173271L;
+
+	public InvalidSpecificationException() {
+		super();
+	}
+
+	public InvalidSpecificationException(String arg0) {
+		super(arg0);
+	}
+    
+    
 }
