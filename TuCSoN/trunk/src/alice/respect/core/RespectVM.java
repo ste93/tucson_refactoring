@@ -136,7 +136,7 @@ public class RespectVM implements Runnable {
             this.context.doOperation(id, op);
             this.news.signalEvent();
         } catch (final alice.tuplecentre.api.exceptions.OperationNotPossibleException e) {
-            throw new OperationNotPossibleException();
+            throw new OperationNotPossibleException(e.getMessage());
         }
     }
 
@@ -233,7 +233,7 @@ public class RespectVM implements Runnable {
             this.context.goCommand();
             this.news.signalEvent();
         } catch (final alice.tuplecentre.api.exceptions.OperationNotPossibleException e) {
-            throw new OperationNotPossibleException();
+            throw new OperationNotPossibleException(e.getMessage());
         }
     }
 
@@ -265,7 +265,7 @@ public class RespectVM implements Runnable {
             this.context.nextStepCommand();
             this.news.signalEvent();
         } catch (final alice.tuplecentre.api.exceptions.OperationNotPossibleException e) {
-            throw new OperationNotPossibleException();
+            throw new OperationNotPossibleException(e.getMessage());
         }
     }
 
@@ -508,7 +508,7 @@ public class RespectVM implements Runnable {
         try {
             this.context.stopCommand();
         } catch (final alice.tuplecentre.api.exceptions.OperationNotPossibleException e) {
-            throw new OperationNotPossibleException();
+            throw new OperationNotPossibleException(e.getMessage());
         }
     }
 }

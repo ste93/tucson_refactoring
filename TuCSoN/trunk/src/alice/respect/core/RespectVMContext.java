@@ -31,10 +31,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 import java.util.Timer;
+
 import alice.logictuple.LogicTuple;
 import alice.logictuple.LogicTupleOpManager;
 import alice.logictuple.TupleArgument;
 import alice.logictuple.Value;
+import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.respect.api.ILinkContext;
 import alice.respect.api.IRespectTC;
 import alice.respect.api.RespectSpecification;
@@ -266,17 +268,13 @@ public class RespectVMContext extends
         LogicTuple tuple = (LogicTuple) t;
         LogicTuple toAdd;
         while (!"[]".equals(tuple.toString())) {
-            try {
-                toAdd = new LogicTuple(tuple.getArg(0));
-                this.tSet.add(toAdd);
-                if (this.isPersistent) {
-                    this.writePersistencyUpdate(toAdd, ModType.ADD_TUPLE);
-                }
-                list.add(new LogicTuple(tuple.getArg(0)));
-                tuple = new LogicTuple(tuple.getArg(1));
-            } catch (final InvalidOperationException e) {
-                e.printStackTrace();
+            toAdd = new LogicTuple(tuple.getArg(0));
+            this.tSet.add(toAdd);
+            if (this.isPersistent) {
+                this.writePersistencyUpdate(toAdd, ModType.ADD_TUPLE);
             }
+            list.add(new LogicTuple(tuple.getArg(0)));
+            tuple = new LogicTuple(tuple.getArg(1));            
         }
         return list;
     }
@@ -289,17 +287,13 @@ public class RespectVMContext extends
     @Override
     public void addSpecTuple(final Tuple t) {
         Tuple tuple = null;
-        try {
-            if (",".equals(((LogicTuple) t).getName())) {
-                tuple = new LogicTuple("reaction", ((LogicTuple) t).getArg(0),
-                        ((LogicTuple) t).getArg(1).getArg(0), ((LogicTuple) t)
-                                .getArg(1).getArg(1));
-            } else {
-                tuple = t;
-            }
-        } catch (final InvalidOperationException e) {
-            e.printStackTrace();
-        }
+        if (",".equals(((LogicTuple) t).getName())) {
+            tuple = new LogicTuple("reaction", ((LogicTuple) t).getArg(0),
+                    ((LogicTuple) t).getArg(1).getArg(0), ((LogicTuple) t)
+                            .getArg(1).getArg(1));
+        } else {
+            tuple = t;
+        }        
         // FIXME LogicTuple > Tuple in all Cicora's API
         this.tSpecSet.add((LogicTuple) tuple);
         if (this.isPersistent) {
@@ -1044,9 +1038,6 @@ public class RespectVMContext extends
                         this.trigCore.solveEnd();
                     }
                 }
-            } catch (final InvalidOperationException e) {
-                e.printStackTrace();
-                this.trigCore.solveEnd();
             } catch (final NoSolutionException e) {
                 this.trigCore.solveEnd();
             } catch (final NoMoreSolutionException e) {
@@ -1471,7 +1462,7 @@ public class RespectVMContext extends
             e.printStackTrace();
         } catch (final IOException e) {
             e.printStackTrace();
-        } catch (final InvalidTupleException e) {
+        } catch (final InvalidLogicTupleException e) {
             e.printStackTrace();
         } finally {
             if (br != null) {
@@ -1709,7 +1700,7 @@ public class RespectVMContext extends
                     final RespectOperation op = RespectOperation.makeRd(
                             logicTuple, null);
                     this.vm.doOperation(null, op);
-                } catch (final InvalidTupleException e) {
+                } catch (final InvalidLogicTupleException e) {
                     e.printStackTrace();
                 } catch (final OperationNotPossibleException e) {
                     e.printStackTrace();
@@ -1723,7 +1714,7 @@ public class RespectVMContext extends
                     final RespectOperation op = RespectOperation.makeIn(
                             logicTuple, null);
                     this.vm.doOperation(null, op);
-                } catch (final InvalidTupleException e) {
+                } catch (final InvalidLogicTupleException e) {
                     e.printStackTrace();
                 } catch (final OperationNotPossibleException e) {
                     e.printStackTrace();
@@ -1872,9 +1863,6 @@ public class RespectVMContext extends
             System.err
                     .println("[RespectVMContext]: InvalidTheoryException @ c: "
                             + e.clause + ", l: " + e.line + ", p: " + e.pos);
-            e.printStackTrace();
-            return false;
-        } catch (final InvalidOperationException e) {
             e.printStackTrace();
             return false;
         }

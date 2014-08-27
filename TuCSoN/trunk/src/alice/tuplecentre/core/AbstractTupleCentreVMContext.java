@@ -161,7 +161,7 @@ public abstract class AbstractTupleCentreVMContext implements
                 this.getCurrentTime());
         synchronized (this.inputEvents) {
             if (this.inputEvents.size() > this.maxPendingInputEventNumber) {
-                throw new OperationNotPossibleException();
+                throw new OperationNotPossibleException("Max pending input event limit reached");
             }
             this.inputEvents.add(ev);
         }

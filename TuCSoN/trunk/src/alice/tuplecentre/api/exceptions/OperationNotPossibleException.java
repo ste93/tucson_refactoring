@@ -20,4 +20,14 @@ package alice.tuplecentre.api.exceptions;
  */
 public class OperationNotPossibleException extends Exception {
     private static final long serialVersionUID = -8477376588854008594L;
+
+	public OperationNotPossibleException() {
+		super();
+	}
+
+	public OperationNotPossibleException(String arg0) {
+		super(arg0);
+	}
+    
+    
 }

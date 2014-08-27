@@ -33,7 +33,7 @@ public class OperationTimeOutException extends RespectException {
 
     /**
      * 
-     * @return the operatio whose timeout expired
+     * @return the operation whose timeout expired
      */
     public IRespectOperation getOperation() {
         return this.op;

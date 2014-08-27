@@ -56,7 +56,7 @@ public class SpecificationSynchInterface extends RootInterface implements
     public LogicTuple inpS(final AgentId id, final LogicTuple t)
             throws InvalidLogicTupleException, OperationNotPossibleException {
         if (t == null) {
-            throw new InvalidLogicTupleException();
+            throw new InvalidLogicTupleException("Null value");
         }
         final IRespectOperation op = this.getCore().inpS(id, t);
         op.waitForOperationCompletion();
@@ -67,7 +67,7 @@ public class SpecificationSynchInterface extends RootInterface implements
     public LogicTuple inS(final AgentId id, final LogicTuple t)
             throws InvalidLogicTupleException, OperationNotPossibleException {
         if (t == null) {
-            throw new InvalidLogicTupleException();
+            throw new InvalidLogicTupleException("Null value");
         }
         final IRespectOperation op = this.getCore().inS(id, t);
         op.waitForOperationCompletion();
@@ -78,7 +78,7 @@ public class SpecificationSynchInterface extends RootInterface implements
     public LogicTuple nopS(final AgentId id, final LogicTuple t)
             throws InvalidLogicTupleException, OperationNotPossibleException {
         if (t == null) {
-            throw new InvalidLogicTupleException();
+            throw new InvalidLogicTupleException("Null value");
         }
         final IRespectOperation op = this.getCore().nopS(id, t);
         op.waitForOperationCompletion();
@@ -89,7 +89,7 @@ public class SpecificationSynchInterface extends RootInterface implements
     public LogicTuple noS(final AgentId id, final LogicTuple t)
             throws InvalidLogicTupleException, OperationNotPossibleException {
         if (t == null) {
-            throw new InvalidLogicTupleException();
+            throw new InvalidLogicTupleException("Null value");
         }
         final IRespectOperation op = this.getCore().noS(id, t);
         op.waitForOperationCompletion();
@@ -100,7 +100,7 @@ public class SpecificationSynchInterface extends RootInterface implements
     public void outS(final AgentId id, final LogicTuple t)
             throws InvalidLogicTupleException, OperationNotPossibleException {
         if (t == null) {
-            throw new InvalidLogicTupleException();
+            throw new InvalidLogicTupleException("Null value");
         }
         final IRespectOperation op = this.getCore().outS(id, t);
         op.waitForOperationCompletion();
@@ -110,7 +110,7 @@ public class SpecificationSynchInterface extends RootInterface implements
     public LogicTuple rdpS(final AgentId id, final LogicTuple t)
             throws InvalidLogicTupleException, OperationNotPossibleException {
         if (t == null) {
-            throw new InvalidLogicTupleException();
+            throw new InvalidLogicTupleException("Null value");
         }
         final IRespectOperation op = this.getCore().rdpS(id, t);
         op.waitForOperationCompletion();
@@ -121,7 +121,7 @@ public class SpecificationSynchInterface extends RootInterface implements
     public LogicTuple rdS(final AgentId id, final LogicTuple t)
             throws InvalidLogicTupleException, OperationNotPossibleException {
         if (t == null) {
-            throw new InvalidLogicTupleException();
+            throw new InvalidLogicTupleException("Null value");
         }
         final IRespectOperation op = this.getCore().rdS(id, t);
         op.waitForOperationCompletion();
