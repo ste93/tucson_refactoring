@@ -2,6 +2,7 @@ package alice.respect.core.tupleset;
 
 import java.util.Iterator;
 import alice.logictuple.LogicTuple;
+import alice.logictuple.exceptions.InvalidLogicTupleException;
 
 /**
  * This interface representing a Tuple Set.
@@ -82,7 +83,7 @@ public interface ITupleSet {
      * Remove a logic tuple from tuple set.
      * 
      * @param t
-     *            a {@code LogicTuple} to remove.
+     *            a {@code LogicTuple} to remove.         
      */
     void remove(LogicTuple t);
 

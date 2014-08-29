@@ -82,7 +82,7 @@ import alice.tuprolog.Theory;
 import alice.tuprolog.Var;
 
 /**
- * This class defines a ReSpecT Context as a specialisation of a tuple centre VM
+ * This class defines a ReSpecT Context as a specialization of a tuple centre VM
  * context (defining VM specific structures)
  * 
  * @see alice.tuplecentre.core.AbstractTupleCentreVMContext

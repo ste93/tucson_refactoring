@@ -281,10 +281,7 @@ public class LogicTuple implements alice.tuplecentre.api.TupleTemplate,
      *             error is issued
      */
     public int getArity() {
-    	if(this.info.isStruct())
     		return this.info.getArity();
-    	else 
-    		throw OperationNotPossibleException("blabla");
     }
 
     /**

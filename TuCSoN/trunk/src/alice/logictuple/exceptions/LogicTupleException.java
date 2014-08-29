@@ -32,6 +32,10 @@ public class LogicTupleException extends Exception {
 		super(arg0);
 	}
 
+	public LogicTupleException(Throwable arg0) {
+		super(arg0);
+	}
+
 	public LogicTupleException(String message, Throwable cause) {
 		super(message, cause);
 	}

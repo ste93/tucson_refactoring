@@ -68,8 +68,6 @@ public interface TransducerStandardInterface {
      * @param ev
      *            the ReSpecT event to be notified
      * @return wether the event has been succesfully notified
-     * @throws InvalidOperationException
-     *             if the tuple representing the event does not have arguments
      * @throws TucsonOperationNotPossibleException
      *             if the requested operation cannot be performed for some
      *             reason
