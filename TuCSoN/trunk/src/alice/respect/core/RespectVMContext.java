@@ -31,6 +31,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 import java.util.Timer;
+
 import alice.logictuple.LogicTuple;
 import alice.logictuple.LogicTupleOpManager;
 import alice.logictuple.TupleArgument;
@@ -49,6 +50,8 @@ import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.introspection.WSetEvent;
+import alice.tucson.persistency.PersistencyData;
+import alice.tucson.persistency.PersistencyXML;
 import alice.tucson.service.Spawn2PLibrary;
 import alice.tucson.service.Spawn2PSolver;
 import alice.tuplecentre.api.AgentId;
@@ -91,7 +94,7 @@ import alice.tuprolog.Var;
  */
 public class RespectVMContext extends
         alice.tuplecentre.core.AbstractTupleCentreVMContext {
-    private enum ModType {
+    public enum ModType {
         ADD_PRED, ADD_SPEC, ADD_TUPLE, DEL_PRED, DEL_SPEC, DEL_TUPLE, EMPTY_PRED, EMPTY_SPEC, EMPTY_TUPLES
     }
 
@@ -203,6 +206,9 @@ public class RespectVMContext extends
     /** multiset of triggered reactions Z */
     private final TRSet zSet;
 
+    /** Persistency XML */
+    private PersistencyXML pXML;
+    
     /**
      * 
      * @param rvm
@@ -426,6 +432,12 @@ public class RespectVMContext extends
             pw.flush();
             pw.close();
             this.log(">>> ...persistency snapshot taken!");
+            
+            // MODIFICA PERSISTENZA
+            PersistencyData pData = new PersistencyData(this.tSet, this.tSpecSet, this.prologPredicates, null);
+            this.pXML = new PersistencyXML(path,fileName);
+            this.pXML.write(pData);
+            
         } catch (final IOException e) {
             e.printStackTrace();
         } finally {
@@ -1466,6 +1478,11 @@ public class RespectVMContext extends
             if (!f.delete()) {
                 this.log(">>> Old persistency file could NOT be deleted!");
             }
+            
+            // MODIFICA NOSTRA
+            this.pXML = new PersistencyXML(path.concat(file));
+            this.pXML.parse();
+            //------
             this.enablePersistency(path, tcName);
         } catch (final FileNotFoundException e) {
             e.printStackTrace();
@@ -1924,6 +1941,8 @@ public class RespectVMContext extends
      */
     private void writePersistencyUpdate(final LogicTuple update,
             final ModType mode) {
+    	//Modifica vince
+    	this.pXML.writeUpdate(update, mode);
         final File f = new File(this.pPath, "tc_" + this.pFileName + "_"
                 + this.pDate + ".dat");
         PrintWriter pw = null;
