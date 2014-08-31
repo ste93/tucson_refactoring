@@ -1,6 +1,7 @@
 package alice.tucson.examples.timedDiningPhilos;
 
 import alice.logictuple.LogicTuple;
+import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.tucson.api.AbstractTucsonAgent;
 import alice.tucson.api.ITucsonOperation;
 import alice.tucson.api.SynchACC;
@@ -8,7 +9,6 @@ import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
-import alice.tuplecentre.api.exceptions.InvalidTupleException;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 import alice.tuplecentre.core.AbstractTupleCentreOperation;
 
@@ -81,7 +81,7 @@ public class DiningPhilosopher extends AbstractTucsonAgent {
                     this.myTable,
                     LogicTuple.parse("chops(" + this.chop1 + "," + this.chop2
                             + ")"), null);
-        } catch (final InvalidTupleException e) {
+        } catch (final InvalidLogicTupleException e) {
             e.printStackTrace();
         } catch (final TucsonOperationNotPossibleException e) {
             e.printStackTrace();
@@ -112,7 +112,7 @@ public class DiningPhilosopher extends AbstractTucsonAgent {
             }
         } catch (final InterruptedException e) {
             e.printStackTrace();
-        } catch (final InvalidTupleException e) {
+        } catch (final InvalidLogicTupleException e) {
             e.printStackTrace();
         } catch (final TucsonOperationNotPossibleException e) {
             e.printStackTrace();
@@ -133,7 +133,7 @@ public class DiningPhilosopher extends AbstractTucsonAgent {
                     this.myTable,
                     LogicTuple.parse("chops(" + this.chop1 + "," + this.chop2
                             + ")"), null);
-        } catch (final InvalidTupleException e) {
+        } catch (final InvalidLogicTupleException e) {
             e.printStackTrace();
         } catch (final TucsonOperationNotPossibleException e) {
             e.printStackTrace();

@@ -1,7 +1,9 @@
 package alice.tucson.examples.distributedDiningPhilos;
 
 import java.io.IOException;
+
 import alice.logictuple.LogicTuple;
+import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.tucson.api.AbstractTucsonAgent;
 import alice.tucson.api.ITucsonOperation;
 import alice.tucson.api.SynchACC;
@@ -11,7 +13,6 @@ import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
 import alice.tucson.examples.utilities.Utils;
-import alice.tuplecentre.api.exceptions.InvalidTupleException;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 import alice.tuplecentre.core.AbstractTupleCentreOperation;
 
@@ -114,7 +115,7 @@ public class DDiningPhilosophersTest extends AbstractTucsonAgent {
             e.printStackTrace();
         } catch (final IOException e) {
             e.printStackTrace();
-        } catch (final InvalidTupleException e) {
+        } catch (final InvalidLogicTupleException e) {
             e.printStackTrace();
         } catch (final TucsonInvalidAgentIdException e) {
             e.printStackTrace();
