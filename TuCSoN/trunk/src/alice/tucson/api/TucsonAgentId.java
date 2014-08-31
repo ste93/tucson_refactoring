@@ -87,7 +87,8 @@ public class TucsonAgentId implements alice.tuplecentre.api.AgentId,
                 this.aid = new AgentId(this.aid + ":uuid"
                         + TucsonAgentId.dropMinus(this.uuid));
             } catch (final InvalidAgentIdException e) {
-                // FIXME This cannot happen
+            	//Cannot happen because it's specified here
+                e.printStackTrace();
             }
         }
         return true;

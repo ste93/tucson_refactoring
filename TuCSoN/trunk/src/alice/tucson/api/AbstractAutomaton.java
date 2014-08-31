@@ -41,11 +41,6 @@ public abstract class AbstractAutomaton extends AbstractTucsonAgent {
     /**
      * @param aid
      *            name of the agent (must be a valid Prolog term)
-     * 
-     * @throws TucsonInvalidAgentIdException
-     *             if the given String does not represent a valid agent
-     *             identifier
-     * 
      * @see alice.tuprolog.Term Term
      * @throws TucsonInvalidAgentIdException
      *             if the given String is not a valid representation of a

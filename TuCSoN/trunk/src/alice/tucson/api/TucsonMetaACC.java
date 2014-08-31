@@ -61,6 +61,7 @@ public final class TucsonMetaACC {
             acc = new ACCProxyAgentSide(aid.toString(), netid, portno);
             aid.assignUUID();
         } catch (final TucsonInvalidAgentIdException e) {
+        	//Cannot happen, aid it's already a valid TucsonAgentId
             e.printStackTrace();
             return null;
         }

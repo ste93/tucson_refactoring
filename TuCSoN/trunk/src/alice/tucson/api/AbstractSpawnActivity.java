@@ -120,15 +120,15 @@ public abstract class AbstractSpawnActivity implements Serializable, Runnable {
      * @param tuple
      *            the tuple argument of the operation
      * @return the tuple result of the operation
+     * @throws TucsonInvalidLogicTupleException
+     *            if the given tuple is not a valid representation of a tuple 
      * @see alice.tucson.api.OrdinarySynchACC OrdinarySynchACC
      */
-    protected final LogicTuple in(final LogicTuple tuple) {
+    protected final LogicTuple in(final LogicTuple tuple) throws TucsonInvalidLogicTupleException {
         if (this.aid != null) {
             try {
                 return (LogicTuple) TupleCentreContainer.doBlockingOperation(
                         TucsonOperation.inCode(), this.aid, this.target, tuple);
-            } catch (final TucsonInvalidLogicTupleException e) {
-                e.printStackTrace();
             } catch (final TucsonOperationNotPossibleException e) {
                 e.printStackTrace();
             }
@@ -137,8 +137,6 @@ public abstract class AbstractSpawnActivity implements Serializable, Runnable {
                 return (LogicTuple) TupleCentreContainer
                         .doBlockingOperation(TucsonOperation.inCode(),
                                 this.tcid, this.target, tuple);
-            } catch (final TucsonInvalidLogicTupleException e) {
-                e.printStackTrace();
             } catch (final TucsonOperationNotPossibleException e) {
                 e.printStackTrace();
             }
@@ -150,16 +148,16 @@ public abstract class AbstractSpawnActivity implements Serializable, Runnable {
      * @param tuple
      *            the tuple argument of the operation
      * @return the list of tuples result of the operation
+     * @throws TucsonInvalidLogicTupleException
+     *            if the given tuple is not a valid representation of a tuple 
      * @see alice.tucson.api.BulkSynchACC BulkSynchACC
      */
-    protected final List<LogicTuple> inAll(final LogicTuple tuple) {
+    protected final List<LogicTuple> inAll(final LogicTuple tuple) throws TucsonInvalidLogicTupleException {
         if (this.aid != null) {
             try {
                 return (List<LogicTuple>) TupleCentreContainer
                         .doBlockingOperation(TucsonOperation.inAllCode(),
                                 this.aid, this.target, tuple);
-            } catch (final TucsonInvalidLogicTupleException e) {
-                e.printStackTrace();
             } catch (final TucsonOperationNotPossibleException e) {
                 e.printStackTrace();
             }
@@ -168,8 +166,6 @@ public abstract class AbstractSpawnActivity implements Serializable, Runnable {
                 return (List<LogicTuple>) TupleCentreContainer
                         .doBlockingOperation(TucsonOperation.inAllCode(),
                                 this.tcid, this.target, tuple);
-            } catch (final TucsonInvalidLogicTupleException e) {
-                e.printStackTrace();
             } catch (final TucsonOperationNotPossibleException e) {
                 e.printStackTrace();
             }
@@ -181,16 +177,16 @@ public abstract class AbstractSpawnActivity implements Serializable, Runnable {
      * @param tuple
      *            the tuple argument of the operation
      * @return the tuple result of the operation
+     * @throws TucsonInvalidLogicTupleException
+     *            if the given tuple is not a valid representation of a tuple 
      * @see alice.tucson.api.OrdinarySynchACC OrdinarySynchACC
      */
-    protected final LogicTuple inp(final LogicTuple tuple) {
+    protected final LogicTuple inp(final LogicTuple tuple) throws TucsonInvalidLogicTupleException {
         if (this.aid != null) {
             try {
                 return (LogicTuple) TupleCentreContainer
                         .doBlockingOperation(TucsonOperation.inpCode(),
                                 this.aid, this.target, tuple);
-            } catch (final TucsonInvalidLogicTupleException e) {
-                e.printStackTrace();
             } catch (final TucsonOperationNotPossibleException e) {
                 e.printStackTrace();
             }
@@ -199,8 +195,6 @@ public abstract class AbstractSpawnActivity implements Serializable, Runnable {
                 return (LogicTuple) TupleCentreContainer.doBlockingOperation(
                         TucsonOperation.inpCode(), this.tcid, this.target,
                         tuple);
-            } catch (final TucsonInvalidLogicTupleException e) {
-                e.printStackTrace();
             } catch (final TucsonOperationNotPossibleException e) {
                 e.printStackTrace();
             }
@@ -228,15 +222,15 @@ public abstract class AbstractSpawnActivity implements Serializable, Runnable {
      * @param tuple
      *            the tuple argument of the operation
      * @return the tuple result of the operation
+     * @throws TucsonInvalidLogicTupleException
+     *            if the given tuple is not a valid representation of a tuple 
      * @see alice.tucson.api.OrdinarySynchACC OrdinarySynchACC
      */
-    protected final LogicTuple no(final LogicTuple tuple) {
+    protected final LogicTuple no(final LogicTuple tuple) throws TucsonInvalidLogicTupleException {
         if (this.aid != null) {
             try {
                 return (LogicTuple) TupleCentreContainer.doBlockingOperation(
                         TucsonOperation.noCode(), this.aid, this.target, tuple);
-            } catch (final TucsonInvalidLogicTupleException e) {
-                e.printStackTrace();
             } catch (final TucsonOperationNotPossibleException e) {
                 e.printStackTrace();
             }
@@ -245,8 +239,6 @@ public abstract class AbstractSpawnActivity implements Serializable, Runnable {
                 return (LogicTuple) TupleCentreContainer
                         .doBlockingOperation(TucsonOperation.noCode(),
                                 this.tcid, this.target, tuple);
-            } catch (final TucsonInvalidLogicTupleException e) {
-                e.printStackTrace();
             } catch (final TucsonOperationNotPossibleException e) {
                 e.printStackTrace();
             }
@@ -258,16 +250,16 @@ public abstract class AbstractSpawnActivity implements Serializable, Runnable {
      * @param tuple
      *            the tuple argument of the operation
      * @return the list of tuples result of the operation
+     * @throws TucsonInvalidLogicTupleException
+     *            if the given tuple is not a valid representation of a tuple 
      * @see alice.tucson.api.BulkSynchACC BulkSynchACC
      */
-    protected final List<LogicTuple> noAll(final LogicTuple tuple) {
+    protected final List<LogicTuple> noAll(final LogicTuple tuple) throws TucsonInvalidLogicTupleException {
         if (this.aid != null) {
             try {
                 return (List<LogicTuple>) TupleCentreContainer
                         .doBlockingOperation(TucsonOperation.noAllCode(),
                                 this.aid, this.target, tuple);
-            } catch (final TucsonInvalidLogicTupleException e) {
-                e.printStackTrace();
             } catch (final TucsonOperationNotPossibleException e) {
                 e.printStackTrace();
             }
@@ -276,8 +268,6 @@ public abstract class AbstractSpawnActivity implements Serializable, Runnable {
                 return (List<LogicTuple>) TupleCentreContainer
                         .doBlockingOperation(TucsonOperation.noAllCode(),
                                 this.tcid, this.target, tuple);
-            } catch (final TucsonInvalidLogicTupleException e) {
-                e.printStackTrace();
             } catch (final TucsonOperationNotPossibleException e) {
                 e.printStackTrace();
             }
@@ -289,16 +279,16 @@ public abstract class AbstractSpawnActivity implements Serializable, Runnable {
      * @param tuple
      *            the tuple argument of the operation
      * @return the tuple result of the operation
+     * @throws TucsonInvalidLogicTupleException
+     *            if the given tuple is not a valid representation of a tuple 
      * @see alice.tucson.api.OrdinarySynchACC OrdinarySynchACC
      */
-    protected final LogicTuple nop(final LogicTuple tuple) {
+    protected final LogicTuple nop(final LogicTuple tuple) throws TucsonInvalidLogicTupleException {
         if (this.aid != null) {
             try {
                 return (LogicTuple) TupleCentreContainer
                         .doBlockingOperation(TucsonOperation.nopCode(),
                                 this.aid, this.target, tuple);
-            } catch (final TucsonInvalidLogicTupleException e) {
-                e.printStackTrace();
             } catch (final TucsonOperationNotPossibleException e) {
                 e.printStackTrace();
             }
@@ -307,8 +297,6 @@ public abstract class AbstractSpawnActivity implements Serializable, Runnable {
                 return (LogicTuple) TupleCentreContainer.doBlockingOperation(
                         TucsonOperation.nopCode(), this.tcid, this.target,
                         tuple);
-            } catch (final TucsonInvalidLogicTupleException e) {
-                e.printStackTrace();
             } catch (final TucsonOperationNotPossibleException e) {
                 e.printStackTrace();
             }
@@ -320,16 +308,16 @@ public abstract class AbstractSpawnActivity implements Serializable, Runnable {
      * @param tuple
      *            the tuple argument of the operation
      * @return the tuple result of the operation
+     * @throws TucsonInvalidLogicTupleException
+     *            if the given tuple is not a valid representation of a tuple 
      * @see alice.tucson.api.OrdinarySynchACC OrdinarySynchACC
      */
-    protected final LogicTuple out(final LogicTuple tuple) {
+    protected final LogicTuple out(final LogicTuple tuple) throws TucsonInvalidLogicTupleException {
         if (this.aid != null) {
             try {
                 return (LogicTuple) TupleCentreContainer
                         .doBlockingOperation(TucsonOperation.outCode(),
                                 this.aid, this.target, tuple);
-            } catch (final TucsonInvalidLogicTupleException e) {
-                e.printStackTrace();
             } catch (final TucsonOperationNotPossibleException e) {
                 e.printStackTrace();
             }
@@ -338,8 +326,6 @@ public abstract class AbstractSpawnActivity implements Serializable, Runnable {
                 return (LogicTuple) TupleCentreContainer.doBlockingOperation(
                         TucsonOperation.outCode(), this.tcid, this.target,
                         tuple);
-            } catch (final TucsonInvalidLogicTupleException e) {
-                e.printStackTrace();
             } catch (final TucsonOperationNotPossibleException e) {
                 e.printStackTrace();
             }
@@ -351,16 +337,16 @@ public abstract class AbstractSpawnActivity implements Serializable, Runnable {
      * @param tuple
      *            the tuple argument of the operation
      * @return the list of tuples result of the operation
+     * @throws TucsonInvalidLogicTupleException
+     *            if the given tuple is not a valid representation of a tuple
      * @see alice.tucson.api.BulkSynchACC BulkSynchACC
      */
-    protected final List<LogicTuple> outAll(final LogicTuple tuple) {
+    protected final List<LogicTuple> outAll(final LogicTuple tuple) throws TucsonInvalidLogicTupleException {
         if (this.aid != null) {
             try {
                 return (List<LogicTuple>) TupleCentreContainer
                         .doBlockingOperation(TucsonOperation.outAllCode(),
                                 this.aid, this.target, tuple);
-            } catch (final TucsonInvalidLogicTupleException e) {
-                e.printStackTrace();
             } catch (final TucsonOperationNotPossibleException e) {
                 e.printStackTrace();
             }
@@ -369,8 +355,6 @@ public abstract class AbstractSpawnActivity implements Serializable, Runnable {
                 return (List<LogicTuple>) TupleCentreContainer
                         .doBlockingOperation(TucsonOperation.outAllCode(),
                                 this.tcid, this.target, tuple);
-            } catch (final TucsonInvalidLogicTupleException e) {
-                e.printStackTrace();
             } catch (final TucsonOperationNotPossibleException e) {
                 e.printStackTrace();
             }
@@ -382,15 +366,15 @@ public abstract class AbstractSpawnActivity implements Serializable, Runnable {
      * @param tuple
      *            the tuple argument of the operation
      * @return the tuple result of the operation
+     * @throws TucsonInvalidLogicTupleException
+     *            if the given tuple is not a valid representation of a tuple
      * @see alice.tucson.api.OrdinarySynchACC OrdinarySynchACC
      */
-    protected final LogicTuple rd(final LogicTuple tuple) {
+    protected final LogicTuple rd(final LogicTuple tuple) throws TucsonInvalidLogicTupleException {
         if (this.aid != null) {
             try {
                 return (LogicTuple) TupleCentreContainer.doBlockingOperation(
                         TucsonOperation.rdCode(), this.aid, this.target, tuple);
-            } catch (final TucsonInvalidLogicTupleException e) {
-                e.printStackTrace();
             } catch (final TucsonOperationNotPossibleException e) {
                 e.printStackTrace();
             }
@@ -399,8 +383,6 @@ public abstract class AbstractSpawnActivity implements Serializable, Runnable {
                 return (LogicTuple) TupleCentreContainer
                         .doBlockingOperation(TucsonOperation.rdCode(),
                                 this.tcid, this.target, tuple);
-            } catch (final TucsonInvalidLogicTupleException e) {
-                e.printStackTrace();
             } catch (final TucsonOperationNotPossibleException e) {
                 e.printStackTrace();
             }
@@ -412,16 +394,16 @@ public abstract class AbstractSpawnActivity implements Serializable, Runnable {
      * @param tuple
      *            the tuple argument of the operation
      * @return the list of tuples result of the operation
+     * @throws TucsonInvalidLogicTupleException
+     *            if the given tuple is not a valid representation of a tuple
      * @see alice.tucson.api.BulkSynchACC BulkSynchACC
      */
-    protected final List<LogicTuple> rdAll(final LogicTuple tuple) {
+    protected final List<LogicTuple> rdAll(final LogicTuple tuple) throws TucsonInvalidLogicTupleException {
         if (this.aid != null) {
             try {
                 return (List<LogicTuple>) TupleCentreContainer
                         .doBlockingOperation(TucsonOperation.rdAllCode(),
                                 this.aid, this.target, tuple);
-            } catch (final TucsonInvalidLogicTupleException e) {
-                e.printStackTrace();
             } catch (final TucsonOperationNotPossibleException e) {
                 e.printStackTrace();
             }
@@ -430,8 +412,6 @@ public abstract class AbstractSpawnActivity implements Serializable, Runnable {
                 return (List<LogicTuple>) TupleCentreContainer
                         .doBlockingOperation(TucsonOperation.rdAllCode(),
                                 this.tcid, this.target, tuple);
-            } catch (final TucsonInvalidLogicTupleException e) {
-                e.printStackTrace();
             } catch (final TucsonOperationNotPossibleException e) {
                 e.printStackTrace();
             }
@@ -443,16 +423,16 @@ public abstract class AbstractSpawnActivity implements Serializable, Runnable {
      * @param tuple
      *            the tuple argument of the operation
      * @return the tuple result of the operation
+     * @throws TucsonInvalidLogicTupleException
+     *            if the given tuple is not a valid representation of a tuple
      * @see alice.tucson.api.OrdinarySynchACC OrdinarySynchACC
      */
-    protected final LogicTuple rdp(final LogicTuple tuple) {
+    protected final LogicTuple rdp(final LogicTuple tuple) throws TucsonInvalidLogicTupleException {
         if (this.aid != null) {
             try {
                 return (LogicTuple) TupleCentreContainer
                         .doBlockingOperation(TucsonOperation.rdpCode(),
                                 this.aid, this.target, tuple);
-            } catch (final TucsonInvalidLogicTupleException e) {
-                e.printStackTrace();
             } catch (final TucsonOperationNotPossibleException e) {
                 e.printStackTrace();
             }
@@ -461,8 +441,6 @@ public abstract class AbstractSpawnActivity implements Serializable, Runnable {
                 return (LogicTuple) TupleCentreContainer.doBlockingOperation(
                         TucsonOperation.rdpCode(), this.tcid, this.target,
                         tuple);
-            } catch (final TucsonInvalidLogicTupleException e) {
-                e.printStackTrace();
             } catch (final TucsonOperationNotPossibleException e) {
                 e.printStackTrace();
             }
@@ -474,16 +452,16 @@ public abstract class AbstractSpawnActivity implements Serializable, Runnable {
      * @param tuple
      *            the tuple argument of the operation
      * @return the tuple result of the operation
+     * @throws TucsonInvalidLogicTupleException
+     *            if the given tuple is not a valid representation of a tuple
      * @see alice.tucson.api.UniformSynchACC UniformSynchACC
      */
-    protected final LogicTuple uin(final LogicTuple tuple) {
+    protected final LogicTuple uin(final LogicTuple tuple) throws TucsonInvalidLogicTupleException {
         if (this.aid != null) {
             try {
                 return (LogicTuple) TupleCentreContainer
                         .doBlockingOperation(TucsonOperation.uinCode(),
                                 this.aid, this.target, tuple);
-            } catch (final TucsonInvalidLogicTupleException e) {
-                e.printStackTrace();
             } catch (final TucsonOperationNotPossibleException e) {
                 e.printStackTrace();
             }
@@ -492,8 +470,6 @@ public abstract class AbstractSpawnActivity implements Serializable, Runnable {
                 return (LogicTuple) TupleCentreContainer.doBlockingOperation(
                         TucsonOperation.uinCode(), this.tcid, this.target,
                         tuple);
-            } catch (final TucsonInvalidLogicTupleException e) {
-                e.printStackTrace();
             } catch (final TucsonOperationNotPossibleException e) {
                 e.printStackTrace();
             }
@@ -505,16 +481,16 @@ public abstract class AbstractSpawnActivity implements Serializable, Runnable {
      * @param tuple
      *            the tuple argument of the operation
      * @return the tuple result of the operation
+     * @throws TucsonInvalidLogicTupleException
+     *            if the given tuple is not a valid representation of a tuple
      * @see alice.tucson.api.UniformSynchACC UniformSynchACC
      */
-    protected final LogicTuple uinp(final LogicTuple tuple) {
+    protected final LogicTuple uinp(final LogicTuple tuple) throws TucsonInvalidLogicTupleException {
         if (this.aid != null) {
             try {
                 return (LogicTuple) TupleCentreContainer.doBlockingOperation(
                         TucsonOperation.uinpCode(), this.aid, this.target,
                         tuple);
-            } catch (final TucsonInvalidLogicTupleException e) {
-                e.printStackTrace();
             } catch (final TucsonOperationNotPossibleException e) {
                 e.printStackTrace();
             }
@@ -523,8 +499,6 @@ public abstract class AbstractSpawnActivity implements Serializable, Runnable {
                 return (LogicTuple) TupleCentreContainer.doBlockingOperation(
                         TucsonOperation.uinpCode(), this.tcid, this.target,
                         tuple);
-            } catch (final TucsonInvalidLogicTupleException e) {
-                e.printStackTrace();
             } catch (final TucsonOperationNotPossibleException e) {
                 e.printStackTrace();
             }
@@ -536,16 +510,16 @@ public abstract class AbstractSpawnActivity implements Serializable, Runnable {
      * @param tuple
      *            the tuple argument of the operation
      * @return the tuple result of the operation
+     * @throws TucsonInvalidLogicTupleException
+     *            if the given tuple is not a valid representation of a tuple
      * @see alice.tucson.api.UniformSynchACC UniformSynchACC
      */
-    protected final LogicTuple uno(final LogicTuple tuple) {
+    protected final LogicTuple uno(final LogicTuple tuple) throws TucsonInvalidLogicTupleException {
         if (this.aid != null) {
             try {
                 return (LogicTuple) TupleCentreContainer
                         .doBlockingOperation(TucsonOperation.unoCode(),
                                 this.aid, this.target, tuple);
-            } catch (final TucsonInvalidLogicTupleException e) {
-                e.printStackTrace();
             } catch (final TucsonOperationNotPossibleException e) {
                 e.printStackTrace();
             }
@@ -554,8 +528,6 @@ public abstract class AbstractSpawnActivity implements Serializable, Runnable {
                 return (LogicTuple) TupleCentreContainer.doBlockingOperation(
                         TucsonOperation.unoCode(), this.tcid, this.target,
                         tuple);
-            } catch (final TucsonInvalidLogicTupleException e) {
-                e.printStackTrace();
             } catch (final TucsonOperationNotPossibleException e) {
                 e.printStackTrace();
             }
@@ -567,16 +539,16 @@ public abstract class AbstractSpawnActivity implements Serializable, Runnable {
      * @param tuple
      *            the tuple argument of the operation
      * @return the tuple result of the operation
+     * @throws TucsonInvalidLogicTupleException
+     *            if the given tuple is not a valid representation of a tuple
      * @see alice.tucson.api.UniformSynchACC UniformSynchACC
      */
-    protected final LogicTuple unop(final LogicTuple tuple) {
+    protected final LogicTuple unop(final LogicTuple tuple) throws TucsonInvalidLogicTupleException {
         if (this.aid != null) {
             try {
                 return (LogicTuple) TupleCentreContainer.doBlockingOperation(
                         TucsonOperation.unopCode(), this.aid, this.target,
                         tuple);
-            } catch (final TucsonInvalidLogicTupleException e) {
-                e.printStackTrace();
             } catch (final TucsonOperationNotPossibleException e) {
                 e.printStackTrace();
             }
@@ -585,8 +557,6 @@ public abstract class AbstractSpawnActivity implements Serializable, Runnable {
                 return (LogicTuple) TupleCentreContainer.doBlockingOperation(
                         TucsonOperation.unopCode(), this.tcid, this.target,
                         tuple);
-            } catch (final TucsonInvalidLogicTupleException e) {
-                e.printStackTrace();
             } catch (final TucsonOperationNotPossibleException e) {
                 e.printStackTrace();
             }
@@ -598,16 +568,16 @@ public abstract class AbstractSpawnActivity implements Serializable, Runnable {
      * @param tuple
      *            the tuple argument of the operation
      * @return the tuple result of the operation
+     * @throws TucsonInvalidLogicTupleException
+     *            if the given tuple is not a valid representation of a tuple
      * @see alice.tucson.api.UniformSynchACC UniformSynchACC
      */
-    protected final LogicTuple urd(final LogicTuple tuple) {
+    protected final LogicTuple urd(final LogicTuple tuple) throws TucsonInvalidLogicTupleException {
         if (this.aid != null) {
             try {
                 return (LogicTuple) TupleCentreContainer
                         .doBlockingOperation(TucsonOperation.urdCode(),
                                 this.aid, this.target, tuple);
-            } catch (final TucsonInvalidLogicTupleException e) {
-                e.printStackTrace();
             } catch (final TucsonOperationNotPossibleException e) {
                 e.printStackTrace();
             }
@@ -616,8 +586,6 @@ public abstract class AbstractSpawnActivity implements Serializable, Runnable {
                 return (LogicTuple) TupleCentreContainer.doBlockingOperation(
                         TucsonOperation.urdCode(), this.tcid, this.target,
                         tuple);
-            } catch (final TucsonInvalidLogicTupleException e) {
-                e.printStackTrace();
             } catch (final TucsonOperationNotPossibleException e) {
                 e.printStackTrace();
             }
@@ -629,16 +597,16 @@ public abstract class AbstractSpawnActivity implements Serializable, Runnable {
      * @param tuple
      *            the tuple argument of the operation
      * @return the tuple result of the operation
+     * @throws TucsonInvalidLogicTupleException
+     *            if the given tuple is not a valid representation of a tuple
      * @see alice.tucson.api.UniformSynchACC UniformSynchACC
      */
-    protected final LogicTuple urdp(final LogicTuple tuple) {
+    protected final LogicTuple urdp(final LogicTuple tuple) throws TucsonInvalidLogicTupleException {
         if (this.aid != null) {
             try {
                 return (LogicTuple) TupleCentreContainer.doBlockingOperation(
                         TucsonOperation.urdpCode(), this.aid, this.target,
                         tuple);
-            } catch (final TucsonInvalidLogicTupleException e) {
-                e.printStackTrace();
             } catch (final TucsonOperationNotPossibleException e) {
                 e.printStackTrace();
             }
@@ -647,8 +615,6 @@ public abstract class AbstractSpawnActivity implements Serializable, Runnable {
                 return (LogicTuple) TupleCentreContainer.doBlockingOperation(
                         TucsonOperation.urdpCode(), this.tcid, this.target,
                         tuple);
-            } catch (final TucsonInvalidLogicTupleException e) {
-                e.printStackTrace();
             } catch (final TucsonOperationNotPossibleException e) {
                 e.printStackTrace();
             }

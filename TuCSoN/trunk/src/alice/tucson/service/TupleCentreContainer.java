@@ -1,7 +1,9 @@
 package alice.tucson.service;
 
 import java.util.HashMap;
+
 import alice.logictuple.LogicTuple;
+import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.respect.api.IEnvironmentContext;
 import alice.respect.api.IManagementContext;
 import alice.respect.api.IOrdinaryAsynchInterface;
@@ -180,7 +182,7 @@ public final class TupleCentreContainer {
             if (type == TucsonOperation.unopCode()) {
                 return context.uin(aid.getAgentId(), (LogicTuple) o);
             }
-        } catch (final InvalidTupleException e) {
+        } catch (final InvalidLogicTupleException e) {
             throw new TucsonInvalidLogicTupleException();
         } catch (final OperationNotPossibleException e) {
             throw new TucsonOperationNotPossibleException();
