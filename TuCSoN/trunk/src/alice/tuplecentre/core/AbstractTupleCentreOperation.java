@@ -14,11 +14,12 @@
 package alice.tuplecentre.core;
 
 import java.util.List;
+
 import alice.logictuple.LogicTuple;
+import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.tuplecentre.api.ITupleCentreOperation;
 import alice.tuplecentre.api.Tuple;
 import alice.tuplecentre.api.TupleTemplate;
-import alice.tuplecentre.api.exceptions.InvalidTupleException;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 import alice.tuplecentre.core.TCCycleResult.Outcome;
 
@@ -279,7 +280,7 @@ public abstract class AbstractTupleCentreOperation implements
             pred.append(this.getPrimitive().toString()).append('(')
                     .append(this.templateArgument).append(')');
             return LogicTuple.parse(pred.toString());
-        } catch (final InvalidTupleException e) {
+        } catch (final InvalidLogicTupleException e) {
             e.printStackTrace();
             return null;
         }
@@ -668,7 +669,7 @@ public abstract class AbstractTupleCentreOperation implements
                 try {
                     this.token.wait(ms);
                 } catch (final InterruptedException e) {
-                    // do nothing here, ususally happens when shutting down
+                    // do nothing here, usually happens when shutting down
                     // nodes
                 }
             }

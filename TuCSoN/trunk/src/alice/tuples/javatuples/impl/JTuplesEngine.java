@@ -40,31 +40,25 @@ public final class JTuplesEngine {
      */
     public static boolean isTemplate(final LogicTuple lt)
             throws InvalidTupleException {
-        try {
-            if ("javat".equals(lt.getName())) {
-                final int a = lt.getArity();
-                for (int i = 0; i < a; i++) {
-                    final TupleArgument ta = lt.getArg(i);
-                    if (ta.getArity() == 0) {
-                        if (ta.isVar()) {
-                            return true;
-                        }
-                        throw new InvalidTupleException();
-                    } else if (ta.getArity() == 1) {
-                        final TupleArgument ta2 = ta.getArg(0);
-                        if (ta2.isVar()) {
-                            return true;
-                        }
+        if ("javat".equals(lt.getName())) {
+            final int a = lt.getArity();
+            for (int i = 0; i < a; i++) {
+                final TupleArgument ta = lt.getArg(i);
+                if (ta.getArity() == 0) {
+                    if (ta.isVar()) {
+                        return true;
+                    }
+                    throw new InvalidTupleException();
+                } else if (ta.getArity() == 1) {
+                    final TupleArgument ta2 = ta.getArg(0);
+                    if (ta2.isVar()) {
+                        return true;
                     }
                 }
-                return false;
             }
-            throw new InvalidTupleException();
-        } catch (final InvalidOperationException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            return false;
         }
-        return false;
+        throw new InvalidTupleException("Error occurred while converting '"+lt.toString()+"' into JTuple");
     }
 
     /**
@@ -140,14 +134,11 @@ public final class JTuplesEngine {
                     }
                 }
             } else {
-                throw new InvalidTupleException();
+                throw new InvalidTupleException("Error occurred while converting '"+tuple.toString()+"' into JTuple");
             }
-        } catch (final InvalidOperationException e) {
-            // cannot happen
-            Logger.getLogger("JTuplesEngine").log(Level.FINEST, "wtf");
         } catch (final InvalidJValException e) {
             // cannot happen
-            Logger.getLogger("JTuplesEngine").log(Level.FINEST, "wtf");
+            Logger.getLogger("JTuplesEngine").log(Level.FINEST, "Error: InvalidJValException");
         }
         jt = new JTuple(vals[0]);
         for (int i = 1; i < vals.length; i++) {
@@ -216,17 +207,14 @@ public final class JTuplesEngine {
                     }
                 }
             } else {
-                throw new InvalidTupleException();
+                throw new InvalidTupleException("Error occurred while converting '"+template.toString()+"' into JTuple");
             }
-        } catch (final InvalidOperationException e) {
-            // cannot happen
-            Logger.getLogger("JTuplesEngine").log(Level.FINEST, "wtf");
         } catch (final InvalidJValException e) {
             // cannot happen
-            Logger.getLogger("JTuplesEngine").log(Level.FINEST, "wtf");
+            Logger.getLogger("JTuplesEngine").log(Level.FINEST, "Error: InvalidJValException");
         } catch (final InvalidJVarException e) {
             // cannot happen
-            Logger.getLogger("JTuplesEngine").log(Level.FINEST, "wtf");
+            Logger.getLogger("JTuplesEngine").log(Level.FINEST, "Error: InvalidJVarException");
         }
         jtt = new JTupleTemplate(args.get(0));
         for (int i = 1; i < args.size(); i++) {
@@ -287,6 +275,9 @@ public final class JTuplesEngine {
                             new Value(val.toLiteral()));
                 } else if (val.isLong()) {
                     tas[i] = new Value("long", new Value(val.toLong()));
+                } else{
+                    Logger.getLogger("JTuplesEngine").log(Level.FINEST,
+                            "Error: Invalid JVal type");
                 }
             } else if (arg.isVar()) {
                 final IJVar var = (IJVar) arg;
@@ -312,7 +303,7 @@ public final class JTuplesEngine {
                     default:
                         // cannot happen
                         Logger.getLogger("JTuplesEngine").log(Level.FINEST,
-                                "wtf");
+                                "Error: Invalid JVar type");
                         break;
                 }
             }

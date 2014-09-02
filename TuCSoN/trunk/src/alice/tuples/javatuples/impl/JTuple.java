@@ -32,7 +32,7 @@ public class JTuple implements Iterable<IJVal>, IJTuple {
             this.args = new ArrayList<IJVal>(JTuple.AVG_CAP);
             this.args.add(arg);
         } else {
-            throw new InvalidTupleException();
+            throw new InvalidTupleException("Null value");
         }
     }
 
@@ -41,7 +41,7 @@ public class JTuple implements Iterable<IJVal>, IJTuple {
         if (arg != null) {
             this.args.add(arg);
         } else {
-            throw new InvalidTupleException();
+            throw new InvalidTupleException("Null value");
         }
     }
 

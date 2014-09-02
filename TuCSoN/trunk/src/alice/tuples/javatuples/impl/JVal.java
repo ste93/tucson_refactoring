@@ -68,7 +68,7 @@ public class JVal implements IJVal {
             this.type = JArgType.LITERAL;
             this.arg = v;
         } else {
-            throw new InvalidJValException();
+            throw new InvalidJValException("Null value");
         }
     }
 

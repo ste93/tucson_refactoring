@@ -29,7 +29,7 @@ public class JVar implements IJVar {
             // this.arg = name;
             // this.val = null;
         } else {
-            throw new InvalidJVarException();
+            throw new InvalidJVarException("Null value");
         }
     }
 

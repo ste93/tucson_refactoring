@@ -68,15 +68,11 @@ public class RespectReactionParser {
      *         parser
      */
     public String parse() {
-        try {
-            if ("[]".equals(this.t.getName())) {
-                return "";
-            }
-            for (int i = 0; i < this.t.getArity(); i++) {
-                this.parse(this.t.getArg(i));
-            }
-        } catch (final InvalidOperationException e) {
-            e.printStackTrace();
+        if ("[]".equals(this.t.getName())) {
+            return "";
+        }
+        for (int i = 0; i < this.t.getArity(); i++) {
+            this.parse(this.t.getArg(i));
         }
         RespectReactionParser.log("spec = "
                 + this.spec.substring(1, this.spec.length() - 1));
@@ -84,58 +80,54 @@ public class RespectReactionParser {
     }
 
     private void parse(final TupleArgument arg) {
-        try {
-            if ("[]".equals(arg.toString())) {
-                if (this.nTimes == 1) {
-                    this.spec = this.spec.substring(0, this.spec.length() - 1)
-                            + ")).'";
-                } else {
-                    this.spec = this.spec.substring(0, this.spec.length() - 1)
-                            + ".'";
-                }
-            } else if (",".equals(Tools.removeApices(arg.getName()))) {
-                for (int i = 0; i < arg.getArity(); i++) {
-                    this.parse(arg.getArg(i));
-                }
-                if (this.flag) {
-                    this.nTimes++;
-                    if (this.nTimes == 1) {
-                        this.spec = this.spec.substring(0,
-                                this.spec.length() - 1);
-                        this.spec += ")).";
-                    }
-                }
-            } else if (".".equals(Tools.removeApices(arg.getName()))) {
-                this.spec += " reaction(";
-                this.nGuards = 0;
-                this.flag = false;
-                this.nTimes = 0;
-                for (int i = 0; i < arg.getArity(); i++) {
-                    this.parse(arg.getArg(i));
-                }
+        if ("[]".equals(arg.toString())) {
+            if (this.nTimes == 1) {
+                this.spec = this.spec.substring(0, this.spec.length() - 1)
+                        + ")).'";
             } else {
-                if (RespectReactionParser.bigFatCondition(arg)) {
-                    this.nGuards++;
-                    if (this.nGuards == 1) {
-                        this.flag = false;
-                        this.spec += "(" + arg + ",";
-                    } else {
-                        this.spec += arg + ",";
-                    }
-                } else {
-                    if (this.nGuards > 0) {
-                        this.nGuards = 0;
-                        this.flag = true;
-                        this.spec = this.spec.substring(0,
-                                this.spec.length() - 1);
-                        this.spec += "),(" + arg + ",";
-                    } else {
-                        this.spec += arg + ",";
-                    }
+                this.spec = this.spec.substring(0, this.spec.length() - 1)
+                        + ".'";
+            }
+        } else if (",".equals(Tools.removeApices(arg.getName()))) {
+            for (int i = 0; i < arg.getArity(); i++) {
+                this.parse(arg.getArg(i));
+            }
+            if (this.flag) {
+                this.nTimes++;
+                if (this.nTimes == 1) {
+                    this.spec = this.spec.substring(0,
+                            this.spec.length() - 1);
+                    this.spec += ")).";
                 }
             }
-        } catch (final InvalidOperationException e) {
-            e.printStackTrace();
+        } else if (".".equals(Tools.removeApices(arg.getName()))) {
+            this.spec += " reaction(";
+            this.nGuards = 0;
+            this.flag = false;
+            this.nTimes = 0;
+            for (int i = 0; i < arg.getArity(); i++) {
+                this.parse(arg.getArg(i));
+            }
+        } else {
+            if (RespectReactionParser.bigFatCondition(arg)) {
+                this.nGuards++;
+                if (this.nGuards == 1) {
+                    this.flag = false;
+                    this.spec += "(" + arg + ",";
+                } else {
+                    this.spec += arg + ",";
+                }
+            } else {
+                if (this.nGuards > 0) {
+                    this.nGuards = 0;
+                    this.flag = true;
+                    this.spec = this.spec.substring(0,
+                            this.spec.length() - 1);
+                    this.spec += "),(" + arg + ",";
+                } else {
+                    this.spec += arg + ",";
+                }
+            }
         }
     }
 }

@@ -35,7 +35,7 @@ public class JTupleTemplate implements Iterable<IJArg>, IJTupleTemplate {
             this.args = new ArrayList<IJArg>(JTupleTemplate.AVG_CAP);
             this.args.add(arg);
         } else {
-            throw new InvalidTupleException();
+            throw new InvalidTupleException("Null value");
         }
     }
 
@@ -50,7 +50,7 @@ public class JTupleTemplate implements Iterable<IJArg>, IJTupleTemplate {
         if (arg != null) {
             this.args.add(arg);
         } else {
-            throw new InvalidTupleException();
+            throw new InvalidTupleException("Null value");
         }
     }
 
