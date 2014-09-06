@@ -16,10 +16,12 @@ package alice.tucson.service;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
 import alice.logictuple.LogicTuple;
 import alice.logictuple.LogicTupleOpManager;
 import alice.logictuple.Value;
 import alice.logictuple.Var;
+import alice.logictuple.exceptions.InvalidVarNameException;
 import alice.tucson.api.EnhancedACC;
 import alice.tucson.api.ITucsonOperation;
 import alice.tucson.api.TucsonAgentId;
@@ -29,7 +31,7 @@ import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
 import alice.tucson.network.AbstractTucsonProtocol;
 import alice.tucson.network.TucsonMsgRequest;
-import alice.tucson.network.exceptions.DialogException;
+import alice.tucson.network.exceptions.DialogSendException;
 import alice.tuplecentre.api.Tuple;
 import alice.tuplecentre.api.TupleCentreId;
 import alice.tuplecentre.api.TupleTemplate;
@@ -151,7 +153,7 @@ public class ACCProxyAgentSide implements EnhancedACC {
                     op.getLogicTupleArgument());
             try {
                 info.sendMsgRequest(exit);
-            } catch (final DialogException e) {
+            } catch (final DialogSendException e) {
                 e.printStackTrace();
             }
         }
@@ -193,7 +195,13 @@ public class ACCProxyAgentSide implements EnhancedACC {
     public ITucsonOperation getS(final TupleCentreId tid, final Long timeout)
             throws TucsonOperationNotPossibleException,
             UnreachableNodeException, OperationTimeOutException {
-        final LogicTuple spec = new LogicTuple("spec", new Var("S"));
+        LogicTuple spec = null;
+		try {
+			spec = new LogicTuple("spec", new Var("S"));
+		} catch (InvalidVarNameException e) {
+			//Cannot happen, the var name it's specified here
+			e.printStackTrace();
+		}
         return this.executor.doBlockingOperation(this.aid,
                 TucsonOperation.getSCode(), tid, spec, timeout);
     }

@@ -15,14 +15,18 @@ package alice.tucson.introspection.tools;
 
 import java.awt.Color;
 import java.io.IOException;
+
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
+
 import alice.logictuple.LogicTuple;
+import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.tucson.introspection.GetSnapshotMsg;
 import alice.tucson.introspection.InspectorProtocol;
+import alice.tucson.network.exceptions.DialogSendException;
 import alice.tuplecentre.api.exceptions.InvalidTupleException;
 
 /**
@@ -119,7 +123,7 @@ public class EventViewer extends javax.swing.JFrame {
         LogicTuple t = null;
         try {
             t = LogicTuple.parse(st);
-        } catch (final InvalidTupleException e) {
+        } catch (final InvalidLogicTupleException e) {
             this.outputState
                     .setText("Please input an admissible tuple template...");
         }
@@ -144,10 +148,10 @@ public class EventViewer extends javax.swing.JFrame {
                 this.context.setProtocol(this.mainForm.protocol);
             }
             this.buttonGetActionPerformed();
-        } catch (final InvalidTupleException e) {
+        } catch (final InvalidLogicTupleException e) {
             this.outputState
                     .setText("Given template is not an admissible Prolog term.");
-        } catch (final IOException e) {
+        } catch (final DialogSendException e) {
             this.outputState.setText(e.toString());
         }
     }
@@ -168,7 +172,7 @@ public class EventViewer extends javax.swing.JFrame {
     private void buttonGetActionPerformed() {
         try {
             this.context.getSnapshot(GetSnapshotMsg.WSET);
-        } catch (final IOException e) {
+        } catch (final DialogSendException e) {
             this.outputState.setText(e.toString());
         }
         this.outputState.setText("Observation done.");
@@ -195,7 +199,7 @@ public class EventViewer extends javax.swing.JFrame {
             this.mainForm.protocol.setWsetFilter(null);
             try {
                 this.context.setProtocol(this.mainForm.protocol);
-            } catch (final IOException e) {
+            } catch (final DialogSendException e) {
                 this.outputState.setText(e.toString());
             }
         }
@@ -564,7 +568,7 @@ public class EventViewer extends javax.swing.JFrame {
                 .setPendingQueryObservType(InspectorProtocol.PROACTIVE_OBSERVATION);
         try {
             this.context.setProtocol(this.mainForm.protocol);
-        } catch (final IOException e) {
+        } catch (final DialogSendException e) {
             this.outputState.setText(e.toString());
         }
         this.buttonGet.setEnabled(false);
@@ -577,7 +581,7 @@ public class EventViewer extends javax.swing.JFrame {
                 .setPendingQueryObservType(InspectorProtocol.REACTIVE_OBSERVATION);
         try {
             this.context.setProtocol(this.mainForm.protocol);
-        } catch (final IOException e) {
+        } catch (final DialogSendException e) {
             this.outputState.setText(e.toString());
         }
         this.buttonGet.setEnabled(true);

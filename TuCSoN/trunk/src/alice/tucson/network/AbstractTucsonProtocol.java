@@ -14,11 +14,16 @@ package alice.tucson.network;
 
 import java.io.IOException;
 import java.util.Properties;
+
 import alice.tucson.api.TucsonMetaACC;
 import alice.tucson.introspection.InspectorContextEvent;
 import alice.tucson.introspection.NewInspectorMsg;
 import alice.tucson.introspection.NodeMsg;
+import alice.tucson.network.exceptions.DialogAcceptException;
+import alice.tucson.network.exceptions.DialogCloseException;
 import alice.tucson.network.exceptions.DialogException;
+import alice.tucson.network.exceptions.DialogReceiveException;
+import alice.tucson.network.exceptions.DialogSendException;
 import alice.tucson.service.ACCDescription;
 
 /**
@@ -41,17 +46,17 @@ public abstract class AbstractTucsonProtocol implements java.io.Serializable {
      * 
      * @return the protocol to be used for interacting with TuCSoN
      * 
-     * @throws DialogException
+     * @throws DialogAcceptException
      *             if something goes wrong in the underlying network
      */
     public abstract AbstractTucsonProtocol acceptNewDialog()
-            throws DialogException;
+            throws DialogAcceptException;
 
     /**
-     * @throws DialogException
+     * @throws DialogCloseException
      *             if something goes wrong in the underlying network
      */
-    public abstract void end() throws DialogException;
+    public abstract void end() throws DialogCloseException;
 
     /**
      * 
@@ -82,203 +87,227 @@ public abstract class AbstractTucsonProtocol implements java.io.Serializable {
     }
 
     /**
-     * 
-     * @throws ClassNotFoundException
-     *             if the received object's class cannot be found
-     * @throws IOException
-     *             if some network problems arise
+     * @throws DialogReceiveException 
+     *				if something goes wrong in the underlying network
      */
-    public void receiveEnterRequest() throws ClassNotFoundException,
-            IOException {
-        final String agentName = this.receiveString();
-        final String agentRole = this.receiveString();
-        final String tcName = this.receiveString();
-        final Properties profile = new Properties();
-        if (agentName.startsWith("'@'")) {
-            profile.setProperty("tc-identity", agentName);
-        } else {
-            profile.setProperty("agent-identity", agentName);
+    public void receiveEnterRequest() throws DialogReceiveException  {
+        try{
+	    	final String agentName = this.receiveString();
+	        final String agentRole = this.receiveString();
+	        final String tcName = this.receiveString();
+	        
+	        final Properties profile = new Properties();
+	        if (agentName.startsWith("'@'")) {
+	            profile.setProperty("tc-identity", agentName);
+	        } else {
+	            profile.setProperty("agent-identity", agentName);
+	        }
+	        profile.setProperty("agent-role", agentRole);
+	        profile.setProperty("tuple-centre", tcName);
+	        this.context = new ACCDescription(profile);
+        } catch (ClassNotFoundException e){
+        	 throw new DialogReceiveException(e);
+        } catch (IOException e){
+        	 throw new DialogReceiveException(e);
         }
-        profile.setProperty("agent-role", agentRole);
-        profile.setProperty("tuple-centre", tcName);
-        this.context = new ACCDescription(profile);
     }
 
     /**
      * 
-     * @throws IOException
-     *             if some network problems arise
+     * @throws DialogReceiveException 
+     *				if something goes wrong in the underlying network
      */
-    public void receiveEnterRequestAnswer() throws IOException {
-        this.reqAllowed = this.receiveBoolean();
+    public void receiveEnterRequestAnswer() throws DialogReceiveException {
+        try {
+			this.reqAllowed = this.receiveBoolean();
+		} catch (IOException e) {
+			throw new DialogReceiveException(e);
+		}
     }
 
     /**
      * 
-     * @throws IOException
-     *             if some network problems arise
+     * @throws DialogReceiveException 
      */
-    public void receiveFirstRequest() throws IOException {
-        this.reqType = this.receiveInt();
+    public void receiveFirstRequest() throws DialogReceiveException {
+        try {
+			this.reqType = this.receiveInt();
+		} catch (IOException e) {
+			throw new DialogReceiveException(e);
+		}
     }
 
     /**
      * 
      * @return the Inspector event received over the network
-     * @throws DialogException
+     * @throws DialogReceiveException
      *             if something goes wrong in the underlying network
      */
     public abstract InspectorContextEvent receiveInspectorEvent()
-            throws DialogException;
+            throws DialogReceiveException;
 
     /**
      * 
      * @return the Inspector message received over the network
-     * @throws DialogException
+     * @throws DialogReceiveException
      *             if something goes wrong in the underlying network
      */
     public abstract NewInspectorMsg receiveInspectorMsg()
-            throws DialogException;
+            throws DialogReceiveException;
 
     /**
      * 
      * @return the TuCSoN message received over the network
-     * @throws DialogException
+     * @throws DialogReceiveException
      *             if something goes wrong in the underlying network
      */
-    public abstract TucsonMsg receiveMsg() throws DialogException;
+    public abstract TucsonMsg receiveMsg() throws DialogReceiveException;
 
     /**
      * 
      * @return the TuCSoN message reply event received over the network
-     * @throws DialogException
+     * @throws DialogReceiveException
      *             if something goes wrong in the underlying network
      */
-    public abstract TucsonMsgReply receiveMsgReply() throws DialogException;
+    public abstract TucsonMsgReply receiveMsgReply() throws DialogReceiveException;
 
     /**
      * 
      * @return the TuCSoN message request received over the network
-     * @throws DialogException
+     * @throws DialogReceiveException
      *             if something goes wrong in the underlying network
      */
-    public abstract TucsonMsgRequest receiveMsgRequest() throws DialogException;
+    public abstract TucsonMsgRequest receiveMsgRequest() throws DialogReceiveException;
 
     /**
      * 
      * @return the node message received over the network
-     * @throws DialogException
+     * @throws DialogReceiveException
      *             if something goes wrong in the underlying network
      */
-    public abstract NodeMsg receiveNodeMsg() throws DialogException;
+    public abstract NodeMsg receiveNodeMsg() throws DialogReceiveException;
 
     /**
      * 
      * @param ctx
      *            the ACC profile to be associated to this protocol
-     * @throws IOException
-     *             if some network problems arise
+     * @throws DialogSendException
+     *             if something goes wrong in the underlying network
      */
-    public void sendEnterRequest(final ACCDescription ctx) throws IOException {
-        this.send(AbstractTucsonProtocol.REQ_ENTERCONTEXT);
-        String agentName = ctx.getProperty("agent-identity");
-        if (agentName == null) {
-            agentName = ctx.getProperty("tc-identity");
-            if (agentName == null) {
-                agentName = "anonymous";
-            }
+    public void sendEnterRequest(final ACCDescription ctx) throws DialogSendException {
+        try{
+        	this.send(AbstractTucsonProtocol.REQ_ENTERCONTEXT);        
+	        String agentName = ctx.getProperty("agent-identity");
+	        if (agentName == null) {
+	            agentName = ctx.getProperty("tc-identity");
+	            if (agentName == null) {
+	                agentName = "anonymous";
+	            }
+	        }
+	        this.send(agentName);
+	        String agentProfile = ctx.getProperty("agent-role");
+	        if (agentProfile == null) {
+	            agentProfile = "default";
+	        }
+	        this.send(agentProfile);
+	        String tcName = ctx.getProperty("tuple-centre");
+	        if (tcName == null) {
+	            tcName = "_";
+	        }
+	        this.send(tcName);
+	        this.flush();
+        } catch (IOException e){
+        	throw new DialogSendException(e);
         }
-        this.send(agentName);
-        String agentProfile = ctx.getProperty("agent-role");
-        if (agentProfile == null) {
-            agentProfile = "default";
-        }
-        this.send(agentProfile);
-        String tcName = ctx.getProperty("tuple-centre");
-        if (tcName == null) {
-            tcName = "_";
-        }
-        this.send(tcName);
-        this.flush();
     }
 
     /**
      * 
-     * @throws IOException
-     *             if some network problems arise
+     * @throws DialogSendException
+     *             if something goes wrong in the underlying network
      */
-    public void sendEnterRequestAccepted() throws IOException {
-        this.send(true);
-        this.flush();
+    public void sendEnterRequestAccepted() throws DialogSendException {
+        try {
+			this.send(true);
+			this.flush();
+		} catch (IOException e) {
+			throw new DialogSendException(e);
+		}
+        
     }
 
     /**
      * 
-     * @throws IOException
-     *             if some network problems arise
+     * @throws DialogSendException
+     *             if something goes wrong in the underlying network
      */
-    public void sendEnterRequestRefused() throws IOException {
-        this.send(false);
-        this.flush();
+    public void sendEnterRequestRefused() throws DialogSendException {
+        try {
+			this.send(false);
+			this.flush();
+		} catch (IOException e) {
+			throw new DialogSendException(e);
+		}
+        
     }
 
     /**
      * 
      * @param msg
      *            the message to send over the network
-     * @throws DialogException
+     * @throws DialogSendException
      *             if something goes wrong in the underlying network
      */
     public abstract void sendInspectorEvent(InspectorContextEvent msg)
-            throws DialogException;
+            throws DialogSendException;
 
     /**
      * 
      * @param msg
      *            the message to send over the network
-     * @throws DialogException
+     * @throws DialogSendException
      *             if something goes wrong in the underlying network
      */
     public abstract void sendInspectorMsg(NewInspectorMsg msg)
-            throws DialogException;
+            throws DialogSendException;
 
     /**
      * 
      * @param msg
      *            the message to send over the network
-     * @throws DialogException
+     * @throws DialogSendException
      *             if something goes wrong in the underlying network
      */
-    public abstract void sendMsg(TucsonMsg msg) throws DialogException;
+    public abstract void sendMsg(TucsonMsg msg) throws DialogSendException;
 
     /**
      * 
      * @param reply
      *            the message to send over the network
-     * @throws DialogException
+     * @throws DialogSendException
      *             if something goes wrong in the underlying network
      */
     public abstract void sendMsgReply(TucsonMsgReply reply)
-            throws DialogException;
+            throws DialogSendException;
 
     /**
      * 
      * @param request
      *            the message to send over the network
-     * @throws DialogException
+     * @throws DialogSendException
      *             if something goes wrong in the underlying network
      */
     public abstract void sendMsgRequest(TucsonMsgRequest request)
-            throws DialogException;
+            throws DialogSendException;
 
     /**
      * 
      * @param msg
      *            the message to send over the network
-     * @throws DialogException
+     * @throws DialogSendException
      *             if something goes wrong in the underlying network
      */
-    public abstract void sendNodeMsg(NodeMsg msg) throws DialogException;
+    public abstract void sendNodeMsg(NodeMsg msg) throws DialogSendException;
 
     /**
      * 
@@ -378,11 +407,15 @@ public abstract class AbstractTucsonProtocol implements java.io.Serializable {
     }
 
     /**
-     * @throws IOException
-     *             if the message cannot be sent due to network problems
+     * @throws DialogSendException
+     *             if something goes wrong in the underlying network
      */
-    public void sendNodeActiveReply() throws IOException {
-        this.send(TucsonMetaACC.getVersion());
-        this.flush();
+    public void sendNodeActiveReply() throws DialogSendException {
+        try {
+			this.send(TucsonMetaACC.getVersion());
+	        this.flush();
+		} catch (IOException e) {
+			throw new DialogSendException(e);
+		}
     }
 }

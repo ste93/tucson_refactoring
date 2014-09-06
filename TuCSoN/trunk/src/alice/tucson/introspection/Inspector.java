@@ -14,8 +14,10 @@
 package alice.tucson.introspection;
 
 import java.io.IOException;
+
 import alice.tucson.api.TucsonAgentId;
 import alice.tucson.api.TucsonTupleCentreId;
+import alice.tucson.network.exceptions.DialogSendException;
 
 /**
  * 
@@ -69,8 +71,8 @@ public class Inspector extends Thread implements InspectorContextListener {
         this.q = true;
         try {
             this.context.exit();
-        } catch (final IOException e) {
-            e.printStackTrace();
+        } catch (DialogSendException e){
+        	e.printStackTrace();
         }
         this.interrupt();
     }
@@ -82,15 +84,7 @@ public class Inspector extends Thread implements InspectorContextListener {
                 + this.context.getTid().getNode() + ":"
                 + this.context.getTid().getPort() + " >");
         while (!this.q) {
-            try {
-                this.context.acceptVMEvent();
-            } catch (final ClassNotFoundException e) {
-                e.printStackTrace();
-                break;
-            } catch (final IOException e) {
-                e.printStackTrace();
-                break;
-            }
+            this.context.acceptVMEvent();
         }
         System.out.println("[Inspector]: Stopped inspecting TuCSoN Node < "
                 + this.context.getTid().getName() + "@"

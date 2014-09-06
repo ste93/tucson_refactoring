@@ -19,6 +19,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+
 import alice.logictuple.LogicTuple;
 import alice.respect.api.TupleCentreId;
 import alice.tucson.api.TucsonOpId;
@@ -31,7 +32,9 @@ import alice.tucson.network.TucsonMsgReply;
 import alice.tucson.network.TucsonMsgRequest;
 import alice.tucson.network.TucsonProtocolTCP;
 import alice.tucson.network.exceptions.DialogException;
-import alice.tucson.network.exceptions.DialogExceptionTcp;
+import alice.tucson.network.exceptions.DialogInitializationException;
+import alice.tucson.network.exceptions.DialogReceiveException;
+import alice.tucson.network.exceptions.DialogSendException;
 import alice.tuplecentre.api.Tuple;
 import alice.tuplecentre.api.TupleTemplate;
 import alice.tuplecentre.core.AbstractTupleCentreOperation;
@@ -69,6 +72,7 @@ public class InterTupleCentreACCProxy implements InterTupleCentreACC,
             try {
                 jlib.register(new alice.tuprolog.Struct("config"), this);
             } catch (final InvalidObjectIdException e) {
+            	//Cannot happen, the object name it's specified here
                 e.printStackTrace();
             }
         }
@@ -80,7 +84,7 @@ public class InterTupleCentreACCProxy implements InterTupleCentreACC,
                 TucsonMsgReply msg = null;
                 try {
                     msg = this.dialog.receiveMsgReply();
-                } catch (final DialogException e) {
+                } catch (final DialogReceiveException e) {
                     InterTupleCentreACCProxy.this
                             .log("TuCSoN node service unavailable, nothing I can do");
                     this.setStop();
@@ -235,11 +239,7 @@ public class InterTupleCentreACCProxy implements InterTupleCentreACC,
                 .getName())) {
             this.aid = (TucsonTupleCentreId) id;
         } else if ("java.lang.String".equals(id.getClass().getName())) {
-            try {
-                this.aid = new TucsonTupleCentreId((String) id);
-            } catch (final TucsonInvalidTupleCentreIdException e) {
-                e.printStackTrace();
-            }
+            this.aid = new TucsonTupleCentreId((String) id);
         } else {
             throw new TucsonInvalidTupleCentreIdException();
         }
@@ -254,25 +254,17 @@ public class InterTupleCentreACCProxy implements InterTupleCentreACC,
     public synchronized TucsonOpId doOperation(final Object tid,
             final AbstractTupleCentreOperation op)
             throws TucsonOperationNotPossibleException,
-            UnreachableNodeException {
+            UnreachableNodeException,TucsonInvalidTupleCentreIdException  {
         TucsonTupleCentreId tcid = null;
         if ("alice.respect.api.TupleCentreId".equals(tid.getClass().getName())) {
             final TupleCentreId id = (TupleCentreId) tid;
-            try {
-                tcid = new TucsonTupleCentreId(id.getName(), id.getNode(),
+            tcid = new TucsonTupleCentreId(id.getName(), id.getNode(),
                         String.valueOf(id.getPort()));
-            } catch (final TucsonInvalidTupleCentreIdException e) {
-                e.printStackTrace();
-            }
         } else if ("alice.tucson.api.TucsonTupleCentreId".equals(tid.getClass()
                 .getName())) {
             tcid = (TucsonTupleCentreId) tid;
         } else if ("java.lang.String".equals(tid.getClass().getName())) {
-            try {
-                tcid = new TucsonTupleCentreId((String) tid);
-            } catch (final TucsonInvalidTupleCentreIdException e) {
-                throw new TucsonOperationNotPossibleException();
-            }
+            tcid = new TucsonTupleCentreId((String) tid);
         } else {
             // DEBUG
             System.err.println("Invalid Class: " + tid.getClass().getName());
@@ -286,10 +278,12 @@ public class InterTupleCentreACCProxy implements InterTupleCentreACC,
             exception = false;
             AbstractTucsonProtocol session = null;
             try {
-                session = this.getSession(tcid);
+               session = this.getSession(tcid);
+			} catch (DialogInitializationException e) {
+					e.printStackTrace();
             } catch (final UnreachableNodeException ex2) {
                 exception = true;
-                throw new UnreachableNodeException();
+                throw new UnreachableNodeException(ex2);
             }
             this.operations.put(this.opId, op);
             final int type = op.getType();
@@ -310,7 +304,7 @@ public class InterTupleCentreACCProxy implements InterTupleCentreACC,
                     + ", " + msg.getTuple() + ", " + msg.getTid());
             try {
                 session.sendMsgRequest(msg);
-            } catch (final DialogException e) {
+            } catch (final DialogSendException e) {
                 exception = true;
                 e.printStackTrace();
             }
@@ -375,7 +369,7 @@ public class InterTupleCentreACCProxy implements InterTupleCentreACC,
     }
 
     private AbstractTucsonProtocol getSession(final TucsonTupleCentreId tid)
-            throws UnreachableNodeException {
+            throws UnreachableNodeException, DialogInitializationException {
         final String opNode = alice.util.Tools.removeApices(tid.getNode());
         final int port = tid.getPort();
         ControllerSession tc = this.controllerSessions.get(opNode + ":" + port);
@@ -408,19 +402,16 @@ public class InterTupleCentreACCProxy implements InterTupleCentreACC,
         this.profile.setProperty("agent-role", "user");
         AbstractTucsonProtocol dialog = null;
         boolean isEnterReqAcpt = false;
+        dialog = new TucsonProtocolTCP(opNode, port);
         try {
-            dialog = new TucsonProtocolTCP(opNode, port);
-            dialog.sendEnterRequest(this.profile);
-            dialog.receiveEnterRequestAnswer();
-            if (dialog.isEnterRequestAccepted()) {
-                isEnterReqAcpt = true;
-            }
-        } catch (final IOException e) {
-            throw new UnreachableNodeException();
-        } catch (final DialogExceptionTcp e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+			dialog.sendEnterRequest(this.profile);
+			dialog.receiveEnterRequestAnswer();
+		} catch (DialogException e) {
+			e.printStackTrace();
+		}
+        if (dialog.isEnterRequestAccepted()) {
+            isEnterReqAcpt = true;
+        }    
         if (isEnterReqAcpt) {
             final Controller contr = new Controller(dialog);
             final ControllerSession cs = new ControllerSession(contr, dialog);

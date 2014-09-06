@@ -15,15 +15,18 @@ package alice.tucson.introspection.tools;
 
 import java.awt.Color;
 import java.io.IOException;
+
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
 import alice.tucson.api.TucsonAgentId;
 import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.introspection.InspectorContext;
 import alice.tucson.introspection.InspectorProtocol;
+import alice.tucson.network.exceptions.DialogSendException;
 
 /**
  * 
@@ -169,7 +172,7 @@ public class InspectorGUI extends javax.swing.JFrame {
                 .setPendingQueryObservType(InspectorProtocol.NO_OBSERVATION);
         try {
             this.context.setProtocol(this.protocol);
-        } catch (final IOException e) {
+        } catch (final DialogSendException e) {
             e.printStackTrace();
         }
     }
@@ -260,7 +263,7 @@ public class InspectorGUI extends javax.swing.JFrame {
         if (this.isSessionOpen) {
             try {
                 this.context.exit();
-            } catch (final IOException e) {
+            } catch (final DialogSendException e) {
                 e.printStackTrace();
             }
         }
@@ -529,7 +532,7 @@ public class InspectorGUI extends javax.swing.JFrame {
                 .setPendingQueryObservType(InspectorProtocol.PROACTIVE_OBSERVATION);
         try {
             this.context.setProtocol(this.protocol);
-        } catch (final IOException e) {
+        } catch (final DialogSendException e) {
             e.printStackTrace();
         }
         this.pendingQueryForm.setVisible(true);
@@ -556,7 +559,7 @@ public class InspectorGUI extends javax.swing.JFrame {
                 .setReactionsObservType(InspectorProtocol.PROACTIVE_OBSERVATION);
         try {
             this.context.setProtocol(this.protocol);
-        } catch (final IOException e) {
+        } catch (final DialogSendException e) {
             e.printStackTrace();
         }
         this.reactionForm.setVisible(true);
@@ -573,7 +576,7 @@ public class InspectorGUI extends javax.swing.JFrame {
                 .setTsetObservType(InspectorProtocol.PROACTIVE_OBSERVATION);
         try {
             this.context.setProtocol(this.protocol);
-        } catch (final IOException e) {
+        } catch (final DialogSendException e) {
             e.printStackTrace();
         }
         this.tupleForm.setVisible(true);
@@ -598,7 +601,7 @@ public class InspectorGUI extends javax.swing.JFrame {
         this.protocol.setReactionsObservType(InspectorProtocol.NO_OBSERVATION);
         try {
             this.context.setProtocol(this.protocol);
-        } catch (final IOException e) {
+        } catch (final DialogSendException e) {
             e.printStackTrace();
         }
     }
@@ -610,7 +613,7 @@ public class InspectorGUI extends javax.swing.JFrame {
         this.protocol.setTsetObservType(InspectorProtocol.NO_OBSERVATION);
         try {
             this.context.setProtocol(this.protocol);
-        } catch (final IOException e) {
+        } catch (final DialogSendException e) {
             e.printStackTrace();
         }
     }

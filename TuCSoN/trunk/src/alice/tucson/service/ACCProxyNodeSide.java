@@ -17,9 +17,11 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+
 import alice.logictuple.LogicTuple;
 import alice.tucson.api.TucsonAgentId;
 import alice.tucson.api.TucsonTupleCentreId;
+import alice.tucson.api.exceptions.TucsonGenericException;
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonInvalidLogicTupleException;
 import alice.tucson.api.exceptions.TucsonInvalidSpecificationException;
@@ -30,10 +32,11 @@ import alice.tucson.introspection.ShutdownMsg;
 import alice.tucson.network.AbstractTucsonProtocol;
 import alice.tucson.network.TucsonMsgReply;
 import alice.tucson.network.TucsonMsgRequest;
-import alice.tucson.network.exceptions.DialogException;
+import alice.tucson.network.exceptions.DialogCloseException;
+import alice.tucson.network.exceptions.DialogReceiveException;
+import alice.tucson.network.exceptions.DialogSendException;
 import alice.tuplecentre.api.ITupleCentreOperation;
 import alice.tuplecentre.api.Tuple;
-import alice.tuplecentre.api.exceptions.InvalidOperationException;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 import alice.tuplecentre.core.AbstractTupleCentreOperation;
 
@@ -68,27 +71,26 @@ public class ACCProxyNodeSide extends AbstractACCProxyNodeSide {
      * @param p
      *            the object describing the request of entering the TuCSoN
      *            system
+     * @throws TucsonInvalidTupleCentreIdException
+     * 			if the TupleCentreId, contained into AbstractTucsonProtocol's message, 
+     * 			does not represent a valid TuCSoN identifier 
+     * 
+     * @throws TucsonInvalidAgentIdException 
+     * 					if the ACCDescription's "agent-identity" property 
+     * 					does not represent a valid TuCSoN identifier
      */
     public ACCProxyNodeSide(final ACCProvider man,
             final AbstractTucsonProtocol d, final TucsonNodeService n,
-            final ACCDescription p) {
+            final ACCDescription p) throws TucsonInvalidTupleCentreIdException, TucsonInvalidAgentIdException {
         super();
         this.ctxId = Integer.parseInt(p.getProperty("context-id"));
         String name = p.getProperty("agent-identity");
         if (name == null) {
             name = p.getProperty("tc-identity");
-            try {
-                this.tcId = new TucsonTupleCentreId(name);
-                this.agentId = new TucsonAgentId("tcAgent", this.tcId);
-            } catch (final TucsonInvalidTupleCentreIdException e) {
-                e.printStackTrace();
-            }
+            this.tcId = new TucsonTupleCentreId(name);
+            this.agentId = new TucsonAgentId("tcAgent", this.tcId); 
         } else {
-            try {
-                this.agentId = new TucsonAgentId(name);
-            } catch (final TucsonInvalidAgentIdException e) {
-                e.printStackTrace();
-            }
+        	this.agentId = new TucsonAgentId(name);
         }
         this.agentName = name;
         this.dialog = d;
@@ -140,7 +142,7 @@ public class ACCProxyNodeSide extends AbstractACCProxyNodeSide {
         }
         try {
             this.dialog.sendMsgReply(reply);
-        } catch (final DialogException e) {
+        } catch (final DialogSendException e) {
             e.printStackTrace();
         }
     }
@@ -160,7 +162,8 @@ public class ACCProxyNodeSide extends AbstractACCProxyNodeSide {
             this.log("Listening to incoming TuCSoN agents/nodes requests...");
             try {
                 msg = this.dialog.receiveMsgRequest();
-            } catch (final DialogException e) {
+            } catch (final DialogReceiveException e) {
+            	e.printStackTrace();
                 this.log("Agent " + this.agentId + " quit");
                 break;
             }
@@ -171,7 +174,7 @@ public class ACCProxyNodeSide extends AbstractACCProxyNodeSide {
                 try {
                     this.dialog.sendMsgReply(reply);
                     break;
-                } catch (final DialogException e) {
+                } catch (final DialogSendException e) {
                     e.printStackTrace();
                     break;
                 }
@@ -186,7 +189,11 @@ public class ACCProxyNodeSide extends AbstractACCProxyNodeSide {
                     + ", type=" + msg.getType() + ", tuple=" + msg.getTuple()
                     + " >...");
             if (msgType == TucsonOperation.setSCode()) {
-                this.node.resolveCore(tid.getName());
+            	final TucsonTCUsers coreInfo = this.node.resolveCore(tid.getName());
+            	if(coreInfo == null){
+            		System.err.println("[ACCProxyNodeSide]: cannot resolve core by its name : "+tid.getName());
+            		break;
+            	}
                 this.node.addTCAgent(this.agentId, tid);
                 try {
                     if (this.tcId == null) {
@@ -209,7 +216,7 @@ public class ACCProxyNodeSide extends AbstractACCProxyNodeSide {
                         true, msg.getTuple(), resList);
                 try {
                     this.dialog.sendMsgReply(reply);
-                } catch (final DialogException e) {
+                } catch (final DialogSendException e) {
                     e.printStackTrace();
                     break;
                 }
@@ -237,7 +244,7 @@ public class ACCProxyNodeSide extends AbstractACCProxyNodeSide {
                         true, res, resList);
                 try {
                     this.dialog.sendMsgReply(reply);
-                } catch (final DialogException e) {
+                } catch (final DialogSendException e) {
                     e.printStackTrace();
                     break;
                 }
@@ -265,7 +272,7 @@ public class ACCProxyNodeSide extends AbstractACCProxyNodeSide {
                         true, null, resList);
                 try {
                     this.dialog.sendMsgReply(reply);
-                } catch (final DialogException e) {
+                } catch (final DialogSendException e) {
                     e.printStackTrace();
                     break;
                 }
@@ -296,7 +303,7 @@ public class ACCProxyNodeSide extends AbstractACCProxyNodeSide {
                         true, null, resList);
                 try {
                     this.dialog.sendMsgReply(reply);
-                } catch (final DialogException e) {
+                } catch (final DialogSendException e) {
                     e.printStackTrace();
                     break;
                 }
@@ -396,9 +403,6 @@ public class ACCProxyNodeSide extends AbstractACCProxyNodeSide {
                     } catch (final TucsonOperationNotPossibleException e) {
                         System.err.println("[ACCProxyNodeSide]: " + e);
                         break;
-                    } catch (final InvalidOperationException e) {
-                        System.err.println("[ACCProxyNodeSide]: " + e);
-                        break;
                     } catch (final OperationTimeOutException e) {
                         System.err.println("[ACCProxyNodeSide]: " + e);
                         break;
@@ -414,7 +418,7 @@ public class ACCProxyNodeSide extends AbstractACCProxyNodeSide {
         }
         try {
             this.dialog.end();
-        } catch (final DialogException e) {
+        } catch (final DialogCloseException e) {
             e.printStackTrace();
         }
         this.log("Releasing ACC < " + this.ctxId + " > held by TuCSoN agent < "

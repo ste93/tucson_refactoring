@@ -531,10 +531,9 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
             }
             return JTuplesEngine.toJavaTuple(lt);
         } catch (final InvalidTupleException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
+            return null;
         }
-        return null;
     }
 
     /*
@@ -554,8 +553,8 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
                 }
             }
         } catch (final InvalidTupleException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
+            return null;
         }
         return jts;
     }
@@ -573,10 +572,9 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
             }
             return JTuplesEngine.toJavaTuple(lt);
         } catch (final InvalidTupleException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
+            return null;
         }
-        return null;
     }
 
     /**

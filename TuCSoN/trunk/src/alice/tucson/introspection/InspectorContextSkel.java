@@ -16,6 +16,7 @@ package alice.tucson.introspection;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.LinkedList;
+
 import alice.logictuple.LogicTuple;
 import alice.tucson.api.TucsonAgentId;
 import alice.tucson.api.TucsonTupleCentreId;
@@ -26,6 +27,8 @@ import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.network.AbstractTucsonProtocol;
 import alice.tucson.network.exceptions.DialogException;
+import alice.tucson.network.exceptions.DialogReceiveException;
+import alice.tucson.network.exceptions.DialogSendException;
 import alice.tucson.service.ACCDescription;
 import alice.tucson.service.ACCProvider;
 import alice.tucson.service.AbstractACCProxyNodeSide;
@@ -71,29 +74,26 @@ public class InspectorContextSkel extends AbstractACCProxyNodeSide implements
      *            the ACC properties descriptor
      * @throws TucsonGenericException
      *             if the tuple centre to inspect cannot be resolved
+     * @throws TucsonInvalidAgentIdException
+     * 			   if the ACCDescription's "agent-identity" property does not represent a valid TuCSoN identifier
+     * @throws TucsonInvalidTupleCentreIdException
+     * 			   if the TupleCentreId, contained into AbstractTucsonProtocol's message,  does not represent a valid TuCSoN identifier
+     * @throws DialogReceiveException
+     * 			   if something goes wrong in the underlying network
      */
     public InspectorContextSkel(final ACCProvider man,
             final AbstractTucsonProtocol d, final TucsonNodeService node,
-            final ACCDescription p) throws TucsonGenericException {
+            final ACCDescription p) throws TucsonGenericException, TucsonInvalidAgentIdException, DialogReceiveException, TucsonInvalidTupleCentreIdException {
         super();
         this.dialog = d;
         this.manager = man;
         NewInspectorMsg msg = null;
-        try {
-            this.ctxId = Integer.parseInt(p.getProperty("context-id"));
-            final String name = p.getProperty("agent-identity");
-            this.agentId = new TucsonAgentId(name);
-            msg = this.dialog.receiveInspectorMsg();
-            this.tcId = new TucsonTupleCentreId(msg.getTcName());
-        } catch (final NumberFormatException e) {
-            e.printStackTrace();
-        } catch (final TucsonInvalidAgentIdException e) {
-            e.printStackTrace();
-        } catch (final TucsonInvalidTupleCentreIdException e) {
-            e.printStackTrace();
-        } catch (final DialogException e) {
-            e.printStackTrace();
-        }
+        this.ctxId = Integer.parseInt(p.getProperty("context-id"));
+        final String name = p.getProperty("agent-identity");
+        this.agentId = new TucsonAgentId(name);
+        msg = this.dialog.receiveInspectorMsg();
+        this.tcId = new TucsonTupleCentreId(msg.getTcName());
+        
         if (msg != null) {
             final TucsonTCUsers coreInfo = node.resolveCore(msg.getTcName());
             if (coreInfo == null) {
@@ -145,7 +145,7 @@ public class InspectorContextSkel extends AbstractACCProxyNodeSide implements
         }
         try {
             this.dialog.sendInspectorEvent(msg);
-        } catch (final DialogException e) {
+        } catch (final DialogSendException e) {
             e.printStackTrace();
         }
     }
@@ -213,8 +213,9 @@ public class InspectorContextSkel extends AbstractACCProxyNodeSide implements
             }
         } catch (final InterruptedException e) {
             e.printStackTrace();
-        } catch (final DialogException e) {
+        } catch (final DialogSendException e) {
             this.log("Inspector quit");
+            e.printStackTrace();
         }
     }
 
@@ -296,14 +297,15 @@ public class InspectorContextSkel extends AbstractACCProxyNodeSide implements
      * 
      * @param m
      *            the set tuples message
+     * @throws TucsonInvalidLogicTupleException
+     * 			  if the TupleSet contained into the given argument m is not a valid tuples list
      */
-    public synchronized void setTupleSet(final SetTupleSetMsg m) {
+    public synchronized void setTupleSet(final SetTupleSetMsg m) throws TucsonInvalidLogicTupleException {
         try {
             TupleCentreContainer.doBlockingOperation(TucsonOperation.setCode(),
                     this.agentId, this.tcId, m.getTupleSet());
-        } catch (final TucsonInvalidLogicTupleException e) {
-            e.printStackTrace();
         } catch (final TucsonOperationNotPossibleException e) {
+        	// FIXME who have to handle this exception? and how?
             e.printStackTrace();
         }
     }

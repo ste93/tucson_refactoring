@@ -3,6 +3,9 @@ package alice.tucson.network;
 import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.api.exceptions.UnreachableNodeException;
 import alice.tucson.network.exceptions.DialogException;
+import alice.tucson.network.exceptions.DialogInitializationException;
+import alice.tucson.network.exceptions.IllegalPortNumberException;
+import alice.tucson.network.exceptions.InvalidProtocolTypeException;
 
 /**
  * <p>
@@ -31,27 +34,31 @@ public final class TPFactory {
      * @param tid
      *            the identifier of the tuple centre to connect to
      * @return the connection protocol hosting communications
-     * @throws DialogException
+     * @throws DialogInitializationException
      *             if something goes wrong in the underlying network
      * @throws UnreachableNodeException
      *             if the target tuple centre is unreachable
+     * @throws InvalidProtocolTypeException
+     * 			   if the protocol type used is not DIALOG_TYPE_TCP    
+     * @throws IllegalPortNumberException
+     * 			   if the portNumber is out of bounds ( < 1 || > MAX_UNBOUND_PORT)       
      */
     public static AbstractTucsonProtocol getDialogAgentSide(
             final int tucsonProtocolType, final TucsonTupleCentreId tid)
-            throws DialogException, UnreachableNodeException {
+            throws DialogInitializationException, UnreachableNodeException, InvalidProtocolTypeException {
         final String node = alice.util.Tools.removeApices(tid.getNode());
         final int port = tid.getPort();
         // TODO CICORA: il controllo su porta e address va fatto meglio, vedere
         // come e'
         // fatto nel resto del codice
         if (port < 1 || port > TPFactory.MAX_UNBOUND_PORT) {
-            throw new DialogException("Illegal port argument");
+        	throw new IllegalPortNumberException("Port number out of bounds. Port number: "+port);
         }
         AbstractTucsonProtocol tp = null;
         if (tucsonProtocolType == TPFactory.DIALOG_TYPE_TCP) {
             tp = new TucsonProtocolTCP(node, port);
         } else {
-            throw new DialogException("Unsupported protocol type");
+            throw new InvalidProtocolTypeException("Unsupported protocol type");
         }
         return tp;
     }
@@ -61,28 +68,39 @@ public final class TPFactory {
      * @param tid
      *            the identifier of the tuple centre to connect to
      * @return the connection protocol hosting communications
-     * @throws DialogException
+     * @throws DialogInitializationException
      *             if something goes wrong in the underlying network
      * @throws UnreachableNodeException
      *             if the target tuple centre is unreachable
+     * @throws InvalidProtocolTypeException
+     * 			   if the protocol type used is not DIALOG_TYPE_TCP
+     * @throws IllegalPortNumberException
+     * 			   if the portNumber is out of bounds ( < 1 || > MAX_UNBOUND_PORT)   
      */
     public static AbstractTucsonProtocol getDialogAgentSide(
-            final TucsonTupleCentreId tid) throws DialogException,
-            UnreachableNodeException {
+            final TucsonTupleCentreId tid) throws 
+            UnreachableNodeException, DialogInitializationException {
         final TPConfig config = TPConfig.getInstance();
-        return TPFactory.getDialogAgentSide(config.getDefaultProtocolType(),
-                tid);
+        try {
+			return TPFactory.getDialogAgentSide(config.getDefaultProtocolType(),
+			        tid);
+		} catch (InvalidProtocolTypeException e) {
+			e.printStackTrace();
+		}
+        return null;
     }
 
     /**
      * Instantiate a new TucsonProtocol based of a default implementation type.
      * 
      * @return the TucsonProtocol class
-     * @throws DialogException
-     *             if something goes wrong in the underlying network
+     * @throws InvalidProtocolTypeException 
+     * 			   if the protocol type used is not DIALOG_TYPE_TCP
+     * @throws DialogInitializationException
+     * 			   if something goes wrong in the underlying network
      */
     public static AbstractTucsonProtocol getDialogNodeSide()
-            throws DialogException {
+            throws InvalidProtocolTypeException, DialogInitializationException {
         final TPConfig config = TPConfig.getInstance();
         return TPFactory.getDialogNodeSide(config.getDefaultProtocolType());
     }
@@ -93,22 +111,26 @@ public final class TPFactory {
      * @param tucsonProtocolType
      *            the type code of the TuCSoN protocol to be used
      * @return the TucsonProtocol class
-     * @throws DialogException
+     * @throws DialogInitializationException
      *             if something goes wrong in the underlying network
+     * @throws InvalidProtocolTypeException
+     * 			   if the protocol type used is not DIALOG_TYPE_TCP
+     * @throws IllegalPortNumberException
+     * 			   if the portNumber is out of bounds ( < 1 || > MAX_UNBOUND_PORT)
      */
     public static AbstractTucsonProtocol getDialogNodeSide(
-            final int tucsonProtocolType) throws DialogException {
+            final int tucsonProtocolType) throws InvalidProtocolTypeException, DialogInitializationException {
         AbstractTucsonProtocol tp = null;
         
         if (tucsonProtocolType == TPFactory.DIALOG_TYPE_TCP) {
             final TPConfig config = TPConfig.getInstance();
             final int port = config.getNodeTcpPort();
             if (port < 1 || port > TPFactory.MAX_UNBOUND_PORT) {
-                throw new DialogException("Illegal port argument");
+                throw new IllegalPortNumberException("Port number out of bounds. Port number: "+port);
             }
             tp = new TucsonProtocolTCP(port);
         } else {
-            throw new DialogException("Unsupported protocol type");
+            throw new InvalidProtocolTypeException("Unsupported protocol type");
         }
         return tp;
     }

@@ -2,7 +2,6 @@ package alice.tucson.parsing;
 
 import alice.logictuple.LogicTuple;
 import alice.logictuple.TupleArgument;
-import alice.tuplecentre.api.exceptions.InvalidOperationException;
 import alice.util.Tools;
 
 /**

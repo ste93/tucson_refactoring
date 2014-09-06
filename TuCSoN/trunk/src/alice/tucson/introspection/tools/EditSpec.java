@@ -19,9 +19,12 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
+
 import javax.swing.JButton;
 import javax.swing.JPanel;
+
 import alice.logictuple.LogicTuple;
+import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.tucson.api.EnhancedACC;
 import alice.tucson.api.TucsonAgentId;
 import alice.tucson.api.TucsonMetaACC;
@@ -44,28 +47,20 @@ public class EditSpec extends javax.swing.JFrame {
 
     private static String format(final LogicTuple t) {
         final StringBuffer res = new StringBuffer(21);
-        try {
-            res.append(t.getName()).append("(\n\t");
-            res.append(t.getArg(0)).append(",\n\t");
-            res.append(t.getArg(1)).append(",\n\t");
-            res.append(t.getArg(2)).append("\n).\n");
-        } catch (final InvalidOperationException e) {
-            e.printStackTrace();
-        }
+        res.append(t.getName()).append("(\n\t");
+        res.append(t.getArg(0)).append(",\n\t");
+        res.append(t.getArg(1)).append(",\n\t");
+        res.append(t.getArg(2)).append("\n).\n");
         return res.toString();
     }
 
     private static String predFormat(final LogicTuple t) {
         final StringBuffer res = new StringBuffer();
-        try {
-            if (!":-".equals(t.getName())) {
-                res.append(t.toString()).append(".\n");
-            } else {
-                res.append(t.getArg(0)).append(" :-\n    ");
-                res.append(t.getArg(1)).append(".\n");
-            }
-        } catch (final InvalidOperationException e) {
-            e.printStackTrace();
+        if (!":-".equals(t.getName())) {
+            res.append(t.toString()).append(".\n");
+        } else {
+            res.append(t.getArg(0)).append(" :-\n    ");
+            res.append(t.getArg(1)).append(".\n");
         }
         return res.toString();
     }
@@ -148,9 +143,7 @@ public class EditSpec extends javax.swing.JFrame {
             this.outputState.setText("TuCSoN Node is unreachable.");
         } catch (final OperationTimeOutException e) {
             this.outputState.setText("TuCSoN operation timeout exceeded.");
-        } catch (final InvalidOperationException e) {
-            this.outputState.setText(e.toString());
-        }
+        } 
     }
 
     private void bLoadActionPerformed() {
@@ -207,7 +200,7 @@ public class EditSpec extends javax.swing.JFrame {
             this.outputState.setText("TuCSoN Node is unreachable.");
         } catch (final OperationTimeOutException e) {
             this.outputState.setText("TuCSoN operation timeout exceeded.");
-        } catch (final InvalidTupleException e) {
+        } catch (final InvalidLogicTupleException e) {
             this.outputState.setText("Invalid ReSpecT specification given.");
         }
     }

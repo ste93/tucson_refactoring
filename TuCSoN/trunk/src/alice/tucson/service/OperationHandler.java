@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+
 import alice.logictuple.LogicTuple;
 import alice.respect.api.TupleCentreId;
 import alice.tucson.api.ITucsonOperation;
@@ -21,6 +22,9 @@ import alice.tucson.network.TPFactory;
 import alice.tucson.network.TucsonMsgReply;
 import alice.tucson.network.TucsonMsgRequest;
 import alice.tucson.network.exceptions.DialogException;
+import alice.tucson.network.exceptions.DialogReceiveException;
+import alice.tucson.network.exceptions.DialogSendException;
+import alice.tucson.network.exceptions.InvalidProtocolTypeException;
 import alice.tuplecentre.api.Tuple;
 import alice.tuplecentre.api.TupleTemplate;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
@@ -82,7 +86,7 @@ public class OperationHandler {
                 TucsonMsgReply msg = null;
                 try {
                     msg = this.dialog.receiveMsgReply();
-                } catch (final DialogException e) {
+                } catch (final DialogReceiveException e) {
                     OperationHandler.this
                             .log("TuCSoN node service unavailable, nothing I can do");
                     this.setStop();
@@ -363,19 +367,11 @@ public class OperationHandler {
             throw new TucsonOperationNotPossibleException();
         }
         ITucsonOperation op = null;
-        try {
-            op = this.doOperation(aid, tcid, type, t, null);
-        } catch (final UnreachableNodeException e) {
-            throw new UnreachableNodeException();
-        }
-        try {
-            if (ms == null) {
-                op.waitForOperationCompletion();
-            } else {
-                op.waitForOperationCompletion(ms);
-            }
-        } catch (final OperationTimeOutException e) {
-            throw new OperationTimeOutException();
+        op = this.doOperation(aid, tcid, type, t, null);
+        if (ms == null) {
+            op.waitForOperationCompletion();
+        } else {
+            op.waitForOperationCompletion(ms);
         }
         return op;
     }
@@ -437,11 +433,8 @@ public class OperationHandler {
         } else {
             throw new TucsonOperationNotPossibleException();
         }
-        try {
-            return this.doOperation(aid, tcid, type, t, l);
-        } catch (final UnreachableNodeException e) {
-            throw new UnreachableNodeException();
-        }
+        return this.doOperation(aid, tcid, type, t, l);
+       
     }
 
     /**
@@ -539,7 +532,7 @@ public class OperationHandler {
                 session = this.getSession(tcid, aid);
             } catch (final UnreachableNodeException ex2) {
                 exception = true;
-                throw new UnreachableNodeException();
+                throw new UnreachableNodeException(ex2);
             }
             TucsonOperation op = null;
             if (type == TucsonOperation.outCode()
@@ -563,7 +556,7 @@ public class OperationHandler {
                     + ", " + msg.getTid());
             try {
                 session.sendMsgRequest(msg);
-            } catch (final DialogException ex) {
+            } catch (final DialogSendException ex) {
                 exception = true;
                 System.err.println("[ACCProxyAgentSide]: " + ex);
             }
@@ -644,10 +637,7 @@ public class OperationHandler {
             if (dialog.isEnterRequestAccepted()) {
                 isEnterReqAcpt = true;
             }
-        } catch (final IOException e) {
-            throw new UnreachableNodeException();
         } catch (final DialogException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         if (isEnterReqAcpt) {
