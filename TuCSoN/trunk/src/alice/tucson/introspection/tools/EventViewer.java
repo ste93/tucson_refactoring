@@ -14,7 +14,6 @@
 package alice.tucson.introspection.tools;
 
 import java.awt.Color;
-import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -27,7 +26,6 @@ import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.tucson.introspection.GetSnapshotMsg;
 import alice.tucson.introspection.InspectorProtocol;
 import alice.tucson.network.exceptions.DialogSendException;
-import alice.tuplecentre.api.exceptions.InvalidTupleException;
 
 /**
  * 

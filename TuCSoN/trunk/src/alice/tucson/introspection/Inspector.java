@@ -13,8 +13,6 @@
  */
 package alice.tucson.introspection;
 
-import java.io.IOException;
-
 import alice.tucson.api.TucsonAgentId;
 import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.network.exceptions.DialogSendException;
