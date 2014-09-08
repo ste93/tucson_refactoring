@@ -13,7 +13,6 @@
  */
 package alice.tucson.service;
 
-import java.io.IOException;
 
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
@@ -21,7 +20,6 @@ import alice.tucson.network.AbstractTucsonProtocol;
 import alice.tucson.network.TPFactory;
 import alice.tucson.network.exceptions.DialogAcceptException;
 import alice.tucson.network.exceptions.DialogCloseException;
-import alice.tucson.network.exceptions.DialogException;
 import alice.tucson.network.exceptions.DialogInitializationException;
 import alice.tucson.network.exceptions.DialogReceiveException;
 import alice.tucson.network.exceptions.DialogSendException;

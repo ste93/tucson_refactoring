@@ -2,7 +2,6 @@ package alice.tucson.network;
 
 import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.api.exceptions.UnreachableNodeException;
-import alice.tucson.network.exceptions.DialogException;
 import alice.tucson.network.exceptions.DialogInitializationException;
 import alice.tucson.network.exceptions.IllegalPortNumberException;
 import alice.tucson.network.exceptions.InvalidProtocolTypeException;

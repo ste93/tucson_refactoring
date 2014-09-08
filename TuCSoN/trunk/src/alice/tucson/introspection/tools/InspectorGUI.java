@@ -14,7 +14,6 @@
 package alice.tucson.introspection.tools;
 
 import java.awt.Color;
-import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
