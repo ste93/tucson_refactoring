@@ -7,7 +7,6 @@ import alice.respect.api.IRespectOperation;
 import alice.respect.api.IRespectTC;
 import alice.respect.api.exceptions.OperationNotPossibleException;
 import alice.tuplecentre.api.IId;
-import alice.tuplecentre.api.exceptions.InvalidOperationException;
 import alice.tuplecentre.core.OperationCompletionListener;
 
 /**

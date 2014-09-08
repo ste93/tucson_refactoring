@@ -13,6 +13,9 @@
 package alice.tuplecentre.api.exceptions;
 
 /**
+ * Exception thrown when a generic invalid operation is called
+ * e.g. Trying to retrieve the Int value of a JVal object that is not an Int type
+ * 
  * @author Alessandro Ricci
  * 
  */

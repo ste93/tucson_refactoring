@@ -2,6 +2,8 @@ package alice.tucson.network.exceptions;
 
 /**
  * 
+ * Dialog root base Exception class
+ * 
  * @author Saverio Cicora
  * 
  */

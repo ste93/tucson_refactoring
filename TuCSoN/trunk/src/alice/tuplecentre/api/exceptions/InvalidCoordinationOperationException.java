@@ -3,8 +3,7 @@ package alice.tuplecentre.api.exceptions;
 /**
  * Exception thrown when an unknown coordination operation is requested.
  * 
- * @author Mattia Balducci
- * @author Alessia Papini
+ * @author Mattia Balducci, Alessia Papini
  * 
  */
 public class InvalidCoordinationOperationException extends Exception {

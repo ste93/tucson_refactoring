@@ -23,7 +23,6 @@ import alice.respect.api.IRespectOperation;
 import alice.respect.api.IRespectTC;
 import alice.respect.api.exceptions.OperationNotPossibleException;
 import alice.tuplecentre.api.IId;
-import alice.tuplecentre.api.exceptions.InvalidOperationException;
 import alice.tuprolog.Struct;
 import alice.tuprolog.Term;
 

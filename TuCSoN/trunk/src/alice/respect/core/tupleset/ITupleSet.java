@@ -2,7 +2,6 @@ package alice.respect.core.tupleset;
 
 import java.util.Iterator;
 import alice.logictuple.LogicTuple;
-import alice.logictuple.exceptions.InvalidLogicTupleException;
 
 /**
  * This interface representing a Tuple Set.

@@ -13,6 +13,9 @@
 package alice.respect.api.exceptions;
 
 /**
+ * 
+ * Exception thrown when an invalid ReSpecT specification is created or used
+ * 
  * @author Alessandro Ricci
  */
 public class InvalidSpecificationException extends RespectException {

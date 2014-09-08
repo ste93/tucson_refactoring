@@ -24,7 +24,6 @@ import alice.respect.api.exceptions.OperationNotPossibleException;
 import alice.respect.api.exceptions.OperationTimeOutException;
 import alice.tuplecentre.api.IId;
 import alice.tuplecentre.api.exceptions.InvalidOperationException;
-import alice.tuplecentre.api.exceptions.InvalidLogicTupleException;
 
 /**
  * 
@@ -78,27 +77,23 @@ public class TimedContext extends RootInterface implements ITimedContext {
             OperationTimeOutException {
         IRespectOperation op = null;
         TupleArgument arg = null;
+        if (t == null) {
+            throw new InvalidLogicTupleException("Null value");
+        } else if (",".equals(t.getName()) && t.getArity() == 2) {
+            op = this.getCore().inAll(aid, new LogicTuple(t.getArg(0)));
+        } else {
+            op = this.getCore().inAll(aid, t);
+        }
         try {
-            if (t == null) {
-                throw new InvalidLogicTupleException("Null value");
-            } else if (",".equals(t.getName()) && t.getArity() == 2) {
-                op = this.getCore().inAll(aid, new LogicTuple(t.getArg(0)));
-            } else {
-                op = this.getCore().inAll(aid, t);
-            }
-            try {
-                op.waitForOperationCompletion(ms);
-            } catch (final alice.tuplecentre.api.exceptions.OperationTimeOutException ex) {
-                throw new OperationTimeOutException(op);
-            }
-            if (",".equals(t.getName()) && t.getArity() == 2) {
-                arg = t.getArg(1);
-                return this.unify(new LogicTuple(
-                        new TupleArgument(arg.toTerm())), op
-                        .getLogicTupleResult());
-            }
-        } catch (final InvalidOperationException e2) {
-            throw new OperationNotPossibleException();
+            op.waitForOperationCompletion(ms);
+        } catch (final alice.tuplecentre.api.exceptions.OperationTimeOutException ex) {
+            throw new OperationTimeOutException(op);
+        }
+        if (",".equals(t.getName()) && t.getArity() == 2) {
+            arg = t.getArg(1);
+            return this.unify(new LogicTuple(
+                    new TupleArgument(arg.toTerm())), op
+                    .getLogicTupleResult());
         }
         return op.getLogicTupleResult();
     }

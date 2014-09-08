@@ -18,7 +18,6 @@ import alice.respect.api.exceptions.InvalidSpecificationException;
 import alice.respect.api.exceptions.OperationNotPossibleException;
 import alice.respect.core.RespectVM;
 import alice.tuplecentre.api.IId;
-import alice.tuplecentre.api.exceptions.InvalidTupleException;
 import alice.tuplecentre.core.OperationCompletionListener;
 
 /**

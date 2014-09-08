@@ -5,6 +5,7 @@
 package alice.respect.api.exceptions;
 
 /**
+ * Exception thrown when a requested operation cannot be carried out
  * 
  * @author Alessandro Ricci
  */
