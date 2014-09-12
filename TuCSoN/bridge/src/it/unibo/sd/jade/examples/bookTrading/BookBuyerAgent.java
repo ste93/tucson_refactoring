@@ -57,6 +57,103 @@ import alice.tuplecentre.api.exceptions.InvalidTupleException;
  */
 public class BookBuyerAgent extends Agent {
     /*
+     * Behaviour collecting the Proposals (possibly) sent by advertising agents.
+     */
+    private class CFPHandler extends Behaviour {
+        /** serialVersionUID **/
+        private static final long serialVersionUID = 1L;
+
+        @Override
+        public void action() {
+            /*
+             * Use previous message template to collect all proposals/refusals
+             * from previously found seller agents.
+             */
+            BookBuyerAgent.this.log("Waiting for proposals...");
+            LogicTuple proposal = null;
+            try {
+                proposal = LogicTuple.parse("proposal(to("
+                        + BookBuyerAgent.this.getAID().getName() + "), book("
+                        + BookBuyerAgent.this.targetBookTitle
+                        + "), from(S), price(P))");
+            } catch (final InvalidTupleException e) {
+                // should not happen
+                e.printStackTrace();
+                BookBuyerAgent.this.doDelete();
+            }
+            final In in = new In(BookBuyerAgent.this.tcid, proposal);
+            TucsonOpCompletionEvent res = null;
+            try {
+                res = BookBuyerAgent.this.bridge.synchronousInvocation(in,
+                        null, this);
+            } catch (final ServiceException e) {
+                BookBuyerAgent.this
+                        .log(">>> No TuCSoN service active, reboot JADE with -services it.unibo.sd.jade.service.TucsonService option <<<");
+                BookBuyerAgent.this.doDelete();
+            }
+            if (res != null) {
+                String from = null;
+                String p = null;
+                try {
+                    from = res.getTuple().getArg(2).getArg(0).toString();
+                    BookBuyerAgent.this.log("Received proposal from '" + from
+                            + "' for book "
+                            + res.getTuple().getArg(1).getArg(0)
+                            + " (target is "
+                            + BookBuyerAgent.this.targetBookTitle + ")");
+                    p = res.getTuple().getArg(3).getArg(0).toString();
+                } catch (final InvalidOperationException e) {
+                    // should not happen
+                    e.printStackTrace();
+                    BookBuyerAgent.this.doDelete();
+                }
+                if (!"unavailable".equals(p)) {
+                    /*
+                     * In case of a positive answer, update current best seller
+                     * based upon proposed book price.
+                     */
+                    final float price = Float.parseFloat(p);
+                    if (BookBuyerAgent.this.bestSeller == null
+                            || price < BookBuyerAgent.this.bestPrice) {
+                        BookBuyerAgent.this.bestPrice = price;
+                        BookBuyerAgent.this.bestSeller = from;
+                    }
+                }
+                /*
+                 * In case of any non-positive answer, do nothing. In any case,
+                 * increase replies counter.
+                 */
+                BookBuyerAgent.this.repliesCnt++;
+            } else {
+                this.block();
+            }
+        }
+
+        /*
+         * Upon collection of all the responses, this behaviour can be removed.
+         */
+        @Override
+        public boolean done() {
+            return BookBuyerAgent.this.repliesCnt >= BookBuyerAgent.this.sellerAgents
+                    .size();
+        }
+
+        /*
+         * If no one had our desired book we should not try to purchase it.
+         */
+        @Override
+        public int onEnd() {
+            if (BookBuyerAgent.this.bestSeller != null) {
+                BookBuyerAgent.this.log("All proposals received :)");
+                BookBuyerAgent.this.sellerAgents
+                        .remove(BookBuyerAgent.this.bestSeller);
+                return 0;
+            }
+            return 1;
+        }
+    }
+
+    /*
      * Behaviour sending the Call for Proposals to agents previously found.
      */
     private class CFPSender extends OneShotBehaviour {
@@ -184,103 +281,6 @@ public class BookBuyerAgent extends Agent {
         public void action() {
             BookBuyerAgent.this
                     .log("No proposals received, trying another book in 10 seconds...");
-        }
-    }
-
-    /*
-     * Behaviour collecting the Proposals (possibly) sent by advertising agents.
-     */
-    private class CFPHandler extends Behaviour {
-        /** serialVersionUID **/
-        private static final long serialVersionUID = 1L;
-
-        @Override
-        public void action() {
-            /*
-             * Use previous message template to collect all proposals/refusals
-             * from previously found seller agents.
-             */
-            BookBuyerAgent.this.log("Waiting for proposals...");
-            LogicTuple proposal = null;
-            try {
-                proposal = LogicTuple.parse("proposal(to("
-                        + BookBuyerAgent.this.getAID().getName() + "), book("
-                        + BookBuyerAgent.this.targetBookTitle
-                        + "), from(S), price(P))");
-            } catch (final InvalidTupleException e) {
-                // should not happen
-                e.printStackTrace();
-                BookBuyerAgent.this.doDelete();
-            }
-            final In in = new In(BookBuyerAgent.this.tcid, proposal);
-            TucsonOpCompletionEvent res = null;
-            try {
-                res = BookBuyerAgent.this.bridge.synchronousInvocation(in,
-                        null, this);
-            } catch (final ServiceException e) {
-                BookBuyerAgent.this
-                        .log(">>> No TuCSoN service active, reboot JADE with -services it.unibo.sd.jade.service.TucsonService option <<<");
-                BookBuyerAgent.this.doDelete();
-            }
-            if (res != null) {
-                String from = null;
-                String p = null;
-                try {
-                    from = res.getTuple().getArg(2).getArg(0).toString();
-                    BookBuyerAgent.this.log("Received proposal from '" + from
-                            + "' for book "
-                            + res.getTuple().getArg(1).getArg(0)
-                            + " (target is "
-                            + BookBuyerAgent.this.targetBookTitle + ")");
-                    p = res.getTuple().getArg(3).getArg(0).toString();
-                } catch (final InvalidOperationException e) {
-                    // should not happen
-                    e.printStackTrace();
-                    BookBuyerAgent.this.doDelete();
-                }
-                if (!"unavailable".equals(p)) {
-                    /*
-                     * In case of a positive answer, update current best seller
-                     * based upon proposed book price.
-                     */
-                    final float price = Float.parseFloat(p);
-                    if (BookBuyerAgent.this.bestSeller == null
-                            || price < BookBuyerAgent.this.bestPrice) {
-                        BookBuyerAgent.this.bestPrice = price;
-                        BookBuyerAgent.this.bestSeller = from;
-                    }
-                }
-                /*
-                 * In case of any non-positive answer, do nothing. In any case,
-                 * increase replies counter.
-                 */
-                BookBuyerAgent.this.repliesCnt++;
-            } else {
-                this.block();
-            }
-        }
-
-        /*
-         * Upon collection of all the responses, this behaviour can be removed.
-         */
-        @Override
-        public boolean done() {
-            return BookBuyerAgent.this.repliesCnt >= BookBuyerAgent.this.sellerAgents
-                    .size();
-        }
-
-        /*
-         * If no one had our desired book we should not try to purchase it.
-         */
-        @Override
-        public int onEnd() {
-            if (BookBuyerAgent.this.bestSeller != null) {
-                BookBuyerAgent.this.log("All proposals received :)");
-                BookBuyerAgent.this.sellerAgents
-                        .remove(BookBuyerAgent.this.bestSeller);
-                return 0;
-            }
-            return 1;
         }
     }
 
