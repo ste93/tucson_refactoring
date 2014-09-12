@@ -14,7 +14,6 @@ package alice.tucson.network;
 
 import java.io.IOException;
 import java.util.Properties;
-
 import alice.tucson.api.TucsonMetaACC;
 import alice.tucson.introspection.InspectorContextEvent;
 import alice.tucson.introspection.NewInspectorMsg;
@@ -33,8 +32,8 @@ import alice.tucson.service.ACCDescription;
  * 
  */
 public abstract class AbstractTucsonProtocol implements java.io.Serializable {
-    private static final int REQ_ENTERCONTEXT = 1;
     public static final int NODE_ACTIVE_QUERY = 2;
+    private static final int REQ_ENTERCONTEXT = 1;
     /** serialVersionUID **/
     private static final long serialVersionUID = 1L;
     private ACCDescription context;
@@ -86,54 +85,60 @@ public abstract class AbstractTucsonProtocol implements java.io.Serializable {
     }
 
     /**
-     * @throws DialogReceiveException 
-     *				if something goes wrong in the underlying network
+     * @return wether the request received last is a "NODE_ACTIVE_QUERY" query
      */
-    public void receiveEnterRequest() throws DialogReceiveException  {
-        try{
-	    	final String agentName = this.receiveString();
-	        final String agentRole = this.receiveString();
-	        final String tcName = this.receiveString();
-	        
-	        final Properties profile = new Properties();
-	        if (agentName.startsWith("'@'")) {
-	            profile.setProperty("tc-identity", agentName);
-	        } else {
-	            profile.setProperty("agent-identity", agentName);
-	        }
-	        profile.setProperty("agent-role", agentRole);
-	        profile.setProperty("tuple-centre", tcName);
-	        this.context = new ACCDescription(profile);
-        } catch (ClassNotFoundException e){
-        	 throw new DialogReceiveException(e);
-        } catch (IOException e){
-        	 throw new DialogReceiveException(e);
+    public boolean isNodeActiveQuery() {
+        return this.reqType == AbstractTucsonProtocol.NODE_ACTIVE_QUERY;
+    }
+
+    /**
+     * @throws DialogReceiveException
+     *             if something goes wrong in the underlying network
+     */
+    public void receiveEnterRequest() throws DialogReceiveException {
+        try {
+            final String agentName = this.receiveString();
+            final String agentRole = this.receiveString();
+            final String tcName = this.receiveString();
+            final Properties profile = new Properties();
+            if (agentName.startsWith("'@'")) {
+                profile.setProperty("tc-identity", agentName);
+            } else {
+                profile.setProperty("agent-identity", agentName);
+            }
+            profile.setProperty("agent-role", agentRole);
+            profile.setProperty("tuple-centre", tcName);
+            this.context = new ACCDescription(profile);
+        } catch (final ClassNotFoundException e) {
+            throw new DialogReceiveException(e);
+        } catch (final IOException e) {
+            throw new DialogReceiveException(e);
         }
     }
 
     /**
      * 
-     * @throws DialogReceiveException 
-     *				if something goes wrong in the underlying network
+     * @throws DialogReceiveException
+     *             if something goes wrong in the underlying network
      */
     public void receiveEnterRequestAnswer() throws DialogReceiveException {
         try {
-			this.reqAllowed = this.receiveBoolean();
-		} catch (IOException e) {
-			throw new DialogReceiveException(e);
-		}
+            this.reqAllowed = this.receiveBoolean();
+        } catch (final IOException e) {
+            throw new DialogReceiveException(e);
+        }
     }
 
     /**
      * 
-     * @throws DialogReceiveException 
+     * @throws DialogReceiveException
      */
     public void receiveFirstRequest() throws DialogReceiveException {
         try {
-			this.reqType = this.receiveInt();
-		} catch (IOException e) {
-			throw new DialogReceiveException(e);
-		}
+            this.reqType = this.receiveInt();
+        } catch (final IOException e) {
+            throw new DialogReceiveException(e);
+        }
     }
 
     /**
@@ -168,7 +173,8 @@ public abstract class AbstractTucsonProtocol implements java.io.Serializable {
      * @throws DialogReceiveException
      *             if something goes wrong in the underlying network
      */
-    public abstract TucsonMsgReply receiveMsgReply() throws DialogReceiveException;
+    public abstract TucsonMsgReply receiveMsgReply()
+            throws DialogReceiveException;
 
     /**
      * 
@@ -176,7 +182,8 @@ public abstract class AbstractTucsonProtocol implements java.io.Serializable {
      * @throws DialogReceiveException
      *             if something goes wrong in the underlying network
      */
-    public abstract TucsonMsgRequest receiveMsgRequest() throws DialogReceiveException;
+    public abstract TucsonMsgRequest receiveMsgRequest()
+            throws DialogReceiveException;
 
     /**
      * 
@@ -193,30 +200,31 @@ public abstract class AbstractTucsonProtocol implements java.io.Serializable {
      * @throws DialogSendException
      *             if something goes wrong in the underlying network
      */
-    public void sendEnterRequest(final ACCDescription ctx) throws DialogSendException {
-        try{
-        	this.send(AbstractTucsonProtocol.REQ_ENTERCONTEXT);        
-	        String agentName = ctx.getProperty("agent-identity");
-	        if (agentName == null) {
-	            agentName = ctx.getProperty("tc-identity");
-	            if (agentName == null) {
-	                agentName = "anonymous";
-	            }
-	        }
-	        this.send(agentName);
-	        String agentProfile = ctx.getProperty("agent-role");
-	        if (agentProfile == null) {
-	            agentProfile = "default";
-	        }
-	        this.send(agentProfile);
-	        String tcName = ctx.getProperty("tuple-centre");
-	        if (tcName == null) {
-	            tcName = "_";
-	        }
-	        this.send(tcName);
-	        this.flush();
-        } catch (IOException e){
-        	throw new DialogSendException(e);
+    public void sendEnterRequest(final ACCDescription ctx)
+            throws DialogSendException {
+        try {
+            this.send(AbstractTucsonProtocol.REQ_ENTERCONTEXT);
+            String agentName = ctx.getProperty("agent-identity");
+            if (agentName == null) {
+                agentName = ctx.getProperty("tc-identity");
+                if (agentName == null) {
+                    agentName = "anonymous";
+                }
+            }
+            this.send(agentName);
+            String agentProfile = ctx.getProperty("agent-role");
+            if (agentProfile == null) {
+                agentProfile = "default";
+            }
+            this.send(agentProfile);
+            String tcName = ctx.getProperty("tuple-centre");
+            if (tcName == null) {
+                tcName = "_";
+            }
+            this.send(tcName);
+            this.flush();
+        } catch (final IOException e) {
+            throw new DialogSendException(e);
         }
     }
 
@@ -227,12 +235,11 @@ public abstract class AbstractTucsonProtocol implements java.io.Serializable {
      */
     public void sendEnterRequestAccepted() throws DialogSendException {
         try {
-			this.send(true);
-			this.flush();
-		} catch (IOException e) {
-			throw new DialogSendException(e);
-		}
-        
+            this.send(true);
+            this.flush();
+        } catch (final IOException e) {
+            throw new DialogSendException(e);
+        }
     }
 
     /**
@@ -242,12 +249,11 @@ public abstract class AbstractTucsonProtocol implements java.io.Serializable {
      */
     public void sendEnterRequestRefused() throws DialogSendException {
         try {
-			this.send(false);
-			this.flush();
-		} catch (IOException e) {
-			throw new DialogSendException(e);
-		}
-        
+            this.send(false);
+            this.flush();
+        } catch (final IOException e) {
+            throw new DialogSendException(e);
+        }
     }
 
     /**
@@ -298,6 +304,19 @@ public abstract class AbstractTucsonProtocol implements java.io.Serializable {
      */
     public abstract void sendMsgRequest(TucsonMsgRequest request)
             throws DialogSendException;
+
+    /**
+     * @throws DialogSendException
+     *             if something goes wrong in the underlying network
+     */
+    public void sendNodeActiveReply() throws DialogSendException {
+        try {
+            this.send(TucsonMetaACC.getVersion());
+            this.flush();
+        } catch (final IOException e) {
+            throw new DialogSendException(e);
+        }
+    }
 
     /**
      * 
@@ -397,24 +416,4 @@ public abstract class AbstractTucsonProtocol implements java.io.Serializable {
      *             if some network problems arise
      */
     protected abstract void send(String value) throws IOException;
-
-    /**
-     * @return wether the request received last is a "NODE_ACTIVE_QUERY" query
-     */
-    public boolean isNodeActiveQuery() {
-        return this.reqType == AbstractTucsonProtocol.NODE_ACTIVE_QUERY;
-    }
-
-    /**
-     * @throws DialogSendException
-     *             if something goes wrong in the underlying network
-     */
-    public void sendNodeActiveReply() throws DialogSendException {
-        try {
-			this.send(TucsonMetaACC.getVersion());
-	        this.flush();
-		} catch (IOException e) {
-			throw new DialogSendException(e);
-		}
-    }
 }
