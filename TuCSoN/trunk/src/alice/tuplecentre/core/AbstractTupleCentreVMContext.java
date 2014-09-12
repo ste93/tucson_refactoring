@@ -19,7 +19,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import alice.respect.api.IRespectTC;
-import alice.respect.core.EventMonitor;
 import alice.respect.core.StepMonitor;
 import alice.tuplecentre.api.AgentId;
 import alice.tuplecentre.api.IId;
@@ -49,7 +48,6 @@ public abstract class AbstractTupleCentreVMContext implements
     private long bootTime;
     private InputEvent currentEvent;
     private AbstractTupleCentreVMState currentState;
-    private boolean doStep;
     private final List<AbstractEvent> inputEnvEvents;
     private final List<AbstractEvent> inputEvents;
     private boolean management;
@@ -58,7 +56,6 @@ public abstract class AbstractTupleCentreVMContext implements
     private final int maxPendingInputEventNumber;
     private final IRespectTC respectTC;
     private final Map<String, AbstractTupleCentreVMState> states;
-    private boolean stop;
     private final TupleCentreId tid;
 
     /**
@@ -193,20 +190,17 @@ public abstract class AbstractTupleCentreVMContext implements
         while (!this.currentState.isIdle()) {
             this.currentState.execute();
             this.currentState = this.currentState.getNextState();
-            if(isStepMode()){
-        		try {
-    				this.step.awaitEvent();
-    			} catch (InterruptedException e) {
-    				e.printStackTrace();
-    			}
-        	}
-           /*old
-            *  if (this.management && this.stop) {
-                if (!this.doStep) {
-                    break;
+            if (isStepMode()) {
+                try {
+                    this.step.awaitEvent();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
-                this.doStep = false;
-            }*/
+            }
+            /*
+             * old if (this.management && this.stop) { if (!this.doStep) {
+             * break; } this.doStep = false; }
+             */
         }
     }
 
@@ -360,7 +354,6 @@ public abstract class AbstractTupleCentreVMContext implements
         if (!this.management) {
             throw new OperationNotPossibleException();
         }
-        this.stop = false;
     }
 
     /**
@@ -541,21 +534,21 @@ public abstract class AbstractTupleCentreVMContext implements
     public void setManagementMode(final boolean activate) {
         this.management = activate;
     }
-    
+
     @Override
     public boolean setStepMode() {
-    	if (isStepMode()) {
-    		this.stepMode = false;
-    		this.step.signalEvent();
-    		return false;
-    	}
-    	this.stepMode = true;
-    	return true;
+        if (isStepMode()) {
+            this.stepMode = false;
+            this.step.signalEvent();
+            return false;
+        }
+        this.stepMode = true;
+        return true;
     }
-    
+
     @Override
-    public boolean isStepMode(){
-    	return this.stepMode;
+    public boolean isStepMode() {
+        return this.stepMode;
     }
 
     /**
@@ -575,7 +568,6 @@ public abstract class AbstractTupleCentreVMContext implements
         if (!this.management) {
             throw new OperationNotPossibleException();
         }
-        this.stop = true;
     }
 
     /**

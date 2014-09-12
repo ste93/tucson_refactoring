@@ -113,24 +113,26 @@ public interface IManagementContext {
      *         listening
      */
     boolean hasObservers();
-    
+
     /**
      * enable/disable VM step mode
+     * 
      * @return true if stepMode is active
      */
     boolean isStepModeCommand();
-    
+
     /**
      * enable/disable VM step mode
-     * @return true if stepMode is enable, else false
      */
     void stepModeCommand();
 
     /**
      * Executes a single execution step (step mode)
-     * @throws alice.tuplecentre.api.exceptions.OperationNotPossibleException 
+     * 
+     * @throws alice.tuplecentre.api.exceptions.OperationNotPossibleException
      */
-    void nextStepCommand() throws alice.tuplecentre.api.exceptions.OperationNotPossibleException;
+    void nextStepCommand()
+            throws alice.tuplecentre.api.exceptions.OperationNotPossibleException;
 
     void recoveryPersistent(String path, String file, TucsonTupleCentreId ttcid);
 
@@ -182,8 +184,7 @@ public interface IManagementContext {
      */
     void stopCommand() throws OperationNotPossibleException;
 
-	void setManagementMode(boolean activate);
+    void setManagementMode(boolean activate);
 
-	ArrayList<InspectableEventListener> getInspectors();
-
+    ArrayList<InspectableEventListener> getInspectors();
 }

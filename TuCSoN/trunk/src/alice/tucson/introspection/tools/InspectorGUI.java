@@ -24,7 +24,6 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-
 import alice.tucson.api.TucsonAgentId;
 import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
@@ -39,13 +38,6 @@ import alice.tucson.introspection.InspectorProtocol;
  */
 public class InspectorGUI extends javax.swing.JFrame {
     private static final long serialVersionUID = -3765811664087552414L;
-    
-    private final JButton specBtn = new JButton();
-    private final JCheckBox vmStepCB = new JCheckBox();
-    private final JButton vmStepBtn = new JButton();
-    private boolean onRefreshCB = false;
-    /**if we do a quit in inspector, this flag became true */
-    private boolean afterQuit = false;
 
     /**
      * 
@@ -114,6 +106,8 @@ public class InspectorGUI extends javax.swing.JFrame {
         System.exit(0);
     }
 
+    /** if we do a quit in inspector, this flag became true */
+    private boolean afterQuit = false;
     private final TucsonAgentId aid;
     private javax.swing.JButton buttonInspect;
     private javax.swing.JPanel chooseTC;
@@ -125,11 +119,15 @@ public class InspectorGUI extends javax.swing.JFrame {
     private javax.swing.JTextField inputNode;
     private javax.swing.JTextField inputPort;
     private boolean isSessionOpen;
+    private boolean onRefreshCB = false;
     private EventViewer pendingQueryForm;
     private ReactionViewer reactionForm;
+    private final JButton specBtn = new JButton();
     private EditSpec specForm;
     private javax.swing.JTextField stateBar;
     private TupleViewer tupleForm;
+    private final JButton vmStepBtn = new JButton();
+    private final JCheckBox vmStepCB = new JCheckBox();
     /**
      * Package-visible reference to the Inspector core machinery.
      */
@@ -176,6 +174,28 @@ public class InspectorGUI extends javax.swing.JFrame {
         this.buttonInspectActionPerformed();
     }
 
+    /**
+     * updating stepMode CheckBox when VM mode change due to another inspector
+     */
+    public void changeStepModeCB() {
+        if (this.vmStepCB.isSelected()) {
+            this.onRefreshCB = true;
+            this.vmStepCB.setSelected(false);
+        } else {
+            this.onRefreshCB = true;
+            this.vmStepCB.setSelected(true);
+        }
+    }
+
+    /**
+     * updating stepMode CheckBox when start inspecting a tuple centre after a
+     * quit
+     */
+    public void deselectStepModeCB() {
+        this.onRefreshCB = true;
+        this.vmStepCB.setSelected(false);
+    }
+
     public void onEventViewerExit() {
         this.protocol
                 .setPendingQueryObservType(InspectorProtocol.NO_OBSERVATION);
@@ -184,6 +204,15 @@ public class InspectorGUI extends javax.swing.JFrame {
         } catch (final IOException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * updating stepMode CheckBox when start inspecting a tuple centre with
+     * stepMode already active
+     */
+    public void selectStepModeCB() {
+        this.onRefreshCB = true;
+        this.vmStepCB.setSelected(true);
     }
 
     private void buttonInspectActionPerformed() {
@@ -216,15 +245,14 @@ public class InspectorGUI extends javax.swing.JFrame {
                 this.stateBar.setText("Operation Failed: " + e);
                 e.printStackTrace();
             }
-            if(this.afterQuit){
-            	deselectStepModeCB();
-            	afterQuit = false;
+            if (this.afterQuit) {
+                this.deselectStepModeCB();
+                this.afterQuit = false;
             }
-        	this.context.isStepMode();
-        	if(!this.afterQuit){
-            	this.afterQuit = true;
+            this.context.isStepMode();
+            if (!this.afterQuit) {
+                this.afterQuit = true;
             }
-            
         } else {
             this.specForm.exit();
             this.agent.quit();
@@ -398,13 +426,13 @@ public class InspectorGUI extends javax.swing.JFrame {
         gridBagConstraints.weightx = 30.0;
         gridBagConstraints.weighty = 100.0;
         respectSetsPanel.add(reactionsBtn, gridBagConstraints);
-        specBtn.setFont(new java.awt.Font("Arial", 0, 11));
-        specBtn.setText("Specification Space");
-        specBtn.setToolTipText("Inspect ReSpecT specification tuples set");
-        specBtn.setMaximumSize(new java.awt.Dimension(130, 25));
-        specBtn.setMinimumSize(new java.awt.Dimension(130, 25));
-        specBtn.setPreferredSize(new java.awt.Dimension(130, 25));
-        specBtn.addActionListener(new java.awt.event.ActionListener() {
+        this.specBtn.setFont(new java.awt.Font("Arial", 0, 11));
+        this.specBtn.setText("Specification Space");
+        this.specBtn.setToolTipText("Inspect ReSpecT specification tuples set");
+        this.specBtn.setMaximumSize(new java.awt.Dimension(130, 25));
+        this.specBtn.setMinimumSize(new java.awt.Dimension(130, 25));
+        this.specBtn.setPreferredSize(new java.awt.Dimension(130, 25));
+        this.specBtn.addActionListener(new java.awt.event.ActionListener() {
             @Override
             public void actionPerformed(final java.awt.event.ActionEvent evt) {
                 InspectorGUI.this.specBtnActionPerformed();
@@ -415,61 +443,61 @@ public class InspectorGUI extends javax.swing.JFrame {
         gridBagConstraints.gridy = 2;
         gridBagConstraints.weightx = 50.0;
         gridBagConstraints.weighty = 100.0;
-        respectSetsPanel.add(specBtn, gridBagConstraints);
-        vmStepCB.setFont(new java.awt.Font("Arial", 0, 11));
-        vmStepCB.setText("Step Mode");
-        vmStepCB.setToolTipText("Enable/Disable step mode");
-        vmStepCB.setSelected(false);
-        vmStepCB.addItemListener(new ItemListener() {
-        	@Override
-			public void itemStateChanged(final ItemEvent e) {
-				try {
-					if (vmStepCB.isSelected()) {						
-						vmStepBtn.setEnabled(true);
-						if (onRefreshCB){
-							onRefreshCB = false;
-							return;
-						}
-						context.VmStepMode();
-					} else {
-						vmStepBtn.setEnabled(false);
-						if (onRefreshCB){
-							onRefreshCB = false;
-							return;
-						}
-						context.VmStepMode();
-					}
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				}
-			}
-		});
+        respectSetsPanel.add(this.specBtn, gridBagConstraints);
+        this.vmStepCB.setFont(new java.awt.Font("Arial", 0, 11));
+        this.vmStepCB.setText("Step Mode");
+        this.vmStepCB.setToolTipText("Enable/Disable step mode");
+        this.vmStepCB.setSelected(false);
+        this.vmStepCB.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(final ItemEvent e) {
+                try {
+                    if (InspectorGUI.this.vmStepCB.isSelected()) {
+                        InspectorGUI.this.vmStepBtn.setEnabled(true);
+                        if (InspectorGUI.this.onRefreshCB) {
+                            InspectorGUI.this.onRefreshCB = false;
+                            return;
+                        }
+                        InspectorGUI.this.context.VmStepMode();
+                    } else {
+                        InspectorGUI.this.vmStepBtn.setEnabled(false);
+                        if (InspectorGUI.this.onRefreshCB) {
+                            InspectorGUI.this.onRefreshCB = false;
+                            return;
+                        }
+                        InspectorGUI.this.context.VmStepMode();
+                    }
+                } catch (final IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.weightx = 50.0;
         gridBagConstraints.weighty = 100.0;
-        stepModePanel.add(vmStepCB, gridBagConstraints);
-        vmStepBtn.setEnabled(false);
-        vmStepBtn.setFont(new java.awt.Font("Arial", 0, 11));
-        vmStepBtn.setText("Next Step");
-        vmStepBtn.setEnabled(false);
-        vmStepBtn.setToolTipText("Go to the next respect vm step");
-        vmStepBtn.setMaximumSize(new java.awt.Dimension(130, 25));
-        vmStepBtn.setMinimumSize(new java.awt.Dimension(130, 25));
-        vmStepBtn.setPreferredSize(new java.awt.Dimension(130, 25));
-        vmStepBtn.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(final ActionEvent e) {
-				vmStepBtnActionPerformed();
-			}
-		});
+        stepModePanel.add(this.vmStepCB, gridBagConstraints);
+        this.vmStepBtn.setEnabled(false);
+        this.vmStepBtn.setFont(new java.awt.Font("Arial", 0, 11));
+        this.vmStepBtn.setText("Next Step");
+        this.vmStepBtn.setEnabled(false);
+        this.vmStepBtn.setToolTipText("Go to the next respect vm step");
+        this.vmStepBtn.setMaximumSize(new java.awt.Dimension(130, 25));
+        this.vmStepBtn.setMinimumSize(new java.awt.Dimension(130, 25));
+        this.vmStepBtn.setPreferredSize(new java.awt.Dimension(130, 25));
+        this.vmStepBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(final ActionEvent e) {
+                InspectorGUI.this.vmStepBtnActionPerformed();
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.weightx = 50.0;
         gridBagConstraints.weighty = 100.0;
-        stepModePanel.add(vmStepBtn, gridBagConstraints);
+        stepModePanel.add(this.vmStepBtn, gridBagConstraints);
         this.controlPanel.addTab("Sets", null, respectSetsPanel,
                 "Now inspecting TuCSoN tuplecentre sets");
         this.controlPanel.addTab("StepMode", null, stepModePanel,
@@ -657,14 +685,14 @@ public class InspectorGUI extends javax.swing.JFrame {
 
     /**
      * Handles 'vm step' button.
-     *
+     * 
      */
     private void vmStepBtnActionPerformed() {
-    	try {
-			this.context.nextStep();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+        try {
+            this.context.nextStep();
+        } catch (final IOException e) {
+            e.printStackTrace();
+        }
     }
 
     protected EventViewer getQueryForm() {
@@ -702,36 +730,4 @@ public class InspectorGUI extends javax.swing.JFrame {
             e.printStackTrace();
         }
     }
-
-    /**
-     *  updating stepMode CheckBox when start inspecting a
-     *  tuple centre with stepMode already active
-     */
-	public void selectStepModeCB() {
-				onRefreshCB = true;
-				vmStepCB.setSelected(true);
-	}
-	
-    /**
-     *  updating stepMode CheckBox when start inspecting a
-     *  tuple centre after a quit
-     */
-	public void deselectStepModeCB() {
-				onRefreshCB = true;
-				vmStepCB.setSelected(false);
-	}
-	
-    /**
-     *  updating stepMode CheckBox when VM mode change 
-     *  due to another inspector
-     */
-	public void changeStepModeCB() {
-		if (vmStepCB.isSelected()) {
-				onRefreshCB = true;
-				vmStepCB.setSelected(false);
-		}else{
-			onRefreshCB = true;
-			vmStepCB.setSelected(true);
-		}
-	}
 }

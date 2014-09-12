@@ -568,27 +568,27 @@ public final class TupleCentreContainer {
                 return false;
             }
         }
-        if (type == TucsonOperation.isStepModeCode()) {
+        if (type == TucsonOperation.stepModeCode()) {
             return context.isStepModeCommand();
         }
-        if (type == TucsonOperation.StepModeCode()) {
+        if (type == TucsonOperation.stepModeCode()) {
             context.stepModeCommand();
             return true;
         }
         if (type == TucsonOperation.nextStepCode()) {
-				try {
-					context.nextStepCommand();
-					return true;
-				} catch (alice.tuplecentre.api.exceptions.OperationNotPossibleException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-					return false;
-				}
+            try {
+                context.nextStepCommand();
+                return true;
+            } catch (final alice.tuplecentre.api.exceptions.OperationNotPossibleException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+                return false;
+            }
         }
-       /*TODO must be delete... if (type == TucsonOperation.setMngModeCode()) {
-            context.setManagementMode((Boolean) obj);
-            return true;
-        }*/
+        /*
+         * TODO must be delete... if (type == TucsonOperation.setMngModeCode())
+         * { context.setManagementMode((Boolean) obj); return true; }
+         */
         if (type == TucsonOperation.addObsCode()) {
             context.addObserver((ObservableEventListener) obj);
             return true;
@@ -609,7 +609,7 @@ public final class TupleCentreContainer {
             return true;
         }
         if (type == TucsonOperation.getInspectorsCode()) {
-           return context.getInspectors();
+            return context.getInspectors();
         }
         if (type == TucsonOperation.hasInspCode()) {
             return context.hasInspectors();

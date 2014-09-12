@@ -18,24 +18,15 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
-
-import alice.logictuple.LogicTuple;
 import alice.tucson.api.EnhancedACC;
 import alice.tucson.api.TucsonAgentId;
 import alice.tucson.api.TucsonMetaACC;
 import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
-import alice.tucson.api.exceptions.UnreachableNodeException;
-import alice.tuplecentre.api.exceptions.InvalidOperationException;
-import alice.tuplecentre.api.exceptions.InvalidTupleException;
-import alice.tuplecentre.api.exceptions.OperationTimeOutException;
-import alice.util.jedit.JEditTextArea;
 
 /**
  * 
@@ -45,7 +36,6 @@ import alice.util.jedit.JEditTextArea;
  */
 public class EditSpec extends javax.swing.JFrame {
     private static final long serialVersionUID = 2491540632593263750L;
-    
     private javax.swing.JTextField caretPosition;
     private EnhancedACC context;
     private final alice.util.jedit.JEditTextArea inputSpec;
@@ -108,26 +98,8 @@ public class EditSpec extends javax.swing.JFrame {
      * get tuple centre specification space
      */
     private void bGetActionPerformed() {
-    	new SpecWorker("get", this.context, this.tid, this, null).start();
+        new SpecWorker("get", this.context, this.tid, this, null).start();
     }
-    
-    /**
-     * reports the result of get operation in SpecWorker
-     * @param spec
-     * @param inputSpec
-     * @param outputState
-     */
-    protected void getCompletition(final StringBuffer spec){
-    	SwingUtilities.invokeLater(new Runnable() {
-			
-			@Override
-			public void run() {
-				inputSpec.setText(spec.toString());
-	            outputState.setText("ReSpecT specification read.");	
-			}
-		});
-    }
-    
 
     private void bLoadActionPerformed() {
         final javax.swing.JFileChooser chooser = new javax.swing.JFileChooser();
@@ -168,23 +140,8 @@ public class EditSpec extends javax.swing.JFrame {
     }
 
     private void bOkActionPerformed() {
-    	new SpecWorker("set", this.context, this.tid, this, this.inputSpec).start();
-    }
-    
-    /**
-     * reports the result of set operation in SpecWorker
-     * @param spec
-     * @param inputSpec
-     * @param outputState
-     */
-    protected void setCompletition(){
-    	SwingUtilities.invokeLater(new Runnable() {
-			
-			@Override
-			public void run() {
-	            outputState.setText("ReSpecT specification set.");	
-			}
-		});
+        new SpecWorker("set", this.context, this.tid, this, this.inputSpec)
+                .start();
     }
 
     private void bSaveActionPerformed() {
@@ -249,9 +206,9 @@ public class EditSpec extends javax.swing.JFrame {
             }
         }
     }
-    
+
     private void formComponentShown() {
-    	this.bGetActionPerformed();
+        this.bGetActionPerformed();
     }
 
     private void initComponents() {
@@ -392,5 +349,39 @@ public class EditSpec extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 0);
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         this.getContentPane().add(this.caretPosition, gridBagConstraints);
+    }
+
+    /**
+     * reports the result of get operation in SpecWorker
+     * 
+     * @param spec
+     * @param inputSpec
+     * @param outputState
+     */
+    protected void getCompletition(final StringBuffer spec) {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                EditSpec.this.inputSpec.setText(spec.toString());
+                EditSpec.this.outputState
+                        .setText("ReSpecT specification read.");
+            }
+        });
+    }
+
+    /**
+     * reports the result of set operation in SpecWorker
+     * 
+     * @param spec
+     * @param inputSpec
+     * @param outputState
+     */
+    protected void setCompletition() {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                EditSpec.this.outputState.setText("ReSpecT specification set.");
+            }
+        });
     }
 }

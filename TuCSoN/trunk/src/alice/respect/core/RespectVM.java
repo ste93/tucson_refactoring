@@ -47,8 +47,6 @@ public class RespectVM implements Runnable {
     private final RespectVMContext context;
     private final Object idle;
     private final EventMonitor news;
-    private final EventMonitor step;
-    private boolean stepMode;
     /** listener to VM inspectable events */
     protected List<InspectableEventListener> inspectors;
     /**
@@ -76,8 +74,6 @@ public class RespectVM implements Runnable {
         this.idle = new Object();
         this.inspectors = new ArrayList<InspectableEventListener>();
         this.observers = new ArrayList<ObservableEventListener>();
-        this.stepMode = false;
-        this.step = new EventMonitor();
     }
 
     /**
@@ -172,13 +168,13 @@ public class RespectVM implements Runnable {
     public TupleCentreId getId() {
         return (TupleCentreId) this.context.getId();
     }
-    
+
     /**
      * 
      * @return the list of inspector
      */
     public ArrayList<InspectableEventListener> getInspectors() {
-    	return (ArrayList<InspectableEventListener>) this.inspectors;
+        return (ArrayList<InspectableEventListener>) this.inspectors;
     }
 
     /**
@@ -268,21 +264,22 @@ public class RespectVM implements Runnable {
     }
 
     public void stepModeCommand() {
-    	this.context.setStepMode();
+        this.context.setStepMode();
     }
 
     /**
      * @throws alice.tuplecentre.api.exceptions.OperationNotPossibleException
      */
-    public void nextStepCommand() throws alice.tuplecentre.api.exceptions.OperationNotPossibleException {
-    	this.context.nextStepCommand();
+    public void nextStepCommand()
+            throws alice.tuplecentre.api.exceptions.OperationNotPossibleException {
+        this.context.nextStepCommand();
     }
-    
+
     /**
      * @return if stepMode is active or not
      */
     public boolean isStepModeCommand() {
-    	return this.context.isStepMode();
+        return this.context.isStepMode();
     }
 
     /**

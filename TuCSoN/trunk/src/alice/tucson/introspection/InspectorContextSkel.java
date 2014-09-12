@@ -152,52 +152,33 @@ public class InspectorContextSkel extends AbstractACCProxyNodeSide implements
     }
 
     /**
-     * enable/disable VM step Mode
-     * @param m
-     *            the step mode message
-     */
-    public void stepMode(final StepModeMsg m) {
-    	TupleCentreContainer.doManagementOperation(TucsonOperation.StepModeCode(), this.tcId, null);
-    	ArrayList<InspectableEventListener> inspectors = 
-    			(ArrayList<InspectableEventListener>) TupleCentreContainer.doManagementOperation(TucsonOperation.getInspectorsCode(), this.tcId, null);
-    	for (InspectableEventListener insp : inspectors) {
-    		InspectorContextSkel skel = (InspectorContextSkel)insp;
-    		if (skel.getId() == this.getId()) {
-    			continue;
-    		}
-    		InspectorContextEvent msg = new InspectorContextEvent();
-    		msg.setModeChanged(true);
-    		try {
-    			skel.getDialog().sendInspectorEvent(msg);
-			} catch (DialogException e) {
-				e.printStackTrace();
-			}
-    	}
-    }
-
-    /**
      * verify if VM step mode is already active
+     * 
      * @param m
-     * 			the IsActiveStepModeMsg
+     *            the IsActiveStepModeMsg
      */
     public void isStepMode(final IsActiveStepModeMsg m) {
-    	boolean isActive = (boolean)TupleCentreContainer.doManagementOperation(TucsonOperation.isStepModeCode(), this.tcId, null);
-    	InspectorContextEvent msg = new InspectorContextEvent();
-    	msg.setStepMode(isActive);
-    	try {
-			this.dialog.sendInspectorEvent(msg);
-		} catch (DialogException e) {
-			e.printStackTrace();
-		}
+        final boolean isActive = (Boolean) TupleCentreContainer
+                .doManagementOperation(TucsonOperation.stepModeCode(),
+                        this.tcId, null);
+        final InspectorContextEvent msg = new InspectorContextEvent();
+        msg.setStepMode(isActive);
+        try {
+            this.dialog.sendInspectorEvent(msg);
+        } catch (final DialogException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
      * ask a new step for a tuple centre vm during step mode
+     * 
      * @param m
-     * 			the NxtStepMsg
+     *            the NxtStepMsg
      */
     public void nextStep(final NextStepMsg m) {
-    	TupleCentreContainer.doManagementOperation(TucsonOperation.nextStepCode(), this.tcId, null);
+        TupleCentreContainer.doManagementOperation(
+                TucsonOperation.nextStepCode(), this.tcId, null);
     }
 
     @Override
@@ -277,7 +258,7 @@ public class InspectorContextSkel extends AbstractACCProxyNodeSide implements
             TupleCentreContainer.doManagementOperation(
                     TucsonOperation.addInspCode(), this.tcId, this);
             while (!this.shutdown) {
-                final NodeMsg msg = this.dialog.receiveNodeMsg();   
+                final NodeMsg msg = this.dialog.receiveNodeMsg();
                 final Class<?> cl = msg.getClass();
                 final Method m = this.getClass().getMethod(msg.getAction(),
                         new Class[] { cl });
@@ -349,19 +330,46 @@ public class InspectorContextSkel extends AbstractACCProxyNodeSide implements
     }
 
     /**
+     * enable/disable VM step Mode
+     * 
+     * @param m
+     *            the step mode message
+     */
+    public void stepMode(final StepModeMsg m) {
+        TupleCentreContainer.doManagementOperation(
+                TucsonOperation.stepModeCode(), this.tcId, null);
+        final ArrayList<InspectableEventListener> inspectors = (ArrayList<InspectableEventListener>) TupleCentreContainer
+                .doManagementOperation(TucsonOperation.getInspectorsCode(),
+                        this.tcId, null);
+        for (final InspectableEventListener insp : inspectors) {
+            final InspectorContextSkel skel = (InspectorContextSkel) insp;
+            if (skel.getId() == this.getId()) {
+                continue;
+            }
+            final InspectorContextEvent msg = new InspectorContextEvent();
+            msg.setModeChanged(true);
+            try {
+                skel.getDialog().sendInspectorEvent(msg);
+            } catch (final DialogException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * 
+     * @return InspectorContextSke dialog
+     */
+    private AbstractTucsonProtocol getDialog() {
+        return this.dialog;
+    }
+
+    /**
      * 
      * @param st
      *            the String to log
      */
     protected void log(final String st) {
         System.out.println("[InspectorContextSkel]: " + st);
-    }
-    
-    /**
-     * 
-     * @return InspectorContextSke dialog
-     */
-    private AbstractTucsonProtocol getDialog() {
-    	return this.dialog;
     }
 }
