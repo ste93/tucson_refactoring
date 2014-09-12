@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<classpath>
-	<classpathentry kind="src" path="bridge/src"/>
-	<classpathentry kind="src" path="trunk/src"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="/Users/Lorenzo/Documents/universita/Specialistica/distribuiti/tucson/2p-2.8.0.jar"/>
-	<classpathentry kind="lib" path="/Users/Lorenzo/Documents/universita/Specialistica/distribuiti/tucson/jade.jar"/>
-	<classpathentry kind="output" path="bin"/>
-</classpath>
