@@ -57,6 +57,8 @@ public interface IManagementContext {
 
     void enablePersistency(String path, TucsonTupleCentreId ttcid);
 
+    ArrayList<InspectableEventListener> getInspectors();
+
     /**
      * Get current behaviour specification
      * 
@@ -122,11 +124,6 @@ public interface IManagementContext {
     boolean isStepModeCommand();
 
     /**
-     * enable/disable VM step mode
-     */
-    void stepModeCommand();
-
-    /**
      * Executes a single execution step (step mode)
      * 
      * @throws alice.tuplecentre.api.exceptions.OperationNotPossibleException
@@ -155,6 +152,8 @@ public interface IManagementContext {
      */
     void reset();
 
+    void setManagementMode(boolean activate);
+
     /**
      * Specify the behaviour of the tuple centre
      * 
@@ -176,6 +175,11 @@ public interface IManagementContext {
     void setWSet(List<LogicTuple> wSet);
 
     /**
+     * enable/disable VM step mode
+     */
+    void stepModeCommand();
+
+    /**
      * Stops the VM (management mode, debugging)
      * 
      * @throws OperationNotPossibleException
@@ -183,8 +187,4 @@ public interface IManagementContext {
      *             state
      */
     void stopCommand() throws OperationNotPossibleException;
-
-    void setManagementMode(boolean activate);
-
-    ArrayList<InspectableEventListener> getInspectors();
 }

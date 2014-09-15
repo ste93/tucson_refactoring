@@ -51,11 +51,11 @@ public abstract class AbstractTupleCentreVMContext implements
     private final List<AbstractEvent> inputEnvEvents;
     private final List<AbstractEvent> inputEvents;
     private boolean management;
-    private boolean stepMode;
-    private StepMonitor step;
     private final int maxPendingInputEventNumber;
     private final IRespectTC respectTC;
     private final Map<String, AbstractTupleCentreVMState> states;
+    private final StepMonitor step;
+    private boolean stepMode;
     private final TupleCentreId tid;
 
     /**
@@ -190,10 +190,10 @@ public abstract class AbstractTupleCentreVMContext implements
         while (!this.currentState.isIdle()) {
             this.currentState.execute();
             this.currentState = this.currentState.getNextState();
-            if (isStepMode()) {
+            if (this.isStepMode()) {
                 try {
                     this.step.awaitEvent();
-                } catch (InterruptedException e) {
+                } catch (final InterruptedException e) {
                     e.printStackTrace();
                 }
             }
@@ -364,6 +364,11 @@ public abstract class AbstractTupleCentreVMContext implements
      * @return the list of matching tuples
      */
     public abstract List<Tuple> inAllTuples(TupleTemplate t);
+
+    @Override
+    public boolean isStepMode() {
+        return this.stepMode;
+    }
 
     /**
      * 
@@ -537,18 +542,13 @@ public abstract class AbstractTupleCentreVMContext implements
 
     @Override
     public boolean setStepMode() {
-        if (isStepMode()) {
+        if (this.isStepMode()) {
             this.stepMode = false;
             this.step.signalEvent();
             return false;
         }
         this.stepMode = true;
         return true;
-    }
-
-    @Override
-    public boolean isStepMode() {
-        return this.stepMode;
     }
 
     /**

@@ -190,7 +190,6 @@ public class TucsonNodeService {
     }
 
     private final List<TucsonAgentId> agents;
-    private ArrayList<InspectorContextSkel> inspectorAgents;
     private final String configFile;
     private Prolog configManager;
     private Map<String, TucsonTCUsers> cores;
@@ -200,8 +199,9 @@ public class TucsonNodeService {
     private TucsonTupleCentreId idEnvTC; // Tuple centre for environment
     // configuration
     private TucsonTupleCentreId idObsTC;
+    private final ArrayList<InspectorContextSkel> inspectorAgents;
     private Date installationDate;
-    private final List<Thread> nodeAgents;    
+    private final List<Thread> nodeAgents;
     private TucsonAgentId nodeAid;
     private boolean observed;
     private ObservationService obsService;
@@ -291,6 +291,14 @@ public class TucsonNodeService {
         if (this.observed && !present) {
             this.obsService.accEntered(aid);
         }
+    }
+
+    /**
+     * @param i
+     *            the inspector agent to add
+     */
+    public void addInspectorAgent(final InspectorContextSkel i) {
+        this.inspectorAgents.add(i);
     }
 
     /**
@@ -526,6 +534,13 @@ public class TucsonNodeService {
     }
 
     /**
+     * @return node agents list
+     */
+    public ArrayList<InspectorContextSkel> getInspectorAgents() {
+        return this.inspectorAgents;
+    }
+
+    /**
      * 
      * @return the date when the TuCSoN node was installed
      */
@@ -539,29 +554,6 @@ public class TucsonNodeService {
      */
     public NodeServiceListener getListener() {
         return this.obsService;
-    }
-    
-    /** 
-     * @return node agents list
-     */
-    public ArrayList<InspectorContextSkel> getInspectorAgents() {	
-    	return this.inspectorAgents;
-    }
-    
-    /**
-     * @param i
-     * 			the inspector agent to add
-     */
-    public void addInspectorAgent(InspectorContextSkel i) {	
-    	this.inspectorAgents.add(i);
-    }
-    
-    /**
-     * @param i
-     * 			the InspectorContextSkel to eliminate
-     */
-    public void removeInspectorAgent(InspectorContextSkel i) {
-    	this.inspectorAgents.remove(i);
     }
 
     /**
@@ -639,6 +631,14 @@ public class TucsonNodeService {
         while (it.hasNext()) {
             it.next().removeUser(aid);
         }
+    }
+
+    /**
+     * @param i
+     *            the InspectorContextSkel to eliminate
+     */
+    public void removeInspectorAgent(final InspectorContextSkel i) {
+        this.inspectorAgents.remove(i);
     }
 
     /**

@@ -25,26 +25,6 @@ public interface ITupleCentreManagement {
     void goCommand() throws OperationNotPossibleException;
 
     /**
-     * 
-     * @throws OperationNotPossibleException
-     *             if the operation cannot be performed
-     */
-    void nextStepCommand() throws OperationNotPossibleException;
-
-    /**
-     * old
-     * @param activate
-     *            wether the 'management mode' should be activated or not
-     */
-    void setManagementMode(boolean activate);
- 
-    /**
-     * enable/disable step mode
-     * @return 
-     */
-    boolean setStepMode();
-    
-    /**
      * verify if stepMode is active or not
      * 
      * @return if stepMode is active or not
@@ -53,11 +33,33 @@ public interface ITupleCentreManagement {
 
     /**
      * 
+     * @throws OperationNotPossibleException
+     *             if the operation cannot be performed
+     */
+    void nextStepCommand() throws OperationNotPossibleException;
+
+    /**
+     * old
+     * 
+     * @param activate
+     *            wether the 'management mode' should be activated or not
+     */
+    void setManagementMode(boolean activate);
+
+    /**
+     * 
      * @param spec
      *            the ReSpecT specification to set
      * @return wether the ReSpecT specification has been succesfully set
      */
     boolean setReactionSpec(AbstractBehaviourSpecification spec);
+
+    /**
+     * enable/disable step mode
+     * 
+     * @return
+     */
+    boolean setStepMode();
 
     /**
      * 
