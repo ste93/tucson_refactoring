@@ -2,63 +2,56 @@ package it.unibo.sd.jade.examples.myex;
 
 import java.util.Random;
 
-import it.unibo.sd.jade.examples.bookTrading.BookBuyerAgent;
+
 import it.unibo.sd.jade.operations.ordinary.In;
-import it.unibo.sd.jade.operations.ordinary.Inp;
-import it.unibo.sd.jade.operations.ordinary.Out;
-import it.unibo.sd.jade.service.TucsonHelper;
-import it.unibo.sd.jade.service.TucsonService;
 import alice.logictuple.LogicTuple;
-import alice.logictuple.TupleArgument;
-import alice.respect.api.AbstractAgent;
-import alice.respect.api.AgentId;
 import alice.tucson.api.AbstractTucsonAgent;
-import alice.tucson.api.AsynchACC;
 import alice.tucson.api.EnhancedAsynchACC;
 import alice.tucson.api.ITucsonOperation;
-import alice.tucson.api.SynchACC;
 import alice.tucson.api.TucsonOperationCompletionListener;
 import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
-import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
-import alice.tucson.api.exceptions.UnreachableNodeException;
-import alice.tucson.examples.helloWorld.HelloWorldAgent;
-import alice.tuplecentre.api.Tuple;
 import alice.tuplecentre.api.exceptions.InvalidOperationException;
 import alice.tuplecentre.api.exceptions.InvalidTupleException;
-import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 import alice.tuplecentre.core.AbstractTupleCentreOperation;
 
+/**
+ * Asynchronous Consumer Example
+ * 
+ * @author Consalici Drudi
+ */
 
 public class AsynchConsumer extends AbstractTucsonAgent  {
-		int blue=0;
-		int yellow=0;
-		int green=0;
-		int red=0;
-		int black=0;
-		public int count=0;
-		public int failedForTime=0;
-		public AsynchConsumer(String id) throws TucsonInvalidAgentIdException {
-			super(id);
-		}
-		public synchronized  void addColor(String color){
-			switch(color){
-			case "blue": 
-				blue++;
-				break;
-			case "green":
-				green++;
-				break;
-			case "yellow":
-				yellow++;
-				break;
-			case "red":
-				red++;
-				break;
-			default: black++;
-			}
-		}
+
+   private int blue = 0;
+   private int yellow = 0;
+   private int green = 0;
+   private int red = 0;
+   private int black = 0;
+   public int count = 0;
+   public int failedForTime=0;
+   public AsynchConsumer(String id) throws TucsonInvalidAgentIdException {
+      super(id);
+   }
+   
+   public synchronized  void addColor(String color){
+         switch(color){
+         case "blue": 
+            blue++;
+            break;
+         case "green":
+            green++;
+            break;
+         case "yellow":
+            yellow++;
+            break;
+         case "red":
+            red++;
+            break;
+         default: black++;
+      }
+   }
 		private class InList implements TucsonOperationCompletionListener{
 			@Override
 			public void operationCompleted(AbstractTupleCentreOperation op) {

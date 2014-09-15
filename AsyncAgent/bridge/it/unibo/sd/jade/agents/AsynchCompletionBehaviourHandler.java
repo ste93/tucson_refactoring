@@ -23,7 +23,7 @@ import alice.tuplecentre.core.AbstractTupleCentreOperation;
  * 
  */
 public class AsynchCompletionBehaviourHandler extends AbstractTucsonAgent {
-    private static void log(final String msg) {
+	private static void log(final String msg) {
         System.out.println("..[AsynchHandler]: " + msg);
     }
 
