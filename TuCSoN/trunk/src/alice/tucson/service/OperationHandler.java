@@ -525,8 +525,6 @@ public class OperationHandler {
             tupl = JTuplesEngine.toLogicTuple((JTuple) t);
         } else if (t instanceof JTupleTemplate) {
             tupl = JTuplesEngine.toLogicTuple((JTupleTemplate) t);
-        } else {
-            this.log("wtf");
         }
         // this.log("tupl = " + tupl);
         int nTry = 0;
