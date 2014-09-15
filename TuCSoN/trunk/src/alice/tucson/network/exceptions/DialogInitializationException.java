@@ -2,21 +2,21 @@ package alice.tucson.network.exceptions;
 
 
 public class DialogInitializationException extends DialogException {
-    private static final long serialVersionUID = 1L;
-
     /**
-	 * Exception thrown when something goes wrong while
-	 *  creating a new ServerSocket
-	 */
-	public DialogInitializationException(String message, Throwable cause) {
+     * Exception thrown when something goes wrong while
+     *  creating a new ServerSocket
+     */
+    private static final long serialVersionUID = 1L;        
+    
+	public DialogInitializationException(final String message, final Throwable cause) {
 		super(message, cause);
 	}
 
-	public DialogInitializationException(String message) {
+	public DialogInitializationException(final String message) {
 		super(message);
 	}
 
-	public DialogInitializationException(Throwable cause) {
+	public DialogInitializationException(final Throwable cause) {
 		super(cause);
 	}
 

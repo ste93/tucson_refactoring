@@ -16,7 +16,7 @@ public class OperationNotPossibleException extends RespectException {
 		super();
 	}
 
-	public OperationNotPossibleException(String arg0) {
+	public OperationNotPossibleException(final String arg0) {
 		super(arg0);
 	}
     

@@ -137,7 +137,7 @@ public class TucsonNodeService {
         } catch (final java.net.ConnectException e) {
             reply = "";
         } catch (UnknownHostException e) {
-        	throw new UnreachableNodeException("Host unknown",e);
+        	throw new UnreachableNodeException("Host unknown", e);
 		} catch (IOException e) {
 			throw new DialogInitializationException(e);
 		}
@@ -421,6 +421,7 @@ public class TucsonNodeService {
      * @param tc
      *            the identifier of the tuple centre whose persistency service
      *            should be disabled
+     * 
      */
     public synchronized boolean disablePersistency(final String tc) {
         final TucsonTCUsers tar = this.cores.get(tc);

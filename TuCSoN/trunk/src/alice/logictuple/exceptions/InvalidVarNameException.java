@@ -29,7 +29,7 @@ public class InvalidVarNameException extends LogicTupleException {
 		super();
 	}
 
-	public InvalidVarNameException(String message, Throwable cause) {
+	public InvalidVarNameException(final String message, final Throwable cause) {
 		super(message, cause);
 	}
     

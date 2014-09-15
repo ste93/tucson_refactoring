@@ -28,11 +28,11 @@ public class UnreachableNodeException extends Exception {
 		super();
 	}
 
-	public UnreachableNodeException(String arg0, Throwable arg1) {
+	public UnreachableNodeException(final String arg0, final Throwable arg1) {
 		super(arg0, arg1);
 	}
 
-	public UnreachableNodeException(Throwable arg0) {
+	public UnreachableNodeException(final Throwable arg0) {
 		super(arg0);
 	}
     

@@ -14,7 +14,6 @@
 package alice.logictuple;
 
 import alice.logictuple.exceptions.InvalidLogicTupleException;
-import alice.tuplecentre.api.exceptions.InvalidOperationException;
 import alice.tuprolog.InvalidTermException;
 import alice.tuprolog.Term;
 
@@ -53,7 +52,7 @@ public class LogicTuple implements alice.tuplecentre.api.TupleTemplate,
                     new LogicTupleOpManager());
             return new LogicTuple(new TupleArgument(t));
         } catch (final InvalidTermException ex) {
-            throw new InvalidLogicTupleException("Exception occurred while parsing the string: \""+st+"\"",ex);
+            throw new InvalidLogicTupleException("Exception occurred while parsing the string: \"" + st + "\"", ex);
         }
     }
 
@@ -276,9 +275,7 @@ public class LogicTuple implements alice.tuplecentre.api.TupleTemplate,
      * Gets the number of arguments of this argument supposed to be a structure
      * 
      * @return the number of arguments
-     * @throws InvalidOperationException
-     *             if this argument is not a structure or an out of bounds index
-     *             error is issued
+     * 
      */
     public int getArity() {
     		return this.info.getArity();
@@ -288,8 +285,7 @@ public class LogicTuple implements alice.tuplecentre.api.TupleTemplate,
      * Gets the name of the logic tuple
      * 
      * @return the name of the logic tuple
-     * @throws InvalidOperationException
-     *             if the requested operation is not allowed for this tuple
+     * 
      */
     public String getName() {
         return this.info.getName();
@@ -302,8 +298,6 @@ public class LogicTuple implements alice.tuplecentre.api.TupleTemplate,
      * 
      * @return a {@code String} in the form nome/arity.
      * 
-     * @throws InvalidOperationException
-     *             if the tuple is not a predicate (e.g. a tuProlog Struct)
      * 
      */
     public String getPredicateIndicator() {

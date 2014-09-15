@@ -140,7 +140,7 @@ public class JVal implements IJVal {
      * @see alice.tuples.javatuples.IJVal#toDouble()
      */
     @Override
-    public double toDouble(){
+    public double toDouble() {
         if (this.type == JArgType.DOUBLE) {
             return ((Double) this.arg).doubleValue();
         }
@@ -164,7 +164,7 @@ public class JVal implements IJVal {
      * @see alice.tuples.javatuples.IJVal#toInt()
      */
     @Override
-    public int toInt(){
+    public int toInt() {
         if (this.type == JArgType.INT) {
             return ((Integer) this.arg).intValue();
         }
@@ -176,7 +176,7 @@ public class JVal implements IJVal {
      * @see alice.tuples.javatuples.IJVal#toLiteral()
      */
     @Override
-    public String toLiteral(){
+    public String toLiteral() {
         if (this.type == JArgType.LITERAL) {
             return this.arg.toString();
         }
@@ -188,7 +188,7 @@ public class JVal implements IJVal {
      * @see alice.tuples.javatuples.IJVal#toLong()
      */
     @Override
-    public long toLong(){
+    public long toLong() {
         if (this.type == JArgType.LONG) {
             return ((Long) this.arg).longValue();
         }

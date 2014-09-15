@@ -14,7 +14,7 @@ public class RespectException extends Exception {
 		super();
 	}
 
-	public RespectException(String arg0) {
+	public RespectException(final String arg0) {
 		super(arg0);
 	}
     

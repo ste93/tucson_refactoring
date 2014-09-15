@@ -38,9 +38,9 @@ public final class TPFactory {
      * @throws UnreachableNodeException
      *             if the target tuple centre is unreachable
      * @throws InvalidProtocolTypeException
-     * 			   if the protocol type used is not DIALOG_TYPE_TCP    
+     * 	           if the protocol type used is not DIALOG_TYPE_TCP    
      * @throws IllegalPortNumberException
-     * 			   if the portNumber is out of bounds ( < 1 || > MAX_UNBOUND_PORT)       
+     * 		   if the portNumber is out of bounds ( < 1 || > MAX_UNBOUND_PORT)       
      */
     public static AbstractTucsonProtocol getDialogAgentSide(
             final int tucsonProtocolType, final TucsonTupleCentreId tid)
@@ -51,7 +51,7 @@ public final class TPFactory {
         // come e'
         // fatto nel resto del codice
         if (port < 1 || port > TPFactory.MAX_UNBOUND_PORT) {
-        	throw new IllegalPortNumberException("Port number out of bounds. Port number: "+port);
+        	throw new IllegalPortNumberException("Port number out of bounds. Port number: " + port);
         }
         AbstractTucsonProtocol tp = null;
         if (tucsonProtocolType == TPFactory.DIALOG_TYPE_TCP) {
@@ -71,8 +71,6 @@ public final class TPFactory {
      *             if something goes wrong in the underlying network
      * @throws UnreachableNodeException
      *             if the target tuple centre is unreachable
-     * @throws InvalidProtocolTypeException
-     * 			   if the protocol type used is not DIALOG_TYPE_TCP
      * @throws IllegalPortNumberException
      * 			   if the portNumber is out of bounds ( < 1 || > MAX_UNBOUND_PORT)   
      */
@@ -125,7 +123,7 @@ public final class TPFactory {
             final TPConfig config = TPConfig.getInstance();
             final int port = config.getNodeTcpPort();
             if (port < 1 || port > TPFactory.MAX_UNBOUND_PORT) {
-                throw new IllegalPortNumberException("Port number out of bounds. Port number: "+port);
+                throw new IllegalPortNumberException("Port number out of bounds. Port number: " + port);
             }
             tp = new TucsonProtocolTCP(port);
         } else {

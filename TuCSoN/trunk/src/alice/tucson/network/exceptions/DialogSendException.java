@@ -7,15 +7,15 @@ public class DialogSendException extends DialogException {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public DialogSendException(String message, Throwable cause) {
+	public DialogSendException(final String message, final Throwable cause) {
 		super(message, cause);
 	}
 
-	public DialogSendException(String message) {
+	public DialogSendException(final String message) {
 		super(message);
 	}
 
-	public DialogSendException(Throwable cause) {
+	public DialogSendException(final Throwable cause) {
 		super(cause);
 	}
 	

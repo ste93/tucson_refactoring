@@ -57,7 +57,7 @@ public final class JTuplesEngine {
             }
             return false;
         }
-        throw new InvalidTupleException("Error occurred while converting '"+lt.toString()+"' into JTuple");
+        throw new InvalidTupleException("Error occurred while converting '" + lt.toString() + "' into JTuple");
     }
 
     /**
@@ -133,7 +133,7 @@ public final class JTuplesEngine {
                     }
                 }
             } else {
-                throw new InvalidTupleException("Error occurred while converting '"+tuple.toString()+"' into JTuple");
+                throw new InvalidTupleException("Error occurred while converting '" + tuple.toString() + "' into JTuple");
             }
         } catch (final InvalidJValException e) {
             // cannot happen
@@ -206,7 +206,7 @@ public final class JTuplesEngine {
                     }
                 }
             } else {
-                throw new InvalidTupleException("Error occurred while converting '"+template.toString()+"' into JTuple");
+                throw new InvalidTupleException("Error occurred while converting '" + template.toString() + "' into JTuple");
             }
         } catch (final InvalidJValException e) {
             // cannot happen
@@ -274,7 +274,7 @@ public final class JTuplesEngine {
                             new Value(val.toLiteral()));
                 } else if (val.isLong()) {
                     tas[i] = new Value("long", new Value(val.toLong()));
-                } else{
+                } else {
                     Logger.getLogger("JTuplesEngine").log(Level.FINEST,
                             "Error: Invalid JVal type");
                 }

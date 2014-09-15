@@ -7,15 +7,15 @@ public class DialogReceiveException extends DialogException {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public DialogReceiveException(String message, Throwable cause) {
+	public DialogReceiveException(final String message, final Throwable cause) {
 		super(message, cause);
 	}
 
-	public DialogReceiveException(String message) {
+	public DialogReceiveException(final String message) {
 		super(message);
 	}
 
-	public DialogReceiveException(Throwable cause) {
+	public DialogReceiveException(final Throwable cause) {
 		super(cause);
 	}
 

@@ -25,7 +25,7 @@ public class InvalidSpecificationException extends RespectException {
 		super();
 	}
 
-	public InvalidSpecificationException(String arg0) {
+	public InvalidSpecificationException(final String arg0) {
 		super(arg0);
 	}
     

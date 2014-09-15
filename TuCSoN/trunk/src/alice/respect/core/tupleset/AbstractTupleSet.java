@@ -80,7 +80,7 @@ public abstract class AbstractTupleSet implements ITupleSet {
     protected DoubleKeyMVMap<String, String, LogicTuple> tuples;
 
     @Override
-    public void add(final LogicTuple t){
+    public void add(final LogicTuple t) {
             final LTEntry e = this.createEntry(t);
             this.tuples.put(e.getKey1(), e.getKey2(), e.getValue());
             if (this.transaction) {
@@ -170,7 +170,7 @@ public abstract class AbstractTupleSet implements ITupleSet {
     }
 
     @Override
-    public LogicTuple readMatchingTuple(final LogicTuple templ){
+    public LogicTuple readMatchingTuple(final LogicTuple templ) {
         if (templ == null) {
             return null;
         }
@@ -222,7 +222,7 @@ public abstract class AbstractTupleSet implements ITupleSet {
         return this.tuples.toString();
     }
 
-    private LTEntry createEntry(final LogicTuple t){
+    private LTEntry createEntry(final LogicTuple t) {
         return new LTEntry(this.getTupleKey1(t), this.getTupleKey2(t), t);
     }
 

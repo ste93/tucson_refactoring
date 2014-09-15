@@ -4,7 +4,6 @@
 package alice.tucson.examples.persistency;
 
 import java.io.IOException;
-
 import alice.logictuple.LogicTuple;
 import alice.logictuple.Value;
 import alice.logictuple.exceptions.InvalidLogicTupleException;
@@ -17,6 +16,8 @@ import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
 import alice.tucson.examples.utilities.Utils;
+import alice.tucson.network.exceptions.DialogCloseException;
+import alice.tucson.network.exceptions.DialogInitializationException;
 import alice.tucson.service.TucsonNodeService;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 
@@ -38,6 +39,10 @@ public final class PersistencyTester {
                     Thread.sleep(1000);
                 }
             } catch (final InterruptedException e) {
+                e.printStackTrace();
+            } catch (DialogInitializationException e) {
+                e.printStackTrace();
+            } catch (DialogCloseException e) {
                 e.printStackTrace();
             }
             final TucsonTupleCentreId ttcid = new TucsonTupleCentreId(

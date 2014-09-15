@@ -10,11 +10,11 @@ public class InvalidCoordinationOperationException extends Exception {
 
 	private static final long serialVersionUID = 1L;
 
-	public InvalidCoordinationOperationException(){
+	public InvalidCoordinationOperationException() {
     	super();
     }
     
-    public InvalidCoordinationOperationException(final String message){
+    public InvalidCoordinationOperationException(final String message) {
     	super(message);
     }
 }

@@ -25,8 +25,8 @@ public class OperationTimeOutException extends Exception {
 		super();
 	}
 	
-	public OperationTimeOutException(long ms) {
-		super("Waited for "+ms+" milliseconds");
+	public OperationTimeOutException(final long ms) {
+		super("Waited for " + ms + " milliseconds");
 	}
     
     

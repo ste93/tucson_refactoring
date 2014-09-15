@@ -4,7 +4,6 @@ import alice.logictuple.LogicTuple;
 import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.respect.api.exceptions.OperationNotPossibleException;
 import alice.tuplecentre.api.IId;
-import alice.tuplecentre.api.exceptions.InvalidTupleException;
 import alice.tuplecentre.core.OperationCompletionListener;
 
 /**

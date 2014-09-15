@@ -509,7 +509,7 @@ public class RespectTC implements IRespectTC {
             throws InvalidSpecificationException {
         final boolean accepted = this.vm.setReactionSpec(spec);
         if (!accepted) {
-            throw new InvalidSpecificationException("RespectSpecification value :"+spec.toString());
+            throw new InvalidSpecificationException("RespectSpecification value :" + spec.toString());
         }
         final RespectOperation op = RespectOperation.makeSetS(null);
         final Iterator<LogicTuple> rit = this.vm.getRespectVMContext()

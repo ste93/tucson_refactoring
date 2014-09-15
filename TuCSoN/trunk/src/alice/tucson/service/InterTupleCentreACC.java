@@ -40,6 +40,9 @@ public interface InterTupleCentreACC {
      *             if the operation requested cannot be performed
      * @throws UnreachableNodeException
      *             if the target tuple centre cannot be reached over the network
+     * @throws TucsonInvalidTupleCentreIdException
+     *             if the given Object is not a valid identifier of a tuple
+     *             centre
      */
     TucsonOpId doOperation(Object tid, AbstractTupleCentreOperation op)
             throws TucsonOperationNotPossibleException,

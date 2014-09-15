@@ -28,15 +28,15 @@ public class InvalidLogicTupleException extends LogicTupleException {
 		super();
 	}
 
-	public InvalidLogicTupleException(String arg0) {
+	public InvalidLogicTupleException(final String arg0) {
 		super(arg0);
 	}
 
-	public InvalidLogicTupleException(Throwable arg0) {
+	public InvalidLogicTupleException(final Throwable arg0) {
 		super(arg0);
 	}
 
-	public InvalidLogicTupleException(String message, Throwable cause) {
+	public InvalidLogicTupleException(final String message, final Throwable cause) {
 		super(message, cause);
 	}
     

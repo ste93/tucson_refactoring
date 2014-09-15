@@ -15,7 +15,6 @@ import jade.core.Service;
 import jade.core.ServiceHelper;
 import jade.core.Sink;
 import jade.core.VerticalCommand;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import alice.tucson.api.EnhancedACC;
@@ -30,6 +29,8 @@ import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
+import alice.tucson.network.exceptions.DialogCloseException;
+import alice.tucson.network.exceptions.DialogInitializationException;
 import alice.tucson.service.TucsonNodeService;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 
@@ -218,8 +219,11 @@ public class TucsonService extends BaseService {
                 final int timeout) {
             try {
                 return TucsonNodeService.isInstalled(netid, port, timeout);
-            } catch (final IOException e) {
-                // TODO Auto-generated catch block
+            } catch (DialogInitializationException e) {
+                e.printStackTrace();
+            } catch (DialogCloseException e) {
+                e.printStackTrace();
+            } catch (UnreachableNodeException e) {
                 e.printStackTrace();
             }
             return false;

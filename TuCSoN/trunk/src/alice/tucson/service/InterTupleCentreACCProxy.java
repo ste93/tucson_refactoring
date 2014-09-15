@@ -253,7 +253,7 @@ public class InterTupleCentreACCProxy implements InterTupleCentreACC,
     public synchronized TucsonOpId doOperation(final Object tid,
             final AbstractTupleCentreOperation op)
             throws TucsonOperationNotPossibleException,
-            UnreachableNodeException,TucsonInvalidTupleCentreIdException  {
+            UnreachableNodeException, TucsonInvalidTupleCentreIdException  {
         TucsonTupleCentreId tcid = null;
         if ("alice.respect.api.TupleCentreId".equals(tid.getClass().getName())) {
             final TupleCentreId id = (TupleCentreId) tid;

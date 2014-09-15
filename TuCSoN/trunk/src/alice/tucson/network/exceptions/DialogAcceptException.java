@@ -8,15 +8,15 @@ public class DialogAcceptException extends DialogException {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public DialogAcceptException(String message, Throwable cause) {
+	public DialogAcceptException(final String message, final Throwable cause) {
 		super(message, cause);
 	}
 
-	public DialogAcceptException(String message) {
+	public DialogAcceptException(final String message) {
 		super(message);
 	}
 
-	public DialogAcceptException(Throwable cause) {
+	public DialogAcceptException(final Throwable cause) {
 		super(cause);
 	}
 	

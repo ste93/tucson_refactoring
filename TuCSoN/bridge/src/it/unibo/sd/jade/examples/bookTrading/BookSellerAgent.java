@@ -38,12 +38,12 @@ import java.util.Queue;
 import java.util.StringTokenizer;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import alice.logictuple.LogicTuple;
+import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.service.TucsonOpCompletionEvent;
 import alice.tuplecentre.api.exceptions.InvalidOperationException;
-import alice.tuplecentre.api.exceptions.InvalidTupleException;
 
 /**
  * Adapted from Giovanni Caire's Book Trading example in examples.bookTrading
@@ -72,7 +72,7 @@ public class BookSellerAgent extends Agent {
                 cfp = LogicTuple.parse("cfp(to("
                         + BookSellerAgent.this.getAID().getName()
                         + "), from(B), book(T))");
-            } catch (final InvalidTupleException e) {
+            } catch (final InvalidLogicTupleException e) {
                 // should not happen
                 e.printStackTrace();
                 BookSellerAgent.this.doDelete();
@@ -138,7 +138,7 @@ public class BookSellerAgent extends Agent {
                 // should not happen
                 e.printStackTrace();
                 BookSellerAgent.this.doDelete();
-            } catch (final InvalidTupleException e) {
+            } catch (final InvalidLogicTupleException e) {
                 // should not happen
                 e.printStackTrace();
                 BookSellerAgent.this.doDelete();
@@ -180,7 +180,7 @@ public class BookSellerAgent extends Agent {
                 order = LogicTuple.parse("order(X, from(B), to("
                         + BookSellerAgent.this.getAID().getName()
                         + "), book(T))");
-            } catch (final InvalidTupleException e) {
+            } catch (final InvalidLogicTupleException e) {
                 // should not happen
                 e.printStackTrace();
                 BookSellerAgent.this.doDelete();
@@ -254,7 +254,7 @@ public class BookSellerAgent extends Agent {
                     // should not happen
                     e.printStackTrace();
                     BookSellerAgent.this.doDelete();
-                } catch (final InvalidTupleException e) {
+                } catch (final InvalidLogicTupleException e) {
                     // should not happen
                     e.printStackTrace();
                     BookSellerAgent.this.doDelete();
@@ -422,7 +422,7 @@ public class BookSellerAgent extends Agent {
             // should not happen
             e.printStackTrace();
             this.doDelete();
-        } catch (final InvalidTupleException e) {
+        } catch (final InvalidLogicTupleException e) {
             // should not happen
             e.printStackTrace();
             this.doDelete();

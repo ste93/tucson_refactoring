@@ -18,7 +18,7 @@ public class InvalidJVarException extends Exception {
 		super();
 	}
 
-	public InvalidJVarException(String message) {
+	public InvalidJVarException(final String message) {
 		super(message);
 	}
 }

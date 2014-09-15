@@ -44,12 +44,12 @@ public class Var extends TupleArgument {
      * @throws InvalidVarNameException 
      * 				if the text does not represent a valid Var name
      */
-    public Var(final String n) throws InvalidVarNameException{
+    public Var(final String n) throws InvalidVarNameException {
         super();
         try {
             this.value = new alice.tuprolog.Var(n);
         } catch (final alice.tuprolog.InvalidTermException ex) {
-            throw new InvalidVarNameException("Invalid Var name: \""+n+"\"",ex);
+            throw new InvalidVarNameException("Invalid Var name: \"" + n + "\"", ex);
         }
     }
 }

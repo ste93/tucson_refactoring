@@ -132,6 +132,7 @@ public abstract class AbstractTucsonProtocol implements java.io.Serializable {
     /**
      * 
      * @throws DialogReceiveException
+     *           if something goes wrong in the underlying network
      */
     public void receiveFirstRequest() throws DialogReceiveException {
         try {

@@ -8,15 +8,15 @@ public class DialogCloseException extends DialogException {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public DialogCloseException(String message, Throwable cause) {
+	public DialogCloseException(final String message, final Throwable cause) {
 		super(message, cause);
 	}
 
-	public DialogCloseException(String message) {
+	public DialogCloseException(final String message) {
 		super(message);
 	}
 
-	public DialogCloseException(Throwable cause) {
+	public DialogCloseException(final Throwable cause) {
 		super(cause);
 	}
 

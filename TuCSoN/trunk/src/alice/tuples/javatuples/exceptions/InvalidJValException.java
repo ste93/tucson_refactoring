@@ -18,7 +18,7 @@ public class InvalidJValException extends Exception {
 		super();
 	}
 
-	public InvalidJValException(String message) {
+	public InvalidJValException(final String message) {
 		super(message);
 	}
 }

@@ -41,12 +41,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.StringTokenizer;
 import alice.logictuple.LogicTuple;
+import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.service.TucsonOpCompletionEvent;
 import alice.tuplecentre.api.exceptions.InvalidOperationException;
-import alice.tuplecentre.api.exceptions.InvalidTupleException;
 
 /**
  * Adapted from Giovanni Caire's Book Trading example in examples.bookTrading
@@ -76,11 +76,11 @@ public class BookBuyerAgent extends Agent {
                         + BookBuyerAgent.this.getAID().getName() + "), book("
                         + BookBuyerAgent.this.targetBookTitle
                         + "), from(S), price(P))");
-            } catch (final InvalidTupleException e) {
+            } catch (final InvalidLogicTupleException e) {
                 // should not happen
                 e.printStackTrace();
                 BookBuyerAgent.this.doDelete();
-            }
+            } 
             final In in = new In(BookBuyerAgent.this.tcid, proposal);
             TucsonOpCompletionEvent res = null;
             try {
@@ -181,7 +181,7 @@ public class BookBuyerAgent extends Agent {
                 BookBuyerAgent.this
                         .log(">>> No TuCSoN service active, reboot JADE with -services it.unibo.sd.jade.service.TucsonService option <<<");
                 BookBuyerAgent.this.doDelete();
-            } catch (final InvalidTupleException e) {
+            } catch (final InvalidLogicTupleException e) {
                 // should not happen
                 e.printStackTrace();
                 BookBuyerAgent.this.doDelete();
@@ -210,7 +210,7 @@ public class BookBuyerAgent extends Agent {
                         + BookBuyerAgent.this.getAID().getName() + "), from("
                         + BookBuyerAgent.this.bestSeller + "), book("
                         + BookBuyerAgent.this.targetBookTitle + "))");
-            } catch (final InvalidTupleException e) {
+            } catch (final InvalidLogicTupleException e) {
                 // should not happen
                 e.printStackTrace();
                 BookBuyerAgent.this.doDelete();
@@ -321,7 +321,7 @@ public class BookBuyerAgent extends Agent {
                     final Out outi = new Out(BookBuyerAgent.this.tcid, reject);
                     BookBuyerAgent.this.bridge.asynchronousInvocation(outi);
                 }
-            } catch (final InvalidTupleException e) {
+            } catch (final InvalidLogicTupleException e) {
                 // should not happen
                 e.printStackTrace();
                 BookBuyerAgent.this.doDelete();
@@ -519,7 +519,7 @@ public class BookBuyerAgent extends Agent {
                     final RdAll rdall = new RdAll(BookBuyerAgent.this.tcid, adv);
                     res = BookBuyerAgent.this.bridge.synchronousInvocation(
                             rdall, null, this);
-                } catch (final InvalidTupleException e) {
+                } catch (final InvalidLogicTupleException e) {
                     // should not happen
                     e.printStackTrace();
                     BookBuyerAgent.this.doDelete();

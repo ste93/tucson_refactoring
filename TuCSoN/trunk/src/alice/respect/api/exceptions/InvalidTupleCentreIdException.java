@@ -26,7 +26,7 @@ public class InvalidTupleCentreIdException extends RespectException {
 		super();
 	}
 
-	public InvalidTupleCentreIdException(String arg0) {
+	public InvalidTupleCentreIdException(final String arg0) {
 		super(arg0);
 	}
     

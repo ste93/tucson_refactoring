@@ -12,7 +12,7 @@ public class InstantiationNotPossibleException extends RespectException {
 		super();
 	}
 
-	public InstantiationNotPossibleException(String arg0) {
+	public InstantiationNotPossibleException(final String arg0) {
 		super(arg0);
 	}
     

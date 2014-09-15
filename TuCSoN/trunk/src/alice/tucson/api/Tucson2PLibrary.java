@@ -708,7 +708,7 @@ public class Tucson2PLibrary extends Library {
      * @see alice.tucson.api.OrdinarySynchACC OrdinarySynchACC
      */
     public boolean out_2(final Term arg0, final Term arg1) 
-    		throws TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException{
+    		throws TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException {
         if (this.context == null) {
             return false;
         }
@@ -743,7 +743,7 @@ public class Tucson2PLibrary extends Library {
      * @see alice.tucson.api.BulkSynchACC BulkSynchACC
      */
     public boolean out_all_2(final Term arg0, final Term arg1) 
-    		throws TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException{
+    		throws TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException {
         if (this.context == null) {
             return false;
         }
@@ -787,7 +787,7 @@ public class Tucson2PLibrary extends Library {
      */
     public boolean out_s_4(final Term event, final Term guards,
             final Term reactionBody, final Term arg3) 
-            		throws TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException{
+            		throws TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException {
         if (this.context == null) {
             return false;
         }
@@ -823,7 +823,7 @@ public class Tucson2PLibrary extends Library {
      * @see alice.tucson.api.OrdinarySynchACC OrdinarySynchACC
      */
     public boolean rd_2(final Term arg0, final Term arg1) 
-    		throws TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException{
+    		throws TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException {
         if (this.context == null) {
             return false;
         }
@@ -865,7 +865,7 @@ public class Tucson2PLibrary extends Library {
      * @see alice.tucson.api.BulkSynchACC BulkSynchACC
      */
     public boolean rd_all_3(final Term arg0, final Term arg1, final Term arg2) 
-    		throws TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException{
+    		throws TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException {
         if (this.context == null) {
             return false;
         }
@@ -915,7 +915,7 @@ public class Tucson2PLibrary extends Library {
      */
     public boolean rd_s_4(final Term event, final Term guards,
             final Term reactionBody, final Term arg3) 
-            	throws TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException{
+            	throws TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException {
         if (this.context == null) {
             return false;
         }
@@ -957,7 +957,7 @@ public class Tucson2PLibrary extends Library {
      * @see alice.tucson.api.OrdinarySynchACC OrdinarySynchACC
      */
     public boolean rdp_2(final Term arg0, final Term arg1) 
-    		throws TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException{
+    		throws TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException {
         if (this.context == null) {
             return false;
         }
@@ -1006,7 +1006,7 @@ public class Tucson2PLibrary extends Library {
      */
     public boolean rdp_s_4(final Term event, final Term guards,
             final Term reactionBody, final Term arg3) 
-            	throws TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException{
+            	throws TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException {
         if (this.context == null) {
             return false;
         }
@@ -1034,7 +1034,7 @@ public class Tucson2PLibrary extends Library {
      * @throws TucsonOperationNotPossibleException
      * 			  if the requested operation cannot be carried out
      */
-    public boolean release_acc_0() throws TucsonOperationNotPossibleException{
+    public boolean release_acc_0() throws TucsonOperationNotPossibleException {
         this.context.exit();
   
         return true;
@@ -1064,7 +1064,7 @@ public class Tucson2PLibrary extends Library {
      * @see alice.tucson.api.OrdinarySynchACC OrdinarySynchACC
      */
     public boolean set_2(final Term arg0, final Term arg1) 
-    		throws TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException{
+    		throws TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException {
         if (this.context == null) {
             return false;
         }
@@ -1103,7 +1103,7 @@ public class Tucson2PLibrary extends Library {
      * @see alice.tucson.api.SpecificationSynchACC SpecificationSynchACC
      */
     public boolean set_s_2(final Term arg0, final Term arg1) 
-    		throws TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException{
+    		throws TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException {
         if (this.context == null) {
             return false;
         }
@@ -1141,7 +1141,7 @@ public class Tucson2PLibrary extends Library {
      * @see alice.tucson.api.OrdinarySynchACC OrdinarySynchACC
      */
     public boolean spawn_2(final Term arg0, final Term arg1) 
-    		throws TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException{
+    		throws TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException {
         if (this.context == null) {
             return false;
         }
@@ -1179,7 +1179,7 @@ public class Tucson2PLibrary extends Library {
      * @see alice.tucson.api.UniformSynchACC UniformSynchACC
      */
     public boolean uin_2(final Term arg0, final Term arg1) 
-    		throws TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException{
+    		throws TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException {
         if (this.context == null) {
             return false;
         }
@@ -1220,7 +1220,7 @@ public class Tucson2PLibrary extends Library {
      * @see alice.tucson.api.UniformSynchACC UniformSynchACC
      */
     public boolean uinp_2(final Term arg0, final Term arg1) 
-    		throws TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException{
+    		throws TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException {
         if (this.context == null) {
             return false;
         }
@@ -1261,7 +1261,7 @@ public class Tucson2PLibrary extends Library {
      * @see alice.tucson.api.UniformSynchACC UniformSynchACC
      */
     public boolean uno_2(final Term arg0, final Term arg1) 
-    		throws TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException{
+    		throws TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException {
         if (this.context == null) {
             return false;
         }
@@ -1302,7 +1302,7 @@ public class Tucson2PLibrary extends Library {
      * @see alice.tucson.api.UniformSynchACC UniformSynchACC
      */
     public boolean unop_2(final Term arg0, final Term arg1) 
-    		throws TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException{
+    		throws TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException {
         if (this.context == null) {
             return false;
         }
@@ -1343,7 +1343,7 @@ public class Tucson2PLibrary extends Library {
      * @see alice.tucson.api.UniformSynchACC UniformSynchACC
      */
     public boolean urd_2(final Term arg0, final Term arg1) 
-    		throws TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException{
+    		throws TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException {
         if (this.context == null) {
             return false;
         }
@@ -1384,7 +1384,7 @@ public class Tucson2PLibrary extends Library {
      * @see alice.tucson.api.UniformSynchACC UniformSynchACC
      */
     public boolean urdp_2(final Term arg0, final Term arg1) 
-    		throws TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException{
+    		throws TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException {
         if (this.context == null) {
             return false;
         }

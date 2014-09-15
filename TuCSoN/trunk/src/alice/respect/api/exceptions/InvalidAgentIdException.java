@@ -26,7 +26,7 @@ public class InvalidAgentIdException extends RespectException {
 		super();	
 	}
 
-	public InvalidAgentIdException(String arg0) {
+	public InvalidAgentIdException(final String arg0) {
 		super(arg0);
 	}
     

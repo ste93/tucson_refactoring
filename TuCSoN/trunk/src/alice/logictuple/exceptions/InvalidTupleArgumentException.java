@@ -28,11 +28,11 @@ public class InvalidTupleArgumentException extends LogicTupleException {
 		super();
 	}
 
-	public InvalidTupleArgumentException(String arg0) {
+	public InvalidTupleArgumentException(final String arg0) {
 		super(arg0);
 	}
 
-	public InvalidTupleArgumentException(String message, Throwable cause) {
+	public InvalidTupleArgumentException(final String message, final Throwable cause) {
 		super(message, cause);
 	}    
     

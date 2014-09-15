@@ -99,9 +99,9 @@ public class TucsonProtocolTCP extends AbstractTucsonProtocol {
         try {
             this.socket = new Socket(host, port);
         } catch (final UnknownHostException e) {
-            throw new UnreachableNodeException("Host unknown",e);
+            throw new UnreachableNodeException("Host unknown", e);
         } catch (final ConnectException e) {
-            throw new UnreachableNodeException("Connection refused",e);
+            throw new UnreachableNodeException("Connection refused", e);
         } catch (final IOException e) {
             throw new DialogInitializationException(e);
         }

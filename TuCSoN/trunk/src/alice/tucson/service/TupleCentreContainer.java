@@ -382,8 +382,6 @@ public final class TupleCentreContainer {
      * @param l
      *            the listener for operation completion
      * @return the Java object representing the tuple centre operation
-     * @throws InvalidOperationException
-     *             if the tuple cannot be managed properly
      * @throws TucsonOperationNotPossibleException
      *             if the requested operation cannot be performed for some
      *             reason
@@ -397,7 +395,7 @@ public final class TupleCentreContainer {
             final int type, final TucsonAgentId aid,
             final TucsonTupleCentreId tid, final LogicTuple t,
             final OperationCompletionListener l)
-            throws OperationTimeOutException, InvalidOperationException,
+            throws OperationTimeOutException,
             TucsonOperationNotPossibleException, UnreachableNodeException {
         IEnvironmentContext context = null;
         RespectOperation op = null;
@@ -457,8 +455,6 @@ public final class TupleCentreContainer {
      * @param l
      *            the listener for operation completion
      * @return the Java object representing the tuple centre operation
-     * @throws InvalidOperationException
-     *             if the tuple cannot be managed properly
      * @throws TucsonOperationNotPossibleException
      *             if the requested operation cannot be performed for some
      *             reason

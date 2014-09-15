@@ -39,7 +39,7 @@ public class TupleSetCoord extends AbstractTupleSet {
      * arity.
      */
     @Override
-    public String getTupleKey1(final LogicTuple t){        
+    public String getTupleKey1(final LogicTuple t) {        
         final TupleArgument ta = t.getVarValue(null);
         if (ta != null && ta.isStruct()) {
     		return ta.getPredicateIndicator();
@@ -53,7 +53,7 @@ public class TupleSetCoord extends AbstractTupleSet {
      * stored whit a special key.
      * */
     @Override
-    public String getTupleKey2(final LogicTuple t){
+    public String getTupleKey2(final LogicTuple t) {
         TupleArgument tArg = t.getVarValue(null);
         // Check if the term as a value assigned to a variable
         if (tArg != null) {

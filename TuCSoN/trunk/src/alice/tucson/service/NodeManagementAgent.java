@@ -84,7 +84,7 @@ public class NodeManagementAgent extends Thread {
         } catch (final TucsonOperationNotPossibleException e) {
             e.printStackTrace();
             this.node.removeNodeAgent(this);
-        } catch (final InvalidVarNameException e){
+        } catch (final InvalidVarNameException e) {
         	e.printStackTrace();
             this.node.removeNodeAgent(this);
         }

@@ -144,7 +144,7 @@ public class ManagementContext implements IManagementContext {
             throws InvalidSpecificationException {
         final boolean accepted = this.vm.setReactionSpec(spec);
         if (!accepted) {
-            throw new InvalidSpecificationException("RespectSpecification value :"+spec.toString());
+            throw new InvalidSpecificationException("RespectSpecification value :" + spec.toString());
         }
     }
 

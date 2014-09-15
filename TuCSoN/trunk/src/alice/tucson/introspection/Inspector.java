@@ -69,7 +69,7 @@ public class Inspector extends Thread implements InspectorContextListener {
         this.q = true;
         try {
             this.context.exit();
-        } catch (DialogSendException e){
+        } catch (DialogSendException e) {
         	e.printStackTrace();
         }
         this.interrupt();

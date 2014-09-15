@@ -7,7 +7,7 @@ public class InvalidProtocolTypeException extends Exception {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public InvalidProtocolTypeException(String arg0) {
+	public InvalidProtocolTypeException(final String arg0) {
 		super(arg0);
 	}
 

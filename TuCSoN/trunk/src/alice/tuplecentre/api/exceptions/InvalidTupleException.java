@@ -27,7 +27,7 @@ public class InvalidTupleException extends Exception {
 		super();
 	}
 
-	public InvalidTupleException(String arg0) {
+	public InvalidTupleException(final String arg0) {
 		super(arg0);
 	}
 }

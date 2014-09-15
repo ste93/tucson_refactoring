@@ -23,7 +23,6 @@ import alice.respect.api.ITimedContext;
 import alice.respect.api.exceptions.OperationNotPossibleException;
 import alice.respect.api.exceptions.OperationTimeOutException;
 import alice.tuplecentre.api.IId;
-import alice.tuplecentre.api.exceptions.InvalidOperationException;
 
 /**
  * 

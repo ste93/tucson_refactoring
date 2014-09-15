@@ -189,8 +189,8 @@ public class ACCProxyNodeSide extends AbstractACCProxyNodeSide {
                     + " >...");
             if (msgType == TucsonOperation.setSCode()) {
             	final TucsonTCUsers coreInfo = this.node.resolveCore(tid.getName());
-            	if(coreInfo == null){
-            		System.err.println("[ACCProxyNodeSide]: cannot resolve core by its name : "+tid.getName());
+            	if (coreInfo == null) {
+            		System.err.println("[ACCProxyNodeSide]: cannot resolve core by its name : " + tid.getName());
             		break;
             	}
                 this.node.addTCAgent(this.agentId, tid);

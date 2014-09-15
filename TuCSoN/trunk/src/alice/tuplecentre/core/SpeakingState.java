@@ -342,7 +342,7 @@ public class SpeakingState extends AbstractTupleCentreVMState {
                         foundSatisfied = true;
                     } else {
                         throw new InvalidCoordinationOperationException("The coordination operation requested does not exist. "
-                    			+ "Operation id: "+ op.getId()+", Operation type: "+op.getType());
+                    			+ "Operation id: " + op.getId() + ", Operation type: " + op.getType());
                     }
                     if (((RespectVMContext) this.vm).getRespectVM()
                             .getObservers().size() > 0) {

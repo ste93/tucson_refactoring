@@ -28,7 +28,7 @@ public class InvalidLogicTupleOperationException extends LogicTupleException {
 		super();
 	}
 
-	public InvalidLogicTupleOperationException(String arg0) {
+	public InvalidLogicTupleOperationException(final String arg0) {
 		super(arg0);
 	}
     

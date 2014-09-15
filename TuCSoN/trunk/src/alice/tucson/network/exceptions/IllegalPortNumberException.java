@@ -7,7 +7,7 @@ public class IllegalPortNumberException extends RuntimeException {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public IllegalPortNumberException(String arg0) {
+	public IllegalPortNumberException(final String arg0) {
 		super(arg0);
 	}
 
