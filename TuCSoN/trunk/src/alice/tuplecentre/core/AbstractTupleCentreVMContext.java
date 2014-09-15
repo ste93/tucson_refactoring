@@ -541,7 +541,7 @@ public abstract class AbstractTupleCentreVMContext implements
     }
 
     @Override
-    public boolean setStepMode() {
+    public boolean toggleStepMode() {
         if (this.isStepMode()) {
             this.stepMode = false;
             this.step.signalEvent();

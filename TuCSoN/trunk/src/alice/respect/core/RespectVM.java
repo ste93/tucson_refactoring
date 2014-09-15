@@ -272,6 +272,7 @@ public class RespectVM implements Runnable {
 
     /**
      * @throws alice.tuplecentre.api.exceptions.OperationNotPossibleException
+     *             if the ReSpecT VM is not in step mode
      */
     public void nextStepCommand()
             throws alice.tuplecentre.api.exceptions.OperationNotPossibleException {
@@ -508,7 +509,7 @@ public class RespectVM implements Runnable {
     }
 
     public void stepModeCommand() {
-        this.context.setStepMode();
+        this.context.toggleStepMode();
     }
 
     /**

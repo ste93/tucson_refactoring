@@ -55,11 +55,11 @@ public interface ITupleCentreManagement {
     boolean setReactionSpec(AbstractBehaviourSpecification spec);
 
     /**
-     * enable/disable step mode
+     * toggles step mode (defaults to <code>false</code>)
      * 
-     * @return
+     * @return wether step mode is currently enabled
      */
-    boolean setStepMode();
+    boolean toggleStepMode();
 
     /**
      * 

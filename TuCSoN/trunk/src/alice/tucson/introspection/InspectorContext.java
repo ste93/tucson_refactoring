@@ -129,6 +129,9 @@ public interface InspectorContext {
 
     /**
      * do the next step of the VM
+     * 
+     * @throws IOException
+     *             if the VM is not reachable due to network problems
      */
     void VmStepMode() throws IOException;
 }
