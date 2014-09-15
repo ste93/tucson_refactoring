@@ -264,7 +264,7 @@ public class RespectVM implements Runnable {
     }
 
     public void stepModeCommand() {
-        this.context.setStepMode();
+        this.context.setStepMode();    
     }
 
     /**

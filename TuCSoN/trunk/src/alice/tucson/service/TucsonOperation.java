@@ -422,6 +422,15 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
     public static int stepModeCode() {
         return AbstractTupleCentreOperation.OPTYPE_STEP_MODE;
     }
+    
+    /**
+     * 
+     * @return the Integer representing the type code of <code>step_mode</code>
+     *         operation
+     */
+    public static int isStepModeCode() {
+        return AbstractTupleCentreOperation.OPTYPE_IS_STEP_MODE;
+    }
 
     /**
      * 

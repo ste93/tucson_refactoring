@@ -159,7 +159,7 @@ public class InspectorContextSkel extends AbstractACCProxyNodeSide implements
      */
     public void isStepMode(final IsActiveStepModeMsg m) {
         final boolean isActive = (Boolean) TupleCentreContainer
-                .doManagementOperation(TucsonOperation.stepModeCode(),
+                .doManagementOperation(TucsonOperation.isStepModeCode(),
                         this.tcId, null);
         final InspectorContextEvent msg = new InspectorContextEvent();
         msg.setStepMode(isActive);

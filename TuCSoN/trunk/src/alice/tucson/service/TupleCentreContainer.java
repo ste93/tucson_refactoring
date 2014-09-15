@@ -568,7 +568,7 @@ public final class TupleCentreContainer {
                 return false;
             }
         }
-        if (type == TucsonOperation.stepModeCode()) {
+        if (type == TucsonOperation.isStepModeCode()) {
             return context.isStepModeCommand();
         }
         if (type == TucsonOperation.stepModeCode()) {
