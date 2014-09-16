@@ -54,11 +54,11 @@ public abstract class AbstractTupleCentreVMContext implements
     private boolean management;
     private final int maxPendingInputEventNumber;
     private final IRespectTC respectTC;
+    private final RespectVM rvm;
     private final Map<String, AbstractTupleCentreVMState> states;
     private final StepMonitor step;
     private boolean stepMode;
     private final TupleCentreId tid;
-    private final RespectVM rvm;
 
     /**
      * Creates a new tuple centre virtual machine core
@@ -72,9 +72,9 @@ public abstract class AbstractTupleCentreVMContext implements
      * @param rtc
      *            the ReSpecT tuple centre this VM refers to
      */
-    public AbstractTupleCentreVMContext(final RespectVM rvm, final TupleCentreId id,
-            final int ieSize, final IRespectTC rtc) {
-    	this.rvm = rvm;
+    public AbstractTupleCentreVMContext(final RespectVM rvm,
+            final TupleCentreId id, final int ieSize, final IRespectTC rtc) {
+        this.rvm = rvm;
         this.management = false;
         this.stepMode = false;
         this.step = new StepMonitor();
@@ -194,7 +194,6 @@ public abstract class AbstractTupleCentreVMContext implements
     public void execute() {
         while (!this.currentState.isIdle()) {
             this.currentState.execute();
-            
             this.currentState = this.currentState.getNextState();
             if (this.rvm.hasInspectors()) {
                 this.rvm.notifyInspectableEvent(new InspectableEvent(this,
@@ -550,17 +549,6 @@ public abstract class AbstractTupleCentreVMContext implements
         this.management = activate;
     }
 
-    @Override
-    public boolean toggleStepMode() {
-        if (this.isStepMode()) {
-            this.stepMode = false;
-            this.step.signalEvent();
-            return false;
-        }
-        this.stepMode = true;
-        return true;
-    }
-
     /**
      * 
      * @param t
@@ -585,6 +573,17 @@ public abstract class AbstractTupleCentreVMContext implements
      * @return wether there are some time-triggered ReSpecT reactions
      */
     public abstract boolean timeTriggeredReaction();
+
+    @Override
+    public boolean toggleStepMode() {
+        if (this.isStepMode()) {
+            this.stepMode = false;
+            this.step.signalEvent();
+            return false;
+        }
+        this.stepMode = true;
+        return true;
+    }
 
     /**
      * 
