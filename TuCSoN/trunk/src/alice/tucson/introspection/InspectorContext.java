@@ -68,6 +68,11 @@ public interface InspectorContext {
     TucsonTupleCentreId getTid();
 
     /**
+     * verify is step mode
+     */
+    void isStepMode();
+
+    /**
      * when doing trace, asks for a new virtual machine step
      * 
      * @throws IOException
@@ -121,14 +126,12 @@ public interface InspectorContext {
      *             if some I/O error occurs
      */
     void setTupleSet(List<Tuple> tset) throws IOException;
-    
+
     /**
      * do the next step of the VM
+     * 
+     * @throws IOException
+     *             if the VM is not reachable due to network problems
      */
-	void VmStepMode() throws IOException;
-	
-    /**
-     * verify is step mode
-     */
-	void isStepMode();
+    void VmStepMode() throws IOException;
 }

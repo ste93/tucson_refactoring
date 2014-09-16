@@ -87,7 +87,7 @@ public class SpecWorker extends Thread {
                         spec.append(SpecWorker.predFormat(t));
                     }
                 }
-                this.form.getCompletition(spec);
+                this.form.getCompletion(spec);
             } catch (final InvalidOperationException e) {
                 e.printStackTrace();
             } catch (final TucsonOperationNotPossibleException e) {
@@ -107,16 +107,16 @@ public class SpecWorker extends Thread {
                 } else {
                     this.context.setS(this.tid, spec, (Long) null);
                 }
-            } catch (TucsonOperationNotPossibleException e) {
+            } catch (final TucsonOperationNotPossibleException e) {
                 e.printStackTrace();
-            } catch (UnreachableNodeException e) {
+            } catch (final UnreachableNodeException e) {
                 e.printStackTrace();
-            } catch (OperationTimeOutException e) {
+            } catch (final OperationTimeOutException e) {
                 e.printStackTrace();
-            } catch (InvalidTupleException e) {
+            } catch (final InvalidTupleException e) {
                 e.printStackTrace();
             }
-            this.form.setCompletition();
+            this.form.setCompletion();
         }
     }
 }

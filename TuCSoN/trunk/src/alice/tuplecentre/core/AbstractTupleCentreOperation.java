@@ -31,6 +31,8 @@ import alice.tuplecentre.core.TCCycleResult.Outcome;
  */
 public abstract class AbstractTupleCentreOperation implements
         ITupleCentreOperation {
+    /**  */
+    public static final int OPTYPE_IS_STEP_MODE = 57;
     /**
      * shared id counter
      */
@@ -43,6 +45,8 @@ public abstract class AbstractTupleCentreOperation implements
     protected static final int OPTYPE_ADD_OBS = 67;
     /**  */
     protected static final int OPTYPE_GET = 8;
+    /**  */
+    protected static final int OPTYPE_GET_INSPS = 29;
     /**  */
     protected static final int OPTYPE_GET_S = 28;
     /**  */
@@ -62,17 +66,11 @@ public abstract class AbstractTupleCentreOperation implements
     /**  */
     protected static final int OPTYPE_IN_ALL = 11;
     /**  */
-    protected static final int OPTYPE_GET_INSPS = 29;
-    /**  */
     protected static final int OPTYPE_IN_S = 21;
     /**  */
     protected static final int OPTYPE_INP = 4;
     /**  */
     protected static final int OPTYPE_INP_S = 23;
-    /**  */
-	public static final int OPTYPE_IS_STEP_MODE = 57;
-    /**  */
-    protected static final int OPTYPE_STEP_MODE = 59;
     /**  */
     protected static final int OPTYPE_NEXT_STEP = 62;
     /**  */
@@ -108,7 +106,8 @@ public abstract class AbstractTupleCentreOperation implements
     /**  */
     protected static final int OPTYPE_SET = 9;
     /**  */
-   // TODO must be delete.. protected static final int OPTYPE_SET_MNG_MODE = 59;
+    // TODO must be delete.. protected static final int OPTYPE_SET_MNG_MODE =
+    // 59;
     /**  */
     protected static final int OPTYPE_SET_S = 27;
     /**  */
@@ -117,6 +116,8 @@ public abstract class AbstractTupleCentreOperation implements
     protected static final int OPTYPE_SET_WSET = 73;
     /**  */
     protected static final int OPTYPE_SPAWN = 666;
+    /**  */
+    protected static final int OPTYPE_STEP_MODE = 59;
     /**  */
     protected static final int OPTYPE_STOP_CMD = 60;
     /**  */

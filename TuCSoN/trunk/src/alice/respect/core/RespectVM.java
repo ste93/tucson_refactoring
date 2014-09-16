@@ -263,23 +263,20 @@ public class RespectVM implements Runnable {
         return this.observers.size() > 0;
     }
 
-    public void stepModeCommand() {
-        this.context.setStepMode();    
-    }
-
-    /**
-     * @throws alice.tuplecentre.api.exceptions.OperationNotPossibleException
-     */
-    public void nextStepCommand()
-            throws alice.tuplecentre.api.exceptions.OperationNotPossibleException {
-        this.context.nextStepCommand();
-    }
-
     /**
      * @return if stepMode is active or not
      */
     public boolean isStepModeCommand() {
         return this.context.isStepMode();
+    }
+
+    /**
+     * @throws alice.tuplecentre.api.exceptions.OperationNotPossibleException
+     *             if the ReSpecT VM is not in step mode
+     */
+    public void nextStepCommand()
+            throws alice.tuplecentre.api.exceptions.OperationNotPossibleException {
+        this.context.nextStepCommand();
     }
 
     /**
@@ -505,6 +502,10 @@ public class RespectVM implements Runnable {
      */
     public void setWSet(final List<LogicTuple> wSet) {
         this.context.setWSet(wSet);
+    }
+
+    public void stepModeCommand() {
+        this.context.toggleStepMode();
     }
 
     /**

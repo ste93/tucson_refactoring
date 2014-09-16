@@ -18,12 +18,11 @@ import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * @author Roberto D'Elia
- *
+ * 
  */
 public class StepMonitor {
     private final Condition canCompute;
     private final ReentrantLock lock;
-
 
     public StepMonitor() {
         this.lock = new ReentrantLock();
@@ -37,7 +36,7 @@ public class StepMonitor {
     public void awaitEvent() throws InterruptedException {
         this.lock.lock();
         try {
-                this.canCompute.await();
+            this.canCompute.await();
         } finally {
             this.lock.unlock();
         }

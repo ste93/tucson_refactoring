@@ -122,6 +122,15 @@ public class InspectorContextStub implements InspectorContext {
     }
 
     @Override
+    public void isStepMode() {
+        try {
+            this.dialog.sendNodeMsg(new IsActiveStepModeMsg(this.id));
+        } catch (final DialogException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
     public void nextStep() throws IOException {
         try {
             this.dialog.sendNodeMsg(new NextStepMsg(this.id));
@@ -179,6 +188,15 @@ public class InspectorContextStub implements InspectorContext {
         }
     }
 
+    @Override
+    public void VmStepMode() throws IOException {
+        try {
+            this.dialog.sendNodeMsg(new StepModeMsg(this.id));
+        } catch (final DialogException e) {
+            throw new IOException();
+        }
+    }
+
     /**
      * if request to a new tuple centre -> create new connection to target
      * daemon providing the tuple centre otherwise return the already
@@ -212,6 +230,7 @@ public class InspectorContextStub implements InspectorContext {
 
     /**
      * resolve information about a tuple centre
+     * 
      * @param titcd
      *            the identifier of the tuple centre to be resolved
      */
@@ -224,22 +243,4 @@ public class InspectorContextStub implements InspectorContext {
             e.printStackTrace();
         }
     }
-
-	@Override
-	public void VmStepMode() throws IOException{
-		try {
-			this.dialog.sendNodeMsg(new StepModeMsg(this.id));
-		} catch (DialogException e) {
-			throw new IOException();
-		}
-	}
-
-	@Override
-	public void isStepMode() {
-		try {
-			this.dialog.sendNodeMsg(new IsActiveStepModeMsg(this.id));
-		} catch (DialogException e) {
-			e.printStackTrace();
-		}
-	}
 }

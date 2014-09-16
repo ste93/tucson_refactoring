@@ -69,6 +69,11 @@ public class ManagementContext implements IManagementContext {
     }
 
     @Override
+    public ArrayList<InspectableEventListener> getInspectors() {
+        return this.vm.getInspectors();
+    }
+
+    @Override
     public RespectSpecification getSpec() {
         return (RespectSpecification) this.vm.getReactionSpec();
     }
@@ -104,7 +109,13 @@ public class ManagementContext implements IManagementContext {
     }
 
     @Override
-    public void nextStepCommand() throws alice.tuplecentre.api.exceptions.OperationNotPossibleException {
+    public boolean isStepModeCommand() {
+        return this.vm.isStepModeCommand();
+    }
+
+    @Override
+    public void nextStepCommand()
+            throws alice.tuplecentre.api.exceptions.OperationNotPossibleException {
         this.vm.nextStepCommand();
     }
 
@@ -136,6 +147,11 @@ public class ManagementContext implements IManagementContext {
     }
 
     @Override
+    public void setManagementMode(final boolean activate) {
+        this.vm.setManagementMode(activate);
+    }
+
+    @Override
     public void setSpec(final RespectSpecification spec)
             throws InvalidSpecificationException {
         final boolean accepted = this.vm.setReactionSpec(spec);
@@ -150,29 +166,12 @@ public class ManagementContext implements IManagementContext {
     }
 
     @Override
+    public void stepModeCommand() {
+        this.vm.stepModeCommand();
+    }
+
+    @Override
     public void stopCommand() throws OperationNotPossibleException {
         this.vm.stopCommand();
     }
-    
-    @Override
-    public void setManagementMode(final boolean activate) {
-        this.vm.setManagementMode(activate);
-    }
-    
-	@Override
-	public void stepModeCommand() {
-		this.vm.stepModeCommand();
-		
-	}
-	
-	@Override
-	public boolean isStepModeCommand() {
-		return this.vm.isStepModeCommand();
-		
-	}
-
-	@Override
-	public ArrayList<InspectableEventListener> getInspectors() {
-		return this.vm.getInspectors();
-	}
 }

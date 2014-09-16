@@ -355,10 +355,9 @@ public class EditSpec extends javax.swing.JFrame {
      * reports the result of get operation in SpecWorker
      * 
      * @param spec
-     * @param inputSpec
-     * @param outputState
+     *            the ReSpecT specification read
      */
-    protected void getCompletition(final StringBuffer spec) {
+    protected void getCompletion(final StringBuffer spec) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
@@ -371,12 +370,8 @@ public class EditSpec extends javax.swing.JFrame {
 
     /**
      * reports the result of set operation in SpecWorker
-     * 
-     * @param spec
-     * @param inputSpec
-     * @param outputState
      */
-    protected void setCompletition() {
+    protected void setCompletion() {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {

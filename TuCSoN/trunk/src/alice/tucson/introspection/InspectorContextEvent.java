@@ -29,27 +29,34 @@ public class InspectorContextEvent implements java.io.Serializable {
     private static final long serialVersionUID = -5586328696570013265L;
     /** observer time */
     private long localTime;
+    /** verify if VM mode changed */
+    private boolean modeChanged = false;
     /** observed a reaction failure */
     private TriggeredReaction reactionFailed = null;
     /** observed a reaction ok */
     private TriggeredReaction reactionOk = null;
+    /** verify step mode activation */
+    private boolean stepMode = false;
     /** tuple observed or to set */
     private List<LogicTuple> tuples = null;
     /** virtual machine time */
     private long vmTime;
     /** events observed */
     private List<WSetEvent> wnEvents = null;
-    /** verify step mode activation */
-    private boolean stepMode = false;
-    /** verify if VM mode changed */
-    private boolean modeChanged= false;
-    
 
     /**
      * @return the localTime
      */
     public long getLocalTime() {
         return this.localTime;
+    }
+
+    /**
+     * 
+     * @return verify if VM mode changed
+     */
+    public boolean getModeChanged() {
+        return this.modeChanged;
     }
 
     /**
@@ -64,6 +71,14 @@ public class InspectorContextEvent implements java.io.Serializable {
      */
     public TriggeredReaction getReactionOk() {
         return this.reactionOk;
+    }
+
+    /**
+     * 
+     * @return verify if step mode is active
+     */
+    public boolean getStepMode() {
+        return this.stepMode;
     }
 
     /**
@@ -96,6 +111,15 @@ public class InspectorContextEvent implements java.io.Serializable {
     }
 
     /**
+     * 
+     * @param a
+     *            set modeChanged
+     */
+    public void setModeChanged(final boolean a) {
+        this.modeChanged = a;
+    }
+
+    /**
      * @param rf
      *            the reactionFailed to set
      */
@@ -109,6 +133,15 @@ public class InspectorContextEvent implements java.io.Serializable {
      */
     public void setReactionOk(final TriggeredReaction ro) {
         this.reactionOk = ro;
+    }
+
+    /**
+     * 
+     * @param a
+     *            set step mode as active
+     */
+    public void setStepMode(final boolean a) {
+        this.stepMode = a;
     }
 
     /**
@@ -133,39 +166,5 @@ public class InspectorContextEvent implements java.io.Serializable {
      */
     public void setWnEvents(final List<WSetEvent> wne) {
         this.wnEvents = wne;
-    }
-    
-    /**
-     * 
-     * @param a
-     * 			set step mode as active
-     */
-    public void setStepMode(boolean a) {
-    	this.stepMode = a;
-    }
-    
-    /**
-     * 
-     * @return verify if step mode is active
-     */
-    public boolean getStepMode() {
-    	return this.stepMode;
-    }
-    
-    /**
-     * 
-     * @param a
-     * 			set modeChanged
-     */
-    public void setModeChanged(boolean a) {
-    	this.modeChanged = a;
-    }
-    
-    /**
-     * 
-     * @return verify if VM mode changed
-     */
-    public boolean getModeChanged() {
-    	return this.modeChanged;
     }
 }
