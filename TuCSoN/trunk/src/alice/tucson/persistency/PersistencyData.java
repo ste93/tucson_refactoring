@@ -22,28 +22,28 @@ public class PersistencyData {
 	
 	public PersistencyData(ITupleSet tSet, ITupleSet tSpecSet, TupleSet pPrologPred, List<String> tUpdates)
 	{
-		this.initCreationPersistencyData=System.currentTimeMillis();
+		this.initCreationPersistencyData=System.nanoTime();
 		setTupleSet(tSet);
 		setTupleSpecSet(tSpecSet);
 		setPrologPredicates(pPrologPred);
 		setUpdates(tUpdates);
-		this.terminateCreationPersistencyData=System.currentTimeMillis();
+		this.terminateCreationPersistencyData=System.nanoTime();
 		
-		this.log("Time elapsed from creation of PersistencyData: "+((this.terminateCreationPersistencyData-this.initCreationPersistencyData)/1000));
+		this.log("Time elapsed from creation of PersistencyData: "+((this.terminateCreationPersistencyData-this.initCreationPersistencyData)/1000000)+" milliseconds.");
 	}
 
 	public PersistencyData(List<String>tuples,List<String>specTuples,List<String> pPredicates, List<String>updates)
 	{
-		this.initCreationPersistencyData=System.currentTimeMillis();
+		this.initCreationPersistencyData=System.nanoTime();
 		
 		setTuples(tuples);
 		setSpecTuples(specTuples);
 		setPredicates(pPredicates);
 		setUpdates(updates);
 
-		this.terminateCreationPersistencyData=System.currentTimeMillis();
+		this.terminateCreationPersistencyData=System.nanoTime();
 		
-		this.log("Time elapsed from creation of PersistencyData: "+((this.terminateCreationPersistencyData-this.initCreationPersistencyData)/1000));
+		this.log("Time elapsed from creation of PersistencyData: "+((this.terminateCreationPersistencyData-this.initCreationPersistencyData)/10000000)+" milliseconds.");
 	}
 	
 	public PersistencyData() {

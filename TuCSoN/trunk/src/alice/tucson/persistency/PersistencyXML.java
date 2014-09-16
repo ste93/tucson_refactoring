@@ -63,24 +63,24 @@ public class PersistencyXML {
     
 	public PersistencyXML(String path, TucsonTupleCentreId fileName)
 	{
-		this.initCreationPersistencyXML = System.currentTimeMillis();
+		this.initCreationPersistencyXML = System.nanoTime();
 		
 		this.pFileName = fileName;
 		this.pPath = path;
-		this.finishCreationPersistencyXML=System.currentTimeMillis();
+		this.finishCreationPersistencyXML=System.nanoTime();
 		
-		log("Time elapsed for creation of PersistencyXML: "+((this.finishCreationPersistencyXML-this.initCreationPersistencyXML)/1000));
+		log("Time elapsed for creation of PersistencyXML: "+((this.finishCreationPersistencyXML-this.initCreationPersistencyXML)/1000000)+" milliseconds.");
 	}
 	
 	public PersistencyXML(String fileName)
 	{
-		this.initCreationPersistencyXML = System.currentTimeMillis();
+		this.initCreationPersistencyXML = System.nanoTime();
 		
 		this.xmlFile = new File(fileName);
 		
-		this.finishCreationPersistencyXML=System.currentTimeMillis();
+		this.finishCreationPersistencyXML=System.nanoTime();
 		
-		log("Time elapsed for creation of PersistencyXML: "+((this.finishCreationPersistencyXML-this.initCreationPersistencyXML)/1000));
+		log("Time elapsed for creation of PersistencyXML: "+((this.finishCreationPersistencyXML-this.initCreationPersistencyXML)/1000000)+" milliseconds.");
 	}
 	
 	public List<String> getNodeInfo(Node node, String childName)
@@ -102,7 +102,7 @@ public class PersistencyXML {
 	public PersistencyData parse()
 	{
 		
-		this.initParse=System.currentTimeMillis();
+		this.initParse=System.nanoTime();
 		
 		PersistencyData pData = new PersistencyData();
 		List<String> tuples = null;
@@ -135,7 +135,7 @@ public class PersistencyXML {
         	
 			pData = new PersistencyData(tuples,specTuple,predicates,updates);
 			
-			this.finishParse=System.currentTimeMillis();
+			this.finishParse=System.nanoTime();
 			
 		} catch (ParserConfigurationException e) {
 			// TODO Auto-generated catch block
@@ -146,7 +146,7 @@ public class PersistencyXML {
 			e.printStackTrace();
 		}
         
-        this.log("Time elapsed for parse metod: "+((this.finishParse-this.initParse)/1000));
+        this.log("Time elapsed for parse metod: "+((this.finishParse-this.initParse)/1000000)+" milliseconds.");
         
 		return pData;
 	}
@@ -154,7 +154,7 @@ public class PersistencyXML {
 	public void writeUpdate(LogicTuple update, ModType mode)
 	{
 		
-		this.initWriteUpdate=System.currentTimeMillis();
+		this.initWriteUpdate=System.nanoTime();
 		
 		try {
 			DocumentBuilderFactory dbf= DocumentBuilderFactory.newInstance();   
@@ -215,10 +215,10 @@ public class PersistencyXML {
 			StreamResult result = new StreamResult(this.xmlFile);
 			transformer.transform(source, result);
 			
-			this.finishWriteUpdate=System.currentTimeMillis();
+			this.finishWriteUpdate=System.nanoTime();
 			
 			
-			this.log("Time elapsed for WriteUpdate: "+((this.finishWriteUpdate-this.initWriteUpdate)/1000));
+			this.log("Time elapsed for WriteUpdate: "+((this.finishWriteUpdate-this.initWriteUpdate)/1000000)+" milliseconds.");
 			
 			this.log("File updated!");
 
@@ -311,7 +311,7 @@ public class PersistencyXML {
 	 
 			this.finishWriteFile=System.currentTimeMillis();
 			
-			this.log("Time elapsed for write file: "+((this.finishWriteFile-this.initWriteFile)/1000));
+			this.log("Time elapsed for write file: "+((this.finishWriteFile-this.initWriteFile)/1000)+" milliseconds.");
 			
 			this.log("File saved!");
 
