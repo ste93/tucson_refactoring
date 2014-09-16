@@ -38,8 +38,8 @@ public class SpecificationAsynchInterface implements
 
     @Override
     public IRespectOperation inpS(final IId id, final LogicTuple t,
-            final OperationCompletionListener l) throws InvalidLogicTupleException,
-            OperationNotPossibleException {
+            final OperationCompletionListener l)
+            throws InvalidLogicTupleException, OperationNotPossibleException {
         if (t == null) {
             throw new InvalidLogicTupleException("Null value");
         }
@@ -48,8 +48,8 @@ public class SpecificationAsynchInterface implements
 
     @Override
     public IRespectOperation inS(final IId id, final LogicTuple t,
-            final OperationCompletionListener l) throws InvalidLogicTupleException,
-            OperationNotPossibleException {
+            final OperationCompletionListener l)
+            throws InvalidLogicTupleException, OperationNotPossibleException {
         if (t == null) {
             throw new InvalidLogicTupleException("Null value");
         }
@@ -58,8 +58,8 @@ public class SpecificationAsynchInterface implements
 
     @Override
     public IRespectOperation nopS(final IId aid, final LogicTuple t,
-            final OperationCompletionListener l) throws InvalidLogicTupleException,
-            OperationNotPossibleException {
+            final OperationCompletionListener l)
+            throws InvalidLogicTupleException, OperationNotPossibleException {
         if (t == null) {
             throw new InvalidLogicTupleException("Null value");
         }
@@ -68,8 +68,8 @@ public class SpecificationAsynchInterface implements
 
     @Override
     public IRespectOperation noS(final IId aid, final LogicTuple t,
-            final OperationCompletionListener l) throws InvalidLogicTupleException,
-            OperationNotPossibleException {
+            final OperationCompletionListener l)
+            throws InvalidLogicTupleException, OperationNotPossibleException {
         if (t == null) {
             throw new InvalidLogicTupleException("Null value");
         }
@@ -78,8 +78,8 @@ public class SpecificationAsynchInterface implements
 
     @Override
     public IRespectOperation outS(final IId id, final LogicTuple t,
-            final OperationCompletionListener l) throws InvalidLogicTupleException,
-            OperationNotPossibleException {
+            final OperationCompletionListener l)
+            throws InvalidLogicTupleException, OperationNotPossibleException {
         if (t == null) {
             throw new InvalidLogicTupleException("Null value");
         }
@@ -88,8 +88,8 @@ public class SpecificationAsynchInterface implements
 
     @Override
     public IRespectOperation rdpS(final IId id, final LogicTuple t,
-            final OperationCompletionListener l) throws InvalidLogicTupleException,
-            OperationNotPossibleException {
+            final OperationCompletionListener l)
+            throws InvalidLogicTupleException, OperationNotPossibleException {
         if (t == null) {
             throw new InvalidLogicTupleException("Null value");
         }
@@ -98,8 +98,8 @@ public class SpecificationAsynchInterface implements
 
     @Override
     public IRespectOperation rdS(final IId id, final LogicTuple t,
-            final OperationCompletionListener l) throws InvalidLogicTupleException,
-            OperationNotPossibleException {
+            final OperationCompletionListener l)
+            throws InvalidLogicTupleException, OperationNotPossibleException {
         if (t == null) {
             throw new InvalidLogicTupleException("Null value");
         }

@@ -17,7 +17,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-
 import alice.logictuple.LogicTuple;
 import alice.tucson.api.TucsonAgentId;
 import alice.tucson.api.TucsonTupleCentreId;
@@ -71,25 +70,26 @@ public class ACCProxyNodeSide extends AbstractACCProxyNodeSide {
      *            the object describing the request of entering the TuCSoN
      *            system
      * @throws TucsonInvalidTupleCentreIdException
-     * 			if the TupleCentreId, contained into AbstractTucsonProtocol's message, 
-     * 			does not represent a valid TuCSoN identifier 
+     *             if the TupleCentreId, contained into AbstractTucsonProtocol's
+     *             message, does not represent a valid TuCSoN identifier
      * 
-     * @throws TucsonInvalidAgentIdException 
-     * 					if the ACCDescription's "agent-identity" property 
-     * 					does not represent a valid TuCSoN identifier
+     * @throws TucsonInvalidAgentIdException
+     *             if the ACCDescription's "agent-identity" property does not
+     *             represent a valid TuCSoN identifier
      */
     public ACCProxyNodeSide(final ACCProvider man,
             final AbstractTucsonProtocol d, final TucsonNodeService n,
-            final ACCDescription p) throws TucsonInvalidTupleCentreIdException, TucsonInvalidAgentIdException {
+            final ACCDescription p) throws TucsonInvalidTupleCentreIdException,
+            TucsonInvalidAgentIdException {
         super();
         this.ctxId = Integer.parseInt(p.getProperty("context-id"));
         String name = p.getProperty("agent-identity");
         if (name == null) {
             name = p.getProperty("tc-identity");
             this.tcId = new TucsonTupleCentreId(name);
-            this.agentId = new TucsonAgentId("tcAgent", this.tcId); 
+            this.agentId = new TucsonAgentId("tcAgent", this.tcId);
         } else {
-        	this.agentId = new TucsonAgentId(name);
+            this.agentId = new TucsonAgentId(name);
         }
         this.agentName = name;
         this.dialog = d;
@@ -162,7 +162,7 @@ public class ACCProxyNodeSide extends AbstractACCProxyNodeSide {
             try {
                 msg = this.dialog.receiveMsgRequest();
             } catch (final DialogReceiveException e) {
-            	e.printStackTrace();
+                e.printStackTrace();
                 this.log("Agent " + this.agentId + " quit");
                 break;
             }
@@ -188,11 +188,14 @@ public class ACCProxyNodeSide extends AbstractACCProxyNodeSide {
                     + ", type=" + msg.getType() + ", tuple=" + msg.getTuple()
                     + " >...");
             if (msgType == TucsonOperation.setSCode()) {
-            	final TucsonTCUsers coreInfo = this.node.resolveCore(tid.getName());
-            	if (coreInfo == null) {
-            		System.err.println("[ACCProxyNodeSide]: cannot resolve core by its name : " + tid.getName());
-            		break;
-            	}
+                final TucsonTCUsers coreInfo = this.node.resolveCore(tid
+                        .getName());
+                if (coreInfo == null) {
+                    System.err
+                            .println("[ACCProxyNodeSide]: cannot resolve core by its name : "
+                                    + tid.getName());
+                    break;
+                }
                 this.node.addTCAgent(this.agentId, tid);
                 try {
                     if (this.tcId == null) {

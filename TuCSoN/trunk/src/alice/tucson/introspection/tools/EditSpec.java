@@ -19,10 +19,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
-
 import javax.swing.JButton;
 import javax.swing.JPanel;
-
 import alice.logictuple.LogicTuple;
 import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.tucson.api.EnhancedACC;
@@ -141,7 +139,7 @@ public class EditSpec extends javax.swing.JFrame {
             this.outputState.setText("TuCSoN Node is unreachable.");
         } catch (final OperationTimeOutException e) {
             this.outputState.setText("TuCSoN operation timeout exceeded.");
-        } 
+        }
     }
 
     private void bLoadActionPerformed() {

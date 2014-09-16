@@ -13,20 +13,20 @@
 package alice.tuplecentre.api.exceptions;
 
 /**
- * Exception thrown when a generic invalid operation is called
- * e.g. Trying to retrieve the Int value of a JVal object that is not an Int type
+ * Exception thrown when a generic invalid operation is called e.g. Trying to
+ * retrieve the Int value of a JVal object that is not an Int type
  * 
  * @author Alessandro Ricci
  * 
  */
 public class InvalidOperationException extends RuntimeException {
     private static final long serialVersionUID = 2834213882766578233L;
-    
+
     public InvalidOperationException() {
-    	super();
+        super();
     }
-    
+
     public InvalidOperationException(final String message) {
-    	super(message);
+        super(message);
     }
 }

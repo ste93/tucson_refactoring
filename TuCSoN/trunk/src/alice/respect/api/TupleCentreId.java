@@ -52,7 +52,8 @@ public class TupleCentreId implements alice.tuplecentre.api.TupleCentreId,
         }
         this.id = Term.createTerm(name, TupleCentreId.opManager);
         if (!this.id.isGround()) {
-            throw new InvalidTupleCentreIdException("String '" + n + "' is not a well-formed ground logic term");
+            throw new InvalidTupleCentreIdException("String '" + n
+                    + "' is not a well-formed ground logic term");
         }
     }
 
@@ -76,11 +77,14 @@ public class TupleCentreId implements alice.tuplecentre.api.TupleCentreId,
             this.id = Term.createTerm(tc + "@" + host + ":" + port,
                     TupleCentreId.opManager);
         } catch (final InvalidTermException e) {
-            throw new InvalidTupleCentreIdException("Cannot create a valid centre id from tcName: '"
-            		+ tc + "', hostName: '" + host + "' and port:'" + port + "'");
+            throw new InvalidTupleCentreIdException(
+                    "Cannot create a valid centre id from tcName: '" + tc
+                            + "', hostName: '" + host + "' and port:'" + port
+                            + "'");
         }
         if (!this.id.isGround()) {
-            throw new InvalidTupleCentreIdException("Term '" + this.id + "' is not a well-formed ground logic term");
+            throw new InvalidTupleCentreIdException("Term '" + this.id
+                    + "' is not a well-formed ground logic term");
         }
     }
 
@@ -96,7 +100,8 @@ public class TupleCentreId implements alice.tuplecentre.api.TupleCentreId,
     public TupleCentreId(final Term name) throws InvalidTupleCentreIdException {
         this.id = name.getTerm();
         if (!this.id.isGround()) {
-            throw new InvalidTupleCentreIdException("Term '" + name + "' is not a well-formed ground logic term");
+            throw new InvalidTupleCentreIdException("Term '" + name
+                    + "' is not a well-formed ground logic term");
         }
     }
 

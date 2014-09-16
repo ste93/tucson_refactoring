@@ -13,7 +13,6 @@
  */
 package alice.tucson.service;
 
-
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.network.AbstractTucsonProtocol;
@@ -71,10 +70,10 @@ public class WelcomeAgent extends Thread {
             // used?
             e.printStackTrace();
             this.shut = true;
-        } catch (InvalidProtocolTypeException e) {
-			// Cannot happen
-			e.printStackTrace();
-		}
+        } catch (final InvalidProtocolTypeException e) {
+            // Cannot happen
+            e.printStackTrace();
+        }
         AbstractTucsonProtocol dialog = null;
         try {
             while (!this.isShutdown()) {
@@ -108,12 +107,12 @@ public class WelcomeAgent extends Thread {
         } catch (final DialogReceiveException e) {
             e.printStackTrace();
         } catch (final DialogSendException e) {
-			e.printStackTrace();
-		} catch (final TucsonInvalidAgentIdException e) {
-			e.printStackTrace();
-		} catch (final TucsonInvalidTupleCentreIdException e) {
-			e.printStackTrace();
-		} 
+            e.printStackTrace();
+        } catch (final TucsonInvalidAgentIdException e) {
+            e.printStackTrace();
+        } catch (final TucsonInvalidTupleCentreIdException e) {
+            e.printStackTrace();
+        }
         this.node.removeNodeAgent(this);
     }
 

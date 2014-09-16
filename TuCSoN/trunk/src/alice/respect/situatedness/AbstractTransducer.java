@@ -202,7 +202,7 @@ public abstract class AbstractTransducer implements
             final int value = Integer.parseInt(ev.getInternalOperation()
                     .getArgument().getArg(1).toString());
             return this.setEnv(key, value);
-        }       
+        }
         return false;
     }
 

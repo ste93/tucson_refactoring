@@ -22,7 +22,6 @@ import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
-
 import alice.tucson.api.exceptions.UnreachableNodeException;
 import alice.tucson.introspection.InspectorContextEvent;
 import alice.tucson.introspection.NewInspectorMsg;
@@ -65,7 +64,8 @@ public class TucsonProtocolTCP extends AbstractTucsonProtocol {
      * @throws DialogInitializationException
      *             if something goes wrong in the udenrlying network
      */
-    public TucsonProtocolTCP(final int port) throws DialogInitializationException {
+    public TucsonProtocolTCP(final int port)
+            throws DialogInitializationException {
         super();
         try {
             this.mainSocket = new ServerSocket();
@@ -89,7 +89,8 @@ public class TucsonProtocolTCP extends AbstractTucsonProtocol {
      * @param port
      *            the listening port where to bound
      * @throws UnreachableNodeException
-     *             if the given host is unknown or no process is listening on the given port
+     *             if the given host is unknown or no process is listening on
+     *             the given port
      * @throws DialogInitializationException
      *             if some network problems arise
      */
@@ -123,11 +124,12 @@ public class TucsonProtocolTCP extends AbstractTucsonProtocol {
     /**
      * 
      * @param s
-     * 			 the socket to bound
+     *            the socket to bound
      * @throws DialogInitializationException
-     * 			 if some network problems arise
+     *             if some network problems arise
      */
-    private TucsonProtocolTCP(final Socket s) throws DialogInitializationException {
+    private TucsonProtocolTCP(final Socket s)
+            throws DialogInitializationException {
         super();
         this.socket = s;
         /*
@@ -146,9 +148,10 @@ public class TucsonProtocolTCP extends AbstractTucsonProtocol {
     }
 
     @Override
-    public AbstractTucsonProtocol acceptNewDialog() throws DialogAcceptException {
+    public AbstractTucsonProtocol acceptNewDialog()
+            throws DialogAcceptException {
         try {
-            return new TucsonProtocolTCP(this.mainSocket.accept());            
+            return new TucsonProtocolTCP(this.mainSocket.accept());
         } catch (final IOException e) {
             // FIXME What to do here?
             if (this.serverSocketClosed) {
@@ -158,9 +161,9 @@ public class TucsonProtocolTCP extends AbstractTucsonProtocol {
                 System.err.println("Generic IO error: " + e);
             }
             throw new DialogAcceptException(e);
-        } catch (DialogInitializationException e) {
-			throw new DialogAcceptException(e);
-		}
+        } catch (final DialogInitializationException e) {
+            throw new DialogAcceptException(e);
+        }
     }
 
     @Override
@@ -184,7 +187,8 @@ public class TucsonProtocolTCP extends AbstractTucsonProtocol {
      * @see alice.tucson.network.AbstractTucsonProtocol#receiveInspectorEvent()
      */
     @Override
-    public InspectorContextEvent receiveInspectorEvent() throws DialogReceiveException {
+    public InspectorContextEvent receiveInspectorEvent()
+            throws DialogReceiveException {
         InspectorContextEvent msg;
         try {
             msg = (InspectorContextEvent) this.inStream.readObject();
@@ -201,7 +205,7 @@ public class TucsonProtocolTCP extends AbstractTucsonProtocol {
      * @see alice.tucson.network.AbstractTucsonProtocol#receiveInspectorMsg()
      */
     @Override
-    public NewInspectorMsg receiveInspectorMsg() throws DialogReceiveException { 
+    public NewInspectorMsg receiveInspectorMsg() throws DialogReceiveException {
         NewInspectorMsg msg;
         try {
             msg = (NewInspectorMsg) this.inStream.readObject();

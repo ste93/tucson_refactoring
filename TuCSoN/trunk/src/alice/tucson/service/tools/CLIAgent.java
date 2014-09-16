@@ -16,7 +16,6 @@ package alice.tucson.service.tools;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-
 import alice.logictuple.LogicTuple;
 import alice.logictuple.LogicTupleOpManager;
 import alice.logictuple.exceptions.InvalidLogicTupleException;
@@ -531,9 +530,9 @@ public class CLIAgent extends alice.util.Automaton {
                 e.printStackTrace();
             } catch (final OperationTimeOutException e) {
                 e.printStackTrace();
-            } catch (InvalidLogicTupleException e) {
-				e.printStackTrace();
-			}
+            } catch (final InvalidLogicTupleException e) {
+                e.printStackTrace();
+            }
         }
         this.become("goalRequest");
     }

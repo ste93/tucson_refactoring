@@ -50,7 +50,8 @@ public class JTuple implements Iterable<IJVal>, IJTuple {
         if (i >= 0 && i < this.args.size()) {
             return this.args.get(i);
         }
-        throw new InvalidOperationException("Index out of bounds. Value of the index i: " + i);
+        throw new InvalidOperationException(
+                "Index out of bounds. Value of the index i: " + i);
     }
 
     /*

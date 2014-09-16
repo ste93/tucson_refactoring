@@ -14,7 +14,6 @@ package alice.respect.core;
 
 import java.util.Iterator;
 import java.util.List;
-
 import alice.logictuple.LogicTuple;
 import alice.logictuple.TupleArgument;
 import alice.logictuple.exceptions.InvalidLogicTupleException;

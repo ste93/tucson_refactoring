@@ -39,12 +39,12 @@ public class TupleSetCoord extends AbstractTupleSet {
      * arity.
      */
     @Override
-    public String getTupleKey1(final LogicTuple t) {        
+    public String getTupleKey1(final LogicTuple t) {
         final TupleArgument ta = t.getVarValue(null);
         if (ta != null && ta.isStruct()) {
-    		return ta.getPredicateIndicator();
+            return ta.getPredicateIndicator();
         }
-        return t.getPredicateIndicator();        
+        return t.getPredicateIndicator();
     }
 
     /**

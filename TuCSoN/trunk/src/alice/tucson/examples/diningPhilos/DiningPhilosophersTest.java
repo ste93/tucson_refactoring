@@ -1,7 +1,6 @@
 package alice.tucson.examples.diningPhilos;
 
 import java.io.IOException;
-
 import alice.logictuple.LogicTuple;
 import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.tucson.api.AbstractTucsonAgent;

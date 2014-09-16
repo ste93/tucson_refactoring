@@ -15,7 +15,6 @@ package alice.tucson.introspection;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import alice.tucson.api.TucsonAgentId;
 import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.api.exceptions.OperationNotAllowedException;
@@ -136,7 +135,8 @@ public class InspectorContextStub implements InspectorContext {
     }
 
     @Override
-    public void setProtocol(final InspectorProtocol p) throws DialogSendException {
+    public void setProtocol(final InspectorProtocol p)
+            throws DialogSendException {
         final InspectorProtocol newp = new InspectorProtocol();
         newp.setTsetObservType(p.getTsetObservType());
         newp.setTsetFilter(p.getTsetFilter());

@@ -7,14 +7,13 @@ package alice.tuplecentre.api.exceptions;
  * 
  */
 public class InvalidCoordinationOperationException extends Exception {
+    private static final long serialVersionUID = 1L;
 
-	private static final long serialVersionUID = 1L;
-
-	public InvalidCoordinationOperationException() {
-    	super();
+    public InvalidCoordinationOperationException() {
+        super();
     }
-    
+
     public InvalidCoordinationOperationException(final String message) {
-    	super(message);
+        super(message);
     }
 }

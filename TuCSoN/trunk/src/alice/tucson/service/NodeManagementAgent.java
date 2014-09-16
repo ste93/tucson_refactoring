@@ -46,7 +46,7 @@ public class NodeManagementAgent extends Thread {
         try {
             this.nodeManAid = new TucsonAgentId("node_management_agent");
         } catch (final TucsonInvalidAgentIdException e) {
-        	//Cannot happen, the agend id it's specified here
+            // Cannot happen, the agend id it's specified here
             e.printStackTrace();
         }
         this.node = n;
@@ -85,7 +85,7 @@ public class NodeManagementAgent extends Thread {
             e.printStackTrace();
             this.node.removeNodeAgent(this);
         } catch (final InvalidVarNameException e) {
-        	e.printStackTrace();
+            e.printStackTrace();
             this.node.removeNodeAgent(this);
         }
     }

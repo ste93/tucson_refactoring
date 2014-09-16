@@ -82,7 +82,7 @@ public interface ITupleSet {
      * Remove a logic tuple from tuple set.
      * 
      * @param t
-     *            a {@code LogicTuple} to remove.         
+     *            a {@code LogicTuple} to remove.
      */
     void remove(LogicTuple t);
 

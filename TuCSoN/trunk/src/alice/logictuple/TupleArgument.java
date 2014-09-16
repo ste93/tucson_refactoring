@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-
 import alice.logictuple.exceptions.InvalidTupleArgumentException;
 import alice.tuplecentre.api.exceptions.InvalidOperationException;
 import alice.tuprolog.InvalidTermException;
@@ -58,7 +57,9 @@ public class TupleArgument implements java.io.Serializable {
             final Term t = alice.tuprolog.Term.createTerm(st);
             return new TupleArgument(t);
         } catch (final InvalidTermException ex) {
-            throw new InvalidTupleArgumentException("Exception occurred while parsing the string:\"" + st + "\"", ex);
+            throw new InvalidTupleArgumentException(
+                    "Exception occurred while parsing the string:\"" + st
+                            + "\"", ex);
         }
     }
 
@@ -90,7 +91,7 @@ public class TupleArgument implements java.io.Serializable {
      * @return the double value
      */
     public double doubleValue() {
-        if (isNumber()) {
+        if (this.isNumber()) {
             return ((Number) this.value).doubleValue();
         }
         throw new InvalidOperationException("The argument is not a Number");
@@ -102,7 +103,7 @@ public class TupleArgument implements java.io.Serializable {
      * @return the float value
      */
     public float floatValue() {
-        if (isNumber()) {
+        if (this.isNumber()) {
             return ((Number) this.value).floatValue();
         }
         throw new InvalidOperationException("The argument is not a Number");
@@ -141,7 +142,7 @@ public class TupleArgument implements java.io.Serializable {
      * 
      */
     public int getArity() {
-        if (isStruct()) {
+        if (this.isStruct()) {
             return ((Struct) this.value).getArity();
         }
         throw new InvalidOperationException("The argument is not a Struct");
@@ -155,12 +156,13 @@ public class TupleArgument implements java.io.Serializable {
      * 
      */
     public String getName() {
-        if (isStruct()) {
+        if (this.isStruct()) {
             return ((Struct) this.value).getName();
-        } else if (isVar()) {
+        } else if (this.isVar()) {
             return ((alice.tuprolog.Var) this.value).getName();
         } else {
-            throw new InvalidOperationException("The argument is not a Struct or a Var");
+            throw new InvalidOperationException(
+                    "The argument is not a Struct or a Var");
         }
     }
 
@@ -169,7 +171,7 @@ public class TupleArgument implements java.io.Serializable {
      * @return the String representation of the tuProlog predicate
      */
     public String getPredicateIndicator() {
-        if (isStruct()) {
+        if (this.isStruct()) {
             // TODO CICORA: oppure return
             // ((Struct)value).getPredicateIndicator();
             return ((alice.tuprolog.Struct) this.value).getName() + "/"
@@ -207,10 +209,10 @@ public class TupleArgument implements java.io.Serializable {
      * @return the integer value
      */
     public int intValue() {
-    	if (isNumber()) {
-    		return ((Number) this.value).intValue();
-    	}
-    	throw new InvalidOperationException("The argument is not a Number");
+        if (this.isNumber()) {
+            return ((Number) this.value).intValue();
+        }
+        throw new InvalidOperationException("The argument is not a Number");
     }
 
     /**
@@ -315,9 +317,9 @@ public class TupleArgument implements java.io.Serializable {
      * 
      * @return <code>true</code> if this argument is a struct
      */
-    public boolean isStruct() {    	
-        //return this.value.isCompound(); why?
-    	return this.value instanceof alice.tuprolog.Struct;
+    public boolean isStruct() {
+        // return this.value.isCompound(); why?
+        return this.value instanceof alice.tuprolog.Struct;
     }
 
     /**
@@ -356,10 +358,10 @@ public class TupleArgument implements java.io.Serializable {
      * @return the long value
      */
     public long longValue() {
-    	if (isLong()) {
-    		return ((Number) this.value).longValue();
-    	}
-    	throw new InvalidOperationException("The argument is not a Long");
+        if (this.isLong()) {
+            return ((Number) this.value).longValue();
+        }
+        throw new InvalidOperationException("The argument is not a Long");
     }
 
     /**
@@ -392,23 +394,23 @@ public class TupleArgument implements java.io.Serializable {
      * Converts this argument (which is supposed to be a Prolog list) into an
      * array of values
      * 
-     * @return an array of Tuple Arguments     
+     * @return an array of Tuple Arguments
      */
     public TupleArgument[] toArray() {
-    	if (isList()) {
-	    	final ArrayList<Term> list = new ArrayList<Term>();
-	        final Iterator<? extends Term> it = ((Struct) this.value)
-	                .listIterator();
-	        while (it.hasNext()) {
-	            list.add(it.next());
-	        }
-	        final TupleArgument[] vect = new TupleArgument[list.size()];
-	        for (int i = 0; i < vect.length; i++) {
-	            vect[i] = new TupleArgument(list.get(i));
-	        }
-	        return vect;
-    	}
-    	throw new InvalidOperationException("The argument is not a List");
+        if (this.isList()) {
+            final ArrayList<Term> list = new ArrayList<Term>();
+            final Iterator<? extends Term> it = ((Struct) this.value)
+                    .listIterator();
+            while (it.hasNext()) {
+                list.add(it.next());
+            }
+            final TupleArgument[] vect = new TupleArgument[list.size()];
+            for (int i = 0; i < vect.length; i++) {
+                vect[i] = new TupleArgument(list.get(i));
+            }
+            return vect;
+        }
+        throw new InvalidOperationException("The argument is not a List");
     }
 
     /**
@@ -419,14 +421,14 @@ public class TupleArgument implements java.io.Serializable {
      * 
      */
     public List<Term> toList() {
-        if (isList()) {
-	    	final LinkedList<Term> list = new LinkedList<Term>();
-	        final Iterator<? extends Term> it = ((Struct) this.value)
-	                .listIterator();
-	        while (it.hasNext()) {
-	            list.add(it.next());
-	        }
-	        return list;
+        if (this.isList()) {
+            final LinkedList<Term> list = new LinkedList<Term>();
+            final Iterator<? extends Term> it = ((Struct) this.value)
+                    .listIterator();
+            while (it.hasNext()) {
+                list.add(it.next());
+            }
+            return list;
         }
         throw new InvalidOperationException("The argument is not a List");
     }

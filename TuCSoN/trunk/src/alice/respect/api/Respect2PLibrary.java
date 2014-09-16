@@ -22,7 +22,6 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
-
 import alice.logictuple.LogicMatchingEngine;
 import alice.logictuple.LogicTuple;
 import alice.logictuple.LogicTupleOpManager;
@@ -436,10 +435,12 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      * @param arg1
      *            the identifier of the target tuple centre
      * @throws InvalidTupleCentreIdException
-     * 			  if arg1 (tuple centre's id) is not a well-formed ground logic term 
+     *             if arg1 (tuple centre's id) is not a well-formed ground logic
+     *             term
      * @return <code>true</code> if the operation is successfull
      */
-    public boolean get_2(final Term arg0, final Term arg1) throws InvalidTupleCentreIdException {
+    public boolean get_2(final Term arg0, final Term arg1)
+            throws InvalidTupleCentreIdException {
         String tcName = null;
         TupleCentreId tid = null;
         tid = new TupleCentreId(arg1);
@@ -456,7 +457,6 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
             }
             final alice.tuplecentre.api.Tuple tuple = new LogicTuple("get",
                     array);
-            
             if (((LogicTuple) tuple).getArg(0) != null) {
                 final Term term = ((LogicTuple) tuple).toTerm();
                 this.unify(arg0, term.copyGoal(v, 0));
@@ -469,7 +469,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
                 this.vm.fetchTriggeredReactions(ev);
                 return true;
             }
-            return false;            
+            return false;
         }
         Respect2PLibrary.log("Remote get triggered...");
         final InputEvent ce = this.vm.getCurrentEvent();
@@ -489,11 +489,13 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      * @param arg1
      *            the identifier of the target tuple centre
      * @throws InvalidTupleCentreIdException
-     * 			  if arg1 (tuple centre's id) is not a well-formed ground logic term 
-     *            
+     *             if arg1 (tuple centre's id) is not a well-formed ground logic
+     *             term
+     * 
      * @return <code>true</code> if the operation is successfull
      */
-    public boolean get_s_2(final Term arg0, final Term arg1) throws InvalidTupleCentreIdException {
+    public boolean get_s_2(final Term arg0, final Term arg1)
+            throws InvalidTupleCentreIdException {
         String tcName = null;
         TupleCentreId tid = null;
         tid = new TupleCentreId(arg1);
@@ -526,7 +528,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
                 this.vm.fetchTriggeredReactions(ev);
                 return true;
             }
-            return false;            
+            return false;
         }
         Respect2PLibrary.log("Remote get_s triggered...");
         final InputEvent ce = this.vm.getCurrentEvent();
@@ -546,16 +548,20 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      * @param key
      *            the environmental property to sense
      * @param val
-     *            the value sensed     
+     *            the value sensed
      * @throws OperationTimeOutException
-     *  		  if the notification operation expires timeout
-     * @throws UnreachableNodeException 
-     * 			  if the TuCSoN tuple centre target of the notification cannot be reached over the network
-     * @throws TucsonOperationNotPossibleException 
-     * 			  if the requested operation cannot be performed for some reason
-     * @return <code>true</code> if the operation is successfull 
+     *             if the notification operation expires timeout
+     * @throws UnreachableNodeException
+     *             if the TuCSoN tuple centre target of the notification cannot
+     *             be reached over the network
+     * @throws TucsonOperationNotPossibleException
+     *             if the requested operation cannot be performed for some
+     *             reason
+     * @return <code>true</code> if the operation is successfull
      */
-    public boolean getEnv_3(final Term env, final Term key, final Term val) throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException {
+    public boolean getEnv_3(final Term env, final Term key, final Term val)
+            throws TucsonOperationNotPossibleException,
+            UnreachableNodeException, OperationTimeOutException {
         // Get engine's copy of key and val
         final AbstractMap<Var, Var> v = new LinkedHashMap<Var, Var>();
         final AbstractMap<Var, Var> v1 = new LinkedHashMap<Var, Var>();
@@ -575,12 +581,11 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         internalEv.setSource(this.vm.getId()); // Set the source of the event
         final TransducersManager tm = TransducersManager.INSTANCE;
         // Getting the transducer from the transducer manager
-        final TransducerId tId = tm.getTransducerId(envId);        
+        final TransducerId tId = tm.getTransducerId(envId);
         if (tm.getTransducer(tId.getAgentName()).notifyOutput(internalEv)) {
             this.vm.fetchTriggeredReactions(internalEv);
             return true;
         }
-            
         return false;
     }
 
@@ -670,10 +675,12 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      * @param arg1
      *            the identifier of the target tuple centre
      * @throws InvalidTupleCentreIdException
-     * 			  if arg1 (tuple centre's id) is not a well-formed ground logic term 
+     *             if arg1 (tuple centre's id) is not a well-formed ground logic
+     *             term
      * @return <code>true</code> if the operation is successfull
      */
-    public boolean in_2(final Term arg0, final Term arg1) throws InvalidTupleCentreIdException {
+    public boolean in_2(final Term arg0, final Term arg1)
+            throws InvalidTupleCentreIdException {
         String tcName = null;
         TupleCentreId tid = null;
         tid = new TupleCentreId(arg1);
@@ -719,13 +726,14 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      * @param arg2
      *            the identifier of the target tuple centre
      * @throws InvalidTupleCentreIdException
-     * 			  if arg2 (tuple centre's id) is not a well-formed ground logic term 
+     *             if arg2 (tuple centre's id) is not a well-formed ground logic
+     *             term
      * @throws InvalidLogicTupleException
-     * 			  if the text does not represent a valid logic tuple
+     *             if the text does not represent a valid logic tuple
      * @return <code>true</code> if the operation is successfull
      */
     public boolean in_all_3(final Term arg0, final Term arg1, final Term arg2)
-    		throws InvalidTupleCentreIdException, InvalidLogicTupleException {
+            throws InvalidTupleCentreIdException, InvalidLogicTupleException {
         String tcName = null;
         TupleCentreId tid = null;
         tid = new TupleCentreId(arg2);
@@ -757,7 +765,6 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         return true;
     }
 
-    
     /**
      * 
      * @param ev
@@ -769,28 +776,33 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      * @param tc
      *            the identifier of the target tuple centre
      * @throws InvalidTupleCentreIdException
-     * 			  if tc (tuple centre's id) is not a well-formed ground logic term   
-     * @throws InvalidTupleArgumentException 
-     * 			  if is not possible to create a valid Prolog Term with the specified values for ev, g and r  	  
+     *             if tc (tuple centre's id) is not a well-formed ground logic
+     *             term
+     * @throws InvalidTupleArgumentException
+     *             if is not possible to create a valid Prolog Term with the
+     *             specified values for ev, g and r
      * @return <code>true</code> if the operation is successfull
-     *  
+     * 
      */
     public boolean in_s_4(final Term ev, final Term g, final Term r,
-            final Term tc) throws InvalidTupleCentreIdException, InvalidTupleArgumentException {
+            final Term tc) throws InvalidTupleCentreIdException,
+            InvalidTupleArgumentException {
         String tcName = null;
         TupleCentreId tid = null;
-        tid = new TupleCentreId(tc);        
+        tid = new TupleCentreId(tc);
         tcName = tid.getName();
         final AbstractMap<Var, Var> v = new LinkedHashMap<Var, Var>();
         Term goal;
         try {
-        goal = Term.createTerm(
+            goal = Term.createTerm(
                     "reaction(" + ev.getTerm() + "," + g.getTerm() + ","
                             + r.getTerm() + ")", new LogicTupleOpManager());
-	    } catch (final InvalidTermException e) {
-	    	throw new InvalidTupleArgumentException("Cannot create a valid Prolog Term with ev: " + ev.getTerm() + ""
-	    			+ ", g: " + g.getTerm() + ", r: " + r.getTerm(), e);
-	    }
+        } catch (final InvalidTermException e) {
+            throw new InvalidTupleArgumentException(
+                    "Cannot create a valid Prolog Term with ev: "
+                            + ev.getTerm() + "" + ", g: " + g.getTerm()
+                            + ", r: " + r.getTerm(), e);
+        }
         if ("this".equals(tcName)) {
             Respect2PLibrary.log("Local in_s triggered...");
             final Term newArg = goal.copyGoal(v, 0);
@@ -841,10 +853,12 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      * @param arg1
      *            the identifier of the target tuple centre
      * @throws InvalidTupleCentreIdException
-     * 			  if arg1 (tuple centre's id) is not a well-formed ground logic term
+     *             if arg1 (tuple centre's id) is not a well-formed ground logic
+     *             term
      * @return <code>true</code> if the operation is successfull
      */
-    public boolean inp_2(final Term arg0, final Term arg1) throws InvalidTupleCentreIdException {
+    public boolean inp_2(final Term arg0, final Term arg1)
+            throws InvalidTupleCentreIdException {
         String tcName = null;
         TupleCentreId tid = null;
         tid = new TupleCentreId(arg1);
@@ -891,14 +905,16 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      * @param tc
      *            the identifier of the target tuple centre
      * @throws InvalidTupleCentreIdException
-     * 	          if tc (tuple centre's id) is not a well-formed ground logic term
+     *             if tc (tuple centre's id) is not a well-formed ground logic
+     *             term
      * @throws InvalidTupleArgumentException
-     *            if an invalid tuple argument is used
+     *             if an invalid tuple argument is used
      * @return <code>true</code> if the operation is successfull
      * 
      */
     public boolean inp_s_4(final Term ev, final Term g, final Term r,
-            final Term tc) throws InvalidTupleCentreIdException, InvalidTupleArgumentException {
+            final Term tc) throws InvalidTupleCentreIdException,
+            InvalidTupleArgumentException {
         String tcName = null;
         TupleCentreId tid = null;
         tid = new TupleCentreId(tc);
@@ -906,13 +922,15 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         final AbstractMap<Var, Var> v = new LinkedHashMap<Var, Var>();
         Term goal;
         try {
-	        goal = Term.createTerm(
-	                    "reaction(" + ev.getTerm() + "," + g.getTerm() + ","
-	                            + r.getTerm() + ")", new LogicTupleOpManager());
-	    } catch (final InvalidTermException e) {
-	    	throw new InvalidTupleArgumentException("Cannot create a valid Prolog Term with ev: " + ev.getTerm() + ""
-	    			+ ", g: " + g.getTerm() + ", r: " + r.getTerm(), e);
-	    }
+            goal = Term.createTerm(
+                    "reaction(" + ev.getTerm() + "," + g.getTerm() + ","
+                            + r.getTerm() + ")", new LogicTupleOpManager());
+        } catch (final InvalidTermException e) {
+            throw new InvalidTupleArgumentException(
+                    "Cannot create a valid Prolog Term with ev: "
+                            + ev.getTerm() + "" + ", g: " + g.getTerm()
+                            + ", r: " + r.getTerm(), e);
+        }
         if ("this".equals(tcName)) {
             Respect2PLibrary.log("Local inp_s triggered...");
             final Term newArg = goal.copyGoal(v, 0);
@@ -1028,10 +1046,12 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      * @param arg1
      *            the identifier of the target tuple centre
      * @throws InvalidTupleCentreIdException
-     * 			  if arg1 (tuple centre's id) is not a well-formed ground logic term
+     *             if arg1 (tuple centre's id) is not a well-formed ground logic
+     *             term
      * @return <code>true</code> if the operation is successfull
      */
-    public boolean no_2(final Term arg0, final Term arg1) throws InvalidTupleCentreIdException {
+    public boolean no_2(final Term arg0, final Term arg1)
+            throws InvalidTupleCentreIdException {
         String tcName = null;
         TupleCentreId tid = null;
         tid = new TupleCentreId(arg1);
@@ -1075,13 +1095,14 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      * @param arg2
      *            the identifier of the target tuple centre
      * @throws InvalidTupleCentreIdException
-     * 			  if arg2 (tuple centre's id) is not a well-formed ground logic term 
+     *             if arg2 (tuple centre's id) is not a well-formed ground logic
+     *             term
      * @throws InvalidLogicTupleException
-     * 			  if the text does not represent a valid logic tuple          
+     *             if the text does not represent a valid logic tuple
      * @return <code>true</code> if the operation is successfull
      */
-    public boolean no_all_3(final Term arg0, final Term arg1, final Term arg2) 
-    		throws InvalidTupleCentreIdException, InvalidLogicTupleException {
+    public boolean no_all_3(final Term arg0, final Term arg1, final Term arg2)
+            throws InvalidTupleCentreIdException, InvalidLogicTupleException {
         String tcName = null;
         TupleCentreId tid = null;
         tid = new TupleCentreId(arg2);
@@ -1124,14 +1145,17 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      * @param tc
      *            the identifier of the target tuple centre
      * @throws InvalidTupleCentreIdException
-     * 			  if tc (tuple centre's id) is not a well-formed ground logic term
-     * @throws InvalidTupleArgumentException 
-     * 			  if is not possible to create a valid Prolog Term with the specified values for ev, g and r  
+     *             if tc (tuple centre's id) is not a well-formed ground logic
+     *             term
+     * @throws InvalidTupleArgumentException
+     *             if is not possible to create a valid Prolog Term with the
+     *             specified values for ev, g and r
      * @return <code>true</code> if the operation is successfull
      * 
      */
     public boolean no_s_4(final Term ev, final Term g, final Term r,
-            final Term tc) throws InvalidTupleCentreIdException, InvalidTupleArgumentException {
+            final Term tc) throws InvalidTupleCentreIdException,
+            InvalidTupleArgumentException {
         String tcName = null;
         TupleCentreId tid = null;
         tid = new TupleCentreId(tc);
@@ -1143,9 +1167,11 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
                     "reaction(" + ev.getTerm() + "," + g.getTerm() + ","
                             + r.getTerm() + ")", new LogicTupleOpManager());
         } catch (final InvalidTermException e) {
-	    	throw new InvalidTupleArgumentException("Cannot create a valid Prolog Term with ev: " + ev.getTerm() + ""
-	    			+ ", g: " + g.getTerm() + ", r: " + r.getTerm(), e);
-	    }
+            throw new InvalidTupleArgumentException(
+                    "Cannot create a valid Prolog Term with ev: "
+                            + ev.getTerm() + "" + ", g: " + g.getTerm()
+                            + ", r: " + r.getTerm(), e);
+        }
         if ("this".equals(tcName)) {
             Respect2PLibrary.log("Local no_s triggered...");
             final Term newArg = goal.copyGoal(v, 0);
@@ -1182,10 +1208,12 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      * @param arg1
      *            the identifier of the target tuple centre
      * @throws InvalidTupleCentreIdException
-     * 			  if arg1 (tuple centre's id) is not a well-formed ground logic term 
+     *             if arg1 (tuple centre's id) is not a well-formed ground logic
+     *             term
      * @return <code>true</code> if the operation is successfull
      */
-    public boolean nop_2(final Term arg0, final Term arg1) throws InvalidTupleCentreIdException {
+    public boolean nop_2(final Term arg0, final Term arg1)
+            throws InvalidTupleCentreIdException {
         String tcName = null;
         TupleCentreId tid = null;
         tid = new TupleCentreId(arg1);
@@ -1230,14 +1258,17 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      * @param tc
      *            the identifier of the target tuple centre
      * @throws InvalidTupleCentreIdException
-     * 			  if tc (tuple centre's id) is not a well-formed ground logic term 
-     * @throws InvalidTupleArgumentException 
-     * 			  if is not possible to create a valid Prolog Term with the specified values for ev, g and r  
+     *             if tc (tuple centre's id) is not a well-formed ground logic
+     *             term
+     * @throws InvalidTupleArgumentException
+     *             if is not possible to create a valid Prolog Term with the
+     *             specified values for ev, g and r
      * @return <code>true</code> if the operation is successfull
      * 
      */
     public boolean nop_s_4(final Term ev, final Term g, final Term r,
-            final Term tc) throws InvalidTupleCentreIdException, InvalidTupleArgumentException {
+            final Term tc) throws InvalidTupleCentreIdException,
+            InvalidTupleArgumentException {
         String tcName = null;
         TupleCentreId tid = null;
         tid = new TupleCentreId(tc);
@@ -1249,9 +1280,11 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
                     "reaction(" + ev.getTerm() + "," + g.getTerm() + ","
                             + r.getTerm() + ")", new LogicTupleOpManager());
         } catch (final InvalidTermException e) {
-	    	throw new InvalidTupleArgumentException("Cannot create a valid Prolog Term with ev: " + ev.getTerm() + ""
-	    			+ ", g: " + g.getTerm() + ", r: " + r.getTerm(), e);
-	    }
+            throw new InvalidTupleArgumentException(
+                    "Cannot create a valid Prolog Term with ev: "
+                            + ev.getTerm() + "" + ", g: " + g.getTerm()
+                            + ", r: " + r.getTerm(), e);
+        }
         if ("this".equals(tcName)) {
             Respect2PLibrary.log("Local nop_s triggered...");
             final Term newArg = goal.copyGoal(v, 0);
@@ -1303,10 +1336,12 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      * @param arg1
      *            the identifier of the target tuple centre
      * @throws InvalidTupleCentreIdException
-     * 			  if arg1 (tuple centre's id) is not a well-formed ground logic term 
+     *             if arg1 (tuple centre's id) is not a well-formed ground logic
+     *             term
      * @return <code>true</code> if the operation is successfull
      */
-    public boolean out_2(final Term arg0, final Term arg1) throws InvalidTupleCentreIdException {
+    public boolean out_2(final Term arg0, final Term arg1)
+            throws InvalidTupleCentreIdException {
         String tcName = null;
         TupleCentreId tid = null;
         tid = new TupleCentreId(arg1);
@@ -1363,10 +1398,12 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      * @param arg1
      *            the identifier of the target tuple centre
      * @throws InvalidTupleCentreIdException
-     * 			  if arg1 (tuple centre's id) is not a well-formed ground logic term 
+     *             if arg1 (tuple centre's id) is not a well-formed ground logic
+     *             term
      * @return <code>true</code> if the operation is successfull
      */
-    public boolean out_all_2(final Term arg0, final Term arg1) throws InvalidTupleCentreIdException {
+    public boolean out_all_2(final Term arg0, final Term arg1)
+            throws InvalidTupleCentreIdException {
         String tcName = null;
         TupleCentreId tid = null;
         tid = new TupleCentreId(arg1);
@@ -1409,14 +1446,17 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      * @param tc
      *            the identifier of the target tuple centre
      * @throws InvalidTupleCentreIdException
-     * 			  if tc (tuple centre's id) is not a well-formed ground logic term
-     * @throws InvalidTupleArgumentException 
-     * 			  if is not possible to create a valid Prolog Term with the specified values for ev, g and r  
+     *             if tc (tuple centre's id) is not a well-formed ground logic
+     *             term
+     * @throws InvalidTupleArgumentException
+     *             if is not possible to create a valid Prolog Term with the
+     *             specified values for ev, g and r
      * @return <code>true</code> if the operation is successfull
      * 
      */
     public boolean out_s_4(final Term ev, final Term g, final Term r,
-            final Term tc) throws InvalidTupleCentreIdException, InvalidTupleArgumentException {
+            final Term tc) throws InvalidTupleCentreIdException,
+            InvalidTupleArgumentException {
         String tcName = null;
         TupleCentreId tid = null;
         tid = new TupleCentreId(tc);
@@ -1428,9 +1468,11 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
                     "reaction(" + ev.getTerm() + "," + g.getTerm() + ","
                             + r.getTerm() + ")", new LogicTupleOpManager());
         } catch (final InvalidTermException e) {
-	    	throw new InvalidTupleArgumentException("Cannot create a valid Prolog Term with ev: " + ev.getTerm() + ""
-	    			+ ", g: " + g.getTerm() + ", r: " + r.getTerm(), e);
-	    }
+            throw new InvalidTupleArgumentException(
+                    "Cannot create a valid Prolog Term with ev: "
+                            + ev.getTerm() + "" + ", g: " + g.getTerm()
+                            + ", r: " + r.getTerm(), e);
+        }
         if ("this".equals(tcName)) {
             Respect2PLibrary.log("Local out_s triggered...");
             final Term newArg = goal.copyGoal(v, 0);
@@ -1479,10 +1521,12 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      * @param arg1
      *            the identifier of the target tuple centre
      * @throws InvalidTupleCentreIdException
-     * 			  if arg1 (tuple centre's id) is not a well-formed ground logic term
+     *             if arg1 (tuple centre's id) is not a well-formed ground logic
+     *             term
      * @return <code>true</code> if the operation is successfull
      */
-    public boolean rd_2(final Term arg0, final Term arg1) throws InvalidTupleCentreIdException {
+    public boolean rd_2(final Term arg0, final Term arg1)
+            throws InvalidTupleCentreIdException {
         String tcName = null;
         TupleCentreId tid = null;
         tid = new TupleCentreId(arg1);
@@ -1528,13 +1572,14 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      * @param arg2
      *            the identifier of the target tuple centre
      * @throws InvalidTupleCentreIdException
-     * 			  if arg2 (tuple centre's id) is not a well-formed ground logic term
+     *             if arg2 (tuple centre's id) is not a well-formed ground logic
+     *             term
      * @throws InvalidLogicTupleException
-     * 			  if the text does not represent a valid logic tuple
+     *             if the text does not represent a valid logic tuple
      * @return <code>true</code> if the operation is successfull
      */
-    public boolean rd_all_3(final Term arg0, final Term arg1, final Term arg2) 
-    		throws InvalidTupleCentreIdException, InvalidLogicTupleException {
+    public boolean rd_all_3(final Term arg0, final Term arg1, final Term arg2)
+            throws InvalidTupleCentreIdException, InvalidLogicTupleException {
         String tcName = null;
         TupleCentreId tid = null;
         tid = new TupleCentreId(arg2);
@@ -1577,14 +1622,17 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      * @param tc
      *            the identifier of the target tuple centre
      * @throws InvalidTupleCentreIdException
-     * 			  if tc (tuple centre's id) is not a well-formed ground logic term
-     * @throws InvalidTupleArgumentException 
-     * 			  if is not possible to create a valid Prolog Term with the specified values for ev, g and r  
+     *             if tc (tuple centre's id) is not a well-formed ground logic
+     *             term
+     * @throws InvalidTupleArgumentException
+     *             if is not possible to create a valid Prolog Term with the
+     *             specified values for ev, g and r
      * @return <code>true</code> if the operation is successfull
      * 
      */
     public boolean rd_s_4(final Term ev, final Term g, final Term r,
-            final Term tc) throws InvalidTupleCentreIdException, InvalidTupleArgumentException {
+            final Term tc) throws InvalidTupleCentreIdException,
+            InvalidTupleArgumentException {
         String tcName = null;
         TupleCentreId tid = null;
         tid = new TupleCentreId(tc);
@@ -1596,9 +1644,11 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
                     "reaction(" + ev.getTerm() + "," + g.getTerm() + ","
                             + r.getTerm() + ")", new LogicTupleOpManager());
         } catch (final InvalidTermException e) {
-	    	throw new InvalidTupleArgumentException("Cannot create a valid Prolog Term with ev: " + ev.getTerm() + ""
-	    			+ ", g: " + g.getTerm() + ", r: " + r.getTerm(), e);
-	    }
+            throw new InvalidTupleArgumentException(
+                    "Cannot create a valid Prolog Term with ev: "
+                            + ev.getTerm() + "" + ", g: " + g.getTerm()
+                            + ", r: " + r.getTerm(), e);
+        }
         if ("this".equals(tcName)) {
             Respect2PLibrary.log("Local rd_s triggered...");
             final Term newArg = goal.copyGoal(v, 0);
@@ -1637,10 +1687,12 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      * @param arg1
      *            the identifier of the target tuple centre
      * @throws InvalidTupleCentreIdException
-     * 			  if arg1 (tuple centre's id) is not a well-formed ground logic term
+     *             if arg1 (tuple centre's id) is not a well-formed ground logic
+     *             term
      * @return <code>true</code> if the operation is successfull
      */
-    public boolean rdp_2(final Term arg0, final Term arg1) throws InvalidTupleCentreIdException {
+    public boolean rdp_2(final Term arg0, final Term arg1)
+            throws InvalidTupleCentreIdException {
         String tcName = null;
         TupleCentreId tid = null;
         tid = new TupleCentreId(arg1);
@@ -1690,14 +1742,17 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      * @param tc
      *            the identifier of the target tuple centre
      * @throws InvalidTupleCentreIdException
-     * 			  if tc (tuple centre's id) is not a well-formed ground logic term
-     * @throws InvalidTupleArgumentException 
-     * 			  if is not possible to create a valid Prolog Term with the specified values for ev, g and r  
+     *             if tc (tuple centre's id) is not a well-formed ground logic
+     *             term
+     * @throws InvalidTupleArgumentException
+     *             if is not possible to create a valid Prolog Term with the
+     *             specified values for ev, g and r
      * @return <code>true</code> if the operation is successfull
      * 
      */
     public boolean rdp_s_4(final Term ev, final Term g, final Term r,
-            final Term tc)  throws InvalidTupleCentreIdException, InvalidTupleArgumentException {
+            final Term tc) throws InvalidTupleCentreIdException,
+            InvalidTupleArgumentException {
         String tcName = null;
         TupleCentreId tid = null;
         tid = new TupleCentreId(tc);
@@ -1709,9 +1764,11 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
                     "reaction(" + ev.getTerm() + "," + g.getTerm() + ","
                             + r.getTerm() + ")", new LogicTupleOpManager());
         } catch (final InvalidTermException e) {
-	    	throw new InvalidTupleArgumentException("Cannot create a valid Prolog Term with ev: " + ev.getTerm() + ""
-	    			+ ", g: " + g.getTerm() + ", r: " + r.getTerm(), e);
-	    }
+            throw new InvalidTupleArgumentException(
+                    "Cannot create a valid Prolog Term with ev: "
+                            + ev.getTerm() + "" + ", g: " + g.getTerm()
+                            + ", r: " + r.getTerm(), e);
+        }
         if ("this".equals(tcName)) {
             Respect2PLibrary.log("Local rdp_s triggered...");
             final Term newArg = goal.copyGoal(v, 0);
@@ -1787,14 +1844,18 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      * @param val
      *            the value modified
      * @throws OperationTimeOutException
-     *  		  if the notification operation expires timeout
-     * @throws UnreachableNodeException 
-     * 			  if the TuCSoN tuple centre target of the notification cannot be reached over the network
-     * @throws TucsonOperationNotPossibleException 
-     * 			  if the requested operation cannot be performed for some reason
+     *             if the notification operation expires timeout
+     * @throws UnreachableNodeException
+     *             if the TuCSoN tuple centre target of the notification cannot
+     *             be reached over the network
+     * @throws TucsonOperationNotPossibleException
+     *             if the requested operation cannot be performed for some
+     *             reason
      * @return <code>true</code> if the operation is successfull
      */
-    public boolean setEnv_3(final Term env, final Term key, final Term val) throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException  {
+    public boolean setEnv_3(final Term env, final Term key, final Term val)
+            throws TucsonOperationNotPossibleException,
+            UnreachableNodeException, OperationTimeOutException {
         // Get engine's copy of key and val
         final AbstractMap<Var, Var> v = new LinkedHashMap<Var, Var>();
         final AbstractMap<Var, Var> v1 = new LinkedHashMap<Var, Var>();
@@ -1829,10 +1890,12 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      * @param arg1
      *            the identifier of the target tuple centre
      * @throws InvalidTupleCentreIdException
-     * 			  if arg1 (tuple centre's id) is not a well-formed ground logic term
+     *             if arg1 (tuple centre's id) is not a well-formed ground logic
+     *             term
      * @return <code>true</code> if the operation is successfull
      */
-    public boolean spawn_2(final Term arg0, final Term arg1) throws InvalidTupleCentreIdException {
+    public boolean spawn_2(final Term arg0, final Term arg1)
+            throws InvalidTupleCentreIdException {
         String tcName = null;
         TupleCentreId tid = null;
         tid = new TupleCentreId(arg1);
@@ -2083,10 +2146,12 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      * @param arg1
      *            the identifier of the target tuple centre
      * @throws InvalidTupleCentreIdException
-     * 			  if arg1 (tuple centre's id) is not a well-formed ground logic term
+     *             if arg1 (tuple centre's id) is not a well-formed ground logic
+     *             term
      * @return <code>true</code> if the operation is successfull
      */
-    public boolean uin_2(final Term arg0, final Term arg1) throws InvalidTupleCentreIdException {
+    public boolean uin_2(final Term arg0, final Term arg1)
+            throws InvalidTupleCentreIdException {
         String tcName = null;
         TupleCentreId tid = null;
         tid = new TupleCentreId(arg1);
@@ -2129,10 +2194,12 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      * @param arg1
      *            the identifier of the target tuple centre
      * @throws InvalidTupleCentreIdException
-     * 			  if arg1 (tuple centre's id) is not a well-formed ground logic term           
+     *             if arg1 (tuple centre's id) is not a well-formed ground logic
+     *             term
      * @return <code>true</code> if the operation is successfull
      */
-    public boolean uinp_2(final Term arg0, final Term arg1) throws InvalidTupleCentreIdException {
+    public boolean uinp_2(final Term arg0, final Term arg1)
+            throws InvalidTupleCentreIdException {
         String tcName = null;
         TupleCentreId tid = null;
         tid = new TupleCentreId(arg1);
@@ -2175,10 +2242,12 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      * @param arg1
      *            the identifier of the target tuple centre
      * @throws InvalidTupleCentreIdException
-     * 			  if arg1 (tuple centre's id) is not a well-formed ground logic term            
+     *             if arg1 (tuple centre's id) is not a well-formed ground logic
+     *             term
      * @return <code>true</code> if the operation is successfull
      */
-    public boolean uno_2(final Term arg0, final Term arg1) throws InvalidTupleCentreIdException {
+    public boolean uno_2(final Term arg0, final Term arg1)
+            throws InvalidTupleCentreIdException {
         String tcName = null;
         TupleCentreId tid = null;
         tid = new TupleCentreId(arg1);
@@ -2221,10 +2290,12 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      * @param arg1
      *            the identifier of the target tuple centre
      * @throws InvalidTupleCentreIdException
-     * 			  if arg1 (tuple centre's id) is not a well-formed ground logic term            
+     *             if arg1 (tuple centre's id) is not a well-formed ground logic
+     *             term
      * @return <code>true</code> if the operation is successfull
      */
-    public boolean unop_2(final Term arg0, final Term arg1) throws InvalidTupleCentreIdException {
+    public boolean unop_2(final Term arg0, final Term arg1)
+            throws InvalidTupleCentreIdException {
         String tcName = null;
         TupleCentreId tid = null;
         tid = new TupleCentreId(arg1);
@@ -2267,10 +2338,12 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      * @param arg1
      *            the identifier of the target tuple centre
      * @throws InvalidTupleCentreIdException
-     * 			  if arg1 (tuple centre's id) is not a well-formed ground logic term           
+     *             if arg1 (tuple centre's id) is not a well-formed ground logic
+     *             term
      * @return <code>true</code> if the operation is successfull
      */
-    public boolean urd_2(final Term arg0, final Term arg1) throws InvalidTupleCentreIdException {
+    public boolean urd_2(final Term arg0, final Term arg1)
+            throws InvalidTupleCentreIdException {
         String tcName = null;
         TupleCentreId tid = null;
         tid = new TupleCentreId(arg1);
@@ -2313,10 +2386,12 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      * @param arg1
      *            the identifier of the target tuple centre
      * @throws InvalidTupleCentreIdException
-     * 			  if arg1 (tuple centre's id) is not a well-formed ground logic term           
+     *             if arg1 (tuple centre's id) is not a well-formed ground logic
+     *             term
      * @return <code>true</code> if the operation is successfull
      */
-    public boolean urdp_2(final Term arg0, final Term arg1) throws InvalidTupleCentreIdException {
+    public boolean urdp_2(final Term arg0, final Term arg1)
+            throws InvalidTupleCentreIdException {
         String tcName = null;
         TupleCentreId tid = null;
         tid = new TupleCentreId(arg1);

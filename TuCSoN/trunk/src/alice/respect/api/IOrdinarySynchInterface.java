@@ -1,7 +1,6 @@
 package alice.respect.api;
 
 import java.util.List;
-
 import alice.logictuple.LogicTuple;
 import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.respect.api.exceptions.OperationNotPossibleException;
@@ -56,8 +55,8 @@ public interface IOrdinarySynchInterface {
      * @throws OperationNotPossibleException
      *             if the operation requested cannot be carried out
      */
-    List<LogicTuple> inAll(IId aid, LogicTuple t) throws InvalidLogicTupleException,
-            OperationNotPossibleException;
+    List<LogicTuple> inAll(IId aid, LogicTuple t)
+            throws InvalidLogicTupleException, OperationNotPossibleException;
 
     /**
      * 
@@ -101,8 +100,8 @@ public interface IOrdinarySynchInterface {
      * @throws OperationNotPossibleException
      *             if the operation requested cannot be carried out
      */
-    List<LogicTuple> noAll(IId aid, LogicTuple t) throws InvalidLogicTupleException,
-            OperationNotPossibleException;
+    List<LogicTuple> noAll(IId aid, LogicTuple t)
+            throws InvalidLogicTupleException, OperationNotPossibleException;
 
     /**
      * 
@@ -175,8 +174,8 @@ public interface IOrdinarySynchInterface {
      * @throws OperationNotPossibleException
      *             if the operation requested cannot be carried out
      */
-    List<LogicTuple> rdAll(IId aid, LogicTuple t) throws InvalidLogicTupleException,
-            OperationNotPossibleException;
+    List<LogicTuple> rdAll(IId aid, LogicTuple t)
+            throws InvalidLogicTupleException, OperationNotPossibleException;
 
     /**
      * 

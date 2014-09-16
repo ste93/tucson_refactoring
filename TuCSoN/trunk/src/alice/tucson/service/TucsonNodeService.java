@@ -31,7 +31,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
-
 import alice.logictuple.LogicMatchingEngine;
 import alice.logictuple.LogicTuple;
 import alice.logictuple.TupleArgument;
@@ -90,24 +89,25 @@ public class TucsonNodeService {
         return TucsonMetaACC.getVersion();
     }
 
-    public static boolean isInstalled(final int timeout) throws DialogInitializationException, DialogCloseException {
+    public static boolean isInstalled(final int timeout)
+            throws DialogInitializationException, DialogCloseException {
         try {
-			return TucsonNodeService.isInstalled("localhost",
-			        TucsonNodeService.DEFAULT_TCP_PORT, timeout);
-		} catch (UnreachableNodeException e) {
-			e.printStackTrace();
-			return false;
-		}
+            return TucsonNodeService.isInstalled("localhost",
+                    TucsonNodeService.DEFAULT_TCP_PORT, timeout);
+        } catch (final UnreachableNodeException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     public static boolean isInstalled(final int port, final int timeout)
             throws DialogInitializationException, DialogCloseException {
         try {
-			return TucsonNodeService.isInstalled("localhost", port, timeout);
-		} catch (UnreachableNodeException e) {
-			e.printStackTrace();
-			return false;
-		}
+            return TucsonNodeService.isInstalled("localhost", port, timeout);
+        } catch (final UnreachableNodeException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     /**
@@ -121,47 +121,48 @@ public class TucsonNodeService {
      *            the maximum waiting time the caller agent can afford to wait
      *            for a response
      * @return whether a TuCSoN node is up & active on the given port
-     * @throws UnreachableNodeException 
-     * 			  if the given host is unknown
+     * @throws UnreachableNodeException
+     *             if the given host is unknown
      * @throws DialogInitializationException
-     * 			  if some network problems arise
+     *             if some network problems arise
      * @throws DialogCloseException
-     * 			  if some network problems arise
+     *             if some network problems arise
      */
     public static boolean isInstalled(final String netid, final int port,
-            final int timeout) throws UnreachableNodeException, DialogInitializationException, DialogCloseException {
+            final int timeout) throws UnreachableNodeException,
+            DialogInitializationException, DialogCloseException {
         Socket test = null;
         String reply = "";
         try {
             test = new Socket(netid, port);
         } catch (final java.net.ConnectException e) {
             reply = "";
-        } catch (UnknownHostException e) {
-        	throw new UnreachableNodeException("Host unknown", e);
-		} catch (IOException e) {
-			throw new DialogInitializationException(e);
-		}
+        } catch (final UnknownHostException e) {
+            throw new UnreachableNodeException("Host unknown", e);
+        } catch (final IOException e) {
+            throw new DialogInitializationException(e);
+        }
         if (test != null) {
-        	try {
-	            test.setReuseAddress(true);
-	            test.setSoTimeout(timeout);
-	            final ObjectInputStream ois = new ObjectInputStream(
-	                    new BufferedInputStream(test.getInputStream()));
-	            final ObjectOutputStream oos = new ObjectOutputStream(
-	                    new BufferedOutputStream(test.getOutputStream()));
-	            oos.writeInt(AbstractTucsonProtocol.NODE_ACTIVE_QUERY);
-	            oos.flush();            
+            try {
+                test.setReuseAddress(true);
+                test.setSoTimeout(timeout);
+                final ObjectInputStream ois = new ObjectInputStream(
+                        new BufferedInputStream(test.getInputStream()));
+                final ObjectOutputStream oos = new ObjectOutputStream(
+                        new BufferedOutputStream(test.getOutputStream()));
+                oos.writeInt(AbstractTucsonProtocol.NODE_ACTIVE_QUERY);
+                oos.flush();
                 reply = ois.readUTF();
             } catch (final java.net.SocketTimeoutException e) {
                 reply = "";
-            } catch (IOException e) {
-            	throw new DialogInitializationException(e);
-			} finally {
+            } catch (final IOException e) {
+                throw new DialogInitializationException(e);
+            } finally {
                 try {
-					test.close();
-				} catch (IOException e) {
-					throw new DialogCloseException(e);
-				}
+                    test.close();
+                } catch (final IOException e) {
+                    throw new DialogCloseException(e);
+                }
             }
         }
         return reply.equals(TucsonMetaACC.getVersion());
@@ -278,10 +279,10 @@ public class TucsonNodeService {
             this.idEnvTC = new TucsonTupleCentreId("'$ENV'", "localhost",
                     String.valueOf(this.tcpPort));
         } catch (final TucsonInvalidAgentIdException e) {
-        	//Cannot happen
+            // Cannot happen
             e.printStackTrace();
         } catch (final TucsonInvalidTupleCentreIdException e) {
-        	//Cannot happen
+            // Cannot happen
             e.printStackTrace();
         }
         this.observed = false;
@@ -406,10 +407,10 @@ public class TucsonNodeService {
             } catch (final TucsonInvalidLogicTupleException e) {
                 e.printStackTrace();
                 return false;
-            } catch (InvalidTupleArgumentException e) {
-				e.printStackTrace();
-				return false;
-			}
+            } catch (final InvalidTupleArgumentException e) {
+                e.printStackTrace();
+                return false;
+            }
             this.cores.remove(realName);
             return true;
         }
@@ -760,7 +761,7 @@ public class TucsonNodeService {
         try {
             this.envAgent = new EnvConfigAgent("localhost", this.tcpPort);
         } catch (final TucsonInvalidAgentIdException e) {
-        	// Cannot happen
+            // Cannot happen
             e.printStackTrace();
         }
     }
@@ -770,7 +771,7 @@ public class TucsonNodeService {
      * @param name
      * @return
      * @throws TucsonInvalidTupleCentreIdException
-     * @throws InvalidTupleCentreIdException 
+     * @throws InvalidTupleCentreIdException
      */
     private TucsonTCUsers bootTupleCentre(final String n)
             throws TucsonInvalidTupleCentreIdException {
@@ -781,7 +782,7 @@ public class TucsonNodeService {
         if (n.indexOf(':') < 0) {
             name.append(':').append(this.tcpPort);
         }
-    	final TucsonTupleCentreId id = new TucsonTupleCentreId(name.toString());
+        final TucsonTupleCentreId id = new TucsonTupleCentreId(name.toString());
         try {
             this.tcs.add(TupleCentreContainer.createTC(id,
                     TucsonNodeService.MAX_EVENT_QUEUE_SIZE, this.tcpPort));
@@ -970,10 +971,10 @@ public class TucsonNodeService {
         } catch (final IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-        } catch (TucsonInvalidTupleCentreIdException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+        } catch (final TucsonInvalidTupleCentreIdException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
     /**

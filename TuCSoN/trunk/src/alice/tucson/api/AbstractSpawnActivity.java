@@ -121,10 +121,11 @@ public abstract class AbstractSpawnActivity implements Serializable, Runnable {
      *            the tuple argument of the operation
      * @return the tuple result of the operation
      * @throws TucsonInvalidLogicTupleException
-     *            if the given tuple is not a valid representation of a tuple 
+     *             if the given tuple is not a valid representation of a tuple
      * @see alice.tucson.api.OrdinarySynchACC OrdinarySynchACC
      */
-    protected final LogicTuple in(final LogicTuple tuple) throws TucsonInvalidLogicTupleException {
+    protected final LogicTuple in(final LogicTuple tuple)
+            throws TucsonInvalidLogicTupleException {
         if (this.aid != null) {
             try {
                 return (LogicTuple) TupleCentreContainer.doBlockingOperation(
@@ -149,10 +150,11 @@ public abstract class AbstractSpawnActivity implements Serializable, Runnable {
      *            the tuple argument of the operation
      * @return the list of tuples result of the operation
      * @throws TucsonInvalidLogicTupleException
-     *            if the given tuple is not a valid representation of a tuple 
+     *             if the given tuple is not a valid representation of a tuple
      * @see alice.tucson.api.BulkSynchACC BulkSynchACC
      */
-    protected final List<LogicTuple> inAll(final LogicTuple tuple) throws TucsonInvalidLogicTupleException {
+    protected final List<LogicTuple> inAll(final LogicTuple tuple)
+            throws TucsonInvalidLogicTupleException {
         if (this.aid != null) {
             try {
                 return (List<LogicTuple>) TupleCentreContainer
@@ -178,10 +180,11 @@ public abstract class AbstractSpawnActivity implements Serializable, Runnable {
      *            the tuple argument of the operation
      * @return the tuple result of the operation
      * @throws TucsonInvalidLogicTupleException
-     *            if the given tuple is not a valid representation of a tuple 
+     *             if the given tuple is not a valid representation of a tuple
      * @see alice.tucson.api.OrdinarySynchACC OrdinarySynchACC
      */
-    protected final LogicTuple inp(final LogicTuple tuple) throws TucsonInvalidLogicTupleException {
+    protected final LogicTuple inp(final LogicTuple tuple)
+            throws TucsonInvalidLogicTupleException {
         if (this.aid != null) {
             try {
                 return (LogicTuple) TupleCentreContainer
@@ -223,10 +226,11 @@ public abstract class AbstractSpawnActivity implements Serializable, Runnable {
      *            the tuple argument of the operation
      * @return the tuple result of the operation
      * @throws TucsonInvalidLogicTupleException
-     *            if the given tuple is not a valid representation of a tuple 
+     *             if the given tuple is not a valid representation of a tuple
      * @see alice.tucson.api.OrdinarySynchACC OrdinarySynchACC
      */
-    protected final LogicTuple no(final LogicTuple tuple) throws TucsonInvalidLogicTupleException {
+    protected final LogicTuple no(final LogicTuple tuple)
+            throws TucsonInvalidLogicTupleException {
         if (this.aid != null) {
             try {
                 return (LogicTuple) TupleCentreContainer.doBlockingOperation(
@@ -251,10 +255,11 @@ public abstract class AbstractSpawnActivity implements Serializable, Runnable {
      *            the tuple argument of the operation
      * @return the list of tuples result of the operation
      * @throws TucsonInvalidLogicTupleException
-     *            if the given tuple is not a valid representation of a tuple 
+     *             if the given tuple is not a valid representation of a tuple
      * @see alice.tucson.api.BulkSynchACC BulkSynchACC
      */
-    protected final List<LogicTuple> noAll(final LogicTuple tuple) throws TucsonInvalidLogicTupleException {
+    protected final List<LogicTuple> noAll(final LogicTuple tuple)
+            throws TucsonInvalidLogicTupleException {
         if (this.aid != null) {
             try {
                 return (List<LogicTuple>) TupleCentreContainer
@@ -280,10 +285,11 @@ public abstract class AbstractSpawnActivity implements Serializable, Runnable {
      *            the tuple argument of the operation
      * @return the tuple result of the operation
      * @throws TucsonInvalidLogicTupleException
-     *            if the given tuple is not a valid representation of a tuple 
+     *             if the given tuple is not a valid representation of a tuple
      * @see alice.tucson.api.OrdinarySynchACC OrdinarySynchACC
      */
-    protected final LogicTuple nop(final LogicTuple tuple) throws TucsonInvalidLogicTupleException {
+    protected final LogicTuple nop(final LogicTuple tuple)
+            throws TucsonInvalidLogicTupleException {
         if (this.aid != null) {
             try {
                 return (LogicTuple) TupleCentreContainer
@@ -309,10 +315,11 @@ public abstract class AbstractSpawnActivity implements Serializable, Runnable {
      *            the tuple argument of the operation
      * @return the tuple result of the operation
      * @throws TucsonInvalidLogicTupleException
-     *            if the given tuple is not a valid representation of a tuple 
+     *             if the given tuple is not a valid representation of a tuple
      * @see alice.tucson.api.OrdinarySynchACC OrdinarySynchACC
      */
-    protected final LogicTuple out(final LogicTuple tuple) throws TucsonInvalidLogicTupleException {
+    protected final LogicTuple out(final LogicTuple tuple)
+            throws TucsonInvalidLogicTupleException {
         if (this.aid != null) {
             try {
                 return (LogicTuple) TupleCentreContainer
@@ -338,10 +345,11 @@ public abstract class AbstractSpawnActivity implements Serializable, Runnable {
      *            the tuple argument of the operation
      * @return the list of tuples result of the operation
      * @throws TucsonInvalidLogicTupleException
-     *            if the given tuple is not a valid representation of a tuple
+     *             if the given tuple is not a valid representation of a tuple
      * @see alice.tucson.api.BulkSynchACC BulkSynchACC
      */
-    protected final List<LogicTuple> outAll(final LogicTuple tuple) throws TucsonInvalidLogicTupleException {
+    protected final List<LogicTuple> outAll(final LogicTuple tuple)
+            throws TucsonInvalidLogicTupleException {
         if (this.aid != null) {
             try {
                 return (List<LogicTuple>) TupleCentreContainer
@@ -367,10 +375,11 @@ public abstract class AbstractSpawnActivity implements Serializable, Runnable {
      *            the tuple argument of the operation
      * @return the tuple result of the operation
      * @throws TucsonInvalidLogicTupleException
-     *            if the given tuple is not a valid representation of a tuple
+     *             if the given tuple is not a valid representation of a tuple
      * @see alice.tucson.api.OrdinarySynchACC OrdinarySynchACC
      */
-    protected final LogicTuple rd(final LogicTuple tuple) throws TucsonInvalidLogicTupleException {
+    protected final LogicTuple rd(final LogicTuple tuple)
+            throws TucsonInvalidLogicTupleException {
         if (this.aid != null) {
             try {
                 return (LogicTuple) TupleCentreContainer.doBlockingOperation(
@@ -395,10 +404,11 @@ public abstract class AbstractSpawnActivity implements Serializable, Runnable {
      *            the tuple argument of the operation
      * @return the list of tuples result of the operation
      * @throws TucsonInvalidLogicTupleException
-     *            if the given tuple is not a valid representation of a tuple
+     *             if the given tuple is not a valid representation of a tuple
      * @see alice.tucson.api.BulkSynchACC BulkSynchACC
      */
-    protected final List<LogicTuple> rdAll(final LogicTuple tuple) throws TucsonInvalidLogicTupleException {
+    protected final List<LogicTuple> rdAll(final LogicTuple tuple)
+            throws TucsonInvalidLogicTupleException {
         if (this.aid != null) {
             try {
                 return (List<LogicTuple>) TupleCentreContainer
@@ -424,10 +434,11 @@ public abstract class AbstractSpawnActivity implements Serializable, Runnable {
      *            the tuple argument of the operation
      * @return the tuple result of the operation
      * @throws TucsonInvalidLogicTupleException
-     *            if the given tuple is not a valid representation of a tuple
+     *             if the given tuple is not a valid representation of a tuple
      * @see alice.tucson.api.OrdinarySynchACC OrdinarySynchACC
      */
-    protected final LogicTuple rdp(final LogicTuple tuple) throws TucsonInvalidLogicTupleException {
+    protected final LogicTuple rdp(final LogicTuple tuple)
+            throws TucsonInvalidLogicTupleException {
         if (this.aid != null) {
             try {
                 return (LogicTuple) TupleCentreContainer
@@ -453,10 +464,11 @@ public abstract class AbstractSpawnActivity implements Serializable, Runnable {
      *            the tuple argument of the operation
      * @return the tuple result of the operation
      * @throws TucsonInvalidLogicTupleException
-     *            if the given tuple is not a valid representation of a tuple
+     *             if the given tuple is not a valid representation of a tuple
      * @see alice.tucson.api.UniformSynchACC UniformSynchACC
      */
-    protected final LogicTuple uin(final LogicTuple tuple) throws TucsonInvalidLogicTupleException {
+    protected final LogicTuple uin(final LogicTuple tuple)
+            throws TucsonInvalidLogicTupleException {
         if (this.aid != null) {
             try {
                 return (LogicTuple) TupleCentreContainer
@@ -482,10 +494,11 @@ public abstract class AbstractSpawnActivity implements Serializable, Runnable {
      *            the tuple argument of the operation
      * @return the tuple result of the operation
      * @throws TucsonInvalidLogicTupleException
-     *            if the given tuple is not a valid representation of a tuple
+     *             if the given tuple is not a valid representation of a tuple
      * @see alice.tucson.api.UniformSynchACC UniformSynchACC
      */
-    protected final LogicTuple uinp(final LogicTuple tuple) throws TucsonInvalidLogicTupleException {
+    protected final LogicTuple uinp(final LogicTuple tuple)
+            throws TucsonInvalidLogicTupleException {
         if (this.aid != null) {
             try {
                 return (LogicTuple) TupleCentreContainer.doBlockingOperation(
@@ -511,10 +524,11 @@ public abstract class AbstractSpawnActivity implements Serializable, Runnable {
      *            the tuple argument of the operation
      * @return the tuple result of the operation
      * @throws TucsonInvalidLogicTupleException
-     *            if the given tuple is not a valid representation of a tuple
+     *             if the given tuple is not a valid representation of a tuple
      * @see alice.tucson.api.UniformSynchACC UniformSynchACC
      */
-    protected final LogicTuple uno(final LogicTuple tuple) throws TucsonInvalidLogicTupleException {
+    protected final LogicTuple uno(final LogicTuple tuple)
+            throws TucsonInvalidLogicTupleException {
         if (this.aid != null) {
             try {
                 return (LogicTuple) TupleCentreContainer
@@ -540,10 +554,11 @@ public abstract class AbstractSpawnActivity implements Serializable, Runnable {
      *            the tuple argument of the operation
      * @return the tuple result of the operation
      * @throws TucsonInvalidLogicTupleException
-     *            if the given tuple is not a valid representation of a tuple
+     *             if the given tuple is not a valid representation of a tuple
      * @see alice.tucson.api.UniformSynchACC UniformSynchACC
      */
-    protected final LogicTuple unop(final LogicTuple tuple) throws TucsonInvalidLogicTupleException {
+    protected final LogicTuple unop(final LogicTuple tuple)
+            throws TucsonInvalidLogicTupleException {
         if (this.aid != null) {
             try {
                 return (LogicTuple) TupleCentreContainer.doBlockingOperation(
@@ -569,10 +584,11 @@ public abstract class AbstractSpawnActivity implements Serializable, Runnable {
      *            the tuple argument of the operation
      * @return the tuple result of the operation
      * @throws TucsonInvalidLogicTupleException
-     *            if the given tuple is not a valid representation of a tuple
+     *             if the given tuple is not a valid representation of a tuple
      * @see alice.tucson.api.UniformSynchACC UniformSynchACC
      */
-    protected final LogicTuple urd(final LogicTuple tuple) throws TucsonInvalidLogicTupleException {
+    protected final LogicTuple urd(final LogicTuple tuple)
+            throws TucsonInvalidLogicTupleException {
         if (this.aid != null) {
             try {
                 return (LogicTuple) TupleCentreContainer
@@ -598,10 +614,11 @@ public abstract class AbstractSpawnActivity implements Serializable, Runnable {
      *            the tuple argument of the operation
      * @return the tuple result of the operation
      * @throws TucsonInvalidLogicTupleException
-     *            if the given tuple is not a valid representation of a tuple
+     *             if the given tuple is not a valid representation of a tuple
      * @see alice.tucson.api.UniformSynchACC UniformSynchACC
      */
-    protected final LogicTuple urdp(final LogicTuple tuple) throws TucsonInvalidLogicTupleException {
+    protected final LogicTuple urdp(final LogicTuple tuple)
+            throws TucsonInvalidLogicTupleException {
         if (this.aid != null) {
             try {
                 return (LogicTuple) TupleCentreContainer.doBlockingOperation(

@@ -114,9 +114,9 @@ public final class HelloWorld {
              * Operation timeout expired.
              */
             e.printStackTrace();
-        } catch (InvalidVarNameException e) {
-			e.printStackTrace();
-		}
+        } catch (final InvalidVarNameException e) {
+            e.printStackTrace();
+        }
     }
 
     private HelloWorld() {

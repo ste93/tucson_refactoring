@@ -34,8 +34,8 @@ public class OrdinaryAsynchInterface extends RootInterface implements
 
     @Override
     public IRespectOperation in(final IId id, final LogicTuple t,
-            final OperationCompletionListener l) throws InvalidLogicTupleException,
-            OperationNotPossibleException {
+            final OperationCompletionListener l)
+            throws InvalidLogicTupleException, OperationNotPossibleException {
         if (t == null) {
             throw new InvalidLogicTupleException("Null value");
         }
@@ -44,8 +44,8 @@ public class OrdinaryAsynchInterface extends RootInterface implements
 
     @Override
     public IRespectOperation inAll(final IId aid, final LogicTuple t,
-            final OperationCompletionListener l) throws InvalidLogicTupleException,
-            OperationNotPossibleException {
+            final OperationCompletionListener l)
+            throws InvalidLogicTupleException, OperationNotPossibleException {
         IRespectOperation op = null;
         if (t == null) {
             throw new InvalidLogicTupleException("Null value");
@@ -59,8 +59,8 @@ public class OrdinaryAsynchInterface extends RootInterface implements
 
     @Override
     public IRespectOperation inp(final IId id, final LogicTuple t,
-            final OperationCompletionListener l) throws InvalidLogicTupleException,
-            OperationNotPossibleException {
+            final OperationCompletionListener l)
+            throws InvalidLogicTupleException, OperationNotPossibleException {
         if (t == null) {
             throw new InvalidLogicTupleException("Null value");
         }
@@ -69,8 +69,8 @@ public class OrdinaryAsynchInterface extends RootInterface implements
 
     @Override
     public IRespectOperation no(final IId id, final LogicTuple t,
-            final OperationCompletionListener l) throws InvalidLogicTupleException,
-            OperationNotPossibleException {
+            final OperationCompletionListener l)
+            throws InvalidLogicTupleException, OperationNotPossibleException {
         if (t == null) {
             throw new InvalidLogicTupleException("Null value");
         }
@@ -79,23 +79,23 @@ public class OrdinaryAsynchInterface extends RootInterface implements
 
     @Override
     public IRespectOperation noAll(final IId aid, final LogicTuple t,
-            final OperationCompletionListener l) throws InvalidLogicTupleException,
-            OperationNotPossibleException {
+            final OperationCompletionListener l)
+            throws InvalidLogicTupleException, OperationNotPossibleException {
         IRespectOperation op = null;
         if (t == null) {
             throw new InvalidLogicTupleException("Null value");
         } else if (",".equals(t.getName()) && t.getArity() == 2) {
             op = this.getCore().noAll(aid, new LogicTuple(t.getArg(0)), l);
         } else {
-        	op = this.getCore().noAll(aid, t, l);
+            op = this.getCore().noAll(aid, t, l);
         }
         return op;
     }
 
     @Override
     public IRespectOperation nop(final IId id, final LogicTuple t,
-            final OperationCompletionListener l) throws InvalidLogicTupleException,
-            OperationNotPossibleException {
+            final OperationCompletionListener l)
+            throws InvalidLogicTupleException, OperationNotPossibleException {
         if (t == null) {
             throw new InvalidLogicTupleException("Null value");
         }
@@ -104,8 +104,8 @@ public class OrdinaryAsynchInterface extends RootInterface implements
 
     @Override
     public IRespectOperation out(final IId id, final LogicTuple t,
-            final OperationCompletionListener l) throws InvalidLogicTupleException,
-            OperationNotPossibleException {
+            final OperationCompletionListener l)
+            throws InvalidLogicTupleException, OperationNotPossibleException {
         if (t == null) {
             throw new InvalidLogicTupleException("Null value");
         }
@@ -114,8 +114,8 @@ public class OrdinaryAsynchInterface extends RootInterface implements
 
     @Override
     public IRespectOperation outAll(final IId id, final LogicTuple t,
-            final OperationCompletionListener l) throws InvalidLogicTupleException,
-            OperationNotPossibleException {
+            final OperationCompletionListener l)
+            throws InvalidLogicTupleException, OperationNotPossibleException {
         if (t == null) {
             throw new InvalidLogicTupleException("Null value");
         }
@@ -124,8 +124,8 @@ public class OrdinaryAsynchInterface extends RootInterface implements
 
     @Override
     public IRespectOperation rd(final IId id, final LogicTuple t,
-            final OperationCompletionListener l) throws InvalidLogicTupleException,
-            OperationNotPossibleException {
+            final OperationCompletionListener l)
+            throws InvalidLogicTupleException, OperationNotPossibleException {
         if (t == null) {
             throw new InvalidLogicTupleException("Null value");
         }
@@ -134,8 +134,8 @@ public class OrdinaryAsynchInterface extends RootInterface implements
 
     @Override
     public IRespectOperation rdAll(final IId aid, final LogicTuple t,
-            final OperationCompletionListener l) throws InvalidLogicTupleException,
-            OperationNotPossibleException {
+            final OperationCompletionListener l)
+            throws InvalidLogicTupleException, OperationNotPossibleException {
         IRespectOperation op = null;
         if (t == null) {
             throw new InvalidLogicTupleException("Null value");
@@ -149,8 +149,8 @@ public class OrdinaryAsynchInterface extends RootInterface implements
 
     @Override
     public IRespectOperation rdp(final IId id, final LogicTuple t,
-            final OperationCompletionListener l) throws InvalidLogicTupleException,
-            OperationNotPossibleException {
+            final OperationCompletionListener l)
+            throws InvalidLogicTupleException, OperationNotPossibleException {
         if (t == null) {
             throw new InvalidLogicTupleException("Null value");
         }
@@ -159,8 +159,8 @@ public class OrdinaryAsynchInterface extends RootInterface implements
 
     @Override
     public IRespectOperation set(final IId aid, final LogicTuple t,
-            final OperationCompletionListener l) throws InvalidLogicTupleException,
-            OperationNotPossibleException {
+            final OperationCompletionListener l)
+            throws InvalidLogicTupleException, OperationNotPossibleException {
         if (t == null) {
             throw new InvalidLogicTupleException("Null value");
         }
@@ -169,8 +169,8 @@ public class OrdinaryAsynchInterface extends RootInterface implements
 
     @Override
     public IRespectOperation spawn(final IId aid, final LogicTuple t,
-            final OperationCompletionListener l) throws InvalidLogicTupleException,
-            OperationNotPossibleException {
+            final OperationCompletionListener l)
+            throws InvalidLogicTupleException, OperationNotPossibleException {
         if (t == null) {
             throw new InvalidLogicTupleException("Null value");
         }
@@ -179,8 +179,8 @@ public class OrdinaryAsynchInterface extends RootInterface implements
 
     @Override
     public IRespectOperation uin(final IId aid, final LogicTuple t,
-            final OperationCompletionListener l) throws InvalidLogicTupleException,
-            OperationNotPossibleException {
+            final OperationCompletionListener l)
+            throws InvalidLogicTupleException, OperationNotPossibleException {
         if (t == null) {
             throw new InvalidLogicTupleException("Null value");
         }
@@ -189,8 +189,8 @@ public class OrdinaryAsynchInterface extends RootInterface implements
 
     @Override
     public IRespectOperation uinp(final IId aid, final LogicTuple t,
-            final OperationCompletionListener l) throws InvalidLogicTupleException,
-            OperationNotPossibleException {
+            final OperationCompletionListener l)
+            throws InvalidLogicTupleException, OperationNotPossibleException {
         if (t == null) {
             throw new InvalidLogicTupleException("Null value");
         }
@@ -199,8 +199,8 @@ public class OrdinaryAsynchInterface extends RootInterface implements
 
     @Override
     public IRespectOperation uno(final IId id, final LogicTuple t,
-            final OperationCompletionListener l) throws InvalidLogicTupleException,
-            OperationNotPossibleException {
+            final OperationCompletionListener l)
+            throws InvalidLogicTupleException, OperationNotPossibleException {
         if (t == null) {
             throw new InvalidLogicTupleException("Null value");
         }
@@ -209,8 +209,8 @@ public class OrdinaryAsynchInterface extends RootInterface implements
 
     @Override
     public IRespectOperation unop(final IId id, final LogicTuple t,
-            final OperationCompletionListener l) throws InvalidLogicTupleException,
-            OperationNotPossibleException {
+            final OperationCompletionListener l)
+            throws InvalidLogicTupleException, OperationNotPossibleException {
         if (t == null) {
             throw new InvalidLogicTupleException("Null value");
         }
@@ -219,8 +219,8 @@ public class OrdinaryAsynchInterface extends RootInterface implements
 
     @Override
     public IRespectOperation urd(final IId aid, final LogicTuple t,
-            final OperationCompletionListener l) throws InvalidLogicTupleException,
-            OperationNotPossibleException {
+            final OperationCompletionListener l)
+            throws InvalidLogicTupleException, OperationNotPossibleException {
         if (t == null) {
             throw new InvalidLogicTupleException("Null value");
         }
@@ -229,8 +229,8 @@ public class OrdinaryAsynchInterface extends RootInterface implements
 
     @Override
     public IRespectOperation urdp(final IId aid, final LogicTuple t,
-            final OperationCompletionListener l) throws InvalidLogicTupleException,
-            OperationNotPossibleException {
+            final OperationCompletionListener l)
+            throws InvalidLogicTupleException, OperationNotPossibleException {
         if (t == null) {
             throw new InvalidLogicTupleException("Null value");
         }

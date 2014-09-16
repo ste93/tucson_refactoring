@@ -4,7 +4,6 @@ import java.util.AbstractMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
-
 import alice.logictuple.LogicTuple;
 import alice.respect.core.collection.DoubleKeyMVMap;
 import alice.respect.core.collection.MVMap;
@@ -81,11 +80,11 @@ public abstract class AbstractTupleSet implements ITupleSet {
 
     @Override
     public void add(final LogicTuple t) {
-            final LTEntry e = this.createEntry(t);
-            this.tuples.put(e.getKey1(), e.getKey2(), e.getValue());
-            if (this.transaction) {
-                this.tAdded.add(e);
-            }
+        final LTEntry e = this.createEntry(t);
+        this.tuples.put(e.getKey1(), e.getKey2(), e.getValue());
+        if (this.transaction) {
+            this.tAdded.add(e);
+        }
     }
 
     @Override

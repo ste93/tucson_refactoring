@@ -16,7 +16,6 @@ package alice.tucson.service;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
 import alice.logictuple.LogicTuple;
 import alice.logictuple.LogicTupleOpManager;
 import alice.logictuple.Value;
@@ -196,12 +195,12 @@ public class ACCProxyAgentSide implements EnhancedACC {
             throws TucsonOperationNotPossibleException,
             UnreachableNodeException, OperationTimeOutException {
         LogicTuple spec = null;
-		try {
-			spec = new LogicTuple("spec", new Var("S"));
-		} catch (InvalidVarNameException e) {
-			//Cannot happen, the var name it's specified here
-			e.printStackTrace();
-		}
+        try {
+            spec = new LogicTuple("spec", new Var("S"));
+        } catch (final InvalidVarNameException e) {
+            // Cannot happen, the var name it's specified here
+            e.printStackTrace();
+        }
         return this.executor.doBlockingOperation(this.aid,
                 TucsonOperation.getSCode(), tid, spec, timeout);
     }

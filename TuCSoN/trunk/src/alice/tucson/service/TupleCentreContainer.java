@@ -1,7 +1,6 @@
 package alice.tucson.service;
 
 import java.util.HashMap;
-
 import alice.logictuple.LogicTuple;
 import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.respect.api.IEnvironmentContext;
@@ -468,8 +467,8 @@ public final class TupleCentreContainer {
             final int type, final TucsonTupleCentreId aid,
             final TucsonTupleCentreId tid, final LogicTuple t,
             final OperationCompletionListener l)
-            throws TucsonOperationNotPossibleException, UnreachableNodeException,
-            OperationTimeOutException {
+            throws TucsonOperationNotPossibleException,
+            UnreachableNodeException, OperationTimeOutException {
         IEnvironmentContext context = null;
         RespectOperation op = null;
         context = RespectTCContainer.getRespectTCContainer()
@@ -861,9 +860,9 @@ public final class TupleCentreContainer {
         } catch (final OperationNotPossibleException e) {
             throw new TucsonOperationNotPossibleException();
         } catch (final InvalidSpecificationException e) {
-        	// Caused by the String version of a LogicTuple
-        	throw new TucsonInvalidLogicTupleException();
-		}
+            // Caused by the String version of a LogicTuple
+            throw new TucsonInvalidLogicTupleException();
+        }
         return res;
     }
 
@@ -929,10 +928,10 @@ public final class TupleCentreContainer {
             throw new TucsonInvalidLogicTupleException();
         } catch (final OperationNotPossibleException e) {
             throw new TucsonOperationNotPossibleException();
-        } catch (InvalidSpecificationException e) {
-        	// Caused by the String version of a LogicTuple
-        	throw new TucsonInvalidLogicTupleException();
-		}
+        } catch (final InvalidSpecificationException e) {
+            // Caused by the String version of a LogicTuple
+            throw new TucsonInvalidLogicTupleException();
+        }
         return res;
     }
 

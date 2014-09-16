@@ -76,6 +76,7 @@ public interface TransducerStandardInterface {
      * @throws OperationTimeOutException
      *             if the notification operation expires timeout
      */
-    boolean notifyOutput(InternalEvent ev) throws TucsonOperationNotPossibleException,
-    		UnreachableNodeException, OperationTimeOutException;
+    boolean notifyOutput(InternalEvent ev)
+            throws TucsonOperationNotPossibleException,
+            UnreachableNodeException, OperationTimeOutException;
 }

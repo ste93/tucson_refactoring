@@ -1,10 +1,10 @@
 package alice.respect.api;
 
 import alice.logictuple.LogicTuple;
+import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.respect.api.exceptions.InvalidSpecificationException;
 import alice.respect.api.exceptions.OperationNotPossibleException;
 import alice.tuplecentre.api.IId;
-import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.tuplecentre.core.OperationCompletionListener;
 
 /**
@@ -166,6 +166,6 @@ public interface ISpecificationAsynchInterface {
      *             if the operation requested cannot be carried out
      */
     IRespectOperation setS(IId aid, RespectSpecification spec,
-            OperationCompletionListener l) throws InvalidSpecificationException,
-            OperationNotPossibleException;
+            OperationCompletionListener l)
+            throws InvalidSpecificationException, OperationNotPossibleException;
 }

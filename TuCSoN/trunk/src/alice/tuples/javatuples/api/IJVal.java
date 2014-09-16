@@ -3,7 +3,6 @@
  */
 package alice.tuples.javatuples.api;
 
-
 /**
  * @author ste (mailto: s.mariani@unibo.it) on 21/feb/2014
  * 
@@ -42,7 +41,7 @@ public interface IJVal extends IJArg {
     /**
      * 
      * @return the double value of the JVal
-     *
+     * 
      */
     double toDouble();
 

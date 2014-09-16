@@ -94,8 +94,7 @@ public class RespectReactionParser {
             if (this.flag) {
                 this.nTimes++;
                 if (this.nTimes == 1) {
-                    this.spec = this.spec.substring(0,
-                            this.spec.length() - 1);
+                    this.spec = this.spec.substring(0, this.spec.length() - 1);
                     this.spec += ")).";
                 }
             }
@@ -120,8 +119,7 @@ public class RespectReactionParser {
                 if (this.nGuards > 0) {
                     this.nGuards = 0;
                     this.flag = true;
-                    this.spec = this.spec.substring(0,
-                            this.spec.length() - 1);
+                    this.spec = this.spec.substring(0, this.spec.length() - 1);
                     this.spec += "),(" + arg + ",";
                 } else {
                     this.spec += arg + ",";

@@ -13,7 +13,6 @@
 package alice.respect.core;
 
 import java.util.List;
-
 import alice.logictuple.LogicTuple;
 import alice.logictuple.TupleArgument;
 import alice.logictuple.exceptions.InvalidLogicTupleException;
@@ -90,9 +89,8 @@ public class TimedContext extends RootInterface implements ITimedContext {
         }
         if (",".equals(t.getName()) && t.getArity() == 2) {
             arg = t.getArg(1);
-            return this.unify(new LogicTuple(
-                    new TupleArgument(arg.toTerm())), op
-                    .getLogicTupleResult());
+            return this.unify(new LogicTuple(new TupleArgument(arg.toTerm())),
+                    op.getLogicTupleResult());
         }
         return op.getLogicTupleResult();
     }
@@ -149,9 +147,8 @@ public class TimedContext extends RootInterface implements ITimedContext {
         }
         if (",".equals(t.getName()) && t.getArity() == 2) {
             arg = t.getArg(1);
-            return this.unify(new LogicTuple(
-                    new TupleArgument(arg.toTerm())), op
-                    .getLogicTupleResult());
+            return this.unify(new LogicTuple(new TupleArgument(arg.toTerm())),
+                    op.getLogicTupleResult());
         }
         return op.getLogicTupleResult();
     }
@@ -238,9 +235,8 @@ public class TimedContext extends RootInterface implements ITimedContext {
         }
         if (",".equals(t.getName()) && t.getArity() == 2) {
             arg = t.getArg(1);
-            return this.unify(new LogicTuple(
-                    new TupleArgument(arg.toTerm())), op
-                    .getLogicTupleResult());
+            return this.unify(new LogicTuple(new TupleArgument(arg.toTerm())),
+                    op.getLogicTupleResult());
         }
         return op.getLogicTupleResult();
     }
@@ -262,10 +258,10 @@ public class TimedContext extends RootInterface implements ITimedContext {
     }
 
     @Override
-    public List<LogicTuple> set(final IId aid, final LogicTuple t,
-            final long ms) throws OperationNotPossibleException,
-            InvalidLogicTupleException, OperationTimeOutException {
-    	if (t == null) {
+    public List<LogicTuple> set(final IId aid, final LogicTuple t, final long ms)
+            throws OperationNotPossibleException, InvalidLogicTupleException,
+            OperationTimeOutException {
+        if (t == null) {
             throw new InvalidLogicTupleException("Null value");
         }
         final IRespectOperation op = this.getCore().set(aid, t);

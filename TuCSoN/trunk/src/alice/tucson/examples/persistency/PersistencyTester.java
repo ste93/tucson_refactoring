@@ -40,9 +40,9 @@ public final class PersistencyTester {
                 }
             } catch (final InterruptedException e) {
                 e.printStackTrace();
-            } catch (DialogInitializationException e) {
+            } catch (final DialogInitializationException e) {
                 e.printStackTrace();
-            } catch (DialogCloseException e) {
+            } catch (final DialogCloseException e) {
                 e.printStackTrace();
             }
             final TucsonTupleCentreId ttcid = new TucsonTupleCentreId(

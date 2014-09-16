@@ -1,7 +1,6 @@
 package alice.tucson.examples.spawnedWorkers;
 
 import java.math.BigInteger;
-
 import alice.logictuple.LogicTuple;
 import alice.logictuple.TupleArgument;
 import alice.logictuple.exceptions.InvalidLogicTupleException;
@@ -55,10 +54,10 @@ public class SpawnedWorkingActivity extends AbstractSpawnActivity {
         } catch (final InvalidOperationException e) {
             this.log("ERROR: No tuple arguments to retrieve!");
             e.printStackTrace();
-        } catch (TucsonInvalidLogicTupleException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+        } catch (final TucsonInvalidLogicTupleException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
     private BigInteger computeFactorial(final TupleArgument varValue) {

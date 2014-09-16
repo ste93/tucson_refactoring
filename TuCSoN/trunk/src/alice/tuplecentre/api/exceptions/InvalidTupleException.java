@@ -23,11 +23,11 @@ package alice.tuplecentre.api.exceptions;
 public class InvalidTupleException extends Exception {
     private static final long serialVersionUID = -3585492012733336883L;
 
-	public InvalidTupleException() {
-		super();
-	}
+    public InvalidTupleException() {
+        super();
+    }
 
-	public InvalidTupleException(final String arg0) {
-		super(arg0);
-	}
+    public InvalidTupleException(final String arg0) {
+        super(arg0);
+    }
 }

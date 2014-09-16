@@ -2,10 +2,10 @@ package alice.respect.api;
 
 import java.util.List;
 import alice.logictuple.LogicTuple;
+import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.respect.api.exceptions.OperationNotPossibleException;
 import alice.respect.api.exceptions.OperationTimeOutException;
 import alice.tuplecentre.api.IId;
-import alice.logictuple.exceptions.InvalidLogicTupleException;
 
 /**
  * Interface to a ReSpecT Tuple Centre with timing functionalities.
@@ -45,8 +45,9 @@ public interface ITimedContext {
      * @throws OperationTimeOutException
      *             if the given timeout expired prior to operation completion
      */
-    LogicTuple in(IId id, LogicTuple t, long ms) throws InvalidLogicTupleException,
-            OperationNotPossibleException, OperationTimeOutException;
+    LogicTuple in(IId id, LogicTuple t, long ms)
+            throws InvalidLogicTupleException, OperationNotPossibleException,
+            OperationTimeOutException;
 
     /**
      * 
@@ -84,8 +85,9 @@ public interface ITimedContext {
      * @throws OperationTimeOutException
      *             if the given timeout expired prior to operation completion
      */
-    LogicTuple inp(IId id, LogicTuple t, long ms) throws InvalidLogicTupleException,
-            OperationNotPossibleException, OperationTimeOutException;
+    LogicTuple inp(IId id, LogicTuple t, long ms)
+            throws InvalidLogicTupleException, OperationNotPossibleException,
+            OperationTimeOutException;
 
     /**
      * 
@@ -103,8 +105,9 @@ public interface ITimedContext {
      * @throws OperationTimeOutException
      *             if the given timeout expired prior to operation completion
      */
-    LogicTuple no(IId id, LogicTuple t, long ms) throws InvalidLogicTupleException,
-            OperationNotPossibleException, OperationTimeOutException;
+    LogicTuple no(IId id, LogicTuple t, long ms)
+            throws InvalidLogicTupleException, OperationNotPossibleException,
+            OperationTimeOutException;
 
     /**
      * 
@@ -142,8 +145,9 @@ public interface ITimedContext {
      * @throws OperationTimeOutException
      *             if the given timeout expired prior to operation completion
      */
-    LogicTuple nop(IId id, LogicTuple t, long ms) throws InvalidLogicTupleException,
-            OperationNotPossibleException, OperationTimeOutException;
+    LogicTuple nop(IId id, LogicTuple t, long ms)
+            throws InvalidLogicTupleException, OperationNotPossibleException,
+            OperationTimeOutException;
 
     /**
      * 
@@ -178,8 +182,9 @@ public interface ITimedContext {
      * @throws OperationTimeOutException
      *             if the given timeout expired prior to operation completion
      */
-    void outAll(IId id, LogicTuple t, long ms) throws InvalidLogicTupleException,
-            OperationNotPossibleException, OperationTimeOutException;
+    void outAll(IId id, LogicTuple t, long ms)
+            throws InvalidLogicTupleException, OperationNotPossibleException,
+            OperationTimeOutException;
 
     /**
      * 
@@ -197,8 +202,9 @@ public interface ITimedContext {
      * @throws OperationTimeOutException
      *             if the given timeout expired prior to operation completion
      */
-    LogicTuple rd(IId id, LogicTuple t, long ms) throws InvalidLogicTupleException,
-            OperationNotPossibleException, OperationTimeOutException;
+    LogicTuple rd(IId id, LogicTuple t, long ms)
+            throws InvalidLogicTupleException, OperationNotPossibleException,
+            OperationTimeOutException;
 
     /**
      * 
@@ -236,8 +242,9 @@ public interface ITimedContext {
      * @throws OperationTimeOutException
      *             if the given timeout expired prior to operation completion
      */
-    LogicTuple rdp(IId id, LogicTuple t, long ms) throws InvalidLogicTupleException,
-            OperationNotPossibleException, OperationTimeOutException;
+    LogicTuple rdp(IId id, LogicTuple t, long ms)
+            throws InvalidLogicTupleException, OperationNotPossibleException,
+            OperationTimeOutException;
 
     /**
      * 
@@ -295,8 +302,9 @@ public interface ITimedContext {
      * @throws OperationTimeOutException
      *             if the given timeout expired prior to operation completion
      */
-    LogicTuple uin(IId id, LogicTuple t, long ms) throws InvalidLogicTupleException,
-            OperationNotPossibleException, OperationTimeOutException;
+    LogicTuple uin(IId id, LogicTuple t, long ms)
+            throws InvalidLogicTupleException, OperationNotPossibleException,
+            OperationTimeOutException;
 
     /**
      * 
@@ -334,8 +342,9 @@ public interface ITimedContext {
      * @throws OperationTimeOutException
      *             if the given timeout expired prior to operation completion
      */
-    LogicTuple uno(IId id, LogicTuple t, long ms) throws InvalidLogicTupleException,
-            OperationNotPossibleException, OperationTimeOutException;
+    LogicTuple uno(IId id, LogicTuple t, long ms)
+            throws InvalidLogicTupleException, OperationNotPossibleException,
+            OperationTimeOutException;
 
     /**
      * 
@@ -373,8 +382,9 @@ public interface ITimedContext {
      * @throws OperationTimeOutException
      *             if the given timeout expired prior to operation completion
      */
-    LogicTuple urd(IId id, LogicTuple t, long ms) throws InvalidLogicTupleException,
-            OperationNotPossibleException, OperationTimeOutException;
+    LogicTuple urd(IId id, LogicTuple t, long ms)
+            throws InvalidLogicTupleException, OperationNotPossibleException,
+            OperationTimeOutException;
 
     /**
      * 

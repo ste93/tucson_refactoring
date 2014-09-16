@@ -52,7 +52,9 @@ public class LogicTuple implements alice.tuplecentre.api.TupleTemplate,
                     new LogicTupleOpManager());
             return new LogicTuple(new TupleArgument(t));
         } catch (final InvalidTermException ex) {
-            throw new InvalidLogicTupleException("Exception occurred while parsing the string: \"" + st + "\"", ex);
+            throw new InvalidLogicTupleException(
+                    "Exception occurred while parsing the string: \"" + st
+                            + "\"", ex);
         }
     }
 
@@ -278,7 +280,7 @@ public class LogicTuple implements alice.tuplecentre.api.TupleTemplate,
      * 
      */
     public int getArity() {
-    		return this.info.getArity();
+        return this.info.getArity();
     }
 
     /**

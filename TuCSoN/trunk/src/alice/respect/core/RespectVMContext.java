@@ -31,7 +31,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 import java.util.Timer;
-
 import alice.logictuple.LogicTuple;
 import alice.logictuple.LogicTupleOpManager;
 import alice.logictuple.TupleArgument;
@@ -272,7 +271,7 @@ public class RespectVMContext extends
                 this.writePersistencyUpdate(toAdd, ModType.ADD_TUPLE);
             }
             list.add(new LogicTuple(tuple.getArg(0)));
-            tuple = new LogicTuple(tuple.getArg(1));            
+            tuple = new LogicTuple(tuple.getArg(1));
         }
         return list;
     }
@@ -291,7 +290,7 @@ public class RespectVMContext extends
                             .getArg(1).getArg(1));
         } else {
             tuple = t;
-        }        
+        }
         // FIXME LogicTuple > Tuple in all Cicora's API
         this.tSpecSet.add((LogicTuple) tuple);
         if (this.isPersistent) {

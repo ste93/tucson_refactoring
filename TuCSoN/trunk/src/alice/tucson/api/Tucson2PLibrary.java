@@ -69,12 +69,14 @@ public class Tucson2PLibrary extends Library {
      * @return <code>true</code> if the operation succeed, <code>false</code>
      *         otherwise
      * @throws TucsonInvalidAgentIdException
-     * 			  if the given Term does not represent a valid TuCSoN identifier 
+     *             if the given Term does not represent a valid TuCSoN
+     *             identifier
      * 
      * @see alice.tucson.api.EnhancedACC EnhancedACC
      * @see alice.tucson.api.TucsonAgentId TucsonAgentId
      */
-    public boolean acquire_acc_1(final Term id) throws TucsonInvalidAgentIdException {
+    public boolean acquire_acc_1(final Term id)
+            throws TucsonInvalidAgentIdException {
         TucsonAgentId agentId;
         if (this.context != null) {
             try {
@@ -84,7 +86,7 @@ public class Tucson2PLibrary extends Library {
                 return false;
             }
         }
-        agentId = new TucsonAgentId(id.getTerm().toString());        
+        agentId = new TucsonAgentId(id.getTerm().toString());
         this.context = TucsonMetaACC.getContext(agentId);
         return true;
     }
@@ -100,25 +102,28 @@ public class Tucson2PLibrary extends Library {
      * @return <code>true</code> if the operation succeed, <code>false</code>
      *         otherwise
      * @throws TucsonInvalidTupleCentreIdException
-     * 			  if the given Term does not represent a valid TuCSoN identifier
+     *             if the given Term does not represent a valid TuCSoN
+     *             identifier
      * @throws TucsonOperationNotPossibleException
-     * 			  if the requested operation cannot be carried out
+     *             if the requested operation cannot be carried out
      * @throws UnreachableNodeException
-     * 			  if the target tuple centre is not reachable over the network
+     *             if the target tuple centre is not reachable over the network
      * @throws OperationTimeOutException
-     * 			  if the operation timeout expired prior to operation completion
+     *             if the operation timeout expired prior to operation
+     *             completion
      * 
      * @see alice.tucson.api.OrdinaryAsynchACC OrdinaryAsynchACC
      * @see alice.tucson.api.OrdinarySynchACC OrdinarySynchACC
      */
-    public boolean get_2(final Term arg0, final Term arg1) 
-    		throws TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException {
+    public boolean get_2(final Term arg0, final Term arg1)
+            throws TucsonInvalidTupleCentreIdException,
+            TucsonOperationNotPossibleException, UnreachableNodeException,
+            OperationTimeOutException {
         if (this.context == null) {
             return false;
         }
         TucsonTupleCentreId tid;
         tid = new TucsonTupleCentreId(arg1.getTerm().toString());
-        
         ITucsonOperation op;
         op = this.context.get(tid, (Long) null);
         if (op.isResultSuccess()) {
@@ -139,28 +144,30 @@ public class Tucson2PLibrary extends Library {
      * @return <code>true</code> if the operation succeed, <code>false</code>
      *         otherwise
      * @throws TucsonInvalidTupleCentreIdException
-     * 			  if the given Term does not represent a valid TuCSoN identifier
+     *             if the given Term does not represent a valid TuCSoN
+     *             identifier
      * @throws TucsonOperationNotPossibleException
-     * 			  if the requested operation cannot be carried out
+     *             if the requested operation cannot be carried out
      * @throws UnreachableNodeException
-     * 			  if the target tuple centre is not reachable over the network
+     *             if the target tuple centre is not reachable over the network
      * @throws OperationTimeOutException
-     * 			  if the operation timeout expired prior to operation completion
+     *             if the operation timeout expired prior to operation
+     *             completion
      * 
      * @see alice.tucson.api.SpecificationAsynchACC SpecificationAsynchACC
      * @see alice.tucson.api.SpecificationSynchACC SpecificationSynchACC
      */
-    public boolean get_s_2(final Term arg0, final Term arg1) 
-    		throws TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException {
+    public boolean get_s_2(final Term arg0, final Term arg1)
+            throws TucsonInvalidTupleCentreIdException,
+            TucsonOperationNotPossibleException, UnreachableNodeException,
+            OperationTimeOutException {
         if (this.context == null) {
             return false;
         }
         TucsonTupleCentreId tid;
         tid = new TucsonTupleCentreId(arg1.getTerm().toString());
-        
         ITucsonOperation op;
         op = this.context.getS(tid, (Long) null);
-        
         if (op.isResultSuccess()) {
             this.unify(arg0,
                     Tucson2PLibrary.list2tuple(op.getLogicTupleListResult()));
@@ -257,29 +264,30 @@ public class Tucson2PLibrary extends Library {
      * @return <code>true</code> if the operation succeed, <code>false</code>
      *         otherwise
      * @throws TucsonInvalidTupleCentreIdException
-     * 			  if the given Term does not represent a valid TuCSoN identifier
+     *             if the given Term does not represent a valid TuCSoN
+     *             identifier
      * @throws TucsonOperationNotPossibleException
-     * 			  if the requested operation cannot be carried out
+     *             if the requested operation cannot be carried out
      * @throws UnreachableNodeException
-     * 			  if the target tuple centre is not reachable over the network
+     *             if the target tuple centre is not reachable over the network
      * @throws OperationTimeOutException
-     * 			  if the operation timeout expired prior to operation completion
+     *             if the operation timeout expired prior to operation
+     *             completion
      * 
      * @see alice.tucson.api.OrdinaryAsynchACC OrdinaryAsynchACC
      * @see alice.tucson.api.OrdinarySynchACC OrdinarySynchACC
      */
-    public boolean in_2(final Term arg0, final Term arg1) 
-    		throws TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException {
+    public boolean in_2(final Term arg0, final Term arg1)
+            throws TucsonInvalidTupleCentreIdException,
+            TucsonOperationNotPossibleException, UnreachableNodeException,
+            OperationTimeOutException {
         if (this.context == null) {
             return false;
         }
         TucsonTupleCentreId tid;
         tid = new TucsonTupleCentreId(arg1.getTerm().toString());
-        
         ITucsonOperation op;
-            op = this.context.in(tid, new LogicTuple(arg0.getTerm()),
-                    (Long) null);
-            
+        op = this.context.in(tid, new LogicTuple(arg0.getTerm()), (Long) null);
         if (op.isResultSuccess()) {
             this.unify(arg0.getTerm(), op.getLogicTupleResult().toTerm());
         }
@@ -299,29 +307,31 @@ public class Tucson2PLibrary extends Library {
      * @return <code>true</code> if the operation succeed, <code>false</code>
      *         otherwise
      * @throws TucsonInvalidTupleCentreIdException
-     * 			  if the given Term does not represent a valid TuCSoN identifier
+     *             if the given Term does not represent a valid TuCSoN
+     *             identifier
      * @throws TucsonOperationNotPossibleException
-     * 			  if the requested operation cannot be carried out
+     *             if the requested operation cannot be carried out
      * @throws UnreachableNodeException
-     * 			  if the target tuple centre is not reachable over the network
+     *             if the target tuple centre is not reachable over the network
      * @throws OperationTimeOutException
-     * 			  if the operation timeout expired prior to operation completion
+     *             if the operation timeout expired prior to operation
+     *             completion
      * 
      * @see alice.tucson.api.BulkAsynchACC BulkAsynchACC
      * @see alice.tucson.api.BulkSynchACC BulkSynchACC
      */
-    public boolean in_all_3(final Term arg0, final Term arg1, final Term arg2) 
-    		throws TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException {
+    public boolean in_all_3(final Term arg0, final Term arg1, final Term arg2)
+            throws TucsonInvalidTupleCentreIdException,
+            TucsonOperationNotPossibleException, UnreachableNodeException,
+            OperationTimeOutException {
         if (this.context == null) {
             return false;
         }
         TucsonTupleCentreId tid;
         tid = new TucsonTupleCentreId(arg2.getTerm().toString());
-        
         ITucsonOperation op;
         op = this.context.inAll(tid, new LogicTuple(arg0.getTerm()),
-                    (Long) null);
-            
+                (Long) null);
         if (op.isResultSuccess()) {
             this.unify(arg1,
                     Tucson2PLibrary.list2tuple(op.getLogicTupleListResult()));
@@ -347,31 +357,33 @@ public class Tucson2PLibrary extends Library {
      * @return <code>true</code> if the operation succeed, <code>false</code>
      *         otherwise
      * @throws TucsonInvalidTupleCentreIdException
-     * 			  if the given Term does not represent a valid TuCSoN identifier
+     *             if the given Term does not represent a valid TuCSoN
+     *             identifier
      * @throws TucsonOperationNotPossibleException
-     * 			  if the requested operation cannot be carried out
+     *             if the requested operation cannot be carried out
      * @throws UnreachableNodeException
-     * 			  if the target tuple centre is not reachable over the network
+     *             if the target tuple centre is not reachable over the network
      * @throws OperationTimeOutException
-     * 			  if the operation timeout expired prior to operation completion
+     *             if the operation timeout expired prior to operation
+     *             completion
      * 
      * @see alice.tucson.api.SpecificationAsynchACC SpecificationAsynchACC
      * @see alice.tucson.api.SpecificationSynchACC SpecificationSynchACC
      */
     public boolean in_s_4(final Term event, final Term guards,
-            final Term reactionBody, final Term arg3) 
-            		throws TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException {
+            final Term reactionBody, final Term arg3)
+            throws TucsonInvalidTupleCentreIdException,
+            TucsonOperationNotPossibleException, UnreachableNodeException,
+            OperationTimeOutException {
         if (this.context == null) {
             return false;
         }
         TucsonTupleCentreId tid;
         tid = new TucsonTupleCentreId(arg3.getTerm().toString());
-        
         ITucsonOperation op;
         op = this.context.inS(tid, new LogicTuple(event.getTerm()),
-                new LogicTuple(guards.getTerm()), new LogicTuple(
-                        reactionBody.getTerm()), (Long) null);
-        
+                new LogicTuple(guards.getTerm()),
+                new LogicTuple(reactionBody.getTerm()), (Long) null);
         if (op.isResultSuccess()) {
             this.unify(event, op.getLogicTupleResult().toTerm());
         }
@@ -389,29 +401,30 @@ public class Tucson2PLibrary extends Library {
      * @return <code>true</code> if the operation succeed, <code>false</code>
      *         otherwise
      * @throws TucsonInvalidTupleCentreIdException
-     * 			  if the given Term does not represent a valid TuCSoN identifier
+     *             if the given Term does not represent a valid TuCSoN
+     *             identifier
      * @throws TucsonOperationNotPossibleException
-     * 			  if the requested operation cannot be carried out
+     *             if the requested operation cannot be carried out
      * @throws UnreachableNodeException
-     * 			  if the target tuple centre is not reachable over the network
+     *             if the target tuple centre is not reachable over the network
      * @throws OperationTimeOutException
-     * 			  if the operation timeout expired prior to operation completion
+     *             if the operation timeout expired prior to operation
+     *             completion
      * 
      * @see alice.tucson.api.OrdinaryAsynchACC OrdinaryAsynchACC
      * @see alice.tucson.api.OrdinarySynchACC OrdinarySynchACC
      */
-    public boolean inp_2(final Term arg0, final Term arg1) 
-    		throws TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException {
+    public boolean inp_2(final Term arg0, final Term arg1)
+            throws TucsonInvalidTupleCentreIdException,
+            TucsonOperationNotPossibleException, UnreachableNodeException,
+            OperationTimeOutException {
         if (this.context == null) {
             return false;
         }
         TucsonTupleCentreId tid;
         tid = new TucsonTupleCentreId(arg1.getTerm().toString());
-        
         ITucsonOperation op;
-        op = this.context.inp(tid, new LogicTuple(arg0.getTerm()),
-                (Long) null);
-        
+        op = this.context.inp(tid, new LogicTuple(arg0.getTerm()), (Long) null);
         if (op.isResultSuccess()) {
             this.unify(arg0.getTerm(), op.getLogicTupleResult().toTerm());
         }
@@ -436,30 +449,33 @@ public class Tucson2PLibrary extends Library {
      * @return <code>true</code> if the operation succeed, <code>false</code>
      *         otherwise
      * @throws TucsonInvalidTupleCentreIdException
-     * 			  if the given Term does not represent a valid TuCSoN identifier
+     *             if the given Term does not represent a valid TuCSoN
+     *             identifier
      * @throws TucsonOperationNotPossibleException
-     * 			  if the requested operation cannot be carried out
+     *             if the requested operation cannot be carried out
      * @throws UnreachableNodeException
-     * 			  if the target tuple centre is not reachable over the network
+     *             if the target tuple centre is not reachable over the network
      * @throws OperationTimeOutException
-     * 			  if the operation timeout expired prior to operation completion
+     *             if the operation timeout expired prior to operation
+     *             completion
      * 
      * @see alice.tucson.api.SpecificationAsynchACC SpecificationAsynchACC
      * @see alice.tucson.api.SpecificationSynchACC SpecificationSynchACC
      */
     public boolean inp_s_4(final Term event, final Term guards,
-            final Term reactionBody, final Term arg3) 
-        		throws TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException {
+            final Term reactionBody, final Term arg3)
+            throws TucsonInvalidTupleCentreIdException,
+            TucsonOperationNotPossibleException, UnreachableNodeException,
+            OperationTimeOutException {
         if (this.context == null) {
             return false;
         }
         TucsonTupleCentreId tid;
         tid = new TucsonTupleCentreId(arg3.getTerm().toString());
-        
         ITucsonOperation op;
         op = this.context.inpS(tid, new LogicTuple(event.getTerm()),
-                new LogicTuple(guards.getTerm()), new LogicTuple(
-                        reactionBody.getTerm()), (Long) null);
+                new LogicTuple(guards.getTerm()),
+                new LogicTuple(reactionBody.getTerm()), (Long) null);
         if (op.isResultSuccess()) {
             this.unify(event, op.getLogicTupleResult().toTerm());
         }
@@ -477,28 +493,30 @@ public class Tucson2PLibrary extends Library {
      * @return <code>true</code> if the operation succeed, <code>false</code>
      *         otherwise
      * @throws TucsonInvalidTupleCentreIdException
-     * 			  if the given Term does not represent a valid TuCSoN identifier
+     *             if the given Term does not represent a valid TuCSoN
+     *             identifier
      * @throws TucsonOperationNotPossibleException
-     * 			  if the requested operation cannot be carried out
+     *             if the requested operation cannot be carried out
      * @throws UnreachableNodeException
-     * 			  if the target tuple centre is not reachable over the network
+     *             if the target tuple centre is not reachable over the network
      * @throws OperationTimeOutException
-     * 			  if the operation timeout expired prior to operation completion
+     *             if the operation timeout expired prior to operation
+     *             completion
      * 
      * @see alice.tucson.api.OrdinaryAsynchACC OrdinaryAsynchACC
      * @see alice.tucson.api.OrdinarySynchACC OrdinarySynchACC
      */
-    public boolean no_2(final Term arg0, final Term arg1) 
-    		throws TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException {
+    public boolean no_2(final Term arg0, final Term arg1)
+            throws TucsonInvalidTupleCentreIdException,
+            TucsonOperationNotPossibleException, UnreachableNodeException,
+            OperationTimeOutException {
         if (this.context == null) {
             return false;
         }
         TucsonTupleCentreId tid;
         tid = new TucsonTupleCentreId(arg1.getTerm().toString());
-        
         ITucsonOperation op;
-        op = this.context.no(tid, new LogicTuple(arg0.getTerm()),
-                (Long) null);
+        op = this.context.no(tid, new LogicTuple(arg0.getTerm()), (Long) null);
         if (!op.isResultSuccess()) {
             this.unify(arg0.getTerm(), op.getLogicTupleResult().toTerm());
         }
@@ -518,29 +536,31 @@ public class Tucson2PLibrary extends Library {
      * @return <code>true</code> if the operation succeed, <code>false</code>
      *         otherwise
      * @throws TucsonInvalidTupleCentreIdException
-     * 			  if the given Term does not represent a valid TuCSoN identifier
+     *             if the given Term does not represent a valid TuCSoN
+     *             identifier
      * @throws TucsonOperationNotPossibleException
-     * 			  if the requested operation cannot be carried out
+     *             if the requested operation cannot be carried out
      * @throws UnreachableNodeException
-     * 			  if the target tuple centre is not reachable over the network
+     *             if the target tuple centre is not reachable over the network
      * @throws OperationTimeOutException
-     * 			  if the operation timeout expired prior to operation completion
+     *             if the operation timeout expired prior to operation
+     *             completion
      * 
      * @see alice.tucson.api.BulkAsynchACC BulkAsynchACC
      * @see alice.tucson.api.BulkSynchACC BulkSynchACC
      */
-    public boolean no_all_3(final Term arg0, final Term arg1, final Term arg2) 
-    		throws TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException {
+    public boolean no_all_3(final Term arg0, final Term arg1, final Term arg2)
+            throws TucsonInvalidTupleCentreIdException,
+            TucsonOperationNotPossibleException, UnreachableNodeException,
+            OperationTimeOutException {
         if (this.context == null) {
             return false;
         }
         TucsonTupleCentreId tid;
         tid = new TucsonTupleCentreId(arg2.getTerm().toString());
-        
         ITucsonOperation op;
         op = this.context.noAll(tid, new LogicTuple(arg0.getTerm()),
                 (Long) null);
-        
         if (op.isResultSuccess()) {
             this.unify(arg1,
                     Tucson2PLibrary.list2tuple(op.getLogicTupleListResult()));
@@ -566,30 +586,33 @@ public class Tucson2PLibrary extends Library {
      * @return <code>true</code> if the operation succeed, <code>false</code>
      *         otherwise
      * @throws TucsonInvalidTupleCentreIdException
-     * 			  if the given Term does not represent a valid TuCSoN identifier
+     *             if the given Term does not represent a valid TuCSoN
+     *             identifier
      * @throws TucsonOperationNotPossibleException
-     * 			  if the requested operation cannot be carried out
+     *             if the requested operation cannot be carried out
      * @throws UnreachableNodeException
-     * 			  if the target tuple centre is not reachable over the network
+     *             if the target tuple centre is not reachable over the network
      * @throws OperationTimeOutException
-     * 			  if the operation timeout expired prior to operation completion
+     *             if the operation timeout expired prior to operation
+     *             completion
      * 
      * @see alice.tucson.api.SpecificationAsynchACC SpecificationAsynchACC
      * @see alice.tucson.api.SpecificationSynchACC SpecificationSynchACC
      */
     public boolean no_s_4(final Term event, final Term guards,
-            final Term reactionBody, final Term arg3) 
-        		throws TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException {
+            final Term reactionBody, final Term arg3)
+            throws TucsonInvalidTupleCentreIdException,
+            TucsonOperationNotPossibleException, UnreachableNodeException,
+            OperationTimeOutException {
         if (this.context == null) {
             return false;
         }
         TucsonTupleCentreId tid;
         tid = new TucsonTupleCentreId(arg3.getTerm().toString());
-        
         ITucsonOperation op;
         op = this.context.noS(tid, new LogicTuple(event.getTerm()),
-                new LogicTuple(guards.getTerm()), new LogicTuple(
-                        reactionBody.getTerm()), (Long) null);
+                new LogicTuple(guards.getTerm()),
+                new LogicTuple(reactionBody.getTerm()), (Long) null);
         if (!op.isResultSuccess()) {
             this.unify(event, op.getLogicTupleResult().toTerm());
         }
@@ -607,29 +630,30 @@ public class Tucson2PLibrary extends Library {
      * @return <code>true</code> if the operation succeed, <code>false</code>
      *         otherwise
      * @throws TucsonInvalidTupleCentreIdException
-     * 			  if the given Term does not represent a valid TuCSoN identifier
+     *             if the given Term does not represent a valid TuCSoN
+     *             identifier
      * @throws TucsonOperationNotPossibleException
-     * 			  if the requested operation cannot be carried out
+     *             if the requested operation cannot be carried out
      * @throws UnreachableNodeException
-     * 			  if the target tuple centre is not reachable over the network
+     *             if the target tuple centre is not reachable over the network
      * @throws OperationTimeOutException
-     * 			  if the operation timeout expired prior to operation completion
+     *             if the operation timeout expired prior to operation
+     *             completion
      * 
      * @see alice.tucson.api.OrdinaryAsynchACC OrdinaryAsynchACC
      * @see alice.tucson.api.OrdinarySynchACC OrdinarySynchACC
      */
-    public boolean nop_2(final Term arg0, final Term arg1) 
-    		throws TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException {
+    public boolean nop_2(final Term arg0, final Term arg1)
+            throws TucsonInvalidTupleCentreIdException,
+            TucsonOperationNotPossibleException, UnreachableNodeException,
+            OperationTimeOutException {
         if (this.context == null) {
             return false;
         }
         TucsonTupleCentreId tid;
         tid = new TucsonTupleCentreId(arg1.getTerm().toString());
-        
         ITucsonOperation op;
-        op = this.context.nop(tid, new LogicTuple(arg0.getTerm()),
-                (Long) null);
-        
+        op = this.context.nop(tid, new LogicTuple(arg0.getTerm()), (Long) null);
         if (!op.isResultSuccess()) {
             this.unify(arg0.getTerm(), op.getLogicTupleResult().toTerm());
         }
@@ -654,31 +678,33 @@ public class Tucson2PLibrary extends Library {
      * @return <code>true</code> if the operation succeed, <code>false</code>
      *         otherwise
      * @throws TucsonInvalidTupleCentreIdException
-     * 			  if the given Term does not represent a valid TuCSoN identifier
+     *             if the given Term does not represent a valid TuCSoN
+     *             identifier
      * @throws TucsonOperationNotPossibleException
-     * 			  if the requested operation cannot be carried out
+     *             if the requested operation cannot be carried out
      * @throws UnreachableNodeException
-     * 			  if the target tuple centre is not reachable over the network
+     *             if the target tuple centre is not reachable over the network
      * @throws OperationTimeOutException
-     * 			  if the operation timeout expired prior to operation completion
+     *             if the operation timeout expired prior to operation
+     *             completion
      * 
      * @see alice.tucson.api.SpecificationAsynchACC SpecificationAsynchACC
      * @see alice.tucson.api.SpecificationSynchACC SpecificationSynchACC
      */
     public boolean nop_s_4(final Term event, final Term guards,
-            final Term reactionBody, final Term arg3) 
-        		throws TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException {
+            final Term reactionBody, final Term arg3)
+            throws TucsonInvalidTupleCentreIdException,
+            TucsonOperationNotPossibleException, UnreachableNodeException,
+            OperationTimeOutException {
         if (this.context == null) {
             return false;
         }
         TucsonTupleCentreId tid;
         tid = new TucsonTupleCentreId(arg3.getTerm().toString());
-        
         ITucsonOperation op;
         op = this.context.nopS(tid, new LogicTuple(event.getTerm()),
-                new LogicTuple(guards.getTerm()), new LogicTuple(
-                        reactionBody.getTerm()), (Long) null);
-        
+                new LogicTuple(guards.getTerm()),
+                new LogicTuple(reactionBody.getTerm()), (Long) null);
         if (!op.isResultSuccess()) {
             this.unify(event, op.getLogicTupleResult().toTerm());
         }
@@ -696,27 +722,30 @@ public class Tucson2PLibrary extends Library {
      * @return <code>true</code> if the operation succeed, <code>false</code>
      *         otherwise
      * @throws TucsonInvalidTupleCentreIdException
-     * 			  if the given Term does not represent a valid TuCSoN identifier
+     *             if the given Term does not represent a valid TuCSoN
+     *             identifier
      * @throws TucsonOperationNotPossibleException
-     * 			  if the requested operation cannot be carried out
+     *             if the requested operation cannot be carried out
      * @throws UnreachableNodeException
-     * 			  if the target tuple centre is not reachable over the network
+     *             if the target tuple centre is not reachable over the network
      * @throws OperationTimeOutException
-     * 			  if the operation timeout expired prior to operation completion
+     *             if the operation timeout expired prior to operation
+     *             completion
      * 
      * @see alice.tucson.api.OrdinaryAsynchACC OrdinaryAsynchACC
      * @see alice.tucson.api.OrdinarySynchACC OrdinarySynchACC
      */
-    public boolean out_2(final Term arg0, final Term arg1) 
-    		throws TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException {
+    public boolean out_2(final Term arg0, final Term arg1)
+            throws TucsonInvalidTupleCentreIdException,
+            TucsonOperationNotPossibleException, UnreachableNodeException,
+            OperationTimeOutException {
         if (this.context == null) {
             return false;
         }
         TucsonTupleCentreId tid;
         tid = new TucsonTupleCentreId(arg1.getTerm().toString());
         ITucsonOperation op;
-        op = this.context.out(tid, new LogicTuple(arg0.getTerm()),
-                    (Long) null);
+        op = this.context.out(tid, new LogicTuple(arg0.getTerm()), (Long) null);
         return op.isResultSuccess();
     }
 
@@ -730,26 +759,29 @@ public class Tucson2PLibrary extends Library {
      * 
      * @return <code>true</code> if the operation succeed, <code>false</code>
      *         otherwise
-     *
+     * 
      * @throws TucsonInvalidTupleCentreIdException
-     * 			  if the given Term does not represent a valid TuCSoN identifier
+     *             if the given Term does not represent a valid TuCSoN
+     *             identifier
      * @throws TucsonOperationNotPossibleException
-     * 			  if the requested operation cannot be carried out
+     *             if the requested operation cannot be carried out
      * @throws UnreachableNodeException
-     * 			  if the target tuple centre is not reachable over the network
+     *             if the target tuple centre is not reachable over the network
      * @throws OperationTimeOutException
-     * 			  if the operation timeout expired prior to operation completion
+     *             if the operation timeout expired prior to operation
+     *             completion
      * @see alice.tucson.api.BulkAsynchACC BulkAsynchACC
      * @see alice.tucson.api.BulkSynchACC BulkSynchACC
      */
-    public boolean out_all_2(final Term arg0, final Term arg1) 
-    		throws TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException {
+    public boolean out_all_2(final Term arg0, final Term arg1)
+            throws TucsonInvalidTupleCentreIdException,
+            TucsonOperationNotPossibleException, UnreachableNodeException,
+            OperationTimeOutException {
         if (this.context == null) {
             return false;
         }
         TucsonTupleCentreId tid;
         tid = new TucsonTupleCentreId(arg1.getTerm().toString());
-        
         ITucsonOperation op;
         op = this.context.outAll(tid, new LogicTuple(arg0.getTerm()),
                 (Long) null);
@@ -774,30 +806,33 @@ public class Tucson2PLibrary extends Library {
      *         otherwise
      * 
      * @throws TucsonInvalidTupleCentreIdException
-     * 			  if the given Term does not represent a valid TuCSoN identifier
+     *             if the given Term does not represent a valid TuCSoN
+     *             identifier
      * @throws TucsonOperationNotPossibleException
-     * 			  if the requested operation cannot be carried out
+     *             if the requested operation cannot be carried out
      * @throws UnreachableNodeException
-     * 			  if the target tuple centre is not reachable over the network
+     *             if the target tuple centre is not reachable over the network
      * @throws OperationTimeOutException
-     * 			  if the operation timeout expired prior to operation completion
+     *             if the operation timeout expired prior to operation
+     *             completion
      * 
      * @see alice.tucson.api.SpecificationAsynchACC SpecificationAsynchACC
      * @see alice.tucson.api.SpecificationSynchACC SpecificationSynchACC
      */
     public boolean out_s_4(final Term event, final Term guards,
-            final Term reactionBody, final Term arg3) 
-            		throws TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException {
+            final Term reactionBody, final Term arg3)
+            throws TucsonInvalidTupleCentreIdException,
+            TucsonOperationNotPossibleException, UnreachableNodeException,
+            OperationTimeOutException {
         if (this.context == null) {
             return false;
         }
         TucsonTupleCentreId tid;
         tid = new TucsonTupleCentreId(arg3.getTerm().toString());
-        
         ITucsonOperation op;
         op = this.context.outS(tid, new LogicTuple(event.getTerm()),
-                new LogicTuple(guards.getTerm()), new LogicTuple(
-                        reactionBody.getTerm()), (Long) null);
+                new LogicTuple(guards.getTerm()),
+                new LogicTuple(reactionBody.getTerm()), (Long) null);
         return op.isResultSuccess();
     }
 
@@ -812,28 +847,29 @@ public class Tucson2PLibrary extends Library {
      * @return <code>true</code> if the operation succeed, <code>false</code>
      *         otherwise
      * @throws TucsonInvalidTupleCentreIdException
-     * 			  if the given Term does not represent a valid TuCSoN identifier
+     *             if the given Term does not represent a valid TuCSoN
+     *             identifier
      * @throws TucsonOperationNotPossibleException
-     * 			  if the requested operation cannot be carried out
+     *             if the requested operation cannot be carried out
      * @throws UnreachableNodeException
-     * 			  if the target tuple centre is not reachable over the network
+     *             if the target tuple centre is not reachable over the network
      * @throws OperationTimeOutException
-     * 			  if the operation timeout expired prior to operation completion
+     *             if the operation timeout expired prior to operation
+     *             completion
      * @see alice.tucson.api.OrdinaryAsynchACC OrdinaryAsynchACC
      * @see alice.tucson.api.OrdinarySynchACC OrdinarySynchACC
      */
-    public boolean rd_2(final Term arg0, final Term arg1) 
-    		throws TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException {
+    public boolean rd_2(final Term arg0, final Term arg1)
+            throws TucsonInvalidTupleCentreIdException,
+            TucsonOperationNotPossibleException, UnreachableNodeException,
+            OperationTimeOutException {
         if (this.context == null) {
             return false;
         }
         TucsonTupleCentreId tid;
         tid = new TucsonTupleCentreId(arg1.getTerm().toString());
-        
         ITucsonOperation op;
-        op = this.context.rd(tid, new LogicTuple(arg0.getTerm()),
-                (Long) null);
-        
+        op = this.context.rd(tid, new LogicTuple(arg0.getTerm()), (Long) null);
         if (op.isResultSuccess()) {
             this.unify(arg0.getTerm(), op.getLogicTupleResult().toTerm());
         }
@@ -854,28 +890,30 @@ public class Tucson2PLibrary extends Library {
      *         otherwise
      * 
      * @throws TucsonInvalidTupleCentreIdException
-     * 			  if the given Term does not represent a valid TuCSoN identifier
+     *             if the given Term does not represent a valid TuCSoN
+     *             identifier
      * @throws TucsonOperationNotPossibleException
-     * 			  if the requested operation cannot be carried out
+     *             if the requested operation cannot be carried out
      * @throws UnreachableNodeException
-     * 			  if the target tuple centre is not reachable over the network
+     *             if the target tuple centre is not reachable over the network
      * @throws OperationTimeOutException
-     * 			  if the operation timeout expired prior to operation completion
+     *             if the operation timeout expired prior to operation
+     *             completion
      * @see alice.tucson.api.BulkAsynchACC BulkAsynchACC
      * @see alice.tucson.api.BulkSynchACC BulkSynchACC
      */
-    public boolean rd_all_3(final Term arg0, final Term arg1, final Term arg2) 
-    		throws TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException {
+    public boolean rd_all_3(final Term arg0, final Term arg1, final Term arg2)
+            throws TucsonInvalidTupleCentreIdException,
+            TucsonOperationNotPossibleException, UnreachableNodeException,
+            OperationTimeOutException {
         if (this.context == null) {
             return false;
         }
         TucsonTupleCentreId tid;
         tid = new TucsonTupleCentreId(arg2.getTerm().toString());
-        
         ITucsonOperation op;
         op = this.context.rdAll(tid, new LogicTuple(arg0.getTerm()),
                 (Long) null);
-        
         if (op.isResultSuccess()) {
             this.unify(arg1,
                     Tucson2PLibrary.list2tuple(op.getLogicTupleListResult()));
@@ -900,33 +938,35 @@ public class Tucson2PLibrary extends Library {
      * 
      * @return <code>true</code> if the operation succeed, <code>false</code>
      *         otherwise
-     *         
+     * 
      * @throws TucsonInvalidTupleCentreIdException
-     * 			  if the given Term does not represent a valid TuCSoN identifier
+     *             if the given Term does not represent a valid TuCSoN
+     *             identifier
      * @throws TucsonOperationNotPossibleException
-     * 			  if the requested operation cannot be carried out
+     *             if the requested operation cannot be carried out
      * @throws UnreachableNodeException
-     * 			  if the target tuple centre is not reachable over the network
+     *             if the target tuple centre is not reachable over the network
      * @throws OperationTimeOutException
-     * 			  if the operation timeout expired prior to operation completion
+     *             if the operation timeout expired prior to operation
+     *             completion
      * 
      * @see alice.tucson.api.SpecificationAsynchACC SpecificationAsynchACC
      * @see alice.tucson.api.SpecificationSynchACC SpecificationSynchACC
      */
     public boolean rd_s_4(final Term event, final Term guards,
-            final Term reactionBody, final Term arg3) 
-            	throws TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException {
+            final Term reactionBody, final Term arg3)
+            throws TucsonInvalidTupleCentreIdException,
+            TucsonOperationNotPossibleException, UnreachableNodeException,
+            OperationTimeOutException {
         if (this.context == null) {
             return false;
         }
         TucsonTupleCentreId tid;
         tid = new TucsonTupleCentreId(arg3.getTerm().toString());
-        
         ITucsonOperation op;
         op = this.context.rdS(tid, new LogicTuple(event.getTerm()),
-                new LogicTuple(guards.getTerm()), new LogicTuple(
-                        reactionBody.getTerm()), (Long) null);
-        
+                new LogicTuple(guards.getTerm()),
+                new LogicTuple(reactionBody.getTerm()), (Long) null);
         if (op.isResultSuccess()) {
             this.unify(event, op.getLogicTupleResult().toTerm());
         }
@@ -943,31 +983,32 @@ public class Tucson2PLibrary extends Library {
      * 
      * @return <code>true</code> if the operation succeed, <code>false</code>
      *         otherwise
-     *         
+     * 
      * @throws TucsonInvalidTupleCentreIdException
-     * 			  if the given Term does not represent a valid TuCSoN identifier
+     *             if the given Term does not represent a valid TuCSoN
+     *             identifier
      * @throws TucsonOperationNotPossibleException
-     * 			  if the requested operation cannot be carried out
+     *             if the requested operation cannot be carried out
      * @throws UnreachableNodeException
-     * 			  if the target tuple centre is not reachable over the network
+     *             if the target tuple centre is not reachable over the network
      * @throws OperationTimeOutException
-     * 			  if the operation timeout expired prior to operation completion
+     *             if the operation timeout expired prior to operation
+     *             completion
      * 
      * @see alice.tucson.api.OrdinaryAsynchACC OrdinaryAsynchACC
      * @see alice.tucson.api.OrdinarySynchACC OrdinarySynchACC
      */
-    public boolean rdp_2(final Term arg0, final Term arg1) 
-    		throws TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException {
+    public boolean rdp_2(final Term arg0, final Term arg1)
+            throws TucsonInvalidTupleCentreIdException,
+            TucsonOperationNotPossibleException, UnreachableNodeException,
+            OperationTimeOutException {
         if (this.context == null) {
             return false;
         }
         TucsonTupleCentreId tid;
         tid = new TucsonTupleCentreId(arg1.getTerm().toString());
-        
         ITucsonOperation op;
-        op = this.context.rdp(tid, new LogicTuple(arg0.getTerm()),
-                (Long) null);
-        
+        op = this.context.rdp(tid, new LogicTuple(arg0.getTerm()), (Long) null);
         if (op.isResultSuccess()) {
             this.unify(arg0.getTerm(), op.getLogicTupleResult().toTerm());
         }
@@ -991,33 +1032,35 @@ public class Tucson2PLibrary extends Library {
      * 
      * @return <code>true</code> if the operation succeed, <code>false</code>
      *         otherwise
-     *         
+     * 
      * @throws TucsonInvalidTupleCentreIdException
-     * 			  if the given Term does not represent a valid TuCSoN identifier
+     *             if the given Term does not represent a valid TuCSoN
+     *             identifier
      * @throws TucsonOperationNotPossibleException
-     * 			  if the requested operation cannot be carried out
+     *             if the requested operation cannot be carried out
      * @throws UnreachableNodeException
-     * 			  if the target tuple centre is not reachable over the network
+     *             if the target tuple centre is not reachable over the network
      * @throws OperationTimeOutException
-     * 			  if the operation timeout expired prior to operation completion
+     *             if the operation timeout expired prior to operation
+     *             completion
      * 
      * @see alice.tucson.api.SpecificationAsynchACC SpecificationAsynchACC
      * @see alice.tucson.api.SpecificationSynchACC SpecificationSynchACC
      */
     public boolean rdp_s_4(final Term event, final Term guards,
-            final Term reactionBody, final Term arg3) 
-            	throws TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException {
+            final Term reactionBody, final Term arg3)
+            throws TucsonInvalidTupleCentreIdException,
+            TucsonOperationNotPossibleException, UnreachableNodeException,
+            OperationTimeOutException {
         if (this.context == null) {
             return false;
         }
         TucsonTupleCentreId tid;
         tid = new TucsonTupleCentreId(arg3.getTerm().toString());
-        
         ITucsonOperation op;
         op = this.context.rdpS(tid, new LogicTuple(event.getTerm()),
-                new LogicTuple(guards.getTerm()), new LogicTuple(
-                        reactionBody.getTerm()), (Long) null);
-        
+                new LogicTuple(guards.getTerm()),
+                new LogicTuple(reactionBody.getTerm()), (Long) null);
         if (op.isResultSuccess()) {
             this.unify(event, op.getLogicTupleResult().toTerm());
         }
@@ -1030,13 +1073,12 @@ public class Tucson2PLibrary extends Library {
      * 
      * @return <code>true</code> if the operation succeed, <code>false</code>
      *         otherwise
-     *         
+     * 
      * @throws TucsonOperationNotPossibleException
-     * 			  if the requested operation cannot be carried out
+     *             if the requested operation cannot be carried out
      */
     public boolean release_acc_0() throws TucsonOperationNotPossibleException {
         this.context.exit();
-  
         return true;
     }
 
@@ -1050,31 +1092,32 @@ public class Tucson2PLibrary extends Library {
      * 
      * @return <code>true</code> if the operation succeed, <code>false</code>
      *         otherwise
-     *         
+     * 
      * @throws TucsonInvalidTupleCentreIdException
-     * 			  if the given Term does not represent a valid TuCSoN identifier
+     *             if the given Term does not represent a valid TuCSoN
+     *             identifier
      * @throws TucsonOperationNotPossibleException
-     * 			  if the requested operation cannot be carried out
+     *             if the requested operation cannot be carried out
      * @throws UnreachableNodeException
-     * 			  if the target tuple centre is not reachable over the network
+     *             if the target tuple centre is not reachable over the network
      * @throws OperationTimeOutException
-     * 			  if the operation timeout expired prior to operation completion
+     *             if the operation timeout expired prior to operation
+     *             completion
      * 
      * @see alice.tucson.api.OrdinaryAsynchACC OrdinaryAsynchACC
      * @see alice.tucson.api.OrdinarySynchACC OrdinarySynchACC
      */
-    public boolean set_2(final Term arg0, final Term arg1) 
-    		throws TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException {
+    public boolean set_2(final Term arg0, final Term arg1)
+            throws TucsonInvalidTupleCentreIdException,
+            TucsonOperationNotPossibleException, UnreachableNodeException,
+            OperationTimeOutException {
         if (this.context == null) {
             return false;
         }
         TucsonTupleCentreId tid;
         tid = new TucsonTupleCentreId(arg1.getTerm().toString());
-        
         ITucsonOperation op;
-        op = this.context.set(tid, new LogicTuple(arg0.getTerm()),
-                (Long) null);
-        
+        op = this.context.set(tid, new LogicTuple(arg0.getTerm()), (Long) null);
         return op.isResultSuccess();
     }
 
@@ -1089,31 +1132,33 @@ public class Tucson2PLibrary extends Library {
      * 
      * @return <code>true</code> if the operation succeed, <code>false</code>
      *         otherwise
-     *         
+     * 
      * @throws TucsonInvalidTupleCentreIdException
-     * 			  if the given Term does not represent a valid TuCSoN identifier
+     *             if the given Term does not represent a valid TuCSoN
+     *             identifier
      * @throws TucsonOperationNotPossibleException
-     * 			  if the requested operation cannot be carried out
+     *             if the requested operation cannot be carried out
      * @throws UnreachableNodeException
-     * 			  if the target tuple centre is not reachable over the network
+     *             if the target tuple centre is not reachable over the network
      * @throws OperationTimeOutException
-     * 			  if the operation timeout expired prior to operation completion
+     *             if the operation timeout expired prior to operation
+     *             completion
      * 
      * @see alice.tucson.api.SpecificationAsynchACC SpecificationAsynchACC
      * @see alice.tucson.api.SpecificationSynchACC SpecificationSynchACC
      */
-    public boolean set_s_2(final Term arg0, final Term arg1) 
-    		throws TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException {
+    public boolean set_s_2(final Term arg0, final Term arg1)
+            throws TucsonInvalidTupleCentreIdException,
+            TucsonOperationNotPossibleException, UnreachableNodeException,
+            OperationTimeOutException {
         if (this.context == null) {
             return false;
         }
         TucsonTupleCentreId tid;
         tid = new TucsonTupleCentreId(arg1.getTerm().toString());
-        
         ITucsonOperation op;
-        op = this.context.setS(tid, new LogicTuple(arg0.getTerm()),
-                (Long) null);
-        
+        op = this.context
+                .setS(tid, new LogicTuple(arg0.getTerm()), (Long) null);
         return op.isResultSuccess();
     }
 
@@ -1127,31 +1172,33 @@ public class Tucson2PLibrary extends Library {
      * 
      * @return <code>true</code> if the operation succeed, <code>false</code>
      *         otherwise
-     *         
+     * 
      * @throws TucsonInvalidTupleCentreIdException
-     * 			  if the given Term does not represent a valid TuCSoN identifier
+     *             if the given Term does not represent a valid TuCSoN
+     *             identifier
      * @throws TucsonOperationNotPossibleException
-     * 			  if the requested operation cannot be carried out
+     *             if the requested operation cannot be carried out
      * @throws UnreachableNodeException
-     * 			  if the target tuple centre is not reachable over the network
+     *             if the target tuple centre is not reachable over the network
      * @throws OperationTimeOutException
-     * 			  if the operation timeout expired prior to operation completion
+     *             if the operation timeout expired prior to operation
+     *             completion
      * 
      * @see alice.tucson.api.OrdinaryAsynchACC OrdinaryAsynchACC
      * @see alice.tucson.api.OrdinarySynchACC OrdinarySynchACC
      */
-    public boolean spawn_2(final Term arg0, final Term arg1) 
-    		throws TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException {
+    public boolean spawn_2(final Term arg0, final Term arg1)
+            throws TucsonInvalidTupleCentreIdException,
+            TucsonOperationNotPossibleException, UnreachableNodeException,
+            OperationTimeOutException {
         if (this.context == null) {
             return false;
         }
         TucsonTupleCentreId tid;
         tid = new TucsonTupleCentreId(arg1.getTerm().toString());
-        
         ITucsonOperation op;
         op = this.context.spawn(tid, new LogicTuple(arg0.getTerm()),
                 (Long) null);
-        
         return op.isResultSuccess();
     }
 
@@ -1165,31 +1212,32 @@ public class Tucson2PLibrary extends Library {
      * 
      * @return <code>true</code> if the operation succeed, <code>false</code>
      *         otherwise
-     *         
+     * 
      * @throws TucsonInvalidTupleCentreIdException
-     * 			  if the given Term does not represent a valid TuCSoN identifier
+     *             if the given Term does not represent a valid TuCSoN
+     *             identifier
      * @throws TucsonOperationNotPossibleException
-     * 			  if the requested operation cannot be carried out
+     *             if the requested operation cannot be carried out
      * @throws UnreachableNodeException
-     * 			  if the target tuple centre is not reachable over the network
+     *             if the target tuple centre is not reachable over the network
      * @throws OperationTimeOutException
-     * 			  if the operation timeout expired prior to operation completion
+     *             if the operation timeout expired prior to operation
+     *             completion
      * 
      * @see alice.tucson.api.UniformAsynchACC UniformAsynchACC
      * @see alice.tucson.api.UniformSynchACC UniformSynchACC
      */
-    public boolean uin_2(final Term arg0, final Term arg1) 
-    		throws TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException {
+    public boolean uin_2(final Term arg0, final Term arg1)
+            throws TucsonInvalidTupleCentreIdException,
+            TucsonOperationNotPossibleException, UnreachableNodeException,
+            OperationTimeOutException {
         if (this.context == null) {
             return false;
         }
         TucsonTupleCentreId tid;
         tid = new TucsonTupleCentreId(arg1.getTerm().toString());
-        
         ITucsonOperation op;
-        op = this.context.uin(tid, new LogicTuple(arg0.getTerm()),
-                (Long) null);
-        
+        op = this.context.uin(tid, new LogicTuple(arg0.getTerm()), (Long) null);
         if (op.isResultSuccess()) {
             this.unify(arg0.getTerm(), op.getLogicTupleResult().toTerm());
         }
@@ -1206,31 +1254,33 @@ public class Tucson2PLibrary extends Library {
      * 
      * @return <code>true</code> if the operation succeed, <code>false</code>
      *         otherwise
-     *         
+     * 
      * @throws TucsonInvalidTupleCentreIdException
-     * 			  if the given Term does not represent a valid TuCSoN identifier
+     *             if the given Term does not represent a valid TuCSoN
+     *             identifier
      * @throws TucsonOperationNotPossibleException
-     * 			  if the requested operation cannot be carried out
+     *             if the requested operation cannot be carried out
      * @throws UnreachableNodeException
-     * 			  if the target tuple centre is not reachable over the network
+     *             if the target tuple centre is not reachable over the network
      * @throws OperationTimeOutException
-     * 			  if the operation timeout expired prior to operation completion
+     *             if the operation timeout expired prior to operation
+     *             completion
      * 
      * @see alice.tucson.api.UniformAsynchACC UniformAsynchACC
      * @see alice.tucson.api.UniformSynchACC UniformSynchACC
      */
-    public boolean uinp_2(final Term arg0, final Term arg1) 
-    		throws TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException {
+    public boolean uinp_2(final Term arg0, final Term arg1)
+            throws TucsonInvalidTupleCentreIdException,
+            TucsonOperationNotPossibleException, UnreachableNodeException,
+            OperationTimeOutException {
         if (this.context == null) {
             return false;
         }
         TucsonTupleCentreId tid;
         tid = new TucsonTupleCentreId(arg1.getTerm().toString());
-        
         ITucsonOperation op;
-        op = this.context.uinp(tid, new LogicTuple(arg0.getTerm()),
-                (Long) null);
-        
+        op = this.context
+                .uinp(tid, new LogicTuple(arg0.getTerm()), (Long) null);
         if (op.isResultSuccess()) {
             this.unify(arg0.getTerm(), op.getLogicTupleResult().toTerm());
         }
@@ -1247,31 +1297,32 @@ public class Tucson2PLibrary extends Library {
      * 
      * @return <code>true</code> if the operation succeed, <code>false</code>
      *         otherwise
-     *         
+     * 
      * @throws TucsonInvalidTupleCentreIdException
-     * 			  if the given Term does not represent a valid TuCSoN identifier
+     *             if the given Term does not represent a valid TuCSoN
+     *             identifier
      * @throws TucsonOperationNotPossibleException
-     * 			  if the requested operation cannot be carried out
+     *             if the requested operation cannot be carried out
      * @throws UnreachableNodeException
-     * 			  if the target tuple centre is not reachable over the network
+     *             if the target tuple centre is not reachable over the network
      * @throws OperationTimeOutException
-     * 			  if the operation timeout expired prior to operation completion
+     *             if the operation timeout expired prior to operation
+     *             completion
      * 
      * @see alice.tucson.api.UniformAsynchACC UniformAsynchACC
      * @see alice.tucson.api.UniformSynchACC UniformSynchACC
      */
-    public boolean uno_2(final Term arg0, final Term arg1) 
-    		throws TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException {
+    public boolean uno_2(final Term arg0, final Term arg1)
+            throws TucsonInvalidTupleCentreIdException,
+            TucsonOperationNotPossibleException, UnreachableNodeException,
+            OperationTimeOutException {
         if (this.context == null) {
             return false;
         }
         TucsonTupleCentreId tid;
         tid = new TucsonTupleCentreId(arg1.getTerm().toString());
-        
         ITucsonOperation op;
-        op = this.context.uno(tid, new LogicTuple(arg0.getTerm()),
-                (Long) null);
-        
+        op = this.context.uno(tid, new LogicTuple(arg0.getTerm()), (Long) null);
         if (!op.isResultSuccess()) {
             this.unify(arg0.getTerm(), op.getLogicTupleResult().toTerm());
         }
@@ -1288,31 +1339,33 @@ public class Tucson2PLibrary extends Library {
      * 
      * @return <code>true</code> if the operation succeed, <code>false</code>
      *         otherwise
-     *        
+     * 
      * @throws TucsonInvalidTupleCentreIdException
-     * 			  if the given Term does not represent a valid TuCSoN identifier
+     *             if the given Term does not represent a valid TuCSoN
+     *             identifier
      * @throws TucsonOperationNotPossibleException
-     * 			  if the requested operation cannot be carried out
+     *             if the requested operation cannot be carried out
      * @throws UnreachableNodeException
-     * 			  if the target tuple centre is not reachable over the network
+     *             if the target tuple centre is not reachable over the network
      * @throws OperationTimeOutException
-     * 			  if the operation timeout expired prior to operation completion
+     *             if the operation timeout expired prior to operation
+     *             completion
      * 
      * @see alice.tucson.api.UniformAsynchACC UniformAsynchACC
      * @see alice.tucson.api.UniformSynchACC UniformSynchACC
      */
-    public boolean unop_2(final Term arg0, final Term arg1) 
-    		throws TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException {
+    public boolean unop_2(final Term arg0, final Term arg1)
+            throws TucsonInvalidTupleCentreIdException,
+            TucsonOperationNotPossibleException, UnreachableNodeException,
+            OperationTimeOutException {
         if (this.context == null) {
             return false;
         }
         TucsonTupleCentreId tid;
         tid = new TucsonTupleCentreId(arg1.getTerm().toString());
-        
         ITucsonOperation op;
-        op = this.context.unop(tid, new LogicTuple(arg0.getTerm()),
-                (Long) null);
-        
+        op = this.context
+                .unop(tid, new LogicTuple(arg0.getTerm()), (Long) null);
         if (!op.isResultSuccess()) {
             this.unify(arg0.getTerm(), op.getLogicTupleResult().toTerm());
         }
@@ -1331,29 +1384,30 @@ public class Tucson2PLibrary extends Library {
      *         otherwise
      * 
      * @throws TucsonInvalidTupleCentreIdException
-     * 			  if the given Term does not represent a valid TuCSoN identifier
+     *             if the given Term does not represent a valid TuCSoN
+     *             identifier
      * @throws TucsonOperationNotPossibleException
-     * 			  if the requested operation cannot be carried out
+     *             if the requested operation cannot be carried out
      * @throws UnreachableNodeException
-     * 			  if the target tuple centre is not reachable over the network
+     *             if the target tuple centre is not reachable over the network
      * @throws OperationTimeOutException
-     * 			  if the operation timeout expired prior to operation completion
+     *             if the operation timeout expired prior to operation
+     *             completion
      * 
      * @see alice.tucson.api.UniformAsynchACC UniformAsynchACC
      * @see alice.tucson.api.UniformSynchACC UniformSynchACC
      */
-    public boolean urd_2(final Term arg0, final Term arg1) 
-    		throws TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException {
+    public boolean urd_2(final Term arg0, final Term arg1)
+            throws TucsonInvalidTupleCentreIdException,
+            TucsonOperationNotPossibleException, UnreachableNodeException,
+            OperationTimeOutException {
         if (this.context == null) {
             return false;
         }
         TucsonTupleCentreId tid;
         tid = new TucsonTupleCentreId(arg1.getTerm().toString());
-        
         ITucsonOperation op;
-        op = this.context.urd(tid, new LogicTuple(arg0.getTerm()),
-                (Long) null);
-        
+        op = this.context.urd(tid, new LogicTuple(arg0.getTerm()), (Long) null);
         if (op.isResultSuccess()) {
             this.unify(arg0.getTerm(), op.getLogicTupleResult().toTerm());
         }
@@ -1370,31 +1424,33 @@ public class Tucson2PLibrary extends Library {
      * 
      * @return <code>true</code> if the operation succeed, <code>false</code>
      *         otherwise
-     *         
+     * 
      * @throws TucsonInvalidTupleCentreIdException
-     * 			  if the given Term does not represent a valid TuCSoN identifier
+     *             if the given Term does not represent a valid TuCSoN
+     *             identifier
      * @throws TucsonOperationNotPossibleException
-     * 			  if the requested operation cannot be carried out
+     *             if the requested operation cannot be carried out
      * @throws UnreachableNodeException
-     * 			  if the target tuple centre is not reachable over the network
+     *             if the target tuple centre is not reachable over the network
      * @throws OperationTimeOutException
-     * 			  if the operation timeout expired prior to operation completion         
+     *             if the operation timeout expired prior to operation
+     *             completion
      * 
      * @see alice.tucson.api.UniformAsynchACC UniformAsynchACC
      * @see alice.tucson.api.UniformSynchACC UniformSynchACC
      */
-    public boolean urdp_2(final Term arg0, final Term arg1) 
-    		throws TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException {
+    public boolean urdp_2(final Term arg0, final Term arg1)
+            throws TucsonInvalidTupleCentreIdException,
+            TucsonOperationNotPossibleException, UnreachableNodeException,
+            OperationTimeOutException {
         if (this.context == null) {
             return false;
         }
         TucsonTupleCentreId tid;
         tid = new TucsonTupleCentreId(arg1.getTerm().toString());
-        
         ITucsonOperation op;
-        op = this.context.urdp(tid, new LogicTuple(arg0.getTerm()),
-                (Long) null);
-        
+        op = this.context
+                .urdp(tid, new LogicTuple(arg0.getTerm()), (Long) null);
         if (op.isResultSuccess()) {
             this.unify(arg0.getTerm(), op.getLogicTupleResult().toTerm());
         }

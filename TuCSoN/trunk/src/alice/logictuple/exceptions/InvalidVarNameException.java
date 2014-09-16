@@ -13,7 +13,6 @@
  */
 package alice.logictuple.exceptions;
 
-
 /**
  * Exception thrown when a not valid name for Variable is used
  * 
@@ -25,13 +24,11 @@ public class InvalidVarNameException extends LogicTupleException {
      */
     private static final long serialVersionUID = 1L;
 
-	public InvalidVarNameException() {
-		super();
-	}
+    public InvalidVarNameException() {
+        super();
+    }
 
-	public InvalidVarNameException(final String message, final Throwable cause) {
-		super(message, cause);
-	}
-    
-    
+    public InvalidVarNameException(final String message, final Throwable cause) {
+        super(message, cause);
+    }
 }

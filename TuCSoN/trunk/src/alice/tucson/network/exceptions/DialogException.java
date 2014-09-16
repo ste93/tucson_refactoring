@@ -9,20 +9,20 @@ package alice.tucson.network.exceptions;
  */
 public class DialogException extends Exception {
     private static final long serialVersionUID = 1L;
-    
+
     public DialogException() {
-    	super();
+        super();
     }
-    
+
+    public DialogException(final String message) {
+        super(message);
+    }
+
+    public DialogException(final String message, final Throwable cause) {
+        super(message, cause);
+    }
+
     public DialogException(final Throwable cause) {
-    	super(cause);
+        super(cause);
     }
-
-	public DialogException(final String message, final Throwable cause) {
-		super(message, cause);
-	}
-
-	public DialogException(final String message) {
-		super(message);
-	}
 }

@@ -38,20 +38,23 @@ public final class TPFactory {
      * @throws UnreachableNodeException
      *             if the target tuple centre is unreachable
      * @throws InvalidProtocolTypeException
-     * 	           if the protocol type used is not DIALOG_TYPE_TCP    
+     *             if the protocol type used is not DIALOG_TYPE_TCP
      * @throws IllegalPortNumberException
-     * 		   if the portNumber is out of bounds ( < 1 || > MAX_UNBOUND_PORT)       
+     *             if the portNumber is out of bounds ( < 1 || >
+     *             MAX_UNBOUND_PORT)
      */
     public static AbstractTucsonProtocol getDialogAgentSide(
             final int tucsonProtocolType, final TucsonTupleCentreId tid)
-            throws DialogInitializationException, UnreachableNodeException, InvalidProtocolTypeException {
+            throws DialogInitializationException, UnreachableNodeException,
+            InvalidProtocolTypeException {
         final String node = alice.util.Tools.removeApices(tid.getNode());
         final int port = tid.getPort();
         // TODO CICORA: il controllo su porta e address va fatto meglio, vedere
         // come e'
         // fatto nel resto del codice
         if (port < 1 || port > TPFactory.MAX_UNBOUND_PORT) {
-        	throw new IllegalPortNumberException("Port number out of bounds. Port number: " + port);
+            throw new IllegalPortNumberException(
+                    "Port number out of bounds. Port number: " + port);
         }
         AbstractTucsonProtocol tp = null;
         if (tucsonProtocolType == TPFactory.DIALOG_TYPE_TCP) {
@@ -72,18 +75,19 @@ public final class TPFactory {
      * @throws UnreachableNodeException
      *             if the target tuple centre is unreachable
      * @throws IllegalPortNumberException
-     * 			   if the portNumber is out of bounds ( < 1 || > MAX_UNBOUND_PORT)   
+     *             if the portNumber is out of bounds ( < 1 || >
+     *             MAX_UNBOUND_PORT)
      */
     public static AbstractTucsonProtocol getDialogAgentSide(
-            final TucsonTupleCentreId tid) throws 
-            UnreachableNodeException, DialogInitializationException {
+            final TucsonTupleCentreId tid) throws UnreachableNodeException,
+            DialogInitializationException {
         final TPConfig config = TPConfig.getInstance();
         try {
-			return TPFactory.getDialogAgentSide(config.getDefaultProtocolType(),
-			        tid);
-		} catch (InvalidProtocolTypeException e) {
-			e.printStackTrace();
-		}
+            return TPFactory.getDialogAgentSide(
+                    config.getDefaultProtocolType(), tid);
+        } catch (final InvalidProtocolTypeException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 
@@ -91,10 +95,10 @@ public final class TPFactory {
      * Instantiate a new TucsonProtocol based of a default implementation type.
      * 
      * @return the TucsonProtocol class
-     * @throws InvalidProtocolTypeException 
-     * 			   if the protocol type used is not DIALOG_TYPE_TCP
+     * @throws InvalidProtocolTypeException
+     *             if the protocol type used is not DIALOG_TYPE_TCP
      * @throws DialogInitializationException
-     * 			   if something goes wrong in the underlying network
+     *             if something goes wrong in the underlying network
      */
     public static AbstractTucsonProtocol getDialogNodeSide()
             throws InvalidProtocolTypeException, DialogInitializationException {
@@ -111,19 +115,21 @@ public final class TPFactory {
      * @throws DialogInitializationException
      *             if something goes wrong in the underlying network
      * @throws InvalidProtocolTypeException
-     * 			   if the protocol type used is not DIALOG_TYPE_TCP
+     *             if the protocol type used is not DIALOG_TYPE_TCP
      * @throws IllegalPortNumberException
-     * 			   if the portNumber is out of bounds ( < 1 || > MAX_UNBOUND_PORT)
+     *             if the portNumber is out of bounds ( < 1 || >
+     *             MAX_UNBOUND_PORT)
      */
     public static AbstractTucsonProtocol getDialogNodeSide(
-            final int tucsonProtocolType) throws InvalidProtocolTypeException, DialogInitializationException {
+            final int tucsonProtocolType) throws InvalidProtocolTypeException,
+            DialogInitializationException {
         AbstractTucsonProtocol tp = null;
-        
         if (tucsonProtocolType == TPFactory.DIALOG_TYPE_TCP) {
             final TPConfig config = TPConfig.getInstance();
             final int port = config.getNodeTcpPort();
             if (port < 1 || port > TPFactory.MAX_UNBOUND_PORT) {
-                throw new IllegalPortNumberException("Port number out of bounds. Port number: " + port);
+                throw new IllegalPortNumberException(
+                        "Port number out of bounds. Port number: " + port);
             }
             tp = new TucsonProtocolTCP(port);
         } else {

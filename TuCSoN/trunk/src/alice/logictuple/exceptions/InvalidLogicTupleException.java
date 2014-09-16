@@ -24,20 +24,20 @@ public class InvalidLogicTupleException extends LogicTupleException {
      */
     private static final long serialVersionUID = 1L;
 
-	public InvalidLogicTupleException() {
-		super();
-	}
+    public InvalidLogicTupleException() {
+        super();
+    }
 
-	public InvalidLogicTupleException(final String arg0) {
-		super(arg0);
-	}
+    public InvalidLogicTupleException(final String arg0) {
+        super(arg0);
+    }
 
-	public InvalidLogicTupleException(final Throwable arg0) {
-		super(arg0);
-	}
+    public InvalidLogicTupleException(final String message,
+            final Throwable cause) {
+        super(message, cause);
+    }
 
-	public InvalidLogicTupleException(final String message, final Throwable cause) {
-		super(message, cause);
-	}
-    
+    public InvalidLogicTupleException(final Throwable arg0) {
+        super(arg0);
+    }
 }

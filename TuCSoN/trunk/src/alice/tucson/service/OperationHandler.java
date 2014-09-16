@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-
 import alice.logictuple.LogicTuple;
 import alice.respect.api.TupleCentreId;
 import alice.tucson.api.ITucsonOperation;
@@ -432,7 +431,6 @@ public class OperationHandler {
             throw new TucsonOperationNotPossibleException();
         }
         return this.doOperation(aid, tcid, type, t, l);
-       
     }
 
     /**

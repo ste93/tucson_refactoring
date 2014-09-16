@@ -7,8 +7,7 @@ import alice.tuprolog.Prolog;
 import alice.tuprolog.Term;
 
 /**
- * @author ste (mailto: s.mariani@unibo.it) on 07/gen/2014
- * ciccis
+ * @author ste (mailto: s.mariani@unibo.it) on 07/gen/2014 ciccis
  */
 public final class LogicMatchingEngine {
     private static final Prolog MATCHING_ENGINE = new Prolog();

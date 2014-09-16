@@ -24,13 +24,11 @@ public class InvalidLogicTupleOperationException extends LogicTupleException {
      */
     private static final long serialVersionUID = 1L;
 
-	public InvalidLogicTupleOperationException() {
-		super();
-	}
+    public InvalidLogicTupleOperationException() {
+        super();
+    }
 
-	public InvalidLogicTupleOperationException(final String arg0) {
-		super(arg0);
-	}
-    
-    
+    public InvalidLogicTupleOperationException(final String arg0) {
+        super(arg0);
+    }
 }

@@ -60,10 +60,11 @@ public class JTupleTemplate implements Iterable<IJArg>, IJTupleTemplate {
      */
     @Override
     public IJArg getArg(final int i) {
-    	if (i >= 0 && i < this.args.size()) {
+        if (i >= 0 && i < this.args.size()) {
             return this.args.get(i);
         }
-        throw new InvalidOperationException("Index out of bounds. Value of the index i: " + i);
+        throw new InvalidOperationException(
+                "Index out of bounds. Value of the index i: " + i);
     }
 
     /*

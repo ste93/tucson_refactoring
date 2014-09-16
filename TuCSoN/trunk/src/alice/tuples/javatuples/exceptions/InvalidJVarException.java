@@ -14,11 +14,11 @@ public class InvalidJVarException extends Exception {
     /** serialVersionUID **/
     private static final long serialVersionUID = 1L;
 
-	public InvalidJVarException() {
-		super();
-	}
+    public InvalidJVarException() {
+        super();
+    }
 
-	public InvalidJVarException(final String message) {
-		super(message);
-	}
+    public InvalidJVarException(final String message) {
+        super(message);
+    }
 }
