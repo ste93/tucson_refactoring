@@ -52,6 +52,14 @@ public class PersistencyXML {
     private long initCreationPersistencyXML;
     private long finishCreationPersistencyXML;
     
+    private long initParse;
+    private long finishParse;
+    
+    private long initWriteUpdate;
+    private long finishWriteUpdate;
+    
+    private long initWriteFile;
+    private long finishWriteFile;
     
 	public PersistencyXML(String path, TucsonTupleCentreId fileName)
 	{
@@ -93,6 +101,9 @@ public class PersistencyXML {
 	
 	public PersistencyData parse()
 	{
+		
+		this.initParse=System.currentTimeMillis();
+		
 		PersistencyData pData = new PersistencyData();
 		List<String> tuples = null;
 		List<String> specTuple = null;
@@ -124,6 +135,8 @@ public class PersistencyXML {
         	
 			pData = new PersistencyData(tuples,specTuple,predicates,updates);
 			
+			this.finishParse=System.currentTimeMillis();
+			
 		} catch (ParserConfigurationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -133,11 +146,16 @@ public class PersistencyXML {
 			e.printStackTrace();
 		}
         
+        this.log("Time elapsed for parse metod: "+((this.finishParse-this.initParse)/1000));
+        
 		return pData;
 	}
 	
 	public void writeUpdate(LogicTuple update, ModType mode)
 	{
+		
+		this.initWriteUpdate=System.currentTimeMillis();
+		
 		try {
 			DocumentBuilderFactory dbf= DocumentBuilderFactory.newInstance();   
 			DocumentBuilder db = dbf.newDocumentBuilder();   
@@ -196,7 +214,13 @@ public class PersistencyXML {
 			DOMSource source = new DOMSource(doc);
 			StreamResult result = new StreamResult(this.xmlFile);
 			transformer.transform(source, result);
-			System.out.println("File updated!");
+			
+			this.finishWriteUpdate=System.currentTimeMillis();
+			
+			
+			this.log("Time elapsed for WriteUpdate: "+((this.finishWriteUpdate-this.initWriteUpdate)/1000));
+			
+			this.log("File updated!");
 
 		} catch (TransformerConfigurationException e) {
 			// TODO Auto-generated catch block
@@ -217,7 +241,10 @@ public class PersistencyXML {
 	}
 	
 	public void write(PersistencyData pData)
-	{	   
+	{	
+		
+		this.initWriteFile=System.currentTimeMillis();
+		
 		try 
 		{
 			long now = System.currentTimeMillis();
@@ -282,7 +309,11 @@ public class PersistencyXML {
 	 
 			transformer.transform(source, result);
 	 
-			System.out.println("File saved!");
+			this.finishWriteFile=System.currentTimeMillis();
+			
+			this.log("Time elapsed for write file: "+((this.finishWriteFile-this.initWriteFile)/1000));
+			
+			this.log("File saved!");
 
 		} catch (ParserConfigurationException e) {
 			// TODO Auto-generated catch block
