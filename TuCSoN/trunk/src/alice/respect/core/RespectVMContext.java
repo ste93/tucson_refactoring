@@ -1417,6 +1417,16 @@ public class RespectVMContext extends
                 }
             }
             br.close();
+            
+            // MODIFICA PERSISTENZA XML
+            this.pXML = new PersistencyXML(path.concat(file));
+            PersistencyData recoveredData = this.pXML.parse();
+            tuples = recoveredData.getTuples();
+            specs = recoveredData.getSpecTuples();
+            predicates = recoveredData.getPredicates();
+            updates = recoveredData.getUpdates();
+            //------
+            
             // recover tuples
             if (tuples != null && !tuples.isEmpty()) {
                 this.log(">>> Recovering tuples...");
@@ -1479,10 +1489,6 @@ public class RespectVMContext extends
                 this.log(">>> Old persistency file could NOT be deleted!");
             }
             
-            // MODIFICA NOSTRA
-            this.pXML = new PersistencyXML(path.concat(file));
-            this.pXML.parse();
-            //------
             this.enablePersistency(path, tcName);
         } catch (final FileNotFoundException e) {
             e.printStackTrace();
