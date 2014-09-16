@@ -19,6 +19,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import alice.respect.api.IRespectTC;
+import alice.respect.core.RespectVM;
 import alice.respect.core.StepMonitor;
 import alice.tuplecentre.api.AgentId;
 import alice.tuplecentre.api.IId;
@@ -57,10 +58,13 @@ public abstract class AbstractTupleCentreVMContext implements
     private final IRespectTC respectTC;
     private final Map<String, AbstractTupleCentreVMState> states;
     private final TupleCentreId tid;
+    private final RespectVM rvm;
 
     /**
      * Creates a new tuple centre virtual machine core
      * 
+     * @param id
+     *            is the ReSpecT virtual machine
      * @param id
      *            is the tuple centre identifier
      * @param ieSize
@@ -68,8 +72,9 @@ public abstract class AbstractTupleCentreVMContext implements
      * @param rtc
      *            the ReSpecT tuple centre this VM refers to
      */
-    public AbstractTupleCentreVMContext(final TupleCentreId id,
+    public AbstractTupleCentreVMContext(final RespectVM rvm, final TupleCentreId id,
             final int ieSize, final IRespectTC rtc) {
+    	this.rvm = rvm;
         this.management = false;
         this.stepMode = false;
         this.step = new StepMonitor();
@@ -189,7 +194,12 @@ public abstract class AbstractTupleCentreVMContext implements
     public void execute() {
         while (!this.currentState.isIdle()) {
             this.currentState.execute();
+            
             this.currentState = this.currentState.getNextState();
+            if (this.rvm.hasInspectors()) {
+                this.rvm.notifyInspectableEvent(new InspectableEvent(this,
+                        InspectableEvent.TYPE_NEWSTATE));
+            }
             if (isStepMode()) {
                 try {
                     this.step.awaitEvent();

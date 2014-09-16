@@ -464,10 +464,6 @@ public class RespectVM implements Runnable {
                 this.context.execute();
             }
             try {
-                if (this.hasInspectors()) {
-                    this.notifyInspectableEvent(new InspectableEvent(this,
-                            InspectableEvent.TYPE_NEWSTATE));
-                }
                 if (!(this.context.pendingEvents() || this.context
                         .pendingEnvEvents())) {
                     this.news.awaitEvent();
