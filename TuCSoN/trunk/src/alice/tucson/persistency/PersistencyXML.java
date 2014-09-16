@@ -206,7 +206,13 @@ public class PersistencyXML {
 			}
 			updates.appendChild(upd);
 
-
+			// Updates Time attribute
+			long now = System.currentTimeMillis();
+			Date d = new Date(now);
+			final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH.mm.ss");
+			String date = sdf.format(d);
+			updates.setAttribute("time", date);
+			
 			// write the content into xml file
 			TransformerFactory transformerFactory = TransformerFactory.newInstance();
 			Transformer transformer = transformerFactory.newTransformer();
