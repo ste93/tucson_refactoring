@@ -55,4 +55,8 @@ public abstract class AbstractTupleCentreVMState {
      * 
      */
     public abstract void resolveLinks();
+
+    protected void log() {
+        System.out.println("......=> " + this.getClass().getSimpleName());
+    }
 }

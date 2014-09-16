@@ -36,7 +36,9 @@ public class ListeningState extends AbstractTupleCentreVMState {
 
     @Override
     public void execute() {
-        System.out.println("listening state");
+        if (super.vm.isStepMode()) {
+            this.log();
+        }
         this.vm.fetchPendingEvent();
         final InputEvent ev = this.vm.getCurrentEvent();
         if (ev.getSimpleTCEvent().getType() != RespectOperation.OPTYPE_TIME) {

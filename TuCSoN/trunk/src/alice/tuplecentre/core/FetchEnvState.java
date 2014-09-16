@@ -33,7 +33,9 @@ public class FetchEnvState extends AbstractTupleCentreVMState {
 
     @Override
     public void execute() {
-        System.out.println("fetch env state");
+        if (super.vm.isStepMode()) {
+            this.log();
+        }
         this.vm.fetchPendingEnvEvent();
         final InputEvent ev = this.vm.getCurrentEvent();
         this.vm.addPendingQueryEvent(ev);

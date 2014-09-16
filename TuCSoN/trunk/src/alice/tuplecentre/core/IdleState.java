@@ -34,10 +34,9 @@ public class IdleState extends AbstractTupleCentreVMState {
 
     @Override
     public void execute() {
-        System.out.println("idle state");
-        /*
-         * 
-         */
+        if (super.vm.isStepMode()) {
+            this.log();
+        }
     }
 
     @Override
