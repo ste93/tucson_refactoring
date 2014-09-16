@@ -16,20 +16,34 @@ public class PersistencyData {
 	private List<String> predicates;
 	private List<String> updates;
 	
+	private long initCreationPersistencyData;
+	private long terminateCreationPersistencyData;
+	
+	
 	public PersistencyData(ITupleSet tSet, ITupleSet tSpecSet, TupleSet pPrologPred, List<String> tUpdates)
 	{
+		this.initCreationPersistencyData=System.currentTimeMillis();
 		setTupleSet(tSet);
 		setTupleSpecSet(tSpecSet);
 		setPrologPredicates(pPrologPred);
 		setUpdates(tUpdates);
+		this.terminateCreationPersistencyData=System.currentTimeMillis();
+		
+		this.log("Time elapsed from creation of PersistencyData: "+((this.terminateCreationPersistencyData-this.initCreationPersistencyData)/1000));
 	}
 
 	public PersistencyData(List<String>tuples,List<String>specTuples,List<String> pPredicates, List<String>updates)
 	{
+		this.initCreationPersistencyData=System.currentTimeMillis();
+		
 		setTuples(tuples);
 		setSpecTuples(specTuples);
 		setPredicates(pPredicates);
 		setUpdates(updates);
+
+		this.terminateCreationPersistencyData=System.currentTimeMillis();
+		
+		this.log("Time elapsed from creation of PersistencyData: "+((this.terminateCreationPersistencyData-this.initCreationPersistencyData)/1000));
 	}
 	
 	public PersistencyData() {
@@ -90,5 +104,9 @@ public class PersistencyData {
 
 	public void setPredicates(List<String> pPredicates) {
 		this.predicates = pPredicates;
+	}
+	
+	private void log(String s){
+		System.out.println("["+this.getClass().getName()+"] "+s);
 	}
 }

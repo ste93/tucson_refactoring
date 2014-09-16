@@ -49,15 +49,30 @@ public class PersistencyXML {
     private String pPath;
     private File xmlFile;
     
+    private long initCreationPersistencyXML;
+    private long finishCreationPersistencyXML;
+    
+    
 	public PersistencyXML(String path, TucsonTupleCentreId fileName)
 	{
+		this.initCreationPersistencyXML = System.currentTimeMillis();
+		
 		this.pFileName = fileName;
 		this.pPath = path;
+		this.finishCreationPersistencyXML=System.currentTimeMillis();
+		
+		log("Time elapsed for creation of PersistencyXML: "+((this.finishCreationPersistencyXML-this.initCreationPersistencyXML)/1000));
 	}
 	
 	public PersistencyXML(String fileName)
 	{
+		this.initCreationPersistencyXML = System.currentTimeMillis();
+		
 		this.xmlFile = new File(fileName);
+		
+		this.finishCreationPersistencyXML=System.currentTimeMillis();
+		
+		log("Time elapsed for creation of PersistencyXML: "+((this.finishCreationPersistencyXML-this.initCreationPersistencyXML)/1000));
 	}
 	
 	public List<String> getNodeInfo(Node node, String childName)
@@ -277,5 +292,9 @@ public class PersistencyXML {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	private void log(String s){
+		System.out.println("["+this.getClass().getName()+"] "+s);
 	}
 }
