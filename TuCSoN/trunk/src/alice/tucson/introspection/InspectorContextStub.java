@@ -89,7 +89,6 @@ public class InspectorContextStub implements InspectorContext {
             if (!this.exitFlag) {
                 InspectorContextStub.log("Error receiving a message");
             }
-            e.printStackTrace();
         }
     }
 
