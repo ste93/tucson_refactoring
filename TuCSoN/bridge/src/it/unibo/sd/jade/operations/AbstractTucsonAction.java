@@ -77,4 +77,9 @@ public abstract class AbstractTucsonAction {
     // public TucsonTupleCentreId getTcid() {
     // return this.tcid;
     // }
+
+	public TucsonTupleCentreId getTupleCentreId() {
+		// TODO Auto-generated method stub
+		return tcid;
+	}
 }

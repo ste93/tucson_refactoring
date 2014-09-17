@@ -43,4 +43,8 @@ public abstract class AbstractTucsonOrdinaryAction extends AbstractTucsonAction 
     public String toString() {
         return "(" + this.tuple + ") to " + this.tcid;
     }
+    
+    public LogicTuple getTuple(){
+    	return tuple;
+    }
 }
