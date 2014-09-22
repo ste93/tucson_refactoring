@@ -657,7 +657,6 @@ public abstract class AbstractTupleCentreOperation implements
             }
         } catch (final InterruptedException e) {
             // do nothing here, ususally happens when shutting down nodes
-            e.printStackTrace();
         }
     }
 
@@ -671,7 +670,6 @@ public abstract class AbstractTupleCentreOperation implements
                 } catch (final InterruptedException e) {
                     // do nothing here, usually happens when shutting down
                     // nodes
-                    e.printStackTrace();
                 }
             }
             if (!this.operationCompleted) {
