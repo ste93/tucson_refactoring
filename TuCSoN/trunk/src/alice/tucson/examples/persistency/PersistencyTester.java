@@ -89,6 +89,8 @@ public final class PersistencyTester {
                         Long.MAX_VALUE);
             }
             acc.exit();
+            // give node time to close persistency file
+            Thread.sleep(3000);
             tns.shutdown();
         } catch (final TucsonInvalidTupleCentreIdException e) {
             // TODO Auto-generated catch block
@@ -109,6 +111,9 @@ public final class PersistencyTester {
             // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (final InvalidTupleException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (InterruptedException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
