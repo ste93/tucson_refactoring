@@ -51,6 +51,7 @@ import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.introspection.WSetEvent;
 import alice.tucson.persistency.PersistencyData;
+import alice.tucson.persistency.PersistencyPerformance;
 import alice.tucson.persistency.PersistencyXML;
 import alice.tucson.service.Spawn2PLibrary;
 import alice.tucson.service.Spawn2PSolver;
@@ -217,6 +218,11 @@ public class RespectVMContext extends
     
 	private long initRecovery;
 	private long finishRecovery;
+	
+	private PersistencyPerformance pPerformance;
+	
+	//----------
+	
 	
     /**
      * 
@@ -410,6 +416,10 @@ public class RespectVMContext extends
         Date d = new Date(now);
         final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH.mm.ss");
         String date = sdf.format(d);
+        if(this.pPerformance == null)
+        {
+        	this.pPerformance = new PersistencyPerformance(path.concat(date + ".log"));
+        }
         this.pDate = date;
         final File f = new File(path, "tc_" + this.pFileName + "_" + date
                 + ".dat");
@@ -449,14 +459,21 @@ public class RespectVMContext extends
             pw.close();
             this.log(">>> ...persistency snapshot taken!");
             
+            this.finishPersistencySnapshot=System.nanoTime();
+            String s = "Time elampsed for create file dat: "+((this.finishPersistencySnapshot-this.initPeristencySnapshot)/1000000);
+            this.log(s);
+            this.pPerformance.write(s);
+           
+            this.initPeristencySnapshot = System.nanoTime();
             // MODIFICA PERSISTENZA
             PersistencyData pData = new PersistencyData(this.tSet, this.tSpecSet, this.prologPredicates, null);
             this.pXML = new PersistencyXML(path,fileName);
             this.pXML.write(pData);
-            
             this.finishPersistencySnapshot=System.nanoTime();
-            
-            this.log("Time elampsed for create file dat: "+((this.finishPersistencySnapshot-this.initPeristencySnapshot)/1000000));
+            s = "Time elampsed for create file xml: "+((this.finishPersistencySnapshot-this.initPeristencySnapshot)/1000000);
+            this.log(s);
+            this.pPerformance.write(s);
+
             
         } catch (final IOException e) {
             e.printStackTrace();
@@ -1375,9 +1392,6 @@ public class RespectVMContext extends
             final TucsonTupleCentreId tcName) {
         BufferedReader br = null;
         try {
-        	
-        	this.initRecovery=System.nanoTime();
-        	
             final File f = new File(path.concat(file));
             br = new BufferedReader(new FileReader(f));
             String line = br.readLine();
@@ -1385,6 +1399,16 @@ public class RespectVMContext extends
             List<String> specs = null;
             List<String> predicates = null;
             List<String> updates = null;
+            
+            // PERFORMANCE
+            long now = System.currentTimeMillis();
+            Date d = new Date(now);
+            final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH.mm.ss");
+            String date = sdf.format(d);
+            String logFileName = path.concat(date+".log");
+            this.pPerformance = new PersistencyPerformance(logFileName);
+            
+            this.initRecovery = System.nanoTime();
             // read snapshot
             if (line != null && line.startsWith("<snapshot")) {
                 this.log(">>> Snapshot begins!");
@@ -1441,7 +1465,13 @@ public class RespectVMContext extends
             }
             br.close();
             
-            // MODIFICA PERSISTENZA XML
+            this.finishRecovery = System.nanoTime();
+            String log = "Time elapsed for recovery file DAT: "+((this.finishRecovery-this.initRecovery)/1000000);
+            this.pPerformance.write(log);
+            
+            this.initRecovery = System.nanoTime();
+
+            // MODIFICA PERSISTENZA XML         
             this.pXML = new PersistencyXML(path.concat(file));
             PersistencyData recoveredData = this.pXML.parse();
             tuples = recoveredData.getTuples();
@@ -1449,6 +1479,10 @@ public class RespectVMContext extends
             predicates = recoveredData.getPredicates();
             updates = recoveredData.getUpdates();
             //------
+            
+            this.finishRecovery = System.nanoTime();
+            log = "Time elapsed for recovery file XML: "+((this.finishRecovery-this.initRecovery)/1000000);
+            this.pPerformance.write(log);
             
             // recover tuples
             if (tuples != null && !tuples.isEmpty()) {
@@ -1506,11 +1540,6 @@ public class RespectVMContext extends
                     }
                 }
                 this.log(">>> ...updates recovered!");
-                
-                this.finishRecovery=System.nanoTime();
-                
-                this.log("Time elapsed for recovery: "+((this.finishRecovery-this.initRecovery)/1000000));
-                
             }
             br.close();
             if (!f.delete()) {
@@ -1518,11 +1547,13 @@ public class RespectVMContext extends
             }
             
             this.enablePersistency(path, tcName);
-        } catch (final FileNotFoundException e) {
+        }
+        catch (final InvalidTupleException e) {
+            e.printStackTrace();
+        }
+        catch (final FileNotFoundException e) {
             e.printStackTrace();
         } catch (final IOException e) {
-            e.printStackTrace();
-        } catch (final InvalidTupleException e) {
             e.printStackTrace();
         } finally {
             if (br != null) {
@@ -1532,6 +1563,7 @@ public class RespectVMContext extends
                     e.printStackTrace();
                 }
             }
+            
         }
     }
 
@@ -1976,11 +2008,15 @@ public class RespectVMContext extends
     private void writePersistencyUpdate(final LogicTuple update,
             final ModType mode) {
     	
-    	this.initUpdateFile=System.nanoTime();
-    	
-    	
     	//Modifica vince
+    	this.initUpdateFile=System.nanoTime();
     	this.pXML.writeUpdate(update, mode);
+        this.finishUpdateFile=System.nanoTime();
+        String s = "Time elapsed for update file XML: "+((this.finishUpdateFile-this.initUpdateFile)/1000000);
+        this.log(s);
+    	this.pPerformance.write(s);
+    	
+    	this.initUpdateFile=System.nanoTime();
         final File f = new File(this.pPath, "tc_" + this.pFileName + "_"
                 + this.pDate + ".dat");
         PrintWriter pw = null;
@@ -2021,8 +2057,9 @@ public class RespectVMContext extends
             pw.close();
             
             this.finishUpdateFile=System.nanoTime();
-            
-            this.log("Time elapsed for update file: "+((this.finishUpdateFile-this.initUpdateFile)/1000000));
+            s = "Time elapsed for update file DAT: "+((this.finishUpdateFile-this.initUpdateFile)/1000000);
+            this.log(s);
+        	this.pPerformance.write(s);
             
         } catch (final IOException e) {
             e.printStackTrace();
