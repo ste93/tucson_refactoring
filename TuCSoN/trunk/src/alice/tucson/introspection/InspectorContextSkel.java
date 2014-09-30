@@ -191,7 +191,34 @@ public class InspectorContextSkel extends AbstractACCProxyNodeSide implements
             final InspectorContextEvent msg = new InspectorContextEvent();
             msg.setLocalTime(System.currentTimeMillis());
             msg.setVmTime(ev.getTime());
-            if (ev.getType() == InspectableEvent.TYPE_NEWSTATE) {
+            if (ev.getType() == InspectableEvent.TYPE_IDLESTATE && this.protocol.getStepModeObservType() == InspectorProtocol.STEPMODE_AGENT_OBSERVATION) {
+                if (this.protocol.getTsetObservType() == InspectorProtocol.PROACTIVE_OBSERVATION) {
+                    final LogicTuple[] ltSet = (LogicTuple[]) TupleCentreContainer
+                            .doManagementOperation(
+                                    TucsonOperation.getTSetCode(), this.tcId,
+                                    this.protocol.getTsetFilter());
+                    msg.setTuples(new LinkedList<LogicTuple>());
+                    if (ltSet != null) {
+                        for (final LogicTuple lt : ltSet) {
+                            msg.getTuples().add(lt);
+                        }
+                    }
+                }
+                if (this.protocol.getPendingQueryObservType() == InspectorProtocol.PROACTIVE_OBSERVATION) {
+                    final WSetEvent[] ltSet = (WSetEvent[]) TupleCentreContainer
+                            .doManagementOperation(
+                                    TucsonOperation.getWSetCode(), this.tcId,
+                                    this.protocol.getWsetFilter());
+                    msg.setWnEvents(new LinkedList<WSetEvent>());
+                    if (ltSet != null) {
+                        for (final WSetEvent lt : ltSet) {
+                            msg.getWnEvents().add(lt);
+                        }
+                    }
+                }
+                this.dialog.sendInspectorEvent(msg);
+            }
+            if (ev.getType() == InspectableEvent.TYPE_NEWSTATE && this.protocol.getStepModeObservType() == InspectorProtocol.STEPMODE_TUPLESPACE_OBSERVATION) {
                 if (this.protocol.getTsetObservType() == InspectorProtocol.PROACTIVE_OBSERVATION) {
                     final LogicTuple[] ltSet = (LogicTuple[]) TupleCentreContainer
                             .doManagementOperation(
