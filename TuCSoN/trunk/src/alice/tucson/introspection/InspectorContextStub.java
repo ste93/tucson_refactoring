@@ -171,6 +171,7 @@ public class InspectorContextStub implements InspectorContext {
         newp.setTracing(p.isTracing());
         newp.setPendingQueryObservType(p.getPendingQueryObservType());
         newp.setReactionsObservType(p.getReactionsObservType());
+        newp.setStepModeObservType(p.getStepModeObservType());
         try {
             this.dialog.sendNodeMsg(new SetProtocolMsg(this.id, newp));
         } catch (final DialogException e) {

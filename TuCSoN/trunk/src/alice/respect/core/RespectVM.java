@@ -460,6 +460,10 @@ public class RespectVM implements Runnable {
             synchronized (this.idle) {
                 this.context.execute();
             }
+            if (this.hasInspectors()) {
+                this.notifyInspectableEvent(new InspectableEvent(this,
+                        InspectableEvent.TYPE_IDLESTATE));
+            }
             try {
                 if (!(this.context.pendingEvents() || this.context
                         .pendingEnvEvents())) {
