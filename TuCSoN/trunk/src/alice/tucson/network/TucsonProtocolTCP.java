@@ -226,9 +226,9 @@ public class TucsonProtocolTCP extends AbstractTucsonProtocol {
         try {
             msg = (TucsonMsgReply) this.inStream.readObject();
         } catch (final IOException e) {
-            throw new DialogExceptionTcp();
+            throw new DialogExceptionTcp(e);
         } catch (final ClassNotFoundException e) {
-            throw new DialogExceptionTcp();
+            throw new DialogExceptionTcp(e);
         }
         return msg;
     }

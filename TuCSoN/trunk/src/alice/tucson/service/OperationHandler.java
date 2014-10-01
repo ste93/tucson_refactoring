@@ -85,6 +85,7 @@ public class OperationHandler {
                 } catch (final DialogException e) {
                     OperationHandler.this
                             .log("TuCSoN node service unavailable, nothing I can do");
+                    OperationHandler.this.log(e.getCause().toString());
                     this.setStop();
                     break;
                 }
