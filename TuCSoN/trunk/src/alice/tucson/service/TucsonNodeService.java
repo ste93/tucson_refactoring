@@ -134,7 +134,7 @@ public class TucsonNodeService {
                 test.close();
             }
         }
-        return reply.equals(TucsonMetaACC.getVersion());
+        return reply.startsWith("TuCSoN");
     }
 
     /**
