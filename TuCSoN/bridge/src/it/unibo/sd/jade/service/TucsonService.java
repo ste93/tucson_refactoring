@@ -278,6 +278,7 @@ public class TucsonService extends BaseService {
      * Service name
      */
     public static final String NAME = "it.unibo.sd.jade.service.TucsonService";
+    private static final String VERSION = "TuCSoN4JADE-1.0";
     /*
      * L'insieme dei comandi verticali che il servizio e' in grado di soddisfare
      * autonomamente
@@ -290,7 +291,7 @@ public class TucsonService extends BaseService {
      * @return
      */
     private static String getVersion() {
-        return "TuCSoN4JADE-1.0";
+        return VERSION;
     }
 
     /**

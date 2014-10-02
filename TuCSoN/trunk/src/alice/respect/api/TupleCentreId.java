@@ -73,7 +73,7 @@ public class TupleCentreId implements alice.tuplecentre.api.TupleCentreId,
         final String host = hostName.trim();
         final String port = portName.trim();
         try {
-            this.id = Term.createTerm(tc + "@" + host + ":" + port,
+            this.id = Term.createTerm(tc + "@'" + host + "':'" + port + "'",
                     TupleCentreId.opManager);
         } catch (final InvalidTermException e) {
             throw new InvalidTupleCentreIdException();
