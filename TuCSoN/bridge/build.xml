@@ -139,21 +139,12 @@
 	</target>
 
 	<target name="help" depends="00.init">
-		<echo>The following targets are available: \n
-\t 05.build \t compile application classes \n
-\t \t \t Destination: ${classes-dir} \n
-\t 08.package \t create application jar file \n
-\t \t \t Destination: ${lib-dir} \n
-\t 10.javadoc \t generate application javadoc \n
-\t \t \t Destination: ${doc-dir} \n
-\t 11.release.bin \t generate application bundle ready for distribution.
-\t \t The bundle contains the application binaries (TuCSoN4JADE.jar),
-\t \t the javadoc, and the "howto" guide. \n
-\t \t \t Destination: ${rel-dir} \n
-\t 12.tag \t Tag "master" branch into Bitbucket repository (http://bitbucket.org/smariani/tucson).
-\t \t Set username and project version in "environment.properties" to use this target.
-\t \t Your password will be prompted. \n
-\t help \t print this help
+		<echo>The following targets are available:
+  1.build.....compile application classes into ${classes-dir}
+  2.package...create application jar file into ${lib-dir}
+  3.javadoc...generate application javadoc into ${doc-dir}
+  4.release...generate application bundle into ${rel-dir}
+  help........print this help
 		</echo>
 	</target>
 
@@ -163,19 +154,17 @@
 	<!-- ============= -->
 
 	<target name="03.tree" depends="00.init" description="Creates build tree, if needed">
-		<mkdir dir="${src-dir}" />
 		<mkdir dir="${lib-dir}" />
 		<mkdir dir="${classes-dir}" />
 		<mkdir dir="${rel-dir}" />
-		<mkdir dir="${libs-dir}" />
 		<mkdir dir="${doc-dir}" />
 	</target>
 
-	<target name="04.build" depends="01.classpath, 03.tree" description="Compile java sources in '${src-dir}' to '${classes-dir}'">
+	<target name="1.build" depends="01.classpath, 03.tree" description="Compile java sources in '${src-dir}' to '${classes-dir}'">
 		<build debug="true" />
 	</target>
 
-	<target name="05.package" depends="01.classpath, 03.tree" description="Package runnable jar into '${lib-dir}'">
+	<target name="2.package" depends="01.classpath, 03.tree" description="Package runnable jar into '${lib-dir}'">
 
 		<build debug="false" />
 
@@ -183,11 +172,13 @@
 
 	</target>
 
-	<target name="06.javadoc" depends="01.classpath" description="Generate Javadoc into '${doc-dir}'">
+	<target name="3.javadoc" depends="01.classpath" description="Generate Javadoc into '${doc-dir}'">
 
 		<delete includeemptydirs="true">
-			<fileset dir="${doc-dir}/javadoc" includes="**/*" />
+			<fileset dir="${doc-dir}" includes="**/*" />
 		</delete>
+
+		<mkdir dir="${doc-dir}/javadoc" />
 
 		<javadoc sourcepath="${src-dir}" destdir="${doc-dir}/javadoc" author="true" version="true" use="true" windowtitle="TuCSoN4JADE" doctitle="TuCSoN4JADE" verbose="no" encoding="UTF-8" breakiterator="yes">
 			<link href="http://java.sun.com/j2se/1.6.0/docs/api/" />
@@ -197,7 +188,7 @@
 
 	</target>
 
-	<target name="07.release" depends="01.classpath, 03.tree, 05.package, 06.javadoc " description="Generate the release bundle into '${rel-dir}'">
+	<target name="4.release" depends="01.classpath, 03.tree, 2.package, 3.javadoc " description="Generate the release bundle into '${rel-dir}'">
 
 		<delete includeemptydirs="true">
 			<fileset dir="${rel-dir}" includes="**/*" />
@@ -209,14 +200,14 @@
 		<mkdir dir="${rel-dir}/${middleware.version}/doc" />
 
 		<copy todir="${rel-dir}/${middleware.version}/bin">
-			<fileset dir="${lib.dir}">
+			<fileset dir="${lib-dir}">
 				<include name="*.jar" />
 			</fileset>
 		</copy>
 
-		<copy todir="${lib-dir}/${middleware.version}/lib">
+		<copy todir="${rel-dir}/${middleware.version}/lib">
 			<fileset dir="${libs-dir}">
-				<include name="${tucson.jar}" />
+				<include name="*.jar" />
 			</fileset>
 		</copy>
 
@@ -227,6 +218,15 @@
 		<zip destfile="${rel-dir}/${middleware.version}.zip" basedir="${rel-dir}/${middleware.version}" />
 
 		<echo>Check ${rel-dir} folder!</echo>
+
+	</target>
+
+	<target name="clean" depends="00.init" description="Clean all the builds done so far">
+
+		<delete dir="${lib-dir}" />
+		<delete dir="${classes-dir}" />
+		<delete dir="${rel-dir}" />
+		<delete dir="${doc-dir}" />
 
 	</target>
 
