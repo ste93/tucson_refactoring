@@ -17,9 +17,9 @@
 				<classpath refid="ant-classpath" />
 			</javac>
 
-			<!--<copy todir="${classes-dir}/alice/tuprologx/ide/img">
-				<fileset dir="${src-dir}/alice/tuprologx/ide/img" />
-			</copy>-->
+			<copy todir="${classes-dir}/it/unibo/sd/jade/examples/bookTrading">
+				<fileset file="${src-dir}/it/unibo/sd/jade/examples/bookTrading/books.cat" />
+			</copy>
 
 			<echo>Check ${classes-dir} folder!</echo>
 
@@ -213,6 +213,7 @@
 
 		<copy todir="${rel-dir}/${middleware.version}/doc">
 			<fileset dir="${doc-dir}" />
+			<fileset file="${basedir}/../howto/TuCSoN4JADE-howto.html" />
 		</copy>
 
 		<zip destfile="${rel-dir}/${middleware.version}.zip" basedir="${rel-dir}/${middleware.version}" />
