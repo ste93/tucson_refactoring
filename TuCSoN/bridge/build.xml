@@ -81,7 +81,7 @@
 		<property name="libs-dir" value="libs" />
 		<property name="classes-dir" value="classes" />
 		<property name="lib-dir" value="lib" />
-		<property name="rel-dir" value="rel" />
+		<property name="rel-dir" value="jade/addons" />
 		<property name="doc-dir" value="doc" />
 
 		<loadfile srcfile="${src-dir}/it/unibo/sd/jade/service/TucsonService.java" property="middleware.version">
@@ -140,10 +140,10 @@
 
 	<target name="help" depends="00.init">
 		<echo>The following targets are available:
-  1.build.....compile application classes into ${classes-dir}
-  2.package...create application jar file into ${lib-dir}
-  3.javadoc...generate application javadoc into ${doc-dir}
-  4.release...generate application bundle into ${rel-dir}
+  compile.....compile application classes into ${classes-dir}
+  lib.........create application jar file into ${lib-dir}
+  doc.........generate application javadoc into ${doc-dir}
+  dist........generate application bundle into ${rel-dir}
   help........print this help
 		</echo>
 	</target>
@@ -160,11 +160,11 @@
 		<mkdir dir="${doc-dir}" />
 	</target>
 
-	<target name="1.build" depends="01.classpath, 03.tree" description="Compile java sources in '${src-dir}' to '${classes-dir}'">
+	<target name="compile" depends="01.classpath, 03.tree" description="Compile java sources in '${src-dir}' to '${classes-dir}'">
 		<build debug="true" />
 	</target>
 
-	<target name="2.package" depends="01.classpath, 03.tree" description="Package runnable jar into '${lib-dir}'">
+	<target name="lib" depends="01.classpath, 03.tree" description="Package runnable jar into '${lib-dir}'">
 
 		<build debug="false" />
 
@@ -172,7 +172,7 @@
 
 	</target>
 
-	<target name="3.javadoc" depends="01.classpath, 03.tree" description="Generate Javadoc into '${doc-dir}'">
+	<target name="doc" depends="01.classpath, 03.tree" description="Generate Javadoc into '${doc-dir}'">
 
 		<delete includeemptydirs="true">
 			<fileset dir="${doc-dir}" includes="**/*" />
@@ -190,7 +190,7 @@
 
 	</target>
 
-	<target name="4.release" depends="01.classpath, 03.tree, 2.package, 3.javadoc " description="Generate the release bundle into '${rel-dir}'">
+	<target name="dist" depends="01.classpath, 03.tree, lib, doc " description="Generate the release bundle into '${rel-dir}'">
 
 		<delete includeemptydirs="true">
 			<fileset dir="${rel-dir}" includes="**/*" />
