@@ -35,7 +35,7 @@
 				<fileset dir="${lib-dir}" includes="**/*" />
 			</delete>
 
-			<jar destfile="${lib-dir}/TuCSoN4JADE.jar" basedir="${classes-dir}">
+			<jar destfile="${lib-dir}/${addon.version}.jar" basedir="${classes-dir}">
 				<manifest>
 					<!-- Who is building this jar? -->
 					<attribute name="Built-By" value="${user.name}" />
@@ -47,7 +47,7 @@
 				</manifest>
 			</jar>
 
-			<jar destfile="${lib-dir}/TuCSoN4JADE-noexamples.jar" basedir="${classes-dir}" includes="it/unibo/sd/jade/**" excludes="it/unibo/sd/jade/examples/**">
+			<jar destfile="${lib-dir}/${addon.version}-noexamples.jar" basedir="${classes-dir}" includes="it/unibo/sd/jade/**" excludes="it/unibo/sd/jade/examples/**">
 				<manifest>
 					<!-- Who is building this jar? -->
 					<attribute name="Built-By" value="${user.name}" />
