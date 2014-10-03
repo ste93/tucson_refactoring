@@ -172,7 +172,7 @@
 
 	</target>
 
-	<target name="3.javadoc" depends="01.classpath" description="Generate Javadoc into '${doc-dir}'">
+	<target name="3.javadoc" depends="01.classpath, 03.tree" description="Generate Javadoc into '${doc-dir}'">
 
 		<delete includeemptydirs="true">
 			<fileset dir="${doc-dir}" includes="**/*" />
@@ -181,7 +181,9 @@
 		<mkdir dir="${doc-dir}/javadoc" />
 
 		<javadoc sourcepath="${src-dir}" destdir="${doc-dir}/javadoc" author="true" version="true" use="true" windowtitle="TuCSoN4JADE" doctitle="TuCSoN4JADE" verbose="no" encoding="UTF-8" breakiterator="yes">
+			<classpath refid="ant-classpath" />
 			<link href="http://java.sun.com/j2se/1.6.0/docs/api/" />
+
 		</javadoc>
 
 		<echo>Check ${doc-dir}/javadoc folder!</echo>
