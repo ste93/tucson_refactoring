@@ -337,7 +337,8 @@ public class TucsonService extends BaseService {
                 .log("--------------------------------------------------------------------------------");
         TucsonService.log("Welcome to the TuCSoN4JADE (T4J) bridge :)");
         TucsonService.log("  T4J version " + TucsonService.getVersion());
-        TucsonService.log("  TuCSoN version " + TucsonNodeService.getVersion());
+        // TucsonService.log("  TuCSoN version " +
+        // TucsonNodeService.getVersion());
         TucsonService
                 .log("--------------------------------------------------------------------------------");
     }

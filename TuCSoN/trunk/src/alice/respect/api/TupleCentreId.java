@@ -160,11 +160,15 @@ public class TupleCentreId implements alice.tuplecentre.api.TupleCentreId,
             if (sid.getArity() == 2 && "@".equals(sid.getName())) {
                 final Struct t = (Struct) sid.getArg(1).getTerm();
                 if (!t.getArg(0).getTerm().isCompound()) {
-                    return t.getArg(0).getTerm().toString();
+                    return alice.util.Tools.removeApices(t.getArg(0).getTerm()
+                            .toString());
                 }
                 final Struct tt = (Struct) t.getArg(0).getTerm();
-                return tt.getArg(0).getTerm().toString() + "."
-                        + tt.getArg(1).getTerm().toString();
+                return alice.util.Tools.removeApices(tt.getArg(0).getTerm()
+                        .toString())
+                        + "."
+                        + alice.util.Tools.removeApices(tt.getArg(1).getTerm()
+                                .toString());
             }
         }
         return "localhost";
@@ -179,7 +183,8 @@ public class TupleCentreId implements alice.tuplecentre.api.TupleCentreId,
             final Struct sid = (Struct) this.id;
             if (sid.getArity() == 2 && "@".equals(sid.getName())) {
                 final Struct t = (Struct) sid.getArg(1);
-                return Integer.parseInt(t.getArg(1).getTerm().toString());
+                return Integer.parseInt(alice.util.Tools.removeApices(t
+                        .getArg(1).getTerm().toString()));
             }
         }
         return TupleCentreId.DEFAULT_PORT;

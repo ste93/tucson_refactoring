@@ -41,10 +41,9 @@
 					<attribute name="Built-By" value="${user.name}" />
 					<!-- Information about the program itself -->
 					<attribute name="Implementation-Vendor" value="TuCSoN team" />
-					<attribute name="Implementation-Title" value="TuCSoN middleware" />
-					<attribute name="Implementation-Version" value="${middleware.version}" />
+					<attribute name="Implementation-Title" value="TuCSoN4JADE Add-on" />
+					<attribute name="Implementation-Version" value="${addon.version}" />
 					<!-- details -->
-					<attribute name="Main-Class" value="alice.tucson.service.TucsonNodeService" />
 				</manifest>
 			</jar>
 
@@ -54,8 +53,8 @@
 					<attribute name="Built-By" value="${user.name}" />
 					<!-- Information about the program itself -->
 					<attribute name="Implementation-Vendor" value="TuCSoN team" />
-					<attribute name="Implementation-Title" value="TuCSoN middleware" />
-					<attribute name="Implementation-Version" value="${middleware.version}" />
+					<attribute name="Implementation-Title" value="TuCSoN4JADE Add-on" />
+					<attribute name="Implementation-Version" value="${addon.version}" />
 					<!-- details -->
 				</manifest>
 			</jar>
@@ -78,13 +77,12 @@
 
 		<!-- Project structure -->
 		<property name="src-dir" value="src" />
-		<property name="libs-dir" value="libs" />
 		<property name="classes-dir" value="classes" />
 		<property name="lib-dir" value="lib" />
-		<property name="rel-dir" value="jade/addons" />
+		<property name="rel-dir" value="jade/add-ons" />
 		<property name="doc-dir" value="doc" />
 
-		<loadfile srcfile="${src-dir}/it/unibo/sd/jade/service/TucsonService.java" property="middleware.version">
+		<loadfile srcfile="${src-dir}/it/unibo/sd/jade/service/TucsonService.java" property="addon.version">
 			<filterchain>
 				<linecontains>
 					<contains value="String VERSION" />
@@ -103,8 +101,10 @@
 	<target name="01.classpath" depends="00.init" description="Set up classpath for ANT tasks">
 		<path id="ant-classpath">
 			<!-- Project-specific libraries -->
-			<fileset dir="${libs-dir}">
-				<include name="*.jar" />
+			<fileset dir="${libs.dir}">
+				<include name="${tucson.jar}" />
+				<include name="${jade.jar}" />
+				<include name="${tuprolog.jar}" />
 			</fileset>
 			<!-- Project classes -->
 			<pathelement path="${classes-dir}" />
@@ -121,8 +121,8 @@
 		<echo message="-----------------------------------" />
 		<echo message="{ant.project.name} is '${ant.project.name}'" />
 		<echo message="{basedir} is '${basedir}'" />
+		<echo message="..................................." />
 		<echo message="{src-dir} is '${src-dir}'" />
-		<echo message="{libs-dir} is '${libs-dir}'" />
 		<echo message="{classes-dir} is '${classes-dir}'" />
 		<echo message="{lib-dir} is '${lib-dir}'" />
 		<echo message="{rel-dir} is '${rel-dir}'" />
@@ -132,8 +132,13 @@
 		<echo message="{java.home} is '${java.home}'" />
 		<echo message="{target} is '${target}'" />
 		<echo message="{tucson.jar} is '${tucson.jar}'" />
+		<echo message="{jade.jar} is '${jade.jar}'" />
+		<echo message="{tuprolog.jar} is '${tuprolog.jar}'" />
+		<echo message="{libs.dir} is '${libs.dir}'" />
+		<echo message="..................................." />
+		<echo message="{addon.version} is '${addon.version}'" />
+		<echo message="..................................." />
 		<echo message="{username} is '${username}'" />
-		<echo message="{middleware.version} is '${middleware.version}'" />
 		<echo message="-----------------------------------" />
 		<echo message=" " />
 	</target>
@@ -196,29 +201,29 @@
 			<fileset dir="${rel-dir}" includes="**/*" />
 		</delete>
 
-		<mkdir dir="${rel-dir}/${middleware.version}" />
-		<mkdir dir="${rel-dir}/${middleware.version}/bin" />
-		<mkdir dir="${rel-dir}/${middleware.version}/lib" />
-		<mkdir dir="${rel-dir}/${middleware.version}/doc" />
+		<mkdir dir="${rel-dir}/${addon.version}" />
+		<mkdir dir="${rel-dir}/${addon.version}/rel" />
+		<mkdir dir="${rel-dir}/${addon.version}/libs" />
+		<mkdir dir="${rel-dir}/${addon.version}/docs" />
 
-		<copy todir="${rel-dir}/${middleware.version}/bin">
+		<copy todir="${rel-dir}/${addon.version}/rel">
 			<fileset dir="${lib-dir}">
 				<include name="*.jar" />
 			</fileset>
 		</copy>
 
-		<copy todir="${rel-dir}/${middleware.version}/lib">
-			<fileset dir="${libs-dir}">
+		<copy todir="${rel-dir}/${addon.version}/libs">
+			<fileset dir="${libs.dir}">
 				<include name="*.jar" />
 			</fileset>
 		</copy>
 
-		<copy todir="${rel-dir}/${middleware.version}/doc">
+		<copy todir="${rel-dir}/${addon.version}/docs">
 			<fileset dir="${doc-dir}" />
 			<fileset file="${basedir}/../howto/TuCSoN4JADE-howto.html" />
 		</copy>
 
-		<zip destfile="${rel-dir}/${middleware.version}.zip" basedir="${rel-dir}/${middleware.version}" />
+		<zip destfile="${rel-dir}/${addon.version}.zip" basedir="${rel-dir}/${addon.version}" />
 
 		<echo>Check ${rel-dir} folder!</echo>
 
@@ -226,10 +231,17 @@
 
 	<target name="clean" depends="00.init" description="Clean all the builds done so far">
 
-		<delete dir="${lib-dir}" />
-		<delete dir="${classes-dir}" />
+		<delete includeEmptyDirs="true">
+			<fileset dir="${lib-dir}" includes="**/*" defaultexcludes="no" />
+		</delete>
+		<delete includeEmptyDirs="true">
+			<fileset dir="${classes-dir}" includes="**/*" defaultexcludes="no" />
+		</delete>
 		<delete dir="${rel-dir}" />
-		<delete dir="${doc-dir}" />
+		<delete dir="${rel-dir}/.." />
+		<delete includeEmptyDirs="true">
+			<fileset dir="${doc-dir}" includes="**/*" defaultexcludes="no" />
+		</delete>
 
 	</target>
 
