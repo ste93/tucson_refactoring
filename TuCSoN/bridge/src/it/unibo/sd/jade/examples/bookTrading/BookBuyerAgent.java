@@ -45,6 +45,7 @@ import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
+import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.service.TucsonOpCompletionEvent;
 import alice.tuplecentre.api.exceptions.InvalidOperationException;
 
@@ -418,10 +419,10 @@ public class BookBuyerAgent extends Agent {
              * Then, start a TuCSoN Node (if not already up) as the actual
              * executor of the service
              */
-            // if (!this.helper.isActive("localhost", 20504, 10000)) {
-            // this.log("Booting local TuCSoN Node on default port...");
-            // this.helper.startTucsonNode(20504);
-            // }
+            if (!this.helper.isActive("localhost", 20504, 10000)) {
+                this.log("Booting local TuCSoN Node on default port...");
+                this.helper.startTucsonNode(20504);
+            }
             /*
              * Obtain ACC (which is actually given to the bridge, not directly
              * to your agent)
@@ -451,9 +452,9 @@ public class BookBuyerAgent extends Agent {
             // should not happen
             e.printStackTrace();
             this.doDelete();
-            // } catch (final TucsonOperationNotPossibleException e) {
-            // this.log(">>> TuCSoN Node cannot be installed, check if given port is already in use <<<");
-            // this.doDelete();
+        } catch (final TucsonOperationNotPossibleException e) {
+            this.log(">>> TuCSoN Node cannot be installed, check if given port is already in use <<<");
+            this.doDelete();
         }
         /*
          * Periodic behaviour performing random book requests.
