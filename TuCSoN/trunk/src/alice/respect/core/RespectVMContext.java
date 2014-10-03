@@ -332,23 +332,26 @@ public class RespectVMContext extends
      * 
      */
     public void closePersistencyUpdates() {
-        final File f = new File(this.pPath, "tc_" + this.pFileName + "_"
-                + this.pDate + ".dat");
-        final long now = System.currentTimeMillis();
-        final Date d = new Date(now);
-        final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        final String ds = sdf.format(d);
-        PrintWriter pw = null;
-        try {
-            pw = new PrintWriter(new FileWriter(f, true), true);
-            pw.printf("</updates time=%s>%n", ds);
-            pw.flush();
-            pw.close();
-        } catch (final IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (pw != null) {
+        if (this.isPersistent) {
+            final File f = new File(this.pPath, "tc_" + this.pFileName + "_"
+                    + this.pDate + ".dat");
+            final long now = System.currentTimeMillis();
+            final Date d = new Date(now);
+            final SimpleDateFormat sdf = new SimpleDateFormat(
+                    "yyyy-MM-dd HH:mm:ss");
+            final String ds = sdf.format(d);
+            PrintWriter pw = null;
+            try {
+                pw = new PrintWriter(new FileWriter(f, true), true);
+                pw.printf("</updates time=%s>%n", ds);
+                pw.flush();
                 pw.close();
+            } catch (final IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (pw != null) {
+                    pw.close();
+                }
             }
         }
     }
@@ -362,6 +365,7 @@ public class RespectVMContext extends
      */
     public void disablePersistency(final String path,
             final TucsonTupleCentreId fileName) {
+        this.closePersistencyUpdates();
         this.isPersistent = false;
     }
 
@@ -1393,7 +1397,7 @@ public class RespectVMContext extends
                 this.log(">>> Snapshot end!");
                 line = br.readLine(); // skip "</snapshot ...>" line
                 // read updates
-                if (line != null && line.startsWith("<updates")) {
+                while (line != null && line.startsWith("<updates")) {
                     this.log(">>> Updates begin!");
                     updates = new LinkedList<String>();
                     line = br.readLine();
