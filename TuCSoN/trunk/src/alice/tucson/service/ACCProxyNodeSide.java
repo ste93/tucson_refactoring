@@ -13,6 +13,7 @@
  */
 package alice.tucson.service;
 
+import java.net.SocketException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -142,7 +143,13 @@ public class ACCProxyNodeSide extends AbstractACCProxyNodeSide {
         try {
             this.dialog.sendMsgReply(reply);
         } catch (final DialogSendException e) {
-            e.printStackTrace();
+            if (e.getCause() instanceof SocketException
+                    && e.getMessage().endsWith("Socket closed")) {
+                this.err("Agent " + this.agentName
+                        + " disconnected unexpectedly :/");
+            } else {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -431,6 +438,11 @@ public class ACCProxyNodeSide extends AbstractACCProxyNodeSide {
 
     private void log(final String st) {
         System.out.println("..[ACCProxyNodeSide (" + this.node.getTCPPort()
+                + ", " + this.ctxId + ", " + this.agentName + ")]: " + st);
+    }
+
+    private void err(final String st) {
+        System.err.println("..[ACCProxyNodeSide (" + this.node.getTCPPort()
                 + ", " + this.ctxId + ", " + this.agentName + ")]: " + st);
     }
 }
