@@ -84,7 +84,7 @@ public class InterTupleCentreACCProxy implements InterTupleCentreACC,
                     msg = this.dialog.receiveMsgReply();
                 } catch (final DialogReceiveException e) {
                     InterTupleCentreACCProxy.this
-                            .log("TuCSoN node service unavailable, nothing I can do");
+                            .err("TuCSoN Node disconnected unexpectedly :/");
                     this.setStop();
                     break;
                 }
@@ -422,6 +422,11 @@ public class InterTupleCentreACCProxy implements InterTupleCentreACC,
 
     private void log(final String msg) {
         System.out.println("..[InterTupleCentreACCProxy ("
+                + this.profile.getProperty("tc-identity") + ")]: " + msg);
+    }
+
+    private void err(final String msg) {
+        System.err.println("..[InterTupleCentreACCProxy ("
                 + this.profile.getProperty("tc-identity") + ")]: " + msg);
     }
 

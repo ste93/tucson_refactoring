@@ -226,6 +226,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      */
     public boolean current_target_1(final Term target) {
         final Term t = ((TupleCentreId) this.vm.getId()).toTerm();
+        // Respect2PLibrary.log("target = " + target + " | " + t + " = t");
         return this.unify(target, t);
     }
 
