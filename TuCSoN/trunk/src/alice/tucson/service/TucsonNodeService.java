@@ -134,7 +134,7 @@ public class TucsonNodeService {
                 test.close();
             }
         }
-        return reply.startsWith("TuCSoN");
+        return reply.equals(TucsonMetaACC.getVersion());
     }
 
     /**
@@ -569,8 +569,8 @@ public class TucsonNodeService {
         TucsonNodeService.log("  Version " + TucsonNodeService.getVersion());
         TucsonNodeService
                 .log("--------------------------------------------------------------------------------");
-        TucsonNodeService.log(new Date().toString());
         TucsonNodeService.log("Beginning TuCSoN Node Service installation...");
+        TucsonNodeService.log(new Date().toString());
         this.configManager = new Prolog();
         this.cores = new HashMap<String, TucsonTCUsers>();
         TucsonNodeService.log("Configuring TuCSoN Node Service...");
