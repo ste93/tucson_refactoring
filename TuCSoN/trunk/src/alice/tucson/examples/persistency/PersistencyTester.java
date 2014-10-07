@@ -122,7 +122,7 @@ public final class PersistencyTester {
         } catch (final InvalidTupleException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-        } catch (InterruptedException e) {
+        } catch (final InterruptedException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
