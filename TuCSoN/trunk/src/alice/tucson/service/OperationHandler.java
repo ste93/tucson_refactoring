@@ -85,8 +85,8 @@ public class OperationHandler {
                     msg = this.dialog.receiveMsgReply();
                 } catch (final DialogReceiveException e) {
                     OperationHandler.this
-                            .log("TuCSoN node service unavailable, nothing I can do");
-                    OperationHandler.this.log(e.getCause().toString());
+                            .err("TuCSoN Node disconnected unexpectedly :/");
+                    // OperationHandler.this.err(e.getCause().toString());
                     this.setStop();
                     break;
                 }
@@ -452,6 +452,11 @@ public class OperationHandler {
      */
     private void log(final String msg) {
         System.out.println("....[OperationHandler ("
+                + this.profile.getProperty("agent-identity") + ")]: " + msg);
+    }
+
+    private void err(final String msg) {
+        System.err.println("....[OperationHandler ("
                 + this.profile.getProperty("agent-identity") + ")]: " + msg);
     }
 
