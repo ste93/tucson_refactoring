@@ -204,7 +204,7 @@ public class PersistencyXML {
             // StreamResult result = new StreamResult(System.out);
             transformer.transform(source, result);
             this.finishWriteFile = System.currentTimeMillis();
-            this.log("Time elapsed for write file: "
+            this.log("Time elapsed for writing file: "
                     + (this.finishWriteFile - this.initWriteFile) / 1000
                     + " milliseconds.");
             this.log("File saved!");

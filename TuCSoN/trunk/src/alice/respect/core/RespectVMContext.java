@@ -215,7 +215,6 @@ public class RespectVMContext extends
     /** multiset of triggered reactions Z */
     private final TRSet zSet;
 
-    // ----------
     /**
      * 
      * @param rvm
@@ -449,19 +448,18 @@ public class RespectVMContext extends
             pw.close();
             this.log(">>> ...persistency snapshot taken!");
             this.finishPersistencySnapshot = System.nanoTime();
-            String s = "Time elampsed for create file dat: "
+            String s = "Time spent creating .dat persistency snapshot: "
                     + (this.finishPersistencySnapshot - this.initPeristencySnapshot)
                     / 1000000;
             this.log(s);
             this.pPerformance.write(s);
             this.initPeristencySnapshot = System.nanoTime();
-            // MODIFICA PERSISTENZA
             final PersistencyData pData = new PersistencyData(this.tSet,
                     this.tSpecSet, this.prologPredicates, null);
             this.pXML = new PersistencyXML(path, fileName);
             this.pXML.write(pData);
             this.finishPersistencySnapshot = System.nanoTime();
-            s = "Time elampsed for create file xml: "
+            s = "Time spent creating .xml persistency snapshot: "
                     + (this.finishPersistencySnapshot - this.initPeristencySnapshot)
                     / 1000000;
             this.log(s);
@@ -1390,7 +1388,6 @@ public class RespectVMContext extends
             List<String> specs = null;
             List<String> predicates = null;
             List<String> updates = null;
-            // PERFORMANCE
             final long now = System.currentTimeMillis();
             final Date d = new Date(now);
             final SimpleDateFormat sdf = new SimpleDateFormat(
@@ -1455,20 +1452,18 @@ public class RespectVMContext extends
             }
             br.close();
             this.finishRecovery = System.nanoTime();
-            String log = "Time elapsed for recovery file DAT: "
+            String log = "Time spent recovering .dat file: "
                     + (this.finishRecovery - this.initRecovery) / 1000000;
             this.pPerformance.write(log);
             this.initRecovery = System.nanoTime();
-            // MODIFICA PERSISTENZA XML
             this.pXML = new PersistencyXML(path.concat(file));
             final PersistencyData recoveredData = this.pXML.parse();
             tuples = recoveredData.getTuples();
             specs = recoveredData.getSpecTuples();
             predicates = recoveredData.getPredicates();
             updates = recoveredData.getUpdates();
-            // ------
             this.finishRecovery = System.nanoTime();
-            log = "Time elapsed for recovery file XML: "
+            log = "Time spent recovering .xml file: "
                     + (this.finishRecovery - this.initRecovery) / 1000000;
             this.pPerformance.write(log);
             // recover tuples
@@ -1990,11 +1985,10 @@ public class RespectVMContext extends
      */
     private void writePersistencyUpdate(final LogicTuple update,
             final ModType mode) {
-        // Modifica vince
         this.initUpdateFile = System.nanoTime();
         this.pXML.writeUpdate(update, mode);
         this.finishUpdateFile = System.nanoTime();
-        String s = "Time elapsed for update file XML: "
+        String s = "Time spent updating .xml file: "
                 + (this.finishUpdateFile - this.initUpdateFile) / 1000000;
         this.log(s);
         this.pPerformance.write(s);
@@ -2038,7 +2032,7 @@ public class RespectVMContext extends
             pw.flush();
             pw.close();
             this.finishUpdateFile = System.nanoTime();
-            s = "Time elapsed for update file DAT: "
+            s = "Time spent updating .dat file: "
                     + (this.finishUpdateFile - this.initUpdateFile) / 1000000;
             this.log(s);
             this.pPerformance.write(s);
