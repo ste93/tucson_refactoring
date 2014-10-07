@@ -40,6 +40,10 @@ public class InspectorContextStub implements InspectorContext {
         System.out.println("[InspectorContextStub]: " + msg);
     }
 
+    private static void err(final String msg) {
+        System.err.println("[InspectorContextStub]: " + msg);
+    }
+
     /** listeners registrated for virtual machine output events */
     private final List<InspectorContextListener> contextListeners = new ArrayList<InspectorContextListener>();
     private AbstractTucsonProtocol dialog;
@@ -87,7 +91,8 @@ public class InspectorContextStub implements InspectorContext {
             }
         } catch (final DialogException e) {
             if (!this.exitFlag) {
-                InspectorContextStub.log("Error receiving a message");
+                InspectorContextStub
+                        .err("TuCSoN Node disconnected unexpectedly :/");
             }
         }
     }
