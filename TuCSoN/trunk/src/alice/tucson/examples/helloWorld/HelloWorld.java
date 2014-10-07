@@ -19,7 +19,6 @@ import alice.tuplecentre.api.exceptions.OperationTimeOutException;
  * 
  * @author ste (mailto: s.mariani@unibo.it)
  */
-// questo è un mio commento
 public final class HelloWorld {
     /**
      * @param args
