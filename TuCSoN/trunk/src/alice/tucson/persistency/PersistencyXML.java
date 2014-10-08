@@ -202,6 +202,7 @@ public class PersistencyXML {
                     .newInstance();
             final Transformer transformer = transformerFactory.newTransformer();
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
             final DOMSource source = new DOMSource(document);
             final StreamResult result = new StreamResult(this.xmlFile);
             // Output to console for testing
@@ -284,6 +285,7 @@ public class PersistencyXML {
                     .newInstance();
             final Transformer transformer = transformerFactory.newTransformer();
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
             final DOMSource source = new DOMSource(doc);
             final StreamResult result = new StreamResult(this.xmlFile);
             transformer.transform(source, result);
