@@ -88,7 +88,18 @@ public final class PersistencyTester {
                 acc.out(ttcid, new LogicTuple("ttt", new Value(i)),
                         Long.MAX_VALUE);
             }
+            // snapshot test n. 2
+            acc.out(ttcidOrg, new LogicTuple("cmd", new Value(
+                    "enable_persistency", new Value("default"))),
+                    Long.MAX_VALUE);
+            // tuples addition
+            for (; i < 3000; i++) {
+                acc.out(ttcid, new LogicTuple("ttt", new Value(i)),
+                        Long.MAX_VALUE);
+            }
             acc.exit();
+            // give node time to close persistency file
+            Thread.sleep(5000);
             tns.shutdown();
         } catch (final TucsonInvalidTupleCentreIdException e) {
             // TODO Auto-generated catch block
@@ -109,6 +120,9 @@ public final class PersistencyTester {
             // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (final InvalidTupleException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (InterruptedException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
