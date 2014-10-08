@@ -37,36 +37,25 @@ public class PersistencyXML {
     public static final String TUPLES_NODE = "tuples";
     public static final String UPDATE_NODE = "update";
     public static final String UPDATES_NODE = "updates";
-    private final long finishCreationPersistencyXML;
-    private long finishParse;
-    private long finishWriteFile;
-    private long finishWriteUpdate;
-    private final long initCreationPersistencyXML;
-    private long initParse;
-    private long initWriteFile;
-    private long initWriteUpdate;
+    public static final String ACTION_ATTRIBUTE = "action";
+    public static final String SUBJECT_ATTRIBUTE = "subject";
+    public static final String TIME_ATTRIBUTE = "time";
+    public static final String TC_ATTRIBUTE = "tc";
+    public static final String ADD_OPERATION = "addition";
+    public static final String DEL_OPERATION = "deletion";
+    public static final String CLEAN_OPERATION = "clean";
     private String pDate;
     private TucsonTupleCentreId pFileName;
     private String pPath;
     private File xmlFile;
 
     public PersistencyXML(final String fileName) {
-        this.initCreationPersistencyXML = System.nanoTime();
         this.xmlFile = new File(fileName);
-        this.finishCreationPersistencyXML = System.nanoTime();
-        this.log("Time elapsed for creation of PersistencyXML: "
-                + (this.finishCreationPersistencyXML - this.initCreationPersistencyXML)
-                / 1000000 + " milliseconds.");
     }
 
     public PersistencyXML(final String path, final TucsonTupleCentreId fileName) {
-        this.initCreationPersistencyXML = System.nanoTime();
         this.pFileName = fileName;
         this.pPath = path;
-        this.finishCreationPersistencyXML = System.nanoTime();
-        this.log("Time elapsed for creation of PersistencyXML: "
-                + (this.finishCreationPersistencyXML - this.initCreationPersistencyXML)
-                / 1000000 + " milliseconds.");
     }
 
     public List<String> getNodeInfo(final Node node, final String childName) {
@@ -82,25 +71,29 @@ public class PersistencyXML {
     }
 
     public PersistencyData parse() {
-        this.initParse = System.nanoTime();
         PersistencyData pData = new PersistencyData();
-        List<String> tuples = null;
-        List<String> specTuple = null;
-        List<String> predicates = null;
-        List<String> updates = null;
+        List<String> tuples = new LinkedList<String>();
+        List<String> specTuple = new LinkedList<String>();
+        List<String> predicates = new LinkedList<String>();
+        List<String> updates = new LinkedList<String>();
         try {
             final DocumentBuilderFactory factory = DocumentBuilderFactory
                     .newInstance();
             final DocumentBuilder builder = factory.newDocumentBuilder();
             final Document document = builder.parse(this.xmlFile);
-            // Lista dei figli del root element <snapshot>
-            final NodeList nodeList = document.getDocumentElement()
-                    .getChildNodes();
-            for (int i = 0; i < nodeList.getLength(); i++) {
-                final Node node = nodeList.item(i);
-                if (node.getNodeType() == Node.ELEMENT_NODE) {
-                    final Element elem = (Element) node;
-                    if (elem.getNodeName().equals(PersistencyXML.TUPLES_NODE)) {
+            
+            // SNAPSHOT
+            final NodeList snapshotList = document.getElementsByTagName(SNAPSHOT_NODE);
+            final Node snapshotNode = snapshotList.item(0);
+            final NodeList snapshotChilds = snapshotNode.getChildNodes();
+           
+            for (int i = 0; i < snapshotChilds.getLength(); i++)
+            {
+            	Node node = snapshotChilds.item(i);
+            	if(node.getNodeType() == Node.ELEMENT_NODE)
+            	{
+            		Element elem = (Element)node;
+            		if (elem.getNodeName().equals(PersistencyXML.TUPLES_NODE)) {
                         tuples = this.getNodeInfo(node,
                                 PersistencyXML.TUPLE_NODE);
                     } else if (elem.getNodeName().equals(
@@ -111,15 +104,30 @@ public class PersistencyXML {
                             PersistencyXML.PREDICATES_NODE)) {
                         predicates = this.getNodeInfo(node,
                                 PersistencyXML.PREDICATE_NODE);
-                    } else if (elem.getNodeName().equals(
-                            PersistencyXML.UPDATES_NODE)) {
-                        updates = this.getNodeInfo(node,
-                                PersistencyXML.UPDATE_NODE);
                     }
-                }
+            	}
             }
+            
+            // UPDATES
+            final NodeList updatesList = document.getElementsByTagName(UPDATES_NODE);
+            final Node updatesNode = updatesList.item(0);
+            final NodeList updatesChilds = updatesNode.getChildNodes();
+            for(int i = 0; i < updatesChilds.getLength(); i++)
+            {
+            	Node node = updatesChilds.item(i);
+            	if(node.getNodeType() == Node.ELEMENT_NODE)
+            	{
+            		Element elem = (Element)node;
+            		if (elem.getNodeName().equals(PersistencyXML.UPDATE_NODE))
+            		{
+            			String update = this.getUpdateInfo(elem);
+            			if(update != null)
+            				updates.add(update);
+            		}
+            	}
+            }
+           
             pData = new PersistencyData(tuples, specTuple, predicates, updates);
-            this.finishParse = System.nanoTime();
         } catch (final ParserConfigurationException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -130,14 +138,39 @@ public class PersistencyXML {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        this.log("Time elapsed for parse metod: "
-                + (this.finishParse - this.initParse) / 1000000
-                + " milliseconds.");
         return pData;
     }
 
+    public String getUpdateInfo(Element elem)
+    {
+    	String nodeInfo = null;
+    	String attrAction = elem.getAttribute(ACTION_ATTRIBUTE);
+		String attrSubject = elem.getAttribute(SUBJECT_ATTRIBUTE);
+		String body = elem.getTextContent();
+		
+		String subject = null;
+		if(attrSubject.equals(TUPLE_NODE))
+			subject = "t";
+		else if(attrSubject.equals(SPEC_NODE))
+			subject = "s";
+		else if(attrSubject.equals(PREDICATE_NODE))
+			subject = "p";
+		
+		String operation = null;
+		if(attrAction.equals(ADD_OPERATION))
+			operation = "+";
+		else if(attrAction.equals(DEL_OPERATION))
+			operation = "-";
+		else if(attrAction.equalsIgnoreCase(CLEAN_OPERATION))
+			operation = "e";
+		
+		if(subject != null && operation != null && body != null)
+			nodeInfo = "("+operation+subject+")"+" "+body;
+		
+    	return nodeInfo;
+    }
+    
     public void write(final PersistencyData pData) {
-        this.initWriteFile = System.currentTimeMillis();
         try {
             final long now = System.currentTimeMillis();
             final Date d = new Date(now);
@@ -161,9 +194,9 @@ public class PersistencyXML {
             final Element snapshotElement = document
                     .createElement(PersistencyXML.SNAPSHOT_NODE);
             // Set attribute tc to rootElement
-            		snapshotElement.setAttribute("tc", this.pFileName.toString());
+            		snapshotElement.setAttribute(TC_ATTRIBUTE, this.pFileName.toString());
             // Set attribute time to rootElement
-            snapshotElement.setAttribute("time", this.pDate);
+            snapshotElement.setAttribute(TIME_ATTRIBUTE, this.pDate);
             rootElement.appendChild(snapshotElement);
             final Element tuples = document
                     .createElement(PersistencyXML.TUPLES_NODE);
@@ -208,11 +241,6 @@ public class PersistencyXML {
             // Output to console for testing
             // StreamResult result = new StreamResult(System.out);
             transformer.transform(source, result);
-            this.finishWriteFile = System.currentTimeMillis();
-            this.log("Time elapsed for writing file: "
-                    + (this.finishWriteFile - this.initWriteFile) / 1000
-                    + " milliseconds.");
-            this.log("File saved!");
         } catch (final ParserConfigurationException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -223,7 +251,6 @@ public class PersistencyXML {
     }
 
     public void writeUpdate(final LogicTuple update, final ModType mode) {
-        this.initWriteUpdate = System.nanoTime();
         try {
             final DocumentBuilderFactory dbf = DocumentBuilderFactory
                     .newInstance();
@@ -243,31 +270,46 @@ public class PersistencyXML {
             final Element upd = doc.createElement(PersistencyXML.UPDATE_NODE);
             switch (mode) {
                 case ADD_TUPLE:
-                    upd.setTextContent("(+t) " + update);
+                	upd.setAttribute(SUBJECT_ATTRIBUTE, TUPLE_NODE);
+                	upd.setAttribute(ACTION_ATTRIBUTE, ADD_OPERATION);
+                    upd.setTextContent(update.toString());
                     break;
                 case ADD_SPEC:
-                    upd.setTextContent("(+s) " + update);
+                	upd.setAttribute(SUBJECT_ATTRIBUTE, SPEC_NODE);
+                	upd.setAttribute(ACTION_ATTRIBUTE, ADD_OPERATION);
+                    upd.setTextContent(update.toString());
                     break;
                 case ADD_PRED:
-                    upd.setTextContent("(+p) " + update);
+                	upd.setAttribute(SUBJECT_ATTRIBUTE, PREDICATE_NODE);
+                	upd.setAttribute(ACTION_ATTRIBUTE, ADD_OPERATION);
+                    upd.setTextContent(update.toString());
                     break;
                 case DEL_TUPLE:
-                    upd.setTextContent("(-t) " + update);
+                	upd.setAttribute(SUBJECT_ATTRIBUTE, TUPLE_NODE);
+                	upd.setAttribute(ACTION_ATTRIBUTE, DEL_OPERATION);
+                    upd.setTextContent(update.toString());
                     break;
                 case DEL_SPEC:
-                    upd.setTextContent("(-s) " + update);
+                	upd.setAttribute(SUBJECT_ATTRIBUTE, SPEC_NODE);
+                	upd.setAttribute(ACTION_ATTRIBUTE, DEL_OPERATION);
+                    upd.setTextContent(update.toString());
                     break;
                 case DEL_PRED:
-                    upd.setTextContent("(-p) " + update);
+                	upd.setAttribute(SUBJECT_ATTRIBUTE, PREDICATE_NODE);
+                	upd.setAttribute(ACTION_ATTRIBUTE, DEL_OPERATION);
+                    upd.setTextContent(update.toString());
                     break;
                 case EMPTY_TUPLES:
-                    upd.setTextContent("(et)");
+                	upd.setAttribute(SUBJECT_ATTRIBUTE, TUPLE_NODE);
+                	upd.setAttribute(ACTION_ATTRIBUTE, CLEAN_OPERATION);
                     break;
                 case EMPTY_SPEC:
-                    upd.setTextContent("(es)");
+                	upd.setAttribute(SUBJECT_ATTRIBUTE, SPEC_NODE);
+                	upd.setAttribute(ACTION_ATTRIBUTE, CLEAN_OPERATION);
                     break;
                 case EMPTY_PRED:
-                    upd.setTextContent("(ep)");
+                	upd.setAttribute(SUBJECT_ATTRIBUTE, PREDICATE_NODE);
+                	upd.setAttribute(ACTION_ATTRIBUTE, CLEAN_OPERATION);
                     break;
                 default:
                     break;
@@ -289,11 +331,6 @@ public class PersistencyXML {
             final DOMSource source = new DOMSource(doc);
             final StreamResult result = new StreamResult(this.xmlFile);
             transformer.transform(source, result);
-            this.finishWriteUpdate = System.nanoTime();
-            this.log("Time elapsed for WriteUpdate: "
-                    + (this.finishWriteUpdate - this.initWriteUpdate) / 1000000
-                    + " milliseconds.");
-            this.log("File updated!");
         } catch (final TransformerConfigurationException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

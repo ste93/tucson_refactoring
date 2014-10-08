@@ -5,11 +5,9 @@ import alice.respect.core.TupleSet;
 import alice.respect.core.tupleset.ITupleSet;
 
 public class PersistencyData {
-    private long initCreationPersistencyData;
     private List<String> predicates;
     private TupleSet prologPredicates;
     private List<String> specTuples;
-    private long terminateCreationPersistencyData;
     private List<String> tuples;
     private ITupleSet tupleSet;
     private ITupleSet tupleSpecSet;
@@ -20,29 +18,19 @@ public class PersistencyData {
 
     public PersistencyData(final ITupleSet tSet, final ITupleSet tSpecSet,
             final TupleSet pPrologPred, final List<String> tUpdates) {
-        this.initCreationPersistencyData = System.nanoTime();
         this.setTupleSet(tSet);
         this.setTupleSpecSet(tSpecSet);
         this.setPrologPredicates(pPrologPred);
         this.setUpdates(tUpdates);
-        this.terminateCreationPersistencyData = System.nanoTime();
-        this.log("Time elapsed from creation of PersistencyData: "
-                + (this.terminateCreationPersistencyData - this.initCreationPersistencyData)
-                / 1000000 + " milliseconds.");
     }
 
     public PersistencyData(final List<String> tuples,
             final List<String> specTuples, final List<String> pPredicates,
             final List<String> updates) {
-        this.initCreationPersistencyData = System.nanoTime();
         this.setTuples(tuples);
         this.setSpecTuples(specTuples);
         this.setPredicates(pPredicates);
         this.setUpdates(updates);
-        this.terminateCreationPersistencyData = System.nanoTime();
-        this.log("Time elapsed from creation of PersistencyData: "
-                + (this.terminateCreationPersistencyData - this.initCreationPersistencyData)
-                / 10000000 + " milliseconds.");
     }
 
     public List<String> getPredicates() {
