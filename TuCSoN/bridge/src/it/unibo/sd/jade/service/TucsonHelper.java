@@ -10,106 +10,115 @@ import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 
 /**
+ * TucsonHelper. Interface class responsible to provide API to JADE agent to
+ * fruitfully interact with TuCSoN coordination services.
  * 
- * @author lucasangiorgi
+ * @author Luca Sangiorgi (mailto: luca.sangiorgi6@studio.unibo.it)
+ * @author (contributor) Stefano Mariani (mailto: s.mariani@unibo.it)
  * 
  */
 public interface TucsonHelper extends ServiceHelper {
     /**
-     * Permette di effettuare l'autenticazione per il nodo TuCSoN locale.
-     * Equivale a {@link #acquireACC(Agent, String, int)} con i parametri
-     * relativi al nodo locale.
+     * Enables ACC acquisition on the default local TuCSoN Node. Equivalent to
+     * {@link #acquireACC(Agent, String, int)} givin the default local TuCSoN
+     * Node addresses.
      * 
      * @param agent
-     *            L'agente che richiede l'autenticazione.
+     *            the agent requesting authentication
      * @throws TucsonInvalidAgentIdException
-     *             Se il nome dell'agente non soddisfa i requisiti di TuCSoN.
+     *             if the given agent id is not a valid TuSCoN agent id
      */
     void acquireACC(Agent agent) throws TucsonInvalidAgentIdException;
 
     /**
-     * Permette di effettuare l'autenticazione per il nodo TuCSoN specificato.
+     * Enables ACC acquisition on the given TuCSoN Node.
      * 
      * @param agent
-     *            L'agente che richiede l'autenticazione.
+     *            the agent requesting authentication
      * @param netid
-     *            L'indirizzo IP o nome DNS del nodo TuCSoN.
+     *            IP address of the TuCSoN Node to interact with
      * @param portno
-     *            Il numero di porta del nodo TuCSoN.
+     *            TCP port number of the TuCSoN Node to interact with
      * @throws TucsonInvalidAgentIdException
-     *             Se il nome dell'agente non soddisfa i requisiti di TuCSoN.
+     *             if the given agent id is not a valid TuSCoN agent id
      */
     void acquireACC(Agent agent, String netid, int portno)
             throws TucsonInvalidAgentIdException;
 
     /**
-     * Permette di ottenere il {@link alice.tucson.api.TucsonTupleCentreId}
-     * TucsonTupleCentreId relativo al <code>tupleCentreName</code>,
-     * <code>netid</code> e <code>portno</code> specificati
+     * Builds the {@link alice.tucson.api.TucsonTupleCentreId} identifying the
+     * tuple centre named <code>tupleCentreName</code> and reachable at IP
+     * address <code>netid</code>:<code>portno</code>.
      * 
      * @param tupleCentreName
-     *            Il nome del tuple centre
+     *            the name of the tuple centre
      * @param netid
-     *            L'indirizzo IP o nome DNS del nodo che ospita il tuple centre
+     *            IP address of the tuple centre
      * @param portno
-     *            Il numero di porta del tuple centre (default 20504)
-     * @return Il TucsonTupleCentreId relativo ai parametri specificati
+     *            TCP port number of the tuple centre
+     * @return the TucsonTupleCentreId built
      * @throws TucsonInvalidTupleCentreIdException
-     *             Se il tuple centre non &egrave; valido.
+     *             if given name is not a valid TuCSoN tuple centre id
      */
     TucsonTupleCentreId buildTucsonTupleCentreId(String tupleCentreName,
             String netid, int portno)
             throws TucsonInvalidTupleCentreIdException;
 
     /**
-     * Permette di ottenere il {@link BridgeToTucson} tramite il quale &egrave;
-     * possibile interagire con TuCSoN.
+     * Gets the {@link BridgeToTucson} providing JADE agents the API to benefit
+     * of TuCSoN coordination services.
      * 
      * @param agent
-     *            L'agente che richiede il TucsonOperationHandler.
-     * @return Il BridgeJadeTuCSoN che permette l'interazione con TuCSoN.
+     *            the agent requesting access to the TuCSoN4JADE bridge
+     *            component
+     * @return the TuCSoN4JADE bridge component providing JADE agents the API to
+     *         benefit of TuCSoN coordination services
      * @throws CannotAcquireACCException
-     *             Se l'agente <code>agent</code> non ha ottenuto un ACC.
+     *             if the <code>agent</code> cannot get an ACC (e.g. another
+     *             agent with same id already exists)
      */
     BridgeToTucson getBridgeToTucson(Agent agent)
             throws CannotAcquireACCException;
 
     /**
-     * Checks if a TuCSoN Node is active on the given port
+     * Checks if a TuCSoN Node is active on the given TCP/IP address.
      * 
      * @param netid
+     *            the IP address to test
      * @param port
+     *            the TCP port number to test
      * @param timeout
+     *            the maximum waiting time for the test
      * @return wether a TuCSoN Node is active on the given port
      */
     boolean isActive(String netid, int port, int timeout);
 
     /**
-     * Permette di effettuare la deautenticazione per il nodo TuCSoN sul quale
-     * si era precedentemente autenticati.
+     * Releases the ACC held by the caller agent.
      * 
      * @param agent
-     *            L'agente che richiede la deautenticazione.
+     *            the agent releasing its ACC
      */
     void releaseACC(Agent agent);
 
     /**
-     * Permette di avviare un {@link alice.tucson.service.TucsonNodeService}
-     * TucsonNodeService sull'host alla porta specificata.
+     * Enables to start a {@link alice.tucson.service.TucsonNodeService} on the
+     * given TCP port on the local host.
      * 
      * @param port
-     *            La porta del TucsonNodeService.
+     *            the TCP port number to start the TuCSoN Node on
      * @exception TucsonOperationNotPossibleException
-     *                if the TuCSoN node cannot be started
+     *                if the TuCSoN node cannot be started (e.g. TCP port
+     *                already in use)
      */
     void startTucsonNode(int port) throws TucsonOperationNotPossibleException;
 
     /**
-     * Permette di fermare un {@link alice.tucson.service.TucsonNodeService}
-     * TucsonNodeService sull'host.
+     * Enables to stop a {@link alice.tucson.service.TucsonNodeService} on the
+     * given TCP port on the local host.
      * 
      * @param port
-     *            La porta del TucsonNodeService
+     *            the TCP port number to stop the TuCSoN Node on
      */
     void stopTucsonNode(int port);
 }

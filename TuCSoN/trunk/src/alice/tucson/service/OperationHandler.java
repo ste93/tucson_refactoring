@@ -444,6 +444,11 @@ public class OperationHandler {
         return this.controllerSessions;
     }
 
+    private void err(final String msg) {
+        System.err.println("....[OperationHandler ("
+                + this.profile.getProperty("agent-identity") + ")]: " + msg);
+    }
+
     /**
      * Method internally used to log proxy activity (could be used for debug)
      * 
@@ -452,11 +457,6 @@ public class OperationHandler {
      */
     private void log(final String msg) {
         System.out.println("....[OperationHandler ("
-                + this.profile.getProperty("agent-identity") + ")]: " + msg);
-    }
-
-    private void err(final String msg) {
-        System.err.println("....[OperationHandler ("
                 + this.profile.getProperty("agent-identity") + ")]: " + msg);
     }
 

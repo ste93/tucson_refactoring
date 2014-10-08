@@ -21,6 +21,10 @@
 				<fileset file="${src-dir}/it/unibo/sd/jade/examples/bookTrading/books.cat" />
 			</copy>
 
+			<copy todir="${classes-dir}/it/unibo/sd/jade/service">
+				<fileset file="${src-dir}/it/unibo/sd/jade/service/t4j-logos.txt" />
+			</copy>
+
 			<echo>Check ${classes-dir} folder!</echo>
 
 		</sequential>

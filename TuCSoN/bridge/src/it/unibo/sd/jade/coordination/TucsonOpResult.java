@@ -5,25 +5,21 @@ import java.util.List;
 import alice.tucson.service.TucsonOpCompletionEvent;
 
 /**
- * Classe utilizzata per memorizzare/reperire i risultati delle operazioni di
- * coordinazione ottenuti da un behaviour JADE
+ * TucsonOpResult. Object wrapping TuCSoN coordination operation results to JADE
+ * agents.
  * 
- * @author lucasangiorgi
+ * @author Luca Sangiorgi (mailto: luca.sangiorgi6@studio.unibo.it)
+ * @author (contributor) Stefano Mariani (mailto: s.mariani@unibo.it)
  * 
  */
 public class TucsonOpResult {
-    // prossimo risultato da usare, utilizzato per restituire il risultato
-    // corretto o per sapere se quel risultato non e' presente e quindi
-    // procedere
-    // con l'operazione
+    /*
+     * next result to provide. Used to give the result to requesting agents and
+     * test if operation is still to be requested
+     */
     private int nextRes;
     /*
-     * variabile utilizzata per sapere se i risultati sono stati ottenuti o ce
-     * ne sono ancora di pendenti (es se e' si allora e' nella fase in cui e'
-     * stata chiamata l'asincrona ma il comportamento che e' stato bloccato si
-     * risveglia perche' e' stato ricevuto un messaggio dall'agente senza che
-     * l'operazione sia stata completata, questo permette di interrompere subito
-     * l'operazione tornando null e rimettendo nella BlockQueue il comportamento
+     * used to know if the operation result is ready
      */
     private boolean ready;
     private final List<TucsonOpCompletionEvent> tucsonCompletionEvents;
@@ -38,21 +34,21 @@ public class TucsonOpResult {
     }
 
     /**
-     * @return the next_res
+     * @return the next result
      */
     public int getNextRes() {
         return this.nextRes;
     }
 
     /**
-     * @return the list
+     * @return the list of completion events
      */
     public List<TucsonOpCompletionEvent> getTucsonCompletionEvents() {
         return this.tucsonCompletionEvents;
     }
 
     /**
-     * @return the ready
+     * @return wether the operation result is ready
      */
     public boolean isReady() {
         return this.ready;
@@ -60,7 +56,7 @@ public class TucsonOpResult {
 
     /**
      * @param n
-     *            the next_res to set
+     *            the next result to set
      */
     public void setNextRes(final int n) {
         this.nextRes = n;
@@ -68,7 +64,7 @@ public class TucsonOpResult {
 
     /**
      * @param r
-     *            the ready to set
+     *            wether the operation result is ready
      */
     public void setReady(final boolean r) {
         this.ready = r;

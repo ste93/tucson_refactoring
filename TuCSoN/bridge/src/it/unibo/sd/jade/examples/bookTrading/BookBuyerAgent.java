@@ -81,7 +81,7 @@ public class BookBuyerAgent extends Agent {
                 // should not happen
                 e.printStackTrace();
                 BookBuyerAgent.this.doDelete();
-            } 
+            }
             final In in = new In(BookBuyerAgent.this.tcid, proposal);
             TucsonOpCompletionEvent res = null;
             try {
@@ -125,6 +125,7 @@ public class BookBuyerAgent extends Agent {
                  * increase replies counter.
                  */
                 BookBuyerAgent.this.repliesCnt++;
+                BookBuyerAgent.this.bridge.clearTucsonOpResult(this);
             } else {
                 this.block();
             }
@@ -255,6 +256,7 @@ public class BookBuyerAgent extends Agent {
                     e.printStackTrace();
                     BookBuyerAgent.this.doDelete();
                 }
+                BookBuyerAgent.this.bridge.clearTucsonOpResult(this);
             } else {
                 BookBuyerAgent.this.log("Waiting for confirmation...");
                 this.block();
@@ -556,6 +558,7 @@ public class BookBuyerAgent extends Agent {
                         BookBuyerAgent.this
                                 .log("No suitable services found, retrying in 10 seconds...");
                     }
+                    BookBuyerAgent.this.bridge.clearTucsonOpResult(this);
                 } else {
                     BookBuyerAgent.this
                             .log("No 'book-trading' services available yet...");

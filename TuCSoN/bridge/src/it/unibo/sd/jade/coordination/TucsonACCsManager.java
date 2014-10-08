@@ -7,36 +7,17 @@ import java.util.Map;
 import alice.tucson.api.EnhancedACC;
 
 /**
- * classe che permette di memorizzare gli accoppiamenti acc-agente
+ * TucsonACCsManager. Responsible for tracking JADE agent - TuCSoN ACC mappings.
  * 
  * @author Luca Sangiorgi (mailto: luca.sangiorgi6@studio.unibo.it)
+ * @author (contributor) Stefano Mariani (mailto: s.mariani@unibo.it)
  */
-public class TucsonACCsManager {
-    /**
-     * 
-     */
-    protected static TucsonACCsManager instance;
+public enum TucsonACCsManager {
+    /** the singleton instance of this ACCs manager */
+    INSTANCE;
+    private Map<AID, EnhancedACC> mAccs;
 
-    /**
-     * 
-     * @return the singleton instance of this ACC manager entity
-     */
-    public static TucsonACCsManager getInstance() {
-        if (TucsonACCsManager.instance == null) {
-            TucsonACCsManager.instance = new TucsonACCsManager();
-        }
-        return TucsonACCsManager.instance;
-    }
-
-    /**
-     * 
-     */
-    protected Map<AID, EnhancedACC> mAccs;
-
-    /**
-     * 
-     */
-    protected TucsonACCsManager() {
+    private TucsonACCsManager() {
         this.mAccs = new LinkedHashMap<AID, EnhancedACC>();
     }
 
@@ -64,7 +45,7 @@ public class TucsonACCsManager {
     /**
      * 
      * @param agent
-     *            the JADE agent query about held ACCs
+     *            the JADE agent querying about held ACCs
      * @return wether the given JADE agent currently holds any ACC
      */
     public boolean hasAcc(final Agent agent) {

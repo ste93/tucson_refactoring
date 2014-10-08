@@ -354,6 +354,11 @@ public class InterTupleCentreACCProxy implements InterTupleCentreACC,
         }
     }
 
+    private void err(final String msg) {
+        System.err.println("..[InterTupleCentreACCProxy ("
+                + this.profile.getProperty("tc-identity") + ")]: " + msg);
+    }
+
     private TucsonOpCompletionEvent findEvent(final TucsonOpId id) {
         final Iterator<TucsonOpCompletionEvent> it = this.events.iterator();
         while (it.hasNext()) {
@@ -422,11 +427,6 @@ public class InterTupleCentreACCProxy implements InterTupleCentreACC,
 
     private void log(final String msg) {
         System.out.println("..[InterTupleCentreACCProxy ("
-                + this.profile.getProperty("tc-identity") + ")]: " + msg);
-    }
-
-    private void err(final String msg) {
-        System.err.println("..[InterTupleCentreACCProxy ("
                 + this.profile.getProperty("tc-identity") + ")]: " + msg);
     }
 

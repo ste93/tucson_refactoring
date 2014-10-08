@@ -33,13 +33,6 @@ import alice.tuplecentre.api.Tuple;
  * 
  */
 public class InspectorContextStub implements InspectorContext {
-    /**
-     * @param msg
-     */
-    private static void log(final String msg) {
-        System.out.println("[InspectorContextStub]: " + msg);
-    }
-
     private static void err(final String msg) {
         System.err.println("[InspectorContextStub]: " + msg);
     }

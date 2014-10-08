@@ -6,11 +6,12 @@ import alice.tucson.service.TucsonOpCompletionEvent;
 import alice.tucson.service.TucsonOperation;
 
 /**
- * AsyncOpResultData: classe usata per rappresentare la struttura dati con la
- * quale controllare se il risultato dell'operazione di coordinazione in
- * modalita' asincrona con tecnica di polling e' stata completata o e' pendente
+ * AsynchTucsonOpResult. Data structure representing results of asynchronous
+ * operations. Such results are handled by the caller JADE agent in
+ * "polling mode".
  * 
- * @author lucasangiorgi
+ * @author Luca Sangiorgi (mailto: luca.sangiorgi6@studio.unibo.it)
+ * @author (contributor) Stefano Mariani (mailto: s.mariani@unibo.it)
  * 
  */
 public class AsynchTucsonOpResult {
@@ -52,24 +53,19 @@ public class AsynchTucsonOpResult {
     }
 
     /**
-     * cerca e restituisce in modo mutuamente esclusivo l'evento riguardante
-     * l'operazione richiesta
+     * Given a TuCSoN operation id, its completion is retrieved (if available)
      * 
      * @param o
-     *            id dell'operazione che si vuole cercare
-     * @return TucsonOpCompletionEvent se l'operazione e' stata completata,
-     *         altrimenti null
+     *            id of the TuCSoN operation to look for
+     * @return TucsonOpCompletionEvent if available, @code{null} otherwise
      */
     public TucsonOpCompletionEvent getTucsonCompletionEvent(final long o) {
         TucsonOpCompletionEvent ev = null;
         synchronized (this.tucsonCompletionEvents) {
             final boolean trovato = false;
             for (int i = 0; i < this.tucsonCompletionEvents.size() && !trovato; i++) {
-                if (this.tucsonCompletionEvents.get(i).getOpId().getId() == o) { // operazione
-                    // richiesta
-                    // trovata
-                    // prelevo l'operazione completata dalla coda dei messaggi
-                    // completati
+                if (this.tucsonCompletionEvents.get(i).getOpId().getId() == o) {
+                    // completion found
                     ev = this.tucsonCompletionEvents.remove(i);
                 }
             }
@@ -86,18 +82,16 @@ public class AsynchTucsonOpResult {
     }
 
     /**
-     * controlla se l'operazione richiesta e' ancora pendente o meno
+     * Checks wether given operation (through its id) is still pending
      * 
      * @param o
-     *            id dell'operazione che si vuole controllare
-     * @return true se e' nella lista delle operazioni pendenti, false se non lo
-     *         e'
+     *            id of the TuCSoN operation to look for
+     * @return @code{true} if still pending, @code{false} if not
      */
     public boolean isPending(final long o) {
         synchronized (this.pendingOps) {
             final TucsonOperation op1 = this.pendingOps.get(o);
-            if (op1 != null) { // operazione nella lista delle operazioni
-                               // pendenti
+            if (op1 != null) {
                 return false;
             }
             return true;

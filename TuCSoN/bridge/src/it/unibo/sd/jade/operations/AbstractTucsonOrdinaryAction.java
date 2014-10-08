@@ -4,13 +4,16 @@ import alice.logictuple.LogicTuple;
 import alice.tucson.api.TucsonTupleCentreId;
 
 /**
+ * Ordinary actions are those involving ordinary tuples (not specification
+ * tuples).
  * 
  * @author Luca Sangiorgi (mailto: luca.sangiorgi6@studio.unibo.it)
+ * @author (contributor) Stefano Mariani (mailto: s.mariani@unibo.it)
  * 
  */
 public abstract class AbstractTucsonOrdinaryAction extends AbstractTucsonAction {
     /**
-     * 
+     * the tuple argument of the operation
      */
     protected LogicTuple tuple;
 
@@ -28,13 +31,6 @@ public abstract class AbstractTucsonOrdinaryAction extends AbstractTucsonAction 
         this.tuple = t;
     }
 
-    // /**
-    // *
-    // * @return the Logic Tuple argument of the coordination operation
-    // */
-    // public LogicTuple getTuple() {
-    // return this.tuple;
-    // }
     /*
      * (non-Javadoc)
      * @see java.lang.Object#toString()

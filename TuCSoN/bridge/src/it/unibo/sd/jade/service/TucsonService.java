@@ -15,8 +15,11 @@ import jade.core.Service;
 import jade.core.ServiceHelper;
 import jade.core.Sink;
 import jade.core.VerticalCommand;
+import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.StringTokenizer;
 import alice.tucson.api.EnhancedACC;
 import alice.tucson.api.EnhancedAsynchACC;
 import alice.tucson.api.EnhancedSynchACC;
@@ -29,22 +32,25 @@ import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
+import alice.tucson.examples.utilities.Utils;
 import alice.tucson.network.exceptions.DialogCloseException;
 import alice.tucson.network.exceptions.DialogInitializationException;
 import alice.tucson.service.TucsonNodeService;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 
 /**
+ * TucsonService. The class representing TuCSoN coordination services within the
+ * JADE middleware.
  * 
- * @author lucasangiorgi
+ * @author Luca Sangiorgi (mailto: luca.sangiorgi6@studio.unibo.it)
+ * @author (contributor) Stefano Mariani (mailto: s.mariani@unibo.it)
  * 
  */
 public class TucsonService extends BaseService {
-    /*
-     * Classe interna che ha il compito di eseguire i comandi verticali
-     * "interni", ovvero quelli gestiti direttamente dal servizio (quelli
-     * inclusi nell'elenco OWNED_COMMANDS) sono l'ultimo step dei comandi
-     * verticali che implementa effettivamente il comando verticale
+    /**
+     * Inner class repsonsible for executing JADE kernel services
+     * "vertical commands". In our case, TuCSoN coordination operations
+     * invocations.
      */
     private class CommandSourceSink implements Sink {
         @Override
@@ -58,11 +64,7 @@ public class TucsonService extends BaseService {
                 ITucsonOperation result;
                 try {
                     result = action.executeSynch(acc, timeout);
-                    cmd.setReturnValue(result); // viene ritornato nel corpo
-                    // della classe di
-                    // TucsonOperationHandler dove
-                    // si esegue il comando
-                    // verticale
+                    cmd.setReturnValue(result);
                 } catch (final TucsonOperationNotPossibleException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
@@ -100,10 +102,6 @@ public class TucsonService extends BaseService {
         }
     }
 
-    /*
-     * Classe interna che ha il compito di eseguire i comandi verticali generati
-     * dal ServiceComponent (al momento nessuno)
-     */
     private class CommandTargetSink implements Sink {
         @Override
         public void consume(final VerticalCommand cmd) {
@@ -139,8 +137,8 @@ public class TucsonService extends BaseService {
         }
     }
 
-    /*
-     * L'implementazione del TuCSoNHelper
+    /**
+     * Inner class implementing the {@link TucsonHelper} interface.
      */
     private class TucsonHelperImpl implements TucsonHelper {
         private Agent myAgent;
@@ -148,12 +146,12 @@ public class TucsonService extends BaseService {
         @Override
         public void acquireACC(final Agent agent)
                 throws TucsonInvalidAgentIdException {
-            if (TucsonService.this.mAccManager.hasAcc(agent)) {
+            if (TucsonACCsManager.INSTANCE.hasAcc(agent)) {
                 this.log("Agent '" + agent.getName() + "' already has an ACC.");
                 return;
             }
             final EnhancedACC acc = this.obtainAcc(agent);
-            TucsonService.this.mAccManager.addAcc(agent, acc);
+            TucsonACCsManager.INSTANCE.addAcc(agent, acc);
             this.log("Giving ACC '"
                     + acc.getClass().getInterfaces()[0].getSimpleName()
                     + "' to agent " + agent.getLocalName());
@@ -162,12 +160,12 @@ public class TucsonService extends BaseService {
         @Override
         public void acquireACC(final Agent agent, final String netid,
                 final int portno) throws TucsonInvalidAgentIdException {
-            if (TucsonService.this.mAccManager.hasAcc(agent)) {
+            if (TucsonACCsManager.INSTANCE.hasAcc(agent)) {
                 this.log("Agent '" + agent.getName() + "' already has an ACC.");
                 return;
             }
             final EnhancedACC acc = this.obtainAcc(agent, netid, portno);
-            TucsonService.this.mAccManager.addAcc(agent, acc);
+            TucsonACCsManager.INSTANCE.addAcc(agent, acc);
             this.log("Giving ACC '"
                     + acc.getClass().getInterfaces()[0].getSimpleName()
                     + "' to agent " + agent.getLocalName()
@@ -186,17 +184,15 @@ public class TucsonService extends BaseService {
         @Override
         public BridgeToTucson getBridgeToTucson(final Agent agent)
                 throws CannotAcquireACCException {
-            if (!TucsonService.this.mAccManager.hasAcc(agent)) {
+            if (!TucsonACCsManager.INSTANCE.hasAcc(agent)) {
                 throw new CannotAcquireACCException(
                         "The agent does not hold an ACC");
             }
-            // Controllo se esiste gia' un OperationHandler per l'agente,
-            // altrimenti lo creo
             BridgeToTucson bridge = TucsonService.this.mOperationHandlers
                     .get(agent.getAID());
             if (bridge == null) {
                 bridge = new BridgeToTucson(
-                        TucsonService.this.mAccManager.getAcc(agent),
+                        TucsonACCsManager.INSTANCE.getAcc(agent),
                         TucsonService.this);
                 TucsonService.this.mOperationHandlers.put(agent.getAID(),
                         bridge);
@@ -219,11 +215,11 @@ public class TucsonService extends BaseService {
                 final int timeout) {
             try {
                 return TucsonNodeService.isInstalled(netid, port, timeout);
-            } catch (DialogInitializationException e) {
+            } catch (final DialogInitializationException e) {
                 e.printStackTrace();
-            } catch (DialogCloseException e) {
+            } catch (final DialogCloseException e) {
                 e.printStackTrace();
-            } catch (UnreachableNodeException e) {
+            } catch (final UnreachableNodeException e) {
                 e.printStackTrace();
             }
             return false;
@@ -231,9 +227,7 @@ public class TucsonService extends BaseService {
 
         @Override
         public void releaseACC(final Agent agent) {
-            // Esco dall'acc
-            final EnhancedACC acc = TucsonService.this.mAccManager
-                    .getAcc(agent);
+            final EnhancedACC acc = TucsonACCsManager.INSTANCE.getAcc(agent);
             if (acc != null) {
                 try {
                     acc.exit();
@@ -241,9 +235,7 @@ public class TucsonService extends BaseService {
                     e.printStackTrace();
                 }
             }
-            // Rimuovo l'ACC
-            TucsonService.this.mAccManager.removeAcc(agent);
-            // Rimuovo eventuali TucsonOperationHandler
+            TucsonACCsManager.INSTANCE.removeAcc(agent);
             TucsonService.this.mOperationHandlers.remove(this.myAgent.getAID());
             this.log("Releasing ACC and TuCSoN bridge for agent "
                     + agent.getName());
@@ -278,76 +270,55 @@ public class TucsonService extends BaseService {
         }
     }
 
-    /**
-     * Service name
-     */
+    /** Service name */
     public static final String NAME = "it.unibo.sd.jade.service.TucsonService";
-    private static final String VERSION = "TuCSoN4JADE-1.0";
-    /*
-     * L'insieme dei comandi verticali che il servizio e' in grado di soddisfare
-     * autonomamente
-     */
+    /** The set of JADE "vertical commands" this service is able to serve */
     private static final String[] OWNED_COMMANDS = { TucsonSlice.EXECUTE_SYNCH,
             TucsonSlice.EXECUTE_ASYNCH };
     private static final int TUCSON_DEF_PORT = 20504;
+    private static final String VERSION = "TuCSoN4JADE-1.0";
 
-    /**
-     * @return
-     */
     private static String getVersion() {
-        return VERSION;
+        return TucsonService.VERSION;
     }
 
-    /**
-     * @param string
-     */
     private static void log(final String msg) {
         System.out.println("[TuCSoN Service]: " + msg);
     }
 
-    /*
-     * L'helper del servizio
-     */
     private final TucsonHelper helperService = new TucsonHelperImpl();
-    // The local slice for this service
-    @SuppressWarnings("unused")
+    /** Leave this here, seems that JADE requires it anyway */
     private final ServiceComponent localSlice = new ServiceComponent();
-    /*
-     * Gestisce gli acc posseduti dagli agenti
-     */
-    private final TucsonACCsManager mAccManager = TucsonACCsManager
-            .getInstance();
-    /*
-     * Gestisce il mapping Agente-OperationHandler
-     */
     private final Map<AID, BridgeToTucson> mOperationHandlers = new HashMap<AID, BridgeToTucson>();
-    /*
-     * Gestisce il mapping nodeName-InetAddress
-     */
-    // private final Map<String, InetSocketAddress> mTucsonNodes =
-    // new HashMap<String, InetSocketAddress>();
-    // @Override
-    // public Slice getLocalSlice() {
-    // return localSlice;
-    // }
-    // The source and target sinks
     private final Sink sourceSink = new CommandSourceSink();
-    private final Sink targetSink = new CommandTargetSink(); // Al momento non
-                                                             // e'
+    private final Sink targetSink = new CommandTargetSink();
 
     public TucsonService() {
         super();
+        TucsonService
+                .log("--------------------------------------------------------------------------------");
+        try {
+            final StringTokenizer st = new StringTokenizer(
+                    Utils.fileToString("it/unibo/sd/jade/service/t4j-logos.txt"),
+                    "\n");
+            while (st.hasMoreTokens()) {
+                TucsonService.log(st.nextToken());
+            }
+        } catch (final IOException e) {
+            // should not happen
+            e.printStackTrace();
+        }
         TucsonService
                 .log("--------------------------------------------------------------------------------");
         TucsonService.log("Welcome to the TuCSoN4JADE (T4J) bridge :)");
         TucsonService.log("  T4J version " + TucsonService.getVersion());
         // TucsonService.log("  TuCSoN version " +
         // TucsonNodeService.getVersion());
+        TucsonService.log(new Date().toString());
         TucsonService
                 .log("--------------------------------------------------------------------------------");
     }
 
-    // utilizzato
     @Override
     public Sink getCommandSink(final boolean direction) {
         if (direction == Sink.COMMAND_SOURCE) {
@@ -361,9 +332,8 @@ public class TucsonService extends BaseService {
         return this.helperService;
     }
 
-    @SuppressWarnings("rawtypes")
     @Override
-    public Class getHorizontalInterface() {
+    public Class<TucsonSlice> getHorizontalInterface() {
         return TucsonSlice.class;
     }
 

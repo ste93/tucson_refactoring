@@ -422,7 +422,7 @@ public class TucsonNodeService {
      * @param tc
      *            the identifier of the tuple centre whose persistency service
      *            should be disabled
-     * 
+     * @return wether persistency has been succesfully disabled
      */
     public synchronized boolean disablePersistency(final String tc) {
         final TucsonTCUsers tar = this.cores.get(tc);
@@ -498,6 +498,7 @@ public class TucsonNodeService {
      * @param tc
      *            the identifier of the tuple centre whose persistency service
      *            should be enabled
+     * @return wether persistency has been succesfully enabled
      */
     public synchronized boolean enablePersistency(final String tc) {
         final TucsonTCUsers tar = this.cores.get(tc);

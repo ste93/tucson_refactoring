@@ -27,9 +27,11 @@ import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.service.TucsonOpCompletionEvent;
 
 /**
- * classe che permette di comunicare dal "mondo" JADE al "mondo" TuCSoN
+ * BridgeToTucson. Client API for JADE agents willing to benefit of TuCSoN
+ * coordination services.
  * 
- * @author lucasangiorgi
+ * @author Luca Sangiorgi (mailto: luca.sangiorgi6@studio.unibo.it)
+ * @author (contributor) Stefano Mariani (mailto: s.mariani@unibo.it)
  * 
  */
 public class BridgeToTucson {
@@ -38,21 +40,21 @@ public class BridgeToTucson {
     }
 
     /**
-     * metodo utilizzato per poter uniformare il tipo di ritorno delle
-     * operazioni di coordinazione eseguite dall'agente jade
+     * Translate TuCSoN completions into JADE completions.
      * 
      * @param op
-     * @return
+     *            the TuCSoN operation to translate
+     * @return JADE wrapper to TuCSoN completions
      */
     private static TucsonOpCompletionEvent toTucsonCompletionEvent(
             final ITucsonOperation op) {
         TucsonOpCompletionEvent ev;
-        if (op.isInAll() // caso in cui ricevo una lista di tuple
-                || op.isRdAll() || op.isGet() || op.isGetS() || op.isNoAll()) {
+        if (op.isInAll() || op.isRdAll() || op.isGet() || op.isGetS()
+                || op.isNoAll()) {
             ev = new TucsonOpCompletionEvent(new TucsonOpId(op.getId()), true,
                     op.isOperationCompleted(), op.isResultSuccess(),
                     op.getLogicTupleListResult());
-        } else { // caso in cui ricevo una tupla come risultato
+        } else {
             ev = new TucsonOpCompletionEvent(new TucsonOpId(op.getId()), true,
                     op.isOperationCompleted(), op.isResultSuccess(),
                     op.getLogicTupleResult());
@@ -78,22 +80,19 @@ public class BridgeToTucson {
     }
 
     /**
-     * metodo asyncrono dove il programmatore controlla se il risultato e'
-     * pronto a runtime (controllo a polling)
+     * "Polling mode", asynchronous invocation method. Callers themselves should
+     * poll the shared data structure returned by this method to test wether a
+     * result is available or not.
      * 
      * @param action
-     *            the TuCSoN action to be carried out
-     * @return struttura che permette di controllare se il risultato e' stato
-     *         ricevuto o e' ancora pendente
+     *            the TuCSoN coordination operation to be carried out
+     * @return the shared "Future-like" object to query for operation result
      * @throws ServiceException
-     *             if the service cannot be contacted
+     *             if the coordination service is not available
      */
     public AsynchTucsonOpResult asynchronousInvocation(
             final AbstractTucsonAction action) throws ServiceException {
-        // Creo il comando verticale
-        // chiamata asincrona senza settare il listener perche' il controllo del
-        // completamento dell'operazione e' a carico del programmatore tramite
-        // la struttura ritornata AsyncOpResultData
+        // no listeneer given since we are in "polling mode"
         final GenericCommand cmd = new GenericCommand(
                 TucsonSlice.EXECUTE_ASYNCH, TucsonService.NAME, null);
         cmd.addParam(action);
@@ -105,9 +104,7 @@ public class BridgeToTucson {
         final Object result = this.service.submit(cmd);
         if (result instanceof ITucsonOperation) {
             final ITucsonOperation op = (ITucsonOperation) result;
-            // si deve ritornare un oggetto che contiene la lista dove si andra'
-            // a
-            // controllare se l'operazione e' completata, e l'id della op
+            // the shared Future-like object
             final AsynchTucsonOpResult asyncData = new AsynchTucsonOpResult(
                     op.getId(), this.acc.getCompletionEventsList(),
                     this.acc.getPendingOperationsMap());
@@ -117,20 +114,20 @@ public class BridgeToTucson {
     }
 
     /**
-     * metodo asyncrono dove il programmatore crea precedentemente il behaviour
-     * che verra' attivato nell'agente quando il risultato e' pronto (controllo
-     * a interrupt)
+     * "Interrupt mode", asynchronous invocation method. Callers should provide
+     * a ready-to-use JADE behaviour responsible for handling the asynchronous
+     * operation result.
      * 
      * @param action
-     *            the TuCSoN action to be carried out
+     *            the TuCSoN coordination operation to be carried out
      * @param behav
-     *            the JADE behaviour handling the rusult
+     *            the JADE behaviour handling the result
      * @param myAgent
      *            the JADE agent responsible for execution of the behaviour
      */
     public void asynchronousInvocation(final AbstractTucsonAction action,
             final Behaviour behav, final Agent myAgent) {
-        // Creo il comando verticale
+        // the listener is a behaviour, not known atm, thus it is not set now
         final GenericCommand cmd = new GenericCommand(
                 TucsonSlice.EXECUTE_ASYNCH, TucsonService.NAME, null);
         cmd.addParam(action);
@@ -149,73 +146,66 @@ public class BridgeToTucson {
     }
 
     /**
-     * metodo utilizzato per eliminare la struttura condivisa non piu'
-     * utilizzata (il metodo deve essere chiamato appena prima della
-     * terminazione del behaviour) o quando si vuole chiamare una stessa
-     * operazione in un cyclebehaviour perche' altrimenti questa operazione
-     * verrebbe eseguita una sola volta e restituirebbe sempre lo stesso
-     * risultato anche se la si richiama piu' volte
+     * To be called in case of synchronous invocations after result handling so
+     * as to clean shared data structures.
      * 
      * @param b
-     *            behaviour tramite il quale si identifica la struttura
-     *            condivisa associata al behaviour (behaviour da cui si sono
-     *            invocate le operazioni di cooridnazione)
+     *            the behaviour calling the coordination operations, whose
+     *            result map should be cleaned
      */
     public void clearTucsonOpResult(final Behaviour b) {
         this.tucsonOpResultsMap.remove(b);
     }
 
     /**
-     * esecuzione operazioni di coordinazione sospensive in modalita' sincrona
+     * Synchronous invocation method. Caller behavioiur is suspended then
+     * resumed as soon as the operation result becomes available.
      * 
      * @param action
-     *            the TuCSoN action to be carried out
+     *            the TuCSoN coordination operation to be carried out
      * @param timeout
      *            the maximum waiting time for completion reception
      * @param behav
-     *            comportamento che invoca la chiamata
+     *            caller behaviour
      * @return the TuCSoN operation completion event
      * @throws ServiceException
-     *             if the service cannot be contacted
+     *             if the coordination service is not available
      */
     public TucsonOpCompletionEvent synchronousInvocation(
             final AbstractTucsonAction action, final Long timeout,
             final Behaviour behav) throws ServiceException {
         TucsonOpResult ros;
-        if (this.tucsonOpResultsMap.get(behav) == null) { // ottengo o creo il
-            // gestore di
-            // memorizzazione dei
-            // risultati delle
-            // operazioni di
-            // coordinazione
+        if (this.tucsonOpResultsMap.get(behav) == null) {
             ros = new TucsonOpResult();
             this.tucsonOpResultsMap.put(behav, ros);
         } else {
             ros = this.tucsonOpResultsMap.get(behav);
             if (!ros.isReady()) {
-                return null; // il comportamento e' stato sbloccato da un
-                             // messaggio ricevuto dall'agente e non da un
-                             // restart del thread delegato a questo.
+                // in this case, the JADE behaviour was resumed not by us, but
+                // by JADE runtime due to message reception, thus nothing should
+                // be done
+                return null;
             }
         }
-        // controllo se l'op e' gia' stata eseguita e ritorna subito il
-        // risultato
-        // memorizzato in mResultOpBehaviour
         final List<TucsonOpCompletionEvent> list = ros
                 .getTucsonCompletionEvents();
         int nextRes = ros.getNextRes();
-        if (list.size() > nextRes) { // sono gia' presenti dei risultati vecchi
-            ros.setNextRes(++nextRes); // si incrementa la prossima
-                                       // operazione che si deve eseguire
+        if (list.size() > nextRes) {
+            /*
+             * operation already executed, return completion and increment
+             * executions counter to next operation in queue
+             */
+            ros.setNextRes(++nextRes);
             return ros.getTucsonCompletionEvents().get(nextRes - 1);
         }
-        // e' la prima volta che si esegue l'operazione
-        // controllo se l'operazione richiesta ha bisogno di attendere la
-        // risposta
+        /*
+         * first time the operation is called, its result cannot be available
+         * yet
+         */
         if (action instanceof Out || action instanceof OutS
                 || action instanceof OutAll || action instanceof Spawn
                 || action instanceof Set || action instanceof SetS) {
-            // Creo il comando verticale
+            // no suspension needed
             final GenericCommand cmd = new GenericCommand(
                     TucsonSlice.EXECUTE_SYNCH, TucsonService.NAME, null);
             cmd.addParam(action);
@@ -223,23 +213,16 @@ public class BridgeToTucson {
             cmd.addParam(timeout);
             Object result;
             BridgeToTucson.log("Synchronous invocation of operation " + action);
-            result = this.service.submit(cmd); // eseguo comando
-                                               // verticale
+            result = this.service.submit(cmd);
             final ITucsonOperation op = (ITucsonOperation) result;
-            // creo il TucsonOpCompletionEvent per salvarlo nella struttura
-            // condivisa
-            // utilizzato della funzione fromITucsonOpToTucsonOpComp perche'
-            // i risultati vengono restituiti rispetto al contratto
-            // ITucsonOperation
             final TucsonOpCompletionEvent res = BridgeToTucson
                     .toTucsonCompletionEvent(op);
-            // aggiorno struttura condivisa
             ros.getTucsonCompletionEvents().add(res);
             ros.setNextRes(ros.getNextRes() + 1);
             ros.setReady(true);
             return res;
         }
-        // operazioni che necessitano di sospendere il behaviour
+        // suspension needed
         final GenericCommand cmd = new GenericCommand(
                 TucsonSlice.EXECUTE_ASYNCH, TucsonService.NAME, null);
         cmd.addParam(action);
@@ -254,14 +237,14 @@ public class BridgeToTucson {
              * cannot really happen
              */
         }
-        ros.setNextRes(0); // setto a 0 perche' l'agente si blocchera' e
-                           // quando verra' riavviato ricomincera' da capo
-                           // l'esecuzione
+        /*
+         * the behaviour will be suspended, thus at resume its whole
+         * @code{action} method executed from the beginning
+         */
+        ros.setNextRes(0);
         ros.setReady(false);
-        ta.go(); // avvio dell'agente tucson incaricato ad eseguire l'op
-                 // e gestire il risultato
-        return null; // se si ritorna null vuol dire che il risultato non e'
-                     // pronto e di conseguenza si adotta il protocollo di
-                     // sospensione e riattivazione del behaviour
+        ta.go();
+        // by returning @code{null} the behaviour will be suspended
+        return null;
     }
 }

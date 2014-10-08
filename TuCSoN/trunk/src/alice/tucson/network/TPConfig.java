@@ -75,9 +75,6 @@ public final class TPConfig {
      * 
      * @param portNumber
      *            the TCP listening port
-     * @throws IllegalPortNumberException
-     *             if the portNumber is out of bounds ( < 1 || >
-     *             MAX_UNBOUND_PORT)
      */
     public synchronized void setTcpPort(final int portNumber) {
         if (portNumber < 1 || portNumber > TPConfig.MAX_UNBOUND_PORT

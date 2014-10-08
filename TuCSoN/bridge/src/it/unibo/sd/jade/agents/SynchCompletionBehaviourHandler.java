@@ -14,25 +14,26 @@ import alice.tucson.service.TucsonOpCompletionEvent;
 import alice.tuplecentre.core.AbstractTupleCentreOperation;
 
 /**
- * TucsonAgentAsync: agente TuCSoN che esegue operazioni di coordinazione in
- * modalita' asincrona e gestisce il suo completamento riavviando il behaviour
- * JADE chiamante
+ * SynchCompletionBehaviourHandler. TuCSoN agent in charge of carrying out
+ * coordination operations in synchronous mode. Completion of such operations is
+ * handled by resuming the caller behaviour, scheduled for execution as soon as
+ * TuCSoN reply is available.
  * 
- * @author lucasangiorgi
+ * @author Luca Sangiorgi (mailto: luca.sangiorgi6@studio.unibo.it)
+ * @author (contributor) Stefano Mariani (mailto: s.mariani@unibo.it)
  * 
  */
 public class SynchCompletionBehaviourHandler extends AbstractTucsonAgent {
-    private final Behaviour behav; // comportamento da "riavviare" comando
-                                   // restart()
-    private final GenericCommand cmd; // comando verticale da
-                                      // eseguire(esecuzione dell'operazione di
-                                      // coordinazione sospensiva)
-    private ITucsonOperation result; // risultato operazione dell'operazione di
-                                     // coordianzione sospensiva
-    private final TucsonOpResult ros; // struttura condivisa dove memorizzare
-                                      // il risultato
-    private final TucsonService service; // servizio incaricato ad eseguire il
-                                         // comando
+    /** the caller behaviour to resume */
+    private final Behaviour behav;
+    /** command wrapping the coordination operation to execute */
+    private final GenericCommand cmd;
+    /** TuCSoN reply storing the coordination operation result */
+    private ITucsonOperation result;
+    /** shared (with caller behaviour and ACC) object storing operation result */
+    private final TucsonOpResult ros;
+    /** The JADE service responsible for command execution */
+    private final TucsonService service;
 
     /**
      * 
@@ -43,9 +44,9 @@ public class SynchCompletionBehaviourHandler extends AbstractTucsonAgent {
      * @param c
      *            the command to dispatch to the JADE middleware
      * @param s
-     *            the TuCSoN service to interact with
+     *            the JADE service to interact with
      * @param b
-     *            the JADE Behaviour to handle
+     *            the caller JADE Behaviour to resume
      * @throws TucsonInvalidAgentIdException
      *             if the given String is not a valid representation of a TuCSoN
      *             agent id
@@ -63,7 +64,7 @@ public class SynchCompletionBehaviourHandler extends AbstractTucsonAgent {
     }
 
     /*
-     * metodo utilizzato solo dalle chiamate asincrone (non-Javadoc)
+     * (non-Javadoc)
      * @see
      * alice.tucson.api.AbstractTucsonAgent#operationCompleted(alice.tuplecentre
      * .core.AbstractTupleCentreOperation)
@@ -73,31 +74,17 @@ public class SynchCompletionBehaviourHandler extends AbstractTucsonAgent {
         final EnhancedAsynchACC acc = (EnhancedAsynchACC) this.cmd.getParam(1);
         final List<TucsonOpCompletionEvent> list = acc
                 .getCompletionEventsList();
-        // ricerca del risultato dell'operazione richiesta contenuto nella
-        // risposta della chiamata asincrona di oggetto ITucsonOperation
-        boolean trovato = false;
+        boolean found = false;
         synchronized (list) {
-            for (int i = 0; i < list.size() && !trovato; i++) {
-                if (list.get(i).getOpId().getId() == this.result.getId()) { // operazione
-                                                                            // richiesta
-                                                                            // trovata
-                    trovato = true;
-                    final TucsonOpCompletionEvent ev = list.remove(i); // prelevo
-                                                                       // l'operazione
-                                                                       // completata
-                                                                       // dalla
-                                                                       // coda
-                                                                       // dei
-                                                                       // messaggi
-                                                                       // completati
-                    this.ros.getTucsonCompletionEvents().add(ev); // salvare il
-                                                                  // risultato
-                                                                  // nella
-                    // struttura dedicata
-                    this.ros.setReady(true); // segnalo che al behaviour JADE
-                                             // che
-                                             // e' pronto il risultato
-                                             // dell'operazione pendente
+            for (int i = 0; i < list.size() && !found; i++) {
+                if (list.get(i).getOpId().getId() == this.result.getId()) {
+                    found = true;
+                    // removing completed operation from completion list
+                    final TucsonOpCompletionEvent ev = list.remove(i);
+                    // storing result in shared object
+                    this.ros.getTucsonCompletionEvents().add(ev);
+                    // signal to JADE bahaviour that result is available
+                    this.ros.setReady(true);
                 }
             }
         }
@@ -113,13 +100,11 @@ public class SynchCompletionBehaviourHandler extends AbstractTucsonAgent {
 
     @Override
     protected void main() {
-        this.cmd.addParam(this); // listener aggiunto dopo aver creato l'oggetto
-                                 // che fa da listener
+        // Adding myself as listeneer of TuCSoN operation completion
+        this.cmd.addParam(this);
         try {
-            this.result = (ITucsonOperation) this.service.submit(this.cmd); // esecuzione
-                                                                            // operazione
-                                                                            // di
-                                                                            // coordinazione
+            // actual execution of coordination operation
+            this.result = (ITucsonOperation) this.service.submit(this.cmd);
         } catch (final ServiceException e) {
             System.err.println(e);
         }

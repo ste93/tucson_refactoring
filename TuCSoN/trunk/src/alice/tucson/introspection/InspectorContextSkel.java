@@ -96,14 +96,12 @@ public class InspectorContextSkel extends AbstractACCProxyNodeSide implements
         this.agentId = new TucsonAgentId(name);
         msg = this.dialog.receiveInspectorMsg();
         this.tcId = new TucsonTupleCentreId(msg.getTcName());
-        if (msg != null) {
-            final TucsonTCUsers coreInfo = node.resolveCore(msg.getTcName());
-            if (coreInfo == null) {
-                throw new TucsonGenericException(
-                        "Internal error: InspectorContextSkel constructor");
-            }
-            this.protocol = msg.getInfo();
+        final TucsonTCUsers coreInfo = node.resolveCore(msg.getTcName());
+        if (coreInfo == null) {
+            throw new TucsonGenericException(
+                    "Internal error: InspectorContextSkel constructor");
         }
+        this.protocol = msg.getInfo();
     }
 
     @Override

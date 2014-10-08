@@ -1,5 +1,14 @@
 package alice.tucson.network.exceptions;
 
+/**
+ * DialogReceiveException. Thrown if TuCSoN Node service can't handle reception
+ * of a message.
+ * 
+ * @author Alessia Papini (mailto: alessia.papini@studio.unibo.it)
+ * @author Mattia Balducci (mailto: mattia.balducci@studio.unibo.it)
+ * @author (contributor) Stefano Mariani (mailto: s.mariani@unibo.it)
+ * 
+ */
 public class DialogReceiveException extends DialogException {
     /**
      * Exception thrown when a TuCSoN receiving operation goes wrong

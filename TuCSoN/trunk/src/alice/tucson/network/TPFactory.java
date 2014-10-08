@@ -39,9 +39,6 @@ public final class TPFactory {
      *             if the target tuple centre is unreachable
      * @throws InvalidProtocolTypeException
      *             if the protocol type used is not DIALOG_TYPE_TCP
-     * @throws IllegalPortNumberException
-     *             if the portNumber is out of bounds ( < 1 || >
-     *             MAX_UNBOUND_PORT)
      */
     public static AbstractTucsonProtocol getDialogAgentSide(
             final int tucsonProtocolType, final TucsonTupleCentreId tid)
@@ -74,9 +71,6 @@ public final class TPFactory {
      *             if something goes wrong in the underlying network
      * @throws UnreachableNodeException
      *             if the target tuple centre is unreachable
-     * @throws IllegalPortNumberException
-     *             if the portNumber is out of bounds ( < 1 || >
-     *             MAX_UNBOUND_PORT)
      */
     public static AbstractTucsonProtocol getDialogAgentSide(
             final TucsonTupleCentreId tid) throws UnreachableNodeException,
@@ -116,9 +110,6 @@ public final class TPFactory {
      *             if something goes wrong in the underlying network
      * @throws InvalidProtocolTypeException
      *             if the protocol type used is not DIALOG_TYPE_TCP
-     * @throws IllegalPortNumberException
-     *             if the portNumber is out of bounds ( < 1 || >
-     *             MAX_UNBOUND_PORT)
      */
     public static AbstractTucsonProtocol getDialogNodeSide(
             final int tucsonProtocolType) throws InvalidProtocolTypeException,

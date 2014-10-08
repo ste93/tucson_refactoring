@@ -131,6 +131,7 @@ public class BookSellerAgent extends Agent {
                             + "), price(" + p + "))");
                     final Out out = new Out(BookSellerAgent.this.tcid, proposal);
                     BookSellerAgent.this.bridge.asynchronousInvocation(out);
+                    BookSellerAgent.this.bridge.clearTucsonOpResult(this);
                 } else { // cfp not available yet, BLOCK ONLY THIS BEHAVIOUR
                     BookSellerAgent.this.log("No CFP yet...");
                     this.block();
@@ -203,7 +204,7 @@ public class BookSellerAgent extends Agent {
                             .toString();
                     final String title = result.getTuple().getArg(3).getArg(0)
                             .toString();
-                    // someone is trying to fool me: he never didi a cfp, but he
+                    // someone is trying to fool me: he never did a cfp, but he
                     // is trying to buy something!
                     if (BookSellerAgent.this.buyers.contains(buyer)) {
                         BookSellerAgent.this.buyers.remove(buyer);
@@ -264,6 +265,7 @@ public class BookSellerAgent extends Agent {
                             .log(">>> No TuCSoN service active, reboot JADE with -services it.unibo.sd.jade.service.TucsonService option <<<");
                     BookSellerAgent.this.doDelete();
                 }
+                BookSellerAgent.this.bridge.clearTucsonOpResult(this);
             } else {
                 BookSellerAgent.this.log("No purchase orders yet...");
                 this.block();

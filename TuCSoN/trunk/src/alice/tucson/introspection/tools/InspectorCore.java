@@ -36,16 +36,27 @@ public class InspectorCore extends alice.tucson.introspection.Inspector {
      */
     private Calendar cal;
     private final InspectorGUI form;
+    /** wether pending queries view logging is enabled */
     protected boolean loggingQueries = false;
+    /** wether triggered reactions view logging is enabled */
     protected boolean loggingReactions = false;
+    /** wether tuples view logging is enabled */
     protected boolean loggingTuples = false;
+    /** template filtering pending queries logging */
     protected LogicTuple logOpFilter;
+    /** file name to log pending queries */
     protected String logQueryFilename;
+    /** writing component to log pending queries */
     protected FileWriter logQueryWriter;
+    /** file name to log triggered reactions */
     protected String logReactionFilename;
+    /** writing component to log triggered reactions */
     protected FileWriter logReactionWriter;
+    /** file name to log tuples */
     protected String logTupleFilename;
+    /** template filtering tuples logging */
     protected LogicTuple logTupleFilter;
+    /** writing component to log tuples */
     protected FileWriter logTupleWriter;
 
     /**

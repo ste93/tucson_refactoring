@@ -4,14 +4,18 @@ import alice.logictuple.LogicTuple;
 import alice.tucson.api.TucsonTupleCentreId;
 
 /**
+ * Specification actions are those involving specification tuples, that is,
+ * ReSpecT reactions specifications.
  * 
  * @author Luca Sangiorgi (mailto: luca.sangiorgi6@studio.unibo.it)
+ * @author (contributor) Stefano Mariani (mailto: s.mariani@unibo.it)
  * 
  */
 public abstract class AbstractTucsonSpecificationAction extends
         AbstractTucsonAction {
     /**
-     * 
+     * the tuple representing the event, guards and body of a ReSpecT
+     * specification tuple
      */
     protected LogicTuple event, guards, reaction;
 

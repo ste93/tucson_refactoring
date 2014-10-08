@@ -32,6 +32,7 @@ import alice.tucson.service.ACCDescription;
  * 
  */
 public abstract class AbstractTucsonProtocol implements java.io.Serializable {
+    /** Code for isInstalled() query */
     public static final int NODE_ACTIVE_QUERY = 2;
     private static final int REQ_ENTERCONTEXT = 1;
     /** serialVersionUID **/

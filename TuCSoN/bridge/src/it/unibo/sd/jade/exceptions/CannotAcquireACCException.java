@@ -12,7 +12,7 @@ public class CannotAcquireACCException extends Exception {
     /**
      * 
      * @param msg
-     *            the message describign the exception
+     *            the message describing the exception
      */
     public CannotAcquireACCException(final String msg) {
         super(msg);

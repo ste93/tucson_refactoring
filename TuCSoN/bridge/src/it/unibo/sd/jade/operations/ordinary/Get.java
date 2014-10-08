@@ -11,8 +11,10 @@ import alice.tucson.api.exceptions.UnreachableNodeException;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 
 /**
+ * <code>get</code> TuCSoN primitive.
  * 
  * @author Luca Sangiorgi (mailto: luca.sangiorgi6@studio.unibo.it)
+ * @author (contributor) Stefano Mariani (mailto: s.mariani@unibo.it)
  * 
  */
 public class Get extends AbstractTucsonOrdinaryAction {

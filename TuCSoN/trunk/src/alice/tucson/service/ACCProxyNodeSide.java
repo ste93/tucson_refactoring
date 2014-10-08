@@ -436,13 +436,13 @@ public class ACCProxyNodeSide extends AbstractACCProxyNodeSide {
         this.node.removeNodeAgent(this);
     }
 
-    private void log(final String st) {
-        System.out.println("..[ACCProxyNodeSide (" + this.node.getTCPPort()
+    private void err(final String st) {
+        System.err.println("..[ACCProxyNodeSide (" + this.node.getTCPPort()
                 + ", " + this.ctxId + ", " + this.agentName + ")]: " + st);
     }
 
-    private void err(final String st) {
-        System.err.println("..[ACCProxyNodeSide (" + this.node.getTCPPort()
+    private void log(final String st) {
+        System.out.println("..[ACCProxyNodeSide (" + this.node.getTCPPort()
                 + ", " + this.ctxId + ", " + this.agentName + ")]: " + st);
     }
 }
