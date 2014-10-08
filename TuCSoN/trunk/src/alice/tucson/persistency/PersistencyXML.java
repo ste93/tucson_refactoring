@@ -29,7 +29,8 @@ import alice.tucson.api.TucsonTupleCentreId;
 public class PersistencyXML {
     public static final String PREDICATE_NODE = "predicate";
     public static final String PREDICATES_NODE = "predicates";
-    public static final String ROOT_NODE = "snapshot";
+    public static final String ROOT_NODE = "persistency";
+    public static final String SNAPSHOT_NODE = "snapshot";
     public static final String SPEC_NODE = "spec";
     public static final String SPEC_TUPLES_NODE = "specTuples";
     public static final String TUPLE_NODE = "tuple";
@@ -156,11 +157,14 @@ public class PersistencyXML {
             final Document document = documentBuilder.newDocument();
             final Element rootElement = document
                     .createElement(PersistencyXML.ROOT_NODE);
-            // Set attribute tc to rootElement
-            rootElement.setAttribute("tc", this.pFileName.toString());
-            // Set attribute time to rootElement
-            rootElement.setAttribute("time", this.pDate);
             document.appendChild(rootElement);
+            final Element snapshotElement = document
+                    .createElement(PersistencyXML.SNAPSHOT_NODE);
+            // Set attribute tc to rootElement
+            		snapshotElement.setAttribute("tc", this.pFileName.toString());
+            // Set attribute time to rootElement
+            snapshotElement.setAttribute("time", this.pDate);
+            rootElement.appendChild(snapshotElement);
             final Element tuples = document
                     .createElement(PersistencyXML.TUPLES_NODE);
             final Iterator<LogicTuple> it = pData.getTupleSet().getIterator();
@@ -170,7 +174,7 @@ public class PersistencyXML {
                 tuple.setTextContent(it.next().toString());
                 tuples.appendChild(tuple);
             }
-            rootElement.appendChild(tuples);
+            snapshotElement.appendChild(tuples);
             final Element specTuples = document
                     .createElement(PersistencyXML.SPEC_TUPLES_NODE);
             final Iterator<LogicTuple> itS = pData.getTupleSpecSet()
@@ -181,7 +185,7 @@ public class PersistencyXML {
                 spec.setTextContent(itS.next().toString());
                 specTuples.appendChild(spec);
             }
-            rootElement.appendChild(specTuples);
+            snapshotElement.appendChild(specTuples);
             final Element predicates = document
                     .createElement(PersistencyXML.PREDICATES_NODE);
             final Iterator<LogicTuple> itP = pData.getPrologPredicates()
@@ -192,7 +196,7 @@ public class PersistencyXML {
                 predicate.setTextContent(itP.next().toString());
                 predicates.appendChild(predicate);
             }
-            rootElement.appendChild(predicates);
+            snapshotElement.appendChild(predicates);
             // write the content into xml file
             final TransformerFactory transformerFactory = TransformerFactory
                     .newInstance();
@@ -225,6 +229,7 @@ public class PersistencyXML {
             final DocumentBuilder db = dbf.newDocumentBuilder();
             final Document doc = db.parse(this.xmlFile);
             final Element root = doc.getDocumentElement();
+            
             Element updates;
             final NodeList updsElement = doc
                     .getElementsByTagName(PersistencyXML.UPDATES_NODE);
