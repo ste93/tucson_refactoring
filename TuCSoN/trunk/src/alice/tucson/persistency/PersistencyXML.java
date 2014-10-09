@@ -3,10 +3,12 @@ package alice.tucson.persistency;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -17,11 +19,13 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+
 import alice.logictuple.LogicTuple;
 import alice.respect.core.RespectVMContext.ModType;
 import alice.tucson.api.TucsonTupleCentreId;
@@ -72,10 +76,10 @@ public class PersistencyXML {
 
     public PersistencyData parse() {
         PersistencyData pData = new PersistencyData();
-        List<String> tuples = new LinkedList<String>();
-        List<String> specTuple = new LinkedList<String>();
-        List<String> predicates = new LinkedList<String>();
-        List<String> updates = new LinkedList<String>();
+        List<String> tuples = new ArrayList<String>();
+        List<String> specTuple = new ArrayList<String>();
+        List<String> predicates = new ArrayList<String>();
+        List<String> updates = new ArrayList<String>();
         try {
             final DocumentBuilderFactory factory = DocumentBuilderFactory
                     .newInstance();
@@ -112,6 +116,7 @@ public class PersistencyXML {
             final NodeList updatesList = document.getElementsByTagName(UPDATES_NODE);
             final Node updatesNode = updatesList.item(0);
             final NodeList updatesChilds = updatesNode.getChildNodes();
+            
             for(int i = 0; i < updatesChilds.getLength(); i++)
             {
             	Node node = updatesChilds.item(i);
@@ -121,12 +126,16 @@ public class PersistencyXML {
             		if (elem.getNodeName().equals(PersistencyXML.UPDATE_NODE))
             		{
             			String update = this.getUpdateInfo(elem);
-            			if(update != null)
+            			if(update != null)	
             				updates.add(update);
             		}
             	}
             }
-           
+            
+            updates = this.listByRemoving(updates, TUPLE_NODE);
+            updates = this.listByRemoving(updates, SPEC_NODE);
+            updates = this.listByRemoving(updates, PREDICATE_NODE);
+            
             pData = new PersistencyData(tuples, specTuple, predicates, updates);
         } catch (final ParserConfigurationException e) {
             // TODO Auto-generated catch block
@@ -139,6 +148,35 @@ public class PersistencyXML {
             e.printStackTrace();
         }
         return pData;
+    }
+    
+    public ArrayList<String> listByRemoving(List<String> updates, String value)
+    {
+    	boolean found = false;
+    	String search = null;
+    	if(value.equals(TUPLE_NODE))
+    		search = "(et)";
+    	else if(value.equals(SPEC_NODE))
+    		search = "(es)";
+    	else if(value.equals(PREDICATE_NODE))
+    		search = "(ep)";
+    	
+    	for(int i = updates.size()-1; i > 0; i--)
+    	{
+    		String obj = updates.get(i);
+    		if(obj.contains(search))
+    			found = true;
+
+    		if(found)
+    		{
+    			if(((obj.contains("(+t)") || obj.contains("(-t)") || obj.contains("(et)")) && value.equals(TUPLE_NODE))
+    					|| ((obj.contains("(+s)") || obj.contains("(-s)") || obj.contains("(es)")) && value.equals(SPEC_NODE))
+    					|| ((obj.contains("(+p)") || obj.contains("(-p)") || obj.contains("(ep)")) && value.equals(PREDICATE_NODE)))
+    			updates.remove(i);
+    		}
+    	}
+    	
+    	return new ArrayList<String>(updates);
     }
 
     public String getUpdateInfo(Element elem)
