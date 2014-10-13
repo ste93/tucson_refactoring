@@ -8,7 +8,6 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -19,35 +18,33 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
-
 import alice.logictuple.LogicTuple;
 import alice.respect.core.RespectVMContext.ModType;
 import alice.tucson.api.TucsonTupleCentreId;
 
 public class PersistencyXML {
+    public static final String ACTION_ATTRIBUTE = "action";
+    public static final String ADD_OPERATION = "addition";
+    public static final String CLEAN_OPERATION = "clean";
+    public static final String DEL_OPERATION = "deletion";
     public static final String PREDICATE_NODE = "predicate";
     public static final String PREDICATES_NODE = "predicates";
     public static final String ROOT_NODE = "persistency";
     public static final String SNAPSHOT_NODE = "snapshot";
     public static final String SPEC_NODE = "spec";
     public static final String SPEC_TUPLES_NODE = "specTuples";
+    public static final String SUBJECT_ATTRIBUTE = "subject";
+    public static final String TC_ATTRIBUTE = "tc";
+    public static final String TIME_ATTRIBUTE = "time";
     public static final String TUPLE_NODE = "tuple";
     public static final String TUPLES_NODE = "tuples";
     public static final String UPDATE_NODE = "update";
     public static final String UPDATES_NODE = "updates";
-    public static final String ACTION_ATTRIBUTE = "action";
-    public static final String SUBJECT_ATTRIBUTE = "subject";
-    public static final String TIME_ATTRIBUTE = "time";
-    public static final String TC_ATTRIBUTE = "tc";
-    public static final String ADD_OPERATION = "addition";
-    public static final String DEL_OPERATION = "deletion";
-    public static final String CLEAN_OPERATION = "clean";
     private String pDate;
     private TucsonTupleCentreId pFileName;
     private String pPath;
@@ -74,6 +71,68 @@ public class PersistencyXML {
         return nodeInfo;
     }
 
+    public String getUpdateInfo(final Element elem) {
+        String nodeInfo = null;
+        final String attrAction = elem
+                .getAttribute(PersistencyXML.ACTION_ATTRIBUTE);
+        final String attrSubject = elem
+                .getAttribute(PersistencyXML.SUBJECT_ATTRIBUTE);
+        final String body = elem.getTextContent();
+        String subject = null;
+        if (attrSubject.equals(PersistencyXML.TUPLE_NODE)) {
+            subject = "t";
+        } else if (attrSubject.equals(PersistencyXML.SPEC_NODE)) {
+            subject = "s";
+        } else if (attrSubject.equals(PersistencyXML.PREDICATE_NODE)) {
+            subject = "p";
+        }
+        String operation = null;
+        if (attrAction.equals(PersistencyXML.ADD_OPERATION)) {
+            operation = "+";
+        } else if (attrAction.equals(PersistencyXML.DEL_OPERATION)) {
+            operation = "-";
+        } else if (attrAction.equalsIgnoreCase(PersistencyXML.CLEAN_OPERATION)) {
+            operation = "e";
+        }
+        if (subject != null && operation != null && body != null) {
+            nodeInfo = "(" + operation + subject + ")" + " " + body;
+        }
+        return nodeInfo;
+    }
+
+    public ArrayList<String> listByRemoving(final List<String> updates,
+            final String value) {
+        boolean found = false;
+        String search = null;
+        if (value.equals(PersistencyXML.TUPLE_NODE)) {
+            search = "(et)";
+        } else if (value.equals(PersistencyXML.SPEC_NODE)) {
+            search = "(es)";
+        } else if (value.equals(PersistencyXML.PREDICATE_NODE)) {
+            search = "(ep)";
+        }
+        for (int i = updates.size() - 1; i > 0; i--) {
+            final String obj = updates.get(i);
+            if (obj.contains(search)) {
+                found = true;
+            }
+            if (found) {
+                if ((obj.contains("(+t)") || obj.contains("(-t)") || obj
+                        .contains("(et)"))
+                        && value.equals(PersistencyXML.TUPLE_NODE)
+                        || (obj.contains("(+s)") || obj.contains("(-s)") || obj
+                                .contains("(es)"))
+                        && value.equals(PersistencyXML.SPEC_NODE)
+                        || (obj.contains("(+p)") || obj.contains("(-p)") || obj
+                                .contains("(ep)"))
+                        && value.equals(PersistencyXML.PREDICATE_NODE)) {
+                    updates.remove(i);
+                }
+            }
+        }
+        return new ArrayList<String>(updates);
+    }
+
     public PersistencyData parse() {
         PersistencyData pData = new PersistencyData();
         List<String> tuples = new ArrayList<String>();
@@ -85,19 +144,16 @@ public class PersistencyXML {
                     .newInstance();
             final DocumentBuilder builder = factory.newDocumentBuilder();
             final Document document = builder.parse(this.xmlFile);
-            
             // SNAPSHOT
-            final NodeList snapshotList = document.getElementsByTagName(SNAPSHOT_NODE);
+            final NodeList snapshotList = document
+                    .getElementsByTagName(PersistencyXML.SNAPSHOT_NODE);
             final Node snapshotNode = snapshotList.item(0);
             final NodeList snapshotChilds = snapshotNode.getChildNodes();
-           
-            for (int i = 0; i < snapshotChilds.getLength(); i++)
-            {
-            	Node node = snapshotChilds.item(i);
-            	if(node.getNodeType() == Node.ELEMENT_NODE)
-            	{
-            		Element elem = (Element)node;
-            		if (elem.getNodeName().equals(PersistencyXML.TUPLES_NODE)) {
+            for (int i = 0; i < snapshotChilds.getLength(); i++) {
+                final Node node = snapshotChilds.item(i);
+                if (node.getNodeType() == Node.ELEMENT_NODE) {
+                    final Element elem = (Element) node;
+                    if (elem.getNodeName().equals(PersistencyXML.TUPLES_NODE)) {
                         tuples = this.getNodeInfo(node,
                                 PersistencyXML.TUPLE_NODE);
                     } else if (elem.getNodeName().equals(
@@ -109,33 +165,29 @@ public class PersistencyXML {
                         predicates = this.getNodeInfo(node,
                                 PersistencyXML.PREDICATE_NODE);
                     }
-            	}
+                }
             }
-            
             // UPDATES
-            final NodeList updatesList = document.getElementsByTagName(UPDATES_NODE);
+            final NodeList updatesList = document
+                    .getElementsByTagName(PersistencyXML.UPDATES_NODE);
             final Node updatesNode = updatesList.item(0);
             final NodeList updatesChilds = updatesNode.getChildNodes();
-            
-            for(int i = 0; i < updatesChilds.getLength(); i++)
-            {
-            	Node node = updatesChilds.item(i);
-            	if(node.getNodeType() == Node.ELEMENT_NODE)
-            	{
-            		Element elem = (Element)node;
-            		if (elem.getNodeName().equals(PersistencyXML.UPDATE_NODE))
-            		{
-            			String update = this.getUpdateInfo(elem);
-            			if(update != null)	
-            				updates.add(update);
-            		}
-            	}
+            for (int i = 0; i < updatesChilds.getLength(); i++) {
+                final Node node = updatesChilds.item(i);
+                if (node.getNodeType() == Node.ELEMENT_NODE) {
+                    final Element elem = (Element) node;
+                    if (elem.getNodeName().equals(PersistencyXML.UPDATE_NODE)) {
+                        final String update = this.getUpdateInfo(elem);
+                        if (update != null) {
+                            updates.add(update);
+                        }
+                    }
+                }
             }
-            
-            updates = this.listByRemoving(updates, TUPLE_NODE);
-            updates = this.listByRemoving(updates, SPEC_NODE);
-            updates = this.listByRemoving(updates, PREDICATE_NODE);
-            
+            updates = this.listByRemoving(updates, PersistencyXML.TUPLE_NODE);
+            updates = this.listByRemoving(updates, PersistencyXML.SPEC_NODE);
+            updates = this.listByRemoving(updates,
+                    PersistencyXML.PREDICATE_NODE);
             pData = new PersistencyData(tuples, specTuple, predicates, updates);
         } catch (final ParserConfigurationException e) {
             // TODO Auto-generated catch block
@@ -149,65 +201,7 @@ public class PersistencyXML {
         }
         return pData;
     }
-    
-    public ArrayList<String> listByRemoving(List<String> updates, String value)
-    {
-    	boolean found = false;
-    	String search = null;
-    	if(value.equals(TUPLE_NODE))
-    		search = "(et)";
-    	else if(value.equals(SPEC_NODE))
-    		search = "(es)";
-    	else if(value.equals(PREDICATE_NODE))
-    		search = "(ep)";
-    	
-    	for(int i = updates.size()-1; i > 0; i--)
-    	{
-    		String obj = updates.get(i);
-    		if(obj.contains(search))
-    			found = true;
 
-    		if(found)
-    		{
-    			if(((obj.contains("(+t)") || obj.contains("(-t)") || obj.contains("(et)")) && value.equals(TUPLE_NODE))
-    					|| ((obj.contains("(+s)") || obj.contains("(-s)") || obj.contains("(es)")) && value.equals(SPEC_NODE))
-    					|| ((obj.contains("(+p)") || obj.contains("(-p)") || obj.contains("(ep)")) && value.equals(PREDICATE_NODE)))
-    			updates.remove(i);
-    		}
-    	}
-    	
-    	return new ArrayList<String>(updates);
-    }
-
-    public String getUpdateInfo(Element elem)
-    {
-    	String nodeInfo = null;
-    	String attrAction = elem.getAttribute(ACTION_ATTRIBUTE);
-		String attrSubject = elem.getAttribute(SUBJECT_ATTRIBUTE);
-		String body = elem.getTextContent();
-		
-		String subject = null;
-		if(attrSubject.equals(TUPLE_NODE))
-			subject = "t";
-		else if(attrSubject.equals(SPEC_NODE))
-			subject = "s";
-		else if(attrSubject.equals(PREDICATE_NODE))
-			subject = "p";
-		
-		String operation = null;
-		if(attrAction.equals(ADD_OPERATION))
-			operation = "+";
-		else if(attrAction.equals(DEL_OPERATION))
-			operation = "-";
-		else if(attrAction.equalsIgnoreCase(CLEAN_OPERATION))
-			operation = "e";
-		
-		if(subject != null && operation != null && body != null)
-			nodeInfo = "("+operation+subject+")"+" "+body;
-		
-    	return nodeInfo;
-    }
-    
     public void write(final PersistencyData pData) {
         try {
             final long now = System.currentTimeMillis();
@@ -232,9 +226,11 @@ public class PersistencyXML {
             final Element snapshotElement = document
                     .createElement(PersistencyXML.SNAPSHOT_NODE);
             // Set attribute tc to rootElement
-            		snapshotElement.setAttribute(TC_ATTRIBUTE, this.pFileName.toString());
+            snapshotElement.setAttribute(PersistencyXML.TC_ATTRIBUTE,
+                    this.pFileName.toString());
             // Set attribute time to rootElement
-            snapshotElement.setAttribute(TIME_ATTRIBUTE, this.pDate);
+            snapshotElement.setAttribute(PersistencyXML.TIME_ATTRIBUTE,
+                    this.pDate);
             rootElement.appendChild(snapshotElement);
             final Element tuples = document
                     .createElement(PersistencyXML.TUPLES_NODE);
@@ -273,7 +269,8 @@ public class PersistencyXML {
                     .newInstance();
             final Transformer transformer = transformerFactory.newTransformer();
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-            transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
+            transformer.setOutputProperty(
+                    "{http://xml.apache.org/xslt}indent-amount", "4");
             final DOMSource source = new DOMSource(document);
             final StreamResult result = new StreamResult(this.xmlFile);
             // Output to console for testing
@@ -295,7 +292,6 @@ public class PersistencyXML {
             final DocumentBuilder db = dbf.newDocumentBuilder();
             final Document doc = db.parse(this.xmlFile);
             final Element root = doc.getDocumentElement();
-            
             Element updates;
             final NodeList updsElement = doc
                     .getElementsByTagName(PersistencyXML.UPDATES_NODE);
@@ -308,46 +304,64 @@ public class PersistencyXML {
             final Element upd = doc.createElement(PersistencyXML.UPDATE_NODE);
             switch (mode) {
                 case ADD_TUPLE:
-                	upd.setAttribute(SUBJECT_ATTRIBUTE, TUPLE_NODE);
-                	upd.setAttribute(ACTION_ATTRIBUTE, ADD_OPERATION);
+                    upd.setAttribute(PersistencyXML.SUBJECT_ATTRIBUTE,
+                            PersistencyXML.TUPLE_NODE);
+                    upd.setAttribute(PersistencyXML.ACTION_ATTRIBUTE,
+                            PersistencyXML.ADD_OPERATION);
                     upd.setTextContent(update.toString());
                     break;
                 case ADD_SPEC:
-                	upd.setAttribute(SUBJECT_ATTRIBUTE, SPEC_NODE);
-                	upd.setAttribute(ACTION_ATTRIBUTE, ADD_OPERATION);
+                    upd.setAttribute(PersistencyXML.SUBJECT_ATTRIBUTE,
+                            PersistencyXML.SPEC_NODE);
+                    upd.setAttribute(PersistencyXML.ACTION_ATTRIBUTE,
+                            PersistencyXML.ADD_OPERATION);
                     upd.setTextContent(update.toString());
                     break;
                 case ADD_PRED:
-                	upd.setAttribute(SUBJECT_ATTRIBUTE, PREDICATE_NODE);
-                	upd.setAttribute(ACTION_ATTRIBUTE, ADD_OPERATION);
+                    upd.setAttribute(PersistencyXML.SUBJECT_ATTRIBUTE,
+                            PersistencyXML.PREDICATE_NODE);
+                    upd.setAttribute(PersistencyXML.ACTION_ATTRIBUTE,
+                            PersistencyXML.ADD_OPERATION);
                     upd.setTextContent(update.toString());
                     break;
                 case DEL_TUPLE:
-                	upd.setAttribute(SUBJECT_ATTRIBUTE, TUPLE_NODE);
-                	upd.setAttribute(ACTION_ATTRIBUTE, DEL_OPERATION);
+                    upd.setAttribute(PersistencyXML.SUBJECT_ATTRIBUTE,
+                            PersistencyXML.TUPLE_NODE);
+                    upd.setAttribute(PersistencyXML.ACTION_ATTRIBUTE,
+                            PersistencyXML.DEL_OPERATION);
                     upd.setTextContent(update.toString());
                     break;
                 case DEL_SPEC:
-                	upd.setAttribute(SUBJECT_ATTRIBUTE, SPEC_NODE);
-                	upd.setAttribute(ACTION_ATTRIBUTE, DEL_OPERATION);
+                    upd.setAttribute(PersistencyXML.SUBJECT_ATTRIBUTE,
+                            PersistencyXML.SPEC_NODE);
+                    upd.setAttribute(PersistencyXML.ACTION_ATTRIBUTE,
+                            PersistencyXML.DEL_OPERATION);
                     upd.setTextContent(update.toString());
                     break;
                 case DEL_PRED:
-                	upd.setAttribute(SUBJECT_ATTRIBUTE, PREDICATE_NODE);
-                	upd.setAttribute(ACTION_ATTRIBUTE, DEL_OPERATION);
+                    upd.setAttribute(PersistencyXML.SUBJECT_ATTRIBUTE,
+                            PersistencyXML.PREDICATE_NODE);
+                    upd.setAttribute(PersistencyXML.ACTION_ATTRIBUTE,
+                            PersistencyXML.DEL_OPERATION);
                     upd.setTextContent(update.toString());
                     break;
                 case EMPTY_TUPLES:
-                	upd.setAttribute(SUBJECT_ATTRIBUTE, TUPLE_NODE);
-                	upd.setAttribute(ACTION_ATTRIBUTE, CLEAN_OPERATION);
+                    upd.setAttribute(PersistencyXML.SUBJECT_ATTRIBUTE,
+                            PersistencyXML.TUPLE_NODE);
+                    upd.setAttribute(PersistencyXML.ACTION_ATTRIBUTE,
+                            PersistencyXML.CLEAN_OPERATION);
                     break;
                 case EMPTY_SPEC:
-                	upd.setAttribute(SUBJECT_ATTRIBUTE, SPEC_NODE);
-                	upd.setAttribute(ACTION_ATTRIBUTE, CLEAN_OPERATION);
+                    upd.setAttribute(PersistencyXML.SUBJECT_ATTRIBUTE,
+                            PersistencyXML.SPEC_NODE);
+                    upd.setAttribute(PersistencyXML.ACTION_ATTRIBUTE,
+                            PersistencyXML.CLEAN_OPERATION);
                     break;
                 case EMPTY_PRED:
-                	upd.setAttribute(SUBJECT_ATTRIBUTE, PREDICATE_NODE);
-                	upd.setAttribute(ACTION_ATTRIBUTE, CLEAN_OPERATION);
+                    upd.setAttribute(PersistencyXML.SUBJECT_ATTRIBUTE,
+                            PersistencyXML.PREDICATE_NODE);
+                    upd.setAttribute(PersistencyXML.ACTION_ATTRIBUTE,
+                            PersistencyXML.CLEAN_OPERATION);
                     break;
                 default:
                     break;
@@ -365,7 +379,8 @@ public class PersistencyXML {
                     .newInstance();
             final Transformer transformer = transformerFactory.newTransformer();
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-            transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
+            transformer.setOutputProperty(
+                    "{http://xml.apache.org/xslt}indent-amount", "4");
             final DOMSource source = new DOMSource(doc);
             final StreamResult result = new StreamResult(this.xmlFile);
             transformer.transform(source, result);
@@ -385,9 +400,5 @@ public class PersistencyXML {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-    }
-
-    private void log(final String s) {
-        System.out.println("[" + this.getClass().getName() + "] " + s);
     }
 }

@@ -88,8 +88,4 @@ public class PersistencyData {
     public void setUpdates(final List<String> updates) {
         this.updates = updates;
     }
-
-    private void log(final String s) {
-        System.out.println("[" + this.getClass().getName() + "] " + s);
-    }
 }
