@@ -291,7 +291,9 @@ public class PersistencyXML {
                     .newInstance();
             final DocumentBuilder db = dbf.newDocumentBuilder();
             final Document doc = db.parse(this.xmlFile);
-            final Element root = doc.getDocumentElement();
+            // final Element root = doc.getDocumentElement();
+            final Element root = (Element) doc.getElementsByTagName(
+                    PersistencyXML.ROOT_NODE).item(0);
             Element updates;
             final NodeList updsElement = doc
                     .getElementsByTagName(PersistencyXML.UPDATES_NODE);
