@@ -810,7 +810,8 @@ public class TucsonNodeService {
         if (dir.exists() && dir.isDirectory()) {
             final String[] files = dir.list();
             for (final String file : files) {
-                if (file.startsWith("tc_") && file.endsWith(".dat")) {
+                // if (file.startsWith("tc_") && file.endsWith(".dat")) {
+                if (file.startsWith("tc_") && file.endsWith(".xml")) {
                     final int start = file.indexOf("_");
                     int end = file.lastIndexOf("_");
                     String toParse = file.substring(start + 1, end);
