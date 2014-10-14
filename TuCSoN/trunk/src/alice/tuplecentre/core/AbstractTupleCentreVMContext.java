@@ -63,7 +63,7 @@ public abstract class AbstractTupleCentreVMContext implements
     /**
      * Creates a new tuple centre virtual machine core
      * 
-     * @param id
+     * @param rvm
      *            is the ReSpecT virtual machine
      * @param id
      *            is the tuple centre identifier

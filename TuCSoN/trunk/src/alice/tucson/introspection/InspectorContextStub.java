@@ -34,13 +34,6 @@ import alice.tuplecentre.api.Tuple;
  * 
  */
 public class InspectorContextStub implements InspectorContext {
-    /**
-     * @param msg
-     */
-    private static void log(final String msg) {
-        System.out.println("[InspectorContextStub]: " + msg);
-    }
-
     /** listeners registrated for virtual machine output events */
     private final List<InspectorContextListener> contextListeners = new ArrayList<InspectorContextListener>();
     private AbstractTucsonProtocol dialog;
@@ -78,7 +71,7 @@ public class InspectorContextStub implements InspectorContext {
     }
 
     @Override
-    public void acceptVMEvent() {
+    public void acceptVMEvent() throws DialogException {
         try {
             final InspectorContextEvent msg = this.dialog
                     .receiveInspectorEvent();
@@ -87,7 +80,7 @@ public class InspectorContextStub implements InspectorContext {
             }
         } catch (final DialogException e) {
             if (!this.exitFlag) {
-                InspectorContextStub.log("Unreachable TuCSoN node :(");
+                throw new DialogException("node-disconnected");
             }
         }
     }

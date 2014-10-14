@@ -16,6 +16,7 @@ package alice.tucson.introspection;
 import java.io.IOException;
 import alice.tucson.api.TucsonAgentId;
 import alice.tucson.api.TucsonTupleCentreId;
+import alice.tucson.network.exceptions.DialogException;
 
 /**
  * 
@@ -90,6 +91,13 @@ public class Inspector extends Thread implements InspectorContextListener {
             } catch (final IOException e) {
                 e.printStackTrace();
                 break;
+            } catch (DialogException e) {
+                System.err.println("TuCSoN node "
+                        + this.context.getTid().getName() + "@"
+                        + this.context.getTid().getNode() + ":"
+                        + this.context.getTid().getPort()
+                        + " disconnected unexpectedly :/");
+                this.q = true;
             }
         }
         System.out.println("[Inspector]: Stopped inspecting TuCSoN Node < "
