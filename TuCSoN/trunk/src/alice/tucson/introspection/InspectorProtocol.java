@@ -24,10 +24,14 @@ import alice.logictuple.LogicTuple;
 public class InspectorProtocol implements Serializable {
     /** don't observe */
     public static final byte NO_OBSERVATION = 1;
-    /** observe continuosly */
-    public static final byte PROACTIVE_OBSERVATION = 3;
     /** observe only when asked by inspector */
     public static final byte REACTIVE_OBSERVATION = 2;
+    /** observe continuosly */
+    public static final byte PROACTIVE_OBSERVATION = 3;
+    /** observe step mode like the tuple space */
+    public static final byte STEPMODE_TUPLESPACE_OBSERVATION = 4;
+    /** observe step mode like an agent */
+    public static final byte STEPMODE_AGENT_OBSERVATION = 5;
     private static final long serialVersionUID = -6842026459178793395L;
     /** defining W set observation */
     private byte pendingQueryObservType = InspectorProtocol.NO_OBSERVATION;
@@ -39,6 +43,8 @@ public class InspectorProtocol implements Serializable {
     private LogicTuple tsetFilter = null;
     /** defining T set observation */
     private byte tsetObservType = InspectorProtocol.NO_OBSERVATION;
+    /** defining stepMode observation */
+    private byte stepModeObservType = InspectorProtocol.STEPMODE_TUPLESPACE_OBSERVATION;
     /** filter for query observed */
     private LogicTuple wsetFilter = null;
 
@@ -68,6 +74,13 @@ public class InspectorProtocol implements Serializable {
      */
     public byte getTsetObservType() {
         return this.tsetObservType;
+    }
+    
+    /**
+     * @return the sepModeObservType
+     */
+    public byte getStepModeObservType() {
+        return this.stepModeObservType;
     }
 
     /**
@@ -122,6 +135,14 @@ public class InspectorProtocol implements Serializable {
      */
     public void setTsetObservType(final byte obstype) {
         this.tsetObservType = obstype;
+    }
+    
+    /**
+     * @param obstype
+     *            the stepModeObservType to set
+     */
+    public void setStepModeObservType(final byte obstype) {
+        this.stepModeObservType = obstype;
     }
 
     /**

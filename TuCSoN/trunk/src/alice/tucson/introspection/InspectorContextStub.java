@@ -194,7 +194,7 @@ public class InspectorContextStub implements InspectorContext {
     /**
      * if request to a new tuple centre -> create new connection to target
      * daemon providing the tuple centre otherwise return the already
-     * established connection
+     * established  connection
      */
     private AbstractTucsonProtocol getTupleCentreInfo(
             final TucsonTupleCentreId tc) throws UnreachableNodeException,

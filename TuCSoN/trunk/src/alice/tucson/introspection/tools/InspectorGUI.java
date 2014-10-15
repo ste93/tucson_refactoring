@@ -20,10 +20,14 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.io.IOException;
+
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+
 import alice.tucson.api.TucsonAgentId;
 import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
@@ -128,6 +132,9 @@ public class InspectorGUI extends javax.swing.JFrame {
     private TupleViewer tupleForm;
     private final JButton vmStepBtn = new JButton();
     private final JCheckBox vmStepCB = new JCheckBox();
+    private JRadioButton tupleSpaceStepMode = new JRadioButton();
+    private JRadioButton agentStepMode = new JRadioButton();
+    private ButtonGroup buttonGroup = new ButtonGroup();
     /**
      * Package-visible reference to the Inspector core machinery.
      */
@@ -254,6 +261,9 @@ public class InspectorGUI extends javax.swing.JFrame {
                 this.afterQuit = true;
             }
         } else {
+        	//if you don't do this, after a quit you can't immediately see the tuples on the same tuple centre
+        	this.tupleSpaceStepMode.doClick();
+        	
             this.specForm.exit();
             this.agent.quit();
             this.buttonInspect.setText("Inspect!");
@@ -498,6 +508,45 @@ public class InspectorGUI extends javax.swing.JFrame {
         gridBagConstraints.weightx = 50.0;
         gridBagConstraints.weighty = 100.0;
         stepModePanel.add(this.vmStepBtn, gridBagConstraints);
+        buttonGroup.add(tupleSpaceStepMode);
+        this.tupleSpaceStepMode.setFont(new java.awt.Font("Arial", 0, 11));
+        this.tupleSpaceStepMode.setText("Inspect Like The Tuple Space");
+        this.tupleSpaceStepMode.setToolTipText("Defining Inspection Mode");
+        this.tupleSpaceStepMode.setMaximumSize(new java.awt.Dimension(180, 25));
+        this.tupleSpaceStepMode.setMinimumSize(new java.awt.Dimension(180, 25));
+        this.tupleSpaceStepMode.setPreferredSize(new java.awt.Dimension(180, 25));
+        this.tupleSpaceStepMode.setSelected(true);
+        this.tupleSpaceStepMode.addActionListener(new java.awt.event.ActionListener() {
+            @Override
+            public void actionPerformed(final java.awt.event.ActionEvent evt) {
+            	InspectorGUI.this.stepObModeActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.weightx = 50.0;
+        gridBagConstraints.weighty = 100.0;
+        stepModePanel.add(this.tupleSpaceStepMode, gridBagConstraints);
+        buttonGroup.add(agentStepMode);
+        this.agentStepMode.setFont(new java.awt.Font("Arial", 0, 11));
+        this.agentStepMode.setText("Inspect Like An Agent");
+        this.agentStepMode.setToolTipText("Defining Inspection Mode");
+        this.agentStepMode.setMaximumSize(new java.awt.Dimension(180, 25));
+        this.agentStepMode.setMinimumSize(new java.awt.Dimension(180, 25));
+        this.agentStepMode.setPreferredSize(new java.awt.Dimension(180, 25));
+        this.agentStepMode.addActionListener(new java.awt.event.ActionListener() {
+            @Override
+            public void actionPerformed(final java.awt.event.ActionEvent evt) {
+                InspectorGUI.this.stepObModeActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.weightx = 50.0;
+        gridBagConstraints.weighty = 100.0;
+        stepModePanel.add(this.agentStepMode, gridBagConstraints);
         this.controlPanel.addTab("Sets", null, respectSetsPanel,
                 "Now inspecting TuCSoN tuplecentre sets");
         this.controlPanel.addTab("StepMode", null, stepModePanel,
@@ -621,8 +670,35 @@ public class InspectorGUI extends javax.swing.JFrame {
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         this.getContentPane().add(this.stateBar, gridBagConstraints);
     }
+    
+	/**
+     * Handles 'type stepMode inspection' radioButton.
+     * 
+     * @param evt
+     *            'pending' button pushing event.
+     */
+    private void stepObModeActionPerformed(ActionEvent evt) {
+		if (evt.getActionCommand().equals("Inspect Like The Tuple Space")) {
+			this.protocol
+            .setStepModeObservType(InspectorProtocol.STEPMODE_TUPLESPACE_OBSERVATION);
+			try {
+				this.agent.getContext().setProtocol(this.protocol);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		} else {
+			this.protocol
+            .setStepModeObservType(InspectorProtocol.STEPMODE_AGENT_OBSERVATION);
+			try {
+				this.agent.getContext().setProtocol(this.protocol);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
+	}
 
-    /**
+	/**
      * Handles 'pending query' button.
      * 
      * @param evt
