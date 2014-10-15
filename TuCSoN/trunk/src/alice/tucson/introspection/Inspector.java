@@ -92,7 +92,7 @@ public class Inspector extends Thread implements InspectorContextListener {
             } catch (final IOException e) {
                 e.printStackTrace();
                 break;
-            } catch (DialogException e) {
+            } catch (final DialogException e) {
                 System.err.println("TuCSoN node "
                         + this.context.getTid().getName() + "@"
                         + this.context.getTid().getNode() + ":"

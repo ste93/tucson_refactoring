@@ -117,7 +117,7 @@ public class SpecWorker extends Thread {
             } catch (final OperationTimeOutException e) {
                 e.printStackTrace();
                 // EditSpec.outputState.setText("TuCSoN operation timeout exceeded.");
-            } catch (InvalidLogicTupleException e) {
+            } catch (final InvalidLogicTupleException e) {
                 e.printStackTrace();
                 // EditSpec.outputState.setText("Invalid ReSpecT specification given.");
             }

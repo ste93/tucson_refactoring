@@ -214,14 +214,17 @@ public class PersistencyXML {
                     + this.pFileName.getNode() + "_at_"
                     + this.pFileName.getPort();
             // Delete old persistency file
-            File dir = new File(this.pPath);
-            File[] files = dir.listFiles();
-            for (File file : files) {
+            final File dir = new File(this.pPath);
+            final File[] files = dir.listFiles();
+            for (final File file : files) {
                 if (file.getName().startsWith("tc_" + pXMLFileName)) {
                     if (file.delete()) {
-                        System.out.println("....old persistency file '" + file.getName() + "' has been deleted");
+                        System.out.println("....old persistency file '"
+                                + file.getName() + "' has been deleted");
                     } else {
-                        System.err.println("....error while deleting old persistency file '" + file.getName() + "' :/");
+                        System.err
+                                .println("....error while deleting old persistency file '"
+                                        + file.getName() + "' :/");
                     }
                 }
             }

@@ -191,7 +191,8 @@ public class InspectorContextSkel extends AbstractACCProxyNodeSide implements
             final InspectorContextEvent msg = new InspectorContextEvent();
             msg.setLocalTime(System.currentTimeMillis());
             msg.setVmTime(ev.getTime());
-            if (ev.getType() == InspectableEvent.TYPE_IDLESTATE && this.protocol.getStepModeObservType() == InspectorProtocol.STEPMODE_AGENT_OBSERVATION) {
+            if (ev.getType() == InspectableEvent.TYPE_IDLESTATE
+                    && this.protocol.getStepModeObservType() == InspectorProtocol.STEPMODE_AGENT_OBSERVATION) {
                 if (this.protocol.getTsetObservType() == InspectorProtocol.PROACTIVE_OBSERVATION) {
                     final LogicTuple[] ltSet = (LogicTuple[]) TupleCentreContainer
                             .doManagementOperation(
@@ -218,7 +219,8 @@ public class InspectorContextSkel extends AbstractACCProxyNodeSide implements
                 }
                 this.dialog.sendInspectorEvent(msg);
             }
-            if (ev.getType() == InspectableEvent.TYPE_NEWSTATE && this.protocol.getStepModeObservType() == InspectorProtocol.STEPMODE_TUPLESPACE_OBSERVATION) {
+            if (ev.getType() == InspectableEvent.TYPE_NEWSTATE
+                    && this.protocol.getStepModeObservType() == InspectorProtocol.STEPMODE_TUPLESPACE_OBSERVATION) {
                 if (this.protocol.getTsetObservType() == InspectorProtocol.PROACTIVE_OBSERVATION) {
                     final LogicTuple[] ltSet = (LogicTuple[]) TupleCentreContainer
                             .doManagementOperation(
