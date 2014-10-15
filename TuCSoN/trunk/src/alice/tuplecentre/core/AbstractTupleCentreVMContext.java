@@ -195,7 +195,7 @@ public abstract class AbstractTupleCentreVMContext implements
         while (!this.currentState.isIdle()) {
             this.currentState.execute();
             this.currentState = this.currentState.getNextState();
-            //notify TYPE_NEWSTATE
+            // notify TYPE_NEWSTATE
             if (this.rvm.hasInspectors()) {
                 this.rvm.notifyInspectableEvent(new InspectableEvent(this,
                         InspectableEvent.TYPE_NEWSTATE));

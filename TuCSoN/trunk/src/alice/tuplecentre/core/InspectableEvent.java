@@ -23,11 +23,11 @@ import java.util.EventObject;
  * 
  */
 public class InspectableEvent extends EventObject {
+    public static final int TYPE_IDLESTATE = 2;
     /**
      * 
      */
     public static final int TYPE_NEWSTATE = 1;
-    public static final int TYPE_IDLESTATE = 2;
     private static final long serialVersionUID = 5564085406606810969L;
     /** virtual machine time at which the event has been observed */
     private final long time;
