@@ -11,19 +11,22 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307 USA
  */
-package alice.tucson.api;
+package alice.tucson.introspection;
+
+import alice.tucson.api.TucsonAgentId;
 
 /**
- * Synchronous ACC. Can act both on the ordinary tuple space and on the
- * specification tuple space. Bulk and uniform primitives are NOT included.
+ * @author Roberto D'Elia
  * 
- * @see alice.tucson.api.OrdinaryAsynchACC OrdinarySynchACC
- * @see alice.tucson.api.SpecificationAsynchACC SpecificationSynchACC
- * 
- * @author ste (mailto: s.mariani@unibo.it)
  */
-public interface SynchACC extends OrdinarySynchACC, SpecificationSynchACC {
-    /*
-     * Convenience interface
+public class StepModeMsg extends NodeMsg {
+    private static final long serialVersionUID = -6748034977696183466L;
+
+    /**
+     * @param id
+     *            the agent id of the sender
      */
+    public StepModeMsg(final TucsonAgentId id) {
+        super(id, "stepMode");
+    }
 }

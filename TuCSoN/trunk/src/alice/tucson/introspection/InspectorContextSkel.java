@@ -15,6 +15,7 @@ package alice.tucson.introspection;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import alice.logictuple.LogicTuple;
 import alice.tucson.api.TucsonAgentId;
@@ -151,13 +152,33 @@ public class InspectorContextSkel extends AbstractACCProxyNodeSide implements
     }
 
     /**
-     * ask a new step for a tuple centre vm during tracing
+     * verify if VM step mode is already active
+     * 
+     * @param m
+     *            the IsActiveStepModeMsg
      */
-    public synchronized void nextStep() {
-        if (this.protocol.isTracing()) {
-            this.nStep = true;
-            this.notifyAll();
+    public void isStepMode(final IsActiveStepModeMsg m) {
+        final boolean isActive = (Boolean) TupleCentreContainer
+                .doManagementOperation(TucsonOperation.isStepModeCode(),
+                        this.tcId, null);
+        final InspectorContextEvent msg = new InspectorContextEvent();
+        msg.setStepMode(isActive);
+        try {
+            this.dialog.sendInspectorEvent(msg);
+        } catch (final DialogException e) {
+            e.printStackTrace();
         }
+    }
+
+    /**
+     * ask a new step for a tuple centre vm during step mode
+     * 
+     * @param m
+     *            the NxtStepMsg
+     */
+    public void nextStep(final NextStepMsg m) {
+        TupleCentreContainer.doManagementOperation(
+                TucsonOperation.nextStepCode(), this.tcId, null);
     }
 
     @Override
@@ -170,7 +191,34 @@ public class InspectorContextSkel extends AbstractACCProxyNodeSide implements
             final InspectorContextEvent msg = new InspectorContextEvent();
             msg.setLocalTime(System.currentTimeMillis());
             msg.setVmTime(ev.getTime());
-            if (ev.getType() == InspectableEvent.TYPE_NEWSTATE) {
+            if (ev.getType() == InspectableEvent.TYPE_IDLESTATE && this.protocol.getStepModeObservType() == InspectorProtocol.STEPMODE_AGENT_OBSERVATION) {
+                if (this.protocol.getTsetObservType() == InspectorProtocol.PROACTIVE_OBSERVATION) {
+                    final LogicTuple[] ltSet = (LogicTuple[]) TupleCentreContainer
+                            .doManagementOperation(
+                                    TucsonOperation.getTSetCode(), this.tcId,
+                                    this.protocol.getTsetFilter());
+                    msg.setTuples(new LinkedList<LogicTuple>());
+                    if (ltSet != null) {
+                        for (final LogicTuple lt : ltSet) {
+                            msg.getTuples().add(lt);
+                        }
+                    }
+                }
+                if (this.protocol.getPendingQueryObservType() == InspectorProtocol.PROACTIVE_OBSERVATION) {
+                    final WSetEvent[] ltSet = (WSetEvent[]) TupleCentreContainer
+                            .doManagementOperation(
+                                    TucsonOperation.getWSetCode(), this.tcId,
+                                    this.protocol.getWsetFilter());
+                    msg.setWnEvents(new LinkedList<WSetEvent>());
+                    if (ltSet != null) {
+                        for (final WSetEvent lt : ltSet) {
+                            msg.getWnEvents().add(lt);
+                        }
+                    }
+                }
+                this.dialog.sendInspectorEvent(msg);
+            }
+            if (ev.getType() == InspectableEvent.TYPE_NEWSTATE && this.protocol.getStepModeObservType() == InspectorProtocol.STEPMODE_TUPLESPACE_OBSERVATION) {
                 if (this.protocol.getTsetObservType() == InspectorProtocol.PROACTIVE_OBSERVATION) {
                     final LogicTuple[] ltSet = (LogicTuple[]) TupleCentreContainer
                             .doManagementOperation(
@@ -310,6 +358,41 @@ public class InspectorContextSkel extends AbstractACCProxyNodeSide implements
             // FIXME who have to handle this exception? and how?
             e.printStackTrace();
         }
+    }
+
+    /**
+     * enable/disable VM step Mode
+     * 
+     * @param m
+     *            the step mode message
+     */
+    public void stepMode(final StepModeMsg m) {
+        TupleCentreContainer.doManagementOperation(
+                TucsonOperation.stepModeCode(), this.tcId, null);
+        final ArrayList<InspectableEventListener> inspectors = (ArrayList<InspectableEventListener>) TupleCentreContainer
+                .doManagementOperation(TucsonOperation.getInspectorsCode(),
+                        this.tcId, null);
+        for (final InspectableEventListener insp : inspectors) {
+            final InspectorContextSkel skel = (InspectorContextSkel) insp;
+            if (skel.getId() == this.getId()) {
+                continue;
+            }
+            final InspectorContextEvent msg = new InspectorContextEvent();
+            msg.setModeChanged(true);
+            try {
+                skel.getDialog().sendInspectorEvent(msg);
+            } catch (final DialogException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * 
+     * @return InspectorContextSke dialog
+     */
+    private AbstractTucsonProtocol getDialog() {
+        return this.dialog;
     }
 
     /**

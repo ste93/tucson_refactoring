@@ -11,32 +11,43 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307 USA
  */
-package alice.tucson.api.exceptions;
+package alice.respect.core;
+
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * 
- * @author Alessandro Ricci
+ * @author Roberto D'Elia
  * 
  */
-public class TucsonGenericException extends Exception {
-    private static final long serialVersionUID = -4594211677771913572L;
-    private final String msg;
+public class StepMonitor {
+    private final Condition canCompute;
+    private final ReentrantLock lock;
 
-    /**
-     * 
-     * @param m
-     *            the String message explaining the Exception thrown
-     */
-    public TucsonGenericException(final String m) {
-        super();
-        this.msg = m;
+    public StepMonitor() {
+        this.lock = new ReentrantLock();
+        this.canCompute = this.lock.newCondition();
     }
 
     /**
-     * 
-     * @return the String message explaining the Exception thrown
+     * @throws InterruptedException
+     *             if the synchronisation wait gets interrupted
      */
-    public String getMsg() {
-        return this.msg;
+    public void awaitEvent() throws InterruptedException {
+        this.lock.lock();
+        try {
+            this.canCompute.await();
+        } finally {
+            this.lock.unlock();
+        }
+    }
+
+    public void signalEvent() {
+        this.lock.lock();
+        try {
+            this.canCompute.signal();
+        } finally {
+            this.lock.unlock();
+        }
     }
 }

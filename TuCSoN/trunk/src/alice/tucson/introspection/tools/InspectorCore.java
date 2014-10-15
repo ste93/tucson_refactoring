@@ -349,5 +349,11 @@ public class InspectorCore extends alice.tucson.introspection.Inspector {
                 }
             }
         }
+        if (msg.getStepMode()) {
+            this.form.selectStepModeCB();
+        }
+        if (msg.getModeChanged()) {
+            this.form.changeStepModeCB();
+        }
     }
 }

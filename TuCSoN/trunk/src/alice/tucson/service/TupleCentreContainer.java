@@ -563,19 +563,27 @@ public final class TupleCentreContainer {
                 return false;
             }
         }
+        if (type == TucsonOperation.isStepModeCode()) {
+            return context.isStepModeCommand();
+        }
+        if (type == TucsonOperation.stepModeCode()) {
+            context.stepModeCommand();
+            return true;
+        }
         if (type == TucsonOperation.nextStepCode()) {
             try {
                 context.nextStepCommand();
                 return true;
             } catch (final OperationNotPossibleException e) {
+                // TODO Auto-generated catch block
                 e.printStackTrace();
                 return false;
             }
         }
-        if (type == TucsonOperation.setMngModeCode()) {
-            context.setManagementMode((Boolean) obj);
-            return true;
-        }
+        /*
+         * TODO must be delete... if (type == TucsonOperation.setMngModeCode())
+         * { context.setManagementMode((Boolean) obj); return true; }
+         */
         if (type == TucsonOperation.addObsCode()) {
             context.addObserver((ObservableEventListener) obj);
             return true;
@@ -594,6 +602,9 @@ public final class TupleCentreContainer {
         if (type == TucsonOperation.rmvInspCode()) {
             context.removeInspector((InspectableEventListener) obj);
             return true;
+        }
+        if (type == TucsonOperation.getInspectorsCode()) {
+            return context.getInspectors();
         }
         if (type == TucsonOperation.hasInspCode()) {
             return context.hasInspectors();

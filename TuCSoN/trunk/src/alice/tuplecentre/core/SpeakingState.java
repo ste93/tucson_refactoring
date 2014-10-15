@@ -44,6 +44,9 @@ public class SpeakingState extends AbstractTupleCentreVMState {
 
     @Override
     public void execute() {
+        if (super.vm.isStepMode()) {
+            this.log();
+        }
         final Iterator<?> it = this.vm.getPendingQuerySetIterator();
         InputEvent ev = null;
         OutputEvent outEv = null;

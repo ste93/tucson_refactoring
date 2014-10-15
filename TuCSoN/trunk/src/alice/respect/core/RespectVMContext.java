@@ -209,7 +209,7 @@ public class RespectVMContext extends
      */
     public RespectVMContext(final RespectVM rvm, final TupleCentreId tid,
             final int queueSize, final IRespectTC respectTC) {
-        super(tid, queueSize, respectTC);
+        super(rvm, tid, queueSize, respectTC);
         this.timers = new ArrayList<Timer>();
         this.semaphore = new Object();
         this.tSet = new TupleSetCoord();

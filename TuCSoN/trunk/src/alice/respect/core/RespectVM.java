@@ -171,6 +171,14 @@ public class RespectVM implements Runnable {
 
     /**
      * 
+     * @return the list of inspector
+     */
+    public ArrayList<InspectableEventListener> getInspectors() {
+        return (ArrayList<InspectableEventListener>) this.inspectors;
+    }
+
+    /**
+     * 
      * @return the list of observable events listeners
      */
     public List<ObservableEventListener> getObservers() {
@@ -256,9 +264,15 @@ public class RespectVM implements Runnable {
     }
 
     /**
-     * 
+     * @return if stepMode is active or not
+     */
+    public boolean isStepModeCommand() {
+        return this.context.isStepMode();
+    }
+
+    /**
      * @throws OperationNotPossibleException
-     *             if the requested operation cannot be carried out
+     *             if the ReSpecT VM is not in step mode
      */
     public void nextStepCommand() throws OperationNotPossibleException {
         try {
@@ -450,11 +464,11 @@ public class RespectVM implements Runnable {
             synchronized (this.idle) {
                 this.context.execute();
             }
+            if (this.hasInspectors()) {
+                this.notifyInspectableEvent(new InspectableEvent(this,
+                        InspectableEvent.TYPE_IDLESTATE));
+            }
             try {
-                if (this.hasInspectors()) {
-                    this.notifyInspectableEvent(new InspectableEvent(this,
-                            InspectableEvent.TYPE_NEWSTATE));
-                }
                 if (!(this.context.pendingEvents() || this.context
                         .pendingEnvEvents())) {
                     this.news.awaitEvent();
@@ -469,7 +483,6 @@ public class RespectVM implements Runnable {
     }
 
     /**
-     * 
      * @param activate
      *            toggles management mode on and off
      */
@@ -497,6 +510,10 @@ public class RespectVM implements Runnable {
      */
     public void setWSet(final List<LogicTuple> wSet) {
         this.context.setWSet(wSet);
+    }
+
+    public void stepModeCommand() {
+        this.context.toggleStepMode();
     }
 
     /**

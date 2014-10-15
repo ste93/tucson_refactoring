@@ -34,6 +34,9 @@ public class ReactingState extends AbstractTupleCentreVMState {
 
     @Override
     public void execute() {
+        if (super.vm.isStepMode()) {
+            this.log();
+        }
         TriggeredReaction tr = this.vm.removeTriggeredReaction();
         if (tr != null) {
             this.vm.evalReaction(tr);

@@ -23,6 +23,7 @@ import java.util.EventObject;
  * 
  */
 public class InspectableEvent extends EventObject {
+    public static final int TYPE_IDLESTATE = 2;
     /**
      * 
      */

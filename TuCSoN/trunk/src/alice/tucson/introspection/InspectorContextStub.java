@@ -33,10 +33,6 @@ import alice.tuplecentre.api.Tuple;
  * 
  */
 public class InspectorContextStub implements InspectorContext {
-    private static void err(final String msg) {
-        System.err.println("[InspectorContextStub]: " + msg);
-    }
-
     /** listeners registrated for virtual machine output events */
     private final List<InspectorContextListener> contextListeners = new ArrayList<InspectorContextListener>();
     private AbstractTucsonProtocol dialog;
@@ -50,7 +46,6 @@ public class InspectorContextStub implements InspectorContext {
     protected TucsonTupleCentreId tid;
 
     /**
-     * 
      * @param i
      *            the agent identifier to be used by this inspector
      * @param tc
@@ -75,7 +70,7 @@ public class InspectorContextStub implements InspectorContext {
     }
 
     @Override
-    public void acceptVMEvent() {
+    public void acceptVMEvent() throws DialogException {
         try {
             final InspectorContextEvent msg = this.dialog
                     .receiveInspectorEvent();
@@ -84,8 +79,7 @@ public class InspectorContextStub implements InspectorContext {
             }
         } catch (final DialogException e) {
             if (!this.exitFlag) {
-                InspectorContextStub
-                        .err("TuCSoN Node disconnected unexpectedly :/");
+                throw new DialogException("node-disconnected");
             }
         }
     }
@@ -109,6 +103,15 @@ public class InspectorContextStub implements InspectorContext {
     @Override
     public TucsonTupleCentreId getTid() {
         return this.tid;
+    }
+
+    @Override
+    public void isStepMode() {
+        try {
+            this.dialog.sendNodeMsg(new IsActiveStepModeMsg(this.id));
+        } catch (final DialogException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -141,6 +144,7 @@ public class InspectorContextStub implements InspectorContext {
         newp.setTracing(p.isTracing());
         newp.setPendingQueryObservType(p.getPendingQueryObservType());
         newp.setReactionsObservType(p.getReactionsObservType());
+        newp.setStepModeObservType(p.getStepModeObservType());
         this.dialog.sendNodeMsg(new SetProtocolMsg(this.id, newp));
         this.protocol = p;
     }
@@ -148,6 +152,11 @@ public class InspectorContextStub implements InspectorContext {
     @Override
     public void setTupleSet(final List<Tuple> tset) throws DialogSendException {
         this.dialog.sendNodeMsg(new SetTupleSetMsg(this.id, tset));
+    }
+
+    @Override
+    public void vmStepMode() throws DialogSendException {
+        this.dialog.sendNodeMsg(new StepModeMsg(this.id));
     }
 
     /**

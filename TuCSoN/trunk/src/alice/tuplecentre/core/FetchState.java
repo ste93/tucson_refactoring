@@ -34,9 +34,11 @@ public class FetchState extends AbstractTupleCentreVMState {
 
     @Override
     public void execute() {
+        if (super.vm.isStepMode()) {
+            this.log();
+        }
         this.vm.fetchPendingEvent();
         final InputEvent ev = this.vm.getCurrentEvent();
-        System.out.println("[FetchState]: ev = " + ev);
         this.vm.addPendingQueryEvent(ev);
         this.vm.fetchTriggeredReactions(ev);
     }
