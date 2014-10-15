@@ -508,7 +508,7 @@ public class InspectorGUI extends javax.swing.JFrame {
         gridBagConstraints.weightx = 50.0;
         gridBagConstraints.weighty = 100.0;
         stepModePanel.add(this.vmStepBtn, gridBagConstraints);
-        buttonGroup.add(tupleSpaceStepMode);
+        this.buttonGroup.add(this.tupleSpaceStepMode);
         this.tupleSpaceStepMode.setFont(new java.awt.Font("Arial", 0, 11));
         this.tupleSpaceStepMode.setText("Inspect Like The Tuple Space");
         this.tupleSpaceStepMode.setToolTipText("Defining Inspection Mode");
@@ -528,7 +528,7 @@ public class InspectorGUI extends javax.swing.JFrame {
         gridBagConstraints.weightx = 50.0;
         gridBagConstraints.weighty = 100.0;
         stepModePanel.add(this.tupleSpaceStepMode, gridBagConstraints);
-        buttonGroup.add(agentStepMode);
+        this.buttonGroup.add(this.agentStepMode);
         this.agentStepMode.setFont(new java.awt.Font("Arial", 0, 11));
         this.agentStepMode.setText("Inspect Like An Agent");
         this.agentStepMode.setToolTipText("Defining Inspection Mode");
