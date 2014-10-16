@@ -267,6 +267,7 @@
 
 		<copy todir="${rel-dir}/${addon.version}/docs">
 			<fileset dir="${doc-dir}" />
+			<fileset file="${basedir}/../how-to/TuCSoN-guide.pdf" />
 		</copy>
 
 		<zip destfile="${rel-dir}/${addon.version}.zip" basedir="${rel-dir}/${addon.version}" />
