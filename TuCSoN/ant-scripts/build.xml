@@ -7,7 +7,7 @@
 		<sequential>
 
 			<echo>Building TuCSoN (${target})...</echo>
-			<echo message="Using Java version ${ant.java.version}."/>
+			<echo message="Using Java version ${ant.java.version}." />
 
 			<delete includeemptydirs="true">
 				<fileset dir="${classes-dir}" includes="**/*" />
@@ -18,12 +18,53 @@
 				<classpath refid="ant-classpath" />
 			</javac>
 
-			<copy todir="${classes-dir}/it/unibo/tucson/jade/examples/bookTrading">
-				<fileset file="${src-dir}/it/unibo/tucson/jade/examples/bookTrading/books.cat" />
+			<copy todir="${classes-dir}/alice/respect/images">
+				<fileset file="${src-dir}/alice/respect/images/logo.png" />
 			</copy>
 
-			<copy todir="${classes-dir}/it/unibo/tucson/jade/service">
-				<fileset file="${src-dir}/it/unibo/tucson/jade/service/t4j-logos.txt" />
+			<copy todir="${classes-dir}/alice/tucson/examples/diningPhilos">
+				<fileset file="${src-dir}/alice/tucson/examples/diningPhilos/table.rsp" />
+			</copy>
+
+			<copy todir="${classes-dir}/alice/tucson/examples/distributedDiningPhilos">
+				<fileset file="${src-dir}/alice/tucson/examples/distributedDiningPhilos/table.rsp" />
+				<fileset file="${src-dir}/alice/tucson/examples/distributedDiningPhilos/seat.rsp" />
+			</copy>
+
+			<copy todir="${classes-dir}/alice/tucson/examples/helloWorld">
+				<fileset file="${src-dir}/alice/tucson/examples/helloWorld/helloWorld.pl" />
+			</copy>
+
+			<copy todir="${classes-dir}/alice/tucson/examples/persistency">
+				<fileset file="${src-dir}/alice/tucson/examples/persistency/aggregation.rsp" />
+				<fileset file="${src-dir}/alice/tucson/examples/persistency/repulsion.rsp" />
+			</copy>
+
+			<copy todir="${classes-dir}/alice/tucson/examples/situatedness">
+				<fileset file="${src-dir}/alice/tucson/examples/situatedness/actuatorSpec.rsp" />
+				<fileset file="${src-dir}/alice/tucson/examples/situatedness/sensorSpec.rsp" />
+			</copy>
+
+			<copy todir="${classes-dir}/alice/tucson/examples/spawnedWorkers">
+				<fileset file="${src-dir}/alice/tucson/examples/spawnedWorkers/masterAgent.pl" />
+				<fileset file="${src-dir}/alice/tucson/examples/spawnedWorkers/spawnedWorkingActivity.pl" />
+			</copy>
+
+			<copy todir="${classes-dir}/alice/tucson/examples/timedDiningPhilos">
+				<fileset file="${src-dir}/alice/tucson/examples/timedDiningPhilos/table.rsp" />
+			</copy>
+
+			<copy todir="${classes-dir}/alice/tucson/images">
+				<fileset file="${src-dir}/alice/tucson/images/logo.jpg" />
+				<fileset file="${src-dir}/alice/tucson/images/logo.gif" />
+			</copy>
+
+			<copy todir="${classes-dir}/alice/tucson/service/config">
+				<fileset file="${src-dir}/alice/tucson/service/config/boot_spec.rsp" />
+				<fileset file="${src-dir}/alice/tucson/service/config/BOOT.PL" />
+				<fileset file="${src-dir}/alice/tucson/service/config/env_spec.rsp" />
+				<fileset file="${src-dir}/alice/tucson/service/config/obs_spec.rsp" />
+				<fileset file="${src-dir}/alice/tucson/service/config/tucsonCLIlogo3.txt" />
 			</copy>
 
 			<echo>Check ${classes-dir} folder!</echo>
@@ -34,7 +75,7 @@
 	<macrodef name="package">
 		<sequential>
 
-			<echo>Packaging TuCSoN4JADE (${target})...</echo>
+			<echo>Packaging TuCSoN (${target})...</echo>
 
 			<delete includeemptydirs="true">
 				<fileset dir="${lib-dir}" includes="**/*" />
@@ -46,23 +87,27 @@
 					<attribute name="Built-By" value="${user.name}" />
 					<!-- Information about the program itself -->
 					<attribute name="Implementation-Vendor" value="TuCSoN team" />
-					<attribute name="Implementation-Title" value="TuCSoN4JADE Library" />
+					<attribute name="Implementation-Title" value="TuCSoN Library" />
 					<attribute name="Implementation-Version" value="${addon.version}" />
 					<!-- details -->
 				</manifest>
 			</jar>
 
-			<jar destfile="${lib-dir}/${addon.version}-noexamples.jar" basedir="${classes-dir}" includes="it/unibo/tucson/jade/**" excludes="it/unibo/tucson/jade/examples/**">
+			<jar destfile="${lib-dir}/${addon.version}-noexamples.jar" basedir="${classes-dir}" includes="alice/**" excludes="alice/tucson/examples/**">
 				<manifest>
 					<!-- Who is building this jar? -->
 					<attribute name="Built-By" value="${user.name}" />
 					<!-- Information about the program itself -->
 					<attribute name="Implementation-Vendor" value="TuCSoN team" />
-					<attribute name="Implementation-Title" value="TuCSoN4JADE Library" />
+					<attribute name="Implementation-Title" value="TuCSoN Library" />
 					<attribute name="Implementation-Version" value="${addon.version}" />
 					<!-- details -->
 				</manifest>
 			</jar>
+
+			<copy todir="${lib-dir}/">
+				<fileset file="${basedir}/../howto/TuCSoN_boot.sh" />
+			</copy>
 
 			<echo>Check ${lib-dir} folder!</echo>
 
@@ -84,10 +129,10 @@
 		<property name="src-dir" value="../src" />
 		<property name="classes-dir" value="../classes" />
 		<property name="lib-dir" value="../lib" />
-		<property name="rel-dir" value="../jade/add-ons" />
+		<property name="rel-dir" value="../rel" />
 		<property name="doc-dir" value="../doc" />
 
-		<loadfile srcfile="${src-dir}/it/unibo/tucson/jade/service/TucsonService.java" property="addon.version">
+		<loadfile srcfile="${src-dir}/alice/tucson/api/TucsonMetaACC.java" property="addon.version">
 			<filterchain>
 				<linecontains>
 					<contains value="String VERSION" />
@@ -107,8 +152,6 @@
 		<path id="ant-classpath">
 			<!-- Project-specific libraries -->
 			<fileset dir="${libs.dir}">
-				<include name="${tucson.jar}" />
-				<include name="${jade.jar}" />
 				<include name="${tuprolog.jar}" />
 			</fileset>
 			<!-- Project classes -->
@@ -136,8 +179,6 @@
 		<echo message="{jdk.home} is '${jdk.home}'" />
 		<echo message="{java.home} is '${java.home}'" />
 		<echo message="{target} is '${target}'" />
-		<echo message="{tucson.jar} is '${tucson.jar}'" />
-		<echo message="{jade.jar} is '${jade.jar}'" />
 		<echo message="{tuprolog.jar} is '${tuprolog.jar}'" />
 		<echo message="{libs.dir} is '${libs.dir}'" />
 		<echo message="..................................." />
@@ -190,7 +231,7 @@
 
 		<mkdir dir="${doc-dir}/javadoc" />
 
-		<javadoc sourcepath="${src-dir}" destdir="${doc-dir}/javadoc" author="true" version="true" use="true" windowtitle="TuCSoN4JADE Javadoc" doctitle="TuCSoN4JADE Javadoc" verbose="no" encoding="UTF-8" breakiterator="yes">
+		<javadoc sourcepath="${src-dir}" destdir="${doc-dir}/javadoc" author="true" version="true" use="true" windowtitle="TuCSoN Javadoc" doctitle="TuCSoN Javadoc" verbose="no" encoding="UTF-8" breakiterator="yes">
 			<classpath refid="ant-classpath" />
 			<link href="http://java.sun.com/j2se/1.6.0/docs/api/" />
 
@@ -214,6 +255,7 @@
 		<copy todir="${rel-dir}/${addon.version}/rel">
 			<fileset dir="${lib-dir}">
 				<include name="*.jar" />
+				<include name="TuCSoN_boot.sh" />
 			</fileset>
 		</copy>
 
@@ -225,10 +267,6 @@
 
 		<copy todir="${rel-dir}/${addon.version}/docs">
 			<fileset dir="${doc-dir}" />
-		</copy>
-
-		<copy todir="${rel-dir}/${addon.version}/docs/how-to">
-			<fileset dir="${basedir}/../how-to" />
 		</copy>
 
 		<zip destfile="${rel-dir}/${addon.version}.zip" basedir="${rel-dir}/${addon.version}" />
@@ -246,7 +284,6 @@
 			<fileset dir="${classes-dir}" includes="**/*" defaultexcludes="no" />
 		</delete>
 		<delete dir="${rel-dir}" />
-		<delete dir="${rel-dir}/.." />
 		<delete includeEmptyDirs="true">
 			<fileset dir="${doc-dir}" includes="**/*" defaultexcludes="no" />
 		</delete>
