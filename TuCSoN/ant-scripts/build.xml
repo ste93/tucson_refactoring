@@ -106,7 +106,7 @@
 			</jar>
 
 			<copy todir="${lib-dir}/">
-				<fileset file="${basedir}/../howto/TuCSoN_boot.sh" />
+				<fileset file="${basedir}/../how-to/TuCSoN_boot.sh" />
 			</copy>
 
 			<echo>Check ${lib-dir} folder!</echo>
