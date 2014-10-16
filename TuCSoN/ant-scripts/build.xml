@@ -6,7 +6,7 @@
 		<attribute name="debug" />
 		<sequential>
 
-			<echo>Building TuCSoN (${target})...</echo>
+			<echo>Building TuCSoN (${addon.version})...</echo>
 			<echo message="Using Java version ${ant.java.version}." />
 
 			<delete includeemptydirs="true">
@@ -75,7 +75,7 @@
 	<macrodef name="package">
 		<sequential>
 
-			<echo>Packaging TuCSoN (${target})...</echo>
+			<echo>Packaging TuCSoN (${addon.version})...</echo>
 
 			<delete includeemptydirs="true">
 				<fileset dir="${lib-dir}" includes="**/*" />
@@ -126,7 +126,7 @@
 		<property file="environment.properties" />
 
 		<!-- Project structure -->
-		<property name="src-dir" value="../src" />
+		<property name="src-dir" value="../trunk/src" />
 		<property name="classes-dir" value="../classes" />
 		<property name="lib-dir" value="../lib" />
 		<property name="rel-dir" value="../rel" />

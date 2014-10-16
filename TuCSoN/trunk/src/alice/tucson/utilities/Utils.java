@@ -3,7 +3,7 @@
  * Attribution-NonCommercial-ShareAlike 3.0 Italy License. Permissions beyond
  * the scope of this license may be available at www.danilopianini.org.
  */
-package alice.tucson.examples.utilities;
+package alice.tucson.utilities;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;

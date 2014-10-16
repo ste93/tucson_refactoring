@@ -15,10 +15,10 @@ import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
-import alice.tucson.examples.utilities.Utils;
 import alice.tucson.network.exceptions.DialogCloseException;
 import alice.tucson.network.exceptions.DialogInitializationException;
 import alice.tucson.service.TucsonNodeService;
+import alice.tucson.utilities.Utils;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 
 /**
