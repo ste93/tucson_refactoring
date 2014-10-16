@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="TuCSoN build file" basedir="." default="help">
+
+	<macrodef name="build">
+		<attribute name="debug" />
+		<sequential>
+
+			<echo>Building TuCSoN (${target})...</echo>
+			<echo message="Using Java version ${ant.java.version}."/>
+
+			<delete includeemptydirs="true">
+				<fileset dir="${classes-dir}" includes="**/*" />
+			</delete>
+
+			<javac destdir="${classes-dir}" debug="@{debug}" includeantruntime="false" target="${target}" source="${target}">
+				<src path="${src-dir}" />
+				<classpath refid="ant-classpath" />
+			</javac>
+
+			<copy todir="${classes-dir}/it/unibo/tucson/jade/examples/bookTrading">
+				<fileset file="${src-dir}/it/unibo/tucson/jade/examples/bookTrading/books.cat" />
+			</copy>
+
+			<copy todir="${classes-dir}/it/unibo/tucson/jade/service">
+				<fileset file="${src-dir}/it/unibo/tucson/jade/service/t4j-logos.txt" />
+			</copy>
+
+			<echo>Check ${classes-dir} folder!</echo>
+
+		</sequential>
+	</macrodef>
+
+	<macrodef name="package">
+		<sequential>
+
+			<echo>Packaging TuCSoN4JADE (${target})...</echo>
+
+			<delete includeemptydirs="true">
+				<fileset dir="${lib-dir}" includes="**/*" />
+			</delete>
+
+			<jar destfile="${lib-dir}/${addon.version}.jar" basedir="${classes-dir}">
+				<manifest>
+					<!-- Who is building this jar? -->
+					<attribute name="Built-By" value="${user.name}" />
+					<!-- Information about the program itself -->
+					<attribute name="Implementation-Vendor" value="TuCSoN team" />
+					<attribute name="Implementation-Title" value="TuCSoN4JADE Library" />
+					<attribute name="Implementation-Version" value="${addon.version}" />
+					<!-- details -->
+				</manifest>
+			</jar>
+
+			<jar destfile="${lib-dir}/${addon.version}-noexamples.jar" basedir="${classes-dir}" includes="it/unibo/tucson/jade/**" excludes="it/unibo/tucson/jade/examples/**">
+				<manifest>
+					<!-- Who is building this jar? -->
+					<attribute name="Built-By" value="${user.name}" />
+					<!-- Information about the program itself -->
+					<attribute name="Implementation-Vendor" value="TuCSoN team" />
+					<attribute name="Implementation-Title" value="TuCSoN4JADE Library" />
+					<attribute name="Implementation-Version" value="${addon.version}" />
+					<!-- details -->
+				</manifest>
+			</jar>
+
+			<echo>Check ${lib-dir} folder!</echo>
+
+		</sequential>
+	</macrodef>
+
+	<!-- ================ -->
+	<!-- Properties setup -->
+	<!-- ================ -->
+
+	<!-- idea: in the build directory delete and recreate each directory only inside a target that has to modify that directory-->
+
+	<target name="00.init" description="Set up ANT properties">
+		<echo message="Remember to set up ANT properties in file environment.properties!" />
+		<!-- Environment properties -->
+		<property file="environment.properties" />
+
+		<!-- Project structure -->
+		<property name="src-dir" value="../src" />
+		<property name="classes-dir" value="../classes" />
+		<property name="lib-dir" value="../lib" />
+		<property name="rel-dir" value="../jade/add-ons" />
+		<property name="doc-dir" value="../doc" />
+
+		<loadfile srcfile="${src-dir}/it/unibo/tucson/jade/service/TucsonService.java" property="addon.version">
+			<filterchain>
+				<linecontains>
+					<contains value="String VERSION" />
+				</linecontains>
+				<deletecharacters chars="\n\r" />
+				<!-- Do not get a number with a new line at the end -->
+				<tokenfilter>
+					<replaceregex pattern="[^0-9]+&quot;" replace="" />
+					<replaceregex pattern="&quot;.*" replace="" />
+				</tokenfilter>
+			</filterchain>
+		</loadfile>
+
+	</target>
+
+	<target name="01.classpath" depends="00.init" description="Set up classpath for ANT tasks">
+		<path id="ant-classpath">
+			<!-- Project-specific libraries -->
+			<fileset dir="${libs.dir}">
+				<include name="${tucson.jar}" />
+				<include name="${jade.jar}" />
+				<include name="${tuprolog.jar}" />
+			</fileset>
+			<!-- Project classes -->
+			<pathelement path="${classes-dir}" />
+		</path>
+	</target>
+
+	<!-- ================= -->
+	<!-- Informative tasks -->
+	<!-- ================= -->
+
+	<target name="02.log" depends="00.init" description="Log ANT properties on std out">
+		<echo message="-----------------------------------" />
+		<echo message="Properties are:" />
+		<echo message="-----------------------------------" />
+		<echo message="{ant.project.name} is '${ant.project.name}'" />
+		<echo message="{basedir} is '${basedir}'" />
+		<echo message="..................................." />
+		<echo message="{src-dir} is '${src-dir}'" />
+		<echo message="{classes-dir} is '${classes-dir}'" />
+		<echo message="{lib-dir} is '${lib-dir}'" />
+		<echo message="{rel-dir} is '${rel-dir}'" />
+		<echo message="{doc-dir} is '${doc-dir}'" />
+		<echo message="..................................." />
+		<echo message="{jdk.home} is '${jdk.home}'" />
+		<echo message="{java.home} is '${java.home}'" />
+		<echo message="{target} is '${target}'" />
+		<echo message="{tucson.jar} is '${tucson.jar}'" />
+		<echo message="{jade.jar} is '${jade.jar}'" />
+		<echo message="{tuprolog.jar} is '${tuprolog.jar}'" />
+		<echo message="{libs.dir} is '${libs.dir}'" />
+		<echo message="..................................." />
+		<echo message="{addon.version} is '${addon.version}'" />
+		<echo message="..................................." />
+		<echo message="{username} is '${username}'" />
+		<echo message="-----------------------------------" />
+		<echo message=" " />
+	</target>
+
+	<target name="help" depends="00.init">
+		<echo>The following targets are available:
+  compile.....compile application classes into ${classes-dir}
+  lib.........create application jar file into ${lib-dir}
+  doc.........generate application javadoc into ${doc-dir}
+  dist........generate application bundle into ${rel-dir}
+  help........print this help
+		</echo>
+	</target>
+
+
+	<!-- ============= -->
+	<!-- Project tasks -->
+	<!-- ============= -->
+
+	<target name="03.tree" depends="00.init" description="Creates build tree, if needed">
+		<mkdir dir="${lib-dir}" />
+		<mkdir dir="${classes-dir}" />
+		<mkdir dir="${rel-dir}" />
+		<mkdir dir="${doc-dir}" />
+	</target>
+
+	<target name="compile" depends="01.classpath, 03.tree" description="Compile java sources in '${src-dir}' to '${classes-dir}'">
+		<build debug="true" />
+	</target>
+
+	<target name="lib" depends="01.classpath, 03.tree" description="Package runnable jar into '${lib-dir}'">
+
+		<build debug="false" />
+
+		<package />
+
+	</target>
+
+	<target name="doc" depends="01.classpath, 03.tree" description="Generate Javadoc into '${doc-dir}'">
+
+		<delete includeemptydirs="true">
+			<fileset dir="${doc-dir}" includes="**/*" />
+		</delete>
+
+		<mkdir dir="${doc-dir}/javadoc" />
+
+		<javadoc sourcepath="${src-dir}" destdir="${doc-dir}/javadoc" author="true" version="true" use="true" windowtitle="TuCSoN4JADE Javadoc" doctitle="TuCSoN4JADE Javadoc" verbose="no" encoding="UTF-8" breakiterator="yes">
+			<classpath refid="ant-classpath" />
+			<link href="http://java.sun.com/j2se/1.6.0/docs/api/" />
+
+		</javadoc>
+
+		<echo>Check ${doc-dir}/javadoc folder!</echo>
+
+	</target>
+
+	<target name="dist" depends="01.classpath, 03.tree, lib, doc " description="Generate the release bundle into '${rel-dir}'">
+
+		<delete includeemptydirs="true">
+			<fileset dir="${rel-dir}" includes="**/*" />
+		</delete>
+
+		<mkdir dir="${rel-dir}/${addon.version}" />
+		<mkdir dir="${rel-dir}/${addon.version}/rel" />
+		<mkdir dir="${rel-dir}/${addon.version}/libs" />
+		<mkdir dir="${rel-dir}/${addon.version}/docs" />
+
+		<copy todir="${rel-dir}/${addon.version}/rel">
+			<fileset dir="${lib-dir}">
+				<include name="*.jar" />
+			</fileset>
+		</copy>
+
+		<copy todir="${rel-dir}/${addon.version}/libs">
+			<fileset dir="${libs.dir}">
+				<include name="*.jar" />
+			</fileset>
+		</copy>
+
+		<copy todir="${rel-dir}/${addon.version}/docs">
+			<fileset dir="${doc-dir}" />
+		</copy>
+
+		<copy todir="${rel-dir}/${addon.version}/docs/how-to">
+			<fileset dir="${basedir}/../how-to" />
+		</copy>
+
+		<zip destfile="${rel-dir}/${addon.version}.zip" basedir="${rel-dir}/${addon.version}" />
+
+		<echo>Check ${rel-dir} folder!</echo>
+
+	</target>
+
+	<target name="clean" depends="00.init" description="Clean all the builds done so far">
+
+		<delete includeEmptyDirs="true">
+			<fileset dir="${lib-dir}" includes="**/*" defaultexcludes="no" />
+		</delete>
+		<delete includeEmptyDirs="true">
+			<fileset dir="${classes-dir}" includes="**/*" defaultexcludes="no" />
+		</delete>
+		<delete dir="${rel-dir}" />
+		<delete dir="${rel-dir}/.." />
+		<delete includeEmptyDirs="true">
+			<fileset dir="${doc-dir}" includes="**/*" defaultexcludes="no" />
+		</delete>
+
+	</target>
+
+</project>
