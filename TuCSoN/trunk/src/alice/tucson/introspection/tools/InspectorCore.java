@@ -19,6 +19,8 @@ import java.util.Calendar;
 import java.util.Iterator;
 import alice.logictuple.LogicTuple;
 import alice.respect.api.AgentId;
+import alice.respect.api.TupleCentreId;
+import alice.respect.situatedness.TransducerId;
 import alice.tucson.api.TucsonAgentId;
 import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.introspection.WSetEvent;
@@ -212,12 +214,26 @@ public class InspectorCore extends alice.tucson.introspection.Inspector {
                             .append("> to <").append(ev.getTarget())
                             .append(">\n");
                 } else if (ev.getSource().isTC()) {
-                    st.append(ev.getOp())
-                            .append(" from <")
-                            .append(((TucsonTupleCentreId) ev.getSource())
-                                    .toString()).append("> to <")
-                            .append(ev.getTarget()).append(">\n");
-                } // is Env?
+                    // Ugly
+                    if (ev.getSource() instanceof TucsonTupleCentreId) {
+                        st.append(ev.getOp())
+                                .append(" from <")
+                                .append(((TucsonTupleCentreId) ev.getSource())
+                                        .toString()).append("> to <")
+                                .append(ev.getTarget()).append(">\n");
+                    } else if (ev.getSource() instanceof TupleCentreId) {
+                        st.append(ev.getOp())
+                                .append(" from <")
+                                .append(((TupleCentreId) ev.getSource())
+                                        .toString()).append("> to <")
+                                .append(ev.getTarget()).append(">\n");
+                    }
+                } else if (ev.getSource().isEnv()) {
+                    st.append(ev.getOp()).append(" from <")
+                            .append(((TransducerId) ev.getSource()).toString())
+                            .append("> to <").append(ev.getTarget())
+                            .append(">\n");
+                }
                 n++;
             }
             viewer.setNItems(n);
