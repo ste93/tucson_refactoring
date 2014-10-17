@@ -1,6 +1,6 @@
 # TuCSoN "how-to"
 
-In this brief "how-to", you will learn how to get TuCSoN, build it and run examples showcasing its features. <!--You will also learn main API available to JADE developers and how to use them in your code, for your JADE agents.-->
+In this brief "how-to", you will learn how to get TuCSoN, build it and run examples showcasing its features.
 
 Assumptions are you are familiar with Java (compilation), Git (cloning repositories) and, optionally, ANT (buildfiles).
 
@@ -16,13 +16,8 @@ Assumptions are you are familiar with Java (compilation), Git (cloning repositor
    
    1.4 <a href="#running">Running</a>
    
-<!--2. <a href="#using">Using t4j</a>
-
-   2.1 <a href="#api">API Overview</a>
    
-   2.2 <a href="#hands-on">"Hands-on" step-by-step tour</a>-->
-   
-3. <a href="#contact">Contact Information</a>
+2. <a href="#contact">Contact Information</a>
 
 ---
 
@@ -77,7 +72,7 @@ To compile TuCSoN using ANT:
  
 Other ANT targets are available through the `build.xml` file: to learn which, launch the ANT script using target `help`.
 
-###### <a name="deploying">Deploying</a>
+###### 1.3 <a name="deploying">Deploying</a>
 
 Deploying TuCSoN is as simple as giving a different build target to the ANT script `build.xml`:
 
@@ -123,7 +118,7 @@ The complete directory structure obtained by launching `ant dist` build process 
 
 Other ANT targets are available through the `build.xml` file: to learn which, launch the ANT script using target `help`.
 
-###### <a name="running">Running</a>
+###### 1.4 <a name="running">Running</a>
 
 To run TuCSoN, you need:
 
@@ -139,7 +134,7 @@ Supposing you built TuCSoN using the provided ANT script <a href="#6">\[6\]</a> 
 
 The TuCSoN ASCII logo on the command prompt, as depicted below.
 
-<img src="TuCSoN-boot.png" alt="TuCSoN in execution" height="280" width="600">
+<img src="TuCSoN-boot.jpeg" alt="TuCSoN in execution">
 
 As long as no TuCSoN agents start exploiting TuCSoN coordination services, nothing happens. Thus, here follows instructions on how to launch one of the example applications shipped within TuCSoN-1.11.0.0209.jar, showcasing its features: the *old-but-gold* "Dining Philosophers" example (package `alice.tucson.examples.timedDiningPhilos.TDiningPhilosophersTest`).
 
@@ -154,163 +149,6 @@ You should see many prints on the command prompt, tracking what the philosophers
 
 ---
 
-<!--### <a name="api">API Overview</a>
-
-The first step to integrate TuCSoN and JADE has been implementing TuCSoN *as a* JADE *service*. Thus, JADE `BaseService` class has been extended with a class representing the TuCSoN service entry point: in TuCSoN4JADE, **the `TucsonService` class**. This class **should be used to get an helper class** extending JADE `ServiceHelper` interface, working as the interface between the clients and the service. In TuCSoN4JADE, the helper role is played by the **`TucsonHelper`** interface---whose implementation class is hidden to clients. Its methods are quite self-explanatory (if you know TuCSoN terminology) and are listed in the picture below.
-
-<img src="helper-bridge.png" alt="TucsonHelper & BridgeToTucson" height="300" width="600">
-
-The only "unusual" method is `getBridgeToTucson`: **`BridgeToTucson` is the class which `TucsonHelper` delegates TuCSoN coordination operations invocation to**. To this end, `BridgeToTucson` exposes the following API:
-
-
- * `synchronousInvocation()` — lets clients *synchronously* invoke TuCSoN coordination operations. In particular, given a coordination operation to perform (`AbstractTucsonAction` subtypes), a maximum waiting time to be possibly suspended for (`timeout`), and a reference to the caller Jade behaviour, the chosen coordination operation is requested to the active TuCSoN service synchronously w.r.t. the caller behaviour. This means **the caller behaviour is (possibly) suspended and automatically resumed by the TuCSoN4JADE bridge as soon as the requested operation completes**—--returning the completion event reified by the `TucsonOpCompletionEvent` object. Such mechanism encourages JADE programmers using the TuCSoN4JADE bridge to adopt the same programming style suggested by the JADE Programmers Guide (available from <http://jade.tilab.com> after registering) regarding message reception---depicted both for JADE (top) and TuCSoN4JADE (bottom) in picture below:
-
-
-      1. the communication method – `synchronousInvocation()` in TuCSoN4JADE, `receive()` in JADE – is first called
-
-      
-      2. the result is checked, and (i) handled, if available, (ii) otherwise method `block()` is called
-
-                @Override
-                public void action () {
-                    // field 'mt' stores the ACL message template
-                    final ACLMessage msg = myAgent.receive(mt);
-                    if (msg != null) { // message received: process it
-                        ...
-                    } else { // message not received yet: wait
-                        block();
-                    }
-                }
-
-                @Override
-                public void action () {
-                    // field 'tuple' stores the TuCSoN tuple template
-                    final Rd op = new Rd(tcid, tuple);
-                    final TucsonOpCompletionEvent
-                            res = bridge.synchronousInvocation(op, null, this);
-                    if (res != null) { // tuple found: process it
-                        ...
-                    } else { // tuple not found: wait
-                        block();
-                    }
-                }
-
-   This allows the JADE runtime – through the behaviours scheduler – to **keep on scheduling others behaviours belonging to the caller agent while the coordination operation invoking behaviour remains suspended** (within JADE waiting queue).
-   
-   * `asynchronousInvocation()` — lets clients *asynchronously* invoke TuCSoN coordination operations. Such method comes in two flavours:
- 
-   * the first (in black) works *by interrupt* — that is, **when the requested operation completes, the JADE behaviour passed in as an actual parameter is activated** (put in the ready queue, thus ready to be scheduled) to handle the operation result
-   * the second (in red) works *by polling* — that is, **the caller agent gets a data structure** (`AsynchTucsonOpResult`, depicted below) **representing the operation result, which it may query to check completion and (eventually) retrieve the actual result**.
-   
-   **In both cases, regardless of whether the coordination operation suspends or not, the agent does not**, thus the caller behaviour keeps on executing.
-
-<img src="bridge-res.png" alt="AsynchTucsonOpResult" height="100" width="360">
-
-The "result-handling" behaviour written by JADE programmers should implement the TuCSoN4JADE `IAsynchCompletionBehaviour` interface: the `setTucsonOpCompletionEvent()` method is the "hook" for TuCSoN4JADE to share completion events between the caller and the "result handler" behaviour, transparently to JADE programmers.
-
-As a last note, the type hierarchy representing TuCSoN coordination operations is in package `it.unibo.tucson.sd.jade.operations` as depicted in figure below.
-
-<img src="actions.png" alt="TuCSoN operations as JADE actions" height="180" width="520">
-
-
-### <a name="hands-on">"Hands-on" step-by-step tour</a>
-
----
-
-### ! Disclaimer !
-
-**NB:** TuCSoN4JADE has been tested against **JDK 6**, **7**, **8**, using **TuCSoN-1.10.8.0208**, **tuProlog-2.8.0** and **JADE v. 4.3.1**. Other combinations may not function properly.
-
----
-
-What follows is a "hands-on how-to" describing how to exploit TuCSoN4JADE API: what classes you should know, what you have to develop on your own, etc.
-
-**Prior to reading this how-to is *highly recommended* to read the reference paper on integrating TuCSoN and JADE**:
-
- * Mariani, S., Omicini, A., Sangiorgi, L.: *"Models of Autonomy and Coordination:
-   Integrating Subjective & Objective Approaches in Agent Development Frameworks"*.
-   Published in 8th International Symposium on Intelligent Distributed Computing
-   (IDC 2014), 3-5 September 2014
-   
-available from here > <http://apice.unibo.it/xwiki/bin/view/Publications/ObjsubjIdc2014>
-
-If you want to work with TuCSoN4JADE, first of all, **remember to instruct the JADE platform to boot the TuCSoN service**, as explained in the beginning of this how-to.
-
-Then, diving into the code, regardless of how you are willing to exploit TuCSoN services, you need to:
-
- 1. get the service helper class from the TuCSoN service instance
- 
-         ITucsonHelper helper = (TucsonHelper) this.getHelper(TucsonService.NAME);
-         
- 2. [OPTIONAL] start the TuCSoN node you wish to operate on
- 
-         if (!this.helper.isActive(20504)) {
-             this.helper.startTucsonNode(20504);
-         }
-         
- 3. get an ACC (*which is actually associated to the* `BridgeToTucson` *object* you'll
-    get from the helper in step 4)
- 
-         this.helper.acquireACC(this);
-         
- 4. get the bridge object *through which all your TuCSoN operations will go*
- 
-         BridgeToTucson bridge = this.helper.getBridgeToTucson(this);
-         
- 5. [OPTIONAL] stop the TuCSoN node
- 
-         if (this.helper.isActive(20504)) {
-             this.helper.stopTucsonNode(20504);
-         }
-
-Now, what to do next obviously depends on what your program logic needs. Anyway, you will likely perform some of the following operations:
-
- * build the identifier of the tuple centre you wish to use (e.g., "hello" on
-   default TuCSoN node)
- 
-        TucsonTupleCentreId tcid = this.helper.buildTucsonTupleCentreId(
-                         "default", "localhost", 20504);
-                    
- * build the tuples you need (using usual TuCSoN facilities)
- 
-        LogicTuple adv = LogicTuple.parse(
-                         "advertise(provider("
-                             + this.getAID().getName()
-                             + "), service('book-trading')))");
-                    
- * *build an "action"*, representing TuCSoN (meta-)coordination operations,
-   choosing from all the type hierarchy rooted in `it.unibo.sd.jade.operations.AbstractTucsonAction`
-    
-        Out out = new Out(this.tcid, this.adv);
-        
- * perform the action according to your preferred *invocation semantics* (e.g.
-   asynchronous, "polling" mode)
- 
-        AsynchTucsonOpResult res = this.bridge.asynchronousInvocation(out);
-        
-   (e.g. asynchronous, "interrupt" mode)
-   
-        this.bridge.asynchronousInvocation(out,
-                    new AdvertisingCompletedBehaviour(this.adv), this);
-                    
-        private class AdvertisingCompletedBehaviour extends OneShotBehaviour
-            implements IAsynchCompletionBehaviour {...}
-            
-   (e.g. synchronous mode)
-   
-        TucsonOpCompletionEvent result =
-                BookSellerAgent.this.bridge.synchronousInvocation(in, null, this);
-                
-   remembering, if needed, to exploit JADE's usual programming pattern
-   
-        if (result != null) { // tuple found: process it
-            ...
-        } else { // tuple not found: wait
-            block();
-        }
-
----
--->
 ### <a name="contact">Contact Information</a>
 
 **Author** of this "how-to":
