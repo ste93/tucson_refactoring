@@ -1,0 +1,540 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<style>
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote {
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: "Helvetica Neue", Helvetica, "Hiragino Sans GB", Arial, sans-serif;
+    font-size: 13px;
+    line-height: 18px;
+    color: #737373;
+    background-color: white;
+    margin: 10px 13px 10px 13px;
+}
+table {
+	margin: 10px 0 15px 0;
+	border-collapse: collapse;
+}
+td,th {	
+	border: 1px solid #ddd;
+	padding: 3px 10px;
+}
+th {
+	padding: 5px 10px;	
+}
+
+a {
+    color: #0069d6;
+}
+a:hover {
+    color: #0050a3;
+    text-decoration: none;
+}
+a img {
+    border: none;
+}
+p {
+    margin-bottom: 9px;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: #404040;
+    line-height: 36px;
+}
+h1 {
+    margin-bottom: 18px;
+    font-size: 30px;
+}
+h2 {
+    font-size: 24px;
+}
+h3 {
+    font-size: 18px;
+}
+h4 {
+    font-size: 16px;
+}
+h5 {
+    font-size: 14px;
+}
+h6 {
+    font-size: 13px;
+}
+hr {
+    margin: 0 0 19px;
+    border: 0;
+    border-bottom: 1px solid #ccc;
+}
+blockquote {
+    padding: 13px 13px 21px 15px;
+    margin-bottom: 18px;
+    font-family:georgia,serif;
+    font-style: italic;
+}
+blockquote:before {
+    content:"\201C";
+    font-size:40px;
+    margin-left:-10px;
+    font-family:georgia,serif;
+    color:#eee;
+}
+blockquote p {
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 18px;
+    margin-bottom: 0;
+    font-style: italic;
+}
+code, pre {
+    font-family: Monaco, Andale Mono, Courier New, monospace;
+}
+code {
+    background-color: #fee9cc;
+    color: rgba(0, 0, 0, 0.75);
+    padding: 1px 3px;
+    font-size: 12px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+pre {
+    display: block;
+    padding: 14px;
+    margin: 0 0 18px;
+    line-height: 16px;
+    font-size: 11px;
+    border: 1px solid #d9d9d9;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+pre code {
+    background-color: #fff;
+    color:#737373;
+    font-size: 11px;
+    padding: 0;
+}
+sup {
+    font-size: 0.83em;
+    vertical-align: super;
+    line-height: 0;
+}
+* {
+	-webkit-print-color-adjust: exact;
+}
+@media screen and (min-width: 914px) {
+    body {
+        width: 854px;
+        margin:10px auto;
+    }
+}
+@media print {
+	body,code,pre code,h1,h2,h3,h4,h5,h6 {
+		color: black;
+	}
+	table, pre {
+		page-break-inside: avoid;
+	}
+}
+</style>
+<title>TuCSoN "how-to"</title>
+<script type="text/x-mathjax-config">MathJax.Hub.Config({tex2jax:{inlineMath:[['$$$','$$$']]}});</script><script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</head>
+<body>
+<h1>TuCSoN "how-to"</h1>
+
+<p>In this brief "how-to", you will learn how to get TuCSoN, build it and run examples showcasing its features. <!--You will also learn main API available to JADE developers and how to use them in your code, for your JADE agents.--></p>
+
+<p>Assumptions are you are familiar with Java (compilation), Git (cloning repositories) and, optionally, ANT (buildfiles).</p>
+
+<hr />
+
+<ol>
+<li><p><a href="#getting">Getting Started with t4j</a></p>
+
+<p>1.1 <a href="#downloading">Downloading</a></p>
+
+<p>1.2 <a href="#compiling">Compiling</a></p>
+
+<p>1.3 <a href="#deploying">Deploying</a></p>
+
+<p>1.4 <a href="#running">Running</a></p></li>
+</ol>
+
+
+<!--2. <a href="#using">Using t4j</a>
+
+   2.1 <a href="#api">API Overview</a>
+   
+   2.2 <a href="#hands-on">"Hands-on" step-by-step tour</a>-->
+
+
+<ol>
+<li><a href="#contact">Contact Information</a></li>
+</ol>
+
+
+<hr />
+
+<h3>1. <a name="getting">Getting Started with TuCSoN</a></h3>
+
+<h6>1.1 <a name="downloading">Downloading</a></h6>
+
+<p>If you want the <em>ready-to-use</em> distribution of TuCSoN, download <strong>TuCSoN-1.11.0.0209.jar</strong> archive from the "Downloads" section, here > <a href="http://bitbucket.org/smariani/tucson/downloads">http://bitbucket.org/smariani/tucson/downloads</a>. <strong>TuCSoN_boot.sh</strong> bash script is also available for quick boot of TuSCoN components and examples.</p>
+
+<p>If you want the <em>source code</em> of TuCSoN, clone the TuCSoN <strong><a href="http://git-scm.com">Git</a> repository</strong> hosted here on Bitbucket, at > <a href="http://smariani@bitbucket.org/smariani/tucson.git">http://smariani@bitbucket.org/smariani/tucson.git</a> (e.g., from a command prompt type <code>$&gt; git clone https://smariani@bitbucket.org/smariani/tucson.git</code>) <a href="#1">[1]</a>.</p>
+
+<p>In the former case, skip to the "<a href="#running">Running</a>" section below. In the latter case, keep reading.</p>
+
+<h6>1.2 <a name="compiling">Compiling</a></h6>
+
+<p>By cloning TuCSoN you have downloaded a folder named <code>tucson/</code>, with the following <em>directory structure</em>:</p>
+
+<pre><code>tucson/
+|__...
+|__TuCSoN/
+   |__...
+   |__ant-scripts/
+      |__build.xml
+      |__environment.properties
+   |__eclipse-config/
+   |__how-to/
+   |__license-info/
+   |__trunk/
+      |__src/
+</code></pre>
+
+<p>TuCSoN depends on 1 other Java library to function properly <a href="#2">[2]</a>:</p>
+
+<ul>
+<li><strong>tuProlog</strong>, downloadable from tuProlog "Download" page, here > <a href="http://apice.unibo.it/xwiki/bin/view/Tuprolog/Download">http://apice.unibo.it/xwiki/bin/view/Tuprolog/Download</a> (<strong>2p.jar</strong>)</li>
+</ul>
+
+
+<p>Once you got the above libraries, you are ready to compile TuCSoN source code.</p>
+
+<p>The easiest way to do so is by exploiting the <a href="http://ant.apache.org">ANT</a> script named <code>build.xml</code> within folder <code>ant-scripts/</code>, which takes care of the whole building process for you, from compilation to deployment (covered in next section). To do so, you need to have ANT installed on your machine <a href="#3">[3]</a>. If you don't want to use ANT, build TuCSoN jar archive using the tools you prefer, then skip to the "<a href="#running">Running</a>" section below.</p>
+
+<p>To compile TuCSoN using ANT:</p>
+
+<ol>
+<li><p>Edit the <code>environment.properties</code> file according to your system configuration:</p>
+
+<p>1.1 Tell ANT where your JDK and your <code>java</code> tool are</p>
+
+<p>1.2 Tell ANT which libraries are needed to compile TuCSoN (the one you just downloaded, that is tuProlog)</p>
+
+<p>1.3 Tell ANT where you put such libraries (e.g. if you put them into <code>TuCSoN/libs/</code> you are already set)</p>
+
+<p><em>[1.4 Tell ANT your Bitbucket username (for automatic syncing with TuCSoN repository, <strong>not supported at the moment</strong>)]</em></p></li>
+<li><p>Launch the ANT script using target <code>compile</code> (e.g., from a command prompt position yourself into the <code>ant-scripts/</code> folder then type <code>$&gt; ant compile</code>) <a href="#4">[4]</a>. This will create folder <code>classes/</code> within folder <code>TuCSoN/</code> and therein store Java <code>.class</code> files.</p></li>
+</ol>
+
+
+<p>Other ANT targets are available through the <code>build.xml</code> file: to learn which, launch the ANT script using target <code>help</code>.</p>
+
+<h6><a name="deploying">Deploying</a></h6>
+
+<p>Deploying TuCSoN is as simple as giving a different build target to the ANT script <code>build.xml</code>:</p>
+
+<ul>
+<li><p>if you only want the <strong>TuCSoN jar</strong> archive, ready to be included in your Java project, launch the script using target <code>lib</code>. This will compile TuCSoN source code into binaries (put into <code>TuCSoN/classes/</code> folder) then package them to <strong>TuCSoN-1.11.0.0209.jar</strong> into <code>TuCSoN/lib/</code> folder <a href="#5">[5]</a>.</p></li>
+<li><p>if you want a <strong>ready-to-release distribution</strong> of TuCSoN, including also documentation and support libraries, launch the script using target <code>dist</code>. This will:</p>
+
+<ul>
+<li>compile TuCSoN source code into binaries, put into <code>TuCSoN/classes/</code> folder</li>
+<li>package them to TuCSoN-1.11.0.0209.jar, put into <code>TuCSoN/lib/</code> folder</li>
+<li>generate Javadoc information, put into <code>TuCSoN/doc/</code> folder</li>
+<li><p>create folder <code>rel/TuCSoN-1.11.0.0209</code> including:</p>
+
+<ul>
+<li>folder <code>docs/</code> including the generated Javadoc information as well as this "how-to"</li>
+<li>folder <code>libs/</code> including tuProlog library used to build TuCSoN</li>
+<li>folder <code>rel/</code> including TuCSoN jar archives</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+
+<p>The complete directory structure obtained by launching <code>ant dist</code> build process should look like the following (assuming you put tuProlog library in folder <code>TuCSoN/libs/</code>):</p>
+
+<pre><code>tucson/
+|__...
+|__TuCSoN/
+   |__...
+   |__ant-scripts/
+      |__build.xml
+      |__environment.properties
+   |__classes/
+   |__doc/
+   |__eclipse-config/
+   |__how-to/
+   |__rel/
+      |__TuCSoN4JADE-1.0/
+         |__docs/
+            |__how-to/
+            |__javadoc/
+         |__libs/
+         |__rel/
+      |__...
+   |__lib/
+   |__libs/
+   |__license-info/
+   |__trunk/
+      |__src/
+</code></pre>
+
+<p>Other ANT targets are available through the <code>build.xml</code> file: to learn which, launch the ANT script using target <code>help</code>.</p>
+
+<h6><a name="running">Running</a></h6>
+
+<p>To run TuCSoN, you need:</p>
+
+<ul>
+<li>TuCSoN jar, e.g. <strong>TuCSoNTuCSoN-1.11.0.0209.jar</strong></li>
+<li>tuProlog jar, e.g. <strong>2p.jar</strong></li>
+</ul>
+
+
+<p>Supposing you built TuCSoN using the provided ANT script <a href="#6">[6]</a> and that you are comfortable with using a command prompt to launch Java applications <a href="#7">[7]</a>:</p>
+
+<ol>
+<li>open a command prompt and position yourself into either <code>TuCSoN/lib/</code> or <code>TuCSoN/rel/TuCSoN-1.11.0.0209/rel/</code> folder</li>
+<li><p>launch the TuCSoN Node service, e.g. as follows <a href="#8">[8]</a>:</p>
+
+<pre><code> java -cp TuCSoN-1.11.0.0209.jar:../libs/2p.jar alice.tucson.service.TucsonNodeService
+</code></pre></li>
+</ol>
+
+
+<p>The TuCSoN ASCII logo on the command prompt, as depicted below.</p>
+
+<p><img src="TuCSoN-boot.png" alt="TuCSoN in execution" height="280" width="600"></p>
+
+<p>As long as no TuCSoN agents start exploiting TuCSoN coordination services, nothing happens. Thus, here follows instructions on how to launch one of the example applications shipped within TuCSoN-1.11.0.0209.jar, showcasing its features: the <em>old-but-gold</em> "Dining Philosophers" example (package <code>alice.tucson.examples.timedDiningPhilos.TDiningPhilosophersTest</code>).</p>
+
+<p>Supposing you successfully launched the TuCSoN Node Service as described above, to launch the "Dining Philosophers" example:</p>
+
+<ol>
+<li>open a new command prompt window/tab and position yourself into either <code>TuCSoN/lib/</code> or <code>TuCSoN/rel/TuCSoN-1.11.0.0209/rel/</code> folder</li>
+<li><p>launch the "Dining Philosophers" example, e.g. as follows <a href="#8">[8]</a>:</p>
+
+<pre><code> java -cp TuCSoN-1.11.0.0209.jar:../libs/2p.jar alice.tucson.examples.timedDiningPhilos.TDiningPhilosophersTest
+</code></pre></li>
+</ol>
+
+
+<p>You should see many prints on the command prompt, tracking what the philosophers are doing.</p>
+
+<hr />
+
+<!--### <a name="api">API Overview</a>
+
+The first step to integrate TuCSoN and JADE has been implementing TuCSoN *as a* JADE *service*. Thus, JADE `BaseService` class has been extended with a class representing the TuCSoN service entry point: in TuCSoN4JADE, **the `TucsonService` class**. This class **should be used to get an helper class** extending JADE `ServiceHelper` interface, working as the interface between the clients and the service. In TuCSoN4JADE, the helper role is played by the **`TucsonHelper`** interface---whose implementation class is hidden to clients. Its methods are quite self-explanatory (if you know TuCSoN terminology) and are listed in the picture below.
+
+<img src="helper-bridge.png" alt="TucsonHelper & BridgeToTucson" height="300" width="600">
+
+The only "unusual" method is `getBridgeToTucson`: **`BridgeToTucson` is the class which `TucsonHelper` delegates TuCSoN coordination operations invocation to**. To this end, `BridgeToTucson` exposes the following API:
+
+
+ * `synchronousInvocation()` — lets clients *synchronously* invoke TuCSoN coordination operations. In particular, given a coordination operation to perform (`AbstractTucsonAction` subtypes), a maximum waiting time to be possibly suspended for (`timeout`), and a reference to the caller Jade behaviour, the chosen coordination operation is requested to the active TuCSoN service synchronously w.r.t. the caller behaviour. This means **the caller behaviour is (possibly) suspended and automatically resumed by the TuCSoN4JADE bridge as soon as the requested operation completes**—--returning the completion event reified by the `TucsonOpCompletionEvent` object. Such mechanism encourages JADE programmers using the TuCSoN4JADE bridge to adopt the same programming style suggested by the JADE Programmers Guide (available from <http://jade.tilab.com> after registering) regarding message reception---depicted both for JADE (top) and TuCSoN4JADE (bottom) in picture below:
+
+
+      1. the communication method – `synchronousInvocation()` in TuCSoN4JADE, `receive()` in JADE – is first called
+
+      
+      2. the result is checked, and (i) handled, if available, (ii) otherwise method `block()` is called
+
+                @Override
+                public void action () {
+                    // field 'mt' stores the ACL message template
+                    final ACLMessage msg = myAgent.receive(mt);
+                    if (msg != null) { // message received: process it
+                        ...
+                    } else { // message not received yet: wait
+                        block();
+                    }
+                }
+
+                @Override
+                public void action () {
+                    // field 'tuple' stores the TuCSoN tuple template
+                    final Rd op = new Rd(tcid, tuple);
+                    final TucsonOpCompletionEvent
+                            res = bridge.synchronousInvocation(op, null, this);
+                    if (res != null) { // tuple found: process it
+                        ...
+                    } else { // tuple not found: wait
+                        block();
+                    }
+                }
+
+   This allows the JADE runtime – through the behaviours scheduler – to **keep on scheduling others behaviours belonging to the caller agent while the coordination operation invoking behaviour remains suspended** (within JADE waiting queue).
+   
+   * `asynchronousInvocation()` — lets clients *asynchronously* invoke TuCSoN coordination operations. Such method comes in two flavours:
+ 
+   * the first (in black) works *by interrupt* — that is, **when the requested operation completes, the JADE behaviour passed in as an actual parameter is activated** (put in the ready queue, thus ready to be scheduled) to handle the operation result
+   * the second (in red) works *by polling* — that is, **the caller agent gets a data structure** (`AsynchTucsonOpResult`, depicted below) **representing the operation result, which it may query to check completion and (eventually) retrieve the actual result**.
+   
+   **In both cases, regardless of whether the coordination operation suspends or not, the agent does not**, thus the caller behaviour keeps on executing.
+
+<img src="bridge-res.png" alt="AsynchTucsonOpResult" height="100" width="360">
+
+The "result-handling" behaviour written by JADE programmers should implement the TuCSoN4JADE `IAsynchCompletionBehaviour` interface: the `setTucsonOpCompletionEvent()` method is the "hook" for TuCSoN4JADE to share completion events between the caller and the "result handler" behaviour, transparently to JADE programmers.
+
+As a last note, the type hierarchy representing TuCSoN coordination operations is in package `it.unibo.tucson.sd.jade.operations` as depicted in figure below.
+
+<img src="actions.png" alt="TuCSoN operations as JADE actions" height="180" width="520">
+
+
+### <a name="hands-on">"Hands-on" step-by-step tour</a>
+
+---
+
+### ! Disclaimer !
+
+**NB:** TuCSoN4JADE has been tested against **JDK 6**, **7**, **8**, using **TuCSoN-1.10.8.0208**, **tuProlog-2.8.0** and **JADE v. 4.3.1**. Other combinations may not function properly.
+
+---
+
+What follows is a "hands-on how-to" describing how to exploit TuCSoN4JADE API: what classes you should know, what you have to develop on your own, etc.
+
+**Prior to reading this how-to is *highly recommended* to read the reference paper on integrating TuCSoN and JADE**:
+
+ * Mariani, S., Omicini, A., Sangiorgi, L.: *"Models of Autonomy and Coordination:
+   Integrating Subjective & Objective Approaches in Agent Development Frameworks"*.
+   Published in 8th International Symposium on Intelligent Distributed Computing
+   (IDC 2014), 3-5 September 2014
+   
+available from here > <http://apice.unibo.it/xwiki/bin/view/Publications/ObjsubjIdc2014>
+
+If you want to work with TuCSoN4JADE, first of all, **remember to instruct the JADE platform to boot the TuCSoN service**, as explained in the beginning of this how-to.
+
+Then, diving into the code, regardless of how you are willing to exploit TuCSoN services, you need to:
+
+ 1. get the service helper class from the TuCSoN service instance
+ 
+         ITucsonHelper helper = (TucsonHelper) this.getHelper(TucsonService.NAME);
+         
+ 2. [OPTIONAL] start the TuCSoN node you wish to operate on
+ 
+         if (!this.helper.isActive(20504)) {
+             this.helper.startTucsonNode(20504);
+         }
+         
+ 3. get an ACC (*which is actually associated to the* `BridgeToTucson` *object* you'll
+    get from the helper in step 4)
+ 
+         this.helper.acquireACC(this);
+         
+ 4. get the bridge object *through which all your TuCSoN operations will go*
+ 
+         BridgeToTucson bridge = this.helper.getBridgeToTucson(this);
+         
+ 5. [OPTIONAL] stop the TuCSoN node
+ 
+         if (this.helper.isActive(20504)) {
+             this.helper.stopTucsonNode(20504);
+         }
+
+Now, what to do next obviously depends on what your program logic needs. Anyway, you will likely perform some of the following operations:
+
+ * build the identifier of the tuple centre you wish to use (e.g., "hello" on
+   default TuCSoN node)
+ 
+        TucsonTupleCentreId tcid = this.helper.buildTucsonTupleCentreId(
+                         "default", "localhost", 20504);
+                    
+ * build the tuples you need (using usual TuCSoN facilities)
+ 
+        LogicTuple adv = LogicTuple.parse(
+                         "advertise(provider("
+                             + this.getAID().getName()
+                             + "), service('book-trading')))");
+                    
+ * *build an "action"*, representing TuCSoN (meta-)coordination operations,
+   choosing from all the type hierarchy rooted in `it.unibo.sd.jade.operations.AbstractTucsonAction`
+    
+        Out out = new Out(this.tcid, this.adv);
+        
+ * perform the action according to your preferred *invocation semantics* (e.g.
+   asynchronous, "polling" mode)
+ 
+        AsynchTucsonOpResult res = this.bridge.asynchronousInvocation(out);
+        
+   (e.g. asynchronous, "interrupt" mode)
+   
+        this.bridge.asynchronousInvocation(out,
+                    new AdvertisingCompletedBehaviour(this.adv), this);
+                    
+        private class AdvertisingCompletedBehaviour extends OneShotBehaviour
+            implements IAsynchCompletionBehaviour {...}
+            
+   (e.g. synchronous mode)
+   
+        TucsonOpCompletionEvent result =
+                BookSellerAgent.this.bridge.synchronousInvocation(in, null, this);
+                
+   remembering, if needed, to exploit JADE's usual programming pattern
+   
+        if (result != null) { // tuple found: process it
+            ...
+        } else { // tuple not found: wait
+            block();
+        }
+
+---
+-->
+
+
+<h3><a name="contact">Contact Information</a></h3>
+
+<p><strong>Author</strong> of this "how-to":</p>
+
+<ul>
+<li><em>Stefano Mariani</em>, DISI - Università di Bologna (<a href="&#109;&#x61;&#105;&#x6c;&#116;&#x6f;&#58;&#x73;&#46;&#x6d;&#x61;&#x72;&#x69;&#97;&#x6e;&#105;&#x40;&#117;&#x6e;&#105;&#x62;&#111;&#x2e;&#105;&#116;">&#x73;&#x2e;&#109;&#97;&#114;&#105;&#x61;&#110;&#x69;&#64;&#117;&#110;&#105;&#98;&#111;&#46;&#x69;&#116;</a>)</li>
+</ul>
+
+
+<p><strong>Authors</strong> of TuCSoN in TuCSoN "People" section of its main site, here > <a href="http://apice.unibo.it/xwiki/bin/view/TuCSoN/People">http://apice.unibo.it/xwiki/bin/view/TuCSoN/People</a></p>
+
+<hr />
+
+<p><a name="1">[1]</a> Git standalone clients are available for any platform (e.g., <a href="http://www.sourcetreeapp.com">SourceTree</a> for Mac OS and Windows). Also, if you are using <a href="http://www.eclipse.org/home/index.php">Eclipse IDE</a> for developing in JADE, the <a href="http://marketplace.eclipse.org/content/egit-git-team-provider">EGit plugin</a> is included in the <a href="http://www.eclipse.org/downloads/packages/eclipse-ide-java-developers/lunasr1">Java Developers version</a> of the IDE.</p>
+
+<p><a name="2">[2]</a> Recommended tuProlog version is <strong>2.9.1</strong>. Others (both newer and older) may work properly, but they have not been tested.</p>
+
+<p><a name="3">[3]</a> Binaries available <a href="http://ant.apache.org/bindownload.cgi">here</a>, installation instructions covering Linux, MacOS X, Windows and Unix systems <a href="http://ant.apache.org/manual/install.html">here</a>.</p>
+
+<p><a name="4">[4]</a> If you are using <a href="http://www.eclipse.org/home/index.php">Eclipse IDE</a> for developing in Java, ANT is included: click "Window > Show View > Ant" then click "Add buildfiles" from the ANT view and select file <code>build.xml</code> within <code>ant-scripts/</code> folder. Now expand the "TuCSoN build file" from the ANT view and finally double click on target <code>compile</code> to start the build process.</p>
+
+<p><a name="5">[5]</a> Actually, also a <strong>TuCSoN-1.11.0.0209-noexamples.jar</strong> is built. It is the same as <strong>TuCSoN-1.11.0.0209.jar</strong> except for the explanatory examples in package <code>alice.tucson.examples.*</code>, which are excluded.</p>
+
+<p><a name="6">[6]</a> If you directly downloaded TuCSoN jar or if you built it from sources without using the provided ANT script, simply adjust the given command to suit your configuration.</p>
+
+<p><a name="7">[7]</a> If you do not want to use the command prompt to launch Java applications, adjust the given command to suit your configuration, e.g., if your are using <a href="http://www.eclipse.org/home/index.php">Eclipse IDE</a>: right-click on "TuCSoN-1.11.0.0209.jar > Run As > Run Configurations..." then double-click on "Java Application", finally select "TucsonNodeService - alice.tucson.service" as the main class (<code>-cp TuCSoN-1.11.0.0209.jar:../libs/2p.jar</code> is automatically added by Eclipse according to project's build path settings).</p>
+
+<p><a name="8">[8]</a> Separator <code>:</code> works on Mac &amp; Linux only, use <code>;</code> on Windows.</p>
+
+<p><a name="9">[9]</a> Actually, a TuCSoN agent identifier can be any valid tuProlog <em>ground term</em>. See tuProlog documentation, <a href="http://apice.unibo.it/xwiki/bin/download/Tuprolog/Download/tuprolog-guide-2.9.0.pdf">here</a>.</p>
+
+<hr />
+</body>
+</html>

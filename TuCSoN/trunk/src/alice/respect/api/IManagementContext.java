@@ -28,6 +28,7 @@ import alice.tuplecentre.api.ObservableEventListener;
  * @author Alessandro Ricci
  */
 public interface IManagementContext {
+
     /**
      * Abort a previously executed in or rd operation
      * 
@@ -127,6 +128,7 @@ public interface IManagementContext {
      * Executes a single execution step (step mode)
      * 
      * @throws OperationNotPossibleException
+     *             if the operation cannot be performed
      */
     void nextStepCommand() throws OperationNotPossibleException;
 

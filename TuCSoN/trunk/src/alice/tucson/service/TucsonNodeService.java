@@ -72,6 +72,7 @@ import alice.tuprolog.lib.InvalidObjectIdException;
  * 
  */
 public class TucsonNodeService {
+
     private static final String BOOT_SETUP_THEORY = "alice/tucson/service/config/boot.pl";
     private static final String DEFAULT_BOOT_SPEC_FILE = "alice/tucson/service/config/boot_spec.rsp";
     private static final String DEFAULT_ENVCONFIG_SPEC_FILE = "alice/tucson/service/config/env_spec.rsp";
@@ -114,14 +115,15 @@ public class TucsonNodeService {
     /**
      * 
      * @param netid
-     *            the IP address where to test if a TuCSoN node is up & running
+     *            the IP address where to test if a TuCSoN node is up and
+     *            running
      * @param port
-     *            the listening port where to test if a TuCSoN node is up &
+     *            the listening port where to test if a TuCSoN node is up and
      *            running
      * @param timeout
      *            the maximum waiting time the caller agent can afford to wait
      *            for a response
-     * @return whether a TuCSoN node is up & active on the given port
+     * @return whether a TuCSoN node is up and active on the given port
      * @throws UnreachableNodeException
      *             if the given host is unknown
      * @throws DialogInitializationException

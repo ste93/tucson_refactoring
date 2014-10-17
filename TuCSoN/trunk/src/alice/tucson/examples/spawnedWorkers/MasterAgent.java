@@ -20,12 +20,13 @@ import alice.tuplecentre.core.AbstractTupleCentreOperation;
 
 /**
  * Master thread of a master-worker architecture. Given a list of TuCSoN Nodes
- * (hopefully up & listening), it submits jobs regarding factorial computation,
- * then collects expected results.
+ * (hopefully up and listening), it submits jobs regarding factorial
+ * computation, then collects expected results.
  * 
  * @author ste (mailto: s.mariani@unibo.it)
  */
 public class MasterAgent extends AbstractTucsonAgent {
+
     private static final int ITERS = 10;
     private static final int MAX_FACT = 10;
     private static final int SLEEP = 1000;
