@@ -6,7 +6,7 @@ Assumptions are you are familiar with Java (compilation), Git (cloning repositor
 
 ---
 
-1. <a href="#getting">Getting Started with t4j</a>
+1. <a href="#getting">Getting Started with TuCSoN</a>
    
    1.1 <a href="#downloading">Downloading</a>
    
