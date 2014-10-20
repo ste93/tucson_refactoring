@@ -6,7 +6,7 @@
 		<attribute name="debug" />
 		<sequential>
 
-			<echo>Building TuCSoN (${addon.version})...</echo>
+			<echo>Building TuCSoN (${library.version})...</echo>
 			<echo message="Using Java version ${ant.java.version}." />
 
 			<delete includeemptydirs="true">
@@ -75,32 +75,32 @@
 	<macrodef name="package">
 		<sequential>
 
-			<echo>Packaging TuCSoN (${addon.version})...</echo>
+			<echo>Packaging TuCSoN (${library.version})...</echo>
 
 			<delete includeemptydirs="true">
 				<fileset dir="${lib-dir}" includes="**/*" />
 			</delete>
 
-			<jar destfile="${lib-dir}/${addon.version}.jar" basedir="${classes-dir}">
+			<jar destfile="${lib-dir}/tucson.jar" basedir="${classes-dir}">
 				<manifest>
 					<!-- Who is building this jar? -->
 					<attribute name="Built-By" value="${user.name}" />
 					<!-- Information about the program itself -->
 					<attribute name="Implementation-Vendor" value="TuCSoN team" />
 					<attribute name="Implementation-Title" value="TuCSoN Library" />
-					<attribute name="Implementation-Version" value="${addon.version}" />
+					<attribute name="Implementation-Version" value="${library.version}" />
 					<!-- details -->
 				</manifest>
 			</jar>
 
-			<jar destfile="${lib-dir}/${addon.version}-noexamples.jar" basedir="${classes-dir}" includes="alice/**" excludes="alice/tucson/examples/**">
+			<jar destfile="${lib-dir}/tucson-noexamples.jar" basedir="${classes-dir}" includes="alice/**" excludes="alice/tucson/examples/**">
 				<manifest>
 					<!-- Who is building this jar? -->
 					<attribute name="Built-By" value="${user.name}" />
 					<!-- Information about the program itself -->
 					<attribute name="Implementation-Vendor" value="TuCSoN team" />
 					<attribute name="Implementation-Title" value="TuCSoN Library" />
-					<attribute name="Implementation-Version" value="${addon.version}" />
+					<attribute name="Implementation-Version" value="${library.version}" />
 					<!-- details -->
 				</manifest>
 			</jar>
@@ -132,7 +132,7 @@
 		<property name="rel-dir" value="../rel" />
 		<property name="doc-dir" value="../doc" />
 
-		<loadfile srcfile="${src-dir}/alice/tucson/api/TucsonMetaACC.java" property="addon.version">
+		<loadfile srcfile="${src-dir}/alice/tucson/api/TucsonMetaACC.java" property="library.version">
 			<filterchain>
 				<linecontains>
 					<contains value="String VERSION" />
@@ -182,7 +182,7 @@
 		<echo message="{tuprolog.jar} is '${tuprolog.jar}'" />
 		<echo message="{libs.dir} is '${libs.dir}'" />
 		<echo message="..................................." />
-		<echo message="{addon.version} is '${addon.version}'" />
+		<echo message="{library.version} is '${library.version}'" />
 		<echo message="..................................." />
 		<echo message="{username} is '${username}'" />
 		<echo message="-----------------------------------" />
@@ -231,7 +231,7 @@
 
 		<mkdir dir="${doc-dir}/javadoc" />
 
-		<javadoc sourcepath="${src-dir}" destdir="${doc-dir}/javadoc" author="true" version="true" use="true" windowtitle="TuCSoN Javadoc" doctitle="TuCSoN Javadoc" verbose="no" encoding="UTF-8" breakiterator="yes">
+		<javadoc sourcepath="${src-dir}" destdir="${doc-dir}/javadoc" author="true" version="true" use="true" windowtitle="TuCSoN ${library.version} Javadoc" doctitle="TuCSoN ${library.version} Javadoc" verbose="no" encoding="UTF-8" breakiterator="yes">
 			<classpath refid="ant-classpath" />
 			<link href="http://java.sun.com/j2se/1.6.0/docs/api/" />
 
@@ -247,32 +247,33 @@
 			<fileset dir="${rel-dir}" includes="**/*" />
 		</delete>
 
-		<mkdir dir="${rel-dir}/${addon.version}" />
-		<mkdir dir="${rel-dir}/${addon.version}/rel" />
-		<mkdir dir="${rel-dir}/${addon.version}/libs" />
-		<mkdir dir="${rel-dir}/${addon.version}/docs" />
+		<mkdir dir="${rel-dir}/${library.version}" />
+		<mkdir dir="${rel-dir}/${library.version}/rel" />
+		<mkdir dir="${rel-dir}/${library.version}/libs" />
+		<mkdir dir="${rel-dir}/${library.version}/docs" />
 
-		<copy todir="${rel-dir}/${addon.version}/rel">
+		<copy todir="${rel-dir}/${library.version}/rel">
 			<fileset dir="${lib-dir}">
 				<include name="*.jar" />
 				<include name="TuCSoN_boot.sh" />
 			</fileset>
 		</copy>
 
-		<copy todir="${rel-dir}/${addon.version}/libs">
+		<copy todir="${rel-dir}/${library.version}/libs">
 			<fileset dir="${libs.dir}">
 				<include name="*.jar" />
 			</fileset>
 		</copy>
 
-		<copy todir="${rel-dir}/${addon.version}/docs">
+		<copy todir="${rel-dir}/${library.version}/docs">
 			<fileset dir="${doc-dir}" />
 			<fileset file="${basedir}/../how-to/TuCSoN-guide.pdf" />
 			<fileset file="${basedir}/../how-to/how-to.html" />
+			<fileset file="${basedir}/../how-to/situatedness.html" />
 			<fileset file="${basedir}/../how-to/TuCSoN-boot.png" />
 		</copy>
 
-		<zip destfile="${rel-dir}/${addon.version}.zip" basedir="${rel-dir}/${addon.version}" />
+		<zip destfile="${rel-dir}/${library.version}.zip" basedir="${rel-dir}/${library.version}" />
 
 		<echo>Check ${rel-dir} folder!</echo>
 

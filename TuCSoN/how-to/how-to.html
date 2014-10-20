@@ -184,7 +184,7 @@ sup {
 
 <h6>1.1 <a name="downloading">Downloading</a></h6>
 
-<p>If you want the <em>ready-to-use</em> distribution of TuCSoN, download <strong>TuCSoN-1.11.0.0209.jar</strong> archive from the "Downloads" section, here > <a href="http://bitbucket.org/smariani/tucson/downloads">http://bitbucket.org/smariani/tucson/downloads</a>. <strong>TuCSoN_boot.sh</strong> bash script is also available for quick boot of TuSCoN components and examples.</p>
+<p>If you want the <em>ready-to-use</em> distribution of TuCSoN, download <strong>tucson.jar</strong> archive from the "Downloads" section, here > <a href="http://bitbucket.org/smariani/tucson/downloads">http://bitbucket.org/smariani/tucson/downloads</a>. <strong>TuCSoN_boot.sh</strong> bash script is also available for quick boot of TuSCoN components and examples.</p>
 
 <p>If you want the <em>source code</em> of TuCSoN, clone the TuCSoN <strong><a href="http://git-scm.com">Git</a> repository</strong> hosted here on Bitbucket, at > <a href="http://smariani@bitbucket.org/smariani/tucson.git">http://smariani@bitbucket.org/smariani/tucson.git</a> (e.g., from a command prompt type <code>$&gt; git clone https://smariani@bitbucket.org/smariani/tucson.git</code>) <a href="#1">[1]</a>.</p>
 
@@ -242,14 +242,14 @@ sup {
 <p>Deploying TuCSoN is as simple as giving a different build target to the ANT script <code>build.xml</code>:</p>
 
 <ul>
-<li><p>if you only want the <strong>TuCSoN jar</strong> archive, ready to be included in your Java project, launch the script using target <code>lib</code>. This will compile TuCSoN source code into binaries (put into <code>TuCSoN/classes/</code> folder) then package them to <strong>TuCSoN-1.11.0.0209.jar</strong> into <code>TuCSoN/lib/</code> folder <a href="#5">[5]</a>.</p></li>
+<li><p>if you only want the <strong>TuCSoN jar</strong> archive, ready to be included in your Java project, launch the script using target <code>lib</code>. This will compile TuCSoN source code into binaries (put into <code>TuCSoN/classes/</code> folder) then package them to <strong>tucson.jar</strong> into <code>TuCSoN/lib/</code> folder <a href="#5">[5]</a>.</p></li>
 <li><p>if you want a <strong>ready-to-release distribution</strong> of TuCSoN, including also documentation and support libraries, launch the script using target <code>dist</code>. This will:</p>
 
 <ul>
 <li>compile TuCSoN source code into binaries, put into <code>TuCSoN/classes/</code> folder</li>
 <li>package them to TuCSoN-1.11.0.0209.jar, put into <code>TuCSoN/lib/</code> folder</li>
 <li>generate Javadoc information, put into <code>TuCSoN/doc/</code> folder</li>
-<li><p>create folder <code>rel/TuCSoN-1.11.0.0209</code> including:</p>
+<li><p>create folder <code>rel/TuCSoN-${version}</code> including:</p>
 
 <ul>
 <li>folder <code>docs/</code> including the generated Javadoc information as well as this "how-to"</li>
@@ -276,7 +276,7 @@ sup {
    |__eclipse-config/
    |__how-to/
    |__rel/
-      |__TuCSoN4JADE-1.0/
+      |__TuCSoN-${version}/
          |__docs/
             |__how-to/
             |__javadoc/
@@ -297,18 +297,18 @@ sup {
 <p>To run TuCSoN, you need:</p>
 
 <ul>
-<li>TuCSoN jar, e.g. <strong>TuCSoNTuCSoN-1.11.0.0209.jar</strong></li>
-<li>tuProlog jar, e.g. <strong>2p.jar</strong></li>
+<li>TuCSoN jar, <strong>tucson.jar</strong></li>
+<li>tuProlog jar, <strong>2p.jar</strong></li>
 </ul>
 
 
 <p>Supposing you built TuCSoN using the provided ANT script <a href="#6">[6]</a> and that you are comfortable with using a command prompt to launch Java applications <a href="#7">[7]</a>:</p>
 
 <ol>
-<li>open a command prompt and position yourself into either <code>TuCSoN/lib/</code> or <code>TuCSoN/rel/TuCSoN-1.11.0.0209/rel/</code> folder</li>
+<li>open a command prompt and position yourself into either <code>TuCSoN/lib/</code> or <code>TuCSoN/rel/TuCSoN-${version}/rel/</code> folder</li>
 <li><p>launch the TuCSoN Node service, e.g. as follows <a href="#8">[8]</a>:</p>
 
-<pre><code> java -cp TuCSoN-1.11.0.0209.jar:../libs/2p.jar alice.tucson.service.TucsonNodeService
+<pre><code> java -cp tucson.jar:../libs/2p.jar alice.tucson.service.TucsonNodeService
 </code></pre></li>
 </ol>
 
@@ -325,7 +325,7 @@ sup {
 <li>open a new command prompt window/tab and position yourself into either <code>TuCSoN/lib/</code> or <code>TuCSoN/rel/TuCSoN-1.11.0.0209/rel/</code> folder</li>
 <li><p>launch the "Dining Philosophers" example, e.g. as follows <a href="#8">[8]</a>:</p>
 
-<pre><code> java -cp TuCSoN-1.11.0.0209.jar:../libs/2p.jar alice.tucson.examples.timedDiningPhilos.TDiningPhilosophersTest
+<pre><code> java -cp tucson.jar:../libs/2p.jar alice.tucson.examples.timedDiningPhilos.TDiningPhilosophersTest
 </code></pre></li>
 </ol>
 
@@ -339,7 +339,7 @@ sup {
 <p><strong>Author</strong> of this "how-to":</p>
 
 <ul>
-<li><em>Stefano Mariani</em>, DISI - Università di Bologna (<a href="&#109;&#97;&#x69;&#108;&#x74;&#111;&#x3a;&#x73;&#x2e;&#x6d;&#97;&#114;&#x69;&#97;&#110;&#105;&#x40;&#x75;&#x6e;&#x69;&#98;&#x6f;&#46;&#105;&#116;">&#x73;&#46;&#109;&#97;&#x72;&#105;&#97;&#110;&#105;&#64;&#x75;&#110;&#x69;&#98;&#111;&#46;&#105;&#116;</a>)</li>
+<li><em>Stefano Mariani</em>, DISI - Università di Bologna (<a href="&#x6d;&#97;&#105;&#x6c;&#x74;&#111;&#x3a;&#x73;&#x2e;&#109;&#97;&#x72;&#x69;&#x61;&#x6e;&#x69;&#x40;&#x75;&#110;&#105;&#98;&#111;&#46;&#x69;&#116;">&#115;&#x2e;&#109;&#97;&#114;&#x69;&#x61;&#110;&#x69;&#64;&#117;&#x6e;&#x69;&#x62;&#x6f;&#x2e;&#x69;&#116;</a>)</li>
 </ul>
 
 
@@ -355,11 +355,11 @@ sup {
 
 <p><a name="4">[4]</a> If you are using <a href="http://www.eclipse.org/home/index.php">Eclipse IDE</a> for developing in Java, ANT is included: click "Window > Show View > Ant" then click "Add buildfiles" from the ANT view and select file <code>build.xml</code> within <code>ant-scripts/</code> folder. Now expand the "TuCSoN build file" from the ANT view and finally double click on target <code>compile</code> to start the build process.</p>
 
-<p><a name="5">[5]</a> Actually, also a <strong>TuCSoN-1.11.0.0209-noexamples.jar</strong> is built. It is the same as <strong>TuCSoN-1.11.0.0209.jar</strong> except for the explanatory examples in package <code>alice.tucson.examples.*</code>, which are excluded.</p>
+<p><a name="5">[5]</a> Actually, also a <strong>tucson-noexamples.jar</strong> is built. It is the same as <strong>tucson.jar</strong> except for the explanatory examples in package <code>alice.tucson.examples.*</code>, which are excluded.</p>
 
 <p><a name="6">[6]</a> If you directly downloaded TuCSoN jar or if you built it from sources without using the provided ANT script, simply adjust the given command to suit your configuration.</p>
 
-<p><a name="7">[7]</a> If you do not want to use the command prompt to launch Java applications, adjust the given command to suit your configuration, e.g., if your are using <a href="http://www.eclipse.org/home/index.php">Eclipse IDE</a>: right-click on "TuCSoN-1.11.0.0209.jar > Run As > Run Configurations..." then double-click on "Java Application", finally select "TucsonNodeService - alice.tucson.service" as the main class (<code>-cp TuCSoN-1.11.0.0209.jar:../libs/2p.jar</code> is automatically added by Eclipse according to project's build path settings).</p>
+<p><a name="7">[7]</a> If you do not want to use the command prompt to launch Java applications, adjust the given command to suit your configuration, e.g., if your are using <a href="http://www.eclipse.org/home/index.php">Eclipse IDE</a>: right-click on "tucson.jar > Run As > Run Configurations..." then double-click on "Java Application", finally select "TucsonNodeService - alice.tucson.service" as the main class (<code>-cp tucson.jar:../libs/2p.jar</code> is automatically added by Eclipse according to project's build path settings).</p>
 
 <p><a name="8">[8]</a> Separator <code>:</code> works on Mac &amp; Linux only, use <code>;</code> on Windows.</p>
 

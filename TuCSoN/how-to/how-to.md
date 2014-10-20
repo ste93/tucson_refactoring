@@ -25,7 +25,7 @@ Assumptions are you are familiar with Java (compilation), Git (cloning repositor
 
 ###### 1.1 <a name="downloading">Downloading</a>
 
-If you want the *ready-to-use* distribution of TuCSoN, download **TuCSoN-1.11.0.0209.jar** archive from the "Downloads" section, here > <http://bitbucket.org/smariani/tucson/downloads>. **TuCSoN_boot.sh** bash script is also available for quick boot of TuSCoN components and examples.
+If you want the *ready-to-use* distribution of TuCSoN, download **tucson.jar** archive from the "Downloads" section, here > <http://bitbucket.org/smariani/tucson/downloads>. **TuCSoN_boot.sh** bash script is also available for quick boot of TuSCoN components and examples.
 
 If you want the *source code* of TuCSoN, clone the TuCSoN **[Git](http://git-scm.com) repository** hosted here on Bitbucket, at > <http://smariani@bitbucket.org/smariani/tucson.git> (e.g., from a command prompt type `$> git clone https://smariani@bitbucket.org/smariani/tucson.git`) <a href="#1">\[1\]</a>.
 
@@ -76,14 +76,14 @@ Other ANT targets are available through the `build.xml` file: to learn which, la
 
 Deploying TuCSoN is as simple as giving a different build target to the ANT script `build.xml`:
 
- * if you only want the **TuCSoN jar** archive, ready to be included in your Java project, launch the script using target `lib`. This will compile TuCSoN source code into binaries (put into `TuCSoN/classes/` folder) then package them to **TuCSoN-1.11.0.0209.jar** into `TuCSoN/lib/` folder <a href="#5">\[5\]</a>.
+ * if you only want the **TuCSoN jar** archive, ready to be included in your Java project, launch the script using target `lib`. This will compile TuCSoN source code into binaries (put into `TuCSoN/classes/` folder) then package them to **tucson.jar** into `TuCSoN/lib/` folder <a href="#5">\[5\]</a>.
  
  * if you want a **ready-to-release distribution** of TuCSoN, including also documentation and support libraries, launch the script using target `dist`. This will:
    
    * compile TuCSoN source code into binaries, put into `TuCSoN/classes/` folder
    * package them to TuCSoN-1.11.0.0209.jar, put into `TuCSoN/lib/` folder
    * generate Javadoc information, put into `TuCSoN/doc/` folder
-   * create folder `rel/TuCSoN-1.11.0.0209` including:
+   * create folder `rel/TuCSoN-${version}` including:
    
      * folder `docs/` including the generated Javadoc information as well as this "how-to"
      * folder `libs/` including tuProlog library used to build TuCSoN
@@ -103,7 +103,7 @@ The complete directory structure obtained by launching `ant dist` build process 
        |__eclipse-config/
        |__how-to/
        |__rel/
-          |__TuCSoN4JADE-1.0/
+          |__TuCSoN-${version}/
              |__docs/
                 |__how-to/
                 |__javadoc/
@@ -122,15 +122,15 @@ Other ANT targets are available through the `build.xml` file: to learn which, la
 
 To run TuCSoN, you need:
 
- * TuCSoN jar, e.g. **TuCSoNTuCSoN-1.11.0.0209.jar**
- * tuProlog jar, e.g. **2p.jar**
+ * TuCSoN jar, **tucson.jar**
+ * tuProlog jar, **2p.jar**
 
 Supposing you built TuCSoN using the provided ANT script <a href="#6">\[6\]</a> and that you are comfortable with using a command prompt to launch Java applications <a href="#7">\[7\]</a>:
 
- 1. open a command prompt and position yourself into either `TuCSoN/lib/` or `TuCSoN/rel/TuCSoN-1.11.0.0209/rel/` folder
+ 1. open a command prompt and position yourself into either `TuCSoN/lib/` or `TuCSoN/rel/TuCSoN-${version}/rel/` folder
  2. launch the TuCSoN Node service, e.g. as follows <a href="#8">\[8\]</a>:
  
-         java -cp TuCSoN-1.11.0.0209.jar:../libs/2p.jar alice.tucson.service.TucsonNodeService
+         java -cp tucson.jar:../libs/2p.jar alice.tucson.service.TucsonNodeService
 
 The TuCSoN ASCII logo on the command prompt, as depicted below.
 
@@ -143,7 +143,7 @@ Supposing you successfully launched the TuCSoN Node Service as described above, 
  1. open a new command prompt window/tab and position yourself into either `TuCSoN/lib/` or `TuCSoN/rel/TuCSoN-1.11.0.0209/rel/` folder
  2. launch the "Dining Philosophers" example, e.g. as follows <a href="#8">\[8\]</a>:
  
-         java -cp TuCSoN-1.11.0.0209.jar:../libs/2p.jar alice.tucson.examples.timedDiningPhilos.TDiningPhilosophersTest
+         java -cp tucson.jar:../libs/2p.jar alice.tucson.examples.timedDiningPhilos.TDiningPhilosophersTest
 
 You should see many prints on the command prompt, tracking what the philosophers are doing.
 
@@ -167,11 +167,11 @@ You should see many prints on the command prompt, tracking what the philosophers
 
 <a name="4">\[4\]</a> If you are using [Eclipse IDE](http://www.eclipse.org/home/index.php) for developing in Java, ANT is included: click "Window > Show View > Ant" then click "Add buildfiles" from the ANT view and select file `build.xml` within `ant-scripts/` folder. Now expand the "TuCSoN build file" from the ANT view and finally double click on target `compile` to start the build process.
 
-<a name="5">\[5\]</a> Actually, also a **TuCSoN-1.11.0.0209-noexamples.jar** is built. It is the same as **TuCSoN-1.11.0.0209.jar** except for the explanatory examples in package `alice.tucson.examples.*`, which are excluded.
+<a name="5">\[5\]</a> Actually, also a **tucson-noexamples.jar** is built. It is the same as **tucson.jar** except for the explanatory examples in package `alice.tucson.examples.*`, which are excluded.
 
 <a name="6">\[6\]</a> If you directly downloaded TuCSoN jar or if you built it from sources without using the provided ANT script, simply adjust the given command to suit your configuration.
 
-<a name="7">\[7\]</a> If you do not want to use the command prompt to launch Java applications, adjust the given command to suit your configuration, e.g., if your are using [Eclipse IDE](http://www.eclipse.org/home/index.php): right-click on "TuCSoN-1.11.0.0209.jar > Run As > Run Configurations..." then double-click on "Java Application", finally select "TucsonNodeService - alice.tucson.service" as the main class (`-cp TuCSoN-1.11.0.0209.jar:../libs/2p.jar` is automatically added by Eclipse according to project's build path settings).
+<a name="7">\[7\]</a> If you do not want to use the command prompt to launch Java applications, adjust the given command to suit your configuration, e.g., if your are using [Eclipse IDE](http://www.eclipse.org/home/index.php): right-click on "tucson.jar > Run As > Run Configurations..." then double-click on "Java Application", finally select "TucsonNodeService - alice.tucson.service" as the main class (`-cp tucson.jar:../libs/2p.jar` is automatically added by Eclipse according to project's build path settings).
 
 <a name="8">\[8\]</a> Separator `:` works on Mac & Linux only, use `;` on Windows.
 
