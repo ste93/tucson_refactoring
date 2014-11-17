@@ -1,4 +1,4 @@
-package alice.tucson.examples.asynchProduceConsumer;
+package alice.tucson.examples.asynchAgent;
 
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 

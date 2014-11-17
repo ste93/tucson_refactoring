@@ -39,10 +39,6 @@ public class AsynchQueueManager extends AbstractTucsonAgent {
     /**
      * queue containing operation to execute.
      */
-    //private FilterQueue pendingQueue;
-    /**
-     * queue containing operation to execute.
-     */
     private CompletedFilterQueue completedQueue;
     /**
      * to stop the aqm immediately.
@@ -71,13 +67,6 @@ public class AsynchQueueManager extends AbstractTucsonAgent {
     getWaitingQueue() {
         return waitingQueue;
     }
-    /**
-     * @return the operation queue.
-     */
-    /*public final FilterQueue
-    getPendingQueue() {
-        return pendingQueue;
-    }*/
     /**
      * @return the operation queue.
      */
@@ -118,19 +107,13 @@ public class AsynchQueueManager extends AbstractTucsonAgent {
      */
     public AsynchQueueManager(final String id)
             throws TucsonInvalidAgentIdException {
-        super(id);
-        waitingQueue = new FilterQueue();
-        //pendingQueue = new FilterQueue();
-        completedQueue = new CompletedFilterQueue();
-        operationCount = new Semaphore(0);
-        waitOperationCount = new Semaphore(0);
-        this.go();
+            super(id);
+            waitingQueue = new FilterQueue();
+            completedQueue = new CompletedFilterQueue();
+            operationCount = new Semaphore(0);
+            waitOperationCount = new Semaphore(0);
+            this.go();
 	}
-	/*public static AsynchQueueManager getAQM(String idC) throws TucsonInvalidAgentIdException{
-		idCount++;
-		id=idC+""+idCount;
-		return new AsynchQueueManager(id);
-	}*/
 	@Override
 	public void operationCompleted(final AbstractTupleCentreOperation op) {
 	}
@@ -141,7 +124,7 @@ public class AsynchQueueManager extends AbstractTucsonAgent {
 	 * @param msg
 	 *           message to print.
 	 */
-	public final void log(final String msg) {
+	private final void log(final String msg) {
 		System.out.println(msg);
 	}
 	/**
@@ -159,7 +142,6 @@ public class AsynchQueueManager extends AbstractTucsonAgent {
 		if (stopGraceful || stopAbrout) {
 			return false;
 		}
-		//acc = this.getContext();
 		TucsonOperationForAsynchManager elem = null;
 		
 		WrapperOperationListener wol =
@@ -169,40 +151,6 @@ public class AsynchQueueManager extends AbstractTucsonAgent {
 				acc, action, wol);
 		wol.setTucsonOperationForAsynchManager(elem);
 		log("operazione aggiunta");
-		try {
-			return waitingQueue.add(elem);
-		} catch (IllegalStateException ex) {
-			return false;
-		}
-	}
-    /**
-     * Add a operation in the queue of pending operation,
-	 * only if the shutdown operation wasn't called before.
-	 * @param action
-	 *               The AbstractTucsonAction to execute.
-	 * @param clientListener
-	 *               Action to do after the execution of operation.
-	 * @param timeOut
-	 *               Max time to wait the operation's
-	 *               positive result
-	 * @return
-	 *               True if the action is added.
-     */
-	public final boolean add(final AbstractTucsonAction action,
-			final TucsonOperationCompletionListener clientListener,
-			final long timeOut) {
-		if (stopGraceful || stopAbrout) {
-			return false;
-		}
-		TucsonOperationForAsynchManager elem = null;
-		WrapperOperationListener wol =
-				new AsynchTimedWaitingOperationListener(
-						clientListener, this, timeOut);
-		elem = new TucsonOperationForAsynchManager(
-				acc, action, wol, timeOut);
-		wol.setTucsonOperationForAsynchManager(elem);
-		log("[" + this.getTucsonAgentId() + "] "
-				+ "Operazione aggiunta con timeout");
 		try {
 			return waitingQueue.add(elem);
 		} catch (IllegalStateException ex) {
@@ -225,7 +173,8 @@ public class AsynchQueueManager extends AbstractTucsonAgent {
 	protected final void main() {
 		acc = this.getContext();
 		TucsonOperationForAsynchManager elem = null;
-		log("[aqm]parte il main");
+		log("["+ this.getTucsonAgentId() +"]start work");
+		//this is the loop that execute the operation until user stop command
 		while (!stopAbrout && !stopGraceful) {
 			try {
 					elem = waitingQueue.poll(
@@ -241,7 +190,6 @@ public class AsynchQueueManager extends AbstractTucsonAgent {
 						}
 						operationCount.release();
 					    elem.execute();
-					    //pendingQueue.add(elem);
 					}
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
@@ -254,26 +202,25 @@ public class AsynchQueueManager extends AbstractTucsonAgent {
 					e.printStackTrace();
 				}
 		}
+		//Case stopAbrout: do not execute waitingQueue ops
 		if (stopAbrout) {
-			//while(operationCount.availablePermits()!=0){}
 			try {
-				log("[aqm] queueLength:" + waitingQueue.size());
+				log("["+this.getTucsonAgentId()+"] queueLength:" + waitingQueue.size());
 				if (operationCount.availablePermits() != 0) {
 					log("[aqm]:stopAbrout="
 					+ stopAbrout
 					+ " AvaiblePermits:"
 					+ operationCount.availablePermits());
-					//
 					waitOperationCount.acquire();
-					//
 				} else {
-					log("[aqm]: avaible permits = 0");
+					log("["+this.getTucsonAgentId()+"]: avaible permits = 0");
 				}
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		} else {
+		//case StopGracefull: execute all added operations
 			while (operationCount.availablePermits() != 0
 					|| !waitingQueue.isEmpty()) {
 				      try {
@@ -286,7 +233,6 @@ public class AsynchQueueManager extends AbstractTucsonAgent {
 								}
 								operationCount.release();
 							    elem.execute();
-							    //pendingQueue.add(elem);
 							}
 						} catch (
 						InterruptedException e) {
@@ -300,6 +246,6 @@ public class AsynchQueueManager extends AbstractTucsonAgent {
 						}
 			}
 		}
-		log("[" + this.getTucsonAgentId() + "] Dead!");
+		log("[" + this.getTucsonAgentId() + "] End work");
 	}
 }

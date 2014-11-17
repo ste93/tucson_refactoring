@@ -13,11 +13,9 @@ import java.util.concurrent.LinkedBlockingQueue;
  */
 public class FilterQueue extends
      LinkedBlockingQueue<TucsonOperationForAsynchManager> {
-     /**
-     * 
-     * @author Consalici Drudi
-     *
-     */
+        /**
+         * return a list of all operations who match the arguments
+         */
 	public FilterQueue getAllTypedOperation(Class optype){
 		Iterator<TucsonOperationForAsynchManager> it = this.iterator();
 		FilterQueue typedOp=new FilterQueue();
@@ -29,11 +27,11 @@ public class FilterQueue extends
 		}
 		return typedOp;
 	}
-	
-	public final void log(final String msg) {
-		System.out.println(msg);
-	}
-	
+	/**
+	 * remove the specific action to list
+	 * @param action
+	 * @return
+	 */
 	public boolean removeAbstractTucsonAction(AbstractTucsonAction action){
 		Iterator<TucsonOperationForAsynchManager> it = this.iterator();
 		while(it.hasNext()){
@@ -45,7 +43,11 @@ public class FilterQueue extends
 		}
 		return false;
 	}
-	
+	/**
+	 * remove the operation identified by ID to list
+	 * @param id
+	 * @return
+	 */
 	public boolean removeOperationById(long id){
 		Iterator<TucsonOperationForAsynchManager> it = this.iterator();
 		while(it.hasNext()){
@@ -57,7 +59,10 @@ public class FilterQueue extends
 		}
 		return false;
 	}
-	
+	/**
+	 * remove all the operations match with argument
+	 * @param optype
+	 */
 	public void removeAllTypedOperation(Class optype){
 		Iterator<TucsonOperationForAsynchManager> it = this.iterator();
 		while(it.hasNext()){

@@ -13,15 +13,15 @@ public class WrapperOperationListener
     /**
      * action to do after operation.
      */
-    private TucsonOperationCompletionListener clientListener;
+    protected TucsonOperationCompletionListener clientListener;
     /**
      * link to the Asynch Queue Manager.
      */
-    private AsynchQueueManager aqm;
+    protected AsynchQueueManager aqm;
     /**
      * tofam.
      */
-    private TucsonOperationForAsynchManager tofam;
+    protected TucsonOperationForAsynchManager tofam;
     /**
      * @param clientListener
      *          action to do after the operation
@@ -34,29 +34,34 @@ public class WrapperOperationListener
         this.aqm = aqm;
         this.clientListener = clientListener;
     }
+    /**
+     * manage the result of operations executed from asynchQueueManager
+     */
     @Override
     public void operationCompleted(
              final AbstractTupleCentreOperation op) {
         try {
+            //
+            //semaphore for stop managing
+            //
             aqm.getOperationCount().acquire();
             if (aqm.getStopAbrout() && aqm.getOperationCount().availablePermits()==0) {
                 aqm.getWaitOperationCount().release();
             }
         	if(!aqm.getStopAbrout()){
-        		//aqm.getPendingQueue().remove(tofam);
         		tofam.setOp(op);
         		aqm.getCompletedQueue().add(tofam);
-        		clientListener.operationCompleted(op);
+        		if(clientListener!=null){
+        		        //Execution of the user listener
+        			clientListener.operationCompleted(op);
+        		}
         	}
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
     @Override
-    public void operationCompleted(final ITucsonOperation op) {
-
-    }
-    
+    public void operationCompleted(final ITucsonOperation op){}
     public final void setTucsonOperationForAsynchManager(
 			final TucsonOperationForAsynchManager tofam) {
 		this.tofam = tofam;

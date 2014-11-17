@@ -22,10 +22,6 @@ public class TucsonOperationForAsynchManager {
      */
     private TucsonOperationCompletionListener listener;
     /**
-     * max time for the lifecycle of operation.
-     */
-    private long timeout;
-    /**
      * time adding operation.
      */
     private long timeExecution;
@@ -38,7 +34,7 @@ public class TucsonOperationForAsynchManager {
      */
     private AbstractTupleCentreOperation op;
     /**
-     * 
+     * identified a removed operation from filterQueue
      */
     private boolean isDeleted=false;
     /**
@@ -77,14 +73,7 @@ public class TucsonOperationForAsynchManager {
 			final long timeout) {
 		this.action = action;
 		this.listener = listener;
-		this.timeout = timeout;
 		this.acc = acc;
-	}
-	/**
-	 * @return the timeOut of operation
-	 */
-	public final long getTimeOut() {
-		return timeout;
 	}
 	/**
 	 * @return the action

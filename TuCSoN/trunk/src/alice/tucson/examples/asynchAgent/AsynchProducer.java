@@ -1,4 +1,4 @@
-package alice.tucson.examples.asynchProduceConsumer;
+package alice.tucson.examples.asynchAgent;
 
 
 import java.util.Random;
@@ -117,7 +117,7 @@ public class AsynchProducer extends AbstractTucsonAgent  {
 	}
 
 	  public static void main(final String[] args) {
-		    String aid = null;
+		    /*String aid = null;
 	        if (args.length == 1) {
 	            aid = args[0];
 	        } else {
@@ -128,7 +128,7 @@ public class AsynchProducer extends AbstractTucsonAgent  {
 			} catch (TucsonInvalidAgentIdException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}
+			}*/
 	    }
 
 }

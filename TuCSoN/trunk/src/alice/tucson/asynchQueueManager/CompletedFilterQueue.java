@@ -1,11 +1,16 @@
 package alice.tucson.asynchQueueManager;
 
-import it.unibo.sd.jade.operations.AbstractTucsonAction;
-
 import java.util.Iterator;
-
+/**
+ * A specialization of FilterQueue who manage the completed operations  
+ * @author Consalici Drudi
+ *
+ */
 public class CompletedFilterQueue extends FilterQueue{
-	
+	/**
+	 * return a list of all success operations
+	 * @return
+	 */
 	public CompletedFilterQueue getAllSuccessOp(){
 		Iterator<TucsonOperationForAsynchManager> it = this.iterator();
 		CompletedFilterQueue typedOp=new CompletedFilterQueue();
@@ -17,7 +22,10 @@ public class CompletedFilterQueue extends FilterQueue{
 		}
 		return typedOp;
 	}
-	
+	/**
+	 * return a list of all unsuccess operations
+	 * @return
+	 */
 	public CompletedFilterQueue getAllUnsuccessOp(){
 		Iterator<TucsonOperationForAsynchManager> it = this.iterator();
 		CompletedFilterQueue typedOp=new CompletedFilterQueue();
@@ -29,7 +37,9 @@ public class CompletedFilterQueue extends FilterQueue{
 		}
 		return typedOp;
 	}
-	
+	/**
+	 * remove from the completedQueue the success operations
+	 */
 	public void removeAllSuccessOperation(){
 		Iterator<TucsonOperationForAsynchManager> it = this.iterator();
 		while(it.hasNext()){
@@ -39,7 +49,9 @@ public class CompletedFilterQueue extends FilterQueue{
 			}
 		}
 	}
-	
+	/**
+         * remove from the completedQueue the unsuccess operations
+         */
 	public void removeAllUnsuccessOperation(){
 		Iterator<TucsonOperationForAsynchManager> it = this.iterator();
 		while(it.hasNext()){
@@ -49,7 +61,9 @@ public class CompletedFilterQueue extends FilterQueue{
 			}
 		}
 	}
-	
+	/**
+         * return a list of all operations who match the arguments
+         */
 	public CompletedFilterQueue getAllTypedOperation(Class optype){
 		Iterator<TucsonOperationForAsynchManager> it = this.iterator();
 		CompletedFilterQueue typedOp=new CompletedFilterQueue();
