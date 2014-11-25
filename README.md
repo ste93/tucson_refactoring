@@ -8,6 +8,6 @@
 
 The TuCSoN coordination technology implements the TuCSoN model as a Java-based distributed middleware, available under [GNU LGPL license](https://www.gnu.org/licenses/lgpl.html).
 
-Main TuCSoN web page is <http://tucson4jade.apice.unibo.it/>.
+Main TuCSoN web page is <http://tucson.apice.unibo.it/>.
 
 ---
