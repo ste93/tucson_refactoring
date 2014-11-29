@@ -186,9 +186,6 @@ public class AsynchQueueManager extends AbstractTucsonAgent {
                 elem = waitingQueue.poll(POLLINGQUEUETIME,
                         TimeUnit.MILLISECONDS);
                 if (elem != null) {
-                    if (elem.getAcc() == null) {
-                        elem.setAcc(acc);
-                    }
                     operationCount.release();
                     elem.execute();
                 }
@@ -220,9 +217,6 @@ public class AsynchQueueManager extends AbstractTucsonAgent {
                     elem = waitingQueue.poll(POLLINGQUEUETIME,
                             TimeUnit.MILLISECONDS);
                     if (elem != null) {
-                        if (elem.getAcc() == null) {
-                            elem.setAcc(acc);
-                        }
                         operationCount.release();
                         elem.execute();
                     }

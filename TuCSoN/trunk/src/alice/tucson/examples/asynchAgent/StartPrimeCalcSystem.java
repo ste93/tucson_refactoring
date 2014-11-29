@@ -13,11 +13,11 @@ import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
  * @author Consalici-Drudi
  *
  */
-public class StartFactorialSystem {
+public class StartPrimeCalcSystem {
 
 	public static void main(String[] args) {
 		try {
-		        int nPrimeCalc=20;
+		        int nPrimeCalc=3;
 			new MasterAgent("master", nPrimeCalc).go();
 			PrimeCalculator fc;
 			for(int i = 0; i<nPrimeCalc; i++){
