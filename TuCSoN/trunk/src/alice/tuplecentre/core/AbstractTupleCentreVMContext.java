@@ -46,6 +46,7 @@ import alice.tuplecentre.api.exceptions.OperationNotPossibleException;
  */
 public abstract class AbstractTupleCentreVMContext implements
         ITupleCentreManagement, ITupleCentre {
+
     private long bootTime;
     private InputEvent currentEvent;
     private AbstractTupleCentreVMState currentState;
@@ -159,8 +160,10 @@ public abstract class AbstractTupleCentreVMContext implements
      * 
      * @param t
      *            the tuple to be addedd
+     * @param u
+     *            a flag indicating wether a persistency update is due
      */
-    public abstract void addTuple(Tuple t);
+    public abstract void addTuple(Tuple t, boolean u);
 
     @Override
     public void doOperation(final IId who, final AbstractTupleCentreOperation op)
@@ -490,9 +493,11 @@ public abstract class AbstractTupleCentreVMContext implements
      * 
      * @param t
      *            the tuple template that must be matched by the tuple
+     * @param u
+     *            a flag indicating wether a persistency update is due
      * @return a tuple matching the tuple template
      */
-    public abstract Tuple removeMatchingTuple(TupleTemplate t);
+    public abstract Tuple removeMatchingTuple(TupleTemplate t, boolean u);
 
     /**
      * Removes the pending queries related to an agent

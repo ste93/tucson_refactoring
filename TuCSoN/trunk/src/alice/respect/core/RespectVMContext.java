@@ -85,11 +85,13 @@ import alice.tuprolog.Var;
  */
 public class RespectVMContext extends
         alice.tuplecentre.core.AbstractTupleCentreVMContext {
+
     public enum ModType {
         ADD_PRED, ADD_SPEC, ADD_TUPLE, DEL_PRED, DEL_SPEC, DEL_TUPLE, EMPTY_PRED, EMPTY_SPEC, EMPTY_TUPLES
     }
 
     class CompletionListener implements OperationCompletionListener {
+
         private final OutputEvent oe;
 
         public CompletionListener(final OutputEvent o) {
@@ -222,6 +224,7 @@ public class RespectVMContext extends
         this.temporaryOutputEventList = new ArrayList<AbstractEvent>();
         this.core = new Prolog();
         final alice.tuprolog.event.OutputListener l = new alice.tuprolog.event.OutputListener() {
+
             @Override
             public void onOutput(final alice.tuprolog.event.OutputEvent ev) {
                 System.out.print(ev.getMsg());
@@ -303,15 +306,15 @@ public class RespectVMContext extends
     }
 
     @Override
-    public void addTuple(final Tuple t) {
+    public void addTuple(final Tuple t, final boolean update) {
         this.tSet.add((LogicTuple) t);
-        if (this.isPersistent) {
+        if (this.isPersistent && update) {
             this.writePersistencyUpdate((LogicTuple) t, ModType.ADD_TUPLE);
         }
     }
 
-    /**
-     * 
+    /*
+     * TODO: delete useless
      */
     public void closePersistencyUpdates() {
         if (this.isPersistent) {
@@ -1195,7 +1198,7 @@ public class RespectVMContext extends
     public List<Tuple> inAllTuples(final TupleTemplate t) {
         final List<Tuple> tl = new LinkedList<Tuple>();
         TupleTemplate t2 = t;
-        Tuple tuple = this.removeMatchingTuple(t2);
+        Tuple tuple = this.removeMatchingTuple(t2, true);
         while (tuple != null) {
             if (this.isPersistent) {
                 this.writePersistencyUpdate((LogicTuple) tuple,
@@ -1203,7 +1206,7 @@ public class RespectVMContext extends
             }
             t2 = t;
             tl.add(tuple);
-            tuple = this.removeMatchingTuple(t2);
+            tuple = this.removeMatchingTuple(t2, true);
         }
         return tl;
     }
@@ -1253,16 +1256,16 @@ public class RespectVMContext extends
     public List<Tuple> readAllTuples(final TupleTemplate t) {
         final List<Tuple> tl = new LinkedList<Tuple>();
         TupleTemplate t2 = t;
-        Tuple tuple = this.removeMatchingTuple(t2);
+        Tuple tuple = this.removeMatchingTuple(t2, false);
         while (tuple != null) {
             t2 = t;
             tl.add(tuple);
-            tuple = this.removeMatchingTuple(t2);
+            tuple = this.removeMatchingTuple(t2, false);
         }
         final List<Tuple> tl2 = tl;
         final Iterator<Tuple> it = tl2.iterator();
         while (it.hasNext()) {
-            this.addTuple(it.next());
+            this.addTuple(it.next(), false);
         }
         return tl;
     }
@@ -1352,7 +1355,7 @@ public class RespectVMContext extends
             if (tuples != null && !tuples.isEmpty()) {
                 this.log(">>> Recovering tuples...");
                 for (final String t : tuples) {
-                    this.addTuple(LogicTuple.parse(t));
+                    this.addTuple(LogicTuple.parse(t), true);
                 }
                 this.log(">>> ...tuples recovered!");
             }
@@ -1383,9 +1386,10 @@ public class RespectVMContext extends
                     // this.log("split[1] = " + split[1]);
                     // }
                     if ("(+t)".equals(split[0])) {
-                        this.addTuple(LogicTuple.parse(split[1]));
+                        this.addTuple(LogicTuple.parse(split[1]), true);
                     } else if ("(-t)".equals(split[0])) {
-                        this.removeMatchingTuple(LogicTuple.parse(split[1]));
+                        this.removeMatchingTuple(LogicTuple.parse(split[1]),
+                                true);
                     } else if ("(+s)".equals(split[0])) {
                         this.addSpecTuple(LogicTuple.parse(split[1]));
                     } else if ("(-s)".equals(split[0])) {
@@ -1435,9 +1439,9 @@ public class RespectVMContext extends
     }
 
     @Override
-    public Tuple removeMatchingTuple(final TupleTemplate t) {
+    public Tuple removeMatchingTuple(final TupleTemplate t, final boolean update) {
         final Tuple tuple = this.tSet.getMatchingTuple((LogicTuple) t);
-        if (this.isPersistent) {
+        if (this.isPersistent && update) {
             this.writePersistencyUpdate((LogicTuple) tuple, ModType.DEL_TUPLE);
         }
         return tuple;
@@ -1546,10 +1550,7 @@ public class RespectVMContext extends
             this.writePersistencyUpdate(null, ModType.EMPTY_TUPLES);
         }
         for (final Tuple t : tupleList) {
-            this.addTuple(t);
-            if (this.isPersistent) {
-                this.writePersistencyUpdate((LogicTuple) t, ModType.ADD_TUPLE);
-            }
+            this.addTuple(t, true);
         }
     }
 
@@ -1857,6 +1858,7 @@ public class RespectVMContext extends
      */
     private void writePersistencyUpdate(final LogicTuple update,
             final ModType mode) {
+        // this.log("update = " + update + ", mode = " + mode);
         this.pXML.writeUpdate(update, mode);
         /*
          * final File f = new File(this.pPath, "tc_" + this.pFileName + "_" +

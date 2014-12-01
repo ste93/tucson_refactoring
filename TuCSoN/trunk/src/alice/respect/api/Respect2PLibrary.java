@@ -691,7 +691,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         if ("this".equals(tcName)) {
             Respect2PLibrary.log("Local in triggered...");
             final alice.tuplecentre.api.Tuple tuple = this.vm
-                    .removeMatchingTuple(tuArg);
+                    .removeMatchingTuple(tuArg, true);
             if (tuple != null) {
                 final Term term = ((LogicTuple) tuple).toTerm();
                 this.unify(arg0, term.copyGoal(v, 0));
@@ -869,7 +869,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         if ("this".equals(tcName)) {
             Respect2PLibrary.log("Local inp triggered...");
             final alice.tuplecentre.api.Tuple tuple = this.vm
-                    .removeMatchingTuple(tuArg);
+                    .removeMatchingTuple(tuArg, true);
             if (tuple != null) {
                 final Term term = ((LogicTuple) tuple).toTerm();
                 this.unify(arg0, term.copyGoal(v, 0));
@@ -1352,7 +1352,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
             Respect2PLibrary.log("Local out triggered...");
             final Term newArg = arg0.copyGoal(v, 0);
             final LogicTuple tuArg = new LogicTuple(newArg);
-            this.vm.addTuple(tuArg);
+            this.vm.addTuple(tuArg, true);
             final InputEvent ce = this.vm.getCurrentEvent();
             final InternalEvent ev = new InternalEvent(ce,
                     InternalOperation.makeOutR(new LogicTuple(arg0.copyGoal(v,
