@@ -29,6 +29,7 @@ import alice.tuplecentre.core.TCCycleResult.Outcome;
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public class SpeakingState extends AbstractTupleCentreVMState {
+
     private AbstractTupleCentreVMState idleState;
     private boolean noMoreSatisfiablePendingQuery;
     private AbstractTupleCentreVMState reactingState;
@@ -74,13 +75,13 @@ public class SpeakingState extends AbstractTupleCentreVMState {
                         foundSatisfied = true;
                     } else if (op.isOut()) {
                         tuple = op.getTupleArgument();
-                        this.vm.addTuple(tuple);
+                        this.vm.addTuple(tuple, true);
                         op.setOpResult(Outcome.SUCCESS);
                         op.setTupleResult(tuple);
                         foundSatisfied = true;
                     } else if (op.isIn()) {
-                        tuple = this.vm.removeMatchingTuple(op
-                                .getTemplateArgument());
+                        tuple = this.vm.removeMatchingTuple(
+                                op.getTemplateArgument(), true);
                         if (tuple != null) {
                             op.setOpResult(Outcome.SUCCESS);
                             op.setTupleResult(tuple);
@@ -97,8 +98,8 @@ public class SpeakingState extends AbstractTupleCentreVMState {
                         } // we do nothing: rd is suspensive hence we cannot
                           // conclude FAILURE yet!
                     } else if (op.isInp()) {
-                        tuple = this.vm.removeMatchingTuple(op
-                                .getTemplateArgument());
+                        tuple = this.vm.removeMatchingTuple(
+                                op.getTemplateArgument(), true);
                         if (tuple != null) {
                             op.setOpResult(Outcome.SUCCESS);
                             op.setTupleResult(tuple);
