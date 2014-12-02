@@ -4,6 +4,11 @@ package alice.tucson.rbac;
 public class TucsonPermission implements Permission{
 	
 	protected String permissionName;
+	
+	public TucsonPermission(){};
+	public TucsonPermission(String permissionName){
+		setPermission(permissionName);
+	}
 
 	@Override
 	public String getPermission() {

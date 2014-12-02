@@ -7,7 +7,11 @@ public class TucsonRole implements Role{
 	protected String roleName;
 	protected Policy policy;
 	
+	public TucsonRole(){}
 	
+	public TucsonRole(String roleName){
+		setRoleName(roleName);
+	}
 	
 	@Override
 	public String getRoleName() {
