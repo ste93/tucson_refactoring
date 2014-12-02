@@ -15,6 +15,7 @@ package alice.tucson.api;
 
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.service.ACCProxyAgentSide;
+import alice.tucson.service.MetaACCProxyAgentSide;
 
 /**
  * TuCSoN Meta Agent Coordination Context. It is exploited by TuCSoN agents to
@@ -28,6 +29,25 @@ public final class TucsonMetaACC {
     private static final int DEFAULT_PORT = 20504;
     private static final String VERSION = "TuCSoN-1.11.0.0209";
 
+    
+    
+    
+    public static MetaACC getContext(String aid, String netid, int portno) {
+		MetaACC acc = null;
+		try {
+			acc = new MetaACCProxyAgentSide(aid, netid, portno);
+			//((TucsonAgentId)aid).assignUUID();
+		} catch (TucsonInvalidAgentIdException e) {
+			System.err.println("[Tucson-MetaACC]: " + e);
+			e.printStackTrace();
+			return null;
+		}
+		return acc;
+	}
+    
+    
+    
+    
     /**
      * Gets the available most-comprehensive ACC from the TuCSoN Node Service
      * active on the default host ("localhost") on the default port (20504).

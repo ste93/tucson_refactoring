@@ -90,6 +90,9 @@ public class ACCProxyAgentSide implements EnhancedACC {
      * TuCSoN Node Service listening port
      */
     protected int port;
+    
+    protected static final String tcOrg = "'$ORG'";	// galassi
+	private volatile boolean isACCEntered; // galassi
 
     /**
      * Default constructor: exploits the default port (20504) in the "localhost"
@@ -106,6 +109,7 @@ public class ACCProxyAgentSide implements EnhancedACC {
             throws TucsonInvalidAgentIdException {
         this(id, "localhost", ACCProxyAgentSide.DEFAULT_PORT);
     }
+
 
     /**
      * Complete constructor: starts the named TuCSoN Agent on the specific
