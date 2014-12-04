@@ -1,7 +1,11 @@
 package alice.tucson.rbac;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import com.sun.corba.se.impl.encoding.OSFCodeSetRegistry.Entry;
 
 public class TucsonRBAC implements RBAC{
 
@@ -9,8 +13,9 @@ public class TucsonRBAC implements RBAC{
 	
 	private Map<String,Role> roles;
 	
-	public TucsonRBAC(){
+	public TucsonRBAC(String orgName){
 		roles = new HashMap<String,Role>();
+		this.orgName = orgName;
 	}
 	
 	@Override
@@ -44,6 +49,12 @@ public class TucsonRBAC implements RBAC{
 	public void removeRole(Role role) {
 		if(role != null && roles.containsKey(role.getRoleName()))
 			roles.remove(role.getRoleName());
+	}
+
+	@Override
+	public List<Role> getRoles() {
+		List<Role> rolesList = new ArrayList<Role>(roles.values());
+		return rolesList;
 	}
 
 }

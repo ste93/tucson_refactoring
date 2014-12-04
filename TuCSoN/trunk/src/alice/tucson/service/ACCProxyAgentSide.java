@@ -25,12 +25,16 @@ import alice.tucson.api.EnhancedACC;
 import alice.tucson.api.ITucsonOperation;
 import alice.tucson.api.TucsonAgentId;
 import alice.tucson.api.TucsonOperationCompletionListener;
+import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
+import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
 import alice.tucson.network.AbstractTucsonProtocol;
 import alice.tucson.network.TucsonMsgRequest;
 import alice.tucson.network.exceptions.DialogSendException;
+import alice.tucson.rbac.Role;
+import alice.tucson.rbac.TucsonRole;
 import alice.tuplecentre.api.Tuple;
 import alice.tuplecentre.api.TupleCentreId;
 import alice.tuplecentre.api.TupleTemplate;
@@ -93,6 +97,7 @@ public class ACCProxyAgentSide implements EnhancedACC {
     
     protected static final String tcOrg = "'$ORG'";	// galassi
 	private volatile boolean isACCEntered; // galassi
+	private ACCDescription profile; // galassi
 
     /**
      * Default constructor: exploits the default port (20504) in the "localhost"
@@ -105,9 +110,9 @@ public class ACCProxyAgentSide implements EnhancedACC {
      *             if the String representation given is not valid TuCSoN agent
      *             identifier
      */
-    public ACCProxyAgentSide(final String id)
+    public ACCProxyAgentSide(final Object aid)
             throws TucsonInvalidAgentIdException {
-        this(id, "localhost", ACCProxyAgentSide.DEFAULT_PORT);
+        this(aid, "localhost", ACCProxyAgentSide.DEFAULT_PORT);
     }
 
 
@@ -126,14 +131,130 @@ public class ACCProxyAgentSide implements EnhancedACC {
      *             if the String representation given is not valid TuCSoN agent
      *             identifier
      */
-    public ACCProxyAgentSide(final String id, final String n, final int p)
+    public ACCProxyAgentSide(final Object aid, final String n, final int p)
             throws TucsonInvalidAgentIdException {
-        this.aid = new TucsonAgentId(id);
+    	if(aid.getClass().equals("alice.tucson.api.TucsonAgentId"))
+    		this.aid = (TucsonAgentId)aid;
+    	else
+    		this.aid = new TucsonAgentId(aid.toString());
+    	
+        //this.aid = new TucsonAgentId(id);
         this.node = n;
         this.port = p;
         // Class used to perform tucson operations
         this.executor = new OperationHandler();
+        
+        isACCEntered = false;
     }
+    
+    //========== Metodi Galassi ================================================
+    
+    
+    @Override
+	public synchronized ITucsonOperation activateRole(String roleName) throws TucsonOperationNotPossibleException, TucsonInvalidTupleCentreIdException, InvalidVarNameException, UnreachableNodeException, OperationTimeOutException{
+		return this.activateRole(roleName, null);
+	}
+    
+    @Override
+	public synchronized ITucsonOperation activateRole(String roleName, Long l) throws TucsonOperationNotPossibleException, TucsonInvalidTupleCentreIdException, InvalidVarNameException, UnreachableNodeException, OperationTimeOutException{
+		
+    	if(profile.getRole(roleName)!= null){
+    		throw new TucsonOperationNotPossibleException();
+    	}
+    	
+    	TucsonTupleCentreId tid = new TucsonTupleCentreId(tcOrg, "'"+node+"'", ""+port);
+    	
+    	LogicTuple template = new LogicTuple("role_activation_request",
+    			new Value(aid.toString()),
+    			new Value(roleName),
+    			new Var("Result"));
+
+    	ITucsonOperation op = inp(tid, template, l);
+    	
+    	if(op.isResultSuccess()){
+    		LogicTuple res = op.getLogicTupleResult();
+    		if(res!=null && res.getArg(2).getName().equalsIgnoreCase("ok")){
+    			Role roleReceived = createRole(res);
+    			if(roleReceived != null){
+    				profile.addRole(roleReceived);
+    				log("Activated the role: " + res);
+    			} else {
+    				log("Activation request failed: " + res);
+    			}
+    			return op;
+    		} else {
+				log("Activation request failed: " + res);
+				return op;
+			}
+    	} else{
+			log("Activation request failed: " + roleName);
+			return op;
+		}
+	}
+    
+    //TODO: Creazione ruolo incerta
+    private Role createRole(LogicTuple res){
+    	Role roleReceived = null;
+    	
+    	if(res!= null && res.getArg(2).getName().equalsIgnoreCase("ok")){
+    		String roleName = "";
+    		if(res.getArg(1).isValue()){
+    			roleName = res.getArg(1).toString();
+    			roleName = roleName.trim();
+    			if(roleName.equalsIgnoreCase("_") || roleName.equalsIgnoreCase(""))
+    				return null;
+    		}
+    		else
+    			return null;
+    		
+    		roleReceived = new TucsonRole(roleName);
+    	}
+    	
+    	return roleReceived;
+    }
+    
+    @Override
+	public void enterACC() throws UnreachableNodeException,
+			TucsonOperationNotPossibleException {
+    	
+		profile = new ACCDescription();
+		profile.setProperty("agent_identity", this.aid.toString());
+		profile.setProperty("agent_name", this.aid.getAgentName());
+		profile.setProperty("agent_role", "user");
+
+	}
+
+
+	@Override
+	public String getPassword() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setPassword(String password) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public String getUsername() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setUsername(String username) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public boolean isACCEntered() {
+		return isACCEntered;
+	}
+    
+	//===================================================================
 
     @Override
     public synchronized void exit() {
@@ -780,4 +901,7 @@ public class ACCProxyAgentSide implements EnhancedACC {
     protected void log(final String msg) {
         System.out.println("[ACCProxyAgentSide]: " + msg);
     }
+
+
+	
 }

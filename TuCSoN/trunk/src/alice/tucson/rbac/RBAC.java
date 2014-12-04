@@ -1,6 +1,7 @@
 package alice.tucson.rbac;
 
 import java.io.Serializable;
+import java.util.List;
 
 public interface RBAC extends Serializable {
 
@@ -10,4 +11,6 @@ public interface RBAC extends Serializable {
 	void addRole(Role role);
 	void removeRole(String roleName);
 	void removeRole(Role role);
+	
+	List<Role> getRoles();
 }

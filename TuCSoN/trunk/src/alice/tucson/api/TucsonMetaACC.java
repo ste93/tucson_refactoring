@@ -32,7 +32,7 @@ public final class TucsonMetaACC {
     
     
     
-    public static MetaACC getContext(String aid, String netid, int portno) {
+    public static MetaACC getContext(final TucsonAgentId aid, String netid, int portno) {
 		MetaACC acc = null;
 		try {
 			acc = new MetaACCProxyAgentSide(aid, netid, portno);
@@ -75,7 +75,7 @@ public final class TucsonMetaACC {
      * 
      * @return The DefaultACC (which is the most powerful at the moment)
      */
-    public static EnhancedACC getContext(final TucsonAgentId aid,
+    /*public static EnhancedACC getContext(final TucsonAgentId aid,
             final String netid, final int portno) {
         EnhancedACC acc = null;
         try {
@@ -87,7 +87,7 @@ public final class TucsonMetaACC {
             return null;
         }
         return acc;
-    }
+    }*/
 
     /**
      * 

@@ -6,8 +6,11 @@ reaction(out(boot),true,(
     out(context_id(0)),
     out(authorised_agent(_)),
     out(role(default,'default role')),
+    out(role(admin_role, 'admin role')),
     out(policy(default,'default policy')),
+    out(policy(adminPolicy, 'admin policy')),
     out(role_policy(default,default)),
+    out(role_policy(admin_role,adminPolicy)),
     out(role_assignment(_,_)))).
 
 
@@ -49,14 +52,16 @@ reaction( inp(context_shutdown(CtxId,AgentId,_)),request,(
 %
 % role activation
 %
-reaction( inp(role_activation_request(CtxId,RoleId,Result)),request,(
+reaction( inp(role_activation_request(AgentId,RoleId,_)),request,(
   in(open_session(CtxId,AgentId,RoleList)),
-  rd(role(RoleId,Descr)),
+  %rd(role(RoleId,Descr)),
   rd(role_assignment(RoleId,AgentId)),
-  out(open_session(CtxId,AgentId,[RoleId|RoleList])),
-  rd(role_policy(RoleId,PolicyId)),
-  rd(policy(PolicyId,Policy)),
-  out( role_activation_request(CtxId,RoleId,ok(Policy))))).
+  out(open_session(2,AgentId,[RoleId|RoleList])),
+  %rd(role_policy(RoleId,PolicyId)),
+  %rd(policy(PolicyId,Policy)),
+  out(role_activation_request(AgentId,RoleId,ok(CtxId))))).
+  
+ 
 
 
 

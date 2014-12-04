@@ -14,8 +14,13 @@
 package alice.tucson.api;
 
 import java.util.Map;
+
+import alice.logictuple.exceptions.InvalidVarNameException;
+import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
+import alice.tucson.api.exceptions.UnreachableNodeException;
 import alice.tucson.service.TucsonOperation;
+import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 
 /**
  * Root ACC, no Linda nor TuCSoN operations available, only ACC release back to
@@ -24,6 +29,9 @@ import alice.tucson.service.TucsonOperation;
  * @author ste (mailto: s.mariani@unibo.it)
  */
 public interface RootACC {
+	
+	void enterACC() throws UnreachableNodeException,	// galassi
+					TucsonOperationNotPossibleException;
     /**
      * Release of the ACC and exit from the TuCSoN system.
      * 
@@ -38,4 +46,14 @@ public interface RootACC {
      *         operation
      */
     Map<Long, TucsonOperation> getPendingOperationsMap();
+    
+    String getPassword();
+	void setPassword(String password);
+	String getUsername();
+	void setUsername(String username);
+	
+	boolean isACCEntered();
+	
+	ITucsonOperation activateRole(String roleId) throws TucsonOperationNotPossibleException, TucsonInvalidTupleCentreIdException, InvalidVarNameException, UnreachableNodeException, OperationTimeOutException;
+	ITucsonOperation activateRole(String roleId, Long l) throws TucsonOperationNotPossibleException, TucsonInvalidTupleCentreIdException, InvalidVarNameException, UnreachableNodeException, OperationTimeOutException;
 }

@@ -3,9 +3,11 @@ package alice.tucson.service;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.Map;
 
 import alice.logictuple.LogicTuple;
 import alice.logictuple.Value;
+import alice.logictuple.exceptions.InvalidVarNameException;
 import alice.tucson.api.ITucsonOperation;
 import alice.tucson.api.MetaACC;
 import alice.tucson.api.TucsonTupleCentreId;
@@ -14,20 +16,30 @@ import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
 import alice.tucson.rbac.RBAC;
+import alice.tucson.rbac.Role;
 import alice.tuplecentre.api.TupleCentreId;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 
 
 public class MetaACCProxyAgentSide extends ACCProxyAgentSide implements MetaACC{
 
+	@Override
+	public ITucsonOperation activateAdminRole() throws InvalidVarNameException, TucsonOperationNotPossibleException, TucsonInvalidTupleCentreIdException, UnreachableNodeException, OperationTimeOutException {
+		return this.activateAdminRole(null);
+	}
+
+	@Override
+	public ITucsonOperation activateAdminRole(Long l) throws InvalidVarNameException, TucsonOperationNotPossibleException, TucsonInvalidTupleCentreIdException, UnreachableNodeException, OperationTimeOutException {
+		return this.activateRole("admin_role", l);
+	}
 
 	
-	public MetaACCProxyAgentSide(String id)
+	public MetaACCProxyAgentSide(Object id)
 			throws TucsonInvalidAgentIdException {
 		super(id);
 	}
 	
-	public MetaACCProxyAgentSide(String aid, String node, int port) throws TucsonInvalidAgentIdException{
+	public MetaACCProxyAgentSide(Object aid, String node, int port) throws TucsonInvalidAgentIdException{
 		super(aid, node, port);
 	}
 
@@ -42,7 +54,7 @@ public class MetaACCProxyAgentSide extends ACCProxyAgentSide implements MetaACC{
 		if(rbac == null)
 			return;
 		
-		TupleCentreId tid = getTid(node, port);
+		TupleCentreId tid = new TucsonTupleCentreId(tcOrg, "'"+node+"'", ""+port);//getTid(node, port);
 		
 		LogicTuple template = new LogicTuple("organisation_name",
 				new Value(rbac.getOrgName()));
@@ -53,6 +65,10 @@ public class MetaACCProxyAgentSide extends ACCProxyAgentSide implements MetaACC{
 		}
 		else
 			log("problem with addRBAC: "+rbac.getOrgName());
+		
+		for(Role role : rbac.getRoles()){
+			this.addRole(role, l, tid);
+		}
 	}
 
 	@Override
@@ -65,6 +81,21 @@ public class MetaACCProxyAgentSide extends ACCProxyAgentSide implements MetaACC{
 	public void remove(RBAC rbac, Long l, String node, int port) {
 		if(rbac == null)
 			return;
+	}
+	
+	
+	private void addRole(Role role, Long l, TupleCentreId tid) throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException{
+		
+		LogicTuple roleTuple = new LogicTuple("role",
+				new Value(role.getRoleName()),
+				new Value("'ruolo " + role.getRoleName() + "'"));
+		ITucsonOperation op = out(tid, roleTuple, l);
+		if(op.isResultSuccess()){
+			LogicTuple res = op.getLogicTupleResult();
+			log("addRole: "+res);
+		}
+		else
+			log("problem with addRole: "+role.getRoleName());
 	}
 
 	private TupleCentreId getTid(String node, int port) throws TucsonInvalidTupleCentreIdException{
@@ -95,6 +126,8 @@ public class MetaACCProxyAgentSide extends ACCProxyAgentSide implements MetaACC{
 		
 		return new TucsonTupleCentreId(tcOrg, "'"+tmpNode+"'", ""+tmpPort);
 	}
+
+	
 
 	
 
