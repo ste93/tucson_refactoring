@@ -9,10 +9,10 @@ import alice.tucson.network.exceptions.IllegalPortNumberException;
  * <p>
  * A singleton class to manage configuration of TucsonProtocol
  * </p>
- * 
+ *
  * @author Saverio Cicora
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
- * 
+ *
  */
 public final class TPConfig {
 
@@ -22,7 +22,7 @@ public final class TPConfig {
 
     /**
      * Return the default TCP port number
-     * 
+     *
      * @return a valid TCP port number
      */
     public static int getDefaultTcpPort() {
@@ -35,7 +35,7 @@ public final class TPConfig {
 
     /**
      * Return the default Protocol type
-     * 
+     *
      * @return the protocol type codified as an integer
      */
     public int getDefaultProtocolType() {
@@ -44,7 +44,7 @@ public final class TPConfig {
 
     /**
      * Return the TCP port number
-     * 
+     *
      * @return a valid TCP port number
      */
     public int getNodeTcpPort() {
@@ -57,7 +57,7 @@ public final class TPConfig {
     /**
      * TODO CICORA: Set the TCP port: only one set is permitted, the second one
      * will be ignored
-     * 
+     *
      * @param portNumber
      *            the TCP listening port
      */

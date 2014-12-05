@@ -15,7 +15,7 @@ import alice.tucson.service.TucsonNodeService;
  * Description: the factory class to build a specific implementation of
  * TucsonProtocol
  * </p>
- * 
+ *
  * @author Saverio Cicora
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
@@ -29,7 +29,7 @@ public final class TPFactory {
     private static final int MAX_UNBOUND_PORT = 64000;
 
     /**
-     * 
+     *
      * @param tucsonProtocolType
      *            the type code of the TuCSoN protocol to be used
      * @param tid
@@ -44,8 +44,8 @@ public final class TPFactory {
      */
     public static AbstractTucsonProtocol getDialogAgentSide(
             final int tucsonProtocolType, final TucsonTupleCentreId tid)
-            throws DialogInitializationException, UnreachableNodeException,
-            InvalidProtocolTypeException {
+                    throws DialogInitializationException, UnreachableNodeException,
+                    InvalidProtocolTypeException {
         final String node = alice.util.Tools.removeApices(tid.getNode());
         final int port = tid.getPort();
         // TODO CICORA: il controllo su porta e address va fatto meglio, vedere
@@ -65,7 +65,7 @@ public final class TPFactory {
     }
 
     /**
-     * 
+     *
      * @param tid
      *            the identifier of the tuple centre to connect to
      * @return the connection protocol hosting communications
@@ -96,7 +96,7 @@ public final class TPFactory {
 
     /**
      * Instantiate a new TucsonProtocol based on type specified by parameter.
-     * 
+     *
      * @param tucsonProtocolType
      *            the type code of the TuCSoN protocol to be used
      * @param portno
@@ -109,7 +109,7 @@ public final class TPFactory {
      */
     public static AbstractTucsonProtocol getDialogNodeSide(
             final int tucsonProtocolType, final int portno)
-            throws InvalidProtocolTypeException, DialogInitializationException {
+                    throws InvalidProtocolTypeException, DialogInitializationException {
         AbstractTucsonProtocol tp = null;
         if (tucsonProtocolType == TPFactory.DIALOG_TYPE_TCP) {
             final TPConfig config = TucsonNodeService.getNode(portno)
@@ -128,7 +128,7 @@ public final class TPFactory {
 
     private TPFactory() {
         /*
-         * 
+         *
          */
     }
 }
