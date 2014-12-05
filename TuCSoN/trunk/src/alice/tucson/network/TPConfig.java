@@ -77,8 +77,7 @@ public final class TPConfig {
      *            the TCP listening port
      */
     public synchronized void setTcpPort(final int portNumber) {
-        if (portNumber < 1 || portNumber > TPConfig.MAX_UNBOUND_PORT
-                || this.tcpPort > 0) {
+        if (portNumber < 1 || portNumber > TPConfig.MAX_UNBOUND_PORT) {
             throw new IllegalPortNumberException(
                     "Port number out of bounds. Port number: " + portNumber);
         }
