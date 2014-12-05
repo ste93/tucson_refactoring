@@ -77,8 +77,14 @@ public final class TPFactory {
     public static AbstractTucsonProtocol getDialogAgentSide(
             final TucsonTupleCentreId tid) throws UnreachableNodeException,
             DialogInitializationException {
-        final TPConfig config = TucsonNodeService.getNode(tid.getPort())
-                .getTPConfig();
+        final TucsonNodeService tns = TucsonNodeService.getNode(tid.getPort());
+        final TPConfig config;
+        if (tns != null) {
+            config = tns.getTPConfig();
+        } else {
+            config = new TPConfig();
+            config.setTcpPort(tid.getPort());
+        }
         try {
             return TPFactory.getDialogAgentSide(
                     config.getDefaultProtocolType(), tid);

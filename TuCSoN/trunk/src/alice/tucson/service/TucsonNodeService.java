@@ -262,15 +262,6 @@ public class TucsonNodeService {
 
     /**
      * 
-     * @param portno
-     *            the default listening port of this TuCSoN node
-     */
-    public TucsonNodeService(final int portno) {
-        this(null, portno, null);
-    }
-
-    /**
-     * 
      * @param conf
      *            the configuration file to load
      * @param portNumber
@@ -306,6 +297,9 @@ public class TucsonNodeService {
         this.tcs = new ArrayList<RespectTC>();
         this.tpConfig = new TPConfig();
         this.tpConfig.setTcpPort(this.tcpPort);
+        synchronized (TucsonNodeService.NODES) {
+            TucsonNodeService.NODES.put(this.tcpPort, this);
+        }
     }
 
     /**
