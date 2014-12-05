@@ -241,7 +241,17 @@ public class TucsonNodeService {
     private Tuple persistencyTemplate;
     private int tcpPort = TucsonNodeService.DEFAULT_TCP_PORT;
     private final List<RespectTC> tcs;
+    private static final Map<Integer, TucsonNodeService> NODES = new HashMap<Integer, TucsonNodeService>();
     private WelcomeAgent welcome;
+    private final TPConfig tpConfig;
+
+    public final TPConfig getTPConfig() {
+        return this.tpConfig;
+    }
+
+    public synchronized static final TucsonNodeService getNode(final int port) {
+        return NODES.get(port);
+    }
 
     /**
      * 
@@ -294,7 +304,8 @@ public class TucsonNodeService {
         this.nodeAgents = new ArrayList<Thread>();
         this.inspectorAgents = new ArrayList<InspectorContextSkel>();
         this.tcs = new ArrayList<RespectTC>();
-        TPConfig.getInstance().setTcpPort(this.tcpPort);
+        this.tpConfig = new TPConfig();
+        this.tpConfig.setTcpPort(this.tcpPort);
     }
 
     /**

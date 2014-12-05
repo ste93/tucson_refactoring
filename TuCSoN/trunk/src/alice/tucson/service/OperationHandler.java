@@ -38,10 +38,12 @@ import alice.tuprolog.lib.InvalidObjectIdException;
  * 
  */
 public class OperationHandler {
+
     /**
      * 
      */
     public class Controller extends Thread {
+
         private final AbstractTucsonProtocol dialog;
         private final Prolog p = new Prolog();
         private boolean stop;
@@ -219,6 +221,7 @@ public class OperationHandler {
      * 
      */
     public class ControllerSession {
+
         private final Controller controller;
         private final AbstractTucsonProtocol session;
 
