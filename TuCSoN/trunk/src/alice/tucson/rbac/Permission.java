@@ -7,6 +7,6 @@ import java.io.Serializable;
  */
 public interface Permission extends Serializable {
 	
-	public String getPermission();
-	public void setPermission(String permissionName);
+	public String getPermissionName();
+	public void setPermissionName(String permissionName);
 }

@@ -13,6 +13,7 @@
  */
 package alice.tucson.service;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -149,6 +150,33 @@ public class ACCProxyAgentSide implements EnhancedACC {
     
     //========== Metodi Galassi ================================================
     
+    @Override
+    public List<String> listActivableRoles() throws TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException, InvalidVarNameException{
+    	return this.listActivableRoles(null);
+    }
+    
+    @Override
+	public List<String> listActivableRoles(Long l) throws TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException, InvalidVarNameException {
+		List<Role> roleList = new ArrayList<Role>();
+		
+		TucsonTupleCentreId tid = new TucsonTupleCentreId(tcOrg, "'"+node+"'", ""+port);
+		
+		LogicTuple template = new LogicTuple("role_activable_list_request", 
+				new Value(aid.toString()), // galassi agentname al posto di tostring
+				new Var("Result"),
+				new Var("ResultList")
+				);
+		
+		ITucsonOperation op = inp(tid, template, l);
+		if(op.isResultSuccess()){
+			
+		} else
+			log("Failure retrieving list of roles");
+		
+		return null;
+	}
+    
+   
     
     @Override
 	public synchronized ITucsonOperation activateRole(String roleName) throws TucsonOperationNotPossibleException, TucsonInvalidTupleCentreIdException, InvalidVarNameException, UnreachableNodeException, OperationTimeOutException{
@@ -902,6 +930,4 @@ public class ACCProxyAgentSide implements EnhancedACC {
         System.out.println("[ACCProxyAgentSide]: " + msg);
     }
 
-
-	
 }

@@ -6,7 +6,19 @@ import java.util.List;
 public class TucsonPolicy implements Policy{
 
 	protected List<Permission> permissions;
+	private String policyName;
 	
+	public TucsonPolicy(String policyName){
+		this.policyName = policyName;
+	}
+	
+	public String getPolicyName(){
+		return policyName;
+	}
+	
+	public void setPolicyName(String policyName){
+		this.policyName = policyName;
+	}
 	
 	@Override
 	public List<Permission> getPermissions() {

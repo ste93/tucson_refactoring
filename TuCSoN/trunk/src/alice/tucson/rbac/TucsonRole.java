@@ -36,10 +36,10 @@ public class TucsonRole implements Role{
 		this.policy = policy;
 	}
 
-	@Override
+	/*@Override
 	public void addPermission(Permission permission) {
 		if(policy==null)
-			policy = new TucsonPolicy();
+			policy = new TucsonPolicy("");
 		policy.addPermission(permission);
 	}
 
@@ -47,6 +47,6 @@ public class TucsonRole implements Role{
 	public void removePermission(Permission permission) {
 		if(policy!=null)
 			policy.removePermission(permission);
-	}
+	}*/
 
 }

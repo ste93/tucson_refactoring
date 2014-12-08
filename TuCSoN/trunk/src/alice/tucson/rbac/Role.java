@@ -10,6 +10,6 @@ public interface Role extends Serializable{
 	Policy getPolicy();	
 	void setPolicy(Policy policy);
 	
-	void addPermission(Permission permission);
-	void removePermission(Permission permission);
+	/*void addPermission(Permission permission);
+	void removePermission(Permission permission);*/
 }

@@ -56,14 +56,35 @@ reaction( inp(role_activation_request(AgentId,RoleId,_)),request,(
   in(open_session(CtxId,AgentId,RoleList)),
   %rd(role(RoleId,Descr)),
   rd(role_assignment(RoleId,AgentId)),
-  out(open_session(2,AgentId,[RoleId|RoleList])),
+  out(open_session(CtxId,AgentId,[RoleId|RoleList])),
   %rd(role_policy(RoleId,PolicyId)),
   %rd(policy(PolicyId,Policy)),
   out(role_activation_request(AgentId,RoleId,ok(CtxId))))).
   
  
-
-
+%
+%	role list
+%
+reaction( inp(role_activable_list_request(AgentId,Result,ResultList)),
+	(invocation,operation),
+	(
+		rd_all(role(RoleId,Desc), AllRoleList),
+		out(create_role_list(AllRoleList,AgentId, []))
+	)).
+	
+reaction( out(create_role_list([role(RoleId,Desc)|AllRoleList], AgentId, ResultList)),
+	internal,
+	(
+		in(create_role_list(_, AgentId, ResultList)), % tolgo la tupla scatenante la reazione 
+		
+	
+reaction( out(create_role_list([],AgentId, ResultList)), % ho iterato tutta la lista
+	internal,
+	(
+		in(create_role_list(_,AgentId,ResultList)), % tolgo la tupla scatenante la reazione    
+		out(role_activable_list_request(AgentId,ok(role_activable_list_request),ResultList))
+	)).
+	
 
 
 %

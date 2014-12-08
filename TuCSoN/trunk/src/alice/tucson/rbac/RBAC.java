@@ -12,5 +12,10 @@ public interface RBAC extends Serializable {
 	void removeRole(String roleName);
 	void removeRole(Role role);
 	
+	void addPolicy(Policy policy);
+	void removePolicy(String policyName);
+	void removePolicy(Policy policy);
+	
 	List<Role> getRoles();
+	List<Policy> getPolicies();
 }

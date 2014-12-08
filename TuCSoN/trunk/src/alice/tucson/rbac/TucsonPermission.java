@@ -7,16 +7,16 @@ public class TucsonPermission implements Permission{
 	
 	public TucsonPermission(){};
 	public TucsonPermission(String permissionName){
-		setPermission(permissionName);
+		setPermissionName(permissionName);
 	}
 
 	@Override
-	public String getPermission() {
+	public String getPermissionName() {
 		return permissionName;
 	}
 
 	@Override
-	public void setPermission(String permissionName) {
+	public void setPermissionName(String permissionName) {
 		if(permissionName == null || permissionName.equals(""))
 			return;
 		this.permissionName = permissionName;

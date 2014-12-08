@@ -15,6 +15,8 @@ import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
+import alice.tucson.rbac.Permission;
+import alice.tucson.rbac.Policy;
 import alice.tucson.rbac.RBAC;
 import alice.tucson.rbac.Role;
 import alice.tuplecentre.api.TupleCentreId;
@@ -69,6 +71,9 @@ public class MetaACCProxyAgentSide extends ACCProxyAgentSide implements MetaACC{
 		for(Role role : rbac.getRoles()){
 			this.addRole(role, l, tid);
 		}
+		
+		for(Policy policy : rbac.getPolicies())
+			this.addPolicy(policy, l, tid);
 	}
 
 	@Override
@@ -96,6 +101,41 @@ public class MetaACCProxyAgentSide extends ACCProxyAgentSide implements MetaACC{
 		}
 		else
 			log("problem with addRole: "+role.getRoleName());
+		
+		this.addRolePolicy(role.getPolicy(), role.getRoleName(), l, tid);
+	}
+	
+	private void addPolicy(Policy policy, Long l, TupleCentreId tid) throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException{
+		String permissions = "";
+		for(Permission perm : policy.getPermissions()){
+			permissions += perm.getPermissionName() + ",";
+		}
+		permissions = permissions.substring(0, permissions.length() - 1);
+		LogicTuple policyTuple = new LogicTuple("policy",
+				new Value(policy.getPolicyName()),
+				new Value("[" + permissions + "]"));
+		ITucsonOperation op = out(tid, policyTuple, l);
+		if(op.isResultSuccess()){
+			LogicTuple res = op.getLogicTupleResult();
+			log("addPolicy: "+res);
+		}
+		else
+			log("problem with addPolicy: "+policy.getPolicyName());
+		
+	}
+	
+	private void addRolePolicy(Policy policy, String roleName, Long l, TupleCentreId tid) throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException{
+		
+		LogicTuple policyTuple = new LogicTuple("role_policy",
+				new Value(roleName),
+				new Value(policy.getPolicyName()));
+		ITucsonOperation op = out(tid, policyTuple, l);
+		if(op.isResultSuccess()){
+			LogicTuple res = op.getLogicTupleResult();
+			log("addRolePolicy: "+res);
+		}
+		else
+			log("problem with addRolePolicy: "+policy.getPolicyName());
 	}
 
 	private TupleCentreId getTid(String node, int port) throws TucsonInvalidTupleCentreIdException{
