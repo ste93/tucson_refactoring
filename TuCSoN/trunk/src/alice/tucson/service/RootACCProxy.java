@@ -1,5 +1,6 @@
 package alice.tucson.service;
 
+import java.util.List;
 import java.util.Map;
 
 import alice.logictuple.exceptions.InvalidVarNameException;
@@ -79,6 +80,44 @@ public class RootACCProxy implements RootACC {
 			throws TucsonOperationNotPossibleException,
 			TucsonInvalidTupleCentreIdException, InvalidVarNameException,
 			UnreachableNodeException, OperationTimeOutException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<String> listActivableRoles()
+			throws TucsonInvalidTupleCentreIdException,
+			TucsonOperationNotPossibleException, UnreachableNodeException,
+			OperationTimeOutException, InvalidVarNameException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<String> listActivableRoles(Long l)
+			throws TucsonInvalidTupleCentreIdException,
+			TucsonOperationNotPossibleException, UnreachableNodeException,
+			OperationTimeOutException, InvalidVarNameException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ITucsonOperation activateRoleWithPermission(String permissionId)
+			throws InvalidVarNameException,
+			TucsonInvalidTupleCentreIdException,
+			TucsonOperationNotPossibleException, UnreachableNodeException,
+			OperationTimeOutException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ITucsonOperation activateRoleWithPermission(String permissionId,
+			Long l) throws InvalidVarNameException,
+			TucsonInvalidTupleCentreIdException,
+			TucsonOperationNotPossibleException, UnreachableNodeException,
+			OperationTimeOutException {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -15,4 +15,6 @@ public interface Policy extends Serializable {
 	void setPermissions(List<Permission> permissions);
 	void addPermission(Permission permission);
 	void removePermission(Permission permission);
+	
+	boolean hasPermissions(List<String> permissionsId);
 }

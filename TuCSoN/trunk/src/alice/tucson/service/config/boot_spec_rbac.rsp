@@ -5,11 +5,11 @@ reaction(out(boot),true,(
     out(boot_info([time(Time)])),
     out(context_id(0)),
     out(authorised_agent(_)),
-    out(role(default,'default role')),
+    %out(role(default,'default role')),
     out(role(admin_role, 'admin role')),
-    out(policy(default,'default policy')),
+    %out(policy(default,'default policy')),
     out(policy(adminPolicy, 'admin policy')),
-    out(role_policy(default,default)),
+    %out(role_policy(default,default)),
     out(role_policy(admin_role,adminPolicy)),
     out(role_assignment(_,_)))).
 
@@ -54,13 +54,23 @@ reaction( inp(context_shutdown(CtxId,AgentId,_)),request,(
 %
 reaction( inp(role_activation_request(AgentId,RoleId,_)),request,(
   in(open_session(CtxId,AgentId,RoleList)),
-  %rd(role(RoleId,Descr)),
+  rd(role(RoleId,Descr)),										% Esiste il ruolo
   rd(role_assignment(RoleId,AgentId)),
   out(open_session(CtxId,AgentId,[RoleId|RoleList])),
   %rd(role_policy(RoleId,PolicyId)),
   %rd(policy(PolicyId,Policy)),
-  out(role_activation_request(AgentId,RoleId,ok(CtxId))))).
-  
+  out(role_activation_request(AgentId,RoleId,ok(Desc))))).
+
+
+%
+%	Policy list request
+%
+reaction( inp(policy_list_request(AgentId,PermissionId,_)),(invocation, operation), (
+	%in(open_session(CtxId,AgentId,RoleList)),
+	rd_all(policy(PolicyId, PermissionList), AllPolicyList),
+	out(policy_list_request(AgentId,PermissionId,ok(AllPolicyList)))
+	)).
+		
  
 %
 %	role list
@@ -72,10 +82,10 @@ reaction( inp(role_activable_list_request(AgentId,Result,ResultList)),
 		out(create_role_list(AllRoleList,AgentId, []))
 	)).
 	
-reaction( out(create_role_list([role(RoleId,Desc)|AllRoleList], AgentId, ResultList)),
-	internal,
-	(
-		in(create_role_list(_, AgentId, ResultList)), % tolgo la tupla scatenante la reazione 
+%reaction( out(create_role_list([role(RoleId,Desc)|AllRoleList], AgentId, ResultList)),
+%	internal,
+%	(
+%		in(create_role_list(_, AgentId, ResultList)), % tolgo la tupla scatenante la reazione 
 		
 	
 reaction( out(create_role_list([],AgentId, ResultList)), % ho iterato tutta la lista

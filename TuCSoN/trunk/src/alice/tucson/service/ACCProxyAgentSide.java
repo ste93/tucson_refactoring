@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import alice.logictuple.LogicTuple;
 import alice.logictuple.LogicTupleOpManager;
+import alice.logictuple.TupleArgument;
 import alice.logictuple.Value;
 import alice.logictuple.Var;
 import alice.logictuple.exceptions.InvalidVarNameException;
@@ -34,13 +35,17 @@ import alice.tucson.api.exceptions.UnreachableNodeException;
 import alice.tucson.network.AbstractTucsonProtocol;
 import alice.tucson.network.TucsonMsgRequest;
 import alice.tucson.network.exceptions.DialogSendException;
+import alice.tucson.rbac.Policy;
 import alice.tucson.rbac.Role;
+import alice.tucson.rbac.TucsonPolicy;
 import alice.tucson.rbac.TucsonRole;
 import alice.tuplecentre.api.Tuple;
 import alice.tuplecentre.api.TupleCentreId;
 import alice.tuplecentre.api.TupleTemplate;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 import alice.tuprolog.Parser;
+import alice.tuprolog.Struct;
+import alice.tuprolog.Term;
 
 /**
  * Active part of the Default Agent Coordination Context.
@@ -150,7 +155,7 @@ public class ACCProxyAgentSide implements EnhancedACC {
     
     //========== Metodi Galassi ================================================
     
-    @Override
+   /* @Override
     public List<String> listActivableRoles() throws TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException, InvalidVarNameException{
     	return this.listActivableRoles(null);
     }
@@ -174,7 +179,7 @@ public class ACCProxyAgentSide implements EnhancedACC {
 			log("Failure retrieving list of roles");
 		
 		return null;
-	}
+	}*/
     
    
     
@@ -220,6 +225,38 @@ public class ACCProxyAgentSide implements EnhancedACC {
 		}
 	}
     
+    @Override
+	public ITucsonOperation activateRoleWithPermission(List<String> permissionsId) throws InvalidVarNameException, TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException {
+		return this.activateRoleWithPermission(permissionsId, null);
+	}
+    
+    @Override
+	public synchronized ITucsonOperation activateRoleWithPermission(List<String> permissionsId, Long l) throws InvalidVarNameException, TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException {
+		
+    	TucsonTupleCentreId tid = new TucsonTupleCentreId(tcOrg, "'"+node+"'", ""+port);
+    	
+    	LogicTuple permissionTemplate = new LogicTuple("policy_list_request",
+    			new Value(aid.toString()),
+    			//new Value(permissionId),
+    			new Var("Result"));
+    	
+    	ITucsonOperation op = inp(tid, permissionTemplate, l);
+    	
+    	if(op.isResultSuccess()){
+    		LogicTuple res = op.getLogicTupleResult();
+    		if(res!=null && res.getArg(2).getName().equalsIgnoreCase("ok")){
+    			Policy policy = choosePolicy(res, permissionsId);
+    			return op;
+    		} else {
+				log("Activation request failed: " + res);
+				return op;
+			}
+    	} else{
+			log("Activation request failed for permission: " + permissionsId.toString());
+			return op;
+		}
+	}
+    
     //TODO: Creazione ruolo incerta
     private Role createRole(LogicTuple res){
     	Role roleReceived = null;
@@ -239,6 +276,36 @@ public class ACCProxyAgentSide implements EnhancedACC {
     	}
     	
     	return roleReceived;
+    }
+    
+    private Policy choosePolicy(LogicTuple res, List<String> permissionsId){
+    	
+    	List<Term> policiesList = res.getArg(2).getArg(0).toList();
+    	List<Policy> policies = new ArrayList<Policy>();
+    	for(Term term : policiesList){
+    		Struct rt = (Struct) term;
+    		Policy newPolicy = TucsonPolicy.createPolicy(rt.toString());
+    		policies.add(newPolicy);
+    		/*String arg1 = rt.getArg(0).toString();
+    		String permissions = ((Struct)rt.getArg(1)).getArg(0).toString();
+    		Struct structPermissions = (Struct) Term.createTerm(permissions);*/
+    	}
+    	
+    	Policy bestPolicy = null;
+    	int bestPermissionsArity = 10000;
+    	
+    	for(Policy pol : policies){
+    		if(pol.hasPermissions(permissionsId)){
+    			if(pol.getPermissions().size() < bestPermissionsArity){
+    				bestPermissionsArity = pol.getPermissions().size();
+    				bestPolicy = pol;
+    			}
+    		}
+    	}
+    	
+    	//Scelgo la policy con il numero minore di privilegi che presenta quelli richiesti
+    	
+    	return bestPolicy;
     }
     
     @Override
@@ -929,5 +996,11 @@ public class ACCProxyAgentSide implements EnhancedACC {
     protected void log(final String msg) {
         System.out.println("[ACCProxyAgentSide]: " + msg);
     }
+
+
+	
+
+
+	
 
 }
