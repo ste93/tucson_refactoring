@@ -69,17 +69,17 @@ public final class TupleCentreContainer {
             RespectTCContainer.setDefPort(TupleCentreContainer.defaultport);
             final TupleCentreId tid = new TupleCentreId(id.getName(),
                     id.getNode(), String.valueOf(id.getPort()));
-            System.err
+            System.out
                     .println(" @@@@@@@@@@ TupleCentreContainer.defaultport = "
                             + TupleCentreContainer.defaultport);
-            System.err.println(" @@@@@@@@@@ RespectTCContainer.getDefPort() = "
+            System.out.println(" @@@@@@@@@@ RespectTCContainer.getDefPort() = "
                     + RespectTCContainer.getDefPort());
-            System.err.println(" @@@@@@@@@@ id.getName() = " + id.getName());
-            System.err.println(" @@@@@@@@@@ id.getNode() = " + id.getNode());
-            System.err.println(" @@@@@@@@@@ id.getPort() = " + id.getPort());
-            System.err.println(" @@@@@@@@@@ tid.getName() = " + tid.getName());
-            System.err.println(" @@@@@@@@@@ tid.getNode() = " + tid.getNode());
-            System.err.println(" @@@@@@@@@@ tid.getPort() = " + tid.getPort());
+            System.out.println(" @@@@@@@@@@ id.getName() = " + id.getName());
+            System.out.println(" @@@@@@@@@@ id.getNode() = " + id.getNode());
+            System.out.println(" @@@@@@@@@@ id.getPort() = " + id.getPort());
+            System.out.println(" @@@@@@@@@@ tid.getName() = " + tid.getName());
+            System.out.println(" @@@@@@@@@@ tid.getNode() = " + tid.getNode());
+            System.out.println(" @@@@@@@@@@ tid.getPort() = " + tid.getPort());
             return rtcc.createRespectTC(tid, q);
         } catch (final InvalidTupleCentreIdException e) {
             throw new InvalidTupleCentreIdException();

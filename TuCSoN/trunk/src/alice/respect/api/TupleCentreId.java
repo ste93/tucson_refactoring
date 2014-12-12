@@ -187,12 +187,12 @@ public class TupleCentreId implements alice.tuplecentre.api.TupleCentreId,
      */
     public int getPort() {
         if (this.id instanceof alice.tuprolog.Struct) {
-            System.err.println(" @@@@@@@@@@ here 1");
+            System.out.println(" @@@@@@@@@@ here 1");
             final Struct sid = (Struct) this.id;
             if (sid.getArity() == 2 && "@".equals(sid.getName())) {
-                System.err.println(" @@@@@@@@@@ here 2");
+                System.out.println(" @@@@@@@@@@ here 2");
                 final Struct t = (Struct) sid.getArg(1);
-                System.err.println(" @@@@@@@@@@ here 3: "
+                System.out.println(" @@@@@@@@@@ here 3: "
                         + Integer.parseInt(alice.util.Tools.removeApices(t
                                 .getArg(1).getTerm().toString())));
                 return Integer.parseInt(alice.util.Tools.removeApices(t

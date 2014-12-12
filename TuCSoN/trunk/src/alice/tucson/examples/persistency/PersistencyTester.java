@@ -32,10 +32,10 @@ public final class PersistencyTester {
      */
     public static void main(final String[] args) {
         try {
-            final TucsonNodeService tns = new TucsonNodeService();
+            final TucsonNodeService tns = new TucsonNodeService(20504);
             tns.install();
             try {
-                while (!TucsonNodeService.isInstalled(5000)) {
+                while (!TucsonNodeService.isInstalled(20504, 5000)) {
                     Thread.sleep(1000);
                 }
             } catch (final InterruptedException e) {
