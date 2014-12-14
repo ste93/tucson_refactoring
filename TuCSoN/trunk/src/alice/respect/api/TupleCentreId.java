@@ -56,6 +56,7 @@ public class TupleCentreId implements alice.tuplecentre.api.TupleCentreId,
             throw new InvalidTupleCentreIdException("String '" + n
                     + "' is not a well-formed ground logic term");
         }
+        System.out.println(" @@@@@@@@@@ TupleCentreId.this.id = " + this.id);
     }
 
     /**
@@ -104,15 +105,6 @@ public class TupleCentreId implements alice.tuplecentre.api.TupleCentreId,
             throw new InvalidTupleCentreIdException("Term '" + name
                     + "' is not a well-formed ground logic term");
         }
-    }
-
-    /**
-     * 
-     */
-    protected TupleCentreId() {
-        /*
-         * 
-         */
     }
 
     /*
