@@ -104,6 +104,8 @@ public class ACCProxyAgentSide implements EnhancedACC {
     protected static final String tcOrg = "'$ORG'";	// galassi
 	private volatile boolean isACCEntered; // galassi
 	private ACCDescription profile; // galassi
+	
+	private final int OKNUMBER = 1;
 
     /**
      * Default constructor: exploits the default port (20504) in the "localhost"
@@ -244,7 +246,7 @@ public class ACCProxyAgentSide implements EnhancedACC {
     	
     	if(op.isResultSuccess()){
     		LogicTuple res = op.getLogicTupleResult();
-    		if(res!=null && res.getArg(2).getName().equalsIgnoreCase("ok")){
+    		if(res!=null && res.getArg(OKNUMBER).getName().equalsIgnoreCase("ok")){
     			Policy policy = choosePolicy(res, permissionsId);
     			return op;
     		} else {
@@ -261,7 +263,7 @@ public class ACCProxyAgentSide implements EnhancedACC {
     private Role createRole(LogicTuple res){
     	Role roleReceived = null;
     	
-    	if(res!= null && res.getArg(2).getName().equalsIgnoreCase("ok")){
+    	if(res!= null && res.getArg(1).getName().equalsIgnoreCase("ok")){
     		String roleName = "";
     		if(res.getArg(1).isValue()){
     			roleName = res.getArg(1).toString();
@@ -280,11 +282,11 @@ public class ACCProxyAgentSide implements EnhancedACC {
     
     private Policy choosePolicy(LogicTuple res, List<String> permissionsId){
     	
-    	List<Term> policiesList = res.getArg(2).getArg(0).toList();
+    	TupleArgument[] policiesList = res.getArg(OKNUMBER).getArg(0).toArray();
     	List<Policy> policies = new ArrayList<Policy>();
-    	for(Term term : policiesList){
-    		Struct rt = (Struct) term;
-    		Policy newPolicy = TucsonPolicy.createPolicy(rt.toString());
+    	for(TupleArgument term : policiesList){
+    		TupleArgument[] policyTuples = term.getArg(1).toArray();
+    		Policy newPolicy = TucsonPolicy.createPolicy(term.getArg(0).toString(), policyTuples);
     		policies.add(newPolicy);
     		/*String arg1 = rt.getArg(0).toString();
     		String permissions = ((Struct)rt.getArg(1)).getArg(0).toString();

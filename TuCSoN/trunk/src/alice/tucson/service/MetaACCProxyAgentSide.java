@@ -3,10 +3,13 @@ package alice.tucson.service;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import alice.logictuple.LogicTuple;
 import alice.logictuple.Value;
+import alice.logictuple.Var;
 import alice.logictuple.exceptions.InvalidVarNameException;
 import alice.tucson.api.ITucsonOperation;
 import alice.tucson.api.MetaACC;
@@ -46,13 +49,12 @@ public class MetaACCProxyAgentSide extends ACCProxyAgentSide implements MetaACC{
 	}
 
 	@Override
-	public void add(RBAC rbac) throws TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException {
-		
+	public void add(RBAC rbac) throws TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException, InvalidVarNameException {		
 		this.add(rbac, null, node, port);
 	}
 	
 	@Override
-	public void add(RBAC rbac, Long l, String node, int port) throws TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException {
+	public void add(RBAC rbac, Long l, String node, int port) throws TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException, InvalidVarNameException {
 		if(rbac == null)
 			return;
 		
@@ -89,11 +91,12 @@ public class MetaACCProxyAgentSide extends ACCProxyAgentSide implements MetaACC{
 	}
 	
 	
-	private void addRole(Role role, Long l, TupleCentreId tid) throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException{
+	private void addRole(Role role, Long l, TupleCentreId tid) throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException, InvalidVarNameException{
 		
 		LogicTuple roleTuple = new LogicTuple("role",
 				new Value(role.getRoleName()),
-				new Value("'ruolo " + role.getRoleName() + "'"));
+				new Value("ruolo_" + role.getRoleName()));
+		
 		ITucsonOperation op = out(tid, roleTuple, l);
 		if(op.isResultSuccess()){
 			LogicTuple res = op.getLogicTupleResult();
@@ -105,15 +108,16 @@ public class MetaACCProxyAgentSide extends ACCProxyAgentSide implements MetaACC{
 		this.addRolePolicy(role.getPolicy(), role.getRoleName(), l, tid);
 	}
 	
-	private void addPolicy(Policy policy, Long l, TupleCentreId tid) throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException{
+	private void addPolicy(Policy policy, Long l, TupleCentreId tid) throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException, InvalidVarNameException{
 		String permissions = "";
 		for(Permission perm : policy.getPermissions()){
 			permissions += perm.getPermissionName() + ",";
 		}
+
 		permissions = permissions.substring(0, permissions.length() - 1);
 		LogicTuple policyTuple = new LogicTuple("policy",
 				new Value(policy.getPolicyName()),
-				new Value("[" + permissions + "]"));
+				new Var('[' + permissions + ']'));
 		ITucsonOperation op = out(tid, policyTuple, l);
 		if(op.isResultSuccess()){
 			LogicTuple res = op.getLogicTupleResult();

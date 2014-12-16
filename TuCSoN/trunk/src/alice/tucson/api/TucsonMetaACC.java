@@ -16,6 +16,7 @@ package alice.tucson.api;
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.service.ACCProxyAgentSide;
 import alice.tucson.service.MetaACCProxyAgentSide;
+import alice.tucson.service.NegotiationACCProxyAgentSide;
 
 /**
  * TuCSoN Meta Agent Coordination Context. It is exploited by TuCSoN agents to
@@ -29,10 +30,34 @@ public final class TucsonMetaACC {
     private static final int DEFAULT_PORT = 20504;
     private static final String VERSION = "TuCSoN-1.11.0.0209";
 
+    public static NegotiationACC getContext(final TucsonAgentId aid, String netid, int portno){
+    	NegotiationACC acc = null;
+    	try {
+    		acc = new NegotiationACCProxyAgentSide(netid, portno);
+    	}catch (TucsonInvalidAgentIdException e) {
+			System.err.println("[Tucson-NegotiationACC]: " + e);
+			e.printStackTrace();
+			return null;
+		}
+    	return acc;
+    }
+    
+    /**
+     * Gets the available most-comprehensive ACC from the TuCSoN Node Service
+     * active on the default host ("localhost") on the default port (20504).
+     * 
+     * @param aid
+     *            Who demand for the ACC
+     * 
+     * @return The DefaultACC (which is the most powerful at the moment)
+     */
+    public static NegotiationACC getContext(final TucsonAgentId aid) {
+        return TucsonMetaACC.getContext(aid, "localhost",
+                TucsonMetaACC.DEFAULT_PORT);
+    }
     
     
-    
-    public static MetaACC getContext(final TucsonAgentId aid, String netid, int portno) {
+   /* public static MetaACC getContext(final TucsonAgentId aid, String netid, int portno) {
 		MetaACC acc = null;
 		try {
 			acc = new MetaACCProxyAgentSide(aid, netid, portno);
@@ -43,7 +68,7 @@ public final class TucsonMetaACC {
 			return null;
 		}
 		return acc;
-	}
+	}*/
     
     
     
@@ -57,10 +82,10 @@ public final class TucsonMetaACC {
      * 
      * @return The DefaultACC (which is the most powerful at the moment)
      */
-    public static EnhancedACC getContext(final TucsonAgentId aid) {
+    /*public static EnhancedACC getContext(final TucsonAgentId aid) {
         return TucsonMetaACC.getContext(aid, "localhost",
                 TucsonMetaACC.DEFAULT_PORT);
-    }
+    }*/
 
     /**
      * Gets the available most-comprehensive ACC from the TuCSoN Node Service

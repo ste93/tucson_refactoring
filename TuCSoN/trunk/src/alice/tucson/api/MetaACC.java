@@ -11,8 +11,8 @@ public interface MetaACC extends EnhancedACC {
 	ITucsonOperation activateAdminRole() throws InvalidVarNameException, TucsonOperationNotPossibleException, TucsonInvalidTupleCentreIdException, UnreachableNodeException, OperationTimeOutException;
 	ITucsonOperation activateAdminRole(Long l) throws InvalidVarNameException, TucsonOperationNotPossibleException, TucsonInvalidTupleCentreIdException, UnreachableNodeException, OperationTimeOutException;
 
-	void add(RBAC rbac) throws TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException;
-	void add(RBAC rbac, Long l, String node, int port) throws TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException;
+	void add(RBAC rbac) throws TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException, InvalidVarNameException;
+	void add(RBAC rbac, Long l, String node, int port) throws TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException, InvalidVarNameException;
 	void remove(RBAC rbac);
 	void remove(RBAC rbac, Long l, String node, int port);
 }

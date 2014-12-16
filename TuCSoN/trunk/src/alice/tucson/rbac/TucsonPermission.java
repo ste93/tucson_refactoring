@@ -21,4 +21,8 @@ public class TucsonPermission implements Permission{
 			return;
 		this.permissionName = permissionName;
 	}
+	
+	public static TucsonPermission createPermission(String permName){
+		return new TucsonPermission(permName);
+	}
 }

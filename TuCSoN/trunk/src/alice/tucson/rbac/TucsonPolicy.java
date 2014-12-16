@@ -3,6 +3,7 @@ package alice.tucson.rbac;
 import java.util.ArrayList;
 import java.util.List;
 
+import alice.logictuple.TupleArgument;
 import alice.tuprolog.Struct;
 import alice.tuprolog.Term;
 
@@ -47,9 +48,12 @@ public class TucsonPolicy implements Policy{
 			permissions.remove(permission);
 	}
 	
-	public static Policy createPolicy(String content){
-		Struct rt = (Struct) Term.createTerm(content);
-		Policy returnPolicy = new TucsonPolicy(rt.getArg(0).toString());
+	public static Policy createPolicy(String nomePolicy, TupleArgument[] policyArr){
+		Policy returnPolicy = new TucsonPolicy(nomePolicy);
+		for(TupleArgument policyTuple : policyArr){
+			Permission newPermission = TucsonPermission.createPermission(policyTuple.getName());
+			returnPolicy.addPermission(newPermission);
+		}
 		return returnPolicy;
 	}
 
