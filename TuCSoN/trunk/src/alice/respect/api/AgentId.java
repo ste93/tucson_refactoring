@@ -58,10 +58,12 @@ public class AgentId implements alice.tuplecentre.api.AgentId,
             this.id = Term.createTerm(newSid, AgentId.opManager);
         } catch (final InvalidTermException e) {
             e.printStackTrace();
-            throw new InvalidAgentIdException();
+            throw new InvalidAgentIdException("The identifier '" + newSid
+                    + "' is not a valid term");
         }
         if (!this.id.isGround()) {
-            throw new InvalidAgentIdException();
+            throw new InvalidAgentIdException("The identifier '"
+                    + this.id.toString() + "' is not ground");
         }
     }
 
@@ -89,7 +91,8 @@ public class AgentId implements alice.tuplecentre.api.AgentId,
     public AgentId(final Term tid) throws InvalidAgentIdException {
         this.id = tid.getTerm();
         if (!this.id.isGround()) {
-            throw new InvalidAgentIdException();
+            throw new InvalidAgentIdException("The identifier '"
+                    + this.id.toString() + "' is not ground");
         }
     }
 

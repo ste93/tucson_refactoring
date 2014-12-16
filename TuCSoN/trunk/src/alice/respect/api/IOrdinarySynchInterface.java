@@ -2,9 +2,9 @@ package alice.respect.api;
 
 import java.util.List;
 import alice.logictuple.LogicTuple;
+import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.respect.api.exceptions.OperationNotPossibleException;
 import alice.tuplecentre.api.IId;
-import alice.tuplecentre.api.exceptions.InvalidTupleException;
 
 /**
  * A ReSpecT Tuple Centre Interface to issue ReSpecT ordinary primitives using a
@@ -34,13 +34,13 @@ public interface IOrdinarySynchInterface {
      *            the tuple argument of the operation the tuple argument of the
      *            operation
      * @return the result of the operation
-     * @throws InvalidTupleException
+     * @throws InvalidLogicTupleException
      *             if the tuple given as argument is not a valid Prolog tuple if
      *             the tuple given as argument is not a valid Prolog tuple
      * @throws OperationNotPossibleException
      *             if the operation requested cannot be carried out
      */
-    LogicTuple in(IId aid, LogicTuple t) throws InvalidTupleException,
+    LogicTuple in(IId aid, LogicTuple t) throws InvalidLogicTupleException,
             OperationNotPossibleException;
 
     /**
@@ -50,12 +50,27 @@ public interface IOrdinarySynchInterface {
      * @param t
      *            the tuple argument of the operation
      * @return the result of the operation
-     * @throws InvalidTupleException
+     * @throws InvalidLogicTupleException
      *             if the tuple given as argument is not a valid Prolog tuple
      * @throws OperationNotPossibleException
      *             if the operation requested cannot be carried out
      */
-    List<LogicTuple> inAll(IId aid, LogicTuple t) throws InvalidTupleException,
+    List<LogicTuple> inAll(IId aid, LogicTuple t)
+            throws InvalidLogicTupleException, OperationNotPossibleException;
+
+    /**
+     * 
+     * @param aid
+     *            the identifier of who is invokin the operation
+     * @param t
+     *            the tuple argument of the operation
+     * @return the result of the operation
+     * @throws InvalidLogicTupleException
+     *             if the tuple given as argument is not a valid Prolog tuple
+     * @throws OperationNotPossibleException
+     *             if the operation requested cannot be carried out
+     */
+    LogicTuple inp(IId aid, LogicTuple t) throws InvalidLogicTupleException,
             OperationNotPossibleException;
 
     /**
@@ -65,12 +80,12 @@ public interface IOrdinarySynchInterface {
      * @param t
      *            the tuple argument of the operation
      * @return the result of the operation
-     * @throws InvalidTupleException
+     * @throws InvalidLogicTupleException
      *             if the tuple given as argument is not a valid Prolog tuple
      * @throws OperationNotPossibleException
      *             if the operation requested cannot be carried out
      */
-    LogicTuple inp(IId aid, LogicTuple t) throws InvalidTupleException,
+    LogicTuple no(IId aid, LogicTuple t) throws InvalidLogicTupleException,
             OperationNotPossibleException;
 
     /**
@@ -80,12 +95,41 @@ public interface IOrdinarySynchInterface {
      * @param t
      *            the tuple argument of the operation
      * @return the result of the operation
-     * @throws InvalidTupleException
+     * @throws InvalidLogicTupleException
      *             if the tuple given as argument is not a valid Prolog tuple
      * @throws OperationNotPossibleException
      *             if the operation requested cannot be carried out
      */
-    LogicTuple no(IId aid, LogicTuple t) throws InvalidTupleException,
+    List<LogicTuple> noAll(IId aid, LogicTuple t)
+            throws InvalidLogicTupleException, OperationNotPossibleException;
+
+    /**
+     * 
+     * @param aid
+     *            the identifier of who is invokin the operation
+     * @param t
+     *            the tuple argument of the operation
+     * @return the result of the operation
+     * @throws InvalidLogicTupleException
+     *             if the tuple given as argument is not a valid Prolog tuple
+     * @throws OperationNotPossibleException
+     *             if the operation requested cannot be carried out
+     */
+    LogicTuple nop(IId aid, LogicTuple t) throws InvalidLogicTupleException,
+            OperationNotPossibleException;
+
+    /**
+     * 
+     * @param aid
+     *            the identifier of who is invokin the operation
+     * @param t
+     *            the tuple argument of the operation
+     * @throws InvalidLogicTupleException
+     *             if the tuple given as argument is not a valid Prolog tuple
+     * @throws OperationNotPossibleException
+     *             if the operation requested cannot be carried out
+     */
+    void out(IId aid, LogicTuple t) throws InvalidLogicTupleException,
             OperationNotPossibleException;
 
     /**
@@ -95,57 +139,13 @@ public interface IOrdinarySynchInterface {
      * @param t
      *            the tuple argument of the operation
      * @return the result of the operation
-     * @throws InvalidTupleException
-     *             if the tuple given as argument is not a valid Prolog tuple
-     * @throws OperationNotPossibleException
-     *             if the operation requested cannot be carried out
-     */
-    List<LogicTuple> noAll(IId aid, LogicTuple t) throws InvalidTupleException,
-            OperationNotPossibleException;
-
-    /**
-     * 
-     * @param aid
-     *            the identifier of who is invokin the operation
-     * @param t
-     *            the tuple argument of the operation
-     * @return the result of the operation
-     * @throws InvalidTupleException
-     *             if the tuple given as argument is not a valid Prolog tuple
-     * @throws OperationNotPossibleException
-     *             if the operation requested cannot be carried out
-     */
-    LogicTuple nop(IId aid, LogicTuple t) throws InvalidTupleException,
-            OperationNotPossibleException;
-
-    /**
-     * 
-     * @param aid
-     *            the identifier of who is invokin the operation
-     * @param t
-     *            the tuple argument of the operation
-     * @throws InvalidTupleException
-     *             if the tuple given as argument is not a valid Prolog tuple
-     * @throws OperationNotPossibleException
-     *             if the operation requested cannot be carried out
-     */
-    void out(IId aid, LogicTuple t) throws InvalidTupleException,
-            OperationNotPossibleException;
-
-    /**
-     * 
-     * @param aid
-     *            the identifier of who is invokin the operation
-     * @param t
-     *            the tuple argument of the operation
-     * @return the result of the operation
-     * @throws InvalidTupleException
+     * @throws InvalidLogicTupleException
      *             if the tuple given as argument is not a valid Prolog tuple
      * @throws OperationNotPossibleException
      *             if the operation requested cannot be carried out
      */
     List<LogicTuple> outAll(IId aid, LogicTuple t)
-            throws InvalidTupleException, OperationNotPossibleException;
+            throws InvalidLogicTupleException, OperationNotPossibleException;
 
     /**
      * 
@@ -154,12 +154,12 @@ public interface IOrdinarySynchInterface {
      * @param t
      *            the tuple argument of the operation
      * @return the result of the operation
-     * @throws InvalidTupleException
+     * @throws InvalidLogicTupleException
      *             if the tuple given as argument is not a valid Prolog tuple
      * @throws OperationNotPossibleException
      *             if the operation requested cannot be carried out
      */
-    LogicTuple rd(IId aid, LogicTuple t) throws InvalidTupleException,
+    LogicTuple rd(IId aid, LogicTuple t) throws InvalidLogicTupleException,
             OperationNotPossibleException;
 
     /**
@@ -169,13 +169,13 @@ public interface IOrdinarySynchInterface {
      * @param t
      *            the tuple argument of the operation
      * @return the result of the operation
-     * @throws InvalidTupleException
+     * @throws InvalidLogicTupleException
      *             if the tuple given as argument is not a valid Prolog tuple
      * @throws OperationNotPossibleException
      *             if the operation requested cannot be carried out
      */
-    List<LogicTuple> rdAll(IId aid, LogicTuple t) throws InvalidTupleException,
-            OperationNotPossibleException;
+    List<LogicTuple> rdAll(IId aid, LogicTuple t)
+            throws InvalidLogicTupleException, OperationNotPossibleException;
 
     /**
      * 
@@ -184,12 +184,12 @@ public interface IOrdinarySynchInterface {
      * @param t
      *            the tuple argument of the operation
      * @return the result of the operation
-     * @throws InvalidTupleException
+     * @throws InvalidLogicTupleException
      *             if the tuple given as argument is not a valid Prolog tuple
      * @throws OperationNotPossibleException
      *             if the operation requested cannot be carried out
      */
-    LogicTuple rdp(IId aid, LogicTuple t) throws InvalidTupleException,
+    LogicTuple rdp(IId aid, LogicTuple t) throws InvalidLogicTupleException,
             OperationNotPossibleException;
 
     /**
@@ -201,11 +201,11 @@ public interface IOrdinarySynchInterface {
      * @return the result of the operation
      * @throws OperationNotPossibleException
      *             if the operation requested cannot be carried out
-     * @throws InvalidTupleException
+     * @throws InvalidLogicTupleException
      *             if the tuple given as argument is not a valid Prolog tuple
      */
     List<LogicTuple> set(IId aid, LogicTuple tupleList)
-            throws OperationNotPossibleException, InvalidTupleException;
+            throws OperationNotPossibleException, InvalidLogicTupleException;
 
     /**
      * 
@@ -214,12 +214,12 @@ public interface IOrdinarySynchInterface {
      * @param t
      *            the tuple argument of the operation
      * @return the result of the operation
-     * @throws InvalidTupleException
+     * @throws InvalidLogicTupleException
      *             if the tuple given as argument is not a valid Prolog tuple
      * @throws OperationNotPossibleException
      *             if the operation requested cannot be carried out
      */
-    LogicTuple spawn(IId aid, LogicTuple t) throws InvalidTupleException,
+    LogicTuple spawn(IId aid, LogicTuple t) throws InvalidLogicTupleException,
             OperationNotPossibleException;
 
     /**
@@ -229,12 +229,12 @@ public interface IOrdinarySynchInterface {
      * @param t
      *            the tuple argument of the operation
      * @return the result of the operation
-     * @throws InvalidTupleException
+     * @throws InvalidLogicTupleException
      *             if the tuple given as argument is not a valid Prolog tuple
      * @throws OperationNotPossibleException
      *             if the operation requested cannot be carried out
      */
-    LogicTuple uin(IId aid, LogicTuple t) throws InvalidTupleException,
+    LogicTuple uin(IId aid, LogicTuple t) throws InvalidLogicTupleException,
             OperationNotPossibleException;
 
     /**
@@ -244,12 +244,12 @@ public interface IOrdinarySynchInterface {
      * @param t
      *            the tuple argument of the operation
      * @return the result of the operation
-     * @throws InvalidTupleException
+     * @throws InvalidLogicTupleException
      *             if the tuple given as argument is not a valid Prolog tuple
      * @throws OperationNotPossibleException
      *             if the operation requested cannot be carried out
      */
-    LogicTuple uinp(IId aid, LogicTuple t) throws InvalidTupleException,
+    LogicTuple uinp(IId aid, LogicTuple t) throws InvalidLogicTupleException,
             OperationNotPossibleException;
 
     /**
@@ -259,12 +259,12 @@ public interface IOrdinarySynchInterface {
      * @param t
      *            the tuple argument of the operation
      * @return the result of the operation
-     * @throws InvalidTupleException
+     * @throws InvalidLogicTupleException
      *             if the tuple given as argument is not a valid Prolog tuple
      * @throws OperationNotPossibleException
      *             if the operation requested cannot be carried out
      */
-    LogicTuple uno(IId aid, LogicTuple t) throws InvalidTupleException,
+    LogicTuple uno(IId aid, LogicTuple t) throws InvalidLogicTupleException,
             OperationNotPossibleException;
 
     /**
@@ -274,12 +274,12 @@ public interface IOrdinarySynchInterface {
      * @param t
      *            the tuple argument of the operation
      * @return the result of the operation
-     * @throws InvalidTupleException
+     * @throws InvalidLogicTupleException
      *             if the tuple given as argument is not a valid Prolog tuple
      * @throws OperationNotPossibleException
      *             if the operation requested cannot be carried out
      */
-    LogicTuple unop(IId aid, LogicTuple t) throws InvalidTupleException,
+    LogicTuple unop(IId aid, LogicTuple t) throws InvalidLogicTupleException,
             OperationNotPossibleException;
 
     /**
@@ -289,12 +289,12 @@ public interface IOrdinarySynchInterface {
      * @param t
      *            the tuple argument of the operation
      * @return the result of the operation
-     * @throws InvalidTupleException
+     * @throws InvalidLogicTupleException
      *             if the tuple given as argument is not a valid Prolog tuple
      * @throws OperationNotPossibleException
      *             if the operation requested cannot be carried out
      */
-    LogicTuple urd(IId aid, LogicTuple t) throws InvalidTupleException,
+    LogicTuple urd(IId aid, LogicTuple t) throws InvalidLogicTupleException,
             OperationNotPossibleException;
 
     /**
@@ -304,11 +304,11 @@ public interface IOrdinarySynchInterface {
      * @param t
      *            the tuple argument of the operation
      * @return the result of the operation
-     * @throws InvalidTupleException
+     * @throws InvalidLogicTupleException
      *             if the tuple given as argument is not a valid Prolog tuple
      * @throws OperationNotPossibleException
      *             if the operation requested cannot be carried out
      */
-    LogicTuple urdp(IId aid, LogicTuple t) throws InvalidTupleException,
+    LogicTuple urdp(IId aid, LogicTuple t) throws InvalidLogicTupleException,
             OperationNotPossibleException;
 }

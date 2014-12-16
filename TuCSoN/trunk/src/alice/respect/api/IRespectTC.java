@@ -13,11 +13,11 @@
 package alice.respect.api;
 
 import alice.logictuple.LogicTuple;
+import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.respect.api.exceptions.InvalidSpecificationException;
 import alice.respect.api.exceptions.OperationNotPossibleException;
 import alice.respect.core.RespectVM;
 import alice.tuplecentre.api.IId;
-import alice.tuplecentre.api.exceptions.InvalidTupleException;
 import alice.tuplecentre.core.OperationCompletionListener;
 
 /**
@@ -614,11 +614,11 @@ public interface IRespectTC {
      * @return the operation requested
      * @throws OperationNotPossibleException
      *             if the requested operation cannot be carried out
-     * @throws InvalidTupleException
+     * @throws InvalidLogicTupleException
      *             if the given argument is not a valid Prolog tuple
      */
     IRespectOperation set(IId id, LogicTuple t)
-            throws OperationNotPossibleException, InvalidTupleException;
+            throws OperationNotPossibleException, InvalidLogicTupleException;
 
     /**
      * Gets the whole tuple set
@@ -632,11 +632,11 @@ public interface IRespectTC {
      * @return the operation requested
      * @throws OperationNotPossibleException
      *             if the requested operation cannot be carried out
-     * @throws InvalidTupleException
+     * @throws InvalidLogicTupleException
      *             if the given argument is not a valid Prolog tuple
      */
     IRespectOperation set(IId id, LogicTuple t, OperationCompletionListener l)
-            throws OperationNotPossibleException, InvalidTupleException;
+            throws OperationNotPossibleException, InvalidLogicTupleException;
 
     /**
      * 

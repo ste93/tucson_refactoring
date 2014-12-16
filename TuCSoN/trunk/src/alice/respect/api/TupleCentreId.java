@@ -52,7 +52,8 @@ public class TupleCentreId implements alice.tuplecentre.api.TupleCentreId,
         }
         this.id = Term.createTerm(name, TupleCentreId.opManager);
         if (!this.id.isGround()) {
-            throw new InvalidTupleCentreIdException();
+            throw new InvalidTupleCentreIdException("String '" + n
+                    + "' is not a well-formed ground logic term");
         }
     }
 
@@ -70,16 +71,20 @@ public class TupleCentreId implements alice.tuplecentre.api.TupleCentreId,
     public TupleCentreId(final String tcName, final String hostName,
             final String portName) throws InvalidTupleCentreIdException {
         final String tc = tcName.trim();
-        final String host = hostName.trim();
-        final String port = portName.trim();
+        final String host = alice.util.Tools.removeApices(hostName.trim());
+        final String port = alice.util.Tools.removeApices(portName.trim());
         try {
             this.id = Term.createTerm(tc + "@'" + host + "':'" + port + "'",
                     TupleCentreId.opManager);
         } catch (final InvalidTermException e) {
-            throw new InvalidTupleCentreIdException();
+            throw new InvalidTupleCentreIdException(
+                    "Cannot create a valid centre id from tcName: '" + tc
+                            + "', hostName: '" + host + "' and port:'" + port
+                            + "'");
         }
         if (!this.id.isGround()) {
-            throw new InvalidTupleCentreIdException();
+            throw new InvalidTupleCentreIdException("Term '" + this.id
+                    + "' is not a well-formed ground logic term");
         }
     }
 
@@ -95,7 +100,8 @@ public class TupleCentreId implements alice.tuplecentre.api.TupleCentreId,
     public TupleCentreId(final Term name) throws InvalidTupleCentreIdException {
         this.id = name.getTerm();
         if (!this.id.isGround()) {
-            throw new InvalidTupleCentreIdException();
+            throw new InvalidTupleCentreIdException("Term '" + name
+                    + "' is not a well-formed ground logic term");
         }
     }
 

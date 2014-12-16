@@ -31,7 +31,7 @@ public class EnvAgentId extends TucsonAgentId {
 
     @Override
     public boolean isAgent() {
-        return true;
+        return false;
     }
 
     @Override

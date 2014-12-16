@@ -16,6 +16,7 @@ import alice.respect.situatedness.TransducerId;
  * 
  */
 public enum ProbesManager {
+    /** the singleton instance of this probes manager */
     INSTANCE;
     /**
      * Utility method used to communicate an output message to the console.

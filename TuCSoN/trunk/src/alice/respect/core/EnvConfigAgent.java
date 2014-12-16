@@ -2,6 +2,7 @@ package alice.respect.core;
 
 import java.lang.reflect.InvocationTargetException;
 import alice.logictuple.LogicTuple;
+import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.respect.api.TupleCentreId;
 import alice.respect.api.exceptions.InvalidTupleCentreIdException;
 import alice.respect.situatedness.AbstractProbeId;
@@ -16,7 +17,6 @@ import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
 import alice.tuplecentre.api.exceptions.InvalidOperationException;
-import alice.tuplecentre.api.exceptions.InvalidTupleException;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 import alice.tuplecentre.core.AbstractTupleCentreOperation;
 
@@ -194,7 +194,7 @@ public class EnvConfigAgent extends AbstractTucsonAgent {
                             + pId + ", new transducer=" + tId + " >...");
                     rm.setTransducer(pId, tId);
                 }
-            } catch (final InvalidTupleException e) {
+            } catch (final InvalidLogicTupleException e) {
                 e.printStackTrace();
             } catch (final TucsonOperationNotPossibleException e) {
                 e.printStackTrace();

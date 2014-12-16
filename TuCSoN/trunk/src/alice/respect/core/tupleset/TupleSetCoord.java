@@ -16,8 +16,6 @@ import java.util.LinkedList;
 import alice.logictuple.LogicTuple;
 import alice.logictuple.TupleArgument;
 import alice.respect.core.collection.DoubleKeyMVMap;
-import alice.tuplecentre.api.exceptions.InvalidOperationException;
-import alice.tuplecentre.api.exceptions.InvalidTupleException;
 
 /**
  * 
@@ -41,16 +39,12 @@ public class TupleSetCoord extends AbstractTupleSet {
      * arity.
      */
     @Override
-    public String getTupleKey1(final LogicTuple t) throws InvalidTupleException {
-        try {
-            final TupleArgument ta = t.getVarValue(null);
-            if (ta != null) {
-                return ta.getPredicateIndicator();
-            }
-            return t.getPredicateIndicator();
-        } catch (final InvalidOperationException e) {
-            throw new InvalidTupleException();
+    public String getTupleKey1(final LogicTuple t) {
+        final TupleArgument ta = t.getVarValue(null);
+        if (ta != null && ta.isStruct()) {
+            return ta.getPredicateIndicator();
         }
+        return t.getPredicateIndicator();
     }
 
     /**
@@ -59,38 +53,34 @@ public class TupleSetCoord extends AbstractTupleSet {
      * stored whit a special key.
      * */
     @Override
-    public String getTupleKey2(final LogicTuple t) throws InvalidTupleException {
-        try {
-            TupleArgument tArg = t.getVarValue(null);
-            // Check if the term as a value assigned to a variable
-            if (tArg != null) {
-                if (tArg.getArity() > 0) {
-                    tArg = tArg.getArg(0);
-                    if (tArg.isNumber()) {
-                        // The number are treated as a special case and
-                        // are indexed with their string representation
-                        return tArg.toString();
-                    } else if (tArg.isVar()) {
-                        return "VAR";
-                    } else {
-                        return tArg.getPredicateIndicator();
-                    }
-                }
-                return "";
-            } else if (t.getArity() > 0) {
-                tArg = t.getArg(0);
+    public String getTupleKey2(final LogicTuple t) {
+        TupleArgument tArg = t.getVarValue(null);
+        // Check if the term as a value assigned to a variable
+        if (tArg != null) {
+            if (tArg.getArity() > 0) {
+                tArg = tArg.getArg(0);
                 if (tArg.isNumber()) {
+                    // The number are treated as a special case and
+                    // are indexed with their string representation
                     return tArg.toString();
                 } else if (tArg.isVar()) {
                     return "VAR";
                 } else {
                     return tArg.getPredicateIndicator();
                 }
-            } else {
-                return "";
             }
-        } catch (final InvalidOperationException e) {
-            throw new InvalidTupleException();
+            return "";
+        } else if (t.getArity() > 0) {
+            tArg = t.getArg(0);
+            if (tArg.isNumber()) {
+                return tArg.toString();
+            } else if (tArg.isVar()) {
+                return "VAR";
+            } else {
+                return tArg.getPredicateIndicator();
+            }
+        } else {
+            return "";
         }
     }
 }

@@ -136,7 +136,7 @@ public class RespectVM implements Runnable {
             this.context.doOperation(id, op);
             this.news.signalEvent();
         } catch (final alice.tuplecentre.api.exceptions.OperationNotPossibleException e) {
-            throw new OperationNotPossibleException();
+            throw new OperationNotPossibleException(e.getMessage());
         }
     }
 
@@ -167,6 +167,14 @@ public class RespectVM implements Runnable {
      */
     public TupleCentreId getId() {
         return (TupleCentreId) this.context.getId();
+    }
+
+    /**
+     * 
+     * @return the list of inspector
+     */
+    public ArrayList<InspectableEventListener> getInspectors() {
+        return (ArrayList<InspectableEventListener>) this.inspectors;
     }
 
     /**
@@ -233,7 +241,7 @@ public class RespectVM implements Runnable {
             this.context.goCommand();
             this.news.signalEvent();
         } catch (final alice.tuplecentre.api.exceptions.OperationNotPossibleException e) {
-            throw new OperationNotPossibleException();
+            throw new OperationNotPossibleException(e.getMessage());
         }
     }
 
@@ -256,16 +264,22 @@ public class RespectVM implements Runnable {
     }
 
     /**
-     * 
+     * @return if stepMode is active or not
+     */
+    public boolean isStepModeCommand() {
+        return this.context.isStepMode();
+    }
+
+    /**
      * @throws OperationNotPossibleException
-     *             if the requested operation cannot be carried out
+     *             if the ReSpecT VM is not in step mode
      */
     public void nextStepCommand() throws OperationNotPossibleException {
         try {
             this.context.nextStepCommand();
             this.news.signalEvent();
         } catch (final alice.tuplecentre.api.exceptions.OperationNotPossibleException e) {
-            throw new OperationNotPossibleException();
+            throw new OperationNotPossibleException(e.getMessage());
         }
     }
 
@@ -450,11 +464,11 @@ public class RespectVM implements Runnable {
             synchronized (this.idle) {
                 this.context.execute();
             }
+            if (this.hasInspectors()) {
+                this.notifyInspectableEvent(new InspectableEvent(this,
+                        InspectableEvent.TYPE_IDLESTATE));
+            }
             try {
-                if (this.hasInspectors()) {
-                    this.notifyInspectableEvent(new InspectableEvent(this,
-                            InspectableEvent.TYPE_NEWSTATE));
-                }
                 if (!(this.context.pendingEvents() || this.context
                         .pendingEnvEvents())) {
                     this.news.awaitEvent();
@@ -469,7 +483,6 @@ public class RespectVM implements Runnable {
     }
 
     /**
-     * 
      * @param activate
      *            toggles management mode on and off
      */
@@ -499,6 +512,10 @@ public class RespectVM implements Runnable {
         this.context.setWSet(wSet);
     }
 
+    public void stepModeCommand() {
+        this.context.toggleStepMode();
+    }
+
     /**
      * 
      * @throws OperationNotPossibleException
@@ -508,7 +525,7 @@ public class RespectVM implements Runnable {
         try {
             this.context.stopCommand();
         } catch (final alice.tuplecentre.api.exceptions.OperationNotPossibleException e) {
-            throw new OperationNotPossibleException();
+            throw new OperationNotPossibleException(e.getMessage());
         }
     }
 }

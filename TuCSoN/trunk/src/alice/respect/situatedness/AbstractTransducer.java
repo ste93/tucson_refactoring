@@ -17,7 +17,6 @@ import alice.tucson.service.OperationHandler;
 import alice.tucson.service.TucsonOperation;
 import alice.tuplecentre.api.TupleCentreId;
 import alice.tuplecentre.api.TupleTemplate;
-import alice.tuplecentre.api.exceptions.InvalidOperationException;
 
 /**
  * This class implements some common behavior of transducers and defines some
@@ -194,20 +193,15 @@ public abstract class AbstractTransducer implements
      */
     @Override
     public boolean notifyOutput(final InternalEvent ev) {
-        try {
-            if (ev.getInternalOperation().isGetEnv()) {
-                return this.getEnv(ev.getInternalOperation().getArgument()
-                        .getArg(0).toString());
-            } else if (ev.getInternalOperation().isSetEnv()) {
-                final String key = ev.getInternalOperation().getArgument()
-                        .getArg(0).toString();
-                final int value = Integer.parseInt(ev.getInternalOperation()
-                        .getArgument().getArg(1).toString());
-                return this.setEnv(key, value);
-            }
-        } catch (final InvalidOperationException e) {
-            e.printStackTrace();
-            return false;
+        if (ev.getInternalOperation().isGetEnv()) {
+            return this.getEnv(ev.getInternalOperation().getArgument()
+                    .getArg(0).toString());
+        } else if (ev.getInternalOperation().isSetEnv()) {
+            final String key = ev.getInternalOperation().getArgument()
+                    .getArg(0).toString();
+            final int value = Integer.parseInt(ev.getInternalOperation()
+                    .getArgument().getArg(1).toString());
+            return this.setEnv(key, value);
         }
         return false;
     }

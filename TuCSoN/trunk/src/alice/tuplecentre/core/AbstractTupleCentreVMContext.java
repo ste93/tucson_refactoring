@@ -19,6 +19,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import alice.respect.api.IRespectTC;
+import alice.respect.core.RespectVM;
+import alice.respect.core.StepMonitor;
 import alice.tuplecentre.api.AgentId;
 import alice.tuplecentre.api.IId;
 import alice.tuplecentre.api.ITupleCentre;
@@ -44,22 +46,26 @@ import alice.tuplecentre.api.exceptions.OperationNotPossibleException;
  */
 public abstract class AbstractTupleCentreVMContext implements
         ITupleCentreManagement, ITupleCentre {
+
     private long bootTime;
     private InputEvent currentEvent;
     private AbstractTupleCentreVMState currentState;
-    private boolean doStep;
     private final List<AbstractEvent> inputEnvEvents;
     private final List<AbstractEvent> inputEvents;
     private boolean management;
     private final int maxPendingInputEventNumber;
     private final IRespectTC respectTC;
+    private final RespectVM rvm;
     private final Map<String, AbstractTupleCentreVMState> states;
-    private boolean stop;
+    private final StepMonitor step;
+    private boolean stepMode;
     private final TupleCentreId tid;
 
     /**
      * Creates a new tuple centre virtual machine core
      * 
+     * @param rvm
+     *            is the ReSpecT virtual machine
      * @param id
      *            is the tuple centre identifier
      * @param ieSize
@@ -67,9 +73,12 @@ public abstract class AbstractTupleCentreVMContext implements
      * @param rtc
      *            the ReSpecT tuple centre this VM refers to
      */
-    public AbstractTupleCentreVMContext(final TupleCentreId id,
-            final int ieSize, final IRespectTC rtc) {
+    public AbstractTupleCentreVMContext(final RespectVM rvm,
+            final TupleCentreId id, final int ieSize, final IRespectTC rtc) {
+        this.rvm = rvm;
         this.management = false;
+        this.stepMode = false;
+        this.step = new StepMonitor();
         this.inputEvents = new LinkedList<AbstractEvent>();
         this.inputEnvEvents = new LinkedList<AbstractEvent>();
         this.tid = id;
@@ -151,8 +160,10 @@ public abstract class AbstractTupleCentreVMContext implements
      * 
      * @param t
      *            the tuple to be addedd
+     * @param u
+     *            a flag indicating wether a persistency update is due
      */
-    public abstract void addTuple(Tuple t);
+    public abstract void addTuple(Tuple t, boolean u);
 
     @Override
     public void doOperation(final IId who, final AbstractTupleCentreOperation op)
@@ -161,7 +172,8 @@ public abstract class AbstractTupleCentreVMContext implements
                 this.getCurrentTime());
         synchronized (this.inputEvents) {
             if (this.inputEvents.size() > this.maxPendingInputEventNumber) {
-                throw new OperationNotPossibleException();
+                throw new OperationNotPossibleException(
+                        "Max pending input event limit reached");
             }
             this.inputEvents.add(ev);
         }
@@ -184,21 +196,25 @@ public abstract class AbstractTupleCentreVMContext implements
      * Executes a virtual machine behaviour cycle
      */
     public void execute() {
-        if (this.management && this.stop) {
-            if (!this.doStep) {
-                return;
-            }
-            this.doStep = false;
-        }
         while (!this.currentState.isIdle()) {
             this.currentState.execute();
             this.currentState = this.currentState.getNextState();
-            if (this.management && this.stop) {
-                if (!this.doStep) {
-                    break;
-                }
-                this.doStep = false;
+            // notify TYPE_NEWSTATE
+            if (this.rvm.hasInspectors()) {
+                this.rvm.notifyInspectableEvent(new InspectableEvent(this,
+                        InspectableEvent.TYPE_NEWSTATE));
             }
+            if (this.isStepMode()) {
+                try {
+                    this.step.awaitEvent();
+                } catch (final InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            /*
+             * old if (this.management && this.stop) { if (!this.doStep) {
+             * break; } this.doStep = false; }
+             */
         }
     }
 
@@ -352,7 +368,6 @@ public abstract class AbstractTupleCentreVMContext implements
         if (!this.management) {
             throw new OperationNotPossibleException();
         }
-        this.stop = false;
     }
 
     /**
@@ -364,6 +379,11 @@ public abstract class AbstractTupleCentreVMContext implements
      */
     public abstract List<Tuple> inAllTuples(TupleTemplate t);
 
+    @Override
+    public boolean isStepMode() {
+        return this.stepMode;
+    }
+
     /**
      * 
      * @param out
@@ -373,10 +393,10 @@ public abstract class AbstractTupleCentreVMContext implements
 
     @Override
     public void nextStepCommand() throws OperationNotPossibleException {
-        if (!this.management) {
+        if (!this.stepMode) {
             throw new OperationNotPossibleException();
         }
-        this.doStep = true;
+        this.step.signalEvent();
     }
 
     /**
@@ -473,9 +493,11 @@ public abstract class AbstractTupleCentreVMContext implements
      * 
      * @param t
      *            the tuple template that must be matched by the tuple
+     * @param u
+     *            a flag indicating wether a persistency update is due
      * @return a tuple matching the tuple template
      */
-    public abstract Tuple removeMatchingTuple(TupleTemplate t);
+    public abstract Tuple removeMatchingTuple(TupleTemplate t, boolean u);
 
     /**
      * Removes the pending queries related to an agent
@@ -551,7 +573,6 @@ public abstract class AbstractTupleCentreVMContext implements
         if (!this.management) {
             throw new OperationNotPossibleException();
         }
-        this.stop = true;
     }
 
     /**
@@ -559,6 +580,17 @@ public abstract class AbstractTupleCentreVMContext implements
      * @return wether there are some time-triggered ReSpecT reactions
      */
     public abstract boolean timeTriggeredReaction();
+
+    @Override
+    public boolean toggleStepMode() {
+        if (this.isStepMode()) {
+            this.stepMode = false;
+            this.step.signalEvent();
+            return false;
+        }
+        this.stepMode = true;
+        return true;
+    }
 
     /**
      * 

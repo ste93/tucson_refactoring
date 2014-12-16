@@ -18,20 +18,15 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JPanel;
-import alice.logictuple.LogicTuple;
+import javax.swing.SwingUtilities;
 import alice.tucson.api.EnhancedACC;
 import alice.tucson.api.TucsonAgentId;
 import alice.tucson.api.TucsonMetaACC;
 import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
-import alice.tucson.api.exceptions.UnreachableNodeException;
-import alice.tuplecentre.api.exceptions.InvalidOperationException;
-import alice.tuplecentre.api.exceptions.InvalidTupleException;
-import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 
 /**
  * 
@@ -41,35 +36,6 @@ import alice.tuplecentre.api.exceptions.OperationTimeOutException;
  */
 public class EditSpec extends javax.swing.JFrame {
     private static final long serialVersionUID = 2491540632593263750L;
-
-    private static String format(final LogicTuple t) {
-        final StringBuffer res = new StringBuffer(21);
-        try {
-            res.append(t.getName()).append("(\n\t");
-            res.append(t.getArg(0)).append(",\n\t");
-            res.append(t.getArg(1)).append(",\n\t");
-            res.append(t.getArg(2)).append("\n).\n");
-        } catch (final InvalidOperationException e) {
-            e.printStackTrace();
-        }
-        return res.toString();
-    }
-
-    private static String predFormat(final LogicTuple t) {
-        final StringBuffer res = new StringBuffer();
-        try {
-            if (!":-".equals(t.getName())) {
-                res.append(t.toString()).append(".\n");
-            } else {
-                res.append(t.getArg(0)).append(" :-\n    ");
-                res.append(t.getArg(1)).append(".\n");
-            }
-        } catch (final InvalidOperationException e) {
-            e.printStackTrace();
-        }
-        return res.toString();
-    }
-
     private javax.swing.JTextField caretPosition;
     private EnhancedACC context;
     private final alice.util.jedit.JEditTextArea inputSpec;
@@ -128,29 +94,11 @@ public class EditSpec extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * get tuple centre specification space
+     */
     private void bGetActionPerformed() {
-        try {
-            final StringBuffer spec = new StringBuffer();
-            final List<LogicTuple> list = this.context.getS(this.tid,
-                    (Long) null).getLogicTupleListResult();
-            for (final LogicTuple t : list) {
-                if ("reaction".equals(t.getName())) {
-                    spec.append(EditSpec.format(t));
-                } else {
-                    spec.append(EditSpec.predFormat(t));
-                }
-            }
-            this.inputSpec.setText(spec.toString());
-            this.outputState.setText("ReSpecT specification read.");
-        } catch (final TucsonOperationNotPossibleException e) {
-            this.outputState.setText(e.toString());
-        } catch (final UnreachableNodeException e) {
-            this.outputState.setText("TuCSoN Node is unreachable.");
-        } catch (final OperationTimeOutException e) {
-            this.outputState.setText("TuCSoN operation timeout exceeded.");
-        } catch (final InvalidOperationException e) {
-            this.outputState.setText(e.toString());
-        }
+        new SpecWorker("get", this.context, this.tid, this, null).start();
     }
 
     private void bLoadActionPerformed() {
@@ -192,24 +140,8 @@ public class EditSpec extends javax.swing.JFrame {
     }
 
     private void bOkActionPerformed() {
-        try {
-            final String spec = this.inputSpec.getText();
-            if (spec.isEmpty()) {
-                this.context
-                        .setS(this.tid, LogicTuple.parse("[]"), (Long) null);
-            } else {
-                this.context.setS(this.tid, spec, (Long) null);
-            }
-            this.outputState.setText("ReSpecT specification set.");
-        } catch (final TucsonOperationNotPossibleException e) {
-            this.outputState.setText(e.toString());
-        } catch (final UnreachableNodeException e) {
-            this.outputState.setText("TuCSoN Node is unreachable.");
-        } catch (final OperationTimeOutException e) {
-            this.outputState.setText("TuCSoN operation timeout exceeded.");
-        } catch (final InvalidTupleException e) {
-            this.outputState.setText("Invalid ReSpecT specification given.");
-        }
+        new SpecWorker("set", this.context, this.tid, this, this.inputSpec)
+                .start();
     }
 
     private void bSaveActionPerformed() {
@@ -276,18 +208,7 @@ public class EditSpec extends javax.swing.JFrame {
     }
 
     private void formComponentShown() {
-        try {
-            final String spec = this.context.getS(this.tid, (Long) null)
-                    .getLogicTupleListResult().toString();
-            this.inputSpec.setText(spec);
-            this.outputState.setText("ReSpecT specification read.");
-        } catch (final TucsonOperationNotPossibleException e) {
-            this.outputState.setText(e.toString());
-        } catch (final UnreachableNodeException e) {
-            this.outputState.setText("TuCSoN Node is unreachable.");
-        } catch (final OperationTimeOutException e) {
-            this.outputState.setText("TuCSoN operation timeout exceeded.");
-        }
+        this.bGetActionPerformed();
     }
 
     private void initComponents() {
@@ -428,5 +349,34 @@ public class EditSpec extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 0);
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         this.getContentPane().add(this.caretPosition, gridBagConstraints);
+    }
+
+    /**
+     * reports the result of get operation in SpecWorker
+     * 
+     * @param spec
+     *            the ReSpecT specification read
+     */
+    protected void getCompletion(final StringBuffer spec) {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                EditSpec.this.inputSpec.setText(spec.toString());
+                EditSpec.this.outputState
+                        .setText("ReSpecT specification read.");
+            }
+        });
+    }
+
+    /**
+     * reports the result of set operation in SpecWorker
+     */
+    protected void setCompletion() {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                EditSpec.this.outputState.setText("ReSpecT specification set.");
+            }
+        });
     }
 }

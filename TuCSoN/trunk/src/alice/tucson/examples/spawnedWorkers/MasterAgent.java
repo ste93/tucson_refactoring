@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import alice.logictuple.LogicTuple;
+import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.tucson.api.AbstractTucsonAgent;
 import alice.tucson.api.EnhancedSynchACC;
 import alice.tucson.api.ITucsonOperation;
@@ -14,18 +15,18 @@ import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
 import alice.tuplecentre.api.exceptions.InvalidOperationException;
-import alice.tuplecentre.api.exceptions.InvalidTupleException;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 import alice.tuplecentre.core.AbstractTupleCentreOperation;
 
 /**
  * Master thread of a master-worker architecture. Given a list of TuCSoN Nodes
- * (hopefully up & listening), it submits jobs regarding factorial computation,
- * then collects expected results.
+ * (hopefully up and listening), it submits jobs regarding factorial
+ * computation, then collects expected results.
  * 
  * @author ste (mailto: s.mariani@unibo.it)
  */
 public class MasterAgent extends AbstractTucsonAgent {
+
     private static final int ITERS = 10;
     private static final int MAX_FACT = 10;
     private static final int SLEEP = 1000;
@@ -223,7 +224,7 @@ public class MasterAgent extends AbstractTucsonAgent {
                 }
             }
             this.say("Someone killed me, bye!");
-        } catch (final InvalidTupleException e) {
+        } catch (final InvalidLogicTupleException e) {
             this.say("ERROR: Tuple is not an admissible Prolog term!");
             e.printStackTrace();
         } catch (final TucsonOperationNotPossibleException e) {

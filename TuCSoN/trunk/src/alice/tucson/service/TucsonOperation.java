@@ -86,6 +86,10 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
         return RespectOperation.OPTYPE_GET_ENV;
     }
 
+    public static int getInspectorsCode() {
+        return AbstractTupleCentreOperation.OPTYPE_GET_INSPS;
+    }
+
     /**
      * 
      * @return the Integer representing the type code of <code>get_s</code>
@@ -192,6 +196,15 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
      */
     public static int inSCode() {
         return AbstractTupleCentreOperation.OPTYPE_IN_S;
+    }
+
+    /**
+     * 
+     * @return the Integer representing the type code of <code>step_mode</code>
+     *         operation
+     */
+    public static int isStepModeCode() {
+        return AbstractTupleCentreOperation.OPTYPE_IS_STEP_MODE;
     }
 
     /**
@@ -370,10 +383,10 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
      * @return the Integer representing the type code of
      *         <code>set_mgm_mode</code> operation
      */
-    public static int setMngModeCode() {
-        return AbstractTupleCentreOperation.OPTYPE_SET_MNG_MODE;
-    }
-
+    /*
+     * TODO must be delete... public static int setMngModeCode() { return
+     * AbstractTupleCentreOperation.OPTYPE_SET_MNG_MODE; }
+     */
     /**
      * 
      * @return the Integer representing the type code of <code>set_s</code>
@@ -408,6 +421,15 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
      */
     public static int spawnCode() {
         return AbstractTupleCentreOperation.OPTYPE_SPAWN;
+    }
+
+    /**
+     * 
+     * @return the Integer representing the type code of <code>step_mode</code>
+     *         operation
+     */
+    public static int stepModeCode() {
+        return AbstractTupleCentreOperation.OPTYPE_STEP_MODE;
     }
 
     /**
@@ -531,10 +553,9 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
             }
             return JTuplesEngine.toJavaTuple(lt);
         } catch (final InvalidTupleException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
+            return null;
         }
-        return null;
     }
 
     /*
@@ -554,8 +575,8 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
                 }
             }
         } catch (final InvalidTupleException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
+            return null;
         }
         return jts;
     }
@@ -573,10 +594,9 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
             }
             return JTuplesEngine.toJavaTuple(lt);
         } catch (final InvalidTupleException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
+            return null;
         }
-        return null;
     }
 
     /**

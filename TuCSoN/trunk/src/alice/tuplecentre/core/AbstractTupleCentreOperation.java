@@ -15,10 +15,10 @@ package alice.tuplecentre.core;
 
 import java.util.List;
 import alice.logictuple.LogicTuple;
+import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.tuplecentre.api.ITupleCentreOperation;
 import alice.tuplecentre.api.Tuple;
 import alice.tuplecentre.api.TupleTemplate;
-import alice.tuplecentre.api.exceptions.InvalidTupleException;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 import alice.tuplecentre.core.TCCycleResult.Outcome;
 
@@ -31,6 +31,8 @@ import alice.tuplecentre.core.TCCycleResult.Outcome;
  */
 public abstract class AbstractTupleCentreOperation implements
         ITupleCentreOperation {
+    /**  */
+    public static final int OPTYPE_IS_STEP_MODE = 57;
     /**
      * shared id counter
      */
@@ -43,6 +45,8 @@ public abstract class AbstractTupleCentreOperation implements
     protected static final int OPTYPE_ADD_OBS = 67;
     /**  */
     protected static final int OPTYPE_GET = 8;
+    /**  */
+    protected static final int OPTYPE_GET_INSPS = 29;
     /**  */
     protected static final int OPTYPE_GET_S = 28;
     /**  */
@@ -102,7 +106,8 @@ public abstract class AbstractTupleCentreOperation implements
     /**  */
     protected static final int OPTYPE_SET = 9;
     /**  */
-    protected static final int OPTYPE_SET_MNG_MODE = 59;
+    // TODO must be delete.. protected static final int OPTYPE_SET_MNG_MODE =
+    // 59;
     /**  */
     protected static final int OPTYPE_SET_S = 27;
     /**  */
@@ -111,6 +116,8 @@ public abstract class AbstractTupleCentreOperation implements
     protected static final int OPTYPE_SET_WSET = 73;
     /**  */
     protected static final int OPTYPE_SPAWN = 666;
+    /**  */
+    protected static final int OPTYPE_STEP_MODE = 59;
     /**  */
     protected static final int OPTYPE_STOP_CMD = 60;
     /**  */
@@ -279,7 +286,7 @@ public abstract class AbstractTupleCentreOperation implements
             pred.append(this.getPrimitive().toString()).append('(')
                     .append(this.templateArgument).append(')');
             return LogicTuple.parse(pred.toString());
-        } catch (final InvalidTupleException e) {
+        } catch (final InvalidLogicTupleException e) {
             e.printStackTrace();
             return null;
         }
@@ -668,12 +675,12 @@ public abstract class AbstractTupleCentreOperation implements
                 try {
                     this.token.wait(ms);
                 } catch (final InterruptedException e) {
-                    // do nothing here, ususally happens when shutting down
+                    // do nothing here, usually happens when shutting down
                     // nodes
                 }
             }
             if (!this.operationCompleted) {
-                throw new OperationTimeOutException();
+                throw new OperationTimeOutException(ms);
             }
         }
     }

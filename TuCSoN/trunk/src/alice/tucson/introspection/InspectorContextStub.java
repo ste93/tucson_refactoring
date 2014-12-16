@@ -13,7 +13,6 @@
  */
 package alice.tucson.introspection;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import alice.tucson.api.TucsonAgentId;
@@ -23,7 +22,7 @@ import alice.tucson.api.exceptions.UnreachableNodeException;
 import alice.tucson.network.AbstractTucsonProtocol;
 import alice.tucson.network.TucsonProtocolTCP;
 import alice.tucson.network.exceptions.DialogException;
-import alice.tucson.network.exceptions.DialogExceptionTcp;
+import alice.tucson.network.exceptions.DialogSendException;
 import alice.tucson.service.ACCDescription;
 import alice.tuplecentre.api.Tuple;
 
@@ -34,13 +33,6 @@ import alice.tuplecentre.api.Tuple;
  * 
  */
 public class InspectorContextStub implements InspectorContext {
-    /**
-     * @param msg
-     */
-    private static void log(final String msg) {
-        System.out.println("[InspectorContextStub]: " + msg);
-    }
-
     /** listeners registrated for virtual machine output events */
     private final List<InspectorContextListener> contextListeners = new ArrayList<InspectorContextListener>();
     private AbstractTucsonProtocol dialog;
@@ -54,7 +46,6 @@ public class InspectorContextStub implements InspectorContext {
     protected TucsonTupleCentreId tid;
 
     /**
-     * 
      * @param i
      *            the agent identifier to be used by this inspector
      * @param tc
@@ -79,7 +70,7 @@ public class InspectorContextStub implements InspectorContext {
     }
 
     @Override
-    public void acceptVMEvent() {
+    public void acceptVMEvent() throws DialogException {
         try {
             final InspectorContextEvent msg = this.dialog
                     .receiveInspectorEvent();
@@ -88,7 +79,7 @@ public class InspectorContextStub implements InspectorContext {
             }
         } catch (final DialogException e) {
             if (!this.exitFlag) {
-                InspectorContextStub.log("Unreachable TuCSoN node :(");
+                throw new DialogException("node-disconnected");
             }
         }
     }
@@ -99,22 +90,14 @@ public class InspectorContextStub implements InspectorContext {
     }
 
     @Override
-    public void exit() throws IOException {
+    public void exit() throws DialogSendException {
         this.exitFlag = true;
-        try {
-            this.dialog.sendNodeMsg(new ShutdownMsg(this.id));
-        } catch (final DialogException e) {
-            throw new IOException();
-        }
+        this.dialog.sendNodeMsg(new ShutdownMsg(this.id));
     }
 
     @Override
-    public void getSnapshot(final byte snapshotMsg) throws IOException {
-        try {
-            this.dialog.sendNodeMsg(new GetSnapshotMsg(this.id, snapshotMsg));
-        } catch (final DialogException e) {
-            throw new IOException();
-        }
+    public void getSnapshot(final byte snapshotMsg) throws DialogSendException {
+        this.dialog.sendNodeMsg(new GetSnapshotMsg(this.id, snapshotMsg));
     }
 
     @Override
@@ -123,12 +106,17 @@ public class InspectorContextStub implements InspectorContext {
     }
 
     @Override
-    public void nextStep() throws IOException {
+    public void isStepMode() {
         try {
-            this.dialog.sendNodeMsg(new NextStepMsg(this.id));
+            this.dialog.sendNodeMsg(new IsActiveStepModeMsg(this.id));
         } catch (final DialogException e) {
-            throw new IOException();
+            e.printStackTrace();
         }
+    }
+
+    @Override
+    public void nextStep() throws DialogSendException {
+        this.dialog.sendNodeMsg(new NextStepMsg(this.id));
     }
 
     @Override
@@ -137,25 +125,18 @@ public class InspectorContextStub implements InspectorContext {
     }
 
     @Override
-    public void reset() throws IOException {
-        try {
-            this.dialog.sendNodeMsg(new ResetMsg(this.id));
-        } catch (final DialogException e) {
-            throw new IOException();
-        }
+    public void reset() throws DialogSendException {
+        this.dialog.sendNodeMsg(new ResetMsg(this.id));
     }
 
     @Override
-    public void setEventSet(final List<Tuple> wset) throws IOException {
-        try {
-            this.dialog.sendNodeMsg(new SetEventSetMsg(this.id, wset));
-        } catch (final DialogException e) {
-            throw new IOException();
-        }
+    public void setEventSet(final List<Tuple> wset) throws DialogSendException {
+        this.dialog.sendNodeMsg(new SetEventSetMsg(this.id, wset));
     }
 
     @Override
-    public void setProtocol(final InspectorProtocol p) throws IOException {
+    public void setProtocol(final InspectorProtocol p)
+            throws DialogSendException {
         final InspectorProtocol newp = new InspectorProtocol();
         newp.setTsetObservType(p.getTsetObservType());
         newp.setTsetFilter(p.getTsetFilter());
@@ -163,21 +144,19 @@ public class InspectorContextStub implements InspectorContext {
         newp.setTracing(p.isTracing());
         newp.setPendingQueryObservType(p.getPendingQueryObservType());
         newp.setReactionsObservType(p.getReactionsObservType());
-        try {
-            this.dialog.sendNodeMsg(new SetProtocolMsg(this.id, newp));
-        } catch (final DialogException e) {
-            throw new IOException();
-        }
+        newp.setStepModeObservType(p.getStepModeObservType());
+        this.dialog.sendNodeMsg(new SetProtocolMsg(this.id, newp));
         this.protocol = p;
     }
 
     @Override
-    public void setTupleSet(final List<Tuple> tset) throws IOException {
-        try {
-            this.dialog.sendNodeMsg(new SetTupleSetMsg(this.id, tset));
-        } catch (final DialogException e) {
-            throw new IOException();
-        }
+    public void setTupleSet(final List<Tuple> tset) throws DialogSendException {
+        this.dialog.sendNodeMsg(new SetTupleSetMsg(this.id, tset));
+    }
+
+    @Override
+    public void vmStepMode() throws DialogSendException {
+        this.dialog.sendNodeMsg(new StepModeMsg(this.id));
     }
 
     /**
@@ -201,10 +180,6 @@ public class InspectorContextStub implements InspectorContext {
                 this.dialog.sendInspectorMsg(msg);
                 return this.dialog;
             }
-        } catch (final IOException e) {
-            throw new alice.tucson.api.exceptions.UnreachableNodeException();
-        } catch (final DialogExceptionTcp e) {
-            e.printStackTrace();
         } catch (final DialogException e) {
             e.printStackTrace();
         }

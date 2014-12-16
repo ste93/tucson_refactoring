@@ -12,6 +12,7 @@
  */
 package alice.respect.api;
 
+import java.util.ArrayList;
 import java.util.List;
 import alice.logictuple.LogicTuple;
 import alice.respect.api.exceptions.InvalidSpecificationException;
@@ -27,6 +28,7 @@ import alice.tuplecentre.api.ObservableEventListener;
  * @author Alessandro Ricci
  */
 public interface IManagementContext {
+
     /**
      * Abort a previously executed in or rd operation
      * 
@@ -55,6 +57,8 @@ public interface IManagementContext {
     void disablePersistency(String path, TucsonTupleCentreId ttcid);
 
     void enablePersistency(String path, TucsonTupleCentreId ttcid);
+
+    ArrayList<InspectableEventListener> getInspectors();
 
     /**
      * Get current behaviour specification
@@ -114,11 +118,17 @@ public interface IManagementContext {
     boolean hasObservers();
 
     /**
-     * Executes a single execution step (management mode)
+     * enable/disable VM step mode
+     * 
+     * @return true if stepMode is active
+     */
+    boolean isStepModeCommand();
+
+    /**
+     * Executes a single execution step (step mode)
      * 
      * @throws OperationNotPossibleException
-     *             if the operation is not possible according to current VM
-     *             state
+     *             if the operation cannot be performed
      */
     void nextStepCommand() throws OperationNotPossibleException;
 
@@ -143,12 +153,6 @@ public interface IManagementContext {
      */
     void reset();
 
-    /**
-     * Enables/Disables the management mode
-     * 
-     * @param activate
-     *            true to swith to management mode
-     */
     void setManagementMode(boolean activate);
 
     /**
@@ -170,6 +174,11 @@ public interface IManagementContext {
      *            set in terms of logic tuples
      */
     void setWSet(List<LogicTuple> wSet);
+
+    /**
+     * enable/disable VM step mode
+     */
+    void stepModeCommand();
 
     /**
      * Stops the VM (management mode, debugging)

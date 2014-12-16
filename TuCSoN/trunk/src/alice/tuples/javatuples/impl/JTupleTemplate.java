@@ -35,7 +35,7 @@ public class JTupleTemplate implements Iterable<IJArg>, IJTupleTemplate {
             this.args = new ArrayList<IJArg>(JTupleTemplate.AVG_CAP);
             this.args.add(arg);
         } else {
-            throw new InvalidTupleException();
+            throw new InvalidTupleException("Null value");
         }
     }
 
@@ -50,7 +50,7 @@ public class JTupleTemplate implements Iterable<IJArg>, IJTupleTemplate {
         if (arg != null) {
             this.args.add(arg);
         } else {
-            throw new InvalidTupleException();
+            throw new InvalidTupleException("Null value");
         }
     }
 
@@ -59,11 +59,12 @@ public class JTupleTemplate implements Iterable<IJArg>, IJTupleTemplate {
      * @see alice.tuples.javatuples.IJTupleTemplate#getArg(int)
      */
     @Override
-    public IJArg getArg(final int i) throws InvalidOperationException {
-        if (i < this.args.size()) {
+    public IJArg getArg(final int i) {
+        if (i >= 0 && i < this.args.size()) {
             return this.args.get(i);
         }
-        throw new InvalidOperationException();
+        throw new InvalidOperationException(
+                "Index out of bounds. Value of the index i: " + i);
     }
 
     /*

@@ -19,6 +19,8 @@ import java.util.Calendar;
 import java.util.Iterator;
 import alice.logictuple.LogicTuple;
 import alice.respect.api.AgentId;
+import alice.respect.api.TupleCentreId;
+import alice.respect.situatedness.TransducerId;
 import alice.tucson.api.TucsonAgentId;
 import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.introspection.WSetEvent;
@@ -36,16 +38,27 @@ public class InspectorCore extends alice.tucson.introspection.Inspector {
      */
     private Calendar cal;
     private final InspectorGUI form;
+    /** wether pending queries view logging is enabled */
     protected boolean loggingQueries = false;
+    /** wether triggered reactions view logging is enabled */
     protected boolean loggingReactions = false;
+    /** wether tuples view logging is enabled */
     protected boolean loggingTuples = false;
+    /** template filtering pending queries logging */
     protected LogicTuple logOpFilter;
+    /** file name to log pending queries */
     protected String logQueryFilename;
+    /** writing component to log pending queries */
     protected FileWriter logQueryWriter;
+    /** file name to log triggered reactions */
     protected String logReactionFilename;
+    /** writing component to log triggered reactions */
     protected FileWriter logReactionWriter;
+    /** file name to log tuples */
     protected String logTupleFilename;
+    /** template filtering tuples logging */
     protected LogicTuple logTupleFilter;
+    /** writing component to log tuples */
     protected FileWriter logTupleWriter;
 
     /**
@@ -201,12 +214,26 @@ public class InspectorCore extends alice.tucson.introspection.Inspector {
                             .append("> to <").append(ev.getTarget())
                             .append(">\n");
                 } else if (ev.getSource().isTC()) {
-                    st.append(ev.getOp())
-                            .append(" from <")
-                            .append(((TucsonTupleCentreId) ev.getSource())
-                                    .toString()).append("> to <")
-                            .append(ev.getTarget()).append(">\n");
-                } // is Env?
+                    // Ugly
+                    if (ev.getSource() instanceof TucsonTupleCentreId) {
+                        st.append(ev.getOp())
+                                .append(" from <")
+                                .append(((TucsonTupleCentreId) ev.getSource())
+                                        .toString()).append("> to <")
+                                .append(ev.getTarget()).append(">\n");
+                    } else if (ev.getSource() instanceof TupleCentreId) {
+                        st.append(ev.getOp())
+                                .append(" from <")
+                                .append(((TupleCentreId) ev.getSource())
+                                        .toString()).append("> to <")
+                                .append(ev.getTarget()).append(">\n");
+                    }
+                } else if (ev.getSource().isEnv()) {
+                    st.append(ev.getOp()).append(" from <")
+                            .append(((TransducerId) ev.getSource()).toString())
+                            .append("> to <").append(ev.getTarget())
+                            .append(">\n");
+                }
                 n++;
             }
             viewer.setNItems(n);
@@ -337,6 +364,12 @@ public class InspectorCore extends alice.tucson.introspection.Inspector {
                     e.printStackTrace();
                 }
             }
+        }
+        if (msg.getStepMode()) {
+            this.form.selectStepModeCB();
+        }
+        if (msg.getModeChanged()) {
+            this.form.changeStepModeCB();
         }
     }
 }

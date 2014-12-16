@@ -153,7 +153,7 @@ public interface ISpecificationSynchInterface {
      *             if the operation requested cannot be carried out
      * @throws InvalidSpecificationException
      *             if the given String does not represent a valid ReSpecT
-     *             specifiction
+     *             specification
      */
     List<LogicTuple> setS(final IId aid, final RespectSpecification spec)
             throws OperationNotPossibleException, InvalidSpecificationException;

@@ -3,9 +3,10 @@ package alice.tucson.examples.spawnedWorkers;
 import java.math.BigInteger;
 import alice.logictuple.LogicTuple;
 import alice.logictuple.TupleArgument;
+import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.tucson.api.AbstractSpawnActivity;
+import alice.tucson.api.exceptions.TucsonInvalidLogicTupleException;
 import alice.tuplecentre.api.exceptions.InvalidOperationException;
-import alice.tuplecentre.api.exceptions.InvalidTupleException;
 
 /**
  * 
@@ -47,11 +48,14 @@ public class SpawnedWorkingActivity extends AbstractSpawnActivity {
                     + job.getArg("reqID").getArg(0) + ")" + ")");
             this.log("Putting result: " + res.toString());
             this.out(res);
-        } catch (final InvalidTupleException e) {
+        } catch (final InvalidLogicTupleException e) {
             this.log("ERROR: Tuple is not an admissible Prolog term!");
             e.printStackTrace();
         } catch (final InvalidOperationException e) {
             this.log("ERROR: No tuple arguments to retrieve!");
+            e.printStackTrace();
+        } catch (final TucsonInvalidLogicTupleException e) {
+            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }

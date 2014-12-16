@@ -7,7 +7,6 @@ import java.util.List;
 import alice.logictuple.LogicTuple;
 import alice.respect.core.collection.DoubleKeyMVMap;
 import alice.respect.core.collection.MVMap;
-import alice.tuplecentre.api.exceptions.InvalidTupleException;
 import alice.tuprolog.Var;
 
 /**
@@ -81,14 +80,10 @@ public abstract class AbstractTupleSet implements ITupleSet {
 
     @Override
     public void add(final LogicTuple t) {
-        try {
-            final LTEntry e = this.createEntry(t);
-            this.tuples.put(e.getKey1(), e.getKey2(), e.getValue());
-            if (this.transaction) {
-                this.tAdded.add(e);
-            }
-        } catch (final InvalidTupleException e) {
-            e.printStackTrace();
+        final LTEntry e = this.createEntry(t);
+        this.tuples.put(e.getKey1(), e.getKey2(), e.getValue());
+        if (this.transaction) {
+            this.tAdded.add(e);
         }
     }
 
@@ -134,32 +129,28 @@ public abstract class AbstractTupleSet implements ITupleSet {
             return null;
         }
         Iterator<LogicTuple> l;
-        try {
-            final String key2 = this.getTupleKey2(templ);
-            if ("VAR".equals(key2)) {
-                l = this.tuples.get(this.getTupleKey1(templ)).iterator();
+        final String key2 = this.getTupleKey2(templ);
+        if ("VAR".equals(key2)) {
+            l = this.tuples.get(this.getTupleKey1(templ)).iterator();
+        } else {
+            final MVMap<String, LogicTuple> map = this.tuples.get(this
+                    .getTupleKey1(templ));
+            if (map.get("VAR").size() > 0) {
+                l = map.iterator();
             } else {
-                final MVMap<String, LogicTuple> map = this.tuples.get(this
-                        .getTupleKey1(templ));
-                if (map.get("VAR").size() > 0) {
-                    l = map.iterator();
-                } else {
-                    l = map.get(key2).iterator();
-                }
+                l = map.get(key2).iterator();
             }
-            while (l.hasNext()) {
-                final LogicTuple tu = l.next();
-                if (templ.match(tu)) {
-                    l.remove();
-                    if (this.transaction) {
-                        this.tRemoved.add(this.createEntry(tu));
-                    }
-                    final AbstractMap<Var, Var> v = new LinkedHashMap<Var, Var>();
-                    return new LogicTuple(tu.toTerm().copyGoal(v, 0));
+        }
+        while (l.hasNext()) {
+            final LogicTuple tu = l.next();
+            if (templ.match(tu)) {
+                l.remove();
+                if (this.transaction) {
+                    this.tRemoved.add(this.createEntry(tu));
                 }
+                final AbstractMap<Var, Var> v = new LinkedHashMap<Var, Var>();
+                return new LogicTuple(tu.toTerm().copyGoal(v, 0));
             }
-        } catch (final InvalidTupleException e) {
-            e.printStackTrace();
         }
         return null;
     }
@@ -183,44 +174,35 @@ public abstract class AbstractTupleSet implements ITupleSet {
             return null;
         }
         Iterator<LogicTuple> l;
-        try {
-            final String key2 = this.getTupleKey2(templ);
-            if ("VAR".equals(key2)) {
-                l = this.tuples.get(this.getTupleKey1(templ)).iterator();
+        final String key2 = this.getTupleKey2(templ);
+        if ("VAR".equals(key2)) {
+            l = this.tuples.get(this.getTupleKey1(templ)).iterator();
+        } else {
+            final MVMap<String, LogicTuple> map = this.tuples.get(this
+                    .getTupleKey1(templ));
+            if (map.get("VAR").size() > 0) {
+                l = map.iterator();
             } else {
-                final MVMap<String, LogicTuple> map = this.tuples.get(this
-                        .getTupleKey1(templ));
-                if (map.get("VAR").size() > 0) {
-                    l = map.iterator();
-                } else {
-                    l = map.get(key2).iterator();
-                }
+                l = map.get(key2).iterator();
             }
-            while (l.hasNext()) {
-                final LogicTuple tu = l.next();
-                if (templ.match(tu)) {
-                    final AbstractMap<Var, Var> v = new LinkedHashMap<Var, Var>();
-                    return new LogicTuple(tu.toTerm().copyGoal(v, 0));
-                }
+        }
+        while (l.hasNext()) {
+            final LogicTuple tu = l.next();
+            if (templ.match(tu)) {
+                final AbstractMap<Var, Var> v = new LinkedHashMap<Var, Var>();
+                return new LogicTuple(tu.toTerm().copyGoal(v, 0));
             }
-        } catch (final InvalidTupleException e) {
-            e.printStackTrace();
         }
         return null;
     }
 
     @Override
     public void remove(final LogicTuple t) {
-        try {
-            final LTEntry e = this.createEntry(t);
-            final boolean res = this.tuples.remove(e.getKey1(), e.getKey2(),
-                    e.getValue());
-            if (res && this.transaction) {
-                this.tRemoved.add(this.createEntry(t));
-            }
-        } catch (final InvalidTupleException e) {
-            System.out.println(t.toString());
-            e.printStackTrace();
+        final LTEntry e = this.createEntry(t);
+        final boolean res = this.tuples.remove(e.getKey1(), e.getKey2(),
+                e.getValue());
+        if (res && this.transaction) {
+            this.tRemoved.add(this.createEntry(t));
         }
     }
 
@@ -239,8 +221,7 @@ public abstract class AbstractTupleSet implements ITupleSet {
         return this.tuples.toString();
     }
 
-    private LTEntry createEntry(final LogicTuple t)
-            throws InvalidTupleException {
+    private LTEntry createEntry(final LogicTuple t) {
         return new LTEntry(this.getTupleKey1(t), this.getTupleKey2(t), t);
     }
 
@@ -249,20 +230,14 @@ public abstract class AbstractTupleSet implements ITupleSet {
      * @param t
      *            the LogicTuple whose first key should be retrieved
      * @return the String representation of the retrieved key
-     * @throws alice.tuplecentre.api.exceptions.InvalidTupleException
-     *             if the given tuple is not well formed
      */
-    protected abstract String getTupleKey1(LogicTuple t)
-            throws InvalidTupleException;
+    protected abstract String getTupleKey1(LogicTuple t);
 
     /**
      * 
      * @param t
      *            the LogicTuple whose second key should be retrieved
      * @return the String representation of the retrieved key
-     * @throws alice.tuplecentre.api.exceptions.InvalidTupleException
-     *             if the given tuple is not well formed
      */
-    protected abstract String getTupleKey2(LogicTuple t)
-            throws InvalidTupleException;
+    protected abstract String getTupleKey2(LogicTuple t);
 }

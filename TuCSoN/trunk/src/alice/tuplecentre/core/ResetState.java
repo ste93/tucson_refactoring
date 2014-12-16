@@ -33,6 +33,9 @@ public class ResetState extends AbstractTupleCentreVMState {
 
     @Override
     public void execute() {
+        if (super.vm.isStepMode()) {
+            this.log();
+        }
         this.vm.reset();
     }
 

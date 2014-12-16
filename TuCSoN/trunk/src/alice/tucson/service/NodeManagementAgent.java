@@ -9,12 +9,12 @@ import alice.logictuple.LogicTuple;
 import alice.logictuple.TupleArgument;
 import alice.logictuple.Value;
 import alice.logictuple.Var;
+import alice.logictuple.exceptions.InvalidVarNameException;
 import alice.tucson.api.TucsonAgentId;
 import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonInvalidLogicTupleException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
-import alice.tuplecentre.api.exceptions.InvalidOperationException;
 import alice.tuprolog.InvalidTermException;
 
 /**
@@ -46,6 +46,7 @@ public class NodeManagementAgent extends Thread {
         try {
             this.nodeManAid = new TucsonAgentId("node_management_agent");
         } catch (final TucsonInvalidAgentIdException e) {
+            // Cannot happen, the agend id it's specified here
             e.printStackTrace();
         }
         this.node = n;
@@ -83,14 +84,14 @@ public class NodeManagementAgent extends Thread {
         } catch (final TucsonOperationNotPossibleException e) {
             e.printStackTrace();
             this.node.removeNodeAgent(this);
-        } catch (final InvalidOperationException e) {
+        } catch (final InvalidVarNameException e) {
             e.printStackTrace();
             this.node.removeNodeAgent(this);
         }
     }
 
     private void execCmd(final TupleArgument cmd)
-            throws InvalidOperationException, TucsonInvalidLogicTupleException,
+            throws TucsonInvalidLogicTupleException,
             TucsonOperationNotPossibleException {
         final String name = cmd.getName();
         NodeManagementAgent.log("Executing command " + name);

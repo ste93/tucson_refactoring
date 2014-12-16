@@ -3,8 +3,6 @@
  */
 package alice.tuples.javatuples.api;
 
-import alice.tuplecentre.api.exceptions.InvalidOperationException;
-
 /**
  * @author ste (mailto: s.mariani@unibo.it) on 21/feb/2014
  * 
@@ -43,40 +41,35 @@ public interface IJVal extends IJArg {
     /**
      * 
      * @return the double value of the JVal
-     * @throws InvalidOperationException
-     *             if the JVal is not a double
+     * 
      */
-    double toDouble() throws InvalidOperationException;
+    double toDouble();
 
     /**
      * 
      * @return the float value of the JVal
-     * @throws InvalidOperationException
-     *             if the JVal is not a float
+     * 
      */
-    float toFloat() throws InvalidOperationException;
+    float toFloat();
 
     /**
      * 
      * @return the int value of the JVal
-     * @throws InvalidOperationException
-     *             if the JVal is not a int
+     * 
      */
-    int toInt() throws InvalidOperationException;
+    int toInt();
 
     /**
      * 
      * @return the literal (Java String) value of the JVal
-     * @throws InvalidOperationException
-     *             if the JVal is not a literal (Java String)
+     * 
      */
-    String toLiteral() throws InvalidOperationException;
+    String toLiteral();
 
     /**
      * 
      * @return the long value of the JVal
-     * @throws InvalidOperationException
-     *             if the JVal is not a long
+     * 
      */
-    long toLong() throws InvalidOperationException;
+    long toLong();
 }

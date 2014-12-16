@@ -4,7 +4,6 @@ import alice.respect.core.InternalEvent;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
 import alice.tuplecentre.api.TupleCentreId;
-import alice.tuplecentre.api.exceptions.InvalidOperationException;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 
 /**
@@ -68,9 +67,6 @@ public interface TransducerStandardInterface {
      * @param ev
      *            the ReSpecT event to be notified
      * @return wether the event has been succesfully notified
-     * @throws InvalidOperationException
-     *             if the tuple representing the event cannot be managed
-     *             properly
      * @throws TucsonOperationNotPossibleException
      *             if the requested operation cannot be performed for some
      *             reason
@@ -80,7 +76,7 @@ public interface TransducerStandardInterface {
      * @throws OperationTimeOutException
      *             if the notification operation expires timeout
      */
-    boolean notifyOutput(InternalEvent ev) throws InvalidOperationException,
-            TucsonOperationNotPossibleException, UnreachableNodeException,
-            OperationTimeOutException;
+    boolean notifyOutput(InternalEvent ev)
+            throws TucsonOperationNotPossibleException,
+            UnreachableNodeException, OperationTimeOutException;
 }

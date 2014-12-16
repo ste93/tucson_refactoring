@@ -15,6 +15,8 @@ package alice.respect.api.exceptions;
 import alice.respect.api.IRespectOperation;
 
 /**
+ * Exception thrown when the given timeout expires prior to operation completion
+ * 
  * @author Alessandro Ricci
  */
 public class OperationTimeOutException extends RespectException {
@@ -33,7 +35,7 @@ public class OperationTimeOutException extends RespectException {
 
     /**
      * 
-     * @return the operatio whose timeout expired
+     * @return the operation whose timeout expired
      */
     public IRespectOperation getOperation() {
         return this.op;

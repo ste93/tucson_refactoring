@@ -3,6 +3,7 @@ package alice.tucson.examples.helloWorld;
 import alice.logictuple.LogicTuple;
 import alice.logictuple.Value;
 import alice.logictuple.Var;
+import alice.logictuple.exceptions.InvalidVarNameException;
 import alice.tucson.api.ITucsonOperation;
 import alice.tucson.api.SynchACC;
 import alice.tucson.api.TucsonAgentId;
@@ -112,6 +113,8 @@ public final class HelloWorld {
             /*
              * Operation timeout expired.
              */
+            e.printStackTrace();
+        } catch (final InvalidVarNameException e) {
             e.printStackTrace();
         }
     }

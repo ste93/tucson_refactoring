@@ -6,6 +6,7 @@ package alice.tucson.examples.persistency;
 import java.io.IOException;
 import alice.logictuple.LogicTuple;
 import alice.logictuple.Value;
+import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.tucson.api.EnhancedACC;
 import alice.tucson.api.TucsonAgentId;
 import alice.tucson.api.TucsonMetaACC;
@@ -14,9 +15,10 @@ import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
-import alice.tucson.examples.utilities.Utils;
+import alice.tucson.network.exceptions.DialogCloseException;
+import alice.tucson.network.exceptions.DialogInitializationException;
 import alice.tucson.service.TucsonNodeService;
-import alice.tuplecentre.api.exceptions.InvalidTupleException;
+import alice.tucson.utilities.Utils;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 
 /**
@@ -37,6 +39,10 @@ public final class PersistencyTester {
                     Thread.sleep(1000);
                 }
             } catch (final InterruptedException e) {
+                e.printStackTrace();
+            } catch (final DialogInitializationException e) {
+                e.printStackTrace();
+            } catch (final DialogCloseException e) {
                 e.printStackTrace();
             }
             final TucsonTupleCentreId ttcid = new TucsonTupleCentreId(
@@ -119,10 +125,10 @@ public final class PersistencyTester {
         } catch (final IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-        } catch (final InvalidTupleException e) {
+        } catch (final InvalidLogicTupleException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-        } catch (InterruptedException e) {
+        } catch (final InterruptedException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }

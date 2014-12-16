@@ -55,6 +55,8 @@ public class InterTupleCentreACCProvider implements ILinkContext {
             if (this.helper != null) {
                 try {
                     this.helper.doOperation(this.toId, this.op);
+                } catch (final TucsonInvalidTupleCentreIdException e) {
+                    e.printStackTrace();
                 } catch (final TucsonOperationNotPossibleException e) {
                     e.printStackTrace();
                 } catch (final UnreachableNodeException e) {

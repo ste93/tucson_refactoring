@@ -1,5 +1,6 @@
 package alice.respect.core;
 
+import java.util.ArrayList;
 import java.util.List;
 import alice.logictuple.LogicTuple;
 import alice.respect.api.IManagementContext;
@@ -68,6 +69,11 @@ public class ManagementContext implements IManagementContext {
     }
 
     @Override
+    public ArrayList<InspectableEventListener> getInspectors() {
+        return this.vm.getInspectors();
+    }
+
+    @Override
     public RespectSpecification getSpec() {
         return (RespectSpecification) this.vm.getReactionSpec();
     }
@@ -100,6 +106,11 @@ public class ManagementContext implements IManagementContext {
     @Override
     public boolean hasObservers() {
         return this.vm.hasObservers();
+    }
+
+    @Override
+    public boolean isStepModeCommand() {
+        return this.vm.isStepModeCommand();
     }
 
     @Override
@@ -144,13 +155,19 @@ public class ManagementContext implements IManagementContext {
             throws InvalidSpecificationException {
         final boolean accepted = this.vm.setReactionSpec(spec);
         if (!accepted) {
-            throw new InvalidSpecificationException();
+            throw new InvalidSpecificationException(
+                    "RespectSpecification value :" + spec.toString());
         }
     }
 
     @Override
     public void setWSet(final List<LogicTuple> wSet) {
         this.vm.setWSet(wSet);
+    }
+
+    @Override
+    public void stepModeCommand() {
+        this.vm.stepModeCommand();
     }
 
     @Override

@@ -37,6 +37,7 @@ public class ObservationService implements NodeServiceListener {
         try {
             this.obsAid = new TucsonAgentId("obs_agent");
         } catch (final TucsonInvalidAgentIdException e) {
+            // Cannot happen, the agend id it's specified here
             e.printStackTrace();
         }
     }

@@ -4,7 +4,6 @@
 package alice.tuples.javatuples.api;
 
 import alice.tuplecentre.api.Tuple;
-import alice.tuplecentre.api.exceptions.InvalidOperationException;
 import alice.tuplecentre.api.exceptions.InvalidTupleException;
 
 /**
@@ -26,10 +25,9 @@ public interface IJTuple extends Tuple {
      * @param i
      *            the index of the JVal to retrieve (starting from 0)
      * @return the JVal retrieved
-     * @throws InvalidOperationException
-     *             if the given index is invalid (e.g. > JTuple.getNArgs())
+     * 
      */
-    IJVal getArg(int i) throws InvalidOperationException;
+    IJVal getArg(int i);
 
     /**
      * 

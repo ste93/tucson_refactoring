@@ -16,8 +16,6 @@ import java.util.LinkedList;
 import alice.logictuple.LogicTuple;
 import alice.logictuple.TupleArgument;
 import alice.respect.core.collection.DoubleKeyMVMap;
-import alice.tuplecentre.api.exceptions.InvalidOperationException;
-import alice.tuplecentre.api.exceptions.InvalidTupleException;
 
 /**
  * Class representing a Tuple Set.
@@ -42,28 +40,20 @@ public class TupleSetSpec extends AbstractTupleSet {
     }
 
     @Override
-    public String getTupleKey1(final LogicTuple t) throws InvalidTupleException {
-        try {
-            final TupleArgument event = t.getArg(0);
-            return event.getPredicateIndicator();
-        } catch (final InvalidOperationException e) {
-            throw new InvalidTupleException();
-        }
+    public String getTupleKey1(final LogicTuple t) {
+        final TupleArgument event = t.getArg(0);
+        return event.getPredicateIndicator();
     }
 
     @Override
-    public String getTupleKey2(final LogicTuple t) throws InvalidTupleException {
-        try {
-            final TupleArgument eventArg = t.getArg(0).getArg(0);
-            if (eventArg.isNumber()) {
-                return eventArg.toString();
-            } else if (eventArg.isVar()) {
-                return "VAR";
-            } else {
-                return eventArg.getPredicateIndicator();
-            }
-        } catch (final InvalidOperationException e) {
-            throw new InvalidTupleException();
+    public String getTupleKey2(final LogicTuple t) {
+        final TupleArgument eventArg = t.getArg(0).getArg(0);
+        if (eventArg.isNumber()) {
+            return eventArg.toString();
+        } else if (eventArg.isVar()) {
+            return "VAR";
+        } else {
+            return eventArg.getPredicateIndicator();
         }
     }
 }

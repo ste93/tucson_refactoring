@@ -12,7 +12,6 @@ import alice.logictuple.LogicTuple;
 import alice.logictuple.TupleArgument;
 import alice.logictuple.Value;
 import alice.logictuple.Var;
-import alice.tuplecentre.api.exceptions.InvalidOperationException;
 import alice.tuplecentre.api.exceptions.InvalidTupleException;
 import alice.tuples.javatuples.api.IJArg;
 import alice.tuples.javatuples.api.IJTuple;
@@ -40,31 +39,26 @@ public final class JTuplesEngine {
      */
     public static boolean isTemplate(final LogicTuple lt)
             throws InvalidTupleException {
-        try {
-            if ("javat".equals(lt.getName())) {
-                final int a = lt.getArity();
-                for (int i = 0; i < a; i++) {
-                    final TupleArgument ta = lt.getArg(i);
-                    if (ta.getArity() == 0) {
-                        if (ta.isVar()) {
-                            return true;
-                        }
-                        throw new InvalidTupleException();
-                    } else if (ta.getArity() == 1) {
-                        final TupleArgument ta2 = ta.getArg(0);
-                        if (ta2.isVar()) {
-                            return true;
-                        }
+        if ("javat".equals(lt.getName())) {
+            final int a = lt.getArity();
+            for (int i = 0; i < a; i++) {
+                final TupleArgument ta = lt.getArg(i);
+                if (ta.getArity() == 0) {
+                    if (ta.isVar()) {
+                        return true;
+                    }
+                    throw new InvalidTupleException();
+                } else if (ta.getArity() == 1) {
+                    final TupleArgument ta2 = ta.getArg(0);
+                    if (ta2.isVar()) {
+                        return true;
                     }
                 }
-                return false;
             }
-            throw new InvalidTupleException();
-        } catch (final InvalidOperationException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            return false;
         }
-        return false;
+        throw new InvalidTupleException("Error occurred while converting '"
+                + lt.toString() + "' into JTuple");
     }
 
     /**
@@ -140,14 +134,14 @@ public final class JTuplesEngine {
                     }
                 }
             } else {
-                throw new InvalidTupleException();
+                throw new InvalidTupleException(
+                        "Error occurred while converting '" + tuple.toString()
+                                + "' into JTuple");
             }
-        } catch (final InvalidOperationException e) {
-            // cannot happen
-            Logger.getLogger("JTuplesEngine").log(Level.FINEST, "wtf");
         } catch (final InvalidJValException e) {
             // cannot happen
-            Logger.getLogger("JTuplesEngine").log(Level.FINEST, "wtf");
+            Logger.getLogger("JTuplesEngine").log(Level.FINEST,
+                    "Error: InvalidJValException");
         }
         jt = new JTuple(vals[0]);
         for (int i = 1; i < vals.length; i++) {
@@ -216,17 +210,18 @@ public final class JTuplesEngine {
                     }
                 }
             } else {
-                throw new InvalidTupleException();
+                throw new InvalidTupleException(
+                        "Error occurred while converting '"
+                                + template.toString() + "' into JTuple");
             }
-        } catch (final InvalidOperationException e) {
-            // cannot happen
-            Logger.getLogger("JTuplesEngine").log(Level.FINEST, "wtf");
         } catch (final InvalidJValException e) {
             // cannot happen
-            Logger.getLogger("JTuplesEngine").log(Level.FINEST, "wtf");
+            Logger.getLogger("JTuplesEngine").log(Level.FINEST,
+                    "Error: InvalidJValException");
         } catch (final InvalidJVarException e) {
             // cannot happen
-            Logger.getLogger("JTuplesEngine").log(Level.FINEST, "wtf");
+            Logger.getLogger("JTuplesEngine").log(Level.FINEST,
+                    "Error: InvalidJVarException");
         }
         jtt = new JTupleTemplate(args.get(0));
         for (int i = 1; i < args.size(); i++) {
@@ -245,24 +240,19 @@ public final class JTuplesEngine {
         final JTuple jt = (JTuple) tuple;
         final TupleArgument[] tas = new TupleArgument[jt.getNArgs()];
         int i = 0;
-        try {
-            for (final IJVal val : jt) {
-                if (val.isDouble()) {
-                    tas[i] = new Value("double", new Value(val.toDouble()));
-                } else if (val.isFloat()) {
-                    tas[i] = new Value("float", new Value(val.toFloat()));
-                } else if (val.isInt()) {
-                    tas[i] = new Value("int", new Value(val.toInt()));
-                } else if (val.isLiteral()) {
-                    tas[i] = new Value("literal", new Value(val.toLiteral()));
-                } else if (val.isLong()) {
-                    tas[i] = new Value("long", new Value(val.toLong()));
-                }
-                i++;
+        for (final IJVal val : jt) {
+            if (val.isDouble()) {
+                tas[i] = new Value("double", new Value(val.toDouble()));
+            } else if (val.isFloat()) {
+                tas[i] = new Value("float", new Value(val.toFloat()));
+            } else if (val.isInt()) {
+                tas[i] = new Value("int", new Value(val.toInt()));
+            } else if (val.isLiteral()) {
+                tas[i] = new Value("literal", new Value(val.toLiteral()));
+            } else if (val.isLong()) {
+                tas[i] = new Value("long", new Value(val.toLong()));
             }
-        } catch (final InvalidOperationException e) {
-            // cannot happen
-            Logger.getLogger("JTuplesEngine").log(Level.FINEST, "wtf");
+            i++;
         }
         return new LogicTuple("javat", tas);
     }
@@ -277,55 +267,52 @@ public final class JTuplesEngine {
         final JTupleTemplate jt = (JTupleTemplate) template;
         final TupleArgument[] tas = new TupleArgument[jt.getNArgs()];
         int i = 0;
-        try {
-            for (final IJArg arg : jt) {
-                if (arg.isVal()) {
-                    final IJVal val = (IJVal) arg;
-                    if (val.isDouble()) {
-                        tas[i] = new Value("double", new Value(val.toDouble()));
-                    } else if (val.isFloat()) {
-                        tas[i] = new Value("float", new Value(val.toFloat()));
-                    } else if (val.isInt()) {
-                        tas[i] = new Value("int", new Value(val.toInt()));
-                    } else if (val.isLiteral()) {
-                        tas[i] = new Value("literal",
-                                new Value(val.toLiteral()));
-                    } else if (val.isLong()) {
-                        tas[i] = new Value("long", new Value(val.toLong()));
-                    }
-                } else if (arg.isVar()) {
-                    final IJVar var = (IJVar) arg;
-                    switch (var.getType()) {
-                        case ANY:
-                            tas[i] = new Var();
-                            break;
-                        case DOUBLE:
-                            tas[i] = new Value("double", new Var());
-                            break;
-                        case FLOAT:
-                            tas[i] = new Value("float", new Var());
-                            break;
-                        case INT:
-                            tas[i] = new Value("int", new Var());
-                            break;
-                        case LITERAL:
-                            tas[i] = new Value("literal", new Var());
-                            break;
-                        case LONG:
-                            tas[i] = new Value("long", new Var());
-                            break;
-                        default:
-                            // cannot happen
-                            Logger.getLogger("JTuplesEngine").log(Level.FINEST,
-                                    "wtf");
-                            break;
-                    }
+        for (final IJArg arg : jt) {
+            if (arg.isVal()) {
+                final IJVal val = (IJVal) arg;
+                if (val.isDouble()) {
+                    tas[i] = new Value("double", new Value(val.toDouble()));
+                } else if (val.isFloat()) {
+                    tas[i] = new Value("float", new Value(val.toFloat()));
+                } else if (val.isInt()) {
+                    tas[i] = new Value("int", new Value(val.toInt()));
+                } else if (val.isLiteral()) {
+                    tas[i] = new Value("literal", new Value(val.toLiteral()));
+                } else if (val.isLong()) {
+                    tas[i] = new Value("long", new Value(val.toLong()));
+                } else {
+                    Logger.getLogger("JTuplesEngine").log(Level.FINEST,
+                            "Error: Invalid JVal type");
                 }
-                i++;
+            } else if (arg.isVar()) {
+                final IJVar var = (IJVar) arg;
+                switch (var.getType()) {
+                    case ANY:
+                        tas[i] = new Var();
+                        break;
+                    case DOUBLE:
+                        tas[i] = new Value("double", new Var());
+                        break;
+                    case FLOAT:
+                        tas[i] = new Value("float", new Var());
+                        break;
+                    case INT:
+                        tas[i] = new Value("int", new Var());
+                        break;
+                    case LITERAL:
+                        tas[i] = new Value("literal", new Var());
+                        break;
+                    case LONG:
+                        tas[i] = new Value("long", new Var());
+                        break;
+                    default:
+                        // cannot happen
+                        Logger.getLogger("JTuplesEngine").log(Level.FINEST,
+                                "Error: Invalid JVar type");
+                        break;
+                }
             }
-        } catch (final InvalidOperationException e) {
-            // cannot happen
-            Logger.getLogger("JTuplesEngine").log(Level.FINEST, "wtf");
+            i++;
         }
         return new LogicTuple("javat", tas);
     }

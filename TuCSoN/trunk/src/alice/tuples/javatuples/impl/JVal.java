@@ -68,7 +68,7 @@ public class JVal implements IJVal {
             this.type = JArgType.LITERAL;
             this.arg = v;
         } else {
-            throw new InvalidJValException();
+            throw new InvalidJValException("Null value");
         }
     }
 
@@ -140,11 +140,11 @@ public class JVal implements IJVal {
      * @see alice.tuples.javatuples.IJVal#toDouble()
      */
     @Override
-    public double toDouble() throws InvalidOperationException {
+    public double toDouble() {
         if (this.type == JArgType.DOUBLE) {
             return ((Double) this.arg).doubleValue();
         }
-        throw new InvalidOperationException();
+        throw new InvalidOperationException("The JVal is not a Double");
     }
 
     /*
@@ -152,11 +152,11 @@ public class JVal implements IJVal {
      * @see alice.tuples.javatuples.IJVal#toFloat()
      */
     @Override
-    public float toFloat() throws InvalidOperationException {
+    public float toFloat() {
         if (this.type == JArgType.FLOAT) {
             return ((Float) this.arg).floatValue();
         }
-        throw new InvalidOperationException();
+        throw new InvalidOperationException("The JVal is not a Float");
     }
 
     /*
@@ -164,11 +164,11 @@ public class JVal implements IJVal {
      * @see alice.tuples.javatuples.IJVal#toInt()
      */
     @Override
-    public int toInt() throws InvalidOperationException {
+    public int toInt() {
         if (this.type == JArgType.INT) {
             return ((Integer) this.arg).intValue();
         }
-        throw new InvalidOperationException();
+        throw new InvalidOperationException("The JVal is not an Int");
     }
 
     /*
@@ -176,11 +176,11 @@ public class JVal implements IJVal {
      * @see alice.tuples.javatuples.IJVal#toLiteral()
      */
     @Override
-    public String toLiteral() throws InvalidOperationException {
+    public String toLiteral() {
         if (this.type == JArgType.LITERAL) {
             return this.arg.toString();
         }
-        throw new InvalidOperationException();
+        throw new InvalidOperationException("The JVal is not a Literal");
     }
 
     /*
@@ -188,11 +188,11 @@ public class JVal implements IJVal {
      * @see alice.tuples.javatuples.IJVal#toLong()
      */
     @Override
-    public long toLong() throws InvalidOperationException {
+    public long toLong() {
         if (this.type == JArgType.LONG) {
             return ((Long) this.arg).longValue();
         }
-        throw new InvalidOperationException();
+        throw new InvalidOperationException("The JVal is not a Long");
     }
 
     /*

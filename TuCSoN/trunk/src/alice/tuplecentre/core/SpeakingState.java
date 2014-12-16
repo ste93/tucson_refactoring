@@ -19,7 +19,7 @@ import java.util.List;
 import alice.respect.core.RespectOperation;
 import alice.respect.core.RespectVMContext;
 import alice.tuplecentre.api.Tuple;
-import alice.tuplecentre.api.exceptions.InvalidOperationException;
+import alice.tuplecentre.api.exceptions.InvalidCoordinationOperationException;
 import alice.tuplecentre.core.TCCycleResult.Outcome;
 
 /**
@@ -29,6 +29,7 @@ import alice.tuplecentre.core.TCCycleResult.Outcome;
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public class SpeakingState extends AbstractTupleCentreVMState {
+
     private AbstractTupleCentreVMState idleState;
     private boolean noMoreSatisfiablePendingQuery;
     private AbstractTupleCentreVMState reactingState;
@@ -44,6 +45,9 @@ public class SpeakingState extends AbstractTupleCentreVMState {
 
     @Override
     public void execute() {
+        if (super.vm.isStepMode()) {
+            this.log();
+        }
         final Iterator<?> it = this.vm.getPendingQuerySetIterator();
         InputEvent ev = null;
         OutputEvent outEv = null;
@@ -71,13 +75,13 @@ public class SpeakingState extends AbstractTupleCentreVMState {
                         foundSatisfied = true;
                     } else if (op.isOut()) {
                         tuple = op.getTupleArgument();
-                        this.vm.addTuple(tuple);
+                        this.vm.addTuple(tuple, true);
                         op.setOpResult(Outcome.SUCCESS);
                         op.setTupleResult(tuple);
                         foundSatisfied = true;
                     } else if (op.isIn()) {
-                        tuple = this.vm.removeMatchingTuple(op
-                                .getTemplateArgument());
+                        tuple = this.vm.removeMatchingTuple(
+                                op.getTemplateArgument(), true);
                         if (tuple != null) {
                             op.setOpResult(Outcome.SUCCESS);
                             op.setTupleResult(tuple);
@@ -94,8 +98,8 @@ public class SpeakingState extends AbstractTupleCentreVMState {
                         } // we do nothing: rd is suspensive hence we cannot
                           // conclude FAILURE yet!
                     } else if (op.isInp()) {
-                        tuple = this.vm.removeMatchingTuple(op
-                                .getTemplateArgument());
+                        tuple = this.vm.removeMatchingTuple(
+                                op.getTemplateArgument(), true);
                         if (tuple != null) {
                             op.setOpResult(Outcome.SUCCESS);
                             op.setTupleResult(tuple);
@@ -341,7 +345,10 @@ public class SpeakingState extends AbstractTupleCentreVMState {
                         op.setTupleResult(tuple);
                         foundSatisfied = true;
                     } else {
-                        throw new InvalidOperationException();
+                        throw new InvalidCoordinationOperationException(
+                                "The coordination operation requested does not exist. "
+                                        + "Operation id: " + op.getId()
+                                        + ", Operation type: " + op.getType());
                     }
                     if (((RespectVMContext) this.vm).getRespectVM()
                             .getObservers().size() > 0) {
@@ -349,7 +356,7 @@ public class SpeakingState extends AbstractTupleCentreVMState {
                                 .notifyObservableEvent(ev);
                     }
                 }
-            } catch (final InvalidOperationException ex) {
+            } catch (final InvalidCoordinationOperationException ex) {
                 this.vm.notifyException(ex);
                 it.remove();
             }

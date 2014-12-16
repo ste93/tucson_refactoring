@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import alice.logictuple.LogicTuple;
 import alice.logictuple.LogicTupleOpManager;
+import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.tucson.api.EnhancedACC;
 import alice.tucson.api.ITucsonOperation;
 import alice.tucson.api.TucsonTupleCentreId;
@@ -26,8 +27,6 @@ import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
 import alice.tucson.parsing.TucsonOpParser;
 import alice.tucson.service.TucsonCmd;
-import alice.tuplecentre.api.exceptions.InvalidOperationException;
-import alice.tuplecentre.api.exceptions.InvalidTupleException;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 import alice.tuprolog.Parser;
 
@@ -525,15 +524,13 @@ public class CLIAgent extends alice.util.Automaton {
                 } else {
                     CLIAgent.error(methodName);
                 }
-            } catch (final InvalidTupleException e) {
-                e.printStackTrace();
             } catch (final TucsonOperationNotPossibleException e) {
                 e.printStackTrace();
             } catch (final UnreachableNodeException e) {
                 e.printStackTrace();
             } catch (final OperationTimeOutException e) {
                 e.printStackTrace();
-            } catch (final InvalidOperationException e) {
+            } catch (final InvalidLogicTupleException e) {
                 e.printStackTrace();
             }
         }

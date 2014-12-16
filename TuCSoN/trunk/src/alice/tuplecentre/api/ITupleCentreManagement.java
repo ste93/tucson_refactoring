@@ -25,6 +25,13 @@ public interface ITupleCentreManagement {
     void goCommand() throws OperationNotPossibleException;
 
     /**
+     * verify if stepMode is active or not
+     * 
+     * @return if stepMode is active or not
+     */
+    boolean isStepMode();
+
+    /**
      * 
      * @throws OperationNotPossibleException
      *             if the operation cannot be performed
@@ -32,6 +39,7 @@ public interface ITupleCentreManagement {
     void nextStepCommand() throws OperationNotPossibleException;
 
     /**
+     * old
      * 
      * @param activate
      *            wether the 'management mode' should be activated or not
@@ -52,4 +60,11 @@ public interface ITupleCentreManagement {
      *             if the operation cannot be performed
      */
     void stopCommand() throws OperationNotPossibleException;
+
+    /**
+     * toggles step mode (defaults to <code>false</code>)
+     * 
+     * @return wether step mode is currently enabled
+     */
+    boolean toggleStepMode();
 }

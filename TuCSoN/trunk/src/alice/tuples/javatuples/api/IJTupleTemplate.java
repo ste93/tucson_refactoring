@@ -4,7 +4,6 @@
 package alice.tuples.javatuples.api;
 
 import alice.tuplecentre.api.TupleTemplate;
-import alice.tuplecentre.api.exceptions.InvalidOperationException;
 import alice.tuplecentre.api.exceptions.InvalidTupleException;
 
 /**
@@ -26,11 +25,9 @@ public interface IJTupleTemplate extends TupleTemplate {
      * @param i
      *            the index of the JArg to retrieve (starting from 0)
      * @return the JArg retrieved
-     * @throws InvalidOperationException
-     *             if the given index is invalid (e.g. >
-     *             JTupleTemplate.getNArgs())
+     * 
      */
-    IJArg getArg(int i) throws InvalidOperationException;
+    IJArg getArg(int i);
 
     /**
      * 

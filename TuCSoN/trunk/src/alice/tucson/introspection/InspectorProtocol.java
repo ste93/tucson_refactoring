@@ -28,11 +28,17 @@ public class InspectorProtocol implements Serializable {
     public static final byte PROACTIVE_OBSERVATION = 3;
     /** observe only when asked by inspector */
     public static final byte REACTIVE_OBSERVATION = 2;
+    /** observe step mode like an agent */
+    public static final byte STEPMODE_AGENT_OBSERVATION = 5;
+    /** observe step mode like the tuple space */
+    public static final byte STEPMODE_TUPLESPACE_OBSERVATION = 4;
     private static final long serialVersionUID = -6842026459178793395L;
     /** defining W set observation */
     private byte pendingQueryObservType = InspectorProtocol.NO_OBSERVATION;
     /** defining T set observation */
     private byte reactionsObservType = InspectorProtocol.NO_OBSERVATION;
+    /** defining stepMode observation */
+    private byte stepModeObservType = InspectorProtocol.STEPMODE_TUPLESPACE_OBSERVATION;
     /** desired tracing state for the vm */
     private boolean tracing = false;
     /** filter for tuple observed */
@@ -54,6 +60,13 @@ public class InspectorProtocol implements Serializable {
      */
     public byte getReactionsObservType() {
         return this.reactionsObservType;
+    }
+
+    /**
+     * @return the sepModeObservType
+     */
+    public byte getStepModeObservType() {
+        return this.stepModeObservType;
     }
 
     /**
@@ -98,6 +111,14 @@ public class InspectorProtocol implements Serializable {
      */
     public void setReactionsObservType(final byte obstype) {
         this.reactionsObservType = obstype;
+    }
+
+    /**
+     * @param obstype
+     *            the stepModeObservType to set
+     */
+    public void setStepModeObservType(final byte obstype) {
+        this.stepModeObservType = obstype;
     }
 
     /**
