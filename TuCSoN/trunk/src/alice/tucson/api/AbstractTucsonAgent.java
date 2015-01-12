@@ -49,10 +49,10 @@ public abstract class AbstractTucsonAgent implements
         @Override
         public void run() {
             try {
-                /*this.agent.setContext(TucsonMetaACC.getContext(
+                this.agent.setContext(TucsonMetaACC.getContext(
                         this.agent.getTucsonAgentId(),
                         AbstractTucsonAgent.this.node,
-                        AbstractTucsonAgent.this.port));*/
+                        AbstractTucsonAgent.this.port));
                 this.agent.main();
                 this.agent.getContext().exit();
             } catch (final TucsonOperationNotPossibleException e) {

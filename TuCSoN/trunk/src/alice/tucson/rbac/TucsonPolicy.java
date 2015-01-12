@@ -48,10 +48,10 @@ public class TucsonPolicy implements Policy{
 			permissions.remove(permission);
 	}
 	
-	public static Policy createPolicy(String nomePolicy, TupleArgument[] policyArr){
+	public static Policy createPolicy(String nomePolicy, TupleArgument[] permissionsArr){
 		Policy returnPolicy = new TucsonPolicy(nomePolicy);
-		for(TupleArgument policyTuple : policyArr){
-			Permission newPermission = TucsonPermission.createPermission(policyTuple.getName());
+		for(TupleArgument permTuple : permissionsArr){
+			Permission newPermission = TucsonPermission.createPermission(permTuple.getName());
 			returnPolicy.addPermission(newPermission);
 		}
 		return returnPolicy;

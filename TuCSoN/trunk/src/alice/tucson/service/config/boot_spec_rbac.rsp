@@ -5,12 +5,12 @@ reaction(out(boot),true,(
     out(boot_info([time(Time)])),
     out(context_id(0)),
     out(authorised_agent(_)),
-    out(role(default,'default role')),
-    out(role(admin_role, 'admin role')),
+    %out(role(default,'default role')),
+    %out(role(admin_role, 'admin role')),
     %out(policy(default,'default policy')),
-    out(policy(adminPolicy, 'admin policy')),
+    %out(policy(adminPolicy, 'admin policy')),
     %out(role_policy(default,default)),
-    out(role_policy(admin_role,adminPolicy)),
+    %out(role_policy(admin_role,adminPolicy)),
     out(role_assignment(_,_)))).
 
 
@@ -71,6 +71,10 @@ reaction( inp(policy_list_request(AgentId,_)),(invocation, operation), (
 	out(policy_list_request(AgentId,ok(AllPolicyList)))
 	)).
 		
+reaction( inp(policy_role_request(PolicyId,_)), (invocation, operation), (
+	rd(role_policy(RoleId, PolicyId)),
+	out(policy_role_request(PolicyId,RoleId))
+	)).
  
 %
 %	role list

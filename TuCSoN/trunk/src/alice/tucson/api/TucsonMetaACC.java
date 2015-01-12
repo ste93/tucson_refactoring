@@ -30,10 +30,10 @@ public final class TucsonMetaACC {
     private static final int DEFAULT_PORT = 20504;
     private static final String VERSION = "TuCSoN-1.11.0.0209";
 
-    public static NegotiationACC getContext(final TucsonAgentId aid, String netid, int portno){
+    public static NegotiationACC getNegotiationContext(final TucsonAgentId aid, String netid, int portno){
     	NegotiationACC acc = null;
     	try {
-    		acc = new NegotiationACCProxyAgentSide(netid, portno);
+    		acc = new NegotiationACCProxyAgentSide(aid, netid, portno);
     	}catch (TucsonInvalidAgentIdException e) {
 			System.err.println("[Tucson-NegotiationACC]: " + e);
 			e.printStackTrace();
@@ -51,13 +51,15 @@ public final class TucsonMetaACC {
      * 
      * @return The DefaultACC (which is the most powerful at the moment)
      */
-    public static NegotiationACC getContext(final TucsonAgentId aid) {
-        return TucsonMetaACC.getContext(aid, "localhost",
+    public static NegotiationACC getNegotiationContext(final TucsonAgentId aid) {
+        return TucsonMetaACC.getNegotiationContext(aid, "localhost",
                 TucsonMetaACC.DEFAULT_PORT);
     }
     
     
-   /* public static MetaACC getContext(final TucsonAgentId aid, String netid, int portno) {
+    
+    //TODO: Controllo password
+    public static MetaACC getContext(final TucsonAgentId aid, String netid, int portno, String username, String password) {
 		MetaACC acc = null;
 		try {
 			acc = new MetaACCProxyAgentSide(aid, netid, portno);
@@ -68,7 +70,7 @@ public final class TucsonMetaACC {
 			return null;
 		}
 		return acc;
-	}*/
+	}
     
     
     
@@ -82,10 +84,10 @@ public final class TucsonMetaACC {
      * 
      * @return The DefaultACC (which is the most powerful at the moment)
      */
-    /*public static EnhancedACC getContext(final TucsonAgentId aid) {
+    public static EnhancedACC getContext(final TucsonAgentId aid) {
         return TucsonMetaACC.getContext(aid, "localhost",
                 TucsonMetaACC.DEFAULT_PORT);
-    }*/
+    }
 
     /**
      * Gets the available most-comprehensive ACC from the TuCSoN Node Service
@@ -100,7 +102,7 @@ public final class TucsonMetaACC {
      * 
      * @return The DefaultACC (which is the most powerful at the moment)
      */
-    /*public static EnhancedACC getContext(final TucsonAgentId aid,
+    public static EnhancedACC getContext(final TucsonAgentId aid,
             final String netid, final int portno) {
         EnhancedACC acc = null;
         try {
@@ -112,7 +114,7 @@ public final class TucsonMetaACC {
             return null;
         }
         return acc;
-    }*/
+    }
 
     /**
      * 

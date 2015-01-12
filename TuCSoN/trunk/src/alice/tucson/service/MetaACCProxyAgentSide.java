@@ -28,7 +28,7 @@ import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 
 public class MetaACCProxyAgentSide extends ACCProxyAgentSide implements MetaACC{
 
-	@Override
+	/*@Override
 	public ITucsonOperation activateAdminRole() throws InvalidVarNameException, TucsonOperationNotPossibleException, TucsonInvalidTupleCentreIdException, UnreachableNodeException, OperationTimeOutException {
 		return this.activateAdminRole(null);
 	}
@@ -36,7 +36,7 @@ public class MetaACCProxyAgentSide extends ACCProxyAgentSide implements MetaACC{
 	@Override
 	public ITucsonOperation activateAdminRole(Long l) throws InvalidVarNameException, TucsonOperationNotPossibleException, TucsonInvalidTupleCentreIdException, UnreachableNodeException, OperationTimeOutException {
 		return this.activateRole("admin_role", l);
-	}
+	}*/
 
 	
 	public MetaACCProxyAgentSide(Object id)
@@ -109,15 +109,16 @@ public class MetaACCProxyAgentSide extends ACCProxyAgentSide implements MetaACC{
 	}
 	
 	private void addPolicy(Policy policy, Long l, TupleCentreId tid) throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException, InvalidVarNameException{
-		String permissions = "";
+		String permissions = "[";
 		for(Permission perm : policy.getPermissions()){
 			permissions += perm.getPermissionName() + ",";
 		}
 
 		permissions = permissions.substring(0, permissions.length() - 1);
+		permissions += "]";
 		LogicTuple policyTuple = new LogicTuple("policy",
 				new Value(policy.getPolicyName()),
-				new Var('[' + permissions + ']'));
+				new Value(permissions));
 		ITucsonOperation op = out(tid, policyTuple, l);
 		if(op.isResultSuccess()){
 			LogicTuple res = op.getLogicTupleResult();

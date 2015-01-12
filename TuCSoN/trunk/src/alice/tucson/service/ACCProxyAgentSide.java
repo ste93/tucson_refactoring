@@ -184,7 +184,7 @@ public class ACCProxyAgentSide implements EnhancedACC {
 	}*/
     
    
-    
+    /*
     @Override
 	public synchronized ITucsonOperation activateRole(String roleName) throws TucsonOperationNotPossibleException, TucsonInvalidTupleCentreIdException, InvalidVarNameException, UnreachableNodeException, OperationTimeOutException{
 		return this.activateRole(roleName, null);
@@ -288,9 +288,9 @@ public class ACCProxyAgentSide implements EnhancedACC {
     		TupleArgument[] policyTuples = term.getArg(1).toArray();
     		Policy newPolicy = TucsonPolicy.createPolicy(term.getArg(0).toString(), policyTuples);
     		policies.add(newPolicy);
-    		/*String arg1 = rt.getArg(0).toString();
+    		String arg1 = rt.getArg(0).toString();
     		String permissions = ((Struct)rt.getArg(1)).getArg(0).toString();
-    		Struct structPermissions = (Struct) Term.createTerm(permissions);*/
+    		Struct structPermissions = (Struct) Term.createTerm(permissions);
     	}
     	
     	Policy bestPolicy = null;
@@ -308,7 +308,7 @@ public class ACCProxyAgentSide implements EnhancedACC {
     	//Scelgo la policy con il numero minore di privilegi che presenta quelli richiesti
     	
     	return bestPolicy;
-    }
+    }*/
     
     @Override
 	public void enterACC() throws UnreachableNodeException,
