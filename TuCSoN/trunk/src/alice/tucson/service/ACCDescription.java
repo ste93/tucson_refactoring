@@ -14,7 +14,10 @@
 package alice.tucson.service;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.Properties;
+
+import alice.tucson.rbac.Role;
 
 /**
  * Agent Coordination Context Description class.
@@ -39,6 +42,8 @@ import java.util.Properties;
 public class ACCDescription implements Serializable {
     private static final long serialVersionUID = -8231854077657631541L;
     private final java.util.Properties properties;
+    
+    private HashMap<String, Role> roles;
 
     /**
      * Creates an ACCDescription as a Java Properties empty map.
@@ -47,6 +52,8 @@ public class ACCDescription implements Serializable {
      */
     public ACCDescription() {
         this.properties = new Properties();
+        
+        roles = new HashMap<String,Role>(); //galassi
     }
 
     /**
@@ -58,6 +65,8 @@ public class ACCDescription implements Serializable {
      */
     public ACCDescription(final Properties p) {
         this.properties = p;
+        
+        roles = new HashMap<String,Role>();			// galassi
     }
 
     /**
@@ -83,5 +92,34 @@ public class ACCDescription implements Serializable {
      */
     public void setProperty(final String name, final String value) {
         this.properties.setProperty(name, value);
+    }
+    
+    public Role getRole(String role) { // galassi
+    	return roles.get(role);
+    }
+    
+    public Role getRole(Role role) { // galassi
+    	return roles.get(role.getRoleName());
+    }
+    
+    public void addRole(Role role) { // galassi
+    	if(!roles.containsValue(role))
+    		roles.put(role.getRoleName(), role);
+    }
+    
+    public void removeRole(Role role) { // galassi
+    	removeRole(role.getRoleName());
+    }
+
+	public void removeRole(String roleId) {
+		roles.remove(roleId);
+	}
+    
+    public HashMap<String,Role> getRoles() { // galassi
+    	return roles;
+    }
+    
+    public void setRoles(HashMap<String,Role> roles) { // galassi
+    	this.roles=roles;
     }
 }
