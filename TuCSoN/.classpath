@@ -2,6 +2,6 @@
 <classpath>
 	<classpathentry kind="src" path="trunk/src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="libs/2p.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Emanuele/Dropbox/Università/Tesi/libs/2p.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

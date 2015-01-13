@@ -121,12 +121,13 @@ public class NegotiationACCProxyAgentSide implements NegotiationACC{
     		if(res!=null && res.getArg(OKNUMBER).getName().equalsIgnoreCase("ok")){
     			Policy policy = choosePolicy(res, permissionsId);
     			LogicTuple rolePolicyTemplate = new LogicTuple("policy_role_request",
-    					new Var("Result"),
-    					new Value(policy.getPolicyName()));
+    					new Value(policy.getPolicyName()),
+    					new Var("Result"));
     			
-    			op = internalACC.inp(tid, rolePolicyTemplate, l);
+    			ITucsonOperation op2 = internalACC.inp(tid, rolePolicyTemplate, l);
     			
-    			if(op.isResultSuccess()){
+    			if(op2.isResultSuccess()){
+    				res = op2.getLogicTupleResult();
     				String roleName = res.getArg(1).toString();
     				Role newRole = new TucsonRole(roleName);
     				newRole.setPolicy(policy);

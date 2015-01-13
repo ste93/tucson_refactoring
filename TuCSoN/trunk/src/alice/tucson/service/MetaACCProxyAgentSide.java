@@ -8,8 +8,10 @@ import java.util.List;
 import java.util.Map;
 
 import alice.logictuple.LogicTuple;
+import alice.logictuple.TupleArgument;
 import alice.logictuple.Value;
 import alice.logictuple.Var;
+import alice.logictuple.exceptions.InvalidTupleArgumentException;
 import alice.logictuple.exceptions.InvalidVarNameException;
 import alice.tucson.api.ITucsonOperation;
 import alice.tucson.api.MetaACC;
@@ -24,6 +26,7 @@ import alice.tucson.rbac.RBAC;
 import alice.tucson.rbac.Role;
 import alice.tuplecentre.api.TupleCentreId;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
+import alice.tuprolog.Term;
 
 
 public class MetaACCProxyAgentSide extends ACCProxyAgentSide implements MetaACC{
@@ -49,12 +52,12 @@ public class MetaACCProxyAgentSide extends ACCProxyAgentSide implements MetaACC{
 	}
 
 	@Override
-	public void add(RBAC rbac) throws TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException, InvalidVarNameException {		
+	public void add(RBAC rbac) throws TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException, InvalidVarNameException, InvalidTupleArgumentException {		
 		this.add(rbac, null, node, port);
 	}
 	
 	@Override
-	public void add(RBAC rbac, Long l, String node, int port) throws TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException, InvalidVarNameException {
+	public void add(RBAC rbac, Long l, String node, int port) throws TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException, InvalidVarNameException, InvalidTupleArgumentException {
 		if(rbac == null)
 			return;
 		
@@ -108,7 +111,7 @@ public class MetaACCProxyAgentSide extends ACCProxyAgentSide implements MetaACC{
 		this.addRolePolicy(role.getPolicy(), role.getRoleName(), l, tid);
 	}
 	
-	private void addPolicy(Policy policy, Long l, TupleCentreId tid) throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException, InvalidVarNameException{
+	private void addPolicy(Policy policy, Long l, TupleCentreId tid) throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException, InvalidVarNameException, InvalidTupleArgumentException{
 		String permissions = "[";
 		for(Permission perm : policy.getPermissions()){
 			permissions += perm.getPermissionName() + ",";
@@ -118,8 +121,9 @@ public class MetaACCProxyAgentSide extends ACCProxyAgentSide implements MetaACC{
 		permissions += "]";
 		LogicTuple policyTuple = new LogicTuple("policy",
 				new Value(policy.getPolicyName()),
-				new Value(permissions));
+				TupleArgument.parse(permissions));
 		ITucsonOperation op = out(tid, policyTuple, l);
+		
 		if(op.isResultSuccess()){
 			LogicTuple res = op.getLogicTupleResult();
 			log("addPolicy: "+res);
