@@ -22,6 +22,7 @@ import alice.tucson.rbac.Policy;
 import alice.tucson.rbac.Role;
 import alice.tucson.rbac.TucsonPolicy;
 import alice.tucson.rbac.TucsonRole;
+import alice.tucson.service.tools.TucsonACCTool;
 import alice.tuplecentre.api.TupleCentreId;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 import alice.tuprolog.Term;
@@ -64,6 +65,7 @@ public class NegotiationACCProxyAgentSide implements NegotiationACC{
 		
 		TupleCentreId tid = new TucsonTupleCentreId(tcOrg,"'"+node+"'", ""+port);
 		
+		TucsonACCTool.activateRole(agentAid.toString(), roleName, tid, internalACC);
 		LogicTuple template = new LogicTuple("role_activation_request",
     			new Value(tcAgent),
     			new Value(roleName),
@@ -76,13 +78,6 @@ public class NegotiationACCProxyAgentSide implements NegotiationACC{
     		if(res!=null && res.getArg(2).getName().equalsIgnoreCase("ok")){
     			RoleACCProxyAgentSide newACC = new RoleACCProxyAgentSide(agentAid, node, port);
     			return newACC;
-    			/*Role roleReceived = createRole(res);
-    			if(roleReceived != null){
-    				profile.addRole(roleReceived);
-    				log("Activated the role: " + res);
-    			} else {
-    				log("Activation request failed: " + res);
-    			}*/
     		} else {
 				//log("Activation request failed: " + res);
 				return null;
@@ -108,76 +103,30 @@ public class NegotiationACCProxyAgentSide implements NegotiationACC{
 	public synchronized EnhancedACC activateRoleWithPermission(List<String> permissionsId, Long l) throws InvalidVarNameException, TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException, TucsonInvalidAgentIdException {
 		
     	TucsonTupleCentreId tid = new TucsonTupleCentreId(tcOrg, "'"+node+"'", ""+port);
-    	
-    	LogicTuple permissionTemplate = new LogicTuple("policy_list_request",
-    			new Value(agentAid.toString()),
-    			//new Value(permissionId),
-    			new Var("Result"));
-    	
-    	ITucsonOperation op = internalACC.inp(tid, permissionTemplate, l);
-    	
-    	if(op.isResultSuccess()){
-    		LogicTuple res = op.getLogicTupleResult();
-    		if(res!=null && res.getArg(OKNUMBER).getName().equalsIgnoreCase("ok")){
-    			Policy policy = choosePolicy(res, permissionsId);
-    			LogicTuple rolePolicyTemplate = new LogicTuple("policy_role_request",
-    					new Value(policy.getPolicyName()),
-    					new Var("Result"));
-    			
-    			ITucsonOperation op2 = internalACC.inp(tid, rolePolicyTemplate, l);
-    			
-    			if(op2.isResultSuccess()){
-    				res = op2.getLogicTupleResult();
-    				String roleName = res.getArg(1).toString();
-    				LogicTuple template = new LogicTuple("role_activation_request",
-    		    			new Value(agentAid.toString()),
-    		    			new Value(roleName),
-    		    			new Var("Result"));
-    				op2 = internalACC.inp(tid, template, l);
-    				if(op2.isResultSuccess()){
-    					Role newRole = new TucsonRole(roleName);
-        				newRole.setPolicy(policy);
-        				RoleACCProxyAgentSide newACC = new RoleACCProxyAgentSide(agentAid, node, port);
-        				newACC.setRole(newRole);
-        				return newACC;
-    				}
-    			}
-    		} else {
-				log("Activation request failed: " + res);
-			}
-    	} else{
-			log("Activation request failed for permission: " + permissionsId.toString());
-		}
-    	
-    	return null;
+    	List<Policy> policies = TucsonACCTool.getPolicyList(agentAid.toString(), tid, internalACC);
+
+		Policy policy = choosePolicy(policies, permissionsId);
+		
+		Role newRole = TucsonACCTool.activateRoleWithPolicy(agentAid.toString(), policy, tid, internalACC);
+		RoleACCProxyAgentSide newACC = new RoleACCProxyAgentSide(agentAid, node, port);
+		
+		if(newACC != null)
+			newACC.setRole(newRole);
+		
+		return newACC;
 	}
     
-    
-    private Policy choosePolicy(LogicTuple res, List<String> permissionsId){
-    	TupleArgument[] policiesList = res.getArg(OKNUMBER).getArg(0).toArray();
-    	List<Policy> policies = new ArrayList<Policy>();
-    	for(TupleArgument term : policiesList){
-    		TupleArgument[] permissionsTuples = term.getArg(1).toArray();
-
-    		Policy newPolicy = TucsonPolicy.createPolicy(term.getArg(0).toString(), permissionsTuples);
-    		policies.add(newPolicy);
-    		/*String arg1 = term.getArg(0).toString();
-    		String permissions = ((Struct)term.getArg(1)).getArg(0).toString();
-    		Struct structPermissions = (Struct) Term.createTerm(permissions);*/
-    	}
-    	
+    private Policy choosePolicy(List<Policy> policies, List<String> permissionsId){
     	Policy bestPolicy = null;
     	int bestPermissionsArity = 10000;
     	
-    	for(Policy pol : policies){
-    		if(pol.hasPermissions(permissionsId)){
+    	for(Policy pol : policies)
+    		if(pol.hasPermissions(permissionsId))
     			if(pol.getPermissions().size() < bestPermissionsArity){
     				bestPermissionsArity = pol.getPermissions().size();
     				bestPolicy = pol;
     			}
-    		}
-    	}
-    	
+	
     	return bestPolicy;    	
     }
     
