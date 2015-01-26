@@ -49,7 +49,7 @@ public class NegotiationACCProxyAgentSide implements NegotiationACC{
 	}
 
 	@Override
-	public RootACC activateRole(String roleName)
+	public EnhancedACC activateRole(String roleName)
 			throws TucsonOperationNotPossibleException,
 			TucsonInvalidTupleCentreIdException, InvalidVarNameException,
 			UnreachableNodeException, OperationTimeOutException, TucsonInvalidAgentIdException {
@@ -57,7 +57,7 @@ public class NegotiationACCProxyAgentSide implements NegotiationACC{
 	}
 
 	@Override
-	public RootACC activateRole(String roleName, Long l)
+	public EnhancedACC activateRole(String roleName, Long l)
 			throws TucsonOperationNotPossibleException,
 			TucsonInvalidTupleCentreIdException, InvalidVarNameException,
 			UnreachableNodeException, OperationTimeOutException, TucsonInvalidAgentIdException {
@@ -94,7 +94,7 @@ public class NegotiationACCProxyAgentSide implements NegotiationACC{
 	}
 	
 	@Override
-	public RootACC activateRoleWithPermission(List<String> permissionsId) throws InvalidVarNameException, TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException, TucsonInvalidAgentIdException {
+	public EnhancedACC activateRoleWithPermission(List<String> permissionsId) throws InvalidVarNameException, TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException, TucsonInvalidAgentIdException {
 		return this.activateRoleWithPermission(permissionsId, null);
 	}
     
@@ -105,7 +105,7 @@ public class NegotiationACCProxyAgentSide implements NegotiationACC{
 	 *  3 - Viene ricercato il ruolo che detiene la policy, ed attivato.
 	 */
     @Override
-	public synchronized RootACC activateRoleWithPermission(List<String> permissionsId, Long l) throws InvalidVarNameException, TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException, TucsonInvalidAgentIdException {
+	public synchronized EnhancedACC activateRoleWithPermission(List<String> permissionsId, Long l) throws InvalidVarNameException, TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException, TucsonInvalidAgentIdException {
 		
     	TucsonTupleCentreId tid = new TucsonTupleCentreId(tcOrg, "'"+node+"'", ""+port);
     	
@@ -129,12 +129,18 @@ public class NegotiationACCProxyAgentSide implements NegotiationACC{
     			if(op2.isResultSuccess()){
     				res = op2.getLogicTupleResult();
     				String roleName = res.getArg(1).toString();
-    				Role newRole = new TucsonRole(roleName);
-    				newRole.setPolicy(policy);
-    				RoleACCProxyAgentSide newACC = new RoleACCProxyAgentSide(agentAid, node, port);
-    				newACC.setRole(newRole);
-    				
-    				return newACC;
+    				LogicTuple template = new LogicTuple("role_activation_request",
+    		    			new Value(agentAid.toString()),
+    		    			new Value(roleName),
+    		    			new Var("Result"));
+    				op2 = internalACC.inp(tid, template, l);
+    				if(op2.isResultSuccess()){
+    					Role newRole = new TucsonRole(roleName);
+        				newRole.setPolicy(policy);
+        				RoleACCProxyAgentSide newACC = new RoleACCProxyAgentSide(agentAid, node, port);
+        				newACC.setRole(newRole);
+        				return newACC;
+    				}
     			}
     		} else {
 				log("Activation request failed: " + res);

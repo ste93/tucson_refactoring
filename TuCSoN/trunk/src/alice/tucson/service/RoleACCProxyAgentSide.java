@@ -10,6 +10,7 @@ import alice.tucson.api.TucsonOperationCompletionListener;
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
+import alice.tucson.rbac.Permission;
 import alice.tucson.rbac.Role;
 import alice.tuplecentre.api.Tuple;
 import alice.tuplecentre.api.TupleCentreId;
@@ -20,28 +21,31 @@ public class RoleACCProxyAgentSide extends ACCProxyAgentSide{
 	private List<String> permissions;
 	private Role role;
 	
-	public RoleACCProxyAgentSide(Object aid, String perm)
+	public RoleACCProxyAgentSide(Object aid)
 			throws TucsonInvalidAgentIdException {
 		super(aid);
 		
 		permissions = new ArrayList<String>();
-		addPermission(perm);
 	}
 	
 	public RoleACCProxyAgentSide(Object aid, final String n, final int p) throws TucsonInvalidAgentIdException{
 		super(aid, n, p);
 		permissions = new ArrayList<String>();
-		//addPermission(perm);
 	}
 	
 	public void setRole(Role role){
 		this.role = role;
+		setPermissions();
+	}
+	
+	private void setPermissions(){
+		permissions = new ArrayList<String>();
+		List<Permission> perms = role.getPolicy().getPermissions();
+		for(Permission perm : perms){
+			permissions.add(perm.getPermissionName());
+		}
 	}
 
-	private void addPermission(String perm){
-		if(!permissions.contains(perm))
-			permissions.add(perm);
-	}
 	
 	private void checkPermission(String perm) throws TucsonOperationNotPossibleException{
 		if(permissions.isEmpty() || !permissions.contains(perm))
@@ -54,7 +58,7 @@ public class RoleACCProxyAgentSide extends ACCProxyAgentSide{
             UnreachableNodeException, OperationTimeOutException {
 		
 		checkPermission("rd");
-		return this.rd(tid, tuple, timeout);
+		return super.rd(tid, tuple, timeout);
     }
 
     @Override
@@ -64,6 +68,63 @@ public class RoleACCProxyAgentSide extends ACCProxyAgentSide{
             UnreachableNodeException {
     	
     	checkPermission("rd");
-    	return this.rd(tid, tuple, l);
+    	return super.rd(tid, tuple, l);
+    }
+    
+    @Override
+    public ITucsonOperation rdp(final TupleCentreId tid, final Tuple tuple,
+            final Long timeout) throws TucsonOperationNotPossibleException,
+            UnreachableNodeException, OperationTimeOutException {
+    	
+    	checkPermission("rdp");
+    	return super.rdp(tid, tuple, timeout);
+    }
+
+    @Override
+    public ITucsonOperation rdp(final TupleCentreId tid, final Tuple tuple,
+            final TucsonOperationCompletionListener l)
+            throws TucsonOperationNotPossibleException,
+            UnreachableNodeException {
+    	
+    	checkPermission("rdp");
+        return super.rdp(tid, tuple, l);
+    }
+    
+    @Override
+    public ITucsonOperation in(final TupleCentreId tid, final Tuple tuple,
+            final Long timeout) throws TucsonOperationNotPossibleException,
+            UnreachableNodeException, OperationTimeOutException {
+        
+    	checkPermission("in");
+    	return super.in(tid, tuple, timeout);
+    }
+
+    @Override
+    public ITucsonOperation in(final TupleCentreId tid, final Tuple tuple,
+            final TucsonOperationCompletionListener l)
+            throws TucsonOperationNotPossibleException,
+            UnreachableNodeException {
+    	
+    	checkPermission("in");
+    	return super.in(tid, tuple, l);
+    }
+    
+    @Override
+    public ITucsonOperation inp(final TupleCentreId tid, final Tuple tuple,
+            final Long timeout) throws TucsonOperationNotPossibleException,
+            UnreachableNodeException, OperationTimeOutException {
+    	
+        checkPermission("inp");
+        return super.inp(tid, tuple, timeout);
+    }
+
+    @Override
+    public ITucsonOperation inp(final TupleCentreId tid, final Tuple tuple,
+            final TucsonOperationCompletionListener l)
+            throws TucsonOperationNotPossibleException,
+            UnreachableNodeException {
+    	
+        checkPermission("inp");
+        return super.inp(tid, tuple, l);
     }
 }
