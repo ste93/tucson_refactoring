@@ -127,4 +127,22 @@ public class RoleACCProxyAgentSide extends ACCProxyAgentSide{
         checkPermission("inp");
         return super.inp(tid, tuple, l);
     }
+    
+    @Override
+    public ITucsonOperation out(final TupleCentreId tid, final Tuple tuple,
+            final Long timeout) throws TucsonOperationNotPossibleException,
+            UnreachableNodeException, OperationTimeOutException {
+    	
+    	checkPermission("out");
+    	return super.out(tid, tuple, timeout);
+    }
+
+    @Override
+    public ITucsonOperation out(final TupleCentreId tid, final Tuple tuple,
+            final TucsonOperationCompletionListener l)
+            throws TucsonOperationNotPossibleException,
+            UnreachableNodeException {
+    	checkPermission("out");
+    	return super.out(tid, tuple, l);
+    }
 }

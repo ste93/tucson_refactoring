@@ -7,6 +7,7 @@ import alice.logictuple.LogicTuple;
 import alice.logictuple.TupleArgument;
 import alice.logictuple.Value;
 import alice.logictuple.Var;
+import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.logictuple.exceptions.InvalidVarNameException;
 import alice.tucson.api.EnhancedACC;
 import alice.tucson.api.ITucsonOperation;
@@ -64,28 +65,25 @@ public class NegotiationACCProxyAgentSide implements NegotiationACC{
 			UnreachableNodeException, OperationTimeOutException, TucsonInvalidAgentIdException {
 		
 		TupleCentreId tid = new TucsonTupleCentreId(tcOrg,"'"+node+"'", ""+port);
+		//TupleCentreId tid2 = new TucsonTupleCentreId(tcDefault, "'"+node+"'", ""+port);
 		
-		TucsonACCTool.activateRole(agentAid.toString(), roleName, tid, internalACC);
-		LogicTuple template = new LogicTuple("role_activation_request",
-    			new Value(tcAgent),
-    			new Value(roleName),
-    			new Var("Result"));
-		
-		ITucsonOperation op = internalACC.inp(tid, template, l);
-		
-		if(op.isResultSuccess()){
-			LogicTuple res = op.getLogicTupleResult();
-    		if(res!=null && res.getArg(2).getName().equalsIgnoreCase("ok")){
-    			RoleACCProxyAgentSide newACC = new RoleACCProxyAgentSide(agentAid, node, port);
-    			return newACC;
-    		} else {
-				//log("Activation request failed: " + res);
-				return null;
+		Role newRole = TucsonACCTool.activateRole(agentAid.toString(), roleName, tid, internalACC);
+
+		if(newRole != null){
+			RoleACCProxyAgentSide newACC = new RoleACCProxyAgentSide(agentAid.toString(), node, port);
+			newACC.setRole(newRole);
+			/*return newACC;*/
+
+			//EnhancedACC newACC2 = new ACCProxyAgentSide(agentAid, node, port);
+			try {
+				newACC.rdp(tid, LogicTuple.parse("ciao(A)"), (Long)null);
+			} catch (InvalidLogicTupleException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-    	} else{
-			//log("Activation request failed: " + roleName);
+			return newACC;
+		} else
 			return null;
-		}
 	}
 	
 	@Override

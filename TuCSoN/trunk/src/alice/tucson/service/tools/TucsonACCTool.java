@@ -7,22 +7,50 @@ import alice.logictuple.LogicTuple;
 import alice.logictuple.TupleArgument;
 import alice.logictuple.Value;
 import alice.logictuple.Var;
+import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.logictuple.exceptions.InvalidVarNameException;
 import alice.tucson.api.EnhancedACC;
 import alice.tucson.api.ITucsonOperation;
 import alice.tucson.api.TucsonTupleCentreId;
+import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
+import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
 import alice.tucson.rbac.Policy;
 import alice.tucson.rbac.Role;
 import alice.tucson.rbac.TucsonPolicy;
 import alice.tucson.rbac.TucsonRole;
+import alice.tucson.service.ACCProxyAgentSide;
 import alice.tuplecentre.api.TupleCentreId;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 
 public final class TucsonACCTool {
 
+	public static boolean activateContext(String agentAid, TupleCentreId tid, EnhancedACC acc){
+		try {
+			LogicTuple template = new LogicTuple("context_request",
+					new Value(agentAid),
+					new Var("Result"));
+			ITucsonOperation op = acc.inp(tid, template, (Long)null);
+			if(op.isResultSuccess()){
+				LogicTuple res = op.getLogicTupleResult();
+				if(res!=null && res.getArg(1).getName().equalsIgnoreCase("ok")){
+					return true;
+				} else if(res!=null && res.getArg(1).getName().equalsIgnoreCase("failed") && 
+						res.getArg(1).getArg(0).toString().equalsIgnoreCase("agent_already_present"))
+					return true;
+			}
+		} catch (InvalidVarNameException | TucsonOperationNotPossibleException | UnreachableNodeException | OperationTimeOutException e) {
+			e.printStackTrace();
+		}
+		
+		return false;
+	}
+	
 	public static Role activateRole(String agentAid, String roleName, TupleCentreId tid, EnhancedACC acc){
+		if(!activateContext(agentAid, tid, acc))
+			return null;
+		
 		Role newRole = null;
 		try {
 			LogicTuple template = new LogicTuple("role_activation_request",
@@ -31,17 +59,34 @@ public final class TucsonACCTool {
 					new Var("Result"));
 			ITucsonOperation op = acc.inp(tid, template, (Long)null);
 			if(op.isResultSuccess()){
-				newRole = new TucsonRole(roleName);
+				LogicTuple res = op.getLogicTupleResult();
+				if(res!=null && res.getArg(2).getName().equalsIgnoreCase("ok")){
+					String policyName = res.getArg(2).getArg(0).toString();
+					TupleArgument[] permissionsList = res.getArg(2).getArg(1).toArray();
+					Policy newPolicy = TucsonPolicy.createPolicy(policyName, permissionsList);
+					newRole = new TucsonRole(roleName);
+					newRole.setPolicy(newPolicy);
+					/*LogicTuple rolePolicyTemplate = new LogicTuple("policy_role_request",
+							new Value("Result"),
+							new Var(roleName));
+					op = acc.inp(tid, rolePolicyTemplate, (Long)null);*/
+				}
 			}
 		} catch (InvalidVarNameException | TucsonOperationNotPossibleException | UnreachableNodeException | OperationTimeOutException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
+
+		
+		
 		return newRole;
 	}
 	
 	public static Role activateRoleWithPolicy(String agentAid, Policy policy, TupleCentreId tid, EnhancedACC acc){
+		if(!activateContext(agentAid, tid, acc))
+			return null;
+		
 		Role newRole = null;
 		
 		try {

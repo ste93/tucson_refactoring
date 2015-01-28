@@ -104,7 +104,9 @@ public class ACCProvider {
             final LogicTuple result = (LogicTuple) TupleCentreContainer
                     .doBlockingOperation(TucsonOperation.inpCode(), this.aid,
                             this.config, req);
+           
             if (result == null) {
+            	 ACCProvider.log("===========================================Result Null");
                 profile.setProperty("failure", "context not available");
                 dialog.sendEnterRequestRefused();
                 return false;

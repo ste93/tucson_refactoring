@@ -21,10 +21,10 @@ reaction( inp(context_request(AgentId,_)),request,(
   no(authorised_agent(AgentId)),
   out(context_request(AgentId,failed(agent_not_authorised))))).
 
-reaction( inp(context_request(AgentId,_)),request(
-  rd(open_session(_,AgentId)),
+reaction( inp(context_request(AgentId,_)),request,(
+  rd(open_session(_,AgentId,_)),
   no(context_request(AgentId,ok(_))),
-  out(context_request(AgentId,failed(agent_already_present))) )).
+  out(context_request(AgentId,failed(agent_already_present))))).
 
 reaction( inp(context_request(AgentId,_)),request,(
   rd(authorised_agent(AgentId)),
@@ -57,9 +57,9 @@ reaction( inp(role_activation_request(AgentId,RoleId,_)),request,(
   rd(role(RoleId,Descr)),										% Esiste il ruolo
   rd(role_assignment(RoleId,AgentId)),
   out(open_session(CtxId,AgentId,[RoleId|RoleList])),
-  %rd(role_policy(RoleId,PolicyId)),
-  %rd(policy(PolicyId,Policy)),
-  out(role_activation_request(AgentId,RoleId,ok(Desc))))).
+  rd(role_policy(RoleId,PolicyId)),
+  rd(policy(PolicyId,PermissionList)),
+  out(role_activation_request(AgentId,RoleId,ok(PolicyId,PermissionList))))).
 
 
 %
@@ -74,6 +74,11 @@ reaction( inp(policy_list_request(AgentId,_)),(invocation, operation), (
 reaction( inp(policy_role_request(PolicyId,_)), (invocation, operation), (
 	rd(role_policy(RoleId, PolicyId)),
 	out(policy_role_request(PolicyId,RoleId))
+	)).
+	
+reaction( inp(role_policy_request(_,RoleId)), (invocation, operation), (
+	rd(role_policy(RoleId, PolicyId)),
+	out(role_policy_request(PolicyId,RoleId))
 	)).
  
 %
