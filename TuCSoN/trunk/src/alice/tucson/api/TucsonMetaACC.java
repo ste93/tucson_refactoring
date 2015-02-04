@@ -30,10 +30,10 @@ public final class TucsonMetaACC {
     private static final int DEFAULT_PORT = 20504;
     private static final String VERSION = "TuCSoN-1.11.0.0209";
 
-    public static NegotiationACC getNegotiationContext(final TucsonAgentId aid, String netid, int portno){
+    public static NegotiationACC getNegotiationContext(final String aid, String netid, int portno){
     	NegotiationACC acc = null;
     	try {
-    		acc = new NegotiationACCProxyAgentSide(aid, netid, portno);
+    		acc = new NegotiationACCProxyAgentSide(new TucsonAgentId(aid), netid, portno);
     	}catch (TucsonInvalidAgentIdException e) {
 			System.err.println("[Tucson-NegotiationACC]: " + e);
 			e.printStackTrace();
@@ -51,7 +51,7 @@ public final class TucsonMetaACC {
      * 
      * @return The DefaultACC (which is the most powerful at the moment)
      */
-    public static NegotiationACC getNegotiationContext(final TucsonAgentId aid) {
+    public static NegotiationACC getNegotiationContext(final String aid) {
         return TucsonMetaACC.getNegotiationContext(aid, "localhost",
                 TucsonMetaACC.DEFAULT_PORT);
     }

@@ -22,9 +22,9 @@ reaction( inp(context_request(AgentId,_)),request,(
   out(context_request(AgentId,failed(agent_not_authorised))))).
 
 reaction( inp(context_request(AgentId,_)),request,(
-  rd(open_session(_,AgentId,_)),
+  rd(open_session(Id,AgentId,_)),
   no(context_request(AgentId,ok(_))),
-  out(context_request(AgentId,failed(agent_already_present))))).
+  out(context_request(AgentId,ok(Id))))).
 
 reaction( inp(context_request(AgentId,_)),request,(
   rd(authorised_agent(AgentId)),
