@@ -2,6 +2,7 @@ package alice.tucson.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import alice.tucson.api.EnhancedACC;
 import alice.tucson.api.ITucsonOperation;
@@ -36,6 +37,10 @@ public class RoleACCProxyAgentSide extends ACCProxyAgentSide{
 	public void setRole(Role role){
 		this.role = role;
 		setPermissions();
+	}
+	
+	public UUID getUUID(){
+		return this.executor.agentUUID;
 	}
 	
 	private void setPermissions(){

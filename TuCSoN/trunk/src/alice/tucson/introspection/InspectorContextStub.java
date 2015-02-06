@@ -15,6 +15,8 @@ package alice.tucson.introspection;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
+
 import alice.tucson.api.TucsonAgentId;
 import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.api.exceptions.OperationNotAllowedException;
@@ -57,6 +59,7 @@ public class InspectorContextStub implements InspectorContext {
         this.profile.setProperty("agent-identity", i.toString());
         this.profile.setProperty("agent-role", "$inspector");
         this.profile.setProperty("tuple-centre", tc.getName());
+        this.profile.setProperty("agent-uuid", UUID.randomUUID().toString());
         this.id = i;
         this.tid = tc;
         try {

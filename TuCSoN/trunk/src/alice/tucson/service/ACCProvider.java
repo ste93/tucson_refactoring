@@ -99,8 +99,10 @@ public class ACCProvider {
             if (agentName == null) {
                 agentName = profile.getProperty("tc-identity");
             }
+            //BUCCELLI: Inserito UUID nella richiesta
+            String agentUUID = profile.getProperty("agent-uuid");
             final LogicTuple req = new LogicTuple("context_request", new Value(
-                    agentName), new Var("CtxId"));
+                    agentName), new Var("CtxId"), new Value(agentUUID));
             final LogicTuple result = (LogicTuple) TupleCentreContainer
                     .doBlockingOperation(TucsonOperation.inpCode(), this.aid,
                             this.config, req);

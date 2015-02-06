@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
+
 import alice.logictuple.LogicTuple;
 import alice.logictuple.LogicTupleOpManager;
 import alice.logictuple.TupleArgument;
@@ -149,8 +151,11 @@ public class ACCProxyAgentSide implements EnhancedACC {
         //this.aid = new TucsonAgentId(id);
         this.node = n;
         this.port = p;
+        
+        UUID agentUUID = UUID.randomUUID();
+        
         // Class used to perform tucson operations
-        this.executor = new OperationHandler();
+        this.executor = new OperationHandler(agentUUID);
         
         isACCEntered = false;
     }
@@ -317,6 +322,7 @@ public class ACCProxyAgentSide implements EnhancedACC {
 		profile = new ACCDescription();
 		profile.setProperty("agent_identity", this.aid.toString());
 		profile.setProperty("agent_name", this.aid.getAgentName());
+		profile.setProperty("agent-uuid", this.executor.agentUUID.toString());
 		profile.setProperty("agent_role", "user");
 
 	}

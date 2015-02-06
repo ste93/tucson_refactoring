@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
+
 import alice.logictuple.LogicTuple;
 import alice.respect.api.TupleCentreId;
 import alice.tucson.api.ITucsonOperation;
@@ -272,10 +274,15 @@ public class OperationHandler {
      */
     protected ACCDescription profile;
 
+    /* BUCCELLI
+     * 	UUID of the agent using this OperationHandler
+     */
+    protected UUID agentUUID;
     /**
      * 
      */
-    public OperationHandler() {
+    public OperationHandler(UUID uuid) {
+    	this.agentUUID = uuid;
         this.profile = new ACCDescription();
         this.events = new LinkedList<TucsonOpCompletionEvent>();
         this.controllerSessions = new HashMap<String, OperationHandler.ControllerSession>();
@@ -628,6 +635,7 @@ public class OperationHandler {
         }
         this.profile.setProperty("agent-identity", aid.toString());
         this.profile.setProperty("agent-role", "user");
+        this.profile.setProperty("agent-uuid", this.agentUUID.toString());
         AbstractTucsonProtocol dialog = null;
         boolean isEnterReqAcpt = false;
         try {

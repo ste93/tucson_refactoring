@@ -2,6 +2,7 @@ package alice.tucson.service.tools;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import alice.logictuple.LogicTuple;
 import alice.logictuple.TupleArgument;
@@ -26,11 +27,12 @@ import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 
 public final class TucsonACCTool {
 
-	public static boolean activateContext(String agentAid, TupleCentreId tid, EnhancedACC acc){
+	public static boolean activateContext(String agentAid, UUID agentUUID, TupleCentreId tid, EnhancedACC acc){
 		try {
 			LogicTuple template = new LogicTuple("context_request",
 					new Value(agentAid),
-					new Var("Result"));
+					new Var("Result"),
+					new Value(agentUUID.toString()));
 			ITucsonOperation op = acc.inp(tid, template, (Long)null);
 			if(op.isResultSuccess()){
 				LogicTuple res = op.getLogicTupleResult();
@@ -47,8 +49,8 @@ public final class TucsonACCTool {
 		return false;
 	}
 	
-	public static Role activateRole(String agentAid, String roleName, TupleCentreId tid, EnhancedACC acc){
-		if(!activateContext(agentAid, tid, acc))
+	public static Role activateRole(String agentAid, UUID agentUUID, String roleName, TupleCentreId tid, EnhancedACC acc){
+		if(!activateContext(agentAid, agentUUID, tid, acc))
 			return null;
 		
 		Role newRole = null;
@@ -66,25 +68,17 @@ public final class TucsonACCTool {
 					Policy newPolicy = TucsonPolicy.createPolicy(policyName, permissionsList);
 					newRole = new TucsonRole(roleName);
 					newRole.setPolicy(newPolicy);
-					/*LogicTuple rolePolicyTemplate = new LogicTuple("policy_role_request",
-							new Value("Result"),
-							new Var(roleName));
-					op = acc.inp(tid, rolePolicyTemplate, (Long)null);*/
 				}
 			}
 		} catch (InvalidVarNameException | TucsonOperationNotPossibleException | UnreachableNodeException | OperationTimeOutException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-
-		
 		
 		return newRole;
 	}
 	
-	public static Role activateRoleWithPolicy(String agentAid, Policy policy, TupleCentreId tid, EnhancedACC acc){
-		if(!activateContext(agentAid, tid, acc))
+	public static Role activateRoleWithPolicy(String agentAid, UUID agentUUID, Policy policy, TupleCentreId tid, EnhancedACC acc){
+		if(!activateContext(agentAid, agentUUID, tid, acc))
 			return null;
 		
 		Role newRole = null;

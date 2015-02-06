@@ -17,49 +17,52 @@ reaction(out(boot),true,(
 %
 % context acquire
 %
-reaction( inp(context_request(AgentId,_)),request,(
+reaction( inp(context_request(AgentId,_, AgentUUID)),request,(
   no(authorised_agent(AgentId)),
-  out(context_request(AgentId,failed(agent_not_authorised))))).
+  out(context_request(AgentId,failed(agent_not_authorised), AgentUUID)))).
 
-reaction( inp(context_request(AgentId,_)),request,(
-  rd(open_session(Id,AgentId,_)),
-  no(context_request(AgentId,ok(_))),
-  out(context_request(AgentId,ok(Id))))).
+reaction( inp(context_request(AgentId,_, AgentUUID)),request,(
+  rd(open_session(Id,AgentId,AgentUUID,_)),
+  no(context_request(AgentId,ok(_),AgentUUID)),
+  out(context_request(AgentId,ok(Id),AgentUUID)))).
 
-reaction( inp(context_request(AgentId,_)),request,(
+reaction( inp(context_request(AgentId,_,AgentUUID)),request,(
   rd(authorised_agent(AgentId)),
   in(context_id(Id)),
   Id1 is Id + 1,
   out(context_id(Id1)),
-  no(open_session(_,AgentId,_)),
-  out(open_session(Id,AgentId,[])),
-  out(context_request(AgentId,ok(Id))) )).
+  no(open_session(_,AgentId,AgentUUID,_)),
+  out(open_session(Id,AgentId,AgentUUID,[])),
+  out(context_request(AgentId,ok(Id),AgentUUID)) )).
+  
+  
+ 
 
 %
 % context release
 %
 reaction( inp(context_shutdown(CtxId,AgentId,_)),request,(
-  rd(open_session(CtxId,AgentId,_)),
+  rd(open_session(CtxId,AgentId,_,_)),
   out(context_shutdown(CtxId,AgentId,ok)) )).
 
 reaction( inp(context_shutdown(CtxId,AgentId,ok)),response,(
-  in(open_session(CtxId,AgentId,_)) )).
+  in(open_session(CtxId,AgentId,_,_)) )).
 
 reaction( inp(context_shutdown(CtxId,AgentId,_)),request,(
-  no(open_session(CtxId,AgentId,_)),
+  no(open_session(CtxId,AgentId,_,_)),
   out(context_shutdown(CtxId,AgentId,failed(no_valid_context))) )).
 
 %
 % role activation
 %
-reaction( inp(role_activation_request(AgentId,RoleId,_)),request,(
-  in(open_session(CtxId,AgentId,RoleList)),
+reaction( inp(role_activation_request(AgentId,AgentUUID,RoleId,_)),request,(
+  in(open_session(CtxId,AgentId,AgentUUID,RoleList)),
   rd(role(RoleId,Descr)),										% Esiste il ruolo
   rd(role_assignment(RoleId,AgentId)),
-  out(open_session(CtxId,AgentId,[RoleId|RoleList])),
+  out(open_session(CtxId,AgentId,AgentUUID,[RoleId|RoleList])),
   rd(role_policy(RoleId,PolicyId)),
   rd(policy(PolicyId,PermissionList)),
-  out(role_activation_request(AgentId,RoleId,ok(PolicyId,PermissionList))))).
+  out(role_activation_request(AgentId,AgentUUID,RoleId,ok(PolicyId,PermissionList))))).
 
 
 %

@@ -2,6 +2,7 @@ package alice.tucson.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import alice.logictuple.LogicTuple;
 import alice.logictuple.TupleArgument;
@@ -65,22 +66,12 @@ public class NegotiationACCProxyAgentSide implements NegotiationACC{
 			UnreachableNodeException, OperationTimeOutException, TucsonInvalidAgentIdException {
 		
 		TupleCentreId tid = new TucsonTupleCentreId(tcOrg,"'"+node+"'", ""+port);
-		//TupleCentreId tid2 = new TucsonTupleCentreId(tcDefault, "'"+node+"'", ""+port);
 		
-		Role newRole = TucsonACCTool.activateRole(agentAid.toString(), roleName, tid, internalACC);
+		RoleACCProxyAgentSide newACC = new RoleACCProxyAgentSide(agentAid.toString(), node, port);
+		Role newRole = TucsonACCTool.activateRole(agentAid.toString(), newACC.getUUID(), roleName, tid, internalACC);
 
-		if(newRole != null){
-			RoleACCProxyAgentSide newACC = new RoleACCProxyAgentSide(agentAid.toString(), node, port);
+		if(newRole != null){			
 			newACC.setRole(newRole);
-			/*return newACC;*/
-
-			//EnhancedACC newACC2 = new ACCProxyAgentSide(agentAid, node, port);
-			try {
-				newACC.rdp(tid, LogicTuple.parse("ciao(A)"), (Long)null);
-			} catch (InvalidLogicTupleException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 			return newACC;
 		} else
 			return null;
@@ -105,8 +96,8 @@ public class NegotiationACCProxyAgentSide implements NegotiationACC{
 
 		Policy policy = choosePolicy(policies, permissionsId);
 		
-		Role newRole = TucsonACCTool.activateRoleWithPolicy(agentAid.toString(), policy, tid, internalACC);
 		RoleACCProxyAgentSide newACC = new RoleACCProxyAgentSide(agentAid, node, port);
+		Role newRole = TucsonACCTool.activateRoleWithPolicy(agentAid.toString(), newACC.getUUID(), policy, tid, internalACC);
 		
 		if(newACC != null)
 			newACC.setRole(newRole);

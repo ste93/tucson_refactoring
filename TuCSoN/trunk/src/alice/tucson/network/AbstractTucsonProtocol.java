@@ -100,6 +100,7 @@ public abstract class AbstractTucsonProtocol implements java.io.Serializable {
         try {
             final String agentName = this.receiveString();
             final String agentRole = this.receiveString();
+            final String agentUUID = this.receiveString(); //BUCCELLI
             final String tcName = this.receiveString();
             final Properties profile = new Properties();
             if (agentName.startsWith("'@'")) {
@@ -108,6 +109,7 @@ public abstract class AbstractTucsonProtocol implements java.io.Serializable {
                 profile.setProperty("agent-identity", agentName);
             }
             profile.setProperty("agent-role", agentRole);
+            profile.setProperty("agent-uuid", agentUUID);
             profile.setProperty("tuple-centre", tcName);
             this.context = new ACCDescription(profile);
         } catch (final ClassNotFoundException e) {
@@ -219,6 +221,11 @@ public abstract class AbstractTucsonProtocol implements java.io.Serializable {
                 agentProfile = "default";
             }
             this.send(agentProfile);
+            String agentUUID = ctx.getProperty("agent-uuid");
+            if(agentUUID == null){
+            	agentUUID = "defaultUUID";
+            }
+            this.send(agentUUID);
             String tcName = ctx.getProperty("tuple-centre");
             if (tcName == null) {
                 tcName = "_";

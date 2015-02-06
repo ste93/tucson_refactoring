@@ -30,17 +30,6 @@ import alice.tuprolog.Term;
 
 
 public class MetaACCProxyAgentSide extends ACCProxyAgentSide implements MetaACC{
-
-	/*@Override
-	public ITucsonOperation activateAdminRole() throws InvalidVarNameException, TucsonOperationNotPossibleException, TucsonInvalidTupleCentreIdException, UnreachableNodeException, OperationTimeOutException {
-		return this.activateAdminRole(null);
-	}
-
-	@Override
-	public ITucsonOperation activateAdminRole(Long l) throws InvalidVarNameException, TucsonOperationNotPossibleException, TucsonInvalidTupleCentreIdException, UnreachableNodeException, OperationTimeOutException {
-		return this.activateRole("admin_role", l);
-	}*/
-
 	
 	public MetaACCProxyAgentSide(Object id)
 			throws TucsonInvalidAgentIdException {
