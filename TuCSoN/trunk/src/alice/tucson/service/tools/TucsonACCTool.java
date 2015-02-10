@@ -49,22 +49,23 @@ public final class TucsonACCTool {
 		return false;
 	}
 	
-	public static Role activateRole(String agentAid, UUID agentUUID, String roleName, TupleCentreId tid, EnhancedACC acc){
-		if(!activateContext(agentAid, agentUUID, tid, acc))
+	public static Role activateRole(String agentAid, UUID accUUID, String roleName, TupleCentreId tid, EnhancedACC acc){
+		if(!activateContext(agentAid, accUUID, tid, acc))
 			return null;
 		
 		Role newRole = null;
 		try {
 			LogicTuple template = new LogicTuple("role_activation_request",
 					new Value(agentAid.toString()),
+					new Value(accUUID.toString()),
 					new Value(roleName),
 					new Var("Result"));
 			ITucsonOperation op = acc.inp(tid, template, (Long)null);
 			if(op.isResultSuccess()){
 				LogicTuple res = op.getLogicTupleResult();
-				if(res!=null && res.getArg(2).getName().equalsIgnoreCase("ok")){
-					String policyName = res.getArg(2).getArg(0).toString();
-					TupleArgument[] permissionsList = res.getArg(2).getArg(1).toArray();
+				if(res!=null && res.getArg(3).getName().equalsIgnoreCase("ok")){
+					String policyName = res.getArg(3).getArg(0).toString();
+					TupleArgument[] permissionsList = res.getArg(3).getArg(1).toArray();
 					Policy newPolicy = TucsonPolicy.createPolicy(policyName, permissionsList);
 					newRole = new TucsonRole(roleName);
 					newRole.setPolicy(newPolicy);
@@ -77,8 +78,8 @@ public final class TucsonACCTool {
 		return newRole;
 	}
 	
-	public static Role activateRoleWithPolicy(String agentAid, UUID agentUUID, Policy policy, TupleCentreId tid, EnhancedACC acc){
-		if(!activateContext(agentAid, agentUUID, tid, acc))
+	public static Role activateRoleWithPolicy(String agentAid, UUID accUUID, Policy policy, TupleCentreId tid, EnhancedACC acc){
+		if(!activateContext(agentAid, accUUID, tid, acc))
 			return null;
 		
 		Role newRole = null;
@@ -94,6 +95,7 @@ public final class TucsonACCTool {
 				
 				LogicTuple template = new LogicTuple("role_activation_request",
 						new Value(agentAid.toString()),
+						new Value(accUUID.toString()),
 						new Value(roleName),
 						new Var("Result"));
 				op = acc.inp(tid, template, (Long)null);

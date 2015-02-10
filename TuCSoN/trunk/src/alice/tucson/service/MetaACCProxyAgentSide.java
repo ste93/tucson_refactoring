@@ -24,6 +24,7 @@ import alice.tucson.rbac.Permission;
 import alice.tucson.rbac.Policy;
 import alice.tucson.rbac.RBAC;
 import alice.tucson.rbac.Role;
+import alice.tucson.rbac.TucsonAuthorizedAgent;
 import alice.tuplecentre.api.TupleCentreId;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 import alice.tuprolog.Term;
@@ -62,12 +63,15 @@ public class MetaACCProxyAgentSide extends ACCProxyAgentSide implements MetaACC{
 		else
 			log("problem with addRBAC: "+rbac.getOrgName());
 		
-		for(Role role : rbac.getRoles()){
+		for(Role role : rbac.getRoles())
 			this.addRole(role, l, tid);
-		}
 		
 		for(Policy policy : rbac.getPolicies())
 			this.addPolicy(policy, l, tid);
+		
+		for(String authAgent : rbac.getAuthorizedAgents())
+			this.addAuthorizedAgent(authAgent, l, tid);
+		
 	}
 
 	@Override
@@ -134,6 +138,17 @@ public class MetaACCProxyAgentSide extends ACCProxyAgentSide implements MetaACC{
 		}
 		else
 			log("problem with addRolePolicy: "+policy.getPolicyName());
+	}
+	
+	private void addAuthorizedAgent(String agentName, Long l, TupleCentreId tid) throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException{
+		LogicTuple authTuple = TucsonAuthorizedAgent.getLogicTuple(agentName);
+		ITucsonOperation op = out(tid, authTuple, l);
+		if(op.isResultSuccess()){
+			LogicTuple res = op.getLogicTupleResult();
+			log("Authorized agent added: "+res);
+		} else {
+			log("Problem with addAuthorizedAgent: " + agentName);
+		}
 	}
 
 	private TupleCentreId getTid(String node, int port) throws TucsonInvalidTupleCentreIdException{

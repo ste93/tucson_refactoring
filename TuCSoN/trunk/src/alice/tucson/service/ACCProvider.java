@@ -31,6 +31,7 @@ import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.introspection.InspectorContextSkel;
 import alice.tucson.network.AbstractTucsonProtocol;
 import alice.tucson.network.exceptions.DialogException;
+import alice.util.Tools;
 
 /**
  * 
@@ -102,7 +103,7 @@ public class ACCProvider {
             //BUCCELLI: Inserito UUID nella richiesta
             String agentUUID = profile.getProperty("agent-uuid");
             final LogicTuple req = new LogicTuple("context_request", new Value(
-                    agentName), new Var("CtxId"), new Value(agentUUID));
+                    Tools.removeApices(agentName)), new Var("CtxId"), new Value(agentUUID));
             final LogicTuple result = (LogicTuple) TupleCentreContainer
                     .doBlockingOperation(TucsonOperation.inpCode(), this.aid,
                             this.config, req);

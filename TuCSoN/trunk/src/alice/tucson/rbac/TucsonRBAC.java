@@ -13,10 +13,12 @@ public class TucsonRBAC implements RBAC{
 	
 	private Map<String,Role> roles;
 	private Map<String,Policy> policies;
+	private List<String> authorizedAgents;
 	
 	public TucsonRBAC(String orgName){
 		roles = new HashMap<String,Role>();
 		policies = new HashMap<String,Policy>();
+		authorizedAgents = new ArrayList<String>();
 		this.orgName = orgName;
 	}
 	
@@ -72,7 +74,8 @@ public class TucsonRBAC implements RBAC{
 
 	@Override
 	public void removePolicy(String policyName) {
-		policies.remove(policyName);
+		if(policies.containsKey(policyName))
+			policies.remove(policyName);
 	}
 
 	@Override
@@ -85,6 +88,29 @@ public class TucsonRBAC implements RBAC{
 	public List<Policy> getPolicies() {
 		List<Policy> policyList = new ArrayList<Policy>(policies.values());
 		return policyList;
+	}
+
+	@Override
+	public void addAuthorizedAgent(AuthorizedAgent agent) {
+		if(!authorizedAgents.contains(agent.getAgentName()))
+			authorizedAgents.add(agent.getAgentName());
+	}
+
+	@Override
+	public void removeAuthorizedAgent(String agentName) {
+		if(authorizedAgents.contains(agentName))
+			authorizedAgents.remove(agentName);
+	}
+
+	@Override
+	public void removeAuthorizedAgent(AuthorizedAgent agent) {
+		if(authorizedAgents.contains(agent.getAgentName()))
+			authorizedAgents.remove(agent.getAgentName());
+	}
+
+	@Override
+	public List<String> getAuthorizedAgents() {
+		return authorizedAgents;
 	}
 
 }
