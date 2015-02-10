@@ -17,7 +17,7 @@ public class TucsonAuthorizedAgent implements AuthorizedAgent {
 	}
 	
 	public static LogicTuple getLogicTuple(String agentName){
-		return new LogicTuple("authorised_agent",
+		return new LogicTuple("authorized_agent",
 				new Value(agentName));
 	}
 }

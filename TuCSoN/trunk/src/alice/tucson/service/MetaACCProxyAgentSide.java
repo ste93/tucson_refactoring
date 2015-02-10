@@ -1,6 +1,9 @@
 package alice.tucson.service;
 
 
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -15,8 +18,11 @@ import alice.logictuple.exceptions.InvalidTupleArgumentException;
 import alice.logictuple.exceptions.InvalidVarNameException;
 import alice.tucson.api.ITucsonOperation;
 import alice.tucson.api.MetaACC;
+import alice.tucson.api.TucsonAgentId;
 import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
+import alice.tucson.api.exceptions.TucsonInvalidLogicTupleException;
+import alice.tucson.api.exceptions.TucsonInvalidSpecificationException;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
@@ -31,6 +37,8 @@ import alice.tuprolog.Term;
 
 
 public class MetaACCProxyAgentSide extends ACCProxyAgentSide implements MetaACC{
+	
+	private static final String RBAC_BOOT_SPEC_FILE = "alice/tucson/service/config/boot_spec_rbac.rsp";
 	
 	public MetaACCProxyAgentSide(Object id)
 			throws TucsonInvalidAgentIdException {
@@ -51,7 +59,14 @@ public class MetaACCProxyAgentSide extends ACCProxyAgentSide implements MetaACC{
 		if(rbac == null)
 			return;
 		
-		TupleCentreId tid = new TucsonTupleCentreId(tcOrg, "'"+node+"'", ""+port);//getTid(node, port);
+		TucsonTupleCentreId tid = new TucsonTupleCentreId(tcOrg, "'"+node+"'", ""+port);//getTid(node, port);
+		
+		try {
+			installRBACSupport(tid);
+		} catch (IOException | TucsonInvalidSpecificationException
+				| TucsonInvalidLogicTupleException e) {
+			e.printStackTrace();
+		}
 		
 		LogicTuple template = new LogicTuple("organisation_name",
 				new Value(rbac.getOrgName()));
@@ -72,6 +87,20 @@ public class MetaACCProxyAgentSide extends ACCProxyAgentSide implements MetaACC{
 		for(String authAgent : rbac.getAuthorizedAgents())
 			this.addAuthorizedAgent(authAgent, l, tid);
 		
+		LogicTuple inspectorsTuple = null;
+		if(rbac.getAuthorizedInspectors()){
+			inspectorsTuple = new LogicTuple("authorize_inspectors", new Value("yes"));
+		} else {
+			inspectorsTuple = new LogicTuple("authorize_inspectors", new Value("no"));
+		}
+		
+		op = inp(tid, inspectorsTuple, l);
+		if(op.isResultSuccess()){
+			LogicTuple res = op.getLogicTupleResult();
+			log("Inspectors activation: "+res.getArg(0));
+		}
+		else
+			log("Inspectors activation: ERROR");
 	}
 
 	@Override
@@ -84,6 +113,32 @@ public class MetaACCProxyAgentSide extends ACCProxyAgentSide implements MetaACC{
 	public void remove(RBAC rbac, Long l, String node, int port) {
 		if(rbac == null)
 			return;
+	}
+	
+	// Passiamo da una fase in cui RBAC non è supportato ad una fase nella quale va tutto come progettato
+	// admin si aggiunge agli utenti autorizzati
+	private void installRBACSupport(TucsonTupleCentreId tid) throws IOException, TucsonOperationNotPossibleException, TucsonInvalidSpecificationException, TucsonInvalidLogicTupleException, UnreachableNodeException, OperationTimeOutException{
+		//RIMOZIONE TUTTE TUPLE SPEC PRECEDENTI
+		
+		//RIMOZIONE TUTTE TUPLE PRECEDENTITupleCentreContainer.doBlockingOperation(TucsonOperation.inAllCode(), aid, tid, null);
+		set(tid, new LogicTuple("asd(A)"), (Long)null);
+		
+		final InputStream is = Thread
+                .currentThread()
+                .getContextClassLoader()
+                .getResourceAsStream(
+                        MetaACCProxyAgentSide.RBAC_BOOT_SPEC_FILE);
+        final String spec = alice.util.Tools
+                .loadText(new BufferedInputStream(is));
+        final LogicTuple specTuple = new LogicTuple("spec", new Value(spec));
+        TupleCentreContainer.doBlockingSpecOperation(TucsonOperation.setSCode(), aid, tid, specTuple);
+        
+        LogicTuple adminAuthorized = new LogicTuple("authorized_agent",new Value(aid.toString()));
+        TupleCentreContainer.doBlockingOperation(TucsonOperation.outCode(), aid, tid, adminAuthorized);
+        
+        TupleCentreContainer.doNonBlockingOperation(
+                TucsonOperation.outCode(), aid, tid,
+                new LogicTuple("boot"), null);
 	}
 	
 	

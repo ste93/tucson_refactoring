@@ -102,6 +102,23 @@ public class ACCProvider {
             }
             //BUCCELLI: Inserito UUID nella richiesta
             String agentUUID = profile.getProperty("agent-uuid");
+            
+            //===BUCCELLI: autorizzo l'agente inspector(Se gli inspector sono autorizzati)!===
+            final String agentRole = profile.getProperty("agent-role");
+            if ("$inspector".equals(agentRole)) {
+            	final LogicTuple areInspectorsAuth = new LogicTuple("are_inspectors_auth", new Var("Response"));
+            	final LogicTuple res = (LogicTuple)TupleCentreContainer.doBlockingOperation(TucsonOperation.inpCode(), this.aid,
+                        this.config, areInspectorsAuth);
+            	String res0 = res.getArg(0).toString();
+            	if(res.getArg(0).toString().equals("yes")){
+            		final LogicTuple authInspector = new LogicTuple("authorized_agent",
+                			new Value(agentName));
+                	TupleCentreContainer.doBlockingOperation(TucsonOperation.outCode(), this.aid,
+                                    this.config, authInspector);
+            	}
+            }
+            //=======
+            
             final LogicTuple req = new LogicTuple("context_request", new Value(
                     Tools.removeApices(agentName)), new Var("CtxId"), new Value(agentUUID));
             final LogicTuple result = (LogicTuple) TupleCentreContainer
@@ -125,7 +142,7 @@ public class ACCProvider {
             ACCProvider.log("ACC request accepted, ACC id is < "
                     + ctxId.toString() + " >");
             dialog.sendEnterRequestAccepted();
-            final String agentRole = profile.getProperty("agent-role");
+            //final String agentRole = profile.getProperty("agent-role");
             if ("$inspector".equals(agentRole)) {
                 final AbstractACCProxyNodeSide skel = new InspectorContextSkel(
                         this, dialog, this.node, profile);

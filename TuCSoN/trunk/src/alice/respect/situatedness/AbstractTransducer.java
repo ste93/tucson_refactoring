@@ -3,6 +3,8 @@ package alice.respect.situatedness;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.UUID;
+
 import alice.logictuple.LogicTuple;
 import alice.logictuple.Value;
 import alice.respect.core.InternalEvent;
@@ -53,7 +55,8 @@ public abstract class AbstractTransducer implements
     public AbstractTransducer(final TransducerId i, final TupleCentreId tc) {
         this.id = i;
         this.tcId = tc;
-        this.executor = new OperationHandler();
+        UUID uuid = UUID.randomUUID(); //BUCCELLI
+        this.executor = new OperationHandler(uuid);
         this.probes = new HashMap<AbstractProbeId, Object>();
     }
 

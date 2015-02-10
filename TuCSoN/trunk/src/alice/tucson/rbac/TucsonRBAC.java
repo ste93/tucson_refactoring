@@ -5,11 +5,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
+
 import com.sun.corba.se.impl.encoding.OSFCodeSetRegistry.Entry;
 
 public class TucsonRBAC implements RBAC{
 
 	private String orgName;
+	
+	private boolean inspectorsAuthorized = false;
 	
 	private Map<String,Role> roles;
 	private Map<String,Policy> policies;
@@ -112,5 +116,24 @@ public class TucsonRBAC implements RBAC{
 	public List<String> getAuthorizedAgents() {
 		return authorizedAgents;
 	}
+
+	@Override
+	/**
+     * Set the the rule whether to authorize inspectors or not
+     * 
+     * @param auth
+     * 			If inspectors have to be authorized or not.
+     */
+	public void setAuthorizedInspectors(boolean auth) {
+		this.inspectorsAuthorized = auth;
+	}
+
+	@Override
+	public boolean getAuthorizedInspectors() {
+		return this.inspectorsAuthorized;
+	}
+	
+
+
 
 }

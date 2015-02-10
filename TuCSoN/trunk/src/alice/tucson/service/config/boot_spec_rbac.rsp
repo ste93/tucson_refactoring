@@ -4,7 +4,11 @@ reaction(out(boot),true,(
     current_time(Time),
     out(boot_info([time(Time)])),
     out(context_id(0)),
-    out(authorised_agent('$EnvAgent')),
+    out(authorized_agent('$EnvAgent')),
+    %out(authorized_agent(adminAgent)),
+    %out(authorized_agent(negotAgent)),
+    %out(authorized_agent(_)),
+    out(authorized_inspectors(yes)),
     %out(role(default,'default role')),
     %out(role(admin_role, 'admin role')),
     %out(policy(default,'default policy')),
@@ -18,8 +22,8 @@ reaction(out(boot),true,(
 % context acquire
 %
 reaction( inp(context_request(AgentId,_, AccUUID)),request,(
-  no(authorised_agent(AgentId)),
-  out(context_request(AgentId,failed(agent_not_authorised), AccUUID)))).
+  no(authorized_agent(AgentId)),
+  out(context_request(AgentId,failed(agent_not_authorized), AccUUID)))).
 
 reaction( inp(context_request(AgentId,_, AccUUID)),request,(
   rd(open_session(Id,AgentId,AccUUID,_)),
@@ -27,7 +31,7 @@ reaction( inp(context_request(AgentId,_, AccUUID)),request,(
   out(context_request(AgentId,ok(Id),AccUUID)))).
 
 reaction( inp(context_request(AgentId,_,AccUUID)),request,(
-  rd(authorised_agent(AgentId)),
+  rd(authorized_agent(AgentId)),
   in(context_id(Id)),
   Id1 is Id + 1,
   out(context_id(Id1)),
@@ -35,7 +39,7 @@ reaction( inp(context_request(AgentId,_,AccUUID)),request,(
   out(open_session(Id,AgentId,AccUUID,[])),
   out(context_request(AgentId,ok(Id),AccUUID)) )).
   
-  
+
  
 
 %
@@ -83,6 +87,21 @@ reaction( inp(role_policy_request(_,RoleId)), (invocation, operation), (
 	rd(role_policy(RoleId, PolicyId)),
 	out(role_policy_request(PolicyId,RoleId))
 	)).
+	
+%
+%	inspectors authorized
+%
+reaction( inp(authorize_inspectors(A)), (invocation, operation),(
+ 	in(authorized_inspectors(_)),
+ 	out(authorized_inspectors(A)),
+ 	out(authorize_inspectors(A))
+ )).
+ 
+reaction( inp(are_inspectors_auth(_)), request,(
+ 	rd(authorized_inspectors(A)),
+ 	out(are_inspectors_auth(A))
+ )).
+ 
  
 %
 %	role list
