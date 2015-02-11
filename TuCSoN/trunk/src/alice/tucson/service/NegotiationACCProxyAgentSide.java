@@ -20,8 +20,10 @@ import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
+import alice.tucson.rbac.Permission;
 import alice.tucson.rbac.Policy;
 import alice.tucson.rbac.Role;
+import alice.tucson.rbac.TucsonPermission;
 import alice.tucson.rbac.TucsonPolicy;
 import alice.tucson.rbac.TucsonRole;
 import alice.tucson.service.tools.TucsonACCTool;
@@ -67,6 +69,10 @@ public class NegotiationACCProxyAgentSide implements NegotiationACC{
 		
 		TupleCentreId tid = new TucsonTupleCentreId(tcOrg,"'"+node+"'", ""+port);
 		
+		if(!isRBACInstalled(tid)){
+			return new ACCProxyAgentSide(agentAid, node, port);
+		}
+		
 		RoleACCProxyAgentSide newACC = new RoleACCProxyAgentSide(agentAid.toString(), node, port);
 		Role newRole = TucsonACCTool.activateRole(agentAid.toString(), newACC.getUUID(), roleName, tid, internalACC);
 
@@ -91,7 +97,19 @@ public class NegotiationACCProxyAgentSide implements NegotiationACC{
     @Override
 	public synchronized EnhancedACC activateRoleWithPermission(List<String> permissionsId, Long l) throws InvalidVarNameException, TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException, TucsonInvalidAgentIdException {
 		
-    	TucsonTupleCentreId tid = new TucsonTupleCentreId(tcOrg, "'"+node+"'", ""+port);
+    	TupleCentreId tid = new TucsonTupleCentreId(tcOrg, "'"+node+"'", ""+port);
+    	
+    	if(!isRBACInstalled(tid)){
+    		/*RoleACCProxyAgentSide newACC = new RoleACCProxyAgentSide(agentAid, node, port);
+    		List<Permission> perms = TucsonPermission.createPermissionsFromStrings(permissionsId);
+    		Policy defaultPolicy = new TucsonPolicy("default", perms);
+    		Role defaultRole = new TucsonRole("default");
+    		defaultRole.setPolicy(defaultPolicy);
+    		newACC.setRole(defaultRole);*/
+    		return new ACCProxyAgentSide(agentAid, node, port);
+    	}
+    	
+    	
     	List<Policy> policies = TucsonACCTool.getPolicyList(agentAid.toString(), tid, internalACC);
 
 		Policy policy = choosePolicy(policies, permissionsId);
@@ -103,6 +121,18 @@ public class NegotiationACCProxyAgentSide implements NegotiationACC{
 			newACC.setRole(newRole);
 		
 		return newACC;
+	}
+    
+    /*
+     * 	Attiva un ACC fuori dalla struttura RBAC nel caso questa non sia stata installata nel nodo.
+     */
+    @Override
+	public EnhancedACC activateDefaultRole() throws TucsonInvalidTupleCentreIdException, InvalidVarNameException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException, TucsonInvalidAgentIdException {
+    	TupleCentreId tid = new TucsonTupleCentreId(tcOrg, "'"+node+"'", ""+port);
+    	if(!isRBACInstalled(tid)){
+    		return new ACCProxyAgentSide(agentAid, node, port);
+    	}
+    	return null;
 	}
     
     private Policy choosePolicy(List<Policy> policies, List<String> permissionsId){
@@ -119,7 +149,19 @@ public class NegotiationACCProxyAgentSide implements NegotiationACC{
     	return bestPolicy;    	
     }
     
+    private boolean isRBACInstalled(TupleCentreId tid) throws InvalidVarNameException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException{
+    	ITucsonOperation op = internalACC.rdp(tid, new LogicTuple("rbac_installed", new Var("Result")), (Long)null);
+    	if(op.isResultSuccess()){
+    		LogicTuple res = op.getLogicTupleResult();
+    		if(res.getArg(0).toString().equals("yes"))
+    			return true;
+    	}
+    	return false;
+    }
+    
     protected void log(final String msg) {
         System.out.println("[ACCProxyAgentSide]: " + msg);
     }
+
+	
 }

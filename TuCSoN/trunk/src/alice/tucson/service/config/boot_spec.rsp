@@ -3,8 +3,9 @@ reaction(out(boot),true,(
     no(boot_info(_)),
     current_time(Time),
     out(boot_info([time(Time)])),
+    out(rbac_installed(no)),
     out(context_id(0)),
-    out(authorised_agent(_)),
+    out(authorized_agent(_)),
     out(role(default,'default role')),
     out(policy(default,'default policy')),
     out(role_policy(default,default)),
@@ -14,23 +15,42 @@ reaction(out(boot),true,(
 %
 % context acquire
 %
-reaction( inp(context_request(AgentId,_)),request,(
-  no(authorised_agent(AgentId)),
-  out(context_request(AgentId,failed(agent_not_authorised))))).
+%reaction( inp(context_request(AgentId,_)),request,(
+%  no(authorized_agent(AgentId)),
+%  out(context_request(AgentId,failed(agent_not_authorised))))).
 
-reaction( inp(context_request(AgentId,_)),request(
-  rd(open_session(_,AgentId)),
-  no(context_request(AgentId,ok(_))),
-  out(context_request(AgentId,failed(agent_already_present))) )).
+%reaction( inp(context_request(AgentId,_)),request(
+%  rd(open_session(_,AgentId)),
+%  no(context_request(AgentId,ok(_))),
+%  out(context_request(AgentId,failed(agent_already_present))) )).
 
-reaction( inp(context_request(AgentId,_)),request,(
-  rd(authorised_agent(AgentId)),
+%reaction( inp(context_request(AgentId,_)),request,(
+%  rd(authorized_agent(AgentId)),
+%  in(context_id(Id)),
+%  Id1 is Id + 1,
+%  out(context_id(Id1)),
+%  no(open_session(_,AgentId,_)),
+%  out(open_session(Id,AgentId,[])),
+%  out(context_request(AgentId,ok(Id))) )).
+
+reaction( inp(context_request(AgentId,_, AccUUID)),request,(
+  no(authorized_agent(AgentId)),
+  out(context_request(AgentId,failed(agent_not_authorized), AccUUID)))).
+
+reaction( inp(context_request(AgentId,_, AccUUID)),request,(
+  rd(open_session(Id,AgentId,AccUUID,_)),
+  no(context_request(AgentId,ok(_),AccUUID)),
+  out(context_request(AgentId,ok(Id),AccUUID)))).
+
+reaction( inp(context_request(AgentId,_,AccUUID)),request,(
+  rd(authorized_agent(AgentId)),
   in(context_id(Id)),
   Id1 is Id + 1,
   out(context_id(Id1)),
-  no(open_session(_,AgentId,_)),
-  out(open_session(Id,AgentId,[])),
-  out(context_request(AgentId,ok(Id))) )).
+  no(open_session(_,AgentId,AccUUID,_)),
+  out(open_session(Id,AgentId,AccUUID,[])),
+  out(context_request(AgentId,ok(Id),AccUUID)) )).
+
 
 %
 % context release

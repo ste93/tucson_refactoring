@@ -121,7 +121,9 @@ public class MetaACCProxyAgentSide extends ACCProxyAgentSide implements MetaACC{
 		//RIMOZIONE TUTTE TUPLE SPEC PRECEDENTI
 		
 		//RIMOZIONE TUTTE TUPLE PRECEDENTITupleCentreContainer.doBlockingOperation(TucsonOperation.inAllCode(), aid, tid, null);
-		set(tid, new LogicTuple("asd(A)"), (Long)null);
+		LogicTuple removeasd = new LogicTuple("rbac_installed", new Value("yes"));
+		
+		set(tid, removeasd, (Long)null);
 		
 		final InputStream is = Thread
                 .currentThread()

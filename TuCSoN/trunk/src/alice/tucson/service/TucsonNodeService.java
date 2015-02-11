@@ -74,7 +74,7 @@ import alice.tuprolog.lib.InvalidObjectIdException;
 public class TucsonNodeService {
 
     private static final String BOOT_SETUP_THEORY = "alice/tucson/service/config/boot.pl";
-    private static final String DEFAULT_BOOT_SPEC_FILE = "alice/tucson/service/config/boot_spec_rbac.rsp";
+    private static final String DEFAULT_BOOT_SPEC_FILE = "alice/tucson/service/config/boot_spec.rsp";
     private static final String DEFAULT_ENVCONFIG_SPEC_FILE = "alice/tucson/service/config/env_spec.rsp";
     private static final String DEFAULT_OBS_SPEC_FILE = "alice/tucson/service/config/obs_spec.rsp";
     private static final int DEFAULT_TCP_PORT = 20504;

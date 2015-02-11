@@ -16,6 +16,11 @@ public class TucsonPolicy implements Policy{
 		this.policyName = policyName;
 	}
 	
+	public TucsonPolicy(String policyName, List<Permission> perms){
+		this(policyName);
+		this.permissions = perms;
+	}
+	
 	public String getPolicyName(){
 		return policyName;
 	}
@@ -48,14 +53,7 @@ public class TucsonPolicy implements Policy{
 			permissions.remove(permission);
 	}
 	
-	public static Policy createPolicy(String nomePolicy, TupleArgument[] permissionsArr){
-		Policy returnPolicy = new TucsonPolicy(nomePolicy);
-		for(TupleArgument permTuple : permissionsArr){
-			Permission newPermission = TucsonPermission.createPermission(permTuple.getName());
-			returnPolicy.addPermission(newPermission);
-		}
-		return returnPolicy;
-	}
+	
 
 	@Override
 	public boolean hasPermissions(List<String> permissionsId) {
@@ -75,4 +73,12 @@ public class TucsonPolicy implements Policy{
 		return false;
 	}
 
+	public static Policy createPolicy(String nomePolicy, TupleArgument[] permissionsArr){
+		Policy returnPolicy = new TucsonPolicy(nomePolicy);
+		for(TupleArgument permTuple : permissionsArr){
+			Permission newPermission = TucsonPermission.createPermission(permTuple.getName());
+			returnPolicy.addPermission(newPermission);
+		}
+		return returnPolicy;
+	}
 }

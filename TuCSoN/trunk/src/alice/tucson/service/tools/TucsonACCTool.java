@@ -112,7 +112,7 @@ public final class TucsonACCTool {
 		return newRole;
 	}
 	
-	public static List<Policy> getPolicyList(String agentAid, TucsonTupleCentreId tid, EnhancedACC acc){
+	public static List<Policy> getPolicyList(String agentAid, TupleCentreId tid, EnhancedACC acc){
 		List<Policy> policies = new ArrayList<Policy>();
 		try {
 			LogicTuple policyListTuple = new LogicTuple("policy_list_request",

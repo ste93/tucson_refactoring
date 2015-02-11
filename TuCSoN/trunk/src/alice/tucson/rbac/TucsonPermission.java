@@ -1,5 +1,8 @@
 package alice.tucson.rbac;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class TucsonPermission implements Permission{
 	
@@ -24,5 +27,13 @@ public class TucsonPermission implements Permission{
 	
 	public static TucsonPermission createPermission(String permName){
 		return new TucsonPermission(permName);
+	}
+	
+	public static List<Permission> createPermissionsFromStrings(List<String> permissions){
+		List<Permission> perms = new ArrayList<Permission>();
+		for(String perm : permissions){
+			perms.add(new TucsonPermission(perm));
+		}
+		return perms;
 	}
 }
