@@ -127,7 +127,7 @@ public class NegotiationACCProxyAgentSide implements NegotiationACC{
      * 	Attiva un ACC fuori dalla struttura RBAC nel caso questa non sia stata installata nel nodo.
      */
     @Override
-	public EnhancedACC activateDefaultRole() throws TucsonInvalidTupleCentreIdException, InvalidVarNameException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException, TucsonInvalidAgentIdException {
+	public EnhancedACC activateDefaultRole() throws TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException, TucsonInvalidAgentIdException {
     	TupleCentreId tid = new TucsonTupleCentreId(tcOrg, "'"+node+"'", ""+port);
     	if(!isRBACInstalled(tid)){
     		return new ACCProxyAgentSide(agentAid, node, port);
@@ -149,8 +149,8 @@ public class NegotiationACCProxyAgentSide implements NegotiationACC{
     	return bestPolicy;    	
     }
     
-    private boolean isRBACInstalled(TupleCentreId tid) throws InvalidVarNameException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException{
-    	ITucsonOperation op = internalACC.rdp(tid, new LogicTuple("rbac_installed", new Var("Result")), (Long)null);
+    private boolean isRBACInstalled(TupleCentreId tid) throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException{
+    	ITucsonOperation op = internalACC.rdp(tid, new LogicTuple("rbac_installed(Result)"), (Long)null);
     	if(op.isResultSuccess()){
     		LogicTuple res = op.getLogicTupleResult();
     		if(res.getArg(0).toString().equals("yes"))

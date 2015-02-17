@@ -2,11 +2,15 @@ package alice.tucson.examples.diningPhilos;
 
 import alice.logictuple.LogicTuple;
 import alice.logictuple.exceptions.InvalidLogicTupleException;
+import alice.respect.api.exceptions.InvalidAgentIdException;
 import alice.tucson.api.AbstractTucsonAgent;
 import alice.tucson.api.ITucsonOperation;
+import alice.tucson.api.NegotiationACC;
 import alice.tucson.api.SynchACC;
+import alice.tucson.api.TucsonMetaACC;
 import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
+import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
@@ -127,7 +131,13 @@ public class DiningPhilosopher extends AbstractTucsonAgent {
 
     @Override
     protected void main() {
-        this.acc = this.getContext();
+    	try{
+    	NegotiationACC negAcc = TucsonMetaACC.getNegotiationContext(this.getTucsonAgentId());
+        acc = negAcc.activateDefaultRole();
+    	} catch(TucsonInvalidAgentIdException | TucsonInvalidTupleCentreIdException | TucsonOperationNotPossibleException | UnreachableNodeException | OperationTimeOutException e){
+    		
+    	}
+        //this.acc = this.getContext();
         // Ugly but effective, pardon me...
         while (true) {
             this.say("Now thinking...");

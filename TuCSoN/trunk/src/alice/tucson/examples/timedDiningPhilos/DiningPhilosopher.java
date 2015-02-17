@@ -4,11 +4,15 @@ import alice.logictuple.LogicTuple;
 import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.tucson.api.AbstractTucsonAgent;
 import alice.tucson.api.ITucsonOperation;
+import alice.tucson.api.NegotiationACC;
 import alice.tucson.api.SynchACC;
+import alice.tucson.api.TucsonMetaACC;
 import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
+import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
+import alice.tucson.service.TucsonNodeService;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 import alice.tuplecentre.core.AbstractTupleCentreOperation;
 
@@ -155,7 +159,16 @@ public class DiningPhilosopher extends AbstractTucsonAgent {
 
     @Override
     protected void main() {
-        this.acc = this.getContext();
+    	NegotiationACC negAcc = TucsonMetaACC.getNegotiationContext(this.getTucsonAgentId());
+        try {
+			acc = negAcc.activateDefaultRole();
+		} catch (TucsonInvalidTupleCentreIdException
+				| TucsonOperationNotPossibleException
+				| UnreachableNodeException | OperationTimeOutException
+				| TucsonInvalidAgentIdException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         // Ugly but effective, pardon me...
         while (true) {
             this.say("Now thinking...");

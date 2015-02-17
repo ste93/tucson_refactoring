@@ -6,14 +6,19 @@ import java.util.List;
 import java.util.Map;
 import alice.logictuple.LogicTuple;
 import alice.logictuple.exceptions.InvalidLogicTupleException;
+import alice.logictuple.exceptions.InvalidVarNameException;
 import alice.tucson.api.AbstractTucsonAgent;
 import alice.tucson.api.EnhancedSynchACC;
 import alice.tucson.api.ITucsonOperation;
+import alice.tucson.api.NegotiationACC;
+import alice.tucson.api.SynchACC;
+import alice.tucson.api.TucsonMetaACC;
 import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
+import alice.tucson.service.TucsonNodeService;
 import alice.tuplecentre.api.exceptions.InvalidOperationException;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 import alice.tuplecentre.core.AbstractTupleCentreOperation;
@@ -109,7 +114,8 @@ public class MasterAgent extends AbstractTucsonAgent {
     @Override
     protected void main() {
         this.say("I'm started.");
-        final EnhancedSynchACC acc = this.getContext();
+        
+        //final EnhancedSynchACC acc = this.getContext();
         ITucsonOperation op;
         TucsonTupleCentreId next;
         LogicTuple job;
@@ -117,6 +123,8 @@ public class MasterAgent extends AbstractTucsonAgent {
         List<LogicTuple> res;
         int num;
         try {
+        	NegotiationACC negAcc = TucsonMetaACC.getNegotiationContext(this.getTucsonAgentId());
+            final EnhancedSynchACC acc = negAcc.activateDefaultRole();
             while (!this.die) {
                 this.say("Checking termination...");
                 for (int i = 0; i < this.tids.size(); i++) {
@@ -242,6 +250,12 @@ public class MasterAgent extends AbstractTucsonAgent {
         } catch (final InterruptedException e) {
             this.say("ERROR: Sleep interrupted!");
             e.printStackTrace();
-        }
+        } catch (TucsonInvalidTupleCentreIdException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (TucsonInvalidAgentIdException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 }

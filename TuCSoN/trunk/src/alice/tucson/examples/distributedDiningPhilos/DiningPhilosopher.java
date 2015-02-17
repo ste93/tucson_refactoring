@@ -4,9 +4,12 @@ import alice.logictuple.LogicTuple;
 import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.tucson.api.AbstractTucsonAgent;
 import alice.tucson.api.ITucsonOperation;
+import alice.tucson.api.NegotiationACC;
 import alice.tucson.api.SynchACC;
+import alice.tucson.api.TucsonMetaACC;
 import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
+import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
@@ -74,7 +77,18 @@ public class DiningPhilosopher extends AbstractTucsonAgent {
 
     @Override
     protected void main() {
-        final SynchACC acc = this.getContext();
+    	NegotiationACC negAcc = TucsonMetaACC.getNegotiationContext(this.getTucsonAgentId());
+        SynchACC acc = null;
+		try {
+			acc = negAcc.activateDefaultRole();
+		} catch (TucsonInvalidTupleCentreIdException
+				| TucsonOperationNotPossibleException
+				| UnreachableNodeException | OperationTimeOutException
+				| TucsonInvalidAgentIdException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+        //final SynchACC acc = this.getContext();
         ITucsonOperation op;
         // Ugly but effective, pardon me...
         while (true) {

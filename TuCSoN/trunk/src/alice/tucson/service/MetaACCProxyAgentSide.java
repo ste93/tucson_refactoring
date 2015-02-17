@@ -119,11 +119,8 @@ public class MetaACCProxyAgentSide extends ACCProxyAgentSide implements MetaACC{
 	// admin si aggiunge agli utenti autorizzati
 	private void installRBACSupport(TucsonTupleCentreId tid) throws IOException, TucsonOperationNotPossibleException, TucsonInvalidSpecificationException, TucsonInvalidLogicTupleException, UnreachableNodeException, OperationTimeOutException{
 		//RIMOZIONE TUTTE TUPLE SPEC PRECEDENTI
-		
+		//set(tid, new LogicTuple("adssda", new Value("asd")), (Long)null);
 		//RIMOZIONE TUTTE TUPLE PRECEDENTITupleCentreContainer.doBlockingOperation(TucsonOperation.inAllCode(), aid, tid, null);
-		LogicTuple removeasd = new LogicTuple("rbac_installed", new Value("yes"));
-		
-		set(tid, removeasd, (Long)null);
 		
 		final InputStream is = Thread
                 .currentThread()
@@ -133,7 +130,13 @@ public class MetaACCProxyAgentSide extends ACCProxyAgentSide implements MetaACC{
         final String spec = alice.util.Tools
                 .loadText(new BufferedInputStream(is));
         final LogicTuple specTuple = new LogicTuple("spec", new Value(spec));
-        TupleCentreContainer.doBlockingSpecOperation(TucsonOperation.setSCode(), aid, tid, specTuple);
+        try {
+			TupleCentreContainer.doBlockingSpecOperation(TucsonOperation.setSCode(), new TucsonAgentId("'$TucsonNodeService-Agent'"), tid, specTuple);
+			setS(tid, spec, (Long)null);
+        } catch (TucsonInvalidAgentIdException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         
         LogicTuple adminAuthorized = new LogicTuple("authorized_agent",new Value(aid.toString()));
         TupleCentreContainer.doBlockingOperation(TucsonOperation.outCode(), aid, tid, adminAuthorized);
@@ -141,6 +144,7 @@ public class MetaACCProxyAgentSide extends ACCProxyAgentSide implements MetaACC{
         TupleCentreContainer.doNonBlockingOperation(
                 TucsonOperation.outCode(), aid, tid,
                 new LogicTuple("boot"), null);
+        out(tid, new LogicTuple("boot"), (Long)null);
 	}
 	
 	

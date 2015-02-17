@@ -42,6 +42,10 @@ public final class TucsonMetaACC {
     	return acc;
     }
     
+    public static NegotiationACC getNegotiationContext(final TucsonAgentId aid, String netid, int portno){
+    	return TucsonMetaACC.getNegotiationContext(aid.toString(), netid, portno);
+    }
+    
     /**
      * Gets the available most-comprehensive ACC from the TuCSoN Node Service
      * active on the default host ("localhost") on the default port (20504).
@@ -54,6 +58,9 @@ public final class TucsonMetaACC {
     public static NegotiationACC getNegotiationContext(final String aid) {
         return TucsonMetaACC.getNegotiationContext(aid, "localhost",
                 TucsonMetaACC.DEFAULT_PORT);
+    }
+    public static NegotiationACC getNegotiationContext(final TucsonAgentId aid){
+    	return TucsonMetaACC.getNegotiationContext(aid.toString());
     }
     
     

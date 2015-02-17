@@ -8,6 +8,7 @@ import alice.logictuple.LogicTuple;
 import alice.logictuple.Value;
 import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.tucson.api.EnhancedACC;
+import alice.tucson.api.NegotiationACC;
 import alice.tucson.api.TucsonAgentId;
 import alice.tucson.api.TucsonMetaACC;
 import alice.tucson.api.TucsonTupleCentreId;
@@ -50,7 +51,8 @@ public final class PersistencyTester {
             final TucsonTupleCentreId ttcidOrg = new TucsonTupleCentreId(
                     "'$ORG'@localhost:20504");
             final TucsonAgentId aid = new TucsonAgentId("'PersistencyTester'");
-            final EnhancedACC acc = TucsonMetaACC.getContext(aid);
+            NegotiationACC negAcc = TucsonMetaACC.getNegotiationContext(aid);
+            final EnhancedACC acc = negAcc.activateDefaultRole();
             // spec addition
             String spec = Utils
                     .fileToString("alice/tucson/examples/persistency/aggregation.rsp");

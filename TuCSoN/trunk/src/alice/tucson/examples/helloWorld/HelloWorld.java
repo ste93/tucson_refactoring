@@ -5,6 +5,7 @@ import alice.logictuple.Value;
 import alice.logictuple.Var;
 import alice.logictuple.exceptions.InvalidVarNameException;
 import alice.tucson.api.ITucsonOperation;
+import alice.tucson.api.NegotiationACC;
 import alice.tucson.api.SynchACC;
 import alice.tucson.api.TucsonAgentId;
 import alice.tucson.api.TucsonMetaACC;
@@ -13,6 +14,7 @@ import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
+import alice.tucson.service.TucsonNodeService;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 
 /**
@@ -25,7 +27,7 @@ public final class HelloWorld {
      * @param args
      *            the name of the TuCSoN coordinable (optional).
      */
-    public static void main(final String[] args) {
+    public static void main(final String[] args) {    	
         /*
          * 1) Build a TuCSoN Agent identifier to contact the TuCSoN system.
          */
@@ -39,8 +41,8 @@ public final class HelloWorld {
             /*
              * 2) Get a TuCSoN ACC to enable interaction with the TuCSoN system.
              */
-            SynchACC acc = null;
-            acc = TucsonMetaACC.getContext(aid);
+            NegotiationACC negAcc = TucsonMetaACC.getNegotiationContext(aid);
+            SynchACC acc = negAcc.activateDefaultRole();
             /*
              * 3) Define the tuplecentre target of your coordination operations.
              */

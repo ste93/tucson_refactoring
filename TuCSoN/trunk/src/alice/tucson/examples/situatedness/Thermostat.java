@@ -10,6 +10,7 @@ import alice.logictuple.Value;
 import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.tucson.api.EnhancedSynchACC;
 import alice.tucson.api.ITucsonOperation;
+import alice.tucson.api.NegotiationACC;
 import alice.tucson.api.TucsonAgentId;
 import alice.tucson.api.TucsonMetaACC;
 import alice.tucson.api.TucsonTupleCentreId;
@@ -17,6 +18,7 @@ import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
+import alice.tucson.service.TucsonNodeService;
 import alice.tucson.utilities.Utils;
 import alice.tuplecentre.api.exceptions.InvalidOperationException;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
@@ -58,10 +60,23 @@ public final class Thermostat {
      */
     public static void main(final String[] args) {
         try {
+        	final TucsonNodeService tns = new TucsonNodeService();
+            tns.install();
+            try {
+                while (!TucsonNodeService.isInstalled(5000)) {
+                    Thread.sleep(1000);
+                }
+            } catch (Exception e ){
+            	
+            }
             final TucsonAgentId aid = new TucsonAgentId("thermostat");
-            final EnhancedSynchACC acc = TucsonMetaACC.getContext(aid,
+            final NegotiationACC negACC = TucsonMetaACC.getNegotiationContext(aid,
                     Thermostat.DEFAULT_HOST,
                     Integer.valueOf(Thermostat.DEFAULT_PORT));
+            final EnhancedSynchACC acc = negACC.activateDefaultRole();
+            /*final EnhancedSynchACC acc = TucsonMetaACC.getContext(aid,
+                    Thermostat.DEFAULT_HOST,
+                    Integer.valueOf(Thermostat.DEFAULT_PORT));*/
             final TucsonTupleCentreId configTc = new TucsonTupleCentreId(
                     "'$ENV'", Thermostat.DEFAULT_HOST, Thermostat.DEFAULT_PORT);
             /* Set up temperature */
