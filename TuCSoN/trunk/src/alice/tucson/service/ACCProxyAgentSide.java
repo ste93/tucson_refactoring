@@ -13,6 +13,8 @@
  */
 package alice.tucson.service;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -41,6 +43,7 @@ import alice.tucson.rbac.Policy;
 import alice.tucson.rbac.Role;
 import alice.tucson.rbac.TucsonPolicy;
 import alice.tucson.rbac.TucsonRole;
+import alice.tucson.service.tools.TucsonACCTool;
 import alice.tuplecentre.api.Tuple;
 import alice.tuplecentre.api.TupleCentreId;
 import alice.tuplecentre.api.TupleTemplate;
@@ -108,6 +111,9 @@ public class ACCProxyAgentSide implements EnhancedACC {
 	private ACCDescription profile; // galassi
 	
 	private final int OKNUMBER = 1;
+	
+	private String username;
+	private String password;
 
     /**
      * Default constructor: exploits the default port (20504) in the "localhost"
@@ -163,48 +169,57 @@ public class ACCProxyAgentSide implements EnhancedACC {
     
     @Override
 	public void enterACC() throws UnreachableNodeException,
-			TucsonOperationNotPossibleException {
+			TucsonOperationNotPossibleException, NoSuchAlgorithmException, TucsonInvalidTupleCentreIdException {
     	
 		profile = new ACCDescription();
 		profile.setProperty("agent_identity", this.aid.toString());
 		profile.setProperty("agent_name", this.aid.getAgentName());
 		profile.setProperty("agent-uuid", this.executor.agentUUID.toString());
 		profile.setProperty("agent_role", "user");
-
+		if(username!=null && !username.equalsIgnoreCase("") && password!=null && !password.equalsIgnoreCase("")) {
+			profile.setProperty("credentials", "'"+username+":"+TucsonACCTool.encrypt(password)+"'");
+		}
+		
+		TucsonTupleCentreId tid = new TucsonTupleCentreId(tcOrg, node, ""+port);
+		executor.getSession(tid, aid);
 	}
 
 
 	@Override
 	public String getPassword() {
-		// TODO Auto-generated method stub
-		return null;
+		return password;
 	}
 
 	@Override
 	public void setPassword(String password) {
-		// TODO Auto-generated method stub
-		
+		this.password = password;
 	}
 
 	@Override
 	public String getUsername() {
-		// TODO Auto-generated method stub
-		return null;
+		return username;
 	}
 
 	@Override
 	public void setUsername(String username) {
-		// TODO Auto-generated method stub
-		
+		this.username = username;
 	}
 
 	@Override
 	public boolean isACCEntered() {
 		return isACCEntered;
 	}
+	
+	@Override
+	public UUID getUUID(){
+		return this.executor.agentUUID;
+	}
     
 	//===================================================================
 
+	
+	
+	
     @Override
     public synchronized void exit() {
         final Iterator<OperationHandler.ControllerSession> it = this.executor

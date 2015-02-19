@@ -13,11 +13,11 @@ public class TucsonPolicy implements Policy{
 	private String policyName;
 	
 	public TucsonPolicy(String policyName){
-		this.policyName = policyName;
+		this(policyName, new ArrayList<Permission>());
 	}
 	
 	public TucsonPolicy(String policyName, List<Permission> perms){
-		this(policyName);
+		this.policyName = policyName;
 		this.permissions = perms;
 	}
 	

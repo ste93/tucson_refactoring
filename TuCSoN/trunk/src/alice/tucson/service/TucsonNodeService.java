@@ -24,6 +24,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -35,8 +37,10 @@ import alice.logictuple.LogicMatchingEngine;
 import alice.logictuple.LogicTuple;
 import alice.logictuple.TupleArgument;
 import alice.logictuple.Value;
+import alice.logictuple.Var;
 import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.logictuple.exceptions.InvalidTupleArgumentException;
+import alice.logictuple.exceptions.InvalidVarNameException;
 import alice.respect.api.exceptions.InvalidTupleCentreIdException;
 import alice.respect.core.EnvConfigAgent;
 import alice.respect.core.RespectTC;
@@ -56,6 +60,7 @@ import alice.tucson.network.AbstractTucsonProtocol;
 import alice.tucson.network.TPConfig;
 import alice.tucson.network.exceptions.DialogCloseException;
 import alice.tucson.network.exceptions.DialogInitializationException;
+import alice.tucson.service.tools.TucsonACCTool;
 import alice.tucson.utilities.Utils;
 import alice.tuplecentre.api.Tuple;
 import alice.tuprolog.InvalidTheoryException;
@@ -83,6 +88,12 @@ public class TucsonNodeService {
     private static final int MAX_UNBOUND_PORT = 64000;
     private static final String PERSISTENCY_PATH = "./persistent/";
 
+    // RBAC 
+    private boolean listAllRoles;
+    private boolean authForAdmin;
+    private String adminUsername;
+	private String adminPassword;
+	
     /**
      * 
      * @return the String representation of the TuCSoN version
@@ -295,8 +306,36 @@ public class TucsonNodeService {
         this.inspectorAgents = new ArrayList<InspectorContextSkel>();
         this.tcs = new ArrayList<RespectTC>();
         TPConfig.getInstance().setTcpPort(this.tcpPort);
+        
+        // Set rbac properties
+        listAllRoles = true;
+        authForAdmin = false;
+    }
+    
+    /*
+     *  ============== RBAC METHODS ===============
+     */
+    
+    public void setListAllRolesAllowed(boolean listAllRoles){
+    	this.listAllRoles = listAllRoles;
     }
 
+    public void setAuthForAdmin(boolean needAuth){
+    	this.authForAdmin = needAuth;
+    }
+    
+    public void setAdminUsername(String username){
+    	this.adminUsername = username;
+    }
+    
+    public void setAdminPassword(String password){
+    	this.adminPassword = password;
+    }
+    
+    /*
+     *   ============= END RBAC ================
+     */
+    
     /**
      * 
      */
@@ -904,6 +943,20 @@ public class TucsonNodeService {
             TupleCentreContainer.doNonBlockingOperation(
                     TucsonOperation.outCode(), this.nodeAid, this.idConfigTC,
                     new LogicTuple("boot"), null);
+            
+            // Allow or not list of all roles
+            TupleCentreContainer.doBlockingOperation(TucsonOperation.outCode(), this.nodeAid, this.idConfigTC, new LogicTuple("list_all_roles", new Value((this.listAllRoles)? "yes" : "no")));
+            
+            TupleCentreContainer.doBlockingOperation(TucsonOperation.outCode(), this.nodeAid, this.idConfigTC, new LogicTuple("role", new Value("admin_role"), new Value("admin role"), new Var("_")));
+            if(!authForAdmin){
+            	TupleCentreContainer.doBlockingOperation(TucsonOperation.outCode(), this.nodeAid, this.idConfigTC, new LogicTuple("role_credentials", new Value("admin_role"), new Var("_")));
+            } else if(adminUsername!=null && !adminUsername.equalsIgnoreCase("") && adminPassword!=null && !adminPassword.equalsIgnoreCase("")) {
+				TupleCentreContainer.doBlockingOperation(TucsonOperation.outCode(), nodeAid, idConfigTC, new LogicTuple("role_credentials", new Value("admin_role"), new Value(adminUsername+":"+TucsonACCTool.encrypt(adminPassword))));
+			} else {
+				TupleCentreContainer.doBlockingOperation(TucsonOperation.outCode(), this.nodeAid, this.idConfigTC, new LogicTuple("role_credentials", new Value("admin_role"), new Var("_")));
+			}
+            
+            
             this.addAgent(this.nodeAid);
         } catch (final TucsonInvalidTupleCentreIdException e) {
             e.printStackTrace();
@@ -915,7 +968,11 @@ public class TucsonNodeService {
             e.printStackTrace();
         } catch (final TucsonInvalidSpecificationException e) {
             e.printStackTrace();
-        }
+        } catch (InvalidVarNameException e) {
+			e.printStackTrace();
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
     }
 
     /**

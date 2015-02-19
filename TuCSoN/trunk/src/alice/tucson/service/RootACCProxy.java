@@ -2,6 +2,7 @@ package alice.tucson.service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import alice.logictuple.exceptions.InvalidVarNameException;
 import alice.tucson.api.ITucsonOperation;
@@ -64,5 +65,11 @@ public class RootACCProxy implements RootACC {
 	public boolean isACCEntered() {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public UUID getUUID() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

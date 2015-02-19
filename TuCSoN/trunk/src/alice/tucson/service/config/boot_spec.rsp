@@ -6,11 +6,17 @@ reaction(out(boot),true,(
     out(rbac_installed(no)),
     out(context_id(0)),
     out(authorized_agent(_)),
-    out(role(default,'default role')),
-    out(policy(default,'default policy')),
-    out(role_policy(default,default)),
+    out(authorized_inspectors(yes)),
+    out(policy(admin_policy,[])),
+    out(role_policy(admin_role,admin_policy)),
     out(role_assignment(_,_)))).
 
+reaction(inp(install_rbac),request,
+(
+	in(rbac_installed(R)),
+	out(rbac_installed(yes)),
+	out(install_rbac)
+)).
 
 %
 % context acquire
@@ -77,14 +83,79 @@ reaction( inp(role_activation_request(CtxId,RoleId,Result)),request,(
   rd(role_policy(RoleId,PolicyId)),
   rd(policy(PolicyId,Policy)),
   out( role_activation_request(CtxId,RoleId,ok(Policy))))).
-
+  
+reaction( inp(role_activation_request(AgentId,AccUUID,RoleId,Credentials,_)),request,(
+  in(open_session(CtxId,AgentId,AccUUID,RoleList)),
+  rd(role(RoleId,Descr,_)),										% Esiste il ruolo
+  %rd(role_credentials(RoleId,Credentials)),						% Le credenziali sono verificate
+  rd(role_assignment(RoleId,AgentId)),
+  out(open_session(CtxId,AgentId,AccUUID,[RoleId|RoleList])),
+  rd(role_policy(RoleId,PolicyId)),
+  rd(policy(PolicyId,PermissionList)),
+  out( role_activation_request(AgentId,AccUUID,RoleId,Credentials,ok(PolicyId, PermissionList))))).
+  
 %
-%	RBAC is installed?
+% Policy list
 %
+reaction( inp(policy_list_request(AgentId,_)),(invocation, operation), (
+	%in(open_session(CtxId,AgentId,RoleList)),
+	rd_all(policy(PolicyId, PermissionList), AllPolicyList),
+	out(policy_list_request(AgentId,ok(AllPolicyList)))
+	)).
+		
+reaction( inp(policy_role_request(PolicyId,_)), (invocation, operation), (
+	rd(role_policy(RoleId, PolicyId)),
+	out(policy_role_request(PolicyId,RoleId))
+	)).
+	
+reaction( inp(role_policy_request(_,RoleId)), (invocation, operation), (
+	rd(role_policy(RoleId, PolicyId)),
+	out(role_policy_request(PolicyId,RoleId))
+	)).
+	
+%
+%	Inspectors authorized?
+%
+reaction( inp(are_inspectors_auth(_)), request,(
+ 	rd(authorized_inspectors(A)),
+ 	out(are_inspectors_auth(A))
+)).
+ 
+reaction( inp(authorize_inspectors(A)), (invocation, operation),(
+ 	in(authorized_inspectors(_)),
+ 	out(authorized_inspectors(A)),
+ 	out(authorize_inspectors(A))
+)).
+ 
+%
+%	List of all roles
+%	
+reaction( inp(role_list_request(_)),(invocation, operation),
+(
+	rd(list_all_roles(no)),
+	out(role_list_request(failed(list_not_permitted)))
+)).
 
-
-
-
+reaction( inp(role_list_request(_)),(invocation, operation),
+(
+	rd(list_all_roles(yes)),
+	rd_all(role(RoleId,Desc,Credentials), AllRoleList),
+	out(role_list_request(ok(AllRoleList)))
+)).
+	
+%reaction( out(create_role_list([role(RoleId,Desc)|AllRoleList], AgentId, ResultList)),
+%	internal,
+%	(
+%		in(create_role_list(_, AgentId, ResultList)), % tolgo la tupla scatenante la reazione 
+		
+	
+reaction( out(create_role_list([],AgentId, ResultList)), % ho iterato tutta la lista
+	internal,
+(
+	in(create_role_list(_,AgentId,ResultList)), % tolgo la tupla scatenante la reazione    
+	out(role_activable_list_request(AgentId,ok(role_activable_list_request),ResultList))
+)).
+	
 %
 % command management
 %

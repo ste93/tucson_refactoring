@@ -13,8 +13,10 @@
  */
 package alice.tucson.api;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import alice.logictuple.exceptions.InvalidVarNameException;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
@@ -32,7 +34,7 @@ import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 public interface RootACC {
 	
 	void enterACC() throws UnreachableNodeException,	// galassi
-					TucsonOperationNotPossibleException;
+					TucsonOperationNotPossibleException, NoSuchAlgorithmException, TucsonInvalidTupleCentreIdException;
     /**
      * Release of the ACC and exit from the TuCSoN system.
      * 
@@ -54,4 +56,6 @@ public interface RootACC {
 	void setUsername(String username);
 	
 	boolean isACCEntered();
+	
+	UUID getUUID();
 }

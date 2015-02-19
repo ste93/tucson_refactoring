@@ -1,5 +1,7 @@
 package alice.tucson.service.tools;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -97,6 +99,7 @@ public final class TucsonACCTool {
 						new Value(agentAid.toString()),
 						new Value(accUUID.toString()),
 						new Value(roleName),
+						new Value("_"),
 						new Var("Result"));
 				op = acc.inp(tid, template, (Long)null);
 				if(op.isResultSuccess()){
@@ -137,5 +140,18 @@ public final class TucsonACCTool {
 		}
 		
 		return policies;
+	}
+	
+	public static String encrypt(String password) throws NoSuchAlgorithmException{
+		MessageDigest md = MessageDigest.getInstance("SHA-256");
+		md.update(password.getBytes());
+		
+		byte byteData[] = md.digest();
+		
+		StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < byteData.length; i++) {
+         sb.append(Integer.toString((byteData[i] & 0xff) + 0x100, 16).substring(1));
+        }
+        return sb.toString();
 	}
 }

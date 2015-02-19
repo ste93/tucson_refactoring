@@ -6,16 +6,8 @@ reaction(out(boot),true,(
     out(rbac_installed(yes)),
     out(context_id(0)),
     out(authorized_agent('$EnvAgent')),
-    %out(authorized_agent(adminAgent)),
-    %out(authorized_agent(negotAgent)),
-    %out(authorized_agent(_)),
-    %out(authorized_inspectors(yes)),
-    %out(role(default,'default role')),
-    %out(role(admin_role, 'admin role')),
-    %out(policy(default,'default policy')),
-    %out(policy(adminPolicy, 'admin policy')),
-    %out(role_policy(default,default)),
-    %out(role_policy(admin_role,adminPolicy)),
+    out(authorized_inspectors(yes)),
+    out(login_required(no)),
     out(role_assignment(_,_)))).
 
 

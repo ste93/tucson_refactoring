@@ -66,10 +66,10 @@ public final class TucsonMetaACC {
     
     
     //TODO: Controllo password
-    public static MetaACC getContext(final TucsonAgentId aid, String netid, int portno, String username, String password) {
+    public static MetaACC getAdminContext(final TucsonAgentId aid, String netid, int portno, String username, String password) {
 		MetaACC acc = null;
 		try {
-			acc = new MetaACCProxyAgentSide(aid, netid, portno);
+			acc = new MetaACCProxyAgentSide(aid, netid, portno, username, password);
 		} catch (TucsonInvalidAgentIdException e) {
 			System.err.println("[Tucson-MetaACC]: " + e);
 			e.printStackTrace();

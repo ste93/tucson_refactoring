@@ -1,6 +1,7 @@
 package alice.tucson.rbac;
 
 import java.io.Serializable;
+import java.security.NoSuchAlgorithmException;
 
 public interface Role extends Serializable{
 
@@ -10,6 +11,8 @@ public interface Role extends Serializable{
 	Policy getPolicy();	
 	void setPolicy(Policy policy);
 	
-	/*void addPermission(Permission permission);
-	void removePermission(Permission permission);*/
+	boolean getCredentialsRequired();	
+	void setCredentials(String user, String pass);
+	
+	String getEncryptedCredentials() throws NoSuchAlgorithmException;
 }

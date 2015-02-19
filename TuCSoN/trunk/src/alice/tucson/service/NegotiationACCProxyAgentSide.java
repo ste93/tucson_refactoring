@@ -99,16 +99,8 @@ public class NegotiationACCProxyAgentSide implements NegotiationACC{
 		
     	TupleCentreId tid = new TucsonTupleCentreId(tcOrg, "'"+node+"'", ""+port);
     	
-    	if(!isRBACInstalled(tid)){
-    		/*RoleACCProxyAgentSide newACC = new RoleACCProxyAgentSide(agentAid, node, port);
-    		List<Permission> perms = TucsonPermission.createPermissionsFromStrings(permissionsId);
-    		Policy defaultPolicy = new TucsonPolicy("default", perms);
-    		Role defaultRole = new TucsonRole("default");
-    		defaultRole.setPolicy(defaultPolicy);
-    		newACC.setRole(defaultRole);*/
+    	if(!isRBACInstalled(tid))
     		return new ACCProxyAgentSide(agentAid, node, port);
-    	}
-    	
     	
     	List<Policy> policies = TucsonACCTool.getPolicyList(agentAid.toString(), tid, internalACC);
 
@@ -150,7 +142,14 @@ public class NegotiationACCProxyAgentSide implements NegotiationACC{
     }
     
     private boolean isRBACInstalled(TupleCentreId tid) throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException{
-    	ITucsonOperation op = internalACC.rdp(tid, new LogicTuple("rbac_installed(Result)"), (Long)null);
+    	LogicTuple rbacInstalled = null;
+		try {
+			rbacInstalled = new LogicTuple("rbac_installed", new Var("Result"));
+		} catch (InvalidVarNameException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	ITucsonOperation op = internalACC.rd(tid, rbacInstalled, (Long)null);
     	if(op.isResultSuccess()){
     		LogicTuple res = op.getLogicTupleResult();
     		if(res.getArg(0).toString().equals("yes"))
@@ -162,6 +161,15 @@ public class NegotiationACCProxyAgentSide implements NegotiationACC{
     protected void log(final String msg) {
         System.out.println("[ACCProxyAgentSide]: " + msg);
     }
+
+	@Override
+	public void listAllRoles() throws TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException, InvalidVarNameException {
+		TupleCentreId tid = new TucsonTupleCentreId(tcOrg, "'"+node+"'", ""+port);
+		ITucsonOperation op = internalACC.inp(tid, new LogicTuple("role_list_request", new Var("Result")), (Long)null);
+		if(op.isResultSuccess()){
+			
+		}
+	}
 
 	
 }
