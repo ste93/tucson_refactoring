@@ -12,18 +12,22 @@ import com.sun.corba.se.impl.encoding.OSFCodeSetRegistry.Entry;
 public class TucsonRBAC implements RBAC{
 
 	private String orgName;
-	
-	private boolean inspectorsAuthorized = false;
+	private String defaultAgentClass;
+	private boolean loginRequired;
+	private boolean inspectorsAuthorized;
 	
 	private Map<String,Role> roles;
 	private Map<String,Policy> policies;
-	private List<String> authorizedAgents;
+	private List<AuthorizedAgent> authorizedAgents;
 	
 	public TucsonRBAC(String orgName){
 		roles = new HashMap<String,Role>();
 		policies = new HashMap<String,Policy>();
-		authorizedAgents = new ArrayList<String>();
+		authorizedAgents = new ArrayList<AuthorizedAgent>();
 		this.orgName = orgName;
+		this.loginRequired = false;
+		this.inspectorsAuthorized = false;
+		this.defaultAgentClass = "defaultClass";
 	}
 	
 	@Override
@@ -97,7 +101,7 @@ public class TucsonRBAC implements RBAC{
 	@Override
 	public void addAuthorizedAgent(AuthorizedAgent agent) {
 		if(!authorizedAgents.contains(agent.getAgentName()))
-			authorizedAgents.add(agent.getAgentName());
+			authorizedAgents.add(agent);
 	}
 
 	@Override
@@ -113,7 +117,7 @@ public class TucsonRBAC implements RBAC{
 	}
 
 	@Override
-	public List<String> getAuthorizedAgents() {
+	public List<AuthorizedAgent> getAuthorizedAgents() {
 		return authorizedAgents;
 	}
 
@@ -131,6 +135,26 @@ public class TucsonRBAC implements RBAC{
 	@Override
 	public boolean getAuthorizedInspectors() {
 		return this.inspectorsAuthorized;
+	}
+
+	@Override
+	public void setLoginRequired(boolean loginReq) {
+		this.loginRequired = loginReq;
+	}
+
+	@Override
+	public boolean getLoginRequired() {
+		return this.loginRequired;
+	}
+
+	@Override
+	public void setDefaultAgentClass(String agentClass) {
+		this.defaultAgentClass = agentClass;
+	}
+
+	@Override
+	public String getDefaultAgentClass() {
+		return this.defaultAgentClass;
 	}
 	
 

@@ -8,6 +8,12 @@ public interface Role extends Serializable{
 	String getRoleName();
 	void setRoleName(String roleName);
 	
+	String getDescription();
+	void setDescription(String roleDescription);
+	
+	String getAgentClass();
+	void setAgentClass(String agentClass);
+	
 	Policy getPolicy();	
 	void setPolicy(Policy policy);
 	

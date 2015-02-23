@@ -22,8 +22,14 @@ public interface RBAC extends Serializable {
 	
 	List<Role> getRoles();
 	List<Policy> getPolicies();
-	List<String> getAuthorizedAgents();
+	List<AuthorizedAgent> getAuthorizedAgents();
 	
 	void setAuthorizedInspectors(boolean auth);
 	boolean getAuthorizedInspectors();
+	
+	void setLoginRequired(boolean loginReq);
+	boolean getLoginRequired();
+	
+	void setDefaultAgentClass(String agentClass);
+	String getDefaultAgentClass();
 }

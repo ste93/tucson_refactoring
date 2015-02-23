@@ -13,10 +13,17 @@
  */
 package alice.tucson.api;
 
+import java.security.NoSuchAlgorithmException;
+
+import alice.logictuple.exceptions.InvalidVarNameException;
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
+import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
+import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
+import alice.tucson.api.exceptions.UnreachableNodeException;
 import alice.tucson.service.ACCProxyAgentSide;
 import alice.tucson.service.MetaACCProxyAgentSide;
 import alice.tucson.service.NegotiationACCProxyAgentSide;
+import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 
 /**
  * TuCSoN Meta Agent Coordination Context. It is exploited by TuCSoN agents to
@@ -34,7 +41,21 @@ public final class TucsonMetaACC {
     	NegotiationACC acc = null;
     	try {
     		acc = new NegotiationACCProxyAgentSide(new TucsonAgentId(aid), netid, portno);
+
     	}catch (TucsonInvalidAgentIdException e) {
+			System.err.println("[Tucson-NegotiationACC]: " + e);
+			e.printStackTrace();
+			return null;
+		}
+    	return acc;
+    }
+
+	public static NegotiationACC getNegotiationContext(final String aid, String netid, int portno, String username, String password){
+    	NegotiationACC acc = null;
+    	try {
+    		acc = new NegotiationACCProxyAgentSide(new TucsonAgentId(aid), netid, portno);
+    		acc.login(username, password);
+    	}catch (TucsonInvalidAgentIdException | NoSuchAlgorithmException | InvalidVarNameException | TucsonInvalidTupleCentreIdException | TucsonOperationNotPossibleException | UnreachableNodeException | OperationTimeOutException e) {
 			System.err.println("[Tucson-NegotiationACC]: " + e);
 			e.printStackTrace();
 			return null;
@@ -77,9 +98,6 @@ public final class TucsonMetaACC {
 		}
 		return acc;
 	}
-    
-    
-    
     
     /**
      * Gets the available most-comprehensive ACC from the TuCSoN Node Service

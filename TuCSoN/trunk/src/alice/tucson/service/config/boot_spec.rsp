@@ -18,6 +18,17 @@ reaction(inp(install_rbac),request,
 	out(install_rbac)
 )).
 
+reaction(inp(disinstall_rbac),request,
+(
+	in(rbac_installed(R)),
+	in_all(role(Name,Description,Level)),
+	in_all(policy(Name,Permissions)),
+	in_all(role_policy(NameRuolo,NamePolicy)),
+	in_all(authorized_agent(NameAgent)),
+	out(rbac_installed(no)),
+	out(disinstall_rbac)
+)).
+
 %
 % context acquire
 %
@@ -72,9 +83,26 @@ reaction( inp(context_shutdown(CtxId,AgentId,_)),request,(
   no(open_session(CtxId,AgentId,_)),
   out(context_shutdown(CtxId,AgentId,failed(no_valid_context))) )).
 
+reaction( inp(get_default_agent_class(_)), (invocation,operation),(
+	rd(default_agent_class(A)),
+	out(get_default_agent_class(A))
+)).
+
+
+%
+% role creation
+%
+
+reaction( out(role(Name,Desc, substitute)), true,(
+	in(role(Name,Desc, substitute)),
+	rd(default_agent_class(Class)),
+	out(role(Name,Desc,Class))	
+)).
+
 %
 % role activation
 %
+
 reaction( inp(role_activation_request(CtxId,RoleId,Result)),request,(
   in(open_session(CtxId,AgentId,RoleList)),
   rd(role(RoleId,Descr)),
@@ -87,7 +115,17 @@ reaction( inp(role_activation_request(CtxId,RoleId,Result)),request,(
 reaction( inp(role_activation_request(AgentId,AccUUID,RoleId,Credentials,_)),request,(
   in(open_session(CtxId,AgentId,AccUUID,RoleList)),
   rd(role(RoleId,Descr,_)),										% Esiste il ruolo
-  %rd(role_credentials(RoleId,Credentials)),						% Le credenziali sono verificate
+  rd(role_credentials(RoleId,Credentials)),						% Le credenziali sono verificate
+  rd(role_assignment(RoleId,AgentId)),
+  out(open_session(CtxId,AgentId,AccUUID,[RoleId|RoleList])),
+  rd(role_policy(RoleId,PolicyId)),
+  rd(policy(PolicyId,PermissionList)),
+  out( role_activation_request(AgentId,AccUUID,RoleId,Credentials,ok(PolicyId, PermissionList))))).
+  
+reaction( inp(role_activation_request(AgentId,AccUUID,RoleId,Credentials,_)),request,(
+  in(open_session(CtxId,AgentId,AccUUID,RoleList)),
+  rd(role(RoleId,Descr,_)),										% Esiste il ruolo
+  no(role_credentials(RoleId,_)),						% Non sono necessarie credenziali
   rd(role_assignment(RoleId,AgentId)),
   out(open_session(CtxId,AgentId,AccUUID,[RoleId|RoleList])),
   rd(role_policy(RoleId,PolicyId)),
@@ -126,6 +164,35 @@ reaction( inp(authorize_inspectors(A)), (invocation, operation),(
  	out(authorized_inspectors(A)),
  	out(authorize_inspectors(A))
 )).
+
+%
+%	LOGIN
+%
+
+reaction( inp(set_login(A)), (invocation, operation),(
+ 	in(login_required(_)),
+ 	out(login_required(A)),
+ 	out(set_login(A))
+)).
+
+reaction( inp(set_default_agent_class(A)), (invocation, operation),(
+ 	in(default_agent_class(_)),
+ 	out(default_agent_class(A)),
+ 	out(set_default_agent_class(A))
+)).
+
+% Richiesta di login. Esistono le credenziali fornite e viene ritornata la classe agente assegnata
+reaction( inp(login_request(Credentials,_)), request, (
+	rd(authorized_agent(Credentials, AgentClass)),
+	out(login_request(Credentials, ok(AgentClass))))
+).
+
+% Richiesta di login. Le credenziali non sono corrette, viene ritornata la classe agente di default
+reaction( inp(login_request(Credentials,_)), request, (
+	no(authorized_agent(Credentials, AgentClass)),
+	rd(default_agent_class(Class)),
+	out(login_request(Credentials, failed(Class))))
+).
  
 %
 %	List of all roles

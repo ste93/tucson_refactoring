@@ -9,8 +9,10 @@ public class TucsonRole implements Role{
 	private static final long serialVersionUID = 1L;
 	
 	protected String roleName;
+	protected String roleDescription;
 	protected Policy policy;
 	protected boolean credentialsRequired;
+	protected String agentClass;
 	
 	private String username;
 	private String password;
@@ -38,7 +40,29 @@ public class TucsonRole implements Role{
 		if(roleName==null || roleName.equals(""))
 			return;
 		
-		this.roleName = roleName;
+		this.roleName = roleName.toLowerCase();
+	}
+	
+	@Override
+	public String getDescription() {
+		return (roleDescription != null && !roleDescription.equalsIgnoreCase(""))? roleDescription : "ruolo_"+roleName;
+	}
+
+	@Override
+	public void setDescription(String roleDescription) {
+		this.roleDescription = roleDescription;
+	}
+	
+	@Override
+	public String getAgentClass() {
+		if(agentClass == null || agentClass.equalsIgnoreCase(""))
+			return "substitute";
+		return agentClass;
+	}
+
+	@Override
+	public void setAgentClass(String agentClass) {
+		this.agentClass = agentClass.toLowerCase();
 	}
 
 	@Override
@@ -64,13 +88,16 @@ public class TucsonRole implements Role{
 	public void setCredentials(String user, String pass) {
 		this.username = user;
 		this.password = pass;
+		setCredentialsRequired(true);
 	}
 
 	@Override
 	public String getEncryptedCredentials() throws NoSuchAlgorithmException {
 		return username+":"+TucsonACCTool.encrypt(password);
 	}
+
 	
+
 	
 
 }

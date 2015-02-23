@@ -99,7 +99,7 @@ public final class TucsonACCTool {
 						new Value(agentAid.toString()),
 						new Value(accUUID.toString()),
 						new Value(roleName),
-						new Value("_"),
+						new Var("Credenziali"),
 						new Var("Result"));
 				op = acc.inp(tid, template, (Long)null);
 				if(op.isResultSuccess()){

@@ -1,5 +1,6 @@
 package alice.tucson.service;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -40,6 +41,8 @@ public class NegotiationACCProxyAgentSide implements NegotiationACC{
 	protected int port;
 	private Object agentAid;
 	
+	private String agentClass;
+	
 	private final int OKNUMBER = 1;
 	
 	public NegotiationACCProxyAgentSide(Object aid) throws TucsonInvalidAgentIdException{
@@ -51,6 +54,7 @@ public class NegotiationACCProxyAgentSide implements NegotiationACC{
 		this.node = node;
 		this.port = port;
 		this.agentAid = aid;
+		setDefaultAgentClass();
 	}
 
 	@Override
@@ -167,9 +171,65 @@ public class NegotiationACCProxyAgentSide implements NegotiationACC{
 		TupleCentreId tid = new TucsonTupleCentreId(tcOrg, "'"+node+"'", ""+port);
 		ITucsonOperation op = internalACC.inp(tid, new LogicTuple("role_list_request", new Var("Result")), (Long)null);
 		if(op.isResultSuccess()){
-			
+			LogicTuple res = op.getLogicTupleResult();
 		}
 	}
 
-	
+	@Override
+	public boolean login(String username, String password) throws NoSuchAlgorithmException, TucsonInvalidTupleCentreIdException, InvalidVarNameException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException {
+		TupleCentreId tid = new TucsonTupleCentreId(tcOrg, "'"+node+"'", ""+port);
+		LogicTuple loginTuple = new LogicTuple("login_request",
+				new Value(username+":"+TucsonACCTool.encrypt(password)),
+				new Var("Result"));
+		
+		ITucsonOperation op = internalACC.inp(tid, loginTuple, (Long)null);
+		if(op.isResultSuccess()){
+			TupleArgument response = op.getLogicTupleResult().getArg(1);
+			this.setAgentClass(response.getArg(0).toString());
+			if(response.getName().equals("ok")){
+				return true;
+			} else {
+				return false;
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public void setAgentClass(String agentClass) {
+		this.agentClass = agentClass;
+	}
+
+	@Override
+	public String getAgentClass() {
+		return this.agentClass;
+	}
+
+	private void setDefaultAgentClass() {
+		try {
+			TupleCentreId tid = new TucsonTupleCentreId(tcOrg, "'"+node+"'", ""+port);
+			LogicTuple defaultClassTuple = new LogicTuple("get_default_agent_class", new Var("Response"));
+			ITucsonOperation op = internalACC.inp(tid, defaultClassTuple, (Long)null);
+			if(op.isResultSuccess()){
+				String defaultClass = op.getLogicTupleResult().getArg(0).toString();
+				this.setAgentClass(defaultClass);
+			}
+		} catch (TucsonInvalidTupleCentreIdException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvalidVarNameException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (TucsonOperationNotPossibleException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UnreachableNodeException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (OperationTimeOutException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
 }
