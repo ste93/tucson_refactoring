@@ -46,11 +46,14 @@ public final class TucsonMetaACC {
 			System.err.println("[Tucson-NegotiationACC]: " + e);
 			e.printStackTrace();
 			return null;
+		} catch (TucsonInvalidTupleCentreIdException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
     	return acc;
     }
 
-	public static NegotiationACC getNegotiationContext(final String aid, String netid, int portno, String username, String password){
+	/*public static NegotiationACC getNegotiationContext(final String aid, String netid, int portno, String username, String password){
     	NegotiationACC acc = null;
     	try {
     		acc = new NegotiationACCProxyAgentSide(new TucsonAgentId(aid), netid, portno);
@@ -61,7 +64,7 @@ public final class TucsonMetaACC {
 			return null;
 		}
     	return acc;
-    }
+    }*/
     
     public static NegotiationACC getNegotiationContext(final TucsonAgentId aid, String netid, int portno){
     	return TucsonMetaACC.getNegotiationContext(aid.toString(), netid, portno);
@@ -92,6 +95,10 @@ public final class TucsonMetaACC {
 		try {
 			acc = new MetaACCProxyAgentSide(aid, netid, portno, username, password);
 		} catch (TucsonInvalidAgentIdException e) {
+			System.err.println("[Tucson-MetaACC]: " + e);
+			e.printStackTrace();
+			return null;
+		} catch (TucsonInvalidTupleCentreIdException e) {
 			System.err.println("[Tucson-MetaACC]: " + e);
 			e.printStackTrace();
 			return null;

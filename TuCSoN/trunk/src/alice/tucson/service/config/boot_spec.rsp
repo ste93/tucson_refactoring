@@ -92,8 +92,7 @@ reaction( inp(get_default_agent_class(_)), (invocation,operation),(
 %
 % role creation
 %
-
-reaction( out(role(Name,Desc, substitute)), true,(
+reaction( out(role(Name,Desc, substitute)), completion,(
 	in(role(Name,Desc, substitute)),
 	rd(default_agent_class(Class)),
 	out(role(Name,Desc,Class))	

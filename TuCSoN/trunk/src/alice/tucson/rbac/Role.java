@@ -17,8 +17,8 @@ public interface Role extends Serializable{
 	Policy getPolicy();	
 	void setPolicy(Policy policy);
 	
+	// DA RIMUOVERE PROBABILMENTE
 	boolean getCredentialsRequired();	
 	void setCredentials(String user, String pass);
-	
 	String getEncryptedCredentials() throws NoSuchAlgorithmException;
 }

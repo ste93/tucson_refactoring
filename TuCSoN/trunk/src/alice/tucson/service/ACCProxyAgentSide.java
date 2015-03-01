@@ -165,6 +165,23 @@ public class ACCProxyAgentSide implements EnhancedACC {
         
         isACCEntered = false;
     }
+    
+    public ACCProxyAgentSide(final Object aid, final String n, final int p, UUID agentUUID)
+            throws TucsonInvalidAgentIdException {
+    	if(aid.getClass().equals("alice.tucson.api.TucsonAgentId"))
+    		this.aid = (TucsonAgentId)aid;
+    	else
+    		this.aid = new TucsonAgentId(aid.toString());
+    	
+        //this.aid = new TucsonAgentId(id);
+        this.node = n;
+        this.port = p;
+        
+        // Class used to perform tucson operations
+        this.executor = new OperationHandler(agentUUID);
+        
+        isACCEntered = false;
+    }
 
     
     @Override

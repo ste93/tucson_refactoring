@@ -45,22 +45,23 @@ import alice.tuprolog.Term;
 public class MetaACCProxyAgentSide extends ACCProxyAgentSide implements MetaACC{
 	
 	private boolean admin_authorized;
+	private TupleCentreId tid;
 	
 	public MetaACCProxyAgentSide(Object id)
-			throws TucsonInvalidAgentIdException {
+			throws TucsonInvalidAgentIdException, TucsonInvalidTupleCentreIdException {
 		this(id, "localhost", 20504);
 	}
 	
-	public MetaACCProxyAgentSide(Object aid, String node, int port) throws TucsonInvalidAgentIdException{
+	public MetaACCProxyAgentSide(Object aid, String node, int port) throws TucsonInvalidAgentIdException, TucsonInvalidTupleCentreIdException{
 		this(aid, node, port, "","");
 	}
 	
-	public MetaACCProxyAgentSide(Object aid, String node, int port, String username, String password) throws TucsonInvalidAgentIdException{
+	public MetaACCProxyAgentSide(Object aid, String node, int port, String username, String password) throws TucsonInvalidAgentIdException, TucsonInvalidTupleCentreIdException{
 		super(aid, node, port);
 		setUsername(username);
 		setPassword(password);
 		admin_authorized = false;
-		
+		tid = getTid(node, port);// new TucsonTupleCentreId(tcOrg, "'"+node+"'", ""+port);
 		try {
 			activateAdminRole();
 		} catch (InvalidVarNameException | NoSuchAlgorithmException
@@ -84,10 +85,8 @@ public class MetaACCProxyAgentSide extends ACCProxyAgentSide implements MetaACC{
 		if(!admin_authorized)
 			throw new OperationNotAllowedException();
 		
-		TucsonTupleCentreId tid = new TucsonTupleCentreId(tcOrg, "'"+node+"'", ""+port);
-		
 		try {
-			installRBACSupport(tid);
+			installRBACSupport();
 		} catch (IOException | TucsonInvalidSpecificationException
 				| TucsonInvalidLogicTupleException e) {
 			e.printStackTrace();
@@ -107,24 +106,24 @@ public class MetaACCProxyAgentSide extends ACCProxyAgentSide implements MetaACC{
 		op = inp(tid, defaultClassTuple, l);
 		
 		for(Role role : rbac.getRoles())
-			this.addRole(role, l, tid);
+			this.addRole(role, l);
 		
 		for(Policy policy : rbac.getPolicies())
-			this.addPolicy(policy, l, tid);
+			this.addPolicy(policy, l);
 		
 		for(AuthorizedAgent authAgent : rbac.getAuthorizedAgents())
-			this.addAuthorizedAgent(authAgent, l, tid);
+			this.addAuthorizedAgent(authAgent, l);
 		
-		LogicTuple loginTuple = null;
-		if(rbac.getLoginRequired()){
+		LogicTuple loginTuple = new LogicTuple("set_login", new Value((rbac.getLoginRequired())? "yes" : "no"));
+		/*if(rbac.getLoginRequired()){
 			loginTuple = new LogicTuple("set_login", new Value("yes"));
 		} else {
 			loginTuple = new LogicTuple("set_login", new Value("no"));
-		}
+		}*/
 		
 		op = inp(tid, loginTuple, l);
 		
-		LogicTuple inspectorsTuple = null;
+		LogicTuple inspectorsTuple = new LogicTuple("authorize_inspectors", new Value((rbac.getAuthorizedInspectors())? "yes" : "no"));
 		if(rbac.getAuthorizedInspectors()){
 			inspectorsTuple = new LogicTuple("authorize_inspectors", new Value("yes"));
 		} else {
@@ -141,19 +140,18 @@ public class MetaACCProxyAgentSide extends ACCProxyAgentSide implements MetaACC{
 	}
 
 	@Override
-	public void remove(RBAC rbac) throws OperationNotAllowedException, TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException, InvalidVarNameException {
-		this.remove(rbac, null, node, port);
+	public void removeRBAC() throws OperationNotAllowedException, TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException, InvalidVarNameException {
+		this.removeRBAC(null, node, port);
 	}
 	
 	//TODO: implementare remove RBAC
 	@Override
-	public void remove(RBAC rbac, Long l, String node, int port) throws OperationNotAllowedException, TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException, InvalidVarNameException {
-		if(rbac == null)
-			return;
+	public void removeRBAC(Long l, String node, int port) throws OperationNotAllowedException, TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException, InvalidVarNameException {
+		/*if(rbac == null)
+			return;*/
 		
 		if(!admin_authorized)
 			throw new OperationNotAllowedException();
-		TucsonTupleCentreId tid = new TucsonTupleCentreId(tcOrg, "'"+node+"'", ""+port);
 		inp(tid, new LogicTuple("disinstall_rbac"), (Long)null);
 		/*
 		LogicTuple roleTuple = new LogicTuple("role", new Var("Nome"), new Var("Desc"), new Var("Livello"));
@@ -169,7 +167,7 @@ public class MetaACCProxyAgentSide extends ACCProxyAgentSide implements MetaACC{
 	
 	// Passiamo da una fase in cui RBAC non è supportato ad una fase nella quale va tutto come progettato
 	// admin si aggiunge agli utenti autorizzati
-	private void installRBACSupport(TucsonTupleCentreId tid) throws IOException, TucsonOperationNotPossibleException, TucsonInvalidSpecificationException, TucsonInvalidLogicTupleException, UnreachableNodeException, OperationTimeOutException, OperationNotAllowedException{
+	private void installRBACSupport() throws IOException, TucsonOperationNotPossibleException, TucsonInvalidSpecificationException, TucsonInvalidLogicTupleException, UnreachableNodeException, OperationTimeOutException, OperationNotAllowedException{
 		
 		if(!admin_authorized)
 			throw new OperationNotAllowedException();
@@ -186,15 +184,16 @@ public class MetaACCProxyAgentSide extends ACCProxyAgentSide implements MetaACC{
         final String spec = alice.util.Tools.loadText(new BufferedInputStream(is));
         
 		setS(tid, spec, (Long)null);*/
-  
+		//TODO: Vedere se serve inserire l'agente autorizzato
         LogicTuple adminAuthorized = new LogicTuple("authorized_agent",new Value(aid.toString()));
-        TupleCentreContainer.doBlockingOperation(TucsonOperation.outCode(), aid, tid, adminAuthorized);
+        out(tid, adminAuthorized, (Long)null);
+        //TupleCentreContainer.doBlockingOperation(TucsonOperation.outCode(), aid, tid, adminAuthorized);
         
         //out(tid, new LogicTuple("boot"), (Long)null);
 	}
 	
 	
-	private void addRole(Role role, Long l, TupleCentreId tid) throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException, InvalidVarNameException, NoSuchAlgorithmException{
+	private void addRole(Role role, Long l) throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException, InvalidVarNameException, NoSuchAlgorithmException{
 		
 		LogicTuple roleTuple = new LogicTuple("role",
 				new Value(role.getRoleName()),
@@ -211,10 +210,10 @@ public class MetaACCProxyAgentSide extends ACCProxyAgentSide implements MetaACC{
 		else
 			log("problem with addRole: "+role.getRoleName());
 		
-		this.addRolePolicy(role.getPolicy(), role.getRoleName(), l, tid);
+		this.addRolePolicy(role.getPolicy(), role.getRoleName(), l);
 	}
 	
-	private void addPolicy(Policy policy, Long l, TupleCentreId tid) throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException, InvalidVarNameException, InvalidTupleArgumentException{
+	private void addPolicy(Policy policy, Long l) throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException, InvalidVarNameException, InvalidTupleArgumentException{
 		String permissions = "[";
 		for(Permission perm : policy.getPermissions()){
 			permissions += perm.getPermissionName() + ",";
@@ -236,7 +235,7 @@ public class MetaACCProxyAgentSide extends ACCProxyAgentSide implements MetaACC{
 		
 	}
 	
-	private void addRolePolicy(Policy policy, String roleName, Long l, TupleCentreId tid) throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException{
+	private void addRolePolicy(Policy policy, String roleName, Long l) throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException{
 		
 		LogicTuple policyTuple = new LogicTuple("role_policy",
 				new Value(roleName),
@@ -250,7 +249,7 @@ public class MetaACCProxyAgentSide extends ACCProxyAgentSide implements MetaACC{
 			log("problem with addRolePolicy: "+policy.getPolicyName());
 	}
 	
-	private void addAuthorizedAgent(AuthorizedAgent agent, Long l, TupleCentreId tid) throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException, NoSuchAlgorithmException{
+	private void addAuthorizedAgent(AuthorizedAgent agent, Long l) throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException, NoSuchAlgorithmException{
 		LogicTuple authTuple = TucsonAuthorizedAgent.getLogicTuple(agent);
 		ITucsonOperation op = out(tid, authTuple, l);
 		if(op.isResultSuccess()){
@@ -297,7 +296,7 @@ public class MetaACCProxyAgentSide extends ACCProxyAgentSide implements MetaACC{
 			OperationTimeOutException, NoSuchAlgorithmException {
 		
 		try {
-			TucsonTupleCentreId tid = new TucsonTupleCentreId(tcOrg, "'"+node+"'", ""+port);
+			//TucsonTupleCentreId tid = new TucsonTupleCentreId(tcOrg, "'"+node+"'", ""+port);
 			LogicTuple template = new LogicTuple("role_activation_request",
 					new Value(this.aid.toString()),
 					new Value(this.getUUID().toString()),
@@ -314,6 +313,39 @@ public class MetaACCProxyAgentSide extends ACCProxyAgentSide implements MetaACC{
 		} catch (InvalidVarNameException | TucsonOperationNotPossibleException | UnreachableNodeException | OperationTimeOutException e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public void add(Role role) throws InvalidVarNameException, NoSuchAlgorithmException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException {
+		this.addRole(role, (Long)null);
+	}
+
+	@Override
+	public void removeRole(String roleName) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void add(Policy policy) throws InvalidVarNameException, InvalidTupleArgumentException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException {
+		this.addPolicy(policy, (Long)null);
+	}
+
+	@Override
+	public void removePolicy(String policyName) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void add(AuthorizedAgent agent) throws NoSuchAlgorithmException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException {
+		this.addAuthorizedAgent(agent, (Long)null);
+	}
+
+	@Override
+	public void remove(String agentName) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	

@@ -35,6 +35,7 @@ import alice.tuprolog.Term;
 public class NegotiationACCProxyAgentSide implements NegotiationACC{
 
 	private EnhancedACC internalACC;
+	private TupleCentreId tid;
 	protected static final String tcOrg = "'$ORG'";
 	protected static final String tcAgent = "negotAgent";
 	protected String node;
@@ -45,50 +46,47 @@ public class NegotiationACCProxyAgentSide implements NegotiationACC{
 	
 	private final int OKNUMBER = 1;
 	
-	public NegotiationACCProxyAgentSide(Object aid) throws TucsonInvalidAgentIdException{
+	public NegotiationACCProxyAgentSide(Object aid) throws TucsonInvalidAgentIdException, TucsonInvalidTupleCentreIdException{
 		this(aid, "localhost", 20504);
 	}
 	
-	public NegotiationACCProxyAgentSide(Object aid, String node, int port) throws TucsonInvalidAgentIdException{
+	public NegotiationACCProxyAgentSide(Object aid, String node, int port) throws TucsonInvalidAgentIdException, TucsonInvalidTupleCentreIdException{
 		internalACC = new ACCProxyAgentSide(tcAgent, node, port);
 		this.node = node;
 		this.port = port;
 		this.agentAid = aid;
+		this.tid =  new TucsonTupleCentreId(tcOrg,"'"+node+"'", ""+port);
 		setDefaultAgentClass();
 	}
 
 	@Override
 	public EnhancedACC activateRole(String roleName)
-			throws TucsonOperationNotPossibleException,
-			TucsonInvalidTupleCentreIdException, InvalidVarNameException,
+			throws TucsonOperationNotPossibleException, InvalidVarNameException,
 			UnreachableNodeException, OperationTimeOutException, TucsonInvalidAgentIdException {
 		return this.activateRole(roleName, null);
 	}
 
 	@Override
 	public EnhancedACC activateRole(String roleName, Long l)
-			throws TucsonOperationNotPossibleException,
-			TucsonInvalidTupleCentreIdException, InvalidVarNameException,
+			throws TucsonOperationNotPossibleException, InvalidVarNameException,
 			UnreachableNodeException, OperationTimeOutException, TucsonInvalidAgentIdException {
-		
-		TupleCentreId tid = new TucsonTupleCentreId(tcOrg,"'"+node+"'", ""+port);
 		
 		if(!isRBACInstalled(tid)){
 			return new ACCProxyAgentSide(agentAid, node, port);
 		}
 		
-		RoleACCProxyAgentSide newACC = new RoleACCProxyAgentSide(agentAid.toString(), node, port);
-		Role newRole = TucsonACCTool.activateRole(agentAid.toString(), newACC.getUUID(), roleName, tid, internalACC);
+		UUID agentUUID = UUID.randomUUID();
+		
+		Role newRole = TucsonACCTool.activateRole(agentAid.toString(), agentUUID, roleName, tid, internalACC);
 
-		if(newRole != null){			
-			newACC.setRole(newRole);
-			return newACC;
-		} else
+		if(newRole == null)
 			return null;
+		
+		return new RoleACCProxyAgentSide(agentAid.toString(), node, port, newRole, agentUUID);
 	}
 	
 	@Override
-	public EnhancedACC activateRoleWithPermission(List<String> permissionsId) throws InvalidVarNameException, TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException, TucsonInvalidAgentIdException {
+	public EnhancedACC activateRoleWithPermission(List<String> permissionsId) throws InvalidVarNameException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException, TucsonInvalidAgentIdException {
 		return this.activateRoleWithPermission(permissionsId, null);
 	}
     
@@ -99,10 +97,8 @@ public class NegotiationACCProxyAgentSide implements NegotiationACC{
 	 *  3 - Viene ricercato il ruolo che detiene la policy, ed attivato.
 	 */
     @Override
-	public synchronized EnhancedACC activateRoleWithPermission(List<String> permissionsId, Long l) throws InvalidVarNameException, TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException, TucsonInvalidAgentIdException {
+	public synchronized EnhancedACC activateRoleWithPermission(List<String> permissionsId, Long l) throws InvalidVarNameException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException, TucsonInvalidAgentIdException {
 		
-    	TupleCentreId tid = new TucsonTupleCentreId(tcOrg, "'"+node+"'", ""+port);
-    	
     	if(!isRBACInstalled(tid))
     		return new ACCProxyAgentSide(agentAid, node, port);
     	
@@ -110,21 +106,19 @@ public class NegotiationACCProxyAgentSide implements NegotiationACC{
 
 		Policy policy = choosePolicy(policies, permissionsId);
 		
-		RoleACCProxyAgentSide newACC = new RoleACCProxyAgentSide(agentAid, node, port);
-		Role newRole = TucsonACCTool.activateRoleWithPolicy(agentAid.toString(), newACC.getUUID(), policy, tid, internalACC);
+		UUID agentUUID = UUID.randomUUID();
+		Role newRole = TucsonACCTool.activateRoleWithPolicy(agentAid.toString(), agentUUID, policy, tid, internalACC);
+		if(newRole == null)
+			return null;
 		
-		if(newACC != null)
-			newACC.setRole(newRole);
-		
-		return newACC;
+		return new RoleACCProxyAgentSide(agentAid, node, port, newRole, agentUUID);
 	}
     
     /*
      * 	Attiva un ACC fuori dalla struttura RBAC nel caso questa non sia stata installata nel nodo.
      */
     @Override
-	public EnhancedACC activateDefaultRole() throws TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException, TucsonInvalidAgentIdException {
-    	TupleCentreId tid = new TucsonTupleCentreId(tcOrg, "'"+node+"'", ""+port);
+	public EnhancedACC activateDefaultRole() throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException, TucsonInvalidAgentIdException {
     	if(!isRBACInstalled(tid)){
     		return new ACCProxyAgentSide(agentAid, node, port);
     	}
@@ -167,8 +161,7 @@ public class NegotiationACCProxyAgentSide implements NegotiationACC{
     }
 
 	@Override
-	public void listAllRoles() throws TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException, InvalidVarNameException {
-		TupleCentreId tid = new TucsonTupleCentreId(tcOrg, "'"+node+"'", ""+port);
+	public void listAllRoles() throws InvalidVarNameException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException  {
 		ITucsonOperation op = internalACC.inp(tid, new LogicTuple("role_list_request", new Var("Result")), (Long)null);
 		if(op.isResultSuccess()){
 			LogicTuple res = op.getLogicTupleResult();
@@ -176,8 +169,7 @@ public class NegotiationACCProxyAgentSide implements NegotiationACC{
 	}
 
 	@Override
-	public boolean login(String username, String password) throws NoSuchAlgorithmException, TucsonInvalidTupleCentreIdException, InvalidVarNameException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException {
-		TupleCentreId tid = new TucsonTupleCentreId(tcOrg, "'"+node+"'", ""+port);
+	public boolean login(String username, String password) throws NoSuchAlgorithmException, InvalidVarNameException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException {
 		LogicTuple loginTuple = new LogicTuple("login_request",
 				new Value(username+":"+TucsonACCTool.encrypt(password)),
 				new Var("Result"));
@@ -195,28 +187,22 @@ public class NegotiationACCProxyAgentSide implements NegotiationACC{
 		return false;
 	}
 
-	@Override
-	public void setAgentClass(String agentClass) {
+	private void setAgentClass(String agentClass) {
 		this.agentClass = agentClass;
 	}
 
-	@Override
-	public String getAgentClass() {
+	private String getAgentClass() {
 		return this.agentClass;
 	}
 
 	private void setDefaultAgentClass() {
 		try {
-			TupleCentreId tid = new TucsonTupleCentreId(tcOrg, "'"+node+"'", ""+port);
 			LogicTuple defaultClassTuple = new LogicTuple("get_default_agent_class", new Var("Response"));
 			ITucsonOperation op = internalACC.inp(tid, defaultClassTuple, (Long)null);
 			if(op.isResultSuccess()){
 				String defaultClass = op.getLogicTupleResult().getArg(0).toString();
 				this.setAgentClass(defaultClass);
 			}
-		} catch (TucsonInvalidTupleCentreIdException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		} catch (InvalidVarNameException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

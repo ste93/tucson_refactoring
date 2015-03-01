@@ -14,6 +14,7 @@ import alice.tucson.api.EnhancedACC;
 import alice.tucson.api.ITucsonOperation;
 import alice.tucson.api.TucsonAgentId;
 import alice.tucson.api.TucsonOperationCompletionListener;
+import alice.tucson.api.exceptions.OperationNotAllowedException;
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
@@ -29,25 +30,20 @@ public class RoleACCProxyAgentSide extends ACCProxyAgentSide{
 	private List<String> permissions;
 	private Role role;
 	
-	public RoleACCProxyAgentSide(Object aid)
+	public RoleACCProxyAgentSide(Object aid, Role role, UUID agentUUID)
 			throws TucsonInvalidAgentIdException {
-		super(aid);
-		
-		permissions = new ArrayList<String>();
+		this(aid, "localhost", 20504, role, agentUUID);
 	}
 	
-	public RoleACCProxyAgentSide(Object aid, final String n, final int p) throws TucsonInvalidAgentIdException{
-		super(aid, n, p);
-		permissions = new ArrayList<String>();
+	public RoleACCProxyAgentSide(Object aid, final String n, final int p, Role role, UUID agentUUID) throws TucsonInvalidAgentIdException{
+		super(aid, n, p, agentUUID);
+		//permissions = new ArrayList<String>();
+		this.setRole(role);
 	}
 	
-	public void setRole(Role role){
+	private void setRole(Role role){
 		this.role = role;
 		setPermissions();
-	}
-	
-	public UUID getUUID(){
-		return this.executor.agentUUID;
 	}
 	
 	private void setPermissions(){
@@ -58,6 +54,9 @@ public class RoleACCProxyAgentSide extends ACCProxyAgentSide{
 		}
 	}
 
+	public UUID getUUID(){
+		return this.executor.agentUUID;
+	}
 	
 	private void checkPermission(String perm) throws TucsonOperationNotPossibleException{
 		if(permissions.isEmpty() || !permissions.contains(perm))
