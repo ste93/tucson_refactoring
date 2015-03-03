@@ -29,11 +29,12 @@ import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 
 public final class TucsonACCTool {
 
-	public static boolean activateContext(String agentAid, UUID agentUUID, TupleCentreId tid, EnhancedACC acc){
+	public static boolean activateContext(String agentAid, UUID agentUUID, String agentClass, TupleCentreId tid, EnhancedACC acc){
 		try {
 			LogicTuple template = new LogicTuple("context_request",
 					new Value(agentAid),
 					new Var("Result"),
+					new Value(agentClass),
 					new Value(agentUUID.toString()));
 			ITucsonOperation op = acc.inp(tid, template, (Long)null);
 			if(op.isResultSuccess()){
@@ -51,8 +52,8 @@ public final class TucsonACCTool {
 		return false;
 	}
 	
-	public static Role activateRole(String agentAid, UUID accUUID, String roleName, TupleCentreId tid, EnhancedACC acc){
-		if(!activateContext(agentAid, accUUID, tid, acc))
+	public static Role activateRole(String agentAid, UUID accUUID, String agentClass, String roleName, TupleCentreId tid, EnhancedACC acc){
+		if(!activateContext(agentAid, accUUID, agentClass, tid, acc))
 			return null;
 		
 		Role newRole = null;
@@ -80,8 +81,8 @@ public final class TucsonACCTool {
 		return newRole;
 	}
 	
-	public static Role activateRoleWithPolicy(String agentAid, UUID accUUID, Policy policy, TupleCentreId tid, EnhancedACC acc){
-		if(!activateContext(agentAid, accUUID, tid, acc))
+	public static Role activateRoleWithPolicy(String agentAid, UUID accUUID, String agentClass, Policy policy, TupleCentreId tid, EnhancedACC acc){
+		if(!activateContext(agentAid, accUUID, agentClass, tid, acc))
 			return null;
 		
 		Role newRole = null;

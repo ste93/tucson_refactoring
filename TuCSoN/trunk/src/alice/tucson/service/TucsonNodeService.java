@@ -89,7 +89,7 @@ public class TucsonNodeService {
     private static final String PERSISTENCY_PATH = "./persistent/";
 
     // RBAC
-    private String defaultAgentClass;
+    private String baseAgentClass;
     private boolean loginRequired;
     private boolean listAllRoles;
     private boolean authForAdmin;
@@ -310,7 +310,7 @@ public class TucsonNodeService {
         TPConfig.getInstance().setTcpPort(this.tcpPort);
         
         // Set rbac properties
-        defaultAgentClass = "defaultAgent";
+        baseAgentClass = "baseAgentClass";
         loginRequired = false;
         listAllRoles = true;
         authForAdmin = false;
@@ -320,8 +320,8 @@ public class TucsonNodeService {
      *  ============== RBAC METHODS ===============
      */
     
-    public void setDefaultAgentClass(String agentClass){
-    	this.defaultAgentClass = agentClass;
+    public void setBaseAgentClass(String agentClass){
+    	this.baseAgentClass = agentClass;
     }
     
     public void setLoginRequired(boolean loginReq){
@@ -958,7 +958,7 @@ public class TucsonNodeService {
             
             
             // Set default agent class
-            TupleCentreContainer.doBlockingOperation(TucsonOperation.outCode(), this.nodeAid, this.idConfigTC, new LogicTuple("default_agent_class", new Value(this.defaultAgentClass)));
+            TupleCentreContainer.doBlockingOperation(TucsonOperation.outCode(), this.nodeAid, this.idConfigTC, new LogicTuple("base_agent_class", new Value(this.baseAgentClass)));
            
             // Set login required
             TupleCentreContainer.doBlockingOperation(TucsonOperation.outCode(), this.nodeAid, this.idConfigTC, new LogicTuple("login_required", new Value((this.loginRequired)? "yes" : "no")));
@@ -966,15 +966,17 @@ public class TucsonNodeService {
             // Allow or not list of all roles
             TupleCentreContainer.doBlockingOperation(TucsonOperation.outCode(), this.nodeAid, this.idConfigTC, new LogicTuple("list_all_roles", new Value((this.listAllRoles)? "yes" : "no")));
             
-            TupleCentreContainer.doBlockingOperation(TucsonOperation.outCode(), this.nodeAid, this.idConfigTC, new LogicTuple("role", new Value("admin_role"), new Value("admin role"), new Value("0")));
-            if(!authForAdmin){
+            //TupleCentreContainer.doBlockingOperation(TucsonOperation.outCode(), this.nodeAid, this.idConfigTC, new LogicTuple("role", new Value("admin_role"), new Value("admin role"), new Value("0")));
+            /*if(!authForAdmin){
             	TupleCentreContainer.doBlockingOperation(TucsonOperation.outCode(), this.nodeAid, this.idConfigTC, new LogicTuple("role_credentials", new Value("admin_role"), new Value("_")));
             } else if(adminUsername!=null && !adminUsername.equalsIgnoreCase("") && adminPassword!=null && !adminPassword.equalsIgnoreCase("")) {
 				TupleCentreContainer.doBlockingOperation(TucsonOperation.outCode(), nodeAid, idConfigTC, new LogicTuple("role_credentials", new Value("admin_role"), new Value(adminUsername+":"+TucsonACCTool.encrypt(adminPassword))));
 			} else {
 				TupleCentreContainer.doBlockingOperation(TucsonOperation.outCode(), this.nodeAid, this.idConfigTC, new LogicTuple("role_credentials", new Value("admin_role"), new Value("_")));
+			}*/
+            if(adminUsername!=null && !adminUsername.equalsIgnoreCase("") && adminPassword!=null && !adminPassword.equalsIgnoreCase("")) {
+				TupleCentreContainer.doBlockingOperation(TucsonOperation.outCode(), nodeAid, idConfigTC, new LogicTuple("admin_credentials", new Value("admin_role"), new Value(adminUsername+":"+TucsonACCTool.encrypt(adminPassword))));
 			}
-            
             this.addAgent(this.nodeAid);
         } catch (final TucsonInvalidTupleCentreIdException e) {
             e.printStackTrace();

@@ -102,8 +102,8 @@ public class MetaACCProxyAgentSide extends ACCProxyAgentSide implements MetaACC{
 		else
 			log("problem with addRBAC: "+rbac.getOrgName());
 		
-		LogicTuple defaultClassTuple = new LogicTuple("set_default_agent_class", new Value(rbac.getDefaultAgentClass()));;
-		op = inp(tid, defaultClassTuple, l);
+		LogicTuple baseClassTuple = new LogicTuple("set_base_agent_class", new Value(rbac.getBaseAgentClass()));;
+		op = inp(tid, baseClassTuple, l);
 		
 		for(Role role : rbac.getRoles())
 			this.addRole(role, l);
@@ -173,23 +173,9 @@ public class MetaACCProxyAgentSide extends ACCProxyAgentSide implements MetaACC{
 			throw new OperationNotAllowedException();
 		
 		inp(tid, new LogicTuple("install_rbac"), (Long)null);
-		//TupleCentreContainer.doBlockingOperation(TucsonOperation.outCode(), aid, tid, new LogicTuple("install_rbac"));
-		//set(tid, new LogicTuple("[]"), (Long)null); // Rimozione delle tuple precedenti
-		
-		/*final InputStream is = Thread
-                .currentThread()
-                .getContextClassLoader()
-                .getResourceAsStream(
-                        MetaACCProxyAgentSide.RBAC_BOOT_SPEC_FILE);
-        final String spec = alice.util.Tools.loadText(new BufferedInputStream(is));
-        
-		setS(tid, spec, (Long)null);*/
-		//TODO: Vedere se serve inserire l'agente autorizzato
+		//TODO: Serve admin autorizzato? Se non fosse autorizzato non potrebbe farlo!
         LogicTuple adminAuthorized = new LogicTuple("authorized_agent",new Value(aid.toString()));
         out(tid, adminAuthorized, (Long)null);
-        //TupleCentreContainer.doBlockingOperation(TucsonOperation.outCode(), aid, tid, adminAuthorized);
-        
-        //out(tid, new LogicTuple("boot"), (Long)null);
 	}
 	
 	
@@ -201,9 +187,7 @@ public class MetaACCProxyAgentSide extends ACCProxyAgentSide implements MetaACC{
 				new Value(role.getAgentClass()));
 		
 		ITucsonOperation op = out(tid, roleTuple, l);
-		//TODO: rimozione credenziali di un ruolo
-		if(role.getCredentialsRequired())
-			op = out(tid, new LogicTuple("role_credentials", new Value(role.getRoleName()), new Value(role.getEncryptedCredentials())), l);
+		
 		if(op.isResultSuccess()){
 			LogicTuple res = op.getLogicTupleResult();
 			log("addRole: "+res);
@@ -298,16 +282,20 @@ public class MetaACCProxyAgentSide extends ACCProxyAgentSide implements MetaACC{
 		
 		try {
 			//TucsonTupleCentreId tid = new TucsonTupleCentreId(tcOrg, "'"+node+"'", ""+port);
-			LogicTuple template = new LogicTuple("role_activation_request",
+			LogicTuple template = new LogicTuple("admin_login_request",
+					new Value(this.getUsername()+":"+TucsonACCTool.encrypt(this.getPassword())),
+					new Var("Result"));
+			
+			/*LogicTuple template = new LogicTuple("role_activation_request",
 					new Value(this.aid.toString()),
 					new Value(this.getUUID().toString()),
 					new Value("admin_role"),
 					new Value(getUsername()+":"+TucsonACCTool.encrypt(getPassword())),
-					new Var("Result"));
+					new Var("Result"));*/
 			ITucsonOperation op = inp(tid, template, (Long)null);
 			if(op.isResultSuccess()){
 				LogicTuple res = op.getLogicTupleResult();
-				if(res!=null && res.getArg(4).getName().equalsIgnoreCase("ok")){
+				if(res!=null && res.getArg(1).getName().equalsIgnoreCase("ok")){
 					admin_authorized = true;
 				}
 			}

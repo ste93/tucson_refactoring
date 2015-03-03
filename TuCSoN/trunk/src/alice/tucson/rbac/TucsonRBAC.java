@@ -12,7 +12,7 @@ import com.sun.corba.se.impl.encoding.OSFCodeSetRegistry.Entry;
 public class TucsonRBAC implements RBAC{
 
 	private String orgName;
-	private String defaultAgentClass;
+	private String baseAgentClass;
 	private boolean loginRequired;
 	private boolean inspectorsAuthorized;
 	
@@ -27,7 +27,7 @@ public class TucsonRBAC implements RBAC{
 		this.orgName = orgName;
 		this.loginRequired = false;
 		this.inspectorsAuthorized = false;
-		this.defaultAgentClass = "defaultClass";
+		this.baseAgentClass = "baseAgentClass";
 	}
 	
 	@Override
@@ -148,13 +148,13 @@ public class TucsonRBAC implements RBAC{
 	}
 
 	@Override
-	public void setDefaultAgentClass(String agentClass) {
-		this.defaultAgentClass = agentClass;
+	public void setBaseAgentClass(String agentClass) {
+		this.baseAgentClass = agentClass;
 	}
 
 	@Override
-	public String getDefaultAgentClass() {
-		return this.defaultAgentClass;
+	public String getBaseAgentClass() {
+		return this.baseAgentClass;
 	}
 	
 

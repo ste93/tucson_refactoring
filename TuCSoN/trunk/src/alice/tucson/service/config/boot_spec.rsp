@@ -30,7 +30,7 @@ reaction(inp(disinstall_rbac),request,
 )).
 
 %
-% context acquire
+% context acquire. na = not activated
 %
 %reaction( inp(context_request(AgentId,_)),request,(
 %  no(authorized_agent(AgentId)),
@@ -50,30 +50,49 @@ reaction(inp(disinstall_rbac),request,
 %  out(open_session(Id,AgentId,[])),
 %  out(context_request(AgentId,ok(Id))) )).
 
-reaction( inp(context_request(AgentId,_, AccUUID)),request,(
-  no(authorized_agent(AgentId)),
-  out(context_request(AgentId,failed(agent_not_authorized), AccUUID)))).
-
-reaction( inp(context_request(AgentId,_, AccUUID)),request,(
-  rd(open_session(Id,AgentId,AccUUID,_)),
+%Probabilmente da togliere! Non può avere classe agente differente da quella base se non ha fatto login con successo!
+%reaction( inp(context_request(AgentId,_,AgentClass,AccUUID)),request,(
+%  no(authorized_agent(AgentId)),
+%  out(context_request(AgentId,failed(agent_not_authorized), AgentClass,AccUUID)))).
+  
+reaction( inp(context_request(AgentId,_,AgentClass,AccUUID)),request,(
+  rd(open_session(Id,AgentId,AccUUID,AgentClass,_)),
   no(context_request(AgentId,ok(_),AccUUID)),
-  out(context_request(AgentId,ok(Id),AccUUID)))).
+  out(context_request(AgentId,ok(Id),AgentClass,AccUUID)))).
 
-reaction( inp(context_request(AgentId,_,AccUUID)),request,(
-  rd(authorized_agent(AgentId)),
+% Agente non base, quindi ha effettuato il login
+reaction( inp(context_request(AgentId,_,AgentClass,AccUUID)),request,(
+  %rd(authorized_agent(AgentId)),
+  no(base_agent_class(AgentClass)),
   in(context_id(Id)),
   Id1 is Id + 1,
   out(context_id(Id1)),
-  no(open_session(_,AgentId,AccUUID,_)),
-  out(open_session(Id,AgentId,AccUUID,[])),
-  out(context_request(AgentId,ok(Id),AccUUID)) )).
+  no(open_session(_,AgentId,AccUUID,_,_)),
+  out(open_session(Id,AgentId,AccUUID,AgentClass,na)),
+  out(context_request(AgentId,ok(Id),AgentClass,AccUUID)) )).
 
+% Richiesta di contesto per la classe base, quindi da utente che non ha effettuato login e login non richiesto
+reaction( inp(context_request(AgentId,_,AgentClass,AccUUID)),request,(
+  rd(base_agent_class(AgentClass)),
+  no(login_required(yes)),
+  in(context_id(Id)),
+  Id1 is Id + 1,
+  out(context_id(Id1)),
+  no(open_session(_,AgentId,AccUUID,_,_)),
+  out(open_session(Id,AgentId,AccUUID,AgentClass,na)),
+  out(context_request(AgentId,ok(Id),AgentClass,AccUUID)) )).
+  
+% Richiesta di contesto per la classe base, quindi da utente che non ha effettuato login e login richiesto
+reaction( inp(context_request(AgentId,_,AgentClass,AccUUID)),request,(
+  rd(base_agent_class(AgentClass)),
+  rd(login_required(yes)),
+  out(context_request(AgentId,failed(login_required),AgentClass,AccUUID)) )).
 
 %
 % context release
 %
 reaction( inp(context_shutdown(CtxId,AgentId,_)),request,(
-  rd(open_session(CtxId,AgentId,_)),
+  rd(open_session(CtxId,AgentId_)),
   out(context_shutdown(CtxId,AgentId,ok)) )).
 
 reaction( inp(context_shutdown(CtxId,AgentId,ok)),response,(
@@ -94,7 +113,7 @@ reaction( inp(get_default_agent_class(_)), (invocation,operation),(
 %
 reaction( out(role(Name,Desc, substitute)), completion,(
 	in(role(Name,Desc, substitute)),
-	rd(default_agent_class(Class)),
+	rd(base_agent_class(Class)),
 	out(role(Name,Desc,Class))	
 )).
 
@@ -105,31 +124,27 @@ reaction( out(role(Name,Desc, substitute)), completion,(
 reaction( inp(role_activation_request(CtxId,RoleId,Result)),request,(
   in(open_session(CtxId,AgentId,RoleList)),
   rd(role(RoleId,Descr)),
-  rd(role_assignment(RoleId,AgentId)),
   out(open_session(CtxId,AgentId,[RoleId|RoleList])),
   rd(role_policy(RoleId,PolicyId)),
   rd(policy(PolicyId,Policy)),
   out( role_activation_request(CtxId,RoleId,ok(Policy))))).
   
-reaction( inp(role_activation_request(AgentId,AccUUID,RoleId,Credentials,_)),request,(
-  in(open_session(CtxId,AgentId,AccUUID,RoleList)),
-  rd(role(RoleId,Descr,_)),										% Esiste il ruolo
-  rd(role_credentials(RoleId,Credentials)),						% Le credenziali sono verificate
-  rd(role_assignment(RoleId,AgentId)),
-  out(open_session(CtxId,AgentId,AccUUID,[RoleId|RoleList])),
+reaction( inp(role_activation_request(AgentId,AccUUID,RoleId,_)),request,(
+  in(open_session(CtxId,AgentId,AccUUID,SessionRoleClass,_)),				%C'è una sessione aperta per agente-acc
+  rd(role(RoleId,Descr,SessionRoleClass)),									% Esiste il ruolo e la classe agente è corretta
+  out(open_session(CtxId,AgentId,AccUUID,SessionRoleClass,RoleId)),
   rd(role_policy(RoleId,PolicyId)),
   rd(policy(PolicyId,PermissionList)),
-  out( role_activation_request(AgentId,AccUUID,RoleId,Credentials,ok(PolicyId, PermissionList))))).
+  out( role_activation_request(AgentId,AccUUID,RoleId,ok(PolicyId, PermissionList))))).
   
-reaction( inp(role_activation_request(AgentId,AccUUID,RoleId,Credentials,_)),request,(
+reaction( inp(role_activation_request(AgentId,AccUUID,RoleId,_)),request,(
   in(open_session(CtxId,AgentId,AccUUID,RoleList)),
   rd(role(RoleId,Descr,_)),										% Esiste il ruolo
-  no(role_credentials(RoleId,_)),								% Non sono necessarie credenziali
   rd(role_assignment(RoleId,AgentId)),
   out(open_session(CtxId,AgentId,AccUUID,[RoleId|RoleList])),
   rd(role_policy(RoleId,PolicyId)),
   rd(policy(PolicyId,PermissionList)),
-  out( role_activation_request(AgentId,AccUUID,RoleId,Credentials,ok(PolicyId, PermissionList))))).
+  out( role_activation_request(AgentId,AccUUID,RoleId,ok(PolicyId, PermissionList))))).
   
 %
 % Policy list
@@ -174,11 +189,23 @@ reaction( inp(set_login(A)), (invocation, operation),(
  	out(set_login(A))
 )).
 
-reaction( inp(set_default_agent_class(A)), (invocation, operation),(
- 	in(default_agent_class(_)),
- 	out(default_agent_class(A)),
- 	out(set_default_agent_class(A))
+%
+% Classe agente base
+%
+reaction( inp(set_base_agent_class(A)), (invocation, operation),(
+ 	in(base_agent_class(_)),
+ 	out(base_agent_class(A)),
+ 	out(set_base_agent_class(A))
 )).
+
+reaction( inp(get_base_agent_class(_)), invocation, (
+	rd(base_agent_class(A)),
+	out(get_base_agent_class(A))
+)).
+
+%
+%	Richiesta di login
+%
 
 % Richiesta di login. Esistono le credenziali fornite e viene ritornata la classe agente assegnata
 reaction( inp(login_request(Credentials,_)), request, (
@@ -189,9 +216,21 @@ reaction( inp(login_request(Credentials,_)), request, (
 % Richiesta di login. Le credenziali non sono corrette, viene ritornata la classe agente di default
 reaction( inp(login_request(Credentials,_)), request, (
 	no(authorized_agent(Credentials, AgentClass)),
-	rd(default_agent_class(Class)),
+	rd(base_agent_class(Class)),
 	out(login_request(Credentials, failed(Class))))
 ).
+
+% Richiesta di login per admin con fallimento
+reaction( inp(admin_login_request(Credentials,_)), request, (
+	no(admin_credentials(Credentials)),
+	out(admin_login_request(Credentials, failed(agent_not_authorized)))
+)).
+
+% Richiesta di login per admin con successo
+reaction( inp(admin_login_request(Credentials,_)), request, (
+	rd(admin_credentials(Credentials)),
+	out(admin_login_request(Credentials, ok))
+)).
  
 %
 %	List of all roles

@@ -118,8 +118,11 @@ public class ACCProvider {
             }
             //=======
             
-            final LogicTuple req = new LogicTuple("context_request", new Value(
-                    Tools.removeApices(agentName)), new Var("CtxId"), new Value(agentUUID));
+            final LogicTuple req = new LogicTuple("context_request", 
+            		new Value(Tools.removeApices(agentName)),
+            		new Var("CtxId"),
+            		new Value("base"),
+            		new Value(agentUUID));
             final LogicTuple result = (LogicTuple) TupleCentreContainer
                     .doBlockingOperation(TucsonOperation.inpCode(), this.aid,
                             this.config, req);

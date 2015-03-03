@@ -11,23 +11,20 @@ public class TucsonRole implements Role{
 	protected String roleName;
 	protected String roleDescription;
 	protected Policy policy;
-	protected boolean credentialsRequired;
 	protected String agentClass;
-	
-	private String username;
-	private String password;
+
 	
 	public TucsonRole(){
 		this("");
 	}
 	
 	public TucsonRole(String roleName){
-		this(roleName, false);
+		this(roleName, "substitute");
 	}
 	
-	public TucsonRole(String roleName, boolean credentialsReq){
-		setRoleName(roleName);
-		this.credentialsRequired = credentialsReq;
+	public TucsonRole(String roleName, String agentClass){
+		this.setRoleName(roleName);
+		this.setAgentClass(agentClass);
 	}
 
 	@Override
@@ -74,30 +71,4 @@ public class TucsonRole implements Role{
 	public void setPolicy(Policy policy) {
 		this.policy = policy;
 	}
-
-	@Override
-	public boolean getCredentialsRequired() {
-		return credentialsRequired;
-	}
-
-	public void setCredentialsRequired(boolean credentialsReq){
-		this.credentialsRequired = credentialsReq;
-	}
-
-	@Override
-	public void setCredentials(String user, String pass) {
-		this.username = user;
-		this.password = pass;
-		setCredentialsRequired(true);
-	}
-
-	@Override
-	public String getEncryptedCredentials() throws NoSuchAlgorithmException {
-		return username+":"+TucsonACCTool.encrypt(password);
-	}
-
-	
-
-	
-
 }

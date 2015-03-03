@@ -30,6 +30,6 @@ public interface RBAC extends Serializable {
 	void setLoginRequired(boolean loginReq);
 	boolean getLoginRequired();
 	
-	void setDefaultAgentClass(String agentClass);
-	String getDefaultAgentClass();
+	void setBaseAgentClass(String agentClass);
+	String getBaseAgentClass();
 }

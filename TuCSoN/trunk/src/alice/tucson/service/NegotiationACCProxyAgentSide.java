@@ -56,7 +56,7 @@ public class NegotiationACCProxyAgentSide implements NegotiationACC{
 		this.port = port;
 		this.agentAid = aid;
 		this.tid =  new TucsonTupleCentreId(tcOrg,"'"+node+"'", ""+port);
-		setDefaultAgentClass();
+		setBaseAgentClass();
 	}
 
 	@Override
@@ -77,7 +77,7 @@ public class NegotiationACCProxyAgentSide implements NegotiationACC{
 		
 		UUID agentUUID = UUID.randomUUID();
 		
-		Role newRole = TucsonACCTool.activateRole(agentAid.toString(), agentUUID, roleName, tid, internalACC);
+		Role newRole = TucsonACCTool.activateRole(agentAid.toString(), agentUUID, this.getAgentClass(), roleName, tid, internalACC);
 
 		if(newRole == null)
 			return null;
@@ -107,7 +107,7 @@ public class NegotiationACCProxyAgentSide implements NegotiationACC{
 		Policy policy = chooseRole(policies, permissionsId);
 		
 		UUID agentUUID = UUID.randomUUID();
-		Role newRole = TucsonACCTool.activateRoleWithPolicy(agentAid.toString(), agentUUID, policy, tid, internalACC);
+		Role newRole = TucsonACCTool.activateRoleWithPolicy(agentAid.toString(), agentUUID, this.getAgentClass(), policy, tid, internalACC);
 		if(newRole == null)
 			return null;
 		
@@ -160,6 +160,7 @@ public class NegotiationACCProxyAgentSide implements NegotiationACC{
         System.out.println("[ACCProxyAgentSide]: " + msg);
     }
 
+    //TODO: Lista dei ruoli!!!
 	@Override
 	public void listAllRoles() throws InvalidVarNameException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException  {
 		ITucsonOperation op = internalACC.inp(tid, new LogicTuple("role_list_request", new Var("Result")), (Long)null);
@@ -195,27 +196,18 @@ public class NegotiationACCProxyAgentSide implements NegotiationACC{
 		return this.agentClass;
 	}
 
-	private void setDefaultAgentClass() {
+	private void setBaseAgentClass() {
 		try {
-			LogicTuple defaultClassTuple = new LogicTuple("get_default_agent_class", new Var("Response"));
-			ITucsonOperation op = internalACC.inp(tid, defaultClassTuple, (Long)null);
+			LogicTuple baseClassTuple = new LogicTuple("get_base_agent_class", new Var("Response"));
+			ITucsonOperation op = internalACC.inp(tid, baseClassTuple, (Long)null);
 			if(op.isResultSuccess()){
-				String defaultClass = op.getLogicTupleResult().getArg(0).toString();
-				this.setAgentClass(defaultClass);
+				String baseClass = op.getLogicTupleResult().getArg(0).toString();
+				this.setAgentClass(baseClass);
 			}
-		} catch (InvalidVarNameException e) {
-			// TODO Auto-generated catch block
+		} catch (InvalidVarNameException | TucsonOperationNotPossibleException 
+				| UnreachableNodeException | OperationTimeOutException e) {
 			e.printStackTrace();
-		} catch (TucsonOperationNotPossibleException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (UnreachableNodeException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (OperationTimeOutException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		} 
 		
 	}
 }
