@@ -81,8 +81,7 @@ public class DiningPhilosopher extends AbstractTucsonAgent {
         SynchACC acc = null;
 		try {
 			acc = negAcc.activateDefaultRole();
-		} catch (TucsonInvalidTupleCentreIdException
-				| TucsonOperationNotPossibleException
+		} catch (TucsonOperationNotPossibleException
 				| UnreachableNodeException | OperationTimeOutException
 				| TucsonInvalidAgentIdException e1) {
 			// TODO Auto-generated catch block

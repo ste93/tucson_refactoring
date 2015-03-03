@@ -201,6 +201,7 @@ public class MetaACCProxyAgentSide extends ACCProxyAgentSide implements MetaACC{
 				new Value(role.getAgentClass()));
 		
 		ITucsonOperation op = out(tid, roleTuple, l);
+		//TODO: rimozione credenziali di un ruolo
 		if(role.getCredentialsRequired())
 			op = out(tid, new LogicTuple("role_credentials", new Value(role.getRoleName()), new Value(role.getEncryptedCredentials())), l);
 		if(op.isResultSuccess()){

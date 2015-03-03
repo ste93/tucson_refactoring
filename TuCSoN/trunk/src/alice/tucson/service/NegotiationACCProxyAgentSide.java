@@ -104,7 +104,7 @@ public class NegotiationACCProxyAgentSide implements NegotiationACC{
     	
     	List<Policy> policies = TucsonACCTool.getPolicyList(agentAid.toString(), tid, internalACC);
 
-		Policy policy = choosePolicy(policies, permissionsId);
+		Policy policy = chooseRole(policies, permissionsId);
 		
 		UUID agentUUID = UUID.randomUUID();
 		Role newRole = TucsonACCTool.activateRoleWithPolicy(agentAid.toString(), agentUUID, policy, tid, internalACC);
@@ -125,7 +125,7 @@ public class NegotiationACCProxyAgentSide implements NegotiationACC{
     	return null;
 	}
     
-    private Policy choosePolicy(List<Policy> policies, List<String> permissionsId){
+    private Policy chooseRole(List<Policy> policies, List<String> permissionsId){
     	Policy bestPolicy = null;
     	int bestPermissionsArity = 10000;
     	

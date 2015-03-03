@@ -250,10 +250,7 @@ public class MasterAgent extends AbstractTucsonAgent {
         } catch (final InterruptedException e) {
             this.say("ERROR: Sleep interrupted!");
             e.printStackTrace();
-        } catch (TucsonInvalidTupleCentreIdException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (TucsonInvalidAgentIdException e) {
+        } catch (TucsonInvalidAgentIdException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

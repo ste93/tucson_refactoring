@@ -124,7 +124,7 @@ reaction( inp(role_activation_request(AgentId,AccUUID,RoleId,Credentials,_)),req
 reaction( inp(role_activation_request(AgentId,AccUUID,RoleId,Credentials,_)),request,(
   in(open_session(CtxId,AgentId,AccUUID,RoleList)),
   rd(role(RoleId,Descr,_)),										% Esiste il ruolo
-  no(role_credentials(RoleId,_)),						% Non sono necessarie credenziali
+  no(role_credentials(RoleId,_)),								% Non sono necessarie credenziali
   rd(role_assignment(RoleId,AgentId)),
   out(open_session(CtxId,AgentId,AccUUID,[RoleId|RoleList])),
   rd(role_policy(RoleId,PolicyId)),
