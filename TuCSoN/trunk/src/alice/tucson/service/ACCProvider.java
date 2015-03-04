@@ -118,10 +118,15 @@ public class ACCProvider {
             }
             //=======
             
+            String agentClass = profile.getProperty("agent-class");
+            if(agentClass == null){
+            	agentClass = "base";
+            }
+            
             final LogicTuple req = new LogicTuple("context_request", 
             		new Value(Tools.removeApices(agentName)),
             		new Var("CtxId"),
-            		new Value("base"),
+            		new Value(agentClass),
             		new Value(agentUUID));
             final LogicTuple result = (LogicTuple) TupleCentreContainer
                     .doBlockingOperation(TucsonOperation.inpCode(), this.aid,

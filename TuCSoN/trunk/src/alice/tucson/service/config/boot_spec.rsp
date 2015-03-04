@@ -56,13 +56,12 @@ reaction(inp(disinstall_rbac),request,
 %  out(context_request(AgentId,failed(agent_not_authorized), AgentClass,AccUUID)))).
   
 reaction( inp(context_request(AgentId,_,AgentClass,AccUUID)),request,(
-  rd(open_session(Id,AgentId,AccUUID,AgentClass,_)),
+  rd(open_session(Id,AgentId,AccUUID,_,_)),
   no(context_request(AgentId,ok(_),AccUUID)),
   out(context_request(AgentId,ok(Id),AgentClass,AccUUID)))).
 
 % Agente non base, quindi ha effettuato il login
 reaction( inp(context_request(AgentId,_,AgentClass,AccUUID)),request,(
-  %rd(authorized_agent(AgentId)),
   no(base_agent_class(AgentClass)),
   in(context_id(Id)),
   Id1 is Id + 1,
@@ -120,40 +119,88 @@ reaction( out(role(Name,Desc, substitute)), completion,(
 %
 % role activation
 %
-
-reaction( inp(role_activation_request(CtxId,RoleId,Result)),request,(
-  in(open_session(CtxId,AgentId,RoleList)),
-  rd(role(RoleId,Descr)),
-  out(open_session(CtxId,AgentId,[RoleId|RoleList])),
-  rd(role_policy(RoleId,PolicyId)),
-  rd(policy(PolicyId,Policy)),
-  out( role_activation_request(CtxId,RoleId,ok(Policy))))).
-  
+% Attivazione ruolo con successo. Si legge classe agente della sessione agente-acc e del ruolo che si vuole attivare
+% Se combaciano allora l'agente-acc è autorizzato e viene ritornata la policy e i permessi concessi
 reaction( inp(role_activation_request(AgentId,AccUUID,RoleId,_)),request,(
-  in(open_session(CtxId,AgentId,AccUUID,SessionRoleClass,_)),				%C'è una sessione aperta per agente-acc
+  in(open_session(CtxId,AgentId,AccUUID,SessionRoleClass,_)),				% C'è una sessione aperta per agente-acc
   rd(role(RoleId,Descr,SessionRoleClass)),									% Esiste il ruolo e la classe agente è corretta
   out(open_session(CtxId,AgentId,AccUUID,SessionRoleClass,RoleId)),
   rd(role_policy(RoleId,PolicyId)),
   rd(policy(PolicyId,PermissionList)),
   out( role_activation_request(AgentId,AccUUID,RoleId,ok(PolicyId, PermissionList))))).
   
-reaction( inp(role_activation_request(AgentId,AccUUID,RoleId,_)),request,(
-  in(open_session(CtxId,AgentId,AccUUID,RoleList)),
-  rd(role(RoleId,Descr,_)),										% Esiste il ruolo
-  rd(role_assignment(RoleId,AgentId)),
-  out(open_session(CtxId,AgentId,AccUUID,[RoleId|RoleList])),
-  rd(role_policy(RoleId,PolicyId)),
-  rd(policy(PolicyId,PermissionList)),
-  out( role_activation_request(AgentId,AccUUID,RoleId,ok(PolicyId, PermissionList))))).
-  
+% Failed because requested role can't be found
+reaction( inp(role_activation_request(AgentId,AccUUID,RoleId,_)), request, (
+	in(open_session(CtxId,AgentId,AccUUID,SessionRoleClass,_)),
+	no(role(RoleId,Descr,_)),
+	out(open_session(CtxId,AgentId,AccUUID,SessionRoleClass,_)),
+	out(role_activation_request(AgentId,AccUUID,RoleId,failed(role_not_found)))
+)).
+
+% Agent class doesn't match role agent class, but is a base role 
+reaction( inp(role_activation_request(AgentId,AccUUID,RoleId,_)), request, (
+	in(open_session(CtxId,AgentId,AccUUID,SessionRoleClass,_)),
+	no(role(RoleId,_,SessionRoleClass)),
+	rd(base_agent_class(BaseAgentClass)),
+	rd(role(RoleId,_,BaseAgentClass)),
+	rd(role_policy(RoleId,PolicyId)),
+  	rd(policy(PolicyId,PermissionList)),
+	out(open_session(CtxId,AgentId,AccUUID,SessionRoleClass,RoleId)),
+	out(role_activation_request(AgentId,AccUUID,RoleId,ok(PolicyId, PermissionList)))
+)).
+
+% Agent class doesn't match role agent class, not a base role
+reaction( inp(role_activation_request(AgentId,AccUUID,RoleId,_)), request, (
+	in(open_session(CtxId,AgentId,AccUUID,SessionRoleClass,_)),
+	no(role(RoleId,_,SessionRoleClass)),
+	out(open_session(CtxId,AgentId,AccUUID,SessionRoleClass,_)),
+	out(role_activation_request(AgentId,AccUUID,RoleId,failed(agent_not_authorized_for_role)))
+)).
+
 %
 % Policy list
 %
-reaction( inp(policy_list_request(AgentId,_)),(invocation, operation), (
-	%in(open_session(CtxId,AgentId,RoleList)),
+reaction( inp(policy_list_request(AgentClass,_)), request, (
 	rd_all(policy(PolicyId, PermissionList), AllPolicyList),
-	out(policy_list_request(AgentId,ok(AllPolicyList)))
-	)).
+	out(create_policy_list(AgentClass,AllPolicyList,[]))
+)).
+
+% The role is activable for the agent, added to ResultList
+reaction( out(create_policy_list(AgentClass,[policy(PolicyId,PermissionList)|AllPolicyList], ResultList)),internal,
+(
+	in(create_policy_list(AgentClass,_, ResultList)),	% tolgo la tupla scatenante la reazione
+	rd(role_policy(RoleId,PolicyId)),
+	rd(role(RoleId,_,AgentClass)),
+	out(create_policy_list(AgentClass,AllPolicyList, [policy(PolicyId,PermissionList)|ResultList]))	
+)).
+
+% The role is not activable for the agent but is a base role, added to ResultList
+reaction( out(create_policy_list(AgentClass,[policy(PolicyId,PermissionList)|AllPolicyList], ResultList)),internal,
+(
+	in(create_policy_list(AgentClass,_, ResultList)),	% tolgo la tupla scatenante la reazione
+	rd(role_policy(RoleId,PolicyId)),
+	no(role(RoleId,_,AgentClass)),
+	rd(base_agent_class(BaseClass)),
+	rd(role(RoleId,_,BaseClass)),
+	out(create_policy_list(AgentClass,AllPolicyList, [policy(PolicyId,PermissionList)|ResultList]))	
+)).
+
+% The role is not activable for the agent, discarded
+reaction( out(create_policy_list(AgentClass,[policy(PolicyId,PermissionList)|AllPolicyList], ResultList)),internal,
+(
+	in(create_policy_list(AgentClass,_, ResultList)),	% tolgo la tupla scatenante la reazione
+	rd(role_policy(RoleId,PolicyId)),
+	no(role(RoleId,_,AgentClass)),
+	out(create_policy_list(AgentClass,AllPolicyList, ResultList))	
+)).
+
+reaction( out(create_policy_list(AgentClass,[], ResultList)), internal,
+(
+	in(create_policy_list(AgentClass, OldPolicyList, NewPolicyList)),
+	out(policy_list_request(AgentClass, ok(NewPolicyList)))
+)).
+
+
 		
 reaction( inp(policy_role_request(PolicyId,_)), (invocation, operation), (
 	rd(role_policy(RoleId, PolicyId)),
@@ -233,34 +280,37 @@ reaction( inp(admin_login_request(Credentials,_)), request, (
 )).
  
 %
-%	List of all roles
+%	List of all roles based on agent class, with policy and list of permissions
 %	
-reaction( inp(role_list_request(_)),(invocation, operation),
+
+% List of all roles not permitted
+reaction( inp(role_list_request(AgentClass,_)), request,
 (
 	rd(list_all_roles(no)),
-	out(role_list_request(failed(list_not_permitted)))
+	out(role_list_request(AgentClass,failed(list_not_permitted)))
 )).
 
-reaction( inp(role_list_request(_)),(invocation, operation),
+reaction( inp(role_list_request(AgentClass,_)),request,
 (
 	rd(list_all_roles(yes)),
-	rd_all(role(RoleId,Desc,Credentials), AllRoleList),
-	out(role_list_request(ok(AllRoleList)))
+	rd_all(role(RoleId,Desc,AgentClass), AllRoleList),
+	%out(role_list_request(ok(AllRoleList)))
+	out(create_role_list(AllRoleList,[]))
 )).
 	
-%reaction( out(create_role_list([role(RoleId,Desc)|AllRoleList], AgentId, ResultList)),
-%	internal,
-%	(
-%		in(create_role_list(_, AgentId, ResultList)), % tolgo la tupla scatenante la reazione 
-		
-	
-reaction( out(create_role_list([],AgentId, ResultList)), % ho iterato tutta la lista
-	internal,
+reaction( out(create_role_list([role(RoleId,Desc,AgentClass)|AllRoleList], ResultList)),internal,
 (
-	in(create_role_list(_,AgentId,ResultList)), % tolgo la tupla scatenante la reazione    
-	out(role_activable_list_request(AgentId,ok(role_activable_list_request),ResultList))
+		in(create_role_list(_, ResultList)), % tolgo la tupla scatenante la reazione
+		rd(role_policy(RoleId,PolicyId)),
+		rd(policy(PolicyId, PermissionList)),
+		out(create_role_list(AllRoleList, [role(RoleId, Desc, PolicyId, PermissionList)|ResultList]))
 )).
-	
+
+reaction( out(create_role_list([], ResultList)), internal,
+(
+	in(create_role_list(OldRoleList,NewRoleList)),
+	out(role_list_request(AgentClass, ok(NewRoleList)))
+)).
 %
 % command management
 %

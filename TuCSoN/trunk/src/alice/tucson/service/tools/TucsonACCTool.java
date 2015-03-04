@@ -15,6 +15,7 @@ import alice.logictuple.exceptions.InvalidVarNameException;
 import alice.tucson.api.EnhancedACC;
 import alice.tucson.api.ITucsonOperation;
 import alice.tucson.api.TucsonTupleCentreId;
+import alice.tucson.api.exceptions.AgentNotAllowedException;
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
@@ -52,7 +53,7 @@ public final class TucsonACCTool {
 		return false;
 	}
 	
-	public static Role activateRole(String agentAid, UUID accUUID, String agentClass, String roleName, TupleCentreId tid, EnhancedACC acc){
+	public static Role activateRole(String agentAid, UUID accUUID, String agentClass, String roleName, TupleCentreId tid, EnhancedACC acc) throws AgentNotAllowedException{
 		if(!activateContext(agentAid, accUUID, agentClass, tid, acc))
 			return null;
 		
@@ -72,6 +73,8 @@ public final class TucsonACCTool {
 					Policy newPolicy = TucsonPolicy.createPolicy(policyName, permissionsList);
 					newRole = new TucsonRole(roleName);
 					newRole.setPolicy(newPolicy);
+				} else if(res.getArg(3).getName().equalsIgnoreCase("failed")){
+					throw new AgentNotAllowedException();
 				}
 			}
 		} catch (InvalidVarNameException | TucsonOperationNotPossibleException | UnreachableNodeException | OperationTimeOutException e) {
@@ -100,12 +103,14 @@ public final class TucsonACCTool {
 						new Value(agentAid.toString()),
 						new Value(accUUID.toString()),
 						new Value(roleName),
-						new Var("Credenziali"),
 						new Var("Result"));
 				op = acc.inp(tid, template, (Long)null);
 				if(op.isResultSuccess()){
-					newRole = new TucsonRole(roleName);
-					newRole.setPolicy(policy);
+					res = op.getLogicTupleResult();
+					if(res!=null && res.getArg(3).getName().equalsIgnoreCase("ok")){
+						newRole = new TucsonRole(roleName);
+						newRole.setPolicy(policy);
+					}
 				}
 			}	
 		} catch (InvalidVarNameException | TucsonOperationNotPossibleException | UnreachableNodeException | OperationTimeOutException e) {
@@ -116,25 +121,27 @@ public final class TucsonACCTool {
 		return newRole;
 	}
 	
-	public static List<Policy> getPolicyList(String agentAid, TupleCentreId tid, EnhancedACC acc){
+	public static List<Policy> getPolicyList(String agentClass, TupleCentreId tid, EnhancedACC acc){
 		List<Policy> policies = new ArrayList<Policy>();
 		try {
 			LogicTuple policyListTuple = new LogicTuple("policy_list_request",
-					new Value(agentAid.toString()),
+					new Value(agentClass),
 					new Var("Result"));
 			
 			ITucsonOperation op = acc.inp(tid, policyListTuple, (Long)null);
 			
 			if(op.isResultSuccess()){
 	    		LogicTuple res = op.getLogicTupleResult();
-	    		
-	    		TupleArgument[] policiesList = res.getArg(1).getArg(0).toArray();
-	        	for(TupleArgument term : policiesList){
-	        		TupleArgument[] permissionsTuples = term.getArg(1).toArray();
+	    		if(res.getArg(1).getName().equalsIgnoreCase("ok")){
+	    			TupleArgument[] policiesList = res.getArg(1).getArg(0).toArray();
+		        	for(TupleArgument term : policiesList){
+		        		TupleArgument[] permissionsTuples = term.getArg(1).toArray();
 
-	        		Policy newPolicy = TucsonPolicy.createPolicy(term.getArg(0).toString(), permissionsTuples);
-	        		policies.add(newPolicy);
-	        	}
+		        		Policy newPolicy = TucsonPolicy.createPolicy(term.getArg(0).toString(), permissionsTuples);
+		        		policies.add(newPolicy);
+		        	}
+	    		}
+	    		
 			}
 		} catch (InvalidVarNameException | TucsonOperationNotPossibleException | UnreachableNodeException | OperationTimeOutException e) {
 			e.printStackTrace();

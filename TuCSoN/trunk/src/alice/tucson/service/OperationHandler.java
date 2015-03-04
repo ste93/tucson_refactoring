@@ -636,6 +636,7 @@ public class OperationHandler {
         this.profile.setProperty("agent-identity", aid.toString());
         this.profile.setProperty("agent-role", "user");
         this.profile.setProperty("agent-uuid", this.agentUUID.toString());
+        //this.profile.setProperty("agent-class", value);
         AbstractTucsonProtocol dialog = null;
         boolean isEnterReqAcpt = false;
         try {

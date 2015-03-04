@@ -975,7 +975,7 @@ public class TucsonNodeService {
 				TupleCentreContainer.doBlockingOperation(TucsonOperation.outCode(), this.nodeAid, this.idConfigTC, new LogicTuple("role_credentials", new Value("admin_role"), new Value("_")));
 			}*/
             if(adminUsername!=null && !adminUsername.equalsIgnoreCase("") && adminPassword!=null && !adminPassword.equalsIgnoreCase("")) {
-				TupleCentreContainer.doBlockingOperation(TucsonOperation.outCode(), nodeAid, idConfigTC, new LogicTuple("admin_credentials", new Value("admin_role"), new Value(adminUsername+":"+TucsonACCTool.encrypt(adminPassword))));
+				TupleCentreContainer.doBlockingOperation(TucsonOperation.outCode(), nodeAid, idConfigTC, new LogicTuple("admin_credentials",new Value(adminUsername+":"+TucsonACCTool.encrypt(adminPassword))));
 			}
             this.addAgent(this.nodeAid);
         } catch (final TucsonInvalidTupleCentreIdException e) {

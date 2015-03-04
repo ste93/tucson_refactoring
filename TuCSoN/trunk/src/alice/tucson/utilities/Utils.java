@@ -38,4 +38,8 @@ public final class Utils {
          * 
          */
     }
+    
+    public static String decapitalize(final String string){
+    	return 	string.substring(0, 1).toLowerCase() + string.substring(1);
+    }
 }

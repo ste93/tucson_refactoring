@@ -3,6 +3,7 @@ package alice.tucson.rbac;
 import java.security.NoSuchAlgorithmException;
 
 import alice.tucson.service.tools.TucsonACCTool;
+import alice.tucson.utilities.Utils;
 
 public class TucsonRole implements Role{
 
@@ -37,7 +38,7 @@ public class TucsonRole implements Role{
 		if(roleName==null || roleName.equals(""))
 			return;
 		
-		this.roleName = roleName.toLowerCase();
+		this.roleName = Utils.decapitalize(roleName);
 	}
 	
 	@Override
@@ -59,7 +60,7 @@ public class TucsonRole implements Role{
 
 	@Override
 	public void setAgentClass(String agentClass) {
-		this.agentClass = agentClass.toLowerCase();
+		this.agentClass = Utils.decapitalize(agentClass);
 	}
 
 	@Override
