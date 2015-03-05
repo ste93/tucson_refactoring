@@ -5,11 +5,13 @@ reaction(out(boot),true,(
     out(boot_info([time(Time)])),
     out(rbac_installed(no)),
     out(context_id(0)),
-    out(authorized_agent(_)),
+    %out(authorized_agent(_)),
     out(authorized_inspectors(yes)),
     out(policy(admin_policy,[])),
     out(role_policy(admin_role,admin_policy)),
-    out(role_assignment(_,_)))).
+    out(policy(defaultPolicy, []))
+    %out(role_assignment(_,_))
+)).
 
 reaction(inp(install_rbac),request,
 (
@@ -21,10 +23,10 @@ reaction(inp(install_rbac),request,
 reaction(inp(disinstall_rbac),request,
 (
 	in(rbac_installed(R)),
-	in_all(role(Name,Description,Level)),
-	in_all(policy(Name,Permissions)),
-	in_all(role_policy(NameRuolo,NamePolicy)),
-	in_all(authorized_agent(NameAgent)),
+	in_all(role(Name,Description,Level), RoleList),
+	in_all(policy(Name,Permissions), PolicyList),
+	in_all(role_policy(NameRuolo,NamePolicy), RolePolicyList),
+	in_all(authorized_agent(NameAgent), AgentList),
 	out(rbac_installed(no)),
 	out(disinstall_rbac)
 )).
@@ -108,12 +110,18 @@ reaction( inp(get_default_agent_class(_)), (invocation,operation),(
 
 
 %
-% role creation
+% role creation/destruction
 %
 reaction( out(role(Name,Desc, substitute)), completion,(
 	in(role(Name,Desc, substitute)),
 	rd(base_agent_class(Class)),
 	out(role(Name,Desc,Class))	
+)).
+
+reaction( inp(remove_role(RoleId)), request, (
+	in(role(RoleId,_,_)),
+	in(role_policy(RoleId,_)),
+	out(remove_role(RoleId))
 )).
 
 %
@@ -194,6 +202,14 @@ reaction( out(create_policy_list(AgentClass,[policy(PolicyId,PermissionList)|All
 	out(create_policy_list(AgentClass,AllPolicyList, ResultList))	
 )).
 
+% The policy is not assigned to any role
+reaction( out(create_policy_list(AgentClass,[policy(PolicyId,PermissionList)|AllPolicyList], ResultList)),internal,
+(
+	in(create_policy_list(AgentClass,_, ResultList)),	% tolgo la tupla scatenante la reazione
+	no(role_policy(RoleId,PolicyId)),
+	out(create_policy_list(AgentClass,AllPolicyList, ResultList))	
+)).
+
 reaction( out(create_policy_list(AgentClass,[], ResultList)), internal,
 (
 	in(create_policy_list(AgentClass, OldPolicyList, NewPolicyList)),
@@ -212,6 +228,77 @@ reaction( inp(role_policy_request(_,RoleId)), (invocation, operation), (
 	out(role_policy_request(PolicyId,RoleId))
 	)).
 	
+	
+% Policy destruction
+reaction( inp(remove_policy(PolicyId)), request, 
+(
+	in(policy(PolicyId, _)),
+	in(role_policy(RoleId, PolicyId)),
+	out(role_policy(RoleId, defaultPolicy)),
+	out(remove_policy(PolicyId))
+)).
+
+
+%
+% ========================================================================================
+%			Change RBAC structure values
+% ========================================================================================
+%
+
+% ======Set policy of role======
+% Success
+reaction( inp(set_role_policy(RoleId, PolicyId, Result)), request,
+(
+	rd(role(RoleId,_,_)),					% role exists
+	rd(policy(PolicyId,_)),					% policy exists
+	in(role_policy(RoleId,_)),				% remove old relation
+	out(role_policy(RoleId,PolicyId)),		% set new relation
+	out(set_role_policy(RoleId, PolicyId, ok))
+)).
+
+% Failure: role doesn't exists
+reaction( inp(set_role_policy(RoleId, PolicyId, Result)), request,
+(
+	no(role(RoleId,_,_)),					% role does not exists
+	out(set_role_policy(RoleId, PolicyId, failed(role_not_exists)))
+)).
+
+% Failure: policy doesn't exists
+reaction( inp(set_role_policy(RoleId, PolicyId, Result)), request,
+(
+	rd(role(RoleId,_,_)),					% role exists
+	no(policy(PolicyId,_)),					% policy does not exists
+	out(set_role_policy(RoleId, PolicyId, failed(policy_not_exists)))
+)).
+
+% ======Add permission======
+% Success
+reaction( inp(add_permission(PermissionId, PolicyId, Result)), request,
+(
+	rd(policy(PolicyId,_)),										% policy exists
+	no(policy(PolicyId,[PermissionId|RestPermissionList])),		% permission not already exists in policy
+	in(policy(PolicyId, PermissionList)),	
+	out(policy(PolicyId,[PermissionId|PermissionList])),
+	out(add_permission(PermissionId, PolicyId, ok))
+)).
+
+% Failure: policy does not exists
+reaction( inp(add_permission(PermissionId, PolicyId, Result)), request,
+(
+	no(policy(PolicyId,_)),										% policy does not exists
+	out(add_permission(PermissionId, PolicyId, failed(policy_not_exists)))
+)).
+
+% ======Set role agent class======
+% Success
+reaction( inp(set_role_class(RoleId,AgentClass,Result)), request,
+(
+	in(role(RoleId,Desc,_)),							% role exists
+	out(role(RoleId,Desc,AgentClass)),
+	out(set_role_class(RooleId,AgentClass,ok))
+)).
+
+
 %
 %	Inspectors authorized?
 %
@@ -220,7 +307,7 @@ reaction( inp(are_inspectors_auth(_)), request,(
  	out(are_inspectors_auth(A))
 )).
  
-reaction( inp(authorize_inspectors(A)), (invocation, operation),(
+reaction( inp(authorize_inspectors(A)), request,(
  	in(authorized_inspectors(_)),
  	out(authorized_inspectors(A)),
  	out(authorize_inspectors(A))
@@ -239,10 +326,24 @@ reaction( inp(set_login(A)), (invocation, operation),(
 %
 % Classe agente base
 %
-reaction( inp(set_base_agent_class(A)), (invocation, operation),(
- 	in(base_agent_class(_)),
- 	out(base_agent_class(A)),
- 	out(set_base_agent_class(A))
+reaction( inp(set_base_agent_class(NewClassAgent)), request,(
+ 	in(base_agent_class(OldClassAgent)),
+ 	out(base_agent_class(NewClassAgent)),
+ 	in_all(role(_,_,OldClassAgent), RoleList),
+	out(change_roles_class(NewClassAgent, RoleList)),
+ 	out(set_base_agent_class(NewClassAgent))
+)).
+
+reaction( out(change_roles_class(NewClassAgent,[role(RoleId,Desc,OldClassAgent)|RoleList])), internal,
+(
+	in(change_roles_class(NewClassAgent,_)),	% tolgo la tupla che ha scatenato la reazione
+	out(role(RoleId,Desc,NewClassAgent)),
+	out(change_roles_class(NewClassAgent, RoleList))
+)).
+
+reaction( out(change_roles_class(NewClassAgent,[])), internal,
+(
+	in(change_roles_class(NewClassAgent,_)) % tolgo la tupla che ha scatenato la reazione
 )).
 
 reaction( inp(get_base_agent_class(_)), invocation, (

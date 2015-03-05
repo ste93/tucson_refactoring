@@ -110,6 +110,7 @@ public final class TucsonACCTool {
 					if(res!=null && res.getArg(3).getName().equalsIgnoreCase("ok")){
 						newRole = new TucsonRole(roleName);
 						newRole.setPolicy(policy);
+						newRole.setAgentClass(agentClass);
 					}
 				}
 			}	

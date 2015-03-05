@@ -37,6 +37,7 @@ import alice.tucson.rbac.TucsonAuthorizedAgent;
 import alice.tucson.rbac.TucsonPolicy;
 import alice.tucson.rbac.TucsonRole;
 import alice.tucson.service.tools.TucsonACCTool;
+import alice.tucson.utilities.Utils;
 import alice.tuplecentre.api.TupleCentreId;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 import alice.tuprolog.Term;
@@ -144,25 +145,12 @@ public class MetaACCProxyAgentSide extends ACCProxyAgentSide implements MetaACC{
 		this.removeRBAC(null, node, port);
 	}
 	
-	//TODO: implementare remove RBAC
 	@Override
 	public void removeRBAC(Long l, String node, int port) throws OperationNotAllowedException, TucsonInvalidTupleCentreIdException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException, InvalidVarNameException {
-		/*if(rbac == null)
-			return;*/
-		
+
 		if(!admin_authorized)
 			throw new OperationNotAllowedException();
-		inp(tid, new LogicTuple("disinstall_rbac"), (Long)null);
-		/*
-		LogicTuple roleTuple = new LogicTuple("role", new Var("Nome"), new Var("Desc"), new Var("Livello"));
-		LogicTuple policyTuple = new LogicTuple("policy",new Var("NomePolicy"),new Var("Permessi"));
-		LogicTuple rolePolicyTuple = new LogicTuple("role_policy", new Var("NomeRuolo"), new Var("NomePolicy"));
-		LogicTuple authorizedTuple = new LogicTuple("authorized_agent", new Var("NomeAgente"));
-		inAll(tid, roleTuple, (Long)l);
-		inAll(tid, policyTuple, (Long)l);
-		inAll(tid, rolePolicyTuple, (Long)l);
-		inAll(tid, authorizedTuple, (Long)l);*/
-		
+		inp(tid, new LogicTuple("disinstall_rbac"), (Long)null);	
 	}
 	
 	// Passiamo da una fase in cui RBAC non è supportato ad una fase nella quale va tutto come progettato
@@ -281,17 +269,9 @@ public class MetaACCProxyAgentSide extends ACCProxyAgentSide implements MetaACC{
 			OperationTimeOutException, NoSuchAlgorithmException {
 		
 		try {
-			//TucsonTupleCentreId tid = new TucsonTupleCentreId(tcOrg, "'"+node+"'", ""+port);
 			LogicTuple template = new LogicTuple("admin_login_request",
 					new Value(this.getUsername()+":"+TucsonACCTool.encrypt(this.getPassword())),
 					new Var("Result"));
-			
-			/*LogicTuple template = new LogicTuple("role_activation_request",
-					new Value(this.aid.toString()),
-					new Value(this.getUUID().toString()),
-					new Value("admin_role"),
-					new Value(getUsername()+":"+TucsonACCTool.encrypt(getPassword())),
-					new Var("Result"));*/
 			ITucsonOperation op = inp(tid, template, (Long)null);
 			if(op.isResultSuccess()){
 				LogicTuple res = op.getLogicTupleResult();
@@ -310,9 +290,9 @@ public class MetaACCProxyAgentSide extends ACCProxyAgentSide implements MetaACC{
 	}
 
 	@Override
-	public void removeRole(String roleName) {
-		// TODO Auto-generated method stub
-		
+	public void removeRole(String roleName) throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException {
+		LogicTuple roleDestructionTuple = new LogicTuple("remove_role", new Value(Utils.decapitalize(roleName)));
+		inp(tid, roleDestructionTuple, (Long)null);
 	}
 
 	@Override
@@ -321,9 +301,9 @@ public class MetaACCProxyAgentSide extends ACCProxyAgentSide implements MetaACC{
 	}
 
 	@Override
-	public void removePolicy(String policyName) {
-		// TODO Auto-generated method stub
-		
+	public void removePolicy(String policyName) throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException {
+		LogicTuple policyDestructionTuple = new LogicTuple("remove_policy", new Value(policyName));
+		inp(tid, policyDestructionTuple, (Long)null);
 	}
 
 	@Override
@@ -333,9 +313,89 @@ public class MetaACCProxyAgentSide extends ACCProxyAgentSide implements MetaACC{
 
 	@Override
 	public void remove(String agentName) {
-		// TODO Auto-generated method stub
-		
+		//TODO
 	}
 
-	
+	@Override
+	public void setBaseAgentClass(String newBaseAgentClass) throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException {
+		LogicTuple newClassTuple = new LogicTuple("set_base_agent_class",
+				new Value(newBaseAgentClass));
+		
+		ITucsonOperation op = inp(tid, newClassTuple, (Long)null);
+		if(op.isResultSuccess()){
+			log("[MetaACC]: changed base agent class to " + newBaseAgentClass);
+		} else {
+			log("[MetaACC]: failure in changing base agent class");
+		}
+	}
+
+	@Override
+	public void setRolePolicy(String roleName, String policyName) throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException {
+		LogicTuple setPolicyTuple;
+		try {
+			setPolicyTuple = new LogicTuple("set_role_policy",
+					new Value(roleName),
+					new Value(policyName),
+					new Var("Result"));
+			ITucsonOperation op = inp(tid, setPolicyTuple, (Long)null);
+			if(op.isResultSuccess()){
+				LogicTuple res = op.getLogicTupleResult();
+				if(res.getArg(2).getName().equalsIgnoreCase("ok"))
+					log("[" + this.aid.toString() + "]: policy of role " + roleName + " changed to " + policyName + ".");
+				else if(res.getArg(2).getName().equalsIgnoreCase("failed")){
+					String failReason = res.getArg(2).getArg(0).toString();
+					log("[" + this.aid.toString() + "]: policy of role " + roleName + " not changed because " + failReason + ".");
+				}
+			}
+		} catch (InvalidVarNameException e) {
+			e.printStackTrace();
+		}
+	}
+
+	//TODO: Non funziona l'inserimento in lista
+	@Override
+	public void addPermissionToPolicy(Permission permission, String policyName) throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException {
+		
+		try {
+			LogicTuple setPermissionTuple = new LogicTuple("add_permission",
+					new Value(policyName),
+					new Value(permission.getPermissionName()),
+					new Var("Result"));
+			ITucsonOperation op = inp(tid, setPermissionTuple, (Long)null);
+			if(op.isResultSuccess()){
+				LogicTuple res = op.getLogicTupleResult();
+				if(res.getArg(2).getName().equalsIgnoreCase("ok"))
+					log("[" + this.aid.toString() + "]: permission " + permission.getPermissionName() + " added to " + policyName + ".");
+				else if(res.getArg(2).getName().equalsIgnoreCase("failed")){
+					String failReason = res.getArg(2).getArg(0).toString();
+					log("[" + this.aid.toString() + "]: permission " + permission.getPermissionName() + " not added because " + failReason + ".");
+				}
+			}
+		} catch (InvalidVarNameException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void setRoleAgentClass(String roleName, String agentClass) throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException {
+		LogicTuple setRoleClassTuple;
+		try {
+			setRoleClassTuple = new LogicTuple("set_role_class",
+					new Value(roleName),
+					new Value(agentClass),
+					new Var("Result"));
+			ITucsonOperation op = inp(tid, setRoleClassTuple, (Long)null);
+			if(op.isResultSuccess()){
+				LogicTuple res = op.getLogicTupleResult();
+				if(res.getArg(2).getName().equalsIgnoreCase("ok"))
+					log("[" + this.aid.toString() + "]: agent class of role " + roleName + " changed to " + agentClass + ".");
+				else if(res.getArg(2).getName().equalsIgnoreCase("failed")){
+					String failReason = res.getArg(2).getArg(0).toString();
+					log("[" + this.aid.toString() + "]: agent class of role " + roleName + " changed because " + failReason + ".");
+				}
+			}
+		} catch (InvalidVarNameException e) {
+			e.printStackTrace();
+		}
+	}
 }

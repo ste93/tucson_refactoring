@@ -93,6 +93,7 @@ public class TucsonNodeService {
     private boolean loginRequired;
     private boolean listAllRoles;
     private boolean authForAdmin;
+    private boolean inspectorsAuthorized;
     private String adminUsername;
 	private String adminPassword;
 	
@@ -342,6 +343,10 @@ public class TucsonNodeService {
     
     public void setAdminPassword(String password){
     	this.adminPassword = password;
+    }
+    
+    public void setInspectorsAuthorized(boolean inspectorsAuth){
+    	this.inspectorsAuthorized = inspectorsAuth;
     }
     
     /*
@@ -966,6 +971,9 @@ public class TucsonNodeService {
             // Allow or not list of all roles
             TupleCentreContainer.doBlockingOperation(TucsonOperation.outCode(), this.nodeAid, this.idConfigTC, new LogicTuple("list_all_roles", new Value((this.listAllRoles)? "yes" : "no")));
             
+            //Allow or not inspectors 
+            TupleCentreContainer.doBlockingOperation(TucsonOperation.outCode(), this.nodeAid, this.idConfigTC, new LogicTuple("authorize_inspectors", new Value((this.inspectorsAuthorized)? "yes" : "no")));
+
             //TupleCentreContainer.doBlockingOperation(TucsonOperation.outCode(), this.nodeAid, this.idConfigTC, new LogicTuple("role", new Value("admin_role"), new Value("admin role"), new Value("0")));
             /*if(!authForAdmin){
             	TupleCentreContainer.doBlockingOperation(TucsonOperation.outCode(), this.nodeAid, this.idConfigTC, new LogicTuple("role_credentials", new Value("admin_role"), new Value("_")));
