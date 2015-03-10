@@ -139,7 +139,6 @@ reaction( inp(role_activation_request(AgentId,AccUUID,RoleId,_)),request,(
   
 % Failed because requested role can't be found
 reaction( inp(role_activation_request(AgentId,AccUUID,RoleId,_)), request, (
-	in(open_session(CtxId,AgentId,AccUUID,SessionRoleClass,_)),
 	no(role(RoleId,Descr,_)),
 	out(open_session(CtxId,AgentId,AccUUID,SessionRoleClass,_)),
 	out(role_activation_request(AgentId,AccUUID,RoleId,failed(role_not_found)))
@@ -293,7 +292,8 @@ reaction( inp(add_permission(PermissionId, PolicyId, Result)), request,
 % Success
 reaction( inp(set_role_class(RoleId,AgentClass,Result)), request,
 (
-	in(role(RoleId,Desc,_)),							% role exists
+	rd(role(RoleId,_,_)),							% role exists
+	in(role(RoleId,Desc,_)),							
 	out(role(RoleId,Desc,AgentClass)),
 	out(set_role_class(RooleId,AgentClass,ok))
 )).
