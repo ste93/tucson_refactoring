@@ -18,6 +18,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
+
 import alice.logictuple.LogicTuple;
 import alice.tucson.api.TucsonAgentId;
 import alice.tucson.api.TucsonTupleCentreId;
@@ -49,6 +51,7 @@ public class ACCProxyNodeSide extends AbstractACCProxyNodeSide {
     private TucsonAgentId agentId;
     private final String agentName;
     private final int ctxId;
+    private final String agentUUID;							//buccelli
     private final AbstractTucsonProtocol dialog;
     private boolean ex = false;
     private final ACCProvider manager;
@@ -98,6 +101,7 @@ public class ACCProxyNodeSide extends AbstractACCProxyNodeSide {
         this.opVsReq = new HashMap<Long, Long>();
         this.node = n;
         this.manager = man;
+        this.agentUUID = p.getProperty("agent-uuid");
     }
 
     @Override

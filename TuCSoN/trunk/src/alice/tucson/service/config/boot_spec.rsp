@@ -93,21 +93,15 @@ reaction( inp(context_request(AgentId,_,AgentClass,AccUUID)),request,(
 % context release
 %
 reaction( inp(context_shutdown(CtxId,AgentId,_)),request,(
-  rd(open_session(CtxId,AgentId_)),
+  rd(open_session(CtxId,AgentId,_,_,_)),
   out(context_shutdown(CtxId,AgentId,ok)) )).
 
 reaction( inp(context_shutdown(CtxId,AgentId,ok)),response,(
-  in(open_session(CtxId,AgentId,_)) )).
+  in(open_session(CtxId,AgentId,_,_,_)) )).
 
 reaction( inp(context_shutdown(CtxId,AgentId,_)),request,(
-  no(open_session(CtxId,AgentId,_)),
+  no(open_session(CtxId,AgentId,_,_,_)),
   out(context_shutdown(CtxId,AgentId,failed(no_valid_context))) )).
-
-reaction( inp(get_default_agent_class(_)), (invocation,operation),(
-	rd(default_agent_class(A)),
-	out(get_default_agent_class(A))
-)).
-
 
 %
 % role creation/destruction
@@ -326,6 +320,12 @@ reaction( inp(set_login(A)), (invocation, operation),(
 %
 % Classe agente base
 %
+
+reaction( inp(get_default_agent_class(_)), (invocation,operation),(
+	rd(default_agent_class(A)),
+	out(get_default_agent_class(A))
+)).
+
 reaction( inp(set_base_agent_class(NewClassAgent)), request,(
  	in(base_agent_class(OldClassAgent)),
  	out(base_agent_class(NewClassAgent)),

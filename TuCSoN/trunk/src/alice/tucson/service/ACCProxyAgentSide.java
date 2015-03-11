@@ -183,7 +183,6 @@ public class ACCProxyAgentSide implements EnhancedACC {
         isACCEntered = false;
     }
 
-    
     @Override
 	public void enterACC() throws UnreachableNodeException,
 			TucsonOperationNotPossibleException, NoSuchAlgorithmException, TucsonInvalidTupleCentreIdException {

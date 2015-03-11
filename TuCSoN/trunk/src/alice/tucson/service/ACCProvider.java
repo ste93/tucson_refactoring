@@ -228,7 +228,6 @@ public class ACCProvider {
             e.printStackTrace();
             return false;
         } catch (final InvalidVarNameException e) {
-            // Cannot happen, the var name it's specified here
             e.printStackTrace();
             return false;
         }

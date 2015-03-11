@@ -25,4 +25,6 @@ public interface NegotiationACC {
 	List<Role> listActivableRoles() throws TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException, InvalidVarNameException;
 
 	boolean login(String username, String password) throws NoSuchAlgorithmException, InvalidVarNameException, TucsonOperationNotPossibleException, UnreachableNodeException, OperationTimeOutException;
+
+	
 }
