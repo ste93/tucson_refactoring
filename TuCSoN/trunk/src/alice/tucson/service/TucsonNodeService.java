@@ -731,7 +731,7 @@ public class TucsonNodeService {
             tcName.append("@localhost");
         }
         if (tcn.indexOf(':') < 0) {
-            tcName.append(this.tcpPort);
+            tcName.append(":" + this.tcpPort);
         }
         TucsonTupleCentreId tid;
         try {
