@@ -57,8 +57,8 @@ public class OperationHandler {
             this.dialog = d;
             this.stop = false;
             this.setDaemon(true);
-            final alice.tuprolog.lib.JavaLibrary jlib = (alice.tuprolog.lib.JavaLibrary) this.p
-                    .getLibrary("alice.tuprolog.lib.JavaLibrary");
+            final alice.tuprolog.lib.OOLibrary jlib = (alice.tuprolog.lib.OOLibrary) this.p
+                    .getLibrary("alice.tuprolog.lib.OOLibrary");
             try {
                 jlib.register(new alice.tuprolog.Struct("config"), this);
             } catch (final InvalidObjectIdException e) {
@@ -87,7 +87,7 @@ public class OperationHandler {
                     msg = this.dialog.receiveMsgReply();
                 } catch (final DialogReceiveException e) {
                     OperationHandler.this
-                    .err("TuCSoN Node disconnected unexpectedly :/");
+                            .err("TuCSoN Node disconnected unexpectedly :/");
                     // OperationHandler.this.err(e.getCause().toString());
                     this.setStop();
                     break;
@@ -348,8 +348,8 @@ public class OperationHandler {
      */
     public ITucsonOperation doBlockingOperation(final TucsonAgentId aid,
             final int type, final Object tid, final Tuple t, final Long ms)
-                    throws TucsonOperationNotPossibleException,
-                    UnreachableNodeException, OperationTimeOutException {
+            throws TucsonOperationNotPossibleException,
+            UnreachableNodeException, OperationTimeOutException {
         TucsonTupleCentreId tcid = null;
         if ("alice.tucson.api.TucsonTupleCentreId".equals(tid.getClass()
                 .getName())) {
@@ -413,8 +413,8 @@ public class OperationHandler {
     public ITucsonOperation doNonBlockingOperation(final TucsonAgentId aid,
             final int type, final Object tid, final Tuple t,
             final TucsonOperationCompletionListener l)
-                    throws TucsonOperationNotPossibleException,
-                    UnreachableNodeException {
+            throws TucsonOperationNotPossibleException,
+            UnreachableNodeException {
         // log("tid.class().name() = " + tid.getClass().getName());
         TucsonTupleCentreId tcid = null;
         if ("alice.tucson.api.TucsonTupleCentreId".equals(tid.getClass()
@@ -514,7 +514,7 @@ public class OperationHandler {
             final TucsonAgentId aid, final TucsonTupleCentreId tcid,
             final int type, final Tuple t,
             final TucsonOperationCompletionListener l)
-                    throws UnreachableNodeException {
+            throws UnreachableNodeException {
         // this.log("t = " + t);
         Tuple tupl = null;
         if (t instanceof LogicTuple) {
@@ -612,19 +612,19 @@ public class OperationHandler {
         // if (InetAddress.getLoopbackAddress().getHostName().equals(opNode)) {
         if ("localhost".equals(opNode)) {
             tc =
-                    // this.controllerSessions.get(InetAddress
-                    // .getLoopbackAddress().getHostAddress()
-                    // .concat(String.valueOf(p)));
-                    this.controllerSessions.get("127.0.0.1:".concat(String.valueOf(p)));
+            // this.controllerSessions.get(InetAddress
+            // .getLoopbackAddress().getHostAddress()
+            // .concat(String.valueOf(p)));
+            this.controllerSessions.get("127.0.0.1:".concat(String.valueOf(p)));
         }
         // if (InetAddress.getLoopbackAddress().getHostAddress().equals(opNode))
         // {
         if ("127.0.0.1".equals(opNode)) {
             tc =
-                    // this.controllerSessions.get(InetAddress
-                    // .getLoopbackAddress().getHostName()
-                    // .concat(String.valueOf(p)));
-                    this.controllerSessions.get("localhost:".concat(String.valueOf(p)));
+            // this.controllerSessions.get(InetAddress
+            // .getLoopbackAddress().getHostName()
+            // .concat(String.valueOf(p)));
+            this.controllerSessions.get("localhost:".concat(String.valueOf(p)));
         }
         if (tc != null) {
             return tc.getSession();

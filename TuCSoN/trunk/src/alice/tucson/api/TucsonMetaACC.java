@@ -26,7 +26,7 @@ import alice.tucson.service.ACCProxyAgentSide;
  */
 public final class TucsonMetaACC {
     private static final int DEFAULT_PORT = 20504;
-    private static final String VERSION = "TuCSoN-1.11.0.0209";
+    private static final String VERSION = "TuCSoN-1.11.0.0300";
 
     /**
      * Gets the available most-comprehensive ACC from the TuCSoN Node Service

@@ -951,8 +951,8 @@ public class TucsonNodeService {
     // exception handling is a mess, review it...
     private void setupConfiguration(final String conf)
             throws TucsonGenericException, InvalidConfigException {
-        final alice.tuprolog.lib.JavaLibrary jlib = (alice.tuprolog.lib.JavaLibrary) this.configManager
-                .getLibrary("alice.tuprolog.lib.JavaLibrary");
+        final alice.tuprolog.lib.OOLibrary jlib = (alice.tuprolog.lib.OOLibrary) this.configManager
+                .getLibrary("alice.tuprolog.lib.OOLibrary");
         try {
             jlib.register(new alice.tuprolog.Struct("config"), this);
         } catch (final InvalidObjectIdException e) {
