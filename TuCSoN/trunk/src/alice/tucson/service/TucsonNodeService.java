@@ -832,25 +832,20 @@ public class TucsonNodeService {
             name.append(':').append("'" + this.tcpPort + "'");
         }
         final TucsonTupleCentreId id = new TucsonTupleCentreId(name.toString());
-        System.out.println(" @@@@@@@@@@ TucsonNodeService.id = " + id);
         try {
             RespectTC rtc = TupleCentreContainer.createTC(id,
                     TucsonNodeService.MAX_EVENT_QUEUE_SIZE, this.tcpPort);
-            System.out.println(" @@@@@@@@@@ TucsonNodeService.rtc.getId() = "
-                    + rtc.getId());
             this.tcs.add(rtc);
         } catch (final InvalidTupleCentreIdException e) {
             TucsonNodeService.log("TupleCentreContainer.createTC(...) error");
             e.printStackTrace();
         }
-        System.out.println(" @@@@@@@@@@ HI THERE -.-");
         if (this.observed) {
             TupleCentreContainer.doManagementOperation(
                     TucsonOperation.addObsCode(), id, this.obsService);
             this.obsService.tcCreated(id);
         }
         final TucsonTCUsers tcUsers = new TucsonTCUsers(id);
-        System.out.println(" @@@@@@@@@@ HI THERE 2 -.-");
         this.cores.put(id.getName(), tcUsers);
         return tcUsers;
     }
@@ -1051,7 +1046,6 @@ public class TucsonNodeService {
             TupleCentreContainer.doBlockingSpecOperation(
                     TucsonOperation.setSCode(), this.nodeAid, this.idObsTC,
                     specTuple);
-            System.out.println(" @@@@@@@@@@ HI THERE 3 -.-");
             TupleCentreContainer.doNonBlockingOperation(
                     TucsonOperation.outCode(), this.nodeAid, this.idObsTC,
                     new LogicTuple("boot"), null);

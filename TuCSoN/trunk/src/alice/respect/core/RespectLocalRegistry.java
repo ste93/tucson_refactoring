@@ -54,7 +54,7 @@ public class RespectLocalRegistry implements ITCRegistry {
             throw new InstantiationNotPossibleException("The string "
                     + id.toString() + " is not contained in the registry");
         }
-        System.out.println(" @@@@@@@@@@ this.reg.get = "
+        System.out.println("....[RespectLocalRegistry]: Got "
                 + this.reg.get(id.toString()).getId());
         return this.reg.get(id.toString());
     }
