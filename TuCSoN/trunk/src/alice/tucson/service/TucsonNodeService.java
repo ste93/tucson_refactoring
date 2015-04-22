@@ -280,8 +280,6 @@ public class TucsonNodeService {
             final Tuple persistTempl) {
         this.configFile = conf;
         this.tcpPort = portNumber;
-        System.out.println(" @@@@@@@@@@ TucsonNodeService.this.tcpPort = "
-                + this.tcpPort);
         this.persistencyTemplate = persistTempl;
         try {
             this.nodeAid = new TucsonAgentId("'$TucsonNodeService-Agent'");
@@ -305,9 +303,6 @@ public class TucsonNodeService {
         this.tcs = new ArrayList<RespectTC>();
         this.tpConfig = new TPConfig();
         this.tpConfig.setTcpPort(this.tcpPort);
-        System.out
-                .println(" @@@@@@@@@@ TucsonNodeService.this.tpConfig.getNodeTcpPort = "
-                        + this.tpConfig.getNodeTcpPort());
         synchronized (TucsonNodeService.NODES) {
             TucsonNodeService.NODES.put(this.tcpPort, this);
         }
