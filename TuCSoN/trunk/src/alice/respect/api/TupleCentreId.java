@@ -72,12 +72,20 @@ public class TupleCentreId implements alice.tuplecentre.api.TupleCentreId,
      */
     public TupleCentreId(final String tcName, final String hostName,
             final String portName) throws InvalidTupleCentreIdException {
+        System.out.println(" @@@@@@@@@@ TupleCentreId.tcName = " + tcName
+                + ", TupleCentreId.hostName = " + hostName
+                + ", TupleCentreId.portName = " + portName);
         final String tc = tcName.trim();
         final String host = alice.util.Tools.removeApices(hostName.trim());
         final String port = alice.util.Tools.removeApices(portName.trim());
+        System.out.println(" @@@@@@@@@@ TupleCentreId.tc = " + tc
+                + ", TupleCentreId.host = " + host + ", TupleCentreId.port = "
+                + port);
         try {
             this.id = Term.createTerm(tc + "@'" + host + "':'" + port + "'",
                     TupleCentreId.opManager);
+            System.out
+                    .println(" @@@@@@@@@@ TupleCentreId.this.id = " + this.id);
         } catch (final InvalidTermException e) {
             throw new InvalidTupleCentreIdException(
                     "Cannot create a valid centre id from tcName: '" + tc
@@ -140,8 +148,13 @@ public class TupleCentreId implements alice.tuplecentre.api.TupleCentreId,
      */
     public String getName() {
         if (this.id instanceof alice.tuprolog.Struct) {
+            System.out.println(" @@@@@@@@@@ this.id = " + this.id);
             final Struct sid = (Struct) this.id;
             if (sid.getArity() == 2 && "@".equals(sid.getName())) {
+                System.out.println(" @@@@@@@@@@ sid = " + sid
+                        + ", getArg(0) = " + sid.getArg(0) + ", getTerm() = "
+                        + sid.getArg(0).getTerm() + ", toString() = "
+                        + sid.getArg(0).getTerm().toString());
                 return sid.getArg(0).getTerm().toString();
             }
         }
@@ -178,6 +191,7 @@ public class TupleCentreId implements alice.tuplecentre.api.TupleCentreId,
      * @return the listening port for this tuple centre identifier
      */
     public int getPort() {
+        System.out.println(" @@@@@@@@@@ here 0");
         if (this.id instanceof alice.tuprolog.Struct) {
             System.out.println(" @@@@@@@@@@ here 1");
             final Struct sid = (Struct) this.id;
@@ -191,6 +205,7 @@ public class TupleCentreId implements alice.tuplecentre.api.TupleCentreId,
                         .getArg(1).getTerm().toString()));
             }
         }
+        System.out.println(" @@@@@@@@@@ here 4");
         return TupleCentreId.DEFAULT_PORT;
     }
 

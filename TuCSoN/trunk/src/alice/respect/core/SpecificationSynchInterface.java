@@ -35,6 +35,7 @@ import alice.tuplecentre.api.IId;
  */
 public class SpecificationSynchInterface extends RootInterface implements
         ISpecificationSynchInterface {
+
     /**
      * 
      * @param core
@@ -139,7 +140,26 @@ public class SpecificationSynchInterface extends RootInterface implements
     @Override
     public List<LogicTuple> setS(final IId aid, final RespectSpecification spec)
             throws OperationNotPossibleException, InvalidSpecificationException {
+        System.out.println(" @@@@@@@@@@ this.getCore().getId() = "
+                + this.getCore().getId());
+        System.out.println(" @@@@@@@@@@ this.getCore().getVM().getId() = "
+                + this.getCore().getVM().getId());
+        System.out
+                .println(" @@@@@@@@@@ this.getCore().getVM().getContainer().getDefPort() = "
+                        + this.getCore().getVM().getContainer().getDefPort());
+        System.out
+                .println(" @@@@@@@@@@ this.getCore().getVM().getRespectVMContext().getId() = "
+                        + this.getCore().getVM().getRespectVMContext().getId());
+        System.out
+                .println(" @@@@@@@@@@ this.getCore().getVM().getRespectVMContext().getRespectTC().getId() = "
+                        + this.getCore().getVM().getRespectVMContext()
+                                .getRespectTC().getId());
+        System.out
+                .println(" @@@@@@@@@@ this.getCore().getVM().getRespectVMContext().getRespectVM().getId() = "
+                        + this.getCore().getVM().getRespectVMContext()
+                                .getRespectVM().getId());
         final IRespectOperation op = this.getCore().setS(aid, spec);
+        System.out.println(" @@@@@@@@@@ HI THERE 5 -.-");
         if ("'$TucsonNodeService-Agent'".equals(aid.toString())
                 || aid.toString().startsWith("'$Inspector-'")) {
             return new LinkedList<LogicTuple>();

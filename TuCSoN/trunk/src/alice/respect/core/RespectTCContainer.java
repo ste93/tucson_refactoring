@@ -8,6 +8,7 @@ import alice.respect.api.IManagementContext;
 import alice.respect.api.IOrdinaryAsynchInterface;
 import alice.respect.api.IOrdinarySynchInterface;
 import alice.respect.api.IRemoteLinkProvider;
+import alice.respect.api.IRespectTC;
 import alice.respect.api.ISpecificationAsynchInterface;
 import alice.respect.api.ISpecificationSynchInterface;
 import alice.respect.api.ITCRegistry;
@@ -22,6 +23,7 @@ import alice.tucson.service.RemoteLinkProvider;
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public final class RespectTCContainer {
+
     private static RespectTCContainer container;
     private static int defaultport;
     private static final int QUEUE_SIZE = 1000;
@@ -236,11 +238,21 @@ public final class RespectTCContainer {
     public ISpecificationSynchInterface getSpecificationSynchInterface(
             final TupleCentreId id) {
         try {
+            System.out
+                    .println(" @@@@@@@@@@ getSpecificationSynchInterface > id = "
+                            + id);
+            IRespectTC rtc = this.registry.getTC(id);
+            System.out
+                    .println(" @@@@@@@@@@ getSpecificationSynchInterface > rtc.getId() = "
+                            + rtc.getId());
             return ((RespectTC) this.registry.getTC(id))
                     .getSpecificationSynchInterface();
         } catch (final InstantiationNotPossibleException e) {
             final RespectTC tc = new RespectTC(id, this,
                     RespectTCContainer.QUEUE_SIZE);
+            System.out
+                    .println(" @@@@@@@@@@ getSpecificationSynchInterface > new tc = "
+                            + tc);
             this.registry.addTC(tc);
             return tc.getSpecificationSynchInterface();
         }

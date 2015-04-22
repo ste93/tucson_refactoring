@@ -13,6 +13,7 @@ import alice.respect.api.exceptions.InstantiationNotPossibleException;
  * 
  */
 public class RespectLocalRegistry implements ITCRegistry {
+
     /**
      * internal representation of the registry, keys are tuple centre id (as
      * String)
@@ -28,8 +29,8 @@ public class RespectLocalRegistry implements ITCRegistry {
 
     @Override
     public void addTC(final IRespectTC tc) {
-        if (!this.reg.containsKey(tc.getId().getName())) {
-            this.reg.put(tc.getId().getName(), tc);
+        if (!this.reg.containsKey(tc.getId().toString())) {
+            this.reg.put(tc.getId().toString(), tc);
         }
     }
 
@@ -49,10 +50,12 @@ public class RespectLocalRegistry implements ITCRegistry {
     @Override
     public IRespectTC getTC(final TupleCentreId id)
             throws InstantiationNotPossibleException {
-        if (!this.reg.containsKey(id.getName())) {
+        if (!this.reg.containsKey(id.toString())) {
             throw new InstantiationNotPossibleException("The string "
-                    + id.getName() + " is not contained in the registry");
+                    + id.toString() + " is not contained in the registry");
         }
-        return this.reg.get(id.getName());
+        System.out.println(" @@@@@@@@@@ this.reg.get = "
+                + this.reg.get(id.toString()).getId());
+        return this.reg.get(id.toString());
     }
 }

@@ -69,11 +69,6 @@ public final class TupleCentreContainer {
             RespectTCContainer.setDefPort(TupleCentreContainer.defaultport);
             final TupleCentreId tid = new TupleCentreId(id.getName(),
                     id.getNode(), String.valueOf(id.getPort()));
-            System.out
-                    .println(" @@@@@@@@@@ TupleCentreContainer.defaultport = "
-                            + TupleCentreContainer.defaultport);
-            System.out.println(" @@@@@@@@@@ RespectTCContainer.getDefPort() = "
-                    + RespectTCContainer.getDefPort());
             System.out.println(" @@@@@@@@@@ id.getName() = " + id.getName());
             System.out.println(" @@@@@@@@@@ id.getNode() = " + id.getNode());
             System.out.println(" @@@@@@@@@@ id.getPort() = " + id.getPort());
@@ -308,12 +303,17 @@ public final class TupleCentreContainer {
             TucsonInvalidSpecificationException {
         final LogicTuple res = null;
         ISpecificationSynchInterface context = null;
+        RespectTCContainer rtcc = null;
         try {
-            context = RespectTCContainer.getRespectTCContainer()
-                    .getSpecificationSynchInterface(
-                            tid.getInternalTupleCentreId());
+            rtcc = RespectTCContainer.getRespectTCContainer();
+            System.out.println(" @@@@@@@@@@ rtcc = " + rtcc.getDefPort());
+            context = rtcc.getSpecificationSynchInterface(tid
+                    .getInternalTupleCentreId());
+            System.out.println(" @@@@@@@@@@ tid = " + tid + ", internal = "
+                    + tid.getInternalTupleCentreId());
             if (type == TucsonOperation.setSCode()) {
                 if ("spec".equals(t.getName())) {
+                    System.out.println(" @@@@@@@@@@ HI THERE 4 -.-");
                     return ((SpecificationSynchInterface) context).setS(aid
                             .getAgentId(), new RespectSpecification(t.getArg(0)
                             .getName()));

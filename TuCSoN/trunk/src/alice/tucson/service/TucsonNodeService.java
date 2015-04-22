@@ -829,26 +829,28 @@ public class TucsonNodeService {
             name.append("@localhost");
         }
         if (n.indexOf(':') < 0) {
-            name.append(':').append(this.tcpPort);
+            name.append(':').append("'" + this.tcpPort + "'");
         }
         final TucsonTupleCentreId id = new TucsonTupleCentreId(name.toString());
-        System.out.println(" @@@@@@@@@@ TucsonNodeService.name = " + name);
         System.out.println(" @@@@@@@@@@ TucsonNodeService.id = " + id);
-        System.out.println(" @@@@@@@@@@ TucsonNodeService.this.tcpPort = "
-                + this.tcpPort);
         try {
-            this.tcs.add(TupleCentreContainer.createTC(id,
-                    TucsonNodeService.MAX_EVENT_QUEUE_SIZE, this.tcpPort));
+            RespectTC rtc = TupleCentreContainer.createTC(id,
+                    TucsonNodeService.MAX_EVENT_QUEUE_SIZE, this.tcpPort);
+            System.out.println(" @@@@@@@@@@ TucsonNodeService.rtc.getId() = "
+                    + rtc.getId());
+            this.tcs.add(rtc);
         } catch (final InvalidTupleCentreIdException e) {
             TucsonNodeService.log("TupleCentreContainer.createTC(...) error");
             e.printStackTrace();
         }
+        System.out.println(" @@@@@@@@@@ HI THERE -.-");
         if (this.observed) {
             TupleCentreContainer.doManagementOperation(
                     TucsonOperation.addObsCode(), id, this.obsService);
             this.obsService.tcCreated(id);
         }
         final TucsonTCUsers tcUsers = new TucsonTCUsers(id);
+        System.out.println(" @@@@@@@@@@ HI THERE 2 -.-");
         this.cores.put(id.getName(), tcUsers);
         return tcUsers;
     }
@@ -960,6 +962,7 @@ public class TucsonNodeService {
                     "Internal Failure: loading JavaLibrary in Prolog Configuration Engine failed.");
         }
         if (conf != null) {
+            TucsonNodeService.log("Configuration file not supported atm!");
             try {
                 final InputStream is = Thread
                         .currentThread()
@@ -1048,6 +1051,7 @@ public class TucsonNodeService {
             TupleCentreContainer.doBlockingSpecOperation(
                     TucsonOperation.setSCode(), this.nodeAid, this.idObsTC,
                     specTuple);
+            System.out.println(" @@@@@@@@@@ HI THERE 3 -.-");
             TupleCentreContainer.doNonBlockingOperation(
                     TucsonOperation.outCode(), this.nodeAid, this.idObsTC,
                     new LogicTuple("boot"), null);
