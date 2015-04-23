@@ -862,36 +862,38 @@ public class TucsonNodeService {
                     end = toParse.lastIndexOf("_");
                     toParse = toParse.substring(0, end);
                     final String[] split = toParse.split("_at_");
-                    final String tcName = split[0];
-                    final String fullTcName = split[0] + "@" + split[1] + ":"
-                            + split[2];
-                    TucsonNodeService.log(">>> Persistent tc found: "
-                            + fullTcName);
-                    try {
-                        this.bootTupleCentre(tcName);
-                    } catch (final TucsonInvalidTupleCentreIdException e) {
-                        e.printStackTrace();
-                    }
-                    TucsonNodeService.log(">>> Recovering persistent tc < "
-                            + fullTcName + " >...");
-                    final TucsonTupleCentreId ttcid = this.cores.get(tcName)
-                            .getTucsonTupleCentreId();
-                    TupleCentreContainer.recoveryPersistent(ttcid,
-                            TucsonNodeService.PERSISTENCY_PATH, file);
-                    // TupleCentreContainer.enablePersistency(
-                    // this.cores.get(tcName).getTucsonTupleCentreId(),
-                    // TucsonNodeService.PERSISTENCY_PATH);
-                    try {
-                        TupleCentreContainer.doBlockingOperation(
-                                TucsonOperation.outCode(), this.nodeAid, ttcid,
-                                new LogicTuple("is_persistent", new Value(
-                                        tcName)));
-                        TucsonNodeService.log(">>> ...persistent tc < "
-                                + fullTcName + " > recovered.");
-                    } catch (final TucsonOperationNotPossibleException e) {
-                        e.printStackTrace();
-                    } catch (final TucsonInvalidLogicTupleException e) {
-                        e.printStackTrace();
+                    if (Integer.parseInt(split[2]) == this.tcpPort) {
+                        final String tcName = split[0];
+                        final String fullTcName = split[0] + "@" + split[1]
+                                + ":" + split[2];
+                        TucsonNodeService.log(">>> Persistent tc found: "
+                                + fullTcName);
+                        try {
+                            this.bootTupleCentre(tcName);
+                        } catch (final TucsonInvalidTupleCentreIdException e) {
+                            e.printStackTrace();
+                        }
+                        TucsonNodeService.log(">>> Recovering persistent tc < "
+                                + fullTcName + " >...");
+                        final TucsonTupleCentreId ttcid = this.cores
+                                .get(tcName).getTucsonTupleCentreId();
+                        TupleCentreContainer.recoveryPersistent(ttcid,
+                                TucsonNodeService.PERSISTENCY_PATH, file);
+                        // TupleCentreContainer.enablePersistency(
+                        // this.cores.get(tcName).getTucsonTupleCentreId(),
+                        // TucsonNodeService.PERSISTENCY_PATH);
+                        try {
+                            TupleCentreContainer.doBlockingOperation(
+                                    TucsonOperation.outCode(), this.nodeAid,
+                                    ttcid, new LogicTuple("is_persistent",
+                                            new Value(tcName)));
+                            TucsonNodeService.log(">>> ...persistent tc < "
+                                    + fullTcName + " > recovered.");
+                        } catch (final TucsonOperationNotPossibleException e) {
+                            e.printStackTrace();
+                        } catch (final TucsonInvalidLogicTupleException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             }
