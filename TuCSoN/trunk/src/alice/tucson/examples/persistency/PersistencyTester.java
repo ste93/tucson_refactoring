@@ -26,6 +26,7 @@ import alice.tuplecentre.api.exceptions.OperationTimeOutException;
  * 
  */
 public final class PersistencyTester {
+
     /**
      * @param args
      *            not used atm
