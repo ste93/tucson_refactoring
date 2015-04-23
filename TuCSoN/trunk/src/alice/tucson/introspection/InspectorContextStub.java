@@ -33,6 +33,7 @@ import alice.tuplecentre.api.Tuple;
  * 
  */
 public class InspectorContextStub implements InspectorContext {
+
     /** listeners registrated for virtual machine output events */
     private final List<InspectorContextListener> contextListeners = new ArrayList<InspectorContextListener>();
     private AbstractTucsonProtocol dialog;
@@ -176,7 +177,7 @@ public class InspectorContextStub implements InspectorContext {
             if (this.dialog.isEnterRequestAccepted()) {
                 this.protocol = new InspectorProtocol();
                 final NewInspectorMsg msg = new NewInspectorMsg(this.id,
-                        tc.getName(), this.protocol);
+                        tc.toString(), this.protocol);
                 this.dialog.sendInspectorMsg(msg);
                 return this.dialog;
             }

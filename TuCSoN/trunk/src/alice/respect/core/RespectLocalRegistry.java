@@ -29,8 +29,10 @@ public class RespectLocalRegistry implements ITCRegistry {
 
     @Override
     public void addTC(final IRespectTC tc) {
-        if (!this.reg.containsKey(tc.getId().toString())) {
-            this.reg.put(tc.getId().toString(), tc);
+        final TupleCentreId id = tc.getId();
+        final String key = id.getName() + ":" + id.getPort();
+        if (!this.reg.containsKey(key)) {
+            this.reg.put(key, tc);
         }
     }
 
@@ -50,12 +52,14 @@ public class RespectLocalRegistry implements ITCRegistry {
     @Override
     public IRespectTC getTC(final TupleCentreId id)
             throws InstantiationNotPossibleException {
-        if (!this.reg.containsKey(id.toString())) {
-            throw new InstantiationNotPossibleException("The string "
-                    + id.toString() + " is not contained in the registry");
+        final String key = id.getName() + ":" + id.getPort();
+        if (!this.reg.containsKey(key)) {
+            throw new InstantiationNotPossibleException("The string " + key
+                    + " is not contained in the registry");
         }
-        System.out.println("....[RespectLocalRegistry]: Got "
-                + this.reg.get(id.toString()).getId());
-        return this.reg.get(id.toString());
+        IRespectTC rtc = this.reg.get(key);
+        // System.out.println("....[RespectLocalRegistry]: Got " + rtc.getId()
+        // + " from key " + key);
+        return rtc;
     }
 }
