@@ -554,6 +554,8 @@ public class TucsonNodeService {
      */
     public synchronized void enablePersistency(final Tuple template) {
         this.persistencyTemplate = template;
+        TucsonNodeService.log(">>> Looking for "
+                + this.persistencyTemplate);
         final Iterator<TucsonTCUsers> it = this.cores.values().iterator();
         while (it.hasNext()) {
             final TucsonTCUsers tc = it.next();
