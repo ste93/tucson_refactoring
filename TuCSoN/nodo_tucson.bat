@@ -1,1 +1,0 @@
-java -cp ./lib/tucson.jar;./libs/2p.jar alice.tucson.service.TucsonNodeService 
