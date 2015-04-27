@@ -64,8 +64,8 @@ public class WelcomeAgent extends Thread {
     @Override
     public void run() {
         try {
-            this.mainDialog = TPFactory
-                    .getDialogNodeSide(TPFactory.DIALOG_TYPE_TCP);
+            this.mainDialog = TPFactory.getDialogNodeSide(
+                    TPFactory.DIALOG_TYPE_TCP, this.node.getTCPPort());
         } catch (final DialogInitializationException e) {
             // TODO CICORA: what is the correct behavior when a port is already
             // used?
@@ -80,14 +80,14 @@ public class WelcomeAgent extends Thread {
             while (!this.isShutdown()) {
                 WelcomeAgent.log("Listening to incoming connections...");
                 WelcomeAgent
-                        .log("--------------------------------------------------------------------------------");
+                .log("--------------------------------------------------------------------------------");
                 try {
                     dialog = this.mainDialog.acceptNewDialog();
                 } catch (final DialogAcceptException e) {
                     // TODO CICORA: what is the correct behavior?
                     if (this.isShutdown()) {
                         WelcomeAgent
-                                .log("Shutdown request received, shutting down...");
+                        .log("Shutdown request received, shutting down...");
                     } else {
                         e.printStackTrace();
                     }
@@ -99,7 +99,7 @@ public class WelcomeAgent extends Thread {
                     dialog.receiveEnterRequest();
                     final ACCDescription desc = dialog.getContextDescription();
                     WelcomeAgent
-                            .log("Delegating ACCProvider received enter request...");
+                    .log("Delegating ACCProvider received enter request...");
                     this.contextManager.processContextRequest(desc, dialog);
                 } else if (dialog.isNodeActiveQuery()) {
                     dialog.sendNodeActiveReply();

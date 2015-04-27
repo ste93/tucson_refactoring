@@ -297,10 +297,11 @@ public final class TupleCentreContainer {
             TucsonInvalidSpecificationException {
         final LogicTuple res = null;
         ISpecificationSynchInterface context = null;
+        RespectTCContainer rtcc = null;
         try {
-            context = RespectTCContainer.getRespectTCContainer()
-                    .getSpecificationSynchInterface(
-                            tid.getInternalTupleCentreId());
+            rtcc = RespectTCContainer.getRespectTCContainer();
+            context = rtcc.getSpecificationSynchInterface(tid
+                    .getInternalTupleCentreId());
             if (type == TucsonOperation.setSCode()) {
                 if ("spec".equals(t.getName())) {
                     return ((SpecificationSynchInterface) context).setS(aid

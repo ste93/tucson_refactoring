@@ -19,7 +19,6 @@ public final class TPConfig {
     // TCP configuration ----------------------------------
     private static final int DEFAULT_TCP_PORT = 20504;
     private static final int MAX_UNBOUND_PORT = 64000;
-    private static TPConfig singletonTPConfig = null;
 
     /**
      * Return the default TCP port number
@@ -30,24 +29,9 @@ public final class TPConfig {
         return TPConfig.DEFAULT_TCP_PORT;
     }
 
-    /**
-     * Return singleton instance of TPConfig
-     *
-     * @return the singleton instance of this TuCSoN Protocol configurator
-     */
-    public static synchronized TPConfig getInstance() {
-        if (TPConfig.singletonTPConfig == null) {
-            TPConfig.singletonTPConfig = new TPConfig();
-        }
-        return TPConfig.singletonTPConfig;
-    }
-
     // Generic configuration ------------------------------
     private final int defProtType = TPFactory.DIALOG_TYPE_TCP;
     private int tcpPort = -1;
-
-    private TPConfig() {
-    }
 
     /**
      * Return the default Protocol type

@@ -20,9 +20,9 @@ import alice.tuprolog.Term;
 
 /**
  * Tuple centre identifier for ReSpecT tuple centres
- *
+ * 
  * A tuple centre identifier must be a ground logic term.
- *
+ * 
  * @author Alessandro Ricci
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
@@ -33,14 +33,14 @@ public class TupleCentreId implements alice.tuplecentre.api.TupleCentreId,
     private static TupleCentreIdOperatorManager opManager = new TupleCentreIdOperatorManager();
     private static final long serialVersionUID = 1L;
     /**
-     *
+     * 
      */
     protected alice.tuprolog.Term id;
 
     /**
      * Constructs a tuple centre identifier from a string, which must represent
      * a well-formed ground logic term
-     *
+     * 
      * @param n
      *            is the textual representation of the identifier
      * @throws InvalidTupleCentreIdException
@@ -59,7 +59,7 @@ public class TupleCentreId implements alice.tuplecentre.api.TupleCentreId,
     }
 
     /**
-     *
+     * 
      * @param tcName
      *            logical name of the tuple centre
      * @param hostName
@@ -92,7 +92,7 @@ public class TupleCentreId implements alice.tuplecentre.api.TupleCentreId,
     /**
      * Constructs a tuple centre identifier, which must be a well-formed ground
      * logic term
-     *
+     * 
      * @param name
      *            is the term representing the identifier
      * @throws InvalidTupleCentreIdException
@@ -104,15 +104,6 @@ public class TupleCentreId implements alice.tuplecentre.api.TupleCentreId,
             throw new InvalidTupleCentreIdException("Term '" + name
                     + "' is not a well-formed ground logic term");
         }
-    }
-
-    /**
-     *
-     */
-    protected TupleCentreId() {
-        /*
-         *
-         */
     }
 
     /*
@@ -143,7 +134,7 @@ public class TupleCentreId implements alice.tuplecentre.api.TupleCentreId,
 
     /**
      * Gets the string representation of the tuple centre name
-     *
+     * 
      * @return the ReSpecT node identifier
      */
     public String getName() {
@@ -158,7 +149,7 @@ public class TupleCentreId implements alice.tuplecentre.api.TupleCentreId,
 
     /**
      * Gets localhost ReSpecT has no net infrastructure
-     *
+     * 
      * @return the node identifier (localhost)
      */
     public String getNode() {
@@ -182,7 +173,7 @@ public class TupleCentreId implements alice.tuplecentre.api.TupleCentreId,
     }
 
     /**
-     *
+     * 
      * @return the listening port for this tuple centre identifier
      */
     public int getPort() {
@@ -231,7 +222,7 @@ public class TupleCentreId implements alice.tuplecentre.api.TupleCentreId,
 
     /**
      * Provides the logic term representation of the identifier
-     *
+     * 
      * @return the term representing the identifier
      */
     public Term toTerm() {

@@ -179,7 +179,7 @@ public class InspectorContextStub implements InspectorContext {
             if (this.dialog.isEnterRequestAccepted()) {
                 this.protocol = new InspectorProtocol();
                 final NewInspectorMsg msg = new NewInspectorMsg(this.id,
-                        tc.getName(), this.protocol);
+                        tc.toString(), this.protocol);
                 this.dialog.sendInspectorMsg(msg);
                 return this.dialog;
             }

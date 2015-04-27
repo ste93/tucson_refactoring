@@ -1360,7 +1360,9 @@ public class RespectVMContext extends
             if (tuples != null && !tuples.isEmpty()) {
                 this.log(">>> Recovering tuples...");
                 for (final String t : tuples) {
-                    this.addTuple(LogicTuple.parse(t), true);
+                    if (!t.startsWith("is_persistent")) {
+                        this.addTuple(LogicTuple.parse(t), true);
+                    }
                 }
                 this.log(">>> ...tuples recovered!");
             }
@@ -1391,10 +1393,14 @@ public class RespectVMContext extends
                     // this.log("split[1] = " + split[1]);
                     // }
                     if ("(+t)".equals(split[0])) {
-                        this.addTuple(LogicTuple.parse(split[1]), true);
+                        if (!split[1].startsWith("is_persistent")) {
+                            this.addTuple(LogicTuple.parse(split[1]), true);
+                        }
                     } else if ("(-t)".equals(split[0])) {
-                        this.removeMatchingTuple(LogicTuple.parse(split[1]),
-                                true);
+                        if (!split[1].startsWith("is_persistent")) {
+                            this.removeMatchingTuple(
+                                    LogicTuple.parse(split[1]), true);
+                        }
                     } else if ("(+s)".equals(split[0])) {
                         this.addSpecTuple(LogicTuple.parse(split[1]));
                     } else if ("(-s)".equals(split[0])) {

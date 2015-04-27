@@ -24,7 +24,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -57,7 +56,6 @@ import alice.tucson.network.AbstractTucsonProtocol;
 import alice.tucson.network.TPConfig;
 import alice.tucson.network.exceptions.DialogCloseException;
 import alice.tucson.network.exceptions.DialogInitializationException;
-import alice.tucson.service.tools.TucsonACCTool;
 import alice.tucson.utilities.Utils;
 import alice.tuplecentre.api.Tuple;
 import alice.tuprolog.InvalidTheoryException;
@@ -83,7 +81,13 @@ public class TucsonNodeService {
     // how to set a "proper" number?
     private static final int MAX_EVENT_QUEUE_SIZE = 1000;
     private static final int MAX_UNBOUND_PORT = 64000;
+    private static final Map<Integer, TucsonNodeService> NODES = new HashMap<Integer, TucsonNodeService>();
+
     private static final String PERSISTENCY_PATH = "./persistent/";
+
+    public synchronized static final TucsonNodeService getNode(final int port) {
+        return TucsonNodeService.NODES.get(port);
+    }
 
     /**
      *
@@ -224,19 +228,9 @@ public class TucsonNodeService {
         System.out.println("[TuCSoN Node Service]: " + m);
     }
 
-    private String adminPassword;
-
-    private String adminUsername;
-
     private final List<TucsonAgentId> agents;
-
-    // RBAC
-    private String baseAgentClass;
-
     private final String configFile;
-
     private Prolog configManager;
-
     private Map<String, TucsonTCUsers> cores;
     private ACCProvider ctxman;
     private EnvConfigAgent envAgent;
@@ -245,10 +239,7 @@ public class TucsonNodeService {
     // configuration
     private TucsonTupleCentreId idObsTC;
     private final ArrayList<InspectorContextSkel> inspectorAgents;
-    private boolean inspectorsAuthorized;
     private Date installationDate;
-    private boolean listAllRoles;
-    private boolean loginRequired;
     private final List<Thread> nodeAgents;
     private TucsonAgentId nodeAid;
     private boolean observed;
@@ -256,6 +247,7 @@ public class TucsonNodeService {
     private Tuple persistencyTemplate;
     private int tcpPort = TucsonNodeService.DEFAULT_TCP_PORT;
     private final List<RespectTC> tcs;
+    private final TPConfig tpConfig;
     private WelcomeAgent welcome;
 
     /**
@@ -309,17 +301,12 @@ public class TucsonNodeService {
         this.nodeAgents = new ArrayList<Thread>();
         this.inspectorAgents = new ArrayList<InspectorContextSkel>();
         this.tcs = new ArrayList<RespectTC>();
-        TPConfig.getInstance().setTcpPort(this.tcpPort);
-
-        // Set rbac properties
-        this.baseAgentClass = "baseAgentClass";
-        this.loginRequired = false;
-        this.listAllRoles = true;
+        this.tpConfig = new TPConfig();
+        this.tpConfig.setTcpPort(this.tcpPort);
+        synchronized (TucsonNodeService.NODES) {
+            TucsonNodeService.NODES.put(this.tcpPort, this);
+        }
     }
-
-    /*
-     * ============== RBAC METHODS ===============
-     */
 
     /**
      *
@@ -454,10 +441,6 @@ public class TucsonNodeService {
         return false;
     }
 
-    /*
-     * ============= END RBAC ================
-     */
-
     /**
      *
      * @param tc
@@ -571,6 +554,8 @@ public class TucsonNodeService {
      */
     public synchronized void enablePersistency(final Tuple template) {
         this.persistencyTemplate = template;
+        TucsonNodeService.log(">>> Looking for "
+                + this.persistencyTemplate);
         final Iterator<TucsonTCUsers> it = this.cores.values().iterator();
         while (it.hasNext()) {
             final TucsonTCUsers tc = it.next();
@@ -637,6 +622,10 @@ public class TucsonNodeService {
      */
     public int getTCPPort() {
         return this.tcpPort;
+    }
+
+    public final TPConfig getTPConfig() {
+        return this.tpConfig;
     }
 
     /**
@@ -739,7 +728,7 @@ public class TucsonNodeService {
             tcName.append("@localhost");
         }
         if (tcn.indexOf(':') < 0) {
-            tcName.append(this.tcpPort);
+            tcName.append(":" + this.tcpPort);
         }
         TucsonTupleCentreId tid;
         try {
@@ -761,30 +750,6 @@ public class TucsonNodeService {
             }
         }
         return core;
-    }
-
-    public void setAdminPassword(final String password) {
-        this.adminPassword = password;
-    }
-
-    public void setAdminUsername(final String username) {
-        this.adminUsername = username;
-    }
-
-    public void setBaseAgentClass(final String agentClass) {
-        this.baseAgentClass = agentClass;
-    }
-
-    public void setInspectorsAuthorized(final boolean inspectorsAuth) {
-        this.inspectorsAuthorized = inspectorsAuth;
-    }
-
-    public void setListAllRolesAllowed(final boolean listRoles) {
-        this.listAllRoles = listRoles;
-    }
-
-    public void setLoginRequired(final boolean loginReq) {
-        this.loginRequired = loginReq;
     }
 
     /**
@@ -861,12 +826,13 @@ public class TucsonNodeService {
             name.append("@localhost");
         }
         if (n.indexOf(':') < 0) {
-            name.append(':').append(this.tcpPort);
+            name.append(':').append("'" + this.tcpPort + "'");
         }
         final TucsonTupleCentreId id = new TucsonTupleCentreId(name.toString());
         try {
-            this.tcs.add(TupleCentreContainer.createTC(id,
-                    TucsonNodeService.MAX_EVENT_QUEUE_SIZE, this.tcpPort));
+            RespectTC rtc = TupleCentreContainer.createTC(id,
+                    TucsonNodeService.MAX_EVENT_QUEUE_SIZE, this.tcpPort);
+            this.tcs.add(rtc);
         } catch (final InvalidTupleCentreIdException e) {
             TucsonNodeService.log("TupleCentreContainer.createTC(...) error");
             e.printStackTrace();
@@ -898,36 +864,38 @@ public class TucsonNodeService {
                     end = toParse.lastIndexOf("_");
                     toParse = toParse.substring(0, end);
                     final String[] split = toParse.split("_at_");
-                    final String tcName = split[0];
-                    final String fullTcName = split[0] + "@" + split[1] + ":"
-                            + split[2];
-                    TucsonNodeService.log(">>> Persistent tc found: "
-                            + fullTcName);
-                    try {
-                        this.bootTupleCentre(tcName);
-                    } catch (final TucsonInvalidTupleCentreIdException e) {
-                        e.printStackTrace();
-                    }
-                    TucsonNodeService.log(">>> Recovering persistent tc < "
-                            + fullTcName + " >...");
-                    final TucsonTupleCentreId ttcid = this.cores.get(tcName)
-                            .getTucsonTupleCentreId();
-                    TupleCentreContainer.recoveryPersistent(ttcid,
-                            TucsonNodeService.PERSISTENCY_PATH, file);
-                    // TupleCentreContainer.enablePersistency(
-                    // this.cores.get(tcName).getTucsonTupleCentreId(),
-                    // TucsonNodeService.PERSISTENCY_PATH);
-                    try {
-                        TupleCentreContainer.doBlockingOperation(
-                                TucsonOperation.outCode(), this.nodeAid, ttcid,
-                                new LogicTuple("is_persistent", new Value(
-                                        tcName)));
-                        TucsonNodeService.log(">>> ...persistent tc < "
-                                + fullTcName + " > recovered.");
-                    } catch (final TucsonOperationNotPossibleException e) {
-                        e.printStackTrace();
-                    } catch (final TucsonInvalidLogicTupleException e) {
-                        e.printStackTrace();
+                    if (Integer.parseInt(split[2]) == this.tcpPort) {
+                        final String tcName = split[0];
+                        final String fullTcName = split[0] + "@" + split[1]
+                                + ":" + split[2];
+                        TucsonNodeService.log(">>> Persistent tc found: "
+                                + fullTcName);
+                        try {
+                            this.bootTupleCentre(tcName);
+                        } catch (final TucsonInvalidTupleCentreIdException e) {
+                            e.printStackTrace();
+                        }
+                        TucsonNodeService.log(">>> Recovering persistent tc < "
+                                + fullTcName + " >...");
+                        final TucsonTupleCentreId ttcid = this.cores
+                                .get(tcName).getTucsonTupleCentreId();
+                        TupleCentreContainer.recoveryPersistent(ttcid,
+                                TucsonNodeService.PERSISTENCY_PATH, file);
+                        // TupleCentreContainer.enablePersistency(
+                        // this.cores.get(tcName).getTucsonTupleCentreId(),
+                        // TucsonNodeService.PERSISTENCY_PATH);
+                        try {
+                            TupleCentreContainer.doBlockingOperation(
+                                    TucsonOperation.outCode(), this.nodeAid,
+                                    ttcid, new LogicTuple("is_persistent",
+                                            new Value(tcName)));
+                            TucsonNodeService.log(">>> ...persistent tc < "
+                                    + fullTcName + " > recovered.");
+                        } catch (final TucsonOperationNotPossibleException e) {
+                            e.printStackTrace();
+                        } catch (final TucsonInvalidLogicTupleException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             }
@@ -956,67 +924,6 @@ public class TucsonNodeService {
             TupleCentreContainer.doNonBlockingOperation(
                     TucsonOperation.outCode(), this.nodeAid, this.idConfigTC,
                     new LogicTuple("boot"), null);
-
-            // Set default agent class
-            TupleCentreContainer
-                    .doBlockingOperation(TucsonOperation.outCode(),
-                            this.nodeAid, this.idConfigTC, new LogicTuple(
-                                    "base_agent_class", new Value(
-                                            this.baseAgentClass)));
-
-            // Set login required
-            TupleCentreContainer.doBlockingOperation(TucsonOperation.outCode(),
-                    this.nodeAid, this.idConfigTC, new LogicTuple(
-                            "login_required", new Value(
-                                    this.loginRequired ? "yes" : "no")));
-
-            // Allow or not list of all roles
-            TupleCentreContainer.doBlockingOperation(TucsonOperation.outCode(),
-                    this.nodeAid, this.idConfigTC, new LogicTuple(
-                            "list_all_roles", new Value(
-                                    this.listAllRoles ? "yes" : "no")));
-
-            // Allow or not inspectors
-            TupleCentreContainer.doBlockingOperation(TucsonOperation.outCode(),
-                    this.nodeAid, this.idConfigTC, new LogicTuple(
-                            "authorize_inspectors", new Value(
-                                    this.inspectorsAuthorized ? "yes" : "no")));
-
-            // TupleCentreContainer.doBlockingOperation(TucsonOperation.outCode(),
-            // this.nodeAid, this.idConfigTC, new LogicTuple("role", new
-            // Value("admin_role"), new Value("admin role"), new Value("0")));
-            /*
-             * if(!authForAdmin){
-             * TupleCentreContainer.doBlockingOperation(TucsonOperation
-             * .outCode(), this.nodeAid, this.idConfigTC, new
-             * LogicTuple("role_credentials", new Value("admin_role"), new
-             * Value("_"))); } else if(adminUsername!=null &&
-             * !adminUsername.equalsIgnoreCase("") && adminPassword!=null &&
-             * !adminPassword.equalsIgnoreCase("")) {
-             * TupleCentreContainer.doBlockingOperation
-             * (TucsonOperation.outCode(), nodeAid, idConfigTC, new
-             * LogicTuple("role_credentials", new Value("admin_role"), new
-             * Value(adminUsername+":"+TucsonACCTool.encrypt(adminPassword))));
-             * } else {
-             * TupleCentreContainer.doBlockingOperation(TucsonOperation.
-             * outCode(), this.nodeAid, this.idConfigTC, new
-             * LogicTuple("role_credentials", new Value("admin_role"), new
-             * Value("_"))); }
-             */
-            if (this.adminUsername != null
-                    && !this.adminUsername.equalsIgnoreCase("")
-                    && this.adminPassword != null
-                    && !this.adminPassword.equalsIgnoreCase("")) {
-                TupleCentreContainer.doBlockingOperation(
-                        TucsonOperation.outCode(),
-                        this.nodeAid,
-                        this.idConfigTC,
-                        new LogicTuple("admin_credentials", new Value(
-                                this.adminUsername
-                                        + ":"
-                                        + TucsonACCTool
-                                                .encrypt(this.adminPassword))));
-            }
             this.addAgent(this.nodeAid);
         } catch (final TucsonInvalidTupleCentreIdException e) {
             e.printStackTrace();
@@ -1027,8 +934,6 @@ public class TucsonNodeService {
         } catch (final TucsonInvalidLogicTupleException e) {
             e.printStackTrace();
         } catch (final TucsonInvalidSpecificationException e) {
-            e.printStackTrace();
-        } catch (final NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
     }
@@ -1051,6 +956,7 @@ public class TucsonNodeService {
                     "Internal Failure: loading JavaLibrary in Prolog Configuration Engine failed.");
         }
         if (conf != null) {
+            TucsonNodeService.log("Configuration file not supported atm!");
             try {
                 final InputStream is = Thread
                         .currentThread()

@@ -6,6 +6,7 @@ package alice.tucson.examples.persistency;
 import java.io.IOException;
 import alice.logictuple.LogicTuple;
 import alice.logictuple.Value;
+import alice.logictuple.Var;
 import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.tucson.api.EnhancedACC;
 import alice.tucson.api.NegotiationACC;
@@ -34,10 +35,10 @@ public final class PersistencyTester {
      */
     public static void main(final String[] args) {
         try {
-            final TucsonNodeService tns = new TucsonNodeService();
+            final TucsonNodeService tns = new TucsonNodeService(20504);
             tns.install();
             try {
-                while (!TucsonNodeService.isInstalled(5000)) {
+                while (!TucsonNodeService.isInstalled(20504, 5000)) {
                     Thread.sleep(1000);
                 }
             } catch (final InterruptedException e) {
@@ -48,7 +49,7 @@ public final class PersistencyTester {
                 e.printStackTrace();
             }
             final TucsonTupleCentreId ttcid = new TucsonTupleCentreId(
-                    "default@localhost:20504");
+                    "def(1)@localhost:20504");
             final TucsonTupleCentreId ttcidOrg = new TucsonTupleCentreId(
                     "'$ORG'@localhost:20504");
             final TucsonAgentId aid = new TucsonAgentId("'PersistencyTester'");
@@ -67,7 +68,7 @@ public final class PersistencyTester {
             }
             // snapshot test
             acc.out(ttcidOrg, new LogicTuple("cmd", new Value(
-                    "enable_persistency", new Value("default"))),
+                    "enable_persistency", new Value("def", new Value(1)))),
                     Long.MAX_VALUE);
             // spec addition
             spec = Utils
@@ -91,7 +92,7 @@ public final class PersistencyTester {
                     Long.MAX_VALUE);
             // disable persistency test
             acc.out(ttcidOrg, new LogicTuple("cmd", new Value(
-                    "disable_persistency", new Value("default"))),
+                    "disable_persistency", new Value("def", new Value(1)))),
                     Long.MAX_VALUE);
             // tuples addition
             for (; i < 2000; i++) {
@@ -100,7 +101,7 @@ public final class PersistencyTester {
             }
             // snapshot test n. 2
             acc.out(ttcidOrg, new LogicTuple("cmd", new Value(
-                    "enable_persistency", new Value("default"))),
+                    "enable_persistency", new Value("def", new Var()))),
                     Long.MAX_VALUE);
             // tuples addition
             for (; i < 3000; i++) {
