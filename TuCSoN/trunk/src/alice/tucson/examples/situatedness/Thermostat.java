@@ -25,29 +25,30 @@ import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 
 /**
  * TuCSoN situatedness feature example.
- * 
+ *
  * In this toy scenario, a situated, 'intelligent' thermostat is in charge of
  * keeping a room temperature between 18 and 22. In order to do so, it is
  * equipped with a sensor (ActualSensor class) and an actuator (ActualActuator
  * class). As obvious, the former is requested by the thermostat to perceiving
  * the temperature, whereas the latter is prompted to change the temperature
  * upon need.
- * 
+ *
  * Whereas the thermostat entity can be programmed as pleased, hence as an agent
  * or a simple Java process (still a TuCSoN agent, as in this case), the sensor
  * and the actuator should be modelled as "probes" (aka environmental
  * resources), interfacing with the MAS (in this simple case, only the
  * thermostat TuCSoN agent) through one transducer each.
- * 
+ *
  * Furthermore, to leverage a possible ditributed scenario for this toy
  * thermostat example, transducers and the thermostat each have their own tuple
  * centre to interact with, suitably programmed through situated ReSpecT
  * reactions (sensorSpec.rsp and actuatorSpec.rsp).
- * 
+ *
  * @author ste (mailto: s.mariani@unibo.it) on 05/nov/2013
- * 
+ *
  */
 public final class Thermostat {
+
     private static final String DEFAULT_HOST = "localhost";
     private static final String DEFAULT_PORT = "20504";
     private static final int HIGH = 22;
@@ -60,23 +61,25 @@ public final class Thermostat {
      */
     public static void main(final String[] args) {
         try {
-        	final TucsonNodeService tns = new TucsonNodeService();
+            final TucsonNodeService tns = new TucsonNodeService();
             tns.install();
             try {
                 while (!TucsonNodeService.isInstalled(5000)) {
                     Thread.sleep(1000);
                 }
-            } catch (Exception e ){
-            	
+            } catch (final Exception e) {
+                e.printStackTrace();
             }
             final TucsonAgentId aid = new TucsonAgentId("thermostat");
-            final NegotiationACC negACC = TucsonMetaACC.getNegotiationContext(aid,
-                    Thermostat.DEFAULT_HOST,
+            final NegotiationACC negACC = TucsonMetaACC.getNegotiationContext(
+                    aid, Thermostat.DEFAULT_HOST,
                     Integer.valueOf(Thermostat.DEFAULT_PORT));
             final EnhancedSynchACC acc = negACC.activateDefaultRole();
-            /*final EnhancedSynchACC acc = TucsonMetaACC.getContext(aid,
-                    Thermostat.DEFAULT_HOST,
-                    Integer.valueOf(Thermostat.DEFAULT_PORT));*/
+            /*
+             * final EnhancedSynchACC acc = TucsonMetaACC.getContext(aid,
+             * Thermostat.DEFAULT_HOST,
+             * Integer.valueOf(Thermostat.DEFAULT_PORT));
+             */
             final TucsonTupleCentreId configTc = new TucsonTupleCentreId(
                     "'$ENV'", Thermostat.DEFAULT_HOST, Thermostat.DEFAULT_PORT);
             /* Set up temperature */
@@ -191,7 +194,7 @@ public final class Thermostat {
 
     private Thermostat() {
         /*
-         * 
+         *
          */
     }
 }

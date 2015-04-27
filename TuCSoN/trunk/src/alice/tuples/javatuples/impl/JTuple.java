@@ -13,15 +13,16 @@ import alice.tuples.javatuples.api.IJVal;
 
 /**
  * @author ste (mailto: s.mariani@unibo.it) on 21/feb/2014
- * 
+ *
  */
 public class JTuple implements Iterable<IJVal>, IJTuple {
+
     private static final int AVG_CAP = 5;
     private static final int AVG_CHARS = 15;
     private List<IJVal> args;
 
     /**
-     * 
+     *
      * @param arg
      *            the JVal to add to this JTuple
      * @throws InvalidTupleException

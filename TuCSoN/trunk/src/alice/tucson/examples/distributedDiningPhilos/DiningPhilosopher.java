@@ -9,24 +9,24 @@ import alice.tucson.api.SynchACC;
 import alice.tucson.api.TucsonMetaACC;
 import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
-import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 import alice.tuplecentre.core.AbstractTupleCentreOperation;
 
 /**
- * 
+ *
  * @author ste (mailto: s.mariani@unibo.it)
- * 
+ *
  */
 public class DiningPhilosopher extends AbstractTucsonAgent {
+
     private static final int EATING_TIME = 5000;
     private static final int THINKING_TIME = 5000;
     private final TucsonTupleCentreId mySeat;
 
     /**
-     * 
+     *
      * @param aid
      *            the String representation of this philosopher's TuCSoN agent
      *            identifier
@@ -77,17 +77,21 @@ public class DiningPhilosopher extends AbstractTucsonAgent {
 
     @Override
     protected void main() {
-    	NegotiationACC negAcc = TucsonMetaACC.getNegotiationContext(this.getTucsonAgentId());
+        final NegotiationACC negAcc = TucsonMetaACC.getNegotiationContext(this
+                .getTucsonAgentId());
         SynchACC acc = null;
-		try {
-			acc = negAcc.activateDefaultRole();
-		} catch (TucsonOperationNotPossibleException
-				| UnreachableNodeException | OperationTimeOutException
-				| TucsonInvalidAgentIdException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-        //final SynchACC acc = this.getContext();
+        try {
+            acc = negAcc.activateDefaultRole();
+        } catch (final TucsonOperationNotPossibleException e) {
+            e.printStackTrace();
+        } catch (final UnreachableNodeException e) {
+            e.printStackTrace();
+        } catch (final OperationTimeOutException e) {
+            e.printStackTrace();
+        } catch (final TucsonInvalidAgentIdException e) {
+            e.printStackTrace();
+        }
+        // final SynchACC acc = this.getContext();
         ITucsonOperation op;
         // Ugly but effective, pardon me...
         while (true) {

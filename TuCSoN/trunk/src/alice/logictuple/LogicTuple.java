@@ -19,26 +19,27 @@ import alice.tuprolog.Term;
 
 /**
  * Class representing a logic tuple.
- * 
- * 
+ *
+ *
  * @see TupleArgument
  * @see alice.tuplecentre.api.Tuple
  * @see alice.tuplecentre.api.TupleTemplate
- * 
+ *
  * @author Alessandro Ricci
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
  * @author (contributor) Saverio Cicora
  */
 public class LogicTuple implements alice.tuplecentre.api.TupleTemplate,
         java.io.Serializable {
+
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = 1L;
 
     /**
      * Static service to get a Logic tuple from a textual representation
-     * 
+     *
      * @param st
      *            the text representing the tuple
      * @return the logic tuple interpreted from the text
@@ -62,17 +63,17 @@ public class LogicTuple implements alice.tuplecentre.api.TupleTemplate,
     private TupleArgument info;
 
     /**
-     * 
+     *
      */
     public LogicTuple() {
         /*
-         * 
+         *
          */
     }
 
     /**
      * Constructs the logic tuple providing the tuple name, without arguments
-     * 
+     *
      * @param name
      *            the name of the tuple (the functor)
      */
@@ -82,7 +83,7 @@ public class LogicTuple implements alice.tuplecentre.api.TupleTemplate,
 
     /**
      * Constructs the logic tuple providing the tuple name and one argument
-     * 
+     *
      * @param name
      *            the name of the tuple (the functor)
      * @param t1
@@ -94,7 +95,7 @@ public class LogicTuple implements alice.tuplecentre.api.TupleTemplate,
 
     /**
      * Constructs the logic tuple providing the tuple name and two arguments
-     * 
+     *
      * @param name
      *            the name of the tuple (the functor)
      * @param t1
@@ -109,7 +110,7 @@ public class LogicTuple implements alice.tuplecentre.api.TupleTemplate,
 
     /**
      * Constructs the logic tuple providing the tuple name and three arguments
-     * 
+     *
      * @param name
      *            the name of the tuple (the functor)
      * @param t1
@@ -126,7 +127,7 @@ public class LogicTuple implements alice.tuplecentre.api.TupleTemplate,
 
     /**
      * Constructs the logic tuple providing the tuple name and four arguments
-     * 
+     *
      * @param name
      *            the name of the tuple (the functor)
      * @param t1
@@ -146,7 +147,7 @@ public class LogicTuple implements alice.tuplecentre.api.TupleTemplate,
 
     /**
      * Constructs the logic tuple providing the tuple name and five arguments
-     * 
+     *
      * @param name
      *            the name of the tuple (the functor)
      * @param t1
@@ -168,7 +169,7 @@ public class LogicTuple implements alice.tuplecentre.api.TupleTemplate,
 
     /**
      * Constructs the logic tuple providing the tuple name and six arguments
-     * 
+     *
      * @param name
      *            the name of the tuple (the functor)
      * @param t1
@@ -193,7 +194,7 @@ public class LogicTuple implements alice.tuplecentre.api.TupleTemplate,
 
     /**
      * Constructs the logic tuple providing the tuple name and seven arguments
-     * 
+     *
      * @param name
      *            the name of the tuple (the functor)
      * @param t1
@@ -220,7 +221,7 @@ public class LogicTuple implements alice.tuplecentre.api.TupleTemplate,
 
     /**
      * Constructs a logic tuple providing the tuple name and argument list
-     * 
+     *
      * @param name
      *            the name of the tuple (the functor)
      * @param list
@@ -232,7 +233,7 @@ public class LogicTuple implements alice.tuplecentre.api.TupleTemplate,
 
     /**
      * Constructs the logic tuple from a tuprolog term
-     * 
+     *
      * @param t
      *            the tuprolog term
      */
@@ -243,7 +244,7 @@ public class LogicTuple implements alice.tuplecentre.api.TupleTemplate,
     /**
      * Constructs the logic tuple from a tuple argument (free form of
      * construction)
-     * 
+     *
      * @param t
      *            the tuple argument
      */
@@ -253,7 +254,7 @@ public class LogicTuple implements alice.tuplecentre.api.TupleTemplate,
 
     /**
      * Gets a argument inside the logic tuple
-     * 
+     *
      * @param index
      *            the position (index) of the argument
      * @return the tuple argument if it exists, <code>null</code> otherwise
@@ -264,7 +265,7 @@ public class LogicTuple implements alice.tuplecentre.api.TupleTemplate,
 
     /**
      * Gets an argument (typically a structured value) given its name
-     * 
+     *
      * @param name
      *            name of the argument
      * @return the argument (a structured Value) or null if not present
@@ -275,9 +276,9 @@ public class LogicTuple implements alice.tuplecentre.api.TupleTemplate,
 
     /**
      * Gets the number of arguments of this argument supposed to be a structure
-     * 
+     *
      * @return the number of arguments
-     * 
+     *
      */
     public int getArity() {
         return this.info.getArity();
@@ -285,9 +286,9 @@ public class LogicTuple implements alice.tuplecentre.api.TupleTemplate,
 
     /**
      * Gets the name of the logic tuple
-     * 
+     *
      * @return the name of the logic tuple
-     * 
+     *
      */
     public String getName() {
         return this.info.getName();
@@ -297,10 +298,10 @@ public class LogicTuple implements alice.tuplecentre.api.TupleTemplate,
      * Return a string that is the name and arity of the logic tuple in the
      * following format: {@code name/arity}. The method is applicable only if
      * this term is a structure.
-     * 
+     *
      * @return a {@code String} in the form nome/arity.
-     * 
-     * 
+     *
+     *
      */
     public String getPredicateIndicator() {
         return this.info.getPredicateIndicator();
@@ -308,12 +309,12 @@ public class LogicTuple implements alice.tuplecentre.api.TupleTemplate,
 
     /**
      * Gets the argument linked to a variable inside the tuple.
-     * 
+     *
      * Note that this method works only after that the logic tuple has been
      * resolved, that is the tuple has been subject of matching or unification
      * with an other tuple: typically this method is used with a tuple used in
      * or retrieved by a coordination primitive.
-     * 
+     *
      * @param varName
      *            is the name of the variable
      * @return the value linked to the variable, in the case that the variable
@@ -337,7 +338,7 @@ public class LogicTuple implements alice.tuplecentre.api.TupleTemplate,
 
     /**
      * Gets the string representation of the logic tuple
-     * 
+     *
      * @return the string representing the logic tuple
      */
     @Override
@@ -347,7 +348,7 @@ public class LogicTuple implements alice.tuplecentre.api.TupleTemplate,
 
     /**
      * Gets the Term representation of the logic tuple
-     * 
+     *
      * @return the logictuple as a term
      */
     public Term toTerm() {

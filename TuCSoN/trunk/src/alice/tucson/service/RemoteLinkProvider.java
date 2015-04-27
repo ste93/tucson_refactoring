@@ -7,11 +7,12 @@ import alice.respect.api.IRemoteLinkProvider;
 import alice.tuplecentre.api.TupleCentreId;
 
 /**
- * 
+ *
  * @author Alessandro Ricci
- * 
+ *
  */
 public class RemoteLinkProvider implements IRemoteLinkProvider {
+
     // FIXME How to fix this?
     private static Map<String, InterTupleCentreACCProvider> remoteRegistry = new HashMap<String, InterTupleCentreACCProvider>();
 

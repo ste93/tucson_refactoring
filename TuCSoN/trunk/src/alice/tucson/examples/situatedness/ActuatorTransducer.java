@@ -14,11 +14,12 @@ import alice.tuplecentre.core.AbstractTupleCentreOperation;
  * The transducer mediating interactions to/from the actuator probe. As such,
  * only the 'setEnv' method is implemented (furthermore, a synchronous behaviour
  * is expected, hence no asynchronous facility is implemented).
- * 
+ *
  * @author ste (mailto: s.mariani@unibo.it) on 05/nov/2013
- * 
+ *
  */
 public class ActuatorTransducer extends AbstractTransducer {
+
     /**
      * @param i
      *            the transducer id

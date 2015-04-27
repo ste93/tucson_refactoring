@@ -14,10 +14,11 @@
 package alice.tucson.api.exceptions;
 
 /**
- * 
+ *
  * @author Alessandro Ricci
- * 
+ *
  */
 public class OperationNotAllowedException extends Exception {
+
     private static final long serialVersionUID = 5901199225273548847L;
 }

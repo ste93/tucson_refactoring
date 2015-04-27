@@ -4,15 +4,16 @@ import alice.respect.api.IEnvironmentContext;
 import alice.tuplecentre.core.InputEvent;
 
 /**
- * 
+ *
  * @author Unknown...
- * 
+ *
  */
 public class EnviromentContext implements IEnvironmentContext {
+
     private final RespectVMContext vm;
 
     /**
-     * 
+     *
      * @param rvm
      *            the ReSpecT VM this context refers to
      */

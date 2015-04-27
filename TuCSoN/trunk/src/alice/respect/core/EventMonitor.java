@@ -4,17 +4,18 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * 
+ *
  * @author Saverio Cicora
- * 
+ *
  */
 public class EventMonitor {
+
     private final Condition canCompute;
     private boolean event;
     private final ReentrantLock lock;
 
     /**
-     * 
+     *
      */
     public EventMonitor() {
         this.event = false;
@@ -23,7 +24,7 @@ public class EventMonitor {
     }
 
     /**
-     * 
+     *
      * @throws InterruptedException
      *             if the synchronisation wait gets interrupted
      */
@@ -41,7 +42,7 @@ public class EventMonitor {
     }
 
     /**
-     * 
+     *
      * @return wether at least an event has been signaled
      */
     public boolean hasEvent() {
@@ -54,7 +55,7 @@ public class EventMonitor {
     }
 
     /**
-     * 
+     *
      */
     public void signalEvent() {
         this.lock.lock();

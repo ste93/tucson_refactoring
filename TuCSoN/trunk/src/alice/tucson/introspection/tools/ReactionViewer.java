@@ -20,12 +20,13 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
 /**
- * 
+ *
  * @author Unknown...
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
- * 
+ *
  */
 public class ReactionViewer extends javax.swing.JFrame {
+
     private static final long serialVersionUID = -8708893837692939114L;
     private javax.swing.JCheckBox checkLogEnable;
     private javax.swing.JTextField inputFileLog;
@@ -36,7 +37,7 @@ public class ReactionViewer extends javax.swing.JFrame {
 
     /**
      * Creates new form TupleForm
-     * 
+     *
      * @param mf
      *            the inspector GUI
      */
@@ -56,7 +57,7 @@ public class ReactionViewer extends javax.swing.JFrame {
     }
 
     /**
-     * 
+     *
      * @param st
      *            the message to append
      */
@@ -107,6 +108,7 @@ public class ReactionViewer extends javax.swing.JFrame {
         this.getContentPane().setLayout(new java.awt.GridBagLayout());
         this.setTitle("reactions executed");
         this.addWindowListener(new java.awt.event.WindowAdapter() {
+
             @Override
             public void windowClosing(final java.awt.event.WindowEvent evt) {
                 ReactionViewer.this.exitForm();
@@ -140,7 +142,8 @@ public class ReactionViewer extends javax.swing.JFrame {
         jPanel7.add(jLabel1, gridBagConstraints);
         this.inputFileLog
                 .addActionListener(new java.awt.event.ActionListener() {
-                    @Override
+
+            @Override
                     public void actionPerformed(
                             final java.awt.event.ActionEvent evt) {
                         ReactionViewer.this.inputFileLogActionPerformed();
@@ -155,6 +158,7 @@ public class ReactionViewer extends javax.swing.JFrame {
         buttonBrowse.setFont(new java.awt.Font("Arial", 0, 11));
         buttonBrowse.setText("Browse");
         buttonBrowse.addActionListener(new java.awt.event.ActionListener() {
+
             @Override
             public void actionPerformed(final java.awt.event.ActionEvent evt) {
                 ReactionViewer.this.buttonBrowseActionPerformed();
@@ -167,7 +171,8 @@ public class ReactionViewer extends javax.swing.JFrame {
         jPanel7.add(buttonBrowse, gridBagConstraints);
         this.checkLogEnable
                 .addActionListener(new java.awt.event.ActionListener() {
-                    @Override
+
+            @Override
                     public void actionPerformed(
                             final java.awt.event.ActionEvent evt) {
                         ReactionViewer.this.checkLogEnableActionPerformed();

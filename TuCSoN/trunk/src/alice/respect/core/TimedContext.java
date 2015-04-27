@@ -24,16 +24,17 @@ import alice.respect.api.exceptions.OperationTimeOutException;
 import alice.tuplecentre.api.IId;
 
 /**
- * 
+ *
  * A Timed Context wraps the access to a tuple centre virtual machine for a
  * specific thread of control, providing a timed interface.
- * 
+ *
  * @author Alessandro Ricci
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public class TimedContext extends RootInterface implements ITimedContext {
+
     /**
-     * 
+     *
      * @param core
      *            the ReSpecT tuple centres manager this interface refers to
      */

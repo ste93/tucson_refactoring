@@ -25,13 +25,14 @@ import alice.tuplecentre.core.AbstractTupleCentreOperation;
  * (the most comprehensive at the moment) and trigger Agent's main execution
  * cyle, that is the method {@link alice.tucson.api.AbstractTucsonAgent#main
  * main}.
- * 
+ *
  * @author Alessandro Ricci
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
- * 
+ *
  */
 public abstract class AbstractTucsonAgent implements
         TucsonOperationCompletionListener {
+
     /**
      * Internal Thread responsible for ACC acquisition and main cycle execution.
      * Notice that the ACC is demanded to the TuCSoN Node Service hosted at the
@@ -39,6 +40,7 @@ public abstract class AbstractTucsonAgent implements
      * construction-time defined port.
      */
     final class AgentThread extends Thread {
+
         private final AbstractTucsonAgent agent;
 
         AgentThread(final AbstractTucsonAgent a) {
@@ -67,17 +69,17 @@ public abstract class AbstractTucsonAgent implements
     private final String node;
     private final int port;
     /**
-     * 
+     *
      */
     protected List<TucsonOpCompletionEvent> completionEvents;
 
     /**
      * Same as before, this time using the passed String to create the
      * TucsonAgentId from scratch
-     * 
+     *
      * @param id
      *            The String to use to build the TucsonAgentIdentifier
-     * 
+     *
      * @throws TucsonInvalidAgentIdException
      *             if the String given is not a valid representation of a TuCSoN
      *             agent identifier
@@ -91,12 +93,12 @@ public abstract class AbstractTucsonAgent implements
     /**
      * Again we assume default port (which is 20504), so we skip that parameter
      * (String aid version).
-     * 
+     *
      * @param id
      *            The String to use to build the TucsonAgentIdentifier
      * @param netid
      *            The ip address of the TuCSoN Node to contact
-     * 
+     *
      * @throws TucsonInvalidAgentIdException
      *             if the String given is not a valid representation of a TuCSoN
      *             agent identifier
@@ -109,14 +111,14 @@ public abstract class AbstractTucsonAgent implements
     /**
      * Same as first one, but takes a String in place of a TucsonAgentId that is
      * created from scratch using such string.
-     * 
+     *
      * @param id
      *            The String to use to build the TucsonAgentIdentifier
      * @param netid
      *            The ip address of the TuCSoN Node to contact
      * @param p
      *            The listening port of the TuCSoN Node to contact
-     * 
+     *
      * @throws TucsonInvalidAgentIdException
      *             if the String given is not a valid representation of a TuCSoN
      *             agent identifier
@@ -129,7 +131,7 @@ public abstract class AbstractTucsonAgent implements
     /**
      * Most complete constructor, allows to specify the ip address where the
      * TuCSoN node to whom ask for an ACC resides and its listening port.
-     * 
+     *
      * @param id
      *            The TucsonAgent Identifier
      * @param netid
@@ -146,7 +148,7 @@ public abstract class AbstractTucsonAgent implements
 
     /**
      * Getter for the TucsonAgent identifier
-     * 
+     *
      * @return The TucsonAgentId for this agent
      */
     public final TucsonAgentId getTucsonAgentId() {
@@ -163,7 +165,7 @@ public abstract class AbstractTucsonAgent implements
 
     /**
      * Returns local agent name
-     * 
+     *
      * @return The String name of the agent
      */
     public final String myName() {
@@ -172,7 +174,7 @@ public abstract class AbstractTucsonAgent implements
 
     /**
      * Returns agent default node.
-     * 
+     *
      * @return The default node of the agent
      */
     public final String myNode() {
@@ -181,7 +183,7 @@ public abstract class AbstractTucsonAgent implements
 
     /**
      * Returns agent default port
-     * 
+     *
      * @return The default port of the agent
      */
     public final int myport() {
@@ -199,7 +201,7 @@ public abstract class AbstractTucsonAgent implements
      * for the most comprehensive ACC (that is the DefaultACC): it's up to the
      * user agent wether to use a more restrictive one (properly declaring its
      * reference)
-     * 
+     *
      * @return The DefaultACC
      */
     protected EnhancedACC getContext() {
@@ -213,7 +215,7 @@ public abstract class AbstractTucsonAgent implements
 
     /**
      * Utility method to print on standard output the user agent activity.
-     * 
+     *
      * @param msg
      *            The message to print
      */
@@ -225,7 +227,7 @@ public abstract class AbstractTucsonAgent implements
     /**
      * Setter for the ACC. Takes the most comprehensive one, hence even a
      * less-powerful can be passed.
-     * 
+     *
      * @param ctx
      *            The ACC to use
      */

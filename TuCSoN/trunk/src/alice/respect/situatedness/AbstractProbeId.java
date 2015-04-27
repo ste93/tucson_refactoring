@@ -5,15 +5,16 @@ import alice.respect.api.EnvId;
 /**
  * A "probe" (aka environmental resource) identifier. Being part of the MAS
  * environment, a probe can be either a sensor or an actuator.
- * 
+ *
  * @author Steven Maraldi
  */
 public abstract class AbstractProbeId extends EnvId {
+
     private static final long serialVersionUID = -7709792820397648780L;
 
     /**
      * Constructs a probe identifier
-     * 
+     *
      * @param i
      *            the resource's identifier
      */
@@ -23,14 +24,14 @@ public abstract class AbstractProbeId extends EnvId {
 
     /**
      * Checks if the resource is an actuator.
-     * 
+     *
      * @return true if the resource is an actuatore one.
      */
     public abstract boolean isActuator();
 
     /**
      * Checks if the resource is a sensor.
-     * 
+     *
      * @return true if the resource is a sensor one.
      */
     public abstract boolean isSensor();

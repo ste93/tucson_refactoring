@@ -7,11 +7,12 @@ import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.service.TucsonCmd;
 
 /**
- * 
+ *
  * @author ste (mailto: s.mariani@unibo.it)
- * 
+ *
  */
 public class TucsonOpParser {
+
     private static boolean insideReaction(final String in) {
         final Pattern pattern = Pattern
                 .compile("((out|in|rd|no|inp|rdp|nop|get|set)_s)+?");
@@ -28,7 +29,7 @@ public class TucsonOpParser {
     private TupleCentreIdParser tidParser;
 
     /**
-     * 
+     *
      * @param in
      *            the String representation of the TuCSoN operation to parse
      * @param n
@@ -49,7 +50,7 @@ public class TucsonOpParser {
     }
 
     /**
-     * 
+     *
      * @return the TuCSoN command part of the TuCSoN operation
      */
     public TucsonCmd getCmd() {
@@ -57,7 +58,7 @@ public class TucsonOpParser {
     }
 
     /**
-     * 
+     *
      * @return the id of the tuple centre involved in the operation
      */
     public TucsonTupleCentreId getTid() {
@@ -65,7 +66,7 @@ public class TucsonOpParser {
     }
 
     /**
-     * 
+     *
      * @throws TucsonInvalidTupleCentreIdException
      *             if the id of the tuple centre target of the operation is not
      *             a valid TuCSoN tuple centre id

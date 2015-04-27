@@ -20,16 +20,17 @@ import alice.tuplecentre.api.TupleCentreId;
 /**
  * Represents input events of the tuple centre virtual machine (only difference
  * w.r.t. Event is the <code>isLinking</code> field)
- * 
+ *
  * @author Alessandro Ricci
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public class InputEvent extends AbstractEvent {
+
     private static final long serialVersionUID = -6321543805920861915L;
     private boolean isLnk;
 
     /**
-     * 
+     *
      * @param source
      *            the identifier of the source of this event
      * @param op
@@ -46,7 +47,7 @@ public class InputEvent extends AbstractEvent {
     }
 
     /**
-     * 
+     *
      * @param source
      *            the identifier of the source of this event
      * @param op
@@ -76,7 +77,7 @@ public class InputEvent extends AbstractEvent {
     }
 
     /**
-     * 
+     *
      * @return wether this event is a linking event
      */
     public boolean isLinking() {
@@ -89,7 +90,7 @@ public class InputEvent extends AbstractEvent {
     }
 
     /**
-     * 
+     *
      * @param flag
      *            wether this event is a linking event
      */

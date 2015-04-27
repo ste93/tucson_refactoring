@@ -3,37 +3,45 @@ package alice.tucson.rbac;
 import java.util.ArrayList;
 import java.util.List;
 
+public class TucsonPermission implements Permission {
 
-public class TucsonPermission implements Permission{
-	
-	protected String permissionName;
-	
-	public TucsonPermission(){};
-	public TucsonPermission(String permissionName){
-		setPermissionName(permissionName);
-	}
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
-	@Override
-	public String getPermissionName() {
-		return permissionName;
-	}
+    public static TucsonPermission createPermission(final String permName) {
+        return new TucsonPermission(permName);
+    }
 
-	@Override
-	public void setPermissionName(String permissionName) {
-		if(permissionName == null || permissionName.equals(""))
-			return;
-		this.permissionName = permissionName;
-	}
-	
-	public static TucsonPermission createPermission(String permName){
-		return new TucsonPermission(permName);
-	}
-	
-	public static List<Permission> createPermissionsFromStrings(List<String> permissions){
-		List<Permission> perms = new ArrayList<Permission>();
-		for(String perm : permissions){
-			perms.add(new TucsonPermission(perm));
-		}
-		return perms;
-	}
+    public static List<Permission> createPermissionsFromStrings(
+            final List<String> permissions) {
+        final List<Permission> perms = new ArrayList<Permission>();
+        for (final String perm : permissions) {
+            perms.add(new TucsonPermission(perm));
+        }
+        return perms;
+    }
+
+    protected String permissionName;
+
+    public TucsonPermission() {
+    }
+
+    public TucsonPermission(final String permissionName) {
+        this.setPermissionName(permissionName);
+    }
+
+    @Override
+    public String getPermissionName() {
+        return this.permissionName;
+    }
+
+    @Override
+    public void setPermissionName(final String permissionName) {
+        if (permissionName == null || permissionName.equals("")) {
+            return;
+        }
+        this.permissionName = permissionName;
+    }
 }

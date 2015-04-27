@@ -13,13 +13,15 @@ import alice.tucson.api.exceptions.UnreachableNodeException;
 import alice.tuplecentre.core.AbstractTupleCentreOperation;
 
 /**
- * 
+ *
  * @author Alessandro Ricci
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
- * 
+ *
  */
 public class InterTupleCentreACCProvider implements ILinkContext {
+
     class Executor extends Thread {
+
         private final TupleCentreId fromId;
         private InterTupleCentreACC helper;
         private final Map<String, InterTupleCentreACC> helpers;
@@ -72,7 +74,7 @@ public class InterTupleCentreACCProvider implements ILinkContext {
     private final alice.tuplecentre.api.TupleCentreId idTo;
 
     /**
-     * 
+     *
      * @param id
      *            the identifier of the tuple centre target of the linking
      *            invocation

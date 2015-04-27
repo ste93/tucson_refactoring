@@ -24,11 +24,12 @@ import alice.tuples.javatuples.exceptions.InvalidJVarException;
 
 /**
  * @author ste (mailto: s.mariani@unibo.it) on 21/feb/2014
- * 
+ *
  */
 public final class JTuplesEngine {
+
     /**
-     * 
+     *
      * @param lt
      *            the tuProlog LogicTuple to be checked
      * @return wether the given tuProlog LogicTuple represents a template
@@ -64,9 +65,9 @@ public final class JTuplesEngine {
     /**
      * Tests if the given arguments matches according to tuProlog matching rules
      * for LogicTuples
-     * 
+     *
      * No unification (a la tuProlog) is performed
-     * 
+     *
      * @param template
      *            the JTupleTemplate to match
      * @param tuple
@@ -82,7 +83,7 @@ public final class JTuplesEngine {
 
     /**
      * Tries to perform unification (a la tuProlog)
-     * 
+     *
      * @param template
      *            the JTupleTemplate to match
      * @param tuple
@@ -98,7 +99,7 @@ public final class JTuplesEngine {
     }
 
     /**
-     * 
+     *
      * @param tuple
      *            the tuProlog LogicTuple to convert into a JTuple
      * @return the obtained JTuple
@@ -151,7 +152,7 @@ public final class JTuplesEngine {
     }
 
     /**
-     * 
+     *
      * @param template
      *            the tuProlog LogicTuple template to convert into a
      *            JTupleTemplate
@@ -231,7 +232,7 @@ public final class JTuplesEngine {
     }
 
     /**
-     * 
+     *
      * @param tuple
      *            the JTuple to convert into a tuProlog LogicTuple
      * @return the obtained tuProlog LogicTuple
@@ -258,7 +259,7 @@ public final class JTuplesEngine {
     }
 
     /**
-     * 
+     *
      * @param template
      *            the JTupleTemplate to convert into a tuProlog LogicTuple
      * @return the obtained tuProlog LogicTuple

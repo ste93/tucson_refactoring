@@ -3,15 +3,16 @@ package alice.tucson.parsing;
 import alice.tucson.service.TucsonCmd;
 
 /**
- * 
+ *
  * @author ste (mailto: s.mariani@unibo.it)
- * 
+ *
  */
 public class TucsonPrimitiveParser {
+
     private final String input;
 
     /**
-     * 
+     *
      * @param in
      *            the String representation of the TuCSoN primitive to be parsed
      */
@@ -20,7 +21,7 @@ public class TucsonPrimitiveParser {
     }
 
     /**
-     * 
+     *
      * @return the Object representing the TuCSoN command parsed
      */
     public TucsonCmd parse() {

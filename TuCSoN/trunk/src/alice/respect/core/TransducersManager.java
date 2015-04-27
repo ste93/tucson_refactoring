@@ -21,14 +21,15 @@ import alice.tuprolog.Term;
 
 /**
  * @author ste (mailto: s.mariani@unibo.it) on 04/nov/2013
- * 
+ *
  */
 public enum TransducersManager {
     /** The singleton istance of this enum type */
     INSTANCE;
+
     /**
      * Utility methods used to communicate an output message to the console.
-     * 
+     *
      * @param msg
      *            message to print.
      */
@@ -55,7 +56,7 @@ public enum TransducersManager {
 
     /**
      * Adds a new resource and associate it to the transducer tId.
-     * 
+     *
      * @param id
      *            new environment resource identifier
      * @param tId
@@ -86,7 +87,7 @@ public enum TransducersManager {
 
     /**
      * Creates a new transducer
-     * 
+     *
      * @param className
      *            name of the concrete implementative class of transducer
      * @param id
@@ -96,7 +97,7 @@ public enum TransducersManager {
      * @param probeId
      *            resource's identifier associated to the transducer
      * @return wether the transducer has been successfully created
-     * 
+     *
      * @throws ClassNotFoundException
      *             if the given Java full class name cannot be found within
      *             known paths
@@ -150,7 +151,7 @@ public enum TransducersManager {
 
     /**
      * Returns the resource list associated to the transducer identified by tId
-     * 
+     *
      * @param tId
      *            the transducer's identifier
      * @return a resource list as a ProbeId array.
@@ -172,7 +173,7 @@ public enum TransducersManager {
 
     /**
      * Returns the transducer identified by tId
-     * 
+     *
      * @param tId
      *            the transducer's name
      * @return the transducer
@@ -190,7 +191,7 @@ public enum TransducersManager {
 
     /**
      * Returns the transducer's identifier associated to the input resource
-     * 
+     *
      * @param probe
      *            resource associated to the transducer
      * @return the transducer identifier
@@ -216,7 +217,7 @@ public enum TransducersManager {
     /**
      * Gets the list of transducer ids associated to the tuple centre identified
      * by tcId
-     * 
+     *
      * @param tcId
      *            the tuple centre's identifier
      * @return list of transducer id associated to tcId
@@ -245,7 +246,7 @@ public enum TransducersManager {
     /**
      * Returns the identifier of the tuple centre associated to the transducer
      * identified by tId
-     * 
+     *
      * @param tId
      *            the transducer's identifier
      * @return the tuple centre's identifier
@@ -264,7 +265,7 @@ public enum TransducersManager {
 
     /**
      * Removes a probe from the resource list
-     * 
+     *
      * @param probe
      *            the resource's identifier to remove
      * @return wether the resource has been succesfully removed
@@ -293,7 +294,7 @@ public enum TransducersManager {
 
     /**
      * Stops and removes the transducer identified by id
-     * 
+     *
      * @param id
      *            the transducer identifier
      */

@@ -42,22 +42,24 @@ import alice.tuprolog.Prolog;
 import alice.tuprolog.lib.InvalidObjectIdException;
 
 /**
- * 
+ *
  * @author ste (mailto: s.mariani@unibo.it)
- * 
+ *
  */
 public class InterTupleCentreACCProxy implements InterTupleCentreACC,
         OperationCompletionListener {
+
     /**
-     * 
+     *
      */
     class Controller extends Thread {
+
         private final AbstractTucsonProtocol dialog;
         private final Prolog p = new Prolog();
         private boolean stop;
 
         /**
-         * 
+         *
          * @param input
          */
         Controller(final AbstractTucsonProtocol d) {
@@ -65,8 +67,8 @@ public class InterTupleCentreACCProxy implements InterTupleCentreACC,
             this.dialog = d;
             this.stop = false;
             this.setDaemon(true);
-            final alice.tuprolog.lib.JavaLibrary jlib = (alice.tuprolog.lib.JavaLibrary) this.p
-                    .getLibrary("alice.tuprolog.lib.JavaLibrary");
+            final alice.tuprolog.lib.OOLibrary jlib = (alice.tuprolog.lib.OOLibrary) this.p
+                    .getLibrary("alice.tuprolog.lib.OOLibrary");
             try {
                 jlib.register(new alice.tuprolog.Struct("config"), this);
             } catch (final InvalidObjectIdException e) {
@@ -197,6 +199,7 @@ public class InterTupleCentreACCProxy implements InterTupleCentreACC,
     }
 
     class ControllerSession {
+
         private final Controller controller;
         private final AbstractTucsonProtocol session;
 
@@ -224,7 +227,7 @@ public class InterTupleCentreACCProxy implements InterTupleCentreACC,
     private final ACCDescription profile;
 
     /**
-     * 
+     *
      * @param id
      *            tuplecentre source
      * @throws TucsonInvalidTupleCentreIdException

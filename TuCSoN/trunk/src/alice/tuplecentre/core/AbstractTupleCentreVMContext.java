@@ -32,15 +32,15 @@ import alice.tuplecentre.api.exceptions.OperationNotPossibleException;
 
 /**
  * Defines the core abstract behaviour of a tuple centre virtual machine.
- * 
+ *
  * The class is abstract because the specific implementation of the reacting
  * behaviour and of the set management is left to the derived classes.
- * 
+ *
  * This class implements - by means of the state pattern - the behaviour
  * described formally in the article "From Tuple Space to Tuple Centre"
  * (Omicini, Denti) - Science of Computer Programming 2001,
- * 
- * 
+ *
+ *
  * @author Alessandro Ricci
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
@@ -63,7 +63,7 @@ public abstract class AbstractTupleCentreVMContext implements
 
     /**
      * Creates a new tuple centre virtual machine core
-     * 
+     *
      * @param rvm
      *            is the ReSpecT virtual machine
      * @param id
@@ -109,7 +109,7 @@ public abstract class AbstractTupleCentreVMContext implements
     }
 
     /**
-     * 
+     *
      * @param in
      *            the input envirnomental event to add to the environmental
      *            queue
@@ -121,7 +121,7 @@ public abstract class AbstractTupleCentreVMContext implements
     }
 
     /**
-     * 
+     *
      * @param in
      *            the input event to add to the input queue
      */
@@ -132,7 +132,7 @@ public abstract class AbstractTupleCentreVMContext implements
     }
 
     /**
-     * 
+     *
      * @param t
      *            the tuple representing the list of tuples to add
      * @return the list of tuples just added
@@ -141,7 +141,7 @@ public abstract class AbstractTupleCentreVMContext implements
 
     /**
      * Adds a query to the pending query set (W) of the tuple centre
-     * 
+     *
      * @param w
      *            the pending query to be added
      */
@@ -149,7 +149,7 @@ public abstract class AbstractTupleCentreVMContext implements
 
     /**
      * Adds a tuple to the specification tuple set
-     * 
+     *
      * @param t
      *            the tuple to be added
      */
@@ -157,7 +157,7 @@ public abstract class AbstractTupleCentreVMContext implements
 
     /**
      * Adds a tuple to the tuple set (T)
-     * 
+     *
      * @param t
      *            the tuple to be addedd
      * @param u
@@ -186,7 +186,7 @@ public abstract class AbstractTupleCentreVMContext implements
 
     /**
      * Evaluates a triggered reaction, changing the state of the VM accordingly.
-     * 
+     *
      * @param z
      *            the triggered reaction to be evaluated
      */
@@ -219,7 +219,7 @@ public abstract class AbstractTupleCentreVMContext implements
     }
 
     /**
-     * 
+     *
      */
     public void fetchPendingEnvEvent() {
         if (this.pendingEnvEvents()) {
@@ -231,10 +231,10 @@ public abstract class AbstractTupleCentreVMContext implements
 
     /**
      * Fetches a new pending input event.
-     * 
+     *
      * The first pending input event is fetched from the queue as current event
      * subject of VM process.
-     * 
+     *
      */
     public void fetchPendingEvent() {
         synchronized (this.inputEvents) {
@@ -244,7 +244,7 @@ public abstract class AbstractTupleCentreVMContext implements
 
     /**
      * Collects the time-triggered reactions
-     * 
+     *
      * @param ev
      *            the event triggering reactions
      */
@@ -252,7 +252,7 @@ public abstract class AbstractTupleCentreVMContext implements
 
     /**
      * Collects the reactions that are triggered by an event
-     * 
+     *
      * @param ev
      *            the event triggering reactions
      */
@@ -260,17 +260,17 @@ public abstract class AbstractTupleCentreVMContext implements
 
     /**
      * Gets all the tuples of the tuple centre
-     * 
+     *
      * @return the whole tuple set
      */
     public abstract List<Tuple> getAllTuples();
 
     /**
      * Gets the boot time of the Tuple Centre VM
-     * 
+     *
      * The time is expressed in millisecond, according to the standard Java
      * measurement of time.
-     * 
+     *
      * @return the time at which the tuple centre VM has been booted
      */
     public long getBootTime() {
@@ -279,7 +279,7 @@ public abstract class AbstractTupleCentreVMContext implements
 
     /**
      * Gets the event currently processed by the virtual machine
-     * 
+     *
      * @return the input event currently under process
      */
     public InputEvent getCurrentEvent() {
@@ -287,7 +287,7 @@ public abstract class AbstractTupleCentreVMContext implements
     }
 
     /**
-     * 
+     *
      * @return the String representation of the state the tuple centre VM is
      *         currently in
      */
@@ -297,10 +297,10 @@ public abstract class AbstractTupleCentreVMContext implements
 
     /**
      * Gets current time of the Tuple Centre VM
-     * 
+     *
      * The time is expressed in millisecond, according to the standard Java
      * measurement of time.
-     * 
+     *
      * @return the time at which the tuple centre VM is now
      */
     public long getCurrentTime() {
@@ -309,7 +309,7 @@ public abstract class AbstractTupleCentreVMContext implements
 
     /**
      * Gets the identifier of this tuple centre
-     * 
+     *
      * @return the identifier of the tuple centre managed by this tuple centre
      *         VM
      */
@@ -319,13 +319,13 @@ public abstract class AbstractTupleCentreVMContext implements
 
     /**
      * Gets an iterator over the pending query set (W)
-     * 
+     *
      * @return the iterator
      */
     public abstract Iterator<? extends AbstractEvent> getPendingQuerySetIterator();
 
     /**
-     * 
+     *
      * @return the ReSpecT tuple centre wrapper
      */
     public IRespectTC getRespectTC() {
@@ -333,14 +333,14 @@ public abstract class AbstractTupleCentreVMContext implements
     }
 
     /**
-     * 
+     *
      * @return the iterator through the tuple set
      */
     public abstract Iterator<? extends Tuple> getSpecTupleSetIterator();
 
     /**
      * Gets a state of tuple centre virtual machine.
-     * 
+     *
      * @param stateName
      *            name of the state
      * @return the state
@@ -351,14 +351,14 @@ public abstract class AbstractTupleCentreVMContext implements
 
     /**
      * Gets an iterator over the set of triggered reactions
-     * 
+     *
      * @return the iterator
      */
     public abstract Iterator<? extends TriggeredReaction> getTriggeredReactionSetIterator();
 
     /**
      * Gets an iterator over the tuple set (T)
-     * 
+     *
      * @return the iterator
      */
     public abstract Iterator<? extends Tuple> getTupleSetIterator();
@@ -372,7 +372,7 @@ public abstract class AbstractTupleCentreVMContext implements
 
     /**
      * Gets all the tuples of the tuple centre matching the TupleTemplate t
-     * 
+     *
      * @param t
      *            the tuple template to be used
      * @return the list of matching tuples
@@ -385,7 +385,7 @@ public abstract class AbstractTupleCentreVMContext implements
     }
 
     /**
-     * 
+     *
      * @param out
      *            the output event generated due to a linking operation
      */
@@ -400,7 +400,7 @@ public abstract class AbstractTupleCentreVMContext implements
     }
 
     /**
-     * 
+     *
      * @param e
      *            the Exception to notify
      */
@@ -409,7 +409,7 @@ public abstract class AbstractTupleCentreVMContext implements
     }
 
     /**
-     * 
+     *
      * @param ex
      *            the String representation of the Exception to notify
      */
@@ -418,7 +418,7 @@ public abstract class AbstractTupleCentreVMContext implements
     }
 
     /**
-     * 
+     *
      * @return wether there are environmental events still to process (at least
      *         one)
      */
@@ -430,10 +430,10 @@ public abstract class AbstractTupleCentreVMContext implements
 
     /**
      * Tests if there are pending input events
-     * 
+     *
      * The method tests in there are input events to be processed (or rather if
      * the input event queue is not empty)
-     * 
+     *
      * @return wether there are input events still to process (at least one)
      */
     public boolean pendingEvents() {
@@ -445,7 +445,7 @@ public abstract class AbstractTupleCentreVMContext implements
     /**
      * Gets all the tuples of the tuple centre matching the TupleTemplate t
      * without removing them
-     * 
+     *
      * @param t
      *            the tuple template to be used
      * @return the list of tuples result of the operation
@@ -453,7 +453,7 @@ public abstract class AbstractTupleCentreVMContext implements
     public abstract List<Tuple> readAllTuples(TupleTemplate t);
 
     /**
-     * 
+     *
      * @param templateArgument
      *            the tuple template to be used
      * @return the tuple representation of the ReSpecT specification
@@ -463,7 +463,7 @@ public abstract class AbstractTupleCentreVMContext implements
     /**
      * Gets (not deterministically) without removing from the tuple set a tuple
      * that matches with the provided tuple template
-     * 
+     *
      * @param t
      *            the tuple template that must be matched by the tuple
      * @return a tuple matching the tuple template
@@ -472,7 +472,7 @@ public abstract class AbstractTupleCentreVMContext implements
 
     /**
      * Gets a tuple from tuple space in a non deterministic way
-     * 
+     *
      * @param t
      *            the tuple template to be used
      * @return the tuple result of the operation
@@ -480,7 +480,7 @@ public abstract class AbstractTupleCentreVMContext implements
     public abstract Tuple readUniformTuple(TupleTemplate t);
 
     /**
-     * 
+     *
      * @param templateArgument
      *            the tuple template to be used
      * @return the tuple representation of the ReSpecT specification
@@ -490,7 +490,7 @@ public abstract class AbstractTupleCentreVMContext implements
     /**
      * Removes (not deterministically) from the tuple set a tuple that matches
      * with the provided tuple template
-     * 
+     *
      * @param t
      *            the tuple template that must be matched by the tuple
      * @param u
@@ -501,7 +501,7 @@ public abstract class AbstractTupleCentreVMContext implements
 
     /**
      * Removes the pending queries related to an agent
-     * 
+     *
      * @param id
      *            is the agent identifies
      */
@@ -509,21 +509,21 @@ public abstract class AbstractTupleCentreVMContext implements
 
     /**
      * Removes a time-triggered reaction, previously fetched
-     * 
+     *
      * @return the time-triggered reaction
      */
     public abstract TriggeredReaction removeTimeTriggeredReaction();
 
     /**
      * Removes a triggered reaction, previously fetched
-     * 
+     *
      * @return the triggered reaction
      */
     public abstract TriggeredReaction removeTriggeredReaction();
 
     /**
      * Gets a tuple from tuple space in a non deterministic way
-     * 
+     *
      * @param t
      *            the tuple template to be used
      * @return the tuple result of the operation
@@ -536,7 +536,7 @@ public abstract class AbstractTupleCentreVMContext implements
     public abstract void reset();
 
     /**
-     * 
+     *
      * @param tupleList
      *            the list of tuples representing ReSpecT specification argument
      *            of the operation
@@ -545,7 +545,7 @@ public abstract class AbstractTupleCentreVMContext implements
 
     /**
      * Gets all the tuples of the tuple centre
-     * 
+     *
      * @param tupleList
      *            the list of tuples argument of the operation
      */
@@ -557,7 +557,7 @@ public abstract class AbstractTupleCentreVMContext implements
     }
 
     /**
-     * 
+     *
      * @param t
      *            the tuple representing the computational activity to launch
      * @param owner
@@ -576,7 +576,7 @@ public abstract class AbstractTupleCentreVMContext implements
     }
 
     /**
-     * 
+     *
      * @return wether there are some time-triggered ReSpecT reactions
      */
     public abstract boolean timeTriggeredReaction();
@@ -593,13 +593,13 @@ public abstract class AbstractTupleCentreVMContext implements
     }
 
     /**
-     * 
+     *
      * @return wether there are some triggered ReSpecT reactions
      */
     public abstract boolean triggeredReaction();
 
     /**
-     * 
+     *
      * @param tr
      *            the ReSpecT specification to trigger
      */
@@ -607,7 +607,7 @@ public abstract class AbstractTupleCentreVMContext implements
 
     /**
      * Specifies how to notify an output event.
-     * 
+     *
      * @param ev
      *            the output event to notify
      */
@@ -616,7 +616,7 @@ public abstract class AbstractTupleCentreVMContext implements
     }
 
     /**
-     * 
+     *
      */
     protected void setBootTime() {
         this.bootTime = System.currentTimeMillis();

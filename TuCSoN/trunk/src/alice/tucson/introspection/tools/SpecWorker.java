@@ -28,6 +28,7 @@ import alice.util.jedit.JEditTextArea;
  * @author Roberto D'Elia
  */
 public class SpecWorker extends Thread {
+
     private static String format(final LogicTuple t) {
         final StringBuffer res = new StringBuffer(21);
         try {

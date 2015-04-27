@@ -19,15 +19,16 @@ import alice.util.jedit.Token;
 import alice.util.jedit.TokenMarker;
 
 /**
- * 
+ *
  * @author Unknown...
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public class SpecificationTokenMarker extends TokenMarker {
+
     private static KeywordMap respectKeywords;
 
     /**
-     * 
+     *
      * @return the Object representing associations between String
      *         representation of keywords and keywords token
      */
@@ -158,14 +159,14 @@ public class SpecificationTokenMarker extends TokenMarker {
     private int lastOffset;
 
     /**
-     * 
+     *
      */
     public SpecificationTokenMarker() {
         this(SpecificationTokenMarker.getKeywords());
     }
 
     /**
-     * 
+     *
      * @param keys
      *            the keywords to highlight
      */

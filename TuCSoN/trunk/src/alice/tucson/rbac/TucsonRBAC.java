@@ -5,159 +5,166 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
+public class TucsonRBAC implements RBAC {
 
-import com.sun.corba.se.impl.encoding.OSFCodeSetRegistry.Entry;
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    private final List<AuthorizedAgent> authorizedAgents;
+    private String baseAgentClass;
+    private boolean inspectorsAuthorized;
+    private boolean loginRequired;
 
-public class TucsonRBAC implements RBAC{
+    private String orgName;
+    private final Map<String, Policy> policies;
+    private final Map<String, Role> roles;
 
-	private String orgName;
-	private String baseAgentClass;
-	private boolean loginRequired;
-	private boolean inspectorsAuthorized;
-	
-	private Map<String,Role> roles;
-	private Map<String,Policy> policies;
-	private List<AuthorizedAgent> authorizedAgents;
-	
-	public TucsonRBAC(String orgName){
-		roles = new HashMap<String,Role>();
-		policies = new HashMap<String,Policy>();
-		authorizedAgents = new ArrayList<AuthorizedAgent>();
-		this.orgName = orgName;
-		this.loginRequired = false;
-		this.inspectorsAuthorized = false;
-		this.baseAgentClass = "baseAgentClass";
-	}
-	
-	@Override
-	public String getOrgName() {
-		return orgName;
-	}
+    public TucsonRBAC(final String orgName) {
+        this.roles = new HashMap<String, Role>();
+        this.policies = new HashMap<String, Policy>();
+        this.authorizedAgents = new ArrayList<AuthorizedAgent>();
+        this.orgName = orgName;
+        this.loginRequired = false;
+        this.inspectorsAuthorized = false;
+        this.baseAgentClass = "baseAgentClass";
+    }
 
-	@Override
-	public void setOrgName(String orgName) {
-		this.orgName = orgName;
-	}
+    @Override
+    public void addAuthorizedAgent(final AuthorizedAgent agent) {
+        if (!this.authorizedAgents.contains(agent.getAgentName())) {
+            this.authorizedAgents.add(agent);
+        }
+    }
 
-	@Override
-	public void addRole(Role role) {
-		if(role==null)
-			return;
-		
-		if(roles.get(role.getRoleName())!=null) {
-			return; //Già presente
-		}
-		
-		roles.put(role.getRoleName(), role);
-	}
+    @Override
+    public void addPolicy(final Policy policy) {
+        if (policy == null) {
+            return;
+        }
 
-	@Override
-	public void removeRole(String roleName) {
-		roles.remove(roleName);
-	}
-	
-	@Override
-	public void removeRole(Role role) {
-		if(role != null && roles.containsKey(role.getRoleName()))
-			roles.remove(role.getRoleName());
-	}
+        if (this.policies.get(policy.getPolicyName()) != null) {
+            return;
+        }
 
-	@Override
-	public List<Role> getRoles() {
-		List<Role> rolesList = new ArrayList<Role>(roles.values());
-		return rolesList;
-	}
+        this.policies.put(policy.getPolicyName(), policy);
+    }
 
-	@Override
-	public void addPolicy(Policy policy) {
-		if(policy == null)
-			return;
-		
-		if(policies.get(policy.getPolicyName()) != null)
-			return;
-		
-		policies.put(policy.getPolicyName(), policy);
-	}
+    @Override
+    public void addRole(final Role role) {
+        if (role == null) {
+            return;
+        }
 
-	@Override
-	public void removePolicy(String policyName) {
-		if(policies.containsKey(policyName))
-			policies.remove(policyName);
-	}
+        if (this.roles.get(role.getRoleName()) != null) {
+            return; // Giï¿½ presente
+        }
 
-	@Override
-	public void removePolicy(Policy policy) {
-		if(policy != null && policies.containsKey(policy.getPolicyName()))
-			policies.remove(policy).getPolicyName();
-	}
+        this.roles.put(role.getRoleName(), role);
+    }
 
-	@Override
-	public List<Policy> getPolicies() {
-		List<Policy> policyList = new ArrayList<Policy>(policies.values());
-		return policyList;
-	}
+    @Override
+    public List<AuthorizedAgent> getAuthorizedAgents() {
+        return this.authorizedAgents;
+    }
 
-	@Override
-	public void addAuthorizedAgent(AuthorizedAgent agent) {
-		if(!authorizedAgents.contains(agent.getAgentName()))
-			authorizedAgents.add(agent);
-	}
+    @Override
+    public boolean getAuthorizedInspectors() {
+        return this.inspectorsAuthorized;
+    }
 
-	@Override
-	public void removeAuthorizedAgent(String agentName) {
-		if(authorizedAgents.contains(agentName))
-			authorizedAgents.remove(agentName);
-	}
+    @Override
+    public String getBaseAgentClass() {
+        return this.baseAgentClass;
+    }
 
-	@Override
-	public void removeAuthorizedAgent(AuthorizedAgent agent) {
-		if(authorizedAgents.contains(agent.getAgentName()))
-			authorizedAgents.remove(agent.getAgentName());
-	}
+    @Override
+    public boolean getLoginRequired() {
+        return this.loginRequired;
+    }
 
-	@Override
-	public List<AuthorizedAgent> getAuthorizedAgents() {
-		return authorizedAgents;
-	}
+    @Override
+    public String getOrgName() {
+        return this.orgName;
+    }
 
-	@Override
-	/**
+    @Override
+    public List<Policy> getPolicies() {
+        final List<Policy> policyList = new ArrayList<Policy>(
+                this.policies.values());
+        return policyList;
+    }
+
+    @Override
+    public List<Role> getRoles() {
+        final List<Role> rolesList = new ArrayList<Role>(this.roles.values());
+        return rolesList;
+    }
+
+    @Override
+    public void removeAuthorizedAgent(final AuthorizedAgent agent) {
+        if (this.authorizedAgents.contains(agent.getAgentName())) {
+            this.authorizedAgents.remove(agent.getAgentName());
+        }
+    }
+
+    @Override
+    public void removeAuthorizedAgent(final String agentName) {
+        if (this.authorizedAgents.contains(agentName)) {
+            this.authorizedAgents.remove(agentName);
+        }
+    }
+
+    @Override
+    public void removePolicy(final Policy policy) {
+        if (policy != null && this.policies.containsKey(policy.getPolicyName())) {
+            this.policies.remove(policy).getPolicyName();
+        }
+    }
+
+    @Override
+    public void removePolicy(final String policyName) {
+        if (this.policies.containsKey(policyName)) {
+            this.policies.remove(policyName);
+        }
+    }
+
+    @Override
+    public void removeRole(final Role role) {
+        if (role != null && this.roles.containsKey(role.getRoleName())) {
+            this.roles.remove(role.getRoleName());
+        }
+    }
+
+    @Override
+    public void removeRole(final String roleName) {
+        this.roles.remove(roleName);
+    }
+
+    @Override
+    /**
      * Set the the rule whether to authorize inspectors or not
-     * 
+     *
      * @param auth
      * 			If inspectors have to be authorized or not.
      */
-	public void setAuthorizedInspectors(boolean auth) {
-		this.inspectorsAuthorized = auth;
-	}
+    public void setAuthorizedInspectors(final boolean auth) {
+        this.inspectorsAuthorized = auth;
+    }
 
-	@Override
-	public boolean getAuthorizedInspectors() {
-		return this.inspectorsAuthorized;
-	}
+    @Override
+    public void setBaseAgentClass(final String agentClass) {
+        this.baseAgentClass = agentClass;
+    }
 
-	@Override
-	public void setLoginRequired(boolean loginReq) {
-		this.loginRequired = loginReq;
-	}
+    @Override
+    public void setLoginRequired(final boolean loginReq) {
+        this.loginRequired = loginReq;
+    }
 
-	@Override
-	public boolean getLoginRequired() {
-		return this.loginRequired;
-	}
-
-	@Override
-	public void setBaseAgentClass(String agentClass) {
-		this.baseAgentClass = agentClass;
-	}
-
-	@Override
-	public String getBaseAgentClass() {
-		return this.baseAgentClass;
-	}
-	
-
-
+    @Override
+    public void setOrgName(final String orgName) {
+        this.orgName = orgName;
+    }
 
 }

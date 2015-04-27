@@ -24,7 +24,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -37,10 +36,8 @@ import alice.logictuple.LogicMatchingEngine;
 import alice.logictuple.LogicTuple;
 import alice.logictuple.TupleArgument;
 import alice.logictuple.Value;
-import alice.logictuple.Var;
 import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.logictuple.exceptions.InvalidTupleArgumentException;
-import alice.logictuple.exceptions.InvalidVarNameException;
 import alice.respect.api.exceptions.InvalidTupleCentreIdException;
 import alice.respect.core.EnvConfigAgent;
 import alice.respect.core.RespectTC;
@@ -70,11 +67,11 @@ import alice.tuprolog.Theory;
 import alice.tuprolog.lib.InvalidObjectIdException;
 
 /**
- * 
+ *
  * @author Alessandro Ricci
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
  * @author (contributor) Saverio Cicora
- * 
+ *
  */
 public class TucsonNodeService {
 
@@ -88,17 +85,8 @@ public class TucsonNodeService {
     private static final int MAX_UNBOUND_PORT = 64000;
     private static final String PERSISTENCY_PATH = "./persistent/";
 
-    // RBAC
-    private String baseAgentClass;
-    private boolean loginRequired;
-    private boolean listAllRoles;
-    private boolean authForAdmin;
-    private boolean inspectorsAuthorized;
-    private String adminUsername;
-	private String adminPassword;
-	
     /**
-     * 
+     *
      * @return the String representation of the TuCSoN version
      */
     public static String getVersion() {
@@ -127,7 +115,7 @@ public class TucsonNodeService {
     }
 
     /**
-     * 
+     *
      * @param netid
      *            the IP address where to test if a TuCSoN node is up and
      *            running
@@ -186,7 +174,7 @@ public class TucsonNodeService {
     }
 
     /**
-     * 
+     *
      * @param args
      *            the arguments to start the TuCSoN node with
      */
@@ -236,9 +224,19 @@ public class TucsonNodeService {
         System.out.println("[TuCSoN Node Service]: " + m);
     }
 
+    private String adminPassword;
+
+    private String adminUsername;
+
     private final List<TucsonAgentId> agents;
+
+    // RBAC
+    private String baseAgentClass;
+
     private final String configFile;
+
     private Prolog configManager;
+
     private Map<String, TucsonTCUsers> cores;
     private ACCProvider ctxman;
     private EnvConfigAgent envAgent;
@@ -247,7 +245,10 @@ public class TucsonNodeService {
     // configuration
     private TucsonTupleCentreId idObsTC;
     private final ArrayList<InspectorContextSkel> inspectorAgents;
+    private boolean inspectorsAuthorized;
     private Date installationDate;
+    private boolean listAllRoles;
+    private boolean loginRequired;
     private final List<Thread> nodeAgents;
     private TucsonAgentId nodeAid;
     private boolean observed;
@@ -258,14 +259,14 @@ public class TucsonNodeService {
     private WelcomeAgent welcome;
 
     /**
-     * 
+     *
      */
     public TucsonNodeService() {
         this(null, TucsonNodeService.DEFAULT_TCP_PORT, null);
     }
 
     /**
-     * 
+     *
      * @param portno
      *            the default listening port of this TuCSoN node
      */
@@ -274,7 +275,7 @@ public class TucsonNodeService {
     }
 
     /**
-     * 
+     *
      * @param conf
      *            the configuration file to load
      * @param portNumber
@@ -309,52 +310,19 @@ public class TucsonNodeService {
         this.inspectorAgents = new ArrayList<InspectorContextSkel>();
         this.tcs = new ArrayList<RespectTC>();
         TPConfig.getInstance().setTcpPort(this.tcpPort);
-        
+
         // Set rbac properties
-        baseAgentClass = "baseAgentClass";
-        loginRequired = false;
-        listAllRoles = true;
-        authForAdmin = false;
-    }
-    
-    /*
-     *  ============== RBAC METHODS ===============
-     */
-    
-    public void setBaseAgentClass(String agentClass){
-    	this.baseAgentClass = agentClass;
-    }
-    
-    public void setLoginRequired(boolean loginReq){
-    	this.loginRequired = loginReq;
-    }
-    
-    public void setListAllRolesAllowed(boolean listAllRoles){
-    	this.listAllRoles = listAllRoles;
+        this.baseAgentClass = "baseAgentClass";
+        this.loginRequired = false;
+        this.listAllRoles = true;
     }
 
-    public void setAuthForAdmin(boolean needAuth){
-    	this.authForAdmin = needAuth;
-    }
-    
-    public void setAdminUsername(String username){
-    	this.adminUsername = username;
-    }
-    
-    public void setAdminPassword(String password){
-    	this.adminPassword = password;
-    }
-    
-    public void setInspectorsAuthorized(boolean inspectorsAuth){
-    	this.inspectorsAuthorized = inspectorsAuth;
-    }
-    
     /*
-     *   ============= END RBAC ================
+     * ============== RBAC METHODS ===============
      */
-    
+
     /**
-     * 
+     *
      */
     public synchronized void activateObservability() {
         this.observed = true;
@@ -368,7 +336,7 @@ public class TucsonNodeService {
     }
 
     /**
-     * 
+     *
      * @param aid
      *            the identifier of the agent to add to this TuCSoN node
      */
@@ -393,7 +361,7 @@ public class TucsonNodeService {
     }
 
     /**
-     * 
+     *
      * @param t
      *            the identifier of the internal management agent to add to this
      *            TuCSoN node
@@ -403,7 +371,7 @@ public class TucsonNodeService {
     }
 
     /**
-     * 
+     *
      * @param agentId
      *            the identifier of the tuple centre agent to add to this TuCSoN
      *            node
@@ -418,7 +386,7 @@ public class TucsonNodeService {
     }
 
     /**
-     * 
+     *
      */
     public synchronized void deactivateObservability() {
         this.observed = false;
@@ -432,7 +400,7 @@ public class TucsonNodeService {
     }
 
     /**
-     * 
+     *
      * @param tcn
      *            the String representing the tuple centre identifier to destroy
      * @return wether the operation has been succesfully carried out or not
@@ -486,8 +454,12 @@ public class TucsonNodeService {
         return false;
     }
 
+    /*
+     * ============= END RBAC ================
+     */
+
     /**
-     * 
+     *
      * @param tc
      *            the identifier of the tuple centre whose persistency service
      *            should be disabled
@@ -517,7 +489,7 @@ public class TucsonNodeService {
     }
 
     /**
-     * 
+     *
      * @param template
      *            the tuple template to be used in filtering tuple centre
      *            identifiers whose persistency service should be disabled
@@ -563,7 +535,7 @@ public class TucsonNodeService {
     }
 
     /**
-     * 
+     *
      * @param tc
      *            the identifier of the tuple centre whose persistency service
      *            should be enabled
@@ -592,7 +564,7 @@ public class TucsonNodeService {
     }
 
     /**
-     * 
+     *
      * @param template
      *            the tuple template to be used in filtering tuple centre
      *            identifiers whose persistency service should be enabled
@@ -628,7 +600,7 @@ public class TucsonNodeService {
     }
 
     /**
-     * 
+     *
      * @return a Map storing associations between String representations of
      *         tuple centres along with the list of their users
      */
@@ -644,7 +616,7 @@ public class TucsonNodeService {
     }
 
     /**
-     * 
+     *
      * @return the date when the TuCSoN node was installed
      */
     public Date getInstallationDate() {
@@ -652,7 +624,7 @@ public class TucsonNodeService {
     }
 
     /**
-     * 
+     *
      * @return the observer of the TuCSoN node, if any
      */
     public NodeServiceListener getListener() {
@@ -660,7 +632,7 @@ public class TucsonNodeService {
     }
 
     /**
-     * 
+     *
      * @return the listening port this TuCSoN node is bound to
      */
     public int getTCPPort() {
@@ -668,7 +640,7 @@ public class TucsonNodeService {
     }
 
     /**
-     * 
+     *
      */
     public synchronized void install() {
         TucsonNodeService
@@ -716,7 +688,7 @@ public class TucsonNodeService {
     }
 
     /**
-     * 
+     *
      * @param aid
      *            the identifier of the TuCSoN agent to be removed from users
      */
@@ -745,7 +717,7 @@ public class TucsonNodeService {
     }
 
     /**
-     * 
+     *
      * @param t
      *            the Thread object executing the internal management agent to
      *            be removed
@@ -791,8 +763,32 @@ public class TucsonNodeService {
         return core;
     }
 
+    public void setAdminPassword(final String password) {
+        this.adminPassword = password;
+    }
+
+    public void setAdminUsername(final String username) {
+        this.adminUsername = username;
+    }
+
+    public void setBaseAgentClass(final String agentClass) {
+        this.baseAgentClass = agentClass;
+    }
+
+    public void setInspectorsAuthorized(final boolean inspectorsAuth) {
+        this.inspectorsAuthorized = inspectorsAuth;
+    }
+
+    public void setListAllRolesAllowed(final boolean listAllRoles) {
+        this.listAllRoles = listAllRoles;
+    }
+
+    public void setLoginRequired(final boolean loginReq) {
+        this.loginRequired = loginReq;
+    }
+
     /**
-     * 
+     *
      */
     public void shutdown() {
         TucsonNodeService
@@ -831,7 +827,7 @@ public class TucsonNodeService {
     }
 
     /**
-     * 
+     *
      */
     private void bootManagementAgents() {
         TucsonNodeService.log("Spawning Node Management Agent...");
@@ -852,7 +848,7 @@ public class TucsonNodeService {
     }
 
     /**
-     * 
+     *
      * @param name
      * @return
      * @throws TucsonInvalidTupleCentreIdException
@@ -886,7 +882,7 @@ public class TucsonNodeService {
     }
 
     /**
-     * 
+     *
      * @param dirName
      */
     private void checkPersistentTupleCentres(final String dirName) {
@@ -941,7 +937,7 @@ public class TucsonNodeService {
     }
 
     /**
-     * 
+     *
      */
     private void setupConfigTupleCentre() {
         try {
@@ -960,31 +956,67 @@ public class TucsonNodeService {
             TupleCentreContainer.doNonBlockingOperation(
                     TucsonOperation.outCode(), this.nodeAid, this.idConfigTC,
                     new LogicTuple("boot"), null);
-            
-            
+
             // Set default agent class
-            TupleCentreContainer.doBlockingOperation(TucsonOperation.outCode(), this.nodeAid, this.idConfigTC, new LogicTuple("base_agent_class", new Value(this.baseAgentClass)));
-           
+            TupleCentreContainer
+                    .doBlockingOperation(TucsonOperation.outCode(),
+                            this.nodeAid, this.idConfigTC, new LogicTuple(
+                                    "base_agent_class", new Value(
+                                            this.baseAgentClass)));
+
             // Set login required
-            TupleCentreContainer.doBlockingOperation(TucsonOperation.outCode(), this.nodeAid, this.idConfigTC, new LogicTuple("login_required", new Value((this.loginRequired)? "yes" : "no")));
+            TupleCentreContainer.doBlockingOperation(TucsonOperation.outCode(),
+                    this.nodeAid, this.idConfigTC, new LogicTuple(
+                            "login_required", new Value(
+                                    this.loginRequired ? "yes" : "no")));
 
             // Allow or not list of all roles
-            TupleCentreContainer.doBlockingOperation(TucsonOperation.outCode(), this.nodeAid, this.idConfigTC, new LogicTuple("list_all_roles", new Value((this.listAllRoles)? "yes" : "no")));
-            
-            //Allow or not inspectors 
-            TupleCentreContainer.doBlockingOperation(TucsonOperation.outCode(), this.nodeAid, this.idConfigTC, new LogicTuple("authorize_inspectors", new Value((this.inspectorsAuthorized)? "yes" : "no")));
+            TupleCentreContainer.doBlockingOperation(TucsonOperation.outCode(),
+                    this.nodeAid, this.idConfigTC, new LogicTuple(
+                            "list_all_roles", new Value(
+                                    this.listAllRoles ? "yes" : "no")));
 
-            //TupleCentreContainer.doBlockingOperation(TucsonOperation.outCode(), this.nodeAid, this.idConfigTC, new LogicTuple("role", new Value("admin_role"), new Value("admin role"), new Value("0")));
-            /*if(!authForAdmin){
-            	TupleCentreContainer.doBlockingOperation(TucsonOperation.outCode(), this.nodeAid, this.idConfigTC, new LogicTuple("role_credentials", new Value("admin_role"), new Value("_")));
-            } else if(adminUsername!=null && !adminUsername.equalsIgnoreCase("") && adminPassword!=null && !adminPassword.equalsIgnoreCase("")) {
-				TupleCentreContainer.doBlockingOperation(TucsonOperation.outCode(), nodeAid, idConfigTC, new LogicTuple("role_credentials", new Value("admin_role"), new Value(adminUsername+":"+TucsonACCTool.encrypt(adminPassword))));
-			} else {
-				TupleCentreContainer.doBlockingOperation(TucsonOperation.outCode(), this.nodeAid, this.idConfigTC, new LogicTuple("role_credentials", new Value("admin_role"), new Value("_")));
-			}*/
-            if(adminUsername!=null && !adminUsername.equalsIgnoreCase("") && adminPassword!=null && !adminPassword.equalsIgnoreCase("")) {
-				TupleCentreContainer.doBlockingOperation(TucsonOperation.outCode(), nodeAid, idConfigTC, new LogicTuple("admin_credentials",new Value(adminUsername+":"+TucsonACCTool.encrypt(adminPassword))));
-			}
+            // Allow or not inspectors
+            TupleCentreContainer.doBlockingOperation(TucsonOperation.outCode(),
+                    this.nodeAid, this.idConfigTC, new LogicTuple(
+                            "authorize_inspectors", new Value(
+                                    this.inspectorsAuthorized ? "yes" : "no")));
+
+            // TupleCentreContainer.doBlockingOperation(TucsonOperation.outCode(),
+            // this.nodeAid, this.idConfigTC, new LogicTuple("role", new
+            // Value("admin_role"), new Value("admin role"), new Value("0")));
+            /*
+             * if(!authForAdmin){
+             * TupleCentreContainer.doBlockingOperation(TucsonOperation
+             * .outCode(), this.nodeAid, this.idConfigTC, new
+             * LogicTuple("role_credentials", new Value("admin_role"), new
+             * Value("_"))); } else if(adminUsername!=null &&
+             * !adminUsername.equalsIgnoreCase("") && adminPassword!=null &&
+             * !adminPassword.equalsIgnoreCase("")) {
+             * TupleCentreContainer.doBlockingOperation
+             * (TucsonOperation.outCode(), nodeAid, idConfigTC, new
+             * LogicTuple("role_credentials", new Value("admin_role"), new
+             * Value(adminUsername+":"+TucsonACCTool.encrypt(adminPassword))));
+             * } else {
+             * TupleCentreContainer.doBlockingOperation(TucsonOperation.
+             * outCode(), this.nodeAid, this.idConfigTC, new
+             * LogicTuple("role_credentials", new Value("admin_role"), new
+             * Value("_"))); }
+             */
+            if (this.adminUsername != null
+                    && !this.adminUsername.equalsIgnoreCase("")
+                    && this.adminPassword != null
+                    && !this.adminPassword.equalsIgnoreCase("")) {
+                TupleCentreContainer.doBlockingOperation(
+                        TucsonOperation.outCode(),
+                        this.nodeAid,
+                        this.idConfigTC,
+                        new LogicTuple("admin_credentials", new Value(
+                                this.adminUsername
+                                        + ":"
+                                        + TucsonACCTool
+                                                .encrypt(this.adminPassword))));
+            }
             this.addAgent(this.nodeAid);
         } catch (final TucsonInvalidTupleCentreIdException e) {
             e.printStackTrace();
@@ -996,13 +1028,13 @@ public class TucsonNodeService {
             e.printStackTrace();
         } catch (final TucsonInvalidSpecificationException e) {
             e.printStackTrace();
-        }  catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		}
+        } catch (final NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
-     * 
+     *
      * @param conf
      * @throws TucsonGenericException
      * @throws InvalidConfigException
@@ -1010,8 +1042,8 @@ public class TucsonNodeService {
     // exception handling is a mess, review it...
     private void setupConfiguration(final String conf)
             throws TucsonGenericException, InvalidConfigException {
-        final alice.tuprolog.lib.JavaLibrary jlib = (alice.tuprolog.lib.JavaLibrary) this.configManager
-                .getLibrary("alice.tuprolog.lib.JavaLibrary");
+        final alice.tuprolog.lib.OOLibrary jlib = (alice.tuprolog.lib.OOLibrary) this.configManager
+                .getLibrary("alice.tuprolog.lib.OOLibrary");
         try {
             jlib.register(new alice.tuprolog.Struct("config"), this);
         } catch (final InvalidObjectIdException e) {
@@ -1091,7 +1123,7 @@ public class TucsonNodeService {
     }
 
     /**
-     * 
+     *
      */
     private void setupObsTupleCentre() {
         try {

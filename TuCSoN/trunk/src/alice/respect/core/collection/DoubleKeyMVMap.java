@@ -14,9 +14,9 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 /**
- * 
+ *
  * @author Saverio Cicora
- * 
+ *
  * @param <K>
  *            the first key of the map
  * @param <Q>
@@ -25,11 +25,13 @@ import java.util.Map.Entry;
  *            the value of the map
  */
 public class DoubleKeyMVMap<K, Q, V> {
+
     /**
      * Iterator across all key-value pairs. This requires to manage two
      * iterators: one on the map and one for the map associated at key.
      */
     private class DoubleKeyMVmapIterator implements Iterator<V> {
+
         private final Iterator<Map.Entry<K, MVMap<Q, V>>> entryIterator;
         private MVMap<Q, V> innerMap;
         private Iterator<V> valueIterator;
@@ -53,7 +55,7 @@ public class DoubleKeyMVMap<K, Q, V> {
          * Returns {@code true} if the iteration has more elements. (In other
          * words, returns {@code true} if {@link #next} would return an element
          * rather than throwing an exception.)
-         * 
+         *
          * @return {@code true} if the iteration has more elements
          */
         @Override
@@ -63,7 +65,7 @@ public class DoubleKeyMVMap<K, Q, V> {
 
         /**
          * Returns the next element in the iteration.
-         * 
+         *
          * @return the next element in the iteration
          */
         @Override
@@ -81,7 +83,7 @@ public class DoubleKeyMVMap<K, Q, V> {
          * unspecified if the underlying collection is modified while the
          * iteration is in progress in any way other than by calling this
          * method.
-         * 
+         *
          * @throws IllegalStateException
          *             if the {@code next} method has not yet been called, or
          *             the {@code remove} method has already been called after
@@ -104,11 +106,13 @@ public class DoubleKeyMVMap<K, Q, V> {
     }
 
     private class InnerMVMap implements MVMap<Q, V> {
+
         /**
          * Iterator across all key-value pairs. This requires to manage two
          * iterators: one on the map and one for the list associated at key.
          */
         private class MVmapIterator implements Iterator<V> {
+
             private final Iterator<Map.Entry<Q, List<V>>> entryIterator;
             private List<V> list;
             private Iterator<V> valueIterator;
@@ -132,7 +136,7 @@ public class DoubleKeyMVMap<K, Q, V> {
              * Returns {@code true} if the iteration has more elements. (In
              * other words, returns {@code true} if {@link #next} would return
              * an element rather than throwing an exception.)
-             * 
+             *
              * @return {@code true} if the iteration has more elements
              */
             @Override
@@ -143,7 +147,7 @@ public class DoubleKeyMVMap<K, Q, V> {
 
             /**
              * Returns the next element in the iteration.
-             * 
+             *
              * @return the next element in the iteration
              */
             @Override
@@ -161,7 +165,7 @@ public class DoubleKeyMVMap<K, Q, V> {
              * is unspecified if the underlying collection is modified while the
              * iteration is in progress in any way other than by calling this
              * method.
-             * 
+             *
              * @throws IllegalStateException
              *             if the {@code next} method has not yet been called,
              *             or the {@code remove} method has already been called
@@ -192,7 +196,9 @@ public class DoubleKeyMVMap<K, Q, V> {
         }
 
         private class Values extends AbstractList<V> {
+
             private class WrappedIterator implements Iterator<V> {
+
                 private final Iterator<V> delegateIterator;
                 private final List<V> originalDelegate = Values.this.wrappedList;
 
@@ -243,6 +249,7 @@ public class DoubleKeyMVMap<K, Q, V> {
 
             private class WrappedListIterator extends WrappedIterator implements
                     ListIterator<V> {
+
                 public WrappedListIterator(final int index) {
                     super(Values.this.wrappedList.listIterator(index));
                 }
@@ -665,7 +672,7 @@ public class DoubleKeyMVMap<K, Q, V> {
         /**
          * <p>
          * Return a list of all values contained into MVMap. The list are
-         * wrapped whit a {@link Collections#unmodifiableList()}
+         * wrapped whit a {@link Collections#unmodifiableList(List)}
          * </p>
          * WARNING: the returned list should be used in read-only mode because
          * it is not synchronized with the rest of the map
@@ -698,7 +705,7 @@ public class DoubleKeyMVMap<K, Q, V> {
     private int totalValuesSize = 0;
 
     /**
-     * 
+     *
      */
     public void clear() {
         for (final K k : this.outerMap.keySet()) {
@@ -708,7 +715,7 @@ public class DoubleKeyMVMap<K, Q, V> {
     }
 
     /**
-     * 
+     *
      * @param k1
      *            the first key
      * @return the inner map containing the second key and the value
@@ -722,7 +729,7 @@ public class DoubleKeyMVMap<K, Q, V> {
     }
 
     /**
-     * 
+     *
      * @param k1
      *            the first key
      * @param k2
@@ -734,7 +741,7 @@ public class DoubleKeyMVMap<K, Q, V> {
     }
 
     /**
-     * 
+     *
      * @return wether the map is empty
      */
     public boolean isEmpty() {
@@ -742,7 +749,7 @@ public class DoubleKeyMVMap<K, Q, V> {
     }
 
     /**
-     * 
+     *
      * @return the iterator thoruhg this map values
      */
     public Iterator<V> iterator() {
@@ -751,7 +758,7 @@ public class DoubleKeyMVMap<K, Q, V> {
 
     /**
      * Null values are allowed
-     * 
+     *
      * @param k1
      *            the first key
      * @param k2
@@ -775,7 +782,7 @@ public class DoubleKeyMVMap<K, Q, V> {
 
     /**
      * Removes the first occurrence of the specified element from this MVMap.
-     * 
+     *
      * @param k1
      *            the first key
      * @param k2
@@ -796,7 +803,7 @@ public class DoubleKeyMVMap<K, Q, V> {
     }
 
     /**
-     * 
+     *
      * @return the size of this map
      */
     public int size() {
@@ -804,7 +811,7 @@ public class DoubleKeyMVMap<K, Q, V> {
     }
 
     /**
-     * 
+     *
      * @param v
      *            the array type to be used for array construction
      * @return the array representation of this map

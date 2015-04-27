@@ -17,17 +17,18 @@ import alice.tuplecentre.core.InputEvent;
 /**
  * Represents an internal event of the ReSpecT VM (stores the "connected"
  * InputEvent)
- * 
+ *
  * @author Alessandro Ricci
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public class InternalEvent extends alice.tuplecentre.core.AbstractEvent {
+
     private static final long serialVersionUID = 8362450931717138730L;
     private final InputEvent inputEvent;
     private final InternalOperation internalOperation;
 
     /**
-     * 
+     *
      * @param ev
      *            the input event direct cause of this internal event
      * @param op
@@ -41,7 +42,7 @@ public class InternalEvent extends alice.tuplecentre.core.AbstractEvent {
     }
 
     /**
-     * 
+     *
      * @return the input event direct cause of this internal event
      */
     public InputEvent getInputEvent() {
@@ -49,7 +50,7 @@ public class InternalEvent extends alice.tuplecentre.core.AbstractEvent {
     }
 
     /**
-     * 
+     *
      * @return the ReSpecT operation generating this internal event
      */
     public InternalOperation getInternalOperation() {

@@ -5,6 +5,7 @@ import alice.respect.core.TupleSet;
 import alice.respect.core.tupleset.ITupleSet;
 
 public class PersistencyData {
+
     private List<String> predicates;
     private TupleSet prologPredicates;
     private List<String> specTuples;

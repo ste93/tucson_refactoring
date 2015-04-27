@@ -11,14 +11,15 @@ import alice.tuplecentre.core.AbstractBehaviourSpecification;
  * @author Alessandro Ricci
  */
 public interface ITupleCentreManagement {
+
     /**
-     * 
+     *
      * @return the ReSpecT specification retrieved
      */
     AbstractBehaviourSpecification getReactionSpec();
 
     /**
-     * 
+     *
      * @throws OperationNotPossibleException
      *             if the operation cannot be performed
      */
@@ -26,13 +27,13 @@ public interface ITupleCentreManagement {
 
     /**
      * verify if stepMode is active or not
-     * 
+     *
      * @return if stepMode is active or not
      */
     boolean isStepMode();
 
     /**
-     * 
+     *
      * @throws OperationNotPossibleException
      *             if the operation cannot be performed
      */
@@ -40,14 +41,14 @@ public interface ITupleCentreManagement {
 
     /**
      * old
-     * 
+     *
      * @param activate
      *            wether the 'management mode' should be activated or not
      */
     void setManagementMode(boolean activate);
 
     /**
-     * 
+     *
      * @param spec
      *            the ReSpecT specification to set
      * @return wether the ReSpecT specification has been succesfully set
@@ -55,7 +56,7 @@ public interface ITupleCentreManagement {
     boolean setReactionSpec(AbstractBehaviourSpecification spec);
 
     /**
-     * 
+     *
      * @throws OperationNotPossibleException
      *             if the operation cannot be performed
      */
@@ -63,7 +64,7 @@ public interface ITupleCentreManagement {
 
     /**
      * toggles step mode (defaults to <code>false</code>)
-     * 
+     *
      * @return wether step mode is currently enabled
      */
     boolean toggleStepMode();

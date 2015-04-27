@@ -16,13 +16,14 @@ package alice.tucson.introspection;
 import alice.tucson.api.TucsonAgentId;
 
 public class IsActiveStepModeMsg extends NodeMsg {
+
     /**
-	 * 
-	 */
+     *
+     */
     private static final long serialVersionUID = -13483265125297485L;
 
     /**
-     * 
+     *
      * @param id
      *            the agent id of the sender
      */

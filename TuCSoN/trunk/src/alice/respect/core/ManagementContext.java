@@ -13,15 +13,16 @@ import alice.tuplecentre.api.InspectableEventListener;
 import alice.tuplecentre.api.ObservableEventListener;
 
 /**
- * 
+ *
  * @author Alessandro Ricci
- * 
+ *
  */
 public class ManagementContext implements IManagementContext {
+
     private final RespectVM vm;
 
     /**
-     * 
+     *
      * @param rvm
      *            the ReSpecT VM this context refers to
      */

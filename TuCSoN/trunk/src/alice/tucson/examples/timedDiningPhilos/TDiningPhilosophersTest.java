@@ -22,10 +22,11 @@ import alice.tuplecentre.core.AbstractTupleCentreOperation;
  * Classic Dining Philosophers coordination problem tackled by adopting a clear
  * separation of concerns between coordinables (philosophers) and coordination
  * medium (table) thanks to TuCSoN ReSpecT tuple centres programmability.
- * 
+ *
  * @author ste (mailto: s.mariani@unibo.it)
  */
 public class TDiningPhilosophersTest extends AbstractTucsonAgent {
+
     private static final int EATING_STEP = 1000;
     /*
      * Should be exactly divisible.
@@ -39,7 +40,7 @@ public class TDiningPhilosophersTest extends AbstractTucsonAgent {
     private static final int N_PHILOSOPHERS = 5;
 
     /**
-     * 
+     *
      * @param args
      *            no args expected
      */
@@ -55,7 +56,7 @@ public class TDiningPhilosophersTest extends AbstractTucsonAgent {
     private final String port;
 
     /**
-     * 
+     *
      * @param aid
      *            the String representation of a valid TuCSoN agent identifier
      * @throws TucsonInvalidAgentIdException
@@ -89,17 +90,18 @@ public class TDiningPhilosophersTest extends AbstractTucsonAgent {
 
     @Override
     protected void main() {
-    	final TucsonNodeService tns = new TucsonNodeService();
+        final TucsonNodeService tns = new TucsonNodeService();
         tns.install();
         try {
             while (!TucsonNodeService.isInstalled(5000)) {
                 Thread.sleep(1000);
             }
-        } catch (Exception e ){
-        	
+        } catch (final Exception e) {
+            e.printStackTrace();
         }
         try {
-        	NegotiationACC negAcc = TucsonMetaACC.getNegotiationContext(this.getTucsonAgentId());
+            final NegotiationACC negAcc = TucsonMetaACC
+                    .getNegotiationContext(this.getTucsonAgentId());
             final SynchACC acc = negAcc.activateDefaultRole();
             final TucsonTupleCentreId table = new TucsonTupleCentreId("table",
                     this.ip, this.port);

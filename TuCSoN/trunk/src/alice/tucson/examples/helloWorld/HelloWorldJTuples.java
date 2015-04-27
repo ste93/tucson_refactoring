@@ -3,7 +3,6 @@
  */
 package alice.tucson.examples.helloWorld;
 
-import alice.logictuple.exceptions.InvalidVarNameException;
 import alice.tucson.api.ITucsonOperation;
 import alice.tucson.api.NegotiationACC;
 import alice.tucson.api.SynchACC;
@@ -14,7 +13,6 @@ import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
-import alice.tucson.service.TucsonNodeService;
 import alice.tuplecentre.api.Tuple;
 import alice.tuplecentre.api.exceptions.InvalidTupleException;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
@@ -30,9 +28,10 @@ import alice.tuples.javatuples.impl.JVar;
 
 /**
  * @author ste (mailto: s.mariani@unibo.it) on 24/feb/2014
- * 
+ *
  */
 public final class HelloWorldJTuples {
+
     /**
      * @param args
      *            program arguments (none expected)
@@ -51,8 +50,9 @@ public final class HelloWorldJTuples {
             /*
              * 2) Get a TuCSoN ACC to enable interaction with the TuCSoN system.
              */
-            NegotiationACC negAcc = TucsonMetaACC.getNegotiationContext(aid);
-            SynchACC acc = negAcc.activateDefaultRole();
+            final NegotiationACC negAcc = TucsonMetaACC
+                    .getNegotiationContext(aid);
+            final SynchACC acc = negAcc.activateDefaultRole();
 
             /*
              * 3) Define the tuplecentre target of your coordination operations.
@@ -144,7 +144,7 @@ public final class HelloWorldJTuples {
 
     private HelloWorldJTuples() {
         /*
-         * 
+         *
          */
     }
 }

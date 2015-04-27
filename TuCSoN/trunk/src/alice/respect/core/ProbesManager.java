@@ -13,14 +13,15 @@ import alice.respect.situatedness.TransducerId;
 
 /**
  * @author ste (mailto: s.mariani@unibo.it) on 04/nov/2013
- * 
+ *
  */
 public enum ProbesManager {
     /** the singleton instance of this probes manager */
     INSTANCE;
+
     /**
      * Utility method used to communicate an output message to the console.
-     * 
+     *
      * @param msg
      *            message to print
      */
@@ -41,13 +42,13 @@ public enum ProbesManager {
 
     /**
      * Creates a resource
-     * 
+     *
      * @param className
      *            the concrete implementative class of the resource
      * @param id
      *            the identifier of the resource
      * @return wether the Resource has been succesfully created.
-     * 
+     *
      * @throws ClassNotFoundException
      *             if the given Java full class name cannot be found within
      *             known paths
@@ -85,7 +86,7 @@ public enum ProbesManager {
 
     /**
      * Gets the resource by its identifier
-     * 
+     *
      * @param id
      *            the resource's identifier
      * @return an interface toward the resource whose identifier has been given
@@ -102,7 +103,7 @@ public enum ProbesManager {
 
     /**
      * Gets the resource by its local name
-     * 
+     *
      * @param name
      *            resource's local name
      * @return an interface toward the resource whose logical name has been
@@ -122,7 +123,7 @@ public enum ProbesManager {
 
     /**
      * Removes a resource from the list
-     * 
+     *
      * @param id
      *            the identifier of the resource to remove
      * @return wether the resource has been successfully removed
@@ -142,7 +143,7 @@ public enum ProbesManager {
 
     /**
      * Sets the transducer which the probe will communicate with.
-     * 
+     *
      * @param pId
      *            the probe's identifier
      * @param tId

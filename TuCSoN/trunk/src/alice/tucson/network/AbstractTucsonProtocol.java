@@ -25,13 +25,14 @@ import alice.tucson.network.exceptions.DialogSendException;
 import alice.tucson.service.ACCDescription;
 
 /**
- * 
+ *
  * @author Alessandro Ricci
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
  * @author (contributor) Saverio Cicora
- * 
+ *
  */
 public abstract class AbstractTucsonProtocol implements java.io.Serializable {
+
     /** Code for isInstalled() query */
     public static final int NODE_ACTIVE_QUERY = 2;
     private static final int REQ_ENTERCONTEXT = 1;
@@ -42,9 +43,9 @@ public abstract class AbstractTucsonProtocol implements java.io.Serializable {
     private int reqType;
 
     /**
-     * 
+     *
      * @return the protocol to be used for interacting with TuCSoN
-     * 
+     *
      * @throws DialogAcceptException
      *             if something goes wrong in the underlying network
      */
@@ -58,7 +59,7 @@ public abstract class AbstractTucsonProtocol implements java.io.Serializable {
     public abstract void end() throws DialogCloseException;
 
     /**
-     * 
+     *
      * @return the ACC profile associated to this protocol
      */
     public ACCDescription getContextDescription() {
@@ -70,7 +71,7 @@ public abstract class AbstractTucsonProtocol implements java.io.Serializable {
      * ObjectOutputStream getOutputStream();
      */
     /**
-     * 
+     *
      * @return wether the received request is an ACC acquisition request
      */
     public boolean isEnterRequest() {
@@ -78,7 +79,7 @@ public abstract class AbstractTucsonProtocol implements java.io.Serializable {
     }
 
     /**
-     * 
+     *
      * @return wether the ACC acquisition requested has been accepted or not
      */
     public boolean isEnterRequestAccepted() {
@@ -100,7 +101,7 @@ public abstract class AbstractTucsonProtocol implements java.io.Serializable {
         try {
             final String agentName = this.receiveString();
             final String agentRole = this.receiveString();
-            final String agentUUID = this.receiveString(); //BUCCELLI
+            final String agentUUID = this.receiveString(); // BUCCELLI
             final String tcName = this.receiveString();
             final Properties profile = new Properties();
             if (agentName.startsWith("'@'")) {
@@ -120,7 +121,7 @@ public abstract class AbstractTucsonProtocol implements java.io.Serializable {
     }
 
     /**
-     * 
+     *
      * @throws DialogReceiveException
      *             if something goes wrong in the underlying network
      */
@@ -133,7 +134,7 @@ public abstract class AbstractTucsonProtocol implements java.io.Serializable {
     }
 
     /**
-     * 
+     *
      * @throws DialogReceiveException
      *             if something goes wrong in the underlying network
      */
@@ -146,7 +147,7 @@ public abstract class AbstractTucsonProtocol implements java.io.Serializable {
     }
 
     /**
-     * 
+     *
      * @return the Inspector event received over the network
      * @throws DialogReceiveException
      *             if something goes wrong in the underlying network
@@ -155,7 +156,7 @@ public abstract class AbstractTucsonProtocol implements java.io.Serializable {
             throws DialogReceiveException;
 
     /**
-     * 
+     *
      * @return the Inspector message received over the network
      * @throws DialogReceiveException
      *             if something goes wrong in the underlying network
@@ -164,7 +165,7 @@ public abstract class AbstractTucsonProtocol implements java.io.Serializable {
             throws DialogReceiveException;
 
     /**
-     * 
+     *
      * @return the TuCSoN message received over the network
      * @throws DialogReceiveException
      *             if something goes wrong in the underlying network
@@ -172,7 +173,7 @@ public abstract class AbstractTucsonProtocol implements java.io.Serializable {
     public abstract TucsonMsg receiveMsg() throws DialogReceiveException;
 
     /**
-     * 
+     *
      * @return the TuCSoN message reply event received over the network
      * @throws DialogReceiveException
      *             if something goes wrong in the underlying network
@@ -181,7 +182,7 @@ public abstract class AbstractTucsonProtocol implements java.io.Serializable {
             throws DialogReceiveException;
 
     /**
-     * 
+     *
      * @return the TuCSoN message request received over the network
      * @throws DialogReceiveException
      *             if something goes wrong in the underlying network
@@ -190,7 +191,7 @@ public abstract class AbstractTucsonProtocol implements java.io.Serializable {
             throws DialogReceiveException;
 
     /**
-     * 
+     *
      * @return the node message received over the network
      * @throws DialogReceiveException
      *             if something goes wrong in the underlying network
@@ -198,7 +199,7 @@ public abstract class AbstractTucsonProtocol implements java.io.Serializable {
     public abstract NodeMsg receiveNodeMsg() throws DialogReceiveException;
 
     /**
-     * 
+     *
      * @param ctx
      *            the ACC profile to be associated to this protocol
      * @throws DialogSendException
@@ -222,8 +223,8 @@ public abstract class AbstractTucsonProtocol implements java.io.Serializable {
             }
             this.send(agentProfile);
             String agentUUID = ctx.getProperty("agent-uuid");
-            if(agentUUID == null){
-            	agentUUID = "defaultUUID";
+            if (agentUUID == null) {
+                agentUUID = "defaultUUID";
             }
             this.send(agentUUID);
             String tcName = ctx.getProperty("tuple-centre");
@@ -238,7 +239,7 @@ public abstract class AbstractTucsonProtocol implements java.io.Serializable {
     }
 
     /**
-     * 
+     *
      * @throws DialogSendException
      *             if something goes wrong in the underlying network
      */
@@ -252,7 +253,7 @@ public abstract class AbstractTucsonProtocol implements java.io.Serializable {
     }
 
     /**
-     * 
+     *
      * @throws DialogSendException
      *             if something goes wrong in the underlying network
      */
@@ -266,7 +267,7 @@ public abstract class AbstractTucsonProtocol implements java.io.Serializable {
     }
 
     /**
-     * 
+     *
      * @param msg
      *            the message to send over the network
      * @throws DialogSendException
@@ -276,7 +277,7 @@ public abstract class AbstractTucsonProtocol implements java.io.Serializable {
             throws DialogSendException;
 
     /**
-     * 
+     *
      * @param msg
      *            the message to send over the network
      * @throws DialogSendException
@@ -286,7 +287,7 @@ public abstract class AbstractTucsonProtocol implements java.io.Serializable {
             throws DialogSendException;
 
     /**
-     * 
+     *
      * @param msg
      *            the message to send over the network
      * @throws DialogSendException
@@ -295,7 +296,7 @@ public abstract class AbstractTucsonProtocol implements java.io.Serializable {
     public abstract void sendMsg(TucsonMsg msg) throws DialogSendException;
 
     /**
-     * 
+     *
      * @param reply
      *            the message to send over the network
      * @throws DialogSendException
@@ -305,7 +306,7 @@ public abstract class AbstractTucsonProtocol implements java.io.Serializable {
             throws DialogSendException;
 
     /**
-     * 
+     *
      * @param request
      *            the message to send over the network
      * @throws DialogSendException
@@ -328,7 +329,7 @@ public abstract class AbstractTucsonProtocol implements java.io.Serializable {
     }
 
     /**
-     * 
+     *
      * @param msg
      *            the message to send over the network
      * @throws DialogSendException
@@ -337,14 +338,14 @@ public abstract class AbstractTucsonProtocol implements java.io.Serializable {
     public abstract void sendNodeMsg(NodeMsg msg) throws DialogSendException;
 
     /**
-     * 
+     *
      * @throws IOException
      *             if some network problems arise
      */
     protected abstract void flush() throws IOException;
 
     /**
-     * 
+     *
      * @return the Java boolean value received
      * @throws IOException
      *             if some network problems arise
@@ -352,7 +353,7 @@ public abstract class AbstractTucsonProtocol implements java.io.Serializable {
     protected abstract boolean receiveBoolean() throws IOException;
 
     /**
-     * 
+     *
      * @return the Java int value received
      * @throws IOException
      *             if some network problems arise
@@ -360,7 +361,7 @@ public abstract class AbstractTucsonProtocol implements java.io.Serializable {
     protected abstract int receiveInt() throws IOException;
 
     /**
-     * 
+     *
      * @return the Java object received
      * @throws ClassNotFoundException
      *             if the received object's class cannot be found
@@ -371,7 +372,7 @@ public abstract class AbstractTucsonProtocol implements java.io.Serializable {
             IOException;
 
     /**
-     * 
+     *
      * @return the Java string received
      * @throws ClassNotFoundException
      *             if the received object's class cannot be found
@@ -382,7 +383,7 @@ public abstract class AbstractTucsonProtocol implements java.io.Serializable {
             IOException;
 
     /**
-     * 
+     *
      * @param value
      *            the Jaba boolean value to send
      * @throws IOException
@@ -391,7 +392,7 @@ public abstract class AbstractTucsonProtocol implements java.io.Serializable {
     protected abstract void send(boolean value) throws IOException;
 
     /**
-     * 
+     *
      * @param value
      *            the Java byte array to send
      * @throws IOException
@@ -400,7 +401,7 @@ public abstract class AbstractTucsonProtocol implements java.io.Serializable {
     protected abstract void send(byte[] value) throws IOException;
 
     /**
-     * 
+     *
      * @param value
      *            the Java int value to send
      * @throws IOException
@@ -409,7 +410,7 @@ public abstract class AbstractTucsonProtocol implements java.io.Serializable {
     protected abstract void send(int value) throws IOException;
 
     /**
-     * 
+     *
      * @param value
      *            the Java object to send
      * @throws IOException
@@ -418,7 +419,7 @@ public abstract class AbstractTucsonProtocol implements java.io.Serializable {
     protected abstract void send(Object value) throws IOException;
 
     /**
-     * 
+     *
      * @param value
      *            the Java String to send
      * @throws IOException

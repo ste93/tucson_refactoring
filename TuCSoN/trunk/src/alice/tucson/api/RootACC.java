@@ -14,48 +14,50 @@
 package alice.tucson.api;
 
 import java.security.NoSuchAlgorithmException;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-
-import alice.logictuple.exceptions.InvalidVarNameException;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
 import alice.tucson.service.TucsonOperation;
-import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 
 /**
  * Root ACC, no Linda nor TuCSoN operations available, only ACC release back to
  * TuCSoN node is possible.
- * 
+ *
  * @author ste (mailto: s.mariani@unibo.it)
  */
 public interface RootACC {
-	
-	void enterACC() throws UnreachableNodeException,	// galassi
-					TucsonOperationNotPossibleException, NoSuchAlgorithmException, TucsonInvalidTupleCentreIdException;
+
+    void enterACC()
+            throws UnreachableNodeException, // galassi
+            TucsonOperationNotPossibleException, NoSuchAlgorithmException,
+            TucsonInvalidTupleCentreIdException;
+
     /**
      * Release of the ACC and exit from the TuCSoN system.
-     * 
+     *
      * @throws TucsonOperationNotPossibleException
      *             if the requested operation cannot be carried out
      */
     void exit() throws TucsonOperationNotPossibleException;
 
+    String getPassword();
+
     /**
-     * 
+     *
      * @return the Map associating operation ids with the actual TuCSoN
      *         operation
      */
     Map<Long, TucsonOperation> getPendingOperationsMap();
-    
-    String getPassword();
-	void setPassword(String password);
-	String getUsername();
-	void setUsername(String username);
-	
-	boolean isACCEntered();
-	
-	UUID getUUID();
+
+    String getUsername();
+
+    UUID getUUID();
+
+    boolean isACCEntered();
+
+    void setPassword(String password);
+
+    void setUsername(String username);
 }

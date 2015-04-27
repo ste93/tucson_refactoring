@@ -14,20 +14,20 @@ import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
-import alice.tucson.service.TucsonNodeService;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 
 /**
  * Plain Java class exploiting TuCSoN library.
- * 
+ *
  * @author ste (mailto: s.mariani@unibo.it)
  */
 public final class HelloWorld {
+
     /**
      * @param args
      *            the name of the TuCSoN coordinable (optional).
      */
-    public static void main(final String[] args) {    	
+    public static void main(final String[] args) {
         /*
          * 1) Build a TuCSoN Agent identifier to contact the TuCSoN system.
          */
@@ -41,8 +41,9 @@ public final class HelloWorld {
             /*
              * 2) Get a TuCSoN ACC to enable interaction with the TuCSoN system.
              */
-            NegotiationACC negAcc = TucsonMetaACC.getNegotiationContext(aid);
-            SynchACC acc = negAcc.activateDefaultRole();
+            final NegotiationACC negAcc = TucsonMetaACC
+                    .getNegotiationContext(aid);
+            final SynchACC acc = negAcc.activateDefaultRole();
             /*
              * 3) Define the tuplecentre target of your coordination operations.
              */
@@ -123,7 +124,7 @@ public final class HelloWorld {
 
     private HelloWorld() {
         /*
-         * 
+         *
          */
     }
 }

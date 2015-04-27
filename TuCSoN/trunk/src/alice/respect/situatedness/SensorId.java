@@ -2,15 +2,16 @@ package alice.respect.situatedness;
 
 /**
  * A sensor identifier.
- * 
+ *
  * @author Steven Maraldi
- * 
+ *
  */
 public class SensorId extends AbstractProbeId {
+
     private static final long serialVersionUID = -2977090935649268889L;
 
     /**
-     * 
+     *
      * @param i
      *            the String representation of this sensor identifier
      */

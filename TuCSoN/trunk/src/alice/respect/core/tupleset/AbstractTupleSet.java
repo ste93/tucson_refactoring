@@ -10,17 +10,19 @@ import alice.respect.core.collection.MVMap;
 import alice.tuprolog.Var;
 
 /**
- * 
+ *
  * @author Saverio Cicora
- * 
+ *
  */
 public abstract class AbstractTupleSet implements ITupleSet {
+
     /**
-     * 
+     *
      * @author Saverio Cicora
-     * 
+     *
      */
     protected class LTEntry {
+
         private final String key1;
         private final String key2;
         private final LogicTuple value;
@@ -32,7 +34,7 @@ public abstract class AbstractTupleSet implements ITupleSet {
         }
 
         /**
-         * 
+         *
          * @return the String representation of the first key (K)
          */
         public String getKey1() {
@@ -40,7 +42,7 @@ public abstract class AbstractTupleSet implements ITupleSet {
         }
 
         /**
-         * 
+         *
          * @return the String representation of the second key (Q)
          */
         public String getKey2() {
@@ -48,7 +50,7 @@ public abstract class AbstractTupleSet implements ITupleSet {
         }
 
         /**
-         * 
+         *
          * @return the LogicTuple value
          */
         public LogicTuple getValue() {
@@ -62,19 +64,19 @@ public abstract class AbstractTupleSet implements ITupleSet {
     }
 
     /**
-     * 
+     *
      */
     protected List<LTEntry> tAdded;
     /**
-     * 
+     *
      */
     protected boolean transaction;
     /**
-     * 
+     *
      */
     protected List<LTEntry> tRemoved;
     /**
-     * 
+     *
      */
     protected DoubleKeyMVMap<String, String, LogicTuple> tuples;
 
@@ -226,7 +228,7 @@ public abstract class AbstractTupleSet implements ITupleSet {
     }
 
     /**
-     * 
+     *
      * @param t
      *            the LogicTuple whose first key should be retrieved
      * @return the String representation of the retrieved key
@@ -234,7 +236,7 @@ public abstract class AbstractTupleSet implements ITupleSet {
     protected abstract String getTupleKey1(LogicTuple t);
 
     /**
-     * 
+     *
      * @param t
      *            the LogicTuple whose second key should be retrieved
      * @return the String representation of the retrieved key

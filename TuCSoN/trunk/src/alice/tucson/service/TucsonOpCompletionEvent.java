@@ -7,12 +7,13 @@ import alice.tucson.api.TucsonOpId;
 /**
  * Completion of a TuCSoN operation: such event stores the corresponding
  * operation ID, its success state, its result and other useful info.
- * 
+ *
  * @author Alessandro Ricci
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
- * 
+ *
  */
 public class TucsonOpCompletionEvent {
+
     private final boolean allowed;
     private final TucsonOpId opId;
     private final boolean resultSuccess;
@@ -22,7 +23,7 @@ public class TucsonOpCompletionEvent {
     private List<LogicTuple> tupleList;
 
     /**
-     * 
+     *
      * @param id
      *            the identifier of the TuCSoN operation
      * @param a
@@ -41,7 +42,7 @@ public class TucsonOpCompletionEvent {
     }
 
     /**
-     * 
+     *
      * @param id
      *            the identifier of the TuCSoN operation
      * @param a
@@ -63,7 +64,7 @@ public class TucsonOpCompletionEvent {
     }
 
     /**
-     * 
+     *
      * @param id
      *            the identifier of the TuCSoN operation
      * @param a
@@ -72,7 +73,7 @@ public class TucsonOpCompletionEvent {
      *            wether the operation succeded
      * @param t
      *            the tuple result of the operation
-     * 
+     *
      * @param resOk
      *            whether the operations already has its result available
      */
@@ -86,7 +87,7 @@ public class TucsonOpCompletionEvent {
     }
 
     /**
-     * 
+     *
      * @param id
      *            the identifier of the TuCSoN operation
      * @param a
@@ -108,7 +109,7 @@ public class TucsonOpCompletionEvent {
     }
 
     /**
-     * 
+     *
      * @return the identifier of the TuCSoN operation
      */
     public TucsonOpId getOpId() {
@@ -116,7 +117,7 @@ public class TucsonOpCompletionEvent {
     }
 
     /**
-     * 
+     *
      * @return the ReSpecT specification used in the operation
      */
     public String getSpec() {
@@ -124,7 +125,7 @@ public class TucsonOpCompletionEvent {
     }
 
     /**
-     * 
+     *
      * @return the tuple result of the operation
      */
     public LogicTuple getTuple() {
@@ -132,7 +133,7 @@ public class TucsonOpCompletionEvent {
     }
 
     /**
-     * 
+     *
      * @return the list of tuples result of the operation
      */
     public List<LogicTuple> getTupleList() {
@@ -140,7 +141,7 @@ public class TucsonOpCompletionEvent {
     }
 
     /**
-     * 
+     *
      * @return wether the operation was allowed
      */
     public boolean operationAllowed() {
@@ -148,7 +149,7 @@ public class TucsonOpCompletionEvent {
     }
 
     /**
-     * 
+     *
      * @return wether the operation succeeded
      */
     public boolean operationSucceeded() {
@@ -156,7 +157,7 @@ public class TucsonOpCompletionEvent {
     }
 
     /**
-     * 
+     *
      * @return wether the result operation succeeded
      */
     public boolean resultOperationSucceeded() {

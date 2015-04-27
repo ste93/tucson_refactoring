@@ -6,19 +6,16 @@ import java.util.List;
 import java.util.Map;
 import alice.logictuple.LogicTuple;
 import alice.logictuple.exceptions.InvalidLogicTupleException;
-import alice.logictuple.exceptions.InvalidVarNameException;
 import alice.tucson.api.AbstractTucsonAgent;
 import alice.tucson.api.EnhancedSynchACC;
 import alice.tucson.api.ITucsonOperation;
 import alice.tucson.api.NegotiationACC;
-import alice.tucson.api.SynchACC;
 import alice.tucson.api.TucsonMetaACC;
 import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
-import alice.tucson.service.TucsonNodeService;
 import alice.tuplecentre.api.exceptions.InvalidOperationException;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 import alice.tuplecentre.core.AbstractTupleCentreOperation;
@@ -27,7 +24,7 @@ import alice.tuplecentre.core.AbstractTupleCentreOperation;
  * Master thread of a master-worker architecture. Given a list of TuCSoN Nodes
  * (hopefully up and listening), it submits jobs regarding factorial
  * computation, then collects expected results.
- * 
+ *
  * @author ste (mailto: s.mariani@unibo.it)
  */
 public class MasterAgent extends AbstractTucsonAgent {
@@ -69,7 +66,7 @@ public class MasterAgent extends AbstractTucsonAgent {
      *            max number of jobs per node
      * @param maxFact
      *            max number for which to calculate factorial
-     * 
+     *
      * @throws TucsonInvalidAgentIdException
      *             if the given String does not represent a valid TuCSoN agent
      *             identifier
@@ -103,7 +100,7 @@ public class MasterAgent extends AbstractTucsonAgent {
     @Override
     public void operationCompleted(final ITucsonOperation op) {
         /*
-         * 
+         *
          */
     }
 
@@ -114,8 +111,8 @@ public class MasterAgent extends AbstractTucsonAgent {
     @Override
     protected void main() {
         this.say("I'm started.");
-        
-        //final EnhancedSynchACC acc = this.getContext();
+
+        // final EnhancedSynchACC acc = this.getContext();
         ITucsonOperation op;
         TucsonTupleCentreId next;
         LogicTuple job;
@@ -123,7 +120,8 @@ public class MasterAgent extends AbstractTucsonAgent {
         List<LogicTuple> res;
         int num;
         try {
-        	NegotiationACC negAcc = TucsonMetaACC.getNegotiationContext(this.getTucsonAgentId());
+            final NegotiationACC negAcc = TucsonMetaACC
+                    .getNegotiationContext(this.getTucsonAgentId());
             final EnhancedSynchACC acc = negAcc.activateDefaultRole();
             while (!this.die) {
                 this.say("Checking termination...");
@@ -250,9 +248,9 @@ public class MasterAgent extends AbstractTucsonAgent {
         } catch (final InterruptedException e) {
             this.say("ERROR: Sleep interrupted!");
             e.printStackTrace();
-        } catch (TucsonInvalidAgentIdException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+        } catch (final TucsonInvalidAgentIdException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 }

@@ -18,15 +18,16 @@ import alice.tuplecentre.api.ObservableEventListener;
 
 /**
  * Listener interface reacting to TuCSoN node service events.
- * 
+ *
  * @see alice.tuplecentre.api.ObservableEventListener ObservableEventListener
- * 
+ *
  * @author Alessandro Ricci
  */
 public interface NodeServiceListener extends ObservableEventListener {
+
     /**
      * Reacts to ACC release from node to agent.
-     * 
+     *
      * @param aid
      *            the agent identifier
      */
@@ -34,7 +35,7 @@ public interface NodeServiceListener extends ObservableEventListener {
 
     /**
      * Reacts to ACC release by agent.
-     * 
+     *
      * @param aid
      *            the agent identifier
      */
@@ -42,7 +43,7 @@ public interface NodeServiceListener extends ObservableEventListener {
 
     /**
      * Reacts to tuplecentre creation.
-     * 
+     *
      * @param tid
      *            the created tuplecentre identifier
      */
@@ -50,7 +51,7 @@ public interface NodeServiceListener extends ObservableEventListener {
 
     /**
      * Reacts to tuplecentre destruction.
-     * 
+     *
      * @param tid
      *            the destroyed tuplecentre identifier
      */

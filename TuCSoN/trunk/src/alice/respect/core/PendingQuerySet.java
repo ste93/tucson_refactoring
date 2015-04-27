@@ -12,18 +12,19 @@ import alice.tuplecentre.core.AbstractEvent;
 
 /**
  * Pending Query Set.
- * 
+ *
  * @author Alessandro Ricci
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public class PendingQuerySet {
+
     private final List<AbstractEvent> evAdded;
     private final List<AbstractEvent> events;
     private final List<AbstractEvent> evRemoved;
     private boolean transaction;
 
     /**
-     * 
+     *
      */
     public PendingQuerySet() {
         this.events = new LinkedList<AbstractEvent>();
@@ -33,7 +34,7 @@ public class PendingQuerySet {
     }
 
     /**
-     * 
+     *
      * @param t
      *            the tuple centre event to add to the InQ
      */
@@ -46,7 +47,7 @@ public class PendingQuerySet {
 
     /**
      * Begins a transaction section
-     * 
+     *
      * Every operation on multiset can be undone
      */
     public void beginTransaction() {
@@ -56,7 +57,7 @@ public class PendingQuerySet {
     }
 
     /**
-     * 
+     *
      */
     public void empty() {
         this.events.clear();
@@ -65,7 +66,7 @@ public class PendingQuerySet {
     /**
      * Ends a transaction section specifying if operations must be committed or
      * undone
-     * 
+     *
      * @param commit
      *            if <code>true</code> the operations are committed, else they
      *            are undone and the multiset is rolled back to the state before
@@ -88,7 +89,7 @@ public class PendingQuerySet {
     }
 
     /**
-     * 
+     *
      * @return the tuple centre event head of the InQ
      */
     public alice.tuplecentre.core.AbstractEvent get() {
@@ -100,7 +101,7 @@ public class PendingQuerySet {
     }
 
     /**
-     * 
+     *
      * @return an iterator through the InQ
      */
     public Iterator<? extends AbstractEvent> getIterator() {
@@ -108,7 +109,7 @@ public class PendingQuerySet {
     }
 
     /**
-     * 
+     *
      * @return wether the InQ is empty or not
      */
     public boolean isEmpty() {
@@ -116,7 +117,7 @@ public class PendingQuerySet {
     }
 
     /**
-     * 
+     *
      * @param t
      *            the event to remove from the InQ
      */
@@ -128,7 +129,7 @@ public class PendingQuerySet {
     }
 
     /**
-     * 
+     *
      * @param opId
      *            the progressive, unique per tuple centre operation id whose
      *            operation events have to be removed
@@ -147,7 +148,7 @@ public class PendingQuerySet {
     }
 
     /**
-     * 
+     *
      * @param id
      *            the identifier of the tuple centre agent whose events have to
      *            be removed
@@ -163,7 +164,7 @@ public class PendingQuerySet {
     }
 
     /**
-     * 
+     *
      * @return the length of the InQ
      */
     public int size() {
@@ -171,7 +172,7 @@ public class PendingQuerySet {
     }
 
     /**
-     * 
+     *
      * @return the array representation of the InQ
      */
     public alice.tuplecentre.core.AbstractEvent[] toArray() {

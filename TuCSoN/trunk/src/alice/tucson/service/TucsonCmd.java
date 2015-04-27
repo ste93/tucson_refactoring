@@ -1,16 +1,17 @@
 package alice.tucson.service;
 
 /**
- * 
+ *
  * @author ste (mailto: s.mariani@unibo.it)
- * 
+ *
  */
 public class TucsonCmd {
+
     private final String arg;
     private final String primitive;
 
     /**
-     * 
+     *
      * @param p
      *            the String representation of the TuCSoN primitive
      * @param a
@@ -22,7 +23,7 @@ public class TucsonCmd {
     }
 
     /**
-     * 
+     *
      * @return the String representation of the argument of the operation
      */
     public String getArg() {
@@ -30,7 +31,7 @@ public class TucsonCmd {
     }
 
     /**
-     * 
+     *
      * @return the String representation of the TuCSoN primitive
      */
     public String getPrimitive() {

@@ -24,9 +24,10 @@ import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 
 /**
  * @author ste
- * 
+ *
  */
 public final class PersistencyTester {
+
     /**
      * @param args
      *            not used atm
@@ -51,7 +52,8 @@ public final class PersistencyTester {
             final TucsonTupleCentreId ttcidOrg = new TucsonTupleCentreId(
                     "'$ORG'@localhost:20504");
             final TucsonAgentId aid = new TucsonAgentId("'PersistencyTester'");
-            NegotiationACC negAcc = TucsonMetaACC.getNegotiationContext(aid);
+            final NegotiationACC negAcc = TucsonMetaACC
+                    .getNegotiationContext(aid);
             final EnhancedACC acc = negAcc.activateDefaultRole();
             // spec addition
             String spec = Utils

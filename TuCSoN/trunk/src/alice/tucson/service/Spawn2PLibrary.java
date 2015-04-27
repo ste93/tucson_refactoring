@@ -14,20 +14,21 @@ import alice.tuprolog.Struct;
 import alice.tuprolog.Term;
 
 /**
- * 
- * 
+ *
+ *
  * @author ste (mailto: s.mariani@unibo.it)
- * 
+ *
  */
 public class Spawn2PLibrary extends Library {
+
     private static final long serialVersionUID = 3019036120338145017L;
 
     /**
      * Utility to convert a list of tuple into a tuple list of tuples
-     * 
+     *
      * @param list
      *            the list of tuples to convert
-     * 
+     *
      * @return the tuple list of tuples result of the conversion
      */
     private static Term list2tuple(final List<Tuple> list) {
@@ -48,7 +49,7 @@ public class Spawn2PLibrary extends Library {
     /**
      * Both agents and the coordination medium itself can spawn() a computation,
      * hence we need to handle both.
-     * 
+     *
      * @return the "spawner" id (actually, a generic wrapper hosting either a
      *         TucsonAgentId or a TucsonTupleCentreId, accessible with method
      *         <code> getId() </code>)
@@ -61,7 +62,7 @@ public class Spawn2PLibrary extends Library {
     }
 
     /**
-     * 
+     *
      * @return the tuple centre identifier of the target tuple centre
      */
     public final TucsonTupleCentreId getTargetTC() {
@@ -81,7 +82,7 @@ public class Spawn2PLibrary extends Library {
     }
 
     /**
-     * 
+     *
      * @param arg0
      *            the tuple template argument of the operation
      * @return wether the operation has been succesfully completed or not
@@ -123,7 +124,7 @@ public class Spawn2PLibrary extends Library {
     }
 
     /**
-     * 
+     *
      * @param arg0
      *            the tuple template argument of the operation
      * @param arg1
@@ -167,7 +168,7 @@ public class Spawn2PLibrary extends Library {
     }
 
     /**
-     * 
+     *
      * @param arg0
      *            the tuple template argument of the operation
      * @return wether the operation has been succesfully completed or not
@@ -209,7 +210,7 @@ public class Spawn2PLibrary extends Library {
     }
 
     /**
-     * 
+     *
      * @param arg0
      *            the tuple template argument of the operation
      * @return wether the operation has been succesfully completed or not
@@ -252,7 +253,7 @@ public class Spawn2PLibrary extends Library {
     }
 
     /**
-     * 
+     *
      * @param arg0
      *            the tuple template argument of the operation
      * @param arg1
@@ -296,7 +297,7 @@ public class Spawn2PLibrary extends Library {
     }
 
     /**
-     * 
+     *
      * @param arg0
      *            the tuple template argument of the operation
      * @return wether the operation has been succesfully completed or not
@@ -339,7 +340,7 @@ public class Spawn2PLibrary extends Library {
     }
 
     /**
-     * 
+     *
      * @param arg0
      *            the tuple argument of the operation
      * @return wether the operation has been succesfully completed or not
@@ -377,7 +378,7 @@ public class Spawn2PLibrary extends Library {
     }
 
     /**
-     * 
+     *
      * @param arg0
      *            the tuple argument of the operation
      * @return wether the operation has been succesfully completed or not
@@ -415,7 +416,7 @@ public class Spawn2PLibrary extends Library {
     }
 
     /**
-     * 
+     *
      * @param arg0
      *            the tuple template argument of the operation
      * @return wether the operation has been succesfully completed or not
@@ -457,7 +458,7 @@ public class Spawn2PLibrary extends Library {
     }
 
     /**
-     * 
+     *
      * @param arg0
      *            the tuple template argument of the operation
      * @param arg1
@@ -501,7 +502,7 @@ public class Spawn2PLibrary extends Library {
     }
 
     /**
-     * 
+     *
      * @param arg0
      *            the tuple template argument of the operation
      * @return wether the operation has been succesfully completed or not
@@ -543,7 +544,7 @@ public class Spawn2PLibrary extends Library {
     }
 
     /**
-     * 
+     *
      * @param id
      *            the identifier of the agent whose behalf this spawn behaves on
      */
@@ -553,7 +554,7 @@ public class Spawn2PLibrary extends Library {
     }
 
     /**
-     * 
+     *
      * @param id
      *            the identifier of the tuple centre whose behalf this spawn
      *            behaves on
@@ -564,7 +565,7 @@ public class Spawn2PLibrary extends Library {
     }
 
     /**
-     * 
+     *
      * @param id
      *            the identifier of the tuple centre this spawn is operating on
      */
@@ -573,7 +574,7 @@ public class Spawn2PLibrary extends Library {
     }
 
     /**
-     * 
+     *
      * @param arg0
      *            the tuple template argument of the operation
      * @return wether the operation has been succesfully completed or not
@@ -615,7 +616,7 @@ public class Spawn2PLibrary extends Library {
     }
 
     /**
-     * 
+     *
      * @param arg0
      *            the tuple template argument of the operation
      * @return wether the operation has been succesfully completed or not
@@ -657,7 +658,7 @@ public class Spawn2PLibrary extends Library {
     }
 
     /**
-     * 
+     *
      * @param arg0
      *            the tuple template argument of the operation
      * @return wether the operation has been succesfully completed or not
@@ -700,7 +701,7 @@ public class Spawn2PLibrary extends Library {
     }
 
     /**
-     * 
+     *
      * @param arg0
      *            the tuple template argument of the operation
      * @return wether the operation has been succesfully completed or not
@@ -743,7 +744,7 @@ public class Spawn2PLibrary extends Library {
     }
 
     /**
-     * 
+     *
      * @param arg0
      *            the tuple template argument of the operation
      * @return wether the operation has been succesfully completed or not
@@ -785,7 +786,7 @@ public class Spawn2PLibrary extends Library {
     }
 
     /**
-     * 
+     *
      * @param arg0
      *            the tuple template argument of the operation
      * @return wether the operation has been succesfully completed or not

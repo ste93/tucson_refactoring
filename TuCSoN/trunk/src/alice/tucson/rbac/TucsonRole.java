@@ -1,75 +1,75 @@
 package alice.tucson.rbac;
 
-import java.security.NoSuchAlgorithmException;
-
-import alice.tucson.service.tools.TucsonACCTool;
 import alice.tucson.utilities.Utils;
 
-public class TucsonRole implements Role{
+public class TucsonRole implements Role {
 
-	private static final long serialVersionUID = 1L;
-	
-	protected String roleName;
-	protected String roleDescription;
-	protected Policy policy;
-	protected String agentClass;
+    private static final long serialVersionUID = 1L;
 
-	
-	public TucsonRole(){
-		this("");
-	}
-	
-	public TucsonRole(String roleName){
-		this(roleName, "substitute");
-	}
-	
-	public TucsonRole(String roleName, String agentClass){
-		this.setRoleName(roleName);
-		this.setAgentClass(agentClass);
-	}
+    protected String agentClass;
+    protected Policy policy;
+    protected String roleDescription;
+    protected String roleName;
 
-	@Override
-	public String getRoleName() {
-		return roleName;
-	}
+    public TucsonRole() {
+        this("");
+    }
 
-	@Override
-	public void setRoleName(String roleName) {
-		if(roleName==null || roleName.equals(""))
-			return;
-		
-		this.roleName = Utils.decapitalize(roleName);
-	}
-	
-	@Override
-	public String getDescription() {
-		return (roleDescription != null && !roleDescription.equalsIgnoreCase(""))? roleDescription : "ruolo_"+roleName;
-	}
+    public TucsonRole(final String roleName) {
+        this(roleName, "substitute");
+    }
 
-	@Override
-	public void setDescription(String roleDescription) {
-		this.roleDescription = roleDescription;
-	}
-	
-	@Override
-	public String getAgentClass() {
-		if(agentClass == null || agentClass.equalsIgnoreCase(""))
-			return "substitute";
-		return agentClass;
-	}
+    public TucsonRole(final String roleName, final String agentClass) {
+        this.setRoleName(roleName);
+        this.setAgentClass(agentClass);
+    }
 
-	@Override
-	public void setAgentClass(String agentClass) {
-		this.agentClass = Utils.decapitalize(agentClass);
-	}
+    @Override
+    public String getAgentClass() {
+        if (this.agentClass == null || this.agentClass.equalsIgnoreCase("")) {
+            return "substitute";
+        }
+        return this.agentClass;
+    }
 
-	@Override
-	public Policy getPolicy() {
-		return policy;
-	}
+    @Override
+    public String getDescription() {
+        return this.roleDescription != null
+                && !this.roleDescription.equalsIgnoreCase("") ? this.roleDescription
+                        : "ruolo_" + this.roleName;
+    }
 
-	@Override
-	public void setPolicy(Policy policy) {
-		this.policy = policy;
-	}
+    @Override
+    public Policy getPolicy() {
+        return this.policy;
+    }
+
+    @Override
+    public String getRoleName() {
+        return this.roleName;
+    }
+
+    @Override
+    public void setAgentClass(final String agentClass) {
+        this.agentClass = Utils.decapitalize(agentClass);
+    }
+
+    @Override
+    public void setDescription(final String roleDescription) {
+        this.roleDescription = roleDescription;
+    }
+
+    @Override
+    public void setPolicy(final Policy policy) {
+        this.policy = policy;
+    }
+
+    @Override
+    public void setRoleName(final String roleName) {
+        if (roleName == null || roleName.equals("")) {
+            return;
+        }
+
+        this.roleName = Utils.decapitalize(roleName);
+    }
 }

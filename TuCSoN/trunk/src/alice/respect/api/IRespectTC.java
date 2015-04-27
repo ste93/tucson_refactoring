@@ -22,13 +22,14 @@ import alice.tuplecentre.core.OperationCompletionListener;
 
 /**
  * Basic usage interface of a RespecT Tuple Centre
- * 
+ *
  * @author Alessandro Ricci
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public interface IRespectTC {
+
     /**
-     * 
+     *
      * @param id
      *            the identifier of who is invoking the operation
      * @return the operation requested the operation requested
@@ -39,7 +40,7 @@ public interface IRespectTC {
 
     /**
      * Gets the whole tuple set
-     * 
+     *
      * @param id
      *            agent identifier
      * @param l
@@ -53,13 +54,13 @@ public interface IRespectTC {
 
     /**
      * Gets the tuple centre id
-     * 
+     *
      * @return the tuple centre id
      */
     TupleCentreId getId();
 
     /**
-     * 
+     *
      * @param aid
      *            the identifier of who is invoking the operation
      * @return the operation requested
@@ -69,7 +70,7 @@ public interface IRespectTC {
     IRespectOperation getS(IId aid) throws OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param aid
      *            the identifier of who is invoking the operation
      * @param l
@@ -82,13 +83,13 @@ public interface IRespectTC {
             throws OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @return this ReSpecT VM
      */
     RespectVM getVM();
 
     /**
-     * 
+     *
      * @param id
      *            the identifier of who is invoking the operation
      * @param t
@@ -103,7 +104,7 @@ public interface IRespectTC {
 
     /**
      * Retrieves a tuple in the tuple centre
-     * 
+     *
      * @param id
      *            agent identifier
      * @param t
@@ -119,7 +120,7 @@ public interface IRespectTC {
 
     /**
      * Retrieves all tuples in the tuple centre matching the template
-     * 
+     *
      * @param id
      *            agent identifier
      * @param t
@@ -132,7 +133,7 @@ public interface IRespectTC {
             throws OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param id
      *            the identifier of who is invoking the operation
      * @param t
@@ -148,7 +149,7 @@ public interface IRespectTC {
             throws OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param id
      *            the identifier of who is invoking the operation
      * @param t
@@ -163,7 +164,7 @@ public interface IRespectTC {
 
     /**
      * Tries to retrieve a tuple in the tuple centre
-     * 
+     *
      * @param id
      *            agent identifier
      * @param t
@@ -178,7 +179,7 @@ public interface IRespectTC {
             throws OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param id
      *            the identifier of who is invoking the operation the identifier
      *            of who is invoking the operation
@@ -193,7 +194,7 @@ public interface IRespectTC {
             throws OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param id
      *            the identifier of who is invoking the operation the identifier
      *            of who is invoking the operation
@@ -209,7 +210,7 @@ public interface IRespectTC {
             throws OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param id
      *            the identifier of who is invoking the operation
      * @param t
@@ -222,7 +223,7 @@ public interface IRespectTC {
             throws OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param id
      *            the identifier of who is invoking the operation
      * @param t
@@ -237,7 +238,7 @@ public interface IRespectTC {
             throws OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param id
      *            the identifier of who is invoking the operation
      * @param t
@@ -250,7 +251,7 @@ public interface IRespectTC {
             throws OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param id
      *            the identifier of who is invoking the operation
      * @param t
@@ -265,7 +266,7 @@ public interface IRespectTC {
             throws OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param id
      *            the identifier of who is invoking the operation
      * @param t
@@ -278,7 +279,7 @@ public interface IRespectTC {
             throws OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param id
      *            the identifier of who is invoking the operation
      * @param t
@@ -293,7 +294,7 @@ public interface IRespectTC {
             throws OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param id
      *            the identifier of who is invoking the operation
      * @param t
@@ -306,7 +307,7 @@ public interface IRespectTC {
             throws OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param id
      *            the identifier of who is invoking the operation
      * @param t
@@ -321,7 +322,7 @@ public interface IRespectTC {
             throws OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param aid
      *            the identifier of who is invoking the operation
      * @param t
@@ -334,7 +335,7 @@ public interface IRespectTC {
             throws OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param aid
      *            the identifier of who is invoking the operation
      * @param t
@@ -349,7 +350,7 @@ public interface IRespectTC {
             throws OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param aid
      *            the identifier of who is invoking the operation
      * @param t
@@ -362,7 +363,7 @@ public interface IRespectTC {
             throws OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param aid
      *            the identifier of who is invoking the operation
      * @param t
@@ -377,7 +378,7 @@ public interface IRespectTC {
             throws OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param id
      *            the identifier of who is invoking the operation
      * @param t
@@ -390,7 +391,7 @@ public interface IRespectTC {
             throws OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param id
      *            the identifier of who is invoking the operation
      * @param t
@@ -405,7 +406,7 @@ public interface IRespectTC {
             throws OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param id
      *            the identifier of who is invoking the operation
      * @param t
@@ -418,7 +419,7 @@ public interface IRespectTC {
             throws OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param id
      *            the identifier of who is invoking the operation
      * @param t
@@ -433,7 +434,7 @@ public interface IRespectTC {
             throws OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param id
      *            the identifier of who is invoking the operation
      * @param t
@@ -447,7 +448,7 @@ public interface IRespectTC {
 
     /**
      * Inserts a tuple in the tuple centre
-     * 
+     *
      * @param id
      *            the identifier of who is invoking the operation
      * @param t
@@ -462,7 +463,7 @@ public interface IRespectTC {
             throws OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param id
      *            the identifier of who is invoking the operation
      * @param t
@@ -476,7 +477,7 @@ public interface IRespectTC {
 
     /**
      * Reads a tuple in the tuple centre
-     * 
+     *
      * @param id
      *            the identifier of who is invoking the operation
      * @param t
@@ -493,7 +494,7 @@ public interface IRespectTC {
     /**
      * Retrieves all tuples in the tuple centre matching the template without
      * remove them
-     * 
+     *
      * @param id
      *            the identifier of who is invoking the operation
      * @param t
@@ -506,7 +507,7 @@ public interface IRespectTC {
             throws OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param id
      *            the identifier of who is invoking the operation
      * @param t
@@ -521,7 +522,7 @@ public interface IRespectTC {
             throws OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param id
      *            the identifier of who is invoking the operation
      * @param t
@@ -535,7 +536,7 @@ public interface IRespectTC {
 
     /**
      * Tries to read a tuple in the tuple centre
-     * 
+     *
      * @param id
      *            the identifier of who is invoking the operation
      * @param t
@@ -550,7 +551,7 @@ public interface IRespectTC {
             throws OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param id
      *            the identifier of who is invoking the operation
      * @param t
@@ -563,7 +564,7 @@ public interface IRespectTC {
             throws OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param id
      *            the identifier of who is invoking the operation
      * @param t
@@ -578,7 +579,7 @@ public interface IRespectTC {
             throws OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param id
      *            the identifier of who is invoking the operation
      * @param t
@@ -591,7 +592,7 @@ public interface IRespectTC {
             throws OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param id
      *            the identifier of who is invoking the operation
      * @param t
@@ -606,7 +607,7 @@ public interface IRespectTC {
             throws OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param id
      *            the identifier of who is invoking the operation
      * @param t
@@ -622,7 +623,7 @@ public interface IRespectTC {
 
     /**
      * Gets the whole tuple set
-     * 
+     *
      * @param id
      *            the identifier of who is invoking the operation
      * @param t
@@ -639,7 +640,7 @@ public interface IRespectTC {
             throws OperationNotPossibleException, InvalidLogicTupleException;
 
     /**
-     * 
+     *
      * @param aid
      *            the identifier of who is invoking the operation
      * @param t
@@ -652,7 +653,7 @@ public interface IRespectTC {
             throws OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param id
      *            the identifier of who is invoking the operation
      * @param t
@@ -668,7 +669,7 @@ public interface IRespectTC {
             throws OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param aid
      *            the identifier of who is invoking the operation
      * @param spec
@@ -683,7 +684,7 @@ public interface IRespectTC {
             throws OperationNotPossibleException, InvalidSpecificationException;
 
     /**
-     * 
+     *
      * @param aid
      *            the identifier of who is invoking the operation
      * @param spec
@@ -698,7 +699,7 @@ public interface IRespectTC {
             OperationCompletionListener l) throws OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param id
      *            the identifier of who is invoking the operation
      * @param t
@@ -711,7 +712,7 @@ public interface IRespectTC {
             throws OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param id
      *            the identifier of who is invoking the operation
      * @param t
@@ -727,7 +728,7 @@ public interface IRespectTC {
 
     /**
      * Retrieves all tuples in the tuple centre matching the template
-     * 
+     *
      * @param id
      *            the identifier of who is invoking the operation
      * @param t
@@ -740,7 +741,7 @@ public interface IRespectTC {
             throws OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param id
      *            the identifier of who is invoking the operation
      * @param t
@@ -756,7 +757,7 @@ public interface IRespectTC {
 
     /**
      * Retrieves all tuples in the tuple centre matching the template
-     * 
+     *
      * @param id
      *            the identifier of who is invoking the operation
      * @param t
@@ -769,7 +770,7 @@ public interface IRespectTC {
             throws OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param id
      *            the identifier of who is invoking the operation
      * @param t
@@ -784,7 +785,7 @@ public interface IRespectTC {
             throws OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param id
      *            the identifier of who is invoking the operation
      * @param t
@@ -797,7 +798,7 @@ public interface IRespectTC {
             throws OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param id
      *            the identifier of who is invoking the operation
      * @param t
@@ -812,7 +813,7 @@ public interface IRespectTC {
             throws OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param id
      *            the identifier of who is invoking the operation
      * @param t
@@ -825,7 +826,7 @@ public interface IRespectTC {
             throws OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param id
      *            the identifier of who is invoking the operation
      * @param t
@@ -841,7 +842,7 @@ public interface IRespectTC {
 
     /**
      * Retrieves all tuples in the tuple centre matching the template
-     * 
+     *
      * @param id
      *            the identifier of who is invoking the operation
      * @param t
@@ -854,7 +855,7 @@ public interface IRespectTC {
             throws OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param id
      *            the identifier of who is invoking the operation
      * @param t
@@ -870,7 +871,7 @@ public interface IRespectTC {
 
     /**
      * Retrieves all tuples in the tuple centre matching the template
-     * 
+     *
      * @param id
      *            the identifier of who is invoking the operation
      * @param t
@@ -883,7 +884,7 @@ public interface IRespectTC {
             throws OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param id
      *            the identifier of who is invoking the operation
      * @param t

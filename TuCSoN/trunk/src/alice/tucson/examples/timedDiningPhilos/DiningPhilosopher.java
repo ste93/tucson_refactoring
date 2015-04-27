@@ -9,19 +9,18 @@ import alice.tucson.api.SynchACC;
 import alice.tucson.api.TucsonMetaACC;
 import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
-import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
-import alice.tucson.service.TucsonNodeService;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 import alice.tuplecentre.core.AbstractTupleCentreOperation;
 
 /**
  * A Dining Philosopher: thinks and eats in an endless loop.
- * 
+ *
  * @author ste (mailto: s.mariani@unibo.it)
  */
 public class DiningPhilosopher extends AbstractTucsonAgent {
+
     private static final int THINK_TIME = 5000;
     private SynchACC acc;
     private final int chop1, chop2;
@@ -29,7 +28,7 @@ public class DiningPhilosopher extends AbstractTucsonAgent {
     private final int time, step;
 
     /**
-     * 
+     *
      * @param aid
      *            the String representation of this philosopher's TuCSoN agent
      *            identifier
@@ -159,15 +158,19 @@ public class DiningPhilosopher extends AbstractTucsonAgent {
 
     @Override
     protected void main() {
-    	NegotiationACC negAcc = TucsonMetaACC.getNegotiationContext(this.getTucsonAgentId());
+        final NegotiationACC negAcc = TucsonMetaACC.getNegotiationContext(this
+                .getTucsonAgentId());
         try {
-			acc = negAcc.activateDefaultRole();
-		} catch (TucsonOperationNotPossibleException
-				| UnreachableNodeException | OperationTimeOutException
-				| TucsonInvalidAgentIdException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+            this.acc = negAcc.activateDefaultRole();
+        } catch (final TucsonOperationNotPossibleException e) {
+            e.printStackTrace();
+        } catch (final UnreachableNodeException e) {
+            e.printStackTrace();
+        } catch (final OperationTimeOutException e) {
+            e.printStackTrace();
+        } catch (final TucsonInvalidAgentIdException e) {
+            e.printStackTrace();
+        }
         // Ugly but effective, pardon me...
         while (true) {
             this.say("Now thinking...");

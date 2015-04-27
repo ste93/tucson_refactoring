@@ -13,32 +13,33 @@ import alice.tuplecentre.api.exceptions.OperationTimeOutException;
  * implementation. In particular, this alleviates the burden of implementing
  * 'notifyEnvEvent' and 'notifyOutput' methods, which are the same for all
  * transducers.
- * 
+ *
  * @author Steven Maraldi
- * 
+ *
  */
 public interface TransducerStandardInterface {
+
     /**
-     * 
+     *
      * @return the identifier of the transducer
      */
     TransducerId getIdentifier();
 
     /**
-     * 
+     *
      * @return the list of Probes for which this tranduces is responsible for
      */
     AbstractProbeId[] getProbes();
 
     /**
-     * 
+     *
      * @return the identifier of the TuCSoN tuple centre this transducer works
      *         with
      */
     TupleCentreId getTCId();
 
     /**
-     * 
+     *
      * @param key
      *            the <code>key</code> of the environmental property change to
      *            be notified
@@ -63,7 +64,7 @@ public interface TransducerStandardInterface {
             UnreachableNodeException, OperationTimeOutException;
 
     /**
-     * 
+     *
      * @param ev
      *            the ReSpecT event to be notified
      * @return wether the event has been succesfully notified

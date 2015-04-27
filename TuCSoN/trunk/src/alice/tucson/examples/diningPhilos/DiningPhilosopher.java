@@ -2,7 +2,6 @@ package alice.tucson.examples.diningPhilos;
 
 import alice.logictuple.LogicTuple;
 import alice.logictuple.exceptions.InvalidLogicTupleException;
-import alice.respect.api.exceptions.InvalidAgentIdException;
 import alice.tucson.api.AbstractTucsonAgent;
 import alice.tucson.api.ITucsonOperation;
 import alice.tucson.api.NegotiationACC;
@@ -10,7 +9,6 @@ import alice.tucson.api.SynchACC;
 import alice.tucson.api.TucsonMetaACC;
 import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
-import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
@@ -18,10 +16,11 @@ import alice.tuplecentre.core.AbstractTupleCentreOperation;
 
 /**
  * A Dining Philosopher: thinks and eats in an endless loop.
- * 
+ *
  * @author ste (mailto: s.mariani@unibo.it)
  */
 public class DiningPhilosopher extends AbstractTucsonAgent {
+
     private static final int EATING_TIME = 5000;
     private static final int THINKING_TIME = 5000;
     private SynchACC acc;
@@ -29,7 +28,7 @@ public class DiningPhilosopher extends AbstractTucsonAgent {
     private final TucsonTupleCentreId myTable;
 
     /**
-     * 
+     *
      * @param aid
      *            the String representation of this philosopher's TuCSoN agent
      *            identifier
@@ -46,7 +45,7 @@ public class DiningPhilosopher extends AbstractTucsonAgent {
      */
     public DiningPhilosopher(final String aid, final TucsonTupleCentreId table,
             final int left, final int right)
-            throws TucsonInvalidAgentIdException {
+                    throws TucsonInvalidAgentIdException {
         super(aid);
         this.myTable = table;
         this.chop1 = left;
@@ -131,13 +130,20 @@ public class DiningPhilosopher extends AbstractTucsonAgent {
 
     @Override
     protected void main() {
-    	try{
-    	NegotiationACC negAcc = TucsonMetaACC.getNegotiationContext(this.getTucsonAgentId());
-        acc = negAcc.activateDefaultRole();
-    	} catch(TucsonInvalidAgentIdException | TucsonOperationNotPossibleException | UnreachableNodeException | OperationTimeOutException e){
-    		
-    	}
-        //this.acc = this.getContext();
+        try {
+            final NegotiationACC negAcc = TucsonMetaACC
+                    .getNegotiationContext(this.getTucsonAgentId());
+            this.acc = negAcc.activateDefaultRole();
+        } catch (final OperationTimeOutException e) {
+            e.printStackTrace();
+        } catch (final TucsonInvalidAgentIdException e) {
+            e.printStackTrace();
+        } catch (final TucsonOperationNotPossibleException e) {
+            e.printStackTrace();
+        } catch (final UnreachableNodeException e) {
+            e.printStackTrace();
+        }
+        // this.acc = this.getContext();
         // Ugly but effective, pardon me...
         while (true) {
             this.say("Now thinking...");

@@ -14,7 +14,7 @@ package alice.tuplecentre.core;
 
 /**
  * @author Alessandro Ricci
- * 
+ *
  */
 public abstract class AbstractBehaviourSpecification {
     /*

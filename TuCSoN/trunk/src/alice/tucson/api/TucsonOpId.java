@@ -14,15 +14,16 @@
 package alice.tucson.api;
 
 /**
- * 
+ *
  * @author ste (mailto: s.mariani@unibo.it)
- * 
+ *
  */
 public class TucsonOpId {
+
     private final long id;
 
     /**
-     * 
+     *
      * @param i
      *            the Java long progressively, uniquely identifying TuCSoN
      *            operations
@@ -54,7 +55,7 @@ public class TucsonOpId {
     }
 
     /**
-     * 
+     *
      * @return the progressive, unique identifier of TuCSoN operations
      */
     public long getId() {

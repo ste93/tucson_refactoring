@@ -17,17 +17,18 @@ import alice.tucson.service.RemoteLinkProvider;
 
 /**
  * A Container for ReSpecT tuple centres
- * 
+ *
  * @author Matteo Casadei
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public final class RespectTCContainer {
+
     private static RespectTCContainer container;
     private static int defaultport;
     private static final int QUEUE_SIZE = 1000;
 
     /**
-     * 
+     *
      * @return ReSpecT default listening port
      */
     public static int getDefPort() {
@@ -35,7 +36,7 @@ public final class RespectTCContainer {
     }
 
     /**
-     * 
+     *
      * @return the ReSpecT container used for local tuple centres management
      */
     public static RespectTCContainer getRespectTCContainer() {
@@ -46,7 +47,7 @@ public final class RespectTCContainer {
     }
 
     /**
-     * 
+     *
      * @param port
      *            ReSpecT default listening port
      */
@@ -74,7 +75,7 @@ public final class RespectTCContainer {
     }
 
     /**
-     * 
+     *
      * @param s
      *            the entity responsible of providing linking context to
      *            requestors
@@ -86,7 +87,7 @@ public final class RespectTCContainer {
     }
 
     /**
-     * 
+     *
      * @param id
      *            the identifier of the tuple centre to create
      * @param q
@@ -100,7 +101,7 @@ public final class RespectTCContainer {
     }
 
     /**
-     * 
+     *
      * @param id
      *            the identifier of the TuCSoN tuple centre whose environmental
      *            context should be acquired
@@ -120,7 +121,7 @@ public final class RespectTCContainer {
 
     /**
      * Return a LinkContext for remote/local call
-     * 
+     *
      * @param id
      *            the identifier of the tuple centre target (local or remote)
      * @return the linking context toward the given tuple centre
@@ -144,7 +145,7 @@ public final class RespectTCContainer {
     }
 
     /**
-     * 
+     *
      * @param id
      *            the identifier of the tuple centre target (local or remote)
      * @return the management context toward the given tuple centre
@@ -161,7 +162,7 @@ public final class RespectTCContainer {
     }
 
     /**
-     * 
+     *
      * @param id
      *            the identifier of the tuple centre target (local or remote)
      * @return the ordinary, asynchronous context toward the given tuple centre
@@ -180,7 +181,7 @@ public final class RespectTCContainer {
     }
 
     /**
-     * 
+     *
      * @param id
      *            the identifier of the tuple centre target (local or remote)
      * @return the ordinary, synchronous context toward the given tuple centre
@@ -199,7 +200,7 @@ public final class RespectTCContainer {
     }
 
     /**
-     * 
+     *
      * @return the registry of local ReSpecT tuple centres
      */
     public ITCRegistry getRegistry() {
@@ -207,7 +208,7 @@ public final class RespectTCContainer {
     }
 
     /**
-     * 
+     *
      * @param id
      *            the identifier of the tuple centre target (local or remote)
      * @return the specification, asynchronous context toward the given tuple
@@ -227,7 +228,7 @@ public final class RespectTCContainer {
     }
 
     /**
-     * 
+     *
      * @param id
      *            the identifier of the tuple centre target (local or remote)
      * @return the specification, synchronous context toward the given tuple

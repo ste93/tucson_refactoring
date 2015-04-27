@@ -9,15 +9,16 @@ import alice.tucson.api.exceptions.TucsonInvalidLogicTupleException;
 import alice.tuplecentre.api.exceptions.InvalidOperationException;
 
 /**
- * 
- * 
+ *
+ *
  * @author ste (mailto: s.mariani@unibo.it)
  */
 public class SpawnedWorkingActivity extends AbstractSpawnActivity {
+
     private static final long serialVersionUID = -4459068799410719933L;
 
     /*
-     * 
+     *
      */
     @Override
     public void doActivity() {

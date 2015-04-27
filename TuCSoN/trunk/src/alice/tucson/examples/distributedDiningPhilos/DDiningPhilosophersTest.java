@@ -13,22 +13,22 @@ import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
-import alice.tucson.service.TucsonNodeService;
 import alice.tucson.utilities.Utils;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 import alice.tuplecentre.core.AbstractTupleCentreOperation;
 
 /**
- * 
- * 
+ *
+ *
  * @author ste (mailto: s.mariani@unibo.it)
  */
 public class DDiningPhilosophersTest extends AbstractTucsonAgent {
+
     private static final int DEF_PORT = 20504;
     private static final int N_PHILOSOPHERS = 5;
 
     /**
-     * 
+     *
      * @param args
      *            no args expected
      */
@@ -44,7 +44,7 @@ public class DDiningPhilosophersTest extends AbstractTucsonAgent {
     private final int port;
 
     /**
-     * 
+     *
      * @param aid
      *            the String representation of a valid TuCSoN agent identifier
      * @throws TucsonInvalidAgentIdException
@@ -75,8 +75,9 @@ public class DDiningPhilosophersTest extends AbstractTucsonAgent {
     @Override
     protected void main() {
         try {
-        	NegotiationACC negAcc = TucsonMetaACC.getNegotiationContext(this.getTucsonAgentId());
-            SynchACC acc = negAcc.activateDefaultRole();
+            final NegotiationACC negAcc = TucsonMetaACC
+                    .getNegotiationContext(this.getTucsonAgentId());
+            final SynchACC acc = negAcc.activateDefaultRole();
             final TucsonTupleCentreId[] seats = new TucsonTupleCentreId[DDiningPhilosophersTest.N_PHILOSOPHERS];
             for (int i = 0; i < DDiningPhilosophersTest.N_PHILOSOPHERS; i++) {
                 seats[i] = new TucsonTupleCentreId("seat(" + i + "," + (i + 1)

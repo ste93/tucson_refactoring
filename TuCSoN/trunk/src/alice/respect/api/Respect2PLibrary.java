@@ -54,11 +54,12 @@ import alice.tuprolog.Var;
 /**
  * TuProlog library defining the behaviour of ReSpecT primitives, used inside
  * ReSpecT VM.
- * 
+ *
  * @author Alessandro Ricci
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public class Respect2PLibrary extends alice.tuprolog.Library {
+
     private static final long serialVersionUID = 7865604500315298959L;
 
     /**
@@ -134,7 +135,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     private RespectVMContext vm;
 
     /**
-     * 
+     *
      * @param time
      *            the time that should have passed
      * @return <code>true</code> if the given time passed
@@ -146,7 +147,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     /**
      * @param time
      *            the time to compare.
-     * 
+     *
      * @return true if the ReSpecT reaction has been triggered before the given
      *         time.
      */
@@ -162,7 +163,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     }
 
     /**
-     * 
+     *
      * @param time1
      *            the time that should have passed
      * @param time2
@@ -174,7 +175,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     }
 
     /**
-     * 
+     *
      * @return <code>true</code> if ReSpecT VM is in the completion phase
      */
     public boolean compl_0() {
@@ -182,7 +183,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     }
 
     /**
-     * 
+     *
      * @return <code>true</code> if ReSpecT VM is in the completion phase
      */
     public boolean completion_0() {
@@ -193,7 +194,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      * @param predicate
      *            the expected ReSpecT predicate currently under solving
      *            process.
-     * 
+     *
      * @return true if the actual ReSpecT predicate currently under solving
      *         process is the expected ReSpecT predicate currently under solving
      *         process.
@@ -207,7 +208,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      * @param source
      *            the expected tuplecentre which is responsible for the
      *            generation of the currently processing ReSpecT reaction.
-     * 
+     *
      * @return true if the actual tuplecentre is the expected tuplecentre which
      *         is responsible for the generation of the currently processing
      *         ReSpecT reaction.
@@ -220,7 +221,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     /**
      * @param target
      *            the expected target of the current operation
-     * 
+     *
      * @return <code>true</code> if the given term unifies with the current
      *         target
      */
@@ -233,7 +234,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     /**
      * @param time
      *            the expected time we're at.
-     * 
+     *
      * @return <code>true</code> if the given term unifies with the current time
      */
     public boolean current_time_1(final Term time) {
@@ -245,7 +246,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      * @param tuple
      *            the expected logic tuple which directly started the current
      *            ReSpecT computation.
-     * 
+     *
      * @return true if the actual logic tuple which directly started the current
      *         ReSpecT computation is the expected logic tuple which directly
      *         started the current ReSpecT computation.
@@ -255,7 +256,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     }
 
     /**
-     * 
+     *
      * @return <code>true</code> if the current ReSpecT event is coming from
      *         this tuple centre
      */
@@ -264,7 +265,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     }
 
     /**
-     * 
+     *
      * @param key
      *            the term representing the environmental property to be tested
      * @param value
@@ -285,7 +286,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     }
 
     /**
-     * 
+     *
      * @param predicate
      *            the predicate direct cause of current ReSpecT event
      * @return <code>true</code> if the current ReSpecT event has the given
@@ -299,7 +300,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     /**
      * @param source
      *            the identifier of the direct cause source of the event
-     * 
+     *
      * @return <code>true</code> if current ReSpecT event direct cause has the
      *         given source
      */
@@ -317,7 +318,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     }
 
     /**
-     * 
+     *
      * @param target
      *            the identifier of the direct cause target
      * @return <code>true</code> if current ReSpecT event direct cause has the
@@ -340,7 +341,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      * @param time
      *            the expected time at which the current ReSpecT computation has
      *            been triggered.
-     * 
+     *
      * @return true if the actual time at which the current ReSpecT computation
      *         has been triggered is the expected time at which the current
      *         ReSpecT computation has been triggered.
@@ -353,7 +354,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     /**
      * @param tuple
      *            the tuple argument of the direct cause predicate
-     * 
+     *
      * @return <code>true</code> if the direct cause tuple argument has the
      *         given tuple
      */
@@ -408,7 +409,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      * Situated ReSpecT extension: still to test.
      ********************************************************************/
     /**
-     * 
+     *
      * @return <code>true</code> if the triggering event has been generated by
      *         the environment
      */
@@ -430,7 +431,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     }
 
     /**
-     * 
+     *
      * @param arg0
      *            the Prolog variable to unify the result with
      * @param arg1
@@ -484,7 +485,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     }
 
     /**
-     * 
+     *
      * @param arg0
      *            the Prolog variable to unify the result with
      * @param arg1
@@ -492,7 +493,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      * @throws InvalidTupleCentreIdException
      *             if arg1 (tuple centre's id) is not a well-formed ground logic
      *             term
-     * 
+     *
      * @return <code>true</code> if the operation is successfull
      */
     public boolean get_s_2(final Term arg0, final Term arg1)
@@ -543,7 +544,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     }
 
     /**
-     * 
+     *
      * @param env
      *            the identifier of the target environmental resource
      * @param key
@@ -592,7 +593,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
 
     /**
      * ReSpecT theory to interface with Prolog.
-     * 
+     *
      * @return the String representation of the Prolog theory usable by tuProlog
      *         agents
      */
@@ -670,7 +671,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     }
 
     /**
-     * 
+     *
      * @param arg0
      *            the Prolog variable to unify the result with
      * @param arg1
@@ -718,10 +719,10 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     }
 
     /**
-     * 
+     *
      * @param arg0
      *            the tuple template to be used
-     * 
+     *
      * @param arg1
      *            the Prolog variable to unify the result with
      * @param arg2
@@ -767,7 +768,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     }
 
     /**
-     * 
+     *
      * @param ev
      *            the triggering event of a ReSpecT specification
      * @param g
@@ -783,7 +784,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      *             if is not possible to create a valid Prolog Term with the
      *             specified values for ev, g and r
      * @return <code>true</code> if the operation is successfull
-     * 
+     *
      */
     public boolean in_s_4(final Term ev, final Term g, final Term r,
             final Term tc) throws InvalidTupleCentreIdException,
@@ -839,7 +840,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      * ReSpecT guard predicates.
      ********************************************************************/
     /**
-     * 
+     *
      * @param m
      *            the ReSpecT VM this tuProlog library interfaces to
      */
@@ -848,7 +849,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     }
 
     /**
-     * 
+     *
      * @param arg0
      *            the Prolog variable to unify the result with
      * @param arg1
@@ -896,7 +897,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     }
 
     /**
-     * 
+     *
      * @param ev
      *            the triggering event of a ReSpecT specification
      * @param g
@@ -911,7 +912,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      * @throws InvalidTupleArgumentException
      *             if an invalid tuple argument is used
      * @return <code>true</code> if the operation is successfull
-     * 
+     *
      */
     public boolean inp_s_4(final Term ev, final Term g, final Term r,
             final Term tc) throws InvalidTupleCentreIdException,
@@ -964,7 +965,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     }
 
     /**
-     * 
+     *
      * @return <code>true</code> if the triggering event has not this tuple
      *         centre as target
      */
@@ -973,7 +974,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     }
 
     /**
-     * 
+     *
      * @return <code>true</code> if the triggering event has being generated by
      *         this tc and target to this same tc
      */
@@ -1003,7 +1004,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     }
 
     /**
-     * 
+     *
      * @return <code>true</code> if the ReSpecT VM is currently in the
      *         invocation phase
      */
@@ -1012,7 +1013,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     }
 
     /**
-     * 
+     *
      * @return <code>true</code> if the ReSpecT VM is currently in the
      *         invocation phase
      */
@@ -1021,7 +1022,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     }
 
     /**
-     * 
+     *
      * @return <code>true</code> if the triggering event is coming from a
      *         different tuple centre
      */
@@ -1031,7 +1032,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     }
 
     /**
-     * 
+     *
      * @return <code>true</code> if the triggering event is originating from
      *         this tuple centre toward a different one
      */
@@ -1041,7 +1042,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     }
 
     /**
-     * 
+     *
      * @param arg0
      *            the Prolog variable to unify the result with
      * @param arg1
@@ -1087,10 +1088,10 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     }
 
     /**
-     * 
+     *
      * @param arg0
      *            the tuple template to be used
-     * 
+     *
      * @param arg1
      *            the Prolog variable to unify the result with
      * @param arg2
@@ -1136,7 +1137,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     }
 
     /**
-     * 
+     *
      * @param ev
      *            the triggering event of a ReSpecT specification
      * @param g
@@ -1152,7 +1153,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      *             if is not possible to create a valid Prolog Term with the
      *             specified values for ev, g and r
      * @return <code>true</code> if the operation is successfull
-     * 
+     *
      */
     public boolean no_s_4(final Term ev, final Term g, final Term r,
             final Term tc) throws InvalidTupleCentreIdException,
@@ -1203,7 +1204,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     }
 
     /**
-     * 
+     *
      * @param arg0
      *            the Prolog variable to unify the result with
      * @param arg1
@@ -1249,7 +1250,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     }
 
     /**
-     * 
+     *
      * @param ev
      *            the triggering event of a ReSpecT specification
      * @param g
@@ -1265,7 +1266,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      *             if is not possible to create a valid Prolog Term with the
      *             specified values for ev, g and r
      * @return <code>true</code> if the operation is successfull
-     * 
+     *
      */
     public boolean nop_s_4(final Term ev, final Term g, final Term r,
             final Term tc) throws InvalidTupleCentreIdException,
@@ -1319,7 +1320,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      * ReSpecT composite guard predicates.
      ********************************************************************/
     /**
-     * 
+     *
      * @return <code>true</code> if the triggering event comes from an agent and
      *         is directed toward a tuple centre
      */
@@ -1331,7 +1332,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      * ReSpecT primitives provided as Java methods.
      ********************************************************************/
     /**
-     * 
+     *
      * @param arg0
      *            the tuple to inject in the tuple centre
      * @param arg1
@@ -1393,7 +1394,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     }
 
     /**
-     * 
+     *
      * @param arg0
      *            the list of tuples to injectin the tuple centre
      * @param arg1
@@ -1437,7 +1438,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     }
 
     /**
-     * 
+     *
      * @param ev
      *            the triggering event of a ReSpecT specification
      * @param g
@@ -1453,7 +1454,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      *             if is not possible to create a valid Prolog Term with the
      *             specified values for ev, g and r
      * @return <code>true</code> if the operation is successfull
-     * 
+     *
      */
     public boolean out_s_4(final Term ev, final Term g, final Term r,
             final Term tc) throws InvalidTupleCentreIdException,
@@ -1500,7 +1501,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     }
 
     /**
-     * 
+     *
      * @return <code>true</code> if the ReSpecT VM is in the completion phase
      */
     public boolean post_0() {
@@ -1508,7 +1509,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     }
 
     /**
-     * 
+     *
      * @return <code>true</code> if the ReSpecT VM is in the invocation phase
      */
     public boolean pre_0() {
@@ -1516,7 +1517,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     }
 
     /**
-     * 
+     *
      * @param arg0
      *            the Prolog variable to unify the result with
      * @param arg1
@@ -1564,10 +1565,10 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     }
 
     /**
-     * 
+     *
      * @param arg0
      *            the tuple template to be used
-     * 
+     *
      * @param arg1
      *            the Prolog variable to unify the result with
      * @param arg2
@@ -1613,7 +1614,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     }
 
     /**
-     * 
+     *
      * @param ev
      *            the triggering event of a ReSpecT specification
      * @param g
@@ -1629,7 +1630,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      *             if is not possible to create a valid Prolog Term with the
      *             specified values for ev, g and r
      * @return <code>true</code> if the operation is successfull
-     * 
+     *
      */
     public boolean rd_s_4(final Term ev, final Term g, final Term r,
             final Term tc) throws InvalidTupleCentreIdException,
@@ -1682,7 +1683,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     }
 
     /**
-     * 
+     *
      * @param arg0
      *            the Prolog variable to unify the result with
      * @param arg1
@@ -1733,7 +1734,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      * ReSpecT reaction observation predicates.
      ********************************************************************/
     /**
-     * 
+     *
      * @param ev
      *            the triggering event of a ReSpecT specification
      * @param g
@@ -1749,7 +1750,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      *             if is not possible to create a valid Prolog Term with the
      *             specified values for ev, g and r
      * @return <code>true</code> if the operation is successfull
-     * 
+     *
      */
     public boolean rdp_s_4(final Term ev, final Term g, final Term r,
             final Term tc) throws InvalidTupleCentreIdException,
@@ -1802,7 +1803,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     }
 
     /**
-     * 
+     *
      * @return <code>true</code> if the ReSpecT VM is in the invocation phase
      */
     public boolean req_0() {
@@ -1819,7 +1820,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     }
 
     /**
-     * 
+     *
      * @return <code>true</code> if the ReSpecT VM is in the completion phase
      */
     public boolean resp_0() {
@@ -1837,7 +1838,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     }
 
     /**
-     * 
+     *
      * @param env
      *            the identifier of the target environmental resource
      * @param key
@@ -1885,7 +1886,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     }
 
     /**
-     * 
+     *
      * @param arg0
      *            the Java class full name or tuProlog theory file path to spawn
      * @param arg1
@@ -1928,7 +1929,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     }
 
     /**
-     * 
+     *
      * @param predicate
      *            the predicate prime cause of current ReSpecT event
      * @return <code>true</code> if the current ReSpecT event has the given
@@ -1953,10 +1954,10 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     }
 
     /**
-     * 
+     *
      * @param source
      *            the identifier of the prime cause source of the event
-     * 
+     *
      * @return <code>true</code> if current ReSpecT event prime cause has the
      *         given source
      */
@@ -2001,7 +2002,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     }
 
     /**
-     * 
+     *
      * @param target
      *            the identifier of the prime cause target
      * @return <code>true</code> if current ReSpecT event prime cause has the
@@ -2048,11 +2049,11 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     }
 
     /**
-     * 
+     *
      * @param time
      *            the expected time at which the current ReSpecT computation has
      *            been triggered.
-     * 
+     *
      * @return true if the actual time at which the current ReSpecT computation
      *         has been triggered is the expected time at which the current
      *         ReSpecT computation has been triggered.
@@ -2073,10 +2074,10 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     }
 
     /**
-     * 
+     *
      * @param tuple
      *            the tuple argument of the direct cause predicate
-     * 
+     *
      * @return <code>true</code> if the direct cause tuple argument has the
      *         given tuple
      */
@@ -2119,7 +2120,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     }
 
     /**
-     * 
+     *
      * @return <code>true</code> if the triggering event was directed toward the
      *         environment
      */
@@ -2141,7 +2142,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     }
 
     /**
-     * 
+     *
      * @param arg0
      *            the Prolog variable to unify the result with
      * @param arg1
@@ -2189,7 +2190,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     }
 
     /**
-     * 
+     *
      * @param arg0
      *            the Prolog variable to unify the result with
      * @param arg1
@@ -2237,7 +2238,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     }
 
     /**
-     * 
+     *
      * @param arg0
      *            the Prolog variable to unify the result with
      * @param arg1
@@ -2285,7 +2286,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     }
 
     /**
-     * 
+     *
      * @param arg0
      *            the Prolog variable to unify the result with
      * @param arg1
@@ -2333,7 +2334,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     }
 
     /**
-     * 
+     *
      * @param arg0
      *            the Prolog variable to unify the result with
      * @param arg1
@@ -2381,7 +2382,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     }
 
     /**
-     * 
+     *
      * @param arg0
      *            the Prolog variable to unify the result with
      * @param arg1

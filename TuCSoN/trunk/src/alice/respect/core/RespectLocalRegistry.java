@@ -8,11 +8,12 @@ import alice.respect.api.TupleCentreId;
 import alice.respect.api.exceptions.InstantiationNotPossibleException;
 
 /**
- * 
+ *
  * @author Alessandro Ricci
- * 
+ *
  */
 public class RespectLocalRegistry implements ITCRegistry {
+
     /**
      * internal representation of the registry, keys are tuple centre id (as
      * String)
@@ -20,7 +21,7 @@ public class RespectLocalRegistry implements ITCRegistry {
     private final Map<String, IRespectTC> reg;
 
     /**
-     * 
+     *
      */
     public RespectLocalRegistry() {
         this.reg = new HashMap<String, IRespectTC>();
@@ -39,7 +40,7 @@ public class RespectLocalRegistry implements ITCRegistry {
     }
 
     /**
-     * 
+     *
      * @return the size of the ReSpecT local registry
      */
     public int getSize() {

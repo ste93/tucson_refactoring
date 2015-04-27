@@ -24,13 +24,14 @@ import alice.tuplecentre.core.TCCycleResult.Outcome;
 
 /**
  * This class represents an Operation on a tuple centre.
- * 
+ *
  * @author Alessandro Ricci
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
- * 
+ *
  */
 public abstract class AbstractTupleCentreOperation implements
         ITupleCentreOperation {
+
     /**  */
     public static final int OPTYPE_IS_STEP_MODE = 57;
     /**
@@ -144,11 +145,11 @@ public abstract class AbstractTupleCentreOperation implements
     private List<Tuple> tupleListArgument;
     private final int type;
     /**
-     * 
+     *
      */
     protected OperationCompletionListener listener;
     /**
-     * 
+     *
      */
     protected boolean operationCompleted;
     /**
@@ -166,7 +167,7 @@ public abstract class AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @param t
      *            the type code of the operation
      * @param tupleList
@@ -180,7 +181,7 @@ public abstract class AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @param t
      *            the type code of the operation
      * @param tupleList
@@ -195,7 +196,7 @@ public abstract class AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @param ty
      *            the type code of the operation
      * @param t
@@ -208,7 +209,7 @@ public abstract class AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @param ty
      *            the type code of the operation
      * @param t
@@ -223,7 +224,7 @@ public abstract class AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @param ty
      *            the type code of the operation
      * @param t
@@ -236,7 +237,7 @@ public abstract class AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @param ty
      *            the type code of the operation
      * @param t
@@ -251,7 +252,7 @@ public abstract class AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @param lis
      *            the listener for operation completion to add
      */
@@ -261,7 +262,7 @@ public abstract class AbstractTupleCentreOperation implements
 
     /**
      * Get operation identifier
-     * 
+     *
      * @return Operation identifier
      */
     @Override
@@ -270,7 +271,7 @@ public abstract class AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @return the tuple representing the whole invocation predicate (primitive
      *         + tuple argument)
      */
@@ -293,7 +294,7 @@ public abstract class AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @return the tuple representing the primitive invoked
      */
     public Tuple getPrimitive() {
@@ -387,7 +388,7 @@ public abstract class AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @return the type code of the operation
      */
     public int getType() {
@@ -420,7 +421,7 @@ public abstract class AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @return wether this operation is a <code>inp_s</code>
      */
     public boolean isInpS() {
@@ -428,7 +429,7 @@ public abstract class AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @return wether this operation is a <code>in_s</code>
      */
     public boolean isInS() {
@@ -441,7 +442,7 @@ public abstract class AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @return wether this operation is a <code>no_all</code>
      */
     @Override
@@ -455,7 +456,7 @@ public abstract class AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @return wether this operation is a <code>nop_s</code>
      */
     public boolean isNopS() {
@@ -463,7 +464,7 @@ public abstract class AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @return wether this operation is a <code>no_s</code>
      */
     public boolean isNoS() {
@@ -486,7 +487,7 @@ public abstract class AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @return wether this operation is a <code>out_s</code>
      */
     public boolean isOutS() {
@@ -509,7 +510,7 @@ public abstract class AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @return wether this operation is a <code>rdp_s</code>
      */
     public boolean isRdpS() {
@@ -517,7 +518,7 @@ public abstract class AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @return wether this operation is a <code>rd_s</code>
      */
     public boolean isRdS() {
@@ -526,7 +527,7 @@ public abstract class AbstractTupleCentreOperation implements
 
     /**
      * Tests if the result is defined
-     * 
+     *
      * @return true if the result is defined
      */
     public boolean isResultDefined() {
@@ -554,7 +555,7 @@ public abstract class AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @return wether this operation is a <code>spawn</code>
      */
     public boolean isSpawn() {
@@ -591,7 +592,7 @@ public abstract class AbstractTupleCentreOperation implements
 
     /**
      * Changes the state of the operation to complete.
-     * 
+     *
      */
     public void notifyCompletion() {
         if (this.listener != null) {
@@ -606,14 +607,14 @@ public abstract class AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      */
     public void removeListener() {
         this.listener = null;
     }
 
     /**
-     * 
+     *
      * @param l
      *            the listener for operation completion
      */
@@ -622,7 +623,7 @@ public abstract class AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @param o
      *            the outcome of the operation
      */
@@ -631,7 +632,7 @@ public abstract class AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @param t
      *            the list of tuples result of the operation
      */
@@ -641,7 +642,7 @@ public abstract class AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @param t
      *            the tuple result of the operation
      */

@@ -10,13 +10,18 @@ import java.io.IOException;
 
 /**
  * Credits go to the author below.
- * 
+ *
  * @author Danilo Pianini
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public final class Utils {
+
+    public static String decapitalize(final String string) {
+        return string.substring(0, 1).toLowerCase() + string.substring(1);
+    }
+
     /**
-     * 
+     *
      * @param path
      *            the filepath toward the file to be read
      * @return the String representation of the content of the read file
@@ -35,11 +40,7 @@ public final class Utils {
 
     private Utils() {
         /*
-         * 
+         *
          */
-    }
-    
-    public static String decapitalize(final String string){
-    	return 	string.substring(0, 1).toLowerCase() + string.substring(1);
     }
 }

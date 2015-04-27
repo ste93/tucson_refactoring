@@ -2,7 +2,6 @@ package alice.tucson.examples.helloWorld;
 
 import alice.logictuple.LogicTuple;
 import alice.logictuple.exceptions.InvalidLogicTupleException;
-import alice.logictuple.exceptions.InvalidVarNameException;
 import alice.tucson.api.AbstractTucsonAgent;
 import alice.tucson.api.ITucsonOperation;
 import alice.tucson.api.NegotiationACC;
@@ -13,7 +12,6 @@ import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
-import alice.tucson.service.TucsonNodeService;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 import alice.tuplecentre.core.AbstractTupleCentreOperation;
 
@@ -22,10 +20,11 @@ import alice.tuplecentre.core.AbstractTupleCentreOperation;
  */
 /**
  * Java TuCSoN Agent extending alice.tucson.api.TucsonAgent base class.
- * 
+ *
  * @author ste (mailto: s.mariani@unibo.it)
  */
 public class HelloWorldAgent extends AbstractTucsonAgent {
+
     /**
      * @param args
      *            the name of the TuCSoN coordinable (optional).
@@ -52,7 +51,7 @@ public class HelloWorldAgent extends AbstractTucsonAgent {
      * 2) Choose one of the given constructors.
      */
     /**
-     * 
+     *
      * @param aid
      *            the String representation of a valid TuCSoN agent identifier
      * @throws TucsonInvalidAgentIdException
@@ -89,11 +88,12 @@ public class HelloWorldAgent extends AbstractTucsonAgent {
     protected void main() {
 
         try {
-        	/*
+            /*
              * 4) Get your ACC.
              */
-        	NegotiationACC negAcc = TucsonMetaACC.getNegotiationContext(this.getTucsonAgentId());
-            SynchACC acc = negAcc.activateDefaultRole();
+            final NegotiationACC negAcc = TucsonMetaACC
+                    .getNegotiationContext(this.getTucsonAgentId());
+            final SynchACC acc = negAcc.activateDefaultRole();
             /*
              * 5) Define the tuplecentre target of your coordination operations.
              */
@@ -149,9 +149,9 @@ public class HelloWorldAgent extends AbstractTucsonAgent {
             e.printStackTrace();
         } catch (final OperationTimeOutException e) {
             e.printStackTrace();
-        } catch (TucsonInvalidAgentIdException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+        } catch (final TucsonInvalidAgentIdException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 }

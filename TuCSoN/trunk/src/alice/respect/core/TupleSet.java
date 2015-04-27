@@ -23,20 +23,21 @@ import alice.tuprolog.Var;
 
 /**
  * Class representing a Tuple Set.
- * 
+ *
  * @author Alessandro Ricci
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
  * @author (contributor) Saverio Cicora
- * 
+ *
  */
 public class TupleSet {
+
     private final List<LogicTuple> tAdded;
     private boolean transaction;
     private final List<LogicTuple> tRemoved;
     private final List<LogicTuple> tuples;
 
     /**
-     * 
+     *
      */
     public TupleSet() {
         this.tuples = new LinkedList<LogicTuple>();
@@ -46,7 +47,7 @@ public class TupleSet {
     }
 
     /**
-     * 
+     *
      * @param t
      *            the tuple to add to this tuple list
      */
@@ -59,7 +60,7 @@ public class TupleSet {
 
     /**
      * Begins a transaction section
-     * 
+     *
      * Every operation on multiset can be undone
      */
     public void beginTransaction() {
@@ -69,7 +70,7 @@ public class TupleSet {
     }
 
     /**
-     * 
+     *
      */
     public void empty() {
         this.tuples.clear();
@@ -78,7 +79,7 @@ public class TupleSet {
     /**
      * Ends a transaction section specifying if operations must be committed or
      * undone
-     * 
+     *
      * @param commit
      *            if <code>true</code> the operations are committed, else they
      *            are undone and the multiset is rolled back to the state before
@@ -101,7 +102,7 @@ public class TupleSet {
     }
 
     /**
-     * 
+     *
      * @return a Java iterator through this tuples list
      */
     public Iterator<LogicTuple> getIterator() {
@@ -109,7 +110,7 @@ public class TupleSet {
     }
 
     /**
-     * 
+     *
      * @param templ
      *            the tuple template to be used to retrieve matching tuples from
      *            this set
@@ -136,7 +137,7 @@ public class TupleSet {
     }
 
     /**
-     * 
+     *
      * @return wether this tuples set is empty or not
      */
     public boolean isEmpty() {
@@ -146,7 +147,7 @@ public class TupleSet {
     /**
      * Tells whether there are changes in the tuple multi-set during a
      * transaction
-     * 
+     *
      * @return true if the ongoing transaction made any changes to the tuple
      *         multi-set
      */
@@ -158,7 +159,7 @@ public class TupleSet {
     }
 
     /**
-     * 
+     *
      * @param templ
      *            the tuple template to be used to retrieve matching tuples from
      *            this set
@@ -181,7 +182,7 @@ public class TupleSet {
     }
 
     /**
-     * 
+     *
      * @return the length of this tuple set
      */
     public int size() {
@@ -189,7 +190,7 @@ public class TupleSet {
     }
 
     /**
-     * 
+     *
      * @return the Java array representation of this tuple set
      */
     public LogicTuple[] toArray() {
@@ -199,7 +200,7 @@ public class TupleSet {
     /**
      * Provides a representation of the tuple multi-set in the form of a String
      * containing a prolog theory.
-     * 
+     *
      * @return a textual representation in the form of a prolog theory.
      */
     @Override

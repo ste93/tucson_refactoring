@@ -14,10 +14,11 @@
 package alice.tucson.api.exceptions;
 
 /**
- * 
+ *
  * @author Alessandro Ricci
- * 
+ *
  */
 public class TucsonInvalidLogicTupleException extends Exception {
+
     private static final long serialVersionUID = 1152671661766255513L;
 }

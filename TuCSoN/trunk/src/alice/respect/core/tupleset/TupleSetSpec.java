@@ -19,17 +19,18 @@ import alice.respect.core.collection.DoubleKeyMVMap;
 
 /**
  * Class representing a Tuple Set.
- * 
+ *
  * @author Saverio Cicora
- * 
+ *
  */
 public class TupleSetSpec extends AbstractTupleSet {
+
     // TODO CICORA: ha senso avere due reaction perfettamente uguali nella
     // lista?
     // due normali tuple devono rimanere distinte anche se sono identiche, ma
     // per le reaction potrebbe essere un problema.
     /**
-     * 
+     *
      */
     public TupleSetSpec() {
         super();

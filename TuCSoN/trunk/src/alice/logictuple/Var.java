@@ -17,15 +17,16 @@ import alice.logictuple.exceptions.InvalidVarNameException;
 
 /**
  * Class representing tuple argument variables.
- * 
+ *
  * @see TupleArgument
  * @see Value
- * 
+ *
  * @author Alessandro Ricci
  */
 public class Var extends TupleArgument {
+
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = 1L;
 
@@ -37,7 +38,7 @@ public class Var extends TupleArgument {
 
     /**
      * Construct a variable tuple argument identified with a name
-     * 
+     *
      * @param n
      *            the name of the variable, which must start with an upper case
      *            letter or the underscore

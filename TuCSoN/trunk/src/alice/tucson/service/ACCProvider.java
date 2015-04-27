@@ -34,12 +34,13 @@ import alice.tucson.network.exceptions.DialogException;
 import alice.util.Tools;
 
 /**
- * 
+ *
  * @author Alessandro Ricci
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
- * 
+ *
  */
 public class ACCProvider {
+
     private static final int WAITING_TIME = 10;
 
     private static void log(final String st) {
@@ -52,7 +53,7 @@ public class ACCProvider {
     private final TucsonNodeService node;
 
     /**
-     * 
+     *
      * @param n
      *            the TuCSoN node whose ACC should reference
      * @param tid
@@ -73,7 +74,7 @@ public class ACCProvider {
     }
 
     /**
-     * 
+     *
      * @param profile
      *            the Object decribing a request for an ACC
      * @param dialog
@@ -84,7 +85,7 @@ public class ACCProvider {
      * @throws TucsonInvalidTupleCentreIdException
      *             if the TupleCentreId, contained into AbstractTucsonProtocol's
      *             message, does not represent a valid TuCSoN identifier
-     * 
+     *
      * @throws TucsonInvalidAgentIdException
      *             if the ACCDescription's "agent-identity" property does not
      *             represent a valid TuCSoN identifier
@@ -100,40 +101,43 @@ public class ACCProvider {
             if (agentName == null) {
                 agentName = profile.getProperty("tc-identity");
             }
-            //BUCCELLI: Inserito UUID nella richiesta
-            String agentUUID = profile.getProperty("agent-uuid");
-            
-            //===BUCCELLI: autorizzo l'agente inspector(Se gli inspector sono autorizzati)!===
+            // BUCCELLI: Inserito UUID nella richiesta
+            final String agentUUID = profile.getProperty("agent-uuid");
+
+            // ===BUCCELLI: autorizzo l'agente inspector(Se gli inspector sono
+            // autorizzati)!===
             final String agentRole = profile.getProperty("agent-role");
             if ("$inspector".equals(agentRole)) {
-            	final LogicTuple areInspectorsAuth = new LogicTuple("are_inspectors_auth", new Var("Response"));
-            	final LogicTuple res = (LogicTuple)TupleCentreContainer.doBlockingOperation(TucsonOperation.inpCode(), this.aid,
-                        this.config, areInspectorsAuth);
-            	if(res.getArg(0).toString().equals("yes")){
-            		final LogicTuple authInspector = new LogicTuple("authorized_agent",
-                			new Value(agentName));
-                	TupleCentreContainer.doBlockingOperation(TucsonOperation.outCode(), this.aid,
-                                    this.config, authInspector);
-            	}
+                final LogicTuple areInspectorsAuth = new LogicTuple(
+                        "are_inspectors_auth", new Var("Response"));
+                final LogicTuple res = (LogicTuple) TupleCentreContainer
+                        .doBlockingOperation(TucsonOperation.inpCode(),
+                                this.aid, this.config, areInspectorsAuth);
+                if (res.getArg(0).toString().equals("yes")) {
+                    final LogicTuple authInspector = new LogicTuple(
+                            "authorized_agent", new Value(agentName));
+                    TupleCentreContainer.doBlockingOperation(
+                            TucsonOperation.outCode(), this.aid, this.config,
+                            authInspector);
+                }
             }
-            //=======
-            
+            // =======
+
             String agentClass = profile.getProperty("agent-class");
-            if(agentClass == null){
-            	agentClass = "base";
+            if (agentClass == null) {
+                agentClass = "base";
             }
-            
-            final LogicTuple req = new LogicTuple("context_request", 
-            		new Value(Tools.removeApices(agentName)),
-            		new Var("CtxId"),
-            		new Value(agentClass),
-            		new Value(agentUUID));
+
+            final LogicTuple req = new LogicTuple("context_request", new Value(
+                    Tools.removeApices(agentName)), new Var("CtxId"),
+                    new Value(agentClass), new Value(agentUUID));
             final LogicTuple result = (LogicTuple) TupleCentreContainer
                     .doBlockingOperation(TucsonOperation.inpCode(), this.aid,
                             this.config, req);
-           
+
             if (result == null) {
-            	 ACCProvider.log("===========================================Result Null");
+                ACCProvider
+                .log("===========================================Result Null");
                 profile.setProperty("failure", "context not available");
                 dialog.sendEnterRequestRefused();
                 return false;
@@ -149,7 +153,7 @@ public class ACCProvider {
             ACCProvider.log("ACC request accepted, ACC id is < "
                     + ctxId.toString() + " >");
             dialog.sendEnterRequestAccepted();
-           
+
             if ("$inspector".equals(agentRole)) {
                 final AbstractACCProxyNodeSide skel = new InspectorContextSkel(
                         this, dialog, this.node, profile);
@@ -188,7 +192,7 @@ public class ACCProvider {
     }
 
     /**
-     * 
+     *
      * @throws InterruptedException
      *             if this provider is interrupted during termination
      */
@@ -204,7 +208,7 @@ public class ACCProvider {
     }
 
     /**
-     * 
+     *
      * @param ctxId
      *            the numeric, progressive identifier of the ACC given
      * @param id

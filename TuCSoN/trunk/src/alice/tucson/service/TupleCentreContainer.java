@@ -38,16 +38,17 @@ import alice.tuplecentre.core.InputEvent;
 import alice.tuplecentre.core.OperationCompletionListener;
 
 /**
- * 
+ *
  * @author Alessandro Ricci
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
- * 
+ *
  */
 public final class TupleCentreContainer {
+
     private static int defaultport;
 
     /**
-     * 
+     *
      * @param id
      *            the identifier of the tuple centre this wrapper refers to
      * @param q
@@ -75,11 +76,11 @@ public final class TupleCentreContainer {
     }
 
     /**
-     * 
+     *
      */
     public static synchronized void destroyTC() {
         /*
-         * 
+         *
          */
     }
 
@@ -88,7 +89,7 @@ public final class TupleCentreContainer {
      *            the id of the tuple centre to make persistent
      * @param persistencyPath
      *            the path where to store persistency information
-     * 
+     *
      */
     public static synchronized void disablePersistency(
             final TucsonTupleCentreId ttcid, final String persistencyPath) {
@@ -99,7 +100,7 @@ public final class TupleCentreContainer {
     }
 
     /**
-     * 
+     *
      * @param type
      *            the type code of the operation requested
      * @param aid
@@ -190,7 +191,7 @@ public final class TupleCentreContainer {
 
     /**
      * SPAWN ADDITION
-     * 
+     *
      * @param type
      *            the type code of the operation requested
      * @param aid
@@ -274,7 +275,7 @@ public final class TupleCentreContainer {
     }
 
     /**
-     * 
+     *
      * @param type
      *            the type code of the operation requested
      * @param aid
@@ -322,7 +323,7 @@ public final class TupleCentreContainer {
     }
 
     /**
-     * 
+     *
      * @param type
      *            the type code of the operation requested
      * @param tcid
@@ -369,7 +370,7 @@ public final class TupleCentreContainer {
     }
 
     /**
-     * 
+     *
      * @param type
      *            the type codeof the ReSpecT operation to be executed
      * @param aid
@@ -442,7 +443,7 @@ public final class TupleCentreContainer {
     }
 
     /**
-     * 
+     *
      * @param type
      *            the type codeof the ReSpecT operation to be executed
      * @param aid
@@ -503,7 +504,7 @@ public final class TupleCentreContainer {
     }
 
     /**
-     * 
+     *
      * @param type
      *            the type code of the operation requested
      * @param tid
@@ -617,7 +618,7 @@ public final class TupleCentreContainer {
     }
 
     /**
-     * 
+     *
      * @param type
      *            the type code of the operation requested
      * @param aid
@@ -713,7 +714,7 @@ public final class TupleCentreContainer {
     }
 
     /**
-     * 
+     *
      * @param type
      *            the type code of the operation requested
      * @param tcid
@@ -809,7 +810,7 @@ public final class TupleCentreContainer {
     }
 
     /**
-     * 
+     *
      * @param type
      *            the type code of the operation requested
      * @param aid
@@ -878,7 +879,7 @@ public final class TupleCentreContainer {
     }
 
     /**
-     * 
+     *
      * @param type
      *            the type code of the operation requested
      * @param tcid
@@ -951,7 +952,7 @@ public final class TupleCentreContainer {
      *            the id of the tuple centre to make persistent
      * @param persistencyPath
      *            the path where to store persistency information
-     * 
+     *
      */
     public static synchronized void enablePersistency(
             final TucsonTupleCentreId ttcid, final String persistencyPath) {
@@ -968,7 +969,7 @@ public final class TupleCentreContainer {
      *            the path where to store persistency information
      * @param file
      *            the name of the file to recover
-     * 
+     *
      */
     public static void recoveryPersistent(final TucsonTupleCentreId ttcid,
             final String persistencyPath, final String file) {
@@ -980,7 +981,7 @@ public final class TupleCentreContainer {
 
     private TupleCentreContainer() {
         /*
-         * 
+         *
          */
     }
 }

@@ -13,16 +13,17 @@
 package alice.tuplecentre.core;
 
 /**
- * 
+ *
  * @author Alessandro Ricci
- * 
+ *
  */
 public class ObservableEventReactionFail extends ObservableEventExt {
+
     private static final long serialVersionUID = 5378208360215769012L;
     private TriggeredReaction z;
 
     /**
-     * 
+     *
      * @param src
      *            the source of the event
      * @param tr

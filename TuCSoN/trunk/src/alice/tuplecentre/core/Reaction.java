@@ -15,15 +15,15 @@ package alice.tuplecentre.core;
 
 /**
  * Represents the reaction concept of tuple centre model.
- * 
+ *
  * Reactions are computations executed inside tuple centres, triggered by
  * external and internal communication events (which depends on the specific
  * tuple centre model).
- * 
+ *
  * @author Alessandro Ricci
  */
 public interface Reaction {
     /*
-     * 
+     *
      */
 }

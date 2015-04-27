@@ -6,7 +6,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-
 import alice.logictuple.LogicTuple;
 import alice.respect.api.TupleCentreId;
 import alice.tucson.api.ITucsonOperation;
@@ -35,21 +34,23 @@ import alice.tuprolog.Prolog;
 import alice.tuprolog.lib.InvalidObjectIdException;
 
 /**
- * 
+ *
  * @author ste (mailto: s.mariani@unibo.it) on 11/ago/2013
- * 
+ *
  */
 public class OperationHandler {
+
     /**
-     * 
+     *
      */
     public class Controller extends Thread {
+
         private final AbstractTucsonProtocol dialog;
         private final Prolog p = new Prolog();
         private boolean stop;
 
         /**
-         * 
+         *
          * @param in
          */
         Controller(final AbstractTucsonProtocol d) {
@@ -57,8 +58,8 @@ public class OperationHandler {
             this.dialog = d;
             this.stop = false;
             this.setDaemon(true);
-            final alice.tuprolog.lib.JavaLibrary jlib = (alice.tuprolog.lib.JavaLibrary) this.p
-                    .getLibrary("alice.tuprolog.lib.JavaLibrary");
+            final alice.tuprolog.lib.OOLibrary jlib = (alice.tuprolog.lib.OOLibrary) this.p
+                    .getLibrary("alice.tuprolog.lib.OOLibrary");
             try {
                 jlib.register(new alice.tuprolog.Struct("config"), this);
             } catch (final InvalidObjectIdException e) {
@@ -67,7 +68,7 @@ public class OperationHandler {
         }
 
         /**
-         * 
+         *
          */
         @Override
         public void run() {
@@ -87,7 +88,7 @@ public class OperationHandler {
                     msg = this.dialog.receiveMsgReply();
                 } catch (final DialogReceiveException e) {
                     OperationHandler.this
-                            .err("TuCSoN Node disconnected unexpectedly :/");
+                    .err("TuCSoN Node disconnected unexpectedly :/");
                     // OperationHandler.this.err(e.getCause().toString());
                     this.setStop();
                     break;
@@ -188,14 +189,14 @@ public class OperationHandler {
         }
 
         /**
-         * 
+         *
          */
         public synchronized void setStop() {
             this.stop = true;
         }
 
         /**
-         * 
+         *
          * @return
          */
         private synchronized boolean isStopped() {
@@ -203,7 +204,7 @@ public class OperationHandler {
         }
 
         /**
-         * 
+         *
          * @param template
          * @param tuple
          * @return
@@ -218,14 +219,15 @@ public class OperationHandler {
     }
 
     /**
-     * 
+     *
      */
     public class ControllerSession {
+
         private final Controller controller;
         private final AbstractTucsonProtocol session;
 
         /**
-         * 
+         *
          * @param c
          * @param s
          */
@@ -235,7 +237,7 @@ public class OperationHandler {
         }
 
         /**
-         * 
+         *
          * @return the Controller object monitoring operation completions
          */
         public Controller getController() {
@@ -243,7 +245,7 @@ public class OperationHandler {
         }
 
         /**
-         * 
+         *
          * @return the (generic) connection protocol used by this operation
          *         handler
          */
@@ -253,6 +255,10 @@ public class OperationHandler {
     }
 
     private static final int TRIES = 3;
+    /*
+     * BUCCELLI UUID of the agent using this OperationHandler
+     */
+    protected UUID agentUUID;
     /**
      * Active sessions toward different nodes
      */
@@ -269,20 +275,19 @@ public class OperationHandler {
      * Requested TuCSoN operations
      */
     protected Map<Long, TucsonOperation> operations;
+
     /**
      * Current ACC session description
      */
     protected ACCDescription profile;
 
-    /* BUCCELLI
-     * 	UUID of the agent using this OperationHandler
-     */
-    protected UUID agentUUID;
     /**
-     * 
+     * @param uuid
+     *            the Java UUID of the agent this handler serves.
+     *
      */
-    public OperationHandler(UUID uuid) {
-    	this.agentUUID = uuid;
+    public OperationHandler(final UUID uuid) {
+        this.agentUUID = uuid;
         this.profile = new ACCDescription();
         this.events = new LinkedList<TucsonOpCompletionEvent>();
         this.controllerSessions = new HashMap<String, OperationHandler.ControllerSession>();
@@ -291,7 +296,7 @@ public class OperationHandler {
     }
 
     /**
-     * 
+     *
      * @param id
      *            the Long identifier of the pending operation just requested
      * @param op
@@ -304,7 +309,7 @@ public class OperationHandler {
     /**
      * Method to track expired operations, that is operations whose completion
      * has not been received before specified timeout expiration
-     * 
+     *
      * @param id
      *            Unique Identifier of the expired operation
      */
@@ -319,12 +324,12 @@ public class OperationHandler {
      * truth there is no real execution at this point: we are just packing
      * primitives invocation into TuCSoN messages, then send them to the Node
      * side)
-     * 
+     *
      * The difference w.r.t. the previous method
      * {@link alice.tucson.service.OperationHandler#doNonBlockingOperation
      * nonBlocking} is that here we explicitly wait for completion a time
      * specified in the timeout input parameter.
-     * 
+     *
      * @param aid
      *            the agent identifier
      * @param type
@@ -336,10 +341,10 @@ public class OperationHandler {
      *            The Logic Tuple involved in the requested operation
      * @param ms
      *            Maximum waiting time tolerated by the callee TuCSoN Agent
-     * 
+     *
      * @return An object representing the primitive invocation on the TuCSoN
      *         infrastructure which will store its result
-     * 
+     *
      * @throws TucsonOperationNotPossibleException
      *             if the operation requested cannot be performed
      * @throws UnreachableNodeException
@@ -347,13 +352,13 @@ public class OperationHandler {
      * @throws OperationTimeOutException
      *             if the timeout associated to the operation requested expires
      *             prior to operation completion
-     * 
+     *
      * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
      */
     public ITucsonOperation doBlockingOperation(final TucsonAgentId aid,
             final int type, final Object tid, final Tuple t, final Long ms)
-            throws TucsonOperationNotPossibleException,
-            UnreachableNodeException, OperationTimeOutException {
+                    throws TucsonOperationNotPossibleException,
+                    UnreachableNodeException, OperationTimeOutException {
         TucsonTupleCentreId tcid = null;
         if ("alice.tucson.api.TucsonTupleCentreId".equals(tid.getClass()
                 .getName())) {
@@ -388,7 +393,7 @@ public class OperationHandler {
      * truth there is no real execution at this point: we are just packing
      * primitives invocation into TuCSoN messages, then send them to the Node
      * side)
-     * 
+     *
      * @param aid
      *            the agent identifier
      * @param type
@@ -400,15 +405,15 @@ public class OperationHandler {
      *            The Logic Tuple involved in the requested operation
      * @param l
      *            The listener who should be notified upon operation completion
-     * 
+     *
      * @return An object representing the primitive invocation on the TuCSoN
      *         infrastructure which will store its result
-     * 
+     *
      * @throws TucsonOperationNotPossibleException
      *             if the operation requested cannot be performed
      * @throws UnreachableNodeException
      *             if the target tuple centre cannot be reached over the network
-     * 
+     *
      * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
      * @see alice.tucson.api.TucsonOperationCompletionListener
      *      TucsonOperationCompletionListener
@@ -417,8 +422,8 @@ public class OperationHandler {
     public ITucsonOperation doNonBlockingOperation(final TucsonAgentId aid,
             final int type, final Object tid, final Tuple t,
             final TucsonOperationCompletionListener l)
-            throws TucsonOperationNotPossibleException,
-            UnreachableNodeException {
+                    throws TucsonOperationNotPossibleException,
+                    UnreachableNodeException {
         // log("tid.class().name() = " + tid.getClass().getName());
         TucsonTupleCentreId tcid = null;
         if ("alice.tucson.api.TucsonTupleCentreId".equals(tid.getClass()
@@ -442,7 +447,7 @@ public class OperationHandler {
     }
 
     /**
-     * 
+     *
      * @return the Map associations between the String representation of a
      *         TuCSoN node network address and the TuCSoN protocol session
      *         currently active toward those nodes
@@ -458,7 +463,7 @@ public class OperationHandler {
 
     /**
      * Method internally used to log proxy activity (could be used for debug)
-     * 
+     *
      * @param msg
      *            String to display on the standard output
      */
@@ -469,19 +474,19 @@ public class OperationHandler {
 
     /**
      * This method is the real responsible of TuCSoN operations execution.
-     * 
+     *
      * First, it takes the target tuplecentre and checks wether this proxy has
      * ever established a connection toward it: if it did, the already opened
      * connection is retrieved and used, otherwise a new connection is opened
      * and stored for later use
      * {@link alice.tucson.service.OperationHandler#getSession getSession}.
-     * 
+     *
      * Then, a Tucson Operation {@link alice.tucson.service.TucsonOperation op}
      * storing any useful information about the TuCSoN primitive invocation is
      * created and packed into a Tucson Message Request
      * {@link alice.tucson.network.TucsonMsgRequest} to be possibly sent over
      * the wire toward the target tuplecentre.
-     * 
+     *
      * Notice that a listener is needed, who is the proxy itself, wichever was
      * the requested operation (inp, in, etc.) and despite its (a-)synchronous
      * behavior. This is because of the distributed very nature of TuCSoN: we
@@ -489,7 +494,7 @@ public class OperationHandler {
      * requested operations should be dispatched toward the TuCSoN Node Service,
      * which in turn will take them in charge and notify the requestor upon
      * completion.
-     * 
+     *
      * @param aid
      *            the agent identifier
      * @param tcid
@@ -501,13 +506,13 @@ public class OperationHandler {
      *            The Logic Tuple involved in the requested operation
      * @param l
      *            The listener who should be notified upon operation completion
-     * 
+     *
      * @return An object representing the primitive invocation on the TuCSoN
      *         infrastructure which will store its result
-     * 
+     *
      * @throws UnreachableNodeException
      *             if the target tuple centre cannot be reached over the network
-     * 
+     *
      * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
      * @see alice.tucson.api.TucsonOperationCompletionListener
      *      TucsonOperationCompletionListener
@@ -518,7 +523,7 @@ public class OperationHandler {
             final TucsonAgentId aid, final TucsonTupleCentreId tcid,
             final int type, final Tuple t,
             final TucsonOperationCompletionListener l)
-            throws UnreachableNodeException {
+                    throws UnreachableNodeException {
         // this.log("t = " + t);
         Tuple tupl = null;
         if (t instanceof LogicTuple) {
@@ -578,11 +583,11 @@ public class OperationHandler {
      * This method is responsible to setup, store and retrieve connections
      * toward all the tuplecentres ever contacted by the TuCSoN Agent behind
      * this proxy.
-     * 
+     *
      * If a connection toward the given target tuplecentre already exists, it is
      * retrieved and used. If not, the new connection is setup then stored for
      * later use.
-     * 
+     *
      * It is worth noting a couple of things. Why don't we setup connections
      * once and for all as soon as the TuCSoN Agent is booted? The reason is
      * that new tuplecentres can be created at run-time as TuCSoN Agents please,
@@ -590,18 +595,18 @@ public class OperationHandler {
      * tuplecentre has to be created and booted. If a new tuplecentre has to be
      * booted the correspondant proxy node side is dinamically triggered and
      * booted {@link alice.tucson.service.ACCProxyNodeSide nodeProxy}
-     * 
+     *
      * @param tid
      *            Target TuCSoN tuplecentre id
      *            {@link alice.tucson.api.TucsonTupleCentreId tid}
      * @param aid
      *            the agent identifier
-     * 
+     *
      * @return The open session toward the given target tuplecentre
-     * 
+     *
      * @throws UnreachableNodeException
      *             if the target tuple centre cannot be reached over the network
-     * 
+     *
      * @see alice.tucson.network.AbstractTucsonProtocol TucsonProtocol
      * @see alice.tucson.service.ACCProxyNodeSide ACCProxyNodeSide
      */
@@ -616,19 +621,19 @@ public class OperationHandler {
         // if (InetAddress.getLoopbackAddress().getHostName().equals(opNode)) {
         if ("localhost".equals(opNode)) {
             tc =
-            // this.controllerSessions.get(InetAddress
-            // .getLoopbackAddress().getHostAddress()
-            // .concat(String.valueOf(p)));
-            this.controllerSessions.get("127.0.0.1:".concat(String.valueOf(p)));
+                    // this.controllerSessions.get(InetAddress
+                    // .getLoopbackAddress().getHostAddress()
+                    // .concat(String.valueOf(p)));
+                    this.controllerSessions.get("127.0.0.1:".concat(String.valueOf(p)));
         }
         // if (InetAddress.getLoopbackAddress().getHostAddress().equals(opNode))
         // {
         if ("127.0.0.1".equals(opNode)) {
             tc =
-            // this.controllerSessions.get(InetAddress
-            // .getLoopbackAddress().getHostName()
-            // .concat(String.valueOf(p)));
-            this.controllerSessions.get("localhost:".concat(String.valueOf(p)));
+                    // this.controllerSessions.get(InetAddress
+                    // .getLoopbackAddress().getHostName()
+                    // .concat(String.valueOf(p)));
+                    this.controllerSessions.get("localhost:".concat(String.valueOf(p)));
         }
         if (tc != null) {
             return tc.getSession();
@@ -636,7 +641,7 @@ public class OperationHandler {
         this.profile.setProperty("agent-identity", aid.toString());
         this.profile.setProperty("agent-role", "user");
         this.profile.setProperty("agent-uuid", this.agentUUID.toString());
-        //this.profile.setProperty("agent-class", value);
+        // this.profile.setProperty("agent-class", value);
         AbstractTucsonProtocol dialog = null;
         boolean isEnterReqAcpt = false;
         try {
@@ -663,10 +668,10 @@ public class OperationHandler {
      * Method to add a TuCSoN Operation Completion Event
      * {@link alice.tucson.service.TucsonOpCompletionEvent event} to the
      * internal queue of pending completion event to process
-     * 
+     *
      * @param ev
      *            Completion Event to be added to pending queue
-     * 
+     *
      * @see alice.tucson.service.TucsonOpCompletionEvent TucsonOpCompletionEvent
      */
     protected void postEvent(final TucsonOpCompletionEvent ev) {

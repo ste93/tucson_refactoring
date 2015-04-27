@@ -29,20 +29,21 @@ import alice.tuprolog.Term;
  * are enabled to interact with a TuCSoN system. All the TuCSoN primitives
  * available to Java agents and human agents (through the CLI tool) are thus
  * made available to tuProlog agents too.
- * 
+ *
  * @see alice.tuprolog.Agent Agent
- * 
+ *
  * @author ste (mailto: s.mariani@unibo.it)
  */
 public class Tucson2PLibrary extends Library {
+
     private static final long serialVersionUID = 6716779172091533171L;
 
     /**
      * Utility to convert a list of tuple into a tuple list of tuples
-     * 
+     *
      * @param list
      *            the list of tuples to convert
-     * 
+     *
      * @return the tuple list of tuples result of the conversion
      */
     private static Term list2tuple(final List<LogicTuple> list) {
@@ -61,17 +62,17 @@ public class Tucson2PLibrary extends Library {
     /**
      * To be enabled to interact with any TuCSoN system, an ACC must be acquired
      * first.
-     * 
+     *
      * @param id
      *            the TucsonAgentId of the tuProlog agent willing to interact
      *            with TuCSoN
-     * 
+     *
      * @return <code>true</code> if the operation succeed, <code>false</code>
      *         otherwise
      * @throws TucsonInvalidAgentIdException
      *             if the given Term does not represent a valid TuCSoN
      *             identifier
-     * 
+     *
      * @see alice.tucson.api.EnhancedACC EnhancedACC
      * @see alice.tucson.api.TucsonAgentId TucsonAgentId
      */
@@ -93,12 +94,12 @@ public class Tucson2PLibrary extends Library {
 
     /**
      * <code>get</code> TuCSoN primitive.
-     * 
+     *
      * @param arg0
      *            the tuple to store the result
      * @param arg1
      *            the tuplecentre target
-     * 
+     *
      * @return <code>true</code> if the operation succeed, <code>false</code>
      *         otherwise
      * @throws TucsonInvalidTupleCentreIdException
@@ -111,7 +112,7 @@ public class Tucson2PLibrary extends Library {
      * @throws OperationTimeOutException
      *             if the operation timeout expired prior to operation
      *             completion
-     * 
+     *
      * @see alice.tucson.api.OrdinaryAsynchACC OrdinaryAsynchACC
      * @see alice.tucson.api.OrdinarySynchACC OrdinarySynchACC
      */
@@ -135,12 +136,12 @@ public class Tucson2PLibrary extends Library {
 
     /**
      * <code>get_s</code> TuCSoN primitive.
-     * 
+     *
      * @param arg0
      *            the tuple to store the specification result
      * @param arg1
      *            the tuplecentre target
-     * 
+     *
      * @return <code>true</code> if the operation succeed, <code>false</code>
      *         otherwise
      * @throws TucsonInvalidTupleCentreIdException
@@ -153,7 +154,7 @@ public class Tucson2PLibrary extends Library {
      * @throws OperationTimeOutException
      *             if the operation timeout expired prior to operation
      *             completion
-     * 
+     *
      * @see alice.tucson.api.SpecificationAsynchACC SpecificationAsynchACC
      * @see alice.tucson.api.SpecificationSynchACC SpecificationSynchACC
      */
@@ -180,10 +181,10 @@ public class Tucson2PLibrary extends Library {
      * If only a tuple is specified as argument of a TuCSoN primitive, the
      * default tuplecentre is targeted, otherwise the tuProlog agent must
      * specify the full name of the target tuplecentre.
-     * 
+     *
      * @return the String representation of the tuProlog theory usable by
      *         tuProlog agents
-     * 
+     *
      * @see alice.tuprolog.Theory Theory
      * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
      */
@@ -255,12 +256,12 @@ public class Tucson2PLibrary extends Library {
 
     /**
      * <code>in</code> TuCSoN primitive.
-     * 
+     *
      * @param arg0
      *            the tuple to retrieve
      * @param arg1
      *            the tuplecentre target
-     * 
+     *
      * @return <code>true</code> if the operation succeed, <code>false</code>
      *         otherwise
      * @throws TucsonInvalidTupleCentreIdException
@@ -273,7 +274,7 @@ public class Tucson2PLibrary extends Library {
      * @throws OperationTimeOutException
      *             if the operation timeout expired prior to operation
      *             completion
-     * 
+     *
      * @see alice.tucson.api.OrdinaryAsynchACC OrdinaryAsynchACC
      * @see alice.tucson.api.OrdinarySynchACC OrdinarySynchACC
      */
@@ -296,14 +297,14 @@ public class Tucson2PLibrary extends Library {
 
     /**
      * <code>in_all</code> TuCSoN primitive.
-     * 
+     *
      * @param arg0
      *            the tuple to retrieve
      * @param arg1
      *            the tuple to store the result
      * @param arg2
      *            the tuplecentre target
-     * 
+     *
      * @return <code>true</code> if the operation succeed, <code>false</code>
      *         otherwise
      * @throws TucsonInvalidTupleCentreIdException
@@ -316,7 +317,7 @@ public class Tucson2PLibrary extends Library {
      * @throws OperationTimeOutException
      *             if the operation timeout expired prior to operation
      *             completion
-     * 
+     *
      * @see alice.tucson.api.BulkAsynchACC BulkAsynchACC
      * @see alice.tucson.api.BulkSynchACC BulkSynchACC
      */
@@ -341,7 +342,7 @@ public class Tucson2PLibrary extends Library {
 
     /**
      * <code>in_s</code> TuCSoN primitive.
-     * 
+     *
      * @param event
      *            the template for the TuCSoN primitive to react to
      * @param guards
@@ -353,7 +354,7 @@ public class Tucson2PLibrary extends Library {
      *            <code>event</code>
      * @param arg3
      *            the tuplecentre target
-     * 
+     *
      * @return <code>true</code> if the operation succeed, <code>false</code>
      *         otherwise
      * @throws TucsonInvalidTupleCentreIdException
@@ -366,7 +367,7 @@ public class Tucson2PLibrary extends Library {
      * @throws OperationTimeOutException
      *             if the operation timeout expired prior to operation
      *             completion
-     * 
+     *
      * @see alice.tucson.api.SpecificationAsynchACC SpecificationAsynchACC
      * @see alice.tucson.api.SpecificationSynchACC SpecificationSynchACC
      */
@@ -392,12 +393,12 @@ public class Tucson2PLibrary extends Library {
 
     /**
      * <code>inp</code> TuCSoN primitive.
-     * 
+     *
      * @param arg0
      *            the tuple to retrieve
      * @param arg1
      *            the tuplecentre target
-     * 
+     *
      * @return <code>true</code> if the operation succeed, <code>false</code>
      *         otherwise
      * @throws TucsonInvalidTupleCentreIdException
@@ -410,7 +411,7 @@ public class Tucson2PLibrary extends Library {
      * @throws OperationTimeOutException
      *             if the operation timeout expired prior to operation
      *             completion
-     * 
+     *
      * @see alice.tucson.api.OrdinaryAsynchACC OrdinaryAsynchACC
      * @see alice.tucson.api.OrdinarySynchACC OrdinarySynchACC
      */
@@ -433,7 +434,7 @@ public class Tucson2PLibrary extends Library {
 
     /**
      * <code>inp_s</code> TuCSoN primitive.
-     * 
+     *
      * @param event
      *            the template for the TuCSoN primitive to react to
      * @param guards
@@ -445,7 +446,7 @@ public class Tucson2PLibrary extends Library {
      *            <code>event</code>
      * @param arg3
      *            the tuplecentre target
-     * 
+     *
      * @return <code>true</code> if the operation succeed, <code>false</code>
      *         otherwise
      * @throws TucsonInvalidTupleCentreIdException
@@ -458,7 +459,7 @@ public class Tucson2PLibrary extends Library {
      * @throws OperationTimeOutException
      *             if the operation timeout expired prior to operation
      *             completion
-     * 
+     *
      * @see alice.tucson.api.SpecificationAsynchACC SpecificationAsynchACC
      * @see alice.tucson.api.SpecificationSynchACC SpecificationSynchACC
      */
@@ -484,12 +485,12 @@ public class Tucson2PLibrary extends Library {
 
     /**
      * <code>no</code> TuCSoN primitive.
-     * 
+     *
      * @param arg0
      *            the tuple to check for absence
      * @param arg1
      *            the tuplecentre target
-     * 
+     *
      * @return <code>true</code> if the operation succeed, <code>false</code>
      *         otherwise
      * @throws TucsonInvalidTupleCentreIdException
@@ -502,7 +503,7 @@ public class Tucson2PLibrary extends Library {
      * @throws OperationTimeOutException
      *             if the operation timeout expired prior to operation
      *             completion
-     * 
+     *
      * @see alice.tucson.api.OrdinaryAsynchACC OrdinaryAsynchACC
      * @see alice.tucson.api.OrdinarySynchACC OrdinarySynchACC
      */
@@ -525,14 +526,14 @@ public class Tucson2PLibrary extends Library {
 
     /**
      * <code>no_all</code> TuCSoN primitive.
-     * 
+     *
      * @param arg0
      *            the tuple to check for absence
      * @param arg1
      *            the tuple to store the result
      * @param arg2
      *            the tuplecentre target
-     * 
+     *
      * @return <code>true</code> if the operation succeed, <code>false</code>
      *         otherwise
      * @throws TucsonInvalidTupleCentreIdException
@@ -545,7 +546,7 @@ public class Tucson2PLibrary extends Library {
      * @throws OperationTimeOutException
      *             if the operation timeout expired prior to operation
      *             completion
-     * 
+     *
      * @see alice.tucson.api.BulkAsynchACC BulkAsynchACC
      * @see alice.tucson.api.BulkSynchACC BulkSynchACC
      */
@@ -570,7 +571,7 @@ public class Tucson2PLibrary extends Library {
 
     /**
      * <code>no_s</code> TuCSoN primitive.
-     * 
+     *
      * @param event
      *            the template for the TuCSoN primitive to react to
      * @param guards
@@ -582,7 +583,7 @@ public class Tucson2PLibrary extends Library {
      *            <code>event</code>
      * @param arg3
      *            the tuplecentre target
-     * 
+     *
      * @return <code>true</code> if the operation succeed, <code>false</code>
      *         otherwise
      * @throws TucsonInvalidTupleCentreIdException
@@ -595,7 +596,7 @@ public class Tucson2PLibrary extends Library {
      * @throws OperationTimeOutException
      *             if the operation timeout expired prior to operation
      *             completion
-     * 
+     *
      * @see alice.tucson.api.SpecificationAsynchACC SpecificationAsynchACC
      * @see alice.tucson.api.SpecificationSynchACC SpecificationSynchACC
      */
@@ -621,12 +622,12 @@ public class Tucson2PLibrary extends Library {
 
     /**
      * <code>nop</code> TuCSoN primitive.
-     * 
+     *
      * @param arg0
      *            the tuple to check for absence
      * @param arg1
      *            the tuplecentre target
-     * 
+     *
      * @return <code>true</code> if the operation succeed, <code>false</code>
      *         otherwise
      * @throws TucsonInvalidTupleCentreIdException
@@ -639,7 +640,7 @@ public class Tucson2PLibrary extends Library {
      * @throws OperationTimeOutException
      *             if the operation timeout expired prior to operation
      *             completion
-     * 
+     *
      * @see alice.tucson.api.OrdinaryAsynchACC OrdinaryAsynchACC
      * @see alice.tucson.api.OrdinarySynchACC OrdinarySynchACC
      */
@@ -662,7 +663,7 @@ public class Tucson2PLibrary extends Library {
 
     /**
      * <code>nop_s</code> TuCSoN primitive.
-     * 
+     *
      * @param event
      *            the template for the TuCSoN primitive to react to
      * @param guards
@@ -674,7 +675,7 @@ public class Tucson2PLibrary extends Library {
      *            <code>event</code>
      * @param arg3
      *            the tuplecentre target
-     * 
+     *
      * @return <code>true</code> if the operation succeed, <code>false</code>
      *         otherwise
      * @throws TucsonInvalidTupleCentreIdException
@@ -687,7 +688,7 @@ public class Tucson2PLibrary extends Library {
      * @throws OperationTimeOutException
      *             if the operation timeout expired prior to operation
      *             completion
-     * 
+     *
      * @see alice.tucson.api.SpecificationAsynchACC SpecificationAsynchACC
      * @see alice.tucson.api.SpecificationSynchACC SpecificationSynchACC
      */
@@ -713,12 +714,12 @@ public class Tucson2PLibrary extends Library {
 
     /**
      * <code>out</code> TuCSoN primitive.
-     * 
+     *
      * @param arg0
      *            the tuple to insert
      * @param arg1
      *            the tuplecentre target
-     * 
+     *
      * @return <code>true</code> if the operation succeed, <code>false</code>
      *         otherwise
      * @throws TucsonInvalidTupleCentreIdException
@@ -731,7 +732,7 @@ public class Tucson2PLibrary extends Library {
      * @throws OperationTimeOutException
      *             if the operation timeout expired prior to operation
      *             completion
-     * 
+     *
      * @see alice.tucson.api.OrdinaryAsynchACC OrdinaryAsynchACC
      * @see alice.tucson.api.OrdinarySynchACC OrdinarySynchACC
      */
@@ -751,15 +752,15 @@ public class Tucson2PLibrary extends Library {
 
     /**
      * <code>out_all</code> TuCSoN primitive.
-     * 
+     *
      * @param arg0
      *            the tuple list of tuples to insert
      * @param arg1
      *            the tuplecentre target
-     * 
+     *
      * @return <code>true</code> if the operation succeed, <code>false</code>
      *         otherwise
-     * 
+     *
      * @throws TucsonInvalidTupleCentreIdException
      *             if the given Term does not represent a valid TuCSoN
      *             identifier
@@ -790,7 +791,7 @@ public class Tucson2PLibrary extends Library {
 
     /**
      * <code>out_s</code> TuCSoN primitive.
-     * 
+     *
      * @param event
      *            the TuCSoN primitive to react to
      * @param guards
@@ -801,10 +802,10 @@ public class Tucson2PLibrary extends Library {
      *            <code>event</code>
      * @param arg3
      *            the tuplecentre target
-     * 
+     *
      * @return <code>true</code> if the operation succeed, <code>false</code>
      *         otherwise
-     * 
+     *
      * @throws TucsonInvalidTupleCentreIdException
      *             if the given Term does not represent a valid TuCSoN
      *             identifier
@@ -815,7 +816,7 @@ public class Tucson2PLibrary extends Library {
      * @throws OperationTimeOutException
      *             if the operation timeout expired prior to operation
      *             completion
-     * 
+     *
      * @see alice.tucson.api.SpecificationAsynchACC SpecificationAsynchACC
      * @see alice.tucson.api.SpecificationSynchACC SpecificationSynchACC
      */
@@ -838,12 +839,12 @@ public class Tucson2PLibrary extends Library {
 
     /**
      * <code>rd</code> TuCSoN primitive.
-     * 
+     *
      * @param arg0
      *            the tuple to read (w/o removing)
      * @param arg1
      *            the tuplecentre target
-     * 
+     *
      * @return <code>true</code> if the operation succeed, <code>false</code>
      *         otherwise
      * @throws TucsonInvalidTupleCentreIdException
@@ -878,17 +879,17 @@ public class Tucson2PLibrary extends Library {
 
     /**
      * <code>rd_all</code> TuCSoN primitive.
-     * 
+     *
      * @param arg0
      *            the tuple to read (w/o removing)
      * @param arg1
      *            the tuple to store the result
      * @param arg2
      *            the tuplecentre target
-     * 
+     *
      * @return <code>true</code> if the operation succeed, <code>false</code>
      *         otherwise
-     * 
+     *
      * @throws TucsonInvalidTupleCentreIdException
      *             if the given Term does not represent a valid TuCSoN
      *             identifier
@@ -923,7 +924,7 @@ public class Tucson2PLibrary extends Library {
 
     /**
      * <code>rd_s</code> TuCSoN primitive.
-     * 
+     *
      * @param event
      *            the template for the TuCSoN primitive to react to
      * @param guards
@@ -935,10 +936,10 @@ public class Tucson2PLibrary extends Library {
      *            <code>event</code>
      * @param arg3
      *            the tuplecentre target
-     * 
+     *
      * @return <code>true</code> if the operation succeed, <code>false</code>
      *         otherwise
-     * 
+     *
      * @throws TucsonInvalidTupleCentreIdException
      *             if the given Term does not represent a valid TuCSoN
      *             identifier
@@ -949,7 +950,7 @@ public class Tucson2PLibrary extends Library {
      * @throws OperationTimeOutException
      *             if the operation timeout expired prior to operation
      *             completion
-     * 
+     *
      * @see alice.tucson.api.SpecificationAsynchACC SpecificationAsynchACC
      * @see alice.tucson.api.SpecificationSynchACC SpecificationSynchACC
      */
@@ -975,15 +976,15 @@ public class Tucson2PLibrary extends Library {
 
     /**
      * <code>rdp</code> TuCSoN primitive.
-     * 
+     *
      * @param arg0
      *            the tuple to read (w/o removing)
      * @param arg1
      *            the tuplecentre target
-     * 
+     *
      * @return <code>true</code> if the operation succeed, <code>false</code>
      *         otherwise
-     * 
+     *
      * @throws TucsonInvalidTupleCentreIdException
      *             if the given Term does not represent a valid TuCSoN
      *             identifier
@@ -994,7 +995,7 @@ public class Tucson2PLibrary extends Library {
      * @throws OperationTimeOutException
      *             if the operation timeout expired prior to operation
      *             completion
-     * 
+     *
      * @see alice.tucson.api.OrdinaryAsynchACC OrdinaryAsynchACC
      * @see alice.tucson.api.OrdinarySynchACC OrdinarySynchACC
      */
@@ -1017,7 +1018,7 @@ public class Tucson2PLibrary extends Library {
 
     /**
      * <code>rdp_s</code> TuCSoN primitive.
-     * 
+     *
      * @param event
      *            the template for the TuCSoN primitive to react to
      * @param guards
@@ -1029,10 +1030,10 @@ public class Tucson2PLibrary extends Library {
      *            <code>event</code>
      * @param arg3
      *            the tuplecentre target
-     * 
+     *
      * @return <code>true</code> if the operation succeed, <code>false</code>
      *         otherwise
-     * 
+     *
      * @throws TucsonInvalidTupleCentreIdException
      *             if the given Term does not represent a valid TuCSoN
      *             identifier
@@ -1043,7 +1044,7 @@ public class Tucson2PLibrary extends Library {
      * @throws OperationTimeOutException
      *             if the operation timeout expired prior to operation
      *             completion
-     * 
+     *
      * @see alice.tucson.api.SpecificationAsynchACC SpecificationAsynchACC
      * @see alice.tucson.api.SpecificationSynchACC SpecificationSynchACC
      */
@@ -1070,10 +1071,10 @@ public class Tucson2PLibrary extends Library {
     /**
      * When leaving the TuCSoN system, any agent is kindly requested to release
      * its ACC.
-     * 
+     *
      * @return <code>true</code> if the operation succeed, <code>false</code>
      *         otherwise
-     * 
+     *
      * @throws TucsonOperationNotPossibleException
      *             if the requested operation cannot be carried out
      */
@@ -1084,15 +1085,15 @@ public class Tucson2PLibrary extends Library {
 
     /**
      * <code>set</code> TuCSoN primitive.
-     * 
+     *
      * @param arg0
      *            the tuple list of tuples to overwrite the space
      * @param arg1
      *            the tuplecentre target
-     * 
+     *
      * @return <code>true</code> if the operation succeed, <code>false</code>
      *         otherwise
-     * 
+     *
      * @throws TucsonInvalidTupleCentreIdException
      *             if the given Term does not represent a valid TuCSoN
      *             identifier
@@ -1103,7 +1104,7 @@ public class Tucson2PLibrary extends Library {
      * @throws OperationTimeOutException
      *             if the operation timeout expired prior to operation
      *             completion
-     * 
+     *
      * @see alice.tucson.api.OrdinaryAsynchACC OrdinaryAsynchACC
      * @see alice.tucson.api.OrdinarySynchACC OrdinarySynchACC
      */
@@ -1123,16 +1124,16 @@ public class Tucson2PLibrary extends Library {
 
     /**
      * <code>set_s</code> TuCSoN primitive.
-     * 
+     *
      * @param arg0
      *            the tuple list of ReSpecT specification tuples to overwrite
      *            the specification space
      * @param arg1
      *            the tuplecentre target
-     * 
+     *
      * @return <code>true</code> if the operation succeed, <code>false</code>
      *         otherwise
-     * 
+     *
      * @throws TucsonInvalidTupleCentreIdException
      *             if the given Term does not represent a valid TuCSoN
      *             identifier
@@ -1143,7 +1144,7 @@ public class Tucson2PLibrary extends Library {
      * @throws OperationTimeOutException
      *             if the operation timeout expired prior to operation
      *             completion
-     * 
+     *
      * @see alice.tucson.api.SpecificationAsynchACC SpecificationAsynchACC
      * @see alice.tucson.api.SpecificationSynchACC SpecificationSynchACC
      */
@@ -1164,15 +1165,15 @@ public class Tucson2PLibrary extends Library {
 
     /**
      * <code>spawn</code> TuCSoN primitive.
-     * 
+     *
      * @param arg0
      *            the activity to spawn
      * @param arg1
      *            the tuplecentre target
-     * 
+     *
      * @return <code>true</code> if the operation succeed, <code>false</code>
      *         otherwise
-     * 
+     *
      * @throws TucsonInvalidTupleCentreIdException
      *             if the given Term does not represent a valid TuCSoN
      *             identifier
@@ -1183,7 +1184,7 @@ public class Tucson2PLibrary extends Library {
      * @throws OperationTimeOutException
      *             if the operation timeout expired prior to operation
      *             completion
-     * 
+     *
      * @see alice.tucson.api.OrdinaryAsynchACC OrdinaryAsynchACC
      * @see alice.tucson.api.OrdinarySynchACC OrdinarySynchACC
      */
@@ -1204,15 +1205,15 @@ public class Tucson2PLibrary extends Library {
 
     /**
      * <code>uin</code> TuCSoN primitive.
-     * 
+     *
      * @param arg0
      *            the tuple to probabilistically retrieve
      * @param arg1
      *            the tuplecentre target
-     * 
+     *
      * @return <code>true</code> if the operation succeed, <code>false</code>
      *         otherwise
-     * 
+     *
      * @throws TucsonInvalidTupleCentreIdException
      *             if the given Term does not represent a valid TuCSoN
      *             identifier
@@ -1223,7 +1224,7 @@ public class Tucson2PLibrary extends Library {
      * @throws OperationTimeOutException
      *             if the operation timeout expired prior to operation
      *             completion
-     * 
+     *
      * @see alice.tucson.api.UniformAsynchACC UniformAsynchACC
      * @see alice.tucson.api.UniformSynchACC UniformSynchACC
      */
@@ -1246,15 +1247,15 @@ public class Tucson2PLibrary extends Library {
 
     /**
      * <code>uinp</code> TuCSoN primitive.
-     * 
+     *
      * @param arg0
      *            the tuple to probabilistically retrieve
      * @param arg1
      *            the tuplecentre target
-     * 
+     *
      * @return <code>true</code> if the operation succeed, <code>false</code>
      *         otherwise
-     * 
+     *
      * @throws TucsonInvalidTupleCentreIdException
      *             if the given Term does not represent a valid TuCSoN
      *             identifier
@@ -1265,7 +1266,7 @@ public class Tucson2PLibrary extends Library {
      * @throws OperationTimeOutException
      *             if the operation timeout expired prior to operation
      *             completion
-     * 
+     *
      * @see alice.tucson.api.UniformAsynchACC UniformAsynchACC
      * @see alice.tucson.api.UniformSynchACC UniformSynchACC
      */
@@ -1289,15 +1290,15 @@ public class Tucson2PLibrary extends Library {
 
     /**
      * <code>uno</code> TuCSoN primitive.
-     * 
+     *
      * @param arg0
      *            the tuple to probabilistically check for absence
      * @param arg1
      *            the tuplecentre target
-     * 
+     *
      * @return <code>true</code> if the operation succeed, <code>false</code>
      *         otherwise
-     * 
+     *
      * @throws TucsonInvalidTupleCentreIdException
      *             if the given Term does not represent a valid TuCSoN
      *             identifier
@@ -1308,7 +1309,7 @@ public class Tucson2PLibrary extends Library {
      * @throws OperationTimeOutException
      *             if the operation timeout expired prior to operation
      *             completion
-     * 
+     *
      * @see alice.tucson.api.UniformAsynchACC UniformAsynchACC
      * @see alice.tucson.api.UniformSynchACC UniformSynchACC
      */
@@ -1331,15 +1332,15 @@ public class Tucson2PLibrary extends Library {
 
     /**
      * <code>unop</code> TuCSoN primitive.
-     * 
+     *
      * @param arg0
      *            the tuple to probabilistically check for absence
      * @param arg1
      *            the tuplecentre target
-     * 
+     *
      * @return <code>true</code> if the operation succeed, <code>false</code>
      *         otherwise
-     * 
+     *
      * @throws TucsonInvalidTupleCentreIdException
      *             if the given Term does not represent a valid TuCSoN
      *             identifier
@@ -1350,7 +1351,7 @@ public class Tucson2PLibrary extends Library {
      * @throws OperationTimeOutException
      *             if the operation timeout expired prior to operation
      *             completion
-     * 
+     *
      * @see alice.tucson.api.UniformAsynchACC UniformAsynchACC
      * @see alice.tucson.api.UniformSynchACC UniformSynchACC
      */
@@ -1374,15 +1375,15 @@ public class Tucson2PLibrary extends Library {
 
     /**
      * <code>urd</code> TuCSoN primitive.
-     * 
+     *
      * @param arg0
      *            the tuple to probabilistically read (w/o removing)
      * @param arg1
      *            the tuplecentre target
-     * 
+     *
      * @return <code>true</code> if the operation succeed, <code>false</code>
      *         otherwise
-     * 
+     *
      * @throws TucsonInvalidTupleCentreIdException
      *             if the given Term does not represent a valid TuCSoN
      *             identifier
@@ -1393,7 +1394,7 @@ public class Tucson2PLibrary extends Library {
      * @throws OperationTimeOutException
      *             if the operation timeout expired prior to operation
      *             completion
-     * 
+     *
      * @see alice.tucson.api.UniformAsynchACC UniformAsynchACC
      * @see alice.tucson.api.UniformSynchACC UniformSynchACC
      */
@@ -1416,15 +1417,15 @@ public class Tucson2PLibrary extends Library {
 
     /**
      * <code>urdp</code> TuCSoN primitive.
-     * 
+     *
      * @param arg0
      *            the tuple to probabilistically read (w/o removing)
      * @param arg1
      *            the tuplecentre target
-     * 
+     *
      * @return <code>true</code> if the operation succeed, <code>false</code>
      *         otherwise
-     * 
+     *
      * @throws TucsonInvalidTupleCentreIdException
      *             if the given Term does not represent a valid TuCSoN
      *             identifier
@@ -1435,7 +1436,7 @@ public class Tucson2PLibrary extends Library {
      * @throws OperationTimeOutException
      *             if the operation timeout expired prior to operation
      *             completion
-     * 
+     *
      * @see alice.tucson.api.UniformAsynchACC UniformAsynchACC
      * @see alice.tucson.api.UniformSynchACC UniformSynchACC
      */

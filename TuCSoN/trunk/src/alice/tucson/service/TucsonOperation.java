@@ -15,17 +15,18 @@ import alice.tuplecentre.core.OperationCompletionListener;
 import alice.tuples.javatuples.impl.JTuplesEngine;
 
 /**
- * 
+ *
  * @author Alessandro Ricci
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
- * 
+ *
  */
 public class TucsonOperation extends AbstractTupleCentreOperation implements
         ITucsonOperation {
+
     private static final int OPTYPE_EXIT = 310;
 
     /**
-     * 
+     *
      * @return the Integer representing the type code of
      *         <code>abort_operation</code> operation
      */
@@ -34,7 +35,7 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @return the Integer representing the type code of
      *         <code>add_inspector</code> operation
      */
@@ -43,7 +44,7 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @return the Integer representing the type code of
      *         <code>add_observer</code> operation
      */
@@ -52,7 +53,7 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @return the type code for an environmental operation
      */
     public static int envCode() {
@@ -60,7 +61,7 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @return the Integer representing the type code of <code>exit</code>
      *         operation
      */
@@ -69,7 +70,7 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @return the Integer representing the type code of <code>get</code>
      *         operation
      */
@@ -78,7 +79,7 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @return the type code of the <code>get_env</code> environmental getter
      *         operation
      */
@@ -91,7 +92,7 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @return the Integer representing the type code of <code>get_s</code>
      *         operation
      */
@@ -100,7 +101,7 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @return the Integer representing the type code of the operation to
      *         retrieve the triggered reactions set
      */
@@ -109,7 +110,7 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @return the Integer representing the type code of the operation to
      *         retrieve the tuples set
      */
@@ -118,7 +119,7 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @return the Integer representing the type code of the operation to
      *         retrieve the input events set
      */
@@ -127,7 +128,7 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @return the Integer representing the type code of <code>go_cmd</code>
      *         operation
      */
@@ -136,7 +137,7 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @return the Integer representing the type code of
      *         <code>has_inspectors</code> operation
      */
@@ -145,7 +146,7 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @return the Integer representing the type code of
      *         <code>has_observers</code> operation
      */
@@ -154,7 +155,7 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @return the Integer representing the type code of <code>in_all</code>
      *         operation
      */
@@ -163,7 +164,7 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @return the Integer representing the type code of <code>in</code>
      *         operation
      */
@@ -172,7 +173,7 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @return the Integer representing the type code of <code>inp</code>
      *         operation
      */
@@ -181,7 +182,7 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @return the Integer representing the type code of <code>inp_s</code>
      *         operation
      */
@@ -190,7 +191,7 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @return the Integer representing the type code of <code>in_s</code>
      *         operation
      */
@@ -199,7 +200,7 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @return the Integer representing the type code of <code>step_mode</code>
      *         operation
      */
@@ -208,7 +209,7 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @return the Integer representing the type code of <code>next_step</code>
      *         operation
      */
@@ -217,7 +218,7 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @return the Integer representing the type code of <code>no_all</code>
      *         operation
      */
@@ -226,7 +227,7 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @return the Integer representing the type code of <code>no</code>
      *         operation
      */
@@ -235,7 +236,7 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @return the Integer representing the type code of <code>nop</code>
      *         operation
      */
@@ -244,7 +245,7 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @return the Integer representing the type code of <code>nop_s</code>
      *         operation
      */
@@ -253,7 +254,7 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @return the Integer representing the type code of <code>no_s</code>
      *         operation
      */
@@ -262,7 +263,7 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @return the Integer representing the type code of <code>out_all</code>
      *         operation
      */
@@ -271,7 +272,7 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @return the Integer representing the type code of <code>out</code>
      *         operation
      */
@@ -280,7 +281,7 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @return the Integer representing the type code of <code>out_s</code>
      *         operation
      */
@@ -289,7 +290,7 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @return the Integer representing the type code of <code>rd_all</code>
      *         operation
      */
@@ -298,7 +299,7 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @return the Integer representing the type code of <code>rd</code>
      *         operation
      */
@@ -307,7 +308,7 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @return the Integer representing the type code of <code>rdp</code>
      *         operation
      */
@@ -316,7 +317,7 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @return the Integer representing the type code of <code>rdp_s</code>
      *         operation
      */
@@ -325,7 +326,7 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @return the Integer representing the type code of <code>rd_s</code>
      *         operation
      */
@@ -334,7 +335,7 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @return the Integer representing the type code of <code>reset</code>
      *         operation
      */
@@ -343,7 +344,7 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @return the Integer representing the type code of
      *         <code>rmv_inspector</code> operation
      */
@@ -352,7 +353,7 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @return the Integer representing the type code of
      *         <code>rmv_observer</code> operation
      */
@@ -361,7 +362,7 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @return the Integer representing the type code of <code>set</code>
      *         operation
      */
@@ -370,7 +371,7 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @return the type code of the <code>set_env</code> environmental setter
      *         operation
      */
@@ -379,7 +380,7 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @return the Integer representing the type code of
      *         <code>set_mgm_mode</code> operation
      */
@@ -388,7 +389,7 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
      * AbstractTupleCentreOperation.OPTYPE_SET_MNG_MODE; }
      */
     /**
-     * 
+     *
      * @return the Integer representing the type code of <code>set_s</code>
      *         operation
      */
@@ -397,7 +398,7 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @return the Integer representing the type code of <code>set_spy</code>
      *         operation
      */
@@ -406,7 +407,7 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @return the Integer representing the type code of the operation to set
      *         the input events set
      */
@@ -415,7 +416,7 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @return the Integer representing the type code of <code>spawn</code>
      *         operation
      */
@@ -424,7 +425,7 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @return the Integer representing the type code of <code>step_mode</code>
      *         operation
      */
@@ -433,7 +434,7 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @return the Integer representing the type code of <code>stop_cmd</code>
      *         operation
      */
@@ -442,7 +443,7 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @return the Integer representing the type code of <code>time</code>
      *         operation
      */
@@ -451,7 +452,7 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @return the Integer representing the type code of <code>uin</code>
      *         operation
      */
@@ -460,7 +461,7 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @return the Integer representing the type code of <code>uinp</code>
      *         operation
      */
@@ -469,7 +470,7 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @return the Integer representing the type code of <code>uno</code>
      *         operation
      */
@@ -478,7 +479,7 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @return the Integer representing the type code of <code>unop</code>
      *         operation
      */
@@ -487,7 +488,7 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @return the Integer representing the type code of <code>urd</code>
      *         operation
      */
@@ -496,7 +497,7 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @return the Integer representing the type code of <code>urdp</code>
      *         operation
      */
@@ -507,7 +508,7 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
     private OperationHandler context = null;
 
     /**
-     * 
+     *
      * @param type
      *            the type code of the operation
      * @param t
@@ -524,7 +525,7 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @param type
      *            the type code of the operation
      * @param t
@@ -600,7 +601,7 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @return the listener for operation completion
      */
     public OperationCompletionListener getListener() {
@@ -632,7 +633,7 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @param s
      *            wether the operation succeeded
      * @param a
@@ -653,7 +654,7 @@ public class TucsonOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @param tl
      *            the list of tuples result of the operation
      */

@@ -21,13 +21,14 @@ import alice.tuplecentre.api.Tuple;
 import alice.tuplecentre.api.TupleCentreId;
 
 /**
- * 
+ *
  * @author ste (mailto: s.mariani@unibo.it)
- * 
+ *
  */
 public interface UniformAsynchACC extends RootACC {
+
     /**
-     * 
+     *
      * @return the List of the events regarding TuCSoN operations completion
      */
     List<TucsonOpCompletionEvent> getCompletionEventsList();
@@ -38,13 +39,13 @@ public interface UniformAsynchACC extends RootACC {
      * Linda's non-deterministic selection is replaced by PROBABILISTIC,
      * UNIFORMLY DISTRIBUTED selection: the more a tuple is present, the more
      * likely it will be returned.
-     * 
+     *
      * Notice that the primitive semantics is still SUSPENSIVE: until no tuple
      * is found to match the given template, no success completion answer is
      * forwarded to the TuCSoN Agent exploiting this ACC, but thanks to
      * asynchronous behaviour the TuCSoN Agent could do something else instead
      * of getting stuck.
-     * 
+     *
      * @param tid
      *            the target TuCSoN tuplecentre id
      *            {@link alice.tucson.api.TucsonTupleCentreId tid}
@@ -52,14 +53,14 @@ public interface UniformAsynchACC extends RootACC {
      *            the tuple to be retrieved from the target tuplecentre
      * @param l
      *            the listener who should be notified upon operation completion
-     * 
+     *
      * @return the interface to access the data about TuCSoN operations outcome.
-     * 
+     *
      * @throws TucsonOperationNotPossibleException
      *             if the requested operation cannot be carried out
      * @throws UnreachableNodeException
      *             if the target tuple centre is not reachable over the network
-     * 
+     *
      * @see alice.tuplecentre.api.TupleCentreId TupleCentreId
      * @see alice.tucson.api.TucsonOperationCompletionListener
      *      TucsonOperationCompletionListener
@@ -76,11 +77,11 @@ public interface UniformAsynchACC extends RootACC {
      * Linda's non-deterministic selection is replaced by PROBABILISTIC,
      * UNIFORMLY DISTRIBUTED selection: the more a tuple is present, the more
      * likely it will be returned.
-     * 
+     *
      * This time the primitive semantics is NOT SUSPENSIVE: if no tuple is found
      * to match the given template, a failure completion answer is forwarded to
      * the TuCSoN Agent exploiting this ACC.
-     * 
+     *
      * @param tid
      *            the target TuCSoN tuplecentre id
      *            {@link alice.tucson.api.TucsonTupleCentreId tid}
@@ -88,14 +89,14 @@ public interface UniformAsynchACC extends RootACC {
      *            the tuple to be retrieved from the target tuplecentre
      * @param l
      *            the listener who should be notified upon operation completion
-     * 
+     *
      * @return the interface to access the data about TuCSoN operations outcome.
-     * 
+     *
      * @throws TucsonOperationNotPossibleException
      *             if the requested operation cannot be carried out
      * @throws UnreachableNodeException
      *             if the target tuple centre is not reachable over the network
-     * 
+     *
      * @see alice.tuplecentre.api.TupleCentreId TupleCentreId
      * @see alice.tucson.api.TucsonOperationCompletionListener
      *      TucsonOperationCompletionListener
@@ -112,13 +113,13 @@ public interface UniformAsynchACC extends RootACC {
      * template, Linda's non-deterministic selection is replaced by
      * PROBABILISTIC, UNIFORMLY DISTRIBUTED selection: the more a tuple is
      * present, the more likely it will be returned.
-     * 
+     *
      * Notice that the primitive semantics is still SUSPENSIVE: until any tuple
      * is found to match the given template, no success completion answer is
      * forwarded to the TuCSoN Agent exploiting this ACC, but thanks to
      * asynchronous behaviour TuCSoN Agent could do something else instead of
      * getting stuck.
-     * 
+     *
      * @param tid
      *            the target TuCSoN tuplecentre id
      *            {@link alice.tucson.api.TucsonTupleCentreId tid}
@@ -127,14 +128,14 @@ public interface UniformAsynchACC extends RootACC {
      *            tuplecentre
      * @param l
      *            the listener who should be notified upon operation completion
-     * 
+     *
      * @return the interface to access the data about TuCSoN operations outcome.
-     * 
+     *
      * @throws TucsonOperationNotPossibleException
      *             if the requested operation cannot be carried out
      * @throws UnreachableNodeException
      *             if the target tuple centre is not reachable over the network
-     * 
+     *
      * @see alice.tuplecentre.api.TupleCentreId TupleCentreId
      * @see alice.tucson.api.TucsonOperationCompletionListener
      *      TucsonOperationCompletionListener
@@ -151,11 +152,11 @@ public interface UniformAsynchACC extends RootACC {
      * template, Linda's non-deterministic selection is replaced by
      * PROBABILISTIC, UNIFORMLY DISTRIBUTED selection: the more a tuple is
      * present, the more likely it will be returned.
-     * 
+     *
      * This time the primitive semantics is NOT SUSPENSIVE: if a tuple is found
      * to match the given template, a failure completion answer is forwarded to
      * the TuCSoN Agent exploiting this ACC.
-     * 
+     *
      * @param tid
      *            the target TuCSoN tuplecentre id
      *            {@link alice.tucson.api.TucsonTupleCentreId tid}
@@ -164,14 +165,14 @@ public interface UniformAsynchACC extends RootACC {
      *            tuplecentre
      * @param l
      *            the listener who should be notified upon operation completion
-     * 
+     *
      * @return the interface to access the data about TuCSoN operations outcome.
-     * 
+     *
      * @throws TucsonOperationNotPossibleException
      *             if the requested operation cannot be carried out
      * @throws UnreachableNodeException
      *             if the target tuple centre is not reachable over the network
-     * 
+     *
      * @see alice.tuplecentre.api.TupleCentreId TupleCentreId
      * @see alice.tucson.api.TucsonOperationCompletionListener
      *      TucsonOperationCompletionListener
@@ -188,13 +189,13 @@ public interface UniformAsynchACC extends RootACC {
      * the template, Linda's non-deterministic selection is replaced by
      * PROBABILISTIC, UNIFORMLY DISTRIBUTED selection: the more a tuple is
      * present, the more likely it will be returned.
-     * 
+     *
      * Notice that the primitive semantics is still SUSPENSIVE: until no tuple
      * is found to match the given template, no success completion answer is
      * forwarded to the TuCSoN Agent exploiting this ACC, but thanks to
      * asynchronous behaviour the TuCSoN Agent could do something else instead
      * of getting stuck.
-     * 
+     *
      * @param tid
      *            the target TuCSoN tuplecentre id
      *            {@link alice.tucson.api.TucsonTupleCentreId tid}
@@ -202,14 +203,14 @@ public interface UniformAsynchACC extends RootACC {
      *            the tuple to be read from the target tuplecentre
      * @param l
      *            the listener who should be notified upon operation completion
-     * 
+     *
      * @return the interface to access the data about TuCSoN operations outcome.
-     * 
+     *
      * @throws TucsonOperationNotPossibleException
      *             if the requested operation cannot be carried out
      * @throws UnreachableNodeException
      *             if the target tuple centre is not reachable over the network
-     * 
+     *
      * @see alice.tuplecentre.api.TupleCentreId TupleCentreId
      * @see alice.tucson.api.TucsonOperationCompletionListener
      *      TucsonOperationCompletionListener
@@ -226,11 +227,11 @@ public interface UniformAsynchACC extends RootACC {
      * template, Linda's non-deterministic selection is replaced by
      * PROBABILISTIC, UNIFORMLY DISTRIBUTED selection: the more a tuple is
      * present, the more likely it will be returned.
-     * 
+     *
      * This time the primitive semantics is NOT SUSPENSIVE: if no tuple is found
      * to match the given template, a failure completion answer is forwarded to
      * the TuCSoN Agent exploiting this ACC.
-     * 
+     *
      * @param tid
      *            the target TuCSoN tuplecentre id
      *            {@link alice.tucson.api.TucsonTupleCentreId tid}
@@ -238,14 +239,14 @@ public interface UniformAsynchACC extends RootACC {
      *            the tuple to be read from the target tuplecentre
      * @param l
      *            the listener who should be notified upon operation completion
-     * 
+     *
      * @return the interface to access the data about TuCSoN operations outcome.
-     * 
+     *
      * @throws TucsonOperationNotPossibleException
      *             if the requested operation cannot be carried out
      * @throws UnreachableNodeException
      *             if the target tuple centre is not reachable over the network
-     * 
+     *
      * @see alice.tuplecentre.api.TupleCentreId TupleCentreId
      * @see alice.tucson.api.TucsonOperationCompletionListener
      *      TucsonOperationCompletionListener

@@ -8,13 +8,17 @@ import java.util.List;
  */
 public interface Policy extends Serializable {
 
-	String getPolicyName();
-	void setPolicyName(String policyName);
-	
-	List<Permission> getPermissions();
-	void setPermissions(List<Permission> permissions);
-	void addPermission(Permission permission);
-	void removePermission(Permission permission);
-	
-	boolean hasPermissions(List<String> permissionsId);
+    void addPermission(Permission permission);
+
+    List<Permission> getPermissions();
+
+    String getPolicyName();
+
+    boolean hasPermissions(List<String> permissionsId);
+
+    void removePermission(Permission permission);
+
+    void setPermissions(List<Permission> permissions);
+
+    void setPolicyName(String policyName);
 }

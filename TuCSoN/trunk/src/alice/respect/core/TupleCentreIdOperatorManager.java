@@ -15,19 +15,20 @@ package alice.respect.core;
 /**
  * This class defines the operator manager used for parsing tuple centre
  * identifiers.
- * 
+ *
  * @author Alessandro Ricci
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public class TupleCentreIdOperatorManager extends
         alice.tuprolog.OperatorManager {
+
     private static final int IP_DELIMITER_PRIO = 548;
     private static final int NETID_DELIMITER_PRIO = 550;
     private static final int PORT_DELIMITER_PRIO = 549;
     private static final long serialVersionUID = 1319340757322429430L;
 
     /**
-     * 
+     *
      */
     public TupleCentreIdOperatorManager() {
         super();

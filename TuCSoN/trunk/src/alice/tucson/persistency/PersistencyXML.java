@@ -28,6 +28,7 @@ import alice.respect.core.RespectVMContext.ModType;
 import alice.tucson.api.TucsonTupleCentreId;
 
 public class PersistencyXML {
+
     public static final String ACTION_ATTRIBUTE = "action";
     public static final String ADD_OPERATION = "addition";
     public static final String CLEAN_OPERATION = "clean";

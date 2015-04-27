@@ -10,13 +10,14 @@ import alice.tuplecentre.api.IId;
 /**
  * A ReSpecT Tuple Centre Interface to issue ReSpecT specification primitives
  * using a synchronous semantics.
- * 
+ *
  * @author Alessandro Ricci
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public interface ISpecificationSynchInterface {
+
     /**
-     * 
+     *
      * @param aid
      *            the identifier of who is invokin the operation
      * @return the result of the operation
@@ -26,7 +27,7 @@ public interface ISpecificationSynchInterface {
     List<LogicTuple> getS(final IId aid) throws OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param aid
      *            the identifier of who is invokin the operation
      * @param t
@@ -41,7 +42,7 @@ public interface ISpecificationSynchInterface {
             throws InvalidLogicTupleException, OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param aid
      *            the identifier of who is invokin the operation
      * @param t
@@ -56,7 +57,7 @@ public interface ISpecificationSynchInterface {
             throws InvalidLogicTupleException, OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param aid
      *            the identifier of who is invokin the operation
      * @param t
@@ -71,7 +72,7 @@ public interface ISpecificationSynchInterface {
             throws InvalidLogicTupleException, OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param aid
      *            the identifier of who is invokin the operation
      * @param t
@@ -86,7 +87,7 @@ public interface ISpecificationSynchInterface {
             throws InvalidLogicTupleException, OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param aid
      *            the identifier of who is invokin the operation
      * @param t
@@ -100,7 +101,7 @@ public interface ISpecificationSynchInterface {
             OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param aid
      *            the identifier of who is invokin the operation
      * @param t
@@ -115,7 +116,7 @@ public interface ISpecificationSynchInterface {
             throws InvalidLogicTupleException, OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param aid
      *            the identifier of who is invokin the operation
      * @param t
@@ -130,7 +131,7 @@ public interface ISpecificationSynchInterface {
             throws InvalidLogicTupleException, OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param aid
      *            the identifier of who is invokin the operation
      * @param t
@@ -143,7 +144,7 @@ public interface ISpecificationSynchInterface {
             throws OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param aid
      *            the identifier of who is invokin the operation
      * @param spec

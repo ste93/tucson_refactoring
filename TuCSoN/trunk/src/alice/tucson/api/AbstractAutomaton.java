@@ -20,21 +20,22 @@ import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 
 /**
  * FSA-like TuCSoN agent.
- * 
+ *
  * @author Alessandro Ricci
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public abstract class AbstractAutomaton extends AbstractTucsonAgent {
+
     /**
-     * 
+     *
      */
     protected static Class<?>[] argType;
     /**
-     * 
+     *
      */
     protected Object[] arguments = null;
     /**
-     * 
+     *
      */
     protected String state = "boot";
 
@@ -53,7 +54,7 @@ public abstract class AbstractAutomaton extends AbstractTucsonAgent {
 
     /**
      * To change state.
-     * 
+     *
      * @param s
      *            the string representing the state to become
      */
@@ -66,7 +67,7 @@ public abstract class AbstractAutomaton extends AbstractTucsonAgent {
 
     /**
      * To change state
-     * 
+     *
      * @param s
      *            the string representing the state to become
      * @param args
@@ -86,7 +87,7 @@ public abstract class AbstractAutomaton extends AbstractTucsonAgent {
 
     /**
      * End state.
-     * 
+     *
      * @throws TucsonOperationNotPossibleException
      *             if the requested operation cannot be carried out
      */

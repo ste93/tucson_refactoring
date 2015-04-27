@@ -2,83 +2,93 @@ package alice.tucson.rbac;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import alice.logictuple.TupleArgument;
-import alice.tuprolog.Struct;
-import alice.tuprolog.Term;
 
-public class TucsonPolicy implements Policy{
+public class TucsonPolicy implements Policy {
 
-	protected List<Permission> permissions;
-	private String policyName;
-	
-	public TucsonPolicy(String policyName){
-		this(policyName, new ArrayList<Permission>());
-	}
-	
-	public TucsonPolicy(String policyName, List<Permission> perms){
-		this.policyName = policyName;
-		this.permissions = perms;
-	}
-	
-	public String getPolicyName(){
-		return policyName;
-	}
-	
-	public void setPolicyName(String policyName){
-		this.policyName = policyName;
-	}
-	
-	@Override
-	public List<Permission> getPermissions() {
-		return permissions;
-	}
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
-	@Override
-	public void setPermissions(List<Permission> permissions) {
-		this.permissions = permissions;
-	}
+    public static Policy createPolicy(final String nomePolicy,
+            final TupleArgument[] permissionsArr) {
+        final Policy returnPolicy = new TucsonPolicy(nomePolicy);
+        for (final TupleArgument permTuple : permissionsArr) {
+            final Permission newPermission = TucsonPermission
+                    .createPermission(permTuple.getName());
+            returnPolicy.addPermission(newPermission);
+        }
+        return returnPolicy;
+    }
 
-	@Override
-	public void addPermission(Permission permission) {
-		if(permissions==null)
-			permissions = new ArrayList<Permission>();
-		if(!permissions.contains(permission))
-			permissions.add(permission);
-	}
+    private String policyName;
 
-	@Override
-	public void removePermission(Permission permission) {
-		if(permissions!=null)
-			permissions.remove(permission);
-	}
-	
-	
+    protected List<Permission> permissions;
 
-	@Override
-	public boolean hasPermissions(List<String> permissionsId) {
-		for(String perm : permissionsId){
-			if(!hasPermission(perm))
-				return false;
-		}
-		return true;
-	}
-	
-	private boolean hasPermission(String permissionid){
-		for(Permission perm : permissions){
-			if(perm.getPermissionName().equalsIgnoreCase(permissionid))
-				return true;
-		}
-		
-		return false;
-	}
+    public TucsonPolicy(final String policyName) {
+        this(policyName, new ArrayList<Permission>());
+    }
 
-	public static Policy createPolicy(String nomePolicy, TupleArgument[] permissionsArr){
-		Policy returnPolicy = new TucsonPolicy(nomePolicy);
-		for(TupleArgument permTuple : permissionsArr){
-			Permission newPermission = TucsonPermission.createPermission(permTuple.getName());
-			returnPolicy.addPermission(newPermission);
-		}
-		return returnPolicy;
-	}
+    public TucsonPolicy(final String policyName, final List<Permission> perms) {
+        this.policyName = policyName;
+        this.permissions = perms;
+    }
+
+    @Override
+    public void addPermission(final Permission permission) {
+        if (this.permissions == null) {
+            this.permissions = new ArrayList<Permission>();
+        }
+        if (!this.permissions.contains(permission)) {
+            this.permissions.add(permission);
+        }
+    }
+
+    @Override
+    public List<Permission> getPermissions() {
+        return this.permissions;
+    }
+
+    @Override
+    public String getPolicyName() {
+        return this.policyName;
+    }
+
+    @Override
+    public boolean hasPermissions(final List<String> permissionsId) {
+        for (final String perm : permissionsId) {
+            if (!this.hasPermission(perm)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public void removePermission(final Permission permission) {
+        if (this.permissions != null) {
+            this.permissions.remove(permission);
+        }
+    }
+
+    @Override
+    public void setPermissions(final List<Permission> permissions) {
+        this.permissions = permissions;
+    }
+
+    @Override
+    public void setPolicyName(final String policyName) {
+        this.policyName = policyName;
+    }
+
+    private boolean hasPermission(final String permissionid) {
+        for (final Permission perm : this.permissions) {
+            if (perm.getPermissionName().equalsIgnoreCase(permissionid)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

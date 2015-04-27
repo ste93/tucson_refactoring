@@ -1,58 +1,65 @@
 package alice.tucson.rbac;
 
 import java.security.NoSuchAlgorithmException;
-
 import alice.logictuple.LogicTuple;
 import alice.logictuple.Value;
 import alice.tucson.service.tools.TucsonACCTool;
 
 public class TucsonAuthorizedAgent implements AuthorizedAgent {
 
-	private String agentAid;
-	private String agentClass;
-	
-	private String username;
-	private String password;
-	
-	public TucsonAuthorizedAgent(String agentClass, String username, String password){
-		this.agentClass = agentClass;
-		this.username = username;
-		this.password = password;
-	}
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
-	@Override
-	public String getAgentName() {
-		return agentAid;
-	}
-	
-	public static LogicTuple getLogicTuple(AuthorizedAgent agent) throws NoSuchAlgorithmException{
-		return new LogicTuple("authorized_agent",
-				new Value(agent.getUsername()+":"+TucsonACCTool.encrypt(agent.getPassword())),
-				new Value(agent.getAgentClass()));
-	}
+    public static LogicTuple getLogicTuple(final AuthorizedAgent agent)
+            throws NoSuchAlgorithmException {
+        return new LogicTuple("authorized_agent", new Value(agent.getUsername()
+                + ":" + TucsonACCTool.encrypt(agent.getPassword())), new Value(
+                        agent.getAgentClass()));
+    }
 
-	@Override
-	public String getAgentClass() {
-		return this.agentClass;
-	}
+    private String agentAid;
 
-	@Override
-	public void setUsername(String username) {
-		this.username = username;
-	}
-	
-	@Override
-	public String getUsername() {
-		return this.username;
-	}
+    private final String agentClass;
+    private String password;
 
-	@Override
-	public void setPassword(String pass) {
-		this.password = pass;
-	}
+    private String username;
 
-	@Override
-	public String getPassword() {
-		return this.password;
-	}
+    public TucsonAuthorizedAgent(final String agentClass,
+            final String username, final String password) {
+        this.agentClass = agentClass;
+        this.username = username;
+        this.password = password;
+    }
+
+    @Override
+    public String getAgentClass() {
+        return this.agentClass;
+    }
+
+    @Override
+    public String getAgentName() {
+        return this.agentAid;
+    }
+
+    @Override
+    public String getPassword() {
+        return this.password;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.username;
+    }
+
+    @Override
+    public void setPassword(final String pass) {
+        this.password = pass;
+    }
+
+    @Override
+    public void setUsername(final String username) {
+        this.username = username;
+    }
 }

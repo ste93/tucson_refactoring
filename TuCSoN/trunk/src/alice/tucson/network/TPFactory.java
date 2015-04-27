@@ -14,11 +14,12 @@ import alice.tucson.network.exceptions.InvalidProtocolTypeException;
  * Description: the factory class to build a specific implementation of
  * TucsonProtocol
  * </p>
- * 
+ *
  * @author Saverio Cicora
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public final class TPFactory {
+
     /**
      * Constant indentify implementated protocol type: one constant for each
      * implemented protocol
@@ -27,7 +28,7 @@ public final class TPFactory {
     private static final int MAX_UNBOUND_PORT = 64000;
 
     /**
-     * 
+     *
      * @param tucsonProtocolType
      *            the type code of the TuCSoN protocol to be used
      * @param tid
@@ -63,7 +64,7 @@ public final class TPFactory {
     }
 
     /**
-     * 
+     *
      * @param tid
      *            the identifier of the tuple centre to connect to
      * @return the connection protocol hosting communications
@@ -87,7 +88,7 @@ public final class TPFactory {
 
     /**
      * Instantiate a new TucsonProtocol based of a default implementation type.
-     * 
+     *
      * @return the TucsonProtocol class
      * @throws InvalidProtocolTypeException
      *             if the protocol type used is not DIALOG_TYPE_TCP
@@ -102,7 +103,7 @@ public final class TPFactory {
 
     /**
      * Instantiate a new TucsonProtocol based on type specified by parameter.
-     * 
+     *
      * @param tucsonProtocolType
      *            the type code of the TuCSoN protocol to be used
      * @return the TucsonProtocol class
@@ -131,7 +132,7 @@ public final class TPFactory {
 
     private TPFactory() {
         /*
-         * 
+         *
          */
     }
 }
