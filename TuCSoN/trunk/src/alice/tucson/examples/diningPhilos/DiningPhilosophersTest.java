@@ -84,16 +84,6 @@ public class DiningPhilosophersTest extends AbstractTucsonAgent {
 
     @Override
     protected void main() {
-        final TucsonNodeService tns = new TucsonNodeService();
-        tns.install();
-        try {
-            while (!TucsonNodeService.isInstalled(5000)) {
-                Thread.sleep(1000);
-            }
-        } catch (final Exception e) {
-            e.printStackTrace();
-        }
-
         try {
             final NegotiationACC negAcc = TucsonMetaACC
                     .getNegotiationContext(this.getTucsonAgentId());

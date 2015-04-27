@@ -61,15 +61,6 @@ public final class Thermostat {
      */
     public static void main(final String[] args) {
         try {
-            final TucsonNodeService tns = new TucsonNodeService();
-            tns.install();
-            try {
-                while (!TucsonNodeService.isInstalled(5000)) {
-                    Thread.sleep(1000);
-                }
-            } catch (final Exception e) {
-                e.printStackTrace();
-            }
             final TucsonAgentId aid = new TucsonAgentId("thermostat");
             final NegotiationACC negACC = TucsonMetaACC.getNegotiationContext(
                     aid, Thermostat.DEFAULT_HOST,
