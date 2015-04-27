@@ -40,7 +40,7 @@ public final class TucsonACCTool {
                 } else if (res != null
                         && res.getArg(1).getName().equalsIgnoreCase("failed")
                         && res.getArg(1).getArg(0).toString()
-                        .equalsIgnoreCase("agent_already_present")) {
+                                .equalsIgnoreCase("agent_already_present")) {
                     return true;
                 }
             }
@@ -60,7 +60,7 @@ public final class TucsonACCTool {
     public static Role activateRole(final String agentAid, final UUID accUUID,
             final String agentClass, final String roleName,
             final TupleCentreId tid, final EnhancedACC acc)
-                    throws AgentNotAllowedException {
+            throws AgentNotAllowedException {
         if (!TucsonACCTool.activateContext(agentAid, accUUID, agentClass, tid,
                 acc)) {
             return null;
@@ -85,7 +85,8 @@ public final class TucsonACCTool {
                             policyName, permissionsList);
                     newRole = new TucsonRole(roleName);
                     newRole.setPolicy(newPolicy);
-                } else if (res.getArg(3).getName().equalsIgnoreCase("failed")) {
+                } else if (res != null
+                        && res.getArg(3).getName().equalsIgnoreCase("failed")) {
                     throw new AgentNotAllowedException();
                 }
             }
@@ -124,8 +125,8 @@ public final class TucsonACCTool {
                 final LogicTuple template = new LogicTuple(
                         "role_activation_request", new Value(
                                 agentAid.toString()), new Value(
-                                        accUUID.toString()), new Value(roleName),
-                                        new Var("Result"));
+                                accUUID.toString()), new Value(roleName),
+                        new Var("Result"));
                 op = acc.inp(tid, template, (Long) null);
                 if (op.isResultSuccess()) {
                     res = op.getLogicTupleResult();

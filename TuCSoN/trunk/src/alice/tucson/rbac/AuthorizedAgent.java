@@ -6,8 +6,6 @@ public interface AuthorizedAgent extends Serializable {
 
     public String getAgentClass();
 
-    public String getAgentName();
-
     public String getPassword();
 
     public String getUsername();

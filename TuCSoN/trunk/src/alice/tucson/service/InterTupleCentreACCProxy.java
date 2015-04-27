@@ -281,10 +281,11 @@ public class InterTupleCentreACCProxy implements InterTupleCentreACC,
             try {
                 session = this.getSession(tcid);
             } catch (final DialogInitializationException e) {
-                e.printStackTrace();
-            } catch (final UnreachableNodeException ex2) {
                 exception = true;
-                throw new UnreachableNodeException(ex2);
+                e.printStackTrace();
+            } catch (final UnreachableNodeException e) {
+                exception = true;
+                throw new UnreachableNodeException(e);
             }
             this.operations.put(this.opId, op);
             final int type = op.getType();
@@ -304,7 +305,9 @@ public class InterTupleCentreACCProxy implements InterTupleCentreACC,
             this.log("sending msg " + msg.getId() + ", op = " + msg.getType()
                     + ", " + msg.getTuple() + ", " + msg.getTid());
             try {
-                session.sendMsgRequest(msg);
+                if (session != null) {
+                    session.sendMsgRequest(msg);
+                }
             } catch (final DialogSendException e) {
                 exception = true;
                 e.printStackTrace();

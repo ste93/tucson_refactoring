@@ -39,11 +39,6 @@ public class TucsonAuthorizedAgent implements AuthorizedAgent {
     }
 
     @Override
-    public String getAgentName() {
-        return this.agentAid;
-    }
-
-    @Override
     public String getPassword() {
         return this.password;
     }

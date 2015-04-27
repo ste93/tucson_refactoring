@@ -47,8 +47,8 @@ public class MetaACCProxyAgentSide extends ACCProxyAgentSide implements MetaACC 
 
     public MetaACCProxyAgentSide(final Object aid, final String node,
             final int port, final String username, final String password)
-                    throws TucsonInvalidAgentIdException,
-                    TucsonInvalidTupleCentreIdException {
+            throws TucsonInvalidAgentIdException,
+            TucsonInvalidTupleCentreIdException {
         super(aid, node, port);
         this.setUsername(username);
         this.setPassword(password);
@@ -72,8 +72,8 @@ public class MetaACCProxyAgentSide extends ACCProxyAgentSide implements MetaACC 
 
     @Override
     public void add(final Policy policy) throws InvalidTupleArgumentException,
-    TucsonOperationNotPossibleException, UnreachableNodeException,
-    OperationTimeOutException {
+            TucsonOperationNotPossibleException, UnreachableNodeException,
+            OperationTimeOutException {
         this.addPolicy(policy, (Long) null);
     }
 
@@ -168,8 +168,8 @@ public class MetaACCProxyAgentSide extends ACCProxyAgentSide implements MetaACC 
     @Override
     public void addPermissionToPolicy(final Permission permission,
             final String policyName)
-                    throws TucsonOperationNotPossibleException,
-                    UnreachableNodeException, OperationTimeOutException {
+            throws TucsonOperationNotPossibleException,
+            UnreachableNodeException, OperationTimeOutException {
 
         try {
             final LogicTuple setPermissionTuple = new LogicTuple(
@@ -212,8 +212,8 @@ public class MetaACCProxyAgentSide extends ACCProxyAgentSide implements MetaACC 
 
     @Override
     public void removeRBAC() throws OperationNotAllowedException,
-    TucsonOperationNotPossibleException, UnreachableNodeException,
-    OperationTimeOutException {
+            TucsonOperationNotPossibleException, UnreachableNodeException,
+            OperationTimeOutException {
         this.removeRBAC(null, this.node, this.port);
     }
 
@@ -318,7 +318,7 @@ public class MetaACCProxyAgentSide extends ACCProxyAgentSide implements MetaACC 
             final LogicTuple template = new LogicTuple("admin_login_request",
                     new Value(this.getUsername() + ":"
                             + TucsonACCTool.encrypt(this.getPassword())),
-                            new Var("Result"));
+                    new Var("Result"));
             final ITucsonOperation op = this.inp(this.tid, template,
                     (Long) null);
             if (op.isResultSuccess()) {
@@ -424,22 +424,19 @@ public class MetaACCProxyAgentSide extends ACCProxyAgentSide implements MetaACC 
             tmpPort = this.port;
         }
 
-        if (n.equalsIgnoreCase("localhost") || n.equalsIgnoreCase("127.0.0.1")
-                || n.equalsIgnoreCase("'127.0.0.1'")) {
+        if (tmpNode.equalsIgnoreCase("localhost")
+                || tmpNode.equalsIgnoreCase("127.0.0.1")
+                || tmpNode.equalsIgnoreCase("'127.0.0.1'")) {
             InetAddress localhost;
             try {
                 localhost = InetAddress.getLocalHost();
                 final String local_node_address = localhost.getHostAddress();
                 tmpNode = local_node_address;
             } catch (final UnknownHostException e) {
-                tmpNode = n;
                 return new TucsonTupleCentreId(ACCProxyAgentSide.tcOrg, "'"
                         + tmpNode + "'", "" + tmpPort);
             }
-        } else {
-            tmpNode = n;
         }
-
         return new TucsonTupleCentreId(ACCProxyAgentSide.tcOrg, "'" + tmpNode
                 + "'", "" + tmpPort);
     }

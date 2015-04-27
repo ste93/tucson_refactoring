@@ -27,8 +27,6 @@ public interface RBAC extends Serializable {
 
     void removeAuthorizedAgent(AuthorizedAgent agent);
 
-    void removeAuthorizedAgent(String agentName); // TODO
-
     void removePolicy(Policy policy);
 
     void removePolicy(String policyName);

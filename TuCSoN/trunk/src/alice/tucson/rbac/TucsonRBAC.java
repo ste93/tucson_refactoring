@@ -32,7 +32,7 @@ public class TucsonRBAC implements RBAC {
 
     @Override
     public void addAuthorizedAgent(final AuthorizedAgent agent) {
-        if (!this.authorizedAgents.contains(agent.getAgentName())) {
+        if (!this.authorizedAgents.contains(agent)) {
             this.authorizedAgents.add(agent);
         }
     }
@@ -103,22 +103,15 @@ public class TucsonRBAC implements RBAC {
 
     @Override
     public void removeAuthorizedAgent(final AuthorizedAgent agent) {
-        if (this.authorizedAgents.contains(agent.getAgentName())) {
-            this.authorizedAgents.remove(agent.getAgentName());
-        }
-    }
-
-    @Override
-    public void removeAuthorizedAgent(final String agentName) {
-        if (this.authorizedAgents.contains(agentName)) {
-            this.authorizedAgents.remove(agentName);
+        if (this.authorizedAgents.contains(agent)) {
+            this.authorizedAgents.remove(agent);
         }
     }
 
     @Override
     public void removePolicy(final Policy policy) {
         if (policy != null && this.policies.containsKey(policy.getPolicyName())) {
-            this.policies.remove(policy).getPolicyName();
+            this.policies.remove(policy.getPolicyName());
         }
     }
 
