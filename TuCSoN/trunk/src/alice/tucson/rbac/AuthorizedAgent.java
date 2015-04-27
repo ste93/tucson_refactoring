@@ -2,15 +2,22 @@ package alice.tucson.rbac;
 
 import java.io.Serializable;
 
+/**
+ * 
+ * 
+ * @author Emanuele Buccelli
+ * @author (contributor) Stefano Mariani (mailto: s.mariani@unibo.it)
+ *
+ */
 public interface AuthorizedAgent extends Serializable {
 
-    public String getAgentClass();
+    String getAgentClass();
 
-    public String getPassword();
+    String getPassword();
 
-    public String getUsername();
+    String getUsername();
 
-    public void setPassword(String password);
+    void setPassword(String password);
 
-    public void setUsername(String username);
+    void setUsername(String username);
 }

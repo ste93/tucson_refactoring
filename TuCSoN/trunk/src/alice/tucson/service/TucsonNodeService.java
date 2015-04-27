@@ -779,8 +779,8 @@ public class TucsonNodeService {
         this.inspectorsAuthorized = inspectorsAuth;
     }
 
-    public void setListAllRolesAllowed(final boolean listAllRoles) {
-        this.listAllRoles = listAllRoles;
+    public void setListAllRolesAllowed(final boolean listRoles) {
+        this.listAllRoles = listRoles;
     }
 
     public void setLoginRequired(final boolean loginReq) {

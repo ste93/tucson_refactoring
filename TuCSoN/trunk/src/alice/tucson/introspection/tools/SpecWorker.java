@@ -65,11 +65,11 @@ public class SpecWorker extends Thread {
     private final TucsonTupleCentreId tid;
 
     public SpecWorker(final String op, final EnhancedACC c,
-            final TucsonTupleCentreId tid, final EditSpec editSpec,
+            final TucsonTupleCentreId ttcid, final EditSpec editSpec,
             final JEditTextArea input) {
         this.operation = op;
         this.context = c;
-        this.tid = tid;
+        this.tid = ttcid;
         this.form = editSpec;
         this.inputSpec = input;
     }

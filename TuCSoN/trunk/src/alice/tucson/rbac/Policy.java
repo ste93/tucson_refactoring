@@ -3,8 +3,12 @@ package alice.tucson.rbac;
 import java.io.Serializable;
 import java.util.List;
 
-/*
- * 		Rappresenta la politica di un ruolo
+/**
+ * 
+ * 
+ * @author Emanuele Buccelli
+ * @author (contributor) Stefano Mariani (mailto: s.mariani@unibo.it)
+ *
  */
 public interface Policy extends Serializable {
 

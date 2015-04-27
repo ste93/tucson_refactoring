@@ -22,7 +22,20 @@ import alice.tucson.rbac.TucsonRole;
 import alice.tuplecentre.api.TupleCentreId;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 
+/**
+ * 
+ * 
+ * @author Emanuele Buccelli
+ * @author (contributor) Stefano Mariani (mailto: s.mariani@unibo.it)
+ *
+ */
 public final class TucsonACCTool {
+
+    private TucsonACCTool() {
+        /*
+         * To avoid instantiability
+         */
+    }
 
     public static boolean activateContext(final String agentAid,
             final UUID agentUUID, final String agentClass,
@@ -156,7 +169,7 @@ public final class TucsonACCTool {
         final MessageDigest md = MessageDigest.getInstance("SHA-256");
         md.update(password.getBytes());
 
-        final byte byteData[] = md.digest();
+        final byte[] byteData = md.digest();
 
         final StringBuffer sb = new StringBuffer();
         for (final byte element : byteData) {

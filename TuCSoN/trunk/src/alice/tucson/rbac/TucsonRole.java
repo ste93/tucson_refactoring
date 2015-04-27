@@ -2,26 +2,45 @@ package alice.tucson.rbac;
 
 import alice.tucson.utilities.Utils;
 
+/**
+ * 
+ * 
+ * @author Emanuele Buccelli
+ * @author (contributor) Stefano Mariani (mailto: s.mariani@unibo.it)
+ *
+ */
 public class TucsonRole implements Role {
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * 
+     */
     protected String agentClass;
+    /**
+     * 
+     */
     protected Policy policy;
+    /**
+     * 
+     */
     protected String roleDescription;
+    /**
+     * 
+     */
     protected String roleName;
 
     public TucsonRole() {
         this("");
     }
 
-    public TucsonRole(final String roleName) {
-        this(roleName, "substitute");
+    public TucsonRole(final String rn) {
+        this(rn, "substitute");
     }
 
-    public TucsonRole(final String roleName, final String agentClass) {
-        this.setRoleName(roleName);
-        this.setAgentClass(agentClass);
+    public TucsonRole(final String rn, final String ac) {
+        this.setRoleName(rn);
+        this.setAgentClass(ac);
     }
 
     @Override
@@ -50,26 +69,26 @@ public class TucsonRole implements Role {
     }
 
     @Override
-    public void setAgentClass(final String agentClass) {
-        this.agentClass = Utils.decapitalize(agentClass);
+    public void setAgentClass(final String ac) {
+        this.agentClass = Utils.decapitalize(ac);
     }
 
     @Override
-    public void setDescription(final String roleDescription) {
-        this.roleDescription = roleDescription;
+    public void setDescription(final String rd) {
+        this.roleDescription = rd;
     }
 
     @Override
-    public void setPolicy(final Policy policy) {
-        this.policy = policy;
+    public void setPolicy(final Policy p) {
+        this.policy = p;
     }
 
     @Override
-    public void setRoleName(final String roleName) {
-        if (roleName == null || roleName.equals("")) {
+    public void setRoleName(final String rn) {
+        if (rn == null || rn.equals("")) {
             return;
         }
 
-        this.roleName = Utils.decapitalize(roleName);
+        this.roleName = Utils.decapitalize(rn);
     }
 }

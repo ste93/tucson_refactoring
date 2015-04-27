@@ -80,7 +80,10 @@ import alice.tuprolog.Parser;
 public class ACCProxyAgentSide implements EnhancedACC {
 
     private static final int DEFAULT_PORT = 20504;
-    protected static final String tcOrg = "'$ORG'"; // galassi
+    /**
+     * 
+     */
+    protected static final String TC_ORG = "'$ORG'"; // galassi
     private volatile boolean isACCEntered; // galassi
     private String password;
     private ACCDescription profile; // galassi
@@ -108,23 +111,23 @@ public class ACCProxyAgentSide implements EnhancedACC {
      * Default constructor: exploits the default port (20504) in the "localhost"
      * TuCSoN Node Service
      *
-     * @param aid
+     * @param agId
      *            TuCSoN Agent identifier
      *
      * @throws TucsonInvalidAgentIdException
      *             if the String representation given is not valid TuCSoN agent
      *             identifier
      */
-    public ACCProxyAgentSide(final Object aid)
+    public ACCProxyAgentSide(final Object agId)
             throws TucsonInvalidAgentIdException {
-        this(aid, "localhost", ACCProxyAgentSide.DEFAULT_PORT);
+        this(agId, "localhost", ACCProxyAgentSide.DEFAULT_PORT);
     }
 
     /**
      * Complete constructor: starts the named TuCSoN Agent on the specific
      * TuCSoN node listening on the specified port
      *
-     * @param aid
+     * @param agId
      *            TuCSoN Agent identifier
      * @param n
      *            TuCSoN node ip address
@@ -135,12 +138,12 @@ public class ACCProxyAgentSide implements EnhancedACC {
      *             if the String representation given is not valid TuCSoN agent
      *             identifier
      */
-    public ACCProxyAgentSide(final Object aid, final String n, final int p)
+    public ACCProxyAgentSide(final Object agId, final String n, final int p)
             throws TucsonInvalidAgentIdException {
-        if (aid.getClass().getName().equals("alice.tucson.api.TucsonAgentId")) {
-            this.aid = (TucsonAgentId) aid;
+        if (agId.getClass().getName().equals("alice.tucson.api.TucsonAgentId")) {
+            this.aid = (TucsonAgentId) agId;
         } else {
-            this.aid = new TucsonAgentId(aid.toString());
+            this.aid = new TucsonAgentId(agId.toString());
         }
 
         // this.aid = new TucsonAgentId(id);
@@ -155,12 +158,12 @@ public class ACCProxyAgentSide implements EnhancedACC {
         this.isACCEntered = false;
     }
 
-    public ACCProxyAgentSide(final Object aid, final String n, final int p,
+    public ACCProxyAgentSide(final Object agId, final String n, final int p,
             final UUID agentUUID) throws TucsonInvalidAgentIdException {
-        if (aid.getClass().getName().equals("alice.tucson.api.TucsonAgentId")) {
-            this.aid = (TucsonAgentId) aid;
+        if (agId.getClass().getName().equals("alice.tucson.api.TucsonAgentId")) {
+            this.aid = (TucsonAgentId) agId;
         } else {
-            this.aid = new TucsonAgentId(aid.toString());
+            this.aid = new TucsonAgentId(agId.toString());
         }
 
         // this.aid = new TucsonAgentId(id);
@@ -190,7 +193,7 @@ public class ACCProxyAgentSide implements EnhancedACC {
         }
 
         final TucsonTupleCentreId tid = new TucsonTupleCentreId(
-                ACCProxyAgentSide.tcOrg, this.node, "" + this.port);
+                ACCProxyAgentSide.TC_ORG, this.node, "" + this.port);
         this.executor.getSession(tid, this.aid);
     }
 
@@ -694,8 +697,8 @@ public class ACCProxyAgentSide implements EnhancedACC {
     }
 
     @Override
-    public void setPassword(final String password) {
-        this.password = password;
+    public void setPassword(final String psw) {
+        this.password = psw;
     }
 
     @Override
@@ -739,8 +742,8 @@ public class ACCProxyAgentSide implements EnhancedACC {
     }
 
     @Override
-    public void setUsername(final String username) {
-        this.username = username;
+    public void setUsername(final String uname) {
+        this.username = uname;
     }
 
     @Override

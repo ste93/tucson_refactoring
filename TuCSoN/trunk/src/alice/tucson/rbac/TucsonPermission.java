@@ -3,6 +3,13 @@ package alice.tucson.rbac;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 
+ * 
+ * @author Emanuele Buccelli
+ * @author (contributor) Stefano Mariani (mailto: s.mariani@unibo.it)
+ *
+ */
 public class TucsonPermission implements Permission {
 
     /**
@@ -23,13 +30,16 @@ public class TucsonPermission implements Permission {
         return perms;
     }
 
+    /**
+     * 
+     */
     protected String permissionName;
 
     public TucsonPermission() {
     }
 
-    public TucsonPermission(final String permissionName) {
-        this.setPermissionName(permissionName);
+    public TucsonPermission(final String perm) {
+        this.setPermissionName(perm);
     }
 
     @Override
@@ -38,10 +48,10 @@ public class TucsonPermission implements Permission {
     }
 
     @Override
-    public void setPermissionName(final String permissionName) {
-        if (permissionName == null || permissionName.equals("")) {
+    public void setPermissionName(final String perm) {
+        if (perm == null || perm.equals("")) {
             return;
         }
-        this.permissionName = permissionName;
+        this.permissionName = perm;
     }
 }

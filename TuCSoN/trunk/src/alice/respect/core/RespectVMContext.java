@@ -86,6 +86,11 @@ import alice.tuprolog.Var;
 public class RespectVMContext extends
         alice.tuplecentre.core.AbstractTupleCentreVMContext {
 
+    /**
+     * 
+     * @author Stefano Mariani (mailto: s.mariani@unibo.it)
+     *
+     */
     public enum ModType {
         ADD_PRED, ADD_SPEC, ADD_TUPLE, DEL_PRED, DEL_SPEC, DEL_TUPLE, EMPTY_PRED, EMPTY_SPEC, EMPTY_TUPLES
     }

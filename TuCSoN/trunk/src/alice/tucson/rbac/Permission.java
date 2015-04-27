@@ -2,12 +2,16 @@ package alice.tucson.rbac;
 
 import java.io.Serializable;
 
-/*
- * 		Rappresenta un permesso per una politica
+/**
+ * 
+ * 
+ * @author Emanuele Buccelli
+ * @author (contributor) Stefano Mariani (mailto: s.mariani@unibo.it)
+ *
  */
 public interface Permission extends Serializable {
 
-    public String getPermissionName();
+    String getPermissionName();
 
-    public void setPermissionName(String permissionName);
+    void setPermissionName(String permissionName);
 }

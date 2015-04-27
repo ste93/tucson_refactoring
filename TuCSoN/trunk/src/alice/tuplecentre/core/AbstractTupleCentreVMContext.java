@@ -64,7 +64,7 @@ public abstract class AbstractTupleCentreVMContext implements
     /**
      * Creates a new tuple centre virtual machine core
      *
-     * @param rvm
+     * @param vm
      *            is the ReSpecT virtual machine
      * @param id
      *            is the tuple centre identifier
@@ -73,9 +73,9 @@ public abstract class AbstractTupleCentreVMContext implements
      * @param rtc
      *            the ReSpecT tuple centre this VM refers to
      */
-    public AbstractTupleCentreVMContext(final RespectVM rvm,
+    public AbstractTupleCentreVMContext(final RespectVM vm,
             final TupleCentreId id, final int ieSize, final IRespectTC rtc) {
-        this.rvm = rvm;
+        this.rvm = vm;
         this.management = false;
         this.stepMode = false;
         this.step = new StepMonitor();

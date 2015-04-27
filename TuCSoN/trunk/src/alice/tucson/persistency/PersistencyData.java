@@ -4,6 +4,11 @@ import java.util.List;
 import alice.respect.core.TupleSet;
 import alice.respect.core.tupleset.ITupleSet;
 
+/**
+ * @author Lorenzo Pontellini, Vincenzo Scafuto
+ * @author (contributor) Stefano Mariani (mailto: s.mariani@unibo.it)
+ *
+ */
 public class PersistencyData {
 
     private List<String> predicates;
@@ -25,13 +30,13 @@ public class PersistencyData {
         this.setUpdates(tUpdates);
     }
 
-    public PersistencyData(final List<String> tuples,
-            final List<String> specTuples, final List<String> pPredicates,
-            final List<String> updates) {
-        this.setTuples(tuples);
-        this.setSpecTuples(specTuples);
-        this.setPredicates(pPredicates);
-        this.setUpdates(updates);
+    public PersistencyData(final List<String> ts,
+            final List<String> sts, final List<String> pps,
+            final List<String> us) {
+        this.setTuples(ts);
+        this.setSpecTuples(sts);
+        this.setPredicates(pps);
+        this.setUpdates(us);
     }
 
     public List<String> getPredicates() {
@@ -66,27 +71,27 @@ public class PersistencyData {
         this.predicates = pPredicates;
     }
 
-    public void setPrologPredicates(final TupleSet prologPredicates) {
-        this.prologPredicates = prologPredicates;
+    public void setPrologPredicates(final TupleSet pps) {
+        this.prologPredicates = pps;
     }
 
-    public void setSpecTuples(final List<String> specTuples) {
-        this.specTuples = specTuples;
+    public void setSpecTuples(final List<String> sts) {
+        this.specTuples = sts;
     }
 
-    public void setTuples(final List<String> tuples) {
-        this.tuples = tuples;
+    public void setTuples(final List<String> ts) {
+        this.tuples = ts;
     }
 
-    public void setTupleSet(final ITupleSet tupleSet) {
-        this.tupleSet = tupleSet;
+    public void setTupleSet(final ITupleSet set) {
+        this.tupleSet = set;
     }
 
-    public void setTupleSpecSet(final ITupleSet tupleSpecSet) {
-        this.tupleSpecSet = tupleSpecSet;
+    public void setTupleSpecSet(final ITupleSet sSet) {
+        this.tupleSpecSet = sSet;
     }
 
-    public void setUpdates(final List<String> updates) {
-        this.updates = updates;
+    public void setUpdates(final List<String> us) {
+        this.updates = us;
     }
 }

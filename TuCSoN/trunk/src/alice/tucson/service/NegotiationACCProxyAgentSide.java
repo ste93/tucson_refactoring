@@ -26,10 +26,24 @@ import alice.tucson.service.tools.TucsonACCTool;
 import alice.tuplecentre.api.TupleCentreId;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 
+/**
+ * 
+ * 
+ * @author Emanuele Buccelli
+ * @author (contributor) Stefano Mariani (mailto: s.mariani@unibo.it)
+ *
+ */
 public class NegotiationACCProxyAgentSide implements NegotiationACC {
 
-    protected static final String tcAgent = "negotAgent";
-    protected static final String tcOrg = "'$ORG'";
+    /**
+     * 
+     */
+    protected static final String TC_AGENT = "negotAgent";
+    /**
+     * 
+     */
+    protected static final String TC_ORG = "'$ORG'";
+    private static final int DEF_PORT = 20504;
 
     private static Policy chooseRole(final List<Policy> policies,
             final List<String> permissionsId) {
@@ -54,26 +68,31 @@ public class NegotiationACCProxyAgentSide implements NegotiationACC {
 
     private final TupleCentreId tid;
 
+    /**
+     * 
+     */
     protected String node;
-
+    /**
+     * 
+     */
     protected int port;
 
     public NegotiationACCProxyAgentSide(final Object aid)
             throws TucsonInvalidAgentIdException,
             TucsonInvalidTupleCentreIdException {
-        this(aid, "localhost", 20504);
+        this(aid, "localhost", DEF_PORT);
     }
 
-    public NegotiationACCProxyAgentSide(final Object aid, final String node,
-            final int port) throws TucsonInvalidAgentIdException,
+    public NegotiationACCProxyAgentSide(final Object aid, final String n,
+            final int p) throws TucsonInvalidAgentIdException,
             TucsonInvalidTupleCentreIdException {
         this.internalACC = new ACCProxyAgentSide(
-                NegotiationACCProxyAgentSide.tcAgent, node, port);
-        this.node = node;
-        this.port = port;
+                NegotiationACCProxyAgentSide.TC_AGENT, n, p);
+        this.node = n;
+        this.port = p;
         this.agentAid = aid;
-        this.tid = new TucsonTupleCentreId(NegotiationACCProxyAgentSide.tcOrg,
-                "'" + node + "'", "" + port);
+        this.tid = new TucsonTupleCentreId(NegotiationACCProxyAgentSide.TC_ORG,
+                "'" + n + "'", "" + p);
         this.setBaseAgentClass();
     }
 
@@ -127,9 +146,9 @@ public class NegotiationACCProxyAgentSide implements NegotiationACC {
     @Override
     public EnhancedACC activateRoleWithPermission(
             final List<String> permissionsId)
-                    throws TucsonOperationNotPossibleException,
-                    UnreachableNodeException, OperationTimeOutException,
-                    TucsonInvalidAgentIdException, AgentNotAllowedException {
+            throws TucsonOperationNotPossibleException,
+            UnreachableNodeException, OperationTimeOutException,
+            TucsonInvalidAgentIdException, AgentNotAllowedException {
         return this.activateRoleWithPermission(permissionsId, null);
     }
 
@@ -141,9 +160,9 @@ public class NegotiationACCProxyAgentSide implements NegotiationACC {
     @Override
     public synchronized EnhancedACC activateRoleWithPermission(
             final List<String> permissionsId, final Long l)
-                    throws TucsonOperationNotPossibleException,
-                    UnreachableNodeException, OperationTimeOutException,
-                    TucsonInvalidAgentIdException, AgentNotAllowedException {
+            throws TucsonOperationNotPossibleException,
+            UnreachableNodeException, OperationTimeOutException,
+            TucsonInvalidAgentIdException, AgentNotAllowedException {
 
         if (!this.isRBACInstalled(this.tid)) {
             return new ACCProxyAgentSide(this.agentAid, this.node, this.port);
@@ -173,8 +192,8 @@ public class NegotiationACCProxyAgentSide implements NegotiationACC {
     // TODO: Lista dei ruoli!!!
     @Override
     public List<Role> listActivableRoles() throws InvalidVarNameException,
-    TucsonOperationNotPossibleException, UnreachableNodeException,
-    OperationTimeOutException {
+            TucsonOperationNotPossibleException, UnreachableNodeException,
+            OperationTimeOutException {
         final ITucsonOperation op = this.internalACC.inp(this.tid,
                 new LogicTuple("role_list_request", new Value(this.agentClass),
                         new Var("Result")), (Long) null);
@@ -252,8 +271,8 @@ public class NegotiationACCProxyAgentSide implements NegotiationACC {
         return false;
     }
 
-    private void setAgentClass(final String agentClass) {
-        this.agentClass = agentClass;
+    private void setAgentClass(final String agClass) {
+        this.agentClass = agClass;
     }
 
     private void setBaseAgentClass() {

@@ -255,8 +255,8 @@ public class OperationHandler {
     }
 
     private static final int TRIES = 3;
-    /*
-     * BUCCELLI UUID of the agent using this OperationHandler
+    /**
+     * UUID of the agent using this OperationHandler
      */
     protected UUID agentUUID;
     /**

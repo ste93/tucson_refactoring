@@ -4,6 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 import alice.logictuple.TupleArgument;
 
+/**
+ * 
+ * 
+ * @author Emanuele Buccelli
+ * @author (contributor) Stefano Mariani (mailto: s.mariani@unibo.it)
+ *
+ */
 public class TucsonPolicy implements Policy {
 
     /**
@@ -24,14 +31,17 @@ public class TucsonPolicy implements Policy {
 
     private String policyName;
 
+    /**
+     * 
+     */
     protected List<Permission> permissions;
 
-    public TucsonPolicy(final String policyName) {
-        this(policyName, new ArrayList<Permission>());
+    public TucsonPolicy(final String polName) {
+        this(polName, new ArrayList<Permission>());
     }
 
-    public TucsonPolicy(final String policyName, final List<Permission> perms) {
-        this.policyName = policyName;
+    public TucsonPolicy(final String polName, final List<Permission> perms) {
+        this.policyName = polName;
         this.permissions = perms;
     }
 
@@ -73,13 +83,13 @@ public class TucsonPolicy implements Policy {
     }
 
     @Override
-    public void setPermissions(final List<Permission> permissions) {
-        this.permissions = permissions;
+    public void setPermissions(final List<Permission> perms) {
+        this.permissions = perms;
     }
 
     @Override
-    public void setPolicyName(final String policyName) {
-        this.policyName = policyName;
+    public void setPolicyName(final String polName) {
+        this.policyName = polName;
     }
 
     private boolean hasPermission(final String permissionid) {

@@ -10,6 +10,13 @@ import alice.tucson.api.exceptions.UnreachableNodeException;
 import alice.tucson.rbac.Role;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 
+/**
+ * 
+ * 
+ * @author Emanuele Buccelli
+ * @author (contributor) Stefano Mariani (mailto: s.mariani@unibo.it)
+ *
+ */
 public interface NegotiationACC {
 
     EnhancedACC activateDefaultRole()

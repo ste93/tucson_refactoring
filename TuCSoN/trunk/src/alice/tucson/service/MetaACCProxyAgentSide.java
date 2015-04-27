@@ -28,15 +28,23 @@ import alice.tucson.utilities.Utils;
 import alice.tuplecentre.api.TupleCentreId;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 
+/**
+ * 
+ * 
+ * @author Emanuele Buccelli
+ * @author (contributor) Stefano Mariani (mailto: s.mariani@unibo.it)
+ *
+ */
 public class MetaACCProxyAgentSide extends ACCProxyAgentSide implements MetaACC {
 
-    private boolean admin_authorized;
+    private boolean authAdmin;
     private final TupleCentreId tid;
+    private static final int DEF_PORT = 20504;
 
     public MetaACCProxyAgentSide(final Object id)
             throws TucsonInvalidAgentIdException,
             TucsonInvalidTupleCentreIdException {
-        this(id, "localhost", 20504);
+        this(id, "localhost", DEF_PORT);
     }
 
     public MetaACCProxyAgentSide(final Object aid, final String node,
@@ -52,8 +60,8 @@ public class MetaACCProxyAgentSide extends ACCProxyAgentSide implements MetaACC 
         super(aid, node, port);
         this.setUsername(username);
         this.setPassword(password);
-        this.admin_authorized = false;
-        this.tid = this.getTid(node, port);// new TucsonTupleCentreId(tcOrg,
+        this.authAdmin = false;
+        this.tid = this.getTid(node, port); // new TucsonTupleCentreId(tcOrg,
         // "'"+node+"'", ""+port);
         try {
             this.activateAdminRole();
@@ -96,7 +104,7 @@ public class MetaACCProxyAgentSide extends ACCProxyAgentSide implements MetaACC 
             return;
         }
 
-        if (!this.admin_authorized) {
+        if (!this.authAdmin) {
             throw new OperationNotAllowedException();
         }
 
@@ -223,7 +231,7 @@ public class MetaACCProxyAgentSide extends ACCProxyAgentSide implements MetaACC 
             TucsonOperationNotPossibleException, UnreachableNodeException,
             OperationTimeOutException {
 
-        if (!this.admin_authorized) {
+        if (!this.authAdmin) {
             throw new OperationNotAllowedException();
         }
         this.inp(this.tid, new LogicTuple("disinstall_rbac"), (Long) null);
@@ -325,7 +333,7 @@ public class MetaACCProxyAgentSide extends ACCProxyAgentSide implements MetaACC 
                 final LogicTuple res = op.getLogicTupleResult();
                 if (res != null
                         && res.getArg(1).getName().equalsIgnoreCase("ok")) {
-                    this.admin_authorized = true;
+                    this.authAdmin = true;
                 }
             }
         } catch (final InvalidVarNameException e) {
@@ -430,14 +438,14 @@ public class MetaACCProxyAgentSide extends ACCProxyAgentSide implements MetaACC 
             InetAddress localhost;
             try {
                 localhost = InetAddress.getLocalHost();
-                final String local_node_address = localhost.getHostAddress();
-                tmpNode = local_node_address;
+                final String localNodeAddress = localhost.getHostAddress();
+                tmpNode = localNodeAddress;
             } catch (final UnknownHostException e) {
-                return new TucsonTupleCentreId(ACCProxyAgentSide.tcOrg, "'"
+                return new TucsonTupleCentreId(ACCProxyAgentSide.TC_ORG, "'"
                         + tmpNode + "'", "" + tmpPort);
             }
         }
-        return new TucsonTupleCentreId(ACCProxyAgentSide.tcOrg, "'" + tmpNode
+        return new TucsonTupleCentreId(ACCProxyAgentSide.TC_ORG, "'" + tmpNode
                 + "'", "" + tmpPort);
     }
 
@@ -449,7 +457,7 @@ public class MetaACCProxyAgentSide extends ACCProxyAgentSide implements MetaACC 
             UnreachableNodeException, OperationTimeOutException,
             OperationNotAllowedException {
 
-        if (!this.admin_authorized) {
+        if (!this.authAdmin) {
             throw new OperationNotAllowedException();
         }
 

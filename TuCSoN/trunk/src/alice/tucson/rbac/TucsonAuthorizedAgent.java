@@ -5,6 +5,13 @@ import alice.logictuple.LogicTuple;
 import alice.logictuple.Value;
 import alice.tucson.service.tools.TucsonACCTool;
 
+/**
+ * 
+ * 
+ * @author Emanuele Buccelli
+ * @author (contributor) Stefano Mariani (mailto: s.mariani@unibo.it)
+ *
+ */
 public class TucsonAuthorizedAgent implements AuthorizedAgent {
 
     /**
@@ -16,21 +23,19 @@ public class TucsonAuthorizedAgent implements AuthorizedAgent {
             throws NoSuchAlgorithmException {
         return new LogicTuple("authorized_agent", new Value(agent.getUsername()
                 + ":" + TucsonACCTool.encrypt(agent.getPassword())), new Value(
-                        agent.getAgentClass()));
+                agent.getAgentClass()));
     }
-
-    private String agentAid;
 
     private final String agentClass;
     private String password;
 
     private String username;
 
-    public TucsonAuthorizedAgent(final String agentClass,
-            final String username, final String password) {
-        this.agentClass = agentClass;
-        this.username = username;
-        this.password = password;
+    public TucsonAuthorizedAgent(final String ac,
+            final String uname, final String psw) {
+        this.agentClass = ac;
+        this.username = uname;
+        this.password = psw;
     }
 
     @Override
@@ -49,12 +54,12 @@ public class TucsonAuthorizedAgent implements AuthorizedAgent {
     }
 
     @Override
-    public void setPassword(final String pass) {
-        this.password = pass;
+    public void setPassword(final String psw) {
+        this.password = psw;
     }
 
     @Override
-    public void setUsername(final String username) {
-        this.username = username;
+    public void setUsername(final String uname) {
+        this.username = uname;
     }
 }

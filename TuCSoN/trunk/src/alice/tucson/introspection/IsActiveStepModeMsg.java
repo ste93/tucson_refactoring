@@ -15,6 +15,11 @@ package alice.tucson.introspection;
 
 import alice.tucson.api.TucsonAgentId;
 
+/**
+ * @author Roberto D'Elia
+ * @author (contributor) Stefano Mariani (mailto: s.mariani@unibo.it)
+ *
+ */
 public class IsActiveStepModeMsg extends NodeMsg {
 
     /**

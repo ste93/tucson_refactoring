@@ -120,7 +120,7 @@ public class ACCDescription implements Serializable {
         this.properties.setProperty(name, value);
     }
 
-    public void setRoles(final HashMap<String, Role> roles) { // galassi
-        this.roles = roles;
+    public void setRoles(final HashMap<String, Role> r) { // galassi
+        this.roles = r;
     }
 }

@@ -27,25 +27,31 @@ import alice.logictuple.LogicTuple;
 import alice.respect.core.RespectVMContext.ModType;
 import alice.tucson.api.TucsonTupleCentreId;
 
+/**
+ * 
+ * @author Lorenzo Pontellini, Vincenzo Scafuto
+ * @author (contributor) Stefano Mariani (mailto: s.mariani@unibo.it)
+ *
+ */
 public class PersistencyXML {
 
-    public static final String ACTION_ATTRIBUTE = "action";
-    public static final String ADD_OPERATION = "addition";
-    public static final String CLEAN_OPERATION = "clean";
-    public static final String DEL_OPERATION = "deletion";
-    public static final String PREDICATE_NODE = "predicate";
-    public static final String PREDICATES_NODE = "predicates";
-    public static final String ROOT_NODE = "persistency";
-    public static final String SNAPSHOT_NODE = "snapshot";
-    public static final String SPEC_NODE = "spec";
-    public static final String SPEC_TUPLES_NODE = "specTuples";
-    public static final String SUBJECT_ATTRIBUTE = "subject";
-    public static final String TC_ATTRIBUTE = "tc";
-    public static final String TIME_ATTRIBUTE = "time";
-    public static final String TUPLE_NODE = "tuple";
-    public static final String TUPLES_NODE = "tuples";
-    public static final String UPDATE_NODE = "update";
-    public static final String UPDATES_NODE = "updates";
+    private static final String ACTION_ATTRIBUTE = "action";
+    private static final String ADD_OPERATION = "addition";
+    private static final String CLEAN_OPERATION = "clean";
+    private static final String DEL_OPERATION = "deletion";
+    private static final String PREDICATE_NODE = "predicate";
+    private static final String PREDICATES_NODE = "predicates";
+    private static final String ROOT_NODE = "persistency";
+    private static final String SNAPSHOT_NODE = "snapshot";
+    private static final String SPEC_NODE = "spec";
+    private static final String SPEC_TUPLES_NODE = "specTuples";
+    private static final String SUBJECT_ATTRIBUTE = "subject";
+    private static final String TC_ATTRIBUTE = "tc";
+    private static final String TIME_ATTRIBUTE = "time";
+    private static final String TUPLE_NODE = "tuple";
+    private static final String TUPLES_NODE = "tuples";
+    private static final String UPDATE_NODE = "update";
+    private static final String UPDATES_NODE = "updates";
     private String pDate;
     private TucsonTupleCentreId pFileName;
     private String pPath;

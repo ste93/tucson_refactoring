@@ -21,22 +21,30 @@ import alice.tuplecentre.api.TupleCentreId;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 import alice.tuprolog.Parser;
 
+/**
+ * 
+ * 
+ * @author Emanuele Buccelli
+ * @author (contributor) Stefano Mariani (mailto: s.mariani@unibo.it)
+ *
+ */
 public class RoleACCProxyAgentSide extends ACCProxyAgentSide {
 
     private List<String> permissions;
     private Role role;
+    private static final int DEF_PORT = 20504;
 
-    public RoleACCProxyAgentSide(final Object aid, final Role role,
+    public RoleACCProxyAgentSide(final Object aid, final Role r,
             final UUID agentUUID) throws TucsonInvalidAgentIdException {
-        this(aid, "localhost", 20504, role, agentUUID);
+        this(aid, "localhost", DEF_PORT, r, agentUUID);
     }
 
     public RoleACCProxyAgentSide(final Object aid, final String n, final int p,
-            final Role role, final UUID agentUUID)
-                    throws TucsonInvalidAgentIdException {
+            final Role r, final UUID agentUUID)
+            throws TucsonInvalidAgentIdException {
         super(aid, n, p, agentUUID);
         // permissions = new ArrayList<String>();
-        this.setRole(role);
+        this.setRole(r);
     }
 
     @Override
@@ -727,8 +735,8 @@ public class RoleACCProxyAgentSide extends ACCProxyAgentSide {
         }
     }
 
-    private void setRole(final Role role) {
-        this.role = role;
+    private void setRole(final Role r) {
+        this.role = r;
         this.setPermissions();
     }
 }

@@ -3,6 +3,13 @@ package alice.tucson.rbac;
 import java.io.Serializable;
 import java.util.List;
 
+/**
+ * 
+ * 
+ * @author Emanuele Buccelli
+ * @author (contributor) Stefano Mariani (mailto: s.mariani@unibo.it)
+ *
+ */
 public interface RBAC extends Serializable {
 
     void addAuthorizedAgent(AuthorizedAgent agent);

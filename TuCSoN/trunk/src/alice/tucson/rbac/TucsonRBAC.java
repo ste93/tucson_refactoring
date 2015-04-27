@@ -5,6 +5,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 
+ * 
+ * @author Emanuele Buccelli
+ * @author (contributor) Stefano Mariani (mailto: s.mariani@unibo.it)
+ *
+ */
 public class TucsonRBAC implements RBAC {
 
     /**
@@ -20,11 +27,11 @@ public class TucsonRBAC implements RBAC {
     private final Map<String, Policy> policies;
     private final Map<String, Role> roles;
 
-    public TucsonRBAC(final String orgName) {
+    public TucsonRBAC(final String org) {
         this.roles = new HashMap<String, Role>();
         this.policies = new HashMap<String, Policy>();
         this.authorizedAgents = new ArrayList<AuthorizedAgent>();
-        this.orgName = orgName;
+        this.orgName = org;
         this.loginRequired = false;
         this.inspectorsAuthorized = false;
         this.baseAgentClass = "baseAgentClass";
@@ -156,8 +163,8 @@ public class TucsonRBAC implements RBAC {
     }
 
     @Override
-    public void setOrgName(final String orgName) {
-        this.orgName = orgName;
+    public void setOrgName(final String org) {
+        this.orgName = org;
     }
 
 }
