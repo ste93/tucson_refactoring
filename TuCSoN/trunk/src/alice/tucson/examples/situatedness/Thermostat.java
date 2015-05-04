@@ -18,7 +18,6 @@ import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
-import alice.tucson.service.TucsonNodeService;
 import alice.tucson.utilities.Utils;
 import alice.tuplecentre.api.exceptions.InvalidOperationException;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
@@ -65,7 +64,7 @@ public final class Thermostat {
             final NegotiationACC negACC = TucsonMetaACC.getNegotiationContext(
                     aid, Thermostat.DEFAULT_HOST,
                     Integer.valueOf(Thermostat.DEFAULT_PORT));
-            final EnhancedSynchACC acc = negACC.activateDefaultRole();
+            final EnhancedSynchACC acc = negACC.playDefaultRole();
             /*
              * final EnhancedSynchACC acc = TucsonMetaACC.getContext(aid,
              * Thermostat.DEFAULT_HOST,
@@ -101,9 +100,9 @@ public final class Thermostat {
                     new TupleArgument(sensorTc.toTerm()),
                     new Value(
                             "alice.tucson.examples.situatedness.SensorTransducer"),
-                    new Value("sensorTransducer"), new Value(
-                            "alice.tucson.examples.situatedness.ActualSensor"),
-                    new Value("sensor"));
+                            new Value("sensorTransducer"), new Value(
+                                    "alice.tucson.examples.situatedness.ActualSensor"),
+                                    new Value("sensor"));
             acc.out(configTc, sensorTuple, null);
             /* Set up actuator */
             Thermostat.log(aid.toString(), "Set up actuator...");
@@ -123,10 +122,10 @@ public final class Thermostat {
                     new TupleArgument(actuatorTc.toTerm()),
                     new Value(
                             "alice.tucson.examples.situatedness.ActuatorTransducer"),
-                    new Value("actuatorTransducer"),
-                    new Value(
-                            "alice.tucson.examples.situatedness.ActualActuator"),
-                    new Value("actuator"));
+                            new Value("actuatorTransducer"),
+                            new Value(
+                                    "alice.tucson.examples.situatedness.ActualActuator"),
+                                    new Value("actuator"));
             acc.out(configTc, actuatorTuple, null);
             /* Start perception-reason-action loop */
             Thermostat.log(aid.toString(),

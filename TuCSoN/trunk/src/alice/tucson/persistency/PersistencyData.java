@@ -30,9 +30,8 @@ public class PersistencyData {
         this.setUpdates(tUpdates);
     }
 
-    public PersistencyData(final List<String> ts,
-            final List<String> sts, final List<String> pps,
-            final List<String> us) {
+    public PersistencyData(final List<String> ts, final List<String> sts,
+            final List<String> pps, final List<String> us) {
         this.setTuples(ts);
         this.setSpecTuples(sts);
         this.setPredicates(pps);

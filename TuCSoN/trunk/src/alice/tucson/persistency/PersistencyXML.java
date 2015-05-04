@@ -28,7 +28,7 @@ import alice.respect.core.RespectVMContext.ModType;
 import alice.tucson.api.TucsonTupleCentreId;
 
 /**
- * 
+ *
  * @author Lorenzo Pontellini, Vincenzo Scafuto
  * @author (contributor) Stefano Mariani (mailto: s.mariani@unibo.it)
  *
@@ -129,10 +129,10 @@ public class PersistencyXML {
                         && value.equals(PersistencyXML.TUPLE_NODE)
                         || (obj.contains("(+s)") || obj.contains("(-s)") || obj
                                 .contains("(es)"))
-                        && value.equals(PersistencyXML.SPEC_NODE)
-                        || (obj.contains("(+p)") || obj.contains("(-p)") || obj
-                                .contains("(ep)"))
-                        && value.equals(PersistencyXML.PREDICATE_NODE)) {
+                                && value.equals(PersistencyXML.SPEC_NODE)
+                                || (obj.contains("(+p)") || obj.contains("(-p)") || obj
+                                        .contains("(ep)"))
+                                        && value.equals(PersistencyXML.PREDICATE_NODE)) {
                     updates.remove(i);
                 }
             }
@@ -230,8 +230,8 @@ public class PersistencyXML {
                                 + file.getName() + "' has been deleted");
                     } else {
                         System.err
-                                .println("....error while deleting old persistency file '"
-                                        + file.getName() + "' :/");
+                        .println("....error while deleting old persistency file '"
+                                + file.getName() + "' :/");
                     }
                 }
             }

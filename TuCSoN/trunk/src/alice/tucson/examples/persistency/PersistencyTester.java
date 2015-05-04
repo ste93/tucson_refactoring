@@ -55,7 +55,7 @@ public final class PersistencyTester {
             final TucsonAgentId aid = new TucsonAgentId("'PersistencyTester'");
             final NegotiationACC negAcc = TucsonMetaACC
                     .getNegotiationContext(aid);
-            final EnhancedACC acc = negAcc.activateDefaultRole();
+            final EnhancedACC acc = negAcc.playDefaultRole();
             // spec addition
             String spec = Utils
                     .fileToString("alice/tucson/examples/persistency/aggregation.rsp");
@@ -86,10 +86,10 @@ public final class PersistencyTester {
             acc.inS(ttcid,
                     new LogicTuple("out", new Value("repulse",
                             new Value("INFO"))),
-                    new LogicTuple("completion"),
-                    LogicTuple
+                            new LogicTuple("completion"),
+                            LogicTuple
                             .parse("(rd_all(neighbour(_), NBRS),multiread(NBRS, repulse(INFO)))"),
-                    Long.MAX_VALUE);
+                            Long.MAX_VALUE);
             // disable persistency test
             acc.out(ttcidOrg, new LogicTuple("cmd", new Value(
                     "disable_persistency", new Value("def", new Value(1)))),

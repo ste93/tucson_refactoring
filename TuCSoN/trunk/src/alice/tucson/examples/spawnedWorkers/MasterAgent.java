@@ -73,7 +73,7 @@ public class MasterAgent extends AbstractTucsonAgent {
      */
     public MasterAgent(final String aid, final List<String> nodes,
             final int iters, final int maxFact)
-            throws TucsonInvalidAgentIdException {
+                    throws TucsonInvalidAgentIdException {
         super(aid);
         this.die = false;
         this.tids = new LinkedList<TucsonTupleCentreId>();
@@ -122,7 +122,7 @@ public class MasterAgent extends AbstractTucsonAgent {
         try {
             final NegotiationACC negAcc = TucsonMetaACC
                     .getNegotiationContext(this.getTucsonAgentId());
-            final EnhancedSynchACC acc = negAcc.activateDefaultRole();
+            final EnhancedSynchACC acc = negAcc.playDefaultRole();
             while (!this.die) {
                 this.say("Checking termination...");
                 for (int i = 0; i < this.tids.size(); i++) {
@@ -184,7 +184,7 @@ public class MasterAgent extends AbstractTucsonAgent {
                         acc.spawn(
                                 next,
                                 LogicTuple
-                                        .parse("exec('alice.tucson.examples.spawnedWorkers.SpawnedWorkingActivity.class')"),
+                                .parse("exec('alice.tucson.examples.spawnedWorkers.SpawnedWorkingActivity.class')"),
                                 null);
                         /*
                          * Just to let you view something on the console.

@@ -369,7 +369,7 @@ public abstract class AbstractTucsonProtocol implements java.io.Serializable {
      *             if some network problems arise
      */
     protected abstract Object receiveObject() throws ClassNotFoundException,
-            IOException;
+    IOException;
 
     /**
      *
@@ -380,7 +380,7 @@ public abstract class AbstractTucsonProtocol implements java.io.Serializable {
      *             if some network problems arise
      */
     protected abstract String receiveString() throws ClassNotFoundException,
-            IOException;
+    IOException;
 
     /**
      *

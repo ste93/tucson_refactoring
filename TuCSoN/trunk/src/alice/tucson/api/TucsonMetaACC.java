@@ -16,7 +16,7 @@ package alice.tucson.api;
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.service.ACCProxyAgentSide;
-import alice.tucson.service.MetaACCProxyAgentSide;
+import alice.tucson.service.AdminACCProxyAgentSide;
 import alice.tucson.service.NegotiationACCProxyAgentSide;
 
 /**
@@ -25,6 +25,7 @@ import alice.tucson.service.NegotiationACCProxyAgentSide;
  *
  * @author Alessandro Ricci
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
+ * @author (contributor) Emanuele Buccelli
  *
  */
 public final class TucsonMetaACC {
@@ -33,19 +34,37 @@ public final class TucsonMetaACC {
     private static final String VERSION = "TuCSoN-1.11.0.0300";
 
     // TODO: Controllo password
-    public static MetaACC getAdminContext(final TucsonAgentId aid,
+    /**
+     * Acquires an Administrative ACC from the TuCSoN node. Valid username and
+     * password are required.
+     *
+     * @param aid
+     *            the ID of the agent willing to obtain adminstrative access
+     * @param netid
+     *            the IP address of the TuCSoN node to contact
+     * @param portno
+     *            the TCP port number of the TuCSoN node to contact
+     * @param username
+     *            the username of the administrative agent
+     * @param password
+     *            the (encrypted) password of the administrative agent
+     * @return the Administrative ACC if given credentials are valid,
+     *         {@code null} otherwise
+     */
+    public static AdminACC getAdminContext(final TucsonAgentId aid,
             final String netid, final int portno, final String username,
             final String password) {
-        MetaACC acc = null;
+        AdminACC acc = null;
         try {
-            acc = new MetaACCProxyAgentSide(aid, netid, portno, username,
+            acc = new AdminACCProxyAgentSide(aid, netid, portno, username,
                     password);
         } catch (final TucsonInvalidAgentIdException e) {
-            System.err.println("[Tucson-MetaACC]: " + e);
+            System.out.println("[TucsonMetaACC]: Given agent ID is NOT valid!");
             e.printStackTrace();
             return null;
         } catch (final TucsonInvalidTupleCentreIdException e) {
-            System.err.println("[Tucson-MetaACC]: " + e);
+            System.err
+            .println("[TucsonMetaACC]: Given tuple centre ID is NOT valid!");
             e.printStackTrace();
             return null;
         }
@@ -111,7 +130,7 @@ public final class TucsonMetaACC {
      * active on the default host ("localhost") on the default port (20504).
      *
      * @param aid
-     *            Who demand for the ACC
+     *            Who demands for the ACC
      *
      * @return The DefaultACC (which is the most powerful at the moment)
      */
@@ -120,28 +139,61 @@ public final class TucsonMetaACC {
                 TucsonMetaACC.DEFAULT_PORT);
     }
 
+    /**
+     * Acquires the Negotiation ACC necessary to interact with TuCSoN according
+     * to RBAC policies. If no RBAC policies are installed, method
+     * {@link NegotiationACC#playDefaultRole()} is available.
+     *
+     * @param aid
+     *            the ID of the agent demanding for the ACC
+     * @param netid
+     *            the IP address of the TuCSoN node to contact
+     * @param portno
+     *            the TCP port number of the TuCSoN node to contact
+     * @return the Negotiation ACC requested
+     */
     public static NegotiationACC getNegotiationContext(final String aid,
             final String netid, final int portno) {
         NegotiationACC acc = null;
         try {
             acc = new NegotiationACCProxyAgentSide(new TucsonAgentId(aid),
                     netid, portno);
-
         } catch (final TucsonInvalidAgentIdException e) {
-            System.err.println("[Tucson-NegotiationACC]: " + e);
+            System.out.println("[TucsonMetaACC]: Given agent ID is NOT valid!");
             e.printStackTrace();
             return null;
         } catch (final TucsonInvalidTupleCentreIdException e) {
-            // TODO Auto-generated catch block
+            System.err
+            .println("[TucsonMetaACC]: Given tuple centre ID is NOT valid!");
             e.printStackTrace();
+            return null;
         }
         return acc;
     }
 
+    /**
+     * Acquires the Negotiation ACC from the default TuCSoN node.
+     *
+     * @param aid
+     *            the ID of the agent demanding for the ACC
+     * @return the Negotiation ACC requested
+     */
     public static NegotiationACC getNegotiationContext(final TucsonAgentId aid) {
         return TucsonMetaACC.getNegotiationContext(aid.toString());
     }
 
+    /**
+     * Acquires the Negotiation ACC from the TuCSoN node installed on the given
+     * {@code netid:portno} IP:TCP address.
+     *
+     * @param aid
+     *            the ID of the agent demanding for the ACC
+     * @param netid
+     *            the IP address of the TuCSoN node to contact
+     * @param portno
+     *            the TCP port number of the TuCSoN node to contact
+     * @return the Negotiation ACC requested
+     */
     public static NegotiationACC getNegotiationContext(final TucsonAgentId aid,
             final String netid, final int portno) {
         return TucsonMetaACC.getNegotiationContext(aid.toString(), netid,

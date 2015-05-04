@@ -13,7 +13,6 @@ import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
-import alice.tucson.service.TucsonNodeService;
 import alice.tucson.utilities.Utils;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 import alice.tuplecentre.core.AbstractTupleCentreOperation;
@@ -93,7 +92,7 @@ public class TDiningPhilosophersTest extends AbstractTucsonAgent {
         try {
             final NegotiationACC negAcc = TucsonMetaACC
                     .getNegotiationContext(this.getTucsonAgentId());
-            final SynchACC acc = negAcc.activateDefaultRole();
+            final SynchACC acc = negAcc.playDefaultRole();
             final TucsonTupleCentreId table = new TucsonTupleCentreId("table",
                     this.ip, this.port);
             this.say("Injecting 'table' ReSpecT specification in tc < "
@@ -112,7 +111,7 @@ public class TDiningPhilosophersTest extends AbstractTucsonAgent {
             acc.out(table,
                     LogicTuple.parse("max_eating_time("
                             + TDiningPhilosophersTest.MAX_EATING_TIME + ")"),
-                    null);
+                            null);
             for (int i = 0; i < TDiningPhilosophersTest.N_PHILOSOPHERS; i++) {
                 /*
                  * Init chopsticks required to eat.

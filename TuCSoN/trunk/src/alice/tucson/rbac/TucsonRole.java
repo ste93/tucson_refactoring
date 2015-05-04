@@ -3,8 +3,8 @@ package alice.tucson.rbac;
 import alice.tucson.utilities.Utils;
 
 /**
- * 
- * 
+ * Class implementing a RBAC role in TuCSoN.
+ *
  * @author Emanuele Buccelli
  * @author (contributor) Stefano Mariani (mailto: s.mariani@unibo.it)
  *
@@ -12,32 +12,29 @@ import alice.tucson.utilities.Utils;
 public class TucsonRole implements Role {
 
     private static final long serialVersionUID = 1L;
+    private String agentClass;
+    private Policy policy;
+    private String roleDescription;
+    private String roleName;
 
     /**
-     * 
+     * Builds a RBAC role given its name
+     *
+     * @param rn
+     *            the name of this role
      */
-    protected String agentClass;
-    /**
-     * 
-     */
-    protected Policy policy;
-    /**
-     * 
-     */
-    protected String roleDescription;
-    /**
-     * 
-     */
-    protected String roleName;
-
-    public TucsonRole() {
-        this("");
-    }
-
     public TucsonRole(final String rn) {
         this(rn, "substitute");
     }
 
+    /**
+     * Builds a RBAC role given its name and associated agent class
+     *
+     * @param rn
+     *            the name of this role
+     * @param ac
+     *            the agent class
+     */
     public TucsonRole(final String rn, final String ac) {
         this.setRoleName(rn);
         this.setAgentClass(ac);
@@ -53,9 +50,11 @@ public class TucsonRole implements Role {
 
     @Override
     public String getDescription() {
-        return this.roleDescription != null
-                && !this.roleDescription.equalsIgnoreCase("") ? this.roleDescription
-                        : "ruolo_" + this.roleName;
+        if (this.roleDescription != null
+                && !this.roleDescription.equalsIgnoreCase("")) {
+            return this.roleDescription;
+        }
+        return "role_" + this.roleName;
     }
 
     @Override
@@ -85,10 +84,8 @@ public class TucsonRole implements Role {
 
     @Override
     public void setRoleName(final String rn) {
-        if (rn == null || rn.equals("")) {
-            return;
+        if (rn != null && !rn.equals("")) {
+            this.roleName = Utils.decapitalize(rn);
         }
-
-        this.roleName = Utils.decapitalize(rn);
     }
 }

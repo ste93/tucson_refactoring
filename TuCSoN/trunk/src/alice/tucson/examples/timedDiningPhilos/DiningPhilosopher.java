@@ -161,7 +161,7 @@ public class DiningPhilosopher extends AbstractTucsonAgent {
         final NegotiationACC negAcc = TucsonMetaACC.getNegotiationContext(this
                 .getTucsonAgentId());
         try {
-            this.acc = negAcc.activateDefaultRole();
+            this.acc = negAcc.playDefaultRole();
         } catch (final TucsonOperationNotPossibleException e) {
             e.printStackTrace();
         } catch (final UnreachableNodeException e) {

@@ -7,7 +7,7 @@ import alice.tucson.api.RootACC;
 /**
  *
  * @author ste (mailto: s.mariani@unibo.it)
- *
+ * @author (contributor) Emanuele Buccelli
  */
 public class RootACCProxy implements RootACC {
 
@@ -53,15 +53,4 @@ public class RootACCProxy implements RootACC {
         return false;
     }
 
-    @Override
-    public void setPassword(final String password) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void setUsername(final String username) {
-        // TODO Auto-generated method stub
-
-    }
 }

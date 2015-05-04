@@ -47,7 +47,7 @@ import alice.tuprolog.lib.InvalidObjectIdException;
  *
  */
 public class InterTupleCentreACCProxy implements InterTupleCentreACC,
-        OperationCompletionListener {
+OperationCompletionListener {
 
     /**
      *
@@ -86,7 +86,7 @@ public class InterTupleCentreACCProxy implements InterTupleCentreACC,
                     msg = this.dialog.receiveMsgReply();
                 } catch (final DialogReceiveException e) {
                     InterTupleCentreACCProxy.this
-                            .err("TuCSoN Node disconnected unexpectedly :/");
+                    .err("TuCSoN Node disconnected unexpectedly :/");
                     this.setStop();
                     break;
                 }
@@ -160,15 +160,15 @@ public class InterTupleCentreACCProxy implements InterTupleCentreACC,
                         || op.isSet() || op.isGetS() || op.isSetS()
                         || op.isOutAll()) {
                     InterTupleCentreACCProxy.this
-                            .log("received completion msg " + msg.getId()
-                                    + ", op " + op.getType() + ", "
-                                    + op.getTupleListResult());
+                    .log("received completion msg " + msg.getId()
+                            + ", op " + op.getType() + ", "
+                            + op.getTupleListResult());
                     op.setTupleListResult((List<Tuple>) msg.getTupleResult());
                 } else {
                     InterTupleCentreACCProxy.this
-                            .log("received completion msg " + msg.getId()
-                                    + ", op " + op.getType() + ", "
-                                    + op.getTupleResult());
+                    .log("received completion msg " + msg.getId()
+                            + ", op " + op.getType() + ", "
+                            + op.getTupleResult());
                     op.setTupleResult((LogicTuple) msg.getTupleResult());
                 }
                 if (msg.isResultSuccess()) {
@@ -218,7 +218,7 @@ public class InterTupleCentreACCProxy implements InterTupleCentreACC,
     }
 
     private static final int TRIES = 3;
-    // aid e' il tuplecentre source
+    // aid is the source tuple centre ID
     private TucsonTupleCentreId aid;
     private final Map<String, ControllerSession> controllerSessions;
     private final List<TucsonOpCompletionEvent> events;
@@ -254,8 +254,8 @@ public class InterTupleCentreACCProxy implements InterTupleCentreACC,
     @Override
     public synchronized TucsonOpId doOperation(final Object tid,
             final AbstractTupleCentreOperation op)
-            throws TucsonOperationNotPossibleException,
-            UnreachableNodeException, TucsonInvalidTupleCentreIdException {
+                    throws TucsonOperationNotPossibleException,
+                    UnreachableNodeException, TucsonInvalidTupleCentreIdException {
         TucsonTupleCentreId tcid = null;
         if ("alice.respect.api.TupleCentreId".equals(tid.getClass().getName())) {
             final TupleCentreId id = (TupleCentreId) tid;
@@ -388,20 +388,20 @@ public class InterTupleCentreACCProxy implements InterTupleCentreACC,
         // if (InetAddress.getLoopbackAddress().getHostName().equals(opNode)) {
         if ("localhost".equals(opNode)) {
             tc =
-            // this.controllerSessions.get(InetAddress
-            // .getLoopbackAddress().getHostAddress()
-            // .concat(String.valueOf(p)));
-            this.controllerSessions
+                    // this.controllerSessions.get(InetAddress
+                    // .getLoopbackAddress().getHostAddress()
+                    // .concat(String.valueOf(p)));
+                    this.controllerSessions
                     .get("127.0.0.1".concat(String.valueOf(port)));
         }
         // if (InetAddress.getLoopbackAddress().getHostAddress().equals(opNode))
         // {
         if ("127.0.0.1".equals(opNode)) {
             tc =
-            // this.controllerSessions.get(InetAddress
-            // .getLoopbackAddress().getHostName()
-            // .concat(String.valueOf(p)));
-            this.controllerSessions
+                    // this.controllerSessions.get(InetAddress
+                    // .getLoopbackAddress().getHostName()
+                    // .concat(String.valueOf(p)));
+                    this.controllerSessions
                     .get("localhost".concat(String.valueOf(port)));
         }
         if (tc != null) {

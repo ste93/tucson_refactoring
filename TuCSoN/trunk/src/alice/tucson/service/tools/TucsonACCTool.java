@@ -23,20 +23,30 @@ import alice.tuplecentre.api.TupleCentreId;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 
 /**
- * 
- * 
+ * Utility methods to manage RBAC-related facilities.
+ *
  * @author Emanuele Buccelli
  * @author (contributor) Stefano Mariani (mailto: s.mariani@unibo.it)
  *
  */
 public final class TucsonACCTool {
 
-    private TucsonACCTool() {
-        /*
-         * To avoid instantiability
-         */
-    }
-
+    /**
+     * Activates a coordination context for a given agent.
+     *
+     * @param agentAid
+     *            the ID of the agent
+     * @param agentUUID
+     *            the UUID assigned to the agent
+     * @param agentClass
+     *            the RBAC agent class of the agent
+     * @param tid
+     *            the tuple centre bookeeping activations
+     * @param acc
+     *            the ACC used to perform the activation
+     * @return {@code true} or {@code false} depending on whether activation is
+     *         successful or not
+     */
     public static boolean activateContext(final String agentAid,
             final UUID agentUUID, final String agentClass,
             final TupleCentreId tid, final EnhancedACC acc) {
@@ -53,7 +63,7 @@ public final class TucsonACCTool {
                 } else if (res != null
                         && res.getArg(1).getName().equalsIgnoreCase("failed")
                         && res.getArg(1).getArg(0).toString()
-                                .equalsIgnoreCase("agent_already_present")) {
+                        .equalsIgnoreCase("agent_already_present")) {
                     return true;
                 }
             }
@@ -66,19 +76,36 @@ public final class TucsonACCTool {
         } catch (final OperationTimeOutException e) {
             e.printStackTrace();
         }
-
         return false;
     }
 
+    /**
+     * Activates a given role for the given agent.
+     *
+     * @param agentAid
+     *            the ID of the agent
+     * @param accUUID
+     *            the UUID assigned to the agent
+     * @param agentClass
+     *            the RBAC agent class of the agent
+     * @param roleName
+     *            the name of the role to activate
+     * @param tid
+     *            the tuple centre bookeeping activations
+     * @param acc
+     *            the ACC used to perform the activation
+     * @return the RBAC role activated
+     * @throws AgentNotAllowedException
+     *             if the agent is not allowed to activate the given role
+     */
     public static Role activateRole(final String agentAid, final UUID accUUID,
             final String agentClass, final String roleName,
             final TupleCentreId tid, final EnhancedACC acc)
-            throws AgentNotAllowedException {
+                    throws AgentNotAllowedException {
         if (!TucsonACCTool.activateContext(agentAid, accUUID, agentClass, tid,
                 acc)) {
             return null;
         }
-
         Role newRole = null;
         try {
             final LogicTuple template = new LogicTuple(
@@ -112,10 +139,26 @@ public final class TucsonACCTool {
         } catch (final OperationTimeOutException e) {
             e.printStackTrace();
         }
-
         return newRole;
     }
 
+    /**
+     * Activates a RBAC role given its policy for a given agent.
+     *
+     * @param agentAid
+     *            the ID of the agent
+     * @param accUUID
+     *            the UUID assigned to the agent
+     * @param agentClass
+     *            the RBAC agent class of the agent
+     * @param policy
+     *            the policy whose role should be activated
+     * @param tid
+     *            the tuple centre bookeeping activations
+     * @param acc
+     *            the ACC used to perform the activation
+     * @return the RBAC role activated
+     */
     public static Role activateRoleWithPolicy(final String agentAid,
             final UUID accUUID, final String agentClass, final Policy policy,
             final TupleCentreId tid, final EnhancedACC acc) {
@@ -123,9 +166,7 @@ public final class TucsonACCTool {
                 acc)) {
             return null;
         }
-
         Role newRole = null;
-
         try {
             final LogicTuple rolePolicyTemplate = new LogicTuple(
                     "policy_role_request", new Value(policy.getPolicyName()),
@@ -134,12 +175,11 @@ public final class TucsonACCTool {
             if (op.isResultSuccess()) {
                 LogicTuple res = op.getLogicTupleResult();
                 final String roleName = res.getArg(1).toString();
-
                 final LogicTuple template = new LogicTuple(
                         "role_activation_request", new Value(
                                 agentAid.toString()), new Value(
-                                accUUID.toString()), new Value(roleName),
-                        new Var("Result"));
+                                        accUUID.toString()), new Value(roleName),
+                                        new Var("Result"));
                 op = acc.inp(tid, template, (Long) null);
                 if (op.isResultSuccess()) {
                     res = op.getLogicTupleResult();
@@ -160,17 +200,29 @@ public final class TucsonACCTool {
         } catch (final OperationTimeOutException e) {
             e.printStackTrace();
         }
-
         return newRole;
     }
 
-    public static String encrypt(final String password)
-            throws NoSuchAlgorithmException {
-        final MessageDigest md = MessageDigest.getInstance("SHA-256");
+    /**
+     * Encrypts the given String using standard Java security library and
+     * cryptography algorithms, such as SHA-256.
+     *
+     * @param password
+     *            the String to encrypt
+     * @return the encrypted String
+     */
+    public static String encrypt(final String password) {
+        MessageDigest md = null;
+        try {
+            md = MessageDigest.getInstance("SHA-256");
+        } catch (final NoSuchAlgorithmException e) {
+            /*
+             * Should not happen
+             */
+            e.printStackTrace();
+        }
         md.update(password.getBytes());
-
         final byte[] byteData = md.digest();
-
         final StringBuffer sb = new StringBuffer();
         for (final byte element : byteData) {
             sb.append(Integer.toString((element & 0xff) + 0x100, 16).substring(
@@ -179,17 +231,27 @@ public final class TucsonACCTool {
         return sb.toString();
     }
 
-    public static List<Policy> getPolicyList(final String agentClass,
+    /**
+     * Gets the list of policies available for the given RBAC agent class.
+     *
+     * @param agentClass
+     *            the RBAC agent class whose associated policies should be
+     *            retrieved
+     * @param tid
+     *            the tuple centre bookeeping associations
+     * @param acc
+     *            the ACC used to perform the query
+     * @return the list of policies available for the given RBAC agent class
+     */
+    public static List<Policy> getPoliciesList(final String agentClass,
             final TupleCentreId tid, final EnhancedACC acc) {
         final List<Policy> policies = new ArrayList<Policy>();
         try {
             final LogicTuple policyListTuple = new LogicTuple(
-                    "policy_list_request", new Value(agentClass), new Var(
+                    "policies_list_request", new Value(agentClass), new Var(
                             "Result"));
-
             final ITucsonOperation op = acc.inp(tid, policyListTuple,
                     (Long) null);
-
             if (op.isResultSuccess()) {
                 final LogicTuple res = op.getLogicTupleResult();
                 if (res.getArg(1).getName().equalsIgnoreCase("ok")) {
@@ -198,13 +260,11 @@ public final class TucsonACCTool {
                     for (final TupleArgument term : policiesList) {
                         final TupleArgument[] permissionsTuples = term
                                 .getArg(1).toArray();
-
                         final Policy newPolicy = TucsonPolicy.createPolicy(term
                                 .getArg(0).toString(), permissionsTuples);
                         policies.add(newPolicy);
                     }
                 }
-
             }
         } catch (final InvalidVarNameException e) {
             e.printStackTrace();
@@ -215,7 +275,13 @@ public final class TucsonACCTool {
         } catch (final OperationTimeOutException e) {
             e.printStackTrace();
         }
-
         return policies;
     }
+
+    private TucsonACCTool() {
+        /*
+         * To avoid instantiability
+         */
+    }
+
 }

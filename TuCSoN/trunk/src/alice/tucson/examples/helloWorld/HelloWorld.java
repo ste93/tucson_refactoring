@@ -43,7 +43,7 @@ public final class HelloWorld {
              */
             final NegotiationACC negAcc = TucsonMetaACC
                     .getNegotiationContext(aid);
-            final SynchACC acc = negAcc.activateDefaultRole();
+            final SynchACC acc = negAcc.playDefaultRole();
             /*
              * 3) Define the tuplecentre target of your coordination operations.
              */

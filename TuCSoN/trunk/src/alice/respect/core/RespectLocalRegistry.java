@@ -10,18 +10,19 @@ import alice.respect.api.exceptions.InstantiationNotPossibleException;
 /**
  *
  * @author Alessandro Ricci
+ * @author (contributor) Stefano Mariani (mailto: s.mariani@unibo.it)
  *
  */
 public class RespectLocalRegistry implements ITCRegistry {
 
     /**
-     * internal representation of the registry, keys are tuple centre id (as
-     * String)
+     * internal representation of the registry, keys are tuple centre ids (as
+     * Strings)
      */
     private final Map<String, IRespectTC> reg;
 
     /**
-     *
+     * Builds an empty registry
      */
     public RespectLocalRegistry() {
         this.reg = new HashMap<String, IRespectTC>();
@@ -57,7 +58,7 @@ public class RespectLocalRegistry implements ITCRegistry {
             throw new InstantiationNotPossibleException("The string " + key
                     + " is not contained in the registry");
         }
-        IRespectTC rtc = this.reg.get(key);
+        final IRespectTC rtc = this.reg.get(key);
         // System.out.println("....[RespectLocalRegistry]: Got " + rtc.getId()
         // + " from key " + key);
         return rtc;

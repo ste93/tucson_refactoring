@@ -81,7 +81,7 @@ public class DiningPhilosopher extends AbstractTucsonAgent {
                 .getTucsonAgentId());
         SynchACC acc = null;
         try {
-            acc = negAcc.activateDefaultRole();
+            acc = negAcc.playDefaultRole();
         } catch (final TucsonOperationNotPossibleException e) {
             e.printStackTrace();
         } catch (final UnreachableNodeException e) {

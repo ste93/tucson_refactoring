@@ -52,7 +52,6 @@ public class ACCDescription implements Serializable {
      */
     public ACCDescription() {
         this.properties = new Properties();
-
         this.roles = new HashMap<String, Role>(); // galassi
     }
 
@@ -65,7 +64,6 @@ public class ACCDescription implements Serializable {
      */
     public ACCDescription(final Properties p) {
         this.properties = p;
-
         this.roles = new HashMap<String, Role>(); // galassi
     }
 

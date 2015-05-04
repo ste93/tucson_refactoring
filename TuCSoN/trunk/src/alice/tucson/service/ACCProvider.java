@@ -93,19 +93,16 @@ public class ACCProvider {
     // exception handling is a mess, need to review it...
     public synchronized boolean processContextRequest(
             final ACCDescription profile, final AbstractTucsonProtocol dialog)
-            throws TucsonInvalidAgentIdException,
-            TucsonInvalidTupleCentreIdException {
+                    throws TucsonInvalidAgentIdException,
+                    TucsonInvalidTupleCentreIdException {
         ACCProvider.log("Processing ACC request...");
         try {
             String agentName = profile.getProperty("agent-identity");
             if (agentName == null) {
                 agentName = profile.getProperty("tc-identity");
             }
-            // BUCCELLI: Inserito UUID nella richiesta
             final String agentUUID = profile.getProperty("agent-uuid");
 
-            // ===BUCCELLI: autorizzo l'agente inspector(Se gli inspector sono
-            // autorizzati)!===
             final String agentRole = profile.getProperty("agent-role");
             if ("$inspector".equals(agentRole)) {
                 final LogicTuple areInspectorsAuth = new LogicTuple(
@@ -115,13 +112,12 @@ public class ACCProvider {
                                 this.aid, this.config, areInspectorsAuth);
                 if (res.getArg(0).toString().equals("yes")) {
                     final LogicTuple authInspector = new LogicTuple(
-                            "authorized_agent", new Value(agentName));
+                            "authorised_agent", new Value(agentName));
                     TupleCentreContainer.doBlockingOperation(
                             TucsonOperation.outCode(), this.aid, this.config,
                             authInspector);
                 }
             }
-            // =======
 
             String agentClass = profile.getProperty("agent-class");
             if (agentClass == null) {

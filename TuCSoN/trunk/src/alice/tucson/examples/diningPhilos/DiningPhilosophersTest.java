@@ -13,7 +13,6 @@ import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
-import alice.tucson.service.TucsonNodeService;
 import alice.tucson.utilities.Utils;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 import alice.tuplecentre.core.AbstractTupleCentreOperation;
@@ -87,7 +86,7 @@ public class DiningPhilosophersTest extends AbstractTucsonAgent {
         try {
             final NegotiationACC negAcc = TucsonMetaACC
                     .getNegotiationContext(this.getTucsonAgentId());
-            final SynchACC acc = negAcc.activateDefaultRole();
+            final SynchACC acc = negAcc.playDefaultRole();
 
             final TucsonTupleCentreId table = new TucsonTupleCentreId("table",
                     this.ip, this.port);

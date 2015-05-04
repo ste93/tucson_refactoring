@@ -178,26 +178,24 @@ public class OperationHandler {
                 } else {
                     op.setOpResult(Outcome.FAILURE);
                 }
-                /*
-                 * modifica dell'ordine delle chiamate in modo da consentire
-                 * all'operationhandler di aggiungere l'evento nella lista prima
-                 * della notifica
-                 */
                 OperationHandler.this.postEvent(ev);
                 op.notifyCompletion(ev.operationSucceeded(), msg.isAllowed());
             }
         }
 
         /**
-         *
+         * Stops receiving replies from the TuCSoN node.
          */
         public synchronized void setStop() {
             this.stop = true;
         }
 
         /**
+         * Checks whether this service, listening to TuCSoN node replies, is
+         * stopped
          *
-         * @return
+         * @return {@code true} or {@code false} depending on whether this
+         *         listening service is stopped or not
          */
         private synchronized boolean isStopped() {
             return this.stop;

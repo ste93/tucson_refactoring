@@ -22,28 +22,58 @@ import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 import alice.tuprolog.Parser;
 
 /**
- * 
- * 
+ * Class implementing the RBAC ACC.
+ *
  * @author Emanuele Buccelli
  * @author (contributor) Stefano Mariani (mailto: s.mariani@unibo.it)
  *
  */
-public class RoleACCProxyAgentSide extends ACCProxyAgentSide {
+public class RBACACCProxyAgentSide extends ACCProxyAgentSide {
 
+    private static final int DEF_PORT = 20504;
     private List<String> permissions;
     private Role role;
-    private static final int DEF_PORT = 20504;
 
-    public RoleACCProxyAgentSide(final Object aid, final Role r,
+    /**
+     * Builds an RBAC ACC given the associated agent ID or name, its initial
+     * role and the assigned UUID.
+     *
+     * @param aid
+     *            the associated agent ID or name (String)
+     * @param r
+     *            the initial role to play
+     * @param agentUUID
+     *            the UUID assigned
+     * @throws TucsonInvalidAgentIdException
+     *             if the given agent ID is NOT valid
+     */
+    public RBACACCProxyAgentSide(final Object aid, final Role r,
             final UUID agentUUID) throws TucsonInvalidAgentIdException {
-        this(aid, "localhost", DEF_PORT, r, agentUUID);
+        this(aid, "localhost", RBACACCProxyAgentSide.DEF_PORT, r, agentUUID);
     }
 
-    public RoleACCProxyAgentSide(final Object aid, final String n, final int p,
+    /**
+     * Builds an RBAC ACC given the associated agent ID or name, the IP address
+     * of the TuCSoN node it is willing to interact with, its TCP port also, as
+     * well as the associated agent initial role and the assigned UUID.
+     *
+     * @param aid
+     *            the associated agent ID or name (String)
+     * @param n
+     *            the IP address
+     * @param p
+     *            the TCP port number
+     * @param r
+     *            the initial role to play
+     * @param agentUUID
+     *            the UUID assigned
+     * @throws TucsonInvalidAgentIdException
+     *             if the given agent ID is NOT valid
+     */
+    public RBACACCProxyAgentSide(final Object aid, final String n, final int p,
             final Role r, final UUID agentUUID)
-            throws TucsonInvalidAgentIdException {
+                    throws TucsonInvalidAgentIdException {
         super(aid, n, p, agentUUID);
-        // permissions = new ArrayList<String>();
         this.setRole(r);
     }
 
@@ -59,25 +89,20 @@ public class RoleACCProxyAgentSide extends ACCProxyAgentSide {
     @Override
     public ITucsonOperation get(final TupleCentreId tid,
             final TucsonOperationCompletionListener l)
-            throws TucsonOperationNotPossibleException,
-            UnreachableNodeException {
+                    throws TucsonOperationNotPossibleException,
+                    UnreachableNodeException {
         this.checkPermission("get");
         return this.executor.doNonBlockingOperation(this.aid,
                 TucsonOperation.getCode(), tid, null, l);
     }
 
-    // edited by sangio
-    // restituzione della lista delle operazioni asincrone completate e non
-    // ancora gestite("consumate) dall'agente
     @Override
     public List<TucsonOpCompletionEvent> getCompletionEventsList() {
-        // TODO Auto-generated method stub
         return this.executor.events;
     }
 
     @Override
     public Map<Long, TucsonOperation> getPendingOperationsMap() {
-        // TODO Auto-generated method stub
         return this.executor.operations;
     }
 
@@ -90,7 +115,9 @@ public class RoleACCProxyAgentSide extends ACCProxyAgentSide {
         try {
             spec = new LogicTuple("spec", new Var("S"));
         } catch (final InvalidVarNameException e) {
-            // Cannot happen, the var name it's specified here
+            /*
+             * Cannot happen
+             */
             e.printStackTrace();
         }
         return this.executor.doBlockingOperation(this.aid,
@@ -100,8 +127,8 @@ public class RoleACCProxyAgentSide extends ACCProxyAgentSide {
     @Override
     public ITucsonOperation getS(final TupleCentreId tid,
             final TucsonOperationCompletionListener l)
-            throws TucsonOperationNotPossibleException,
-            UnreachableNodeException {
+                    throws TucsonOperationNotPossibleException,
+                    UnreachableNodeException {
         this.checkPermission("getS");
         final LogicTuple spec = new LogicTuple("spec");
         return this.executor.doNonBlockingOperation(this.aid,
@@ -117,7 +144,6 @@ public class RoleACCProxyAgentSide extends ACCProxyAgentSide {
     public ITucsonOperation in(final TupleCentreId tid, final Tuple tuple,
             final Long timeout) throws TucsonOperationNotPossibleException,
             UnreachableNodeException, OperationTimeOutException {
-
         this.checkPermission("in");
         return super.in(tid, tuple, timeout);
     }
@@ -125,9 +151,8 @@ public class RoleACCProxyAgentSide extends ACCProxyAgentSide {
     @Override
     public ITucsonOperation in(final TupleCentreId tid, final Tuple tuple,
             final TucsonOperationCompletionListener l)
-            throws TucsonOperationNotPossibleException,
-            UnreachableNodeException {
-
+                    throws TucsonOperationNotPossibleException,
+                    UnreachableNodeException {
         this.checkPermission("in");
         return super.in(tid, tuple, l);
     }
@@ -144,8 +169,8 @@ public class RoleACCProxyAgentSide extends ACCProxyAgentSide {
     @Override
     public ITucsonOperation inAll(final TupleCentreId tid, final Tuple tuple,
             final TucsonOperationCompletionListener l)
-            throws TucsonOperationNotPossibleException,
-            UnreachableNodeException {
+                    throws TucsonOperationNotPossibleException,
+                    UnreachableNodeException {
         this.checkPermission("inAll");
         return this.executor.doNonBlockingOperation(this.aid,
                 TucsonOperation.inAllCode(), tid, tuple, l);
@@ -155,7 +180,6 @@ public class RoleACCProxyAgentSide extends ACCProxyAgentSide {
     public ITucsonOperation inp(final TupleCentreId tid, final Tuple tuple,
             final Long timeout) throws TucsonOperationNotPossibleException,
             UnreachableNodeException, OperationTimeOutException {
-
         this.checkPermission("inp");
         return super.inp(tid, tuple, timeout);
     }
@@ -163,9 +187,8 @@ public class RoleACCProxyAgentSide extends ACCProxyAgentSide {
     @Override
     public ITucsonOperation inp(final TupleCentreId tid, final Tuple tuple,
             final TucsonOperationCompletionListener l)
-            throws TucsonOperationNotPossibleException,
-            UnreachableNodeException {
-
+                    throws TucsonOperationNotPossibleException,
+                    UnreachableNodeException {
         this.checkPermission("inp");
         return super.inp(tid, tuple, l);
     }
@@ -174,8 +197,8 @@ public class RoleACCProxyAgentSide extends ACCProxyAgentSide {
     public ITucsonOperation inpS(final TupleCentreId tid,
             final LogicTuple event, final LogicTuple guards,
             final LogicTuple reactionBody, final Long timeout)
-            throws TucsonOperationNotPossibleException,
-            UnreachableNodeException, OperationTimeOutException {
+                    throws TucsonOperationNotPossibleException,
+                    UnreachableNodeException, OperationTimeOutException {
         this.checkPermission("inpS");
         final LogicTuple tuple = new LogicTuple(Parser.parseSingleTerm(
                 "reaction(" + event + "," + guards + "," + reactionBody + ")",
@@ -189,8 +212,8 @@ public class RoleACCProxyAgentSide extends ACCProxyAgentSide {
             final LogicTuple event, final LogicTuple guards,
             final LogicTuple reactionBody,
             final TucsonOperationCompletionListener l)
-            throws TucsonOperationNotPossibleException,
-            UnreachableNodeException {
+                    throws TucsonOperationNotPossibleException,
+                    UnreachableNodeException {
         this.checkPermission("inpS");
         final LogicTuple tuple = new LogicTuple(Parser.parseSingleTerm(
                 "reaction(" + event + "," + guards + "," + reactionBody + ")",
@@ -203,8 +226,8 @@ public class RoleACCProxyAgentSide extends ACCProxyAgentSide {
     public ITucsonOperation inS(final TupleCentreId tid,
             final LogicTuple event, final LogicTuple guards,
             final LogicTuple reactionBody, final Long timeout)
-            throws TucsonOperationNotPossibleException,
-            UnreachableNodeException, OperationTimeOutException {
+                    throws TucsonOperationNotPossibleException,
+                    UnreachableNodeException, OperationTimeOutException {
         this.checkPermission("inS");
         final LogicTuple tuple = new LogicTuple(Parser.parseSingleTerm(
                 "reaction(" + event + "," + guards + "," + reactionBody + ")",
@@ -218,8 +241,8 @@ public class RoleACCProxyAgentSide extends ACCProxyAgentSide {
             final LogicTuple event, final LogicTuple guards,
             final LogicTuple reactionBody,
             final TucsonOperationCompletionListener l)
-            throws TucsonOperationNotPossibleException,
-            UnreachableNodeException {
+                    throws TucsonOperationNotPossibleException,
+                    UnreachableNodeException {
         this.checkPermission("inS");
         final LogicTuple tuple = new LogicTuple(Parser.parseSingleTerm(
                 "reaction(" + event + "," + guards + "," + reactionBody + ")",
@@ -240,8 +263,8 @@ public class RoleACCProxyAgentSide extends ACCProxyAgentSide {
     @Override
     public ITucsonOperation no(final TupleCentreId tid, final Tuple tuple,
             final TucsonOperationCompletionListener l)
-            throws TucsonOperationNotPossibleException,
-            UnreachableNodeException {
+                    throws TucsonOperationNotPossibleException,
+                    UnreachableNodeException {
         this.checkPermission("no");
         return this.executor.doNonBlockingOperation(this.aid,
                 TucsonOperation.noCode(), tid, tuple, l);
@@ -259,8 +282,8 @@ public class RoleACCProxyAgentSide extends ACCProxyAgentSide {
     @Override
     public ITucsonOperation noAll(final TupleCentreId tid, final Tuple tuple,
             final TucsonOperationCompletionListener l)
-            throws TucsonOperationNotPossibleException,
-            UnreachableNodeException {
+                    throws TucsonOperationNotPossibleException,
+                    UnreachableNodeException {
         this.checkPermission("noAll");
         return this.executor.doNonBlockingOperation(this.aid,
                 TucsonOperation.noAllCode(), tid, tuple, l);
@@ -278,8 +301,8 @@ public class RoleACCProxyAgentSide extends ACCProxyAgentSide {
     @Override
     public ITucsonOperation nop(final TupleCentreId tid, final Tuple tuple,
             final TucsonOperationCompletionListener l)
-            throws TucsonOperationNotPossibleException,
-            UnreachableNodeException {
+                    throws TucsonOperationNotPossibleException,
+                    UnreachableNodeException {
         this.checkPermission("nop");
         return this.executor.doNonBlockingOperation(this.aid,
                 TucsonOperation.nopCode(), tid, tuple, l);
@@ -289,8 +312,8 @@ public class RoleACCProxyAgentSide extends ACCProxyAgentSide {
     public ITucsonOperation nopS(final TupleCentreId tid,
             final LogicTuple event, final LogicTuple guards,
             final LogicTuple reactionBody, final Long timeout)
-            throws TucsonOperationNotPossibleException,
-            UnreachableNodeException, OperationTimeOutException {
+                    throws TucsonOperationNotPossibleException,
+                    UnreachableNodeException, OperationTimeOutException {
         this.checkPermission("nopS");
         final LogicTuple tuple = new LogicTuple(Parser.parseSingleTerm(
                 "reaction(" + event + "," + guards + "," + reactionBody + ")",
@@ -304,8 +327,8 @@ public class RoleACCProxyAgentSide extends ACCProxyAgentSide {
             final LogicTuple event, final LogicTuple guards,
             final LogicTuple reactionBody,
             final TucsonOperationCompletionListener l)
-            throws TucsonOperationNotPossibleException,
-            UnreachableNodeException {
+                    throws TucsonOperationNotPossibleException,
+                    UnreachableNodeException {
         this.checkPermission("nopS");
         final LogicTuple tuple = new LogicTuple(Parser.parseSingleTerm(
                 "reaction(" + event + "," + guards + "," + reactionBody + ")",
@@ -318,8 +341,8 @@ public class RoleACCProxyAgentSide extends ACCProxyAgentSide {
     public ITucsonOperation noS(final TupleCentreId tid,
             final LogicTuple event, final LogicTuple guards,
             final LogicTuple reactionBody, final Long timeout)
-            throws TucsonOperationNotPossibleException,
-            UnreachableNodeException, OperationTimeOutException {
+                    throws TucsonOperationNotPossibleException,
+                    UnreachableNodeException, OperationTimeOutException {
         this.checkPermission("noS");
         final LogicTuple tuple = new LogicTuple(Parser.parseSingleTerm(
                 "reaction(" + event + "," + guards + "," + reactionBody + ")",
@@ -333,8 +356,8 @@ public class RoleACCProxyAgentSide extends ACCProxyAgentSide {
             final LogicTuple event, final LogicTuple guards,
             final LogicTuple reactionBody,
             final TucsonOperationCompletionListener l)
-            throws TucsonOperationNotPossibleException,
-            UnreachableNodeException {
+                    throws TucsonOperationNotPossibleException,
+                    UnreachableNodeException {
         this.checkPermission("noS");
         final LogicTuple tuple = new LogicTuple(Parser.parseSingleTerm(
                 "reaction(" + event + "," + guards + "," + reactionBody + ")",
@@ -347,7 +370,6 @@ public class RoleACCProxyAgentSide extends ACCProxyAgentSide {
     public ITucsonOperation out(final TupleCentreId tid, final Tuple tuple,
             final Long timeout) throws TucsonOperationNotPossibleException,
             UnreachableNodeException, OperationTimeOutException {
-
         this.checkPermission("out");
         return super.out(tid, tuple, timeout);
     }
@@ -355,8 +377,8 @@ public class RoleACCProxyAgentSide extends ACCProxyAgentSide {
     @Override
     public ITucsonOperation out(final TupleCentreId tid, final Tuple tuple,
             final TucsonOperationCompletionListener l)
-            throws TucsonOperationNotPossibleException,
-            UnreachableNodeException {
+                    throws TucsonOperationNotPossibleException,
+                    UnreachableNodeException {
         this.checkPermission("out");
         return super.out(tid, tuple, l);
     }
@@ -373,8 +395,8 @@ public class RoleACCProxyAgentSide extends ACCProxyAgentSide {
     @Override
     public ITucsonOperation outAll(final TupleCentreId tid, final Tuple tuple,
             final TucsonOperationCompletionListener l)
-            throws TucsonOperationNotPossibleException,
-            UnreachableNodeException {
+                    throws TucsonOperationNotPossibleException,
+                    UnreachableNodeException {
         this.checkPermission("outAll");
         return this.executor.doNonBlockingOperation(this.aid,
                 TucsonOperation.outAllCode(), tid, tuple, l);
@@ -384,8 +406,8 @@ public class RoleACCProxyAgentSide extends ACCProxyAgentSide {
     public ITucsonOperation outS(final TupleCentreId tid,
             final LogicTuple event, final LogicTuple guards,
             final LogicTuple reactionBody, final Long timeout)
-            throws TucsonOperationNotPossibleException,
-            UnreachableNodeException, OperationTimeOutException {
+                    throws TucsonOperationNotPossibleException,
+                    UnreachableNodeException, OperationTimeOutException {
         this.checkPermission("outS");
         final LogicTuple tuple = new LogicTuple(Parser.parseSingleTerm(
                 "reaction(" + event + "," + guards + "," + reactionBody + ")",
@@ -399,8 +421,8 @@ public class RoleACCProxyAgentSide extends ACCProxyAgentSide {
             final LogicTuple event, final LogicTuple guards,
             final LogicTuple reactionBody,
             final TucsonOperationCompletionListener l)
-            throws TucsonOperationNotPossibleException,
-            UnreachableNodeException {
+                    throws TucsonOperationNotPossibleException,
+                    UnreachableNodeException {
         this.checkPermission("outS");
         final LogicTuple tuple = new LogicTuple(Parser.parseSingleTerm(
                 "reaction(" + event + "," + guards + "," + reactionBody + ")",
@@ -413,7 +435,6 @@ public class RoleACCProxyAgentSide extends ACCProxyAgentSide {
     public ITucsonOperation rd(final TupleCentreId tid, final Tuple tuple,
             final Long timeout) throws TucsonOperationNotPossibleException,
             UnreachableNodeException, OperationTimeOutException {
-
         this.checkPermission("rd");
         return super.rd(tid, tuple, timeout);
     }
@@ -421,9 +442,8 @@ public class RoleACCProxyAgentSide extends ACCProxyAgentSide {
     @Override
     public ITucsonOperation rd(final TupleCentreId tid, final Tuple tuple,
             final TucsonOperationCompletionListener l)
-            throws TucsonOperationNotPossibleException,
-            UnreachableNodeException {
-
+                    throws TucsonOperationNotPossibleException,
+                    UnreachableNodeException {
         this.checkPermission("rd");
         return super.rd(tid, tuple, l);
     }
@@ -440,8 +460,8 @@ public class RoleACCProxyAgentSide extends ACCProxyAgentSide {
     @Override
     public ITucsonOperation rdAll(final TupleCentreId tid, final Tuple tuple,
             final TucsonOperationCompletionListener l)
-            throws TucsonOperationNotPossibleException,
-            UnreachableNodeException {
+                    throws TucsonOperationNotPossibleException,
+                    UnreachableNodeException {
         this.checkPermission("rdAll");
         return this.executor.doNonBlockingOperation(this.aid,
                 TucsonOperation.rdAllCode(), tid, tuple, l);
@@ -451,7 +471,6 @@ public class RoleACCProxyAgentSide extends ACCProxyAgentSide {
     public ITucsonOperation rdp(final TupleCentreId tid, final Tuple tuple,
             final Long timeout) throws TucsonOperationNotPossibleException,
             UnreachableNodeException, OperationTimeOutException {
-
         this.checkPermission("rdp");
         return super.rdp(tid, tuple, timeout);
     }
@@ -459,9 +478,8 @@ public class RoleACCProxyAgentSide extends ACCProxyAgentSide {
     @Override
     public ITucsonOperation rdp(final TupleCentreId tid, final Tuple tuple,
             final TucsonOperationCompletionListener l)
-            throws TucsonOperationNotPossibleException,
-            UnreachableNodeException {
-
+                    throws TucsonOperationNotPossibleException,
+                    UnreachableNodeException {
         this.checkPermission("rdp");
         return super.rdp(tid, tuple, l);
     }
@@ -470,8 +488,8 @@ public class RoleACCProxyAgentSide extends ACCProxyAgentSide {
     public ITucsonOperation rdpS(final TupleCentreId tid,
             final LogicTuple event, final LogicTuple guards,
             final LogicTuple reactionBody, final Long timeout)
-            throws TucsonOperationNotPossibleException,
-            UnreachableNodeException, OperationTimeOutException {
+                    throws TucsonOperationNotPossibleException,
+                    UnreachableNodeException, OperationTimeOutException {
         this.checkPermission("rdpS");
         final LogicTuple tuple = new LogicTuple(Parser.parseSingleTerm(
                 "reaction(" + event + "," + guards + "," + reactionBody + ")",
@@ -485,8 +503,8 @@ public class RoleACCProxyAgentSide extends ACCProxyAgentSide {
             final LogicTuple event, final LogicTuple guards,
             final LogicTuple reactionBody,
             final TucsonOperationCompletionListener l)
-            throws TucsonOperationNotPossibleException,
-            UnreachableNodeException {
+                    throws TucsonOperationNotPossibleException,
+                    UnreachableNodeException {
         this.checkPermission("rdpS");
         final LogicTuple tuple = new LogicTuple(Parser.parseSingleTerm(
                 "reaction(" + event + "," + guards + "," + reactionBody + ")",
@@ -499,8 +517,8 @@ public class RoleACCProxyAgentSide extends ACCProxyAgentSide {
     public ITucsonOperation rdS(final TupleCentreId tid,
             final LogicTuple event, final LogicTuple guards,
             final LogicTuple reactionBody, final Long timeout)
-            throws TucsonOperationNotPossibleException,
-            UnreachableNodeException, OperationTimeOutException {
+                    throws TucsonOperationNotPossibleException,
+                    UnreachableNodeException, OperationTimeOutException {
         this.checkPermission("rdS");
         final LogicTuple tuple = new LogicTuple(Parser.parseSingleTerm(
                 "reaction(" + event + "," + guards + "," + reactionBody + ")",
@@ -514,8 +532,8 @@ public class RoleACCProxyAgentSide extends ACCProxyAgentSide {
             final LogicTuple event, final LogicTuple guards,
             final LogicTuple reactionBody,
             final TucsonOperationCompletionListener l)
-            throws TucsonOperationNotPossibleException,
-            UnreachableNodeException {
+                    throws TucsonOperationNotPossibleException,
+                    UnreachableNodeException {
         this.checkPermission("rdS");
         final LogicTuple tuple = new LogicTuple(Parser.parseSingleTerm(
                 "reaction(" + event + "," + guards + "," + reactionBody + ")",
@@ -536,8 +554,8 @@ public class RoleACCProxyAgentSide extends ACCProxyAgentSide {
     @Override
     public ITucsonOperation set(final TupleCentreId tid, final Tuple tuple,
             final TucsonOperationCompletionListener l)
-            throws TucsonOperationNotPossibleException,
-            UnreachableNodeException {
+                    throws TucsonOperationNotPossibleException,
+                    UnreachableNodeException {
         this.checkPermission("set");
         return this.executor.doNonBlockingOperation(this.aid,
                 TucsonOperation.setCode(), tid, tuple, l);
@@ -546,8 +564,8 @@ public class RoleACCProxyAgentSide extends ACCProxyAgentSide {
     @Override
     public ITucsonOperation setS(final TupleCentreId tid,
             final LogicTuple spec, final Long timeout)
-            throws TucsonOperationNotPossibleException,
-            UnreachableNodeException, OperationTimeOutException {
+                    throws TucsonOperationNotPossibleException,
+                    UnreachableNodeException, OperationTimeOutException {
         this.checkPermission("setS");
         return this.executor.doBlockingOperation(this.aid,
                 TucsonOperation.setSCode(), tid, spec, timeout);
@@ -556,8 +574,8 @@ public class RoleACCProxyAgentSide extends ACCProxyAgentSide {
     @Override
     public ITucsonOperation setS(final TupleCentreId tid,
             final LogicTuple spec, final TucsonOperationCompletionListener l)
-            throws TucsonOperationNotPossibleException,
-            UnreachableNodeException {
+                    throws TucsonOperationNotPossibleException,
+                    UnreachableNodeException {
         this.checkPermission("setS");
         return this.executor.doNonBlockingOperation(this.aid,
                 TucsonOperation.setSCode(), tid, spec, l);
@@ -579,8 +597,8 @@ public class RoleACCProxyAgentSide extends ACCProxyAgentSide {
     @Override
     public ITucsonOperation setS(final TupleCentreId tid, final String spec,
             final TucsonOperationCompletionListener l)
-            throws TucsonOperationNotPossibleException,
-            UnreachableNodeException {
+                    throws TucsonOperationNotPossibleException,
+                    UnreachableNodeException {
         this.checkPermission("setS");
         final LogicTuple specT = new LogicTuple("spec", new Value(spec));
         return this.executor.doNonBlockingOperation(this.aid,
@@ -599,8 +617,8 @@ public class RoleACCProxyAgentSide extends ACCProxyAgentSide {
     @Override
     public ITucsonOperation spawn(final TupleCentreId tid, final Tuple toSpawn,
             final TucsonOperationCompletionListener l)
-            throws TucsonOperationNotPossibleException,
-            UnreachableNodeException {
+                    throws TucsonOperationNotPossibleException,
+                    UnreachableNodeException {
         this.checkPermission("spawn");
         return this.executor.doNonBlockingOperation(this.aid,
                 TucsonOperation.spawnCode(), tid, toSpawn, l);
@@ -618,8 +636,8 @@ public class RoleACCProxyAgentSide extends ACCProxyAgentSide {
     @Override
     public ITucsonOperation uin(final TupleCentreId tid, final Tuple tuple,
             final TucsonOperationCompletionListener l)
-            throws TucsonOperationNotPossibleException,
-            UnreachableNodeException {
+                    throws TucsonOperationNotPossibleException,
+                    UnreachableNodeException {
         this.checkPermission("uin");
         return this.executor.doNonBlockingOperation(this.aid,
                 TucsonOperation.uinCode(), tid, tuple, l);
@@ -637,8 +655,8 @@ public class RoleACCProxyAgentSide extends ACCProxyAgentSide {
     @Override
     public ITucsonOperation uinp(final TupleCentreId tid, final Tuple tuple,
             final TucsonOperationCompletionListener l)
-            throws TucsonOperationNotPossibleException,
-            UnreachableNodeException {
+                    throws TucsonOperationNotPossibleException,
+                    UnreachableNodeException {
         this.checkPermission("uinp");
         return this.executor.doNonBlockingOperation(this.aid,
                 TucsonOperation.uinpCode(), tid, tuple, l);
@@ -656,8 +674,8 @@ public class RoleACCProxyAgentSide extends ACCProxyAgentSide {
     @Override
     public ITucsonOperation uno(final TupleCentreId tid, final Tuple tuple,
             final TucsonOperationCompletionListener l)
-            throws TucsonOperationNotPossibleException,
-            UnreachableNodeException {
+                    throws TucsonOperationNotPossibleException,
+                    UnreachableNodeException {
         this.checkPermission("uno");
         return this.executor.doNonBlockingOperation(this.aid,
                 TucsonOperation.unoCode(), tid, tuple, l);
@@ -675,8 +693,8 @@ public class RoleACCProxyAgentSide extends ACCProxyAgentSide {
     @Override
     public ITucsonOperation unop(final TupleCentreId tid, final Tuple tuple,
             final TucsonOperationCompletionListener l)
-            throws TucsonOperationNotPossibleException,
-            UnreachableNodeException {
+                    throws TucsonOperationNotPossibleException,
+                    UnreachableNodeException {
         this.checkPermission("unop");
         return this.executor.doNonBlockingOperation(this.aid,
                 TucsonOperation.unopCode(), tid, tuple, l);
@@ -694,8 +712,8 @@ public class RoleACCProxyAgentSide extends ACCProxyAgentSide {
     @Override
     public ITucsonOperation urd(final TupleCentreId tid, final Tuple tuple,
             final TucsonOperationCompletionListener l)
-            throws TucsonOperationNotPossibleException,
-            UnreachableNodeException {
+                    throws TucsonOperationNotPossibleException,
+                    UnreachableNodeException {
         this.checkPermission("urd");
         return this.executor.doNonBlockingOperation(this.aid,
                 TucsonOperation.urdCode(), tid, tuple, l);
@@ -713,8 +731,8 @@ public class RoleACCProxyAgentSide extends ACCProxyAgentSide {
     @Override
     public ITucsonOperation urdp(final TupleCentreId tid, final Tuple tuple,
             final TucsonOperationCompletionListener l)
-            throws TucsonOperationNotPossibleException,
-            UnreachableNodeException {
+                    throws TucsonOperationNotPossibleException,
+                    UnreachableNodeException {
         this.checkPermission("urdp");
         return this.executor.doNonBlockingOperation(this.aid,
                 TucsonOperation.urdpCode(), tid, tuple, l);

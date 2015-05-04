@@ -45,7 +45,7 @@ public class DiningPhilosopher extends AbstractTucsonAgent {
      */
     public DiningPhilosopher(final String aid, final TucsonTupleCentreId table,
             final int left, final int right)
-                    throws TucsonInvalidAgentIdException {
+            throws TucsonInvalidAgentIdException {
         super(aid);
         this.myTable = table;
         this.chop1 = left;
@@ -133,7 +133,7 @@ public class DiningPhilosopher extends AbstractTucsonAgent {
         try {
             final NegotiationACC negAcc = TucsonMetaACC
                     .getNegotiationContext(this.getTucsonAgentId());
-            this.acc = negAcc.activateDefaultRole();
+            this.acc = negAcc.playDefaultRole();
         } catch (final OperationTimeOutException e) {
             e.printStackTrace();
         } catch (final TucsonInvalidAgentIdException e) {

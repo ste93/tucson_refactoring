@@ -29,7 +29,7 @@ import alice.tuplecentre.api.TupleTemplate;
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public abstract class AbstractTransducer implements
-        TransducerStandardInterface, TucsonOperationCompletionListener {
+TransducerStandardInterface, TucsonOperationCompletionListener {
 
     /** 'sensing' operation ('getEnv') */
     public static final int GET_MODE = 0;

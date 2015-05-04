@@ -1,8 +1,8 @@
 package alice.respect.api.exceptions;
 
 /**
- * 
- * @author Stefano Mariani (mailto: s.mariani@unibo.it)
+ * @author Emanuele Buccelli
+ * @author (contributor) Stefano Mariani (mailto: s.mariani@unibo.it)
  *
  */
 public class OperationNotAllowedException extends Exception {

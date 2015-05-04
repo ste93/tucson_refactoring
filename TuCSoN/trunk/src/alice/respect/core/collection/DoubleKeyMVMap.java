@@ -248,7 +248,7 @@ public class DoubleKeyMVMap<K, Q, V> {
             }
 
             private class WrappedListIterator extends WrappedIterator implements
-                    ListIterator<V> {
+            ListIterator<V> {
 
                 public WrappedListIterator(final int index) {
                     super(Values.this.wrappedList.listIterator(index));

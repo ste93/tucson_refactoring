@@ -93,7 +93,7 @@ public class HelloWorldAgent extends AbstractTucsonAgent {
              */
             final NegotiationACC negAcc = TucsonMetaACC
                     .getNegotiationContext(this.getTucsonAgentId());
-            final SynchACC acc = negAcc.activateDefaultRole();
+            final SynchACC acc = negAcc.playDefaultRole();
             /*
              * 5) Define the tuplecentre target of your coordination operations.
              */
