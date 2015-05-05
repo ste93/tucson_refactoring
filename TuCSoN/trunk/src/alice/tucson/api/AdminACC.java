@@ -76,7 +76,7 @@ public interface AdminACC extends EnhancedACC {
      * @throws OperationTimeOutException
      * @throws OperationNotAllowedException
      */
-    void add(RBACStructure rbac) throws TucsonOperationNotPossibleException,
+    void install(RBACStructure rbac) throws TucsonOperationNotPossibleException,
     UnreachableNodeException, OperationTimeOutException,
     OperationNotAllowedException;
 
@@ -99,7 +99,7 @@ public interface AdminACC extends EnhancedACC {
      * @throws OperationTimeOutException
      * @throws OperationNotAllowedException
      */
-    void add(RBACStructure rbac, Long timeout, String node, int port)
+    void install(RBACStructure rbac, Long timeout, String node, int port)
             throws TucsonOperationNotPossibleException,
             UnreachableNodeException, OperationTimeOutException,
             OperationNotAllowedException;

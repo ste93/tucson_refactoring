@@ -52,7 +52,7 @@ public class TucsonPolicy implements Policy {
         this.permissions = perms;
     }
 
-    private TucsonPolicy(final String polName) {
+    public TucsonPolicy(final String polName) {
         this(polName, new ArrayList<Permission>());
     }
 

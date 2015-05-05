@@ -6,11 +6,11 @@ reaction(
         no(boot_info(_)),
         current_time(Time),
         out(boot_info([time(Time)])),
-        out(rbac_installed(yes)),
+        out(is_rbac_installed(yes)),
         out(context_id(0)),
         out(authorised_agent('$EnvAgent')),
-        out(authorised_inspectors(yes)),
-        out(login_required(no)),
+        out(is_inspection_allowed(yes)),
+        out(is_login_required(no)),
         out(role_assignment(_,_))
     )
 ).
@@ -135,8 +135,8 @@ reaction(
     inp(authorise_inspection(A)),
     (invocation, operation),
     (
-        in(authorised_inspectors(_)),
-        out(authorised_inspectors(A)),
+        in(is_inspection_allowed(_)),
+        out(is_inspection_allowed(A)),
         out(authorise_inspection(A))
     )
 ).
@@ -145,7 +145,7 @@ reaction(
     inp(are_inspectors_auth(_)),
     invocation,
     (
-        rd(authorised_inspectors(A)),
+        rd(is_inspection_allowed(A)),
         out(are_inspectors_auth(A))
     )
 ). 

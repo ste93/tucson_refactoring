@@ -156,15 +156,15 @@ public class AdminACCProxyAgentSide extends ACCProxyAgentSide implements
     }
 
     @Override
-    public void add(final RBACStructure rbac)
+    public void install(final RBACStructure rbac)
             throws TucsonOperationNotPossibleException,
             UnreachableNodeException, OperationTimeOutException,
             OperationNotAllowedException {
-        this.add(rbac, null, this.node, this.port);
+        this.install(rbac, null, this.node, this.port);
     }
 
     @Override
-    public void add(final RBACStructure rbac, final Long timeout,
+    public void install(final RBACStructure rbac, final Long timeout,
             final String n, final int p)
             throws TucsonOperationNotPossibleException,
             UnreachableNodeException, OperationTimeOutException,
@@ -181,7 +181,8 @@ public class AdminACCProxyAgentSide extends ACCProxyAgentSide implements
             ITucsonOperation op = this.out(this.tid, orgTuple, timeout);
             if (op.isResultSuccess()) {
                 final LogicTuple res = op.getLogicTupleResult();
-                this.log("Installing RBAC for organisation: " + res);
+                this.log("Installing RBAC configuration for organisation: "
+                        + res.getArg(0));
             } else {
                 this.log("Cannot install RBAC for organisation: "
                         + rbac.getOrgName());
@@ -217,9 +218,9 @@ public class AdminACCProxyAgentSide extends ACCProxyAgentSide implements
             op = this.inp(this.tid, inspectorsTuple, timeout);
             if (op.isResultSuccess()) {
                 final LogicTuple res = op.getLogicTupleResult();
-                this.log("Inspectors authorised: " + res.getArg(0));
+                this.log("Inspection allowed: " + res.getArg(0));
             } else {
-                this.log("Error while trying to authorise inspection!");
+                this.log("Error while trying to allow inspection!");
             }
 
         } else {
@@ -244,9 +245,11 @@ public class AdminACCProxyAgentSide extends ACCProxyAgentSide implements
     public void removePolicy(final String policyName)
             throws TucsonOperationNotPossibleException,
             UnreachableNodeException, OperationTimeOutException {
+        final Value policy = new Value(policyName);
         final LogicTuple removePolicyTuple = new LogicTuple("remove_policy",
-                new Value(policyName));
+                policy);
         this.inp(this.tid, removePolicyTuple, (Long) null);
+        this.log("Removed policy: " + policy);
     }
 
     @Override
@@ -271,9 +274,11 @@ public class AdminACCProxyAgentSide extends ACCProxyAgentSide implements
     public void removeRole(final String roleName)
             throws TucsonOperationNotPossibleException,
             UnreachableNodeException, OperationTimeOutException {
+        final Value role = new Value(Utils.decapitalize(roleName));
         final LogicTuple roleDestructionTuple = new LogicTuple("remove_role",
-                new Value(Utils.decapitalize(roleName)));
+                role);
         this.inp(this.tid, roleDestructionTuple, (Long) null);
+        this.log("Removed role: " + role);
     }
 
     @Override
@@ -285,7 +290,7 @@ public class AdminACCProxyAgentSide extends ACCProxyAgentSide implements
         final ITucsonOperation op = this.inp(this.tid, newClassTuple,
                 (Long) null);
         if (op.isResultSuccess()) {
-            this.log("Changed basic agent class to " + newBasicAgentClass);
+            this.log("Changed basic agent class to: " + newBasicAgentClass);
         } else {
             this.log("Error while changing basic agent class!");
         }
@@ -354,7 +359,7 @@ public class AdminACCProxyAgentSide extends ACCProxyAgentSide implements
         final ITucsonOperation op = this.out(this.tid, authTuple, l);
         if (op.isResultSuccess()) {
             final LogicTuple res = op.getLogicTupleResult();
-            this.log("Authorised agent: " + res);
+            this.log("Authorising agent: " + res);
         } else {
             this.log("Error while authorising agent!");
         }

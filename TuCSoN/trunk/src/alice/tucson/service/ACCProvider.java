@@ -121,7 +121,7 @@ public class ACCProvider {
 
             String agentClass = profile.getProperty("agent-class");
             if (agentClass == null) {
-                agentClass = "base";
+                agentClass = "basic";
             }
 
             final LogicTuple req = new LogicTuple("context_request", new Value(

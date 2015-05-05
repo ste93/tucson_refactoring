@@ -306,7 +306,7 @@ public class TucsonNodeService {
             TucsonNodeService.NODES.put(this.tcpPort, this);
         }
         // Set rbac properties
-        this.baseAgentClass = "baseAgentClass";
+        this.baseAgentClass = "basicAgentClass";
         this.loginRequired = false;
         this.listAllRoles = true;
     }
@@ -762,7 +762,7 @@ public class TucsonNodeService {
         this.adminUsername = username;
     }
 
-    public void setBaseAgentClass(final String agentClass) {
+    public void setBasicAgentClass(final String agentClass) {
         this.baseAgentClass = agentClass;
     }
 
@@ -954,13 +954,13 @@ public class TucsonNodeService {
             TupleCentreContainer
                     .doBlockingOperation(TucsonOperation.outCode(),
                             this.nodeAid, this.idConfigTC, new LogicTuple(
-                                    "base_agent_class", new Value(
+                                    "basic_agent_class", new Value(
                                             this.baseAgentClass)));
 
             // Set login required
             TupleCentreContainer.doBlockingOperation(TucsonOperation.outCode(),
                     this.nodeAid, this.idConfigTC, new LogicTuple(
-                            "login_required", new Value(
+                            "is_login_required", new Value(
                                     this.loginRequired ? "yes" : "no")));
 
             // Allow or not list of all roles
@@ -972,7 +972,7 @@ public class TucsonNodeService {
             // Allow or not inspectors
             TupleCentreContainer.doBlockingOperation(TucsonOperation.outCode(),
                     this.nodeAid, this.idConfigTC, new LogicTuple(
-                            "authorize_inspectors", new Value(
+                            "allow_inspection", new Value(
                                     this.inspectorsAuthorized ? "yes" : "no")));
 
             // TupleCentreContainer.doBlockingOperation(TucsonOperation.outCode(),

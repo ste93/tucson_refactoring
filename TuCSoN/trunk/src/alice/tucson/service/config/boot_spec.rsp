@@ -3,10 +3,10 @@ reaction(out(boot),true,(
     no(boot_info(_)),
     current_time(Time),
     out(boot_info([time(Time)])),
-    out(rbac_installed(no)),
+    out(is_rbac_installed(no)),
     out(context_id(0)),
     %out(authorised_agent(_)),
-    out(authorised_inspectors(yes)),
+    out(is_inspection_allowed(yes)),
     out(policy(admin_policy,[])),
     out(role_policy(admin_role,admin_policy)),
     out(policy(defaultPolicy, []))
@@ -15,19 +15,19 @@ reaction(out(boot),true,(
 
 reaction(inp(install_rbac),request,
 (
-	in(rbac_installed(R)),
-	out(rbac_installed(yes)),
+	in(is_rbac_installed(R)),
+	out(is_rbac_installed(yes)),
 	out(install_rbac)
 )).
 
 reaction(inp(disinstall_rbac),request,
 (
-	in(rbac_installed(R)),
+	in(is_rbac_installed(R)),
 	in_all(role(Name,Description,Level), RoleList),
 	in_all(policy(Name,Permissions), PolicyList),
 	in_all(role_policy(NameRuolo,NamePolicy), RolePolicyList),
 	in_all(authorised_agent(NameAgent), AgentList),
-	out(rbac_installed(no)),
+	out(is_rbac_installed(no)),
 	out(disinstall_rbac)
 )).
 
@@ -64,7 +64,7 @@ reaction( inp(context_request(AgentId,_,AgentClass,AccUUID)),request,(
 
 % Agente non base, quindi ha effettuato il login
 reaction( inp(context_request(AgentId,_,AgentClass,AccUUID)),request,(
-  no(base_agent_class(AgentClass)),
+  no(basic_agent_class(AgentClass)),
   in(context_id(Id)),
   Id1 is Id + 1,
   out(context_id(Id1)),
@@ -74,8 +74,8 @@ reaction( inp(context_request(AgentId,_,AgentClass,AccUUID)),request,(
 
 % Richiesta di contesto per la classe base, quindi da utente che non ha effettuato login e login non richiesto
 reaction( inp(context_request(AgentId,_,AgentClass,AccUUID)),request,(
-  rd(base_agent_class(AgentClass)),
-  no(login_required(yes)),
+  rd(basic_agent_class(AgentClass)),
+  no(is_login_required(yes)),
   in(context_id(Id)),
   Id1 is Id + 1,
   out(context_id(Id1)),
@@ -85,9 +85,9 @@ reaction( inp(context_request(AgentId,_,AgentClass,AccUUID)),request,(
   
 % Richiesta di contesto per la classe base, quindi da utente che non ha effettuato login e login richiesto
 reaction( inp(context_request(AgentId,_,AgentClass,AccUUID)),request,(
-  rd(base_agent_class(AgentClass)),
-  rd(login_required(yes)),
-  out(context_request(AgentId,failed(login_required),AgentClass,AccUUID)) )).
+  rd(basic_agent_class(AgentClass)),
+  rd(is_login_required(yes)),
+  out(context_request(AgentId,failed(is_login_required),AgentClass,AccUUID)) )).
 
 %
 % context release
@@ -108,7 +108,7 @@ reaction( inp(context_shutdown(CtxId,AgentId,_)),request,(
 %
 reaction( out(role(Name,Desc, substitute)), completion,(
 	in(role(Name,Desc, substitute)),
-	rd(base_agent_class(Class)),
+	rd(basic_agent_class(Class)),
 	out(role(Name,Desc,Class))	
 )).
 
@@ -181,7 +181,7 @@ reaction( out(create_policy_list(AgentClass,[policy(PolicyId,PermissionList)|All
 	in(create_policy_list(AgentClass,_, ResultList)),	% tolgo la tupla scatenante la reazione
 	rd(role_policy(RoleId,PolicyId)),
 	no(role(RoleId,_,AgentClass)),
-	rd(base_agent_class(BaseClass)),
+	rd(basic_agent_class(BaseClass)),
 	rd(role(RoleId,_,BaseClass)),
 	out(create_policy_list(AgentClass,AllPolicyList, [policy(PolicyId,PermissionList)|ResultList]))	
 )).
@@ -297,13 +297,13 @@ reaction( inp(set_role_class(RoleId,AgentClass,Result)), request,
 %	Inspectors authorized?
 %
 reaction( inp(are_inspectors_auth(_)), request,(
- 	rd(authorised_inspectors(A)),
+ 	rd(is_inspection_allowed(A)),
  	out(are_inspectors_auth(A))
 )).
  
 reaction( inp(authorise_inspection(A)), request,(
- 	in(authorised_inspectors(_)),
- 	out(authorised_inspectors(A)),
+ 	in(is_inspection_allowed(_)),
+ 	out(is_inspection_allowed(A)),
  	out(authorise_inspection(A))
 )).
 
@@ -312,8 +312,8 @@ reaction( inp(authorise_inspection(A)), request,(
 %
 
 reaction( inp(set_login(A)), (invocation, operation),(
- 	in(login_required(_)),
- 	out(login_required(A)),
+ 	in(is_login_required(_)),
+ 	out(is_login_required(A)),
  	out(set_login(A))
 )).
 
@@ -327,8 +327,8 @@ reaction( inp(get_default_agent_class(_)), (invocation,operation),(
 )).
 
 reaction( inp(set_basic_agent_class(NewClassAgent)), request,(
- 	in(base_agent_class(OldClassAgent)),
- 	out(base_agent_class(NewClassAgent)),
+ 	in(basic_agent_class(OldClassAgent)),
+ 	out(basic_agent_class(NewClassAgent)),
  	in_all(role(_,_,OldClassAgent), RoleList),
 	out(change_roles_class(NewClassAgent, RoleList)),
  	out(set_basic_agent_class(NewClassAgent))
@@ -347,7 +347,7 @@ reaction( out(change_roles_class(NewClassAgent,[])), internal,
 )).
 
 reaction( inp(get_basic_agent_class(_)), invocation, (
-	rd(base_agent_class(A)),
+	rd(basic_agent_class(A)),
 	out(get_basic_agent_class(A))
 )).
 
@@ -364,7 +364,7 @@ reaction( inp(login_request(Credentials,_)), request, (
 % Richiesta di login. Le credenziali non sono corrette, viene ritornata la classe agente di default
 reaction( inp(login_request(Credentials,_)), request, (
 	no(authorised_agent(Credentials, AgentClass)),
-	rd(base_agent_class(Class)),
+	rd(basic_agent_class(Class)),
 	out(login_request(Credentials, failed(Class))))
 ).
 

@@ -257,7 +257,7 @@ public class NegotiationACCProxyAgentSide implements NegotiationACC {
             UnreachableNodeException, OperationTimeOutException {
         LogicTuple rbacInstalled = null;
         try {
-            rbacInstalled = new LogicTuple("rbac_installed", new Var("Result"));
+            rbacInstalled = new LogicTuple("is_rbac_installed", new Var("Result"));
         } catch (final InvalidVarNameException e) {
             e.printStackTrace();
         }
