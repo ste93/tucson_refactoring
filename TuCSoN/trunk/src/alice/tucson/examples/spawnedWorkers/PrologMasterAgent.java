@@ -136,11 +136,11 @@ public final class PrologMasterAgent {
                     "No input stream found.");
             System.exit(-1);
         }
-        final BufferedInputStream br = new BufferedInputStream(in);
-        final byte[] res = new byte[br.available()];
-        br.read(res);
-        br.close();
-        return new String(res);
+        try (final BufferedInputStream br = new BufferedInputStream(in);) {
+            final byte[] res = new byte[br.available()];
+            br.read(res);
+            return new String(res);
+        }
     }
 
     private PrologMasterAgent() {

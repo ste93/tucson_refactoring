@@ -17,7 +17,6 @@ import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
-import alice.tucson.network.exceptions.DialogCloseException;
 import alice.tucson.network.exceptions.DialogInitializationException;
 import alice.tucson.service.TucsonNodeService;
 import alice.tucson.utilities.Utils;
@@ -44,8 +43,6 @@ public final class PersistencyTester {
             } catch (final InterruptedException e) {
                 e.printStackTrace();
             } catch (final DialogInitializationException e) {
-                e.printStackTrace();
-            } catch (final DialogCloseException e) {
                 e.printStackTrace();
             }
             final TucsonTupleCentreId ttcid = new TucsonTupleCentreId(
@@ -86,10 +83,10 @@ public final class PersistencyTester {
             acc.inS(ttcid,
                     new LogicTuple("out", new Value("repulse",
                             new Value("INFO"))),
-                            new LogicTuple("completion"),
-                            LogicTuple
+                    new LogicTuple("completion"),
+                    LogicTuple
                             .parse("(rd_all(neighbour(_), NBRS),multiread(NBRS, repulse(INFO)))"),
-                            Long.MAX_VALUE);
+                    Long.MAX_VALUE);
             // disable persistency test
             acc.out(ttcidOrg, new LogicTuple("cmd", new Value(
                     "disable_persistency", new Value("def", new Value(1)))),

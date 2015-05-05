@@ -110,9 +110,7 @@ public class EditSpec extends javax.swing.JFrame {
             final java.io.File file = chooser.getSelectedFile();
             if (file != null) {
                 final String name = file.getAbsolutePath();
-                FileInputStream in = null;
-                try {
-                    in = new FileInputStream(name);
+                try (final FileInputStream in = new FileInputStream(name)) {
                     final byte[] text = new byte[in.available()];
                     in.read(text);
                     this.inputSpec.setText(new String(text));
@@ -124,18 +122,6 @@ public class EditSpec extends javax.swing.JFrame {
                     this.outputState.setText("File '" + name + "' not found.");
                 } catch (final IOException e) {
                     this.outputState.setText(e.toString());
-                    try {
-                        in.close();
-                    } catch (final IOException ee) {
-                        ee.printStackTrace();
-                    }
-                }
-                if (in != null) {
-                    try {
-                        in.close();
-                    } catch (final IOException e) {
-                        e.printStackTrace();
-                    }
                 }
             }
         }
@@ -147,9 +133,8 @@ public class EditSpec extends javax.swing.JFrame {
     }
 
     private void bSaveActionPerformed() {
-        FileOutputStream out = null;
-        try {
-            out = new FileOutputStream(this.specFileName);
+        try (final FileOutputStream out = new FileOutputStream(
+                this.specFileName)) {
             out.write(this.inputSpec.getText().getBytes());
             this.outputState.setText("ReSpecT specification saved on file '"
                     + this.specFileName + "'.");
@@ -158,18 +143,6 @@ public class EditSpec extends javax.swing.JFrame {
                     + "' not found.");
         } catch (final IOException e) {
             this.outputState.setText(e.toString());
-            try {
-                out.close();
-            } catch (final IOException ee) {
-                ee.printStackTrace();
-            }
-        }
-        if (out != null) {
-            try {
-                out.close();
-            } catch (final IOException e) {
-                e.printStackTrace();
-            }
         }
     }
 
@@ -180,9 +153,7 @@ public class EditSpec extends javax.swing.JFrame {
             final java.io.File file = chooser.getSelectedFile();
             if (file != null) {
                 final String name = file.getAbsolutePath();
-                FileOutputStream out = null;
-                try {
-                    out = new FileOutputStream(name);
+                try (final FileOutputStream out = new FileOutputStream(name)) {
                     out.write(this.inputSpec.getText().getBytes());
                     this.outputState
                             .setText("ReSpecT specification saved on file '"
@@ -192,18 +163,6 @@ public class EditSpec extends javax.swing.JFrame {
                     this.outputState.setText("File '" + name + "' not found.");
                 } catch (final IOException e) {
                     this.outputState.setText(e.toString());
-                    try {
-                        out.close();
-                    } catch (final IOException ee) {
-                        ee.printStackTrace();
-                    }
-                }
-                if (out != null) {
-                    try {
-                        out.close();
-                    } catch (final IOException e) {
-                        e.printStackTrace();
-                    }
                 }
             }
         }
