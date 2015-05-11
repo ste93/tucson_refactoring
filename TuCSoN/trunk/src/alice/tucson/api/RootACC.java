@@ -34,8 +34,13 @@ public interface RootACC {
      * setting up a communication/coordination channel with TuCSoN services.
      *
      * @throws UnreachableNodeException
+     *             if the TuCSoN node target of this operation is not
+     *             network-reachable
      * @throws TucsonOperationNotPossibleException
+     *             if the requested TuCSoN operation cannot be performed
      * @throws TucsonInvalidTupleCentreIdException
+     *             if the target tuple centre ID is not a valid TuCSoN tuple
+     *             centre ID
      */
     void enterACC()
             throws UnreachableNodeException, // galassi

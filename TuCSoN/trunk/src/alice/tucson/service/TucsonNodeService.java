@@ -87,7 +87,7 @@ public class TucsonNodeService {
 
     private static final String PERSISTENCY_PATH = "./persistent/";
 
-    public synchronized static final TucsonNodeService getNode(final int port) {
+    public static final synchronized TucsonNodeService getNode(final int port) {
         return TucsonNodeService.NODES.get(port);
     }
 
@@ -951,11 +951,10 @@ public class TucsonNodeService {
                     TucsonOperation.outCode(), this.nodeAid, this.idConfigTC,
                     new LogicTuple("boot"), null);
             // Set default agent class
-            TupleCentreContainer
-                    .doBlockingOperation(TucsonOperation.outCode(),
-                            this.nodeAid, this.idConfigTC, new LogicTuple(
-                                    "basic_agent_class", new Value(
-                                            this.baseAgentClass)));
+            TupleCentreContainer.doBlockingOperation(TucsonOperation.outCode(),
+                    this.nodeAid, this.idConfigTC,
+                    new LogicTuple("basic_agent_class", new Value(
+                            this.baseAgentClass)));
 
             // Set login required
             TupleCentreContainer.doBlockingOperation(TucsonOperation.outCode(),

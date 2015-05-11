@@ -54,9 +54,16 @@ public final class UnauthorisedAgent extends AbstractTucsonAgent {
 
     /**
      * @param id
+     *            the ID of this TuCSoN agent
      * @param netid
+     *            the IP address of the TuCSoN node it is willing to interact
+     *            with
      * @param p
+     *            the TCP port number of the TuCSoN node it is willing to
+     *            interact with
      * @throws TucsonInvalidAgentIdException
+     *             if the given String does not represent a valid TuCSoN agent
+     *             ID
      */
     public UnauthorisedAgent(final String id, final String netid, final int p)
             throws TucsonInvalidAgentIdException {
@@ -70,7 +77,7 @@ public final class UnauthorisedAgent extends AbstractTucsonAgent {
      * .core.AbstractTupleCentreOperation)
      */
     @Override
-    public void operationCompleted(AbstractTupleCentreOperation op) {
+    public void operationCompleted(final AbstractTupleCentreOperation op) {
         /*
          * Not used atm
          */
@@ -83,7 +90,7 @@ public final class UnauthorisedAgent extends AbstractTucsonAgent {
      * api.ITucsonOperation)
      */
     @Override
-    public void operationCompleted(ITucsonOperation op) {
+    public void operationCompleted(final ITucsonOperation op) {
         /*
          * Not used atm
          */
@@ -145,7 +152,7 @@ public final class UnauthorisedAgent extends AbstractTucsonAgent {
      * @param args
      *            program arguments: args[0] is TuCSoN Node TCP port number.
      */
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         int portno = 20504;
         if (args.length == 1) {
             portno = Integer.parseInt(args[0]);

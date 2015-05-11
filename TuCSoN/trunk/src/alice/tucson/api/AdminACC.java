@@ -28,11 +28,16 @@ public interface AdminACC extends EnhancedACC {
      * @param agent
      *            the authorised agent
      * @throws TucsonOperationNotPossibleException
+     *             if the requested TuCSoN operation cannot be performed
      * @throws UnreachableNodeException
+     *             if the TuCSoN node target of this operation is not
+     *             network-reachable
      * @throws OperationTimeOutException
+     *             if the operation timeout expired prior to operation
+     *             completion
      */
     void add(AuthorisedAgent agent) throws TucsonOperationNotPossibleException,
-    UnreachableNodeException, OperationTimeOutException;
+            UnreachableNodeException, OperationTimeOutException;
 
     /**
      * Adds a permission, that is, a grant stating what is allowed to do in the
@@ -44,8 +49,13 @@ public interface AdminACC extends EnhancedACC {
      * @param policyName
      *            the name of the existing policy to extend
      * @throws TucsonOperationNotPossibleException
+     *             if the requested TuCSoN operation cannot be performed
      * @throws UnreachableNodeException
+     *             if the TuCSoN node target of this operation is not
+     *             network-reachable
      * @throws OperationTimeOutException
+     *             if the operation timeout expired prior to operation
+     *             completion
      */
     void add(Permission permission, String policyName)
             throws TucsonOperationNotPossibleException,
@@ -58,11 +68,16 @@ public interface AdminACC extends EnhancedACC {
      * @param policy
      *            the policy to add
      * @throws TucsonOperationNotPossibleException
+     *             if the requested TuCSoN operation cannot be performed
      * @throws UnreachableNodeException
+     *             if the TuCSoN node target of this operation is not
+     *             network-reachable
      * @throws OperationTimeOutException
+     *             if the operation timeout expired prior to operation
+     *             completion
      */
     void add(Policy policy) throws TucsonOperationNotPossibleException,
-    UnreachableNodeException, OperationTimeOutException;
+            UnreachableNodeException, OperationTimeOutException;
 
     /**
      * Adds an RBAC structure, that is, the set of roles, policies, permissions,
@@ -72,13 +87,21 @@ public interface AdminACC extends EnhancedACC {
      * @param rbac
      *            the RBAC structure to add
      * @throws TucsonOperationNotPossibleException
+     *             if the requested TuCSoN operation cannot be performed
      * @throws UnreachableNodeException
+     *             if the TuCSoN node target of this operation is not
+     *             network-reachable
      * @throws OperationTimeOutException
+     *             if the operation timeout expired prior to operation
+     *             completion
      * @throws OperationNotAllowedException
+     *             if the requested TuCSoN operation is not allowed to the
+     *             requesting agent
      */
-    void install(RBACStructure rbac) throws TucsonOperationNotPossibleException,
-    UnreachableNodeException, OperationTimeOutException,
-    OperationNotAllowedException;
+    void install(RBACStructure rbac)
+            throws TucsonOperationNotPossibleException,
+            UnreachableNodeException, OperationTimeOutException,
+            OperationNotAllowedException;
 
     /**
      * Adds an RBAC structure, that is, the set of roles, policies, permissions,
@@ -95,9 +118,16 @@ public interface AdminACC extends EnhancedACC {
      * @param port
      *            the TCP port where the target TuCSoN node is installed
      * @throws TucsonOperationNotPossibleException
+     *             if the requested TuCSoN operation cannot be performed
      * @throws UnreachableNodeException
+     *             if the TuCSoN node target of this operation is not
+     *             network-reachable
      * @throws OperationTimeOutException
+     *             if the operation timeout expired prior to operation
+     *             completion
      * @throws OperationNotAllowedException
+     *             if the requested TuCSoN operation is not allowed to the
+     *             requesting agent
      */
     void install(RBACStructure rbac, Long timeout, String node, int port)
             throws TucsonOperationNotPossibleException,
@@ -112,11 +142,16 @@ public interface AdminACC extends EnhancedACC {
      * @param role
      *            the role to add
      * @throws TucsonOperationNotPossibleException
+     *             if the requested TuCSoN operation cannot be performed
      * @throws UnreachableNodeException
+     *             if the TuCSoN node target of this operation is not
+     *             network-reachable
      * @throws OperationTimeOutException
+     *             if the operation timeout expired prior to operation
+     *             completion
      */
     void add(Role role) throws TucsonOperationNotPossibleException,
-    UnreachableNodeException, OperationTimeOutException;
+            UnreachableNodeException, OperationTimeOutException;
 
     /**
      * Removes an agent from the list of authorised agents installed in default
@@ -134,8 +169,13 @@ public interface AdminACC extends EnhancedACC {
      * @param policyName
      *            the name of the policy to remove
      * @throws TucsonOperationNotPossibleException
+     *             if the requested TuCSoN operation cannot be performed
      * @throws UnreachableNodeException
+     *             if the TuCSoN node target of this operation is not
+     *             network-reachable
      * @throws OperationTimeOutException
+     *             if the operation timeout expired prior to operation
+     *             completion
      */
     void removePolicy(String policyName)
             throws TucsonOperationNotPossibleException,
@@ -145,14 +185,21 @@ public interface AdminACC extends EnhancedACC {
      * Removes the RBAC structure installed in default TuCSoN node (installed on
      * {@code localhost:20504}).
      *
-     * @throws OperationNotAllowedException
      * @throws TucsonOperationNotPossibleException
+     *             if the requested TuCSoN operation cannot be performed
      * @throws UnreachableNodeException
+     *             if the TuCSoN node target of this operation is not
+     *             network-reachable
      * @throws OperationTimeOutException
+     *             if the operation timeout expired prior to operation
+     *             completion
+     * @throws OperationNotAllowedException
+     *             if the requested TuCSoN operation is not allowed to the
+     *             requesting agent
      */
     void removeRBAC() throws OperationNotAllowedException,
-    TucsonOperationNotPossibleException, UnreachableNodeException,
-    OperationTimeOutException;
+            TucsonOperationNotPossibleException, UnreachableNodeException,
+            OperationTimeOutException;
 
     /**
      * Removes the RBAC structure installed in the given TuCSoN node (only local
@@ -166,9 +213,16 @@ public interface AdminACC extends EnhancedACC {
      * @param port
      *            the TCP port where the target TuCSoN node is installed
      * @throws OperationNotAllowedException
+     *             if the requested TuCSoN operation is not allowed to the
+     *             requesting agent
      * @throws TucsonOperationNotPossibleException
+     *             if the requested TuCSoN operation cannot be performed
      * @throws UnreachableNodeException
+     *             if the TuCSoN node target of this operation is not
+     *             network-reachable
      * @throws OperationTimeOutException
+     *             if the operation timeout expired prior to operation
+     *             completion
      */
     void removeRBAC(Long timeout, String node, int port)
             throws OperationNotAllowedException,
@@ -182,8 +236,13 @@ public interface AdminACC extends EnhancedACC {
      * @param roleName
      *            the name of the role to remove
      * @throws TucsonOperationNotPossibleException
+     *             if the requested TuCSoN operation cannot be performed
      * @throws UnreachableNodeException
+     *             if the TuCSoN node target of this operation is not
+     *             network-reachable
      * @throws OperationTimeOutException
+     *             if the operation timeout expired prior to operation
+     *             completion
      */
     void removeRole(String roleName)
             throws TucsonOperationNotPossibleException,
@@ -198,8 +257,13 @@ public interface AdminACC extends EnhancedACC {
      * @param newBasicAgentClass
      *            the new basic agent class
      * @throws TucsonOperationNotPossibleException
+     *             if the requested TuCSoN operation cannot be performed
      * @throws UnreachableNodeException
+     *             if the TuCSoN node target of this operation is not
+     *             network-reachable
      * @throws OperationTimeOutException
+     *             if the operation timeout expired prior to operation
+     *             completion
      */
     void setBasicAgentClass(String newBasicAgentClass)
             throws TucsonOperationNotPossibleException,
@@ -214,8 +278,13 @@ public interface AdminACC extends EnhancedACC {
      * @param agentClass
      *            the agent class to associate to the given role
      * @throws TucsonOperationNotPossibleException
+     *             if the requested TuCSoN operation cannot be performed
      * @throws UnreachableNodeException
+     *             if the TuCSoN node target of this operation is not
+     *             network-reachable
      * @throws OperationTimeOutException
+     *             if the operation timeout expired prior to operation
+     *             completion
      */
     void setRoleAgentClass(String roleName, String agentClass)
             throws TucsonOperationNotPossibleException,
@@ -230,8 +299,13 @@ public interface AdminACC extends EnhancedACC {
      * @param policyName
      *            the name of the policy
      * @throws TucsonOperationNotPossibleException
+     *             if the requested TuCSoN operation cannot be performed
      * @throws UnreachableNodeException
+     *             if the TuCSoN node target of this operation is not
+     *             network-reachable
      * @throws OperationTimeOutException
+     *             if the operation timeout expired prior to operation
+     *             completion
      */
     void setRolePolicy(String roleName, String policyName)
             throws TucsonOperationNotPossibleException,

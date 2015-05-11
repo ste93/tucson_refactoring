@@ -35,11 +35,17 @@ import alice.tucson.service.TucsonNodeService;
  */
 public final class TuCSoNodeLauncher {
 
+    private TuCSoNodeLauncher() {
+        /*
+         * To prevent instantiation
+         */
+    }
+
     /**
      * @param args
      *            program arguments: args[0] is TuCSoN Node TCP port number.
      */
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         int portno = 20504;
         if (args.length == 1) {
             portno = Integer.parseInt(args[0]);

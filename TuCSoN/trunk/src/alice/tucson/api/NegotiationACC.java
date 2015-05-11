@@ -27,11 +27,16 @@ public interface NegotiationACC {
      *
      * @return the set of playable roles
      * @throws TucsonOperationNotPossibleException
+     *             if the requested TuCSoN operation cannot be performed
      * @throws UnreachableNodeException
+     *             if the TuCSoN node target of this operation is not
+     *             network-reachable
      * @throws OperationTimeOutException
+     *             if the operation timeout expired prior to operation
+     *             completion
      */
     List<Role> listPlayableRoles() throws TucsonOperationNotPossibleException,
-    UnreachableNodeException, OperationTimeOutException;
+            UnreachableNodeException, OperationTimeOutException;
 
     /**
      * Attempts to perform login, so as to receive the associated agent class,
@@ -44,8 +49,13 @@ public interface NegotiationACC {
      *            the password of the agent
      * @return {@code true} or {@code false} depending on login success/failure
      * @throws TucsonOperationNotPossibleException
+     *             if the requested TuCSoN operation cannot be performed
      * @throws UnreachableNodeException
+     *             if the TuCSoN node target of this operation is not
+     *             network-reachable
      * @throws OperationTimeOutException
+     *             if the operation timeout expired prior to operation
+     *             completion
      */
     boolean login(String username, String password)
             throws TucsonOperationNotPossibleException,
@@ -58,13 +68,19 @@ public interface NegotiationACC {
      *
      * @return the ACC configured so as to enable and constrain the default role
      * @throws TucsonOperationNotPossibleException
+     *             if the requested TuCSoN operation cannot be performed
      * @throws UnreachableNodeException
+     *             if the TuCSoN node target of this operation is not
+     *             network-reachable
      * @throws OperationTimeOutException
+     *             if the operation timeout expired prior to operation
+     *             completion
      * @throws TucsonInvalidAgentIdException
+     *             if the requesting agent ID is not a valid TuCSoN agent ID
      */
     EnhancedACC playDefaultRole() throws TucsonOperationNotPossibleException,
-    UnreachableNodeException, OperationTimeOutException,
-    TucsonInvalidAgentIdException;
+            UnreachableNodeException, OperationTimeOutException,
+            TucsonInvalidAgentIdException;
 
     /**
      * Requests to play the given role according to RBAC configuration (as
@@ -76,10 +92,18 @@ public interface NegotiationACC {
      * @return the ACC configured so as to enable and constrain the requested
      *         role, or nothing if the agent is not allowed to play such role
      * @throws TucsonOperationNotPossibleException
+     *             if the requested TuCSoN operation cannot be performed
      * @throws UnreachableNodeException
+     *             if the TuCSoN node target of this operation is not
+     *             network-reachable
      * @throws OperationTimeOutException
+     *             if the operation timeout expired prior to operation
+     *             completion
      * @throws TucsonInvalidAgentIdException
+     *             if the requesting agent ID is not a valid TuCSoN agent ID
      * @throws AgentNotAllowedException
+     *             if the requesting agent is not allowed to request this TuCSoN
+     *             operation
      */
     EnhancedACC playRole(String roleName)
             throws TucsonOperationNotPossibleException,
@@ -100,10 +124,18 @@ public interface NegotiationACC {
      *         role, or nothing if the agent is not allowed to play such role or
      *         if the timeout expires
      * @throws TucsonOperationNotPossibleException
+     *             if the requested TuCSoN operation cannot be performed
      * @throws UnreachableNodeException
+     *             if the TuCSoN node target of this operation is not
+     *             network-reachable
      * @throws OperationTimeOutException
+     *             if the operation timeout expired prior to operation
+     *             completion
      * @throws TucsonInvalidAgentIdException
+     *             if the requesting agent ID is not a valid TuCSoN agent ID
      * @throws AgentNotAllowedException
+     *             if the requesting agent is not allowed to request this TuCSoN
+     *             operation
      */
     EnhancedACC playRole(String roleName, Long timeout)
             throws TucsonOperationNotPossibleException,
@@ -121,10 +153,18 @@ public interface NegotiationACC {
      *         requested, or nothing if no role exists satisfying agent's
      *         request
      * @throws TucsonOperationNotPossibleException
+     *             if the requested TuCSoN operation cannot be performed
      * @throws UnreachableNodeException
+     *             if the TuCSoN node target of this operation is not
+     *             network-reachable
      * @throws OperationTimeOutException
+     *             if the operation timeout expired prior to operation
+     *             completion
      * @throws TucsonInvalidAgentIdException
+     *             if the requesting agent ID is not a valid TuCSoN agent ID
      * @throws AgentNotAllowedException
+     *             if the requesting agent is not allowed to request this TuCSoN
+     *             operation
      */
     EnhancedACC playRoleWithPermissions(List<String> permNames)
             throws TucsonOperationNotPossibleException,
@@ -145,10 +185,18 @@ public interface NegotiationACC {
      *         requested, or nothing if no role exists satisfying agent's
      *         request or if the timeout expires
      * @throws TucsonOperationNotPossibleException
+     *             if the requested TuCSoN operation cannot be performed
      * @throws UnreachableNodeException
+     *             if the TuCSoN node target of this operation is not
+     *             network-reachable
      * @throws OperationTimeOutException
+     *             if the operation timeout expired prior to operation
+     *             completion
      * @throws TucsonInvalidAgentIdException
+     *             if the requesting agent ID is not a valid TuCSoN agent ID
      * @throws AgentNotAllowedException
+     *             if the requesting agent is not allowed to request this TuCSoN
+     *             operation
      */
     EnhancedACC playRoleWithPermissions(List<String> permNames, Long timeout)
             throws TucsonOperationNotPossibleException,
