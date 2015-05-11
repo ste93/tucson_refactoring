@@ -42,22 +42,24 @@ import alice.tuprolog.Prolog;
 import alice.tuprolog.lib.InvalidObjectIdException;
 
 /**
- * 
+ *
  * @author ste (mailto: s.mariani@unibo.it)
- * 
+ *
  */
 public class InterTupleCentreACCProxy implements InterTupleCentreACC,
-        OperationCompletionListener {
+OperationCompletionListener {
+
     /**
-     * 
+     *
      */
     class Controller extends Thread {
+
         private final AbstractTucsonProtocol dialog;
         private final Prolog p = new Prolog();
         private boolean stop;
 
         /**
-         * 
+         *
          * @param input
          */
         Controller(final AbstractTucsonProtocol d) {
@@ -65,8 +67,8 @@ public class InterTupleCentreACCProxy implements InterTupleCentreACC,
             this.dialog = d;
             this.stop = false;
             this.setDaemon(true);
-            final alice.tuprolog.lib.JavaLibrary jlib = (alice.tuprolog.lib.JavaLibrary) this.p
-                    .getLibrary("alice.tuprolog.lib.JavaLibrary");
+            final alice.tuprolog.lib.OOLibrary jlib = (alice.tuprolog.lib.OOLibrary) this.p
+                    .getLibrary("alice.tuprolog.lib.OOLibrary");
             try {
                 jlib.register(new alice.tuprolog.Struct("config"), this);
             } catch (final InvalidObjectIdException e) {
@@ -84,7 +86,7 @@ public class InterTupleCentreACCProxy implements InterTupleCentreACC,
                     msg = this.dialog.receiveMsgReply();
                 } catch (final DialogReceiveException e) {
                     InterTupleCentreACCProxy.this
-                            .err("TuCSoN Node disconnected unexpectedly :/");
+                    .err("TuCSoN Node disconnected unexpectedly :/");
                     this.setStop();
                     break;
                 }
@@ -158,15 +160,15 @@ public class InterTupleCentreACCProxy implements InterTupleCentreACC,
                         || op.isSet() || op.isGetS() || op.isSetS()
                         || op.isOutAll()) {
                     InterTupleCentreACCProxy.this
-                            .log("received completion msg " + msg.getId()
-                                    + ", op " + op.getType() + ", "
-                                    + op.getTupleListResult());
+                    .log("received completion msg " + msg.getId()
+                            + ", op " + op.getType() + ", "
+                            + op.getTupleListResult());
                     op.setTupleListResult((List<Tuple>) msg.getTupleResult());
                 } else {
                     InterTupleCentreACCProxy.this
-                            .log("received completion msg " + msg.getId()
-                                    + ", op " + op.getType() + ", "
-                                    + op.getTupleResult());
+                    .log("received completion msg " + msg.getId()
+                            + ", op " + op.getType() + ", "
+                            + op.getTupleResult());
                     op.setTupleResult((LogicTuple) msg.getTupleResult());
                 }
                 if (msg.isResultSuccess()) {
@@ -197,6 +199,7 @@ public class InterTupleCentreACCProxy implements InterTupleCentreACC,
     }
 
     class ControllerSession {
+
         private final Controller controller;
         private final AbstractTucsonProtocol session;
 
@@ -224,7 +227,7 @@ public class InterTupleCentreACCProxy implements InterTupleCentreACC,
     private final ACCDescription profile;
 
     /**
-     * 
+     *
      * @param id
      *            tuplecentre source
      * @throws TucsonInvalidTupleCentreIdException
@@ -251,8 +254,8 @@ public class InterTupleCentreACCProxy implements InterTupleCentreACC,
     @Override
     public synchronized TucsonOpId doOperation(final Object tid,
             final AbstractTupleCentreOperation op)
-            throws TucsonOperationNotPossibleException,
-            UnreachableNodeException, TucsonInvalidTupleCentreIdException {
+                    throws TucsonOperationNotPossibleException,
+                    UnreachableNodeException, TucsonInvalidTupleCentreIdException {
         TucsonTupleCentreId tcid = null;
         if ("alice.respect.api.TupleCentreId".equals(tid.getClass().getName())) {
             final TupleCentreId id = (TupleCentreId) tid;
@@ -382,20 +385,20 @@ public class InterTupleCentreACCProxy implements InterTupleCentreACC,
         // if (InetAddress.getLoopbackAddress().getHostName().equals(opNode)) {
         if ("localhost".equals(opNode)) {
             tc =
-            // this.controllerSessions.get(InetAddress
-            // .getLoopbackAddress().getHostAddress()
-            // .concat(String.valueOf(p)));
-            this.controllerSessions
+                    // this.controllerSessions.get(InetAddress
+                    // .getLoopbackAddress().getHostAddress()
+                    // .concat(String.valueOf(p)));
+                    this.controllerSessions
                     .get("127.0.0.1".concat(String.valueOf(port)));
         }
         // if (InetAddress.getLoopbackAddress().getHostAddress().equals(opNode))
         // {
         if ("127.0.0.1".equals(opNode)) {
             tc =
-            // this.controllerSessions.get(InetAddress
-            // .getLoopbackAddress().getHostName()
-            // .concat(String.valueOf(p)));
-            this.controllerSessions
+                    // this.controllerSessions.get(InetAddress
+                    // .getLoopbackAddress().getHostName()
+                    // .concat(String.valueOf(p)));
+                    this.controllerSessions
                     .get("localhost".concat(String.valueOf(port)));
         }
         if (tc != null) {

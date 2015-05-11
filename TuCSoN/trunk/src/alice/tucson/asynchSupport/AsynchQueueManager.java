@@ -1,13 +1,5 @@
 package alice.tucson.asynchSupport;
 
-import it.unibo.sd.jade.operations.AbstractTucsonAction;
-import it.unibo.sd.jade.operations.ordinary.In;
-import it.unibo.sd.jade.operations.ordinary.Inp;
-import it.unibo.sd.jade.operations.ordinary.No;
-import it.unibo.sd.jade.operations.ordinary.Nop;
-import it.unibo.sd.jade.operations.ordinary.Rd;
-import it.unibo.sd.jade.operations.ordinary.Rdp;
-import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 import alice.tucson.api.AbstractTucsonAgent;
@@ -17,6 +9,7 @@ import alice.tucson.api.TucsonOperationCompletionListener;
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
+import alice.tucson.asynchSupport.operations.AbstractTucsonAction;
 import alice.tuplecentre.core.AbstractTupleCentreOperation;
 
 /**
@@ -26,6 +19,20 @@ import alice.tuplecentre.core.AbstractTupleCentreOperation;
  *
  */
 public class AsynchQueueManager extends AbstractTucsonAgent {
+
+    /**
+     * polling time for queue.
+     */
+    private static final int POLLINGQUEUETIME = 1000;
+
+    /**
+     * @param msg
+     *            message to print.
+     */
+    private final static void log(final String msg) {
+        System.out.println(msg);
+    }
+
     /**
      * context for execute operation.
      */
@@ -33,11 +40,11 @@ public class AsynchQueueManager extends AbstractTucsonAgent {
     /**
      * queue containing operation to execute.
      */
-    private FilterQueue waitingQueue;
+    private final CompletedFilterQueue completedQueue;
     /**
-     * queue containing operation to execute.
+     * Semaphore containing the number of pending operation.
      */
-    private CompletedFilterQueue completedQueue;
+    private final Semaphore operationCount;
     /**
      * to stop the aqm immediately.
      */
@@ -47,59 +54,14 @@ public class AsynchQueueManager extends AbstractTucsonAgent {
      */
     private boolean stopGraceful = false;
     /**
-     * Semaphore containing the number of pending operation.
+     * queue containing operation to execute.
      */
-    private Semaphore operationCount;
+    private final FilterQueue waitingQueue;
+
     /**
      * Semaphore used for synchronization after shutdown.
      */
-    private Semaphore waitOperationCount;
-    /**
-     * polling time for queue.
-     */
-    private static final int POLLINGQUEUETIME = 1000;
-
-    /**
-     * @return the operation queue.
-     */
-    public final FilterQueue getWaitingQueue() {
-        return waitingQueue;
-    }
-
-    /**
-     * @return the operation queue.
-     */
-    public final CompletedFilterQueue getCompletedQueue() {
-        return completedQueue;
-    }
-
-    /**
-     * @return flag for shutdownNow.
-     */
-    public final boolean getStopAbrout() {
-        return stopAbrout;
-    }
-
-    /**
-     * @return flag for shutdown.
-     */
-    public final boolean getStopGraceful() {
-        return stopGraceful;
-    }
-
-    /**
-     * @return semaphore for number of pending operation.
-     */
-    public final Semaphore getOperationCount() {
-        return operationCount;
-    }
-
-    /**
-     * @return semaphore for synchronization after shutdown.
-     */
-    public final Semaphore getWaitOperationCount() {
-        return waitOperationCount;
-    }
+    private final Semaphore waitOperationCount;
 
     /**
      * @param id
@@ -111,33 +73,17 @@ public class AsynchQueueManager extends AbstractTucsonAgent {
     public AsynchQueueManager(final String id)
             throws TucsonInvalidAgentIdException {
         super(id);
-        waitingQueue = new FilterQueue();
-        completedQueue = new CompletedFilterQueue();
-        operationCount = new Semaphore(0);
-        waitOperationCount = new Semaphore(0);
+        this.waitingQueue = new FilterQueue();
+        this.completedQueue = new CompletedFilterQueue();
+        this.operationCount = new Semaphore(0);
+        this.waitOperationCount = new Semaphore(0);
         this.go();
-    }
-
-    @Override
-    public void operationCompleted(final AbstractTupleCentreOperation op) {
-    }
-
-    @Override
-    public void operationCompleted(final ITucsonOperation op) {
-    }
-
-    /**
-     * @param msg
-     *            message to print.
-     */
-    private final void log(final String msg) {
-        System.out.println(msg);
     }
 
     /**
      * Add a operation in the queue of pending operation, only if the shutdown
      * operation wasn't called before.
-     * 
+     *
      * @param action
      *            The AbstractTucsonAction to execute.
      * @param clientListener
@@ -146,89 +92,151 @@ public class AsynchQueueManager extends AbstractTucsonAgent {
      */
     public final boolean add(final AbstractTucsonAction action,
             final TucsonOperationCompletionListener clientListener) {
-        if (stopGraceful || stopAbrout) {
+        if (this.stopGraceful || this.stopAbrout) {
             return false;
         }
         TucsonOperationForAsynchManager elem = null;
-        WrapperOperationListener wol = new WrapperOperationListener(
+        final WrapperOperationListener wol = new WrapperOperationListener(
                 clientListener, this);
-        elem = new TucsonOperationForAsynchManager(acc, action, wol);
+        elem = new TucsonOperationForAsynchManager(this.acc, action, wol);
         wol.setTucsonOperationForAsynchManager(elem);
         try {
-            return waitingQueue.add(elem);
-        } catch (IllegalStateException ex) {
+            return this.waitingQueue.add(elem);
+        } catch (final IllegalStateException ex) {
             return false;
         }
     }
 
     /**
-     * Shut down immediately the aqm.
+     * @return the operation queue.
      */
-    public final void shutdownNow() {
-        stopAbrout = true;
+    public final CompletedFilterQueue getCompletedQueue() {
+        return this.completedQueue;
+    }
+
+    /**
+     * @return semaphore for number of pending operation.
+     */
+    public final Semaphore getOperationCount() {
+        return this.operationCount;
+    }
+
+    /**
+     * @return flag for shutdownNow.
+     */
+    public final boolean getStopAbrout() {
+        return this.stopAbrout;
+    }
+
+    /**
+     * @return flag for shutdown.
+     */
+    public final boolean getStopGraceful() {
+        return this.stopGraceful;
+    }
+
+    /**
+     * @return the operation queue.
+     */
+    public final FilterQueue getWaitingQueue() {
+        return this.waitingQueue;
+    }
+
+    /**
+     * @return semaphore for synchronization after shutdown.
+     */
+    public final Semaphore getWaitOperationCount() {
+        return this.waitOperationCount;
+    }
+
+    @Override
+    public void operationCompleted(final AbstractTupleCentreOperation op) {
+        /*
+         * Not used atm
+         */
+    }
+
+    @Override
+    public void operationCompleted(final ITucsonOperation op) {
+        /*
+         * Not used atm
+         */
     }
 
     /**
      * complete the pending operation and shut down the aqm.
      */
     public final void shutdown() {
-        stopGraceful = true;
+        this.stopGraceful = true;
+    }
+
+    /**
+     * Shut down immediately the aqm.
+     */
+    public final void shutdownNow() {
+        this.stopAbrout = true;
     }
 
     @Override
     protected final void main() {
-        acc = this.getContext();
+        this.acc = this.getContext();
         TucsonOperationForAsynchManager elem = null;
-        log("[" + this.getTucsonAgentId() + "]start work");
+        AsynchQueueManager.log("[" + this.getTucsonAgentId() + "]start work");
         // this is the loop that execute the operation until user stop command
-        while (!stopAbrout && !stopGraceful) {
+        while (!this.stopAbrout && !this.stopGraceful) {
             try {
-                elem = waitingQueue.poll(POLLINGQUEUETIME,
+                elem = this.waitingQueue.poll(
+                        AsynchQueueManager.POLLINGQUEUETIME,
                         TimeUnit.MILLISECONDS);
                 if (elem != null) {
-                    operationCount.release();
+                    this.operationCount.release();
                     elem.execute();
                 }
-            } catch (InterruptedException e) {
+            } catch (final InterruptedException e) {
                 e.printStackTrace();
-            } catch (TucsonOperationNotPossibleException e) {
+            } catch (final TucsonOperationNotPossibleException e) {
                 e.printStackTrace();
-            } catch (UnreachableNodeException e) {
+            } catch (final UnreachableNodeException e) {
                 e.printStackTrace();
             }
         }
         // Case stopAbrout: do not execute waitingQueue ops
-        if (stopAbrout) {
+        if (this.stopAbrout) {
             try {
-                if (operationCount.availablePermits() != 0) {
-                    log("[aqm]:stopAbrout=" + stopAbrout + " AvaiblePermits:"
-                            + operationCount.availablePermits());
-                    waitOperationCount.acquire();
+                if (this.operationCount.availablePermits() != 0) {
+                    AsynchQueueManager.log("[aqm]:stopAbrout="
+                            + this.stopAbrout + " AvaiblePermits:"
+                            + this.operationCount.availablePermits());
+                    this.waitOperationCount.acquire();
                 } else {
+                    /*
+                     * log something
+                     */
                 }
-            } catch (InterruptedException e) {
+            } catch (final InterruptedException e) {
                 e.printStackTrace();
             }
         } else {
             // case StopGracefull: execute all added operations
-            while (operationCount.availablePermits() != 0
-                    || !waitingQueue.isEmpty()) {
+            while (this.operationCount.availablePermits() != 0
+                    || !this.waitingQueue.isEmpty()) {
                 try {
-                    elem = waitingQueue.poll(POLLINGQUEUETIME,
+                    elem = this.waitingQueue.poll(
+                            AsynchQueueManager.POLLINGQUEUETIME,
                             TimeUnit.MILLISECONDS);
                     if (elem != null) {
-                        operationCount.release();
+                        this.operationCount.release();
                         elem.execute();
                     }
-                } catch (InterruptedException e) {
+                } catch (final InterruptedException e) {
                     e.printStackTrace();
-                } catch (TucsonOperationNotPossibleException e) {
+                } catch (final TucsonOperationNotPossibleException e) {
                     e.printStackTrace();
-                } catch (UnreachableNodeException e) {
+                } catch (final UnreachableNodeException e) {
                     e.printStackTrace();
                 }
             }
         }
-        log("[" + this.getTucsonAgentId() + "] End work");
+        AsynchQueueManager.log("[" + this.getTucsonAgentId() + "] End work");
     }
 }

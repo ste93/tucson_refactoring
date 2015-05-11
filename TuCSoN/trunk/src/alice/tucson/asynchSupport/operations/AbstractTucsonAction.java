@@ -72,8 +72,8 @@ public abstract class AbstractTucsonAction {
      */
     public abstract ITucsonOperation executeAsynch(EnhancedAsynchACC acc,
             TucsonOperationCompletionListener listener)
-            throws TucsonOperationNotPossibleException,
-            UnreachableNodeException;
+                    throws TucsonOperationNotPossibleException,
+                    UnreachableNodeException;
 
     /**
      *

@@ -32,7 +32,7 @@ import alice.tucson.api.TucsonTupleCentreId;
  *
  */
 public abstract class AbstractTucsonSpecificationAction extends
-        AbstractTucsonAction {
+AbstractTucsonAction {
 
     /**
      * the tuple representing the event, guards and body of a ReSpecT

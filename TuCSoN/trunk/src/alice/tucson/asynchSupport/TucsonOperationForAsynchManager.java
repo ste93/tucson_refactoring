@@ -5,44 +5,41 @@ import alice.tucson.api.ITucsonOperation;
 import alice.tucson.api.TucsonOperationCompletionListener;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
+import alice.tucson.asynchSupport.operations.AbstractTucsonAction;
 import alice.tuplecentre.core.AbstractTupleCentreOperation;
-import it.unibo.sd.jade.operations.AbstractTucsonAction;
 
 /**
  * Represent an AbstractTucsonOperation with listener and TimeOut.
- * 
+ *
  * @author Consalici Drudi
  *
  */
 public class TucsonOperationForAsynchManager {
-    /**
-     * Operation to do.
-     */
-    private AbstractTucsonAction action;
-    /**
-     * Action to do after the completion of operation.
-     */
-    private TucsonOperationCompletionListener listener;
-    /**
-     * time adding operation.
-     */
-    private long timeExecution;
+
     /**
      * Context to communicate with tucson.
      */
-    private EnhancedAsynchACC acc;
+    private final EnhancedAsynchACC acc;
     /**
-     * operation on completed.
+     * Operation to do.
      */
-    private AbstractTupleCentreOperation op;
+    private final AbstractTucsonAction action;
     /**
      * identified a removed operation from filterQueue
      */
     private boolean isDeleted = false;
+    /**
+     * Action to do after the completion of operation.
+     */
+    private final TucsonOperationCompletionListener listener;
+    /**
+     * operation on completed.
+     */
+    private AbstractTupleCentreOperation op;
 
     /**
      * Create TucsonOperationForAsynchManager object.
-     * 
+     *
      * @param acc
      *            Context of operation
      * @param action
@@ -56,12 +53,12 @@ public class TucsonOperationForAsynchManager {
         this.action = action;
         this.listener = listener;
         this.acc = acc;
-        timeExecution = System.currentTimeMillis();
+        System.currentTimeMillis();
     }
 
     /**
      * Create TucsonOperationForAsynchManager object.
-     * 
+     *
      * @param acc
      *            Context of operation
      * @param action
@@ -80,15 +77,8 @@ public class TucsonOperationForAsynchManager {
     }
 
     /**
-     * @return the action
-     */
-    public final AbstractTucsonAction getAction() {
-        return action;
-    }
-
-    /**
      * Execute operation.
-     * 
+     *
      * @return ITucsonOperation is returned
      * @throws TucsonOperationNotPossibleException
      *             if i can't do the operation
@@ -98,22 +88,29 @@ public class TucsonOperationForAsynchManager {
     public final ITucsonOperation execute()
             throws TucsonOperationNotPossibleException,
             UnreachableNodeException {
-        return action.executeAsynch(acc, listener);
+        return this.action.executeAsynch(this.acc, this.listener);
     }
 
-    public void setOp(AbstractTupleCentreOperation op) {
-        this.op = op;
+    /**
+     * @return the action
+     */
+    public final AbstractTucsonAction getAction() {
+        return this.action;
     }
 
     public AbstractTupleCentreOperation getOp() {
-        return op;
-    }
-
-    public void setDeleted(boolean delete) {
-        isDeleted = delete;
+        return this.op;
     }
 
     public boolean isDeleted() {
-        return isDeleted;
+        return this.isDeleted;
+    }
+
+    public void setDeleted(final boolean delete) {
+        this.isDeleted = delete;
+    }
+
+    public void setOp(final AbstractTupleCentreOperation op) {
+        this.op = op;
     }
 }

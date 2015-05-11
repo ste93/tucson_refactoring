@@ -20,7 +20,6 @@
  */
 package alice.tucson.asynchSupport.operations.specification;
 
-import it.unibo.tucson.jade.operations.AbstractTucsonSpecificationAction;
 import alice.logictuple.LogicTuple;
 import alice.tucson.api.EnhancedAsynchACC;
 import alice.tucson.api.EnhancedSynchACC;
@@ -29,6 +28,7 @@ import alice.tucson.api.TucsonOperationCompletionListener;
 import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
+import alice.tucson.asynchSupport.operations.AbstractTucsonSpecificationAction;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 
 /**
@@ -63,8 +63,8 @@ public class OutS extends AbstractTucsonSpecificationAction {
     @Override
     public ITucsonOperation executeAsynch(final EnhancedAsynchACC acc,
             final TucsonOperationCompletionListener listener)
-            throws TucsonOperationNotPossibleException,
-            UnreachableNodeException {
+                    throws TucsonOperationNotPossibleException,
+                    UnreachableNodeException {
         return acc.outS(this.tcid, this.event, this.guards, this.reaction,
                 listener);
     }

@@ -65,11 +65,11 @@ import alice.tuprolog.Theory;
 import alice.tuprolog.lib.InvalidObjectIdException;
 
 /**
- * 
+ *
  * @author Alessandro Ricci
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
  * @author (contributor) Saverio Cicora
- * 
+ *
  */
 public class TucsonNodeService {
 
@@ -84,7 +84,7 @@ public class TucsonNodeService {
     private static final String PERSISTENCY_PATH = "./persistent/";
 
     /**
-     * 
+     *
      * @return the String representation of the TuCSoN version
      */
     public static String getVersion() {
@@ -113,7 +113,7 @@ public class TucsonNodeService {
     }
 
     /**
-     * 
+     *
      * @param netid
      *            the IP address where to test if a TuCSoN node is up and
      *            running
@@ -172,7 +172,7 @@ public class TucsonNodeService {
     }
 
     /**
-     * 
+     *
      * @param args
      *            the arguments to start the TuCSoN node with
      */
@@ -180,7 +180,7 @@ public class TucsonNodeService {
         if (alice.util.Tools.isOpt(args, "-help")
                 || alice.util.Tools.isOpt(args, "-?")) {
             TucsonNodeService
-                    .log("Arguments: -portno {portNumber} {-? | -help}");
+            .log("Arguments: -portno {portNumber} {-? | -help}");
         } else {
             final String portInfo = alice.util.Tools.getOpt(args, "-portno");
             final String configInfo = alice.util.Tools.getOpt(args, "-config");
@@ -244,14 +244,14 @@ public class TucsonNodeService {
     private WelcomeAgent welcome;
 
     /**
-     * 
+     *
      */
     public TucsonNodeService() {
         this(null, TucsonNodeService.DEFAULT_TCP_PORT, null);
     }
 
     /**
-     * 
+     *
      * @param portno
      *            the default listening port of this TuCSoN node
      */
@@ -260,7 +260,7 @@ public class TucsonNodeService {
     }
 
     /**
-     * 
+     *
      * @param conf
      *            the configuration file to load
      * @param portNumber
@@ -298,7 +298,7 @@ public class TucsonNodeService {
     }
 
     /**
-     * 
+     *
      */
     public synchronized void activateObservability() {
         this.observed = true;
@@ -312,7 +312,7 @@ public class TucsonNodeService {
     }
 
     /**
-     * 
+     *
      * @param aid
      *            the identifier of the agent to add to this TuCSoN node
      */
@@ -337,7 +337,7 @@ public class TucsonNodeService {
     }
 
     /**
-     * 
+     *
      * @param t
      *            the identifier of the internal management agent to add to this
      *            TuCSoN node
@@ -347,7 +347,7 @@ public class TucsonNodeService {
     }
 
     /**
-     * 
+     *
      * @param agentId
      *            the identifier of the tuple centre agent to add to this TuCSoN
      *            node
@@ -362,7 +362,7 @@ public class TucsonNodeService {
     }
 
     /**
-     * 
+     *
      */
     public synchronized void deactivateObservability() {
         this.observed = false;
@@ -376,7 +376,7 @@ public class TucsonNodeService {
     }
 
     /**
-     * 
+     *
      * @param tcn
      *            the String representing the tuple centre identifier to destroy
      * @return wether the operation has been succesfully carried out or not
@@ -431,7 +431,7 @@ public class TucsonNodeService {
     }
 
     /**
-     * 
+     *
      * @param tc
      *            the identifier of the tuple centre whose persistency service
      *            should be disabled
@@ -461,7 +461,7 @@ public class TucsonNodeService {
     }
 
     /**
-     * 
+     *
      * @param template
      *            the tuple template to be used in filtering tuple centre
      *            identifiers whose persistency service should be disabled
@@ -479,7 +479,7 @@ public class TucsonNodeService {
                     if (LogicMatchingEngine.match((LogicTuple) template,
                             (LogicTuple) tid)) {
                         TucsonNodeService
-                                .log(">>> It matches: disabling persistency...");
+                        .log(">>> It matches: disabling persistency...");
                         TupleCentreContainer.doBlockingOperation(
                                 TucsonOperation.inCode(),
                                 this.nodeAid,
@@ -507,7 +507,7 @@ public class TucsonNodeService {
     }
 
     /**
-     * 
+     *
      * @param tc
      *            the identifier of the tuple centre whose persistency service
      *            should be enabled
@@ -536,7 +536,7 @@ public class TucsonNodeService {
     }
 
     /**
-     * 
+     *
      * @param template
      *            the tuple template to be used in filtering tuple centre
      *            identifiers whose persistency service should be enabled
@@ -553,12 +553,12 @@ public class TucsonNodeService {
                 if (LogicMatchingEngine.match((LogicTuple) template,
                         (LogicTuple) tid)) {
                     TucsonNodeService
-                            .log(">>> It matches: enabling persistency...");
+                    .log(">>> It matches: enabling persistency...");
                     TupleCentreContainer.enablePersistency(ttcid,
                             TucsonNodeService.PERSISTENCY_PATH);
                     TupleCentreContainer.doBlockingOperation(TucsonOperation
                             .outCode(), this.nodeAid, ttcid, new LogicTuple(
-                            "is_persistent", new Value(ttcid.getName())));
+                                    "is_persistent", new Value(ttcid.getName())));
                     TucsonNodeService.log(">>> persistency enabled.");
                 }
             } catch (final InvalidLogicTupleException e) {
@@ -572,7 +572,7 @@ public class TucsonNodeService {
     }
 
     /**
-     * 
+     *
      * @return a Map storing associations between String representations of
      *         tuple centres along with the list of their users
      */
@@ -588,7 +588,7 @@ public class TucsonNodeService {
     }
 
     /**
-     * 
+     *
      * @return the date when the TuCSoN node was installed
      */
     public Date getInstallationDate() {
@@ -596,7 +596,7 @@ public class TucsonNodeService {
     }
 
     /**
-     * 
+     *
      * @return the observer of the TuCSoN node, if any
      */
     public NodeServiceListener getListener() {
@@ -604,7 +604,7 @@ public class TucsonNodeService {
     }
 
     /**
-     * 
+     *
      * @return the listening port this TuCSoN node is bound to
      */
     public int getTCPPort() {
@@ -612,11 +612,11 @@ public class TucsonNodeService {
     }
 
     /**
-     * 
+     *
      */
     public synchronized void install() {
         TucsonNodeService
-                .log("--------------------------------------------------------------------------------");
+        .log("--------------------------------------------------------------------------------");
         try {
             final StringTokenizer st = new StringTokenizer(
                     Utils.fileToString("alice/tucson/service/config/tucsonCLIlogo3.txt"),
@@ -629,11 +629,11 @@ public class TucsonNodeService {
             e.printStackTrace();
         }
         TucsonNodeService
-                .log("--------------------------------------------------------------------------------");
+        .log("--------------------------------------------------------------------------------");
         TucsonNodeService.log("Welcome to the TuCSoN infrastructure :)");
         TucsonNodeService.log("  Version " + TucsonNodeService.getVersion());
         TucsonNodeService
-                .log("--------------------------------------------------------------------------------");
+        .log("--------------------------------------------------------------------------------");
         TucsonNodeService.log(new Date().toString());
         TucsonNodeService.log("Beginning TuCSoN Node Service installation...");
         this.configManager = new Prolog();
@@ -652,7 +652,7 @@ public class TucsonNodeService {
         this.setupConfigTupleCentre();
         this.checkPersistentTupleCentres(TucsonNodeService.PERSISTENCY_PATH);
         TucsonNodeService
-                .log("Setting up Environment Configuration Service...");
+        .log("Setting up Environment Configuration Service...");
         this.setupEnvConfigTupleCentre();
         this.installationDate = new Date();
         TucsonNodeService.log("Spawning management agents...");
@@ -660,7 +660,7 @@ public class TucsonNodeService {
     }
 
     /**
-     * 
+     *
      * @param aid
      *            the identifier of the TuCSoN agent to be removed from users
      */
@@ -689,7 +689,7 @@ public class TucsonNodeService {
     }
 
     /**
-     * 
+     *
      * @param t
      *            the Thread object executing the internal management agent to
      *            be removed
@@ -736,11 +736,11 @@ public class TucsonNodeService {
     }
 
     /**
-     * 
+     *
      */
     public void shutdown() {
         TucsonNodeService
-                .log("Node is shutting down management agents and proxies...");
+        .log("Node is shutting down management agents and proxies...");
         for (final Thread t : this.nodeAgents) {
             if (t.isAlive()) {
                 TucsonNodeService.log("  ...shutting down <" + t.getName()
@@ -756,7 +756,7 @@ public class TucsonNodeService {
             this.ctxman.shutdown();
         } catch (final InterruptedException e) {
             TucsonNodeService
-                    .log("ACCProvider may still have tasks executing...");
+            .log("ACCProvider may still have tasks executing...");
         }
         this.envAgent.stopIteraction();
         TucsonNodeService.log("Node is shutting down ReSpecT VMs...");
@@ -764,7 +764,7 @@ public class TucsonNodeService {
             final Thread t = tc.getVMThread();
             if (t.isAlive()) {
                 TucsonNodeService
-                        .log("  ...shutting down <" + tc.getId() + ">");
+                .log("  ...shutting down <" + tc.getId() + ">");
                 t.interrupt();
             } else {
                 TucsonNodeService.log("  ...<" + tc.getId()
@@ -775,13 +775,13 @@ public class TucsonNodeService {
     }
 
     /**
-     * 
+     *
      */
     private void bootManagementAgents() {
         TucsonNodeService.log("Spawning Node Management Agent...");
         this.nodeAgents.add(new NodeManagementAgent(this.idConfigTC, this));
         TucsonNodeService
-                .log("--------------------------------------------------------------------------------");
+        .log("--------------------------------------------------------------------------------");
         TucsonNodeService.log("Spawning ACC Provider Agent...");
         this.ctxman = new ACCProvider(this, this.idConfigTC);
         TucsonNodeService.log("Spawning Welcome Agent...");
@@ -796,7 +796,7 @@ public class TucsonNodeService {
     }
 
     /**
-     * 
+     *
      * @param name
      * @return
      * @throws TucsonInvalidTupleCentreIdException
@@ -830,7 +830,7 @@ public class TucsonNodeService {
     }
 
     /**
-     * 
+     *
      * @param dirName
      */
     private void checkPersistentTupleCentres(final String dirName) {
@@ -885,7 +885,7 @@ public class TucsonNodeService {
     }
 
     /**
-     * 
+     *
      */
     private void setupConfigTupleCentre() {
         try {
@@ -919,7 +919,7 @@ public class TucsonNodeService {
     }
 
     /**
-     * 
+     *
      * @param conf
      * @throws TucsonGenericException
      * @throws InvalidConfigException
@@ -927,8 +927,8 @@ public class TucsonNodeService {
     // exception handling is a mess, review it...
     private void setupConfiguration(final String conf)
             throws TucsonGenericException, InvalidConfigException {
-        final alice.tuprolog.lib.JavaLibrary jlib = (alice.tuprolog.lib.JavaLibrary) this.configManager
-                .getLibrary("alice.tuprolog.lib.JavaLibrary");
+        final alice.tuprolog.lib.OOLibrary jlib = (alice.tuprolog.lib.OOLibrary) this.configManager
+                .getLibrary("alice.tuprolog.lib.OOLibrary");
         try {
             jlib.register(new alice.tuprolog.Struct("config"), this);
         } catch (final InvalidObjectIdException e) {
@@ -1008,7 +1008,7 @@ public class TucsonNodeService {
     }
 
     /**
-     * 
+     *
      */
     private void setupObsTupleCentre() {
         try {
