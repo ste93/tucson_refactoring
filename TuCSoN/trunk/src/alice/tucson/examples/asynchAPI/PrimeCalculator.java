@@ -14,7 +14,7 @@ import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
-import alice.tucson.asynchSupport.AsynchQueueManager;
+import alice.tucson.asynchSupport.AsynchOpsHelper;
 import alice.tucson.asynchSupport.operations.ordinary.In;
 import alice.tucson.asynchSupport.operations.ordinary.Inp;
 import alice.tucson.asynchSupport.operations.ordinary.Out;
@@ -33,11 +33,11 @@ public class PrimeCalculator extends AbstractTucsonAgent {
     class InpListener implements TucsonOperationCompletionListener {
 
         EnhancedAsynchACC acc;
-        AsynchQueueManager aqm;
+        AsynchOpsHelper aqm;
         TucsonTupleCentreId tid;
 
         public InpListener(final EnhancedAsynchACC acc,
-                final TucsonTupleCentreId tid, final AsynchQueueManager aqm) {
+                final TucsonTupleCentreId tid, final AsynchOpsHelper aqm) {
             this.acc = acc;
             this.tid = tid;
             this.aqm = aqm;
@@ -60,13 +60,13 @@ public class PrimeCalculator extends AbstractTucsonAgent {
                     // ITucsonOperation opRes = acc.out(tid, tupleRes, null);
                     // Send result to tuple centre
                     final Out out = new Out(this.tid, tupleRes);
-                    this.aqm.add(out, null);
+                    this.aqm.enqueue(out, null);
                     if (!PrimeCalculator.this.stop) {
                         // Send another inp
                         final LogicTuple tuple = LogicTuple
                                 .parse("calcprime(X)");
                         final Inp inp = new Inp(this.tid, tuple);
-                        this.aqm.add(inp, new InpListener(this.acc, this.tid,
+                        this.aqm.enqueue(inp, new InpListener(this.acc, this.tid,
                                 this.aqm));
                     }
                 } catch (final InvalidLogicTupleException e) {
@@ -85,7 +85,7 @@ public class PrimeCalculator extends AbstractTucsonAgent {
                         final LogicTuple tuple = LogicTuple
                                 .parse("calcprime(X)");
                         final Inp inp = new Inp(this.tid, tuple);
-                        this.aqm.add(inp, new InpListener(this.acc, this.tid,
+                        this.aqm.enqueue(inp, new InpListener(this.acc, this.tid,
                                 this.aqm));
                     }
                 } catch (final InterruptedException e) {
@@ -163,14 +163,14 @@ public class PrimeCalculator extends AbstractTucsonAgent {
             final EnhancedAsynchACC acc = this.getContext();
             final TucsonTupleCentreId tid = new TucsonTupleCentreId("default",
                     "localhost", "20504");
-            final AsynchQueueManager aqm = new AsynchQueueManager("aqm"
+            final AsynchOpsHelper aqm = new AsynchOpsHelper("aqm"
                     + this.getTucsonAgentId());
             //
             // First Inp to get request
             //
             final LogicTuple tuple = LogicTuple.parse("calcprime(X)");
             final Inp inp = new Inp(tid, tuple);
-            aqm.add(inp, new InpListener(acc, tid, aqm));
+            aqm.enqueue(inp, new InpListener(acc, tid, aqm));
             //
             // wait sinchronously a stop tuple
             //

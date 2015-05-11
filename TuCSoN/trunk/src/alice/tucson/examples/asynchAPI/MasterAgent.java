@@ -12,7 +12,7 @@ import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
-import alice.tucson.asynchSupport.AsynchQueueManager;
+import alice.tucson.asynchSupport.AsynchOpsHelper;
 import alice.tucson.asynchSupport.operations.ordinary.In;
 import alice.tucson.asynchSupport.operations.ordinary.Inp;
 import alice.tucson.asynchSupport.operations.ordinary.Out;
@@ -46,11 +46,11 @@ public class MasterAgent extends AbstractTucsonAgent {
                             .toString());
                     final int prime = Integer.parseInt(tuple.getArg(1)
                             .toString());
-                    final int in = MasterAgent.this.aqm.getCompletedQueue()
-                            .getAllTypedOperation(In.class).getAllSuccessOp()
+                    final int in = MasterAgent.this.aqm.getCompletedOps()
+                            .getMatchingOps(In.class).getSuccessfulOps()
                             .size();
-                    final int inp = MasterAgent.this.aqm.getCompletedQueue()
-                            .getAllTypedOperation(Inp.class).getAllSuccessOp()
+                    final int inp = MasterAgent.this.aqm.getCompletedOps()
+                            .getMatchingOps(Inp.class).getSuccessfulOps()
                             .size();
                     final int total = in + inp;
                     System.out.println("The prime number until " + number
@@ -82,10 +82,10 @@ public class MasterAgent extends AbstractTucsonAgent {
      */
     class Response50 implements TucsonOperationCompletionListener {
 
-        AsynchQueueManager manager;
+        AsynchOpsHelper manager;
         TucsonTupleCentreId tid;
 
-        public Response50(final AsynchQueueManager aqm,
+        public Response50(final AsynchOpsHelper aqm,
                 final TucsonTupleCentreId tid) {
             this.manager = aqm;
             this.tid = tid;
@@ -98,7 +98,7 @@ public class MasterAgent extends AbstractTucsonAgent {
             try {
                 tuple = LogicTuple.parse("firstloop");
                 final Out out = new Out(this.tid, tuple);
-                this.manager.add(out, null);
+                this.manager.enqueue(out, null);
             } catch (final InvalidLogicTupleException e) {
                 e.printStackTrace();
             }
@@ -120,7 +120,7 @@ public class MasterAgent extends AbstractTucsonAgent {
         }
     }
 
-    AsynchQueueManager aqm;
+    AsynchOpsHelper aqm;
 
     int inpResult;
 
@@ -134,7 +134,7 @@ public class MasterAgent extends AbstractTucsonAgent {
         this.inpResult = 0;
         this.waitResponse = new Semaphore(0);
         this.nPrimeCalc = nPrimeCalc;
-        this.aqm = new AsynchQueueManager("aqm" + this.getTucsonAgentId());
+        this.aqm = new AsynchOpsHelper("aqm" + this.getTucsonAgentId());
     }
 
     @Override
@@ -173,7 +173,7 @@ public class MasterAgent extends AbstractTucsonAgent {
                 // **3**
                 // send Op to aqm to be executed
                 //
-                this.aqm.add(out, null);
+                this.aqm.enqueue(out, null);
             }
             System.out.println("I send 50 operation to PrimeCalculator");
             Inp inp;
@@ -183,10 +183,10 @@ public class MasterAgent extends AbstractTucsonAgent {
                 if (i == 49) {
                     // r is the code to execute after the response operation
                     final Response50 r = new Response50(this.aqm, tid);
-                    this.aqm.add(inp, r);
+                    this.aqm.enqueue(inp, r);
                 } else {
                     final Response r = new Response();
-                    this.aqm.add(inp, r);
+                    this.aqm.enqueue(inp, r);
                 }
             }
             System.out
@@ -202,24 +202,24 @@ public class MasterAgent extends AbstractTucsonAgent {
             // 1 get all Inp operation
             // 2 get all success operation
             // 3 get size
-            this.inpResult = this.aqm.getCompletedQueue()
-                    .getAllTypedOperation(Inp.class).getAllSuccessOp().size();
+            this.inpResult = this.aqm.getCompletedOps()
+                    .getMatchingOps(Inp.class).getSuccessfulOps().size();
             System.out.println("I send 50 inp to PrimeCalculator. I received "
                     + this.inpResult + " result");
             In in;
-            this.aqm.getCompletedQueue().removeAllSuccessOperation();
+            this.aqm.getCompletedOps().removeSuccessfulOps();
             for (int i = 0; i < 50 - this.inpResult; i++) {
                 tuple = LogicTuple.parse("prime(X,Y)");
                 in = new In(tid, tuple);
                 final Response r = new Response();
-                this.aqm.add(in, r);
+                this.aqm.enqueue(in, r);
             }
             int inResult = 0;
             boolean stop = false;
             while (!stop) {
                 Thread.sleep(5000);
-                inResult = this.aqm.getCompletedQueue()
-                        .getAllTypedOperation(In.class).getAllSuccessOp()
+                inResult = this.aqm.getCompletedOps()
+                        .getMatchingOps(In.class).getSuccessfulOps()
                         .size();
                 System.out.println("InResult=" + inResult + " InpResult="
                         + this.inpResult + " TOT="
@@ -236,12 +236,12 @@ public class MasterAgent extends AbstractTucsonAgent {
                 // ")");
                 tuple = LogicTuple.parse("stop(primecalc)");
                 out = new Out(tid, tuple);
-                this.aqm.add(out, null);
+                this.aqm.enqueue(out, null);
             }
             // **5**
             // Terminate the Aqm
             //
-            this.aqm.shutdown();
+            this.aqm.shutdownGracefully();
             Thread.sleep(3000);
         } catch (final TucsonInvalidTupleCentreIdException e) {
             e.printStackTrace();
