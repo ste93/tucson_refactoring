@@ -21,13 +21,14 @@ import alice.tuplecentre.api.TupleCentreId;
 
 /**
  * Represents events of the tuple centre virtual machine
- * 
+ *
  * An event is always related to the operation executed by some agent.
- * 
+ *
  * @author Alessandro Ricci
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public abstract class AbstractEvent implements java.io.Serializable {
+
     private static final long serialVersionUID = 5233628097824741218L;
     private final Map<String, String> evProp;
     /** the current tuple centre (VM) where this event is managed **/
@@ -42,7 +43,7 @@ public abstract class AbstractEvent implements java.io.Serializable {
     private final long time;
 
     /**
-     * 
+     *
      * @param s
      *            the identifier of the source of the event
      * @param op
@@ -63,7 +64,7 @@ public abstract class AbstractEvent implements java.io.Serializable {
     }
 
     /**
-     * 
+     *
      * @param s
      *            the identifier of the source of the event
      * @param op
@@ -82,7 +83,7 @@ public abstract class AbstractEvent implements java.io.Serializable {
     }
 
     /**
-     * 
+     *
      * @param key
      *            the String representation of the key of the property to
      *            retrieve
@@ -93,7 +94,7 @@ public abstract class AbstractEvent implements java.io.Serializable {
     }
 
     /**
-     * 
+     *
      * @return the identifier of the tuple centre currently reacting to the
      *         event
      */
@@ -102,7 +103,7 @@ public abstract class AbstractEvent implements java.io.Serializable {
     }
 
     /**
-     * 
+     *
      * @return the operation which caused the event
      */
     public AbstractTupleCentreOperation getSimpleTCEvent() {
@@ -112,7 +113,7 @@ public abstract class AbstractEvent implements java.io.Serializable {
     /**
      * Gets the executor of the operation which caused directly or indirectly
      * this event.
-     * 
+     *
      * @return the id of the executor
      */
     public IId getSource() {
@@ -120,7 +121,7 @@ public abstract class AbstractEvent implements java.io.Serializable {
     }
 
     /**
-     * 
+     *
      * @return the identifier of the target of the event
      */
     public IId getTarget() {
@@ -128,7 +129,7 @@ public abstract class AbstractEvent implements java.io.Serializable {
     }
 
     /**
-     * 
+     *
      * @return the time at which this event occurred
      */
     public long getTime() {
@@ -136,7 +137,7 @@ public abstract class AbstractEvent implements java.io.Serializable {
     }
 
     /**
-     * 
+     *
      * @return the tuple argument of the operation which caused the event
      */
     public Tuple getTuple() {
@@ -145,27 +146,27 @@ public abstract class AbstractEvent implements java.io.Serializable {
 
     /**
      * Tests if it is an input event
-     * 
+     *
      * @return true if it is an input event
      */
     public abstract boolean isInput();
 
     /**
      * Tests if it is an internal event
-     * 
+     *
      * @return true if it is an internal event
      */
     public abstract boolean isInternal();
 
     /**
      * Tests if it is an output event
-     * 
+     *
      * @return true if it is an output event
      */
     public abstract boolean isOutput();
 
     /**
-     * 
+     *
      * @param tc
      *            the identifier of the tuple centre currently reacting to the
      *            event
@@ -175,7 +176,7 @@ public abstract class AbstractEvent implements java.io.Serializable {
     }
 
     /**
-     * 
+     *
      * @param op
      *            the operation which caused the event
      */
@@ -184,7 +185,7 @@ public abstract class AbstractEvent implements java.io.Serializable {
     }
 
     /**
-     * 
+     *
      * @param s
      *            the identifier of the source of the event
      */
@@ -193,7 +194,7 @@ public abstract class AbstractEvent implements java.io.Serializable {
     }
 
     /**
-     * 
+     *
      * @param t
      *            the identifier of the target of the event
      */

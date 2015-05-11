@@ -9,6 +9,7 @@ import alice.logictuple.Value;
 import alice.logictuple.Var;
 import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.tucson.api.EnhancedACC;
+import alice.tucson.api.NegotiationACC;
 import alice.tucson.api.TucsonAgentId;
 import alice.tucson.api.TucsonMetaACC;
 import alice.tucson.api.TucsonTupleCentreId;
@@ -16,7 +17,6 @@ import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
-import alice.tucson.network.exceptions.DialogCloseException;
 import alice.tucson.network.exceptions.DialogInitializationException;
 import alice.tucson.service.TucsonNodeService;
 import alice.tucson.utilities.Utils;
@@ -24,7 +24,7 @@ import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 
 /**
  * @author ste
- * 
+ *
  */
 public final class PersistencyTester {
 
@@ -44,15 +44,15 @@ public final class PersistencyTester {
                 e.printStackTrace();
             } catch (final DialogInitializationException e) {
                 e.printStackTrace();
-            } catch (final DialogCloseException e) {
-                e.printStackTrace();
             }
             final TucsonTupleCentreId ttcid = new TucsonTupleCentreId(
                     "def(1)@localhost:20504");
             final TucsonTupleCentreId ttcidOrg = new TucsonTupleCentreId(
                     "'$ORG'@localhost:20504");
             final TucsonAgentId aid = new TucsonAgentId("'PersistencyTester'");
-            final EnhancedACC acc = TucsonMetaACC.getContext(aid);
+            final NegotiationACC negAcc = TucsonMetaACC
+                    .getNegotiationContext(aid);
+            final EnhancedACC acc = negAcc.playDefaultRole();
             // spec addition
             String spec = Utils
                     .fileToString("alice/tucson/examples/persistency/aggregation.rsp");

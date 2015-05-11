@@ -4,7 +4,9 @@ import alice.logictuple.LogicTuple;
 import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.tucson.api.AbstractTucsonAgent;
 import alice.tucson.api.ITucsonOperation;
+import alice.tucson.api.NegotiationACC;
 import alice.tucson.api.SynchACC;
+import alice.tucson.api.TucsonMetaACC;
 import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
@@ -14,10 +16,11 @@ import alice.tuplecentre.core.AbstractTupleCentreOperation;
 
 /**
  * A Dining Philosopher: thinks and eats in an endless loop.
- * 
+ *
  * @author ste (mailto: s.mariani@unibo.it)
  */
 public class DiningPhilosopher extends AbstractTucsonAgent {
+
     private static final int EATING_TIME = 5000;
     private static final int THINKING_TIME = 5000;
     private SynchACC acc;
@@ -25,7 +28,7 @@ public class DiningPhilosopher extends AbstractTucsonAgent {
     private final TucsonTupleCentreId myTable;
 
     /**
-     * 
+     *
      * @param aid
      *            the String representation of this philosopher's TuCSoN agent
      *            identifier
@@ -127,7 +130,20 @@ public class DiningPhilosopher extends AbstractTucsonAgent {
 
     @Override
     protected void main() {
-        this.acc = this.getContext();
+        try {
+            final NegotiationACC negAcc = TucsonMetaACC
+                    .getNegotiationContext(this.getTucsonAgentId());
+            this.acc = negAcc.playDefaultRole();
+        } catch (final OperationTimeOutException e) {
+            e.printStackTrace();
+        } catch (final TucsonInvalidAgentIdException e) {
+            e.printStackTrace();
+        } catch (final TucsonOperationNotPossibleException e) {
+            e.printStackTrace();
+        } catch (final UnreachableNodeException e) {
+            e.printStackTrace();
+        }
+        // this.acc = this.getContext();
         // Ugly but effective, pardon me...
         while (true) {
             this.say("Now thinking...");

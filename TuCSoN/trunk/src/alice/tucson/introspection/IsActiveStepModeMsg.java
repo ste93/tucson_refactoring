@@ -15,14 +15,20 @@ package alice.tucson.introspection;
 
 import alice.tucson.api.TucsonAgentId;
 
+/**
+ * @author Roberto D'Elia
+ * @author (contributor) Stefano Mariani (mailto: s.mariani@unibo.it)
+ *
+ */
 public class IsActiveStepModeMsg extends NodeMsg {
+
     /**
-	 * 
-	 */
+     *
+     */
     private static final long serialVersionUID = -13483265125297485L;
 
     /**
-     * 
+     *
      * @param id
      *            the agent id of the sender
      */

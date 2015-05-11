@@ -28,11 +28,12 @@ import alice.tuplecentre.api.Tuple;
 import alice.tuplecentre.core.TriggeredReaction;
 
 /**
- * 
+ *
  * @author Unknown...
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public class InspectorCore extends alice.tucson.introspection.Inspector {
+
     /*
      * Used when logging tuples/operations/reactions.
      */
@@ -62,8 +63,8 @@ public class InspectorCore extends alice.tucson.introspection.Inspector {
     protected FileWriter logTupleWriter;
 
     /**
-     * 
-     * 
+     *
+     *
      * @param f
      *            the GUI this inpector refers to
      * @param id

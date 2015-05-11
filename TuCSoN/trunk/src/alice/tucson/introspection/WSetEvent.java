@@ -5,14 +5,15 @@ import alice.logictuple.LogicTuple;
 import alice.tuplecentre.api.IId;
 
 /**
- * 
+ *
  * @author Unknown...
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
- * 
+ *
  */
 public class WSetEvent implements Serializable {
+
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = 9193318251500885501L;
     private LogicTuple op;
@@ -20,7 +21,7 @@ public class WSetEvent implements Serializable {
     private IId target;
 
     /**
-     * 
+     *
      * @param lt
      *            the tuple representing the event
      * @param s

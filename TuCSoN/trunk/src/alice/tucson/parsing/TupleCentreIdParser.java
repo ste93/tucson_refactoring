@@ -4,17 +4,18 @@ import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 
 /**
- * 
+ *
  * @author ste (mailto: s.mariani@unibo.it)
- * 
+ *
  */
 public class TupleCentreIdParser {
+
     private final String defPort;
     private final String input;
     private final String node;
 
     /**
-     * 
+     *
      * @param in
      *            the String representation of the tuple centre id to parse
      * @param n
@@ -30,7 +31,7 @@ public class TupleCentreIdParser {
     }
 
     /**
-     * 
+     *
      * @return the identifier of the tuple centre parsed
      * @throws TucsonInvalidTupleCentreIdException
      *             if the id of the tuple centre target of the operation is not

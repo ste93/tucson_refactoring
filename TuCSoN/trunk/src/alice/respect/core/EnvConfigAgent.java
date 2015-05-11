@@ -21,15 +21,16 @@ import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 import alice.tuplecentre.core.AbstractTupleCentreOperation;
 
 /**
- * 
+ *
  * Environment configuration agent.
- * 
+ *
  * It checks for requests on '$ENV' and delegates them to the TransducerManager.
- * 
+ *
  * @author Steven Maraldi
- * 
+ *
  */
 public class EnvConfigAgent extends AbstractTucsonAgent {
+
     /** Add an actuator request's type **/
     private static final String ADD_ACTUATOR = "addActuator";
     /** Add a sensor request's type **/
@@ -47,7 +48,7 @@ public class EnvConfigAgent extends AbstractTucsonAgent {
     private boolean iteraction = true;
 
     /**
-     * 
+     *
      * @param ipAddress
      *            the netid of the TuCSoN Node this environment configuration
      *            agent works with
@@ -237,7 +238,7 @@ public class EnvConfigAgent extends AbstractTucsonAgent {
     }
 
     /**
-     * 
+     *
      */
     public void stopIteraction() {
         this.iteraction = false;

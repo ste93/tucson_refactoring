@@ -26,15 +26,16 @@ import alice.tuprolog.Struct;
 import alice.tuprolog.Term;
 
 /**
- * 
+ *
  * A Blocking Context wraps the access to a tuple centre virtual machine for a
  * specific thread of control, providing a blocking interface.
- * 
+ *
  * @author Alessandro Ricci
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public class OrdinarySynchInterface extends RootInterface implements
         IOrdinarySynchInterface {
+
     private static Term list2tuple(final List<LogicTuple> list) {
         final Term[] termArray = new Term[list.size()];
         final Iterator<LogicTuple> it = list.iterator();
@@ -47,7 +48,7 @@ public class OrdinarySynchInterface extends RootInterface implements
     }
 
     /**
-     * 
+     *
      * @param core
      *            the ReSpecT tuple centre this context refers to
      */

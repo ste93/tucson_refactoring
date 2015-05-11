@@ -26,33 +26,34 @@ import alice.tuplecentre.api.TupleCentreId;
  * that whichever is the Linda operation invoked (either suspensive or
  * predicative) the agent proxy will NOT block waiting for its completion but
  * will be asynchronously notified (by the node side).
- * 
+ *
  * @see alice.tucson.service.ACCProxyAgentSide ACCProxyAgentSide
  * @see alice.tucson.service.ACCProxyNodeSide ACCProxyNodeSide
- * 
+ *
  * @author ste (mailto: s.mariani@unibo.it)
  */
 public interface OrdinaryAsynchACC extends RootACC {
+
     /**
      * <code>get</code> TuCSoN primitive, reads (w/o removing) all the tuples in
      * the given target tuplecentre.
-     * 
+     *
      * Semantics is NOT SUSPENSIVE: if the tuple space is empty, an empty list
      * is returned to the TuCSoN Agent exploiting this ACC.
-     * 
+     *
      * @param tid
      *            the target TuCSoN tuplecentre id
      *            {@link alice.tucson.api.TucsonTupleCentreId tid}
      * @param l
      *            the listener who should be notified upon operation completion
-     * 
+     *
      * @return the interface to access the data about TuCSoN operations outcome.
-     * 
+     *
      * @throws TucsonOperationNotPossibleException
      *             if the requested operation cannot be carried out
      * @throws UnreachableNodeException
      *             if the target tuple centre is not reachable over the network
-     * 
+     *
      * @see alice.tuplecentre.api.TupleCentreId TupleCentreId
      * @see alice.tucson.api.TucsonOperationCompletionListener
      *      TucsonOperationCompletionListener
@@ -63,7 +64,7 @@ public interface OrdinaryAsynchACC extends RootACC {
             UnreachableNodeException;
 
     /**
-     * 
+     *
      * @return the List of the events regarding TuCSoN operations completion
      */
     List<TucsonOpCompletionEvent> getCompletionEventsList();
@@ -71,13 +72,13 @@ public interface OrdinaryAsynchACC extends RootACC {
     /**
      * <code>in</code> Linda primitive, retrieves the specified tuple from the
      * given target tuplecentre.
-     * 
+     *
      * Notice that the primitive semantics is still SUSPENSIVE: until no tuple
      * is found to match the given template, no success completion answer is
      * forwarded to the TuCSoN Agent exploiting this ACC, but thanks to
      * asynchronous behaviour the TuCSoN Agent could do something else instead
      * of getting stuck.
-     * 
+     *
      * @param tid
      *            the target TuCSoN tuplecentre id
      *            {@link alice.tucson.api.TucsonTupleCentreId tid}
@@ -85,14 +86,14 @@ public interface OrdinaryAsynchACC extends RootACC {
      *            the tuple to be retrieved from the target tuplecentre
      * @param l
      *            the listener who should be notified upon operation completion
-     * 
+     *
      * @return the interface to access the data about TuCSoN operations outcome.
-     * 
+     *
      * @throws TucsonOperationNotPossibleException
      *             if the requested operation cannot be carried out
      * @throws UnreachableNodeException
      *             if the target tuple centre is not reachable over the network
-     * 
+     *
      * @see alice.tuplecentre.api.TupleCentreId TupleCentreId
      * @see alice.tucson.api.TucsonOperationCompletionListener
      *      TucsonOperationCompletionListener
@@ -106,11 +107,11 @@ public interface OrdinaryAsynchACC extends RootACC {
     /**
      * <code>inp</code> Linda primitive, retrieves the specified tuple in the
      * given target tuplecentre.
-     * 
+     *
      * This time the primitive semantics is NOT SUSPENSIVE: if no tuple is found
      * to match the given template, a failure completion answer is forwarded to
      * the TuCSoN Agent exploiting this ACC.
-     * 
+     *
      * @param tid
      *            the target TuCSoN tuplecentre id
      *            {@link alice.tucson.api.TucsonTupleCentreId tid}
@@ -118,14 +119,14 @@ public interface OrdinaryAsynchACC extends RootACC {
      *            the tuple to be retrieved from the target tuplecentre
      * @param l
      *            the listener who should be notified upon operation completion
-     * 
+     *
      * @return the interface to access the data about TuCSoN operations outcome.
-     * 
+     *
      * @throws TucsonOperationNotPossibleException
      *             if the requested operation cannot be carried out
      * @throws UnreachableNodeException
      *             if the target tuple centre is not reachable over the network
-     * 
+     *
      * @see alice.tuplecentre.api.TupleCentreId TupleCentreId
      * @see alice.tucson.api.TucsonOperationCompletionListener
      *      TucsonOperationCompletionListener
@@ -139,13 +140,13 @@ public interface OrdinaryAsynchACC extends RootACC {
     /**
      * <code>no</code> TuCSoN primitive, checks absence of the specified tuple
      * in the given target tuplecentre.
-     * 
+     *
      * Notice that the primitive semantics is still SUSPENSIVE: until any tuple
      * is found to match the given template, no success completion answer is
      * forwarded to the TuCSoN Agent exploiting this ACC, but thanks to
      * asynchronous behaviour TuCSoN Agent could do something else instead of
      * getting stuck.
-     * 
+     *
      * @param tid
      *            the target TuCSoN tuplecentre id
      *            {@link alice.tucson.api.TucsonTupleCentreId tid}
@@ -154,14 +155,14 @@ public interface OrdinaryAsynchACC extends RootACC {
      *            tuplecentre
      * @param l
      *            the listener who should be notified upon operation completion
-     * 
+     *
      * @return the interface to access the data about TuCSoN operations outcome.
-     * 
+     *
      * @throws TucsonOperationNotPossibleException
      *             if the requested operation cannot be carried out
      * @throws UnreachableNodeException
      *             if the target tuple centre is not reachable over the network
-     * 
+     *
      * @see alice.tuplecentre.api.TupleCentreId TupleCentreId
      * @see alice.tucson.api.TucsonOperationCompletionListener
      *      TucsonOperationCompletionListener
@@ -175,11 +176,11 @@ public interface OrdinaryAsynchACC extends RootACC {
     /**
      * <code>nop</code> TuCSoN primitive, checks absence of the specified tuple
      * in the given target tuplecentre.
-     * 
+     *
      * This time the primitive semantics is NOT SUSPENSIVE: if a tuple is found
      * to match the given template, a failure completion answer is forwarded to
      * the TuCSoN Agent exploiting this ACC.
-     * 
+     *
      * @param tid
      *            the target TuCSoN tuplecentre id
      *            {@link alice.tucson.api.TucsonTupleCentreId tid}
@@ -188,14 +189,14 @@ public interface OrdinaryAsynchACC extends RootACC {
      *            tuplecentre
      * @param l
      *            the listener who should be notified upon operation completion
-     * 
+     *
      * @return the interface to access the data about TuCSoN operations outcome.
-     * 
+     *
      * @throws TucsonOperationNotPossibleException
      *             if the requested operation cannot be carried out
      * @throws UnreachableNodeException
      *             if the target tuple centre is not reachable over the network
-     * 
+     *
      * @see alice.tuplecentre.api.TupleCentreId TupleCentreId
      * @see alice.tucson.api.TucsonOperationCompletionListener
      *      TucsonOperationCompletionListener
@@ -209,11 +210,11 @@ public interface OrdinaryAsynchACC extends RootACC {
     /**
      * <code>out</code> Linda primitive, inserts the specified tuple in the
      * given target tuplecentre.
-     * 
+     *
      * Notice that TuCSoN out primitive assumes the ORDERED version of this
      * primitive, hence the tuple is SUDDENLY injected in the target space (if
      * the primitive successfully completes)
-     * 
+     *
      * @param tid
      *            the target TuCSoN tuplecentre id
      *            {@link alice.tucson.api.TucsonTupleCentreId tid}
@@ -221,14 +222,14 @@ public interface OrdinaryAsynchACC extends RootACC {
      *            the tuple to be emitted in the target tuplecentre
      * @param l
      *            the listener who should be notified upon operation completion
-     * 
+     *
      * @return the interface to access the data about TuCSoN operations outcome.
-     * 
+     *
      * @throws TucsonOperationNotPossibleException
      *             if the requested operation cannot be carried out
      * @throws UnreachableNodeException
      *             if the target tuple centre is not reachable over the network
-     * 
+     *
      * @see alice.tuplecentre.api.TupleCentreId TupleCentreId
      * @see alice.tucson.api.TucsonOperationCompletionListener
      *      TucsonOperationCompletionListener
@@ -242,13 +243,13 @@ public interface OrdinaryAsynchACC extends RootACC {
     /**
      * <code>rd</code> Linda primitive, reads (w/o removing) the specified tuple
      * from the given target tuplecentre.
-     * 
+     *
      * Notice that the primitive semantics is still SUSPENSIVE: until no tuple
      * is found to match the given template, no success completion answer is
      * forwarded to the TuCSoN Agent exploiting this ACC, but thanks to
      * asynchronous behaviour the TuCSoN Agent could do something else instead
      * of getting stuck.
-     * 
+     *
      * @param tid
      *            the target TuCSoN tuplecentre id
      *            {@link alice.tucson.api.TucsonTupleCentreId tid}
@@ -256,14 +257,14 @@ public interface OrdinaryAsynchACC extends RootACC {
      *            the tuple to be read from the target tuplecentre
      * @param l
      *            the listener who should be notified upon operation completion
-     * 
+     *
      * @return the interface to access the data about TuCSoN operations outcome.
-     * 
+     *
      * @throws TucsonOperationNotPossibleException
      *             if the requested operation cannot be carried out
      * @throws UnreachableNodeException
      *             if the target tuple centre is not reachable over the network
-     * 
+     *
      * @see alice.tuplecentre.api.TupleCentreId TupleCentreId
      * @see alice.tucson.api.TucsonOperationCompletionListener
      *      TucsonOperationCompletionListener
@@ -277,11 +278,11 @@ public interface OrdinaryAsynchACC extends RootACC {
     /**
      * <code>rdp</code> Linda primitive, reads (w/o removing) the specified
      * tuple in the given target tuplecentre.
-     * 
+     *
      * This time the primitive semantics is NOT SUSPENSIVE: if no tuple is found
      * to match the given template, a failure completion answer is forwarded to
      * the TuCSoN Agent exploiting this ACC.
-     * 
+     *
      * @param tid
      *            the target TuCSoN tuplecentre id
      *            {@link alice.tucson.api.TucsonTupleCentreId tid}
@@ -289,14 +290,14 @@ public interface OrdinaryAsynchACC extends RootACC {
      *            the tuple to be read from the target tuplecentre
      * @param l
      *            the listener who should be notified upon operation completion
-     * 
+     *
      * @return the interface to access the data about TuCSoN operations outcome.
-     * 
+     *
      * @throws TucsonOperationNotPossibleException
      *             if the requested operation cannot be carried out
      * @throws UnreachableNodeException
      *             if the target tuple centre is not reachable over the network
-     * 
+     *
      * @see alice.tuplecentre.api.TupleCentreId TupleCentreId
      * @see alice.tucson.api.TucsonOperationCompletionListener
      *      TucsonOperationCompletionListener
@@ -310,7 +311,7 @@ public interface OrdinaryAsynchACC extends RootACC {
     /**
      * <code>set</code> TuCSoN primitive, to replace all the tuples in the given
      * target tuplecentre with that specified in the given list.
-     * 
+     *
      * @param tid
      *            the target TuCSoN tuplecentre id
      *            {@link alice.tucson.api.TucsonTupleCentreId tid}
@@ -319,14 +320,14 @@ public interface OrdinaryAsynchACC extends RootACC {
      *            space)
      * @param l
      *            the listener who should be notified upon operation completion
-     * 
+     *
      * @return the interface to access the data about TuCSoN operations outcome.
-     * 
+     *
      * @throws TucsonOperationNotPossibleException
      *             if the requested operation cannot be carried out
      * @throws UnreachableNodeException
      *             if the target tuple centre is not reachable over the network
-     * 
+     *
      * @see alice.tuplecentre.api.TupleCentreId TupleCentreId
      * @see alice.tucson.api.TucsonOperationCompletionListener
      *      TucsonOperationCompletionListener
@@ -340,11 +341,11 @@ public interface OrdinaryAsynchACC extends RootACC {
     /**
      * <code>spawn</code> TuCSoN primitive, starts a parallel computational
      * activity within the target node.
-     * 
+     *
      * Semantics is NOT SUSPENSIVE: as soon as the parallel activity has been
      * started by the node, the completion is returned to the TuCSoN Agent
      * exploiting this ACC.
-     * 
+     *
      * @param tid
      *            the target TuCSoN tuplecentre id
      *            {@link alice.tucson.api.TucsonTupleCentreId tid}
@@ -359,14 +360,14 @@ public interface OrdinaryAsynchACC extends RootACC {
      *            <code>solve('path/to/Prolog/Theory.pl', yourGoal)</code>
      * @param l
      *            the listener who should be notified upon operation completion
-     * 
+     *
      * @return the interface to access the data about TuCSoN operations outcome.
-     * 
+     *
      * @throws TucsonOperationNotPossibleException
      *             if the requested operation cannot be carried out
      * @throws UnreachableNodeException
      *             if the target tuple centre is not reachable over the network
-     * 
+     *
      * @see alice.tuplecentre.api.TupleCentreId TupleCentreId
      * @see alice.tucson.api.TucsonOperationCompletionListener
      *      TucsonOperationCompletionListener

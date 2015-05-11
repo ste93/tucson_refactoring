@@ -4,13 +4,14 @@ import java.io.Serializable;
 import alice.logictuple.LogicTuple;
 
 /**
- * 
+ *
  * @author Alessandro Ricci
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
  * @author (contributor) Saverio Cicora
- * 
+ *
  */
 public class TucsonMsgRequest implements Serializable {
+
     /** serialVersionUID **/
     private static final long serialVersionUID = 1L;
     private long id;
@@ -19,7 +20,7 @@ public class TucsonMsgRequest implements Serializable {
     private int type;
 
     /**
-     * 
+     *
      * @param i
      *            the operation id
      * @param ty
@@ -38,16 +39,16 @@ public class TucsonMsgRequest implements Serializable {
     }
 
     /**
-     * 
+     *
      */
     protected TucsonMsgRequest() {
         /*
-         * 
+         *
          */
     }
 
     /**
-     * 
+     *
      * @return the operation id
      */
     public long getId() {
@@ -55,7 +56,7 @@ public class TucsonMsgRequest implements Serializable {
     }
 
     /**
-     * 
+     *
      * @return the String representation of the target tuple centre
      */
     public String getTid() {
@@ -63,7 +64,7 @@ public class TucsonMsgRequest implements Serializable {
     }
 
     /**
-     * 
+     *
      * @return the tuple argument of the operation
      */
     public LogicTuple getTuple() {
@@ -71,7 +72,7 @@ public class TucsonMsgRequest implements Serializable {
     }
 
     /**
-     * 
+     *
      * @return the operation type code
      */
     public int getType() {

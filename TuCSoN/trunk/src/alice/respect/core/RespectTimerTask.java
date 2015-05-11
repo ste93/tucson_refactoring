@@ -4,16 +4,17 @@ import java.util.TimerTask;
 import alice.tuplecentre.core.InputEvent;
 
 /**
- * 
+ *
  * @author Matteo Casadei
- * 
+ *
  */
 public class RespectTimerTask extends TimerTask {
+
     private final RespectOperation op;
     private final RespectVMContext vm;
 
     /**
-     * 
+     *
      * @param rvm
      *            the ReSpecT VM which should schedule this timed task
      * @param rop

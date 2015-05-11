@@ -6,28 +6,29 @@ import alice.tuplecentre.api.ITCCycleResult;
 import alice.tuplecentre.api.Tuple;
 
 /**
- * 
+ *
  * @author Alessandro Ricci
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
- * 
+ *
  */
 public class TCCycleResult implements ITCCycleResult {
+
     /**
-     * 
+     *
      * @author ste (mailto: s.mariani@unibo.it) on 17/lug/2013
-     * 
+     *
      */
     public enum Outcome {
         /**
-         * 
+         *
          */
         FAILURE,
         /**
-         * 
+         *
          */
         SUCCESS,
         /**
-         * 
+         *
          */
         UNDEFINED
     }
@@ -39,7 +40,7 @@ public class TCCycleResult implements ITCCycleResult {
     private Tuple tupleResult;
 
     /**
-     * 
+     *
      */
     public TCCycleResult() {
         this.opResult = Outcome.UNDEFINED;

@@ -17,9 +17,10 @@ import alice.tucson.api.TucsonAgentId;
 
 /**
  * @author Roberto D'Elia
- * 
+ *
  */
 public class StepModeMsg extends NodeMsg {
+
     private static final long serialVersionUID = -6748034977696183466L;
 
     /**

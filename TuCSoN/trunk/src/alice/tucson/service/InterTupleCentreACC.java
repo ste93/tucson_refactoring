@@ -20,22 +20,23 @@ import alice.tucson.api.exceptions.UnreachableNodeException;
 import alice.tuplecentre.core.AbstractTupleCentreOperation;
 
 /**
- * 
- * 
+ *
+ *
  * @author ste (mailto: s.mariani@unibo.it)
  */
 public interface InterTupleCentreACC {
+
     /**
-     * 
-     * 
+     *
+     *
      * @param tid
      *            the identifier of the tuple centre target of the operation
      *            requested
      * @param op
      *            the operation requested
-     * 
+     *
      * @return the identifier of the operation requested
-     * 
+     *
      * @throws TucsonOperationNotPossibleException
      *             if the operation requested cannot be performed
      * @throws UnreachableNodeException
@@ -49,7 +50,7 @@ public interface InterTupleCentreACC {
             UnreachableNodeException, TucsonInvalidTupleCentreIdException;
 
     /**
-     * 
+     *
      * @param id
      *            the identifier of the operation requested
      * @return the Object representing operation completion
@@ -57,7 +58,7 @@ public interface InterTupleCentreACC {
     TucsonOpCompletionEvent waitForCompletion(TucsonOpId id);
 
     /**
-     * 
+     *
      * @param id
      *            the identifier of the operation requested
      * @param timeout

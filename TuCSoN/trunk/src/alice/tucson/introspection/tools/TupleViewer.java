@@ -26,12 +26,13 @@ import alice.tucson.introspection.InspectorProtocol;
 import alice.tucson.network.exceptions.DialogSendException;
 
 /**
- * 
+ *
  * @author Unknown...
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
- * 
+ *
  */
 public class TupleViewer extends javax.swing.JFrame {
+
     private static final long serialVersionUID = 194179541036841578L;
     private javax.swing.JButton buttonAcceptFilterLog;
     private javax.swing.JButton buttonAcceptPattern;
@@ -54,7 +55,7 @@ public class TupleViewer extends javax.swing.JFrame {
 
     /**
      * Creates new form TupleForm
-     * 
+     *
      * @param mf
      *            the inspector GUI
      */
@@ -79,7 +80,7 @@ public class TupleViewer extends javax.swing.JFrame {
     }
 
     /**
-     * 
+     *
      * @param l
      *            the local time
      */
@@ -88,7 +89,7 @@ public class TupleViewer extends javax.swing.JFrame {
     }
 
     /**
-     * 
+     *
      * @param l
      *            the number of items inspected
      */
@@ -97,7 +98,7 @@ public class TupleViewer extends javax.swing.JFrame {
     }
 
     /**
-     * 
+     *
      * @param st
      *            the message to show
      */
@@ -106,7 +107,7 @@ public class TupleViewer extends javax.swing.JFrame {
     }
 
     /**
-     * 
+     *
      * @param l
      *            the VM time
      */
@@ -250,6 +251,7 @@ public class TupleViewer extends javax.swing.JFrame {
         this.getContentPane().setLayout(new java.awt.GridBagLayout());
         this.setTitle("T Inspector");
         this.addWindowListener(new java.awt.event.WindowAdapter() {
+
             @Override
             public void windowClosing(final java.awt.event.WindowEvent evt) {
                 TupleViewer.this.exitForm();
@@ -279,7 +281,8 @@ public class TupleViewer extends javax.swing.JFrame {
                 .setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         this.radioReactive
                 .addActionListener(new java.awt.event.ActionListener() {
-                    @Override
+
+            @Override
                     public void actionPerformed(
                             final java.awt.event.ActionEvent evt) {
                         TupleViewer.this.radioReactiveActionPerformed();
@@ -298,7 +301,8 @@ public class TupleViewer extends javax.swing.JFrame {
                 .setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         this.radioProactive
                 .addActionListener(new java.awt.event.ActionListener() {
-                    @Override
+
+            @Override
                     public void actionPerformed(
                             final java.awt.event.ActionEvent evt) {
                         TupleViewer.this.radioProactiveActionPerformed();
@@ -316,6 +320,7 @@ public class TupleViewer extends javax.swing.JFrame {
         this.buttonGet
                 .setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         this.buttonGet.addActionListener(new java.awt.event.ActionListener() {
+
             @Override
             public void actionPerformed(final java.awt.event.ActionEvent evt) {
                 TupleViewer.this.buttonGetActionPerformed();
@@ -343,7 +348,8 @@ public class TupleViewer extends javax.swing.JFrame {
                 .setText("Filter observed tuples using the following template:");
         this.checkFilterView
                 .addActionListener(new java.awt.event.ActionListener() {
-                    @Override
+
+            @Override
                     public void actionPerformed(
                             final java.awt.event.ActionEvent evt) {
                         TupleViewer.this.checkFilterViewActionPerformed();
@@ -360,7 +366,8 @@ public class TupleViewer extends javax.swing.JFrame {
         this.buttonAcceptPattern.setText("Match!");
         this.buttonAcceptPattern
                 .addActionListener(new java.awt.event.ActionListener() {
-                    @Override
+
+            @Override
                     public void actionPerformed(
                             final java.awt.event.ActionEvent evt) {
                         TupleViewer.this.buttonAcceptPatternActionPerformed();
@@ -397,7 +404,8 @@ public class TupleViewer extends javax.swing.JFrame {
                 .setText("Filter observed tuples using the following template:");
         this.checkFilterLog
                 .addActionListener(new java.awt.event.ActionListener() {
-                    @Override
+
+            @Override
                     public void actionPerformed(
                             final java.awt.event.ActionEvent evt) {
                         TupleViewer.this.checkFilterLogActionPerformed();
@@ -414,7 +422,8 @@ public class TupleViewer extends javax.swing.JFrame {
         this.buttonAcceptFilterLog.setText("Match!");
         this.buttonAcceptFilterLog
                 .addActionListener(new java.awt.event.ActionListener() {
-                    @Override
+
+            @Override
                     public void actionPerformed(
                             final java.awt.event.ActionEvent evt) {
                         TupleViewer.this.buttonAcceptFilterLogActionPerformed();
@@ -456,7 +465,8 @@ public class TupleViewer extends javax.swing.JFrame {
         this.inputFileLog.setFont(new java.awt.Font("Courier New", 0, 12));
         this.inputFileLog
                 .addActionListener(new java.awt.event.ActionListener() {
-                    @Override
+
+            @Override
                     public void actionPerformed(
                             final java.awt.event.ActionEvent evt) {
                         TupleViewer.this.inputFileLogActionPerformed();
@@ -471,6 +481,7 @@ public class TupleViewer extends javax.swing.JFrame {
         buttonBrowse.setFont(new java.awt.Font("Arial", 0, 11));
         buttonBrowse.setText("Browse");
         buttonBrowse.addActionListener(new java.awt.event.ActionListener() {
+
             @Override
             public void actionPerformed(final java.awt.event.ActionEvent evt) {
                 TupleViewer.this.buttonBrowseActionPerformed();
@@ -483,7 +494,8 @@ public class TupleViewer extends javax.swing.JFrame {
         jPanel8.add(buttonBrowse, gridBagConstraints);
         this.checkLogEnable
                 .addActionListener(new java.awt.event.ActionListener() {
-                    @Override
+
+            @Override
                     public void actionPerformed(
                             final java.awt.event.ActionEvent evt) {
                         TupleViewer.this.checkLogEnableActionPerformed();

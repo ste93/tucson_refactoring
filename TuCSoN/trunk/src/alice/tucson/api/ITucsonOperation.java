@@ -21,34 +21,35 @@ import alice.tuplecentre.api.Tuple;
 /**
  * TucsonOperation interface, to access the data about TuCSoN operations
  * outcome.
- * 
+ *
  * @see alice.tucson.service.TucsonOperation TucsonOperation
  * @see alice.tuplecentre.api.ITupleCentreOperation ITupleCentreOperation
- * 
+ *
  * @author ste (mailto: s.mariani@unibo.it)
  */
 public interface ITucsonOperation extends ITupleCentreOperation {
+
     /**
-     * 
+     *
      * @return the JTuple argument of this TuCSoN operation
      */
     Tuple getJTupleArgument();
 
     /**
-     * 
+     *
      * @return the list if JTuples result of this TuCSoN operation
      */
     List<Tuple> getJTupleListResult();
 
     /**
-     * 
+     *
      * @return the JTuple result of this TuCSoN operation
      */
     Tuple getJTupleResult();
 
     /**
      * Gets the tuple argument used in the operation.
-     * 
+     *
      * @return the tuple argument used in the operation.
      */
     LogicTuple getLogicTupleArgument();
@@ -56,21 +57,21 @@ public interface ITucsonOperation extends ITupleCentreOperation {
     /**
      * Gets the list of tuples returned as the result of the requested
      * operation.
-     * 
+     *
      * @return the list of tuples result of the requested operation.
      */
     List<LogicTuple> getLogicTupleListResult();
 
     /**
      * Gets the tuple returned as the result of the requested operation.
-     * 
+     *
      * @return the tuple result of the requested operation.
      */
     LogicTuple getLogicTupleResult();
 
     /**
      * Checks success of operation execution.
-     * 
+     *
      * @return <code>true</code> if the operation succeeded, <code>false</code>
      *         otherwise (failure or undefined)
      */

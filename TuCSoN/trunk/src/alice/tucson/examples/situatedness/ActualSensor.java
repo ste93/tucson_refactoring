@@ -27,11 +27,12 @@ import alice.tuplecentre.api.exceptions.OperationTimeOutException;
  * The 'actual' sensor probe deployed in this scenario. Although in this toy
  * example it is only simulated, here is where you would place your code to
  * interface with a real-world probe.
- * 
+ *
  * @author ste (mailto: s.mariani@unibo.it) on 05/nov/2013
- * 
+ *
  */
 public class ActualSensor implements ISimpleProbe {
+
     private static final String DEFAULT_HOST = "localhost";
     private static final String DEFAULT_PORT = "20504";
     private EnhancedSynchACC acc;

@@ -40,12 +40,13 @@ import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 import alice.tuplecentre.core.AbstractTupleCentreOperation;
 
 /**
- * 
+ *
  * @author Alessandro Ricci
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
- * 
+ *
  */
 public class ACCProxyNodeSide extends AbstractACCProxyNodeSide {
+
     private TucsonAgentId agentId;
     private final String agentName;
     private final int ctxId;
@@ -58,7 +59,7 @@ public class ACCProxyNodeSide extends AbstractACCProxyNodeSide {
     private TucsonTupleCentreId tcId;
 
     /**
-     * 
+     *
      * @param man
      *            the ACC provider who created this ACC Proxy at TuCSoN node
      *            side
@@ -73,7 +74,7 @@ public class ACCProxyNodeSide extends AbstractACCProxyNodeSide {
      * @throws TucsonInvalidTupleCentreIdException
      *             if the TupleCentreId, contained into AbstractTucsonProtocol's
      *             message, does not represent a valid TuCSoN identifier
-     * 
+     *
      * @throws TucsonInvalidAgentIdException
      *             if the ACCDescription's "agent-identity" property does not
      *             represent a valid TuCSoN identifier
@@ -154,7 +155,7 @@ public class ACCProxyNodeSide extends AbstractACCProxyNodeSide {
     }
 
     /**
-     * 
+     *
      */
     @Override
     public void run() {

@@ -21,27 +21,28 @@ import alice.tuprolog.Term;
 
 /**
  * Agent identifier.
- * 
+ *
  * @author Alessandro Ricci
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public class AgentId implements alice.tuplecentre.api.AgentId,
         java.io.Serializable {
+
     private static AgentIdOperatorManager opManager = new AgentIdOperatorManager();
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = 1L;
     /**
-     * 
+     *
      */
     protected Term id;
 
     /**
      * Constructs an agent identifier
-     * 
+     *
      * The Agent identifier must be a ground valid logic term
-     * 
+     *
      * @param sid
      *            is the string representation of the identifier
      * @throws InvalidAgentIdException
@@ -68,7 +69,7 @@ public class AgentId implements alice.tuplecentre.api.AgentId,
     }
 
     /**
-     * 
+     *
      * @param name
      *            the string representation of this identifier
      * @param tcId
@@ -80,9 +81,9 @@ public class AgentId implements alice.tuplecentre.api.AgentId,
 
     /**
      * Constructs an agent identifier
-     * 
+     *
      * The Agent identifier must be a ground logic term
-     * 
+     *
      * @param tid
      *            the identifier as tuProlog term
      * @throws InvalidAgentIdException
@@ -97,7 +98,7 @@ public class AgentId implements alice.tuplecentre.api.AgentId,
     }
 
     /**
-     * 
+     *
      * @return the string representation of the local name
      */
     public String getLocalName() {
@@ -129,7 +130,7 @@ public class AgentId implements alice.tuplecentre.api.AgentId,
 
     /**
      * Provides the logic term representation of the identifier
-     * 
+     *
      * @return the term representing the identifier
      */
     public Term toTerm() {

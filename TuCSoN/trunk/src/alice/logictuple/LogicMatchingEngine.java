@@ -10,14 +10,15 @@ import alice.tuprolog.Term;
  * @author ste (mailto: s.mariani@unibo.it) on 07/gen/2014 ciccis
  */
 public final class LogicMatchingEngine {
+
     private static final Prolog MATCHING_ENGINE = new Prolog();
 
     /**
      * Tests if the given arguments matches according to tuProlog matching rules
      * for LogicTuples
-     * 
+     *
      * No unification (a la tuProlog) is performed
-     * 
+     *
      * @param tupleA
      *            the LogicTuple to match
      * @param tupleB
@@ -33,7 +34,7 @@ public final class LogicMatchingEngine {
 
     /**
      * Tries to perform unification (a la tuProlog)
-     * 
+     *
      * @param tupleA
      *            the LogicTuple to match
      * @param tupleB

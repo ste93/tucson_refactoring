@@ -7,16 +7,17 @@ import alice.tuprolog.event.OutputEvent;
 import alice.tuprolog.event.OutputListener;
 
 /**
- * 
+ *
  * @author ste (mailto: s.mariani@unibo.it)
- * 
+ *
  */
 public class Spawn2PSolver extends Thread {
+
     private final Term goal;
     private final Prolog solver;
 
     /**
-     * 
+     *
      * @param s
      *            the Prolog engine to be used
      * @param g
@@ -31,6 +32,7 @@ public class Spawn2PSolver extends Thread {
     @Override
     public void run() {
         this.solver.addOutputListener(new OutputListener() {
+
             @Override
             public void onOutput(final OutputEvent arg0) {
                 System.out.println("[Spawn2PSolver]: " + arg0.getMsg());

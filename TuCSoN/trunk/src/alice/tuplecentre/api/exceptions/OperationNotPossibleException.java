@@ -15,10 +15,11 @@ package alice.tuplecentre.api.exceptions;
 
 /**
  * Exception thrown when the operation execution is not allowed.
- * 
+ *
  * @author Alessandro Ricci
  */
 public class OperationNotPossibleException extends Exception {
+
     private static final long serialVersionUID = -8477376588854008594L;
 
     public OperationNotPossibleException() {

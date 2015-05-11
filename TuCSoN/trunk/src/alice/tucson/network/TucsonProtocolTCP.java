@@ -37,13 +37,14 @@ import alice.tucson.network.exceptions.DialogSendException;
  * usata client side anche in vista di una separazione delle librerie agent-node
  */
 /**
- * 
+ *
  * @author Alessandro Ricci
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
  * @author (contributor) Saverio Cicora
- * 
+ *
  */
 public class TucsonProtocolTCP extends AbstractTucsonProtocol {
+
     /** serialVersionUID **/
     private static final long serialVersionUID = 1L;
     private ObjectInputStream inStream;
@@ -56,9 +57,9 @@ public class TucsonProtocolTCP extends AbstractTucsonProtocol {
      * This constructor is typically used node side: it builds a new access
      * point to which an external agent can engage a new dialog. After the
      * creation of this object usually is invoked the method acceptNewDialog()
-     * 
+     *
      * It make a new ServerSocket binded at port specified by port parameter.
-     * 
+     *
      * @param port
      *            the listening port where to bind
      * @throws DialogInitializationException
@@ -81,9 +82,9 @@ public class TucsonProtocolTCP extends AbstractTucsonProtocol {
      * This constructor create a new dialog whit a specific host that identified
      * by host/port pair. This constructor is typically used from external agent
      * who want start a new dialogue with the node.
-     * 
+     *
      * It make a new socket and init I/O streams. The streams are bufferized.
-     * 
+     *
      * @param host
      *            the host where to bound
      * @param port
@@ -122,7 +123,7 @@ public class TucsonProtocolTCP extends AbstractTucsonProtocol {
     }
 
     /**
-     * 
+     *
      * @param s
      *            the socket to bound
      * @throws DialogInitializationException
@@ -356,7 +357,7 @@ public class TucsonProtocolTCP extends AbstractTucsonProtocol {
     }
 
     /**
-     * 
+     *
      */
     private void clean() {
         try {

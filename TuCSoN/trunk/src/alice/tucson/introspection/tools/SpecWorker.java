@@ -28,6 +28,7 @@ import alice.util.jedit.JEditTextArea;
  * @author Roberto D'Elia
  */
 public class SpecWorker extends Thread {
+
     private static String format(final LogicTuple t) {
         final StringBuffer res = new StringBuffer(21);
         try {
@@ -64,11 +65,11 @@ public class SpecWorker extends Thread {
     private final TucsonTupleCentreId tid;
 
     public SpecWorker(final String op, final EnhancedACC c,
-            final TucsonTupleCentreId tid, final EditSpec editSpec,
+            final TucsonTupleCentreId ttcid, final EditSpec editSpec,
             final JEditTextArea input) {
         this.operation = op;
         this.context = c;
-        this.tid = tid;
+        this.tid = ttcid;
         this.form = editSpec;
         this.inputSpec = input;
     }

@@ -16,18 +16,19 @@ package alice.tuplecentre.core;
 /**
  * Represents output events of the tuple centre virtual machine (stores the
  * "connected" InputEvent)
- * 
+ *
  * @author Alessandro Ricci
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public class OutputEvent extends AbstractEvent {
+
     private static final long serialVersionUID = -5521129200850527503L;
     private boolean isLnk;
     /** the input event this output event is consequence of */
     protected final InputEvent inputEvent;
 
     /**
-     * 
+     *
      * @param ev
      *            the input event this output event refers to
      */
@@ -39,7 +40,7 @@ public class OutputEvent extends AbstractEvent {
     }
 
     /**
-     * 
+     *
      * @return the input event this output event refers to
      */
     public InputEvent getInputEvent() {
@@ -57,7 +58,7 @@ public class OutputEvent extends AbstractEvent {
     }
 
     /**
-     * 
+     *
      * @return wether this event is a linking event
      */
     public boolean isLinking() {
@@ -70,7 +71,7 @@ public class OutputEvent extends AbstractEvent {
     }
 
     /**
-     * 
+     *
      * @param flag
      *            wether this event is a linking event
      */

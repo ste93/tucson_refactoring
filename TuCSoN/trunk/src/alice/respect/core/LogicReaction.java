@@ -20,25 +20,26 @@ import alice.tuprolog.Var;
 
 /**
  * Defines the reaction type managed by ReSpect Reactor (logic reactions).
- * 
+ *
  * @author Alessandro Ricci
  */
 public class LogicReaction implements alice.tuplecentre.core.Reaction,
         java.io.Serializable {
+
     private static final long serialVersionUID = -930986977792219715L;
     private Struct reaction;
 
     /**
-     * 
+     *
      */
     public LogicReaction() {
         /*
-         * 
+         *
          */
     }
 
     /**
-     * 
+     *
      * @param t
      *            the Prolog struct representing this reaction
      */
@@ -48,7 +49,7 @@ public class LogicReaction implements alice.tuplecentre.core.Reaction,
     }
 
     /**
-     * 
+     *
      * @return the Prolog term representing the trigger event
      */
     public Term getReactionTerm() {
@@ -56,7 +57,7 @@ public class LogicReaction implements alice.tuplecentre.core.Reaction,
     }
 
     /**
-     * 
+     *
      * @return the Prolog struct representing this reaction
      */
     public Struct getStructReaction() {

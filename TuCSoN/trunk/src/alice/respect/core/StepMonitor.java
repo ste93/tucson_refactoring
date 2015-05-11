@@ -18,9 +18,10 @@ import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * @author Roberto D'Elia
- * 
+ *
  */
 public class StepMonitor {
+
     private final Condition canCompute;
     private final ReentrantLock lock;
 

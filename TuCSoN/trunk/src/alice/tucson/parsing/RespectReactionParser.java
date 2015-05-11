@@ -5,11 +5,12 @@ import alice.logictuple.TupleArgument;
 import alice.util.Tools;
 
 /**
- * 
+ *
  * @author ste (mailto: s.mariani@unibo.it)
- * 
+ *
  */
 public class RespectReactionParser {
+
     private static boolean bigFatCondition(final TupleArgument arg) {
         return "request".equals(arg.getName())
                 || "response".equals(arg.getName())
@@ -49,7 +50,7 @@ public class RespectReactionParser {
     private final LogicTuple t;
 
     /**
-     * 
+     *
      * @param lt
      *            the logic tuple representation of the ReSpecT reaction
      */
@@ -62,7 +63,7 @@ public class RespectReactionParser {
     }
 
     /**
-     * 
+     *
      * @return the String representation of the ReSpecT reaction given to the
      *         parser
      */

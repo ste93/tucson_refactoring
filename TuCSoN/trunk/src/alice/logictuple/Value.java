@@ -16,21 +16,22 @@ package alice.logictuple;
 /**
  * Class representing a concrete tuple argument value (integer, real, string,
  * structure).
- * 
+ *
  * @see TupleArgument
  * @see Var
- * 
+ *
  * @author Alessandro Ricci
  */
 public class Value extends TupleArgument {
+
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = 1L;
 
     /**
      * Constructs a simple double tuple argument
-     * 
+     *
      * @param v
      *            the double value to initialize this argument
      */
@@ -41,7 +42,7 @@ public class Value extends TupleArgument {
 
     /**
      * Constructs a simple float tuple argument
-     * 
+     *
      * @param v
      *            the float value to initialize this argument
      */
@@ -52,7 +53,7 @@ public class Value extends TupleArgument {
 
     /**
      * Constructs a simple integer tuple argument
-     * 
+     *
      * @param v
      *            the int value to initialize this argument
      */
@@ -63,7 +64,7 @@ public class Value extends TupleArgument {
 
     /**
      * Constructs a simple long tuple argument
-     * 
+     *
      * @param v
      *            the long value to initialize this argument
      */
@@ -74,7 +75,7 @@ public class Value extends TupleArgument {
 
     /**
      * Constructs a simple string tuple argument
-     * 
+     *
      * @param f
      *            the string value to initialize this argument
      */
@@ -86,7 +87,7 @@ public class Value extends TupleArgument {
     /**
      * Constructs a structured (compound) argument, made of a string as a name
      * (functor) and one argument
-     * 
+     *
      * @param f
      *            the name of the structure
      * @param at0
@@ -100,7 +101,7 @@ public class Value extends TupleArgument {
     /**
      * Constructs a structured (compound) argument, made of a string as a name
      * (functor) and two arguments
-     * 
+     *
      * @param f
      *            the name of the structure
      * @param at0
@@ -117,7 +118,7 @@ public class Value extends TupleArgument {
     /**
      * Constructs a structured (compound) argument, made of a string as a name
      * (functor) and three arguments
-     * 
+     *
      * @param f
      *            the name of the structure
      * @param at0
@@ -137,7 +138,7 @@ public class Value extends TupleArgument {
     /**
      * Constructs a structured (compound) argument, made of a string as a name
      * (functor) and four arguments
-     * 
+     *
      * @param f
      *            the name of the structure
      * @param at0
@@ -160,7 +161,7 @@ public class Value extends TupleArgument {
     /**
      * Constructs a structured (compound) argument, made of a string as a name
      * (functor) and five arguments
-     * 
+     *
      * @param f
      *            the name of the structure
      * @param at0
@@ -185,7 +186,7 @@ public class Value extends TupleArgument {
     /**
      * Constructs a structured (compound) argument, made of a string as a name
      * (functor) and six arguments
-     * 
+     *
      * @param f
      *            the name of the structure
      * @param at0
@@ -213,7 +214,7 @@ public class Value extends TupleArgument {
     /**
      * Constructs a structured (compound) argument, made of a string as a name
      * (functor) and seven arguments
-     * 
+     *
      * @param f
      *            the name of the structure
      * @param at0
@@ -244,7 +245,7 @@ public class Value extends TupleArgument {
     /**
      * Constructs a structured (compound) argument, made of a string as a name
      * (functor) and list of arguments
-     * 
+     *
      * @param f
      *            the name of the structure
      * @param argList
@@ -261,7 +262,7 @@ public class Value extends TupleArgument {
 
     /**
      * Constructs a structured (compound) argument as a logic list
-     * 
+     *
      * @param argList
      *            the list of the arguments
      */

@@ -9,13 +9,14 @@ import alice.tuplecentre.api.IId;
 /**
  * A ReSpecT Tuple Centre Interface to issue ReSpecT ordinary primitives using a
  * synchronous semantics.
- * 
+ *
  * @author Alessandro Ricci
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public interface IOrdinarySynchInterface {
+
     /**
-     * 
+     *
      * @param aid
      *            the identifier of who is invokin the operation the identifier
      *            of who is invokin the operation
@@ -27,7 +28,7 @@ public interface IOrdinarySynchInterface {
     List<LogicTuple> get(IId aid) throws OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param aid
      *            the identifier of who is invokin the operation
      * @param t
@@ -44,7 +45,7 @@ public interface IOrdinarySynchInterface {
             OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param aid
      *            the identifier of who is invokin the operation
      * @param t
@@ -59,7 +60,7 @@ public interface IOrdinarySynchInterface {
             throws InvalidLogicTupleException, OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param aid
      *            the identifier of who is invokin the operation
      * @param t
@@ -74,7 +75,7 @@ public interface IOrdinarySynchInterface {
             OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param aid
      *            the identifier of who is invokin the operation
      * @param t
@@ -89,7 +90,7 @@ public interface IOrdinarySynchInterface {
             OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param aid
      *            the identifier of who is invokin the operation
      * @param t
@@ -104,7 +105,7 @@ public interface IOrdinarySynchInterface {
             throws InvalidLogicTupleException, OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param aid
      *            the identifier of who is invokin the operation
      * @param t
@@ -119,7 +120,7 @@ public interface IOrdinarySynchInterface {
             OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param aid
      *            the identifier of who is invokin the operation
      * @param t
@@ -133,7 +134,7 @@ public interface IOrdinarySynchInterface {
             OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param aid
      *            the identifier of who is invokin the operation
      * @param t
@@ -148,7 +149,7 @@ public interface IOrdinarySynchInterface {
             throws InvalidLogicTupleException, OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param aid
      *            the identifier of who is invokin the operation
      * @param t
@@ -163,7 +164,7 @@ public interface IOrdinarySynchInterface {
             OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param aid
      *            the identifier of who is invokin the operation
      * @param t
@@ -178,7 +179,7 @@ public interface IOrdinarySynchInterface {
             throws InvalidLogicTupleException, OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param aid
      *            the identifier of who is invokin the operation
      * @param t
@@ -193,7 +194,7 @@ public interface IOrdinarySynchInterface {
             OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param aid
      *            the identifier of who is invokin the operation
      * @param tupleList
@@ -208,7 +209,7 @@ public interface IOrdinarySynchInterface {
             throws OperationNotPossibleException, InvalidLogicTupleException;
 
     /**
-     * 
+     *
      * @param aid
      *            the identifier of who is invokin the operation
      * @param t
@@ -223,7 +224,7 @@ public interface IOrdinarySynchInterface {
             OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param aid
      *            the identifier of who is invokin the operation
      * @param t
@@ -238,7 +239,7 @@ public interface IOrdinarySynchInterface {
             OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param aid
      *            the identifier of who is invokin the operation
      * @param t
@@ -253,7 +254,7 @@ public interface IOrdinarySynchInterface {
             OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param aid
      *            the identifier of who is invokin the operation
      * @param t
@@ -268,7 +269,7 @@ public interface IOrdinarySynchInterface {
             OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param aid
      *            the identifier of who is invokin the operation
      * @param t
@@ -283,7 +284,7 @@ public interface IOrdinarySynchInterface {
             OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param aid
      *            the identifier of who is invokin the operation
      * @param t
@@ -298,7 +299,7 @@ public interface IOrdinarySynchInterface {
             OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param aid
      *            the identifier of who is invokin the operation
      * @param t

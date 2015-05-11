@@ -22,15 +22,16 @@ import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 /**
  * Bulk Synchronous ACC. Can act on the ordinary tuple space. Only bulk
  * primitives are included.
- * 
+ *
  * @author ste (mailto: s.mariani@unibo.it)
  */
 public interface BulkSynchACC extends RootACC {
+
     /**
      * Withdraws from the space all the tuples matching the given template in
      * one shot (a single transition step). The empty list may be returned in
      * case no tuples match. Matching tuples are removed from the space.
-     * 
+     *
      * @param tid
      *            the TupleCentreId of the target tuple centre
      * @param tuple
@@ -41,11 +42,11 @@ public interface BulkSynchACC extends RootACC {
      *            just unblocks the agent, but the request IS NOT REMOVED from
      *            TuCSoN node pending requests (will still be served at sometime
      *            in the future).
-     * 
+     *
      * @return the ITucsonOperation object storing the outcome of the execution.
      *         Notice due to synchronous semantics, it is guaranteed to store
      *         the result of the operation.
-     * 
+     *
      * @throws TucsonOperationNotPossibleException
      *             if the requested operation cannot be carried out
      * @throws UnreachableNodeException
@@ -53,7 +54,7 @@ public interface BulkSynchACC extends RootACC {
      * @throws OperationTimeOutException
      *             if the operation timeout expired prior to operation
      *             completion
-     * 
+     *
      * @see alice.tuplecentre.api.TupleCentreId TupleCentreId
      * @see alice.tucson.api.TucsonOperationCompletionListener
      *      TucsonOperationCompletionListener
@@ -70,7 +71,7 @@ public interface BulkSynchACC extends RootACC {
      * can be perceived with <code> no </code> primitive. In case of failure,
      * all the tuples matching the template are returned (with <code> no </code>
      * only one non-deterministically selected is returned).
-     * 
+     *
      * @param tid
      *            the TupleCentreId of the target tuple centre
      * @param tuple
@@ -81,11 +82,11 @@ public interface BulkSynchACC extends RootACC {
      *            just unblocks the agent, but the request IS NOT REMOVED from
      *            TuCSoN node pending requests (will still be served at sometime
      *            in the future).
-     * 
+     *
      * @return the ITucsonOperation object storing the outcome of the execution.
      *         Notice due to synchronous semantics, it is guaranteed to store
      *         the result of the operation.
-     * 
+     *
      * @throws TucsonOperationNotPossibleException
      *             if the requested operation cannot be carried out
      * @throws UnreachableNodeException
@@ -93,7 +94,7 @@ public interface BulkSynchACC extends RootACC {
      * @throws OperationTimeOutException
      *             if the operation timeout expired prior to operation
      *             completion
-     * 
+     *
      * @see alice.tuplecentre.api.TupleCentreId TupleCentreId
      * @see alice.tucson.api.TucsonOperationCompletionListener
      *      TucsonOperationCompletionListener
@@ -107,7 +108,7 @@ public interface BulkSynchACC extends RootACC {
     /**
      * Inject in the space a list of tuples in one shot (a single transition
      * step).
-     * 
+     *
      * @param tid
      *            the TupleCentreId of the target tuple centre
      * @param tuple
@@ -118,11 +119,11 @@ public interface BulkSynchACC extends RootACC {
      *            just unblocks the agent, but the request IS NOT REMOVED from
      *            TuCSoN node pending requests (will still be served at sometime
      *            in the future).
-     * 
+     *
      * @return the ITucsonOperation object storing the outcome of the execution.
      *         Notice due to synchronous semantics, it is guaranteed to store
      *         the result of the operation.
-     * 
+     *
      * @throws TucsonOperationNotPossibleException
      *             if the requested operation cannot be carried out
      * @throws UnreachableNodeException
@@ -130,7 +131,7 @@ public interface BulkSynchACC extends RootACC {
      * @throws OperationTimeOutException
      *             if the operation timeout expired prior to operation
      *             completion
-     * 
+     *
      * @see alice.tuplecentre.api.TupleCentreId TupleCentreId
      * @see alice.tucson.api.TucsonOperationCompletionListener
      *      TucsonOperationCompletionListener
@@ -145,7 +146,7 @@ public interface BulkSynchACC extends RootACC {
      * Reads from the space all the tuples matching the given template in one
      * shot (a single transition step). The empty list may be returned in case
      * no tuples match. Matching tuples are NOT removed from the space.
-     * 
+     *
      * @param tid
      *            the TupleCentreId of the target tuple centre
      * @param tuple
@@ -156,11 +157,11 @@ public interface BulkSynchACC extends RootACC {
      *            just unblocks the agent, but the request IS NOT REMOVED from
      *            TuCSoN node pending requests (will still be served at sometime
      *            in the future).
-     * 
+     *
      * @return the ITucsonOperation object storing the outcome of the execution.
      *         Notice due to synchronous semantics, it is guaranteed to store
      *         the result of the operation.
-     * 
+     *
      * @throws TucsonOperationNotPossibleException
      *             if the requested operation cannot be carried out
      * @throws UnreachableNodeException
@@ -168,7 +169,7 @@ public interface BulkSynchACC extends RootACC {
      * @throws OperationTimeOutException
      *             if the operation timeout expired prior to operation
      *             completion
-     * 
+     *
      * @see alice.tuplecentre.api.TupleCentreId TupleCentreId
      * @see alice.tucson.api.TucsonOperationCompletionListener
      *      TucsonOperationCompletionListener

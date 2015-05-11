@@ -76,16 +76,21 @@ import alice.tuprolog.Var;
 /**
  * This class defines a ReSpecT Context as a specialization of a tuple centre VM
  * context (defining VM specific structures)
- * 
+ *
  * @see alice.tuplecentre.core.AbstractTupleCentreVMContext
- * 
+ *
  * @author Alessandro Ricci
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
  * @author (contributor) Saverio Cicora
  */
 public class RespectVMContext extends
-        alice.tuplecentre.core.AbstractTupleCentreVMContext {
+alice.tuplecentre.core.AbstractTupleCentreVMContext {
 
+    /**
+     *
+     * @author Stefano Mariani (mailto: s.mariani@unibo.it)
+     *
+     */
     public enum ModType {
         ADD_PRED, ADD_SPEC, ADD_TUPLE, DEL_PRED, DEL_SPEC, DEL_TUPLE, EMPTY_PRED, EMPTY_SPEC, EMPTY_TUPLES
     }
@@ -117,14 +122,14 @@ public class RespectVMContext extends
     /**
      * Static services that checks if a source text contains a valid ReSpecT
      * specification
-     * 
+     *
      * @param spec
      *            the String representation of the ReSpecT specification to
      *            check for syntactic correctness
      * @return a logic tuple that provides information about the check: valid is
      *         the specification is OK, or invalid(L) if there are errors (at
      *         line L).
-     * 
+     *
      */
     public static LogicTuple checkReactionSpec(final String spec) {
         Prolog core = new Prolog();
@@ -199,7 +204,7 @@ public class RespectVMContext extends
     private final TRSet zSet;
 
     /**
-     * 
+     *
      * @param rvm
      *            the ReSpecT VM this storage context is managed by
      * @param tid
@@ -281,7 +286,7 @@ public class RespectVMContext extends
         if (",".equals(((LogicTuple) t).getName())) {
             tuple = new LogicTuple("reaction", ((LogicTuple) t).getArg(0),
                     ((LogicTuple) t).getArg(1).getArg(0), ((LogicTuple) t)
-                            .getArg(1).getArg(1));
+                    .getArg(1).getArg(1));
         } else {
             tuple = t;
         }
@@ -295,7 +300,7 @@ public class RespectVMContext extends
     }
 
     /**
-     * 
+     *
      * @param out
      *            the out-link event to be remembered
      */
@@ -338,7 +343,7 @@ public class RespectVMContext extends
      *            the path where persistency information is stored
      * @param fileName
      *            the name of the file where persistency information is stored
-     * 
+     *
      */
     public void disablePersistency(final String path,
             final TucsonTupleCentreId fileName) {
@@ -360,7 +365,7 @@ public class RespectVMContext extends
      * @param fileName
      *            the name of the file to create for storing persistency
      *            information
-     * 
+     *
      */
     public void enablePersistency(final String path,
             final TucsonTupleCentreId fileName) {
@@ -585,13 +590,13 @@ public class RespectVMContext extends
                         if (op.getLogicTupleListResult() == null) {
                             this.currentReactionTerm = new Struct("in_all",
                                     op.getLogicTupleArgument().getArg(0)
-                                            .toTerm(), op
-                                            .getLogicTupleArgument().getArg(1)
-                                            .toTerm());
+                                    .toTerm(), op
+                                    .getLogicTupleArgument().getArg(1)
+                                    .toTerm());
                         } else {
                             this.currentReactionTerm = new Struct("in_all",
                                     op.getLogicTupleArgument().getArg(0)
-                                            .toTerm(),
+                                    .toTerm(),
                                     RespectVMContext.list2tuple(op
                                             .getLogicTupleListResult()));
                         }
@@ -599,13 +604,13 @@ public class RespectVMContext extends
                         if (op.getLogicTupleListResult() == null) {
                             this.currentReactionTerm = new Struct("rd_all",
                                     op.getLogicTupleArgument().getArg(0)
-                                            .toTerm(), op
-                                            .getLogicTupleArgument().getArg(1)
-                                            .toTerm());
+                                    .toTerm(), op
+                                    .getLogicTupleArgument().getArg(1)
+                                    .toTerm());
                         } else {
                             this.currentReactionTerm = new Struct("rd_all",
                                     op.getLogicTupleArgument().getArg(0)
-                                            .toTerm(),
+                                    .toTerm(),
                                     RespectVMContext.list2tuple(op
                                             .getLogicTupleListResult()));
                         }
@@ -613,13 +618,13 @@ public class RespectVMContext extends
                         if (op.getLogicTupleListResult() == null) {
                             this.currentReactionTerm = new Struct("no_all",
                                     op.getLogicTupleArgument().getArg(0)
-                                            .toTerm(), op
-                                            .getLogicTupleArgument().getArg(1)
-                                            .toTerm());
+                                    .toTerm(), op
+                                    .getLogicTupleArgument().getArg(1)
+                                    .toTerm());
                         } else {
                             this.currentReactionTerm = new Struct("no_all",
                                     op.getLogicTupleArgument().getArg(0)
-                                            .toTerm(),
+                                    .toTerm(),
                                     RespectVMContext.list2tuple(op
                                             .getLogicTupleListResult()));
                         }
@@ -700,13 +705,13 @@ public class RespectVMContext extends
                             if (op.getLogicTupleListResult() == null) {
                                 this.currentReactionTerm = new Struct("in_all",
                                         op.getLogicTupleArgument().getArg(0)
-                                                .toTerm(), op
-                                                .getLogicTupleArgument()
-                                                .getArg(1).toTerm());
+                                        .toTerm(), op
+                                        .getLogicTupleArgument()
+                                        .getArg(1).toTerm());
                             } else {
                                 this.currentReactionTerm = new Struct("in_all",
                                         op.getLogicTupleArgument().getArg(0)
-                                                .toTerm(),
+                                        .toTerm(),
                                         RespectVMContext.list2tuple(op
                                                 .getLogicTupleListResult()));
                             }
@@ -714,13 +719,13 @@ public class RespectVMContext extends
                             if (op.getLogicTupleListResult() == null) {
                                 this.currentReactionTerm = new Struct("rd_all",
                                         op.getLogicTupleArgument().getArg(0)
-                                                .toTerm(), op
-                                                .getLogicTupleArgument()
-                                                .getArg(1).toTerm());
+                                        .toTerm(), op
+                                        .getLogicTupleArgument()
+                                        .getArg(1).toTerm());
                             } else {
                                 this.currentReactionTerm = new Struct("rd_all",
                                         op.getLogicTupleArgument().getArg(0)
-                                                .toTerm(),
+                                        .toTerm(),
                                         RespectVMContext.list2tuple(op
                                                 .getLogicTupleListResult()));
                             }
@@ -728,13 +733,13 @@ public class RespectVMContext extends
                             if (op.getLogicTupleListResult() == null) {
                                 this.currentReactionTerm = new Struct("no_all",
                                         op.getLogicTupleArgument().getArg(0)
-                                                .toTerm(), op
-                                                .getLogicTupleArgument()
-                                                .getArg(1).toTerm());
+                                        .toTerm(), op
+                                        .getLogicTupleArgument()
+                                        .getArg(1).toTerm());
                             } else {
                                 this.currentReactionTerm = new Struct("no_all",
                                         op.getLogicTupleArgument().getArg(0)
-                                                .toTerm(),
+                                        .toTerm(),
                                         RespectVMContext.list2tuple(op
                                                 .getLogicTupleListResult()));
                             }
@@ -865,13 +870,13 @@ public class RespectVMContext extends
                             if (op.getLogicTupleListResult() == null) {
                                 this.currentReactionTerm = new Struct("in_all",
                                         op.getLogicTupleArgument().getArg(0)
-                                                .toTerm(), op
-                                                .getLogicTupleArgument()
-                                                .getArg(1).toTerm());
+                                        .toTerm(), op
+                                        .getLogicTupleArgument()
+                                        .getArg(1).toTerm());
                             } else {
                                 this.currentReactionTerm = new Struct("in_all",
                                         op.getLogicTupleArgument().getArg(0)
-                                                .toTerm(),
+                                        .toTerm(),
                                         RespectVMContext.list2tuple(op
                                                 .getLogicTupleListResult()));
                             }
@@ -879,13 +884,13 @@ public class RespectVMContext extends
                             if (op.getLogicTupleListResult() == null) {
                                 this.currentReactionTerm = new Struct("rd_all",
                                         op.getLogicTupleArgument().getArg(0)
-                                                .toTerm(), op
-                                                .getLogicTupleArgument()
-                                                .getArg(1).toTerm());
+                                        .toTerm(), op
+                                        .getLogicTupleArgument()
+                                        .getArg(1).toTerm());
                             } else {
                                 this.currentReactionTerm = new Struct("rd_all",
                                         op.getLogicTupleArgument().getArg(0)
-                                                .toTerm(),
+                                        .toTerm(),
                                         RespectVMContext.list2tuple(op
                                                 .getLogicTupleListResult()));
                             }
@@ -893,28 +898,28 @@ public class RespectVMContext extends
                             if (op.getLogicTupleListResult() == null) {
                                 this.currentReactionTerm = new Struct("no_all",
                                         op.getLogicTupleArgument().getArg(0)
-                                                .toTerm(), op
-                                                .getLogicTupleArgument()
-                                                .getArg(1).toTerm());
+                                        .toTerm(), op
+                                        .getLogicTupleArgument()
+                                        .getArg(1).toTerm());
                             } else {
                                 this.currentReactionTerm = new Struct("no_all",
                                         op.getLogicTupleArgument().getArg(0)
-                                                .toTerm(),
+                                        .toTerm(),
                                         RespectVMContext.list2tuple(op
                                                 .getLogicTupleListResult()));
                             }
                         } else if (op.isGetEnv()) {
                             this.currentReactionTerm = new Struct("getEnv",
                                     op.getLogicTupleArgument().getArg(0)
-                                            .toTerm(), op
-                                            .getLogicTupleArgument().getArg(1)
-                                            .toTerm());
+                                    .toTerm(), op
+                                    .getLogicTupleArgument().getArg(1)
+                                    .toTerm());
                         } else if (op.isSetEnv()) {
                             this.currentReactionTerm = new Struct("setEnv",
                                     op.getLogicTupleArgument().getArg(0)
-                                            .toTerm(), op
-                                            .getLogicTupleArgument().getArg(1)
-                                            .toTerm());
+                                    .toTerm(), op
+                                    .getLogicTupleArgument().getArg(1)
+                                    .toTerm());
                         }
                     }
                 } else if (ev.isInternal()) {
@@ -1017,7 +1022,7 @@ public class RespectVMContext extends
     }
 
     /**
-     * 
+     *
      * @return a Java iterator through the list of timed reactions possibly
      *         found
      */
@@ -1060,7 +1065,7 @@ public class RespectVMContext extends
     }
 
     /**
-     * 
+     *
      * @return the event currently under processing
      */
     public AbstractEvent getCurrentReactionEvent() {
@@ -1068,7 +1073,7 @@ public class RespectVMContext extends
     }
 
     /**
-     * 
+     *
      * @return the reaction term currently under processing
      */
     public Struct getCurrentReactionTerm() {
@@ -1081,7 +1086,7 @@ public class RespectVMContext extends
     }
 
     /**
-     * 
+     *
      * @return the tuProlog engine responsible for matching triggering events
      *         with event templates
      */
@@ -1090,7 +1095,7 @@ public class RespectVMContext extends
     }
 
     /**
-     * 
+     *
      * @return a Java iterator through tuProlog predicates used in ReSpecT
      *         specification
      */
@@ -1104,7 +1109,7 @@ public class RespectVMContext extends
     }
 
     /**
-     * 
+     *
      * @return the ReSpecT VM this storage context is managed by
      */
     public RespectVM getRespectVM() {
@@ -1122,7 +1127,7 @@ public class RespectVMContext extends
     }
 
     /**
-     * 
+     *
      * @return the list of tuples representing triggered reactions
      */
     public LogicTuple[] getTRSet() {
@@ -1137,7 +1142,7 @@ public class RespectVMContext extends
     }
 
     /**
-     * 
+     *
      * @param filter
      *            the tuple template to be used in filtering stored tuples
      * @return the list of tuples currently stored
@@ -1162,7 +1167,7 @@ public class RespectVMContext extends
     }
 
     /**
-     * 
+     *
      * @param filter
      *            the tuple template to be used in filtering InQ events
      * @return the list of tuples representing InQ events currently stored
@@ -1226,7 +1231,7 @@ public class RespectVMContext extends
     }
 
     /**
-     * 
+     *
      * @param in
      *            the environmental input event to notify
      */
@@ -1236,7 +1241,7 @@ public class RespectVMContext extends
     }
 
     /**
-     * 
+     *
      * @param in
      *            the input event to notify
      */
@@ -1246,7 +1251,7 @@ public class RespectVMContext extends
     }
 
     /**
-     * 
+     *
      */
     public void notifyNewInputEvent() {
         this.vm.notifyNewInputEvent();
@@ -1298,7 +1303,7 @@ public class RespectVMContext extends
      *            the name of the file where persistency information is stored
      * @param tcName
      *            the name of the tuple centre to be recovered
-     * 
+     *
      */
     public void recoveryPersistent(final String path, final String file,
             final TucsonTupleCentreId tcName) {
@@ -1455,7 +1460,7 @@ public class RespectVMContext extends
 
     /**
      * Removes the event related to a specific executed operation
-     * 
+     *
      * @param operationId
      *            identifier of the operation
      * @return wether the event has been successfully removed or not
@@ -1466,7 +1471,7 @@ public class RespectVMContext extends
 
     /**
      * Removes all events of specified agent
-     * 
+     *
      * @param id
      *            the identifier of the agent whose events must be removed
      */
@@ -1477,7 +1482,7 @@ public class RespectVMContext extends
     }
 
     /**
-     * 
+     *
      */
     public void removeReactionSpec() {
         this.core.clearTheory();
@@ -1633,7 +1638,7 @@ public class RespectVMContext extends
     }
 
     /**
-     * 
+     *
      * @param set
      *            the list of tuple representing InQ events to overwrite this
      *            InQ with
@@ -1813,8 +1818,8 @@ public class RespectVMContext extends
             return false;
         } catch (final InvalidTheoryException e) {
             System.err
-                    .println("[RespectVMContext]: InvalidTheoryException @ c: "
-                            + e.clause + ", l: " + e.line + ", p: " + e.pos);
+            .println("[RespectVMContext]: InvalidTheoryException @ c: "
+                    + e.clause + ", l: " + e.line + ", p: " + e.pos);
             e.printStackTrace();
             return false;
         }
@@ -1884,7 +1889,7 @@ public class RespectVMContext extends
     }
 
     /**
-     * 
+     *
      * @param spec
      *            the ReSpecT specification to be added to this ReSpecT VM
      *            storage context
@@ -1943,7 +1948,7 @@ public class RespectVMContext extends
     }
 
     /**
-     * 
+     *
      * @param spec
      *            the ReSpecT specification to overwrite this ReSpecT VM one
      *            with

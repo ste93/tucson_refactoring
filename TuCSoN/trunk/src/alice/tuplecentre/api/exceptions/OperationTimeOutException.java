@@ -15,10 +15,11 @@ package alice.tuplecentre.api.exceptions;
 
 /**
  * Exceptions thrown when a timeout occurs.
- * 
+ *
  * @author Alessandro Ricci
  */
 public class OperationTimeOutException extends Exception {
+
     private static final long serialVersionUID = -8964988995107906719L;
 
     public OperationTimeOutException() {

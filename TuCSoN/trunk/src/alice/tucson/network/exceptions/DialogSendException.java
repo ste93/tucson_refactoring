@@ -3,13 +3,14 @@ package alice.tucson.network.exceptions;
 /**
  * DialogSendException. Thrown if TuCSoN Node service can't handle sending of a
  * message.
- * 
+ *
  * @author Alessia Papini (mailto: alessia.papini@studio.unibo.it)
  * @author Mattia Balducci (mailto: mattia.balducci@studio.unibo.it)
  * @author (contributor) Stefano Mariani (mailto: s.mariani@unibo.it)
- * 
+ *
  */
 public class DialogSendException extends DialogException {
+
     /**
      * Exception thrown when a TuCSoN sending operation goes wrong
      */

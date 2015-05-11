@@ -34,14 +34,15 @@ import alice.tuprolog.Parser;
  * Command Line Interpreter TuCSoN agent. Waits for user input, properly parses
  * the issued command, then process it calling the corresponding method on the
  * ACC (gained through constructor). It blocks until TuCSoN reply comes.
- * 
+ *
  * @author Alessandro Ricci
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
- * 
+ *
  */
 public class CLIAgent extends alice.util.Automaton {
+
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = 1L;
 
@@ -71,7 +72,7 @@ public class CLIAgent extends alice.util.Automaton {
     private final BufferedReader stdin;
 
     /**
-     * 
+     *
      * @param ctx
      *            the ACC held by the CLI
      * @param n

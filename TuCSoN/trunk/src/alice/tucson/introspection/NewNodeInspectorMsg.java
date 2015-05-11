@@ -16,15 +16,16 @@ package alice.tucson.introspection;
 import alice.tucson.api.TucsonAgentId;
 
 /**
- * 
+ *
  * @author Unknown...
- * 
+ *
  */
 public class NewNodeInspectorMsg extends NodeMsg {
+
     private static final long serialVersionUID = 6582272720835623886L;
 
     /**
-     * 
+     *
      * @param i
      *            the agent id of the sender
      */

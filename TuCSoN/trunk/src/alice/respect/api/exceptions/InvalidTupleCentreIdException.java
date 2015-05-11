@@ -14,12 +14,13 @@ package alice.respect.api.exceptions;
 
 /**
  * This exception is thrown when an invalid tuple centre identifier is used
- * 
+ *
  * Tuple centre identifier must be ground logic term
- * 
+ *
  * @author Alessandro Ricci
  */
 public class InvalidTupleCentreIdException extends RespectException {
+
     private static final long serialVersionUID = 2253131762919089633L;
 
     public InvalidTupleCentreIdException() {

@@ -20,18 +20,19 @@ import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tuprolog.Term;
 
 /**
- * 
+ *
  * @author Alessandro Ricci
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
- * 
+ *
  */
 public class TucsonTupleCentreId implements
         alice.tuplecentre.api.TupleCentreId, Serializable {
+
     private static final long serialVersionUID = -4503481713163088789L;
     private TupleCentreId tid;
 
     /**
-     * 
+     *
      * @param id
      *            the String representation of a valid TuCSoN tuple centre
      *            identifier
@@ -49,7 +50,7 @@ public class TucsonTupleCentreId implements
     }
 
     /**
-     * 
+     *
      * @param tcName
      *            the String representation of a valid tuple centre name
      * @param netid
@@ -70,7 +71,7 @@ public class TucsonTupleCentreId implements
     }
 
     /**
-     * 
+     *
      * @param id
      *            the String representation of a valid TuCSoN tuple centre
      *            identifier
@@ -80,7 +81,7 @@ public class TucsonTupleCentreId implements
     }
 
     /**
-     * 
+     *
      * @return the local tuple centre identifier
      */
     public TupleCentreId getInternalTupleCentreId() {
@@ -88,7 +89,7 @@ public class TucsonTupleCentreId implements
     }
 
     /**
-     * 
+     *
      * @return the local name of the tuple centre
      */
     public String getName() {
@@ -96,7 +97,7 @@ public class TucsonTupleCentreId implements
     }
 
     /**
-     * 
+     *
      * @return the IP address of the tuple centre
      */
     public String getNode() {
@@ -104,7 +105,7 @@ public class TucsonTupleCentreId implements
     }
 
     /**
-     * 
+     *
      * @return the listening port of the tuple centre
      */
     public int getPort() {
@@ -132,7 +133,7 @@ public class TucsonTupleCentreId implements
     }
 
     /**
-     * 
+     *
      * @return the tuProlog Term representation of this tuple centre identifier
      */
     public Term toTerm() {

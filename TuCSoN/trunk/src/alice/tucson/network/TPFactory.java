@@ -44,8 +44,8 @@ public final class TPFactory {
      */
     public static AbstractTucsonProtocol getDialogAgentSide(
             final int tucsonProtocolType, final TucsonTupleCentreId tid)
-                    throws DialogInitializationException, UnreachableNodeException,
-                    InvalidProtocolTypeException {
+            throws DialogInitializationException, UnreachableNodeException,
+            InvalidProtocolTypeException {
         final String node = alice.util.Tools.removeApices(tid.getNode());
         final int port = tid.getPort();
         // TODO CICORA: il controllo su porta e address va fatto meglio, vedere
@@ -109,7 +109,7 @@ public final class TPFactory {
      */
     public static AbstractTucsonProtocol getDialogNodeSide(
             final int tucsonProtocolType, final int portno)
-                    throws InvalidProtocolTypeException, DialogInitializationException {
+            throws InvalidProtocolTypeException, DialogInitializationException {
         AbstractTucsonProtocol tp = null;
         if (tucsonProtocolType == TPFactory.DIALOG_TYPE_TCP) {
             final TPConfig config = TucsonNodeService.getNode(portno)

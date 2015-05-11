@@ -19,11 +19,12 @@ import alice.tuplecentre.core.OutputEvent;
  * @author Alessandro Ricci
  */
 public class RespectOutputEvent extends OutputEvent {
+
     private static final long serialVersionUID = -3368404448915090722L;
     private final InternalOperation operation;
 
     /**
-     * 
+     *
      * @param ev
      *            the input event which caused this output event
      * @param op
@@ -35,7 +36,7 @@ public class RespectOutputEvent extends OutputEvent {
     }
 
     /**
-     * 
+     *
      * @return the internal operation which triggered this output event
      */
     public InternalOperation getRespectOperation() {

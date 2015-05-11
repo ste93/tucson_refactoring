@@ -4,13 +4,14 @@ import java.io.Serializable;
 import alice.logictuple.LogicTuple;
 
 /**
- * 
+ *
  * @author Alessandro Ricci
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
  * @author (contributor) Saverio Cicora
- * 
+ *
  */
 public class TucsonMsgReply implements Serializable {
+
     /** serialVersionUID **/
     private static final long serialVersionUID = 1L;
     private boolean allowed;
@@ -22,7 +23,7 @@ public class TucsonMsgReply implements Serializable {
     private int type;
 
     /**
-     * 
+     *
      * @param i
      *            the operation id
      * @param t
@@ -46,7 +47,7 @@ public class TucsonMsgReply implements Serializable {
     }
 
     /**
-     * 
+     *
      * @param i
      *            the operation id
      * @param t
@@ -76,16 +77,16 @@ public class TucsonMsgReply implements Serializable {
     }
 
     /**
-     * 
+     *
      */
     protected TucsonMsgReply() {
         /*
-         * 
+         *
          */
     }
 
     /**
-     * 
+     *
      * @return the operation id
      */
     public long getId() {
@@ -93,7 +94,7 @@ public class TucsonMsgReply implements Serializable {
     }
 
     /**
-     * 
+     *
      * @return the tuple argument of the operation
      */
     public LogicTuple getTupleRequested() {
@@ -101,7 +102,7 @@ public class TucsonMsgReply implements Serializable {
     }
 
     /**
-     * 
+     *
      * @return the object result of the operation (can be a tuple or a tuple
      *         list)
      */
@@ -110,7 +111,7 @@ public class TucsonMsgReply implements Serializable {
     }
 
     /**
-     * 
+     *
      * @return the type code of the operation
      */
     public int getType() {
@@ -118,7 +119,7 @@ public class TucsonMsgReply implements Serializable {
     }
 
     /**
-     * 
+     *
      * @return wether the operation is allowed
      */
     public boolean isAllowed() {
@@ -126,7 +127,7 @@ public class TucsonMsgReply implements Serializable {
     }
 
     /**
-     * 
+     *
      * @return wether the operation succeeded
      */
     public boolean isResultSuccess() {
@@ -134,7 +135,7 @@ public class TucsonMsgReply implements Serializable {
     }
 
     /**
-     * 
+     *
      * @return wether the operation completed
      */
     public boolean isSuccess() {

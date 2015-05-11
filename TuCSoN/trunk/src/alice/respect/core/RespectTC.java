@@ -37,18 +37,19 @@ import alice.tuplecentre.core.OperationCompletionListener;
 import alice.tuplecentre.core.TCCycleResult.Outcome;
 
 /**
- * 
+ *
  * A ReSpecT tuple centre.
- * 
+ *
  * @author Alessandro Ricci
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public class RespectTC implements IRespectTC {
+
     private final RespectVM vm;
     private final Thread vmThread;
 
     /**
-     * 
+     *
      * @param tid
      *            the identifier of the tuple centre
      * @param container
@@ -80,7 +81,7 @@ public class RespectTC implements IRespectTC {
     }
 
     /**
-     * 
+     *
      * @return the environment context toward this tuple centre
      */
     public IEnvironmentContext getEnvironmentContext() {
@@ -94,7 +95,7 @@ public class RespectTC implements IRespectTC {
 
     /**
      * Gets a interface for linking operations
-     * 
+     *
      * @return the linking context toward this tuple centre
      */
     public ILinkContext getLinkContext() {
@@ -103,7 +104,7 @@ public class RespectTC implements IRespectTC {
 
     /**
      * Gets a context for tuple centre management.
-     * 
+     *
      * @return the management context toward this tuple centre
      */
     public IManagementContext getManagementContext() {
@@ -112,7 +113,7 @@ public class RespectTC implements IRespectTC {
 
     /**
      * Gets a context with no blocking functionalities
-     * 
+     *
      * @return the ordinary, asynchronous context toward this tuple centre
      */
     public IOrdinaryAsynchInterface getOrdinaryAsynchInterface() {
@@ -121,7 +122,7 @@ public class RespectTC implements IRespectTC {
 
     /**
      * Gets a context with blocking functionalities
-     * 
+     *
      * @return the ordinary, synchronous context toward this tuple centre
      */
     public IOrdinarySynchInterface getOrdinarySynchInterface() {
@@ -151,7 +152,7 @@ public class RespectTC implements IRespectTC {
     }
 
     /**
-     * 
+     *
      * @return the specification, asynchronous context toward this tuple centre
      */
     public ISpecificationAsynchInterface getSpecificationAsynchInterface() {
@@ -160,7 +161,7 @@ public class RespectTC implements IRespectTC {
 
     /**
      * Gets a context with blocking specification functionalities
-     * 
+     *
      * @return the specification, synchronous context toward this tuple centre
      */
     public ISpecificationSynchInterface getSpecificationSynchInterface() {
@@ -169,7 +170,7 @@ public class RespectTC implements IRespectTC {
 
     /**
      * Gets a context with timing functionalities.
-     * 
+     *
      * @return the timed context toward this tuple centre
      */
     public ITimedContext getTimedContext() {
@@ -182,7 +183,7 @@ public class RespectTC implements IRespectTC {
     }
 
     /**
-     * 
+     *
      * @return the Java thread executing the ReSpecT VM managing this tuple
      *         centre
      */

@@ -17,16 +17,17 @@ import alice.respect.core.RespectOperation;
 
 /**
  * This is the listening state of the TCVM
- * 
+ *
  * @author Alessandro Ricci
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public class ListeningState extends AbstractTupleCentreVMState {
+
     private AbstractTupleCentreVMState reactingState;
     private AbstractTupleCentreVMState speakingState;
 
     /**
-     * 
+     *
      * @param tcvm
      *            the tuple centre VM this state belongs to
      */

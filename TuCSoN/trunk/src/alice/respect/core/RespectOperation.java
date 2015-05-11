@@ -28,31 +28,32 @@ import alice.tuprolog.Term;
 
 /**
  * This class represents a ReSpecT operation.
- * 
+ *
  * @author Alessandro Ricci
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public class RespectOperation extends AbstractTupleCentreOperation implements
         IRespectOperation {
+
     /**
-     * 
+     *
      */
     public static final int OPTYPE_ENV = 103;
     /**
-     * 
+     *
      */
     public static final int OPTYPE_GET_ENV = 101;
     /**
-     * 
+     *
      */
     public static final int OPTYPE_SET_ENV = 102;
     /**
-     * 
+     *
      */
     public static final int OPTYPE_TIME = 100;
 
     /**
-     * 
+     *
      * @param t
      *            the tuple argument of the operation
      * @param l
@@ -67,7 +68,7 @@ public class RespectOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @param t
      *            the tuple argument of the operation
      * @param l
@@ -83,7 +84,7 @@ public class RespectOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @param t
      *            the tuple argument of the operation
      * @param l
@@ -98,7 +99,7 @@ public class RespectOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @param t
      *            the tuple argument of the operation
      * @param l
@@ -112,7 +113,7 @@ public class RespectOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @param t
      *            the tuple argument of the operation
      * @param l
@@ -126,7 +127,7 @@ public class RespectOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @param t
      *            the tuple argument of the operation
      * @param l
@@ -140,7 +141,7 @@ public class RespectOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @param t
      *            the tuple argument of the operation
      * @param l
@@ -154,7 +155,7 @@ public class RespectOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @param t
      *            the tuple argument of the operation
      * @param l
@@ -168,7 +169,7 @@ public class RespectOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @param t
      *            the tuple argument of the operation
      * @param l
@@ -182,7 +183,7 @@ public class RespectOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @param t
      *            the tuple argument of the operation
      * @param l
@@ -196,7 +197,7 @@ public class RespectOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @param t
      *            the tuple argument of the operation
      * @param l
@@ -210,7 +211,7 @@ public class RespectOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @param t
      *            the tuple argument of the operation
      * @param l
@@ -224,7 +225,7 @@ public class RespectOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @param t
      *            the tuple argument of the operation
      * @param l
@@ -238,7 +239,7 @@ public class RespectOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @param t
      *            the tuple argument of the operation
      * @param l
@@ -252,7 +253,7 @@ public class RespectOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @param t
      *            the tuple argument of the operation
      * @param l
@@ -266,7 +267,7 @@ public class RespectOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @param t
      *            the tuple argument of the operation
      * @param l
@@ -280,7 +281,7 @@ public class RespectOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @param t
      *            the tuple argument of the operation
      * @param l
@@ -294,7 +295,7 @@ public class RespectOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @param t
      *            the tuple argument of the operation
      * @param l
@@ -308,7 +309,7 @@ public class RespectOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @param t
      *            the tuple argument of the operation
      * @param l
@@ -322,7 +323,7 @@ public class RespectOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @param t
      *            the tuple argument of the operation
      * @param l
@@ -336,7 +337,7 @@ public class RespectOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @param t
      *            the tuple argument of the operation
      * @param l
@@ -350,7 +351,7 @@ public class RespectOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @param t
      *            the tuple argument of the operation
      * @param l
@@ -395,7 +396,7 @@ public class RespectOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @param t
      *            the tuple argument of the operation
      * @param l
@@ -411,7 +412,7 @@ public class RespectOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @param t
      *            the tuple argument of the operation
      * @param l
@@ -456,7 +457,7 @@ public class RespectOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @param l
      *            the listener for operation completion
      * @return the ReSpecT operation built
@@ -467,7 +468,7 @@ public class RespectOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @param spec
      *            the ReSpecT specification argument of the operation
      * @param l
@@ -488,7 +489,7 @@ public class RespectOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @param t
      *            the tuple argument of the operation
      * @param l
@@ -502,7 +503,7 @@ public class RespectOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @param t
      *            the tuple argument of the operation
      * @param l
@@ -515,7 +516,7 @@ public class RespectOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @param t
      *            the tuple argument of the operation
      * @param l
@@ -529,7 +530,7 @@ public class RespectOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @param t
      *            the tuple argument of the operation
      * @param l
@@ -543,7 +544,7 @@ public class RespectOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @param t
      *            the tuple argument of the operation
      * @param l
@@ -557,7 +558,7 @@ public class RespectOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @param t
      *            the tuple argument of the operation
      * @param l
@@ -571,7 +572,7 @@ public class RespectOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @param t
      *            the tuple argument of the operation
      * @param l
@@ -585,7 +586,7 @@ public class RespectOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @param t
      *            the tuple argument of the operation
      * @param l
@@ -612,7 +613,7 @@ public class RespectOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @param type
      *            the integer type-code of the oepration
      * @param t
@@ -626,7 +627,7 @@ public class RespectOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @param type
      *            the integer type-code of the oepration
      * @param t
@@ -688,7 +689,7 @@ public class RespectOperation extends AbstractTupleCentreOperation implements
     }
 
     /**
-     * 
+     *
      * @return the logic tuple representation of this operation
      */
     public LogicTuple toTuple() {

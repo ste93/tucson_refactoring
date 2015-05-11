@@ -14,10 +14,11 @@
 package alice.tucson.api.exceptions;
 
 /**
- * 
+ *
  * @author ste (mailto: s.mariani@unibo.it)
- * 
+ *
  */
 public class TucsonInvalidCommandException extends Exception {
+
     private static final long serialVersionUID = -3816363677020991384L;
 }

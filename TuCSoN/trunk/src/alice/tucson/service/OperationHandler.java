@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import alice.logictuple.LogicTuple;
 import alice.respect.api.TupleCentreId;
 import alice.tucson.api.ITucsonOperation;
@@ -87,7 +88,7 @@ public class OperationHandler {
                     msg = this.dialog.receiveMsgReply();
                 } catch (final DialogReceiveException e) {
                     OperationHandler.this
-                            .err("TuCSoN Node disconnected unexpectedly :/");
+                    .err("TuCSoN Node disconnected unexpectedly :/");
                     // OperationHandler.this.err(e.getCause().toString());
                     this.setStop();
                     break;
@@ -177,26 +178,24 @@ public class OperationHandler {
                 } else {
                     op.setOpResult(Outcome.FAILURE);
                 }
-                /*
-                 * modifica dell'ordine delle chiamate in modo da consentire
-                 * all'operationhandler di aggiungere l'evento nella lista prima
-                 * della notifica
-                 */
                 OperationHandler.this.postEvent(ev);
                 op.notifyCompletion(ev.operationSucceeded(), msg.isAllowed());
             }
         }
 
         /**
-         *
+         * Stops receiving replies from the TuCSoN node.
          */
         public synchronized void setStop() {
             this.stop = true;
         }
 
         /**
+         * Checks whether this service, listening to TuCSoN node replies, is
+         * stopped
          *
-         * @return
+         * @return {@code true} or {@code false} depending on whether this
+         *         listening service is stopped or not
          */
         private synchronized boolean isStopped() {
             return this.stop;
@@ -255,6 +254,10 @@ public class OperationHandler {
 
     private static final int TRIES = 3;
     /**
+     * UUID of the agent using this OperationHandler
+     */
+    protected UUID agentUUID;
+    /**
      * Active sessions toward different nodes
      */
     protected Map<String, ControllerSession> controllerSessions;
@@ -270,15 +273,19 @@ public class OperationHandler {
      * Requested TuCSoN operations
      */
     protected Map<Long, TucsonOperation> operations;
+
     /**
      * Current ACC session description
      */
     protected ACCDescription profile;
 
     /**
+     * @param uuid
+     *            the Java UUID of the agent this handler serves.
      *
      */
-    public OperationHandler() {
+    public OperationHandler(final UUID uuid) {
+        this.agentUUID = uuid;
         this.profile = new ACCDescription();
         this.events = new LinkedList<TucsonOpCompletionEvent>();
         this.controllerSessions = new HashMap<String, OperationHandler.ControllerSession>();
@@ -348,8 +355,8 @@ public class OperationHandler {
      */
     public ITucsonOperation doBlockingOperation(final TucsonAgentId aid,
             final int type, final Object tid, final Tuple t, final Long ms)
-            throws TucsonOperationNotPossibleException,
-            UnreachableNodeException, OperationTimeOutException {
+                    throws TucsonOperationNotPossibleException,
+                    UnreachableNodeException, OperationTimeOutException {
         TucsonTupleCentreId tcid = null;
         if ("alice.tucson.api.TucsonTupleCentreId".equals(tid.getClass()
                 .getName())) {
@@ -413,8 +420,8 @@ public class OperationHandler {
     public ITucsonOperation doNonBlockingOperation(final TucsonAgentId aid,
             final int type, final Object tid, final Tuple t,
             final TucsonOperationCompletionListener l)
-            throws TucsonOperationNotPossibleException,
-            UnreachableNodeException {
+                    throws TucsonOperationNotPossibleException,
+                    UnreachableNodeException {
         // log("tid.class().name() = " + tid.getClass().getName());
         TucsonTupleCentreId tcid = null;
         if ("alice.tucson.api.TucsonTupleCentreId".equals(tid.getClass()
@@ -514,7 +521,7 @@ public class OperationHandler {
             final TucsonAgentId aid, final TucsonTupleCentreId tcid,
             final int type, final Tuple t,
             final TucsonOperationCompletionListener l)
-            throws UnreachableNodeException {
+                    throws UnreachableNodeException {
         // this.log("t = " + t);
         Tuple tupl = null;
         if (t instanceof LogicTuple) {
@@ -612,25 +619,27 @@ public class OperationHandler {
         // if (InetAddress.getLoopbackAddress().getHostName().equals(opNode)) {
         if ("localhost".equals(opNode)) {
             tc =
-            // this.controllerSessions.get(InetAddress
-            // .getLoopbackAddress().getHostAddress()
-            // .concat(String.valueOf(p)));
-            this.controllerSessions.get("127.0.0.1:".concat(String.valueOf(p)));
+                    // this.controllerSessions.get(InetAddress
+                    // .getLoopbackAddress().getHostAddress()
+                    // .concat(String.valueOf(p)));
+                    this.controllerSessions.get("127.0.0.1:".concat(String.valueOf(p)));
         }
         // if (InetAddress.getLoopbackAddress().getHostAddress().equals(opNode))
         // {
         if ("127.0.0.1".equals(opNode)) {
             tc =
-            // this.controllerSessions.get(InetAddress
-            // .getLoopbackAddress().getHostName()
-            // .concat(String.valueOf(p)));
-            this.controllerSessions.get("localhost:".concat(String.valueOf(p)));
+                    // this.controllerSessions.get(InetAddress
+                    // .getLoopbackAddress().getHostName()
+                    // .concat(String.valueOf(p)));
+                    this.controllerSessions.get("localhost:".concat(String.valueOf(p)));
         }
         if (tc != null) {
             return tc.getSession();
         }
         this.profile.setProperty("agent-identity", aid.toString());
         this.profile.setProperty("agent-role", "user");
+        this.profile.setProperty("agent-uuid", this.agentUUID.toString());
+        // this.profile.setProperty("agent-class", value);
         AbstractTucsonProtocol dialog = null;
         boolean isEnterReqAcpt = false;
         try {

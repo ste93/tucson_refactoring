@@ -17,12 +17,14 @@ import java.lang.reflect.Method;
 
 /**
  * Base class for building ReSpecT agents.
- * 
+ *
  * @author Alessandro Ricci
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public abstract class AbstractAgent {
+
     final class PlanExecutor extends Thread {
+
         private final Method activity;
         private final AbstractAgent agent;
 
@@ -53,7 +55,7 @@ public abstract class AbstractAgent {
     private IRespectTC tc;
 
     /**
-     * 
+     *
      * @param aid
      *            the identifier of this agent
      */
@@ -62,7 +64,7 @@ public abstract class AbstractAgent {
     }
 
     /**
-     * 
+     *
      * @param aid
      *            the identifier of this agent
      * @param rtc
@@ -74,7 +76,7 @@ public abstract class AbstractAgent {
     }
 
     /**
-     * 
+     *
      * @return the identifier of this agent
      */
     public AgentId getId() {
@@ -104,7 +106,7 @@ public abstract class AbstractAgent {
     }
 
     /**
-     * 
+     *
      * @param name
      *            the full name of the Java class to execute as the agent plan
      */

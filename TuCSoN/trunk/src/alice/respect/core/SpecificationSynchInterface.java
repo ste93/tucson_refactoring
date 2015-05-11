@@ -26,17 +26,18 @@ import alice.respect.api.exceptions.OperationNotPossibleException;
 import alice.tuplecentre.api.IId;
 
 /**
- * 
+ *
  * A Blocking Context wraps the access to a tuple centre virtual machine for a
  * specific thread of control, providing a blocking interface.
- * 
+ *
  * @author Alessandro Ricci
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public class SpecificationSynchInterface extends RootInterface implements
         ISpecificationSynchInterface {
+
     /**
-     * 
+     *
      * @param core
      *            the ReSpecT tuple centres manager this interface refers to
      */

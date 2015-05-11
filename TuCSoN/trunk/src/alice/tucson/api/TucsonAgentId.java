@@ -20,13 +20,14 @@ import alice.respect.api.exceptions.InvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 
 /**
- * 
+ *
  * @author Alessandro Ricci
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
- * 
+ *
  */
 public class TucsonAgentId implements alice.tuplecentre.api.AgentId,
         Serializable {
+
     private static final long serialVersionUID = -5788843633820003843L;
 
     private static String dropMinus(final UUID uuid) {
@@ -47,7 +48,7 @@ public class TucsonAgentId implements alice.tuplecentre.api.AgentId,
     private UUID uuid;
 
     /**
-     * 
+     *
      * @param id
      *            the String representation of this TuCSoN agent identifier
      * @throws TucsonInvalidAgentIdException
@@ -64,7 +65,7 @@ public class TucsonAgentId implements alice.tuplecentre.api.AgentId,
     }
 
     /**
-     * 
+     *
      * @param name
      *            the String representation of this TuCSoN agent identifier
      * @param tcId
@@ -76,7 +77,7 @@ public class TucsonAgentId implements alice.tuplecentre.api.AgentId,
     }
 
     /**
-     * 
+     *
      * @return wether a UUID has been succesfully assigned to this agent
      *         identifier
      */
@@ -95,7 +96,7 @@ public class TucsonAgentId implements alice.tuplecentre.api.AgentId,
     }
 
     /**
-     * 
+     *
      * @return the local agent identifier part of the full TuCSoN agent
      *         identifier
      */
@@ -104,7 +105,7 @@ public class TucsonAgentId implements alice.tuplecentre.api.AgentId,
     }
 
     /**
-     * 
+     *
      * @return the local name given to the agent by the programmer
      */
     public String getAgentName() {
@@ -112,7 +113,7 @@ public class TucsonAgentId implements alice.tuplecentre.api.AgentId,
     }
 
     /**
-     * 
+     *
      * @return the UUID assigned to the agent identifier by TuCSoN to globally,
      *         univocally identify agents
      */

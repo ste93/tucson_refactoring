@@ -17,10 +17,10 @@ package alice.tucson.api;
  * Default TuCSoN ACC. Can act both synchronously and asynchronously. Can act
  * both on the ordinary tuple space and on the specification tuple space. Bulk
  * and uniform primitives are NOT included.
- * 
+ *
  * @see alice.tucson.api.SynchACC SynchACC
  * @see alice.tucson.api.AsynchACC AsynchACC
- * 
+ *
  * @author ste (mailto: s.mariani@unibo.it)
  */
 public interface DefaultACC extends SynchACC, AsynchACC {

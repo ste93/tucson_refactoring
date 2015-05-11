@@ -17,17 +17,18 @@ import java.io.Serializable;
 import alice.tucson.api.TucsonAgentId;
 
 /**
- * 
+ *
  * @author Unknown...
- * 
+ *
  */
 public class NodeMsg implements Serializable {
+
     private static final long serialVersionUID = -3499870079832457223L;
     private String action;
     private TucsonAgentId aid;
 
     /**
-     * 
+     *
      * @param id
      *            the agent id of the sender
      */
@@ -36,7 +37,7 @@ public class NodeMsg implements Serializable {
     }
 
     /**
-     * 
+     *
      * @param id
      *            the agent id of the sender
      * @param act
@@ -48,7 +49,7 @@ public class NodeMsg implements Serializable {
     }
 
     /**
-     * 
+     *
      */
     protected NodeMsg() {
         super();

@@ -9,13 +9,14 @@ import alice.tuplecentre.core.OperationCompletionListener;
 /**
  * A ReSpecT Tuple Centre Interface to issue ReSpecT ordinary primitives using
  * an asynchronous semantics.
- * 
+ *
  * @author Alessandro Ricci
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public interface IOrdinaryAsynchInterface {
+
     /**
-     * 
+     *
      * @param aid
      *            the identifier of who is invokin the operation
      * @param l
@@ -32,7 +33,7 @@ public interface IOrdinaryAsynchInterface {
             throws InvalidLogicTupleException, OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param aid
      *            the identifier of who is invokin the operation
      * @param t
@@ -50,7 +51,7 @@ public interface IOrdinaryAsynchInterface {
             throws InvalidLogicTupleException, OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param aid
      *            the identifier of who is invokin the operation
      * @param t
@@ -67,7 +68,7 @@ public interface IOrdinaryAsynchInterface {
             throws InvalidLogicTupleException, OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param aid
      *            the identifier of who is invokin the operation
      * @param t
@@ -84,7 +85,7 @@ public interface IOrdinaryAsynchInterface {
             throws InvalidLogicTupleException, OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param aid
      *            the identifier of who is invokin the operation
      * @param t
@@ -101,7 +102,7 @@ public interface IOrdinaryAsynchInterface {
             throws InvalidLogicTupleException, OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param aid
      *            the identifier of who is invokin the operation
      * @param t
@@ -118,7 +119,7 @@ public interface IOrdinaryAsynchInterface {
             throws InvalidLogicTupleException, OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param aid
      *            the identifier of who is invokin the operation
      * @param t
@@ -135,7 +136,7 @@ public interface IOrdinaryAsynchInterface {
             throws InvalidLogicTupleException, OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param aid
      *            the identifier of who is invokin the operation
      * @param t
@@ -152,7 +153,7 @@ public interface IOrdinaryAsynchInterface {
             throws InvalidLogicTupleException, OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param aid
      *            the identifier of who is invokin the operation
      * @param t
@@ -170,7 +171,7 @@ public interface IOrdinaryAsynchInterface {
             OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param aid
      *            the identifier of who is invokin the operation
      * @param t
@@ -187,7 +188,7 @@ public interface IOrdinaryAsynchInterface {
             throws InvalidLogicTupleException, OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param aid
      *            the identifier of who is invokin the operation
      * @param t
@@ -204,7 +205,7 @@ public interface IOrdinaryAsynchInterface {
             throws InvalidLogicTupleException, OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param aid
      *            the identifier of who is invokin the operation
      * @param t
@@ -221,7 +222,7 @@ public interface IOrdinaryAsynchInterface {
             throws InvalidLogicTupleException, OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param aid
      *            the identifier of who is invokin the operation
      * @param t
@@ -238,7 +239,7 @@ public interface IOrdinaryAsynchInterface {
             throws InvalidLogicTupleException, OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param aid
      *            the identifier of who is invokin the operation
      * @param t
@@ -255,7 +256,7 @@ public interface IOrdinaryAsynchInterface {
             throws InvalidLogicTupleException, OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param aid
      *            the identifier of who is invokin the operation
      * @param t
@@ -272,7 +273,7 @@ public interface IOrdinaryAsynchInterface {
             throws InvalidLogicTupleException, OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param aid
      *            the identifier of who is invokin the operation
      * @param t
@@ -289,7 +290,7 @@ public interface IOrdinaryAsynchInterface {
             throws InvalidLogicTupleException, OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param aid
      *            the identifier of who is invokin the operation
      * @param t
@@ -306,7 +307,7 @@ public interface IOrdinaryAsynchInterface {
             throws InvalidLogicTupleException, OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param aid
      *            the identifier of who is invokin the operation
      * @param t
@@ -323,7 +324,7 @@ public interface IOrdinaryAsynchInterface {
             throws InvalidLogicTupleException, OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param aid
      *            the identifier of who is invokin the operation
      * @param t
@@ -340,7 +341,7 @@ public interface IOrdinaryAsynchInterface {
             throws InvalidLogicTupleException, OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param aid
      *            the identifier of who is invokin the operation
      * @param t

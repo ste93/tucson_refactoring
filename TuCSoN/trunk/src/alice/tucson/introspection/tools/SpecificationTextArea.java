@@ -25,11 +25,12 @@ import alice.util.jedit.TextAreaDefaults;
 import alice.util.jedit.Token;
 
 /**
- * 
+ *
  * @author Unknown...
- * 
+ *
  */
 public class SpecificationTextArea extends TextAreaDefaults {
+
     private static SyntaxStyle[] getSyntaxStyles() {
         final SyntaxStyle[] styles = new SyntaxStyle[Token.ID_COUNT];
         styles[Token.COMMENT1] = new SyntaxStyle(new Color(0x808080), true,
@@ -48,7 +49,7 @@ public class SpecificationTextArea extends TextAreaDefaults {
     }
 
     /**
-     * 
+     *
      */
     public SpecificationTextArea() {
         super();

@@ -18,14 +18,18 @@ import java.util.EventObject;
 /**
  * Represents observable (by inspectors) events happening inside tuple centre
  * virtual machine
- * 
+ *
  * @author Alessandro Ricci
- * 
+ *
  */
 public class InspectableEvent extends EventObject {
-    public static final int TYPE_IDLESTATE = 2;
+
     /**
      * 
+     */
+    public static final int TYPE_IDLESTATE = 2;
+    /**
+     *
      */
     public static final int TYPE_NEWSTATE = 1;
     private static final long serialVersionUID = 5564085406606810969L;
@@ -35,7 +39,7 @@ public class InspectableEvent extends EventObject {
     private final int type;
 
     /**
-     * 
+     *
      * @param src
      *            the source of the event
      * @param t
@@ -50,7 +54,7 @@ public class InspectableEvent extends EventObject {
     /**
      * Gets the time at which the event has been observed inside the tuple
      * centre VM
-     * 
+     *
      * @return the time at which this inspectable event occurred
      */
     public long getTime() {
@@ -59,7 +63,7 @@ public class InspectableEvent extends EventObject {
 
     /**
      * Gets observable event type
-     * 
+     *
      * @return the type code of this inspectable event
      */
     public int getType() {

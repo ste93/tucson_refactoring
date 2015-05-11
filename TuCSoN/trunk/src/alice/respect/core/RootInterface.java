@@ -7,15 +7,16 @@ import alice.tuplecentre.api.TupleTemplate;
 
 /**
  * A new abstract class for the context
- * 
+ *
  * @author Unknown...
- * 
+ *
  */
 public class RootInterface {
+
     private final IRespectTC core;
 
     /**
-     * 
+     *
      * @param rCore
      *            the ReSpecT tuple centres manager this interface refers to
      */
@@ -24,7 +25,7 @@ public class RootInterface {
     }
 
     /**
-     * 
+     *
      * @return the ReSpecT tuple centres manager this interface refers to
      */
     protected IRespectTC getCore() {
@@ -32,7 +33,7 @@ public class RootInterface {
     }
 
     /**
-     * 
+     *
      * @param template
      *            the tuple template to unify
      * @param tuple
