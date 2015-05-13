@@ -1,6 +1,24 @@
+/*
+ * Copyright 1999-2014 Alma Mater Studiorum - Universita' di Bologna
+ *
+ * This file is part of TuCSoN <http://tucson.unibo.it>.
+ *
+ *    TuCSoN is free software: you can redistribute it and/or modify
+ *    it under the terms of the GNU Lesser General Public License as published by
+ *    the Free Software Foundation, either version 3 of the License, or
+ *    (at your option) any later version.
+ *
+ *    TuCSoN is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *    GNU Lesser General Public License for more details.
+ *
+ *    You should have received a copy of the GNU Lesser General Public License
+ *    along with TuCSoN.  If not, see <https://www.gnu.org/licenses/lgpl.html>.
+ *
+ */
 package alice.tucson.examples.asynchAPI;
 
-import java.util.concurrent.Semaphore;
 import alice.logictuple.LogicTuple;
 import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.tucson.api.AbstractTucsonAgent;
@@ -23,24 +41,31 @@ import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 import alice.tuplecentre.core.AbstractTupleCentreOperation;
 
 /**
- * This agent calc the number of prime number (prime-counting(N)) until stop
+ * Prime Calculation example worker agent. The Prime Calculator agent ...
  *
- * @author Riccardo
+ * @author Fabio Consalici, Riccardo Drudi
+ * @author (contributor) ste (mailto: s.mariani@unibo.it)
  *
  */
 public class PrimeCalculator extends AbstractTucsonAgent {
 
-    class InpListener implements TucsonOperationCompletionListener {
+    /**
+     *
+     * @author Fabio Consalici, Riccardo Drudi
+     * @author (contributor) ste (mailto: s.mariani@unibo.it)
+     *
+     */
+    private class InpHandler implements TucsonOperationCompletionListener {
 
-        EnhancedAsynchACC acc;
-        AsynchOpsHelper aqm;
-        TucsonTupleCentreId tid;
+        private final EnhancedAsynchACC acc;
+        private final AsynchOpsHelper help;
+        private final TucsonTupleCentreId ttcid;
 
-        public InpListener(final EnhancedAsynchACC acc,
+        public InpHandler(final EnhancedAsynchACC acc,
                 final TucsonTupleCentreId tid, final AsynchOpsHelper aqm) {
             this.acc = acc;
-            this.tid = tid;
-            this.aqm = aqm;
+            this.ttcid = tid;
+            this.help = aqm;
         }
 
         @Override
@@ -50,24 +75,24 @@ public class PrimeCalculator extends AbstractTucsonAgent {
                     LogicTuple res = null;
                     LogicTuple tupleRes;
                     res = (LogicTuple) op.getTupleResult();
-                    // Calculate result tuple
-                    final int number = Integer.parseInt(res.getArg(0)
+                    final int upperBound = Integer.parseInt(res.getArg(0)
                             .toString());
-                    final long primeN = PrimeCalculator.this
-                            .getPrimeNumbers(number);
-                    tupleRes = LogicTuple.parse("prime(" + number + ","
-                            + primeN + ")");
-                    // ITucsonOperation opRes = acc.out(tid, tupleRes, null);
-                    // Send result to tuple centre
-                    final Out out = new Out(this.tid, tupleRes);
-                    this.aqm.enqueue(out, null);
+                    this.info("Got request to calculate prime numbers up to "
+                            + upperBound);
+                    final long primeNumbers = PrimeCalculator.this
+                            .getPrimeNumbers(upperBound);
+                    this.info("Preime numbers up to " + upperBound + " are "
+                            + primeNumbers);
+                    tupleRes = LogicTuple.parse("prime(" + upperBound + ","
+                            + primeNumbers + ")");
+                    final Out out = new Out(this.ttcid, tupleRes);
+                    this.help.enqueue(out, null);
                     if (!PrimeCalculator.this.stop) {
-                        // Send another inp
                         final LogicTuple tuple = LogicTuple
                                 .parse("calcprime(X)");
-                        final Inp inp = new Inp(this.tid, tuple);
-                        this.aqm.enqueue(inp, new InpListener(this.acc, this.tid,
-                                this.aqm));
+                        final Inp inp = new Inp(this.ttcid, tuple);
+                        this.help.enqueue(inp, new InpHandler(this.acc,
+                                this.ttcid, this.help));
                     }
                 } catch (final InvalidLogicTupleException e) {
                     e.printStackTrace();
@@ -78,15 +103,13 @@ public class PrimeCalculator extends AbstractTucsonAgent {
                 }
             } else {
                 try {
-                    Thread.sleep(300);
+                    Thread.sleep(PrimeCalculator.SLEEP);
                     if (!PrimeCalculator.this.stop) {
-                        // if no tuple match
-                        // Send another inp
                         final LogicTuple tuple = LogicTuple
                                 .parse("calcprime(X)");
-                        final Inp inp = new Inp(this.tid, tuple);
-                        this.aqm.enqueue(inp, new InpListener(this.acc, this.tid,
-                                this.aqm));
+                        final Inp inp = new Inp(this.ttcid, tuple);
+                        this.help.enqueue(inp, new InpHandler(this.acc,
+                                this.ttcid, this.help));
                     }
                 } catch (final InterruptedException e) {
                     e.printStackTrace();
@@ -102,13 +125,23 @@ public class PrimeCalculator extends AbstractTucsonAgent {
              * Not used atm
              */
         }
+
+        private void info(final String msg) {
+            System.out.println("[PrimeCalculator.InpHandler]: " + msg);
+        }
     }
 
-    class StopListener implements TucsonOperationCompletionListener {
+    /**
+     *
+     * @author Fabio Consalici, Riccardo Drudi
+     * @author (contributor) ste (mailto: s.mariani@unibo.it)
+     *
+     */
+    class StopHandler implements TucsonOperationCompletionListener {
 
         TucsonAgentId agentId;
 
-        public StopListener(final TucsonAgentId tucsonAgentId) {
+        public StopHandler(final TucsonAgentId tucsonAgentId) {
             this.agentId = tucsonAgentId;
         }
 
@@ -116,12 +149,7 @@ public class PrimeCalculator extends AbstractTucsonAgent {
         public void operationCompleted(final AbstractTupleCentreOperation op) {
             if (op.isResultSuccess()) {
                 PrimeCalculator.this.stop = true;
-                System.out.println("[primeCalc]: Stop");
-                // LogicTuple tupleRes = LogicTuple.parse("mystop(" + agentId
-                // + ")");
-                // ITucsonOperation opRes = acc.out(tid, tupleRes, null);
-                // Out out = new Out(tid, tupleRes);
-                // aqm.add(out, null);
+                this.info("Received stop request");
             }
         }
 
@@ -131,12 +159,25 @@ public class PrimeCalculator extends AbstractTucsonAgent {
              * Not used atm
              */
         }
+
+        private void info(final String msg) {
+            System.out.println("[PrimeCalculator.StopHandler]: " + msg);
+        }
     }
 
-    protected boolean stop;
+    private final static int SLEEP = 50;
 
-    protected Semaphore waitIn;
+    private boolean stop;
 
+    /**
+     * Builds a Prime Calculator Agent given its TuCSoN agent ID
+     *
+     * @param id
+     *            the TuCSoN agent ID
+     * @throws TucsonInvalidAgentIdException
+     *             if the given String does not represent a valid TuCSoN agent
+     *             ID
+     */
     public PrimeCalculator(final String id)
             throws TucsonInvalidAgentIdException {
         super(id);
@@ -160,28 +201,23 @@ public class PrimeCalculator extends AbstractTucsonAgent {
     @Override
     protected void main() {
         try {
+            super.say("Started");
             final EnhancedAsynchACC acc = this.getContext();
             final TucsonTupleCentreId tid = new TucsonTupleCentreId("default",
                     "localhost", "20504");
-            final AsynchOpsHelper aqm = new AsynchOpsHelper("aqm"
+            final AsynchOpsHelper helper = new AsynchOpsHelper("helper4"
                     + this.getTucsonAgentId());
-            //
-            // First Inp to get request
-            //
             final LogicTuple tuple = LogicTuple.parse("calcprime(X)");
             final Inp inp = new Inp(tid, tuple);
-            aqm.enqueue(inp, new InpListener(acc, tid, aqm));
-            //
-            // wait sinchronously a stop tuple
-            //
+            helper.enqueue(inp, new InpHandler(acc, tid, helper));
             final EnhancedSynchACC accSynch = this.getContext();
-            // LogicTuple stopTuple = LogicTuple.parse("stop("
-            // + this.getTucsonAgentId() + ")");
             final LogicTuple stopTuple = LogicTuple.parse("stop(primecalc)");
             final In inStop = new In(tid, stopTuple);
             inStop.executeSynch(accSynch, null);
             this.stop = true;
-            aqm.shutdownNow();
+            super.say("Stopping TuCSoN Asynch Helper now");
+            helper.shutdownNow();
+            super.say("I'm done");
         } catch (final TucsonInvalidTupleCentreIdException e) {
             e.printStackTrace();
         } catch (final InvalidLogicTupleException e) {

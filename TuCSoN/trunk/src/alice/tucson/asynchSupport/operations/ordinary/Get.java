@@ -1,21 +1,20 @@
 /*
  * Copyright 1999-2014 Alma Mater Studiorum - Universita' di Bologna
  *
- * This file is part of TuCSoN4JADE <http://tucson4jade.apice.unibo.it>.
+ * This file is part of TuCSoN <http://tucson.unibo.it>.
  *
- *    TuCSoN4JADE is free software: you can redistribute it and/or modify
- *    it under the terms of the GNU Lesser General Public License as published
- *    by the Free Software Foundation, either version 3 of the License, or
+ *    TuCSoN is free software: you can redistribute it and/or modify
+ *    it under the terms of the GNU Lesser General Public License as published by
+ *    the Free Software Foundation, either version 3 of the License, or
  *    (at your option) any later version.
  *
- *    TuCSoN4JADE is distributed in the hope that it will be useful,
+ *    TuCSoN is distributed in the hope that it will be useful,
  *    but WITHOUT ANY WARRANTY; without even the implied warranty of
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *    GNU Lesser General Public License for more details.
  *
  *    You should have received a copy of the GNU Lesser General Public License
- *    along with TuCSoN4JADE.  If not, see
- *    <https://www.gnu.org/licenses/lgpl.html>.
+ *    along with TuCSoN.  If not, see <https://www.gnu.org/licenses/lgpl.html>.
  *
  */
 package alice.tucson.asynchSupport.operations.ordinary;
@@ -32,6 +31,8 @@ import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 
 /**
  * <code>get</code> TuCSoN primitive.
+ * 
+ * @see alice.tucson.api.OrdinaryAsynchACC
  *
  * @author Luca Sangiorgi (mailto: luca.sangiorgi6@studio.unibo.it)
  * @author (contributor) Stefano Mariani (mailto: s.mariani@unibo.it)
@@ -40,20 +41,21 @@ import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 public class Get extends AbstractTucsonOrdinaryAction {
 
     /**
-     *
-     * @param t
-     *            the TuCSoN tuple centre id target of the coordination
+     * Builds the TuCSoN {@code get} action given its target tuple centre
+     * 
+     * @param tc
+     *            the ID of the TuCSoN tuple centre target of this coordination
      *            operation
      */
-    public Get(final TucsonTupleCentreId t) {
-        super(t, null);
+    public Get(final TucsonTupleCentreId tc) {
+        super(tc, null);
     }
 
     @Override
     public ITucsonOperation executeAsynch(final EnhancedAsynchACC acc,
             final TucsonOperationCompletionListener listener)
-                    throws TucsonOperationNotPossibleException,
-                    UnreachableNodeException {
+            throws TucsonOperationNotPossibleException,
+            UnreachableNodeException {
         return acc.get(this.tcid, listener);
     }
 
@@ -66,7 +68,8 @@ public class Get extends AbstractTucsonOrdinaryAction {
 
     /*
      * (non-Javadoc)
-     * @see it.unibo.sd.jade.operations.AbstractTucsonOrdinaryAction#toString()
+     * @see
+     * alice.tucson.asynchSupport.operations.AbstractTucsonOrdinaryAction#toString
      */
     @Override
     public String toString() {

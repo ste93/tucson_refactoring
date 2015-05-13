@@ -1,6 +1,24 @@
+/*
+ * Copyright 1999-2014 Alma Mater Studiorum - Universita' di Bologna
+ *
+ * This file is part of TuCSoN <http://tucson.unibo.it>.
+ *
+ *    TuCSoN is free software: you can redistribute it and/or modify
+ *    it under the terms of the GNU Lesser General Public License as published by
+ *    the Free Software Foundation, either version 3 of the License, or
+ *    (at your option) any later version.
+ *
+ *    TuCSoN is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *    GNU Lesser General Public License for more details.
+ *
+ *    You should have received a copy of the GNU Lesser General Public License
+ *    along with TuCSoN.  If not, see <https://www.gnu.org/licenses/lgpl.html>.
+ *
+ */
 package alice.tucson.examples.asynchAPI;
 
-import java.util.concurrent.Semaphore;
 import alice.logictuple.LogicTuple;
 import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.tucson.api.AbstractTucsonAgent;
@@ -21,48 +39,48 @@ import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 import alice.tuplecentre.core.AbstractTupleCentreOperation;
 
 /**
- * The master agent send operation in the tuple space and wait for response
- * asynchronously
+ * Prime Calculation example master agent. The master agent ...
  *
- * @author Consalici-Drudi
+ * @author Fabio Consalici, Riccardo Drudi
+ * @author (contributor) ste (mailto: s.mariani@unibo.it)
  *
  */
 public class MasterAgent extends AbstractTucsonAgent {
 
     /**
-     * the code executed on the operation response
+     * The handler of operations completion except the last operation.
      *
-     * @author Consalici Drudi
+     * @author Fabio Consalici, Riccardo Drudi
+     * @author (contributor) ste (mailto: s.mariani@unibo.it)
      *
      */
-    class Response implements TucsonOperationCompletionListener {
+    private class CompletionHandler implements
+    TucsonOperationCompletionListener {
 
         @Override
         public void operationCompleted(final AbstractTupleCentreOperation op) {
             if (op.isResultSuccess()) {
                 try {
                     final LogicTuple tuple = (LogicTuple) op.getTupleResult();
-                    final int number = Integer.parseInt(tuple.getArg(0)
+                    final int upperBound = Integer.parseInt(tuple.getArg(0)
                             .toString());
                     final int prime = Integer.parseInt(tuple.getArg(1)
                             .toString());
-                    final int in = MasterAgent.this.aqm.getCompletedOps()
-                            .getMatchingOps(In.class).getSuccessfulOps()
-                            .size();
-                    final int inp = MasterAgent.this.aqm.getCompletedOps()
+                    final int nIn = MasterAgent.this.helper.getCompletedOps()
+                            .getMatchingOps(In.class).getSuccessfulOps().size();
+                    final int nInp = MasterAgent.this.helper.getCompletedOps()
                             .getMatchingOps(Inp.class).getSuccessfulOps()
                             .size();
-                    final int total = in + inp;
-                    System.out.println("The prime number until " + number
-                            + " are " + prime);
-                    System.out.println("OP " + total + " of 50");
+                    final int nOps = nIn + nInp;
+                    this.info("The prime numbers until " + upperBound + " are "
+                            + prime);
+                    this.info("Done " + nOps + " operations out of "
+                            + MasterAgent.REQUESTS);
                 } catch (NumberFormatException | InvalidOperationException e) {
                     e.printStackTrace();
                 }
             } else {
-                /*
-                 * log something
-                 */
+                this.severe("Operation failed!");
             }
         }
 
@@ -72,33 +90,43 @@ public class MasterAgent extends AbstractTucsonAgent {
              * Not used atm
              */
         }
+
+        private void info(final String msg) {
+            System.out.println("[MasterAgent.CompletionHandler]: " + msg);
+        }
+
+        private void severe(final String msg) {
+            System.err.println("[MasterAgent.CompletionHandler]: " + msg);
+        }
     }
 
     /**
-     * the code executed on the last operation response
+     * The handler of last operation completion.
      *
-     * @author Consalici Drudi
+     * @author Fabio Consalici, Riccardo Drudi
+     * @author (contributor) ste (mailto: s.mariani@unibo.it)
      *
      */
-    class Response50 implements TucsonOperationCompletionListener {
+    private class LastCompletionHandler implements
+    TucsonOperationCompletionListener {
 
-        AsynchOpsHelper manager;
-        TucsonTupleCentreId tid;
+        private final AsynchOpsHelper help;
+        private final TucsonTupleCentreId ttcid;
 
-        public Response50(final AsynchOpsHelper aqm,
+        public LastCompletionHandler(final AsynchOpsHelper aoh,
                 final TucsonTupleCentreId tid) {
-            this.manager = aqm;
-            this.tid = tid;
+            this.help = aoh;
+            this.ttcid = tid;
         }
 
         @Override
         public void operationCompleted(final AbstractTupleCentreOperation op) {
-            // waitResponse.release();
             LogicTuple tuple;
             try {
                 tuple = LogicTuple.parse("firstloop");
-                final Out out = new Out(this.tid, tuple);
-                this.manager.enqueue(out, null);
+                final Out out = new Out(this.ttcid, tuple);
+                this.help.enqueue(out, null);
+                this.info("First loop done");
             } catch (final InvalidLogicTupleException e) {
                 e.printStackTrace();
             }
@@ -110,31 +138,59 @@ public class MasterAgent extends AbstractTucsonAgent {
              * Not used atm
              */
         }
+
+        private void info(final String msg) {
+            System.out.println("[MasterAgent.LastCompletionHandler]: " + msg);
+        }
+
     }
 
+    private static final int LOOPS = 3;
+    private static final int REQUESTS = 50;
+    private static final int SEED = 1000;
+
+    private static final int SLEEP = 1000;
+
+    private static final int STEP = 1000;
+
+    /**
+     *
+     * @param args
+     *            no args expected
+     */
     public static void main(final String[] args) {
         try {
-            new MasterAgent("master", 3).go();
+            /*
+             * LOOPS is the number of "firstloops" to be done
+             */
+            new MasterAgent("master", MasterAgent.LOOPS).go();
         } catch (final TucsonInvalidAgentIdException e) {
             e.printStackTrace();
         }
     }
 
-    AsynchOpsHelper aqm;
+    private final AsynchOpsHelper helper;
+    private int nInpSucceeded;
+    private final int nPrimeCalc;
 
-    int inpResult;
-
-    int nPrimeCalc;
-
-    Semaphore waitResponse;
-
+    /**
+     * Builds a Master Agent given its TuCSoN agent ID and the number of
+     * calculations to perform
+     *
+     * @param id
+     *            the TuCSoN agent ID
+     * @param nPrimeCalc
+     *            the number of calculations to perform
+     * @throws TucsonInvalidAgentIdException
+     *             if the given String does not represent a valid TuCSoN agent
+     *             ID
+     */
     public MasterAgent(final String id, final int nPrimeCalc)
             throws TucsonInvalidAgentIdException {
         super(id);
-        this.inpResult = 0;
-        this.waitResponse = new Semaphore(0);
+        this.nInpSucceeded = 0;
         this.nPrimeCalc = nPrimeCalc;
-        this.aqm = new AsynchOpsHelper("aqm" + this.getTucsonAgentId());
+        this.helper = new AsynchOpsHelper("Helper4" + this.getTucsonAgentId());
     }
 
     @Override
@@ -153,96 +209,79 @@ public class MasterAgent extends AbstractTucsonAgent {
 
     @Override
     protected void main() {
-        // **1**
-        // Create TUPLE CENTRE ID and ASYNCHQUEUEMANAGER
-        //
         try {
+            super.say("Started");
             Out out;
             LogicTuple tuple = null;
             final TucsonTupleCentreId tid = new TucsonTupleCentreId("default",
                     "localhost", "20504");
-            // Send Operation to PrimeCalculator
-            int number = 5000;
-            // **2**
-            // Operation to send to aqm
-            //
-            for (int i = 0; i < 50; i++) {
+            int number = MasterAgent.SEED;
+            for (int i = 0; i < MasterAgent.REQUESTS; i++) {
                 tuple = LogicTuple.parse("calcprime(" + number + ")");
-                number += 2000;
+                number += MasterAgent.STEP;
+                super.say("Enqueuing prime numbers calculation up to " + number);
                 out = new Out(tid, tuple);
-                // **3**
-                // send Op to aqm to be executed
-                //
-                this.aqm.enqueue(out, null);
+                this.helper.enqueue(out, null);
             }
-            System.out.println("I send 50 operation to PrimeCalculator");
+            super.say("Sent "
+                    + MasterAgent.REQUESTS
+                    + " requests to Prime Calculator agent, now registering handlers...");
             Inp inp;
-            for (int i = 0; i < 50; i++) {
+            for (int i = 0; i < MasterAgent.REQUESTS; i++) {
                 tuple = LogicTuple.parse("prime(X,Y)");
                 inp = new Inp(tid, tuple);
-                if (i == 49) {
-                    // r is the code to execute after the response operation
-                    final Response50 r = new Response50(this.aqm, tid);
-                    this.aqm.enqueue(inp, r);
+                if (i == MasterAgent.REQUESTS - 1) {
+                    final LastCompletionHandler lch = new LastCompletionHandler(
+                            this.helper, tid);
+                    this.helper.enqueue(inp, lch);
                 } else {
-                    final Response r = new Response();
-                    this.aqm.enqueue(inp, r);
+                    final CompletionHandler ch = new CompletionHandler();
+                    this.helper.enqueue(inp, ch);
                 }
             }
-            System.out
-                    .println("Now I could do whatever i want... i want sleep until the last inp answers");
+            super.say("Handlers registered, now I suspend myself until first loop completes...");
             final EnhancedSynchACC accSynch = this.getContext();
             final LogicTuple firstLoopTuple = LogicTuple.parse("firstloop");
             final In firstLoopIn = new In(tid, firstLoopTuple);
             firstLoopIn.executeSynch(accSynch, null);
-            // waitResponse.acquire();
-            // **4**
-            // inspect the status of operations
-            // operation in cascade to completedQueue on aqm
-            // 1 get all Inp operation
-            // 2 get all success operation
-            // 3 get size
-            this.inpResult = this.aqm.getCompletedOps()
+            this.nInpSucceeded = this.helper.getCompletedOps()
                     .getMatchingOps(Inp.class).getSuccessfulOps().size();
-            System.out.println("I send 50 inp to PrimeCalculator. I received "
-                    + this.inpResult + " result");
+            super.say("First loop completed, received " + this.nInpSucceeded
+                    + " inp successful completions out of "
+                    + MasterAgent.REQUESTS
+                    + ", now registering handlers for remaining (if any)...");
             In in;
-            this.aqm.getCompletedOps().removeSuccessfulOps();
-            for (int i = 0; i < 50 - this.inpResult; i++) {
+            this.helper.getCompletedOps().removeSuccessfulOps();
+            for (int i = 0; i < MasterAgent.REQUESTS - this.nInpSucceeded; i++) {
                 tuple = LogicTuple.parse("prime(X,Y)");
                 in = new In(tid, tuple);
-                final Response r = new Response();
-                this.aqm.enqueue(in, r);
+                final CompletionHandler ch = new CompletionHandler();
+                this.helper.enqueue(in, ch);
             }
-            int inResult = 0;
+            int nInSucceeded = 0;
             boolean stop = false;
             while (!stop) {
-                Thread.sleep(5000);
-                inResult = this.aqm.getCompletedOps()
-                        .getMatchingOps(In.class).getSuccessfulOps()
-                        .size();
-                System.out.println("InResult=" + inResult + " InpResult="
-                        + this.inpResult + " TOT="
-                        + (inResult + this.inpResult));
-                if (inResult + this.inpResult == 50) {
+                Thread.sleep(MasterAgent.SLEEP);
+                nInSucceeded = this.helper.getCompletedOps()
+                        .getMatchingOps(In.class).getSuccessfulOps().size();
+                super.say("Handlers registered, received " + nInSucceeded
+                        + " in successful completions, " + this.nInpSucceeded
+                        + " inp  successful completions, total of "
+                        + (nInSucceeded + this.nInpSucceeded));
+                if (nInSucceeded + this.nInpSucceeded == MasterAgent.REQUESTS) {
                     stop = true;
                 }
             }
-            System.out
-                    .println("I Finish all operation, now i stop the prime calculator");
-            System.out.println("send STOP to all prime calculator");
+            super.say("All requests completed, stopping Prime Calculator agent");
             for (int i = 0; i < this.nPrimeCalc; i++) {
-                // tuple = LogicTuple.parse("stop(factorialcalculator" + i +
-                // ")");
                 tuple = LogicTuple.parse("stop(primecalc)");
                 out = new Out(tid, tuple);
-                this.aqm.enqueue(out, null);
+                this.helper.enqueue(out, null);
             }
-            // **5**
-            // Terminate the Aqm
-            //
-            this.aqm.shutdownGracefully();
-            Thread.sleep(3000);
+            super.say("Stopping TuCSoN Asynch Helper gracefully");
+            this.helper.shutdownGracefully();
+            Thread.sleep(MasterAgent.SLEEP);
+            super.say("I'm done");
         } catch (final TucsonInvalidTupleCentreIdException e) {
             e.printStackTrace();
         } catch (final InvalidLogicTupleException e) {

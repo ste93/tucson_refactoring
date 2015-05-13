@@ -1,21 +1,20 @@
 /*
  * Copyright 1999-2014 Alma Mater Studiorum - Universita' di Bologna
  *
- * This file is part of TuCSoN4JADE <http://tucson4jade.apice.unibo.it>.
+ * This file is part of TuCSoN <http://tucson.unibo.it>.
  *
- *    TuCSoN4JADE is free software: you can redistribute it and/or modify
- *    it under the terms of the GNU Lesser General Public License as published
- *    by the Free Software Foundation, either version 3 of the License, or
+ *    TuCSoN is free software: you can redistribute it and/or modify
+ *    it under the terms of the GNU Lesser General Public License as published by
+ *    the Free Software Foundation, either version 3 of the License, or
  *    (at your option) any later version.
  *
- *    TuCSoN4JADE is distributed in the hope that it will be useful,
+ *    TuCSoN is distributed in the hope that it will be useful,
  *    but WITHOUT ANY WARRANTY; without even the implied warranty of
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *    GNU Lesser General Public License for more details.
  *
  *    You should have received a copy of the GNU Lesser General Public License
- *    along with TuCSoN4JADE.  If not, see
- *    <https://www.gnu.org/licenses/lgpl.html>.
+ *    along with TuCSoN.  If not, see <https://www.gnu.org/licenses/lgpl.html>.
  *
  */
 package alice.tucson.asynchSupport.operations;
@@ -39,28 +38,32 @@ import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 public abstract class AbstractTucsonAction {
 
     /**
-     * the id of tuple centre target of the operation
+     * The ID of the TuCSoN tuple centre target of the operation
      */
     protected TucsonTupleCentreId tcid;
     /**
-     * the name of the tuple centre target of the operation
+     * The name of the TuCSoN tuple centre target of the operation
      */
     protected String tupleCentreName;
 
     /**
-     *
+     * Builds a TuCSoN action whose target is the given tuple centre
+     * 
      * @param tc
-     *            the TuCSoN tuple centre id target of the coordination
-     *            operation
+     *            the ID of the TuCSoN tuple centre target of the operation
      */
     public AbstractTucsonAction(final TucsonTupleCentreId tc) {
         this.tcid = tc;
     }
 
     /**
-     *
+     * Requests execution of this TuCSoN action in ASYNCHRONOUS mode, that is,
+     * without blocking the caller until operation completion, regardless of the
+     * operation suspensive/predicative semantics (e.g., a {@code in} without
+     * matching tuples does not cause blocking the caller agent)
+     * 
      * @param acc
-     *            the TuCSoN ACC ultimately in charge of action execution
+     *            the TuCSoN ACC in charge of action execution
      * @param listener
      *            the TuCSoN listener responsible for handling completion
      *            notifications
@@ -72,13 +75,18 @@ public abstract class AbstractTucsonAction {
      */
     public abstract ITucsonOperation executeAsynch(EnhancedAsynchACC acc,
             TucsonOperationCompletionListener listener)
-                    throws TucsonOperationNotPossibleException,
-                    UnreachableNodeException;
+            throws TucsonOperationNotPossibleException,
+            UnreachableNodeException;
 
     /**
-     *
+     * Requests execution of this TuCSoN action in SYNCHRONOUS mode, that is,
+     * blocking the caller until operation completion (e.g., a {@code in}
+     * without matching tuples does cause blocking the caller agent). This
+     * method is mainly conceived for usage within TuCSoN4JADE bridge component:
+     * see more at {@link "http://bitbucket.org/smariani/tucson4jade"}
+     * 
      * @param acc
-     *            the TuCSoN ACC ultimately in charge of action execution
+     *            the TuCSoN ACC in charge of action execution
      * @param timeout
      *            the maximum timeout the caller is willing to wait
      * @return the TuCSoN operation requested

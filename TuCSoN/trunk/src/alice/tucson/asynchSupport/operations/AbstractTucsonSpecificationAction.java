@@ -1,21 +1,20 @@
 /*
  * Copyright 1999-2014 Alma Mater Studiorum - Universita' di Bologna
  *
- * This file is part of TuCSoN4JADE <http://tucson4jade.apice.unibo.it>.
+ * This file is part of TuCSoN <http://tucson.unibo.it>.
  *
- *    TuCSoN4JADE is free software: you can redistribute it and/or modify
- *    it under the terms of the GNU Lesser General Public License as published
- *    by the Free Software Foundation, either version 3 of the License, or
+ *    TuCSoN is free software: you can redistribute it and/or modify
+ *    it under the terms of the GNU Lesser General Public License as published by
+ *    the Free Software Foundation, either version 3 of the License, or
  *    (at your option) any later version.
  *
- *    TuCSoN4JADE is distributed in the hope that it will be useful,
+ *    TuCSoN is distributed in the hope that it will be useful,
  *    but WITHOUT ANY WARRANTY; without even the implied warranty of
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *    GNU Lesser General Public License for more details.
  *
  *    You should have received a copy of the GNU Lesser General Public License
- *    along with TuCSoN4JADE.  If not, see
- *    <https://www.gnu.org/licenses/lgpl.html>.
+ *    along with TuCSoN.  If not, see <https://www.gnu.org/licenses/lgpl.html>.
  *
  */
 package alice.tucson.asynchSupport.operations;
@@ -25,26 +24,27 @@ import alice.tucson.api.TucsonTupleCentreId;
 
 /**
  * Specification actions are those involving specification tuples, that is,
- * ReSpecT reactions specifications.
+ * ReSpecT reactions specifications and Prolog predicates.
  *
  * @author Luca Sangiorgi (mailto: luca.sangiorgi6@studio.unibo.it)
  * @author (contributor) Stefano Mariani (mailto: s.mariani@unibo.it)
  *
  */
 public abstract class AbstractTucsonSpecificationAction extends
-AbstractTucsonAction {
+        AbstractTucsonAction {
 
     /**
-     * the tuple representing the event, guards and body of a ReSpecT
-     * specification tuple
+     * The tuples representing, respectively, the event, guards and body of a
+     * ReSpecT specification tuple
      */
     protected LogicTuple event, guards, reaction;
 
     /**
-     *
+     * Builds a TuCSoN action whose target is the given tuple centre and whose
+     * argument is the given ReSpecT specification tuple
+     * 
      * @param t
-     *            the TuCSoN tuple centre id target of the coordination
-     *            operation
+     *            the ID of the TuCSoN tuple centre target of the operation
      * @param e
      *            the logic tuple representing the triggering event of the
      *            ReSpecT specification tuple

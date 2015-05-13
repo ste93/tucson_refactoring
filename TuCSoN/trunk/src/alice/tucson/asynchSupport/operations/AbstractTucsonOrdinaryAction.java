@@ -1,21 +1,20 @@
 /*
  * Copyright 1999-2014 Alma Mater Studiorum - Universita' di Bologna
  *
- * This file is part of TuCSoN4JADE <http://tucson4jade.apice.unibo.it>.
+ * This file is part of TuCSoN <http://tucson.unibo.it>.
  *
- *    TuCSoN4JADE is free software: you can redistribute it and/or modify
- *    it under the terms of the GNU Lesser General Public License as published
- *    by the Free Software Foundation, either version 3 of the License, or
+ *    TuCSoN is free software: you can redistribute it and/or modify
+ *    it under the terms of the GNU Lesser General Public License as published by
+ *    the Free Software Foundation, either version 3 of the License, or
  *    (at your option) any later version.
  *
- *    TuCSoN4JADE is distributed in the hope that it will be useful,
+ *    TuCSoN is distributed in the hope that it will be useful,
  *    but WITHOUT ANY WARRANTY; without even the implied warranty of
  *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *    GNU Lesser General Public License for more details.
  *
  *    You should have received a copy of the GNU Lesser General Public License
- *    along with TuCSoN4JADE.  If not, see
- *    <https://www.gnu.org/licenses/lgpl.html>.
+ *    along with TuCSoN.  If not, see <https://www.gnu.org/licenses/lgpl.html>.
  *
  */
 package alice.tucson.asynchSupport.operations;
@@ -24,8 +23,8 @@ import alice.logictuple.LogicTuple;
 import alice.tucson.api.TucsonTupleCentreId;
 
 /**
- * Ordinary actions are those involving ordinary tuples (not specification
- * tuples).
+ * Ordinary actions are those involving ordinary tuples (that is, communication
+ * tuples, not specification ones).
  *
  * @author Luca Sangiorgi (mailto: luca.sangiorgi6@studio.unibo.it)
  * @author (contributor) Stefano Mariani (mailto: s.mariani@unibo.it)
@@ -34,17 +33,18 @@ import alice.tucson.api.TucsonTupleCentreId;
 public abstract class AbstractTucsonOrdinaryAction extends AbstractTucsonAction {
 
     /**
-     * the tuple argument of the operation
+     * The tuple argument of the operation
      */
     protected LogicTuple tuple;
 
     /**
-     *
+     * Builds a TuCSoN action whose target is the given tuple centre and whose
+     * argument is the given tuple
+     * 
      * @param tc
-     *            the TuCSoN tuple centre id target of the coordination
-     *            operation
+     *            the ID of the TuCSoN tuple centre target of the operation
      * @param t
-     *            the logic tuple argument of the coordination operation
+     *            the logic tuple argument of the operation
      */
     public AbstractTucsonOrdinaryAction(final TucsonTupleCentreId tc,
             final LogicTuple t) {
