@@ -35,7 +35,13 @@ import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
  * @author Consalici-Drudi
  *
  */
-public class PrimeCalculationLauncher {
+public final class PrimeCalculationLauncher {
+
+    private PrimeCalculationLauncher() {
+        /*
+         * To avoid instantiation
+         */
+    }
 
     public static void main(final String[] args) {
         try {

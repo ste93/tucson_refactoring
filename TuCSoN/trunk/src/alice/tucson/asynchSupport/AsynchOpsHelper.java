@@ -46,7 +46,7 @@ public class AsynchOpsHelper extends AbstractTucsonAgent {
      */
     private static final int POLLING_TIME = 10;
 
-    private final static void log(final TucsonAgentId aid, final String msg) {
+    private static void log(final TucsonAgentId aid, final String msg) {
         System.out.println("....[AsynchOpsHelper (" + aid + ")]: " + msg);
     }
 

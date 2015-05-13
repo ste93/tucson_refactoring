@@ -179,17 +179,17 @@ public class MasterAgent extends AbstractTucsonAgent {
      *
      * @param id
      *            the TuCSoN agent ID
-     * @param nPrimeCalc
+     * @param nCalcs
      *            the number of calculations to perform
      * @throws TucsonInvalidAgentIdException
      *             if the given String does not represent a valid TuCSoN agent
      *             ID
      */
-    public MasterAgent(final String id, final int nPrimeCalc)
+    public MasterAgent(final String id, final int nCalcs)
             throws TucsonInvalidAgentIdException {
         super(id);
         this.nInpSucceeded = 0;
-        this.nPrimeCalc = nPrimeCalc;
+        this.nPrimeCalc = nCalcs;
         this.helper = new AsynchOpsHelper("'helper4" + this.getTucsonAgentId()
                 + "'");
     }

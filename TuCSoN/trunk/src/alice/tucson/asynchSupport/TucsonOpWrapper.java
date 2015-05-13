@@ -48,15 +48,15 @@ public class TucsonOpWrapper {
      *
      * @param eaacc
      *            the ACC through which the operation should be executed
-     * @param op
+     * @param a
      *            the TuCSoN operation to execute
      * @param l
      *            the TuCSoN listener handling operation completion
      */
     public TucsonOpWrapper(final EnhancedAsynchACC eaacc,
-            final AbstractTucsonAction op,
+            final AbstractTucsonAction a,
             final TucsonOperationCompletionListener l) {
-        this.action = op;
+        this.action = a;
         this.listener = l;
         this.acc = eaacc;
     }
@@ -66,7 +66,7 @@ public class TucsonOpWrapper {
      *
      * @param eaacc
      *            the ACC through which the operation should be executed
-     * @param op
+     * @param a
      *            the TuCSoN operation to execute
      * @param l
      *            the TuCSoN listener handling operation completion
@@ -75,9 +75,9 @@ public class TucsonOpWrapper {
      *            atm)
      */
     public TucsonOpWrapper(final EnhancedAsynchACC eaacc,
-            final AbstractTucsonAction op,
+            final AbstractTucsonAction a,
             final TucsonOperationCompletionListener l, final long timeout) {
-        this.action = op;
+        this.action = a;
         this.listener = l;
         this.acc = eaacc;
     }
@@ -142,11 +142,11 @@ public class TucsonOpWrapper {
     /**
      * Sets the TuCSoN operation to perform
      * 
-     * @param op
+     * @param a
      *            the TuCSoN operation to perform
      */
-    public void setOp(final AbstractTupleCentreOperation op) {
-        this.op = op;
+    public void setOp(final AbstractTupleCentreOperation a) {
+        this.op = a;
     }
 
     /*

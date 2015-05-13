@@ -25,7 +25,6 @@ import alice.tucson.api.AbstractTucsonAgent;
 import alice.tucson.api.EnhancedAsynchACC;
 import alice.tucson.api.EnhancedSynchACC;
 import alice.tucson.api.ITucsonOperation;
-import alice.tucson.api.TucsonAgentId;
 import alice.tucson.api.TucsonOperationCompletionListener;
 import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
@@ -57,13 +56,13 @@ public class PrimeCalculator extends AbstractTucsonAgent {
      */
     private class InpHandler implements TucsonOperationCompletionListener {
 
-        private final EnhancedAsynchACC acc;
+        private final EnhancedAsynchACC eaacc;
         private final AsynchOpsHelper help;
         private final TucsonTupleCentreId ttcid;
 
         public InpHandler(final EnhancedAsynchACC acc,
                 final TucsonTupleCentreId tid, final AsynchOpsHelper aqm) {
-            this.acc = acc;
+            this.eaacc = acc;
             this.ttcid = tid;
             this.help = aqm;
         }
@@ -91,7 +90,7 @@ public class PrimeCalculator extends AbstractTucsonAgent {
                         final LogicTuple tuple = LogicTuple
                                 .parse("calcprime(X)");
                         final Inp inp = new Inp(this.ttcid, tuple);
-                        this.help.enqueue(inp, new InpHandler(this.acc,
+                        this.help.enqueue(inp, new InpHandler(this.eaacc,
                                 this.ttcid, this.help));
                     }
                 } catch (final InvalidLogicTupleException e) {
@@ -108,7 +107,7 @@ public class PrimeCalculator extends AbstractTucsonAgent {
                         final LogicTuple tuple = LogicTuple
                                 .parse("calcprime(X)");
                         final Inp inp = new Inp(this.ttcid, tuple);
-                        this.help.enqueue(inp, new InpHandler(this.acc,
+                        this.help.enqueue(inp, new InpHandler(this.eaacc,
                                 this.ttcid, this.help));
                     }
                 } catch (final InterruptedException e) {
@@ -139,12 +138,6 @@ public class PrimeCalculator extends AbstractTucsonAgent {
      */
     class StopHandler implements TucsonOperationCompletionListener {
 
-        TucsonAgentId agentId;
-
-        public StopHandler(final TucsonAgentId tucsonAgentId) {
-            this.agentId = tucsonAgentId;
-        }
-
         @Override
         public void operationCompleted(final AbstractTupleCentreOperation op) {
             if (op.isResultSuccess()) {
@@ -165,7 +158,7 @@ public class PrimeCalculator extends AbstractTucsonAgent {
         }
     }
 
-    private final static int SLEEP = 50;
+    private static final int SLEEP = 50;
 
     private boolean stop;
 
@@ -237,7 +230,8 @@ public class PrimeCalculator extends AbstractTucsonAgent {
 
     int getPrimeNumbers(final int n) {
         final boolean[] primi = new boolean[n];
-        primi[0] = primi[1] = false;
+        primi[0] = false;
+        primi[1] = false;
         for (int i = 2; i < n; i++) {
             primi[i] = true;
             for (int j = 2; j < i; j++) {
