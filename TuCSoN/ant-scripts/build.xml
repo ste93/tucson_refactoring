@@ -169,6 +169,7 @@
 		<echo message="Properties are:" />
 		<echo message="-----------------------------------" />
 		<echo message="{ant.project.name} is '${ant.project.name}'" />
+		<echo message="{ant.java.version} is '${ant.java.version}'" />
 		<echo message="{basedir} is '${basedir}'" />
 		<echo message="..................................." />
 		<echo message="{src-dir} is '${src-dir}'" />
