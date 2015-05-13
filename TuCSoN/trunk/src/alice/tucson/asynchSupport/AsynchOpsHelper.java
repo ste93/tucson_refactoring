@@ -47,20 +47,20 @@ public class AsynchOpsHelper extends AbstractTucsonAgent {
     private static final int POLLING_TIME = 10;
 
     private final static void log(final TucsonAgentId aid, final String msg) {
-        System.out.println("[AsynchOpsHelper:" + aid + "]: " + msg);
+        System.out.println("....[AsynchOpsHelper (" + aid + ")]: " + msg);
     }
 
     private EnhancedAsynchACC acc;
     private final CompletedOpsQueue completedOpsQueue;
-    private final Semaphore pendingOps;
     private boolean isHardStopped = false;
     private boolean isSoftStopped = false;
+    private final Semaphore pendingOps;
     private final SearchableOpsQueue pendingOpsQueue;
     private final Semaphore shutdownSynch;
 
     /**
      * Builds an helper given the delegating agent ID
-     * 
+     *
      * @param id
      *            the ID of the agent delegating asynchronous invocation to this
      *            helper
@@ -110,7 +110,7 @@ public class AsynchOpsHelper extends AbstractTucsonAgent {
 
     /**
      * Gets the queue of completed operations
-     * 
+     *
      * @return the queue of completed operations
      */
     public final CompletedOpsQueue getCompletedOps() {
@@ -118,8 +118,17 @@ public class AsynchOpsHelper extends AbstractTucsonAgent {
     }
 
     /**
+     * Gets the queue of pending operations
+     *
+     * @return the queue of pending operations
+     */
+    public final SearchableOpsQueue getPendingOps() {
+        return this.pendingOpsQueue;
+    }
+
+    /**
      * Gets the pending operations {@link java.util.concurrent.Semaphore} object
-     * 
+     *
      * @return the pending oeprations {@link java.util.concurrent.Semaphore}
      */
     public final Semaphore getPendingOpsSemaphore() {
@@ -127,18 +136,19 @@ public class AsynchOpsHelper extends AbstractTucsonAgent {
     }
 
     /**
-     * Checks whether hard shutdown has been requested
-     * 
-     * @return {@code true} or {@code false} depending on whether hard shutdown
-     *         has been requested or not
+     * Gets the {@link java.util.concurrent.Semaphore} object for shutdown
+     * synchronisation
+     *
+     * @return the {@link java.util.concurrent.Semaphore} for shutdown
+     *         synchronisation
      */
-    public final boolean isShutdownNow() {
-        return this.isHardStopped;
+    public final Semaphore getShutdownSemaphore() {
+        return this.shutdownSynch;
     }
 
     /**
      * Checks whether soft shutdown has been requested
-     * 
+     *
      * @return {@code true} or {@code false} depending on whether soft shutdown
      *         has been requested or not
      */
@@ -147,23 +157,13 @@ public class AsynchOpsHelper extends AbstractTucsonAgent {
     }
 
     /**
-     * Gets the queue of pending operations
-     * 
-     * @return the queue of pending operations
+     * Checks whether hard shutdown has been requested
+     *
+     * @return {@code true} or {@code false} depending on whether hard shutdown
+     *         has been requested or not
      */
-    public final SearchableOpsQueue getPendingOps() {
-        return this.pendingOpsQueue;
-    }
-
-    /**
-     * Gets the {@link java.util.concurrent.Semaphore} object for shutdown
-     * synchronisation
-     * 
-     * @return the {@link java.util.concurrent.Semaphore} for shutdown
-     *         synchronisation
-     */
-    public final Semaphore getShutdownSemaphore() {
-        return this.shutdownSynch;
+    public final boolean isShutdownNow() {
+        return this.isHardStopped;
     }
 
     @Override
@@ -201,7 +201,7 @@ public class AsynchOpsHelper extends AbstractTucsonAgent {
     protected final void main() {
         this.acc = this.getContext();
         TucsonOpWrapper op = null;
-        AsynchOpsHelper.log(this.getTucsonAgentId(), "Started");
+        AsynchOpsHelper.log(this.getTucsonAgentId(), "started");
         // this is the loop that executes the operation until user stop command
         while (!this.isHardStopped && !this.isSoftStopped) {
             try {
@@ -209,7 +209,7 @@ public class AsynchOpsHelper extends AbstractTucsonAgent {
                         TimeUnit.MILLISECONDS);
                 if (op != null) {
                     this.pendingOps.release();
-                    AsynchOpsHelper.log(this.getTucsonAgentId(), "Doing op "
+                    AsynchOpsHelper.log(this.getTucsonAgentId(), "doing op "
                             + op.toString());
                     op.execute();
                 }
@@ -224,17 +224,17 @@ public class AsynchOpsHelper extends AbstractTucsonAgent {
         // Case shutdownNow: do not execute waitingQueue ops
         if (this.isHardStopped) {
             AsynchOpsHelper.log(this.getTucsonAgentId(),
-                    "Shutdown now requested");
+                    "shutdown now requested");
             try {
                 if (this.pendingOps.availablePermits() != 0) {
                     AsynchOpsHelper.log(
                             this.getTucsonAgentId(),
-                            "Ops still pending: "
+                            "ops still pending: "
                                     + this.pendingOps.availablePermits());
                     this.shutdownSynch.acquire();
                 } else {
                     AsynchOpsHelper.log(this.getTucsonAgentId(),
-                            "No ops pending");
+                            "no ops pending");
                 }
             } catch (final InterruptedException e) {
                 e.printStackTrace();
@@ -242,7 +242,7 @@ public class AsynchOpsHelper extends AbstractTucsonAgent {
         } else {
             // case shutdownGraceful: execute all added operations
             AsynchOpsHelper.log(this.getTucsonAgentId(),
-                    "Shutdown gracefully requested");
+                    "shutdown gracefully requested");
             while (this.pendingOps.availablePermits() != 0
                     || !this.pendingOpsQueue.isEmpty()) {
                 try {
@@ -252,7 +252,7 @@ public class AsynchOpsHelper extends AbstractTucsonAgent {
                     if (op != null) {
                         this.pendingOps.release();
                         AsynchOpsHelper.log(this.getTucsonAgentId(),
-                                "Doing op " + op.toString());
+                                "doing op " + op.toString());
                         op.execute();
                     }
                 } catch (final InterruptedException e) {
@@ -264,6 +264,6 @@ public class AsynchOpsHelper extends AbstractTucsonAgent {
                 }
             }
         }
-        AsynchOpsHelper.log(this.getTucsonAgentId(), "Done");
+        AsynchOpsHelper.log(this.getTucsonAgentId(), "done");
     }
 }

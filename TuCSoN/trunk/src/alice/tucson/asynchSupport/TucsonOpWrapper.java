@@ -148,4 +148,14 @@ public class TucsonOpWrapper {
     public void setOp(final AbstractTupleCentreOperation op) {
         this.op = op;
     }
+
+    /*
+     * (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        return this.action.toString();
+    }
+
 }

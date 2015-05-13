@@ -81,7 +81,7 @@ public class PrimeCalculator extends AbstractTucsonAgent {
                             + upperBound);
                     final long primeNumbers = PrimeCalculator.this
                             .getPrimeNumbers(upperBound);
-                    this.info("Preime numbers up to " + upperBound + " are "
+                    this.info("Prime numbers up to " + upperBound + " are "
                             + primeNumbers);
                     tupleRes = LogicTuple.parse("prime(" + upperBound + ","
                             + primeNumbers + ")");
@@ -205,8 +205,8 @@ public class PrimeCalculator extends AbstractTucsonAgent {
             final EnhancedAsynchACC acc = this.getContext();
             final TucsonTupleCentreId tid = new TucsonTupleCentreId("default",
                     "localhost", "20504");
-            final AsynchOpsHelper helper = new AsynchOpsHelper("helper4"
-                    + this.getTucsonAgentId());
+            final AsynchOpsHelper helper = new AsynchOpsHelper("'helper4"
+                    + this.getTucsonAgentId() + "'");
             final LogicTuple tuple = LogicTuple.parse("calcprime(X)");
             final Inp inp = new Inp(tid, tuple);
             helper.enqueue(inp, new InpHandler(acc, tid, helper));

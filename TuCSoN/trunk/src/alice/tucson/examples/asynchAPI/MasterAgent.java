@@ -55,7 +55,7 @@ public class MasterAgent extends AbstractTucsonAgent {
      *
      */
     private class CompletionHandler implements
-    TucsonOperationCompletionListener {
+            TucsonOperationCompletionListener {
 
         @Override
         public void operationCompleted(final AbstractTupleCentreOperation op) {
@@ -108,7 +108,7 @@ public class MasterAgent extends AbstractTucsonAgent {
      *
      */
     private class LastCompletionHandler implements
-    TucsonOperationCompletionListener {
+            TucsonOperationCompletionListener {
 
         private final AsynchOpsHelper help;
         private final TucsonTupleCentreId ttcid;
@@ -190,7 +190,8 @@ public class MasterAgent extends AbstractTucsonAgent {
         super(id);
         this.nInpSucceeded = 0;
         this.nPrimeCalc = nPrimeCalc;
-        this.helper = new AsynchOpsHelper("Helper4" + this.getTucsonAgentId());
+        this.helper = new AsynchOpsHelper("'helper4" + this.getTucsonAgentId()
+                + "'");
     }
 
     @Override
@@ -218,10 +219,10 @@ public class MasterAgent extends AbstractTucsonAgent {
             int number = MasterAgent.SEED;
             for (int i = 0; i < MasterAgent.REQUESTS; i++) {
                 tuple = LogicTuple.parse("calcprime(" + number + ")");
-                number += MasterAgent.STEP;
                 super.say("Enqueuing prime numbers calculation up to " + number);
                 out = new Out(tid, tuple);
                 this.helper.enqueue(out, null);
+                number += MasterAgent.STEP;
             }
             super.say("Sent "
                     + MasterAgent.REQUESTS
