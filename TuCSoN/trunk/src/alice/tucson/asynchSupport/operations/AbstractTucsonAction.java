@@ -83,7 +83,7 @@ public abstract class AbstractTucsonAction {
      * blocking the caller until operation completion (e.g., a {@code in}
      * without matching tuples does cause blocking the caller agent). This
      * method is mainly conceived for usage within TuCSoN4JADE bridge component:
-     * see more at {@link "http://bitbucket.org/smariani/tucson4jade"}
+     * see more at http://bitbucket.org/smariani/tucson4jade
      * 
      * @param acc
      *            the TuCSoN ACC in charge of action execution
