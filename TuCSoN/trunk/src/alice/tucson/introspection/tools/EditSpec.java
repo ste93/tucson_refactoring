@@ -29,12 +29,13 @@ import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 
 /**
- * 
+ *
  * @author Unknown...
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
- * 
+ *
  */
 public class EditSpec extends javax.swing.JFrame {
+
     private static final long serialVersionUID = 2491540632593263750L;
     private javax.swing.JTextField caretPosition;
     private EnhancedACC context;
@@ -45,7 +46,7 @@ public class EditSpec extends javax.swing.JFrame {
 
     /**
      * Creates new form GUIEditTheory
-     * 
+     *
      * @param t
      *            the identifier of the tuple centre under inspection
      */
@@ -67,6 +68,7 @@ public class EditSpec extends javax.swing.JFrame {
         gridBagConstraints1.weighty = 95.0;
         this.getContentPane().add(this.inputSpec, gridBagConstraints1);
         this.inputSpec.addCaretListener(new javax.swing.event.CaretListener() {
+
             @Override
             public void caretUpdate(final javax.swing.event.CaretEvent evt) {
                 EditSpec.this.caretPosition.setText("line "
@@ -84,7 +86,7 @@ public class EditSpec extends javax.swing.JFrame {
     }
 
     /**
-     * 
+     *
      */
     public void exit() {
         try {
@@ -108,9 +110,7 @@ public class EditSpec extends javax.swing.JFrame {
             final java.io.File file = chooser.getSelectedFile();
             if (file != null) {
                 final String name = file.getAbsolutePath();
-                FileInputStream in = null;
-                try {
-                    in = new FileInputStream(name);
+                try (final FileInputStream in = new FileInputStream(name)) {
                     final byte[] text = new byte[in.available()];
                     in.read(text);
                     this.inputSpec.setText(new String(text));
@@ -122,18 +122,6 @@ public class EditSpec extends javax.swing.JFrame {
                     this.outputState.setText("File '" + name + "' not found.");
                 } catch (final IOException e) {
                     this.outputState.setText(e.toString());
-                    try {
-                        in.close();
-                    } catch (final IOException ee) {
-                        ee.printStackTrace();
-                    }
-                }
-                if (in != null) {
-                    try {
-                        in.close();
-                    } catch (final IOException e) {
-                        e.printStackTrace();
-                    }
                 }
             }
         }
@@ -145,9 +133,8 @@ public class EditSpec extends javax.swing.JFrame {
     }
 
     private void bSaveActionPerformed() {
-        FileOutputStream out = null;
-        try {
-            out = new FileOutputStream(this.specFileName);
+        try (final FileOutputStream out = new FileOutputStream(
+                this.specFileName)) {
             out.write(this.inputSpec.getText().getBytes());
             this.outputState.setText("ReSpecT specification saved on file '"
                     + this.specFileName + "'.");
@@ -156,18 +143,6 @@ public class EditSpec extends javax.swing.JFrame {
                     + "' not found.");
         } catch (final IOException e) {
             this.outputState.setText(e.toString());
-            try {
-                out.close();
-            } catch (final IOException ee) {
-                ee.printStackTrace();
-            }
-        }
-        if (out != null) {
-            try {
-                out.close();
-            } catch (final IOException e) {
-                e.printStackTrace();
-            }
         }
     }
 
@@ -178,9 +153,7 @@ public class EditSpec extends javax.swing.JFrame {
             final java.io.File file = chooser.getSelectedFile();
             if (file != null) {
                 final String name = file.getAbsolutePath();
-                FileOutputStream out = null;
-                try {
-                    out = new FileOutputStream(name);
+                try (final FileOutputStream out = new FileOutputStream(name)) {
                     out.write(this.inputSpec.getText().getBytes());
                     this.outputState
                             .setText("ReSpecT specification saved on file '"
@@ -190,18 +163,6 @@ public class EditSpec extends javax.swing.JFrame {
                     this.outputState.setText("File '" + name + "' not found.");
                 } catch (final IOException e) {
                     this.outputState.setText(e.toString());
-                    try {
-                        out.close();
-                    } catch (final IOException ee) {
-                        ee.printStackTrace();
-                    }
-                }
-                if (out != null) {
-                    try {
-                        out.close();
-                    } catch (final IOException e) {
-                        e.printStackTrace();
-                    }
                 }
             }
         }
@@ -226,6 +187,7 @@ public class EditSpec extends javax.swing.JFrame {
         this.getContentPane().setLayout(new java.awt.GridBagLayout());
         this.setTitle("S Inspector");
         this.addComponentListener(new java.awt.event.ComponentAdapter() {
+
             @Override
             public void componentShown(final java.awt.event.ComponentEvent evt) {
                 EditSpec.this.formComponentShown();
@@ -249,6 +211,7 @@ public class EditSpec extends javax.swing.JFrame {
         bLoad.setFocusPainted(false);
         bLoad.setPreferredSize(new java.awt.Dimension(80, 30));
         bLoad.addActionListener(new java.awt.event.ActionListener() {
+
             @Override
             public void actionPerformed(final java.awt.event.ActionEvent evt) {
                 EditSpec.this.bLoadActionPerformed();
@@ -264,6 +227,7 @@ public class EditSpec extends javax.swing.JFrame {
         bSave.setFocusPainted(false);
         bSave.setPreferredSize(new java.awt.Dimension(80, 30));
         bSave.addActionListener(new java.awt.event.ActionListener() {
+
             @Override
             public void actionPerformed(final java.awt.event.ActionEvent evt) {
                 EditSpec.this.bSaveActionPerformed();
@@ -279,6 +243,7 @@ public class EditSpec extends javax.swing.JFrame {
         bSaveAs.setFocusPainted(false);
         bSaveAs.setPreferredSize(new java.awt.Dimension(80, 30));
         bSaveAs.addActionListener(new java.awt.event.ActionListener() {
+
             @Override
             public void actionPerformed(final java.awt.event.ActionEvent evt) {
                 EditSpec.this.bSaveAsActionPerformed();
@@ -300,6 +265,7 @@ public class EditSpec extends javax.swing.JFrame {
         bOk.setFocusPainted(false);
         bOk.setPreferredSize(new java.awt.Dimension(70, 30));
         bOk.addActionListener(new java.awt.event.ActionListener() {
+
             @Override
             public void actionPerformed(final java.awt.event.ActionEvent evt) {
                 EditSpec.this.bOkActionPerformed();
@@ -315,6 +281,7 @@ public class EditSpec extends javax.swing.JFrame {
         bGet.setActionCommand("bRefresh");
         bGet.setPreferredSize(new java.awt.Dimension(70, 30));
         bGet.addActionListener(new java.awt.event.ActionListener() {
+
             @Override
             public void actionPerformed(final java.awt.event.ActionEvent evt) {
                 EditSpec.this.bGetActionPerformed();
@@ -353,12 +320,13 @@ public class EditSpec extends javax.swing.JFrame {
 
     /**
      * reports the result of get operation in SpecWorker
-     * 
+     *
      * @param spec
      *            the ReSpecT specification read
      */
     protected void getCompletion(final StringBuffer spec) {
         SwingUtilities.invokeLater(new Runnable() {
+
             @Override
             public void run() {
                 EditSpec.this.inputSpec.setText(spec.toString());
@@ -373,6 +341,7 @@ public class EditSpec extends javax.swing.JFrame {
      */
     protected void setCompletion() {
         SwingUtilities.invokeLater(new Runnable() {
+
             @Override
             public void run() {
                 EditSpec.this.outputState.setText("ReSpecT specification set.");

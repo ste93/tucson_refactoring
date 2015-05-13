@@ -16,11 +16,12 @@ package alice.tuplecentre.api.exceptions;
 /**
  * Exception thrown when a not well-formed tuple is found, for instance when
  * invoking a coordination language primitive with a null tuple.
- * 
+ *
  * @author Alessandro Ricci
- * 
+ *
  */
 public class InvalidTupleException extends Exception {
+
     private static final long serialVersionUID = -3585492012733336883L;
 
     public InvalidTupleException() {

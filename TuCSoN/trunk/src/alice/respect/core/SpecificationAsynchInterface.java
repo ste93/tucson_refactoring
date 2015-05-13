@@ -12,16 +12,17 @@ import alice.tuplecentre.api.IId;
 import alice.tuplecentre.core.OperationCompletionListener;
 
 /**
- * 
+ *
  * @author ste (mailto: s.mariani@unibo.it)
- * 
+ *
  */
 public class SpecificationAsynchInterface implements
         ISpecificationAsynchInterface {
+
     private final IRespectTC core;
 
     /**
-     * 
+     *
      * @param c
      *            the ReSpecT tuple centres manager this interface refers to
      */

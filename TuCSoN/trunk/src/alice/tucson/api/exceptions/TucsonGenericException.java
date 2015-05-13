@@ -14,16 +14,17 @@
 package alice.tucson.api.exceptions;
 
 /**
- * 
+ *
  * @author Alessandro Ricci
- * 
+ *
  */
 public class TucsonGenericException extends Exception {
+
     private static final long serialVersionUID = -4594211677771913572L;
     private final String msg;
 
     /**
-     * 
+     *
      * @param m
      *            the String message explaining the Exception thrown
      */
@@ -33,7 +34,7 @@ public class TucsonGenericException extends Exception {
     }
 
     /**
-     * 
+     *
      * @return the String message explaining the Exception thrown
      */
     public String getMsg() {

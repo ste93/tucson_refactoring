@@ -10,13 +10,14 @@ import alice.tuplecentre.core.OperationCompletionListener;
 /**
  * A ReSpecT Tuple Centre Interface to issue ReSpecT specification primitives
  * using an asynchronous semantics.
- * 
+ *
  * @author Alessandro Ricci
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public interface ISpecificationAsynchInterface {
+
     /**
-     * 
+     *
      * @param aid
      *            the identifier of who is invokin the operation
      * @param l
@@ -31,7 +32,7 @@ public interface ISpecificationAsynchInterface {
             throws InvalidLogicTupleException, OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param aid
      *            the identifier of who is invokin the operation
      * @param t
@@ -49,7 +50,7 @@ public interface ISpecificationAsynchInterface {
             throws InvalidLogicTupleException, OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param aid
      *            the identifier of who is invokin the operation
      * @param t
@@ -66,7 +67,7 @@ public interface ISpecificationAsynchInterface {
             throws InvalidLogicTupleException, OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param aid
      *            the identifier of who is invokin the operation
      * @param t
@@ -83,7 +84,7 @@ public interface ISpecificationAsynchInterface {
             throws InvalidLogicTupleException, OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param aid
      *            the identifier of who is invokin the operation
      * @param t
@@ -100,7 +101,7 @@ public interface ISpecificationAsynchInterface {
             throws InvalidLogicTupleException, OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param aid
      *            the identifier of who is invokin the operation
      * @param t
@@ -117,7 +118,7 @@ public interface ISpecificationAsynchInterface {
             throws InvalidLogicTupleException, OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param aid
      *            the identifier of who is invokin the operation
      * @param t
@@ -134,7 +135,7 @@ public interface ISpecificationAsynchInterface {
             throws InvalidLogicTupleException, OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param aid
      *            the identifier of who is invokin the operation
      * @param t
@@ -151,7 +152,7 @@ public interface ISpecificationAsynchInterface {
             throws InvalidLogicTupleException, OperationNotPossibleException;
 
     /**
-     * 
+     *
      * @param aid
      *            the identifier of who is invokin the operation
      * @param spec

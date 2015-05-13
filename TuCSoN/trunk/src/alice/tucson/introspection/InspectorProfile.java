@@ -18,15 +18,16 @@ import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.service.ACCDescription;
 
 /**
- * 
+ *
  * @author Unknown...
- * 
+ *
  */
 public class InspectorProfile extends ACCDescription {
+
     private static final long serialVersionUID = 4542989407611049869L;
 
     /**
-     * 
+     *
      * @param aid
      *            the agent identifier used by the inspector
      * @param tid

@@ -16,16 +16,17 @@ package alice.tuplecentre.core;
 /**
  * Defines the services that must be provided by any object which must receive
  * commounication output events produced by a tuple centre
- * 
+ *
  * @see AbstractEvent
- * 
+ *
  * @author Alessandro Ricci
  */
 public interface OutputEventListener {
+
     /**
      * This service is invoked (by a tuple centre virtual machine able to
      * dispatch output events) when a new output communication is produced
-     * 
+     *
      * @param ev
      *            the output event to notify
      */

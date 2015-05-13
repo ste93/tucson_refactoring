@@ -15,12 +15,13 @@ package alice.logictuple.exceptions;
 
 /**
  * Exception thrown when a malformed tuple argument is created or used
- * 
+ *
  * @author Alessandro Ricci
  */
 public class InvalidTupleArgumentException extends LogicTupleException {
+
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = 1L;
 

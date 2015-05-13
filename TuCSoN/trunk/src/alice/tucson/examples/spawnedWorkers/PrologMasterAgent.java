@@ -21,9 +21,10 @@ import alice.tuprolog.event.OutputListener;
 
 /**
  * @author ste (mailto: s.mariani@unibo.it) on 26/lug/2013
- * 
+ *
  */
 public final class PrologMasterAgent {
+
     /*
      * Remember the dot!
      */
@@ -91,6 +92,7 @@ public final class PrologMasterAgent {
          * 4) [OPTIONAL] Capture tuProlog output and redirect it to Java Logger.
          */
         engine.addOutputListener(new OutputListener() {
+
             @Override
             public void onOutput(final OutputEvent arg0) {
                 System.out.println(arg0.getMsg());
@@ -134,16 +136,16 @@ public final class PrologMasterAgent {
                     "No input stream found.");
             System.exit(-1);
         }
-        final BufferedInputStream br = new BufferedInputStream(in);
-        final byte[] res = new byte[br.available()];
-        br.read(res);
-        br.close();
-        return new String(res);
+        try (final BufferedInputStream br = new BufferedInputStream(in);) {
+            final byte[] res = new byte[br.available()];
+            br.read(res);
+            return new String(res);
+        }
     }
 
     private PrologMasterAgent() {
         /*
-         * 
+         *
          */
     }
 }

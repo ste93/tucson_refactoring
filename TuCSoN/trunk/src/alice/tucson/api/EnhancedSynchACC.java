@@ -16,11 +16,11 @@ package alice.tucson.api;
 /**
  * Enhanced Synchronous ACC. Can act both on the ordinary tuple space and on the
  * specification tuple space. Bulk and uniform primitives are included.
- * 
+ *
  * @see alice.tucson.api.SynchACC SynchACC
  * @see alice.tucson.api.BulkSynchACC BulkSynchACC
  * @see alice.tucson.api.UniformSynchACC UniformSynchACC
- * 
+ *
  * @author ste (mailto: s.mariani@unibo.it)
  */
 public interface EnhancedSynchACC extends SynchACC, BulkSynchACC,

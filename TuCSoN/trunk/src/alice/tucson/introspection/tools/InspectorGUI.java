@@ -34,19 +34,20 @@ import alice.tucson.introspection.InspectorProtocol;
 import alice.tucson.network.exceptions.DialogSendException;
 
 /**
- * 
+ *
  * @author Unknown...
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public class InspectorGUI extends javax.swing.JFrame {
+
     private static final long serialVersionUID = -3765811664087552414L;
 
     /**
-     * 
-     * 
+     *
+     *
      * @param args
      *            the arguments to launch the inspector
-     * 
+     *
      */
     public static void main(final String[] args) {
         System.out.println("[Inspector]: Booting...");
@@ -148,7 +149,7 @@ public class InspectorGUI extends javax.swing.JFrame {
 
     /**
      * Called when no default tuplecentre to monitor is given.
-     * 
+     *
      * @param id
      *            the name of the Inspector agent.
      */
@@ -163,7 +164,7 @@ public class InspectorGUI extends javax.swing.JFrame {
 
     /**
      * Called when a default tuplecentre to inspect is given.
-     * 
+     *
      * @param id
      *            the name of the Inspector agent.
      * @param tc
@@ -307,7 +308,7 @@ public class InspectorGUI extends javax.swing.JFrame {
 
     /**
      * Close all open forms on exit (Inspector itself too).
-     * 
+     *
      * @param evt
      *            closing window event.
      */
@@ -363,6 +364,7 @@ public class InspectorGUI extends javax.swing.JFrame {
         this.setTitle("TuCSoN Inspector");
         this.setResizable(false);
         this.addWindowListener(new java.awt.event.WindowAdapter() {
+
             @Override
             public void windowClosing(final java.awt.event.WindowEvent evt) {
                 InspectorGUI.this.exitForm();
@@ -387,6 +389,7 @@ public class InspectorGUI extends javax.swing.JFrame {
         tuplesBtn.setMinimumSize(new java.awt.Dimension(130, 25));
         tuplesBtn.setPreferredSize(new java.awt.Dimension(130, 25));
         tuplesBtn.addActionListener(new java.awt.event.ActionListener() {
+
             @Override
             public void actionPerformed(final java.awt.event.ActionEvent evt) {
                 InspectorGUI.this.tuplesBtnActionPerformed();
@@ -405,6 +408,7 @@ public class InspectorGUI extends javax.swing.JFrame {
         pendingBtn.setMinimumSize(new java.awt.Dimension(130, 25));
         pendingBtn.setPreferredSize(new java.awt.Dimension(130, 25));
         pendingBtn.addActionListener(new java.awt.event.ActionListener() {
+
             @Override
             public void actionPerformed(final java.awt.event.ActionEvent evt) {
                 InspectorGUI.this.pendingBtnActionPerformed();
@@ -423,6 +427,7 @@ public class InspectorGUI extends javax.swing.JFrame {
         reactionsBtn.setMinimumSize(new java.awt.Dimension(130, 25));
         reactionsBtn.setPreferredSize(new java.awt.Dimension(130, 25));
         reactionsBtn.addActionListener(new java.awt.event.ActionListener() {
+
             @Override
             public void actionPerformed(final java.awt.event.ActionEvent evt) {
                 InspectorGUI.this.trigReactsBtnActionPerformed();
@@ -441,6 +446,7 @@ public class InspectorGUI extends javax.swing.JFrame {
         this.specBtn.setMinimumSize(new java.awt.Dimension(130, 25));
         this.specBtn.setPreferredSize(new java.awt.Dimension(130, 25));
         this.specBtn.addActionListener(new java.awt.event.ActionListener() {
+
             @Override
             public void actionPerformed(final java.awt.event.ActionEvent evt) {
                 InspectorGUI.this.specBtnActionPerformed();
@@ -457,6 +463,7 @@ public class InspectorGUI extends javax.swing.JFrame {
         this.vmStepCB.setToolTipText("Enable/Disable step mode");
         this.vmStepCB.setSelected(false);
         this.vmStepCB.addItemListener(new ItemListener() {
+
             @Override
             public void itemStateChanged(final ItemEvent e) {
                 try {
@@ -495,6 +502,7 @@ public class InspectorGUI extends javax.swing.JFrame {
         this.vmStepBtn.setMinimumSize(new java.awt.Dimension(130, 25));
         this.vmStepBtn.setPreferredSize(new java.awt.Dimension(130, 25));
         this.vmStepBtn.addActionListener(new ActionListener() {
+
             @Override
             public void actionPerformed(final ActionEvent e) {
                 InspectorGUI.this.vmStepBtnActionPerformed();
@@ -517,7 +525,8 @@ public class InspectorGUI extends javax.swing.JFrame {
         this.tupleSpaceStepMode.setSelected(true);
         this.tupleSpaceStepMode
                 .addActionListener(new java.awt.event.ActionListener() {
-                    @Override
+
+            @Override
                     public void actionPerformed(
                             final java.awt.event.ActionEvent evt) {
                         InspectorGUI.this.stepObModeActionPerformed(evt);
@@ -538,7 +547,8 @@ public class InspectorGUI extends javax.swing.JFrame {
         this.agentStepMode.setPreferredSize(new java.awt.Dimension(180, 25));
         this.agentStepMode
                 .addActionListener(new java.awt.event.ActionListener() {
-                    @Override
+
+            @Override
                     public void actionPerformed(
                             final java.awt.event.ActionEvent evt) {
                         InspectorGUI.this.stepObModeActionPerformed(evt);
@@ -627,7 +637,8 @@ public class InspectorGUI extends javax.swing.JFrame {
         this.buttonInspect.setText("Inspect!");
         this.buttonInspect
                 .addActionListener(new java.awt.event.ActionListener() {
-                    @Override
+
+            @Override
                     public void actionPerformed(
                             final java.awt.event.ActionEvent evt) {
                         InspectorGUI.this.buttonInspectActionPerformed();
@@ -676,7 +687,7 @@ public class InspectorGUI extends javax.swing.JFrame {
 
     /**
      * Handles 'pending query' button.
-     * 
+     *
      * @param evt
      *            'pending' button pushing event.
      */
@@ -693,7 +704,7 @@ public class InspectorGUI extends javax.swing.JFrame {
 
     /**
      * Handles 'edit specification space' button.
-     * 
+     *
      * @param evt
      *            'specification' button pushing event.
      */
@@ -703,7 +714,7 @@ public class InspectorGUI extends javax.swing.JFrame {
 
     /**
      * Handles 'type stepMode inspection' radioButton.
-     * 
+     *
      * @param evt
      *            'pending' button pushing event.
      */
@@ -729,7 +740,7 @@ public class InspectorGUI extends javax.swing.JFrame {
 
     /**
      * Handles 'inspect triggered reactions' button.
-     * 
+     *
      * @param evt
      *            'reaction' button pushing event.
      */
@@ -746,7 +757,7 @@ public class InspectorGUI extends javax.swing.JFrame {
 
     /**
      * Handles 'inspect tuples' button.
-     * 
+     *
      * @param evt
      *            'tuples' button pushing event.
      */
@@ -763,7 +774,7 @@ public class InspectorGUI extends javax.swing.JFrame {
 
     /**
      * Handles 'vm step' button.
-     * 
+     *
      */
     private void vmStepBtnActionPerformed() {
         try {

@@ -13,13 +13,14 @@
 package alice.tuplecentre.api;
 
 /**
- * 
+ *
  * @author Alessandro Ricci
- * 
+ *
  */
 public interface ObservableEventListener {
+
     /**
-     * 
+     *
      * @param tid
      *            the identifier of the tuple centre under observation
      * @param id
@@ -30,7 +31,7 @@ public interface ObservableEventListener {
     void getSpecCompleted(TupleCentreId tid, IId id, String spec);
 
     /**
-     * 
+     *
      * @param tid
      *            the identifier of the tuple centre under observation
      * @param id
@@ -39,7 +40,7 @@ public interface ObservableEventListener {
     void getSpecRequested(TupleCentreId tid, IId id);
 
     /**
-     * 
+     *
      * @param tid
      *            the identifier of the tuple centre under observation
      * @param id
@@ -50,7 +51,7 @@ public interface ObservableEventListener {
     void inCompleted(TupleCentreId tid, IId id, Tuple t);
 
     /**
-     * 
+     *
      * @param tid
      *            the identifier of the tuple centre under observation
      * @param id
@@ -61,7 +62,7 @@ public interface ObservableEventListener {
     void inpCompleted(TupleCentreId tid, IId id, Tuple t);
 
     /**
-     * 
+     *
      * @param tid
      *            the identifier of the tuple centre under observation
      * @param id
@@ -72,7 +73,7 @@ public interface ObservableEventListener {
     void inpRequested(TupleCentreId tid, IId id, TupleTemplate t);
 
     /**
-     * 
+     *
      * @param tid
      *            the identifier of the tuple centre under observation
      * @param id
@@ -83,7 +84,7 @@ public interface ObservableEventListener {
     void inRequested(TupleCentreId tid, IId id, TupleTemplate t);
 
     /**
-     * 
+     *
      * @param tid
      *            the identifier of the tuple centre under observation
      * @param id
@@ -94,7 +95,7 @@ public interface ObservableEventListener {
     void outRequested(TupleCentreId tid, IId id, Tuple t);
 
     /**
-     * 
+     *
      * @param tid
      *            the identifier of the tuple centre under observation
      * @param id
@@ -105,7 +106,7 @@ public interface ObservableEventListener {
     void rdCompleted(TupleCentreId tid, IId id, Tuple t);
 
     /**
-     * 
+     *
      * @param tid
      *            the identifier of the tuple centre under observation
      * @param id
@@ -116,7 +117,7 @@ public interface ObservableEventListener {
     void rdpCompleted(TupleCentreId tid, IId id, Tuple t);
 
     /**
-     * 
+     *
      * @param tid
      *            the identifier of the tuple centre under observation
      * @param id
@@ -127,7 +128,7 @@ public interface ObservableEventListener {
     void rdpRequested(TupleCentreId tid, IId id, TupleTemplate t);
 
     /**
-     * 
+     *
      * @param tid
      *            the identifier of the tuple centre under observation
      * @param id
@@ -138,7 +139,7 @@ public interface ObservableEventListener {
     void rdRequested(TupleCentreId tid, IId id, TupleTemplate t);
 
     /**
-     * 
+     *
      * @param tid
      *            the identifier of the tuple centre under observation
      * @param id
@@ -147,7 +148,7 @@ public interface ObservableEventListener {
     void setSpecCompleted(TupleCentreId tid, IId id);
 
     /**
-     * 
+     *
      * @param tid
      *            the identifier of the tuple centre under observation
      * @param id

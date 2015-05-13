@@ -14,10 +14,11 @@
 package alice.tucson.api.exceptions;
 
 /**
- * 
+ *
  * @author Alessandro Ricci
- * 
+ *
  */
 public class TucsonInvalidSpecificationException extends Exception {
+
     private static final long serialVersionUID = 5164569551404840562L;
 }

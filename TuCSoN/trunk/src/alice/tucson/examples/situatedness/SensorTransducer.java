@@ -14,11 +14,12 @@ import alice.tuplecentre.core.AbstractTupleCentreOperation;
  * The transducer mediating interactions to/from the sensor probe. As such, only
  * the 'getEnv' method is implemented (furthermore, a synchronous behaviour is
  * expected, hence no asynchronous facility is implemented).
- * 
+ *
  * @author ste (mailto: s.mariani@unibo.it) on 05/nov/2013
- * 
+ *
  */
 public class SensorTransducer extends AbstractTransducer {
+
     /**
      * @param i
      *            the transducer identifier

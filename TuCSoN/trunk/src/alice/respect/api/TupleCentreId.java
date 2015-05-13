@@ -28,6 +28,7 @@ import alice.tuprolog.Term;
  */
 public class TupleCentreId implements alice.tuplecentre.api.TupleCentreId,
         java.io.Serializable {
+
     private static final int DEFAULT_PORT = 20504;
     private static TupleCentreIdOperatorManager opManager = new TupleCentreIdOperatorManager();
     private static final long serialVersionUID = 1L;
@@ -103,15 +104,6 @@ public class TupleCentreId implements alice.tuplecentre.api.TupleCentreId,
             throw new InvalidTupleCentreIdException("Term '" + name
                     + "' is not a well-formed ground logic term");
         }
-    }
-
-    /**
-     * 
-     */
-    protected TupleCentreId() {
-        /*
-         * 
-         */
     }
 
     /*

@@ -18,13 +18,14 @@ import alice.logictuple.TupleArgument;
 import alice.respect.core.collection.DoubleKeyMVMap;
 
 /**
- * 
+ *
  * @author Saverio Cicora
- * 
+ *
  */
 public class TupleSetCoord extends AbstractTupleSet {
+
     /**
-     * 
+     *
      */
     public TupleSetCoord() {
         super();

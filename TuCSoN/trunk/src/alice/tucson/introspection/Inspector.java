@@ -20,23 +20,24 @@ import alice.tucson.network.exceptions.DialogException;
 import alice.tucson.network.exceptions.DialogSendException;
 
 /**
- * 
+ *
  * @author Unknown...
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
- * 
+ *
  */
 public class Inspector extends Thread implements InspectorContextListener {
+
     /**
-     * 
+     *
      */
     protected InspectorContext context;
     /**
-     * 
+     *
      */
     protected boolean q;
 
     /**
-     * 
+     *
      * @param id
      *            the agent identifier this inspector should use
      * @param tid
@@ -50,7 +51,7 @@ public class Inspector extends Thread implements InspectorContextListener {
     }
 
     /**
-     * 
+     *
      * @return the inspection context used by this inspector
      */
     public InspectorContext getContext() {
@@ -65,7 +66,7 @@ public class Inspector extends Thread implements InspectorContextListener {
     }
 
     /**
-     * 
+     *
      */
     public void quit() {
         this.q = true;

@@ -17,11 +17,12 @@ import java.io.Serializable;
 import alice.logictuple.LogicTuple;
 
 /**
- * 
+ *
  * @author Unknown...
- * 
+ *
  */
 public class InspectorProtocol implements Serializable {
+
     /** don't observe */
     public static final byte NO_OBSERVATION = 1;
     /** observe continuosly */

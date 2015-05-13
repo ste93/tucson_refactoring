@@ -5,18 +5,19 @@ import alice.tuprolog.OperatorManager;
 import alice.tuprolog.Prolog;
 
 /**
- * 
+ *
  * @author ste (mailto: s.mariani@unibo.it)
- * 
+ *
  */
 public class LogicTupleOpManager extends OperatorManager {
+
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = 1L;
 
     /**
-     * 
+     *
      */
     public LogicTupleOpManager() {
         super();

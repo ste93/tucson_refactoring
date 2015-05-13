@@ -10,6 +10,7 @@ import alice.logictuple.Value;
 import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.tucson.api.EnhancedSynchACC;
 import alice.tucson.api.ITucsonOperation;
+import alice.tucson.api.NegotiationACC;
 import alice.tucson.api.TucsonAgentId;
 import alice.tucson.api.TucsonMetaACC;
 import alice.tucson.api.TucsonTupleCentreId;
@@ -23,29 +24,30 @@ import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 
 /**
  * TuCSoN situatedness feature example.
- * 
+ *
  * In this toy scenario, a situated, 'intelligent' thermostat is in charge of
  * keeping a room temperature between 18 and 22. In order to do so, it is
  * equipped with a sensor (ActualSensor class) and an actuator (ActualActuator
  * class). As obvious, the former is requested by the thermostat to perceiving
  * the temperature, whereas the latter is prompted to change the temperature
  * upon need.
- * 
+ *
  * Whereas the thermostat entity can be programmed as pleased, hence as an agent
  * or a simple Java process (still a TuCSoN agent, as in this case), the sensor
  * and the actuator should be modelled as "probes" (aka environmental
  * resources), interfacing with the MAS (in this simple case, only the
  * thermostat TuCSoN agent) through one transducer each.
- * 
+ *
  * Furthermore, to leverage a possible ditributed scenario for this toy
  * thermostat example, transducers and the thermostat each have their own tuple
  * centre to interact with, suitably programmed through situated ReSpecT
  * reactions (sensorSpec.rsp and actuatorSpec.rsp).
- * 
+ *
  * @author ste (mailto: s.mariani@unibo.it) on 05/nov/2013
- * 
+ *
  */
 public final class Thermostat {
+
     private static final String DEFAULT_HOST = "localhost";
     private static final String DEFAULT_PORT = "20504";
     private static final int HIGH = 22;
@@ -59,9 +61,15 @@ public final class Thermostat {
     public static void main(final String[] args) {
         try {
             final TucsonAgentId aid = new TucsonAgentId("thermostat");
-            final EnhancedSynchACC acc = TucsonMetaACC.getContext(aid,
-                    Thermostat.DEFAULT_HOST,
+            final NegotiationACC negACC = TucsonMetaACC.getNegotiationContext(
+                    aid, Thermostat.DEFAULT_HOST,
                     Integer.valueOf(Thermostat.DEFAULT_PORT));
+            final EnhancedSynchACC acc = negACC.playDefaultRole();
+            /*
+             * final EnhancedSynchACC acc = TucsonMetaACC.getContext(aid,
+             * Thermostat.DEFAULT_HOST,
+             * Integer.valueOf(Thermostat.DEFAULT_PORT));
+             */
             final TucsonTupleCentreId configTc = new TucsonTupleCentreId(
                     "'$ENV'", Thermostat.DEFAULT_HOST, Thermostat.DEFAULT_PORT);
             /* Set up temperature */
@@ -92,9 +100,9 @@ public final class Thermostat {
                     new TupleArgument(sensorTc.toTerm()),
                     new Value(
                             "alice.tucson.examples.situatedness.SensorTransducer"),
-                    new Value("sensorTransducer"), new Value(
-                            "alice.tucson.examples.situatedness.ActualSensor"),
-                    new Value("sensor"));
+                            new Value("sensorTransducer"), new Value(
+                                    "alice.tucson.examples.situatedness.ActualSensor"),
+                                    new Value("sensor"));
             acc.out(configTc, sensorTuple, null);
             /* Set up actuator */
             Thermostat.log(aid.toString(), "Set up actuator...");
@@ -114,10 +122,10 @@ public final class Thermostat {
                     new TupleArgument(actuatorTc.toTerm()),
                     new Value(
                             "alice.tucson.examples.situatedness.ActuatorTransducer"),
-                    new Value("actuatorTransducer"),
-                    new Value(
-                            "alice.tucson.examples.situatedness.ActualActuator"),
-                    new Value("actuator"));
+                            new Value("actuatorTransducer"),
+                            new Value(
+                                    "alice.tucson.examples.situatedness.ActualActuator"),
+                                    new Value("actuator"));
             acc.out(configTc, actuatorTuple, null);
             /* Start perception-reason-action loop */
             Thermostat.log(aid.toString(),
@@ -176,7 +184,7 @@ public final class Thermostat {
 
     private Thermostat() {
         /*
-         * 
+         *
          */
     }
 }

@@ -17,16 +17,17 @@ import alice.tucson.api.TucsonAgentId;
 import alice.tuplecentre.api.Tuple;
 
 /**
- * 
+ *
  * @author Unknown...
- * 
+ *
  */
 public class SetTupleSetMsg extends NodeMsg {
+
     private static final long serialVersionUID = 3683932175338169242L;
     private java.util.List<? extends Tuple> tupleSet;
 
     /**
-     * 
+     *
      * @param id
      *            the agent id of the sender
      * @param ts

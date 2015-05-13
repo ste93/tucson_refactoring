@@ -15,12 +15,13 @@ package alice.logictuple.exceptions;
 
 /**
  * Logic Tuple root base Exception class
- * 
+ *
  * @author Alessandro Ricci
  */
 public class LogicTupleException extends Exception {
+
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = 1L;
 

@@ -5,6 +5,7 @@ import alice.logictuple.Value;
 import alice.logictuple.Var;
 import alice.logictuple.exceptions.InvalidVarNameException;
 import alice.tucson.api.ITucsonOperation;
+import alice.tucson.api.NegotiationACC;
 import alice.tucson.api.SynchACC;
 import alice.tucson.api.TucsonAgentId;
 import alice.tucson.api.TucsonMetaACC;
@@ -17,10 +18,11 @@ import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 
 /**
  * Plain Java class exploiting TuCSoN library.
- * 
+ *
  * @author ste (mailto: s.mariani@unibo.it)
  */
 public final class HelloWorld {
+
     /**
      * @param args
      *            the name of the TuCSoN coordinable (optional).
@@ -39,8 +41,9 @@ public final class HelloWorld {
             /*
              * 2) Get a TuCSoN ACC to enable interaction with the TuCSoN system.
              */
-            SynchACC acc = null;
-            acc = TucsonMetaACC.getContext(aid);
+            final NegotiationACC negAcc = TucsonMetaACC
+                    .getNegotiationContext(aid);
+            final SynchACC acc = negAcc.playDefaultRole();
             /*
              * 3) Define the tuplecentre target of your coordination operations.
              */
@@ -121,7 +124,7 @@ public final class HelloWorld {
 
     private HelloWorld() {
         /*
-         * 
+         *
          */
     }
 }

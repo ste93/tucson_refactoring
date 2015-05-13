@@ -25,21 +25,22 @@ import alice.tuplecentre.api.exceptions.OperationTimeOutException;
  * perspective. This means that whichever is the TuCSoN operation invoked
  * (either suspensive or predicative) the agent proxy WILL block waiting for its
  * completion (either success or failure).
- * 
+ *
  * @see alice.tucson.service.ACCProxyAgentSide ACCProxyAgentSide
  * @see alice.tucson.service.ACCProxyNodeSide ACCProxyNodeSide
- * 
+ *
  * @author ste (mailto: s.mariani@unibo.it)
  */
 public interface SpecificationSynchACC extends RootACC {
+
     /**
      * <code>get_s</code> specification primitive, reads (w/o removing) all the
      * ReSpecT specification tuples from the given target tuplecentre
      * specification space.
-     * 
+     *
      * Semantics is NOT SUSPENSIVE: if the specification space is empty, an
      * empty list is returned to the TuCSoN Agent exploiting this ACC.
-     * 
+     *
      * @param tid
      *            the target TuCSoN tuplecentre id
      *            {@link alice.tucson.api.TucsonTupleCentreId tid}
@@ -49,9 +50,9 @@ public interface SpecificationSynchACC extends RootACC {
      *            just unblocks the agent, but the request IS NOT REMOVED from
      *            TuCSoN node pending requests (will still be served at sometime
      *            in the future).
-     * 
+     *
      * @return the interface to access the data about TuCSoN operations outcome.
-     * 
+     *
      * @throws TucsonOperationNotPossibleException
      *             if the requested operation cannot be carried out
      * @throws UnreachableNodeException
@@ -59,7 +60,7 @@ public interface SpecificationSynchACC extends RootACC {
      * @throws OperationTimeOutException
      *             if the operation timeout expired prior to operation
      *             completion
-     * 
+     *
      * @see alice.tucson.api.TucsonTupleCentreId TupleCentreId
      * @see alice.tucson.api.ITucsonOperation ITucsonOperation
      */
@@ -70,11 +71,11 @@ public interface SpecificationSynchACC extends RootACC {
     /**
      * <code>inp_s</code> specification primitive, retrieves a ReSpecT Reaction
      * Specification from the given target tuplecentre specification space.
-     * 
+     *
      * This time the primitive semantics is NOT SUSPENSIVE: if no ReSpecT
      * specification is found to match the given template, a failure completion
      * answer is forwarded to the TuCSoN Agent exploiting this ACC.
-     * 
+     *
      * @param tid
      *            the target TuCSoN tuplecentre id
      *            {@link alice.tucson.api.TucsonTupleCentreId tid}
@@ -93,9 +94,9 @@ public interface SpecificationSynchACC extends RootACC {
      *            just unblocks the agent, but the request IS NOT REMOVED from
      *            TuCSoN node pending requests (will still be served at sometime
      *            in the future).
-     * 
+     *
      * @return the interface to access the data about TuCSoN operations outcome.
-     * 
+     *
      * @throws TucsonOperationNotPossibleException
      *             if the requested operation cannot be carried out
      * @throws UnreachableNodeException
@@ -103,7 +104,7 @@ public interface SpecificationSynchACC extends RootACC {
      * @throws OperationTimeOutException
      *             if the operation timeout expired prior to operation
      *             completion
-     * 
+     *
      * @see alice.tucson.api.TucsonTupleCentreId TupleCentreId
      * @see alice.tucson.api.ITucsonOperation ITucsonOperation
      */
@@ -115,12 +116,12 @@ public interface SpecificationSynchACC extends RootACC {
     /**
      * <code>in_s</code> specification primitive, retrieves a ReSpecT Reaction
      * Specification from the given target tuplecentre specification space.
-     * 
+     *
      * Notice that the primitive semantics is SUSPENSIVE: until no ReSpecT
      * specification is found to match the given template, no success completion
      * answer is forwarded to the TuCSoN Agent exploiting this ACC, which then
      * is blocked waiting.
-     * 
+     *
      * @param tid
      *            the target TuCSoN tuplecentre id
      *            {@link alice.tucson.api.TucsonTupleCentreId tid}
@@ -139,9 +140,9 @@ public interface SpecificationSynchACC extends RootACC {
      *            just unblocks the agent, but the request IS NOT REMOVED from
      *            TuCSoN node pending requests (will still be served at sometime
      *            in the future).
-     * 
+     *
      * @return the interface to access the data about TuCSoN operations outcome.
-     * 
+     *
      * @throws TucsonOperationNotPossibleException
      *             if the requested operation cannot be carried out
      * @throws UnreachableNodeException
@@ -149,7 +150,7 @@ public interface SpecificationSynchACC extends RootACC {
      * @throws OperationTimeOutException
      *             if the operation timeout expired prior to operation
      *             completion
-     * 
+     *
      * @see alice.tucson.api.TucsonTupleCentreId TupleCentreId
      * @see alice.tucson.api.ITucsonOperation ITucsonOperation
      */
@@ -161,11 +162,11 @@ public interface SpecificationSynchACC extends RootACC {
     /**
      * <code>nop_s</code> specification primitive, checks absence of the a
      * ReSpecT Reaction in the given target tuplecentre specification space.
-     * 
+     *
      * This time the primitive semantics is NOT SUSPENSIVE: if any ReSpecT
      * specification is found to match the given template, a failure completion
      * answer is forwarded to the TuCSoN Agent exploiting this ACC.
-     * 
+     *
      * @param tid
      *            the target TuCSoN tuplecentre id
      *            {@link alice.tucson.api.TucsonTupleCentreId tid}
@@ -184,9 +185,9 @@ public interface SpecificationSynchACC extends RootACC {
      *            just unblocks the agent, but the request IS NOT REMOVED from
      *            TuCSoN node pending requests (will still be served at sometime
      *            in the future).
-     * 
+     *
      * @return the interface to access the data about TuCSoN operations outcome.
-     * 
+     *
      * @throws TucsonOperationNotPossibleException
      *             if the requested operation cannot be carried out
      * @throws UnreachableNodeException
@@ -194,7 +195,7 @@ public interface SpecificationSynchACC extends RootACC {
      * @throws OperationTimeOutException
      *             if the operation timeout expired prior to operation
      *             completion
-     * 
+     *
      * @see alice.tucson.api.TucsonTupleCentreId TupleCentreId
      * @see alice.tucson.api.ITucsonOperation ITucsonOperation
      */
@@ -206,12 +207,12 @@ public interface SpecificationSynchACC extends RootACC {
     /**
      * <code>no_s</code> specification primitive, checks absence of the a
      * ReSpecT Reaction in the given target tuplecentre specification space.
-     * 
+     *
      * Notice that the primitive semantics is SUSPENSIVE: until any ReSpecT
      * specification is found to match the given template, no success completion
      * answer is forwarded to the TuCSoN Agent exploiting this ACC, which then
      * is blocked waiting.
-     * 
+     *
      * @param tid
      *            the target TuCSoN tuplecentre id
      *            {@link alice.tucson.api.TucsonTupleCentreId tid}
@@ -230,9 +231,9 @@ public interface SpecificationSynchACC extends RootACC {
      *            just unblocks the agent, but the request IS NOT REMOVED from
      *            TuCSoN node pending requests (will still be served at sometime
      *            in the future).
-     * 
+     *
      * @return the interface to access the data about TuCSoN operations outcome.
-     * 
+     *
      * @throws TucsonOperationNotPossibleException
      *             if the requested operation cannot be carried out
      * @throws UnreachableNodeException
@@ -240,7 +241,7 @@ public interface SpecificationSynchACC extends RootACC {
      * @throws OperationTimeOutException
      *             if the operation timeout expired prior to operation
      *             completion
-     * 
+     *
      * @see alice.tucson.api.TucsonTupleCentreId TupleCentreId
      * @see alice.tucson.api.ITucsonOperation ITucsonOperation
      */
@@ -252,11 +253,11 @@ public interface SpecificationSynchACC extends RootACC {
     /**
      * <code>out_s</code> specification primitive, adds the ReSpecT Reaction
      * Specification in the given target tuplecentre specification space.
-     * 
+     *
      * This TuCSoN <code>out_s</code> primitive assumes the ORDERED semantics,
      * hence the reaction specification is SUDDENLY injected in the target space
      * (if the primitive successfully completes).
-     * 
+     *
      * @param tid
      *            the target TuCSoN tuplecentre id
      *            {@link alice.tucson.api.TucsonTupleCentreId tid}
@@ -274,9 +275,9 @@ public interface SpecificationSynchACC extends RootACC {
      *            just unblocks the agent, but the request IS NOT REMOVED from
      *            TuCSoN node pending requests (will still be served at sometime
      *            in the future).
-     * 
+     *
      * @return the interface to access the data about TuCSoN operations outcome.
-     * 
+     *
      * @throws TucsonOperationNotPossibleException
      *             if the requested operation cannot be carried out
      * @throws UnreachableNodeException
@@ -284,7 +285,7 @@ public interface SpecificationSynchACC extends RootACC {
      * @throws OperationTimeOutException
      *             if the operation timeout expired prior to operation
      *             completion
-     * 
+     *
      * @see alice.tucson.api.TucsonTupleCentreId TupleCentreId
      * @see alice.tucson.api.ITucsonOperation ITucsonOperation
      */
@@ -297,11 +298,11 @@ public interface SpecificationSynchACC extends RootACC {
      * <code>rdp_s</code> specification primitive, reads (w/o removing) a
      * ReSpecT Reaction Specification from the given target tuplecentre
      * specification space.
-     * 
+     *
      * This time the primitive semantics is NOT SUSPENSIVE: if no ReSpecT
      * specification is found to match the given template, a failure completion
      * answer is forwarded to the TuCSoN Agent exploiting this ACC.
-     * 
+     *
      * @param tid
      *            the target TuCSoN tuplecentre id
      *            {@link alice.tucson.api.TucsonTupleCentreId tid}
@@ -320,9 +321,9 @@ public interface SpecificationSynchACC extends RootACC {
      *            just unblocks the agent, but the request IS NOT REMOVED from
      *            TuCSoN node pending requests (will still be served at sometime
      *            in the future).
-     * 
+     *
      * @return the interface to access the data about TuCSoN operations outcome.
-     * 
+     *
      * @throws TucsonOperationNotPossibleException
      *             if the requested operation cannot be carried out
      * @throws UnreachableNodeException
@@ -330,7 +331,7 @@ public interface SpecificationSynchACC extends RootACC {
      * @throws OperationTimeOutException
      *             if the operation timeout expired prior to operation
      *             completion
-     * 
+     *
      * @see alice.tucson.api.TucsonTupleCentreId TupleCentreId
      * @see alice.tucson.api.ITucsonOperation ITucsonOperation
      */
@@ -343,12 +344,12 @@ public interface SpecificationSynchACC extends RootACC {
      * <code>in_s</code> specification primitive, reads (w/o removing) a ReSpecT
      * Reaction Specification from the given target tuplecentre specification
      * space.
-     * 
+     *
      * Notice that the primitive semantics is SUSPENSIVE: until no ReSpecT
      * specification is found to match the given template, no success completion
      * answer is forwarded to the TuCSoN Agent exploiting this ACC, which then
      * is blocked waiting.
-     * 
+     *
      * @param tid
      *            the target TuCSoN tuplecentre id
      *            {@link alice.tucson.api.TucsonTupleCentreId tid}
@@ -367,9 +368,9 @@ public interface SpecificationSynchACC extends RootACC {
      *            just unblocks the agent, but the request IS NOT REMOVED from
      *            TuCSoN node pending requests (will still be served at sometime
      *            in the future).
-     * 
+     *
      * @return the interface to access the data about TuCSoN operations outcome.
-     * 
+     *
      * @throws TucsonOperationNotPossibleException
      *             if the requested operation cannot be carried out
      * @throws UnreachableNodeException
@@ -377,7 +378,7 @@ public interface SpecificationSynchACC extends RootACC {
      * @throws OperationTimeOutException
      *             if the operation timeout expired prior to operation
      *             completion
-     * 
+     *
      * @see alice.tucson.api.TucsonTupleCentreId TupleCentreId
      * @see alice.tucson.api.ITucsonOperation ITucsonOperation
      */
@@ -393,7 +394,7 @@ public interface SpecificationSynchACC extends RootACC {
      * should be formatted as a Prolog list of the kind [(E1,G1,R1), ...,
      * (En,Gn,Rn)] where <code>E = events</code>, <code>G = guards</code>,
      * <code>R = reactionBody</code>.
-     * 
+     *
      * @param tid
      *            the target TuCSoN tuplecentre id
      *            {@link alice.tucson.api.TucsonTupleCentreId tid}
@@ -406,9 +407,9 @@ public interface SpecificationSynchACC extends RootACC {
      *            just unblocks the agent, but the request IS NOT REMOVED from
      *            TuCSoN node pending requests (will still be served at sometime
      *            in the future).
-     * 
+     *
      * @return the interface to access the data about TuCSoN operations outcome.
-     * 
+     *
      * @throws TucsonOperationNotPossibleException
      *             if the requested operation cannot be carried out
      * @throws UnreachableNodeException
@@ -416,7 +417,7 @@ public interface SpecificationSynchACC extends RootACC {
      * @throws OperationTimeOutException
      *             if the operation timeout expired prior to operation
      *             completion
-     * 
+     *
      * @see alice.tucson.api.TucsonTupleCentreId TupleCentreId
      * @see alice.tucson.api.ITucsonOperation ITucsonOperation
      */
@@ -429,7 +430,7 @@ public interface SpecificationSynchACC extends RootACC {
      * specification tuples in the given target tuplecentre specification space
      * with that specified in the given String. The ReSpecT specification string
      * should be formatted according to Prolog theory syntax.
-     * 
+     *
      * @param tid
      *            the target TuCSoN tuplecentre id
      *            {@link alice.tucson.api.TucsonTupleCentreId tid}
@@ -442,9 +443,9 @@ public interface SpecificationSynchACC extends RootACC {
      *            just unblocks the agent, but the request IS NOT REMOVED from
      *            TuCSoN node pending requests (will still be served at sometime
      *            in the future).
-     * 
+     *
      * @return the interface to access the data about TuCSoN operations outcome.
-     * 
+     *
      * @throws TucsonOperationNotPossibleException
      *             if the requested operation cannot be carried out
      * @throws UnreachableNodeException
@@ -452,7 +453,7 @@ public interface SpecificationSynchACC extends RootACC {
      * @throws OperationTimeOutException
      *             if the operation timeout expired prior to operation
      *             completion
-     * 
+     *
      * @see alice.tucson.api.TucsonTupleCentreId TupleCentreId
      * @see alice.tucson.api.ITucsonOperation ITucsonOperation
      * @see alice.tuprolog.Theory Theory

@@ -14,15 +14,16 @@ package alice.respect.core;
 
 /**
  * This class defines the operator manager used for parsing agent identifiers.
- * 
+ *
  * @author ste (mailto: s.mariani@unibo.it)
  */
 public class AgentIdOperatorManager extends alice.tuprolog.OperatorManager {
+
     private static final long serialVersionUID = 2427403369706472143L;
     private static final int UUID_DELIMITER_PRIO = 549;
 
     /**
-     * 
+     *
      */
     public AgentIdOperatorManager() {
         super();

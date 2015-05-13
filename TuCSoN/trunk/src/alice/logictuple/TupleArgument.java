@@ -27,24 +27,25 @@ import alice.tuprolog.Term;
 
 /**
  * Base class for tuple argument classes.
- * 
+ *
  * @see LogicTuple
  * @see Value
  * @see Var
- * 
+ *
  * @author Alessandro Ricci
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
  * @author (contributor) Saverio Cicora
  */
 public class TupleArgument implements java.io.Serializable {
+
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = 1L;
 
     /**
      * Static service to get a Tuple Argument from a textual representation
-     * 
+     *
      * @param st
      *            the text representing the tuple argument
      * @return the tuple argument interpreted from the text
@@ -67,17 +68,17 @@ public class TupleArgument implements java.io.Serializable {
     protected Term value;
 
     /**
-     * 
+     *
      */
     public TupleArgument() {
         /*
-         * 
+         *
          */
     }
 
     /**
      * Contructs a tuple argument copying a tuProlog term
-     * 
+     *
      * @param t
      *            the Prolog term whose content is used to build the argument
      */
@@ -87,7 +88,7 @@ public class TupleArgument implements java.io.Serializable {
 
     /**
      * Gets the double value of this argument
-     * 
+     *
      * @return the double value
      */
     public double doubleValue() {
@@ -99,7 +100,7 @@ public class TupleArgument implements java.io.Serializable {
 
     /**
      * Gets the float value of this argument
-     * 
+     *
      * @return the float value
      */
     public float floatValue() {
@@ -111,7 +112,7 @@ public class TupleArgument implements java.io.Serializable {
 
     /**
      * Gets an argument of this argument supposed to be a compound
-     * 
+     *
      * @param index
      *            the index of the argument
      * @return the argument of the compound
@@ -122,7 +123,7 @@ public class TupleArgument implements java.io.Serializable {
 
     /**
      * Gets an argument of this argument supposed to be a compound
-     * 
+     *
      * @param name
      *            of the argument
      * @return the argument of the compound
@@ -137,9 +138,9 @@ public class TupleArgument implements java.io.Serializable {
 
     /**
      * Gets the number of arguments of this argument supposed to be a structure
-     * 
+     *
      * @return the number of arguments
-     * 
+     *
      */
     public int getArity() {
         if (this.isStruct()) {
@@ -151,9 +152,9 @@ public class TupleArgument implements java.io.Serializable {
     /**
      * Gets the name of this argument, supposed to be a structure (including
      * atoms) or a variable
-     * 
+     *
      * @return the name value
-     * 
+     *
      */
     public String getName() {
         if (this.isStruct()) {
@@ -167,7 +168,7 @@ public class TupleArgument implements java.io.Serializable {
     }
 
     /**
-     * 
+     *
      * @return the String representation of the tuProlog predicate
      */
     public String getPredicateIndicator() {
@@ -182,7 +183,7 @@ public class TupleArgument implements java.io.Serializable {
 
     /**
      * Gets the argument linked to a variable inside the tuple argument
-     * 
+     *
      * @param varName
      *            is the name of the variable
      * @return the value linked to the variable, in the case tha the variable
@@ -205,7 +206,7 @@ public class TupleArgument implements java.io.Serializable {
 
     /**
      * Gets the integer value of this argument
-     * 
+     *
      * @return the integer value
      */
     public int intValue() {
@@ -217,7 +218,7 @@ public class TupleArgument implements java.io.Serializable {
 
     /**
      * Tests if the argument is an atom
-     * 
+     *
      * @return <code>true</code> if this argument is an atom
      */
     public boolean isAtom() {
@@ -227,7 +228,7 @@ public class TupleArgument implements java.io.Serializable {
 
     /**
      * Tests if the argument is an atomic argument
-     * 
+     *
      * @return <code>true</code> if this argument is atomic
      */
     public boolean isAtomic() {
@@ -236,7 +237,7 @@ public class TupleArgument implements java.io.Serializable {
 
     /**
      * Tests if the argument is a double
-     * 
+     *
      * @return <code>true</code> if this argument is a double
      */
     public boolean isDouble() {
@@ -246,7 +247,7 @@ public class TupleArgument implements java.io.Serializable {
 
     /**
      * Tests if the argument is a float
-     * 
+     *
      * @return <code>true</code> if this argument is a float
      */
     public boolean isFloat() {
@@ -256,7 +257,7 @@ public class TupleArgument implements java.io.Serializable {
 
     /**
      * Tests if the argument is an integer
-     * 
+     *
      * @return <code>true</code> if this argument is an int
      */
     public boolean isInt() {
@@ -266,7 +267,7 @@ public class TupleArgument implements java.io.Serializable {
 
     /**
      * Tests if the argument is an integer number
-     * 
+     *
      * @return <code>true</code> if this argument is an integer
      */
     public boolean isInteger() {
@@ -276,7 +277,7 @@ public class TupleArgument implements java.io.Serializable {
 
     /**
      * Tests if the argument is a logic list
-     * 
+     *
      * @return <code>true</code> if this argument is a list
      */
     public boolean isList() {
@@ -285,7 +286,7 @@ public class TupleArgument implements java.io.Serializable {
 
     /**
      * Tests if the argument is an long
-     * 
+     *
      * @return <code>true</code> if this argument is a long
      */
     public boolean isLong() {
@@ -295,7 +296,7 @@ public class TupleArgument implements java.io.Serializable {
 
     /**
      * Tests if the argument is a number
-     * 
+     *
      * @return <code>true</code> if this argument is a number
      */
     public boolean isNumber() {
@@ -304,7 +305,7 @@ public class TupleArgument implements java.io.Serializable {
 
     /**
      * Tests if the argument is a real number
-     * 
+     *
      * @return <code>true</code> if this argument is a real
      */
     public boolean isReal() {
@@ -314,7 +315,7 @@ public class TupleArgument implements java.io.Serializable {
 
     /**
      * Tests if the argument is a structured argument
-     * 
+     *
      * @return <code>true</code> if this argument is a struct
      */
     public boolean isStruct() {
@@ -324,7 +325,7 @@ public class TupleArgument implements java.io.Serializable {
 
     /**
      * Tests if the argument is a value
-     * 
+     *
      * @return <code>true</code> if this argument is a value
      */
     public boolean isValue() {
@@ -333,7 +334,7 @@ public class TupleArgument implements java.io.Serializable {
 
     /**
      * Tests if the argument is a variable
-     * 
+     *
      * @return <code>true</code> if this argument is a var
      */
     public boolean isVar() {
@@ -342,7 +343,7 @@ public class TupleArgument implements java.io.Serializable {
 
     /**
      * Gets an iterator on the elements of this structure supposed to be a list.
-     * 
+     *
      * @return null if the structure is not a list
      */
     public java.util.Iterator<? extends Term> listIterator() {
@@ -354,7 +355,7 @@ public class TupleArgument implements java.io.Serializable {
 
     /**
      * Gets the long value of this argument
-     * 
+     *
      * @return the long value
      */
     public long longValue() {
@@ -366,7 +367,7 @@ public class TupleArgument implements java.io.Serializable {
 
     /**
      * Specifies if this tuple argument matches with a specified tuple argument
-     * 
+     *
      * @param t
      *            a tuple argument
      * @return <code>true</code> if there is matching, <code>false</code>
@@ -378,7 +379,7 @@ public class TupleArgument implements java.io.Serializable {
 
     /**
      * Tries to unify this tuple argument with another one
-     * 
+     *
      * @param t
      *            a tuple argument
      * @param p
@@ -393,7 +394,7 @@ public class TupleArgument implements java.io.Serializable {
     /**
      * Converts this argument (which is supposed to be a Prolog list) into an
      * array of values
-     * 
+     *
      * @return an array of Tuple Arguments
      */
     public TupleArgument[] toArray() {
@@ -416,9 +417,9 @@ public class TupleArgument implements java.io.Serializable {
     /**
      * Converts this argument (which is supposed to be a Prolog list) into a
      * list of values
-     * 
+     *
      * @return the list (actually a LinkedList)
-     * 
+     *
      */
     public List<Term> toList() {
         if (this.isList()) {
@@ -435,7 +436,7 @@ public class TupleArgument implements java.io.Serializable {
 
     /**
      * Gets the string representation of the argument
-     * 
+     *
      * @return the string representation of this argument
      */
     @Override
@@ -445,7 +446,7 @@ public class TupleArgument implements java.io.Serializable {
 
     /**
      * Gets the prolog term representation of the argument
-     * 
+     *
      * @return the term representation of this argument
      */
     public alice.tuprolog.Term toTerm() {

@@ -8,19 +8,21 @@ import alice.respect.api.TupleCentreId;
 import alice.respect.api.exceptions.InstantiationNotPossibleException;
 
 /**
- * 
+ *
  * @author Alessandro Ricci
- * 
+ * @author (contributor) Stefano Mariani (mailto: s.mariani@unibo.it)
+ *
  */
 public class RespectLocalRegistry implements ITCRegistry {
+
     /**
-     * internal representation of the registry, keys are tuple centre id (as
-     * String)
+     * internal representation of the registry, keys are tuple centre ids (as
+     * Strings)
      */
     private final Map<String, IRespectTC> reg;
 
     /**
-     * 
+     * Builds an empty registry
      */
     public RespectLocalRegistry() {
         this.reg = new HashMap<String, IRespectTC>();
@@ -28,8 +30,10 @@ public class RespectLocalRegistry implements ITCRegistry {
 
     @Override
     public void addTC(final IRespectTC tc) {
-        if (!this.reg.containsKey(tc.getId().getName())) {
-            this.reg.put(tc.getId().getName(), tc);
+        final TupleCentreId id = tc.getId();
+        final String key = id.getName() + ":" + id.getPort();
+        if (!this.reg.containsKey(key)) {
+            this.reg.put(key, tc);
         }
     }
 
@@ -39,7 +43,7 @@ public class RespectLocalRegistry implements ITCRegistry {
     }
 
     /**
-     * 
+     *
      * @return the size of the ReSpecT local registry
      */
     public int getSize() {
@@ -49,10 +53,14 @@ public class RespectLocalRegistry implements ITCRegistry {
     @Override
     public IRespectTC getTC(final TupleCentreId id)
             throws InstantiationNotPossibleException {
-        if (!this.reg.containsKey(id.getName())) {
-            throw new InstantiationNotPossibleException("The string "
-                    + id.getName() + " is not contained in the registry");
+        final String key = id.getName() + ":" + id.getPort();
+        if (!this.reg.containsKey(key)) {
+            throw new InstantiationNotPossibleException("The string " + key
+                    + " is not contained in the registry");
         }
-        return this.reg.get(id.getName());
+        final IRespectTC rtc = this.reg.get(key);
+        // System.out.println("....[RespectLocalRegistry]: Got " + rtc.getId()
+        // + " from key " + key);
+        return rtc;
     }
 }

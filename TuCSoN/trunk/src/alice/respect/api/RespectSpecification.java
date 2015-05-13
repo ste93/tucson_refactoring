@@ -16,14 +16,15 @@ import alice.tuplecentre.core.AbstractBehaviourSpecification;
 
 /**
  * Specification of a tuple centre behaviour encoded in the ReSpecT language.
- * 
+ *
  * @author Alessandro Ricci
  */
 public class RespectSpecification extends AbstractBehaviourSpecification {
+
     private final String spec;
 
     /**
-     * 
+     *
      * @param s
      *            the String representation of the ReSpecT specification
      */

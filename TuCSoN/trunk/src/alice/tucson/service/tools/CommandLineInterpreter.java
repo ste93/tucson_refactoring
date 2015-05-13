@@ -23,16 +23,17 @@ import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
  * Command Line Interpreter. Can be booted with a TuCSoN agent ID or using a
  * default assigned one (both passed to the CLIAgent). Gets a TuCSoN ACC from
  * TucsonMetaACC then spawns the CLIAgent who manages user input.
- * 
+ *
  * @author Alessandro Ricci
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
- * 
+ *
  */
 public final class CommandLineInterpreter {
+
     private static final int DEF_PORT = 20504;
 
     /**
-     * 
+     *
      * @param args
      *            the arguments to be given to the CLI
      */
@@ -98,7 +99,7 @@ public final class CommandLineInterpreter {
 
     private CommandLineInterpreter() {
         /*
-         * 
+         *
          */
     }
 }

@@ -25,13 +25,14 @@ import alice.tucson.network.exceptions.DialogSendException;
 import alice.tucson.network.exceptions.InvalidProtocolTypeException;
 
 /**
- * 
+ *
  * @author Alessandro Ricci
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
  * @author (contributor) Saverio Cicora
- * 
+ *
  */
 public class WelcomeAgent extends Thread {
+
     private static void log(final String st) {
         System.out.println("..[WelcomeAgent]: " + st);
     }
@@ -42,7 +43,7 @@ public class WelcomeAgent extends Thread {
     private boolean shut;
 
     /**
-     * 
+     *
      * @param n
      *            the TuCSoN node this internal agent refers to
      * @param cm
@@ -58,13 +59,13 @@ public class WelcomeAgent extends Thread {
     }
 
     /**
-     * 
+     *
      */
     @Override
     public void run() {
         try {
-            this.mainDialog = TPFactory
-                    .getDialogNodeSide(TPFactory.DIALOG_TYPE_TCP);
+            this.mainDialog = TPFactory.getDialogNodeSide(
+                    TPFactory.DIALOG_TYPE_TCP, this.node.getTCPPort());
         } catch (final DialogInitializationException e) {
             // TODO CICORA: what is the correct behavior when a port is already
             // used?
@@ -117,7 +118,7 @@ public class WelcomeAgent extends Thread {
     }
 
     /**
-     * 
+     *
      */
     public synchronized void shutdown() {
         /*

@@ -14,14 +14,15 @@
 package alice.tucson.api.exceptions;
 
 /**
- * 
+ *
  * Exception thrown when the target TuCSoN node cannot be reached over the
  * network (e.g. unknown host )
- * 
+ *
  * @author Alessandro Ricci
- * 
+ *
  */
 public class UnreachableNodeException extends Exception {
+
     private static final long serialVersionUID = -6521929430059926716L;
 
     public UnreachableNodeException() {

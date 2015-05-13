@@ -9,15 +9,16 @@ import alice.tuples.javatuples.exceptions.InvalidJVarException;
 
 /**
  * @author ste (mailto: s.mariani@unibo.it) on 21/feb/2014
- * 
+ *
  */
 public class JVar implements IJVar {
+
     // private final String arg;
     private final JArgType type;
 
     // private IJVal val;
     /**
-     * 
+     *
      * @param t
      *            the JArgType of this JVar
      * @throws InvalidJVarException

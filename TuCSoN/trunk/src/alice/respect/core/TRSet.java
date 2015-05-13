@@ -19,17 +19,18 @@ import alice.tuplecentre.core.TriggeredReaction;
 
 /**
  * Triggered Reaction Set.
- * 
+ *
  * @author Alessandro Ricci
  */
 public class TRSet {
+
     private final List<TriggeredReaction> tAdded;
     private boolean transaction;
     private final List<TriggeredReaction> tRemoved;
     private final List<TriggeredReaction> trigs;
 
     /**
-     * 
+     *
      */
     public TRSet() {
         this.trigs = new LinkedList<TriggeredReaction>();
@@ -39,7 +40,7 @@ public class TRSet {
     }
 
     /**
-     * 
+     *
      * @param t
      *            the ReSpecT triggered reaction to add to the triggered
      *            reaction set
@@ -52,7 +53,7 @@ public class TRSet {
     }
 
     /**
-     * 
+     *
      */
     public void beginTransaction() {
         this.transaction = true;
@@ -61,14 +62,14 @@ public class TRSet {
     }
 
     /**
-     * 
+     *
      */
     public void empty() {
         this.trigs.clear();
     }
 
     /**
-     * 
+     *
      * @param commit
      *            wether the just terminated transaction has to be successfully
      *            commited or not
@@ -90,7 +91,7 @@ public class TRSet {
     }
 
     /**
-     * 
+     *
      * @return the first triggered reaction of this list
      */
     public TriggeredReaction get() {
@@ -98,7 +99,7 @@ public class TRSet {
     }
 
     /**
-     * 
+     *
      * @return a Java iterator through this triggered reactions list
      */
     public Iterator<? extends TriggeredReaction> getIterator() {
@@ -106,7 +107,7 @@ public class TRSet {
     }
 
     /**
-     * 
+     *
      * @return wether this triggered reactions list is empty or not
      */
     public boolean isEmpty() {
@@ -114,7 +115,7 @@ public class TRSet {
     }
 
     /**
-     * 
+     *
      * @param t
      *            the triggered reaction to remove from this list
      */
@@ -126,7 +127,7 @@ public class TRSet {
     }
 
     /**
-     * 
+     *
      * @return the Java array representation of this triggered reaction list
      */
     public TriggeredReaction[] toArray() {

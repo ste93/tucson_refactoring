@@ -9,48 +9,33 @@ import alice.tucson.network.exceptions.IllegalPortNumberException;
  * <p>
  * A singleton class to manage configuration of TucsonProtocol
  * </p>
- * 
+ *
  * @author Saverio Cicora
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
- * 
+ *
  */
 public final class TPConfig {
+
     // TCP configuration ----------------------------------
     private static final int DEFAULT_TCP_PORT = 20504;
     private static final int MAX_UNBOUND_PORT = 64000;
-    private static TPConfig singletonTPConfig = null;
 
     /**
      * Return the default TCP port number
-     * 
+     *
      * @return a valid TCP port number
      */
     public static int getDefaultTcpPort() {
         return TPConfig.DEFAULT_TCP_PORT;
     }
 
-    /**
-     * Return singleton instance of TPConfig
-     * 
-     * @return the singleton instance of this TuCSoN Protocol configurator
-     */
-    public static synchronized TPConfig getInstance() {
-        if (TPConfig.singletonTPConfig == null) {
-            TPConfig.singletonTPConfig = new TPConfig();
-        }
-        return TPConfig.singletonTPConfig;
-    }
-
     // Generic configuration ------------------------------
     private final int defProtType = TPFactory.DIALOG_TYPE_TCP;
     private int tcpPort = -1;
 
-    private TPConfig() {
-    }
-
     /**
      * Return the default Protocol type
-     * 
+     *
      * @return the protocol type codified as an integer
      */
     public int getDefaultProtocolType() {
@@ -59,7 +44,7 @@ public final class TPConfig {
 
     /**
      * Return the TCP port number
-     * 
+     *
      * @return a valid TCP port number
      */
     public int getNodeTcpPort() {
@@ -72,7 +57,7 @@ public final class TPConfig {
     /**
      * TODO CICORA: Set the TCP port: only one set is permitted, the second one
      * will be ignored
-     * 
+     *
      * @param portNumber
      *            the TCP listening port
      */

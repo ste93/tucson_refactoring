@@ -5,18 +5,19 @@ import alice.tuprolog.Struct;
 import alice.tuprolog.Term;
 
 /**
- * 
+ *
  * @author Unknown...
- * 
+ *
  */
 public class EnvId implements IId, java.io.Serializable {
+
     /** serialVersionUID **/
     private static final long serialVersionUID = 1L;
     private final Struct id;
     private final String localName;
 
     /**
-     * 
+     *
      * @param i
      *            the struct representing this environment identifier
      */
@@ -26,7 +27,7 @@ public class EnvId implements IId, java.io.Serializable {
     }
 
     /**
-     * 
+     *
      * @return the String representation of the local name of an environmental
      *         resource
      */
@@ -55,7 +56,7 @@ public class EnvId implements IId, java.io.Serializable {
     }
 
     /**
-     * 
+     *
      * @return the term representation of this identifier
      */
     public Term toTerm() {

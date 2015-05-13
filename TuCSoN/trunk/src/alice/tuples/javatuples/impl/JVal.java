@@ -10,14 +10,15 @@ import alice.tuples.javatuples.exceptions.InvalidJValException;
 
 /**
  * @author ste (mailto: s.mariani@unibo.it) on 21/feb/2014
- * 
+ *
  */
 public class JVal implements IJVal {
+
     private final Object arg;
     private final JArgType type;
 
     /**
-     * 
+     *
      * @param v
      *            the double value of this JVal
      */
@@ -27,7 +28,7 @@ public class JVal implements IJVal {
     }
 
     /**
-     * 
+     *
      * @param v
      *            the float value of this JVal
      */
@@ -37,7 +38,7 @@ public class JVal implements IJVal {
     }
 
     /**
-     * 
+     *
      * @param v
      *            the int value of this JVal
      */
@@ -47,7 +48,7 @@ public class JVal implements IJVal {
     }
 
     /**
-     * 
+     *
      * @param v
      *            the long value of this JVal
      */
@@ -57,7 +58,7 @@ public class JVal implements IJVal {
     }
 
     /**
-     * 
+     *
      * @param v
      *            the literal (Java String) value of this JVal
      * @throws InvalidJValException

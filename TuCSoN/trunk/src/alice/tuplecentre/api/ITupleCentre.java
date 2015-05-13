@@ -11,8 +11,9 @@ import alice.tuplecentre.core.AbstractTupleCentreOperation;
  * @author Alessandro Ricci
  */
 public interface ITupleCentre {
+
     /**
-     * 
+     *
      * @param who
      *            the identifier of the requestor of the operation
      * @param op

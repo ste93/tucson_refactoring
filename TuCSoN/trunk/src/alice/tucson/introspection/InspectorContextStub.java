@@ -15,6 +15,7 @@ package alice.tucson.introspection;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import alice.tucson.api.TucsonAgentId;
 import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.api.exceptions.OperationNotAllowedException;
@@ -27,12 +28,13 @@ import alice.tucson.service.ACCDescription;
 import alice.tuplecentre.api.Tuple;
 
 /**
- * 
+ *
  * @author Unknown...
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
- * 
+ *
  */
 public class InspectorContextStub implements InspectorContext {
+
     /** listeners registrated for virtual machine output events */
     private final List<InspectorContextListener> contextListeners = new ArrayList<InspectorContextListener>();
     private AbstractTucsonProtocol dialog;
@@ -57,6 +59,7 @@ public class InspectorContextStub implements InspectorContext {
         this.profile.setProperty("agent-identity", i.toString());
         this.profile.setProperty("agent-role", "$inspector");
         this.profile.setProperty("tuple-centre", tc.getName());
+        this.profile.setProperty("agent-uuid", UUID.randomUUID().toString());
         this.id = i;
         this.tid = tc;
         try {
@@ -176,7 +179,7 @@ public class InspectorContextStub implements InspectorContext {
             if (this.dialog.isEnterRequestAccepted()) {
                 this.protocol = new InspectorProtocol();
                 final NewInspectorMsg msg = new NewInspectorMsg(this.id,
-                        tc.getName(), this.protocol);
+                        tc.toString(), this.protocol);
                 this.dialog.sendInspectorMsg(msg);
                 return this.dialog;
             }
@@ -188,7 +191,7 @@ public class InspectorContextStub implements InspectorContext {
 
     /**
      * resolve information about a tuple centre
-     * 
+     *
      * @param titcd
      *            the identifier of the tuple centre to be resolved
      */

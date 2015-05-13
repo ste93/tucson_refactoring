@@ -14,12 +14,13 @@ package alice.respect.api.exceptions;
 
 /**
  * This exception is thrown when an invalid agent identifier is used
- * 
+ *
  * Agent identifier must be ground logic term.
- * 
+ *
  * @author Alessandro Ricci
  */
 public class InvalidAgentIdException extends RespectException {
+
     private static final long serialVersionUID = 7316848513690643990L;
 
     public InvalidAgentIdException() {

@@ -5,7 +5,9 @@ import alice.logictuple.LogicTuple;
 import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.tucson.api.AbstractTucsonAgent;
 import alice.tucson.api.ITucsonOperation;
+import alice.tucson.api.NegotiationACC;
 import alice.tucson.api.SynchACC;
+import alice.tucson.api.TucsonMetaACC;
 import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
@@ -19,10 +21,11 @@ import alice.tuplecentre.core.AbstractTupleCentreOperation;
  * Classic Dining Philosophers coordination problem tackled by adopting a clear
  * separation of concerns between coordinables (philosophers) and coordination
  * medium (table) thanks to TuCSoN ReSpecT tuple centres programmability.
- * 
+ *
  * @author ste (mailto: s.mariani@unibo.it)
  */
 public class DiningPhilosophersTest extends AbstractTucsonAgent {
+
     /*
      * Max number of simultaneously eating philosophers should be
      * N_PHILOSOPHERS-2.
@@ -30,7 +33,7 @@ public class DiningPhilosophersTest extends AbstractTucsonAgent {
     private static final int N_PHILOSOPHERS = 5;
 
     /**
-     * 
+     *
      * @param args
      *            no args expected
      */
@@ -46,7 +49,7 @@ public class DiningPhilosophersTest extends AbstractTucsonAgent {
     private final String port;
 
     /**
-     * 
+     *
      * @param aid
      *            the String representation of a valid TuCSoN agent identifier
      * @throws TucsonInvalidAgentIdException
@@ -80,8 +83,11 @@ public class DiningPhilosophersTest extends AbstractTucsonAgent {
 
     @Override
     protected void main() {
-        final SynchACC acc = this.getContext();
         try {
+            final NegotiationACC negAcc = TucsonMetaACC
+                    .getNegotiationContext(this.getTucsonAgentId());
+            final SynchACC acc = negAcc.playDefaultRole();
+
             final TucsonTupleCentreId table = new TucsonTupleCentreId("table",
                     this.ip, this.port);
             this.say("Injecting 'table' ReSpecT specification in tc < "

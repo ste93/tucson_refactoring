@@ -9,6 +9,8 @@ import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.tucson.api.AbstractTucsonAgent;
 import alice.tucson.api.EnhancedSynchACC;
 import alice.tucson.api.ITucsonOperation;
+import alice.tucson.api.NegotiationACC;
+import alice.tucson.api.TucsonMetaACC;
 import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
@@ -22,7 +24,7 @@ import alice.tuplecentre.core.AbstractTupleCentreOperation;
  * Master thread of a master-worker architecture. Given a list of TuCSoN Nodes
  * (hopefully up and listening), it submits jobs regarding factorial
  * computation, then collects expected results.
- * 
+ *
  * @author ste (mailto: s.mariani@unibo.it)
  */
 public class MasterAgent extends AbstractTucsonAgent {
@@ -64,14 +66,14 @@ public class MasterAgent extends AbstractTucsonAgent {
      *            max number of jobs per node
      * @param maxFact
      *            max number for which to calculate factorial
-     * 
+     *
      * @throws TucsonInvalidAgentIdException
      *             if the given String does not represent a valid TuCSoN agent
      *             identifier
      */
     public MasterAgent(final String aid, final List<String> nodes,
             final int iters, final int maxFact)
-            throws TucsonInvalidAgentIdException {
+                    throws TucsonInvalidAgentIdException {
         super(aid);
         this.die = false;
         this.tids = new LinkedList<TucsonTupleCentreId>();
@@ -98,7 +100,7 @@ public class MasterAgent extends AbstractTucsonAgent {
     @Override
     public void operationCompleted(final ITucsonOperation op) {
         /*
-         * 
+         *
          */
     }
 
@@ -109,7 +111,8 @@ public class MasterAgent extends AbstractTucsonAgent {
     @Override
     protected void main() {
         this.say("I'm started.");
-        final EnhancedSynchACC acc = this.getContext();
+
+        // final EnhancedSynchACC acc = this.getContext();
         ITucsonOperation op;
         TucsonTupleCentreId next;
         LogicTuple job;
@@ -117,6 +120,9 @@ public class MasterAgent extends AbstractTucsonAgent {
         List<LogicTuple> res;
         int num;
         try {
+            final NegotiationACC negAcc = TucsonMetaACC
+                    .getNegotiationContext(this.getTucsonAgentId());
+            final EnhancedSynchACC acc = negAcc.playDefaultRole();
             while (!this.die) {
                 this.say("Checking termination...");
                 for (int i = 0; i < this.tids.size(); i++) {
@@ -178,7 +184,7 @@ public class MasterAgent extends AbstractTucsonAgent {
                         acc.spawn(
                                 next,
                                 LogicTuple
-                                        .parse("exec('alice.tucson.examples.spawnedWorkers.SpawnedWorkingActivity.class')"),
+                                .parse("exec('alice.tucson.examples.spawnedWorkers.SpawnedWorkingActivity.class')"),
                                 null);
                         /*
                          * Just to let you view something on the console.
@@ -241,6 +247,9 @@ public class MasterAgent extends AbstractTucsonAgent {
             e.printStackTrace();
         } catch (final InterruptedException e) {
             this.say("ERROR: Sleep interrupted!");
+            e.printStackTrace();
+        } catch (final TucsonInvalidAgentIdException e) {
+            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }

@@ -45,13 +45,14 @@ import alice.tuplecentre.core.ObservableEventReactionOK;
 import alice.tuplecentre.core.TriggeredReaction;
 
 /**
- * 
+ *
  * @author Unknown...
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
- * 
+ *
  */
 public class InspectorContextSkel extends AbstractACCProxyNodeSide implements
         InspectableEventListener {
+
     private final TucsonAgentId agentId;
     private final int ctxId;
     private final AbstractTucsonProtocol dialog;
@@ -63,7 +64,7 @@ public class InspectorContextSkel extends AbstractACCProxyNodeSide implements
     private final TucsonTupleCentreId tcId;
 
     /**
-     * 
+     *
      * @param man
      *            the ACC provider distributing ACCs
      * @param d
@@ -113,7 +114,7 @@ public class InspectorContextSkel extends AbstractACCProxyNodeSide implements
 
     /**
      * get a tuple centre set (T set, W set,...) snapshot
-     * 
+     *
      * @param m
      *            the snapshot message
      */
@@ -153,7 +154,7 @@ public class InspectorContextSkel extends AbstractACCProxyNodeSide implements
 
     /**
      * verify if VM step mode is already active
-     * 
+     *
      * @param m
      *            the IsActiveStepModeMsg
      */
@@ -172,7 +173,7 @@ public class InspectorContextSkel extends AbstractACCProxyNodeSide implements
 
     /**
      * ask a new step for a tuple centre vm during step mode
-     * 
+     *
      * @param m
      *            the NxtStepMsg
      */
@@ -315,7 +316,7 @@ public class InspectorContextSkel extends AbstractACCProxyNodeSide implements
 
     /**
      * set a new tuple set
-     * 
+     *
      * @param m
      *            the set InQ message
      */
@@ -326,7 +327,7 @@ public class InspectorContextSkel extends AbstractACCProxyNodeSide implements
 
     /**
      * setting new observation protocol
-     * 
+     *
      * @param msg
      *            the set protocol message
      */
@@ -344,7 +345,7 @@ public class InspectorContextSkel extends AbstractACCProxyNodeSide implements
 
     /**
      * set a new tuple set
-     * 
+     *
      * @param m
      *            the set tuples message
      * @throws TucsonInvalidLogicTupleException
@@ -364,7 +365,7 @@ public class InspectorContextSkel extends AbstractACCProxyNodeSide implements
 
     /**
      * enable/disable VM step Mode
-     * 
+     *
      * @param m
      *            the step mode message
      */
@@ -390,7 +391,7 @@ public class InspectorContextSkel extends AbstractACCProxyNodeSide implements
     }
 
     /**
-     * 
+     *
      * @return InspectorContextSke dialog
      */
     private AbstractTucsonProtocol getDialog() {
@@ -398,7 +399,7 @@ public class InspectorContextSkel extends AbstractACCProxyNodeSide implements
     }
 
     /**
-     * 
+     *
      * @param st
      *            the String to log
      */

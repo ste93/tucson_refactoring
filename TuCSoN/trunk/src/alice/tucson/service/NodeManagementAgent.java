@@ -18,12 +18,13 @@ import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tuprolog.InvalidTermException;
 
 /**
- * 
+ *
  * @author Alessandro Ricci
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
- * 
+ *
  */
 public class NodeManagementAgent extends Thread {
+
     private static void log(final String s) {
         System.out.println("[NodeManagementAgent]: " + s);
     }
@@ -33,7 +34,7 @@ public class NodeManagementAgent extends Thread {
     private TucsonAgentId nodeManAid;
 
     /**
-     * 
+     *
      * @param conf
      *            the identifier of the tuple centre to be used for
      *            configuration
@@ -55,7 +56,7 @@ public class NodeManagementAgent extends Thread {
     }
 
     /**
-     * 
+     *
      */
     @Override
     public void run() {

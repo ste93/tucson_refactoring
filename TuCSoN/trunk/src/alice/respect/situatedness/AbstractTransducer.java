@@ -3,6 +3,7 @@ package alice.respect.situatedness;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.UUID;
 import alice.logictuple.LogicTuple;
 import alice.logictuple.Value;
 import alice.respect.core.InternalEvent;
@@ -23,12 +24,13 @@ import alice.tuplecentre.api.TupleTemplate;
  * methods to offer the essential interface to users. To make a specific
  * transducer you'll need to extend this class and to define the behavior needed
  * for your specific application logic.
- * 
+ *
  * @author Steven Maraldi
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public abstract class AbstractTransducer implements
-        TransducerStandardInterface, TucsonOperationCompletionListener {
+TransducerStandardInterface, TucsonOperationCompletionListener {
+
     /** 'sensing' operation ('getEnv') */
     public static final int GET_MODE = 0;
     /** 'acting' operation ('setEnv') */
@@ -44,7 +46,7 @@ public abstract class AbstractTransducer implements
 
     /**
      * Constructs a transducer
-     * 
+     *
      * @param i
      *            the transducer's identifier
      * @param tc
@@ -53,14 +55,15 @@ public abstract class AbstractTransducer implements
     public AbstractTransducer(final TransducerId i, final TupleCentreId tc) {
         this.id = i;
         this.tcId = tc;
-        this.executor = new OperationHandler();
+        final UUID uuid = UUID.randomUUID(); // BUCCELLI
+        this.executor = new OperationHandler(uuid);
         this.probes = new HashMap<AbstractProbeId, Object>();
     }
 
     /**
      * Adds a new probe. If the probe's name is already recorded, the probe will
      * not be registered.
-     * 
+     *
      * @param i
      *            probe's identifier
      * @param probe
@@ -103,7 +106,7 @@ public abstract class AbstractTransducer implements
 
     /**
      * The behavior of the transducer when a getEnv operation is required
-     * 
+     *
      * @param key
      *            the environmental property key whose associated value should
      *            be percevied
@@ -113,7 +116,7 @@ public abstract class AbstractTransducer implements
 
     /**
      * Returns the identifier of the transducer.
-     * 
+     *
      * @return the transducer's identifier
      */
     @Override
@@ -123,7 +126,7 @@ public abstract class AbstractTransducer implements
 
     /**
      * Returns the list of all the probes associated to the transducer
-     * 
+     *
      * @return array of the probes associated to the transducer
      */
     @Override
@@ -138,7 +141,7 @@ public abstract class AbstractTransducer implements
 
     /**
      * Returns the tuple centre associated to the transducer
-     * 
+     *
      * @return the tuple centre identifier.
      */
     @Override
@@ -147,9 +150,9 @@ public abstract class AbstractTransducer implements
     }
 
     /**
-     * 
+     *
      * Notifies an event from a probe to the tuple centre.
-     * 
+     *
      * @param key
      *            the name of the value
      * @param value
@@ -181,11 +184,11 @@ public abstract class AbstractTransducer implements
 
     /**
      * Notifies an event from the tuple centre.
-     * 
+     *
      * Events to the transducer should be only getEnv or setEnv ones. The
      * response to each event is specified in getEnv and setEnv methods of the
      * transducer.
-     * 
+     *
      * @param ev
      *            internal event from the tuple centre
      * @return true if the operation required is getEnv or setEnv and it's been
@@ -208,7 +211,7 @@ public abstract class AbstractTransducer implements
 
     /**
      * Removes a probe from the probe list associated to the transducer if exist
-     * 
+     *
      * @param i
      *            probe's identifier
      */
@@ -225,7 +228,7 @@ public abstract class AbstractTransducer implements
 
     /**
      * The behavior of the transducer when a setEnv operation is required
-     * 
+     *
      * @param key
      *            name of the parameter to set
      * @param value
@@ -242,7 +245,7 @@ public abstract class AbstractTransducer implements
      */
     /**
      * Utility methods used to communicate an output message to the console.
-     * 
+     *
      * @param msg
      *            message to print.
      */
@@ -251,7 +254,7 @@ public abstract class AbstractTransducer implements
     }
 
     /**
-     * 
+     *
      * @param msg
      *            the message to show on standard error
      */

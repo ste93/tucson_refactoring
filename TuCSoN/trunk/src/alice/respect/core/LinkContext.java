@@ -6,15 +6,16 @@ import alice.respect.api.exceptions.OperationNotPossibleException;
 import alice.tuplecentre.core.AbstractTupleCentreOperation;
 
 /**
- * 
+ *
  * @author ste (mailto: s.mariani@unibo.it)
- * 
+ *
  */
 public class LinkContext implements ILinkContext {
+
     private final RespectVM vm;
 
     /**
-     * 
+     *
      * @param rvm
      *            the ReSpecT VM this context refers to
      */

@@ -5,21 +5,22 @@ package alice.respect.situatedness;
  * interface when coding their own environmental resource wrappers. More
  * specifically, they should implement all methods but the 'writeValue' for
  * sensors, all methods but the 'readValue' for actuators.
- * 
+ *
  * @author Steven Maraldi
- * 
+ *
  */
 public interface ISimpleProbe {
+
     /**
      * Get the probe's identifier
-     * 
+     *
      * @return probe's identifier
      */
     AbstractProbeId getIdentifier();
 
     /**
      * Gets the transducer which the probe is communicating with.
-     * 
+     *
      * @return the transducer's identifier
      */
     TransducerId getTransducer();
@@ -27,17 +28,17 @@ public interface ISimpleProbe {
     /**
      * Reads the probe's value. A read request should force an event from the
      * device
-     * 
+     *
      * @param key
      *            the parameter to read
-     * 
+     *
      * @return true if success
      */
     boolean readValue(String key);
 
     /**
      * Sets the transducer which the probe will communicate with.
-     * 
+     *
      * @param tId
      *            transducer's identifier
      */
@@ -45,7 +46,7 @@ public interface ISimpleProbe {
 
     /**
      * Set the specific value of a parameter of the probe
-     * 
+     *
      * @param key
      *            the parameter to set
      * @param value

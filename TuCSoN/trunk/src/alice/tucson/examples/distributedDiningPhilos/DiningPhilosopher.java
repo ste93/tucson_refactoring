@@ -4,7 +4,9 @@ import alice.logictuple.LogicTuple;
 import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.tucson.api.AbstractTucsonAgent;
 import alice.tucson.api.ITucsonOperation;
+import alice.tucson.api.NegotiationACC;
 import alice.tucson.api.SynchACC;
+import alice.tucson.api.TucsonMetaACC;
 import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
@@ -13,17 +15,18 @@ import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 import alice.tuplecentre.core.AbstractTupleCentreOperation;
 
 /**
- * 
+ *
  * @author ste (mailto: s.mariani@unibo.it)
- * 
+ *
  */
 public class DiningPhilosopher extends AbstractTucsonAgent {
+
     private static final int EATING_TIME = 5000;
     private static final int THINKING_TIME = 5000;
     private final TucsonTupleCentreId mySeat;
 
     /**
-     * 
+     *
      * @param aid
      *            the String representation of this philosopher's TuCSoN agent
      *            identifier
@@ -74,7 +77,21 @@ public class DiningPhilosopher extends AbstractTucsonAgent {
 
     @Override
     protected void main() {
-        final SynchACC acc = this.getContext();
+        final NegotiationACC negAcc = TucsonMetaACC.getNegotiationContext(this
+                .getTucsonAgentId());
+        SynchACC acc = null;
+        try {
+            acc = negAcc.playDefaultRole();
+        } catch (final TucsonOperationNotPossibleException e) {
+            e.printStackTrace();
+        } catch (final UnreachableNodeException e) {
+            e.printStackTrace();
+        } catch (final OperationTimeOutException e) {
+            e.printStackTrace();
+        } catch (final TucsonInvalidAgentIdException e) {
+            e.printStackTrace();
+        }
+        // final SynchACC acc = this.getContext();
         ITucsonOperation op;
         // Ugly but effective, pardon me...
         while (true) {

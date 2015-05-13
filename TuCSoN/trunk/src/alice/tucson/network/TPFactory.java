@@ -5,6 +5,7 @@ import alice.tucson.api.exceptions.UnreachableNodeException;
 import alice.tucson.network.exceptions.DialogInitializationException;
 import alice.tucson.network.exceptions.IllegalPortNumberException;
 import alice.tucson.network.exceptions.InvalidProtocolTypeException;
+import alice.tucson.service.TucsonNodeService;
 
 /**
  * <p>
@@ -14,11 +15,12 @@ import alice.tucson.network.exceptions.InvalidProtocolTypeException;
  * Description: the factory class to build a specific implementation of
  * TucsonProtocol
  * </p>
- * 
+ *
  * @author Saverio Cicora
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public final class TPFactory {
+
     /**
      * Constant indentify implementated protocol type: one constant for each
      * implemented protocol
@@ -27,7 +29,7 @@ public final class TPFactory {
     private static final int MAX_UNBOUND_PORT = 64000;
 
     /**
-     * 
+     *
      * @param tucsonProtocolType
      *            the type code of the TuCSoN protocol to be used
      * @param tid
@@ -63,7 +65,7 @@ public final class TPFactory {
     }
 
     /**
-     * 
+     *
      * @param tid
      *            the identifier of the tuple centre to connect to
      * @return the connection protocol hosting communications
@@ -75,7 +77,14 @@ public final class TPFactory {
     public static AbstractTucsonProtocol getDialogAgentSide(
             final TucsonTupleCentreId tid) throws UnreachableNodeException,
             DialogInitializationException {
-        final TPConfig config = TPConfig.getInstance();
+        final TucsonNodeService tns = TucsonNodeService.getNode(tid.getPort());
+        final TPConfig config;
+        if (tns != null) {
+            config = tns.getTPConfig();
+        } else {
+            config = new TPConfig();
+            config.setTcpPort(tid.getPort());
+        }
         try {
             return TPFactory.getDialogAgentSide(
                     config.getDefaultProtocolType(), tid);
@@ -86,25 +95,12 @@ public final class TPFactory {
     }
 
     /**
-     * Instantiate a new TucsonProtocol based of a default implementation type.
-     * 
-     * @return the TucsonProtocol class
-     * @throws InvalidProtocolTypeException
-     *             if the protocol type used is not DIALOG_TYPE_TCP
-     * @throws DialogInitializationException
-     *             if something goes wrong in the underlying network
-     */
-    public static AbstractTucsonProtocol getDialogNodeSide()
-            throws InvalidProtocolTypeException, DialogInitializationException {
-        final TPConfig config = TPConfig.getInstance();
-        return TPFactory.getDialogNodeSide(config.getDefaultProtocolType());
-    }
-
-    /**
      * Instantiate a new TucsonProtocol based on type specified by parameter.
-     * 
+     *
      * @param tucsonProtocolType
      *            the type code of the TuCSoN protocol to be used
+     * @param portno
+     *            the port where the TuCSoN node to contact is listening to
      * @return the TucsonProtocol class
      * @throws DialogInitializationException
      *             if something goes wrong in the underlying network
@@ -112,11 +108,12 @@ public final class TPFactory {
      *             if the protocol type used is not DIALOG_TYPE_TCP
      */
     public static AbstractTucsonProtocol getDialogNodeSide(
-            final int tucsonProtocolType) throws InvalidProtocolTypeException,
-            DialogInitializationException {
+            final int tucsonProtocolType, final int portno)
+            throws InvalidProtocolTypeException, DialogInitializationException {
         AbstractTucsonProtocol tp = null;
         if (tucsonProtocolType == TPFactory.DIALOG_TYPE_TCP) {
-            final TPConfig config = TPConfig.getInstance();
+            final TPConfig config = TucsonNodeService.getNode(portno)
+                    .getTPConfig();
             final int port = config.getNodeTcpPort();
             if (port < 1 || port > TPFactory.MAX_UNBOUND_PORT) {
                 throw new IllegalPortNumberException(
@@ -131,7 +128,7 @@ public final class TPFactory {
 
     private TPFactory() {
         /*
-         * 
+         *
          */
     }
 }

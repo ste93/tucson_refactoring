@@ -15,15 +15,16 @@ package alice.tuplecentre.core;
 
 /**
  * This is the listening state of the TCVM
- * 
+ *
  * @author Alessandro Ricci
  */
 public class FetchEnvState extends AbstractTupleCentreVMState {
+
     private AbstractTupleCentreVMState reactingState;
     private AbstractTupleCentreVMState speakingState;
 
     /**
-     * 
+     *
      * @param tcvm
      *            the tuple centre VM this state belongs to
      */

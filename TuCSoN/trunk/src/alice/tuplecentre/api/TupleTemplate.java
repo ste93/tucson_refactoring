@@ -14,19 +14,20 @@
 package alice.tuplecentre.api;
 
 /**
- * 
- * 
+ *
+ *
  * Flag interface representing tuple templates.
- * 
+ *
  * @see Tuple
  * @author Alessandro Ricci
- * 
+ *
  */
 public interface TupleTemplate extends Tuple {
+
     /**
      * specifies if the tuple template matches the tuple, or rather if tuples
      * belongs to the set identified by the template.
-     * 
+     *
      * @param t
      *            the tuple subject to matching
      * @return wether the given tuple matches this tuple template
@@ -36,7 +37,7 @@ public interface TupleTemplate extends Tuple {
     /**
      * tries to change the tuple template object and the tuple argument in order
      * to meld information
-     * 
+     *
      * @param t
      *            a tuple matching the template
      * @return wether unification propagation was succesfull

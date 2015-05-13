@@ -24,7 +24,7 @@ import alice.tuplecentre.core.TCCycleResult.Outcome;
 
 /**
  * This is the speaking state of the TCVM
- * 
+ *
  * @author Alessandro Ricci
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
@@ -35,7 +35,7 @@ public class SpeakingState extends AbstractTupleCentreVMState {
     private AbstractTupleCentreVMState reactingState;
 
     /**
-     * 
+     *
      * @param tcvm
      *            the tuple centre VM this state belongs to
      */

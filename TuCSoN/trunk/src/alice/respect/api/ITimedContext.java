@@ -9,13 +9,14 @@ import alice.tuplecentre.api.IId;
 
 /**
  * Interface to a ReSpecT Tuple Centre with timing functionalities.
- * 
+ *
  * @author Alessandro Ricci
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
 public interface ITimedContext {
+
     /**
-     * 
+     *
      * @param id
      *            the identifier of who is invokin the operation
      * @param ms
@@ -30,7 +31,7 @@ public interface ITimedContext {
             OperationTimeOutException;
 
     /**
-     * 
+     *
      * @param id
      *            the identifier of who is invokin the operation
      * @param t
@@ -50,7 +51,7 @@ public interface ITimedContext {
             OperationTimeOutException;
 
     /**
-     * 
+     *
      * @param id
      *            the identifier of who is invokin the operation
      * @param t
@@ -70,7 +71,7 @@ public interface ITimedContext {
             OperationTimeOutException;
 
     /**
-     * 
+     *
      * @param id
      *            the identifier of who is invokin the operation
      * @param t
@@ -90,7 +91,7 @@ public interface ITimedContext {
             OperationTimeOutException;
 
     /**
-     * 
+     *
      * @param id
      *            the identifier of who is invokin the operation
      * @param t
@@ -110,7 +111,7 @@ public interface ITimedContext {
             OperationTimeOutException;
 
     /**
-     * 
+     *
      * @param id
      *            the identifier of who is invokin the operation
      * @param t
@@ -130,7 +131,7 @@ public interface ITimedContext {
             OperationTimeOutException;
 
     /**
-     * 
+     *
      * @param id
      *            the identifier of who is invokin the operation
      * @param t
@@ -150,7 +151,7 @@ public interface ITimedContext {
             OperationTimeOutException;
 
     /**
-     * 
+     *
      * @param id
      *            the identifier of who is invokin the operation
      * @param t
@@ -168,7 +169,7 @@ public interface ITimedContext {
             OperationNotPossibleException, OperationTimeOutException;
 
     /**
-     * 
+     *
      * @param id
      *            the identifier of who is invokin the operation
      * @param t
@@ -187,7 +188,7 @@ public interface ITimedContext {
             OperationTimeOutException;
 
     /**
-     * 
+     *
      * @param id
      *            the identifier of who is invokin the operation
      * @param t
@@ -207,7 +208,7 @@ public interface ITimedContext {
             OperationTimeOutException;
 
     /**
-     * 
+     *
      * @param id
      *            the identifier of who is invokin the operation
      * @param t
@@ -227,7 +228,7 @@ public interface ITimedContext {
             OperationTimeOutException;
 
     /**
-     * 
+     *
      * @param id
      *            the identifier of who is invokin the operation
      * @param t
@@ -247,7 +248,7 @@ public interface ITimedContext {
             OperationTimeOutException;
 
     /**
-     * 
+     *
      * @param id
      *            the identifier of who is invokin the operation
      * @param t
@@ -267,7 +268,7 @@ public interface ITimedContext {
             OperationTimeOutException;
 
     /**
-     * 
+     *
      * @param id
      *            the identifier of who is invokin the operation
      * @param t
@@ -287,7 +288,7 @@ public interface ITimedContext {
             OperationTimeOutException;
 
     /**
-     * 
+     *
      * @param id
      *            the identifier of who is invokin the operation
      * @param t
@@ -307,7 +308,7 @@ public interface ITimedContext {
             OperationTimeOutException;
 
     /**
-     * 
+     *
      * @param id
      *            the identifier of who is invokin the operation
      * @param t
@@ -327,7 +328,7 @@ public interface ITimedContext {
             OperationTimeOutException;
 
     /**
-     * 
+     *
      * @param id
      *            the identifier of who is invokin the operation
      * @param t
@@ -347,7 +348,7 @@ public interface ITimedContext {
             OperationTimeOutException;
 
     /**
-     * 
+     *
      * @param id
      *            the identifier of who is invokin the operation
      * @param t
@@ -367,7 +368,7 @@ public interface ITimedContext {
             OperationTimeOutException;
 
     /**
-     * 
+     *
      * @param id
      *            the identifier of who is invokin the operation
      * @param t
@@ -387,7 +388,7 @@ public interface ITimedContext {
             OperationTimeOutException;
 
     /**
-     * 
+     *
      * @param id
      *            the identifier of who is invokin the operation
      * @param t

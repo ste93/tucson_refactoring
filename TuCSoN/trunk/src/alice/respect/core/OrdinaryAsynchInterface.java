@@ -10,14 +10,15 @@ import alice.tuplecentre.api.IId;
 import alice.tuplecentre.core.OperationCompletionListener;
 
 /**
- * 
+ *
  * @author ste (mailto: s.mariani@unibo.it)
- * 
+ *
  */
 public class OrdinaryAsynchInterface extends RootInterface implements
         IOrdinaryAsynchInterface {
+
     /**
-     * 
+     *
      * @param core
      *            the ReSpecT tuple centre this context refers to
      */

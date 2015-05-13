@@ -17,13 +17,14 @@ import alice.tucson.introspection.ShutdownMsg;
 import alice.tuplecentre.core.OperationCompletionListener;
 
 /**
- * 
+ *
  * @author Alessandro Ricci
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
- * 
+ *
  */
 public abstract class AbstractACCProxyNodeSide extends Thread implements
         OperationCompletionListener {
+
     /**
      * @param msg
      *            the shutdown message

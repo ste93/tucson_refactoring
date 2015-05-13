@@ -13,23 +13,24 @@
 package alice.tuplecentre.core;
 
 /**
- * 
+ *
  * @author Alessandro Ricci
- * 
+ *
  */
 public class ObservableEventExt extends InspectableEvent {
+
     /**
-     * 
+     *
      */
     public static final int TYPE_REACTIONFAIL = 1001;
     /**
-     * 
+     *
      */
     public static final int TYPE_REACTIONOK = 1000;
     private static final long serialVersionUID = -2903815349443988799L;
 
     /**
-     * 
+     *
      * @param src
      *            the source of the event
      * @param code

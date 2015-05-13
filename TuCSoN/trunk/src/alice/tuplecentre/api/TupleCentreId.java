@@ -14,13 +14,13 @@
 package alice.tuplecentre.api;
 
 /**
- * 
+ *
  * Represents identifier for a tuple centre
- * 
+ *
  * @author Alessandro Ricci
  */
 public interface TupleCentreId extends IId {
     /*
-     * 
+     *
      */
 }

@@ -19,16 +19,17 @@ import alice.tuplecentre.api.TupleCentreId;
 import alice.tuplecentre.api.TupleTemplate;
 
 /**
- * 
+ *
  * @author Alessandro Ricci
- * 
+ *
  */
 public class ObservationService implements NodeServiceListener {
+
     private TucsonAgentId obsAid;
     private final TucsonTupleCentreId obsContext;
 
     /**
-     * 
+     *
      * @param ctx
      *            the identifier of the tuple centre under observation
      */

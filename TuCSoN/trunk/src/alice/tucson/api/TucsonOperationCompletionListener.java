@@ -16,14 +16,15 @@ package alice.tucson.api;
 import alice.tuplecentre.core.OperationCompletionListener;
 
 /**
- * 
+ *
  * @author Alessandro Ricci
- * 
+ *
  */
 public interface TucsonOperationCompletionListener extends
         OperationCompletionListener {
+
     /**
-     * 
+     *
      * @param op
      *            the TuCSoN operation just completed
      */
