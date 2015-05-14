@@ -172,7 +172,7 @@ public class TucsonNodeService {
         if (alice.util.Tools.isOpt(args, "-help")
                 || alice.util.Tools.isOpt(args, "-?")) {
             TucsonNodeService
-                    .log("Arguments: -portno {portNumber} {-? | -help}");
+            .log("Arguments: -portno {portNumber} {-? | -help}");
         } else {
             final String portInfo = alice.util.Tools.getOpt(args, "-portno");
             final String configInfo = alice.util.Tools.getOpt(args, "-config");
@@ -493,7 +493,7 @@ public class TucsonNodeService {
                     if (LogicMatchingEngine.match((LogicTuple) template,
                             (LogicTuple) tid)) {
                         TucsonNodeService
-                                .log(">>> It matches: disabling persistency...");
+                        .log(">>> It matches: disabling persistency...");
                         TupleCentreContainer.doBlockingOperation(
                                 TucsonOperation.inCode(),
                                 this.nodeAid,
@@ -568,12 +568,12 @@ public class TucsonNodeService {
                 if (LogicMatchingEngine.match((LogicTuple) template,
                         (LogicTuple) tid)) {
                     TucsonNodeService
-                            .log(">>> It matches: enabling persistency...");
+                    .log(">>> It matches: enabling persistency...");
                     TupleCentreContainer.enablePersistency(ttcid,
                             TucsonNodeService.PERSISTENCY_PATH);
                     TupleCentreContainer.doBlockingOperation(TucsonOperation
                             .outCode(), this.nodeAid, ttcid, new LogicTuple(
-                            "is_persistent", new Value(ttcid.getName())));
+                                    "is_persistent", new Value(ttcid.getName())));
                     TucsonNodeService.log(">>> persistency enabled.");
                 }
             } catch (final InvalidLogicTupleException e) {
@@ -635,7 +635,7 @@ public class TucsonNodeService {
      */
     public synchronized void install() {
         TucsonNodeService
-                .log("--------------------------------------------------------------------------------");
+        .log("--------------------------------------------------------------------------------");
         try {
             final StringTokenizer st = new StringTokenizer(
                     Utils.fileToString("alice/tucson/service/config/tucsonCLIlogo3.txt"),
@@ -648,11 +648,11 @@ public class TucsonNodeService {
             e.printStackTrace();
         }
         TucsonNodeService
-                .log("--------------------------------------------------------------------------------");
+        .log("--------------------------------------------------------------------------------");
         TucsonNodeService.log("Welcome to the TuCSoN infrastructure :)");
         TucsonNodeService.log("  Version " + TucsonNodeService.getVersion());
         TucsonNodeService
-                .log("--------------------------------------------------------------------------------");
+        .log("--------------------------------------------------------------------------------");
         TucsonNodeService.log(new Date().toString());
         TucsonNodeService.log("Beginning TuCSoN Node Service installation...");
         this.configManager = new Prolog();
@@ -671,7 +671,7 @@ public class TucsonNodeService {
         this.setupConfigTupleCentre();
         this.checkPersistentTupleCentres(TucsonNodeService.PERSISTENCY_PATH);
         TucsonNodeService
-                .log("Setting up Environment Configuration Service...");
+        .log("Setting up Environment Configuration Service...");
         this.setupEnvConfigTupleCentre();
         this.installationDate = new Date();
         TucsonNodeService.log("Spawning management agents...");
@@ -783,7 +783,7 @@ public class TucsonNodeService {
      */
     public void shutdown() {
         TucsonNodeService
-                .log("Node is shutting down management agents and proxies...");
+        .log("Node is shutting down management agents and proxies...");
         for (final Thread t : this.nodeAgents) {
             if (t.isAlive()) {
                 TucsonNodeService.log("  ...shutting down <" + t.getName()
@@ -799,7 +799,7 @@ public class TucsonNodeService {
             this.ctxman.shutdown();
         } catch (final InterruptedException e) {
             TucsonNodeService
-                    .log("ACCProvider may still have tasks executing...");
+            .log("ACCProvider may still have tasks executing...");
         }
         this.envAgent.stopIteraction();
         TucsonNodeService.log("Node is shutting down ReSpecT VMs...");
@@ -807,7 +807,7 @@ public class TucsonNodeService {
             final Thread t = tc.getVMThread();
             if (t.isAlive()) {
                 TucsonNodeService
-                        .log("  ...shutting down <" + tc.getId() + ">");
+                .log("  ...shutting down <" + tc.getId() + ">");
                 t.interrupt();
             } else {
                 TucsonNodeService.log("  ...<" + tc.getId()
@@ -824,7 +824,7 @@ public class TucsonNodeService {
         TucsonNodeService.log("Spawning Node Management Agent...");
         this.nodeAgents.add(new NodeManagementAgent(this.idConfigTC, this));
         TucsonNodeService
-                .log("--------------------------------------------------------------------------------");
+        .log("--------------------------------------------------------------------------------");
         TucsonNodeService.log("Spawning ACC Provider Agent...");
         this.ctxman = new ACCProvider(this, this.idConfigTC);
         TucsonNodeService.log("Spawning Welcome Agent...");

@@ -61,6 +61,7 @@
 
 			<copy todir="${classes-dir}/alice/tucson/service/config">
 				<fileset file="${src-dir}/alice/tucson/service/config/boot_spec.rsp" />
+				<fileset file="${src-dir}/alice/tucson/service/config/boot_spec_rbac.rsp" />
 				<fileset file="${src-dir}/alice/tucson/service/config/BOOT.PL" />
 				<fileset file="${src-dir}/alice/tucson/service/config/env_spec.rsp" />
 				<fileset file="${src-dir}/alice/tucson/service/config/obs_spec.rsp" />
@@ -168,6 +169,7 @@
 		<echo message="Properties are:" />
 		<echo message="-----------------------------------" />
 		<echo message="{ant.project.name} is '${ant.project.name}'" />
+		<echo message="{ant.java.version} is '${ant.java.version}'" />
 		<echo message="{basedir} is '${basedir}'" />
 		<echo message="..................................." />
 		<echo message="{src-dir} is '${src-dir}'" />
@@ -233,7 +235,7 @@
 
 		<javadoc sourcepath="${src-dir}" destdir="${doc-dir}/javadoc" author="true" version="true" use="true" windowtitle="TuCSoN ${library.version} Javadoc" doctitle="TuCSoN ${library.version} Javadoc" verbose="no" encoding="UTF-8" breakiterator="yes">
 			<classpath refid="ant-classpath" />
-			<link href="http://java.sun.com/j2se/1.6.0/docs/api/" />
+			<link href="http://java.sun.com/j2se/1.7.0/docs/api/" />
 
 		</javadoc>
 

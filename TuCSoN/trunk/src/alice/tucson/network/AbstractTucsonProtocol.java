@@ -426,4 +426,5 @@ public abstract class AbstractTucsonProtocol implements java.io.Serializable {
      *             if some network problems arise
      */
     protected abstract void send(String value) throws IOException;
+
 }
