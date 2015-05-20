@@ -14,7 +14,7 @@ Suggested readings complementing the content of this "how-to" are:
 
    1.1 <a href="#api">API Overview</a>
    
-   1.2 <a href="#hands-on">"Hands-on" step-by-step tour</a>
+   1.2 <a href="#hands">"Hands-on" step-by-step tour</a>
    
 2. <a href="#contact">Contact Information</a>
 
