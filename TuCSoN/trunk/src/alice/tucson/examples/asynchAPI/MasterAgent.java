@@ -31,15 +31,20 @@ import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
 import alice.tucson.asynchSupport.AsynchOpsHelper;
-import alice.tucson.asynchSupport.operations.ordinary.In;
-import alice.tucson.asynchSupport.operations.ordinary.Inp;
-import alice.tucson.asynchSupport.operations.ordinary.Out;
+import alice.tucson.asynchSupport.TucsonOpWrapper;
+import alice.tucson.asynchSupport.actions.ordinary.In;
+import alice.tucson.asynchSupport.actions.ordinary.Inp;
+import alice.tucson.asynchSupport.actions.ordinary.Out;
 import alice.tuplecentre.api.exceptions.InvalidOperationException;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 import alice.tuplecentre.core.AbstractTupleCentreOperation;
 
 /**
- * Prime Calculation example master agent. The master agent ...
+ * Prime Calculation example master agent. The master agent delegates
+ * calculations to PrimeCalculator agents through the AsynchOpsHelper, so as to
+ * be free to do other activities while they compute, and getting back the
+ * results without having to suspend--like in traditional tuple based
+ * coordination.
  *
  * @author Fabio Consalici, Riccardo Drudi
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
@@ -48,7 +53,11 @@ import alice.tuplecentre.core.AbstractTupleCentreOperation;
 public class MasterAgent extends AbstractTucsonAgent {
 
     /**
-     * The handler of operations completion except the last operation.
+     * The handler of operations completion except the last operation. This
+     * handler is OPTIONAL: by remvoing it, the example still works the same
+     * way. It is implemented here only to show that usual support to
+     * asynchronous operation invocation -- through the listener -- and the new
+     * support -- trhough the AsynchOpsHelper -- can coexist.
      *
      * @author Fabio Consalici, Riccardo Drudi
      * @author (contributor) ste (mailto: s.mariani@unibo.it)
@@ -101,7 +110,13 @@ public class MasterAgent extends AbstractTucsonAgent {
     }
 
     /**
-     * The handler of last operation completion.
+     * The handler of last operation completion. This handler is MANDATORY only
+     * due to the way in which this example is implemented -- that is, with the
+     * Master agent deliberatively waiting for the tuple here produced. By
+     * remvoing it and coordinating in another way, the example still works the
+     * same way. It is implemented here only to show that usual support to
+     * asynchronous operation invocation -- through the listener -- and the new
+     * support -- trhough the AsynchOpsHelper -- can coexist.
      *
      * @author Fabio Consalici, Riccardo Drudi
      * @author (contributor) ste (mailto: s.mariani@unibo.it)
@@ -190,6 +205,9 @@ public class MasterAgent extends AbstractTucsonAgent {
         super(id);
         this.nInpSucceeded = 0;
         this.nPrimeCalc = nCalcs;
+        /*
+         * 1 - Instantiate the helper
+         */
         this.helper = new AsynchOpsHelper("'helper4" + this.getTucsonAgentId()
                 + "'");
     }
@@ -220,7 +238,14 @@ public class MasterAgent extends AbstractTucsonAgent {
             for (int i = 0; i < MasterAgent.REQUESTS; i++) {
                 tuple = LogicTuple.parse("calcprime(" + number + ")");
                 super.say("Enqueuing prime numbers calculation up to " + number);
+                /*
+                 * 2 - Build the TuCSoN action whose asynchronous invocation
+                 * should be delegated
+                 */
                 out = new Out(tid, tuple);
+                /*
+                 * 3 - Delegate asynchronous invocation to the helper
+                 */
                 this.helper.enqueue(out, null);
                 number += MasterAgent.STEP;
             }
@@ -244,7 +269,16 @@ public class MasterAgent extends AbstractTucsonAgent {
             final EnhancedSynchACC accSynch = this.getContext();
             final LogicTuple firstLoopTuple = LogicTuple.parse("firstloop");
             final In firstLoopIn = new In(tid, firstLoopTuple);
+            /*
+             * - You can also directly execute synchronous invocation the usual
+             * TuCSoN way or by using the novel TuCSoN action object (as done
+             * here)
+             */
             firstLoopIn.executeSynch(accSynch, null);
+            /*
+             * 4 - If and When you want, query the helper for operation state,
+             * incrementally filtering pending/completed queues as you please
+             */
             this.nInpSucceeded = this.helper.getCompletedOps()
                     .getMatchingOps(Inp.class).getSuccessfulOps().size();
             super.say("First loop completed, received " + this.nInpSucceeded
@@ -252,6 +286,9 @@ public class MasterAgent extends AbstractTucsonAgent {
                     + MasterAgent.REQUESTS
                     + ", now registering handlers for remaining (if any)...");
             In in;
+            /*
+             * 5 - Remember to remove the operations you already managed
+             */
             this.helper.getCompletedOps().removeSuccessfulOps();
             for (int i = 0; i < MasterAgent.REQUESTS - this.nInpSucceeded; i++) {
                 tuple = LogicTuple.parse("prime(X,Y)");
@@ -273,13 +310,25 @@ public class MasterAgent extends AbstractTucsonAgent {
                     stop = true;
                 }
             }
-            super.say("All requests completed, stopping Prime Calculator agent");
+            super.say("All requests completed:");
+            /*
+             * - You can freely iterate over (filtered) queues to retrieve each
+             * single operation
+             */
+            for (TucsonOpWrapper op : this.helper.getCompletedOps()
+                    .getMatchingOps(In.class).getSuccessfulOps()) {
+                super.say(op.toString());
+            }
+            super.say("Stopping Prime Calculator agent");
             for (int i = 0; i < this.nPrimeCalc; i++) {
                 tuple = LogicTuple.parse("stop(primecalc)");
                 out = new Out(tid, tuple);
                 this.helper.enqueue(out, null);
             }
             super.say("Stopping TuCSoN Asynch Helper gracefully");
+            /*
+             * 6 - When done, shutdown the helper as you please
+             */
             this.helper.shutdownGracefully();
             Thread.sleep(MasterAgent.SLEEP);
             super.say("I'm done");

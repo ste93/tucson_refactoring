@@ -32,15 +32,18 @@ import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
 import alice.tucson.asynchSupport.AsynchOpsHelper;
-import alice.tucson.asynchSupport.operations.ordinary.In;
-import alice.tucson.asynchSupport.operations.ordinary.Inp;
-import alice.tucson.asynchSupport.operations.ordinary.Out;
+import alice.tucson.asynchSupport.actions.ordinary.In;
+import alice.tucson.asynchSupport.actions.ordinary.Inp;
+import alice.tucson.asynchSupport.actions.ordinary.Out;
 import alice.tuplecentre.api.exceptions.InvalidOperationException;
 import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 import alice.tuplecentre.core.AbstractTupleCentreOperation;
 
 /**
- * Prime Calculation example worker agent. The Prime Calculator agent ...
+ * Prime Calculation example worker agent. The Prime Calculator agent
+ * asynchronously retrieves calculation requests from the Master agent through a
+ * mediating TuCSoN tuple centre, performs the calculation, then puts the
+ * results back in the space.
  *
  * @author Fabio Consalici, Riccardo Drudi
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
@@ -49,6 +52,14 @@ import alice.tuplecentre.core.AbstractTupleCentreOperation;
 public class PrimeCalculator extends AbstractTucsonAgent {
 
     /**
+     * 
+     * This handler is MANDATORY only due to the way in which this example is
+     * implemented -- that is, with the Prime Calculation agent serving requests
+     * as soon as they appear. By remvoing it and coordinating in another way,
+     * the example still works the same way. It is implemented here only to show
+     * that usual support to asynchronous operation invocation -- through the
+     * listener -- and the new support -- trhough the AsynchOpsHelper -- can
+     * coexist.
      *
      * @author Fabio Consalici, Riccardo Drudi
      * @author (contributor) ste (mailto: s.mariani@unibo.it)

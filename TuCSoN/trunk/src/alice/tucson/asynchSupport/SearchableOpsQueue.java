@@ -20,7 +20,7 @@
 package alice.tucson.asynchSupport;
 
 import java.util.concurrent.LinkedBlockingQueue;
-import alice.tucson.asynchSupport.operations.AbstractTucsonAction;
+import alice.tucson.asynchSupport.actions.AbstractTucsonAction;
 
 /**
  * Queue storing pending operations delegated to
@@ -42,7 +42,8 @@ public class SearchableOpsQueue extends LinkedBlockingQueue<TucsonOpWrapper> {
      *
      * @return the queue of operations of the same input type
      */
-    public SearchableOpsQueue getMatchingOps(final Class<?> optype) {
+    public SearchableOpsQueue getMatchingOps(
+            final Class<? extends AbstractTucsonAction> optype) {
         final SearchableOpsQueue matching = new SearchableOpsQueue();
         for (TucsonOpWrapper tow : this) {
             if (tow.getAction().getClass().equals(optype)) {

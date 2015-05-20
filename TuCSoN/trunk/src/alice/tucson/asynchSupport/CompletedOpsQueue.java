@@ -19,9 +19,11 @@
  */
 package alice.tucson.asynchSupport;
 
+import alice.tucson.asynchSupport.actions.AbstractTucsonAction;
+
 /**
- * {@link alice.tucson.asynchSupport.SearchableOpsQueue} specialised for handling
- * completed operations.
+ * {@link alice.tucson.asynchSupport.SearchableOpsQueue} specialised for
+ * handling completed operations.
  *
  * @author Fabio Consalici, Riccardo Drudi
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
@@ -47,7 +49,8 @@ public class CompletedOpsQueue extends SearchableOpsQueue {
     }
 
     @Override
-    public CompletedOpsQueue getMatchingOps(final Class<?> optype) {
+    public CompletedOpsQueue getMatchingOps(
+            final Class<? extends AbstractTucsonAction> optype) {
         final CompletedOpsQueue matching = new CompletedOpsQueue();
         for (TucsonOpWrapper tow : this) {
             if (tow.getAction().getClass().equals(optype)) {

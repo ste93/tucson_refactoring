@@ -29,7 +29,7 @@ import alice.tucson.api.TucsonOperationCompletionListener;
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
-import alice.tucson.asynchSupport.operations.AbstractTucsonAction;
+import alice.tucson.asynchSupport.actions.AbstractTucsonAction;
 import alice.tuplecentre.core.AbstractTupleCentreOperation;
 
 /**
