@@ -26,6 +26,7 @@
 package alice.tucson.examples.rbac;
 
 import java.util.logging.Logger;
+import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.network.exceptions.DialogInitializationException;
 import alice.tucson.service.TucsonNodeService;
 
@@ -33,9 +34,9 @@ import alice.tucson.service.TucsonNodeService;
  * @author Stefano Mariani (mailto: s.mariani@unibo.it)
  *
  */
-public final class TuCSoNodeLauncher {
+public final class RBACLauncher {
 
-    private TuCSoNodeLauncher() {
+    private RBACLauncher() {
         /*
          * To prevent instantiation
          */
@@ -56,7 +57,7 @@ public final class TuCSoNodeLauncher {
         tns.setAdminPassword("psw");
         tns.setBasicAgentClass("basic");
         tns.setListAllRolesAllowed(true);
-        tns.setInspectorsAuthorized(true);
+        tns.setInspectorsAuthorised(true);
         tns.install();
         try {
             while (!TucsonNodeService.isInstalled(portno, 1000)) {
@@ -65,7 +66,46 @@ public final class TuCSoNodeLauncher {
         } catch (DialogInitializationException | InterruptedException e) {
             e.printStackTrace();
         }
-        Logger.getLogger("TuCSoNodeLauncher").info(
+        Logger.getLogger("RBACLauncher").info(
                 "TuCSoN Node installed on TCP port " + tns.getTCPPort());
+        Logger.getLogger("RBACLauncher").info(
+                "Launching administrator agent...");
+        try {
+            new AdminAgent("admin", "localhost", portno).go();
+        } catch (TucsonInvalidAgentIdException e) {
+            e.printStackTrace();
+        }
+        Logger.getLogger("RBACLauncher").info("Administrator agent launched");
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Logger.getLogger("RBACLauncher").info(
+                "Launching an authorised agent...");
+        try {
+            new AuthorisedAgent("authorised", "localhost", portno).go();
+        } catch (TucsonInvalidAgentIdException e) {
+            e.printStackTrace();
+        }
+        Logger.getLogger("RBACLauncher").info("Authorised agent launched");
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Logger.getLogger("RBACLauncher").info(
+                "Launching an unauthorised agent...");
+        try {
+            new UnauthorisedAgent("unauthorised", "localhost", portno).go();
+        } catch (TucsonInvalidAgentIdException e) {
+            e.printStackTrace();
+        }
+        Logger.getLogger("RBACLauncher").info("Unauthorised agent launched");
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }

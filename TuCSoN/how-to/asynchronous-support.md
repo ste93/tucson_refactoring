@@ -115,7 +115,7 @@ Others are intended for usage by the `AsynchOpsHelper`.
 
 *TBD*.
 
-In the meanwhile, you can read through the comments in TuCSoN "Prime Calculator" example source files, [here](https://bitbucket.org/smariani/tucson/src/442c7e6b2e50123493cf01218005f4eb798c31d7/TuCSoN/trunk/src/alice/tucson/examples/asynchAPI/MasterAgent.java?at=master).
+In the meanwhile, you can read through the comments in TuCSoN "asynchAPI" example source files, [here](https://bitbucket.org/smariani/tucson/src/442c7e6b2e50123493cf01218005f4eb798c31d7/TuCSoN/trunk/src/alice/tucson/examples/asynchAPI/?at=master).
 
 ---
 

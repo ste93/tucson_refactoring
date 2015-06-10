@@ -65,7 +65,7 @@ java -cp tucson.jar:../libs/2p.jar alice.tucson.examples.persistency.Persistency
 elif [ "$1" == RBAC ]; then
 ## $1=RBAC
 ## Starts the 'RBAC' example exploiting TuCSoN support to RBAC allowing the infrastructure to allow/deny oeprations based on agents' roles
-java -cp tucson.jar:../libs/2p.jar alice.tucson.examples.rbac.TuCSoNodeLauncher
+java -cp tucson.jar:../libs/2p.jar alice.tucson.examples.rbac.RBACLauncher
 elif [ "$1" == AsynchronousAPI ]; then
 ## $1=AsynchronousAPI
 ## Starts the 'AsynchronousAPI' example exploiting TuCSoN asynchronous mode of operation allowing agents to request blocking coordination operations without being suspended in case of failure, but being notified upon completion

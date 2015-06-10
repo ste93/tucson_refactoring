@@ -235,7 +235,7 @@ public class TucsonNodeService {
     // configuration
     private TucsonTupleCentreId idObsTC;
     private final ArrayList<InspectorContextSkel> inspectorAgents;
-    private boolean inspectorsAuthorized;
+    private boolean inspectorsAuthorised;
     private Date installationDate;
     private boolean listAllRoles;
     private boolean loginRequired;
@@ -766,8 +766,8 @@ public class TucsonNodeService {
         this.baseAgentClass = agentClass;
     }
 
-    public void setInspectorsAuthorized(final boolean inspectorsAuth) {
-        this.inspectorsAuthorized = inspectorsAuth;
+    public void setInspectorsAuthorised(final boolean inspectorsAuth) {
+        this.inspectorsAuthorised = inspectorsAuth;
     }
 
     public void setListAllRolesAllowed(final boolean listRoles) {
@@ -972,7 +972,7 @@ public class TucsonNodeService {
             TupleCentreContainer.doBlockingOperation(TucsonOperation.outCode(),
                     this.nodeAid, this.idConfigTC, new LogicTuple(
                             "allow_inspection", new Value(
-                                    this.inspectorsAuthorized ? "yes" : "no")));
+                                    this.inspectorsAuthorised ? "yes" : "no")));
 
             // TupleCentreContainer.doBlockingOperation(TucsonOperation.outCode(),
             // this.nodeAid, this.idConfigTC, new LogicTuple("role", new
