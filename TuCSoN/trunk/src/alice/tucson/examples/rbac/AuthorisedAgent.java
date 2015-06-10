@@ -45,6 +45,9 @@ import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 import alice.tuplecentre.core.AbstractTupleCentreOperation;
 
 /**
+ * An authorised agent. It is "known" by TuCSoN-RBAC, thanks to administrators
+ * configuration, thus may login to play roles different from the default one.
+ * 
  * @author Stefano Mariani (mailto: s.mariani@unibo.it)
  *
  */
@@ -103,6 +106,10 @@ public final class AuthorisedAgent extends AbstractTucsonAgent {
         Logger.getLogger("AuthorisedAgent").info(
                 "Acquiring NegotiationACC from TuCSoN Node installed on TCP port "
                         + this.myport());
+        /*
+         * A negotiation ACC must be acquired by any software entity willing to
+         * exploit TuCSoN coordination services, thus willing to acquire an ACC.
+         */
         NegotiationACC negACC = TucsonMetaACC
                 .getNegotiationContext("authorised");
         Logger.getLogger("AuthorisedAgent").info("NegotiationACC acquired");
@@ -111,6 +118,12 @@ public final class AuthorisedAgent extends AbstractTucsonAgent {
         try {
             Logger.getLogger("AuthorisedAgent")
                     .info("Logging into TuCSoN Node");
+            /*
+             * A successful login must be done in order to play roles different
+             * from the default role--in case login is required the default role
+             * too is disabled, thus non logged agents cannot participate
+             * TuCSoN-RBAC at all.
+             */
             negACC.login("user3", "psw3");
             Logger.getLogger("AuthorisedAgent").info("Login successful");
             Logger.getLogger("AuthorisedAgent").info(

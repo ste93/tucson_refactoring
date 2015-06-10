@@ -31,6 +31,14 @@ import alice.tucson.network.exceptions.DialogInitializationException;
 import alice.tucson.service.TucsonNodeService;
 
 /**
+ * Example showcasing RBAC in TuCSoN. A TuCSoN node is configured with a set of
+ * RBAC-related properties -- e.g. whether login is required and administrators'
+ * credentials --, then 3 agents are started: an administrator agent, which
+ * logins to change some RBAC properties, an authorised agent, which is allowed
+ * to play some pre-defined role, and an unauthorised agent, which is allowed to
+ * play solely the default role associated to the basic agent class--since login
+ * is not required.
+ * 
  * @author Stefano Mariani (mailto: s.mariani@unibo.it)
  *
  */
@@ -52,11 +60,31 @@ public final class RBACLauncher {
             portno = Integer.parseInt(args[0]);
         }
         TucsonNodeService tns = new TucsonNodeService(portno);
+        /*
+         * When login is not required, non-logged agents are allowed to
+         * participate the TuCSoN-coordinated system anyway, but with restricted
+         * access to coordination services--that is, only those enabled for the
+         * default role associated to the basic agent class
+         */
         tns.setLoginRequired(false);
         tns.setAdminUsername("admin");
         tns.setAdminPassword("psw");
+        /*
+         * The basic agent class is the class associated to non-logged agents by
+         * RBAC-TuCSoN. Agents belonging to the basic agent class are restricted
+         * to play the default role.
+         */
         tns.setBasicAgentClass("basic");
+        /*
+         * To enhance security, requests for the list of all the roles playable
+         * by a given agent may be forbidden.
+         */
         tns.setListAllRolesAllowed(true);
+        /*
+         * To enhance security, inspection of the tuple centre '$ORG' -- the one
+         * storing all the information regarding the RBAC configuration -- may
+         * be forbidden.
+         */
         tns.setInspectorsAuthorised(true);
         tns.install();
         try {

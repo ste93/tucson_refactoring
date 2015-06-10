@@ -47,6 +47,10 @@ import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 import alice.tuplecentre.core.AbstractTupleCentreOperation;
 
 /**
+ * An unauthorised agent. It is NOT "known" by TuCSoN-RBAC, lacking
+ * administrators configuration, thus may NOT login and only play the default
+ * role, if and only if login is NOT required.
+ * 
  * @author Stefano Mariani (mailto: s.mariani@unibo.it)
  *
  */
@@ -113,6 +117,11 @@ public final class UnauthorisedAgent extends AbstractTucsonAgent {
         try {
             Logger.getLogger("UnauthorisedAgent").info(
                     "Attempting to play role with permission: 'rd'");
+            /*
+             * Unauthorised agents do not log into TuCSoN-RBAC, thus, when login
+             * is not required, may only play the default role associated to the
+             * basic agent class.
+             */
             EnhancedACC acc = negACC.playRoleWithPermissions(permissions);
             Logger.getLogger("UnauthorisedAgent").info("Attempt successful");
             Logger.getLogger("UnauthorisedAgent").info("Trying 'rd' operation");

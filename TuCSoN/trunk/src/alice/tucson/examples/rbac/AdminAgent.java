@@ -47,6 +47,8 @@ import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 import alice.tuplecentre.core.AbstractTupleCentreOperation;
 
 /**
+ * The administrator agent, configuring the RBAC properties.
+ * 
  * @author Stefano Mariani (mailto: s.mariani@unibo.it)
  *
  */
@@ -102,11 +104,19 @@ public final class AdminAgent extends AbstractTucsonAgent {
      */
     @Override
     protected void main() {
+        /*
+         * Atm, TuCSoN RBAC permissions are simply the name of a TuCSoN
+         * primitive, indicating that an agent may invoke such operation.
+         */
         Permission prd = new TucsonPermission("rd");
         Permission prdp = new TucsonPermission("rdp");
         Permission pin = new TucsonPermission("in");
         Permission pinp = new TucsonPermission("inp");
         Permission pout = new TucsonPermission("out");
+        /*
+         * TuCSoN RBAC policies are composed by permissions and associated to
+         * role, indicating which TuCSoN operations the role allows.
+         */
         Policy policyrd = new TucsonPolicy("policyrd");
         Policy policyrdrdp = new TucsonPolicy("policyrdrdp");
         Policy policyin = new TucsonPolicy("policyin");
@@ -117,6 +127,11 @@ public final class AdminAgent extends AbstractTucsonAgent {
         policyin.addPermission(pin);
         policyin.addPermission(pinp);
         policyout.addPermission(pout);
+        /*
+         * TuCSoN RBAC roles associate policies to agent classes, indicating the
+         * set of permissions agents of that class, and willing to play that
+         * role, can be granted.
+         */
         Role roleRead = new TucsonRole("roleRead");
         roleRead.setPolicy(policyrd);
         Role roleReadP = new TucsonRole("roleReadP");
@@ -127,6 +142,11 @@ public final class AdminAgent extends AbstractTucsonAgent {
         Role roleWrite = new TucsonRole("roleWrite");
         roleWrite.setAgentClass("writeClass");
         roleWrite.setPolicy(policyout);
+        /*
+         * In order to be associated to an agent class different from the basic
+         * one, thus to play roles different from the default one, agents must
+         * log into TuCSoN-RBAC.
+         */
         AuthorisedAgent agent1 = new TucsonAuthorisedAgent("readClass",
                 "user12", "psw1");
         AuthorisedAgent agent2 = new TucsonAuthorisedAgent("readClass",
@@ -134,6 +154,10 @@ public final class AdminAgent extends AbstractTucsonAgent {
         AuthorisedAgent agent3 = new TucsonAuthorisedAgent("writeClass",
                 "user3", "psw3");
         TucsonRBACStructure rbac = new TucsonRBACStructure("acme-org");
+        /*
+         * Roles, policies and authorised agents should be explicitly set in the
+         * RBAC configuration.
+         */
         rbac.addRole(roleRead);
         rbac.addRole(roleReadP);
         rbac.addRole(roleReadIn);
@@ -145,12 +169,19 @@ public final class AdminAgent extends AbstractTucsonAgent {
         rbac.addAuthorisedAgent(agent1);
         rbac.addAuthorisedAgent(agent2);
         rbac.addAuthorisedAgent(agent3);
+        /*
+         * Administrator agents may change TuCSoN node RBAC-related properties.
+         */
         rbac.allowInspection(true);
         rbac.setBasicAgentClass("newBasicClass");
         rbac.requireLogin(false);
         Logger.getLogger("AdminAgent").info(
                 "Acquiring AdminACC from TuCSoN Node installed on TCP port "
                         + this.myport());
+        /*
+         * An administrator ACC should be acquired in order to gain
+         * administrative access to TuCSoN-RBAC.
+         */
         AdminACC adminACC = TucsonMetaACC.getAdminContext(
                 this.getTucsonAgentId(), "localhost", 20504, "admin", "psw");
         Logger.getLogger("AdminAgent").info("AdminACC acquired");
