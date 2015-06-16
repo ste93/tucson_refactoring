@@ -67,7 +67,7 @@ to constrain access to the TuCSoN-coordinated system only to logged (recognised)
 
 to configure the basic agent class automatically associated to non-logged agents.
 
-**>>>RBAC interaction.** To partecipate a RBAC organisation installed in TuCSoN, agents need to:
+**>>>RBAC interaction.** To participate a RBAC organisation installed in TuCSoN, agents need to:
 
  1. acquire a **meta-ACC**.
  2. activate a role to acquire an **ACC**.

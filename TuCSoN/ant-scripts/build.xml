@@ -272,6 +272,8 @@
 			<fileset file="${basedir}/../how-to/TuCSoN-guide.pdf" />
 			<fileset file="${basedir}/../how-to/how-to.html" />
 			<fileset file="${basedir}/../how-to/situatedness.html" />
+			<fileset file="${basedir}/../how-to/asynchronous-support.html" />
+			<fileset file="${basedir}/../how-to/rbac.html" />
 			<fileset file="${basedir}/../how-to/TuCSoN-boot.png" />
 		</copy>
 
