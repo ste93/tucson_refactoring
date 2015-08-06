@@ -652,6 +652,9 @@ public class RespectOperation extends AbstractTupleCentreOperation implements
     public List<LogicTuple> getLogicTupleListResult() {
         final List<Tuple> tl = this.getTupleListResult();
         final List<LogicTuple> tll = new LinkedList<LogicTuple>();
+        if (tl == null) {
+            return new LinkedList<LogicTuple>();
+        }
         for (final Tuple t : tl) {
             tll.add((LogicTuple) t);
         }
