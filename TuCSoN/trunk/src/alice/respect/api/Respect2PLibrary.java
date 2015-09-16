@@ -133,6 +133,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     }
 
     private RespectVMContext vm;
+    private final static LogicTupleOpManager opMan = new LogicTupleOpManager();
 
     /**
      *
@@ -214,7 +215,9 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      *         ReSpecT reaction.
      */
     public boolean current_source_1(final Term source) {
-        final Term t = ((TupleCentreId) this.vm.getId()).toTerm();
+        // final Term t = ((TupleCentreId) this.vm.getId()).toTerm();
+        final Term t = Term.createTerm(this.vm.getId().toString(),
+                Respect2PLibrary.opMan);
         return this.unify(source, t);
     }
 
@@ -226,7 +229,9 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      *         target
      */
     public boolean current_target_1(final Term target) {
-        final Term t = ((TupleCentreId) this.vm.getId()).toTerm();
+        // final Term t = ((TupleCentreId) this.vm.getId()).toTerm();
+        final Term t = Term.createTerm(this.vm.getId().toString(),
+                Respect2PLibrary.opMan);
         // Respect2PLibrary.log("target = " + target + " | " + t + " = t");
         return this.unify(target, t);
     }
@@ -307,10 +312,14 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     public boolean event_source_1(final Term source) {
         final IId id = this.vm.getCurrentReactionEvent().getSource();
         if (id.isAgent()) {
-            final Term aid = ((AgentId) id).toTerm();
+            // final Term aid = ((AgentId) id).toTerm();
+            final Term aid = Term.createTerm(id.toString(),
+                    new LogicTupleOpManager());
             return this.unify(source, aid);
         } else if (id.isTC()) {
-            final Term tcid = ((TupleCentreId) id).toTerm();
+            // final Term tcid = ((TupleCentreId) id).toTerm();
+            final Term tcid = Term.createTerm(id.toString(),
+                    new LogicTupleOpManager());
             return this.unify(source, tcid);
         } else {
             return false;
@@ -327,10 +336,14 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     public boolean event_target_1(final Term target) {
         final IId id = this.vm.getCurrentReactionEvent().getTarget();
         if (id.isAgent()) {
-            final Term aid = ((AgentId) id).toTerm();
+            // final Term aid = ((AgentId) id).toTerm();
+            final Term aid = Term.createTerm(id.toString(),
+                    new LogicTupleOpManager());
             return this.unify(target, aid);
         } else if (id.isTC()) {
-            final Term tcid = ((TupleCentreId) id).toTerm();
+            // final Term tcid = ((TupleCentreId) id).toTerm();
+            final Term tcid = Term.createTerm(id.toString(),
+                    new LogicTupleOpManager());
             return this.unify(target, tcid);
         } else {
             return false;
@@ -1967,10 +1980,14 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
             final InternalEvent ie = (InternalEvent) e;
             final IId id = ie.getInputEvent().getSource();
             if (id.isAgent()) {
-                final Term aid = ((AgentId) id).toTerm();
+                // final Term aid = ((AgentId) id).toTerm();
+                final Term aid = Term.createTerm(id.toString(),
+                        new LogicTupleOpManager());
                 return this.unify(source, aid);
             } else if (id.isTC()) {
-                final Term tcid = ((TupleCentreId) id).toTerm();
+                // final Term tcid = ((TupleCentreId) id).toTerm();
+                final Term tcid = Term.createTerm(id.toString(),
+                        new LogicTupleOpManager());
                 return this.unify(source, tcid);
             } else {
                 return false;
@@ -1979,10 +1996,14 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
             final OutputEvent oe = (OutputEvent) e;
             final IId id = oe.getInputEvent().getSource();
             if (id.isAgent()) {
-                final Term aid = ((AgentId) id).toTerm();
+                // final Term aid = ((AgentId) id).toTerm();
+                final Term aid = Term.createTerm(id.toString(),
+                        new LogicTupleOpManager());
                 return this.unify(source, aid);
             } else if (id.isTC()) {
-                final Term tcid = ((TupleCentreId) id).toTerm();
+                // final Term tcid = ((TupleCentreId) id).toTerm();
+                final Term tcid = Term.createTerm(id.toString(),
+                        new LogicTupleOpManager());
                 return this.unify(source, tcid);
             } else {
                 return false;
@@ -1990,10 +2011,14 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         } else {
             final IId id = e.getSource();
             if (id.isAgent()) {
-                final Term aid = ((AgentId) id).toTerm();
+                // final Term aid = ((AgentId) id).toTerm();
+                final Term aid = Term.createTerm(id.toString(),
+                        new LogicTupleOpManager());
                 return this.unify(source, aid);
             } else if (id.isTC()) {
-                final Term tcid = ((TupleCentreId) id).toTerm();
+                // final Term tcid = ((TupleCentreId) id).toTerm();
+                final Term tcid = Term.createTerm(id.toString(),
+                        new LogicTupleOpManager());
                 return this.unify(source, tcid);
             } else {
                 return false;
@@ -2014,10 +2039,14 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
             final InternalEvent ie = (InternalEvent) e;
             final IId id = ie.getInputEvent().getTarget();
             if (id.isAgent()) {
-                final Term aid = ((AgentId) id).toTerm();
+                // final Term aid = ((AgentId) id).toTerm();
+                final Term aid = Term.createTerm(id.toString(),
+                        new LogicTupleOpManager());
                 return this.unify(target, aid);
             } else if (id.isTC()) {
-                final Term tcid = ((TupleCentreId) id).toTerm();
+                // final Term tcid = ((TupleCentreId) id).toTerm();
+                final Term tcid = Term.createTerm(id.toString(),
+                        new LogicTupleOpManager());
                 return this.unify(target, tcid);
             } else {
                 return false;
@@ -2026,10 +2055,14 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
             final OutputEvent oe = (OutputEvent) e;
             final IId id = oe.getInputEvent().getTarget();
             if (id.isAgent()) {
-                final Term aid = ((AgentId) id).toTerm();
+                // final Term aid = ((AgentId) id).toTerm();
+                final Term aid = Term.createTerm(id.toString(),
+                        new LogicTupleOpManager());
                 return this.unify(target, aid);
             } else if (id.isTC()) {
-                final Term tcid = ((TupleCentreId) id).toTerm();
+                // final Term tcid = ((TupleCentreId) id).toTerm();
+                final Term tcid = Term.createTerm(id.toString(),
+                        new LogicTupleOpManager());
                 return this.unify(target, tcid);
             } else {
                 return false;
@@ -2037,10 +2070,14 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         } else {
             final IId id = e.getTarget();
             if (id.isAgent()) {
-                final Term aid = ((AgentId) id).toTerm();
+                // final Term aid = ((AgentId) id).toTerm();
+                final Term aid = Term.createTerm(id.toString(),
+                        new LogicTupleOpManager());
                 return this.unify(target, aid);
             } else if (id.isTC()) {
-                final Term tcid = ((TupleCentreId) id).toTerm();
+                // final Term tcid = ((TupleCentreId) id).toTerm();
+                final Term tcid = Term.createTerm(id.toString(),
+                        new LogicTupleOpManager());
                 return this.unify(target, tcid);
             } else {
                 return false;
