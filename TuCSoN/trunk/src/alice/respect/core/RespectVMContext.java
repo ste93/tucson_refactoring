@@ -82,6 +82,8 @@ import alice.tuprolog.Var;
  * @author Alessandro Ricci
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
  * @author (contributor) Saverio Cicora
+ * @author (contributor) Michele Bombardi (mailto:
+ *         michele.bombardi@studio.unibo.it)
  */
 public class RespectVMContext extends
 alice.tuplecentre.core.AbstractTupleCentreVMContext {
@@ -114,7 +116,8 @@ alice.tuplecentre.core.AbstractTupleCentreVMContext {
                     + arg0.getTupleListResult());
             final InputEvent res = new InputEvent(this.oe.getSource(), arg0,
                     (TupleCentreId) this.oe.getTarget(),
-                    RespectVMContext.this.getCurrentTime());
+                    RespectVMContext.this.getCurrentTime(),
+                    RespectVMContext.this.getPosition());
             RespectVMContext.this.notifyInputEvent(res);
         }
     }

@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 import alice.respect.api.IRespectTC;
+import alice.respect.api.geolocation.PlatformUtils;
 import alice.respect.api.geolocation.Position;
 import alice.respect.core.RespectVM;
 import alice.respect.core.StepMonitor;
@@ -45,6 +46,8 @@ import alice.tuplecentre.api.exceptions.OperationNotPossibleException;
  *
  * @author Alessandro Ricci
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
+ * @author (contributor) Michele Bombardi (mailto:
+ *         michele.bombardi@studio.unibo.it)
  */
 public abstract class AbstractTupleCentreVMContext implements
         ITupleCentreManagement, ITupleCentre {
@@ -56,6 +59,7 @@ public abstract class AbstractTupleCentreVMContext implements
     private final List<AbstractEvent> inputEvents;
     private boolean management;
     private final int maxPendingInputEventNumber;
+    private Position place;
     private final IRespectTC respectTC;
     private final RespectVM rvm;
     private final Map<String, AbstractTupleCentreVMState> states;
@@ -171,7 +175,7 @@ public abstract class AbstractTupleCentreVMContext implements
     public void doOperation(final IId who, final AbstractTupleCentreOperation op)
             throws OperationNotPossibleException {
         final InputEvent ev = new InputEvent(who, op, this.tid,
-                this.getCurrentTime());
+                this.getCurrentTime(), this.getPosition());
         synchronized (this.inputEvents) {
             if (this.inputEvents.size() > this.maxPendingInputEventNumber) {
                 throw new OperationNotPossibleException(
@@ -325,6 +329,14 @@ public abstract class AbstractTupleCentreVMContext implements
      * @return the iterator
      */
     public abstract Iterator<? extends AbstractEvent> getPendingQuerySetIterator();
+    
+    /**
+     * 
+     * @return the position of the device hosting the tuple centre VM
+     */
+    public Position getPosition() {
+        return this.place;
+    }
 
     /**
      *
@@ -622,5 +634,22 @@ public abstract class AbstractTupleCentreVMContext implements
      */
     protected void setBootTime() {
         this.bootTime = System.currentTimeMillis();
+    }
+    
+    /**
+     * 
+     */
+    protected void setPosition() {
+        this.place = new Position();
+        final GeolocationServiceManager geolocationManager = GeolocationServiceManager
+                .getGeolocationManager();
+        if (geolocationManager.getServices().size() > 0) {
+            final int platform = PlatformUtils.getPlatform();
+            final AbstractGeolocationService geoService = GeolocationServiceManager
+                    .getGeolocationManager().getAppositeService(platform);
+            if (geoService != null && !geoService.isRunning()) {
+                geoService.start();
+            }
+        }
     }
 }

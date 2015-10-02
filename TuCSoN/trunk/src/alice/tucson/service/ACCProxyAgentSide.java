@@ -17,11 +17,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+
 import alice.logictuple.LogicTuple;
 import alice.logictuple.LogicTupleOpManager;
 import alice.logictuple.Value;
 import alice.logictuple.Var;
 import alice.logictuple.exceptions.InvalidVarNameException;
+import alice.respect.api.geolocation.Position;
+import alice.respect.api.place.IPlace;
 import alice.tucson.api.EnhancedACC;
 import alice.tucson.api.ITucsonOperation;
 import alice.tucson.api.TucsonAgentId;
@@ -108,6 +111,10 @@ public class ACCProxyAgentSide implements EnhancedACC {
      */
     protected int port;
     /**
+     * Current ACC position
+     */
+    protected Position position;
+    /**
      * Username of Admin agents
      */
     protected String username;
@@ -155,6 +162,7 @@ public class ACCProxyAgentSide implements EnhancedACC {
         final UUID agentUUID = UUID.randomUUID();
         this.executor = new OperationHandler(agentUUID);
         this.isACCEntered = false;
+        this.setPosition();
     }
 
     public ACCProxyAgentSide(final Object agId, final String n, final int p,
@@ -254,6 +262,14 @@ public class ACCProxyAgentSide implements EnhancedACC {
     @Override
     public Map<Long, TucsonOperation> getPendingOperationsMap() {
         return this.executor.operations;
+    }
+    
+    /**
+     * 
+     * @return the position of the agent behind this ACC
+     */
+    public Position getPosition() {
+        return this.position;
     }
 
     @Override
@@ -687,6 +703,24 @@ public class ACCProxyAgentSide implements EnhancedACC {
                     UnreachableNodeException {
         return this.executor.doNonBlockingOperation(this.aid,
                 TucsonOperation.setCode(), tid, tuple, l);
+    }
+    
+    /**
+     * 
+     */
+    public final void setPosition() {
+        this.position = new Position();
+    }
+
+    /**
+     * 
+     * @param place
+     *            the position of the agent behind this ACC
+     */
+    public void setPosition(final IPlace place) {
+        if (this.position != null) {
+            this.position.setPlace(place);
+        }
     }
 
     @Override

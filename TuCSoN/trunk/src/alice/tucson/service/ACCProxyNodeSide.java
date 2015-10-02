@@ -20,6 +20,8 @@ import java.util.List;
 import java.util.Map;
 
 import alice.logictuple.LogicTuple;
+import alice.logictuple.exceptions.InvalidLogicTupleException;
+import alice.respect.core.RespectOperation;
 import alice.tucson.api.TucsonAgentId;
 import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
@@ -468,5 +470,44 @@ public class ACCProxyNodeSide extends AbstractACCProxyNodeSide {
     private void log(final String st) {
         System.out.println("..[ACCProxyNodeSide (" + this.node.getTCPPort()
                 + ", " + this.ctxId + ", " + this.agentName + ")]: " + st);
+    }
+    
+    /**
+     * 
+     * @param p
+     * @param opType
+     * @param tuple
+     * @return
+     */
+    private RespectOperation makeOperation(final int opType,
+            final LogicTuple tuple) {
+        RespectOperation op = null;
+        try {
+            if (opType == TucsonOperation.getCode()
+                    || opType == TucsonOperation.getSCode()
+                    || opType == TucsonOperation.setCode()
+                    || opType == TucsonOperation.setSCode()) {
+                op = RespectOperation.make(null, opType, tuple, null); // blocking
+                                                                       // operation,
+                                                                       // no
+                                                                       // need
+                                                                       // for
+                                                                       // operation
+                                                                       // completion
+                                                                       // listener
+            } else {
+                op = RespectOperation.make(null, opType, tuple, this); // non
+                                                                       // blocking
+                                                                       // operation,
+                                                                       // need
+                                                                       // for
+                                                                       // operation
+                                                                       // completion
+                                                                       // listener
+            }
+        } catch (final InvalidLogicTupleException e) {
+            e.printStackTrace();
+        }
+        return op;
     }
 }
