@@ -15,6 +15,8 @@ package alice.tuplecentre.core;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import alice.respect.api.geolocation.Position;
 import alice.tuplecentre.api.IId;
 import alice.tuplecentre.api.Tuple;
 import alice.tuplecentre.api.TupleCentreId;
@@ -26,11 +28,15 @@ import alice.tuplecentre.api.TupleCentreId;
  *
  * @author Alessandro Ricci
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
+ * @author (contributor) Michele Bombardi (mailto:
+ *         michele.bombardi@studio.unibo.it)
  */
 public abstract class AbstractEvent implements java.io.Serializable {
 
     private static final long serialVersionUID = 5233628097824741218L;
     private final Map<String, String> evProp;
+    /** place in where this event occurs */
+    private final Position place;
     /** the current tuple centre (VM) where this event is managed **/
     private TupleCentreId reactingTC;
     /** the operation (primitive + tuple) associated with this event **/
@@ -52,15 +58,18 @@ public abstract class AbstractEvent implements java.io.Serializable {
      *            the identifier of the tuple centre target of the event
      * @param t
      *            the time at which the event was generated
+     * @param p
+     *            the position (wichever sort of) where the event was generated
      */
     public AbstractEvent(final IId s, final AbstractTupleCentreOperation op,
-            final TupleCentreId tc, final long t) {
+            final TupleCentreId tc, final long t, final Position p) {
         this.source = s;
         this.simpleTCEvent = op;
         this.target = tc;
         this.reactingTC = tc;
         this.time = t;
         this.evProp = new HashMap<String, String>();
+        this.place = p;
     }
 
     /**
@@ -75,10 +84,12 @@ public abstract class AbstractEvent implements java.io.Serializable {
      *            the time at which the event was generated
      * @param prop
      *            some properties relatde to the event
+     * @param p
+     *            the position (wichever sort of) where the event was generated
      */
     public AbstractEvent(final IId s, final AbstractTupleCentreOperation op,
-            final TupleCentreId tc, final long t, final Map<String, String> prop) {
-        this(s, op, tc, t);
+            final TupleCentreId tc, final long t, final Position p, final Map<String, String> prop) {
+        this(s, op, tc, t, p);
         this.evProp.putAll(prop);
     }
 
@@ -91,6 +102,14 @@ public abstract class AbstractEvent implements java.io.Serializable {
      */
     public String getEventProp(final String key) {
         return this.evProp.get(key);
+    }
+    
+    /**
+     * 
+     * @return the place in where this event occurred
+     */
+    public Position getPosition() {
+        return this.place;
     }
 
     /**

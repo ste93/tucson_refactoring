@@ -19,6 +19,8 @@ package alice.tuplecentre.core;
  *
  * @author Alessandro Ricci
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
+ * @author (contributor) Michele Bombardi (mailto:
+ *         michele.bombardi@studio.unibo.it)
  */
 public class OutputEvent extends AbstractEvent {
 
@@ -34,7 +36,7 @@ public class OutputEvent extends AbstractEvent {
      */
     public OutputEvent(final InputEvent ev) {
         super(ev.getSource(), ev.getSimpleTCEvent(), ev.getReactingTC(), ev
-                .getTime());
+                .getTime(), ev.getPosition());
         this.inputEvent = ev;
         this.isLnk = ev.isLinking();
     }

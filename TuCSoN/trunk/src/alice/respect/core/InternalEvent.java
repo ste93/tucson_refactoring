@@ -20,6 +20,8 @@ import alice.tuplecentre.core.InputEvent;
  *
  * @author Alessandro Ricci
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
+ * @author (contributor) Michele Bombardi (mailto:
+ *         michele.bombardi@studio.unibo.it)
  */
 public class InternalEvent extends alice.tuplecentre.core.AbstractEvent {
 
@@ -36,7 +38,7 @@ public class InternalEvent extends alice.tuplecentre.core.AbstractEvent {
      */
     public InternalEvent(final InputEvent ev, final InternalOperation op) {
         super(ev.getSource(), ev.getSimpleTCEvent(), ev.getReactingTC(), ev
-                .getTime());
+                .getTime(), ev.getPosition());
         this.inputEvent = ev;
         this.internalOperation = op;
     }
