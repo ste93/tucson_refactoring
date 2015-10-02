@@ -193,11 +193,15 @@ public class ACCProxyAgentSide implements EnhancedACC {
 
     @Override
     public synchronized void exit() {
-        final Iterator<OperationHandler.ControllerSession> it = this.executor
-                .getControllerSessions().values().iterator();
-        OperationHandler.ControllerSession cs;
-        OperationHandler.Controller contr;
+        if (this.myGeolocationService != null) {
+            GeolocationServiceManager.getGeolocationManager().destroyService(
+                    this.myGeolocationService.getServiceId());
+        }
+        final Iterator<ControllerSession> it = this.controllerSessions.values()
+                .iterator();
+        ControllerSession cs;
         AbstractTucsonProtocol info;
+        Controller contr;
         TucsonOperation op;
         TucsonMsgRequest exit;
         while (it.hasNext()) {
@@ -206,13 +210,15 @@ public class ACCProxyAgentSide implements EnhancedACC {
             contr = cs.getController();
             contr.setStop();
             op = new TucsonOperation(TucsonOperation.exitCode(),
-                    (TupleTemplate) null, null, this.executor /* this */);
-            this.executor.addOperation(op.getId(), op);
-            exit = new TucsonMsgRequest((int) op.getId(), op.getType(), null,
-                    op.getLogicTupleArgument());
+                    (TupleTemplate) null, null, this);
+            this.operations.put(op.getId(), op);
+            final InputEventMsg ev = new InputEventMsg(this.aid.toString(),
+                    op.getId(), op.getType(), op.getLogicTupleArgument(), null,
+                    System.currentTimeMillis(), this.getPosition());
+            exit = new TucsonMsgRequest(ev);
             try {
                 info.sendMsgRequest(exit);
-            } catch (final DialogSendException e) {
+            } catch (final DialogException e) {
                 e.printStackTrace();
             }
         }

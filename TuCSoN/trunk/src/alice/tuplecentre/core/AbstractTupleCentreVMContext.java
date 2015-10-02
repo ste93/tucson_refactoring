@@ -18,7 +18,9 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+
 import alice.respect.api.IRespectTC;
+import alice.respect.api.geolocation.Position;
 import alice.respect.core.RespectVM;
 import alice.respect.core.StepMonitor;
 import alice.tuplecentre.api.AgentId;
