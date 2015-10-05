@@ -24,6 +24,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 import java.util.Timer;
+
 import alice.logictuple.LogicTuple;
 import alice.logictuple.LogicTupleOpManager;
 import alice.logictuple.TupleArgument;
@@ -34,6 +35,7 @@ import alice.respect.api.IRespectTC;
 import alice.respect.api.RespectSpecification;
 import alice.respect.api.TupleCentreId;
 import alice.respect.api.exceptions.OperationNotPossibleException;
+import alice.respect.api.geolocation.PlatformUtils;
 import alice.respect.core.tupleset.ITupleSet;
 import alice.respect.core.tupleset.TupleSetCoord;
 import alice.respect.core.tupleset.TupleSetSpec;
@@ -1028,6 +1030,36 @@ alice.tuplecentre.core.AbstractTupleCentreVMContext {
             }
         }
     }
+    
+    /**
+     * 
+     * @return a Java iterator through the list of spatial from reactions
+     *         possibly found
+     */
+    public Iterator<Term> findFromReactions() {
+        final List<Term> foundReactions = new ArrayList<Term>();
+        try {
+            final Struct from = new Struct("from", new alice.tuprolog.Var("S"),
+                    new alice.tuprolog.Var("P"));
+            final Struct fev = new Struct("reaction", from,
+                    new alice.tuprolog.Var("G"), new alice.tuprolog.Var("R"));
+            SolveInfo info = this.trigCore.solve(fev);
+            while (info.isSuccess()) {
+                foundReactions.add(from);
+                if (this.trigCore.hasOpenAlternatives()) {
+                    info = this.trigCore.solveNext();
+                } else {
+                    break;
+                }
+                this.trigCore.solveEnd();
+            }
+        } catch (final NoMoreSolutionException e) {
+            this.notifyException("INTERNAL ERROR: fetchFromReactions ");
+            this.trigCore.solveEnd();
+        }
+        return foundReactions.iterator();
+    }
+
 
     /**
      *
@@ -1057,6 +1089,35 @@ alice.tuplecentre.core.AbstractTupleCentreVMContext {
             this.trigCore.solveEnd();
         } catch (final NoSolutionException e) {
             this.notifyException("INTERNAL ERROR: fetchTimedReactions ");
+            this.trigCore.solveEnd();
+        }
+        return foundReactions.iterator();
+    }
+    
+    /**
+     * 
+     * @return a Java iterator through the list of spatial to reactions possibly
+     *         found
+     */
+    public Iterator<Term> findToReactions() {
+        final List<Term> foundReactions = new ArrayList<Term>();
+        try {
+            final Struct to = new Struct("to", new alice.tuprolog.Var("S"),
+                    new alice.tuprolog.Var("P"));
+            final Struct tev = new Struct("reaction", to,
+                    new alice.tuprolog.Var("G"), new alice.tuprolog.Var("R"));
+            SolveInfo info = this.trigCore.solve(tev);
+            while (info.isSuccess()) {
+                foundReactions.add(to);
+                if (this.trigCore.hasOpenAlternatives()) {
+                    info = this.trigCore.solveNext();
+                } else {
+                    break;
+                }
+                this.trigCore.solveEnd();
+            }
+        } catch (final NoMoreSolutionException e) {
+            this.notifyException("INTERNAL ERROR: fetchToReactions ");
             this.trigCore.solveEnd();
         }
         return foundReactions.iterator();
@@ -1898,7 +1959,7 @@ alice.tuplecentre.core.AbstractTupleCentreVMContext {
     }
 
     /**
-     *
+     * 
      * @param spec
      *            the ReSpecT specification to be added to this ReSpecT VM
      *            storage context
@@ -1943,9 +2004,35 @@ alice.tuplecentre.core.AbstractTupleCentreVMContext {
                     delay = 0;
                 }
                 currTimer.schedule(
-                        new RespectTimerTask(this, RespectOperation.makeTime(
-                                new LogicTuple("time", new TupleArgument(
-                                        current)), null)), delay);
+                        new RespectTimerTask(this, RespectOperation.makeTime(new LogicTuple("time",
+                                        new TupleArgument(current)), null)),
+                        delay);
+            }
+            /** SPATIAL EXTENSION - Interfacing with geolocation service **/
+            final GeolocationServiceManager geolocationManager = GeolocationServiceManager
+                    .getGeolocationManager();
+            if (geolocationManager.getServices().size() > 0) {
+                final int platform = PlatformUtils.getPlatform();
+                final AbstractGeolocationService geoService = GeolocationServiceManager
+                        .getGeolocationManager().getAppositeService(platform);
+                if (geoService != null) {
+                    final Iterator<Term> fit = this.findFromReactions();
+                    final Iterator<Term> tit = this.findToReactions();
+                    if (fit.hasNext() || tit.hasNext()) {
+                        if (!geoService.isRunning()) {
+                            geoService.start();
+                        }
+                        geoService.generateSpatialEvents(true);
+                        while (fit.hasNext()) {
+                            fit.next();
+                        }
+                        while (tit.hasNext()) {
+                            tit.next();
+                        }
+                    } else {
+                        geoService.generateSpatialEvents(false);
+                    }
+                }
             }
             return true;
         } catch (final alice.tuprolog.InvalidTheoryException ex) {
@@ -1957,7 +2044,7 @@ alice.tuplecentre.core.AbstractTupleCentreVMContext {
     }
 
     /**
-     *
+     * 
      * @param spec
      *            the ReSpecT specification to overwrite this ReSpecT VM one
      *            with
@@ -2024,15 +2111,41 @@ alice.tuplecentre.core.AbstractTupleCentreVMContext {
                     delay = 0;
                 }
                 currTimer.schedule(
-                        new RespectTimerTask(this, RespectOperation.makeTime(
-                                new LogicTuple("time", new TupleArgument(
-                                        current)), null)), delay);
+                        new RespectTimerTask(this, RespectOperation.makeTime(new LogicTuple("time",
+                                        new TupleArgument(current)), null)),
+                        delay);
+            }
+            /** SPATIAL EXTENSION - Interfacing with geolocation service **/
+            final GeolocationServiceManager geolocationManager = GeolocationServiceManager
+                    .getGeolocationManager();
+            if (geolocationManager.getServices().size() > 0) {
+                final int platform = PlatformUtils.getPlatform();
+                final AbstractGeolocationService geoService = GeolocationServiceManager
+                        .getGeolocationManager().getAppositeService(platform);
+                if (geoService != null) {
+                    final Iterator<Term> fit = this.findFromReactions();
+                    final Iterator<Term> tit = this.findToReactions();
+                    if (fit.hasNext() || tit.hasNext()) {
+                        if (!geoService.isRunning()) {
+                            geoService.start();
+                        }
+                        geoService.generateSpatialEvents(true);
+                        while (fit.hasNext()) {
+                            fit.next();
+                        }
+                        while (tit.hasNext()) {
+                            tit.next();
+                        }
+                    } else {
+                        geoService.generateSpatialEvents(false);
+                    }
+                }
             }
             return true;
         } catch (final alice.tuprolog.InvalidTheoryException ex) {
             // FIXME Check correctness
             this.notifyException("<!> Invalid reaction spec: " + ex.line + " "
-                    + ex.pos + " <!>");
+                    + ex.pos + "<!>");
             return false;
         }
     }
