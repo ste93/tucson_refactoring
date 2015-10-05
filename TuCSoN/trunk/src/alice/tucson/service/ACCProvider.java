@@ -37,6 +37,7 @@ import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.introspection.InspectorContextSkel;
 import alice.tucson.network.AbstractTucsonProtocol;
 import alice.tucson.network.exceptions.DialogException;
+import alice.tucson.network.exceptions.DialogSendException;
 import alice.tuplecentre.core.InputEvent;
 import alice.util.Tools;
 
@@ -109,7 +110,7 @@ public class ACCProvider {
             final LogicTuple req = new LogicTuple("context_request", new Value(
                     agentName), new Var("CtxId"));
             // Operation Make
-            final RespectOperation opRequested = RespectOperation.make(null,
+            final RespectOperation opRequested = RespectOperation.make(
                     TucsonOperation.inpCode(), req, null);
             // InputEvent Creation
             final InputEvent ev = new InputEvent(this.aid, opRequested,
@@ -122,20 +123,32 @@ public class ACCProvider {
             // req);
             if (result == null) {
                 profile.setProperty("failure", "context not available");
-                dialog.sendEnterRequestRefused();
+                try {
+					dialog.sendEnterRequestRefused();
+				} catch (DialogSendException e) {
+					e.printStackTrace();
+				}
                 return false;
             }
             final TupleArgument res = result.getArg(1);
             if ("failed".equals(res.getName())) {
                 profile.setProperty("failure", res.getArg(0).getName());
-                dialog.sendEnterRequestRefused();
+                try {
+					dialog.sendEnterRequestRefused();
+				} catch (DialogSendException e) {
+					e.printStackTrace();
+				}
                 return false;
             }
             final TupleArgument ctxId = res.getArg(0);
             profile.setProperty("context-id", ctxId.toString());
             ACCProvider.log("ACC request accepted, ACC id is < "
                     + ctxId.toString() + " >");
-            dialog.sendEnterRequestAccepted();
+            try {
+				dialog.sendEnterRequestAccepted();
+			} catch (DialogSendException e) {
+				e.printStackTrace();
+			}
             final String agentRole = profile.getProperty("agent-role");
             if ("$inspector".equals(agentRole)) {
                 final AbstractACCProxyNodeSide skel = new InspectorContextSkel(
@@ -151,10 +164,6 @@ public class ACCProvider {
             }
             return true;
         } catch (final LogicTupleException e) {
-            profile.setProperty("failure", "generic");
-            e.printStackTrace();
-            return false;
-        } catch (final IOException e) {
             profile.setProperty("failure", "generic");
             e.printStackTrace();
             return false;
@@ -200,12 +209,17 @@ public class ACCProvider {
     // exception handling is a mess, need to review it...
     public synchronized boolean shutdownContext(final int ctxId,
             final TucsonAgentId id) {
-        final LogicTuple req = new LogicTuple("context_shutdown", new Value(
-                ctxId), new Value(id.toString()), new Var("CtxId"));
+        LogicTuple req = null;
+		try {
+			req = new LogicTuple("context_shutdown", new Value(
+			        ctxId), new Value(id.toString()), new Var("CtxId"));
+		} catch (InvalidVarNameException e1) {
+			e1.printStackTrace();
+		}
         LogicTuple result;
         try {
             // Operation Make
-            final RespectOperation opRequested = RespectOperation.make(null,
+            final RespectOperation opRequested = RespectOperation.make(
                     TucsonOperation.inpCode(), req, null);
             // InputEvent Creation
             final InputEvent ev = new InputEvent(this.aid, opRequested,
@@ -225,14 +239,14 @@ public class ACCProvider {
             e.printStackTrace();
             return false;
         }
-        try {
+       // try {
             if ("ok".equals(result.getArg(2).getName())) {
                 return true;
             }
             return false;
-        } catch (final InvalidLogicTupleOperationException e) {
-            e.printStackTrace();
-            return false;
-        }
+       // } catch (final InvalidLogicTupleOperationException e) {
+         //   e.printStackTrace();
+        //    return false;
+      //  }
     }
 }

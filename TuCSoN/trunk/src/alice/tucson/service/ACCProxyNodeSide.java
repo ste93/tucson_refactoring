@@ -48,6 +48,8 @@ import alice.tuplecentre.core.InputEvent;
  *
  * @author Alessandro Ricci
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
+ * @author (contributor) Michele Bombardi (mailto:
+ *         michele.bombardi@studio.unibo.it)
  *
  */
 public class ACCProxyNodeSide extends AbstractACCProxyNodeSide {
