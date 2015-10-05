@@ -4,312 +4,251 @@ import java.util.List;
 import alice.logictuple.LogicTuple;
 import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.respect.api.exceptions.OperationNotPossibleException;
-import alice.tuplecentre.api.IId;
+import alice.tuplecentre.core.InputEvent;
 
 /**
  * A ReSpecT Tuple Centre Interface to issue ReSpecT ordinary primitives using a
  * synchronous semantics.
- *
+ * 
  * @author Alessandro Ricci
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
+ * @author (contributor) Michele Bombardi (mailto:
+ *         michele.bombardi@studio.unibo.it)
  */
 public interface IOrdinarySynchInterface {
-
     /**
-     *
-     * @param aid
-     *            the identifier of who is invokin the operation the identifier
-     *            of who is invokin the operation
-     * @return the result of the operation the result of the operation
-     * @throws OperationNotPossibleException
-     *             if the operation requested cannot be carried out if the
-     *             operation requested cannot be carried out
-     */
-    List<LogicTuple> get(IId aid) throws OperationNotPossibleException;
-
-    /**
-     *
-     * @param aid
-     *            the identifier of who is invokin the operation
-     * @param t
-     *            the tuple argument of the operation the tuple argument of the
-     *            operation
+     * @param ev
+     *            the event to handle
      * @return the result of the operation
-     * @throws InvalidLogicTupleException
-     *             if the tuple given as argument is not a valid Prolog tuple if
-     *             the tuple given as argument is not a valid Prolog tuple
      * @throws OperationNotPossibleException
      *             if the operation requested cannot be carried out
      */
-    LogicTuple in(IId aid, LogicTuple t) throws InvalidLogicTupleException,
+    List<LogicTuple> get(InputEvent ev) throws OperationNotPossibleException;
+
+    /**
+     * @param ev
+     *            the event to handle
+     * @return the result of the operation
+     * @throws InvalidLogicTupleException
+     *             if the tuple given as argument is not a valid Prolog tuple
+     * @throws OperationNotPossibleException
+     *             if the operation requested cannot be carried out
+     */
+    LogicTuple in(InputEvent ev) throws InvalidLogicTupleException,
             OperationNotPossibleException;
 
     /**
-     *
-     * @param aid
-     *            the identifier of who is invokin the operation
-     * @param t
-     *            the tuple argument of the operation
+     * @param ev
+     *            the event to handle
      * @return the result of the operation
      * @throws InvalidLogicTupleException
      *             if the tuple given as argument is not a valid Prolog tuple
      * @throws OperationNotPossibleException
      *             if the operation requested cannot be carried out
      */
-    List<LogicTuple> inAll(IId aid, LogicTuple t)
-            throws InvalidLogicTupleException, OperationNotPossibleException;
-
-    /**
-     *
-     * @param aid
-     *            the identifier of who is invokin the operation
-     * @param t
-     *            the tuple argument of the operation
-     * @return the result of the operation
-     * @throws InvalidLogicTupleException
-     *             if the tuple given as argument is not a valid Prolog tuple
-     * @throws OperationNotPossibleException
-     *             if the operation requested cannot be carried out
-     */
-    LogicTuple inp(IId aid, LogicTuple t) throws InvalidLogicTupleException,
+    List<LogicTuple> inAll(InputEvent ev) throws InvalidLogicTupleException,
             OperationNotPossibleException;
 
     /**
-     *
-     * @param aid
-     *            the identifier of who is invokin the operation
-     * @param t
-     *            the tuple argument of the operation
+     * @param ev
+     *            the event to handle
      * @return the result of the operation
      * @throws InvalidLogicTupleException
      *             if the tuple given as argument is not a valid Prolog tuple
      * @throws OperationNotPossibleException
      *             if the operation requested cannot be carried out
      */
-    LogicTuple no(IId aid, LogicTuple t) throws InvalidLogicTupleException,
+    LogicTuple inp(InputEvent ev) throws InvalidLogicTupleException,
             OperationNotPossibleException;
 
     /**
-     *
-     * @param aid
-     *            the identifier of who is invokin the operation
-     * @param t
-     *            the tuple argument of the operation
+     * @param ev
+     *            the event to handle
      * @return the result of the operation
      * @throws InvalidLogicTupleException
      *             if the tuple given as argument is not a valid Prolog tuple
      * @throws OperationNotPossibleException
      *             if the operation requested cannot be carried out
      */
-    List<LogicTuple> noAll(IId aid, LogicTuple t)
-            throws InvalidLogicTupleException, OperationNotPossibleException;
-
-    /**
-     *
-     * @param aid
-     *            the identifier of who is invokin the operation
-     * @param t
-     *            the tuple argument of the operation
-     * @return the result of the operation
-     * @throws InvalidLogicTupleException
-     *             if the tuple given as argument is not a valid Prolog tuple
-     * @throws OperationNotPossibleException
-     *             if the operation requested cannot be carried out
-     */
-    LogicTuple nop(IId aid, LogicTuple t) throws InvalidLogicTupleException,
+    LogicTuple no(InputEvent ev) throws InvalidLogicTupleException,
             OperationNotPossibleException;
 
     /**
-     *
-     * @param aid
-     *            the identifier of who is invokin the operation
-     * @param t
-     *            the tuple argument of the operation
+     * @param ev
+     *            the event to handle
+     * @return the result of the operation
      * @throws InvalidLogicTupleException
      *             if the tuple given as argument is not a valid Prolog tuple
      * @throws OperationNotPossibleException
      *             if the operation requested cannot be carried out
      */
-    void out(IId aid, LogicTuple t) throws InvalidLogicTupleException,
+    List<LogicTuple> noAll(InputEvent ev) throws InvalidLogicTupleException,
             OperationNotPossibleException;
 
     /**
-     *
-     * @param aid
-     *            the identifier of who is invokin the operation
-     * @param t
-     *            the tuple argument of the operation
+     * @param ev
+     *            the event to handle
      * @return the result of the operation
      * @throws InvalidLogicTupleException
      *             if the tuple given as argument is not a valid Prolog tuple
      * @throws OperationNotPossibleException
      *             if the operation requested cannot be carried out
      */
-    List<LogicTuple> outAll(IId aid, LogicTuple t)
-            throws InvalidLogicTupleException, OperationNotPossibleException;
-
-    /**
-     *
-     * @param aid
-     *            the identifier of who is invokin the operation
-     * @param t
-     *            the tuple argument of the operation
-     * @return the result of the operation
-     * @throws InvalidLogicTupleException
-     *             if the tuple given as argument is not a valid Prolog tuple
-     * @throws OperationNotPossibleException
-     *             if the operation requested cannot be carried out
-     */
-    LogicTuple rd(IId aid, LogicTuple t) throws InvalidLogicTupleException,
+    LogicTuple nop(InputEvent ev) throws InvalidLogicTupleException,
             OperationNotPossibleException;
 
     /**
-     *
-     * @param aid
-     *            the identifier of who is invokin the operation
-     * @param t
-     *            the tuple argument of the operation
-     * @return the result of the operation
+     * @param ev
+     *            the event to handle
      * @throws InvalidLogicTupleException
      *             if the tuple given as argument is not a valid Prolog tuple
      * @throws OperationNotPossibleException
      *             if the operation requested cannot be carried out
      */
-    List<LogicTuple> rdAll(IId aid, LogicTuple t)
-            throws InvalidLogicTupleException, OperationNotPossibleException;
-
-    /**
-     *
-     * @param aid
-     *            the identifier of who is invokin the operation
-     * @param t
-     *            the tuple argument of the operation
-     * @return the result of the operation
-     * @throws InvalidLogicTupleException
-     *             if the tuple given as argument is not a valid Prolog tuple
-     * @throws OperationNotPossibleException
-     *             if the operation requested cannot be carried out
-     */
-    LogicTuple rdp(IId aid, LogicTuple t) throws InvalidLogicTupleException,
+    void out(InputEvent ev) throws InvalidLogicTupleException,
             OperationNotPossibleException;
 
     /**
-     *
-     * @param aid
-     *            the identifier of who is invokin the operation
-     * @param tupleList
-     *            the list of tuples argument of the operation
-     * @return the result of the operation
-     * @throws OperationNotPossibleException
-     *             if the operation requested cannot be carried out
-     * @throws InvalidLogicTupleException
-     *             if the tuple given as argument is not a valid Prolog tuple
-     */
-    List<LogicTuple> set(IId aid, LogicTuple tupleList)
-            throws OperationNotPossibleException, InvalidLogicTupleException;
-
-    /**
-     *
-     * @param aid
-     *            the identifier of who is invokin the operation
-     * @param t
-     *            the tuple argument of the operation
+     * @param ev
+     *            the event to handle
      * @return the result of the operation
      * @throws InvalidLogicTupleException
      *             if the tuple given as argument is not a valid Prolog tuple
      * @throws OperationNotPossibleException
      *             if the operation requested cannot be carried out
      */
-    LogicTuple spawn(IId aid, LogicTuple t) throws InvalidLogicTupleException,
+    List<LogicTuple> outAll(InputEvent ev) throws InvalidLogicTupleException,
             OperationNotPossibleException;
 
     /**
-     *
-     * @param aid
-     *            the identifier of who is invokin the operation
-     * @param t
-     *            the tuple argument of the operation
+     * @param ev
+     *            the event to handle
      * @return the result of the operation
      * @throws InvalidLogicTupleException
      *             if the tuple given as argument is not a valid Prolog tuple
      * @throws OperationNotPossibleException
      *             if the operation requested cannot be carried out
      */
-    LogicTuple uin(IId aid, LogicTuple t) throws InvalidLogicTupleException,
+    LogicTuple rd(InputEvent ev) throws InvalidLogicTupleException,
             OperationNotPossibleException;
 
     /**
-     *
-     * @param aid
-     *            the identifier of who is invokin the operation
-     * @param t
-     *            the tuple argument of the operation
+     * @param ev
+     *            the event to handle
      * @return the result of the operation
      * @throws InvalidLogicTupleException
      *             if the tuple given as argument is not a valid Prolog tuple
      * @throws OperationNotPossibleException
      *             if the operation requested cannot be carried out
      */
-    LogicTuple uinp(IId aid, LogicTuple t) throws InvalidLogicTupleException,
+    List<LogicTuple> rdAll(InputEvent ev) throws InvalidLogicTupleException,
             OperationNotPossibleException;
 
     /**
-     *
-     * @param aid
-     *            the identifier of who is invokin the operation
-     * @param t
-     *            the tuple argument of the operation
+     * @param ev
+     *            the event to handle
      * @return the result of the operation
      * @throws InvalidLogicTupleException
      *             if the tuple given as argument is not a valid Prolog tuple
      * @throws OperationNotPossibleException
      *             if the operation requested cannot be carried out
      */
-    LogicTuple uno(IId aid, LogicTuple t) throws InvalidLogicTupleException,
+    LogicTuple rdp(InputEvent ev) throws InvalidLogicTupleException,
             OperationNotPossibleException;
 
     /**
-     *
-     * @param aid
-     *            the identifier of who is invokin the operation
-     * @param t
-     *            the tuple argument of the operation
+     * @param ev
+     *            the event to handle
      * @return the result of the operation
      * @throws InvalidLogicTupleException
      *             if the tuple given as argument is not a valid Prolog tuple
      * @throws OperationNotPossibleException
      *             if the operation requested cannot be carried out
      */
-    LogicTuple unop(IId aid, LogicTuple t) throws InvalidLogicTupleException,
+    List<LogicTuple> set(InputEvent ev) throws OperationNotPossibleException,
+            InvalidLogicTupleException;
+
+    /**
+     * @param ev
+     *            the event to handle
+     * @return the result of the operation
+     * @throws InvalidLogicTupleException
+     *             if the tuple given as argument is not a valid Prolog tuple
+     * @throws OperationNotPossibleException
+     *             if the operation requested cannot be carried out
+     */
+    LogicTuple spawn(InputEvent ev) throws InvalidLogicTupleException,
             OperationNotPossibleException;
 
     /**
-     *
-     * @param aid
-     *            the identifier of who is invokin the operation
-     * @param t
-     *            the tuple argument of the operation
+     * @param ev
+     *            the event to handle
      * @return the result of the operation
      * @throws InvalidLogicTupleException
      *             if the tuple given as argument is not a valid Prolog tuple
      * @throws OperationNotPossibleException
      *             if the operation requested cannot be carried out
      */
-    LogicTuple urd(IId aid, LogicTuple t) throws InvalidLogicTupleException,
+    LogicTuple uin(InputEvent ev) throws InvalidLogicTupleException,
             OperationNotPossibleException;
 
     /**
-     *
-     * @param aid
-     *            the identifier of who is invokin the operation
-     * @param t
-     *            the tuple argument of the operation
+     * @param ev
+     *            the event to handle
      * @return the result of the operation
      * @throws InvalidLogicTupleException
      *             if the tuple given as argument is not a valid Prolog tuple
      * @throws OperationNotPossibleException
      *             if the operation requested cannot be carried out
      */
-    LogicTuple urdp(IId aid, LogicTuple t) throws InvalidLogicTupleException,
+    LogicTuple uinp(InputEvent ev) throws InvalidLogicTupleException,
+            OperationNotPossibleException;
+
+    /**
+     * @param ev
+     *            the event to handle
+     * @return the result of the operation
+     * @throws InvalidLogicTupleException
+     *             if the tuple given as argument is not a valid Prolog tuple
+     * @throws OperationNotPossibleException
+     *             if the operation requested cannot be carried out
+     */
+    LogicTuple uno(InputEvent ev) throws InvalidLogicTupleException,
+            OperationNotPossibleException;
+
+    /**
+     * @param ev
+     *            the event to handle
+     * @return the result of the operation
+     * @throws InvalidLogicTupleException
+     *             if the tuple given as argument is not a valid Prolog tuple
+     * @throws OperationNotPossibleException
+     *             if the operation requested cannot be carried out
+     */
+    LogicTuple unop(InputEvent ev) throws InvalidLogicTupleException,
+            OperationNotPossibleException;
+
+    /**
+     * @param ev
+     *            the event to handle
+     * @return the result of the operation
+     * @throws InvalidLogicTupleException
+     *             if the tuple given as argument is not a valid Prolog tuple
+     * @throws OperationNotPossibleException
+     *             if the operation requested cannot be carried out
+     */
+    LogicTuple urd(InputEvent ev) throws InvalidLogicTupleException,
+            OperationNotPossibleException;
+
+    /**
+     * @param ev
+     *            the event to handle
+     * @return the result of the operation
+     * @throws InvalidLogicTupleException
+     *             if the tuple given as argument is not a valid Prolog tuple
+     * @throws OperationNotPossibleException
+     *             if the operation requested cannot be carried out
+     */
+    LogicTuple urdp(InputEvent ev) throws InvalidLogicTupleException,
             OperationNotPossibleException;
 }

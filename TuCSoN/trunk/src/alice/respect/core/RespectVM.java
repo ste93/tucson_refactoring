@@ -41,6 +41,8 @@ import alice.tuplecentre.core.InspectableEvent;
  * @author Alessandro Ricci
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
  * @author (contributor) Saverio Cicora
+ * @author (contributor) Michele Bombardi (mailto:
+ *         michele.bombardi@studio.unibo.it)
  */
 public class RespectVM implements Runnable {
 
@@ -138,6 +140,23 @@ public class RespectVM implements Runnable {
             this.news.signalEvent();
         } catch (final alice.tuplecentre.api.exceptions.OperationNotPossibleException e) {
             throw new OperationNotPossibleException(e.getMessage());
+        }
+    }
+    
+    /**
+     * 
+     * @param ev
+     *            the event whose operation should be executed
+     * @throws OperationNotPossibleException
+     *             if the operation which caused the event cannot be executed
+     */
+    public void doOperation(final InputEvent ev)
+            throws OperationNotPossibleException {
+        try {
+            this.context.doOperation(ev);
+            this.news.signalEvent();
+        } catch (final alice.tuplecentre.api.exceptions.OperationNotPossibleException e) {
+            throw new OperationNotPossibleException();
         }
     }
 

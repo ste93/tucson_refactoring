@@ -32,6 +32,7 @@ public class RespectTimerTask extends TimerTask {
         // System.out.println("[TIME]: event = " + this.op + " at " +
         // this.vm.getCurrentTime());
         this.vm.notifyInputEvent(new InputEvent(this.vm.getId(), this.op,
-                this.vm.getId(), this.vm.getCurrentTime()));
+                this.vm.getId(), this.vm.getCurrentTime(), this.vm
+                .getPosition()));
     }
 }

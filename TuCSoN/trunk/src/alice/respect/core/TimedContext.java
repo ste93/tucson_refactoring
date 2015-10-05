@@ -30,6 +30,8 @@ import alice.tuplecentre.api.IId;
  *
  * @author Alessandro Ricci
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
+ * @author (contributor) Michele Bombardi (mailto:
+ *         michele.bombardi@studio.unibo.it)
  */
 public class TimedContext extends RootInterface implements ITimedContext {
 

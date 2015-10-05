@@ -14,28 +14,32 @@ package alice.respect.core;
 
 import java.util.Iterator;
 import java.util.List;
+
 import alice.logictuple.LogicTuple;
 import alice.logictuple.TupleArgument;
 import alice.logictuple.exceptions.InvalidLogicTupleException;
+import alice.logictuple.exceptions.InvalidLogicTupleOperationException;
 import alice.respect.api.IOrdinarySynchInterface;
 import alice.respect.api.IRespectOperation;
 import alice.respect.api.IRespectTC;
 import alice.respect.api.exceptions.OperationNotPossibleException;
-import alice.tuplecentre.api.IId;
+import alice.tuplecentre.core.AbstractTupleCentreOperation;
+import alice.tuplecentre.core.InputEvent;
 import alice.tuprolog.Struct;
 import alice.tuprolog.Term;
 
 /**
- *
+ * 
  * A Blocking Context wraps the access to a tuple centre virtual machine for a
  * specific thread of control, providing a blocking interface.
- *
+ * 
  * @author Alessandro Ricci
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
+ * @author (contributor) Michele Bombardi (mailto:
+ *         michele.bombardi@studio.unibo.it)
  */
 public class OrdinarySynchInterface extends RootInterface implements
         IOrdinarySynchInterface {
-
     private static Term list2tuple(final List<LogicTuple> list) {
         final Term[] termArray = new Term[list.size()];
         final Iterator<LogicTuple> it = list.iterator();
@@ -48,7 +52,7 @@ public class OrdinarySynchInterface extends RootInterface implements
     }
 
     /**
-     *
+     * 
      * @param core
      *            the ReSpecT tuple centre this context refers to
      */
@@ -57,39 +61,91 @@ public class OrdinarySynchInterface extends RootInterface implements
     }
 
     @Override
-    public List<LogicTuple> get(final IId aid)
+    public List<LogicTuple> get(final InputEvent ev)
             throws OperationNotPossibleException {
-        final IRespectOperation op = this.getCore().get(aid);
+        final IRespectOperation op = this.getCore().get(ev);
         op.waitForOperationCompletion();
         return op.getLogicTupleListResult();
     }
 
     @Override
-    public LogicTuple in(final IId id, final LogicTuple t)
+    public LogicTuple in(final InputEvent ev)
             throws InvalidLogicTupleException, OperationNotPossibleException {
+        final AbstractTupleCentreOperation inOp = ev.getSimpleTCEvent();
+        final LogicTuple t = (LogicTuple) inOp.getTemplateArgument();
         if (t == null) {
-            throw new InvalidLogicTupleException("Null value");
+            throw new InvalidLogicTupleException();
         }
-        final IRespectOperation op = this.getCore().in(id, t);
+        final IRespectOperation op = this.getCore().in(ev);
         op.waitForOperationCompletion();
-        if (op.getLogicTupleResult() != null) {
-            return this.unify(t, op.getLogicTupleResult());
-        }
-        return null;
+        return this.unify(t, op.getLogicTupleResult());
     }
 
     @Override
-    public List<LogicTuple> inAll(final IId aid, final LogicTuple t)
+    public List<LogicTuple> inAll(final InputEvent ev)
             throws InvalidLogicTupleException, OperationNotPossibleException {
         IRespectOperation op = null;
         TupleArgument arg = null;
+        final AbstractTupleCentreOperation inOp = ev.getSimpleTCEvent();
+        final LogicTuple t = (LogicTuple) inOp.getTemplateArgument();
+        //try {
         if (t == null) {
-            throw new InvalidLogicTupleException("Null value");
-        } else if (",".equals(t.getName()) && t.getArity() == 2) {
-            op = this.getCore().inAll(aid, new LogicTuple(t.getArg(0)));
-        } else {
-            op = this.getCore().inAll(aid, t);
+            throw new InvalidLogicTupleException();
         }
+        op = this.getCore().inAll(ev);
+        op.waitForOperationCompletion();
+        if (",".equals(t.getName()) && t.getArity() == 2) {
+            arg = ((LogicTuple) ev.getTuple()).getArg(1);
+            this.unify(
+                    new LogicTuple(new TupleArgument(arg.toTerm())),
+                    new LogicTuple(OrdinarySynchInterface.list2tuple(op
+                            .getLogicTupleListResult())));
+            return op.getLogicTupleListResult();
+        }
+       // } catch (final InvalidLogicTupleOperationException e2) {
+         //   throw new OperationNotPossibleException();
+      //  }
+        return op.getLogicTupleListResult();
+    }
+
+    @Override
+    public LogicTuple inp(final InputEvent ev)
+            throws InvalidLogicTupleException, OperationNotPossibleException {
+        final AbstractTupleCentreOperation inOp = ev.getSimpleTCEvent();
+        final LogicTuple t = (LogicTuple) inOp.getTemplateArgument();
+        if (t == null) {
+            throw new InvalidLogicTupleException();
+        }
+        final IRespectOperation op = this.getCore().inp(ev);
+        op.waitForOperationCompletion();
+        return this.unify(t, op.getLogicTupleResult());
+    }
+
+    @Override
+    public LogicTuple no(final InputEvent ev)
+            throws InvalidLogicTupleException, OperationNotPossibleException {
+        final AbstractTupleCentreOperation inOp = ev.getSimpleTCEvent();
+        final LogicTuple t = (LogicTuple) inOp.getTemplateArgument();
+        if (t == null) {
+            throw new InvalidLogicTupleException();
+        }
+        final IRespectOperation op = this.getCore().no(ev);
+        op.waitForOperationCompletion();
+        return this.unify(t, op.getLogicTupleResult());
+    }
+
+    @Override
+    public List<LogicTuple> noAll(final InputEvent ev)
+            throws InvalidLogicTupleException, OperationNotPossibleException {
+        IRespectOperation op = null;
+        TupleArgument arg = null;
+        final AbstractTupleCentreOperation inOp = ev.getSimpleTCEvent();
+        final LogicTuple t = (LogicTuple) inOp.getTemplateArgument();
+        //try {
+        if (t == null) {
+            throw new InvalidLogicTupleException();
+        }
+        op = this.getCore().noAll(ev);
         op.waitForOperationCompletion();
         if (",".equals(t.getName()) && t.getArity() == 2) {
             arg = t.getArg(1);
@@ -99,43 +155,73 @@ public class OrdinarySynchInterface extends RootInterface implements
                             .getLogicTupleListResult())));
             return op.getLogicTupleListResult();
         }
+       // } catch (final InvalidLogicTupleOperationException e2) {
+       //     throw new OperationNotPossibleException();
+      //  }
         return op.getLogicTupleListResult();
     }
 
     @Override
-    public LogicTuple inp(final IId id, final LogicTuple t)
+    public LogicTuple nop(final InputEvent ev)
             throws InvalidLogicTupleException, OperationNotPossibleException {
+        final AbstractTupleCentreOperation inOp = ev.getSimpleTCEvent();
+        final LogicTuple t = (LogicTuple) inOp.getTemplateArgument();
         if (t == null) {
-            throw new InvalidLogicTupleException("Null value");
+            throw new InvalidLogicTupleException();
         }
-        final IRespectOperation op = this.getCore().inp(id, t);
+        final IRespectOperation op = this.getCore().nop(ev);
         op.waitForOperationCompletion();
         return this.unify(t, op.getLogicTupleResult());
     }
 
     @Override
-    public LogicTuple no(final IId id, final LogicTuple t)
-            throws InvalidLogicTupleException, OperationNotPossibleException {
+    public void out(final InputEvent ev) throws InvalidLogicTupleException,
+            OperationNotPossibleException {
+        final LogicTuple t = (LogicTuple) ev.getTuple();
         if (t == null) {
-            throw new InvalidLogicTupleException("Null value");
+            throw new InvalidLogicTupleException();
         }
-        final IRespectOperation op = this.getCore().no(id, t);
+        final IRespectOperation op = this.getCore().out(ev);
+        op.waitForOperationCompletion();
+    }
+
+    @Override
+    public List<LogicTuple> outAll(final InputEvent ev)
+            throws InvalidLogicTupleException, OperationNotPossibleException {
+        final LogicTuple t = (LogicTuple) ev.getTuple();
+        if (t == null) {
+            throw new InvalidLogicTupleException();
+        }
+        final IRespectOperation op = this.getCore().outAll(ev);
+        op.waitForOperationCompletion();
+        return op.getLogicTupleListResult();
+    }
+
+    @Override
+    public LogicTuple rd(final InputEvent ev)
+            throws InvalidLogicTupleException, OperationNotPossibleException {
+        final AbstractTupleCentreOperation inOp = ev.getSimpleTCEvent();
+        final LogicTuple t = (LogicTuple) inOp.getTemplateArgument();
+        if (t == null) {
+            throw new InvalidLogicTupleException();
+        }
+        final IRespectOperation op = this.getCore().rd(ev);
         op.waitForOperationCompletion();
         return this.unify(t, op.getLogicTupleResult());
     }
 
     @Override
-    public List<LogicTuple> noAll(final IId aid, final LogicTuple t)
+    public List<LogicTuple> rdAll(final InputEvent ev)
             throws InvalidLogicTupleException, OperationNotPossibleException {
         IRespectOperation op = null;
         TupleArgument arg = null;
+        final AbstractTupleCentreOperation inOp = ev.getSimpleTCEvent();
+        final LogicTuple t = (LogicTuple) inOp.getTemplateArgument();
+       // try {
         if (t == null) {
-            throw new InvalidLogicTupleException("Null value");
-        } else if (",".equals(t.getName()) && t.getArity() == 2) {
-            op = this.getCore().noAll(aid, new LogicTuple(t.getArg(0)));
-        } else {
-            op = this.getCore().noAll(aid, t);
+            throw new InvalidLogicTupleException();
         }
+        op = this.getCore().rdAll(ev);
         op.waitForOperationCompletion();
         if (",".equals(t.getName()) && t.getArity() == 2) {
             arg = t.getArg(1);
@@ -145,170 +231,121 @@ public class OrdinarySynchInterface extends RootInterface implements
                             .getLogicTupleListResult())));
             return op.getLogicTupleListResult();
         }
+       // } catch (final InvalidLogicTupleOperationException e2) {
+          //  throw new OperationNotPossibleException();
+       // }
         return op.getLogicTupleListResult();
     }
 
     @Override
-    public LogicTuple nop(final IId id, final LogicTuple t)
+    public LogicTuple rdp(final InputEvent ev)
             throws InvalidLogicTupleException, OperationNotPossibleException {
+        final AbstractTupleCentreOperation inOp = ev.getSimpleTCEvent();
+        final LogicTuple t = (LogicTuple) inOp.getTemplateArgument();
         if (t == null) {
-            throw new InvalidLogicTupleException("Null value");
+            throw new InvalidLogicTupleException();
         }
-        final IRespectOperation op = this.getCore().nop(id, t);
+        final IRespectOperation op = this.getCore().rdp(ev);
         op.waitForOperationCompletion();
         return this.unify(t, op.getLogicTupleResult());
     }
 
     @Override
-    public void out(final IId id, final LogicTuple t)
-            throws InvalidLogicTupleException, OperationNotPossibleException {
-        if (t == null) {
-            throw new InvalidLogicTupleException("Null value");
-        }
-        final IRespectOperation op = this.getCore().out(id, t);
-        op.waitForOperationCompletion();
-    }
-
-    @Override
-    public List<LogicTuple> outAll(final IId id, final LogicTuple t)
-            throws InvalidLogicTupleException, OperationNotPossibleException {
-        if (t == null) {
-            throw new InvalidLogicTupleException("Null value");
-        }
-        final IRespectOperation op = this.getCore().outAll(id, t);
-        op.waitForOperationCompletion();
-        return op.getLogicTupleListResult();
-    }
-
-    @Override
-    public LogicTuple rd(final IId id, final LogicTuple t)
-            throws InvalidLogicTupleException, OperationNotPossibleException {
-        if (t == null) {
-            throw new InvalidLogicTupleException("Null value");
-        }
-        final IRespectOperation op = this.getCore().rd(id, t);
-        op.waitForOperationCompletion();
-        return this.unify(t, op.getLogicTupleResult());
-    }
-
-    @Override
-    public List<LogicTuple> rdAll(final IId aid, final LogicTuple t)
-            throws InvalidLogicTupleException, OperationNotPossibleException {
-        IRespectOperation op = null;
-        TupleArgument arg = null;
-        if (t == null) {
-            throw new InvalidLogicTupleException("Null value");
-        } else if (",".equals(t.getName()) && t.getArity() == 2) {
-            op = this.getCore().rdAll(aid, new LogicTuple(t.getArg(0)));
-        } else {
-            op = this.getCore().rdAll(aid, t);
-        }
-        op.waitForOperationCompletion();
-        if (",".equals(t.getName()) && t.getArity() == 2) {
-            arg = t.getArg(1);
-            this.unify(
-                    new LogicTuple(new TupleArgument(arg.toTerm())),
-                    new LogicTuple(OrdinarySynchInterface.list2tuple(op
-                            .getLogicTupleListResult())));
-            return op.getLogicTupleListResult();
-        }
-        return op.getLogicTupleListResult();
-    }
-
-    @Override
-    public LogicTuple rdp(final IId id, final LogicTuple t)
-            throws InvalidLogicTupleException, OperationNotPossibleException {
-        if (t == null) {
-            throw new InvalidLogicTupleException("Null value");
-        }
-        final IRespectOperation op = this.getCore().rdp(id, t);
-        op.waitForOperationCompletion();
-        return this.unify(t, op.getLogicTupleResult());
-    }
-
-    @Override
-    public List<LogicTuple> set(final IId aid, final LogicTuple tuple)
+    public List<LogicTuple> set(final InputEvent ev)
             throws OperationNotPossibleException, InvalidLogicTupleException {
-        final IRespectOperation op = this.getCore().set(aid, tuple);
+        final IRespectOperation op = this.getCore().set(ev);
         op.waitForOperationCompletion();
         return op.getLogicTupleListResult();
     }
 
     @Override
-    public LogicTuple spawn(final IId aid, final LogicTuple t)
+    public LogicTuple spawn(final InputEvent ev)
             throws InvalidLogicTupleException, OperationNotPossibleException {
+        final LogicTuple t = (LogicTuple) ev.getTuple();
         if (t == null) {
-            throw new InvalidLogicTupleException("Null value");
+            throw new InvalidLogicTupleException();
         }
-        final IRespectOperation op = this.getCore().spawn(aid, t);
+        final IRespectOperation op = this.getCore().spawn(ev);
         op.waitForOperationCompletion();
         return t;
     }
 
     @Override
-    public LogicTuple uin(final IId id, final LogicTuple t)
+    public LogicTuple uin(final InputEvent ev)
             throws InvalidLogicTupleException, OperationNotPossibleException {
+        final AbstractTupleCentreOperation inOp = ev.getSimpleTCEvent();
+        final LogicTuple t = (LogicTuple) inOp.getTemplateArgument();
         if (t == null) {
-            throw new InvalidLogicTupleException("Null value");
+            throw new InvalidLogicTupleException();
         }
-        final IRespectOperation op = this.getCore().uin(id, t);
+        final IRespectOperation op = this.getCore().uin(ev);
         op.waitForOperationCompletion();
         return this.unify(t, op.getLogicTupleResult());
     }
 
     @Override
-    public LogicTuple uinp(final IId id, final LogicTuple t)
+    public LogicTuple uinp(final InputEvent ev)
             throws InvalidLogicTupleException, OperationNotPossibleException {
+        final AbstractTupleCentreOperation inOp = ev.getSimpleTCEvent();
+        final LogicTuple t = (LogicTuple) inOp.getTemplateArgument();
         if (t == null) {
-            throw new InvalidLogicTupleException("Null value");
+            throw new InvalidLogicTupleException();
         }
-        final IRespectOperation op = this.getCore().uinp(id, t);
+        final IRespectOperation op = this.getCore().uinp(ev);
         op.waitForOperationCompletion();
         final LogicTuple result = op.getLogicTupleResult();
         return this.unify(t, result);
     }
 
     @Override
-    public LogicTuple uno(final IId id, final LogicTuple t)
+    public LogicTuple uno(final InputEvent ev)
             throws InvalidLogicTupleException, OperationNotPossibleException {
+        final AbstractTupleCentreOperation inOp = ev.getSimpleTCEvent();
+        final LogicTuple t = (LogicTuple) inOp.getTemplateArgument();
         if (t == null) {
-            throw new InvalidLogicTupleException("Null value");
+            throw new InvalidLogicTupleException();
         }
-        final IRespectOperation op = this.getCore().uno(id, t);
+        final IRespectOperation op = this.getCore().uno(ev);
         op.waitForOperationCompletion();
         return this.unify(t, op.getLogicTupleResult());
     }
 
     @Override
-    public LogicTuple unop(final IId id, final LogicTuple t)
+    public LogicTuple unop(final InputEvent ev)
             throws InvalidLogicTupleException, OperationNotPossibleException {
+        final AbstractTupleCentreOperation inOp = ev.getSimpleTCEvent();
+        final LogicTuple t = (LogicTuple) inOp.getTemplateArgument();
         if (t == null) {
-            throw new InvalidLogicTupleException("Null value");
+            throw new InvalidLogicTupleException();
         }
-        final IRespectOperation op = this.getCore().unop(id, t);
+        final IRespectOperation op = this.getCore().unop(ev);
         op.waitForOperationCompletion();
         final LogicTuple result = op.getLogicTupleResult();
         return this.unify(t, result);
     }
 
     @Override
-    public LogicTuple urd(final IId id, final LogicTuple t)
+    public LogicTuple urd(final InputEvent ev)
             throws InvalidLogicTupleException, OperationNotPossibleException {
+        final AbstractTupleCentreOperation inOp = ev.getSimpleTCEvent();
+        final LogicTuple t = (LogicTuple) inOp.getTemplateArgument();
         if (t == null) {
-            throw new InvalidLogicTupleException("Null value");
+            throw new InvalidLogicTupleException();
         }
-        final IRespectOperation op = this.getCore().urd(id, t);
+        final IRespectOperation op = this.getCore().urd(ev);
         op.waitForOperationCompletion();
         return this.unify(t, op.getLogicTupleResult());
     }
 
     @Override
-    public LogicTuple urdp(final IId id, final LogicTuple t)
+    public LogicTuple urdp(final InputEvent ev)
             throws InvalidLogicTupleException, OperationNotPossibleException {
+        final AbstractTupleCentreOperation inOp = ev.getSimpleTCEvent();
+        final LogicTuple t = (LogicTuple) inOp.getTemplateArgument();
         if (t == null) {
-            throw new InvalidLogicTupleException("Null value");
+            throw new InvalidLogicTupleException();
         }
-        final IRespectOperation op = this.getCore().urdp(id, t);
+        final IRespectOperation op = this.getCore().urdp(ev);
         op.waitForOperationCompletion();
         final LogicTuple result = op.getLogicTupleResult();
         return this.unify(t, result);

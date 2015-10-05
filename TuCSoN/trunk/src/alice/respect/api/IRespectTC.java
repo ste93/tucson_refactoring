@@ -17,884 +17,360 @@ import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.respect.api.exceptions.InvalidSpecificationException;
 import alice.respect.api.exceptions.OperationNotPossibleException;
 import alice.respect.core.RespectVM;
-import alice.tuplecentre.api.IId;
-import alice.tuplecentre.core.OperationCompletionListener;
+import alice.tuplecentre.core.InputEvent;
 
 /**
  * Basic usage interface of a RespecT Tuple Centre
- *
+ * 
  * @author Alessandro Ricci
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
+ * @author (contributor) Michele Bombardi (mailto:
+ *         michele.bombardi@studio.unibo.it)
  */
 public interface IRespectTC {
-
-    /**
-     *
-     * @param id
-     *            the identifier of who is invoking the operation
-     * @return the operation requested the operation requested
-     * @throws OperationNotPossibleException
-     *             if the requested operation cannot be carried out
-     */
-    IRespectOperation get(IId id) throws OperationNotPossibleException;
-
     /**
      * Gets the whole tuple set
-     *
-     * @param id
-     *            agent identifier
-     * @param l
-     *            the listener for operation completion
+     * 
+     * @param ev
+     *            the event to handle
      * @return the operation requested
      * @throws OperationNotPossibleException
      *             if the requested operation cannot be carried out
      */
-    IRespectOperation get(IId id, OperationCompletionListener l)
-            throws OperationNotPossibleException;
+    IRespectOperation get(InputEvent ev) throws OperationNotPossibleException;
 
     /**
      * Gets the tuple centre id
-     *
+     * 
      * @return the tuple centre id
      */
     TupleCentreId getId();
 
     /**
-     *
-     * @param aid
-     *            the identifier of who is invoking the operation
+     * 
+     * @param ev
+     *            the event to handle
      * @return the operation requested
      * @throws OperationNotPossibleException
      *             if the requested operation cannot be carried out
      */
-    IRespectOperation getS(IId aid) throws OperationNotPossibleException;
+    IRespectOperation getS(InputEvent ev) throws OperationNotPossibleException;
 
     /**
-     *
-     * @param aid
-     *            the identifier of who is invoking the operation
-     * @param l
-     *            the listener for operation completion
-     * @return the operation requested
-     * @throws OperationNotPossibleException
-     *             if the requested operation cannot be carried out
-     */
-    IRespectOperation getS(IId aid, OperationCompletionListener l)
-            throws OperationNotPossibleException;
-
-    /**
-     *
+     * 
      * @return this ReSpecT VM
      */
     RespectVM getVM();
 
     /**
-     *
-     * @param id
-     *            the identifier of who is invoking the operation
-     * @param t
-     *            the tuple argument of the operation the tuple argument of the
-     *            operation
+     * 
+     * @param ev
+     *            the event to handle
      * @return the operation requested
      * @throws OperationNotPossibleException
      *             if the requested operation cannot be carried out
      */
-    IRespectOperation in(IId id, LogicTuple t)
-            throws OperationNotPossibleException;
+    IRespectOperation in(InputEvent ev) throws OperationNotPossibleException;
 
     /**
-     * Retrieves a tuple in the tuple centre
-     *
-     * @param id
-     *            agent identifier
-     * @param t
-     *            the tuple argument of the operation the tuple
-     * @param l
-     *            the listener for operation completion
+     * 
+     * @param ev
+     *            the event to handle
      * @return the operation requested
      * @throws OperationNotPossibleException
      *             if the requested operation cannot be carried out
      */
-    IRespectOperation in(IId id, LogicTuple t, OperationCompletionListener l)
-            throws OperationNotPossibleException;
+    IRespectOperation inAll(InputEvent ev) throws OperationNotPossibleException;
 
     /**
-     * Retrieves all tuples in the tuple centre matching the template
-     *
-     * @param id
-     *            agent identifier
-     * @param t
-     *            the tuple argument of the operation the tuple
+     * 
+     * @param ev
+     *            the event to handle
      * @return the operation requested
      * @throws OperationNotPossibleException
      *             if the requested operation cannot be carried out
      */
-    IRespectOperation inAll(IId id, LogicTuple t)
-            throws OperationNotPossibleException;
+    IRespectOperation inp(InputEvent ev) throws OperationNotPossibleException;
 
     /**
-     *
-     * @param id
-     *            the identifier of who is invoking the operation
-     * @param t
-     *            the tuple argument of the operation the tuple argument of the
-     *            operation
-     * @param l
-     *            the listener for operation completion
+     * 
+     * @param ev
+     *            the event to handle
      * @return the operation requested
      * @throws OperationNotPossibleException
      *             if the requested operation cannot be carried out
      */
-    IRespectOperation inAll(IId id, LogicTuple t, OperationCompletionListener l)
-            throws OperationNotPossibleException;
+    IRespectOperation inpS(InputEvent ev) throws OperationNotPossibleException;
 
     /**
-     *
-     * @param id
-     *            the identifier of who is invoking the operation
-     * @param t
-     *            the tuple argument of the operation the tuple argument of the
-     *            operation
+     * 
+     * @param ev
+     *            the event to handle
      * @return the operation requested
      * @throws OperationNotPossibleException
      *             if the requested operation cannot be carried out
      */
-    IRespectOperation inp(IId id, LogicTuple t)
-            throws OperationNotPossibleException;
+    IRespectOperation inS(InputEvent ev) throws OperationNotPossibleException;
 
     /**
-     * Tries to retrieve a tuple in the tuple centre
-     *
-     * @param id
-     *            agent identifier
-     * @param t
-     *            the tuple argument of the operation the tuple
-     * @param l
-     *            the listener for operation completion
+     * 
+     * @param ev
+     *            the event to handle
      * @return the operation requested
      * @throws OperationNotPossibleException
      *             if the requested operation cannot be carried out
      */
-    IRespectOperation inp(IId id, LogicTuple t, OperationCompletionListener l)
-            throws OperationNotPossibleException;
+    IRespectOperation no(InputEvent ev) throws OperationNotPossibleException;
 
     /**
-     *
-     * @param id
-     *            the identifier of who is invoking the operation the identifier
-     *            of who is invoking the operation
-     * @param t
-     *            the tuple argument of the operation the tuple argument of the
-     *            operation
+     * 
+     * @param ev
+     *            the event to handle
      * @return the operation requested
      * @throws OperationNotPossibleException
      *             if the requested operation cannot be carried out
      */
-    IRespectOperation inpS(IId id, LogicTuple t)
-            throws OperationNotPossibleException;
+    IRespectOperation noAll(InputEvent ev) throws OperationNotPossibleException;
 
     /**
-     *
-     * @param id
-     *            the identifier of who is invoking the operation the identifier
-     *            of who is invoking the operation
-     * @param t
-     *            the tuple argument of the operation
-     * @param l
-     *            the listener for operation completion
+     * 
+     * @param ev
+     *            the event to handle
      * @return the operation requested
      * @throws OperationNotPossibleException
      *             if the requested operation cannot be carried out
      */
-    IRespectOperation inpS(IId id, LogicTuple t, OperationCompletionListener l)
-            throws OperationNotPossibleException;
+    IRespectOperation nop(InputEvent ev) throws OperationNotPossibleException;
 
     /**
-     *
-     * @param id
-     *            the identifier of who is invoking the operation
-     * @param t
-     *            the tuple argument of the operation
+     * 
+     * @param ev
+     *            the event to handle
      * @return the operation requested
      * @throws OperationNotPossibleException
      *             if the requested operation cannot be carried out
      */
-    IRespectOperation inS(IId id, LogicTuple t)
-            throws OperationNotPossibleException;
+    IRespectOperation nopS(InputEvent ev) throws OperationNotPossibleException;
 
     /**
-     *
-     * @param id
-     *            the identifier of who is invoking the operation
-     * @param t
-     *            the tuple argument of the operation
-     * @param l
-     *            the listener for operation completion
+     * 
+     * @param ev
+     *            the event to handle
      * @return the operation requested
      * @throws OperationNotPossibleException
      *             if the requested operation cannot be carried out
      */
-    IRespectOperation inS(IId id, LogicTuple t, OperationCompletionListener l)
-            throws OperationNotPossibleException;
+    IRespectOperation noS(InputEvent ev) throws OperationNotPossibleException;
 
     /**
-     *
-     * @param id
-     *            the identifier of who is invoking the operation
-     * @param t
-     *            the tuple argument of the operation
+     * 
+     * @param ev
+     *            the event to handle
      * @return the operation requested
      * @throws OperationNotPossibleException
      *             if the requested operation cannot be carried out
      */
-    IRespectOperation no(IId id, LogicTuple t)
-            throws OperationNotPossibleException;
+    IRespectOperation out(InputEvent ev) throws OperationNotPossibleException;
 
     /**
-     *
-     * @param id
-     *            the identifier of who is invoking the operation
-     * @param t
-     *            the tuple argument of the operation
-     * @param l
-     *            the listener for operation completion
+     * 
+     * @param ev
+     *            the event to handle
      * @return the operation requested
      * @throws OperationNotPossibleException
      *             if the requested operation cannot be carried out
      */
-    IRespectOperation no(IId id, LogicTuple t, OperationCompletionListener l)
+    IRespectOperation outAll(InputEvent ev)
             throws OperationNotPossibleException;
 
     /**
-     *
-     * @param id
-     *            the identifier of who is invoking the operation
-     * @param t
-     *            the tuple argument of the operation
+     * 
+     * @param ev
+     *            the event to handle
      * @return the operation requested
      * @throws OperationNotPossibleException
      *             if the requested operation cannot be carried out
      */
-    IRespectOperation noAll(IId id, LogicTuple t)
-            throws OperationNotPossibleException;
+    IRespectOperation outS(InputEvent ev) throws OperationNotPossibleException;
 
     /**
-     *
-     * @param id
-     *            the identifier of who is invoking the operation
-     * @param t
-     *            the tuple argument of the operation
-     * @param l
-     *            the listener for operation completion
+     * 
+     * @param ev
+     *            the event to handle
      * @return the operation requested
      * @throws OperationNotPossibleException
      *             if the requested operation cannot be carried out
      */
-    IRespectOperation noAll(IId id, LogicTuple t, OperationCompletionListener l)
-            throws OperationNotPossibleException;
-
-    /**
-     *
-     * @param id
-     *            the identifier of who is invoking the operation
-     * @param t
-     *            the tuple argument of the operation
-     * @return the operation requested
-     * @throws OperationNotPossibleException
-     *             if the requested operation cannot be carried out
-     */
-    IRespectOperation nop(IId id, LogicTuple t)
-            throws OperationNotPossibleException;
-
-    /**
-     *
-     * @param id
-     *            the identifier of who is invoking the operation
-     * @param t
-     *            the tuple argument of the operation
-     * @param l
-     *            the listener for operation completion
-     * @return the operation requested
-     * @throws OperationNotPossibleException
-     *             if the requested operation cannot be carried out
-     */
-    IRespectOperation nop(IId id, LogicTuple t, OperationCompletionListener l)
-            throws OperationNotPossibleException;
-
-    /**
-     *
-     * @param aid
-     *            the identifier of who is invoking the operation
-     * @param t
-     *            the tuple argument of the operation
-     * @return the operation requested
-     * @throws OperationNotPossibleException
-     *             if the requested operation cannot be carried out
-     */
-    IRespectOperation nopS(IId aid, LogicTuple t)
-            throws OperationNotPossibleException;
-
-    /**
-     *
-     * @param aid
-     *            the identifier of who is invoking the operation
-     * @param t
-     *            the tuple argument of the operation
-     * @param l
-     *            the listener for operation completion
-     * @return the operation requested
-     * @throws OperationNotPossibleException
-     *             if the requested operation cannot be carried out
-     */
-    IRespectOperation nopS(IId aid, LogicTuple t, OperationCompletionListener l)
-            throws OperationNotPossibleException;
-
-    /**
-     *
-     * @param aid
-     *            the identifier of who is invoking the operation
-     * @param t
-     *            the tuple argument of the operation
-     * @return the operation requested
-     * @throws OperationNotPossibleException
-     *             if the requested operation cannot be carried out
-     */
-    IRespectOperation noS(IId aid, LogicTuple t)
-            throws OperationNotPossibleException;
-
-    /**
-     *
-     * @param aid
-     *            the identifier of who is invoking the operation
-     * @param t
-     *            the tuple argument of the operation
-     * @param l
-     *            the listener for operation completion
-     * @return the operation requested
-     * @throws OperationNotPossibleException
-     *             if the requested operation cannot be carried out
-     */
-    IRespectOperation noS(IId aid, LogicTuple t, OperationCompletionListener l)
-            throws OperationNotPossibleException;
-
-    /**
-     *
-     * @param id
-     *            the identifier of who is invoking the operation
-     * @param t
-     *            the tuple argument of the operation
-     * @return the operation requested
-     * @throws OperationNotPossibleException
-     *             if the requested operation cannot be carried out
-     */
-    IRespectOperation out(IId id, LogicTuple t)
-            throws OperationNotPossibleException;
-
-    /**
-     *
-     * @param id
-     *            the identifier of who is invoking the operation
-     * @param t
-     *            the tuple argument of the operation
-     * @param l
-     *            the listener for operation completion
-     * @return the operation requested the operation requested
-     * @throws OperationNotPossibleException
-     *             if the requested operation cannot be carried out
-     */
-    IRespectOperation out(IId id, LogicTuple t, OperationCompletionListener l)
-            throws OperationNotPossibleException;
-
-    /**
-     *
-     * @param id
-     *            the identifier of who is invoking the operation
-     * @param t
-     *            the tuple argument of the operation
-     * @return the operation requested
-     * @throws OperationNotPossibleException
-     *             if the requested operation cannot be carried out
-     */
-    IRespectOperation outAll(IId id, LogicTuple t)
-            throws OperationNotPossibleException;
-
-    /**
-     *
-     * @param id
-     *            the identifier of who is invoking the operation
-     * @param t
-     *            the tuple argument of the operation
-     * @param l
-     *            the listener for operation completion
-     * @return the operation requested
-     * @throws OperationNotPossibleException
-     *             if the requested operation cannot be carried out
-     */
-    IRespectOperation outAll(IId id, LogicTuple t, OperationCompletionListener l)
-            throws OperationNotPossibleException;
-
-    /**
-     *
-     * @param id
-     *            the identifier of who is invoking the operation
-     * @param t
-     *            the tuple argument of the operation
-     * @return the operation requested
-     * @throws OperationNotPossibleException
-     *             if the requested operation cannot be carried out
-     */
-    IRespectOperation outS(IId id, LogicTuple t)
-            throws OperationNotPossibleException;
-
-    /**
-     * Inserts a tuple in the tuple centre
-     *
-     * @param id
-     *            the identifier of who is invoking the operation
-     * @param t
-     *            the tuple argument of the operation
-     * @param l
-     *            the listener for operation completion
-     * @return the operation requested
-     * @throws OperationNotPossibleException
-     *             if the requested operation cannot be carried out
-     */
-    IRespectOperation outS(IId id, LogicTuple t, OperationCompletionListener l)
-            throws OperationNotPossibleException;
-
-    /**
-     *
-     * @param id
-     *            the identifier of who is invoking the operation
-     * @param t
-     *            the tuple argument of the operation
-     * @return the operation requested
-     * @throws OperationNotPossibleException
-     *             if the requested operation cannot be carried out
-     */
-    IRespectOperation rd(IId id, LogicTuple t)
-            throws OperationNotPossibleException;
-
-    /**
-     * Reads a tuple in the tuple centre
-     *
-     * @param id
-     *            the identifier of who is invoking the operation
-     * @param t
-     *            the tuple argument of the operation
-     * @param l
-     *            the listener for operation completion
-     * @return the operation requested
-     * @throws OperationNotPossibleException
-     *             if the requested operation cannot be carried out
-     */
-    IRespectOperation rd(IId id, LogicTuple t, OperationCompletionListener l)
-            throws OperationNotPossibleException;
+    IRespectOperation rd(InputEvent ev) throws OperationNotPossibleException;
 
     /**
      * Retrieves all tuples in the tuple centre matching the template without
      * remove them
-     *
-     * @param id
-     *            the identifier of who is invoking the operation
-     * @param t
-     *            the tuple argument of the operation
+     * 
+     * @param ev
+     *            the event to handle
      * @return the operation requested
      * @throws OperationNotPossibleException
      *             if the requested operation cannot be carried out
      */
-    IRespectOperation rdAll(IId id, LogicTuple t)
-            throws OperationNotPossibleException;
+    IRespectOperation rdAll(InputEvent ev) throws OperationNotPossibleException;
 
     /**
-     *
-     * @param id
-     *            the identifier of who is invoking the operation
-     * @param t
-     *            the tuple argument of the operation
-     * @param l
-     *            the listener for operation completion
+     * 
+     * @param ev
+     *            the event to handle
      * @return the operation requested
      * @throws OperationNotPossibleException
      *             if the requested operation cannot be carried out
      */
-    IRespectOperation rdAll(IId id, LogicTuple t, OperationCompletionListener l)
-            throws OperationNotPossibleException;
+    IRespectOperation rdp(InputEvent ev) throws OperationNotPossibleException;
 
     /**
-     *
-     * @param id
-     *            the identifier of who is invoking the operation
-     * @param t
-     *            the tuple argument of the operation
+     * 
+     * @param ev
+     *            the event to handle
      * @return the operation requested
      * @throws OperationNotPossibleException
      *             if the requested operation cannot be carried out
      */
-    IRespectOperation rdp(IId id, LogicTuple t)
-            throws OperationNotPossibleException;
+    IRespectOperation rdpS(InputEvent ev) throws OperationNotPossibleException;
 
     /**
-     * Tries to read a tuple in the tuple centre
-     *
-     * @param id
-     *            the identifier of who is invoking the operation
-     * @param t
-     *            the tuple argument of the operation
-     * @param l
-     *            the listener for operation completion
+     * 
+     * @param ev
+     *            the event to handle
      * @return the operation requested
      * @throws OperationNotPossibleException
      *             if the requested operation cannot be carried out
      */
-    IRespectOperation rdp(IId id, LogicTuple t, OperationCompletionListener l)
-            throws OperationNotPossibleException;
+    IRespectOperation rdS(InputEvent ev) throws OperationNotPossibleException;
 
     /**
-     *
-     * @param id
-     *            the identifier of who is invoking the operation
-     * @param t
-     *            the tuple argument of the operation
-     * @return the operation requested
-     * @throws OperationNotPossibleException
-     *             if the requested operation cannot be carried out
-     */
-    IRespectOperation rdpS(IId id, LogicTuple t)
-            throws OperationNotPossibleException;
-
-    /**
-     *
-     * @param id
-     *            the identifier of who is invoking the operation
-     * @param t
-     *            the tuple argument of the operation
-     * @param l
-     *            the listener for operation completion
-     * @return the operation requested
-     * @throws OperationNotPossibleException
-     *             if the requested operation cannot be carried out
-     */
-    IRespectOperation rdpS(IId id, LogicTuple t, OperationCompletionListener l)
-            throws OperationNotPossibleException;
-
-    /**
-     *
-     * @param id
-     *            the identifier of who is invoking the operation
-     * @param t
-     *            the tuple argument of the operation
-     * @return the operation requested
-     * @throws OperationNotPossibleException
-     *             if the requested operation cannot be carried out
-     */
-    IRespectOperation rdS(IId id, LogicTuple t)
-            throws OperationNotPossibleException;
-
-    /**
-     *
-     * @param id
-     *            the identifier of who is invoking the operation
-     * @param t
-     *            the tuple argument of the operation
-     * @param l
-     *            the listener for operation completion
-     * @return the operation requested
-     * @throws OperationNotPossibleException
-     *             if the requested operation cannot be carried out
-     */
-    IRespectOperation rdS(IId id, LogicTuple t, OperationCompletionListener l)
-            throws OperationNotPossibleException;
-
-    /**
-     *
-     * @param id
-     *            the identifier of who is invoking the operation
-     * @param t
-     *            the tuple argument of the operationuple
+     * 
+     * @param ev
+     *            the event to handle
      * @return the operation requested
      * @throws OperationNotPossibleException
      *             if the requested operation cannot be carried out
      * @throws InvalidLogicTupleException
      *             if the given argument is not a valid Prolog tuple
      */
-    IRespectOperation set(IId id, LogicTuple t)
-            throws OperationNotPossibleException, InvalidLogicTupleException;
+    IRespectOperation set(InputEvent ev) throws OperationNotPossibleException,
+            InvalidLogicTupleException;
 
     /**
-     * Gets the whole tuple set
-     *
-     * @param id
-     *            the identifier of who is invoking the operation
      * @param t
-     *            the tuple argument of the operation
-     * @param l
-     *            the listener for operation completion
-     * @return the operation requested
-     * @throws OperationNotPossibleException
-     *             if the requested operation cannot be carried out
-     * @throws InvalidLogicTupleException
-     *             if the given argument is not a valid Prolog tuple
-     */
-    IRespectOperation set(IId id, LogicTuple t, OperationCompletionListener l)
-            throws OperationNotPossibleException, InvalidLogicTupleException;
-
-    /**
-     *
-     * @param aid
-     *            the identifier of who is invoking the operation
-     * @param t
-     *            the tuple argument of the operation
+     *            the logic tuple representing the ReSpecT specification to set
+     * @param ev
+     *            the event to handle
      * @return the operation requested
      * @throws OperationNotPossibleException
      *             if the requested operation cannot be carried out
      */
-    IRespectOperation setS(IId aid, LogicTuple t)
+    IRespectOperation setS(final LogicTuple t, final InputEvent ev)
             throws OperationNotPossibleException;
 
     /**
-     *
-     * @param id
-     *            the identifier of who is invoking the operation
-     * @param t
-     *            the tuple argument of the operation
-     * @param l
-     *            the listener for operation completion
-     * @return the operation requested
-     * @throws OperationNotPossibleException
-     *             if the requested operation cannot be carried out
-     */
-    IRespectOperation setS(final IId id, final LogicTuple t,
-            final OperationCompletionListener l)
-            throws OperationNotPossibleException;
-
-    /**
-     *
-     * @param aid
-     *            the identifier of who is invoking the operation
+     * 
+     * @param ev
+     *            the event to handle
      * @param spec
-     *            the ReSpecT specification argument of the operation
+     *            the ReSpecT specification to set
+     * @return the operation requested
+     * @throws OperationNotPossibleException
+     *             if the requested operation cannot be carried out
+     */
+    IRespectOperation setSasynch(final InputEvent ev,
+            final RespectSpecification spec)
+            throws OperationNotPossibleException;
+
+    /**
+     * 
+     * @param ev
+     *            the event to handle
+     * @param spec
+     *            the ReSpecT specification to set
      * @return the operation requested
      * @throws OperationNotPossibleException
      *             if the requested operation cannot be carried out
      * @throws InvalidSpecificationException
      *             if the given ReSpecT specification has syntactical errors
      */
-    IRespectOperation setS(IId aid, RespectSpecification spec)
+    IRespectOperation setSsynch(final InputEvent ev,
+            final RespectSpecification spec)
             throws OperationNotPossibleException, InvalidSpecificationException;
 
     /**
-     *
-     * @param aid
-     *            the identifier of who is invoking the operation
-     * @param spec
-     *            the ReSpecT specification argument of the operation
-     * @param l
-     *            the listener for operation completion
+     * 
+     * @param ev
+     *            the event to handle
      * @return the operation requested
      * @throws OperationNotPossibleException
      *             if the requested operation cannot be carried out
      */
-    IRespectOperation setS(IId aid, RespectSpecification spec,
-            OperationCompletionListener l) throws OperationNotPossibleException;
-
-    /**
-     *
-     * @param id
-     *            the identifier of who is invoking the operation
-     * @param t
-     *            the tuple argument of the operation
-     * @return the operation requested
-     * @throws OperationNotPossibleException
-     *             if the requested operation cannot be carried out
-     */
-    IRespectOperation spawn(IId id, LogicTuple t)
-            throws OperationNotPossibleException;
-
-    /**
-     *
-     * @param id
-     *            the identifier of who is invoking the operation
-     * @param t
-     *            the tuple argument of the operation
-     * @param l
-     *            the listener for operation completion
-     * @return the operation requested
-     * @throws OperationNotPossibleException
-     *             if the requested operation cannot be carried out
-     */
-    IRespectOperation spawn(IId id, LogicTuple t, OperationCompletionListener l)
-            throws OperationNotPossibleException;
+    IRespectOperation spawn(InputEvent ev) throws OperationNotPossibleException;
 
     /**
      * Retrieves all tuples in the tuple centre matching the template
-     *
-     * @param id
-     *            the identifier of who is invoking the operation
-     * @param t
-     *            the tuple argument of the operation
+     * 
+     * @param ev
+     *            the event to handle
      * @return the operation requested
      * @throws OperationNotPossibleException
      *             if the requested operation cannot be carried out
      */
-    IRespectOperation uin(IId id, LogicTuple t)
-            throws OperationNotPossibleException;
-
-    /**
-     *
-     * @param id
-     *            the identifier of who is invoking the operation
-     * @param t
-     *            the tuple argument of the operation
-     * @param l
-     *            the listener for operation completion
-     * @return the operation requested
-     * @throws OperationNotPossibleException
-     *             if the requested operation cannot be carried out
-     */
-    IRespectOperation uin(IId id, LogicTuple t, OperationCompletionListener l)
-            throws OperationNotPossibleException;
+    IRespectOperation uin(InputEvent ev) throws OperationNotPossibleException;
 
     /**
      * Retrieves all tuples in the tuple centre matching the template
-     *
-     * @param id
-     *            the identifier of who is invoking the operation
-     * @param t
-     *            the tuple argument of the operation
+     * 
+     * @param ev
+     *            the event to handle
      * @return the operation requested
      * @throws OperationNotPossibleException
      *             if the requested operation cannot be carried out
      */
-    IRespectOperation uinp(IId id, LogicTuple t)
-            throws OperationNotPossibleException;
+    IRespectOperation uinp(InputEvent ev) throws OperationNotPossibleException;
 
     /**
-     *
-     * @param id
-     *            the identifier of who is invoking the operation
-     * @param t
-     *            the tuple argument of the operation
-     * @param l
-     *            the listener for operation completion
+     * 
+     * @param ev
+     *            the event to handle
      * @return the operation requested
      * @throws OperationNotPossibleException
      *             if the requested operation cannot be carried out
      */
-    IRespectOperation uinp(IId id, LogicTuple t, OperationCompletionListener l)
-            throws OperationNotPossibleException;
+    IRespectOperation uno(InputEvent ev) throws OperationNotPossibleException;
 
     /**
-     *
-     * @param id
-     *            the identifier of who is invoking the operation
-     * @param t
-     *            the tuple argument of the operation
+     * 
+     * @param ev
+     *            the event to handle
      * @return the operation requested
      * @throws OperationNotPossibleException
      *             if the requested operation cannot be carried out
      */
-    IRespectOperation uno(IId id, LogicTuple t)
-            throws OperationNotPossibleException;
-
-    /**
-     *
-     * @param id
-     *            the identifier of who is invoking the operation
-     * @param t
-     *            the tuple argument of the operation
-     * @param l
-     *            the listener for operation completion
-     * @return the operation requested
-     * @throws OperationNotPossibleException
-     *             if the requested operation cannot be carried out
-     */
-    IRespectOperation uno(IId id, LogicTuple t, OperationCompletionListener l)
-            throws OperationNotPossibleException;
-
-    /**
-     *
-     * @param id
-     *            the identifier of who is invoking the operation
-     * @param t
-     *            the tuple argument of the operation
-     * @return the operation requested
-     * @throws OperationNotPossibleException
-     *             if the requested operation cannot be carried out
-     */
-    IRespectOperation unop(IId id, LogicTuple t)
-            throws OperationNotPossibleException;
-
-    /**
-     *
-     * @param id
-     *            the identifier of who is invoking the operation
-     * @param t
-     *            the tuple argument of the operation
-     * @param l
-     *            the listener for operation completion
-     * @return the operation requested
-     * @throws OperationNotPossibleException
-     *             if the requested operation cannot be carried out
-     */
-    IRespectOperation unop(IId id, LogicTuple t, OperationCompletionListener l)
-            throws OperationNotPossibleException;
+    IRespectOperation unop(InputEvent ev) throws OperationNotPossibleException;
 
     /**
      * Retrieves all tuples in the tuple centre matching the template
-     *
-     * @param id
-     *            the identifier of who is invoking the operation
-     * @param t
-     *            the tuple argument of the operation
+     * 
+     * @param ev
+     *            the event to handle
      * @return the operation requested
      * @throws OperationNotPossibleException
      *             if the requested operation cannot be carried out
      */
-    IRespectOperation urd(IId id, LogicTuple t)
-            throws OperationNotPossibleException;
-
-    /**
-     *
-     * @param id
-     *            the identifier of who is invoking the operation
-     * @param t
-     *            the tuple argument of the operation
-     * @param l
-     *            the listener for operation completion
-     * @return the operation requested
-     * @throws OperationNotPossibleException
-     *             if the requested operation cannot be carried out
-     */
-    IRespectOperation urd(IId id, LogicTuple t, OperationCompletionListener l)
-            throws OperationNotPossibleException;
+    IRespectOperation urd(InputEvent ev) throws OperationNotPossibleException;
 
     /**
      * Retrieves all tuples in the tuple centre matching the template
-     *
-     * @param id
-     *            the identifier of who is invoking the operation
-     * @param t
-     *            the tuple argument of the operation
+     * 
+     * @param ev
+     *            the event to handle
      * @return the operation requested
      * @throws OperationNotPossibleException
      *             if the requested operation cannot be carried out
      */
-    IRespectOperation urdp(IId id, LogicTuple t)
-            throws OperationNotPossibleException;
-
-    /**
-     *
-     * @param id
-     *            the identifier of who is invoking the operation
-     * @param t
-     *            the tuple argument of the operation
-     * @param l
-     *            the listener for operation completion
-     * @return the operation requested
-     * @throws OperationNotPossibleException
-     *             if the requested operation cannot be carried out
-     */
-    IRespectOperation urdp(IId id, LogicTuple t, OperationCompletionListener l)
-            throws OperationNotPossibleException;
+    IRespectOperation urdp(InputEvent ev) throws OperationNotPossibleException;
 }

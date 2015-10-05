@@ -184,6 +184,16 @@ public abstract class AbstractTupleCentreVMContext implements
             this.inputEvents.add(ev);
         }
     }
+    
+    public void doOperation(final InputEvent ev)
+            throws OperationNotPossibleException {
+        synchronized (this.inputEvents) {
+            if (this.inputEvents.size() > this.maxPendingInputEventNumber) {
+                throw new OperationNotPossibleException();
+            }
+            this.inputEvents.add(ev);
+        }
+    }
 
     /**
      * Removes all tuples
