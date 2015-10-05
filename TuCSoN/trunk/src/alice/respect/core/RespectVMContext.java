@@ -121,6 +121,11 @@ alice.tuplecentre.core.AbstractTupleCentreVMContext {
             RespectVMContext.this.notifyInputEvent(res);
         }
     }
+    /**
+     * the distance tollerance used in spatial observation predicates and guards
+     */
+    private static final float METERS_DISTANCE_TOLLERANCE = 10f;
+
 
     /**
      * Static services that checks if a source text contains a valid ReSpecT
@@ -1540,6 +1545,7 @@ alice.tuplecentre.core.AbstractTupleCentreVMContext {
         this.zSet.empty();
         this.timeSet.empty();
         this.setBootTime();
+        this.setDistanceTollerance(RespectVMContext.METERS_DISTANCE_TOLLERANCE);
     }
 
     @Override

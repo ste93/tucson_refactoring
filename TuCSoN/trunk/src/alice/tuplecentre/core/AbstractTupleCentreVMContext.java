@@ -32,6 +32,7 @@ import alice.tuplecentre.api.Tuple;
 import alice.tuplecentre.api.TupleCentreId;
 import alice.tuplecentre.api.TupleTemplate;
 import alice.tuplecentre.api.exceptions.OperationNotPossibleException;
+import alice.tuprolog.Term;
 
 /**
  * Defines the core abstract behaviour of a tuple centre virtual machine.
@@ -55,6 +56,7 @@ public abstract class AbstractTupleCentreVMContext implements
     private long bootTime;
     private InputEvent currentEvent;
     private AbstractTupleCentreVMState currentState;
+    private Term distanceTollerance;
     private final List<AbstractEvent> inputEnvEvents;
     private final List<AbstractEvent> inputEvents;
     private boolean management;
@@ -321,6 +323,15 @@ public abstract class AbstractTupleCentreVMContext implements
      */
     public long getCurrentTime() {
         return System.currentTimeMillis() - this.bootTime;
+    }
+    
+    /**
+     * 
+     * @return the tuProlog Term representing the floating point precision
+     *         tollerance set for proximity check
+     */
+    public Term getDistanceTollerance() {
+        return this.distanceTollerance;
     }
 
     /**
@@ -645,6 +656,27 @@ public abstract class AbstractTupleCentreVMContext implements
     protected void setBootTime() {
         this.bootTime = System.currentTimeMillis();
     }
+    
+    /**
+     * 
+     * @param t
+     *            the floating point precision to set as a tollerance for
+     *            proximity check
+     */
+    protected void setDistanceTollerance(final float t) {
+        this.distanceTollerance = Term.createTerm(String.valueOf(t));
+    }
+
+    /**
+     * 
+     * @param dt
+     *            the tuProlog term representing the floating point precision to
+     *            set as a tollerance for proximity check
+     */
+    protected void setDistanceTollerance(final Term dt) {
+        this.distanceTollerance = dt;
+    }
+
     
     /**
      * 
