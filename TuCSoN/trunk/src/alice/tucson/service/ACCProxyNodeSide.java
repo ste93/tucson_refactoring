@@ -487,7 +487,7 @@ public class ACCProxyNodeSide extends AbstractACCProxyNodeSide {
                     || opType == TucsonOperation.getSCode()
                     || opType == TucsonOperation.setCode()
                     || opType == TucsonOperation.setSCode()) {
-                op = RespectOperation.make(null, opType, tuple, null); // blocking
+                op = RespectOperation.make(opType, tuple, null); // blocking
                                                                        // operation,
                                                                        // no
                                                                        // need
@@ -496,7 +496,7 @@ public class ACCProxyNodeSide extends AbstractACCProxyNodeSide {
                                                                        // completion
                                                                        // listener
             } else {
-                op = RespectOperation.make(null, opType, tuple, this); // non
+                op = RespectOperation.make(opType, tuple, this); // non
                                                                        // blocking
                                                                        // operation,
                                                                        // need
