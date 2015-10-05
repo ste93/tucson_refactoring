@@ -24,6 +24,7 @@ import alice.logictuple.Value;
 import alice.logictuple.Var;
 import alice.logictuple.exceptions.InvalidVarNameException;
 import alice.respect.api.geolocation.Position;
+import alice.respect.api.geolocation.service.GeolocationServiceManager;
 import alice.respect.api.place.IPlace;
 import alice.tucson.api.EnhancedACC;
 import alice.tucson.api.ITucsonOperation;

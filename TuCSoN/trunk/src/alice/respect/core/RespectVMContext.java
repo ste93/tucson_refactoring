@@ -36,6 +36,8 @@ import alice.respect.api.RespectSpecification;
 import alice.respect.api.TupleCentreId;
 import alice.respect.api.exceptions.OperationNotPossibleException;
 import alice.respect.api.geolocation.PlatformUtils;
+import alice.respect.api.geolocation.service.AbstractGeolocationService;
+import alice.respect.api.geolocation.service.GeolocationServiceManager;
 import alice.respect.core.tupleset.ITupleSet;
 import alice.respect.core.tupleset.TupleSetCoord;
 import alice.respect.core.tupleset.TupleSetSpec;

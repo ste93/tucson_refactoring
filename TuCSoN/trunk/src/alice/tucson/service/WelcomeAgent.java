@@ -109,7 +109,13 @@ public class WelcomeAgent extends Thread {
             e.printStackTrace();
         } catch (final DialogSendException e) {
             e.printStackTrace();
-        }
+        } catch (TucsonInvalidAgentIdException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (TucsonInvalidTupleCentreIdException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         this.node.removeNodeAgent(this);
     }
 

@@ -22,6 +22,8 @@ import java.util.Map;
 import alice.respect.api.IRespectTC;
 import alice.respect.api.geolocation.PlatformUtils;
 import alice.respect.api.geolocation.Position;
+import alice.respect.api.geolocation.service.AbstractGeolocationService;
+import alice.respect.api.geolocation.service.GeolocationServiceManager;
 import alice.respect.core.RespectVM;
 import alice.respect.core.StepMonitor;
 import alice.tuplecentre.api.AgentId;
