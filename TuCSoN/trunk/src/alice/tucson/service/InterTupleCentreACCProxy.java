@@ -90,9 +90,10 @@ OperationCompletionListener {
                     this.setStop();
                     break;
                 }
-                final boolean ok = msg.isAllowed();
+                final OutputEventMsg oEv = msg.getOutputEvent();
+                final boolean ok = oEv.isAllowed();
                 if (ok) {
-                    final int type = msg.getType();
+                    final int type = oEv.getOpType();
                     if (type == TucsonOperation.noCode()
                             || type == TucsonOperation.noSCode()
                             || type == TucsonOperation.nopCode()

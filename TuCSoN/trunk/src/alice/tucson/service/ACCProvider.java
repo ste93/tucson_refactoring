@@ -37,6 +37,7 @@ import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.introspection.InspectorContextSkel;
 import alice.tucson.network.AbstractTucsonProtocol;
 import alice.tucson.network.exceptions.DialogException;
+import alice.tucson.network.exceptions.DialogReceiveException;
 import alice.tucson.network.exceptions.DialogSendException;
 import alice.tuplecentre.core.InputEvent;
 import alice.util.Tools;
@@ -90,6 +91,7 @@ public class ACCProvider {
      *            ACC
      * @return wether the request has been accepted (therefore the ACC given) or
      *         not
+     * @throws DialogReceiveException 
      * @throws TucsonInvalidTupleCentreIdException
      *             if the TupleCentreId, contained into AbstractTucsonProtocol's
      *             message, does not represent a valid TuCSoN identifier
@@ -100,7 +102,7 @@ public class ACCProvider {
      */
     // exception handling is a mess, need to review it...
     public synchronized boolean processContextRequest(
-            final ACCDescription profile, final AbstractTucsonProtocol dialog) {
+            final ACCDescription profile, final AbstractTucsonProtocol dialog) throws DialogReceiveException, TucsonInvalidAgentIdException, TucsonInvalidTupleCentreIdException {
         ACCProvider.log("Processing ACC request...");
         try {
             String agentName = profile.getProperty("agent-identity");
