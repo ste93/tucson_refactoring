@@ -469,6 +469,38 @@ public final class TupleCentreContainer {
          * 
          */
     }
+    
+    /**
+     * @param ttcid
+     *            the id of the tuple centre to make persistent
+     * @param persistencyPath
+     *            the path where to store persistency information
+     *
+     */
+    public static synchronized void enablePersistency(
+            final TucsonTupleCentreId ttcid, final String persistencyPath) {
+        IManagementContext context = null;
+        context = RespectTCContainer.getRespectTCContainer()
+                .getManagementContext(ttcid.getInternalTupleCentreId());
+        context.enablePersistency(persistencyPath, ttcid);
+    }
+
+    /**
+     * @param ttcid
+     *            the id of the tuple centre to make persistent
+     * @param persistencyPath
+     *            the path where to store persistency information
+     * @param file
+     *            the name of the file to recover
+     *
+     */
+    public static void recoveryPersistent(final TucsonTupleCentreId ttcid,
+            final String persistencyPath, final String file) {
+        IManagementContext context = null;
+        context = RespectTCContainer.getRespectTCContainer()
+                .getManagementContext(ttcid.getInternalTupleCentreId());
+        context.recoveryPersistent(persistencyPath, file, ttcid);
+    }
 
     private TupleCentreContainer() {
         /*
