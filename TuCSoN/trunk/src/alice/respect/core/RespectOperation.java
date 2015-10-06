@@ -695,6 +695,24 @@ public class RespectOperation extends AbstractTupleCentreOperation implements
             final OperationCompletionListener l) {
         return new RespectOperation(RespectOperation.OPTYPE_TIME, t, l);
     }
+    
+    /**
+     * 
+     * @param p
+     *            the tuProlog engine used for unification purpose
+     * @param t
+     *            the tuple argument of the operation
+     * @param l
+     *            the listener for operation completion
+     * @return the ReSpecT operation built
+     */
+    public static RespectOperation makeTo(final LogicTuple t,
+            final OperationCompletionListener l) {
+        final RespectOperation temp = new RespectOperation(
+                RespectOperation.OPTYPE_TO, t, l);
+        temp.setTupleResult(t);
+        return temp;
+    }
 
     /**
      *

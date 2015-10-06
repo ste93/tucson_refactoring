@@ -76,11 +76,11 @@ public class GeolocationServiceListener implements IGeolocationServiceListener {
             if (type == RespectOperation.OPTYPE_FROM) {
                 tuple = LogicTuple.parse("from(" + space + "," + place.toTerm()
                         + ")");
-                op = RespectOperation.makeFrom(null, tuple, null);
+                op = RespectOperation.makeFrom(tuple, null);
             } else if (type == RespectOperation.OPTYPE_TO) {
                 tuple = LogicTuple.parse("to(" + space + "," + place.toTerm()
                         + ")");
-                op = RespectOperation.makeTo(null, tuple, null);
+                op = RespectOperation.makeTo(tuple, null);
             }
             final InputEvent ev = new InputEvent(this.service.getServiceId(),
                     op, this.tcId, context.getCurrentTime(),
