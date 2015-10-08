@@ -24,13 +24,13 @@ public class InterTupleCentreACCProvider implements ILinkContext {
 
         private final TupleCentreId fromId;
         private InterTupleCentreACC helper;
-        private final Map<String, InterTupleCentreACC> helpers;
+        private final Map<TupleCentreId, InterTupleCentreACC> helpers;
         private final AbstractTupleCentreOperation op;
         private final alice.tuplecentre.api.TupleCentreId toId;
 
         public Executor(final alice.tuplecentre.api.TupleCentreId to,
                 final TupleCentreId from, final AbstractTupleCentreOperation o,
-                final Map<String, InterTupleCentreACC> helps) {
+                final Map<TupleCentreId, InterTupleCentreACC> helps) {
             super();
             this.toId = to;
             this.fromId = from;
@@ -41,7 +41,7 @@ public class InterTupleCentreACCProvider implements ILinkContext {
         @Override
         public void run() {
             if (this.helpers != null) {
-                this.helper = this.helpers.get(this.fromId.getNode());
+                this.helper = this.helpers.get(this.fromId);
                 if (this.helper == null) {
                     try {
                         this.helper = new InterTupleCentreACCProxy(
@@ -50,7 +50,7 @@ public class InterTupleCentreACCProvider implements ILinkContext {
                         e.printStackTrace();
                     }
                     if (this.helpers != null) {
-                        this.helpers.put(this.fromId.getNode(), this.helper);
+                        this.helpers.put(this.fromId, this.helper);
                     }
                 }
             }
@@ -70,7 +70,7 @@ public class InterTupleCentreACCProvider implements ILinkContext {
 
     // FIXME How to fix this?
     private static ExecutorService exec;
-    private static Map<String, InterTupleCentreACC> helpList;
+    private static Map<TupleCentreId, InterTupleCentreACC> helpList;
     private final alice.tuplecentre.api.TupleCentreId idTo;
 
     /**
@@ -84,7 +84,7 @@ public class InterTupleCentreACCProvider implements ILinkContext {
         this.idTo = id;
         synchronized (this) {
             if (InterTupleCentreACCProvider.helpList == null) {
-                InterTupleCentreACCProvider.helpList = new HashMap<String, InterTupleCentreACC>();
+                InterTupleCentreACCProvider.helpList = new HashMap<TupleCentreId, InterTupleCentreACC>();
             }
         }
         synchronized (this) {
