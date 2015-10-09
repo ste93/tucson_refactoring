@@ -163,7 +163,8 @@ public class NodeManagementAgent extends Thread {
             }
         } else if ("enable_persistency".equals(name)) {
             try {
-                this.node.enablePersistence(cmd.getArg(0));
+            	NodeManagementAgent.log("Enabling persistency...");
+            	this.node.enablePersistency(new LogicTuple(cmd.getArg(0)));
                 // Operation Make
                 final RespectOperation opRequested = RespectOperation.make(
                         TucsonOperation.outCode(), new LogicTuple(
@@ -173,6 +174,7 @@ public class NodeManagementAgent extends Thread {
                         opRequested, this.config, System.currentTimeMillis(),
                         null);
                 TupleCentreContainer.doBlockingOperation(ev);
+                NodeManagementAgent.log("...persistency enabled.");
             } catch (final InvalidLogicTupleException e) {
                 e.printStackTrace();
             }
@@ -181,7 +183,8 @@ public class NodeManagementAgent extends Thread {
             // cmd, new Value("ok")));
         } else if ("disable_persistency".equals(name)) {
             try {
-                this.node.disablePersistence(cmd.getArg(0));
+            	NodeManagementAgent.log("Disabling persistency...");
+                this.node.disablePersistency(new LogicTuple(cmd.getArg(0)));
                 // Operation Make
                 final RespectOperation opRequested = RespectOperation.make(
                         TucsonOperation.outCode(), new LogicTuple(
@@ -192,6 +195,7 @@ public class NodeManagementAgent extends Thread {
                         opRequested, this.config, System.currentTimeMillis(),
                         null);
                 TupleCentreContainer.doBlockingOperation(ev);
+                NodeManagementAgent.log("...persistency disabled.");
             } catch (final InvalidLogicTupleException e) {
                 e.printStackTrace();
             }
