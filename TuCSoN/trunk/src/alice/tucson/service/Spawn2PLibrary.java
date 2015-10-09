@@ -21,7 +21,8 @@ import alice.tuprolog.Term;
  *
  *
  * @author ste (mailto: s.mariani@unibo.it)
- *
+ * @author (contributor) Michele Bombardi (mailto:
+ *         michele.bombardi@studio.unibo.it)
  */
 public class Spawn2PLibrary extends Library {
 
