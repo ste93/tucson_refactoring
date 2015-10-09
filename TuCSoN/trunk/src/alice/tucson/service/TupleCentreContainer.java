@@ -3,7 +3,6 @@ package alice.tucson.service;
 import alice.logictuple.LogicTuple;
 import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.logictuple.exceptions.InvalidLogicTupleOperationException;
-import alice.logictuple.exceptions.InvalidTupleOperationException;
 import alice.respect.api.IManagementContext;
 import alice.respect.api.IOrdinaryAsynchInterface;
 import alice.respect.api.IOrdinarySynchInterface;
@@ -24,6 +23,7 @@ import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tuplecentre.api.ITupleCentreOperation;
 import alice.tuplecentre.api.InspectableEventListener;
 import alice.tuplecentre.api.ObservableEventListener;
+import alice.tuplecentre.api.exceptions.InvalidOperationException;
 import alice.tuplecentre.core.InputEvent;
 
 /**
@@ -185,8 +185,6 @@ public final class TupleCentreContainer {
             throw new TucsonOperationNotPossibleException();
         } catch (final InvalidSpecificationException e) {
             throw new TucsonInvalidSpecificationException();
-        } catch (final InvalidLogicTupleOperationException e) {
-            throw new TucsonOperationNotPossibleException();
         }
         return res;
     }
@@ -217,114 +215,123 @@ public final class TupleCentreContainer {
             throw new TucsonOperationNotPossibleException();
         } catch (final InvalidSpecificationException e) {
             throw new TucsonInvalidSpecificationException();
-        } catch (final InvalidLogicTupleOperationException e) {
-            throw new TucsonOperationNotPossibleException();
-        }
+        } 
         return res;
     }
 
     /**
-     * 
-     * @param type
-     *            the type code of the operation requested
-     * @param tid
-     *            the identifier of the tuple centre target of the operation
-     * @param obj
-     *            the argument of the management operation
-     * @return the result of the operation
-     */
-    public static Object doManagementOperation(final int type,
-            final TucsonTupleCentreId tid, final Object obj) {
-        IManagementContext context = null;
-        context = RespectTCContainer.getRespectTCContainer()
-                .getManagementContext(tid.getInternalTupleCentreId());
-        if (type == TucsonOperation.abortOpCode()) {
-            return context.abortOperation((Long) obj);
-        }
-        if (type == TucsonOperation.setSCode()) {
-            try {
-                context.setSpec(new RespectSpecification(((LogicTuple) obj)
-                        .getArg(0).getName()));
-                return true;
-            } catch (final InvalidSpecificationException e) {
-                e.printStackTrace();
-                return false;
-            } catch (final InvalidLogicTupleOperationException e) {
-                e.printStackTrace();
-                return false;
-            }
-        }
-        if (type == TucsonOperation.getSCode()) {
-            return new LogicTuple(context.getSpec().toString());
-        }
-        if (type == TucsonOperation.getTRSetCode()) {
-            return context.getTRSet((LogicTuple) obj);
-        }
-        if (type == TucsonOperation.getTSetCode()) {
-            return context.getTSet((LogicTuple) obj);
-        }
-        if (type == TucsonOperation.getWSetCode()) {
-            return context.getWSet((LogicTuple) obj);
-        }
-        if (type == TucsonOperation.goCmdCode()) {
-            try {
-                context.goCommand();
-                return true;
-            } catch (final OperationNotPossibleException e) {
-                e.printStackTrace();
-                return false;
-            }
-        }
-        if (type == TucsonOperation.stopCmdCode()) {
-            try {
-                context.stopCommand();
-                return true;
-            } catch (final OperationNotPossibleException e) {
-                e.printStackTrace();
-                return false;
-            }
-        }
-        if (type == TucsonOperation.nextStepCode()) {
-            try {
-                context.nextStepCommand();
-                return true;
-            } catch (final OperationNotPossibleException e) {
-                e.printStackTrace();
-                return false;
-            }
-        }
-        if (type == TucsonOperation.setMngModeCode()) {
-            context.setManagementMode((Boolean) obj);
-            return true;
-        }
-        if (type == TucsonOperation.addObsCode()) {
-            context.addObserver((ObservableEventListener) obj);
-            return true;
-        }
-        if (type == TucsonOperation.rmvObsCode()) {
-            context.removeObserver((ObservableEventListener) obj);
-            return true;
-        }
-        if (type == TucsonOperation.hasObsCode()) {
-            return context.hasObservers();
-        }
-        if (type == TucsonOperation.addInspCode()) {
-            context.addInspector((InspectableEventListener) obj);
-            return true;
-        }
-        if (type == TucsonOperation.rmvInspCode()) {
-            context.removeInspector((InspectableEventListener) obj);
-            return true;
-        }
-        if (type == TucsonOperation.hasInspCode()) {
-            return context.hasInspectors();
-        }
-        // I don't think this is finished...
-        if (type == TucsonOperation.reset()) {
-            return context.hasInspectors();
-        }
-        return null;
-    }
+    *
+    * @param type
+    *            the type code of the operation requested
+    * @param tid
+    *            the identifier of the tuple centre target of the operation
+    * @param obj
+    *            the argument of the management operation
+    * @return the result of the operation
+    */
+   public static Object doManagementOperation(final int type,
+           final TucsonTupleCentreId tid, final Object obj) {
+       IManagementContext context = null;
+       context = RespectTCContainer.getRespectTCContainer()
+               .getManagementContext(tid.getInternalTupleCentreId());
+       if (type == TucsonOperation.abortOpCode()) {
+           return context.abortOperation((Long) obj);
+       }
+       if (type == TucsonOperation.setSCode()) {
+           try {
+               context.setSpec(new RespectSpecification(((LogicTuple) obj)
+                       .getArg(0).getName()));
+               return true;
+           } catch (final InvalidSpecificationException e) {
+               e.printStackTrace();
+               return false;
+           } catch (final InvalidOperationException e) {
+               e.printStackTrace();
+               return false;
+           }
+       }
+       if (type == TucsonOperation.getSCode()) {
+           return new LogicTuple(context.getSpec().toString());
+       }
+       if (type == TucsonOperation.getTRSetCode()) {
+           return context.getTRSet((LogicTuple) obj);
+       }
+       if (type == TucsonOperation.getTSetCode()) {
+           return context.getTSet((LogicTuple) obj);
+       }
+       if (type == TucsonOperation.getWSetCode()) {
+           return context.getWSet((LogicTuple) obj);
+       }
+       if (type == TucsonOperation.goCmdCode()) {
+           try {
+               context.goCommand();
+               return true;
+           } catch (final OperationNotPossibleException e) {
+               e.printStackTrace();
+               return false;
+           }
+       }
+       if (type == TucsonOperation.stopCmdCode()) {
+           try {
+               context.stopCommand();
+               return true;
+           } catch (final OperationNotPossibleException e) {
+               e.printStackTrace();
+               return false;
+           }
+       }
+       if (type == TucsonOperation.isStepModeCode()) {
+           return context.isStepModeCommand();
+       }
+       if (type == TucsonOperation.stepModeCode()) {
+           context.stepModeCommand();
+           return true;
+       }
+       if (type == TucsonOperation.nextStepCode()) {
+           try {
+               context.nextStepCommand();
+               return true;
+           } catch (final OperationNotPossibleException e) {
+               // TODO Auto-generated catch block
+               e.printStackTrace();
+               return false;
+           }
+       }
+       /*
+        * TODO must be delete... if (type == TucsonOperation.setMngModeCode())
+        * { context.setManagementMode((Boolean) obj); return true; }
+        */
+       if (type == TucsonOperation.addObsCode()) {
+           context.addObserver((ObservableEventListener) obj);
+           return true;
+       }
+       if (type == TucsonOperation.rmvObsCode()) {
+           context.removeObserver((ObservableEventListener) obj);
+           return true;
+       }
+       if (type == TucsonOperation.hasObsCode()) {
+           return context.hasObservers();
+       }
+       if (type == TucsonOperation.addInspCode()) {
+           context.addInspector((InspectableEventListener) obj);
+           return true;
+       }
+       if (type == TucsonOperation.rmvInspCode()) {
+           context.removeInspector((InspectableEventListener) obj);
+           return true;
+       }
+       if (type == TucsonOperation.getInspectorsCode()) {
+           return context.getInspectors();
+       }
+       if (type == TucsonOperation.hasInspCode()) {
+           return context.hasInspectors();
+       }
+       // I don't think this is finished...
+       if (type == TucsonOperation.reset()) {
+           return context.hasInspectors();
+       }
+       return null;
+   }
 
     public static ITupleCentreOperation doNonBlockingOperation(
             final InputEvent ev) throws TucsonInvalidLogicTupleException,
