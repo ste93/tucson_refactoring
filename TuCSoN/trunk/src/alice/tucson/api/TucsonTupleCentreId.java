@@ -121,6 +121,11 @@ public class TucsonTupleCentreId implements
     public boolean isEnv() {
         return false;
     }
+    
+    @Override
+    public boolean isGeo() {
+        return false;
+    }
 
     @Override
     public boolean isTC() {

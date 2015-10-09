@@ -44,6 +44,11 @@ public class EnvId implements IId, java.io.Serializable {
     public boolean isEnv() {
         return true;
     }
+    
+    @Override
+	public boolean isGeo() {
+		return false;
+	}
 
     @Override
     public boolean isTC() {
@@ -65,4 +70,4 @@ public class EnvId implements IId, java.io.Serializable {
         }
         return this.id.getTerm();
     }
-}
+ }

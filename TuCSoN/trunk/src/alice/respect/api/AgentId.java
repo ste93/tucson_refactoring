@@ -136,4 +136,9 @@ public class AgentId implements alice.tuplecentre.api.AgentId,
     public Term toTerm() {
         return this.id;
     }
+
+	@Override
+	public boolean isGeo() {
+		return false;
+	}
 }

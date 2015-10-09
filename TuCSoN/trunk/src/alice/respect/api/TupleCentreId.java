@@ -209,6 +209,11 @@ public class TupleCentreId implements alice.tuplecentre.api.TupleCentreId,
     public boolean isEnv() {
         return false;
     }
+    
+    @Override
+    public boolean isGeo() {
+        return false;
+    }
 
     @Override
     public boolean isTC() {
