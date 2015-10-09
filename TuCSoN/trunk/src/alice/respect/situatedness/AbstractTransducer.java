@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.UUID;
+
 import alice.logictuple.LogicTuple;
 import alice.logictuple.Value;
 import alice.respect.core.InternalEvent;
@@ -14,6 +15,7 @@ import alice.tucson.api.exceptions.UnreachableNodeException;
 import alice.tucson.network.AbstractTucsonProtocol;
 import alice.tucson.network.TucsonMsgRequest;
 import alice.tucson.network.exceptions.DialogException;
+import alice.tucson.service.InputEventMsg;
 import alice.tucson.service.OperationHandler;
 import alice.tucson.service.TucsonOperation;
 import alice.tuplecentre.api.TupleCentreId;
@@ -28,6 +30,8 @@ import alice.tuplecentre.api.TupleTemplate;
  * @author Steven Maraldi
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
  */
+
+// !!! Nel metodo "exit" l'inputEventMsg ha null come "position"
 public abstract class AbstractTransducer implements
 TransducerStandardInterface, TucsonOperationCompletionListener {
 
@@ -94,8 +98,10 @@ TransducerStandardInterface, TucsonOperationCompletionListener {
             op = new TucsonOperation(TucsonOperation.exitCode(),
                     (TupleTemplate) null, null, this.executor);
             this.executor.addOperation(op.getId(), op);
-            exit = new TucsonMsgRequest((int) op.getId(), op.getType(), null,
-                    op.getLogicTupleArgument());
+            final InputEventMsg ev = new InputEventMsg(this.id.toString(),
+                    op.getId(), op.getType(), op.getLogicTupleArgument(), null,
+                    System.currentTimeMillis(), null);
+            exit = new TucsonMsgRequest(ev);
             try {
                 info.sendMsgRequest(exit);
             } catch (final DialogException e) {

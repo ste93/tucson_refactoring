@@ -24,6 +24,7 @@ import alice.logictuple.Value;
 import alice.logictuple.Var;
 import alice.logictuple.exceptions.InvalidVarNameException;
 import alice.respect.api.geolocation.Position;
+import alice.respect.api.geolocation.service.AbstractGeolocationService;
 import alice.respect.api.geolocation.service.GeolocationServiceManager;
 import alice.respect.api.place.IPlace;
 import alice.tucson.api.EnhancedACC;
@@ -120,6 +121,10 @@ public class ACCProxyAgentSide implements EnhancedACC {
      * Username of Admin agents
      */
     protected String username;
+    /**
+     * Current geolocation service
+     */
+    private AbstractGeolocationService myGeolocationService;
 
     /**
      * Default constructor: exploits the default port (20504) in the "localhost"
@@ -207,11 +212,11 @@ public class ACCProxyAgentSide implements EnhancedACC {
             GeolocationServiceManager.getGeolocationManager().destroyService(
                     this.myGeolocationService.getServiceId());
         }
-        final Iterator<ControllerSession> it = this.controllerSessions.values()
-                .iterator();
-        ControllerSession cs;
+        final Iterator<OperationHandler.ControllerSession> it = this.executor
+                .getControllerSessions().values().iterator();
+        OperationHandler.ControllerSession cs;
         AbstractTucsonProtocol info;
-        Controller contr;
+        OperationHandler.Controller contr;
         TucsonOperation op;
         TucsonMsgRequest exit;
         while (it.hasNext()) {
@@ -219,9 +224,12 @@ public class ACCProxyAgentSide implements EnhancedACC {
             info = cs.getSession();
             contr = cs.getController();
             contr.setStop();
-            op = new TucsonOperation(TucsonOperation.exitCode(),
+            /*op = new TucsonOperation(TucsonOperation.exitCode(),
                     (TupleTemplate) null, null, this);
-            this.operations.put(op.getId(), op);
+            this.operations.put(op.getId(), op);*/
+            op = new TucsonOperation(TucsonOperation.exitCode(),
+                    (TupleTemplate) null, null, this.executor /* this */);
+            this.executor.addOperation(op.getId(), op);
             final InputEventMsg ev = new InputEventMsg(this.aid.toString(),
                     op.getId(), op.getType(), op.getLogicTupleArgument(), null,
                     System.currentTimeMillis(), this.getPosition());
