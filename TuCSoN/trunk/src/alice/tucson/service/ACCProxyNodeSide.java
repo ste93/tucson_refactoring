@@ -194,7 +194,7 @@ public class ACCProxyNodeSide extends AbstractACCProxyNodeSide {
                 }
             }
             try {
-                tid = new TucsonTupleCentreId(evMsg.getTarget());
+                tid = new TucsonTupleCentreId(evMsg.getReactingTC());
             } catch (final TucsonInvalidTupleCentreIdException e) {
                 e.printStackTrace();
                 break;

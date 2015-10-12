@@ -109,8 +109,17 @@ public class ACCProvider {
             if (agentName == null) {
                 agentName = profile.getProperty("tc-identity");
             }
+            
+            final String agentUUID = profile.getProperty("agent-uuid");
+            String agentClass = profile.getProperty("agent-class");
+            if (agentClass == null) {
+                agentClass = "basic";
+            }
             final LogicTuple req = new LogicTuple("context_request", new Value(
-                    agentName), new Var("CtxId"));
+                    Tools.removeApices(agentName)), new Var("CtxId"),
+                    new Value(agentClass), new Value(agentUUID));
+            /*final LogicTuple req = new LogicTuple("context_request", new Value(
+                    agentName), new Var("CtxId")); */
             // Operation Make
             final RespectOperation opRequested = RespectOperation.make(
                     TucsonOperation.inpCode(), req, null);

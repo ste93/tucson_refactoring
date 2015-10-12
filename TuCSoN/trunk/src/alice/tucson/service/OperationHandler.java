@@ -567,7 +567,7 @@ public class OperationHandler {
                     (TupleTemplate) null, null, this.executor  this );
             this.executor.addOperation(op.getId(), op);*/
             final InputEventMsg ev = new InputEventMsg(aid.toString(),
-                    op.getId(), op.getType(), op.getLogicTupleArgument(), null,
+                    op.getId(), op.getType(), op.getLogicTupleArgument(), tcid.toString(),
                     System.currentTimeMillis(), null); // ATTENZIONE! POSITION A NULL
              
             final TucsonMsgRequest msg = new TucsonMsgRequest(ev);
