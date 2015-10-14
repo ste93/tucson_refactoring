@@ -1295,7 +1295,15 @@ alice.tuplecentre.core.AbstractTupleCentreVMContext {
             op.addListener(new CompletionListener(oe));
             final ILinkContext link = RespectTCContainer
                     .getRespectTCContainer().getLinkContext(target);
-            link.doOperation((TupleCentreId) oe.getSource(), op);
+         // link.doOperation((TupleCentreId) oe.getSource(), op);
+            TupleCentreId source;
+            if (oe.getSource() instanceof TucsonTupleCentreId) {
+                source = ((TucsonTupleCentreId) oe.getSource())
+                        .getInternalTupleCentreId();
+            } else {
+                source = (TupleCentreId) oe.getSource();
+            }
+            link.doOperation(source, op);
         } catch (final OperationNotPossibleException e) {
             e.printStackTrace();
         }
