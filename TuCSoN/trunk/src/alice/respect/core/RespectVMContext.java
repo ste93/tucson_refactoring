@@ -90,7 +90,7 @@ import alice.tuprolog.Var;
  *         michele.bombardi@studio.unibo.it)
  */
 public class RespectVMContext extends
-alice.tuplecentre.core.AbstractTupleCentreVMContext {
+        alice.tuplecentre.core.AbstractTupleCentreVMContext {
 
     /**
      *
@@ -298,7 +298,7 @@ alice.tuplecentre.core.AbstractTupleCentreVMContext {
         if (",".equals(((LogicTuple) t).getName())) {
             tuple = new LogicTuple("reaction", ((LogicTuple) t).getArg(0),
                     ((LogicTuple) t).getArg(1).getArg(0), ((LogicTuple) t)
-                    .getArg(1).getArg(1));
+                            .getArg(1).getArg(1));
         } else {
             tuple = t;
         }
@@ -602,13 +602,13 @@ alice.tuplecentre.core.AbstractTupleCentreVMContext {
                         if (op.getLogicTupleListResult() == null) {
                             this.currentReactionTerm = new Struct("in_all",
                                     op.getLogicTupleArgument().getArg(0)
-                                    .toTerm(), op
-                                    .getLogicTupleArgument().getArg(1)
-                                    .toTerm());
+                                            .toTerm(), op
+                                            .getLogicTupleArgument().getArg(1)
+                                            .toTerm());
                         } else {
                             this.currentReactionTerm = new Struct("in_all",
                                     op.getLogicTupleArgument().getArg(0)
-                                    .toTerm(),
+                                            .toTerm(),
                                     RespectVMContext.list2tuple(op
                                             .getLogicTupleListResult()));
                         }
@@ -616,13 +616,13 @@ alice.tuplecentre.core.AbstractTupleCentreVMContext {
                         if (op.getLogicTupleListResult() == null) {
                             this.currentReactionTerm = new Struct("rd_all",
                                     op.getLogicTupleArgument().getArg(0)
-                                    .toTerm(), op
-                                    .getLogicTupleArgument().getArg(1)
-                                    .toTerm());
+                                            .toTerm(), op
+                                            .getLogicTupleArgument().getArg(1)
+                                            .toTerm());
                         } else {
                             this.currentReactionTerm = new Struct("rd_all",
                                     op.getLogicTupleArgument().getArg(0)
-                                    .toTerm(),
+                                            .toTerm(),
                                     RespectVMContext.list2tuple(op
                                             .getLogicTupleListResult()));
                         }
@@ -630,13 +630,13 @@ alice.tuplecentre.core.AbstractTupleCentreVMContext {
                         if (op.getLogicTupleListResult() == null) {
                             this.currentReactionTerm = new Struct("no_all",
                                     op.getLogicTupleArgument().getArg(0)
-                                    .toTerm(), op
-                                    .getLogicTupleArgument().getArg(1)
-                                    .toTerm());
+                                            .toTerm(), op
+                                            .getLogicTupleArgument().getArg(1)
+                                            .toTerm());
                         } else {
                             this.currentReactionTerm = new Struct("no_all",
                                     op.getLogicTupleArgument().getArg(0)
-                                    .toTerm(),
+                                            .toTerm(),
                                     RespectVMContext.list2tuple(op
                                             .getLogicTupleListResult()));
                         }
@@ -717,13 +717,13 @@ alice.tuplecentre.core.AbstractTupleCentreVMContext {
                             if (op.getLogicTupleListResult() == null) {
                                 this.currentReactionTerm = new Struct("in_all",
                                         op.getLogicTupleArgument().getArg(0)
-                                        .toTerm(), op
-                                        .getLogicTupleArgument()
-                                        .getArg(1).toTerm());
+                                                .toTerm(), op
+                                                .getLogicTupleArgument()
+                                                .getArg(1).toTerm());
                             } else {
                                 this.currentReactionTerm = new Struct("in_all",
                                         op.getLogicTupleArgument().getArg(0)
-                                        .toTerm(),
+                                                .toTerm(),
                                         RespectVMContext.list2tuple(op
                                                 .getLogicTupleListResult()));
                             }
@@ -731,13 +731,13 @@ alice.tuplecentre.core.AbstractTupleCentreVMContext {
                             if (op.getLogicTupleListResult() == null) {
                                 this.currentReactionTerm = new Struct("rd_all",
                                         op.getLogicTupleArgument().getArg(0)
-                                        .toTerm(), op
-                                        .getLogicTupleArgument()
-                                        .getArg(1).toTerm());
+                                                .toTerm(), op
+                                                .getLogicTupleArgument()
+                                                .getArg(1).toTerm());
                             } else {
                                 this.currentReactionTerm = new Struct("rd_all",
                                         op.getLogicTupleArgument().getArg(0)
-                                        .toTerm(),
+                                                .toTerm(),
                                         RespectVMContext.list2tuple(op
                                                 .getLogicTupleListResult()));
                             }
@@ -745,13 +745,13 @@ alice.tuplecentre.core.AbstractTupleCentreVMContext {
                             if (op.getLogicTupleListResult() == null) {
                                 this.currentReactionTerm = new Struct("no_all",
                                         op.getLogicTupleArgument().getArg(0)
-                                        .toTerm(), op
-                                        .getLogicTupleArgument()
-                                        .getArg(1).toTerm());
+                                                .toTerm(), op
+                                                .getLogicTupleArgument()
+                                                .getArg(1).toTerm());
                             } else {
                                 this.currentReactionTerm = new Struct("no_all",
                                         op.getLogicTupleArgument().getArg(0)
-                                        .toTerm(),
+                                                .toTerm(),
                                         RespectVMContext.list2tuple(op
                                                 .getLogicTupleListResult()));
                             }
@@ -882,13 +882,13 @@ alice.tuplecentre.core.AbstractTupleCentreVMContext {
                             if (op.getLogicTupleListResult() == null) {
                                 this.currentReactionTerm = new Struct("in_all",
                                         op.getLogicTupleArgument().getArg(0)
-                                        .toTerm(), op
-                                        .getLogicTupleArgument()
-                                        .getArg(1).toTerm());
+                                                .toTerm(), op
+                                                .getLogicTupleArgument()
+                                                .getArg(1).toTerm());
                             } else {
                                 this.currentReactionTerm = new Struct("in_all",
                                         op.getLogicTupleArgument().getArg(0)
-                                        .toTerm(),
+                                                .toTerm(),
                                         RespectVMContext.list2tuple(op
                                                 .getLogicTupleListResult()));
                             }
@@ -896,13 +896,13 @@ alice.tuplecentre.core.AbstractTupleCentreVMContext {
                             if (op.getLogicTupleListResult() == null) {
                                 this.currentReactionTerm = new Struct("rd_all",
                                         op.getLogicTupleArgument().getArg(0)
-                                        .toTerm(), op
-                                        .getLogicTupleArgument()
-                                        .getArg(1).toTerm());
+                                                .toTerm(), op
+                                                .getLogicTupleArgument()
+                                                .getArg(1).toTerm());
                             } else {
                                 this.currentReactionTerm = new Struct("rd_all",
                                         op.getLogicTupleArgument().getArg(0)
-                                        .toTerm(),
+                                                .toTerm(),
                                         RespectVMContext.list2tuple(op
                                                 .getLogicTupleListResult()));
                             }
@@ -910,28 +910,28 @@ alice.tuplecentre.core.AbstractTupleCentreVMContext {
                             if (op.getLogicTupleListResult() == null) {
                                 this.currentReactionTerm = new Struct("no_all",
                                         op.getLogicTupleArgument().getArg(0)
-                                        .toTerm(), op
-                                        .getLogicTupleArgument()
-                                        .getArg(1).toTerm());
+                                                .toTerm(), op
+                                                .getLogicTupleArgument()
+                                                .getArg(1).toTerm());
                             } else {
                                 this.currentReactionTerm = new Struct("no_all",
                                         op.getLogicTupleArgument().getArg(0)
-                                        .toTerm(),
+                                                .toTerm(),
                                         RespectVMContext.list2tuple(op
                                                 .getLogicTupleListResult()));
                             }
                         } else if (op.isGetEnv()) {
                             this.currentReactionTerm = new Struct("getEnv",
                                     op.getLogicTupleArgument().getArg(0)
-                                    .toTerm(), op
-                                    .getLogicTupleArgument().getArg(1)
-                                    .toTerm());
+                                            .toTerm(), op
+                                            .getLogicTupleArgument().getArg(1)
+                                            .toTerm());
                         } else if (op.isSetEnv()) {
                             this.currentReactionTerm = new Struct("setEnv",
                                     op.getLogicTupleArgument().getArg(0)
-                                    .toTerm(), op
-                                    .getLogicTupleArgument().getArg(1)
-                                    .toTerm());
+                                            .toTerm(), op
+                                            .getLogicTupleArgument().getArg(1)
+                                            .toTerm());
                         }
                     }
                 } else if (ev.isInternal()) {
@@ -1289,6 +1289,7 @@ alice.tuplecentre.core.AbstractTupleCentreVMContext {
 
     @Override
     public void linkOperation(final OutputEvent oe) {
+        this.log(" ### ### ### OE = " + oe);
         final TupleCentreId target = (TupleCentreId) oe.getTarget();
         try {
             final AbstractTupleCentreOperation op = oe.getSimpleTCEvent();
@@ -1909,8 +1910,8 @@ alice.tuplecentre.core.AbstractTupleCentreVMContext {
             return false;
         } catch (final InvalidTheoryException e) {
             System.err
-            .println("[RespectVMContext]: InvalidTheoryException @ c: "
-                    + e.clause + ", l: " + e.line + ", p: " + e.pos);
+                    .println("[RespectVMContext]: InvalidTheoryException @ c: "
+                            + e.clause + ", l: " + e.line + ", p: " + e.pos);
             e.printStackTrace();
             return false;
         }

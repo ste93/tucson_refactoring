@@ -66,6 +66,7 @@ public class LogicReaction implements alice.tuplecentre.core.Reaction,
 
     @Override
     public String toString() {
+        // this.reaction.resolveTerm();
         return this.reaction.toString();
     }
 }
