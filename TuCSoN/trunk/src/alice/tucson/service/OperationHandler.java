@@ -562,10 +562,7 @@ public class OperationHandler {
                 this.operations.put(op.getId(), op);
             }
             
-            /*Esempio. Non c'entra
-             * op = new TucsonOperation(TucsonOperation.exitCode(),
-                    (TupleTemplate) null, null, this.executor  this );
-            this.executor.addOperation(op.getId(), op);*/
+            this.addOperation(op.getId(), op);
             final InputEventMsg ev = new InputEventMsg(aid.toString(),
                     op.getId(), op.getType(), op.getLogicTupleArgument(), tcid.toString(),
                     System.currentTimeMillis(), null); // ATTENZIONE! POSITION A NULL

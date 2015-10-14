@@ -1844,11 +1844,16 @@ alice.tuplecentre.core.AbstractTupleCentreVMContext {
                             this.log("spawnActivity.tcid = " + tcid);
                             instance.setSpawnerId(tcid);
                         }
-                        final TucsonTupleCentreId target = new TucsonTupleCentreId(
-                                ((TupleCentreId) targetTC).getName(),
-                                ((TupleCentreId) targetTC).getNode(),
-                                String.valueOf(((TupleCentreId) targetTC)
-                                        .getPort()));
+                        TucsonTupleCentreId target;
+                        if (targetTC instanceof TucsonTupleCentreId) {
+                            target = (TucsonTupleCentreId) targetTC;
+                        } else {
+                            target = new TucsonTupleCentreId(
+                                    ((TupleCentreId) targetTC).getName(),
+                                    ((TupleCentreId) targetTC).getNode(),
+                                    String.valueOf(((TupleCentreId) targetTC)
+                                            .getPort()));
+                        }
                         this.log("spawnActivity.target = " + target);
                         instance.setTargetTC(target);
                         if (instance.checkInstantiation()) {

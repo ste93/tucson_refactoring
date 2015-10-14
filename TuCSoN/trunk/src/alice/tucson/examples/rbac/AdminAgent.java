@@ -26,6 +26,7 @@
 package alice.tucson.examples.rbac;
 
 import java.util.logging.Logger;
+
 import alice.respect.api.exceptions.OperationNotAllowedException;
 import alice.tucson.api.AbstractTucsonAgent;
 import alice.tucson.api.AdminACC;
@@ -201,14 +202,13 @@ public final class AdminAgent extends AbstractTucsonAgent {
             adminACC.setBasicAgentClass("yetAnotherBasicClass");
             Logger.getLogger("AdminAgent").info(
                     "Basic agent class changed to 'yetAnotherBasicClass'");
-            Logger.getLogger("AdminAgent").info("Releasing AdminACC");
+            Logger.getLogger("AdminAgent").info("Releasing AdminACC"); 
             adminACC.exit();
             Logger.getLogger("AdminAgent").info("AdminACC released, bye!");
         } catch (TucsonOperationNotPossibleException | UnreachableNodeException
                 | OperationTimeOutException | OperationNotAllowedException e) {
             e.printStackTrace();
-        }
-
+        } 
     }
 
     /**
