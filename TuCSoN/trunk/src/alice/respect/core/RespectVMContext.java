@@ -1794,10 +1794,16 @@ alice.tuplecentre.core.AbstractTupleCentreVMContext {
                         this.log("spawnActivity.tcid = " + tcid);
                         s2pLib.setSpawnerId(tcid);
                     }
-                    final TucsonTupleCentreId target = new TucsonTupleCentreId(
-                            ((TupleCentreId) targetTC).getName(),
-                            ((TupleCentreId) targetTC).getNode(),
-                            String.valueOf(((TupleCentreId) targetTC).getPort()));
+                    TucsonTupleCentreId target;
+                    if (targetTC instanceof TucsonTupleCentreId) {
+                        target = (TucsonTupleCentreId) targetTC;
+                    } else {
+                        target = new TucsonTupleCentreId(
+                                ((TupleCentreId) targetTC).getName(),
+                                ((TupleCentreId) targetTC).getNode(),
+                                String.valueOf(((TupleCentreId) targetTC)
+                                        .getPort()));
+                    }
                     this.log("spawnActivity.target = " + target);
                     s2pLib.setTargetTC(target);
                     solver.loadLibrary(s2pLib);
