@@ -1,7 +1,10 @@
 package alice.tucson.service;
 
 import java.net.InetAddress;
+import java.net.NetworkInterface;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+
 import alice.logictuple.LogicTuple;
 import alice.logictuple.TupleArgument;
 import alice.logictuple.Value;
@@ -441,18 +444,22 @@ public class AdminACCProxyAgentSide extends ACCProxyAgentSide implements
             tmpNode = this.node;
             tmpPort = this.port;
         }
-        if (tmpNode.equalsIgnoreCase("localhost")
+        
+        if (!tmpNode.equals("localhost")) {
+        	if (!tmpNode.equals("127.0.0.1")) {
+       /* if (tmpNode.equalsIgnoreCase("localhost")
                 || tmpNode.equalsIgnoreCase("127.0.0.1")
-                || tmpNode.equalsIgnoreCase("'127.0.0.1'")) {
-            InetAddress localhost;
-            try {
-                localhost = InetAddress.getLocalHost();
-                final String localNodeAddress = localhost.getHostAddress();
-                tmpNode = localNodeAddress;
-            } catch (final UnknownHostException e) {
-                return new TucsonTupleCentreId(ACCProxyAgentSide.TC_ORG, "'"
-                        + tmpNode + "'", "" + tmpPort);
-            }
+                || tmpNode.equalsIgnoreCase("'127.0.0.1'")) { */
+	            InetAddress localhost;
+	            try {
+	                localhost = InetAddress.getLocalHost();
+	                final String localNodeAddress = localhost.getHostAddress();
+	                tmpNode = localNodeAddress;
+	            } catch (final UnknownHostException e) {
+	                return new TucsonTupleCentreId(ACCProxyAgentSide.TC_ORG, "'"
+	                        + tmpNode + "'", "" + tmpPort);
+	            } 
+	        }
         }
         return new TucsonTupleCentreId(ACCProxyAgentSide.TC_ORG, "'" + tmpNode
                 + "'", "" + tmpPort);

@@ -1079,7 +1079,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      *         this tc and target to this same tc
      */
     public boolean internal_0() {
-        return this.from_tc_0() && this.to_tc_0() && this.endo_0()
+    	return this.from_tc_0() && this.to_tc_0() && this.endo_0()
                 && this.intra_0();
     }
 
