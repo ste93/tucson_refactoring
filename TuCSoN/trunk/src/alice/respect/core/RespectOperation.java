@@ -212,6 +212,12 @@ public class RespectOperation extends AbstractTupleCentreOperation implements
         if (opType == TucsonOperation.spawnCode()) {
             return RespectOperation.makeSpawn(t, l);
         }
+        if (opType == TucsonOperation.getEnvCode()) {
+            return RespectOperation.makeGetEnv(t, l);
+        }
+        if (opType == TucsonOperation.setEnvCode()) {
+            return RespectOperation.makeSetEnv(t, l);
+        }
         return null;
     }
     

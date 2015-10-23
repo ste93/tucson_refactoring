@@ -218,6 +218,10 @@ public class ACCProxyNodeSide extends AbstractACCProxyNodeSide {
                 ev = new InputEvent(this.agentId, opRequested, tid,
                         evMsg.getTime(), evMsg.getPlace());
             }
+            if (msgType == TucsonOperation.getEnvCode()){
+        		int x;
+        		x = 3;
+        	}
             final AbstractTupleCentreOperation evOp = ev.getSimpleTCEvent();
             this.log("Serving TucsonOperation request < id=" + evOp.getId()
                     + ", type=" + evOp.getType() + ", tuple="
@@ -377,7 +381,9 @@ public class ACCProxyNodeSide extends AbstractACCProxyNodeSide {
                     || msgType == TucsonOperation.inAllCode()
                     || msgType == TucsonOperation.rdAllCode()
                     || msgType == TucsonOperation.noAllCode()
-                    || msgType == TucsonOperation.spawnCode()) {
+                    || msgType == TucsonOperation.spawnCode()
+                    || msgType == TucsonOperation.getEnvCode()
+                    || msgType == TucsonOperation.setEnvCode()) {
                 this.node.resolveCore(tid.getName());
                 this.node.addTCAgent(this.agentId, tid);
                 ITupleCentreOperation op;

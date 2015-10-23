@@ -55,7 +55,7 @@ public interface IRespectTC {
      *             if the requested operation cannot be carried out
      */
     IRespectOperation getS(InputEvent ev) throws OperationNotPossibleException;
-
+    
     /**
      * 
      * @return this ReSpecT VM
@@ -373,4 +373,26 @@ public interface IRespectTC {
      *             if the requested operation cannot be carried out
      */
     IRespectOperation urdp(InputEvent ev) throws OperationNotPossibleException;
+    
+    /**
+     * Retrieves all tuples in the tuple centre matching the template
+     * 
+     * @param ev
+     *            the event to handle
+     * @return the operation requested
+     * @throws OperationNotPossibleException
+     *             if the requested operation cannot be carried out
+     */
+    IRespectOperation getEnv(InputEvent ev) throws OperationNotPossibleException;
+    
+    /**
+     * Retrieves all tuples in the tuple centre matching the template
+     * 
+     * @param ev
+     *            the event to handle
+     * @return the operation requested
+     * @throws OperationNotPossibleException
+     *             if the requested operation cannot be carried out
+     */
+    IRespectOperation setEnv(InputEvent ev) throws OperationNotPossibleException;
 }

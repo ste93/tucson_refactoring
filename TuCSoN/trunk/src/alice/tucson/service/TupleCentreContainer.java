@@ -3,6 +3,7 @@ package alice.tucson.service;
 import alice.logictuple.LogicTuple;
 import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.logictuple.exceptions.InvalidLogicTupleOperationException;
+import alice.respect.api.IEnvironmentContext;
 import alice.respect.api.IManagementContext;
 import alice.respect.api.IOrdinaryAsynchInterface;
 import alice.respect.api.IOrdinarySynchInterface;
@@ -343,8 +344,15 @@ public final class TupleCentreContainer {
         try {
             context = RespectTCContainer.getRespectTCContainer()
                     .getOrdinaryAsynchInterface(tid.getInternalTupleCentreId());
+            
             if (type == TucsonOperation.spawnCode()) {
                 return context.spawn(ev);
+            }
+            if (type == TucsonOperation.getEnvCode()) {
+                return context.getEnv(ev);
+            }
+            if (type == TucsonOperation.setEnvCode()) {
+                return context.setEnv(ev);
             }
             if (type == TucsonOperation.outCode()) {
                 return context.out(ev);

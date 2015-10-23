@@ -214,7 +214,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      * @return <code>true</code> if ReSpecT VM is in the completion phase
      */
     public boolean completion_0() {
-        return this.response_0();
+    	return this.response_0();
     }
     
     /**
@@ -514,7 +514,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      *         the environment
      */
     public boolean from_env_0() {
-        return this.vm.getCurrentReactionEvent().getSource().isEnv();
+    	return this.vm.getCurrentReactionEvent().getSource().isEnv();
     }
 
     /**

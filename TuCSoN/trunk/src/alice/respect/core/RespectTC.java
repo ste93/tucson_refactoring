@@ -399,4 +399,18 @@ public class RespectTC implements IRespectTC {
         this.vm.doOperation(ev);
         return (IRespectOperation) ev.getSimpleTCEvent();
     }
+
+	@Override
+	public IRespectOperation getEnv(InputEvent ev)
+			throws OperationNotPossibleException {
+		this.vm.doOperation(ev);
+        return (IRespectOperation) ev.getSimpleTCEvent();
+	}
+
+	@Override
+	public IRespectOperation setEnv(InputEvent ev)
+			throws OperationNotPossibleException {
+		this.vm.doOperation(ev);
+        return (IRespectOperation) ev.getSimpleTCEvent();
+	}
 }
