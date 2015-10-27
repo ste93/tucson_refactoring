@@ -206,6 +206,7 @@ public class ACCProxyNodeSide extends AbstractACCProxyNodeSide {
             // } catch (InstantiationNotPossibleException e) {
             // e.printStackTrace();
             // }
+            
             // Operation Make
             final RespectOperation opRequested = this.makeOperation(
                     evMsg.getOpType(), evMsg.getTuple());
@@ -218,10 +219,6 @@ public class ACCProxyNodeSide extends AbstractACCProxyNodeSide {
                 ev = new InputEvent(this.agentId, opRequested, tid,
                         evMsg.getTime(), evMsg.getPlace());
             }
-            if (msgType == TucsonOperation.getEnvCode()){
-        		int x;
-        		x = 3;
-        	}
             final AbstractTupleCentreOperation evOp = ev.getSimpleTCEvent();
             this.log("Serving TucsonOperation request < id=" + evOp.getId()
                     + ", type=" + evOp.getType() + ", tuple="
@@ -381,9 +378,9 @@ public class ACCProxyNodeSide extends AbstractACCProxyNodeSide {
                     || msgType == TucsonOperation.inAllCode()
                     || msgType == TucsonOperation.rdAllCode()
                     || msgType == TucsonOperation.noAllCode()
-                    || msgType == TucsonOperation.spawnCode()
-                    || msgType == TucsonOperation.getEnvCode()
-                    || msgType == TucsonOperation.setEnvCode()) {
+                    || msgType == TucsonOperation.spawnCode()) {
+                    //|| msgType == TucsonOperation.getEnvCode()
+                    //|| msgType == TucsonOperation.setEnvCode()) {
                 this.node.resolveCore(tid.getName());
                 this.node.addTCAgent(this.agentId, tid);
                 ITupleCentreOperation op;
@@ -456,6 +453,36 @@ public class ACCProxyNodeSide extends AbstractACCProxyNodeSide {
                     this.opVsReq.put(Long.valueOf(op.getId()),
                             Long.valueOf(evOp.getId()));
                 }
+            } else if (msgType == TucsonOperation.getEnvCode()
+                    || msgType == TucsonOperation.setEnvCode()) {
+                this.node.resolveCore(tid.getName());
+                this.node.addTCAgent(this.agentId, tid);
+                ITupleCentreOperation op = null;
+                synchronized (this.requests) {
+                    try {
+                        if (this.tcId == null) {
+                            op = TupleCentreContainer.doEnvironmentalOperation(
+                                    msgType, this.agentId, tid, msg.getInputEventMsg().getTuple(),
+                                    this);
+                        } else {
+                            op = TupleCentreContainer.doEnvironmentalOperation(
+                                    msgType, this.tcId, tid, msg.getInputEventMsg().getTuple(),
+                                    this);
+                        }
+                    } catch (final TucsonOperationNotPossibleException e) {
+                        System.err.println("[ACCProxyNodeSide]: " + e);
+                        break;
+                    } catch (final OperationTimeOutException e) {
+                        System.err.println("[ACCProxyNodeSide]: " + e);
+                        break;
+                    } catch (final UnreachableNodeException e) {
+                        System.err.println("[ACCProxyNodeSide]: " + e);
+                        break;
+                    }
+                }
+                this.requests.put(Long.valueOf(msg.getInputEventMsg().getOpId()), msg);
+                this.opVsReq.put(Long.valueOf(op.getId()),
+                        Long.valueOf(msg.getInputEventMsg().getOpId()));
             }
         }
         try {

@@ -219,23 +219,23 @@ public class OrdinaryAsynchInterface extends RootInterface implements
         return this.getCore().urdp(ev);
     }
 
-	@Override
-	public IRespectOperation getEnv(InputEvent ev)
-			throws InvalidLogicTupleException, OperationNotPossibleException {
-		final AbstractTupleCentreOperation op = ev.getSimpleTCEvent();
-        if (op.getTemplateArgument() == null) {
-            throw new InvalidLogicTupleException();
-        }
-        return this.getCore().getEnv(ev);
-	}
-
-	@Override
-	public IRespectOperation setEnv(InputEvent ev)
-			throws InvalidLogicTupleException, OperationNotPossibleException {
-		final AbstractTupleCentreOperation op = ev.getSimpleTCEvent();
-        if (op.getTemplateArgument() == null) {
-            throw new InvalidLogicTupleException();
-        }
-        return this.getCore().setEnv(ev);
-	}
+//	@Override
+//	public IRespectOperation getEnv(InputEvent ev)
+//			throws InvalidLogicTupleException, OperationNotPossibleException {
+//		final AbstractTupleCentreOperation op = ev.getSimpleTCEvent();
+//        if (op.getTemplateArgument() == null) {
+//            throw new InvalidLogicTupleException();
+//        }
+//        return this.getCore().getEnv(ev);
+//	}
+//
+//	@Override
+//	public IRespectOperation setEnv(InputEvent ev)
+//			throws InvalidLogicTupleException, OperationNotPossibleException {
+//		final AbstractTupleCentreOperation op = ev.getSimpleTCEvent();
+//        if (op.getTemplateArgument() == null) {
+//            throw new InvalidLogicTupleException();
+//        }
+//        return this.getCore().setEnv(ev);
+//	}
 }

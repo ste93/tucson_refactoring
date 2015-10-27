@@ -849,7 +849,7 @@ public class TucsonNodeService {
                 TucsonNodeService.log("  ...shutting down <" + t.getName()
                         + ">");
                 t.interrupt();
-                boolean b = t.interrupted();
+              //  boolean b = t.interrupted();
             } else {
                 TucsonNodeService.log("  ...<" + t.getName()
                         + "> is already dead");

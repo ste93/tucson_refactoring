@@ -28,36 +28,6 @@ public interface IOrdinaryAsynchInterface {
      */
     IRespectOperation get(InputEvent ev) throws InvalidLogicTupleException,
             OperationNotPossibleException;
-   
-    /**
-     * 
-     * @param ev
-     *            the event to handle
-     * @return the operation requested
-     * @throws InvalidLogicTupleException
-     *             if the tuple given as argument is not a valid Prolog tuple if
-     *             the tuple given as argument is not a valid Prolog tuple
-     * @throws OperationNotPossibleException
-     *             if the operation requested cannot be carried out if the
-     *             operation requested cannot be carried out
-     */
-    IRespectOperation getEnv(InputEvent ev) throws InvalidLogicTupleException,
-            OperationNotPossibleException;
-    
-    /**
-     * 
-     * @param ev
-     *            the event to handle
-     * @return the operation requested
-     * @throws InvalidLogicTupleException
-     *             if the tuple given as argument is not a valid Prolog tuple if
-     *             the tuple given as argument is not a valid Prolog tuple
-     * @throws OperationNotPossibleException
-     *             if the operation requested cannot be carried out if the
-     *             operation requested cannot be carried out
-     */
-    IRespectOperation setEnv(InputEvent ev) throws InvalidLogicTupleException,
-            OperationNotPossibleException;
 
     /**
      * 

@@ -1,5 +1,7 @@
 package alice.tucson.service;
 
+import java.util.HashMap;
+
 import alice.logictuple.LogicTuple;
 import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.logictuple.exceptions.InvalidLogicTupleOperationException;
@@ -14,18 +16,28 @@ import alice.respect.api.TupleCentreId;
 import alice.respect.api.exceptions.InvalidSpecificationException;
 import alice.respect.api.exceptions.InvalidTupleCentreIdException;
 import alice.respect.api.exceptions.OperationNotPossibleException;
+import alice.respect.core.InternalEvent;
+import alice.respect.core.InternalOperation;
+import alice.respect.core.RespectOperation;
 import alice.respect.core.RespectTC;
 import alice.respect.core.RespectTCContainer;
 import alice.respect.core.SpecificationSynchInterface;
+import alice.respect.core.TransducersManager;
+import alice.respect.situatedness.TransducerId;
+import alice.respect.situatedness.TransducerStandardInterface;
+import alice.tucson.api.TucsonAgentId;
 import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.api.exceptions.TucsonInvalidLogicTupleException;
 import alice.tucson.api.exceptions.TucsonInvalidSpecificationException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
+import alice.tucson.api.exceptions.UnreachableNodeException;
 import alice.tuplecentre.api.ITupleCentreOperation;
 import alice.tuplecentre.api.InspectableEventListener;
 import alice.tuplecentre.api.ObservableEventListener;
 import alice.tuplecentre.api.exceptions.InvalidOperationException;
+import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 import alice.tuplecentre.core.InputEvent;
+import alice.tuplecentre.core.OperationCompletionListener;
 
 /**
  * 
@@ -219,6 +231,142 @@ public final class TupleCentreContainer {
         } 
         return res;
     }
+    
+    /**
+    *
+    * @param type
+    *            the type codeof the ReSpecT operation to be executed
+    * @param aid
+    *            the identifier of the TuCSoN agent requesting the operation
+    * @param tid
+    *            the identifier of the tuple centre target of the operation
+    * @param t
+    *            the tuple argument of the operation
+    * @param l
+    *            the listener for operation completion
+    * @return the Java object representing the tuple centre operation
+    * @throws TucsonOperationNotPossibleException
+    *             if the requested operation cannot be performed for some
+    *             reason
+    * @throws UnreachableNodeException
+    *             if the TuCSoN tuple centre target of the notification cannot
+    *             be reached over the network
+    * @throws OperationTimeOutException
+    *             if the notification operation expires timeout
+    */
+   public static ITupleCentreOperation doEnvironmentalOperation(
+           final int type, final TucsonAgentId aid,
+           final TucsonTupleCentreId tid, final LogicTuple t,
+           final OperationCompletionListener l)
+           throws OperationTimeOutException,
+           TucsonOperationNotPossibleException, UnreachableNodeException {
+       IEnvironmentContext context = null;
+       RespectOperation op = null;
+       context = RespectTCContainer.getRespectTCContainer()
+               .getEnvironmentContext(tid.getInternalTupleCentreId());
+       if (type == TucsonOperation.getEnvCode()) {
+           op = RespectOperation.makeGetEnv(t, l);
+       } else if (type == TucsonOperation.setEnvCode()) {
+           op = RespectOperation.makeSetEnv(t, l);
+       }
+       // Preparing the input event for the tuple centre.
+       final HashMap<String, String> eventMap = new HashMap<String, String>();
+       eventMap.put("id", aid.toString());
+       InputEvent event = null;
+       final TransducersManager tm = TransducersManager.INSTANCE;
+       TransducerStandardInterface transducer = tm.getTransducer(aid
+               .getAgentName());
+       if (t != null) {
+           // It's an event performed by a transducer. In other words, it's an
+           // environment event
+           event = new InputEvent(transducer.getIdentifier(), op,
+                   tid.getInternalTupleCentreId(), context.getCurrentTime(), null,
+                   eventMap);
+           // Sending the event
+           event.setSource(transducer.getIdentifier());
+           event.setTarget(tid.getInternalTupleCentreId());
+           context.notifyInputEnvEvent(event);
+       } else {
+           // It's an agent request of environment properties
+           event = new InputEvent(aid, op, tid.getInternalTupleCentreId(),
+                   context.getCurrentTime(), null, eventMap);
+           final InternalEvent internalEv = new InternalEvent(event,
+                   InternalOperation.makeGetEnv(t));
+           internalEv.setSource(tid.getInternalTupleCentreId()); // Set
+           // the source of the event
+           final TransducerId[] tIds = tm.getTransducerIds(tid
+                   .getInternalTupleCentreId());
+           for (final TransducerId tId2 : tIds) {
+               internalEv.setTarget(tId2); // Set target resource
+               transducer = tm.getTransducer(tId2.getAgentName());
+               transducer.notifyOutput(internalEv);
+           }
+       }
+       return op;
+   }
+    
+    /**
+    *
+    * @param type
+    *            the type codeof the ReSpecT operation to be executed
+    * @param aid
+    *            the identifier of the tuple centre requesting the operation
+    * @param tid
+    *            the identifier of the tuple centre target of the operation
+    * @param t
+    *            the tuple argument of the operation
+    * @param l
+    *            the listener for operation completion
+    * @return the Java object representing the tuple centre operation
+    * @throws TucsonOperationNotPossibleException
+    *             if the requested operation cannot be performed for some
+    *             reason
+    * @throws UnreachableNodeException
+    *             if the TuCSoN tuple centre target of the notification cannot
+    *             be reached over the network
+    * @throws OperationTimeOutException
+    *             if the notification operation expires timeout
+    */
+   public static ITupleCentreOperation doEnvironmentalOperation(
+           final int type, final TucsonTupleCentreId aid,
+           final TucsonTupleCentreId tid, final LogicTuple t,
+           final OperationCompletionListener l)
+           throws TucsonOperationNotPossibleException,
+           UnreachableNodeException, OperationTimeOutException {
+       IEnvironmentContext context = null;
+       RespectOperation op = null;
+       context = RespectTCContainer.getRespectTCContainer()
+               .getEnvironmentContext(tid.getInternalTupleCentreId());
+       if (type == TucsonOperation.getEnvCode()) {
+           op = RespectOperation.makeGetEnv(t, l);
+       } else if (type == TucsonOperation.setEnvCode()) {
+           op = RespectOperation.makeSetEnv(t, l);
+       }
+       // Preparing the input event for the tuple centre.
+       final HashMap<String, String> eventMap = new HashMap<String, String>();
+       eventMap.put("id", aid.toString());
+       InputEvent event = new InputEvent(aid, op,
+               tid.getInternalTupleCentreId(), context.getCurrentTime(), null,
+               eventMap);
+       TransducerStandardInterface transducer;
+       event = new InputEvent(aid, op, tid.getInternalTupleCentreId(),
+               context.getCurrentTime(), null, eventMap);
+       final InternalEvent internalEv = new InternalEvent(event,
+               InternalOperation.makeGetEnv(t));
+       internalEv.setSource(tid.getInternalTupleCentreId()); // Set
+       final TransducersManager tm = TransducersManager.INSTANCE;
+       // the source of the event
+       final TransducerId[] tIds = tm.getTransducerIds(tid
+               .getInternalTupleCentreId());
+       for (final TransducerId tId2 : tIds) {
+           internalEv.setTarget(tId2); // Set target resource
+           transducer = tm.getTransducer(tId2.getAgentName());
+           transducer.notifyOutput(internalEv);
+       }
+       return op;
+   }
+   
+   
 
     /**
     *
@@ -347,12 +495,6 @@ public final class TupleCentreContainer {
             
             if (type == TucsonOperation.spawnCode()) {
                 return context.spawn(ev);
-            }
-            if (type == TucsonOperation.getEnvCode()) {
-                return context.getEnv(ev);
-            }
-            if (type == TucsonOperation.setEnvCode()) {
-                return context.setEnv(ev);
             }
             if (type == TucsonOperation.outCode()) {
                 return context.out(ev);

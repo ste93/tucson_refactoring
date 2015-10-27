@@ -9,14 +9,11 @@ import java.util.UUID;
 
 import alice.logictuple.LogicTuple;
 import alice.respect.api.TupleCentreId;
-import alice.respect.situatedness.EnvAgentId;
-import alice.respect.situatedness.TransducerId;
 import alice.tucson.api.ITucsonOperation;
 import alice.tucson.api.TucsonAgentId;
 import alice.tucson.api.TucsonOpId;
 import alice.tucson.api.TucsonOperationCompletionListener;
 import alice.tucson.api.TucsonTupleCentreId;
-import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
@@ -444,8 +441,7 @@ public class OperationHandler {
             }
         } else {
             throw new TucsonOperationNotPossibleException();
-        }
-      
+        }     
         return this.doOperation(aid, tcid, type, t, l);
     }
 
