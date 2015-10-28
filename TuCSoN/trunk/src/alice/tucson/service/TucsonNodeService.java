@@ -41,6 +41,7 @@ import alice.logictuple.Value;
 import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.logictuple.exceptions.InvalidTupleArgumentException;
 import alice.respect.api.exceptions.InvalidTupleCentreIdException;
+import alice.respect.api.geolocation.GeolocationConfigAgent;
 import alice.respect.core.EnvConfigAgent;
 import alice.respect.core.RespectOperation;
 import alice.respect.core.RespectTC;
@@ -81,6 +82,7 @@ public class TucsonNodeService {
     private static final String BOOT_SETUP_THEORY = "alice/tucson/service/config/boot.pl";
     private static final String DEFAULT_BOOT_SPEC_FILE = "alice/tucson/service/config/boot_spec.rsp";
     private static final String DEFAULT_ENVCONFIG_SPEC_FILE = "alice/tucson/service/config/env_spec.rsp";
+    private static final String DEFAULT_GEOLOCATION_SPEC_FILE = "alice/tucson/service/config/geolocation_spec.rsp";
     private static final String DEFAULT_OBS_SPEC_FILE = "alice/tucson/service/config/obs_spec.rsp";
     private static final int DEFAULT_TCP_PORT = 20504;
     // how to set a "proper" number?
@@ -236,6 +238,8 @@ public class TucsonNodeService {
     private TucsonTupleCentreId idConfigTC;
     private TucsonTupleCentreId idEnvTC; // Tuple centre for environment
     // configuration
+    private TucsonTupleCentreId idGeolocationTC; // Tuple centre for geolocation
+    // configuration
     private TucsonTupleCentreId idObsTC;
     private final ArrayList<InspectorContextSkel> inspectorAgents;
     private boolean inspectorsAuthorised;
@@ -290,6 +294,9 @@ public class TucsonNodeService {
             this.idObsTC = new TucsonTupleCentreId("'$OBS'", "localhost",
                     String.valueOf(this.tcpPort));
             this.idEnvTC = new TucsonTupleCentreId("'$ENV'", "localhost",
+                    String.valueOf(this.tcpPort));
+            this.idGeolocationTC = new TucsonTupleCentreId(
+                    "geolocationConfigTC", "localhost",
                     String.valueOf(this.tcpPort));
         } catch (final TucsonInvalidAgentIdException e) {
             // Cannot happen
@@ -733,6 +740,9 @@ public class TucsonNodeService {
         TucsonNodeService
         .log("Setting up Environment Configuration Service...");
         this.setupEnvConfigTupleCentre();
+        TucsonNodeService
+        .log("Setting up Geolocation Configuration Service...");
+        this.setupGeolocationConfigTupleCentre();
         this.installationDate = new Date();
         TucsonNodeService.log("Spawning management agents...");
         this.bootManagementAgents();
@@ -886,6 +896,13 @@ public class TucsonNodeService {
         this.nodeAgents.add(new NodeManagementAgent(this.idConfigTC, this));
         TucsonNodeService
         .log("--------------------------------------------------------------------------------");
+        TucsonNodeService.log("Spawning Geolocation Config Agent...");
+        // GeolocationConfigAgent geolocationConfigAgent = new
+        // GeolocationConfigAgent( "localhost", tcpPort );
+        this.nodeAgents.add(new GeolocationConfigAgent(this.idGeolocationTC,
+                this));
+        TucsonNodeService
+                .log("--------------------------------------------------------------------------------");
         TucsonNodeService.log("Spawning ACC Provider Agent...");
         this.ctxman = new ACCProvider(this, this.idConfigTC);
         TucsonNodeService.log("Spawning Welcome Agent...");
@@ -1209,6 +1226,47 @@ public class TucsonNodeService {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+    }
+    
+    /*
+     * Setting up the environment configuration tuple centre
+     */
+    private void setupGeolocationConfigTupleCentre() {
+        try {
+            this.bootTupleCentre(this.idGeolocationTC.getName());
+            final InputStream is = Thread
+                    .currentThread()
+                    .getContextClassLoader()
+                    .getResourceAsStream(
+                            TucsonNodeService.DEFAULT_GEOLOCATION_SPEC_FILE);
+            final String spec = alice.util.Tools
+                    .loadText(new BufferedInputStream(is));
+            final LogicTuple specTuple = new LogicTuple("spec", new Value(spec));
+            // Operation Make
+            final RespectOperation opRequested = RespectOperation.make(
+                    TucsonOperation.setSCode(), specTuple, null);
+            // InputEvent Creation
+            final InputEvent ev = new InputEvent(this.nodeAid, opRequested,
+                    this.idGeolocationTC, System.currentTimeMillis(), null);
+            TupleCentreContainer.doBlockingSpecOperation(ev, specTuple);
+            final RespectOperation opRequested2 = RespectOperation.make(
+                    TucsonOperation.outCode(), new LogicTuple("boot"), null);
+            final InputEvent ev2 = new InputEvent(this.nodeAid, opRequested2,
+                    this.idGeolocationTC, System.currentTimeMillis(), null);
+            TupleCentreContainer.doNonBlockingOperation(ev2);
+        } catch (final TucsonInvalidTupleCentreIdException e) {
+            e.printStackTrace();
+        } catch (final TucsonInvalidLogicTupleException e) {
+            e.printStackTrace();
+        } catch (final TucsonOperationNotPossibleException e) {
+            e.printStackTrace();
+        } catch (final TucsonInvalidSpecificationException e) {
+            e.printStackTrace();
+        } catch (final IOException e) {
+            e.printStackTrace();
+        } catch (final InvalidLogicTupleException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
