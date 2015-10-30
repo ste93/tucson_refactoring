@@ -250,6 +250,7 @@ OperationCompletionListener {
         this.controllerSessions = new HashMap<String, ControllerSession>();
         this.operations = new HashMap<Long, AbstractTupleCentreOperation>();
         this.opId = -1;
+        this.setPosition();
     }
 
     @Override

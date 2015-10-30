@@ -379,8 +379,6 @@ public class ACCProxyNodeSide extends AbstractACCProxyNodeSide {
                     || msgType == TucsonOperation.rdAllCode()
                     || msgType == TucsonOperation.noAllCode()
                     || msgType == TucsonOperation.spawnCode()) {
-                    //|| msgType == TucsonOperation.getEnvCode()
-                    //|| msgType == TucsonOperation.setEnvCode()) {
                 this.node.resolveCore(tid.getName());
                 this.node.addTCAgent(this.agentId, tid);
                 ITupleCentreOperation op;

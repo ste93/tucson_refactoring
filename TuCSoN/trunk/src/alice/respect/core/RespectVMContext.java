@@ -1617,6 +1617,7 @@ public class RespectVMContext extends
         this.zSet.empty();
         this.timeSet.empty();
         this.setBootTime();
+        this.setPosition();
         this.setDistanceTollerance(RespectVMContext.METERS_DISTANCE_TOLLERANCE);
     }
 
