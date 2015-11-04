@@ -179,12 +179,12 @@ TransducerStandardInterface, TucsonOperationCompletionListener {
             final LogicTuple tupla = new LogicTuple("getEnv", new Value(key),
                     new Value(value));
             this.executor.doNonBlockingOperation(this.id,
-                    RespectOperation.OPTYPE_GET_ENV, this.tcId, tupla, this);
+                    RespectOperation.OPTYPE_GET_ENV, this.tcId, tupla, this, null);
         } else if (mod == AbstractTransducer.SET_MODE) {
             final LogicTuple tupla = new LogicTuple("setEnv", new Value(key),
                     new Value(value));
             this.executor.doNonBlockingOperation(this.id,
-                    RespectOperation.OPTYPE_SET_ENV, this.tcId, tupla, this);
+                    RespectOperation.OPTYPE_SET_ENV, this.tcId, tupla, this, null);
         }
     }
 

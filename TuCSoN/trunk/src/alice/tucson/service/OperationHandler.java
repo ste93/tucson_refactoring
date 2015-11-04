@@ -9,6 +9,7 @@ import java.util.UUID;
 
 import alice.logictuple.LogicTuple;
 import alice.respect.api.TupleCentreId;
+import alice.respect.api.geolocation.Position;
 import alice.tucson.api.ITucsonOperation;
 import alice.tucson.api.TucsonAgentId;
 import alice.tucson.api.TucsonOpId;
@@ -355,7 +356,7 @@ public class OperationHandler {
      * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
      */
     public ITucsonOperation doBlockingOperation(final TucsonAgentId aid,
-            final int type, final Object tid, final Tuple t, final Long ms)
+            final int type, final Object tid, final Tuple t, final Long ms, final Position position)
                     throws TucsonOperationNotPossibleException,
                     UnreachableNodeException, OperationTimeOutException {
         TucsonTupleCentreId tcid = null;
@@ -376,7 +377,7 @@ public class OperationHandler {
             throw new TucsonOperationNotPossibleException();
         }
         ITucsonOperation op = null;
-        op = this.doOperation(aid, tcid, type, t, null);
+        op = this.doOperation(aid, tcid, type, t, null, position);
         if (ms == null) {
             op.waitForOperationCompletion();
         } else {
@@ -420,7 +421,7 @@ public class OperationHandler {
      */
     public ITucsonOperation doNonBlockingOperation(final TucsonAgentId aid,
             final int type, final Object tid, final Tuple t,
-            final TucsonOperationCompletionListener l)
+            final TucsonOperationCompletionListener l, Position position)
                     throws TucsonOperationNotPossibleException,
                     UnreachableNodeException {
         // log("tid.class().name() = " + tid.getClass().getName());
@@ -442,7 +443,7 @@ public class OperationHandler {
         } else {
             throw new TucsonOperationNotPossibleException();
         }     
-        return this.doOperation(aid, tcid, type, t, l);
+        return this.doOperation(aid, tcid, type, t, l, position);
     }
 
     /**
@@ -521,7 +522,7 @@ public class OperationHandler {
     protected synchronized ITucsonOperation doOperation(
             final TucsonAgentId aid, final TucsonTupleCentreId tcid,
             final int type, final Tuple t,
-            final TucsonOperationCompletionListener l)
+            final TucsonOperationCompletionListener l, final Position position)
                     throws UnreachableNodeException {
         // this.log("t = " + t);
         Tuple tupl = null;
@@ -565,7 +566,7 @@ public class OperationHandler {
             this.addOperation(op.getId(), op);
             final InputEventMsg ev = new InputEventMsg(aid.toString(),
                     op.getId(), op.getType(), op.getLogicTupleArgument(), tcid.toString(),
-                    System.currentTimeMillis(), null); // ATTENZIONE! POSITION A NULL
+                    System.currentTimeMillis(), position); 
              
             final TucsonMsgRequest msg = new TucsonMsgRequest(ev);
             

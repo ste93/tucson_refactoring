@@ -2151,18 +2151,19 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
          * FindBugs states e can only be an InputEvent (and it seems so by
          * navigating the type hierarchy)
          */
-        // final AbstractEvent e = this.vm.getCurrentEvent();
-        // Term startEvPosTerm = null;
-        // if (e.isInternal()) {
-        // final InternalEvent ie = (InternalEvent) e;
-        // startEvPosTerm =
-        // ie.getInputEvent().getPosition().getPlace(space).toTerm();
-        // }
-        // if (e.isOutput()) {
-        // final OutputEvent oe = (OutputEvent) e;
-        // startEvPosTerm =
-        // oe.getInputEvent().getPosition().getPlace(space).toTerm();
-        // }
+//         final AbstractEvent e = this.vm.getCurrentEvent();
+//         Term startEvPosTerm = null;
+//         if (e.isInternal()) {
+//         final InternalEvent ie = (InternalEvent) e;
+//         startEvPosTerm =
+//         ie.getInputEvent().getPosition().getPlace(space).toTerm();
+//         }
+//         if (e.isOutput()) {
+//         final OutputEvent oe = (OutputEvent) e;
+//         startEvPosTerm =
+//         oe.getInputEvent().getPosition().getPlace(space).toTerm();
+//         }
+    	
         final Term startEvPosTerm = this.vm.getCurrentEvent().getPosition()
                 .getPlace(space).toTerm();
         return this.unify(place, startEvPosTerm);

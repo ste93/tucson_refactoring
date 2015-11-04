@@ -83,7 +83,7 @@ public class RBACACCProxyAgentSide extends ACCProxyAgentSide {
             UnreachableNodeException, OperationTimeOutException {
         this.checkPermission("get");
         return this.executor.doBlockingOperation(this.aid,
-                TucsonOperation.getCode(), tid, null, timeout);
+                TucsonOperation.getCode(), tid, null, timeout, this.getPosition());
     }
 
     @Override
@@ -93,7 +93,7 @@ public class RBACACCProxyAgentSide extends ACCProxyAgentSide {
                     UnreachableNodeException {
         this.checkPermission("get");
         return this.executor.doNonBlockingOperation(this.aid,
-                TucsonOperation.getCode(), tid, null, l);
+                TucsonOperation.getCode(), tid, null, l, this.getPosition());
     }
 
     @Override
@@ -121,7 +121,7 @@ public class RBACACCProxyAgentSide extends ACCProxyAgentSide {
             e.printStackTrace();
         }
         return this.executor.doBlockingOperation(this.aid,
-                TucsonOperation.getSCode(), tid, spec, timeout);
+                TucsonOperation.getSCode(), tid, spec, timeout, this.getPosition());
     }
 
     @Override
@@ -132,7 +132,7 @@ public class RBACACCProxyAgentSide extends ACCProxyAgentSide {
         this.checkPermission("getS");
         final LogicTuple spec = new LogicTuple("spec");
         return this.executor.doNonBlockingOperation(this.aid,
-                TucsonOperation.getSCode(), tid, spec, l);
+                TucsonOperation.getSCode(), tid, spec, l, this.getPosition());
     }
 
     @Override
@@ -163,7 +163,7 @@ public class RBACACCProxyAgentSide extends ACCProxyAgentSide {
             UnreachableNodeException, OperationTimeOutException {
         this.checkPermission("inAll");
         return this.executor.doBlockingOperation(this.aid,
-                TucsonOperation.inAllCode(), tid, tuple, timeout);
+                TucsonOperation.inAllCode(), tid, tuple, timeout, this.getPosition());
     }
 
     @Override
@@ -173,7 +173,7 @@ public class RBACACCProxyAgentSide extends ACCProxyAgentSide {
                     UnreachableNodeException {
         this.checkPermission("inAll");
         return this.executor.doNonBlockingOperation(this.aid,
-                TucsonOperation.inAllCode(), tid, tuple, l);
+                TucsonOperation.inAllCode(), tid, tuple, l, this.getPosition());
     }
 
     @Override
@@ -204,7 +204,7 @@ public class RBACACCProxyAgentSide extends ACCProxyAgentSide {
                 "reaction(" + event + "," + guards + "," + reactionBody + ")",
                 new LogicTupleOpManager()));
         return this.executor.doBlockingOperation(this.aid,
-                TucsonOperation.inpSCode(), tid, tuple, timeout);
+                TucsonOperation.inpSCode(), tid, tuple, timeout, this.getPosition());
     }
 
     @Override
@@ -219,7 +219,7 @@ public class RBACACCProxyAgentSide extends ACCProxyAgentSide {
                 "reaction(" + event + "," + guards + "," + reactionBody + ")",
                 new LogicTupleOpManager()));
         return this.executor.doNonBlockingOperation(this.aid,
-                TucsonOperation.inpSCode(), tid, tuple, l);
+                TucsonOperation.inpSCode(), tid, tuple, l, this.getPosition());
     }
 
     @Override
@@ -233,7 +233,7 @@ public class RBACACCProxyAgentSide extends ACCProxyAgentSide {
                 "reaction(" + event + "," + guards + "," + reactionBody + ")",
                 new LogicTupleOpManager()));
         return this.executor.doBlockingOperation(this.aid,
-                TucsonOperation.inSCode(), tid, tuple, timeout);
+                TucsonOperation.inSCode(), tid, tuple, timeout, this.getPosition());
     }
 
     @Override
@@ -248,7 +248,7 @@ public class RBACACCProxyAgentSide extends ACCProxyAgentSide {
                 "reaction(" + event + "," + guards + "," + reactionBody + ")",
                 new LogicTupleOpManager()));
         return this.executor.doNonBlockingOperation(this.aid,
-                TucsonOperation.inSCode(), tid, tuple, l);
+                TucsonOperation.inSCode(), tid, tuple, l, this.getPosition());
     }
 
     @Override
@@ -257,7 +257,7 @@ public class RBACACCProxyAgentSide extends ACCProxyAgentSide {
             UnreachableNodeException, OperationTimeOutException {
         this.checkPermission("no");
         return this.executor.doBlockingOperation(this.aid,
-                TucsonOperation.noCode(), tid, tuple, timeout);
+                TucsonOperation.noCode(), tid, tuple, timeout, this.getPosition());
     }
 
     @Override
@@ -267,7 +267,7 @@ public class RBACACCProxyAgentSide extends ACCProxyAgentSide {
                     UnreachableNodeException {
         this.checkPermission("no");
         return this.executor.doNonBlockingOperation(this.aid,
-                TucsonOperation.noCode(), tid, tuple, l);
+                TucsonOperation.noCode(), tid, tuple, l, this.getPosition());
     }
 
     @Override
@@ -276,7 +276,7 @@ public class RBACACCProxyAgentSide extends ACCProxyAgentSide {
             UnreachableNodeException, OperationTimeOutException {
         this.checkPermission("noAll");
         return this.executor.doBlockingOperation(this.aid,
-                TucsonOperation.noAllCode(), tid, tuple, timeout);
+                TucsonOperation.noAllCode(), tid, tuple, timeout, this.getPosition());
     }
 
     @Override
@@ -286,7 +286,7 @@ public class RBACACCProxyAgentSide extends ACCProxyAgentSide {
                     UnreachableNodeException {
         this.checkPermission("noAll");
         return this.executor.doNonBlockingOperation(this.aid,
-                TucsonOperation.noAllCode(), tid, tuple, l);
+                TucsonOperation.noAllCode(), tid, tuple, l, this.getPosition());
     }
 
     @Override
@@ -295,7 +295,7 @@ public class RBACACCProxyAgentSide extends ACCProxyAgentSide {
             UnreachableNodeException, OperationTimeOutException {
         this.checkPermission("nop");
         return this.executor.doBlockingOperation(this.aid,
-                TucsonOperation.nopCode(), tid, tuple, timeout);
+                TucsonOperation.nopCode(), tid, tuple, timeout, this.getPosition());
     }
 
     @Override
@@ -305,7 +305,7 @@ public class RBACACCProxyAgentSide extends ACCProxyAgentSide {
                     UnreachableNodeException {
         this.checkPermission("nop");
         return this.executor.doNonBlockingOperation(this.aid,
-                TucsonOperation.nopCode(), tid, tuple, l);
+                TucsonOperation.nopCode(), tid, tuple, l, this.getPosition());
     }
 
     @Override
@@ -319,7 +319,7 @@ public class RBACACCProxyAgentSide extends ACCProxyAgentSide {
                 "reaction(" + event + "," + guards + "," + reactionBody + ")",
                 new LogicTupleOpManager()));
         return this.executor.doBlockingOperation(this.aid,
-                TucsonOperation.nopSCode(), tid, tuple, timeout);
+                TucsonOperation.nopSCode(), tid, tuple, timeout, this.getPosition());
     }
 
     @Override
@@ -334,7 +334,7 @@ public class RBACACCProxyAgentSide extends ACCProxyAgentSide {
                 "reaction(" + event + "," + guards + "," + reactionBody + ")",
                 new LogicTupleOpManager()));
         return this.executor.doNonBlockingOperation(this.aid,
-                TucsonOperation.nopSCode(), tid, tuple, l);
+                TucsonOperation.nopSCode(), tid, tuple, l, this.getPosition());
     }
 
     @Override
@@ -348,7 +348,7 @@ public class RBACACCProxyAgentSide extends ACCProxyAgentSide {
                 "reaction(" + event + "," + guards + "," + reactionBody + ")",
                 new LogicTupleOpManager()));
         return this.executor.doBlockingOperation(this.aid,
-                TucsonOperation.noSCode(), tid, tuple, timeout);
+                TucsonOperation.noSCode(), tid, tuple, timeout, this.getPosition());
     }
 
     @Override
@@ -363,7 +363,7 @@ public class RBACACCProxyAgentSide extends ACCProxyAgentSide {
                 "reaction(" + event + "," + guards + "," + reactionBody + ")",
                 new LogicTupleOpManager()));
         return this.executor.doNonBlockingOperation(this.aid,
-                TucsonOperation.noSCode(), tid, tuple, l);
+                TucsonOperation.noSCode(), tid, tuple, l, this.getPosition());
     }
 
     @Override
@@ -389,7 +389,7 @@ public class RBACACCProxyAgentSide extends ACCProxyAgentSide {
             UnreachableNodeException, OperationTimeOutException {
         this.checkPermission("outAll");
         return this.executor.doBlockingOperation(this.aid,
-                TucsonOperation.outAllCode(), tid, tuple, timeout);
+                TucsonOperation.outAllCode(), tid, tuple, timeout, this.getPosition());
     }
 
     @Override
@@ -399,7 +399,7 @@ public class RBACACCProxyAgentSide extends ACCProxyAgentSide {
                     UnreachableNodeException {
         this.checkPermission("outAll");
         return this.executor.doNonBlockingOperation(this.aid,
-                TucsonOperation.outAllCode(), tid, tuple, l);
+                TucsonOperation.outAllCode(), tid, tuple, l, this.getPosition());
     }
 
     @Override
@@ -413,7 +413,7 @@ public class RBACACCProxyAgentSide extends ACCProxyAgentSide {
                 "reaction(" + event + "," + guards + "," + reactionBody + ")",
                 new LogicTupleOpManager()));
         return this.executor.doBlockingOperation(this.aid,
-                TucsonOperation.outSCode(), tid, tuple, timeout);
+                TucsonOperation.outSCode(), tid, tuple, timeout, this.getPosition());
     }
 
     @Override
@@ -428,7 +428,7 @@ public class RBACACCProxyAgentSide extends ACCProxyAgentSide {
                 "reaction(" + event + "," + guards + "," + reactionBody + ")",
                 new LogicTupleOpManager()));
         return this.executor.doNonBlockingOperation(this.aid,
-                TucsonOperation.outSCode(), tid, tuple, l);
+                TucsonOperation.outSCode(), tid, tuple, l, this.getPosition());
     }
 
     @Override
@@ -454,7 +454,7 @@ public class RBACACCProxyAgentSide extends ACCProxyAgentSide {
             UnreachableNodeException, OperationTimeOutException {
         this.checkPermission("rdAll");
         return this.executor.doBlockingOperation(this.aid,
-                TucsonOperation.rdAllCode(), tid, tuple, timeout);
+                TucsonOperation.rdAllCode(), tid, tuple, timeout, this.getPosition());
     }
 
     @Override
@@ -464,7 +464,7 @@ public class RBACACCProxyAgentSide extends ACCProxyAgentSide {
                     UnreachableNodeException {
         this.checkPermission("rdAll");
         return this.executor.doNonBlockingOperation(this.aid,
-                TucsonOperation.rdAllCode(), tid, tuple, l);
+                TucsonOperation.rdAllCode(), tid, tuple, l, this.getPosition());
     }
 
     @Override
@@ -495,7 +495,7 @@ public class RBACACCProxyAgentSide extends ACCProxyAgentSide {
                 "reaction(" + event + "," + guards + "," + reactionBody + ")",
                 new LogicTupleOpManager()));
         return this.executor.doBlockingOperation(this.aid,
-                TucsonOperation.rdpSCode(), tid, tuple, timeout);
+                TucsonOperation.rdpSCode(), tid, tuple, timeout, this.getPosition());
     }
 
     @Override
@@ -510,7 +510,7 @@ public class RBACACCProxyAgentSide extends ACCProxyAgentSide {
                 "reaction(" + event + "," + guards + "," + reactionBody + ")",
                 new LogicTupleOpManager()));
         return this.executor.doNonBlockingOperation(this.aid,
-                TucsonOperation.rdpSCode(), tid, tuple, l);
+                TucsonOperation.rdpSCode(), tid, tuple, l, this.getPosition());
     }
 
     @Override
@@ -524,7 +524,7 @@ public class RBACACCProxyAgentSide extends ACCProxyAgentSide {
                 "reaction(" + event + "," + guards + "," + reactionBody + ")",
                 new LogicTupleOpManager()));
         return this.executor.doBlockingOperation(this.aid,
-                TucsonOperation.rdSCode(), tid, tuple, timeout);
+                TucsonOperation.rdSCode(), tid, tuple, timeout, this.getPosition());
     }
 
     @Override
@@ -539,7 +539,7 @@ public class RBACACCProxyAgentSide extends ACCProxyAgentSide {
                 "reaction(" + event + "," + guards + "," + reactionBody + ")",
                 new LogicTupleOpManager()));
         return this.executor.doNonBlockingOperation(this.aid,
-                TucsonOperation.rdSCode(), tid, tuple, l);
+                TucsonOperation.rdSCode(), tid, tuple, l, this.getPosition());
     }
 
     @Override
@@ -548,7 +548,7 @@ public class RBACACCProxyAgentSide extends ACCProxyAgentSide {
             UnreachableNodeException, OperationTimeOutException {
         this.checkPermission("set");
         return this.executor.doBlockingOperation(this.aid,
-                TucsonOperation.setCode(), tid, tuple, timeout);
+                TucsonOperation.setCode(), tid, tuple, timeout, this.getPosition());
     }
 
     @Override
@@ -558,7 +558,7 @@ public class RBACACCProxyAgentSide extends ACCProxyAgentSide {
                     UnreachableNodeException {
         this.checkPermission("set");
         return this.executor.doNonBlockingOperation(this.aid,
-                TucsonOperation.setCode(), tid, tuple, l);
+                TucsonOperation.setCode(), tid, tuple, l, this.getPosition());
     }
 
     @Override
@@ -568,7 +568,7 @@ public class RBACACCProxyAgentSide extends ACCProxyAgentSide {
                     UnreachableNodeException, OperationTimeOutException {
         this.checkPermission("setS");
         return this.executor.doBlockingOperation(this.aid,
-                TucsonOperation.setSCode(), tid, spec, timeout);
+                TucsonOperation.setSCode(), tid, spec, timeout, this.getPosition());
     }
 
     @Override
@@ -578,7 +578,7 @@ public class RBACACCProxyAgentSide extends ACCProxyAgentSide {
                     UnreachableNodeException {
         this.checkPermission("setS");
         return this.executor.doNonBlockingOperation(this.aid,
-                TucsonOperation.setSCode(), tid, spec, l);
+                TucsonOperation.setSCode(), tid, spec, l, this.getPosition());
     }
 
     @Override
@@ -591,7 +591,7 @@ public class RBACACCProxyAgentSide extends ACCProxyAgentSide {
         }
         final LogicTuple specT = new LogicTuple("spec", new Value(spec));
         return this.executor.doBlockingOperation(this.aid,
-                TucsonOperation.setSCode(), tid, specT, timeout);
+                TucsonOperation.setSCode(), tid, specT, timeout, this.getPosition());
     }
 
     @Override
@@ -602,7 +602,7 @@ public class RBACACCProxyAgentSide extends ACCProxyAgentSide {
         this.checkPermission("setS");
         final LogicTuple specT = new LogicTuple("spec", new Value(spec));
         return this.executor.doNonBlockingOperation(this.aid,
-                TucsonOperation.setSCode(), tid, specT, l);
+                TucsonOperation.setSCode(), tid, specT, l, this.getPosition());
     }
 
     @Override
@@ -611,7 +611,7 @@ public class RBACACCProxyAgentSide extends ACCProxyAgentSide {
             UnreachableNodeException, OperationTimeOutException {
         this.checkPermission("spawn");
         return this.executor.doBlockingOperation(this.aid,
-                TucsonOperation.spawnCode(), tid, toSpawn, timeout);
+                TucsonOperation.spawnCode(), tid, toSpawn, timeout, this.getPosition());
     }
 
     @Override
@@ -621,7 +621,7 @@ public class RBACACCProxyAgentSide extends ACCProxyAgentSide {
                     UnreachableNodeException {
         this.checkPermission("spawn");
         return this.executor.doNonBlockingOperation(this.aid,
-                TucsonOperation.spawnCode(), tid, toSpawn, l);
+                TucsonOperation.spawnCode(), tid, toSpawn, l, this.getPosition());
     }
 
     @Override
@@ -630,7 +630,7 @@ public class RBACACCProxyAgentSide extends ACCProxyAgentSide {
             UnreachableNodeException, OperationTimeOutException {
         this.checkPermission("uin");
         return this.executor.doBlockingOperation(this.aid,
-                TucsonOperation.uinCode(), tid, tuple, timeout);
+                TucsonOperation.uinCode(), tid, tuple, timeout, this.getPosition());
     }
 
     @Override
@@ -640,7 +640,7 @@ public class RBACACCProxyAgentSide extends ACCProxyAgentSide {
                     UnreachableNodeException {
         this.checkPermission("uin");
         return this.executor.doNonBlockingOperation(this.aid,
-                TucsonOperation.uinCode(), tid, tuple, l);
+                TucsonOperation.uinCode(), tid, tuple, l, this.getPosition());
     }
 
     @Override
@@ -649,7 +649,7 @@ public class RBACACCProxyAgentSide extends ACCProxyAgentSide {
             UnreachableNodeException, OperationTimeOutException {
         this.checkPermission("uinp");
         return this.executor.doBlockingOperation(this.aid,
-                TucsonOperation.uinpCode(), tid, tuple, timeout);
+                TucsonOperation.uinpCode(), tid, tuple, timeout, this.getPosition());
     }
 
     @Override
@@ -659,7 +659,7 @@ public class RBACACCProxyAgentSide extends ACCProxyAgentSide {
                     UnreachableNodeException {
         this.checkPermission("uinp");
         return this.executor.doNonBlockingOperation(this.aid,
-                TucsonOperation.uinpCode(), tid, tuple, l);
+                TucsonOperation.uinpCode(), tid, tuple, l, this.getPosition());
     }
 
     @Override
@@ -668,7 +668,7 @@ public class RBACACCProxyAgentSide extends ACCProxyAgentSide {
             UnreachableNodeException, OperationTimeOutException {
         this.checkPermission("uno");
         return this.executor.doBlockingOperation(this.aid,
-                TucsonOperation.unoCode(), tid, tuple, timeout);
+                TucsonOperation.unoCode(), tid, tuple, timeout, this.getPosition());
     }
 
     @Override
@@ -678,7 +678,7 @@ public class RBACACCProxyAgentSide extends ACCProxyAgentSide {
                     UnreachableNodeException {
         this.checkPermission("uno");
         return this.executor.doNonBlockingOperation(this.aid,
-                TucsonOperation.unoCode(), tid, tuple, l);
+                TucsonOperation.unoCode(), tid, tuple, l, this.getPosition());
     }
 
     @Override
@@ -687,7 +687,7 @@ public class RBACACCProxyAgentSide extends ACCProxyAgentSide {
             UnreachableNodeException, OperationTimeOutException {
         this.checkPermission("unop");
         return this.executor.doBlockingOperation(this.aid,
-                TucsonOperation.unopCode(), tid, tuple, timeout);
+                TucsonOperation.unopCode(), tid, tuple, timeout, this.getPosition());
     }
 
     @Override
@@ -697,7 +697,7 @@ public class RBACACCProxyAgentSide extends ACCProxyAgentSide {
                     UnreachableNodeException {
         this.checkPermission("unop");
         return this.executor.doNonBlockingOperation(this.aid,
-                TucsonOperation.unopCode(), tid, tuple, l);
+                TucsonOperation.unopCode(), tid, tuple, l, this.getPosition());
     }
 
     @Override
@@ -706,7 +706,7 @@ public class RBACACCProxyAgentSide extends ACCProxyAgentSide {
             UnreachableNodeException, OperationTimeOutException {
         this.checkPermission("urd");
         return this.executor.doBlockingOperation(this.aid,
-                TucsonOperation.urdCode(), tid, tuple, timeout);
+                TucsonOperation.urdCode(), tid, tuple, timeout, this.getPosition());
     }
 
     @Override
@@ -716,7 +716,7 @@ public class RBACACCProxyAgentSide extends ACCProxyAgentSide {
                     UnreachableNodeException {
         this.checkPermission("urd");
         return this.executor.doNonBlockingOperation(this.aid,
-                TucsonOperation.urdCode(), tid, tuple, l);
+                TucsonOperation.urdCode(), tid, tuple, l, this.getPosition());
     }
 
     @Override
@@ -725,7 +725,7 @@ public class RBACACCProxyAgentSide extends ACCProxyAgentSide {
             UnreachableNodeException, OperationTimeOutException {
         this.checkPermission("urdp");
         return this.executor.doBlockingOperation(this.aid,
-                TucsonOperation.urdpCode(), tid, tuple, timeout);
+                TucsonOperation.urdpCode(), tid, tuple, timeout, this.getPosition());
     }
 
     @Override
@@ -735,7 +735,7 @@ public class RBACACCProxyAgentSide extends ACCProxyAgentSide {
                     UnreachableNodeException {
         this.checkPermission("urdp");
         return this.executor.doNonBlockingOperation(this.aid,
-                TucsonOperation.urdpCode(), tid, tuple, l);
+                TucsonOperation.urdpCode(), tid, tuple, l, this.getPosition());
     }
 
     private void checkPermission(final String perm)
