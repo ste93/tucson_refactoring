@@ -54,10 +54,11 @@ public class InspectorContextStub implements InspectorContext {
      *            the identifier of the tuple centre to inspect
      */
     public InspectorContextStub(final TucsonAgentId i,
-            final TucsonTupleCentreId tc) {
+            final TucsonTupleCentreId tc, final boolean forGui) {
         this.profile = new ACCDescription();
         this.profile.setProperty("agent-identity", i.toString());
-        this.profile.setProperty("agent-role", "$inspector");
+        String agentRole = forGui ? "$inspector4gui" : "$inspector";
+        this.profile.setProperty("agent-role", agentRole);
         this.profile.setProperty("tuple-centre", tc.getName());
         this.profile.setProperty("agent-uuid", UUID.randomUUID().toString());
         this.id = i;
@@ -71,7 +72,13 @@ public class InspectorContextStub implements InspectorContext {
         }
         this.exitFlag = false;
     }
-
+    
+    public InspectorContextStub(final TucsonAgentId i,
+            final TucsonTupleCentreId tc) {
+    	this(i, tc, false);
+    }
+    
+    
     @Override
     public void acceptVMEvent() throws DialogException {
         try {

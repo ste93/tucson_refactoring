@@ -35,6 +35,7 @@ import alice.tucson.api.exceptions.TucsonInvalidLogicTupleException;
 import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.introspection.InspectorContextSkel;
+import alice.tucson.introspection4gui.Inspector4GuiContextSkel;
 import alice.tucson.network.AbstractTucsonProtocol;
 import alice.tucson.network.exceptions.DialogException;
 import alice.tucson.network.exceptions.DialogReceiveException;
@@ -165,6 +166,12 @@ public class ACCProvider {
                 final AbstractACCProxyNodeSide skel = new InspectorContextSkel(
                         this, dialog, this.node, profile);
                 this.node.addNodeAgent(skel);
+                skel.start();
+            } else if ("$inspector4gui".equals(agentRole)) {
+                final AbstractACCProxyNodeSide skel = new Inspector4GuiContextSkel(
+                        this, dialog, this.node, profile);
+                this.node.addNodeAgent(skel);
+                this.node.addInspectorAgent((InspectorContextSkel) skel);
                 skel.start();
             } else {
                 // should I pass here the TuCSoN node port?

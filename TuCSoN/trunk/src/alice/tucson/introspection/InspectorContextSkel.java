@@ -61,13 +61,13 @@ public class InspectorContextSkel extends AbstractACCProxyNodeSide implements
 
     private final TucsonAgentId agentId;
     private final int ctxId;
-    private final AbstractTucsonProtocol dialog;
+    protected final AbstractTucsonProtocol dialog;
     private final ACCProvider manager;
     private boolean nStep;
     /** current observation protocol */
     private InspectorProtocol protocol;
     private boolean shutdown = false;
-    private final TucsonTupleCentreId tcId;
+    protected final TucsonTupleCentreId tcId;
 
     /**
      *
@@ -259,10 +259,10 @@ public class InspectorContextSkel extends AbstractACCProxyNodeSide implements
                             ((ObservableEventReactionOK) ev).getZ()
                                     .getReaction());
                     /* Dradi */
-//                    if (zCopy.getReaction() instanceof LogicReaction) {
-//                        ((LogicReaction) zCopy.getReaction())
-//                                .getStructReaction().resolveTerm();
-//                    }
+                    if (zCopy.getReaction() instanceof LogicReaction) {
+                        ((LogicReaction) zCopy.getReaction())
+                                .getStructReaction().resolveTerm();
+                    }
                     /* Dradi */
                     msg.setReactionOk(zCopy);
                     this.dialog.sendInspectorEvent(msg);
