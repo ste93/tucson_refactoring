@@ -13,14 +13,20 @@
  */
 package alice.tucson.service;
 
+import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+
 import alice.logictuple.LogicTuple;
 import alice.logictuple.TupleArgument;
 import alice.logictuple.Value;
 import alice.logictuple.Var;
+import alice.logictuple.exceptions.InvalidLogicTupleException;
+import alice.logictuple.exceptions.InvalidLogicTupleOperationException;
 import alice.logictuple.exceptions.InvalidVarNameException;
+import alice.logictuple.exceptions.LogicTupleException;
+import alice.respect.core.RespectOperation;
 import alice.tucson.api.TucsonAgentId;
 import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.api.exceptions.TucsonGenericException;
@@ -31,6 +37,9 @@ import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.introspection.InspectorContextSkel;
 import alice.tucson.network.AbstractTucsonProtocol;
 import alice.tucson.network.exceptions.DialogException;
+import alice.tucson.network.exceptions.DialogReceiveException;
+import alice.tucson.network.exceptions.DialogSendException;
+import alice.tuplecentre.core.InputEvent;
 import alice.util.Tools;
 
 /**
@@ -82,6 +91,7 @@ public class ACCProvider {
      *            ACC
      * @return wether the request has been accepted (therefore the ACC given) or
      *         not
+     * @throws DialogReceiveException 
      * @throws TucsonInvalidTupleCentreIdException
      *             if the TupleCentreId, contained into AbstractTucsonProtocol's
      *             message, does not represent a valid TuCSoN identifier
@@ -92,69 +102,69 @@ public class ACCProvider {
      */
     // exception handling is a mess, need to review it...
     public synchronized boolean processContextRequest(
-            final ACCDescription profile, final AbstractTucsonProtocol dialog)
-                    throws TucsonInvalidAgentIdException,
-                    TucsonInvalidTupleCentreIdException {
+            final ACCDescription profile, final AbstractTucsonProtocol dialog) throws DialogReceiveException, TucsonInvalidAgentIdException, TucsonInvalidTupleCentreIdException {
         ACCProvider.log("Processing ACC request...");
         try {
             String agentName = profile.getProperty("agent-identity");
             if (agentName == null) {
                 agentName = profile.getProperty("tc-identity");
             }
+            
             final String agentUUID = profile.getProperty("agent-uuid");
-
-            final String agentRole = profile.getProperty("agent-role");
-            if ("$inspector".equals(agentRole)) {
-                final LogicTuple areInspectorsAuth = new LogicTuple(
-                        "are_inspectors_auth", new Var("Response"));
-                final LogicTuple res = (LogicTuple) TupleCentreContainer
-                        .doBlockingOperation(TucsonOperation.inpCode(),
-                                this.aid, this.config, areInspectorsAuth);
-                if (res.getArg(0).toString().equals("yes")) {
-                    final LogicTuple authInspector = new LogicTuple(
-                            "authorised_agent", new Value(agentName));
-                    TupleCentreContainer.doBlockingOperation(
-                            TucsonOperation.outCode(), this.aid, this.config,
-                            authInspector);
-                }
-            }
-
             String agentClass = profile.getProperty("agent-class");
             if (agentClass == null) {
                 agentClass = "basic";
             }
-
             final LogicTuple req = new LogicTuple("context_request", new Value(
                     Tools.removeApices(agentName)), new Var("CtxId"),
                     new Value(agentClass), new Value(agentUUID));
+            /*final LogicTuple req = new LogicTuple("context_request", new Value(
+                    agentName), new Var("CtxId")); */
+            // Operation Make
+            final RespectOperation opRequested = RespectOperation.make(
+                    TucsonOperation.inpCode(), req, null);
+            // InputEvent Creation
+            final InputEvent ev = new InputEvent(this.aid, opRequested,
+                    this.config, System.currentTimeMillis(), null);
             final LogicTuple result = (LogicTuple) TupleCentreContainer
-                    .doBlockingOperation(TucsonOperation.inpCode(), this.aid,
-                            this.config, req);
-
+                    .doBlockingOperation(ev);
+            // final LogicTuple result =
+            // (LogicTuple) TupleCentreContainer.doBlockingOperation(
+            // TucsonOperation.inpCode(), this.aid, this.config,
+            // req);
             if (result == null) {
-                ACCProvider
-                .log("===========================================Result Null");
                 profile.setProperty("failure", "context not available");
-                dialog.sendEnterRequestRefused();
+                try {
+					dialog.sendEnterRequestRefused();
+				} catch (DialogSendException e) {
+					e.printStackTrace();
+				}
                 return false;
             }
             final TupleArgument res = result.getArg(1);
             if ("failed".equals(res.getName())) {
                 profile.setProperty("failure", res.getArg(0).getName());
-                dialog.sendEnterRequestRefused();
+                try {
+					dialog.sendEnterRequestRefused();
+				} catch (DialogSendException e) {
+					e.printStackTrace();
+				}
                 return false;
             }
             final TupleArgument ctxId = res.getArg(0);
             profile.setProperty("context-id", ctxId.toString());
             ACCProvider.log("ACC request accepted, ACC id is < "
                     + ctxId.toString() + " >");
-            dialog.sendEnterRequestAccepted();
-
+            try {
+				dialog.sendEnterRequestAccepted();
+			} catch (DialogSendException e) {
+				e.printStackTrace();
+			}
+            final String agentRole = profile.getProperty("agent-role");
             if ("$inspector".equals(agentRole)) {
                 final AbstractACCProxyNodeSide skel = new InspectorContextSkel(
                         this, dialog, this.node, profile);
                 this.node.addNodeAgent(skel);
-                this.node.addInspectorAgent((InspectorContextSkel) skel);
                 skel.start();
             } else {
                 // should I pass here the TuCSoN node port?
@@ -164,7 +174,7 @@ public class ACCProvider {
                 this.exec.execute(skel);
             }
             return true;
-        } catch (final DialogException e) {
+        } catch (final LogicTupleException e) {
             profile.setProperty("failure", "generic");
             e.printStackTrace();
             return false;
@@ -178,10 +188,6 @@ public class ACCProvider {
             return false;
         } catch (final TucsonOperationNotPossibleException e) {
             profile.setProperty("failure", "generic");
-            e.printStackTrace();
-            return false;
-        } catch (final InvalidVarNameException e) {
-            // Cannot happen, the var name it's specified here
             e.printStackTrace();
             return false;
         }
@@ -214,26 +220,44 @@ public class ACCProvider {
     // exception handling is a mess, need to review it...
     public synchronized boolean shutdownContext(final int ctxId,
             final TucsonAgentId id) {
+        LogicTuple req = null;
+		try {
+			req = new LogicTuple("context_shutdown", new Value(
+			        ctxId), new Value(id.toString()), new Var("CtxId"));
+		} catch (InvalidVarNameException e1) {
+			e1.printStackTrace();
+		}
         LogicTuple result;
         try {
-            final LogicTuple req = new LogicTuple("context_shutdown",
-                    new Value(ctxId), new Value(id.toString()),
-                    new Var("CtxId"));
-            result = (LogicTuple) TupleCentreContainer.doBlockingOperation(
-                    TucsonOperation.inpCode(), this.aid, this.config, req);
+            // Operation Make
+            final RespectOperation opRequested = RespectOperation.make(
+                    TucsonOperation.inpCode(), req, null);
+            // InputEvent Creation
+            final InputEvent ev = new InputEvent(this.aid, opRequested,
+                    this.config, System.currentTimeMillis(), null);
+            result = (LogicTuple) TupleCentreContainer.doBlockingOperation(ev);
+            // result =
+            // (LogicTuple) TupleCentreContainer.doBlockingOperation(
+            // TucsonOperation.inpCode(), this.aid, this.config,
+            // req);
         } catch (final TucsonInvalidLogicTupleException e) {
             e.printStackTrace();
             return false;
         } catch (final TucsonOperationNotPossibleException e) {
             e.printStackTrace();
             return false;
-        } catch (final InvalidVarNameException e) {
+        } catch (final InvalidLogicTupleException e) {
             e.printStackTrace();
             return false;
         }
-        if ("ok".equals(result.getArg(2).getName())) {
-            return true;
-        }
-        return false;
+       // try {
+            if ("ok".equals(result.getArg(2).getName())) {
+                return true;
+            }
+            return false;
+       // } catch (final InvalidLogicTupleOperationException e) {
+         //   e.printStackTrace();
+        //    return false;
+      //  }
     }
 }

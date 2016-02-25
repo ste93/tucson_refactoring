@@ -121,7 +121,7 @@ public final class RBACLauncher {
             Thread.sleep(5000);
         } catch (InterruptedException e) {
             e.printStackTrace();
-        }
+        } 
         Logger.getLogger("RBACLauncher").info(
                 "Launching an unauthorised agent...");
         try {

@@ -6,8 +6,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+
 import alice.logictuple.LogicTuple;
 import alice.respect.api.TupleCentreId;
+import alice.respect.api.geolocation.Position;
 import alice.tucson.api.ITucsonOperation;
 import alice.tucson.api.TucsonAgentId;
 import alice.tucson.api.TucsonOpId;
@@ -93,9 +95,9 @@ public class OperationHandler {
                     this.setStop();
                     break;
                 }
-                final boolean ok = msg.isAllowed();
+                final boolean ok = msg.getOutputEvent().isAllowed();
                 if (ok) {
-                    final int type = msg.getType();
+                    final int type = msg.getOutputEvent().getOpType();
                     if (type == TucsonOperation.uinCode()
                             || type == TucsonOperation.uinpCode()
                             || type == TucsonOperation.urdCode()
@@ -114,21 +116,21 @@ public class OperationHandler {
                             || type == TucsonOperation.rdSCode()
                             || type == TucsonOperation.inpSCode()
                             || type == TucsonOperation.rdpSCode()) {
-                        final boolean succeeded = msg.isSuccess();
+                        final boolean succeeded = msg.getOutputEvent().isSuccess();
                         if (succeeded) {
-                            final LogicTuple tupleReq = msg.getTupleRequested();
-                            final LogicTuple tupleRes = (LogicTuple) msg
+                            final LogicTuple tupleReq = msg.getOutputEvent().getTupleRequested();
+                            final LogicTuple tupleRes = (LogicTuple) msg.getOutputEvent()
                                     .getTupleResult();
                             // log("tupleReq="+tupleReq+", tupleRes="+tupleRes);
                             final LogicTuple res = this.unify(tupleReq,
                                     tupleRes);
                             ev = new TucsonOpCompletionEvent(new TucsonOpId(
-                                    msg.getId()), ok, true,
-                                    msg.isResultSuccess(), res);
+                                    msg.getOutputEvent().getOpId()), ok, true,
+                                    msg.getOutputEvent().isResultSuccess(), res);
                         } else {
                             ev = new TucsonOpCompletionEvent(new TucsonOpId(
-                                    msg.getId()), ok, false,
-                                    msg.isResultSuccess());
+                                    msg.getOutputEvent().getOpId()), ok, false,
+                                    msg.getOutputEvent().isResultSuccess());
                         }
                     } else if (type == TucsonOperation.outCode()
                             || type == TucsonOperation.outAllCode()
@@ -139,47 +141,47 @@ public class OperationHandler {
                             || type == TucsonOperation.getEnvCode()
                             || type == TucsonOperation.setEnvCode()) {
                         ev = new TucsonOpCompletionEvent(new TucsonOpId(
-                                msg.getId()), ok, msg.isSuccess(),
-                                msg.isResultSuccess());
+                                msg.getOutputEvent().getOpId()), ok, msg.getOutputEvent().isSuccess(),
+                                msg.getOutputEvent().isResultSuccess());
                     } else if (type == TucsonOperation.inAllCode()
                             || type == TucsonOperation.rdAllCode()
                             || type == TucsonOperation.noAllCode()
                             || type == TucsonOperation.getCode()
                             || type == TucsonOperation.getSCode()) {
-                        final List<LogicTuple> tupleSetRes = (List<LogicTuple>) msg
+                        final List<LogicTuple> tupleSetRes = (List<LogicTuple>) msg.getOutputEvent()
                                 .getTupleResult();
                         ev = new TucsonOpCompletionEvent(new TucsonOpId(
-                                msg.getId()), ok, msg.isSuccess(),
-                                msg.isResultSuccess(), tupleSetRes);
+                                msg.getOutputEvent().getOpId()), ok, msg.getOutputEvent().isSuccess(),
+                                msg.getOutputEvent().isResultSuccess(), tupleSetRes);
                     } else if (type == TucsonOperation.exitCode()) {
                         this.setStop();
                         break;
                     }
                 } else {
                     ev = new TucsonOpCompletionEvent(
-                            new TucsonOpId(msg.getId()), false, false,
-                            msg.isResultSuccess());
+                            new TucsonOpId(msg.getOutputEvent().getOpId()), false, false,
+                            msg.getOutputEvent().isResultSuccess());
                 }
                 final TucsonOperation op;
                 // removing completed op from pending list
                 synchronized (OperationHandler.this.operations) {
-                    op = OperationHandler.this.operations.remove(msg.getId());
+                    op = OperationHandler.this.operations.remove(msg.getOutputEvent().getOpId());
                 }
                 if (op.isNoAll() || op.isInAll() || op.isRdAll() || op.isGet()
                         || op.isSet() || op.isGetS() || op.isSetS()
                         || op.isOutAll()) {
-                    op.setLogicTupleListResult((List<LogicTuple>) msg
+                    op.setLogicTupleListResult((List<LogicTuple>) msg.getOutputEvent()
                             .getTupleResult());
                 } else {
-                    op.setTupleResult((LogicTuple) msg.getTupleResult());
+                    op.setTupleResult((LogicTuple) msg.getOutputEvent().getTupleResult());
                 }
-                if (msg.isResultSuccess()) {
+                if (msg.getOutputEvent().isResultSuccess()) {
                     op.setOpResult(Outcome.SUCCESS);
                 } else {
                     op.setOpResult(Outcome.FAILURE);
                 }
                 OperationHandler.this.postEvent(ev);
-                op.notifyCompletion(ev.operationSucceeded(), msg.isAllowed());
+                op.notifyCompletion(ev.operationSucceeded(), msg.getOutputEvent().isAllowed());
             }
         }
 
@@ -354,7 +356,7 @@ public class OperationHandler {
      * @see alice.tucson.api.TucsonTupleCentreId TucsonTupleCentreId
      */
     public ITucsonOperation doBlockingOperation(final TucsonAgentId aid,
-            final int type, final Object tid, final Tuple t, final Long ms)
+            final int type, final Object tid, final Tuple t, final Long ms, final Position position)
                     throws TucsonOperationNotPossibleException,
                     UnreachableNodeException, OperationTimeOutException {
         TucsonTupleCentreId tcid = null;
@@ -375,7 +377,7 @@ public class OperationHandler {
             throw new TucsonOperationNotPossibleException();
         }
         ITucsonOperation op = null;
-        op = this.doOperation(aid, tcid, type, t, null);
+        op = this.doOperation(aid, tcid, type, t, null, position);
         if (ms == null) {
             op.waitForOperationCompletion();
         } else {
@@ -419,7 +421,7 @@ public class OperationHandler {
      */
     public ITucsonOperation doNonBlockingOperation(final TucsonAgentId aid,
             final int type, final Object tid, final Tuple t,
-            final TucsonOperationCompletionListener l)
+            final TucsonOperationCompletionListener l, Position position)
                     throws TucsonOperationNotPossibleException,
                     UnreachableNodeException {
         // log("tid.class().name() = " + tid.getClass().getName());
@@ -440,8 +442,8 @@ public class OperationHandler {
             }
         } else {
             throw new TucsonOperationNotPossibleException();
-        }
-        return this.doOperation(aid, tcid, type, t, l);
+        }     
+        return this.doOperation(aid, tcid, type, t, l, position);
     }
 
     /**
@@ -520,7 +522,7 @@ public class OperationHandler {
     protected synchronized ITucsonOperation doOperation(
             final TucsonAgentId aid, final TucsonTupleCentreId tcid,
             final int type, final Tuple t,
-            final TucsonOperationCompletionListener l)
+            final TucsonOperationCompletionListener l, final Position position)
                     throws UnreachableNodeException {
         // this.log("t = " + t);
         Tuple tupl = null;
@@ -560,10 +562,19 @@ public class OperationHandler {
             synchronized (this.operations) {
                 this.operations.put(op.getId(), op);
             }
-            final TucsonMsgRequest msg = new TucsonMsgRequest(op.getId(),
+            
+            this.addOperation(op.getId(), op);
+            final InputEventMsg ev = new InputEventMsg(aid.toString(),
+                    op.getId(), op.getType(), op.getLogicTupleArgument(), tcid.toString(),
+                    System.currentTimeMillis(), position); 
+             
+            final TucsonMsgRequest msg = new TucsonMsgRequest(ev);
+            
+           /* final TucsonMsgRequest msg = new TucsonMsgRequest(op.getId(),
                     op.getType(), tcid.toString(), op.getLogicTupleArgument());
-            this.log("requesting op " + msg.getType() + ", " + msg.getTuple()
-                    + ", " + msg.getTid());
+            */
+            this.log("requesting op " + msg.getInputEventMsg().getOpType() + ", " + msg.getInputEventMsg().getTuple()
+                    + ", " + msg.getInputEventMsg().getTarget());
             try {
                 session.sendMsgRequest(msg);
             } catch (final DialogSendException ex) {

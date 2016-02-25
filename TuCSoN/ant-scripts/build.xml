@@ -64,6 +64,7 @@
 				<fileset file="${src-dir}/alice/tucson/service/config/boot_spec_rbac.rsp" />
 				<fileset file="${src-dir}/alice/tucson/service/config/BOOT.PL" />
 				<fileset file="${src-dir}/alice/tucson/service/config/env_spec.rsp" />
+				<fileset file="${src-dir}/alice/tucson/service/config/geolocation_spec.rsp" />
 				<fileset file="${src-dir}/alice/tucson/service/config/obs_spec.rsp" />
 				<fileset file="${src-dir}/alice/tucson/service/config/tucsonCLIlogo3.txt" />
 			</copy>

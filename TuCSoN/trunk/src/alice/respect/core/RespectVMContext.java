@@ -24,6 +24,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 import java.util.Timer;
+
 import alice.logictuple.LogicTuple;
 import alice.logictuple.LogicTupleOpManager;
 import alice.logictuple.TupleArgument;
@@ -34,6 +35,9 @@ import alice.respect.api.IRespectTC;
 import alice.respect.api.RespectSpecification;
 import alice.respect.api.TupleCentreId;
 import alice.respect.api.exceptions.OperationNotPossibleException;
+import alice.respect.api.geolocation.PlatformUtils;
+import alice.respect.api.geolocation.service.AbstractGeolocationService;
+import alice.respect.api.geolocation.service.GeolocationServiceManager;
 import alice.respect.core.tupleset.ITupleSet;
 import alice.respect.core.tupleset.TupleSetCoord;
 import alice.respect.core.tupleset.TupleSetSpec;
@@ -82,6 +86,8 @@ import alice.tuprolog.Var;
  * @author Alessandro Ricci
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
  * @author (contributor) Saverio Cicora
+ * @author (contributor) Michele Bombardi (mailto:
+ *         michele.bombardi@studio.unibo.it)
  */
 public class RespectVMContext extends
         alice.tuplecentre.core.AbstractTupleCentreVMContext {
@@ -114,10 +120,16 @@ public class RespectVMContext extends
                     + arg0.getTupleListResult());
             final InputEvent res = new InputEvent(this.oe.getSource(), arg0,
                     (TupleCentreId) this.oe.getTarget(),
-                    RespectVMContext.this.getCurrentTime());
+                    RespectVMContext.this.getCurrentTime(),
+                    RespectVMContext.this.getPosition());
             RespectVMContext.this.notifyInputEvent(res);
         }
     }
+    /**
+     * the distance tollerance used in spatial observation predicates and guards
+     */
+    private static final float METERS_DISTANCE_TOLLERANCE = 10f;
+
 
     /**
      * Static services that checks if a source text contains a valid ReSpecT
@@ -1020,6 +1032,36 @@ public class RespectVMContext extends
             }
         }
     }
+    
+    /**
+     * 
+     * @return a Java iterator through the list of spatial from reactions
+     *         possibly found
+     */
+    public Iterator<Term> findFromReactions() {
+        final List<Term> foundReactions = new ArrayList<Term>();
+        try {
+            final Struct from = new Struct("from", new alice.tuprolog.Var("S"),
+                    new alice.tuprolog.Var("P"));
+            final Struct fev = new Struct("reaction", from,
+                    new alice.tuprolog.Var("G"), new alice.tuprolog.Var("R"));
+            SolveInfo info = this.trigCore.solve(fev);
+            while (info.isSuccess()) {
+                foundReactions.add(from);
+                if (this.trigCore.hasOpenAlternatives()) {
+                    info = this.trigCore.solveNext();
+                } else {
+                    break;
+                }
+                this.trigCore.solveEnd();
+            }
+        } catch (final NoMoreSolutionException e) {
+            this.notifyException("INTERNAL ERROR: fetchFromReactions ");
+            this.trigCore.solveEnd();
+        }
+        return foundReactions.iterator();
+    }
+
 
     /**
      *
@@ -1049,6 +1091,35 @@ public class RespectVMContext extends
             this.trigCore.solveEnd();
         } catch (final NoSolutionException e) {
             this.notifyException("INTERNAL ERROR: fetchTimedReactions ");
+            this.trigCore.solveEnd();
+        }
+        return foundReactions.iterator();
+    }
+    
+    /**
+     * 
+     * @return a Java iterator through the list of spatial to reactions possibly
+     *         found
+     */
+    public Iterator<Term> findToReactions() {
+        final List<Term> foundReactions = new ArrayList<Term>();
+        try {
+            final Struct to = new Struct("to", new alice.tuprolog.Var("S"),
+                    new alice.tuprolog.Var("P"));
+            final Struct tev = new Struct("reaction", to,
+                    new alice.tuprolog.Var("G"), new alice.tuprolog.Var("R"));
+            SolveInfo info = this.trigCore.solve(tev);
+            while (info.isSuccess()) {
+                foundReactions.add(to);
+                if (this.trigCore.hasOpenAlternatives()) {
+                    info = this.trigCore.solveNext();
+                } else {
+                    break;
+                }
+                this.trigCore.solveEnd();
+            }
+        } catch (final NoMoreSolutionException e) {
+            this.notifyException("INTERNAL ERROR: fetchToReactions ");
             this.trigCore.solveEnd();
         }
         return foundReactions.iterator();
@@ -1225,7 +1296,15 @@ public class RespectVMContext extends
             op.addListener(new CompletionListener(oe));
             final ILinkContext link = RespectTCContainer
                     .getRespectTCContainer().getLinkContext(target);
-            link.doOperation((TupleCentreId) oe.getSource(), op);
+         // link.doOperation((TupleCentreId) oe.getSource(), op);
+            TupleCentreId source;
+            if (oe.getSource() instanceof TucsonTupleCentreId) {
+                source = ((TucsonTupleCentreId) oe.getSource())
+                        .getInternalTupleCentreId();
+            } else {
+                source = (TupleCentreId) oe.getSource();
+            }
+            link.doOperation(source, op);
         } catch (final OperationNotPossibleException e) {
             e.printStackTrace();
         }
@@ -1538,6 +1617,8 @@ public class RespectVMContext extends
         this.zSet.empty();
         this.timeSet.empty();
         this.setBootTime();
+        this.setPosition();
+        this.setDistanceTollerance(RespectVMContext.METERS_DISTANCE_TOLLERANCE);
     }
 
     @Override
@@ -1723,10 +1804,16 @@ public class RespectVMContext extends
                         this.log("spawnActivity.tcid = " + tcid);
                         s2pLib.setSpawnerId(tcid);
                     }
-                    final TucsonTupleCentreId target = new TucsonTupleCentreId(
-                            ((TupleCentreId) targetTC).getName(),
-                            ((TupleCentreId) targetTC).getNode(),
-                            String.valueOf(((TupleCentreId) targetTC).getPort()));
+                    TucsonTupleCentreId target;
+                    if (targetTC instanceof TucsonTupleCentreId) {
+                        target = (TucsonTupleCentreId) targetTC;
+                    } else {
+                        target = new TucsonTupleCentreId(
+                                ((TupleCentreId) targetTC).getName(),
+                                ((TupleCentreId) targetTC).getNode(),
+                                String.valueOf(((TupleCentreId) targetTC)
+                                        .getPort()));
+                    }
                     this.log("spawnActivity.target = " + target);
                     s2pLib.setTargetTC(target);
                     solver.loadLibrary(s2pLib);
@@ -1773,11 +1860,16 @@ public class RespectVMContext extends
                             this.log("spawnActivity.tcid = " + tcid);
                             instance.setSpawnerId(tcid);
                         }
-                        final TucsonTupleCentreId target = new TucsonTupleCentreId(
-                                ((TupleCentreId) targetTC).getName(),
-                                ((TupleCentreId) targetTC).getNode(),
-                                String.valueOf(((TupleCentreId) targetTC)
-                                        .getPort()));
+                        TucsonTupleCentreId target;
+                        if (targetTC instanceof TucsonTupleCentreId) {
+                            target = (TucsonTupleCentreId) targetTC;
+                        } else {
+                            target = new TucsonTupleCentreId(
+                                    ((TupleCentreId) targetTC).getName(),
+                                    ((TupleCentreId) targetTC).getNode(),
+                                    String.valueOf(((TupleCentreId) targetTC)
+                                            .getPort()));
+                        }
                         this.log("spawnActivity.target = " + target);
                         instance.setTargetTC(target);
                         if (instance.checkInstantiation()) {
@@ -1890,7 +1982,7 @@ public class RespectVMContext extends
     }
 
     /**
-     *
+     * 
      * @param spec
      *            the ReSpecT specification to be added to this ReSpecT VM
      *            storage context
@@ -1935,9 +2027,35 @@ public class RespectVMContext extends
                     delay = 0;
                 }
                 currTimer.schedule(
-                        new RespectTimerTask(this, RespectOperation.makeTime(
-                                new LogicTuple("time", new TupleArgument(
-                                        current)), null)), delay);
+                        new RespectTimerTask(this, RespectOperation.makeTime(new LogicTuple("time",
+                                        new TupleArgument(current)), null)),
+                        delay);
+            }
+            /** SPATIAL EXTENSION - Interfacing with geolocation service **/
+            final GeolocationServiceManager geolocationManager = GeolocationServiceManager
+                    .getGeolocationManager();
+            if (geolocationManager.getServices().size() > 0) {
+                final int platform = PlatformUtils.getPlatform();
+                final AbstractGeolocationService geoService = GeolocationServiceManager
+                        .getGeolocationManager().getAppositeService(platform);
+                if (geoService != null) {
+                    final Iterator<Term> fit = this.findFromReactions();
+                    final Iterator<Term> tit = this.findToReactions();
+                    if (fit.hasNext() || tit.hasNext()) {
+                        if (!geoService.isRunning()) {
+                            geoService.start();
+                        }
+                        geoService.generateSpatialEvents(true);
+                        while (fit.hasNext()) {
+                            fit.next();
+                        }
+                        while (tit.hasNext()) {
+                            tit.next();
+                        }
+                    } else {
+                        geoService.generateSpatialEvents(false);
+                    }
+                }
             }
             return true;
         } catch (final alice.tuprolog.InvalidTheoryException ex) {
@@ -1949,7 +2067,7 @@ public class RespectVMContext extends
     }
 
     /**
-     *
+     * 
      * @param spec
      *            the ReSpecT specification to overwrite this ReSpecT VM one
      *            with
@@ -2016,15 +2134,41 @@ public class RespectVMContext extends
                     delay = 0;
                 }
                 currTimer.schedule(
-                        new RespectTimerTask(this, RespectOperation.makeTime(
-                                new LogicTuple("time", new TupleArgument(
-                                        current)), null)), delay);
+                        new RespectTimerTask(this, RespectOperation.makeTime(new LogicTuple("time",
+                                        new TupleArgument(current)), null)),
+                        delay);
+            }
+            /** SPATIAL EXTENSION - Interfacing with geolocation service **/
+            final GeolocationServiceManager geolocationManager = GeolocationServiceManager
+                    .getGeolocationManager();
+            if (geolocationManager.getServices().size() > 0) {
+                final int platform = PlatformUtils.getPlatform();
+                final AbstractGeolocationService geoService = GeolocationServiceManager
+                        .getGeolocationManager().getAppositeService(platform);
+                if (geoService != null) {
+                    final Iterator<Term> fit = this.findFromReactions();
+                    final Iterator<Term> tit = this.findToReactions();
+                    if (fit.hasNext() || tit.hasNext()) {
+                        if (!geoService.isRunning()) {
+                            geoService.start();
+                        }
+                        geoService.generateSpatialEvents(true);
+                        while (fit.hasNext()) {
+                            fit.next();
+                        }
+                        while (tit.hasNext()) {
+                            tit.next();
+                        }
+                    } else {
+                        geoService.generateSpatialEvents(false);
+                    }
+                }
             }
             return true;
         } catch (final alice.tuprolog.InvalidTheoryException ex) {
             // FIXME Check correctness
             this.notifyException("<!> Invalid reaction spec: " + ex.line + " "
-                    + ex.pos + " <!>");
+                    + ex.pos + "<!>");
             return false;
         }
     }

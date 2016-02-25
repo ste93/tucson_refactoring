@@ -1,24 +1,24 @@
 package alice.respect.core;
 
-import alice.logictuple.LogicTuple;
 import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.respect.api.IOrdinaryAsynchInterface;
 import alice.respect.api.IRespectOperation;
 import alice.respect.api.IRespectTC;
 import alice.respect.api.exceptions.OperationNotPossibleException;
-import alice.tuplecentre.api.IId;
-import alice.tuplecentre.core.OperationCompletionListener;
+import alice.tuplecentre.core.AbstractTupleCentreOperation;
+import alice.tuplecentre.core.InputEvent;
 
 /**
- *
+ * 
  * @author ste (mailto: s.mariani@unibo.it)
- *
+ * @author (contributor) Michele Bombardi (mailto:
+ *         michele.bombardi@studio.unibo.it)
+ * 
  */
 public class OrdinaryAsynchInterface extends RootInterface implements
         IOrdinaryAsynchInterface {
-
     /**
-     *
+     * 
      * @param core
      *            the ReSpecT tuple centre this context refers to
      */
@@ -27,214 +27,215 @@ public class OrdinaryAsynchInterface extends RootInterface implements
     }
 
     @Override
-    public IRespectOperation get(final IId aid,
-            final OperationCompletionListener l)
+    public IRespectOperation get(final InputEvent ev)
             throws OperationNotPossibleException {
-        return this.getCore().get(aid, l);
+        return this.getCore().get(ev);
     }
 
     @Override
-    public IRespectOperation in(final IId id, final LogicTuple t,
-            final OperationCompletionListener l)
+    public IRespectOperation in(final InputEvent ev)
             throws InvalidLogicTupleException, OperationNotPossibleException {
-        if (t == null) {
-            throw new InvalidLogicTupleException("Null value");
+        final AbstractTupleCentreOperation op = ev.getSimpleTCEvent();
+        if (op.getTemplateArgument() == null) {
+            throw new InvalidLogicTupleException();
         }
-        return this.getCore().in(id, t, l);
+        return this.getCore().in(ev);
     }
 
     @Override
-    public IRespectOperation inAll(final IId aid, final LogicTuple t,
-            final OperationCompletionListener l)
+    public IRespectOperation inAll(final InputEvent ev)
             throws InvalidLogicTupleException, OperationNotPossibleException {
-        IRespectOperation op = null;
-        if (t == null) {
-            throw new InvalidLogicTupleException("Null value");
-        } else if (",".equals(t.getName()) && t.getArity() == 2) {
-            op = this.getCore().inAll(aid, new LogicTuple(t.getArg(0)), l);
-        } else {
-            op = this.getCore().inAll(aid, t, l);
+        final AbstractTupleCentreOperation op = ev.getSimpleTCEvent();
+        if (op.getTemplateArgument() == null) {
+            throw new InvalidLogicTupleException();
         }
-        return op;
+        return this.getCore().inAll(ev);
     }
 
     @Override
-    public IRespectOperation inp(final IId id, final LogicTuple t,
-            final OperationCompletionListener l)
+    public IRespectOperation inp(final InputEvent ev)
             throws InvalidLogicTupleException, OperationNotPossibleException {
-        if (t == null) {
-            throw new InvalidLogicTupleException("Null value");
+        final AbstractTupleCentreOperation op = ev.getSimpleTCEvent();
+        if (op.getTemplateArgument() == null) {
+            throw new InvalidLogicTupleException();
         }
-        return this.getCore().inp(id, t, l);
+        return this.getCore().inp(ev);
     }
 
     @Override
-    public IRespectOperation no(final IId id, final LogicTuple t,
-            final OperationCompletionListener l)
+    public IRespectOperation no(final InputEvent ev)
             throws InvalidLogicTupleException, OperationNotPossibleException {
-        if (t == null) {
-            throw new InvalidLogicTupleException("Null value");
+        final AbstractTupleCentreOperation op = ev.getSimpleTCEvent();
+        if (op.getTemplateArgument() == null) {
+            throw new InvalidLogicTupleException();
         }
-        return this.getCore().no(id, t, l);
+        return this.getCore().no(ev);
     }
 
     @Override
-    public IRespectOperation noAll(final IId aid, final LogicTuple t,
-            final OperationCompletionListener l)
+    public IRespectOperation noAll(final InputEvent ev)
             throws InvalidLogicTupleException, OperationNotPossibleException {
-        IRespectOperation op = null;
-        if (t == null) {
-            throw new InvalidLogicTupleException("Null value");
-        } else if (",".equals(t.getName()) && t.getArity() == 2) {
-            op = this.getCore().noAll(aid, new LogicTuple(t.getArg(0)), l);
-        } else {
-            op = this.getCore().noAll(aid, t, l);
+        final AbstractTupleCentreOperation op = ev.getSimpleTCEvent();
+        if (op.getTemplateArgument() == null) {
+            throw new InvalidLogicTupleException();
         }
-        return op;
+        return this.getCore().noAll(ev);
     }
 
     @Override
-    public IRespectOperation nop(final IId id, final LogicTuple t,
-            final OperationCompletionListener l)
+    public IRespectOperation nop(final InputEvent ev)
             throws InvalidLogicTupleException, OperationNotPossibleException {
-        if (t == null) {
-            throw new InvalidLogicTupleException("Null value");
+        final AbstractTupleCentreOperation op = ev.getSimpleTCEvent();
+        if (op.getTemplateArgument() == null) {
+            throw new InvalidLogicTupleException();
         }
-        return this.getCore().nop(id, t, l);
+        return this.getCore().nop(ev);
     }
 
     @Override
-    public IRespectOperation out(final IId id, final LogicTuple t,
-            final OperationCompletionListener l)
+    public IRespectOperation out(final InputEvent ev)
             throws InvalidLogicTupleException, OperationNotPossibleException {
-        if (t == null) {
-            throw new InvalidLogicTupleException("Null value");
+        if (ev.getTuple() == null) {
+            throw new InvalidLogicTupleException();
         }
-        return this.getCore().out(id, t, l);
+        return this.getCore().out(ev);
     }
 
     @Override
-    public IRespectOperation outAll(final IId id, final LogicTuple t,
-            final OperationCompletionListener l)
+    public IRespectOperation outAll(final InputEvent ev)
             throws InvalidLogicTupleException, OperationNotPossibleException {
-        if (t == null) {
-            throw new InvalidLogicTupleException("Null value");
+        if (ev.getTuple() == null) {
+            throw new InvalidLogicTupleException();
         }
-        return this.getCore().outAll(id, t, l);
+        return this.getCore().outAll(ev);
     }
 
     @Override
-    public IRespectOperation rd(final IId id, final LogicTuple t,
-            final OperationCompletionListener l)
+    public IRespectOperation rd(final InputEvent ev)
             throws InvalidLogicTupleException, OperationNotPossibleException {
-        if (t == null) {
-            throw new InvalidLogicTupleException("Null value");
+        final AbstractTupleCentreOperation op = ev.getSimpleTCEvent();
+        if (op.getTemplateArgument() == null) {
+            throw new InvalidLogicTupleException();
         }
-        return this.getCore().rd(id, t, l);
+        return this.getCore().rd(ev);
     }
 
     @Override
-    public IRespectOperation rdAll(final IId aid, final LogicTuple t,
-            final OperationCompletionListener l)
+    public IRespectOperation rdAll(final InputEvent ev)
             throws InvalidLogicTupleException, OperationNotPossibleException {
-        IRespectOperation op = null;
-        if (t == null) {
-            throw new InvalidLogicTupleException("Null value");
-        } else if (",".equals(t.getName()) && t.getArity() == 2) {
-            op = this.getCore().rdAll(aid, new LogicTuple(t.getArg(0)), l);
-        } else {
-            op = this.getCore().rdAll(aid, t, l);
+        final AbstractTupleCentreOperation op = ev.getSimpleTCEvent();
+        if (op.getTemplateArgument() == null) {
+            throw new InvalidLogicTupleException();
         }
-        return op;
+        return this.getCore().rdAll(ev);
     }
 
     @Override
-    public IRespectOperation rdp(final IId id, final LogicTuple t,
-            final OperationCompletionListener l)
+    public IRespectOperation rdp(final InputEvent ev)
             throws InvalidLogicTupleException, OperationNotPossibleException {
-        if (t == null) {
-            throw new InvalidLogicTupleException("Null value");
+        final AbstractTupleCentreOperation op = ev.getSimpleTCEvent();
+        if (op.getTemplateArgument() == null) {
+            throw new InvalidLogicTupleException();
         }
-        return this.getCore().rdp(id, t, l);
+        return this.getCore().rdp(ev);
     }
 
     @Override
-    public IRespectOperation set(final IId aid, final LogicTuple t,
-            final OperationCompletionListener l)
+    public IRespectOperation set(final InputEvent ev)
             throws InvalidLogicTupleException, OperationNotPossibleException {
-        if (t == null) {
-            throw new InvalidLogicTupleException("Null value");
+        final AbstractTupleCentreOperation op = ev.getSimpleTCEvent();
+        if (op.getTupleListArgument() == null) {
+            throw new InvalidLogicTupleException();
         }
-        return this.getCore().set(aid, t, l);
+        return this.getCore().set(ev);
     }
 
     @Override
-    public IRespectOperation spawn(final IId aid, final LogicTuple t,
-            final OperationCompletionListener l)
+    public IRespectOperation spawn(final InputEvent ev)
             throws InvalidLogicTupleException, OperationNotPossibleException {
-        if (t == null) {
-            throw new InvalidLogicTupleException("Null value");
+        if (ev.getTuple() == null) {
+            throw new InvalidLogicTupleException();
         }
-        return this.getCore().spawn(aid, t, l);
+        return this.getCore().spawn(ev);
     }
 
     @Override
-    public IRespectOperation uin(final IId aid, final LogicTuple t,
-            final OperationCompletionListener l)
+    public IRespectOperation uin(final InputEvent ev)
             throws InvalidLogicTupleException, OperationNotPossibleException {
-        if (t == null) {
-            throw new InvalidLogicTupleException("Null value");
+        final AbstractTupleCentreOperation op = ev.getSimpleTCEvent();
+        if (op.getTemplateArgument() == null) {
+            throw new InvalidLogicTupleException();
         }
-        return this.getCore().uin(aid, t, l);
+        return this.getCore().uin(ev);
     }
 
     @Override
-    public IRespectOperation uinp(final IId aid, final LogicTuple t,
-            final OperationCompletionListener l)
+    public IRespectOperation uinp(final InputEvent ev)
             throws InvalidLogicTupleException, OperationNotPossibleException {
-        if (t == null) {
-            throw new InvalidLogicTupleException("Null value");
+        final AbstractTupleCentreOperation op = ev.getSimpleTCEvent();
+        if (op.getTemplateArgument() == null) {
+            throw new InvalidLogicTupleException();
         }
-        return this.getCore().uinp(aid, t, l);
+        return this.getCore().uinp(ev);
     }
 
     @Override
-    public IRespectOperation uno(final IId id, final LogicTuple t,
-            final OperationCompletionListener l)
+    public IRespectOperation uno(final InputEvent ev)
             throws InvalidLogicTupleException, OperationNotPossibleException {
-        if (t == null) {
-            throw new InvalidLogicTupleException("Null value");
+        final AbstractTupleCentreOperation op = ev.getSimpleTCEvent();
+        if (op.getTemplateArgument() == null) {
+            throw new InvalidLogicTupleException();
         }
-        return this.getCore().uno(id, t, l);
+        return this.getCore().uno(ev);
     }
 
     @Override
-    public IRespectOperation unop(final IId id, final LogicTuple t,
-            final OperationCompletionListener l)
+    public IRespectOperation unop(final InputEvent ev)
             throws InvalidLogicTupleException, OperationNotPossibleException {
-        if (t == null) {
-            throw new InvalidLogicTupleException("Null value");
+        final AbstractTupleCentreOperation op = ev.getSimpleTCEvent();
+        if (op.getTemplateArgument() == null) {
+            throw new InvalidLogicTupleException();
         }
-        return this.getCore().unop(id, t, l);
+        return this.getCore().unop(ev);
     }
 
     @Override
-    public IRespectOperation urd(final IId aid, final LogicTuple t,
-            final OperationCompletionListener l)
+    public IRespectOperation urd(final InputEvent ev)
             throws InvalidLogicTupleException, OperationNotPossibleException {
-        if (t == null) {
-            throw new InvalidLogicTupleException("Null value");
+        final AbstractTupleCentreOperation op = ev.getSimpleTCEvent();
+        if (op.getTemplateArgument() == null) {
+            throw new InvalidLogicTupleException();
         }
-        return this.getCore().urd(aid, t, l);
+        return this.getCore().urd(ev);
     }
 
     @Override
-    public IRespectOperation urdp(final IId aid, final LogicTuple t,
-            final OperationCompletionListener l)
+    public IRespectOperation urdp(final InputEvent ev)
             throws InvalidLogicTupleException, OperationNotPossibleException {
-        if (t == null) {
-            throw new InvalidLogicTupleException("Null value");
+        final AbstractTupleCentreOperation op = ev.getSimpleTCEvent();
+        if (op.getTemplateArgument() == null) {
+            throw new InvalidLogicTupleException();
         }
-        return this.getCore().urdp(aid, t, l);
+        return this.getCore().urdp(ev);
     }
+
+//	@Override
+//	public IRespectOperation getEnv(InputEvent ev)
+//			throws InvalidLogicTupleException, OperationNotPossibleException {
+//		final AbstractTupleCentreOperation op = ev.getSimpleTCEvent();
+//        if (op.getTemplateArgument() == null) {
+//            throw new InvalidLogicTupleException();
+//        }
+//        return this.getCore().getEnv(ev);
+//	}
+//
+//	@Override
+//	public IRespectOperation setEnv(InputEvent ev)
+//			throws InvalidLogicTupleException, OperationNotPossibleException {
+//		final AbstractTupleCentreOperation op = ev.getSimpleTCEvent();
+//        if (op.getTemplateArgument() == null) {
+//            throw new InvalidLogicTupleException();
+//        }
+//        return this.getCore().setEnv(ev);
+//	}
 }

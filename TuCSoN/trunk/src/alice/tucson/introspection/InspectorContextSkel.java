@@ -17,7 +17,10 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.LinkedList;
+
 import alice.logictuple.LogicTuple;
+import alice.logictuple.exceptions.InvalidLogicTupleException;
+import alice.respect.core.RespectOperation;
 import alice.tucson.api.TucsonAgentId;
 import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.api.exceptions.TucsonGenericException;
@@ -38,6 +41,7 @@ import alice.tucson.service.TucsonTCUsers;
 import alice.tucson.service.TupleCentreContainer;
 import alice.tuplecentre.api.InspectableEventListener;
 import alice.tuplecentre.core.AbstractTupleCentreOperation;
+import alice.tuplecentre.core.InputEvent;
 import alice.tuplecentre.core.InspectableEvent;
 import alice.tuplecentre.core.ObservableEventExt;
 import alice.tuplecentre.core.ObservableEventReactionFail;
@@ -48,6 +52,8 @@ import alice.tuplecentre.core.TriggeredReaction;
  *
  * @author Unknown...
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
+ * @author (contributor) Michele Bombardi (mailto:
+ *         michele.bombardi@studio.unibo.it)
  *
  */
 public class InspectorContextSkel extends AbstractACCProxyNodeSide implements
@@ -352,13 +358,23 @@ public class InspectorContextSkel extends AbstractACCProxyNodeSide implements
      *             if the TupleSet contained into the given argument m is not a
      *             valid tuples list
      */
-    public synchronized void setTupleSet(final SetTupleSetMsg m)
-            throws TucsonInvalidLogicTupleException {
+    public synchronized void setTupleSet(final SetTupleSetMsg m) {
         try {
-            TupleCentreContainer.doBlockingOperation(TucsonOperation.setCode(),
-                    this.agentId, this.tcId, m.getTupleSet());
+            // Operation Make
+            final RespectOperation opRequested = RespectOperation.make(
+                    TucsonOperation.setSCode(), (LogicTuple) m.getTupleSet(),
+                    null);
+            // InputEvent Creation
+            final InputEvent ev = new InputEvent(this.agentId, opRequested,
+                    this.tcId, System.currentTimeMillis(), null);
+            TupleCentreContainer.doBlockingOperation(ev);
+            // TupleCentreContainer.doBlockingOperation(TucsonOperation.setCode(),
+            // this.agentId, this.tcId, m.getTupleSet());
+        } catch (final TucsonInvalidLogicTupleException e) {
+            e.printStackTrace();
         } catch (final TucsonOperationNotPossibleException e) {
-            // FIXME who have to handle this exception? and how?
+            e.printStackTrace();
+        } catch (final InvalidLogicTupleException e) {
             e.printStackTrace();
         }
     }

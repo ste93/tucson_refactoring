@@ -20,6 +20,12 @@ public interface IId {
      * @return wether this identifier is an environmental resource identifier
      */
     boolean isEnv();
+    
+    /**
+     * 
+     * @return wether this identifier is a geolocation service identifier
+     */
+    boolean isGeo();
 
     /**
      *

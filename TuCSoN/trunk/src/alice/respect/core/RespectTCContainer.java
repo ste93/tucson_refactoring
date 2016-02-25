@@ -2,12 +2,14 @@ package alice.respect.core;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+
 import alice.respect.api.IEnvironmentContext;
 import alice.respect.api.ILinkContext;
 import alice.respect.api.IManagementContext;
 import alice.respect.api.IOrdinaryAsynchInterface;
 import alice.respect.api.IOrdinarySynchInterface;
 import alice.respect.api.IRemoteLinkProvider;
+import alice.respect.api.ISpatialContext;
 import alice.respect.api.ISpecificationAsynchInterface;
 import alice.respect.api.ISpecificationSynchInterface;
 import alice.respect.api.ITCRegistry;
@@ -205,6 +207,24 @@ public final class RespectTCContainer {
      */
     public ITCRegistry getRegistry() {
         return this.registry;
+    }
+    
+    /**
+     * 
+     * @param id
+     *            the id of the tuple centre whose Spatial Context should be
+     *            retrieved
+     * @return the Spatial Context retrieved
+     */
+    public ISpatialContext getSpatialContext(final TupleCentreId id) {
+        try {
+            return ((RespectTC) this.registry.getTC(id)).getSpatialContext();
+        } catch (final InstantiationNotPossibleException e) {
+            final RespectTC tc = new RespectTC(id, this,
+                    RespectTCContainer.QUEUE_SIZE);
+            this.registry.addTC(tc);
+            return tc.getSpatialContext();
+        }
     }
 
     /**

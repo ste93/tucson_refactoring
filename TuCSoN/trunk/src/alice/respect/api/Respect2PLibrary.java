@@ -22,6 +22,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
+
 import alice.logictuple.LogicMatchingEngine;
 import alice.logictuple.LogicTuple;
 import alice.logictuple.LogicTupleOpManager;
@@ -29,6 +30,11 @@ import alice.logictuple.TupleArgument;
 import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.logictuple.exceptions.InvalidTupleArgumentException;
 import alice.respect.api.exceptions.InvalidTupleCentreIdException;
+import alice.respect.api.geolocation.GeoUtils;
+import alice.respect.api.geolocation.PlatformUtils;
+import alice.respect.api.geolocation.Position;
+import alice.respect.api.geolocation.service.AbstractGeolocationService;
+import alice.respect.api.geolocation.service.GeolocationServiceManager;
 import alice.respect.core.InternalEvent;
 import alice.respect.core.InternalOperation;
 import alice.respect.core.RespectOperation;
@@ -38,6 +44,7 @@ import alice.respect.situatedness.TransducerId;
 import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.api.exceptions.UnreachableNodeException;
+import alice.tucson.network.NetworkUtils;
 import alice.tuplecentre.api.IId;
 import alice.tuplecentre.api.ITupleCentreOperation;
 import alice.tuplecentre.api.Tuple;
@@ -50,6 +57,7 @@ import alice.tuprolog.InvalidTermException;
 import alice.tuprolog.Struct;
 import alice.tuprolog.Term;
 import alice.tuprolog.Var;
+import alice.util.Tools;
 
 /**
  * TuProlog library defining the behaviour of ReSpecT primitives, used inside
@@ -57,6 +65,8 @@ import alice.tuprolog.Var;
  *
  * @author Alessandro Ricci
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
+ * @author (contributor) Michele Bombardi (mailto:
+ *         michele.bombardi@studio.unibo.it)
  */
 public class Respect2PLibrary extends alice.tuprolog.Library {
 
@@ -144,6 +154,22 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
     public boolean after_1(final Term time) {
         return !this.before_1(time);
     }
+    
+    /**
+     * 
+     * @param space
+     *            type of node position. It can be specified as either its
+     *            absolute physical position (S=ph), its IP number (S=ip), its
+     *            domain name (S=dns), its geographical location (S=map), or its
+     *            organisational position (S=org).
+     * @param position
+     *            the expected position.
+     * @return <code>true</code> if the tuple centre is currently executing at
+     *         the given position, specified according to the given space term.
+     */
+    public boolean at_2(final Term space, final Term position) {
+        return this.near_3(space, position, this.vm.getDistanceTollerance());
+    }
 
     /**
      * @param time
@@ -188,7 +214,38 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      * @return <code>true</code> if ReSpecT VM is in the completion phase
      */
     public boolean completion_0() {
-        return this.response_0();
+    	return this.response_0();
+    }
+    
+    /**
+     * 
+     * @param space
+     *            type of node position. It can be specified as either its
+     *            absolute physical position (S=ph), its IP number (S=ip), its
+     *            domain name (S=dns), its geographical location (S=map), or its
+     *            organisational position (S=org).
+     * @param position
+     *            the expected position.
+     * @return <code>true</code> if the given position, specified according to
+     *         the given space term, unifies with the position of the node which
+     *         the tuple centre belongs to.
+     */
+    public boolean current_place_2(final Term space, final Term position) {
+        final Position vmPosition = this.vm.getPosition();
+        final Term vmPosTerm = vmPosition.getPlace(space).toTerm();
+        if (!(position instanceof Var)
+                && this.unify(space, Term.createTerm(Position.PH))) {
+            return this
+                    .near_3(space, position, this.vm.getDistanceTollerance()); // necessary
+            // because
+            // of
+            // latitude/longitude
+            // high
+            // variability
+        }
+        return this.unify(position, vmPosTerm); // if S=map, S=org, S=ip or
+                                                // S=dns the position must
+                                                // match exactly
     }
 
     /**
@@ -288,6 +345,36 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
             return this.unify(value, new Struct(res));
         }
         return false;
+    }
+    
+    /**
+     * 
+     * @param space
+     *            type of node position. It can be specified as either its
+     *            absolute physical position (S=ph), its IP number (S=ip), its
+     *            domain name (S=dns), its geographical location (S=map), or its
+     *            organisational position (S=org).
+     * @param position
+     *            the expected position.
+     * @return <code>true</code> if the given position, specified according to
+     *         the given space term, unifies with the position of the node where
+     *         the triggering event was originated.
+     */
+    public boolean event_place_2(final Term space, final Term position) {
+        /**
+         * event fa riferimento alla causa diretta, dunque se l'evento passa la
+         * guardia operation, ci� che serve � la posizione dell'agente, mentre
+         * se non passa la guardia operation, (e.g. � un link_in) serve la
+         * posizione del tc (dunque del nodo).
+         */
+        final InputEvent ev = this.vm.getCurrentEvent();
+        Term ePlaceTerm = null;
+        if (ev.isLinking()) {
+            ePlaceTerm = this.vm.getPosition().getPlace(space).toTerm();
+        } else {
+            ePlaceTerm = ev.getPosition().getPlace(space).toTerm();
+        }
+        return this.unify(position, ePlaceTerm);
     }
 
     /**
@@ -427,7 +514,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      *         the environment
      */
     public boolean from_env_0() {
-        return this.vm.getCurrentReactionEvent().getSource().isEnv();
+    	return this.vm.getCurrentReactionEvent().getSource().isEnv();
     }
 
     /**
@@ -490,7 +577,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         final InputEvent ce = this.vm.getCurrentEvent();
         final InputEvent outEv = new InputEvent(ce.getReactingTC(),
                 RespectOperation.makeGet(new LogicTuple(arg0.copyGoal(v, 0)),
-                        null), tid, this.vm.getCurrentTime());
+                        null), tid, this.vm.getCurrentTime(), ce.getPosition());
         outEv.setIsLinking(true);
         outEv.setTarget(tid);
         this.vm.addTemporaryOutputEvent(outEv);
@@ -549,7 +636,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         final InputEvent ce = this.vm.getCurrentEvent();
         final InputEvent outEv = new InputEvent(ce.getReactingTC(),
                 RespectOperation.makeGetS(new LogicTuple(arg0.copyGoal(v, 0)),
-                        null), tid, this.vm.getCurrentTime());
+                        null), tid, this.vm.getCurrentTime(), ce.getPosition());
         outEv.setIsLinking(true);
         outEv.setTarget(tid);
         this.vm.addTemporaryOutputEvent(outEv);
@@ -724,7 +811,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         final InputEvent ce = this.vm.getCurrentEvent();
         final InputEvent outEv = new InputEvent(ce.getReactingTC(),
                 RespectOperation.makeIn(new LogicTuple(arg0.copyGoal(v, 0)),
-                        null), tid, this.vm.getCurrentTime());
+                        null), tid, this.vm.getCurrentTime(), ce.getPosition());
         outEv.setIsLinking(true);
         outEv.setTarget(tid);
         this.vm.addTemporaryOutputEvent(outEv);
@@ -773,7 +860,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         resultArg = LogicTuple.parse(tuple);
         final InputEvent outEv = new InputEvent(ce.getReactingTC(),
                 RespectOperation.makeInAll(resultArg, null), tid,
-                this.vm.getCurrentTime());
+                this.vm.getCurrentTime(), ce.getPosition());
         outEv.setIsLinking(true);
         outEv.setTarget(tid);
         this.vm.addTemporaryOutputEvent(outEv);
@@ -842,7 +929,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         final InputEvent ce = this.vm.getCurrentEvent();
         final InputEvent outEv = new InputEvent(ce.getReactingTC(),
                 RespectOperation.makeInS(new LogicTuple(goal.copyGoal(v, 0)),
-                        null), tid, this.vm.getCurrentTime());
+                        null), tid, this.vm.getCurrentTime(), ce.getPosition());
         outEv.setIsLinking(true);
         outEv.setTarget(tid);
         this.vm.addTemporaryOutputEvent(outEv);
@@ -902,7 +989,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         final InputEvent ce = this.vm.getCurrentEvent();
         final InputEvent outEv = new InputEvent(ce.getReactingTC(),
                 RespectOperation.makeInp(new LogicTuple(arg0.copyGoal(v, 0)),
-                        null), tid, this.vm.getCurrentTime());
+                        null), tid, this.vm.getCurrentTime(), ce.getPosition());
         outEv.setIsLinking(true);
         outEv.setTarget(tid);
         this.vm.addTemporaryOutputEvent(outEv);
@@ -970,7 +1057,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         final InputEvent ce = this.vm.getCurrentEvent();
         final InputEvent outEv = new InputEvent(ce.getReactingTC(),
                 RespectOperation.makeInpS(new LogicTuple(goal.copyGoal(v, 0)),
-                        null), tid, this.vm.getCurrentTime());
+                        null), tid, this.vm.getCurrentTime(), ce.getPosition());
         outEv.setIsLinking(true);
         outEv.setTarget(tid);
         this.vm.addTemporaryOutputEvent(outEv);
@@ -992,7 +1079,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
      *         this tc and target to this same tc
      */
     public boolean internal_0() {
-        return this.from_tc_0() && this.to_tc_0() && this.endo_0()
+    	return this.from_tc_0() && this.to_tc_0() && this.endo_0()
                 && this.intra_0();
     }
 
@@ -1053,6 +1140,107 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         return this.from_tc_0() && this.to_tc_0() && this.endo_0()
                 && this.inter_0();
     }
+    
+    /**
+     * 
+     * @param space
+     *            type of node position. It can be specified as either its
+     *            absolute physical position (S=ph), its IP number (S=ip), its
+     *            domain name (S=dns), its geographical location (S=map), or its
+     *            organisational position (S=org).
+     * @param center
+     *            the center point of the spatial region.
+     * @param radius
+     *            the radius of the spatial ragion (in meters).
+     * @return <code>true</code> if the tuple centre is currently executing at
+     *         the position included in the spatial region with the given center
+     *         and radius, specified according to the given space term.
+     */
+    public boolean near_3(final Term space, final Term center, final Term radius) {
+        final Position vmPosition = this.vm.getPosition();
+        final Term vmPosTerm = vmPosition.getPlace(space).toTerm();
+        if (this.unify(space, Term.createTerm(Position.PH))) {
+            final Struct vmPosStruct = (Struct) vmPosTerm;
+            final Struct centerStruct = (Struct) center;
+            if (!"coords".equals(centerStruct.getName())) {
+                return false;
+            }
+            final float vmX = ((alice.tuprolog.Number) vmPosStruct.getArg(0))
+                    .floatValue();
+            final float vmY = ((alice.tuprolog.Number) vmPosStruct.getArg(1))
+                    .floatValue();
+            final float cX = ((alice.tuprolog.Number) centerStruct.getArg(0))
+                    .floatValue();
+            final float cY = ((alice.tuprolog.Number) centerStruct.getArg(1))
+                    .floatValue();
+            final float radiusN = GeoUtils
+                    .toDegrees(((alice.tuprolog.Number) radius).floatValue());
+            return Math.pow(vmX - cX, 2) + Math.pow(vmY - cY, 2) <= Math.pow(
+                    radiusN, 2); // check if the current node position is
+                                 // inside a circle having given center and
+                                 // radius
+        } else if (this.unify(space, Term.createTerm(Position.MAP))) {
+            final GeolocationServiceManager geolocationManager = GeolocationServiceManager
+                    .getGeolocationManager();
+            if (geolocationManager.getServices().size() > 0) {
+                final int platform = PlatformUtils.getPlatform();
+                final AbstractGeolocationService geoService = GeolocationServiceManager
+                        .getGeolocationManager().getAppositeService(platform);
+                if (geoService != null) {
+                    final Term centerCoords = geoService.geocode(Tools
+                            .removeApices(center.toString()));
+                    return this.near_3(Term.createTerm("ph"), centerCoords,
+                            radius);
+                }
+            }
+        } else if (this.unify(space, Term.createTerm(Position.ORG))) {
+            final String orgCenterS = Tools.removeApices(center.toString());
+            final String[] orgCenterParts = orgCenterS.split("at ");
+            return this.near_3(Term.createTerm("map"),
+                    Term.createTerm("'" + orgCenterParts[1] + "'"), radius);
+        } else if (this.unify(space, Term.createTerm(Position.IP))) {
+            final float radiusN = ((alice.tuprolog.Number) radius).floatValue();
+            final String vmIpS = Tools.removeApices(vmPosTerm.toString());
+            final String vmIp = NetworkUtils.getIp(vmIpS);
+            // String vmIp = NetworkUtils.getIp("192.168.0.5/26");
+            final int vmMask = NetworkUtils.getNetmask(vmIpS);
+            NetworkUtils.getDecimalNetmask(vmIpS);
+            final String centerIpS = Tools.removeApices(center.toString());
+            final String centerIp = NetworkUtils.getIp(centerIpS);
+            final int mask = NetworkUtils.getNetmask(centerIpS);
+            final String decMask = NetworkUtils.getDecimalNetmask(centerIpS);
+            if (vmMask <= mask + radiusN && vmMask >= mask - radiusN) {
+                return NetworkUtils.sameNetwork(vmIp, centerIp, decMask);
+            }
+            return false;
+        } else if (this.unify(space, Term.createTerm(Position.DNS))) {
+            final float radiusN = ((alice.tuprolog.Number) radius).floatValue();
+            final String vmDnsS = Tools.removeApices(vmPosTerm.toString());
+            // String vmDnsS = "prova2.ciccio.fai.unibo.it";
+            final String centerDnsS = Tools.removeApices(center.toString());
+            if (radiusN == 0) {
+                return vmDnsS.equals(centerDnsS);
+            }
+            final String[] vmDnsParts = vmDnsS.split("\\.");
+            final String[] centerDnsParts = centerDnsS.split("\\.");
+            StringBuffer toCheck = new StringBuffer(centerDnsParts.length);
+            for (int i = centerDnsParts.length - 1; i >= 0; i--) {
+                for (int j = i; j < centerDnsParts.length; j++) {
+                    toCheck.append(centerDnsParts[j]
+                            + (j < centerDnsParts.length - 1 ? "." : ""));
+                }
+                if (vmDnsS.contains(toCheck)) {
+                    for (int k = (int) radiusN; k > 0; k--) {
+                        if (vmDnsParts[k].equals(centerDnsParts[i])) {
+                            return true;
+                        }
+                    }
+                }
+                toCheck = new StringBuffer();
+            }
+        }
+        return false;
+    }
 
     /**
      *
@@ -1093,7 +1281,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         final InputEvent ce = this.vm.getCurrentEvent();
         final InputEvent outEv = new InputEvent(ce.getReactingTC(),
                 RespectOperation.makeNo(new LogicTuple(arg0.copyGoal(v, 0)),
-                        null), tid, this.vm.getCurrentTime());
+                        null), tid, this.vm.getCurrentTime(), ce.getPosition());
         outEv.setIsLinking(true);
         outEv.setTarget(tid);
         this.vm.addTemporaryOutputEvent(outEv);
@@ -1142,7 +1330,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         resultArg = LogicTuple.parse(tuple);
         final InputEvent outEv = new InputEvent(ce.getReactingTC(),
                 RespectOperation.makeNoAll(resultArg, null), tid,
-                this.vm.getCurrentTime());
+                this.vm.getCurrentTime(), ce.getPosition());
         outEv.setIsLinking(true);
         outEv.setTarget(tid);
         this.vm.addTemporaryOutputEvent(outEv);
@@ -1209,7 +1397,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         final InputEvent ce = this.vm.getCurrentEvent();
         final InputEvent outEv = new InputEvent(ce.getReactingTC(),
                 RespectOperation.makeNoS(new LogicTuple(goal.copyGoal(v, 0)),
-                        null), tid, this.vm.getCurrentTime());
+                        null), tid, this.vm.getCurrentTime(), ce.getPosition());
         outEv.setIsLinking(true);
         outEv.setTarget(tid);
         this.vm.addTemporaryOutputEvent(outEv);
@@ -1255,7 +1443,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         final InputEvent ce = this.vm.getCurrentEvent();
         final InputEvent outEv = new InputEvent(ce.getReactingTC(),
                 RespectOperation.makeNop(new LogicTuple(arg0.copyGoal(v, 0)),
-                        null), tid, this.vm.getCurrentTime());
+                        null), tid, this.vm.getCurrentTime(), ce.getPosition());
         outEv.setIsLinking(true);
         outEv.setTarget(tid);
         this.vm.addTemporaryOutputEvent(outEv);
@@ -1322,7 +1510,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         final InputEvent ce = this.vm.getCurrentEvent();
         final InputEvent outEv = new InputEvent(ce.getReactingTC(),
                 RespectOperation.makeNopS(new LogicTuple(goal.copyGoal(v, 0)),
-                        null), tid, this.vm.getCurrentTime());
+                        null), tid, this.vm.getCurrentTime(), ce.getPosition());
         outEv.setIsLinking(true);
         outEv.setTarget(tid);
         this.vm.addTemporaryOutputEvent(outEv);
@@ -1399,7 +1587,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         final InputEvent ce = this.vm.getCurrentEvent();
         final InputEvent outEv = new InputEvent(ce.getReactingTC(),
                 RespectOperation.makeOut(new LogicTuple(arg0.copyGoal(v, 0)),
-                        null), tid, this.vm.getCurrentTime());
+                        null), tid, this.vm.getCurrentTime(), ce.getPosition());
         outEv.setIsLinking(true);
         outEv.setTarget(tid);
         this.vm.addTemporaryOutputEvent(outEv);
@@ -1443,7 +1631,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         final InputEvent outEv = new InputEvent(ce.getReactingTC(),
                 RespectOperation.makeOutAll(
                         new LogicTuple(arg0.copyGoal(v, 0)), null), tid,
-                this.vm.getCurrentTime());
+                this.vm.getCurrentTime(), ce.getPosition());
         outEv.setIsLinking(true);
         outEv.setTarget(tid);
         this.vm.addTemporaryOutputEvent(outEv);
@@ -1506,7 +1694,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         final InputEvent ce = this.vm.getCurrentEvent();
         final InputEvent outEv = new InputEvent(ce.getReactingTC(),
                 RespectOperation.makeOutS(new LogicTuple(goal.copyGoal(v, 0)),
-                        null), tid, this.vm.getCurrentTime());
+                        null), tid, this.vm.getCurrentTime(), ce.getPosition());
         outEv.setIsLinking(true);
         outEv.setTarget(tid);
         this.vm.addTemporaryOutputEvent(outEv);
@@ -1570,7 +1758,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         final InputEvent ce = this.vm.getCurrentEvent();
         final InputEvent outEv = new InputEvent(ce.getReactingTC(),
                 RespectOperation.makeRd(new LogicTuple(arg0.copyGoal(v, 0)),
-                        null), tid, this.vm.getCurrentTime());
+                        null), tid, this.vm.getCurrentTime(), ce.getPosition());
         outEv.setIsLinking(true);
         outEv.setTarget(tid);
         this.vm.addTemporaryOutputEvent(outEv);
@@ -1619,7 +1807,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         resultArg = LogicTuple.parse(tuple);
         final InputEvent outEv = new InputEvent(ce.getReactingTC(),
                 RespectOperation.makeRdAll(resultArg, null), tid,
-                this.vm.getCurrentTime());
+                this.vm.getCurrentTime(), ce.getPosition());
         outEv.setIsLinking(true);
         outEv.setTarget(tid);
         this.vm.addTemporaryOutputEvent(outEv);
@@ -1688,7 +1876,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         final InputEvent ce = this.vm.getCurrentEvent();
         final InputEvent outEv = new InputEvent(ce.getReactingTC(),
                 RespectOperation.makeRdS(new LogicTuple(goal.copyGoal(v, 0)),
-                        null), tid, this.vm.getCurrentTime());
+                        null), tid, this.vm.getCurrentTime(), ce.getPosition());
         outEv.setIsLinking(true);
         outEv.setTarget(tid);
         this.vm.addTemporaryOutputEvent(outEv);
@@ -1736,7 +1924,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         final InputEvent ce = this.vm.getCurrentEvent();
         final InputEvent outEv = new InputEvent(ce.getReactingTC(),
                 RespectOperation.makeRdp(new LogicTuple(arg0.copyGoal(v, 0)),
-                        null), tid, this.vm.getCurrentTime());
+                        null), tid, this.vm.getCurrentTime(), ce.getPosition());
         outEv.setIsLinking(true);
         outEv.setTarget(tid);
         this.vm.addTemporaryOutputEvent(outEv);
@@ -1808,7 +1996,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         final InputEvent ce = this.vm.getCurrentEvent();
         final InputEvent outEv = new InputEvent(ce.getReactingTC(),
                 RespectOperation.makeRdpS(new LogicTuple(goal.copyGoal(v, 0)),
-                        null), tid, this.vm.getCurrentTime());
+                        null), tid, this.vm.getCurrentTime(), ce.getPosition());
         outEv.setIsLinking(true);
         outEv.setTarget(tid);
         this.vm.addTemporaryOutputEvent(outEv);
@@ -1934,11 +2122,51 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         final InputEvent ce = this.vm.getCurrentEvent();
         final InputEvent outEv = new InputEvent(ce.getReactingTC(),
                 RespectOperation.makeSpawn(new LogicTuple(arg0.copyGoal(v, 0)),
-                        null), tid, this.vm.getCurrentTime());
+                        null), tid, this.vm.getCurrentTime(), ce.getPosition());
         outEv.setIsLinking(true);
         outEv.setTarget(tid);
         this.vm.addTemporaryOutputEvent(outEv);
         return true;
+    }
+    
+    /**
+     * 
+     * @param space
+     *            type of node position. It can be specified as either its
+     *            absolute physical position (S=ph), its IP number (S=ip), its
+     *            domain name (S=dns), its geographical location (S=map), or its
+     *            organisational position (S=org).
+     * @param place
+     *            the expected position.
+     * @return <code>true</code> if the given position, specified according to
+     *         the given space term, unifies with the position of the node where
+     *         the event chain that led to the triggering event was originated.
+     */
+    public boolean start_place_2(final Term space, final Term place) {
+        /**
+         * start fa riferimento alla causa prima, dunque servir� "sempre" (pu�
+         * non essere vero, ma per ora fingiamo di si) la posizione dell'agente.
+         */
+        /*
+         * FindBugs states e can only be an InputEvent (and it seems so by
+         * navigating the type hierarchy)
+         */
+//         final AbstractEvent e = this.vm.getCurrentEvent();
+//         Term startEvPosTerm = null;
+//         if (e.isInternal()) {
+//         final InternalEvent ie = (InternalEvent) e;
+//         startEvPosTerm =
+//         ie.getInputEvent().getPosition().getPlace(space).toTerm();
+//         }
+//         if (e.isOutput()) {
+//         final OutputEvent oe = (OutputEvent) e;
+//         startEvPosTerm =
+//         oe.getInputEvent().getPosition().getPlace(space).toTerm();
+//         }
+    	
+        final Term startEvPosTerm = this.vm.getCurrentEvent().getPosition()
+                .getPlace(space).toTerm();
+        return this.unify(place, startEvPosTerm);
     }
 
     /**
@@ -2219,7 +2447,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         final InputEvent ce = this.vm.getCurrentEvent();
         final InputEvent outEv = new InputEvent(ce.getReactingTC(),
                 RespectOperation.makeUin(new LogicTuple(arg0.copyGoal(v, 0)),
-                        null), tid, this.vm.getCurrentTime());
+                        null), tid, this.vm.getCurrentTime(), ce.getPosition());
         outEv.setIsLinking(true);
         outEv.setTarget(tid);
         this.vm.addTemporaryOutputEvent(outEv);
@@ -2267,7 +2495,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         final InputEvent ce = this.vm.getCurrentEvent();
         final InputEvent outEv = new InputEvent(ce.getReactingTC(),
                 RespectOperation.makeUinp(new LogicTuple(arg0.copyGoal(v, 0)),
-                        null), tid, this.vm.getCurrentTime());
+                        null), tid, this.vm.getCurrentTime(), ce.getPosition());
         outEv.setIsLinking(true);
         outEv.setTarget(tid);
         this.vm.addTemporaryOutputEvent(outEv);
@@ -2315,7 +2543,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         final InputEvent ce = this.vm.getCurrentEvent();
         final InputEvent outEv = new InputEvent(ce.getReactingTC(),
                 RespectOperation.makeUno(new LogicTuple(arg0.copyGoal(v, 0)),
-                        null), tid, this.vm.getCurrentTime());
+                        null), tid, this.vm.getCurrentTime(), ce.getPosition());
         outEv.setIsLinking(true);
         outEv.setTarget(tid);
         this.vm.addTemporaryOutputEvent(outEv);
@@ -2363,7 +2591,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         final InputEvent ce = this.vm.getCurrentEvent();
         final InputEvent outEv = new InputEvent(ce.getReactingTC(),
                 RespectOperation.makeUnop(new LogicTuple(arg0.copyGoal(v, 0)),
-                        null), tid, this.vm.getCurrentTime());
+                        null), tid, this.vm.getCurrentTime(), ce.getPosition());
         outEv.setIsLinking(true);
         outEv.setTarget(tid);
         this.vm.addTemporaryOutputEvent(outEv);
@@ -2411,7 +2639,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         final InputEvent ce = this.vm.getCurrentEvent();
         final InputEvent outEv = new InputEvent(ce.getReactingTC(),
                 RespectOperation.makeUrd(new LogicTuple(arg0.copyGoal(v, 0)),
-                        null), tid, this.vm.getCurrentTime());
+                        null), tid, this.vm.getCurrentTime(), ce.getPosition());
         outEv.setIsLinking(true);
         outEv.setTarget(tid);
         this.vm.addTemporaryOutputEvent(outEv);
@@ -2459,7 +2687,7 @@ public class Respect2PLibrary extends alice.tuprolog.Library {
         final InputEvent ce = this.vm.getCurrentEvent();
         final InputEvent outEv = new InputEvent(ce.getReactingTC(),
                 RespectOperation.makeUrdp(new LogicTuple(arg0.copyGoal(v, 0)),
-                        null), tid, this.vm.getCurrentTime());
+                        null), tid, this.vm.getCurrentTime(), ce.getPosition());
         outEv.setIsLinking(true);
         outEv.setTarget(tid);
         this.vm.addTemporaryOutputEvent(outEv);

@@ -14,11 +14,16 @@ package alice.respect.core;
 
 import java.util.LinkedList;
 import java.util.List;
+
 import alice.logictuple.LogicTuple;
 import alice.logictuple.TupleArgument;
+import alice.logictuple.Var;
 import alice.logictuple.exceptions.InvalidLogicTupleException;
+import alice.logictuple.exceptions.InvalidLogicTupleOperationException;
+import alice.logictuple.exceptions.InvalidVarNameException;
 import alice.respect.api.IRespectOperation;
 import alice.respect.api.RespectSpecification;
+import alice.tucson.service.TucsonOperation;
 import alice.tuplecentre.api.Tuple;
 import alice.tuplecentre.api.TupleTemplate;
 import alice.tuplecentre.core.AbstractTupleCentreOperation;
@@ -31,6 +36,8 @@ import alice.tuprolog.Term;
  *
  * @author Alessandro Ricci
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
+ * @author (contributor) Michele Bombardi (mailto:
+ *         michele.bombardi@studio.unibo.it)
  */
 public class RespectOperation extends AbstractTupleCentreOperation implements
         IRespectOperation {
@@ -39,6 +46,10 @@ public class RespectOperation extends AbstractTupleCentreOperation implements
      *
      */
     public static final int OPTYPE_ENV = 103;
+    /**
+     * 
+     */
+    public static final int OPTYPE_FROM = 104;
     /**
      *
      */
@@ -51,7 +62,183 @@ public class RespectOperation extends AbstractTupleCentreOperation implements
      *
      */
     public static final int OPTYPE_TIME = 100;
+    /**
+     * 
+     */
+    public static final int OPTYPE_TO = 105;
 
+
+    /**
+     * 
+     * @param p
+     *            the tuProlog engine used for unification purpose
+     * @param opType
+     *            the type of the operation
+     * @param t
+     *            the tuple argument of the operation
+     * @param l
+     *            the listener to notify upon operation completion
+     * @return the ReSpecT operation built
+     * @throws InvalidLogicTupleException
+     *             if the given logic tuple is not a valid logic tuple
+     */
+    public static RespectOperation make(final int opType,
+            final LogicTuple t, final OperationCompletionListener l)
+            throws InvalidLogicTupleException {
+        if (opType == TucsonOperation.getCode()) {
+            return RespectOperation.makeGet(new LogicTuple("get"), l);
+        }
+        if (opType == TucsonOperation.getSCode()) {
+            try {
+				return RespectOperation.makeGetS(new LogicTuple("spec", new Var(
+				        "S")), l);
+			} catch (InvalidVarNameException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        }
+        if (t == null) {
+            throw new InvalidLogicTupleException();
+        }
+        if (opType == TucsonOperation.setCode()) {
+            return RespectOperation.makeSet(t, l);
+        }
+        if (opType == TucsonOperation.setSCode()) {
+            //try {
+                if ("spec".equals(t.getName())) {
+                    return RespectOperation.makeSetS(null);
+                }
+                return RespectOperation.makeSetS(t, l);
+           // } catch (final InvalidLogicTupleOperationException e) {
+              //  e.printStackTrace();
+          //  }
+        }
+        if (opType == TucsonOperation.inCode()) {
+            return RespectOperation.makeIn(t, l);
+        }
+        if (opType == TucsonOperation.inAllCode()) {
+          //  try {
+                if (",".equals(t.getName()) && t.getArity() == 2) {
+                    return RespectOperation.makeInAll(
+                            new LogicTuple(t.getArg(0)), l);
+                }
+                return RespectOperation.makeInAll(t, l);
+        //    } catch (final InvalidLogicTupleOperationException e) {
+          //      e.printStackTrace();
+          //  }
+        }
+        if (opType == TucsonOperation.inpCode()) {
+            return RespectOperation.makeInp(t, l);
+        }
+        if (opType == TucsonOperation.inpSCode()) {
+            return RespectOperation.makeInpS(t, l);
+        }
+        if (opType == TucsonOperation.inSCode()) {
+            return RespectOperation.makeInS(t, l);
+        }
+        if (opType == TucsonOperation.outCode()) {
+            return RespectOperation.makeOut(t, l);
+        }
+        if (opType == TucsonOperation.outAllCode()) {
+            return RespectOperation.makeOutAll(t, l);
+        }
+        if (opType == TucsonOperation.outSCode()) {
+            return RespectOperation.makeOutS(t, l);
+        }
+        if (opType == TucsonOperation.rdCode()) {
+            return RespectOperation.makeRd(t, l);
+        }
+        if (opType == TucsonOperation.rdAllCode()) {
+          //  try {
+                if (",".equals(t.getName()) && t.getArity() == 2) {
+                    return RespectOperation.makeRdAll(
+                            new LogicTuple(t.getArg(0)), l);
+                }
+                return RespectOperation.makeRdAll(t, l);
+          //  } catch (final InvalidLogicTupleOperationException e) {
+             //   e.printStackTrace();
+           // }
+        }
+        if (opType == TucsonOperation.rdpCode()) {
+            return RespectOperation.makeRdp(t, l);
+        }
+        if (opType == TucsonOperation.rdpSCode()) {
+            return RespectOperation.makeRdpS(t, l);
+        }
+        if (opType == TucsonOperation.rdSCode()) {
+            return RespectOperation.makeRdS(t, l);
+        }
+        if (opType == TucsonOperation.noCode()) {
+            return RespectOperation.makeNo(t, l);
+        }
+        if (opType == TucsonOperation.noAllCode()) {
+          //  try {
+                if (",".equals(t.getName()) && t.getArity() == 2) {
+                    return RespectOperation.makeNoAll(
+                            new LogicTuple(t.getArg(0)), l);
+                }
+                return RespectOperation.makeNoAll(t, l);
+          //  } catch (final InvalidLogicTupleOperationException e) {
+           //     e.printStackTrace();
+          //  }
+        }
+        if (opType == TucsonOperation.nopCode()) {
+            return RespectOperation.makeNop(t, l);
+        }
+        if (opType == TucsonOperation.noSCode()) {
+            return RespectOperation.makeNoS(t, l);
+        }
+        if (opType == TucsonOperation.nopSCode()) {
+            return RespectOperation.makeNopS(t, l);
+        }
+        if (opType == TucsonOperation.uinCode()) {
+            return RespectOperation.makeUin(t, l);
+        }
+        if (opType == TucsonOperation.urdCode()) {
+            return RespectOperation.makeUrd(t, l);
+        }
+        if (opType == TucsonOperation.unoCode()) {
+            return RespectOperation.makeUno(t, l);
+        }
+        if (opType == TucsonOperation.uinpCode()) {
+            return RespectOperation.makeUinp(t, l);
+        }
+        if (opType == TucsonOperation.urdpCode()) {
+            return RespectOperation.makeUrdp(t, l);
+        }
+        if (opType == TucsonOperation.unopCode()) {
+            return RespectOperation.makeUnop(t, l);
+        }
+        if (opType == TucsonOperation.spawnCode()) {
+            return RespectOperation.makeSpawn(t, l);
+        }
+        if (opType == TucsonOperation.getEnvCode()) {
+            return RespectOperation.makeGetEnv(t, l);
+        }
+        if (opType == TucsonOperation.setEnvCode()) {
+            return RespectOperation.makeSetEnv(t, l);
+        }
+        return null;
+    }
+    
+    /**
+     * 
+     * @param p
+     *            the tuProlog engine used for unification purpose
+     * @param t
+     *            the tuple argument of the operation
+     * @param l
+     *            the listener for operation completion
+     * @return the ReSpecT operation built
+     */
+    public static RespectOperation makeFrom(final LogicTuple t,
+            final OperationCompletionListener l) {
+        final RespectOperation temp = new RespectOperation(
+                RespectOperation.OPTYPE_FROM, t, l);
+        temp.setTupleResult(t);
+        return temp;
+    }
+    
     /**
      *
      * @param t
@@ -513,6 +700,24 @@ public class RespectOperation extends AbstractTupleCentreOperation implements
     public static RespectOperation makeTime(final LogicTuple t,
             final OperationCompletionListener l) {
         return new RespectOperation(RespectOperation.OPTYPE_TIME, t, l);
+    }
+    
+    /**
+     * 
+     * @param p
+     *            the tuProlog engine used for unification purpose
+     * @param t
+     *            the tuple argument of the operation
+     * @param l
+     *            the listener for operation completion
+     * @return the ReSpecT operation built
+     */
+    public static RespectOperation makeTo(final LogicTuple t,
+            final OperationCompletionListener l) {
+        final RespectOperation temp = new RespectOperation(
+                RespectOperation.OPTYPE_TO, t, l);
+        temp.setTupleResult(t);
+        return temp;
     }
 
     /**

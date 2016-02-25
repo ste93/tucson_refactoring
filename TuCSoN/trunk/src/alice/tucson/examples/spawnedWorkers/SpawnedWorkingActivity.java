@@ -55,9 +55,6 @@ public class SpawnedWorkingActivity extends AbstractSpawnActivity {
         } catch (final InvalidOperationException e) {
             this.log("ERROR: No tuple arguments to retrieve!");
             e.printStackTrace();
-        } catch (final TucsonInvalidLogicTupleException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
         }
     }
 

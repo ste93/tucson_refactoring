@@ -18,7 +18,12 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+
 import alice.respect.api.IRespectTC;
+import alice.respect.api.geolocation.PlatformUtils;
+import alice.respect.api.geolocation.Position;
+import alice.respect.api.geolocation.service.AbstractGeolocationService;
+import alice.respect.api.geolocation.service.GeolocationServiceManager;
 import alice.respect.core.RespectVM;
 import alice.respect.core.StepMonitor;
 import alice.tuplecentre.api.AgentId;
@@ -29,6 +34,7 @@ import alice.tuplecentre.api.Tuple;
 import alice.tuplecentre.api.TupleCentreId;
 import alice.tuplecentre.api.TupleTemplate;
 import alice.tuplecentre.api.exceptions.OperationNotPossibleException;
+import alice.tuprolog.Term;
 
 /**
  * Defines the core abstract behaviour of a tuple centre virtual machine.
@@ -43,6 +49,8 @@ import alice.tuplecentre.api.exceptions.OperationNotPossibleException;
  *
  * @author Alessandro Ricci
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
+ * @author (contributor) Michele Bombardi (mailto:
+ *         michele.bombardi@studio.unibo.it)
  */
 public abstract class AbstractTupleCentreVMContext implements
         ITupleCentreManagement, ITupleCentre {
@@ -50,10 +58,12 @@ public abstract class AbstractTupleCentreVMContext implements
     private long bootTime;
     private InputEvent currentEvent;
     private AbstractTupleCentreVMState currentState;
+    private Term distanceTollerance;
     private final List<AbstractEvent> inputEnvEvents;
     private final List<AbstractEvent> inputEvents;
     private boolean management;
     private final int maxPendingInputEventNumber;
+    private Position place;
     private final IRespectTC respectTC;
     private final RespectVM rvm;
     private final Map<String, AbstractTupleCentreVMState> states;
@@ -169,11 +179,21 @@ public abstract class AbstractTupleCentreVMContext implements
     public void doOperation(final IId who, final AbstractTupleCentreOperation op)
             throws OperationNotPossibleException {
         final InputEvent ev = new InputEvent(who, op, this.tid,
-                this.getCurrentTime());
+                this.getCurrentTime(), this.getPosition());
         synchronized (this.inputEvents) {
             if (this.inputEvents.size() > this.maxPendingInputEventNumber) {
                 throw new OperationNotPossibleException(
                         "Max pending input event limit reached");
+            }
+            this.inputEvents.add(ev);
+        }
+    }
+    
+    public void doOperation(final InputEvent ev)
+            throws OperationNotPossibleException {
+        synchronized (this.inputEvents) {
+            if (this.inputEvents.size() > this.maxPendingInputEventNumber) {
+                throw new OperationNotPossibleException();
             }
             this.inputEvents.add(ev);
         }
@@ -306,6 +326,15 @@ public abstract class AbstractTupleCentreVMContext implements
     public long getCurrentTime() {
         return System.currentTimeMillis() - this.bootTime;
     }
+    
+    /**
+     * 
+     * @return the tuProlog Term representing the floating point precision
+     *         tollerance set for proximity check
+     */
+    public Term getDistanceTollerance() {
+        return this.distanceTollerance;
+    }
 
     /**
      * Gets the identifier of this tuple centre
@@ -323,6 +352,14 @@ public abstract class AbstractTupleCentreVMContext implements
      * @return the iterator
      */
     public abstract Iterator<? extends AbstractEvent> getPendingQuerySetIterator();
+    
+    /**
+     * 
+     * @return the position of the device hosting the tuple centre VM
+     */
+    public Position getPosition() {
+        return this.place;
+    }
 
     /**
      *
@@ -620,5 +657,43 @@ public abstract class AbstractTupleCentreVMContext implements
      */
     protected void setBootTime() {
         this.bootTime = System.currentTimeMillis();
+    }
+    
+    /**
+     * 
+     * @param t
+     *            the floating point precision to set as a tollerance for
+     *            proximity check
+     */
+    protected void setDistanceTollerance(final float t) {
+        this.distanceTollerance = Term.createTerm(String.valueOf(t));
+    }
+
+    /**
+     * 
+     * @param dt
+     *            the tuProlog term representing the floating point precision to
+     *            set as a tollerance for proximity check
+     */
+    protected void setDistanceTollerance(final Term dt) {
+        this.distanceTollerance = dt;
+    }
+
+    
+    /**
+     * 
+     */
+    protected void setPosition() {
+        this.place = new Position();
+        final GeolocationServiceManager geolocationManager = GeolocationServiceManager
+                .getGeolocationManager();
+        if (geolocationManager.getServices().size() > 0) {
+            final int platform = PlatformUtils.getPlatform();
+            final AbstractGeolocationService geoService = GeolocationServiceManager
+                    .getGeolocationManager().getAppositeService(platform);
+            if (geoService != null && !geoService.isRunning()) {
+                geoService.start();
+            }
+        }
     }
 }

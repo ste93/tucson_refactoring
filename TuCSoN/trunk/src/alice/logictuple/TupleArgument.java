@@ -118,7 +118,7 @@ public class TupleArgument implements java.io.Serializable {
      * @return the argument of the compound
      */
     public TupleArgument getArg(final int index) {
-        return new TupleArgument(((Struct) this.value.getTerm()).getTerm(index));
+    		return new TupleArgument(((Struct) this.value.getTerm()).getTerm(index));	
     }
 
     /**

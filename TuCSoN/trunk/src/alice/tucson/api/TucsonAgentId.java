@@ -130,6 +130,11 @@ public class TucsonAgentId implements alice.tuplecentre.api.AgentId,
     public boolean isEnv() {
         return false;
     }
+    
+    @Override
+    public boolean isGeo() {
+        return false;
+    }
 
     @Override
     public boolean isTC() {

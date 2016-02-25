@@ -6,23 +6,23 @@ import alice.respect.api.IRespectOperation;
 import alice.respect.api.IRespectTC;
 import alice.respect.api.ISpecificationAsynchInterface;
 import alice.respect.api.RespectSpecification;
-import alice.respect.api.exceptions.InvalidSpecificationException;
 import alice.respect.api.exceptions.OperationNotPossibleException;
-import alice.tuplecentre.api.IId;
-import alice.tuplecentre.core.OperationCompletionListener;
+import alice.tuplecentre.core.AbstractTupleCentreOperation;
+import alice.tuplecentre.core.InputEvent;
 
 /**
- *
+ * 
  * @author ste (mailto: s.mariani@unibo.it)
- *
+ * @author (contributor) Michele Bombardi (mailto:
+ *         michele.bombardi@studio.unibo.it)
+ * 
  */
 public class SpecificationAsynchInterface implements
         ISpecificationAsynchInterface {
-
     private final IRespectTC core;
 
     /**
-     *
+     * 
      * @param c
      *            the ReSpecT tuple centres manager this interface refers to
      */
@@ -31,89 +31,88 @@ public class SpecificationAsynchInterface implements
     }
 
     @Override
-    public IRespectOperation getS(final IId aid,
-            final OperationCompletionListener l)
+    public IRespectOperation getS(final InputEvent ev)
             throws OperationNotPossibleException {
-        return this.core.get(aid, l);
+        return this.core.get(ev);
     }
 
     @Override
-    public IRespectOperation inpS(final IId id, final LogicTuple t,
-            final OperationCompletionListener l)
+    public IRespectOperation inpS(final InputEvent ev)
             throws InvalidLogicTupleException, OperationNotPossibleException {
-        if (t == null) {
-            throw new InvalidLogicTupleException("Null value");
+        final AbstractTupleCentreOperation op = ev.getSimpleTCEvent();
+        if (op.getTemplateArgument() == null) {
+            throw new InvalidLogicTupleException();
         }
-        return this.core.inpS(id, t, l);
+        return this.core.inpS(ev);
     }
 
     @Override
-    public IRespectOperation inS(final IId id, final LogicTuple t,
-            final OperationCompletionListener l)
+    public IRespectOperation inS(final InputEvent ev)
             throws InvalidLogicTupleException, OperationNotPossibleException {
-        if (t == null) {
-            throw new InvalidLogicTupleException("Null value");
+        final AbstractTupleCentreOperation op = ev.getSimpleTCEvent();
+        if (op.getTemplateArgument() == null) {
+            throw new InvalidLogicTupleException();
         }
-        return this.core.inS(id, t, l);
+        return this.core.inS(ev);
     }
 
     @Override
-    public IRespectOperation nopS(final IId aid, final LogicTuple t,
-            final OperationCompletionListener l)
+    public IRespectOperation nopS(final InputEvent ev)
             throws InvalidLogicTupleException, OperationNotPossibleException {
-        if (t == null) {
-            throw new InvalidLogicTupleException("Null value");
+        final AbstractTupleCentreOperation op = ev.getSimpleTCEvent();
+        if (op.getTemplateArgument() == null) {
+            throw new InvalidLogicTupleException();
         }
-        return this.core.nopS(aid, t, l);
+        return this.core.nopS(ev);
     }
 
     @Override
-    public IRespectOperation noS(final IId aid, final LogicTuple t,
-            final OperationCompletionListener l)
+    public IRespectOperation noS(final InputEvent ev)
             throws InvalidLogicTupleException, OperationNotPossibleException {
-        if (t == null) {
-            throw new InvalidLogicTupleException("Null value");
+        final AbstractTupleCentreOperation op = ev.getSimpleTCEvent();
+        if (op.getTemplateArgument() == null) {
+            throw new InvalidLogicTupleException();
         }
-        return this.core.noS(aid, t, l);
+        return this.core.noS(ev);
     }
 
     @Override
-    public IRespectOperation outS(final IId id, final LogicTuple t,
-            final OperationCompletionListener l)
+    public IRespectOperation outS(final InputEvent ev)
             throws InvalidLogicTupleException, OperationNotPossibleException {
+        final LogicTuple t = (LogicTuple) ev.getTuple();
         if (t == null) {
-            throw new InvalidLogicTupleException("Null value");
+            throw new InvalidLogicTupleException();
         }
-        return this.core.outS(id, t, l);
+        return this.core.outS(ev);
     }
 
     @Override
-    public IRespectOperation rdpS(final IId id, final LogicTuple t,
-            final OperationCompletionListener l)
+    public IRespectOperation rdpS(final InputEvent ev)
             throws InvalidLogicTupleException, OperationNotPossibleException {
-        if (t == null) {
-            throw new InvalidLogicTupleException("Null value");
+        final AbstractTupleCentreOperation op = ev.getSimpleTCEvent();
+        if (op.getTemplateArgument() == null) {
+            throw new InvalidLogicTupleException();
         }
-        return this.core.rdpS(id, t, l);
+        return this.core.rdpS(ev);
     }
 
     @Override
-    public IRespectOperation rdS(final IId id, final LogicTuple t,
-            final OperationCompletionListener l)
+    public IRespectOperation rdS(final InputEvent ev)
             throws InvalidLogicTupleException, OperationNotPossibleException {
-        if (t == null) {
-            throw new InvalidLogicTupleException("Null value");
+        final AbstractTupleCentreOperation op = ev.getSimpleTCEvent();
+        if (op.getTemplateArgument() == null) {
+            throw new InvalidLogicTupleException();
         }
-        return this.core.rdS(id, t, l);
+        return this.core.rdS(ev);
     }
 
     @Override
-    public IRespectOperation setS(final IId aid,
-            final RespectSpecification spec, final OperationCompletionListener l)
-            throws InvalidSpecificationException, OperationNotPossibleException {
+    public IRespectOperation setS(final RespectSpecification spec,
+            final InputEvent ev) throws InvalidLogicTupleException,
+            OperationNotPossibleException {
         if (spec == null) {
-            throw new InvalidSpecificationException("Null value");
+            throw new InvalidLogicTupleException();
         }
-        return this.core.setS(aid, spec, l);
+        return this.core.setSasynch(ev, spec);
     }
 }

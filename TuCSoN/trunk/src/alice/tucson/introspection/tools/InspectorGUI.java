@@ -94,9 +94,9 @@ public class InspectorGUI extends javax.swing.JFrame {
         }
         InspectorGUI form = null;
         if (tid != null) {
-            form = new InspectorGUI(aid, tid);
+            form = new InspectorGUI(aid, tid, true);
         } else {
-            form = new InspectorGUI(aid);
+            form = new InspectorGUI(aid, true);
         }
         synchronized (form.exit) {
             try {
@@ -152,14 +152,15 @@ public class InspectorGUI extends javax.swing.JFrame {
      *
      * @param id
      *            the name of the Inspector agent.
+     * @param isVisible 
      */
-    public InspectorGUI(final TucsonAgentId id) {
+    public InspectorGUI(final TucsonAgentId id, final boolean isVisible) {
         super();
         this.initComponents();
         this.aid = id;
         this.disableControlPanel();
         this.isSessionOpen = false;
-        this.setVisible(true);
+        this.setVisible(isVisible);
     }
 
     /**
@@ -170,14 +171,27 @@ public class InspectorGUI extends javax.swing.JFrame {
      * @param tc
      *            the fullname of the tuplecentre to inspect.
      */
-    public InspectorGUI(final TucsonAgentId id, final TucsonTupleCentreId tc) {
-        this(id);
+    public InspectorGUI(final TucsonAgentId id, final TucsonTupleCentreId tc, final boolean isVisible) {
+        this(id, isVisible);
         this.tid = tc;
         this.inputName.setText(tc.getName());
         this.inputNode.setText(alice.util.Tools.removeApices(tc.getNode()));
         this.inputPort.setText(alice.util.Tools.removeApices(String
                 .valueOf(this.tid.getPort())));
         this.buttonInspectActionPerformed();
+    }
+    
+    /**
+     * 
+     */
+    public void showTupleCenter() {
+        this.protocol.setTsetObservType(InspectorProtocol.PROACTIVE_OBSERVATION);
+        try {
+            this.context.setProtocol(this.protocol);
+        } catch (final DialogSendException e) {
+            e.printStackTrace();
+        }
+        this.tupleForm.setVisible(true);
     }
 
     /**

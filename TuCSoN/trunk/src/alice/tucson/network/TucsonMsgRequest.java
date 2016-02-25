@@ -1,95 +1,64 @@
 package alice.tucson.network;
 
 import java.io.Serializable;
-import alice.logictuple.LogicTuple;
+import alice.tucson.service.InputEventMsg;
 
 /**
- *
+ * 
  * @author Alessandro Ricci
  * @author (contributor) ste (mailto: s.mariani@unibo.it)
  * @author (contributor) Saverio Cicora
- *
+ * @author (contributor) Michele Bombardi (mailto:
+ *         michele.bombardi@studio.unibo.it)
+ * 
  */
 public class TucsonMsgRequest implements Serializable {
-
     /** serialVersionUID **/
     private static final long serialVersionUID = 1L;
-    private long id;
-    private String tid;
-    private LogicTuple tuple;
-    private int type;
+    private InputEventMsg inputEvent;
 
     /**
-     *
-     * @param i
-     *            the operation id
-     * @param ty
-     *            the operation type code
-     * @param stcid
-     *            the String representation of the target tuple centre
-     * @param t
-     *            the tuple argument of the operation
+     * 
+     * @param ev
+     *            the event to transmit
      */
-    public TucsonMsgRequest(final long i, final int ty, final String stcid,
-            final LogicTuple t) {
-        this.id = i;
-        this.type = ty;
-        this.tid = stcid;
-        this.tuple = t;
+    public TucsonMsgRequest(final InputEventMsg ev) {
+        this.inputEvent = ev;
     }
 
     /**
-     *
+     * 
      */
     protected TucsonMsgRequest() {
         /*
-         *
+         * 
          */
     }
 
     /**
-     *
-     * @return the operation id
+     * 
+     * @return The InputEvent this message veichles
      */
-    public long getId() {
-        return this.id;
-    }
-
-    /**
-     *
-     * @return the String representation of the target tuple centre
-     */
-    public String getTid() {
-        return this.tid;
-    }
-
-    /**
-     *
-     * @return the tuple argument of the operation
-     */
-    public LogicTuple getTuple() {
-        return this.tuple;
-    }
-
-    /**
-     *
-     * @return the operation type code
-     */
-    public int getType() {
-        return this.type;
+    public InputEventMsg getInputEventMsg() {
+        return this.inputEvent;
     }
 
     @Override
     public String toString() {
-        final StringBuffer s = new StringBuffer(28);
+        final StringBuffer s = new StringBuffer(45);
+        final InputEventMsg iEv = this.getInputEventMsg();
         s.append("ID: ");
-        s.append(this.id);
+        s.append(iEv.getOpId());
         s.append("; Type: ");
-        s.append(this.type);
+        s.append(iEv.getOpType());
         s.append("; TID: ");
-        s.append(this.tid);
+        s.append(iEv.getReactingTC());
         s.append("; Tuple: ");
-        s.append(this.tuple);
+        s.append(iEv.getTuple());
+        s.append("; Time: ");
+        s.append(iEv.getTime());
+        s.append("; Place: ");
+        s.append(iEv.getPlace());
         return s.toString();
     }
 }
