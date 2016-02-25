@@ -24,7 +24,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 import java.util.Timer;
-
 import alice.logictuple.LogicTuple;
 import alice.logictuple.LogicTupleOpManager;
 import alice.logictuple.TupleArgument;
@@ -125,11 +124,11 @@ public class RespectVMContext extends
             RespectVMContext.this.notifyInputEvent(res);
         }
     }
+
     /**
      * the distance tollerance used in spatial observation predicates and guards
      */
     private static final float METERS_DISTANCE_TOLLERANCE = 10f;
-
 
     /**
      * Static services that checks if a source text contains a valid ReSpecT
@@ -433,8 +432,18 @@ public class RespectVMContext extends
         this.log("reaction evaluation success = " + info.isSuccess());
         if (info.isSuccess()) {
             if (this.vm.hasInspectors()) {
-                this.vm.notifyInspectableEvent(new ObservableEventReactionOK(
-                        this, z));
+                /* Dradi */
+                try {
+                    Struct sol = (Struct) info.getSolution();
+                    sol.resolveTerm();
+                    this.vm.notifyInspectableEvent(new ObservableEventReactionOK(
+                            this, new TriggeredReaction(z.getEvent(),
+                                    new LogicReaction(sol))));
+                } catch (NoSolutionException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                /* Dradi */
             }
             final int n = this.temporaryOutputEventList.size();
             for (int i = 0; i < n; i++) {
@@ -1032,7 +1041,7 @@ public class RespectVMContext extends
             }
         }
     }
-    
+
     /**
      * 
      * @return a Java iterator through the list of spatial from reactions
@@ -1061,7 +1070,6 @@ public class RespectVMContext extends
         }
         return foundReactions.iterator();
     }
-
 
     /**
      *
@@ -1095,7 +1103,7 @@ public class RespectVMContext extends
         }
         return foundReactions.iterator();
     }
-    
+
     /**
      * 
      * @return a Java iterator through the list of spatial to reactions possibly
@@ -1296,7 +1304,7 @@ public class RespectVMContext extends
             op.addListener(new CompletionListener(oe));
             final ILinkContext link = RespectTCContainer
                     .getRespectTCContainer().getLinkContext(target);
-         // link.doOperation((TupleCentreId) oe.getSource(), op);
+            // link.doOperation((TupleCentreId) oe.getSource(), op);
             TupleCentreId source;
             if (oe.getSource() instanceof TucsonTupleCentreId) {
                 source = ((TucsonTupleCentreId) oe.getSource())
@@ -2027,9 +2035,9 @@ public class RespectVMContext extends
                     delay = 0;
                 }
                 currTimer.schedule(
-                        new RespectTimerTask(this, RespectOperation.makeTime(new LogicTuple("time",
-                                        new TupleArgument(current)), null)),
-                        delay);
+                        new RespectTimerTask(this, RespectOperation.makeTime(
+                                new LogicTuple("time", new TupleArgument(
+                                        current)), null)), delay);
             }
             /** SPATIAL EXTENSION - Interfacing with geolocation service **/
             final GeolocationServiceManager geolocationManager = GeolocationServiceManager
@@ -2134,9 +2142,9 @@ public class RespectVMContext extends
                     delay = 0;
                 }
                 currTimer.schedule(
-                        new RespectTimerTask(this, RespectOperation.makeTime(new LogicTuple("time",
-                                        new TupleArgument(current)), null)),
-                        delay);
+                        new RespectTimerTask(this, RespectOperation.makeTime(
+                                new LogicTuple("time", new TupleArgument(
+                                        current)), null)), delay);
             }
             /** SPATIAL EXTENSION - Interfacing with geolocation service **/
             final GeolocationServiceManager geolocationManager = GeolocationServiceManager

@@ -20,12 +20,15 @@ import java.util.Iterator;
 import alice.logictuple.LogicTuple;
 import alice.respect.api.AgentId;
 import alice.respect.api.TupleCentreId;
+import alice.respect.core.LogicReaction;
 import alice.respect.situatedness.TransducerId;
 import alice.tucson.api.TucsonAgentId;
 import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.introspection.WSetEvent;
 import alice.tuplecentre.api.Tuple;
+import alice.tuplecentre.core.Reaction;
 import alice.tuplecentre.core.TriggeredReaction;
+import alice.tuprolog.Struct;
 
 /**
  *
@@ -320,6 +323,12 @@ public class InspectorCore extends alice.tucson.introspection.Inspector {
             this.cal = Calendar.getInstance();
             final ReactionViewer viewer = this.form.getReactionForm();
             final TriggeredReaction tr = msg.getReactionOk();
+            /* Dradi */
+//            Reaction r = msg.getReactionOk().getReaction();
+//            LogicReaction logicReaction = (LogicReaction) r;
+//            Struct struct = logicReaction.getStructReaction();
+//            struct.resolveTerm();
+            /* Dradi */
             viewer.appendText("reaction < " + tr.getReaction()
                     + " > SUCCEEDED @ " + this.cal.get(Calendar.HOUR_OF_DAY)
                     + ":" + this.cal.get(Calendar.MINUTE) + ":"

@@ -17,9 +17,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.LinkedList;
-
 import alice.logictuple.LogicTuple;
 import alice.logictuple.exceptions.InvalidLogicTupleException;
+import alice.respect.core.LogicReaction;
 import alice.respect.core.RespectOperation;
 import alice.tucson.api.TucsonAgentId;
 import alice.tucson.api.TucsonTupleCentreId;
@@ -258,6 +258,12 @@ public class InspectorContextSkel extends AbstractACCProxyNodeSide implements
                     final TriggeredReaction zCopy = new TriggeredReaction(null,
                             ((ObservableEventReactionOK) ev).getZ()
                                     .getReaction());
+                    /* Dradi */
+//                    if (zCopy.getReaction() instanceof LogicReaction) {
+//                        ((LogicReaction) zCopy.getReaction())
+//                                .getStructReaction().resolveTerm();
+//                    }
+                    /* Dradi */
                     msg.setReactionOk(zCopy);
                     this.dialog.sendInspectorEvent(msg);
                 }
