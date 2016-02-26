@@ -42,19 +42,21 @@ public class Inspector extends Thread implements InspectorContextListener {
      *            the agent identifier this inspector should use
      * @param tid
      *            the identifier of the tuple centre under inspection
-     * @param b 
+     * @param forGui
+     *            whether the inspector is the Gui version (see Dradi MoK
+     *            project 2014/2015)
      */
-    public Inspector(final TucsonAgentId id, final TucsonTupleCentreId tid, boolean forGui) {
+    public Inspector(final TucsonAgentId id, final TucsonTupleCentreId tid,
+            boolean forGui) {
         super();
         this.context = new InspectorContextStub(id, tid, forGui);
         this.context.addInspectorContextListener(this);
         this.q = false;
     }
-    
+
     public Inspector(final TucsonAgentId id, final TucsonTupleCentreId tid) {
-    	this(id, tid, false);
+        this(id, tid, false);
     }
-    
 
     /**
      *

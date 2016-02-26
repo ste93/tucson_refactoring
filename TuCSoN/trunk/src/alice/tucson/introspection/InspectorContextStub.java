@@ -52,6 +52,9 @@ public class InspectorContextStub implements InspectorContext {
      *            the agent identifier to be used by this inspector
      * @param tc
      *            the identifier of the tuple centre to inspect
+     * @param forGui
+     *            whether the inspector is the Gui version (see Dradi MoK
+     *            project 2014/2015)
      */
     public InspectorContextStub(final TucsonAgentId i,
             final TucsonTupleCentreId tc, final boolean forGui) {
@@ -72,13 +75,12 @@ public class InspectorContextStub implements InspectorContext {
         }
         this.exitFlag = false;
     }
-    
+
     public InspectorContextStub(final TucsonAgentId i,
             final TucsonTupleCentreId tc) {
-    	this(i, tc, false);
+        this(i, tc, false);
     }
-    
-    
+
     @Override
     public void acceptVMEvent() throws DialogException {
         try {

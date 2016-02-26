@@ -360,9 +360,6 @@ public class InspectorContextSkel extends AbstractACCProxyNodeSide implements
      *
      * @param m
      *            the set tuples message
-     * @throws TucsonInvalidLogicTupleException
-     *             if the TupleSet contained into the given argument m is not a
-     *             valid tuples list
      */
     public synchronized void setTupleSet(final SetTupleSetMsg m) {
         try {

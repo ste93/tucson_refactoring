@@ -152,7 +152,8 @@ public class InspectorGUI extends javax.swing.JFrame {
      *
      * @param id
      *            the name of the Inspector agent.
-     * @param isVisible 
+     * @param isVisible
+     *            whether the Inspector should immediatley display the GUI
      */
     public InspectorGUI(final TucsonAgentId id, final boolean isVisible) {
         super();
@@ -170,8 +171,11 @@ public class InspectorGUI extends javax.swing.JFrame {
      *            the name of the Inspector agent.
      * @param tc
      *            the fullname of the tuplecentre to inspect.
+     * @param isVisible
+     *            whether the Inspector should immediatley display the GUI
      */
-    public InspectorGUI(final TucsonAgentId id, final TucsonTupleCentreId tc, final boolean isVisible) {
+    public InspectorGUI(final TucsonAgentId id, final TucsonTupleCentreId tc,
+            final boolean isVisible) {
         this(id, isVisible);
         this.tid = tc;
         this.inputName.setText(tc.getName());
@@ -180,12 +184,13 @@ public class InspectorGUI extends javax.swing.JFrame {
                 .valueOf(this.tid.getPort())));
         this.buttonInspectActionPerformed();
     }
-    
+
     /**
      * 
      */
     public void showTupleCenter() {
-        this.protocol.setTsetObservType(InspectorProtocol.PROACTIVE_OBSERVATION);
+        this.protocol
+                .setTsetObservType(InspectorProtocol.PROACTIVE_OBSERVATION);
         try {
             this.context.setProtocol(this.protocol);
         } catch (final DialogSendException e) {
@@ -540,7 +545,7 @@ public class InspectorGUI extends javax.swing.JFrame {
         this.tupleSpaceStepMode
                 .addActionListener(new java.awt.event.ActionListener() {
 
-            @Override
+                    @Override
                     public void actionPerformed(
                             final java.awt.event.ActionEvent evt) {
                         InspectorGUI.this.stepObModeActionPerformed(evt);
@@ -562,7 +567,7 @@ public class InspectorGUI extends javax.swing.JFrame {
         this.agentStepMode
                 .addActionListener(new java.awt.event.ActionListener() {
 
-            @Override
+                    @Override
                     public void actionPerformed(
                             final java.awt.event.ActionEvent evt) {
                         InspectorGUI.this.stepObModeActionPerformed(evt);
@@ -652,7 +657,7 @@ public class InspectorGUI extends javax.swing.JFrame {
         this.buttonInspect
                 .addActionListener(new java.awt.event.ActionListener() {
 
-            @Override
+                    @Override
                     public void actionPerformed(
                             final java.awt.event.ActionEvent evt) {
                         InspectorGUI.this.buttonInspectActionPerformed();

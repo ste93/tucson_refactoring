@@ -70,8 +70,6 @@ public class RespectOperation extends AbstractTupleCentreOperation implements
 
     /**
      * 
-     * @param p
-     *            the tuProlog engine used for unification purpose
      * @param opType
      *            the type of the operation
      * @param t
@@ -223,8 +221,6 @@ public class RespectOperation extends AbstractTupleCentreOperation implements
     
     /**
      * 
-     * @param p
-     *            the tuProlog engine used for unification purpose
      * @param t
      *            the tuple argument of the operation
      * @param l
@@ -704,8 +700,6 @@ public class RespectOperation extends AbstractTupleCentreOperation implements
     
     /**
      * 
-     * @param p
-     *            the tuProlog engine used for unification purpose
      * @param t
      *            the tuple argument of the operation
      * @param l

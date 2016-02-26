@@ -13,17 +13,14 @@
  */
 package alice.tucson.service;
 
-import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-
 import alice.logictuple.LogicTuple;
 import alice.logictuple.TupleArgument;
 import alice.logictuple.Value;
 import alice.logictuple.Var;
 import alice.logictuple.exceptions.InvalidLogicTupleException;
-import alice.logictuple.exceptions.InvalidLogicTupleOperationException;
 import alice.logictuple.exceptions.InvalidVarNameException;
 import alice.logictuple.exceptions.LogicTupleException;
 import alice.respect.core.RespectOperation;
@@ -37,7 +34,6 @@ import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
 import alice.tucson.introspection.InspectorContextSkel;
 import alice.tucson.introspection4gui.Inspector4GuiContextSkel;
 import alice.tucson.network.AbstractTucsonProtocol;
-import alice.tucson.network.exceptions.DialogException;
 import alice.tucson.network.exceptions.DialogReceiveException;
 import alice.tucson.network.exceptions.DialogSendException;
 import alice.tuplecentre.core.InputEvent;
@@ -92,7 +88,8 @@ public class ACCProvider {
      *            ACC
      * @return wether the request has been accepted (therefore the ACC given) or
      *         not
-     * @throws DialogReceiveException 
+     * @throws DialogReceiveException
+     *             if there is something wrong in the reception stream
      * @throws TucsonInvalidTupleCentreIdException
      *             if the TupleCentreId, contained into AbstractTucsonProtocol's
      *             message, does not represent a valid TuCSoN identifier
@@ -103,14 +100,16 @@ public class ACCProvider {
      */
     // exception handling is a mess, need to review it...
     public synchronized boolean processContextRequest(
-            final ACCDescription profile, final AbstractTucsonProtocol dialog) throws DialogReceiveException, TucsonInvalidAgentIdException, TucsonInvalidTupleCentreIdException {
+            final ACCDescription profile, final AbstractTucsonProtocol dialog)
+            throws DialogReceiveException, TucsonInvalidAgentIdException,
+            TucsonInvalidTupleCentreIdException {
         ACCProvider.log("Processing ACC request...");
         try {
             String agentName = profile.getProperty("agent-identity");
             if (agentName == null) {
                 agentName = profile.getProperty("tc-identity");
             }
-            
+
             final String agentUUID = profile.getProperty("agent-uuid");
             String agentClass = profile.getProperty("agent-class");
             if (agentClass == null) {
@@ -119,8 +118,10 @@ public class ACCProvider {
             final LogicTuple req = new LogicTuple("context_request", new Value(
                     Tools.removeApices(agentName)), new Var("CtxId"),
                     new Value(agentClass), new Value(agentUUID));
-            /*final LogicTuple req = new LogicTuple("context_request", new Value(
-                    agentName), new Var("CtxId")); */
+            /*
+             * final LogicTuple req = new LogicTuple("context_request", new
+             * Value( agentName), new Var("CtxId"));
+             */
             // Operation Make
             final RespectOperation opRequested = RespectOperation.make(
                     TucsonOperation.inpCode(), req, null);
@@ -136,20 +137,20 @@ public class ACCProvider {
             if (result == null) {
                 profile.setProperty("failure", "context not available");
                 try {
-					dialog.sendEnterRequestRefused();
-				} catch (DialogSendException e) {
-					e.printStackTrace();
-				}
+                    dialog.sendEnterRequestRefused();
+                } catch (DialogSendException e) {
+                    e.printStackTrace();
+                }
                 return false;
             }
             final TupleArgument res = result.getArg(1);
             if ("failed".equals(res.getName())) {
                 profile.setProperty("failure", res.getArg(0).getName());
                 try {
-					dialog.sendEnterRequestRefused();
-				} catch (DialogSendException e) {
-					e.printStackTrace();
-				}
+                    dialog.sendEnterRequestRefused();
+                } catch (DialogSendException e) {
+                    e.printStackTrace();
+                }
                 return false;
             }
             final TupleArgument ctxId = res.getArg(0);
@@ -157,10 +158,10 @@ public class ACCProvider {
             ACCProvider.log("ACC request accepted, ACC id is < "
                     + ctxId.toString() + " >");
             try {
-				dialog.sendEnterRequestAccepted();
-			} catch (DialogSendException e) {
-				e.printStackTrace();
-			}
+                dialog.sendEnterRequestAccepted();
+            } catch (DialogSendException e) {
+                e.printStackTrace();
+            }
             final String agentRole = profile.getProperty("agent-role");
             if ("$inspector".equals(agentRole)) {
                 final AbstractACCProxyNodeSide skel = new InspectorContextSkel(
@@ -228,12 +229,12 @@ public class ACCProvider {
     public synchronized boolean shutdownContext(final int ctxId,
             final TucsonAgentId id) {
         LogicTuple req = null;
-		try {
-			req = new LogicTuple("context_shutdown", new Value(
-			        ctxId), new Value(id.toString()), new Var("CtxId"));
-		} catch (InvalidVarNameException e1) {
-			e1.printStackTrace();
-		}
+        try {
+            req = new LogicTuple("context_shutdown", new Value(ctxId),
+                    new Value(id.toString()), new Var("CtxId"));
+        } catch (InvalidVarNameException e1) {
+            e1.printStackTrace();
+        }
         LogicTuple result;
         try {
             // Operation Make
@@ -257,14 +258,14 @@ public class ACCProvider {
             e.printStackTrace();
             return false;
         }
-       // try {
-            if ("ok".equals(result.getArg(2).getName())) {
-                return true;
-            }
-            return false;
-       // } catch (final InvalidLogicTupleOperationException e) {
-         //   e.printStackTrace();
-        //    return false;
-      //  }
+        // try {
+        if ("ok".equals(result.getArg(2).getName())) {
+            return true;
+        }
+        return false;
+        // } catch (final InvalidLogicTupleOperationException e) {
+        // e.printStackTrace();
+        // return false;
+        // }
     }
 }
