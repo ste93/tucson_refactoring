@@ -17,7 +17,6 @@ public class LinkTransferMonitor {
 
     public synchronized void doTransfer(final String tuple,
             final boolean firstToSecond) {
-        System.out.println("TRANSFER");
         if (firstToSecond) {
             this.gui.transferMolecule(tuple, this.first, this.second, 1);
         } else {

@@ -52,14 +52,13 @@ public class TucsonInspector implements Executable, Inspector4GuiObserver {
         }
         // TODO Considerare la call blocking-by-link
         this.executor.execute(new Runnable() {
-
             @Override
             public void run() {
                 for (final LinkTransferMonitor linkMonitor : TucsonInspector.this.linkMonitors) {
-                    if (linkMonitor.getFirst().equals(tccSource)) {
+                    if (linkMonitor.getFirst().equals(tccSource) && linkMonitor.getSecond().equals(tccDest)) {
                         linkMonitor.doTransfer(tuple, true);
                         break;
-                    } else if (linkMonitor.getSecond().equals(tccSource)) {
+                    } else if (linkMonitor.getFirst().equals(tccDest) && linkMonitor.getSecond().equals(tccSource)) {
                         linkMonitor.doTransfer(tuple, false);
                         break;
                     }

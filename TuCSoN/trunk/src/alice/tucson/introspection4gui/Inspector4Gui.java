@@ -86,9 +86,13 @@ public class Inspector4Gui extends Inspector {
 					String tcPort = alice.util.Tools.removeApices(hostStruct.getTerm(1).toString());
 					if (arg.getArg(1) instanceof Struct) {
 						Struct termAsStruct = (Struct) arg.getArg(1);
+						System.out.println(termAsStruct);
 						if (termAsStruct.getName().equals("out")) {
 							String tuple = termAsStruct.getArg(0).toString();
-							notifyTransfer(tcName, tcHost, tcPort, tuple);
+							notifyTransfer(tcName, tcHost, tcPort, tuple, false);
+						} else if (termAsStruct.getName().equals("in")) {
+							String tuple = termAsStruct.getArg(0).toString();
+							notifyTransfer(tcName, tcHost, tcPort, tuple, true);
 						}
 					}
 					try {
@@ -126,9 +130,13 @@ public class Inspector4Gui extends Inspector {
 		}
 	}
 
-	private void notifyTransfer(final String tcName, final String tcHost, final String tcPort, final String tuple) {
+	private void notifyTransfer(final String tcName, final String tcHost, final String tcPort, final String tuple, final boolean reverseOrder) {
 		for (Inspector4GuiObserver observer : observers) {
+			if (!reverseOrder) {
 			observer.onNewTrasfer(this.context.getTid().getName(), tcName, tuple);
+			} else {
+				observer.onNewTrasfer(tcName, this.context.getTid().getName(), tuple);
+			}
 		}
 	}
 
