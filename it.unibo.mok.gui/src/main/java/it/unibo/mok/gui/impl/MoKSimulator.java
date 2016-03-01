@@ -80,7 +80,7 @@ public class MoKSimulator implements Simulator {
                 if (data != null) {
                     final boolean result = MoKSimulator.this.gui
                             .transferMolecule(data[0], data[1], data[2],
-                                    Integer.parseInt(data[3]));
+                                    Integer.parseInt(data[3]), true);
                     if (!result) {
                         JOptionPane.showMessageDialog(null, "Transfer failed");
                     }

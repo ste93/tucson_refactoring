@@ -88,9 +88,10 @@ public interface GUI {
      * @param sourceMolecule
      * @param destination
      * @param link
+     * @param addToDest
      */
     void transferAnimationCompleted(Molecule sourceMolecule, Node destination,
-            Link link);
+            Link link, boolean addToDest);
 
     /**
      * Transfer a molecule from a source to a destination node. Source and
@@ -106,6 +107,7 @@ public interface GUI {
      * @return true if transfer accepted, false otherwise
      */
     boolean transferMolecule(String moleculeId, String sourceNode,
-            String destinationNode, float concentrationToMove);
+            String destinationNode, float concentrationToMove, 
+            boolean addToDest);
 
 }

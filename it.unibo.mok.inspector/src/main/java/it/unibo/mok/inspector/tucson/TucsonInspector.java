@@ -50,7 +50,6 @@ public class TucsonInspector implements Executable, Inspector4GuiObserver {
             this.linkMonitors.add(new LinkTransferMonitor(tccSource, tccDest,
                     this.gui));
         }
-        // TODO Considerare la call blocking-by-link
         this.executor.execute(new Runnable() {
             @Override
             public void run() {

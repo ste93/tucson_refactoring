@@ -1,5 +1,7 @@
 package it.unibo.mok.gui.interfaces;
 
+import java.awt.Color;
+
 import it.unibo.mok.gui.impl.utils.Pair;
 
 public interface Molecule extends Drawable {
@@ -27,5 +29,7 @@ public interface Molecule extends Drawable {
     void simulateMove(Pair offset);
 
     void zoom(float zoomValue);
+
+	Color getBackgroundColor();
 
 }

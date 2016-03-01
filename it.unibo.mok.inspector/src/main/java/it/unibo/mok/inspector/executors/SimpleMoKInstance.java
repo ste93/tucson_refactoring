@@ -51,12 +51,12 @@ public class SimpleMoKInstance implements Executable {
                     while (!Thread.interrupted()) {
                         Thread.sleep(1000);
                         SimpleMoKInstance.this.gui.transferMolecule("paperino",
-                                "comp0", "comp1", 2);
+                                "comp0", "comp1", 2, true);
                         SimpleMoKInstance.this.gui.transferMolecule("pluto",
-                                "comp0", "comp1", 1);
+                                "comp0", "comp1", 1, true);
                         Thread.sleep(1000);
                         SimpleMoKInstance.this.gui.transferMolecule("paperino",
-                                "comp1", "comp0", 2);
+                                "comp1", "comp0", 2, true);
                     }
                 } catch (final InterruptedException e) {
                 }
@@ -71,14 +71,14 @@ public class SimpleMoKInstance implements Executable {
                     while (!Thread.interrupted()) {
                         Thread.sleep(1000);
                         SimpleMoKInstance.this.gui.transferMolecule("pippo",
-                                "comp0", "comp2", 4);
+                                "comp0", "comp2", 4, true);
                         SimpleMoKInstance.this.gui.transferMolecule("pippo",
-                                "comp0", "comp2", 3);
+                                "comp0", "comp2", 3, true);
                         Thread.sleep(1000);
                         SimpleMoKInstance.this.gui.transferMolecule("pippo",
-                                "comp2", "comp0", 4);
+                                "comp2", "comp0", 4, true);
                         SimpleMoKInstance.this.gui.transferMolecule("pippo",
-                                "comp2", "comp0", 3);
+                                "comp2", "comp0", 3, true);
                     }
                 } catch (final InterruptedException e) {
                 }

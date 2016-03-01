@@ -41,6 +41,7 @@ public class MoKGUI implements GUI {
     public static final String CONFIG_TRANSFER_POINTS_PER_SECOND = "TRANSFER_POINTS_PER_SECOND";
     public static final String CONFIG_ZOOM_MAX_SIZE = "ZOOM_MAX_SIZE";
     public static final String CONFIG_ZOOM_TICKS_TO_DOUBLE_SIZE = "ZOOM_TICKS_TO_DOUBLE_SIZE";
+    public static final String CONFIG_NODE_PIE_CHART_ZOOM_THRESHOLD = "NODE_PIE_CHART_ZOOM_THRESHOLD";
     private static final String CONFIG_FILE = "gui.config";
 
     /*
@@ -223,14 +224,16 @@ public class MoKGUI implements GUI {
 
     @Override
     public void transferAnimationCompleted(final Molecule movingMolecule,
-            final Node destination, final Link link) {
+            final Node destination, final Link link, final boolean addToDest) {
         new Thread(new Runnable() {
 
             @Override
             public void run() {
                 MoKGUI.this.panLock.acquireUninterruptibly();
                 MoKGUI.this.lock.acquireUninterruptibly();
-                // destination.addMolecule(movingMolecule);
+                if (addToDest) {
+                	destination.addMolecule(movingMolecule);
+                }
                 movingMolecule.setVisible(true);
                 MoKGUI.this.lock.release();
                 MoKGUI.this.panLock.release();
@@ -243,7 +246,7 @@ public class MoKGUI implements GUI {
     @Override
     public boolean transferMolecule(final String moleculeId,
             final String sourceNode, final String destinationNode,
-            final float concentrationToTransfer) {
+            final float concentrationToTransfer, final boolean addToDest) {
         this.panLock.acquireUninterruptibly();
         this.lock.acquireUninterruptibly();
         final Node source = this.database.getNode(sourceNode);
@@ -255,7 +258,7 @@ public class MoKGUI implements GUI {
                 final Molecule molecule = source.getMolecule(moleculeId);
                 if (molecule != null) {
                     return this.doTransfer(molecule, source, destination, link,
-                            concentrationToTransfer);
+                            concentrationToTransfer, addToDest);
                 }
             }
         }
@@ -284,7 +287,7 @@ public class MoKGUI implements GUI {
 
     private boolean doTransfer(final Molecule molecule, final Node sourceNode,
             final Node destinationNode, final Link link,
-            final float concentrationToTransfer) {
+            final float concentrationToTransfer, final boolean addToDest) {
         /* Release lock semaphores and wait for link to be usable */
         this.lock.release();
         this.panLock.release();
@@ -302,7 +305,7 @@ public class MoKGUI implements GUI {
         final Molecule movingMolecule = molecule.lazyCopy();
         movingMolecule.setConcentration(concentrationToTransfer);
         this.canvas.transferMolecule(molecule, movingMolecule, sourceNode,
-                destinationNode, link);
+                destinationNode, link, addToDest);
         /* Transfer command has been sent. Wait for transfer completed lock */
         this.lock.release();
         this.panLock.release();
@@ -347,6 +350,9 @@ public class MoKGUI implements GUI {
         this.config
                 .put(MoKGUI.CONFIG_MOLECULE_SHOW_ID_INSTEAD_OF_CONCENTRATION,
                         "true");
+        this.config
+        		.put(MoKGUI.CONFIG_NODE_PIE_CHART_ZOOM_THRESHOLD,
+                "1.5");
         try {
             final FileOutputStream output = new FileOutputStream(
                     MoKGUI.CONFIG_FILE);

@@ -27,7 +27,7 @@ public class LinkRunnable implements Runnable {
                 break;
             }
 
-            this.gui.transferMolecule(this.n + "", this.node1, this.node2, 1);
+            this.gui.transferMolecule(this.n + "", this.node1, this.node2, 1, true);
 
             try {
                 Thread.sleep(500);
@@ -35,7 +35,7 @@ public class LinkRunnable implements Runnable {
                 break;
             }
 
-            this.gui.transferMolecule(this.n + "", this.node2, this.node1, 1);
+            this.gui.transferMolecule(this.n + "", this.node2, this.node1, 1, true);
 
         }
 

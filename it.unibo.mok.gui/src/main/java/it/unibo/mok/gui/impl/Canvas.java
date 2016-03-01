@@ -312,13 +312,14 @@ public class Canvas extends JPanel implements MouseListener,
 
     public void transferMolecule(final Molecule molecule,
             final Molecule movingMolecule, final Node source,
-            final Node destination, final Link link) {
+            final Node destination, final Link link,
+            final boolean addToDest) {
         movingMolecule.injectConfig(this.config);
         movingMolecule.setOriginalCenter(source.getCenter());
         movingMolecule.setAxisCenter(this.axisOrigin);
         movingMolecule.zoom(this.currentZoomRealValue);
         this.transfers.add(new TransferAnimator(movingMolecule, source,
-                destination, this.config, link, this));
+                destination, this.config, link, this, addToDest));
     }
 
     /*
@@ -422,7 +423,8 @@ public class Canvas extends JPanel implements MouseListener,
                                             .getMovingMolecule(),
                                     Canvas.this.transfers.get(i)
                                             .getDestination(),
-                                    Canvas.this.transfers.get(i).getLink());
+                                    Canvas.this.transfers.get(i).getLink(),
+                                    Canvas.this.transfers.get(i).getAddToDest());
                             Canvas.this.transfers.remove(i);
                         }
                     }
