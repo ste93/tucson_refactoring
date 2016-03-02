@@ -23,11 +23,13 @@ public class TransferAnimator {
     private final int pointsPerFrame;
     private final Node source;
     private int step;
+	private boolean addToDest;
 
     public TransferAnimator(final Molecule movingMolecule, final Node source,
             final Node destination, final Properties config, final Link link,
-            final Canvas canvas) {
+            final Canvas canvas, final boolean addToDest) {
         this.source = source;
+        this.addToDest = addToDest;
         this.destination = destination;
         this.canvas = canvas;
         this.movingMolecule = movingMolecule;
@@ -93,5 +95,9 @@ public class TransferAnimator {
     public Molecule getMovingMolecule() {
         return this.movingMolecule;
     }
+
+	public boolean getAddToDest() {
+		return addToDest;
+	}
 
 }

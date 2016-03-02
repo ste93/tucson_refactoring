@@ -102,7 +102,7 @@ public class Molecule2D implements Molecule {
             }
             g.setPaint(this.backgroundColor);
             g.fill(this.backgroundCircle);
-            if (this.backgroundCircle.getHeight() > 15) {
+            //if (this.backgroundCircle.getHeight() > 30) {
                 g.setFont(new Font("Calibri", Font.BOLD, Molecule2D
                         .fontDimension(this.backgroundCircle.getHeight())));
                 g.setColor(this.textColor);
@@ -115,13 +115,18 @@ public class Molecule2D implements Molecule {
                 final int y = this.currentCenter.getSecond()
                         + displayedNameHeight / 2;
                 g.drawString(conc, x, y);
-            }
+            //}
         }
     }
 
     @Override
     public float getConcentration() {
         return this.concentration;
+    }
+    
+    @Override
+    public Color getBackgroundColor() {
+    	return this.backgroundColor;
     }
 
     @Override

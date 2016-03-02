@@ -6,6 +6,7 @@ import it.unibo.mok.gui.impl.utils.MathUtils;
 import it.unibo.mok.gui.impl.utils.Pair;
 import it.unibo.mok.gui.interfaces.Molecule;
 import it.unibo.mok.gui.interfaces.Node;
+
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
@@ -18,11 +19,6 @@ import java.util.List;
 import java.util.Properties;
 
 public class Node2D implements Node {
-
-    /*
-     * **************************************************
-     * Fields *************************************************
-     */
 
     private static Pair calculateTopLeftPoint(final Pair center,
             final int diameter) {
@@ -52,20 +48,9 @@ public class Node2D implements Node {
     private int moleculeSize;
     private Pair originalCenter;
     private float zoomValue;
-
-    /*
-     * **************************************************
-     * Constructor *************************************************
-     */
-
     protected final String id;
-
-    /*
-     * **************************************************
-     * Commands *************************************************
-     */
-
     protected final List<Molecule> molecules;
+	private float pieChartZoomThreshold;
 
     public Node2D(final String id) {
         this.molecules = new ArrayList<>();
@@ -104,20 +89,54 @@ public class Node2D implements Node {
     @Override
     public void draw(final Graphics2D g) {
         g.setStroke(new BasicStroke(this.borderThickness));
-        if (this.borderThickness > 0) {
-            g.setPaint(this.borderColor);
-            g.draw(this.borderCircle);
-        }
         g.setPaint(this.backgroundColor);
         g.fill(this.backgroundCircle);
-        for (int i = 0; i < this.molecules.size(); i++) {
-            if (this.molecules.get(i) != null) {
-                this.molecules.get(i).draw(g);
+        // Draw pie chart
+        if (this.zoomValue < this.pieChartZoomThreshold) {
+        	double curValue = 0.0D;
+        	int startAngle = 0;
+        	List<Molecule> pieSlices = new ArrayList<>();
+        	int total = findPieSlices(pieSlices);
+        	for (Molecule mol : pieSlices) {
+        		startAngle = (int) (curValue * 360 / total);
+        		int arcAngle = (int) (mol.getConcentration() * 360 / total);
+        		g.setColor(mol.getBackgroundColor());
+        		g.fillArc((int)backgroundCircle.getX(), (int)backgroundCircle.getY(), (int)backgroundCircle.getWidth(), (int)backgroundCircle.getHeight(), startAngle, arcAngle);
+        		curValue += mol.getConcentration();
+        	}
+        } 
+        // Draw molecules
+        else {
+            if (this.borderThickness > 0) {
+                g.setPaint(this.borderColor);
+                g.draw(this.borderCircle);
             }
+	        for (int i = 0; i < this.molecules.size(); i++) {
+	            if (this.molecules.get(i) != null) {
+	                this.molecules.get(i).draw(g);
+	            }
+	        }
         }
         this.drawId(g);
     }
 
+    private int findPieSlices(List<Molecule> list) {
+    	if (this.molecules.size() == 0) return 0;
+    	int total = 0;
+    	int totalNodeConc = 0;
+    	for (Molecule mol : this.molecules) {
+    		totalNodeConc += mol.getConcentration();
+    	}
+    	int nodeMediumConc = totalNodeConc/this.molecules.size();
+    	for (Molecule mol : this.molecules) {
+    		if (mol.getConcentration() >= nodeMediumConc) {
+    			list.add(mol);
+    			total += mol.getConcentration();
+    		}
+    	}
+    	return total;
+    }
+    
     @Override
     public boolean equals(final Object obj) {
         return obj != null && obj instanceof Node
@@ -161,6 +180,8 @@ public class Node2D implements Node {
                 .getProperty(MoKGUI.CONFIG_MOLECULE_RINGS_RADIUS));
         this.moleculeSize = Integer.parseInt(config
                 .getProperty(MoKGUI.CONFIG_MOLECULE_SIZE_FOR_GENERATION));
+        this.pieChartZoomThreshold = Float.parseFloat(config
+                .getProperty(MoKGUI.CONFIG_NODE_PIE_CHART_ZOOM_THRESHOLD));
         this.circularPointGenerator = new CircularPointGenerator(
                 this.moleculeRingRadius, this.moleculeSize);
         this.diameter = this.nodeDiameter();
