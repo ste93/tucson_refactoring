@@ -19,8 +19,10 @@ import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
@@ -45,6 +47,7 @@ public class ControlPanel extends JPanel implements MouseListener {
     private ControlPanelButton setMoleculeConcBtn;
     private final Simulator simulator;
     private JTabbedPane tabbedPane;
+	private ControlPanelButton setFilterBtn;
 
     public ControlPanel(final Simulator simulator, final Executor executor) {
         this.executor = executor;
@@ -98,6 +101,14 @@ public class ControlPanel extends JPanel implements MouseListener {
                     ControlPanel.this.simulator.setMoleculeConc();
                 } else if (e.getComponent() == ControlPanel.this.clearBtn) {
                     ControlPanel.this.simulator.clear();
+                } else if (e.getComponent() == ControlPanel.this.setFilterBtn) {
+                    new Thread(new Runnable() {
+						@Override
+						public void run() {
+							String filter = askFilter();
+							ControlPanel.this.executor.setFilter(filter);
+						}	
+                    }).start();
                 } else if (e.getComponent() == ControlPanel.this.runBtn) {
                     if (ControlPanel.this.executor
                             .execute((Executable) ControlPanel.this.executorsCombo
@@ -158,7 +169,7 @@ public class ControlPanel extends JPanel implements MouseListener {
         this.executorsCombo = new JComboBox<>();
         this.executorsCombo.setPreferredSize(new Dimension(200, 25));
         this.executorsCombo.setFocusable(false);
-        ;
+
         p.setOpaque(false);
         p.add(l1);
         p.add(this.executorsCombo);
@@ -167,8 +178,17 @@ public class ControlPanel extends JPanel implements MouseListener {
                 "<html><center>RUN</center</html>", "/icons/play3.png");
         this.runBtn.setVerticalAlignment(SwingConstants.TOP);
         this.runBtn.addMouseListener(this);
+ 
+        this.setFilterBtn = new ControlPanelButton(ControlPanel.PANEL_HEIGHT, 85,
+                "<html><center>FILTER MOLECULE</center</html>", "/icons/spinner4.png");
+        this.setFilterBtn.setVerticalAlignment(SwingConstants.TOP);
+        this.setFilterBtn.addMouseListener(this);
+        
         panel.add(this.runBtn);
         panel.add(p);
+        panel.add(this.getSeparator(ControlPanel.PANEL_HEIGHT));
+        panel.add(this.setFilterBtn);
+                
         return panel;
     }
 
@@ -266,5 +286,26 @@ public class ControlPanel extends JPanel implements MouseListener {
             e1.printStackTrace();
         }
     }
+    
+    private String askFilter() {
+        final JTextField filter = new JTextField("", 20);
+        final JLabel l1 = new JLabel("Filter:");
+        final Dimension d = new Dimension(100, 20);
+        l1.setPreferredSize(d);
+        final JPanel firstRow = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        firstRow.add(l1);
+        firstRow.add(filter);
+        final JPanel p = new JPanel(new GridLayout(1, 1));
+        p.add(firstRow);
+        final int result = JOptionPane.showConfirmDialog(null, p,
+                "Set molecule filter", JOptionPane.OK_CANCEL_OPTION,
+                JOptionPane.PLAIN_MESSAGE);
+        if (result == JOptionPane.OK_OPTION && !filter.getText().trim().equals("")) {
+        	return filter.getText();
+        }
+        return null;
+    }
+    
+
 
 }

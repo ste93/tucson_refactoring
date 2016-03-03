@@ -11,6 +11,7 @@ import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
 import alice.tucson.introspection.Inspector;
 import alice.tucson.introspection.InspectorContextEvent;
 import alice.tucson.introspection.InspectorProtocol;
+import alice.tucson.network.exceptions.DialogSendException;
 import alice.tuplecentre.api.Tuple;
 import alice.tuplecentre.core.Reaction;
 import alice.tuprolog.Struct;
@@ -25,6 +26,7 @@ public class Inspector4Gui extends Inspector {
  * **************************************************/
 
 	private final List<Inspector4GuiObserver> observers;
+	private final InspectorProtocol protocol;
 	
 /*
  * **************************************************
@@ -36,19 +38,12 @@ public class Inspector4Gui extends Inspector {
 	public Inspector4Gui(final TucsonTupleCentreId arg1) throws Exception {
 		super(new TucsonAgentId("inspector4gui_" + System.currentTimeMillis()), arg1, true);	
 		this.observers = new ArrayList<>();
-		InspectorProtocol protocol = new InspectorProtocol();
+		protocol = new InspectorProtocol();
 		protocol.setTsetObservType(InspectorProtocol.PROACTIVE_OBSERVATION);
 		protocol.setReactionsObservType(InspectorProtocol.PROACTIVE_OBSERVATION);
 		getContext().setProtocol(protocol);
 	}
 	
-/*
- * **************************************************
- * 
- * 	Callback called by Stub
- * 
- * **************************************************/
-
 	@Override
 	public synchronized void onContextEvent(final InspectorContextEvent msg) {
 		if (msg instanceof Inspector4GuiContextEvent) {
@@ -107,13 +102,6 @@ public class Inspector4Gui extends Inspector {
 		} 
 	}
 
-/*
- * **************************************************
- * 
- * 	Observer-observable pattern
- * 
- * **************************************************/
-	
 	public void addOberver(final Inspector4GuiObserver tucsonCoreObserver) {
 		this.observers.add(tucsonCoreObserver);		
 	}
@@ -145,6 +133,16 @@ public class Inspector4Gui extends Inspector {
 			observer.onNewTupleCenter(newTcId);
 		}
 	}
-		
+	
+	
+	public void setFilter(final LogicTuple filter) {
+		protocol.setTsetFilter(filter);
+		try {
+			getContext().setProtocol(protocol);
+		} catch (DialogSendException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	
 }

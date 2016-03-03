@@ -9,6 +9,7 @@ public class Executor {
     private final GUI gui;
     private boolean isExecuting = false;
     private Thread thread;
+	private String filter;
 
     public Executor(final GUI gui) {
         this.gui = gui;
@@ -19,6 +20,7 @@ public class Executor {
             this.gui.clear();
             this.executable = executable;
             executable.setGUI(this.gui);
+            executable.setFilter(filter);
             if (executable.setup()) {
                 this.thread = new Thread(executable);
                 this.thread.start();
@@ -36,5 +38,13 @@ public class Executor {
             this.executable.stop();
         }
     }
+
+	public void setFilter(final String filter) {
+		if (this.executable == null) {
+			this.filter = filter;
+		} else {
+			executable.setFilter(filter);
+		}
+	}
 
 }

@@ -8,4 +8,6 @@ public interface Executable extends Runnable {
 
     void stop();
 
+	void setFilter(String filter);
+
 }

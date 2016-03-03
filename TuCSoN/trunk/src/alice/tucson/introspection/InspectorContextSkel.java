@@ -65,7 +65,7 @@ public class InspectorContextSkel extends AbstractACCProxyNodeSide implements
     private final ACCProvider manager;
     private boolean nStep;
     /** current observation protocol */
-    private InspectorProtocol protocol;
+    protected InspectorProtocol protocol;
     private boolean shutdown = false;
     protected final TucsonTupleCentreId tcId;
 

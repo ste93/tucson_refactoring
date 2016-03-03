@@ -11,6 +11,9 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import javax.swing.JOptionPane;
+
+import alice.logictuple.LogicTuple;
+import alice.logictuple.exceptions.InvalidLogicTupleException;
 import alice.tucson.api.TucsonTupleCentreId;
 import alice.tucson.introspection4gui.Inspector4Gui;
 import alice.tucson.introspection4gui.Inspector4GuiObserver;
@@ -20,11 +23,6 @@ public class TucsonInspector implements Executable, Inspector4GuiObserver {
 
     public static final String NETWORK_FILE = "network.config";
 
-    /*
-     * **************************************************
-     * Fields *************************************************
-     */
-
     private static void alert(final String message) {
         JOptionPane.showMessageDialog(null, "<html>" + message + "</html>");
     }
@@ -33,12 +31,6 @@ public class TucsonInspector implements Executable, Inspector4GuiObserver {
     private GUI gui;
     private List<LinkTransferMonitor> linkMonitors;
     private List<TucsonTupleCentreId> tcIds;
-
-    /*
-     * **************************************************
-     * Commands called by GUI *************************************************
-     */
-
     private List<Inspector4Gui> tcInspectors;
 
     @Override
@@ -89,12 +81,6 @@ public class TucsonInspector implements Executable, Inspector4GuiObserver {
         this.gui.setMoleculeConcentration(tupleRemoved.toString(),
                 ttc.getName(), 0);
     }
-
-    /*
-     * **************************************************
-     * Tucson inspection callbacks
-     * *************************************************
-     */
 
     @Override
     public void run() {
@@ -156,11 +142,6 @@ public class TucsonInspector implements Executable, Inspector4GuiObserver {
         return this.getClass().getSimpleName();
     }
 
-    /*
-     * **************************************************
-     * Utils *************************************************
-     */
-
     private void initTupleCenterInspector(final TucsonTupleCentreId tcId) {
         try {
             final Inspector4Gui inspector4Gui = new Inspector4Gui(tcId);
@@ -174,5 +155,22 @@ public class TucsonInspector implements Executable, Inspector4GuiObserver {
                     + tcId.getPort() + "</b><br>&nbsp;");
         }
     }
+
+	@Override
+	public void setFilter(final String filter) {
+		LogicTuple t = null;   
+		try {
+			if (filter != null) {
+				t = LogicTuple.parse(filter);
+			}
+			if (tcInspectors != null) {
+				for (Inspector4Gui insp : tcInspectors) {
+					insp.setFilter(t);
+				}
+			}
+		} catch (final InvalidLogicTupleException e) {
+			e.printStackTrace();
+		}
+	}
 
 }

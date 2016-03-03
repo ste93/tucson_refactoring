@@ -112,4 +112,9 @@ public class SimpleMoKInstance implements Executable {
         return this.getClass().getSimpleName();
     }
 
+	@Override
+	public void setFilter(String filter) {
+		// TODO nothing here
+	}
+
 }

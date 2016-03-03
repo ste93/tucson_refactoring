@@ -80,7 +80,7 @@ public class Inspector4GuiContextSkel extends InspectorContextSkel {
             if (ev.getType() == InspectableEvent.TYPE_IDLESTATE) {
                     final LogicTuple[] ltSet = (LogicTuple[]) TupleCentreContainer
                             .doManagementOperation(
-                                    TucsonOperation.getTSetCode(), this.tcId, null);
+                                    TucsonOperation.getTSetCode(), this.tcId, this.protocol.getTsetFilter());
 
                     updateTuples(ltSet);     
                     fillMsg(msg);
@@ -89,7 +89,7 @@ public class Inspector4GuiContextSkel extends InspectorContextSkel {
             if (ev.getType() == InspectableEvent.TYPE_NEWSTATE) {
                 	final LogicTuple[] ltSet = (LogicTuple[]) TupleCentreContainer
                             .doManagementOperation(
-                                    TucsonOperation.getTSetCode(), this.tcId, null);
+                                    TucsonOperation.getTSetCode(), this.tcId, this.protocol.getTsetFilter());
                     updateTuples(ltSet);               
                     fillMsg(msg);
                 this.dialog.sendInspectorEvent(msg);
