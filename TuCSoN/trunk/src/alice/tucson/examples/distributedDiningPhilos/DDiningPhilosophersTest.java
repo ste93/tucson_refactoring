@@ -25,7 +25,7 @@ import alice.tuplecentre.core.AbstractTupleCentreOperation;
 public class DDiningPhilosophersTest extends AbstractTucsonAgent {
 
     private static final int DEF_PORT = 20504;
-    private static final int N_PHILOSOPHERS = 5;
+    private static final int N_PHILOSOPHERS = 10;
 
     /**
      *
