@@ -1,4 +1,4 @@
-package alice.tucson.examples.loadBalancing.uniform;
+package alice.tucson.examples.uniform.loadBalancing;
 
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;

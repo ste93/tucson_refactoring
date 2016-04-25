@@ -1,4 +1,4 @@
-package alice.tucson.examples.loadBalancing.uniform;
+package alice.tucson.examples.uniform.loadBalancing;
 
 import alice.logictuple.LogicTuple;
 import alice.logictuple.exceptions.InvalidLogicTupleException;
@@ -123,6 +123,7 @@ public class ServiceRequestor extends AbstractTucsonAgent {
                         + service.toString());
                 req = LogicTuple.parse("req(" + service.getArg(0) + ")");
                 this.acc.out(this.tid, req, null);
+                Thread.sleep(1000);
             }
             this.say("Someone killed me, bye!");
         } catch (final InvalidLogicTupleException e) {
@@ -135,6 +136,9 @@ public class ServiceRequestor extends AbstractTucsonAgent {
             this.say("ERROR: Endless timeout expired!");
         } catch (final TucsonInvalidAgentIdException e) {
             this.say("ERROR: Given ID is not a valid TuCSoN agent ID!");
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
     }
 
