@@ -24,6 +24,8 @@ public class Boot {
 
     /**
      * @param params
+     *            a Java Property object specifying name, TCP port, and IP
+     *            address of the TuCSoN tuple centre to setup
      */
     public static void boot(final Properties params) {
 

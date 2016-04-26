@@ -31,7 +31,7 @@ import alice.tucson.service.NegotiationACCProxyAgentSide;
 public final class TucsonMetaACC {
 
     private static final int DEFAULT_PORT = 20504;
-    private static final String VERSION = "TuCSoN-1.12.0.0301";
+    private static final String VERSION = "TuCSoN-1.13.0.0301-beta";
 
     // TODO: Controllo password
     /**

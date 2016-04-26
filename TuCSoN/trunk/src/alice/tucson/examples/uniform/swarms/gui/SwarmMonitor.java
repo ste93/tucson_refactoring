@@ -33,7 +33,7 @@ public class SwarmMonitor {
     private BulkSynchACC acc;
 
     /**
-     * @param c
+     * @param c the parent JComponent
      */
     public SwarmMonitor(final SwarmComponent c) {
         this.component = c;

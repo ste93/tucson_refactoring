@@ -15,9 +15,6 @@ public final class Swarm {
 
     private final static int ANTS = 10;
 
-    /**
-     * @param args
-     */
     public static void release() {
         try {
             for (int i = 0; i < ANTS; i++) {

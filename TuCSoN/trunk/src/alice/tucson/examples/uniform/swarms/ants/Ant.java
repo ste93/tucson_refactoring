@@ -34,10 +34,16 @@ public class Ant extends AbstractTucsonAgent {
 
     /**
      * @param aid
+     *            the TuCSoN agent identifier
      * @param netid
+     *            the IP address of the TuCSoN node to interact with
      * @param port
+     *            the TCP address of the TuCSoN node to interact with
      * @param tcName
+     *            the name of the tuple centre to interact with
      * @throws TucsonInvalidAgentIdException
+     *             if the given String does not represent a valid TuCSoN agent
+     *             identifier
      */
     public Ant(final String aid, final String netid, final int port,
             final String tcName) throws TucsonInvalidAgentIdException {
@@ -55,7 +61,6 @@ public class Ant extends AbstractTucsonAgent {
 
     /*
      * (non-Javadoc)
-     *
      * @see alice.tucson.api.TucsonAgent#main()
      */
     @Override
@@ -102,7 +107,8 @@ public class Ant extends AbstractTucsonAgent {
 
         }
 
-        Logger.getAnonymousLogger().log(Level.INFO, this.myName() + ") Bye bye!");
+        Logger.getAnonymousLogger().log(Level.INFO,
+                this.myName() + ") Bye bye!");
 
     }
 
@@ -243,8 +249,8 @@ public class Ant extends AbstractTucsonAgent {
                     + e.getClass().getSimpleName());
         }
         this.carryingFood = !op.isResultSuccess();
-        Logger.getAnonymousLogger()
-                .log(Level.INFO, this.myName() + ") Job done!");
+        Logger.getAnonymousLogger().log(Level.INFO,
+                this.myName() + ") Job done!");
     }
 
     private LogicTuple smellAnthill() {
@@ -271,7 +277,6 @@ public class Ant extends AbstractTucsonAgent {
 
     /*
      * (non-Javadoc)
-     *
      * @see alice.tucson.api.TucsonAgent#operationCompleted(alice.tucson.api.
      * ITucsonOperation)
      */
@@ -280,8 +285,11 @@ public class Ant extends AbstractTucsonAgent {
         // Not used atm
     }
 
-    /* (non-Javadoc)
-     * @see alice.tucson.api.AbstractTucsonAgent#operationCompleted(alice.tuplecentre.core.AbstractTupleCentreOperation)
+    /*
+     * (non-Javadoc)
+     * @see
+     * alice.tucson.api.AbstractTucsonAgent#operationCompleted(alice.tuplecentre
+     * .core.AbstractTupleCentreOperation)
      */
     @Override
     public void operationCompleted(final AbstractTupleCentreOperation arg0) {

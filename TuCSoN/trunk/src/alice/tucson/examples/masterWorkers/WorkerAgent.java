@@ -19,7 +19,7 @@ import alice.tuplecentre.core.AbstractTupleCentreOperation;
 
 /**
  * Worker thread of a master-worker architecture. Given a TuCSoN Node (hopefully
- * up & listening), it waits for submitted jobs regarding factorial computation,
+ * up and listening), it waits for submitted jobs regarding factorial computation,
  * then outputs computed results.
  *
  * @author s.mariani@unibo.it

@@ -29,7 +29,7 @@ import alice.tucson.examples.uniform.swarms.gui.GUI;
 public final class LaunchSwarmWithGUI {
 
     /**
-     * @param args
+     * @param args no arguments expected
      */
     public static void main(String[] args) {
         GUI.init();

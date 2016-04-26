@@ -105,7 +105,10 @@ public final class DicePlayer extends AbstractTucsonAgent {
 
     /**
      * @param aid
+     *            the TuCSoN agent identifier
      * @throws TucsonInvalidAgentIdException
+     *             if the given String does not represent a valid TuCSoN agent
+     *             identifier
      */
     public DicePlayer(String aid) throws TucsonInvalidAgentIdException {
         super(aid);
@@ -119,7 +122,8 @@ public final class DicePlayer extends AbstractTucsonAgent {
         this.outcomes = new HashMap<>();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
      * @see alice.tucson.api.AbstractTucsonAgent#main()
      */
     @Override
@@ -143,8 +147,8 @@ public final class DicePlayer extends AbstractTucsonAgent {
                 }
                 this.say("Rolling dice...");
                 template = new LogicTuple("face", new Var());
-                op = acc.rd(this.tcid, template, Long.MAX_VALUE);
-                // op = acc.urd(this.tcid, template, Long.MAX_VALUE);
+                // op = acc.rd(this.tcid, template, Long.MAX_VALUE);
+                op = acc.urd(this.tcid, template, Long.MAX_VALUE);
                 if (op.isResultSuccess()) {
                     face = op.getLogicTupleResult().getArg(0).intValue();
                     this.say("...they see me rollin', they hatin': " + face);
@@ -185,8 +189,12 @@ public final class DicePlayer extends AbstractTucsonAgent {
     private void printFinalStats() {
         this.say("Outcomes 'till now:");
         Integer t;
-        Integer sum = this.outcomes.entrySet().parallelStream()
-                .mapToInt(i -> i.getValue()).sum();
+        Integer sum = 0;
+        for (Integer v : this.outcomes.values()) {
+            sum += v;
+        }
+        // Integer sum = this.outcomes.entrySet().parallelStream()
+        // .mapToInt(i -> i.getValue()).sum();
         for (Integer i : this.outcomes.keySet()) {
             t = this.outcomes.get(i);
             this.say("\t Face " + i + " drawn " + t + " times (ratio: "
@@ -206,8 +214,11 @@ public final class DicePlayer extends AbstractTucsonAgent {
         }
     }
 
-    /* (non-Javadoc)
-     * @see alice.tucson.api.AbstractTucsonAgent#operationCompleted(alice.tuplecentre.core.AbstractTupleCentreOperation)
+    /*
+     * (non-Javadoc)
+     * @see
+     * alice.tucson.api.AbstractTucsonAgent#operationCompleted(alice.tuplecentre
+     * .core.AbstractTupleCentreOperation)
      */
     @Override
     public void operationCompleted(AbstractTupleCentreOperation arg0) {
@@ -216,8 +227,11 @@ public final class DicePlayer extends AbstractTucsonAgent {
          */
     }
 
-    /* (non-Javadoc)
-     * @see alice.tucson.api.AbstractTucsonAgent#operationCompleted(alice.tucson.api.ITucsonOperation)
+    /*
+     * (non-Javadoc)
+     * @see
+     * alice.tucson.api.AbstractTucsonAgent#operationCompleted(alice.tucson.
+     * api.ITucsonOperation)
      */
     @Override
     public void operationCompleted(ITucsonOperation arg0) {

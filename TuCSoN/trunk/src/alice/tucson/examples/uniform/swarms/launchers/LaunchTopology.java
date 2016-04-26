@@ -30,7 +30,7 @@ import alice.tucson.examples.uniform.swarms.utils.Topology;
 public final class LaunchTopology {
 
     /**
-     * @param args
+     * @param args no arguments expected
      */
     public static void main(String[] args) {
         Logger.getAnonymousLogger().log(Level.INFO, "Booting topology...");

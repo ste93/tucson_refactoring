@@ -16,7 +16,7 @@ public class SwarmListener implements ActionListener {
     private SwarmMonitor monitor;
 
     /**
-     * @param c
+     * @param c the parent JComponent
      */
     public SwarmListener(final SwarmComponent c) {
         this.component = c;

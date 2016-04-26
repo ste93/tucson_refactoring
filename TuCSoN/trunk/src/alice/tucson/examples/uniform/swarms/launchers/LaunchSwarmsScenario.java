@@ -17,7 +17,7 @@ import alice.tucson.examples.uniform.swarms.utils.Topology;
 public class LaunchSwarmsScenario {
 
     /**
-     * @param args
+     * @param args no arguments expected
      */
     public static void main(final String[] args) {
 

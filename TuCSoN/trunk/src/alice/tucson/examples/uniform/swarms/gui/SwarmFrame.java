@@ -17,7 +17,7 @@ public class SwarmFrame extends JFrame {
     private static final long serialVersionUID = 1L;
 
     /**
-     * @param name
+     * @param name the name of the JFrame
      */
     public SwarmFrame(final String name) {
         super(name);

@@ -21,7 +21,12 @@ public final class GUI {
          * Schedule a job for the event-dispatching thread: creating and showing
          * this application's GUI.
          */
-        javax.swing.SwingUtilities.invokeLater(() -> GUI.createAndShowGUI());
+        javax.swing.SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                GUI.createAndShowGUI();
+            }
+        });
+        // javax.swing.SwingUtilities.invokeLater(() -> GUI.createAndShowGUI());
     }
 
     private static void createAndShowGUI() {

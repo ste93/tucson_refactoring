@@ -28,7 +28,7 @@ import alice.tucson.examples.uniform.swarms.env.Environment;
 public final class LaunchEnvironment {
 
     /**
-     * @param args
+     * @param args no arguments expected
      */
     public static void main(String[] args) {
         Environment.config();

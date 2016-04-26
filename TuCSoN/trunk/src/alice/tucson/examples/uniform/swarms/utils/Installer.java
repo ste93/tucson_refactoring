@@ -14,7 +14,7 @@ public class Installer extends Thread {
     private final TucsonNodeService tns;
 
     /**
-     * @param node
+     * @param node the TuCSoN service to install
      */
     public Installer(final TucsonNodeService node) {
         super("boot-thread");
