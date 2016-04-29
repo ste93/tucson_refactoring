@@ -53,6 +53,10 @@
 			<copy todir="${classes-dir}/alice/tucson/examples/timedDiningPhilos">
 				<fileset file="${src-dir}/alice/tucson/examples/timedDiningPhilos/table.rsp" />
 			</copy>
+			
+			<copy todir="${classes-dir}/alice/tucson/examples/uniform/swarms/env">
+			                <fileset file="${src-dir}/alice/tucson/examples/uniform/swarms/env/evaporation.rsp" />
+			            </copy>
 
 			<copy todir="${classes-dir}/alice/tucson/images">
 				<fileset file="${src-dir}/alice/tucson/images/logo.jpg" />
