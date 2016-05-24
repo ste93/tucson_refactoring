@@ -15,7 +15,6 @@ package alice.respect.core.tupleset;
 import java.util.LinkedList;
 import alice.logictuple.LogicTuple;
 import alice.logictuple.TupleArgument;
-import alice.respect.api.exceptions.InvalidAccessException;
 import alice.respect.core.collection.DoubleKeyMVMap;
 
 /**
@@ -46,25 +45,15 @@ public class TupleSetSpec extends AbstractTupleSet {
         System.out.println("getTupleKey1) t = " + t);
         final TupleArgument event = t.getArg(0);
         System.out.println("getTupleKey1) event = " + event);
-        if (event.isNumber()) {
-            return event.toString();
-        } else if (event.isVar()) {
-            return "VAR";
-        } else {
-            return event.getPredicateIndicator();
-        }
+        final String predSig = event.getPredicateIndicator();
+        System.out.println("getTupleKey1) predSig = " + predSig);
+        return predSig;
     }
 
     @Override
-    public String getTupleKey2(final LogicTuple t)
-            throws InvalidAccessException {
+    public String getTupleKey2(final LogicTuple t) {
         System.out.println("getTupleKey2) t = " + t);
-        final TupleArgument event = t.getArg(0);
-        if (event.isAtomic()) {
-            throw new InvalidAccessException(
-                    "Attempt to access a non-existing second-level index item");
-        }
-        final TupleArgument eventArg = event.getArg(0);
+        final TupleArgument eventArg = t.getArg(0).getArg(0);
         System.out.println("getTupleKey2) eventArg = " + eventArg);
         if (eventArg.isNumber()) {
             return eventArg.toString();

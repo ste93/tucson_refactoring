@@ -2,7 +2,6 @@ package alice.respect.core.tupleset;
 
 import java.util.Iterator;
 import alice.logictuple.LogicTuple;
-import alice.respect.api.exceptions.InvalidAccessException;
 
 /**
  * This interface representing a Tuple Set.
@@ -16,9 +15,8 @@ public interface ITupleSet {
      *
      * @param t
      *            a {@code LogicTuple} to add.
-     * @throws InvalidAccessException
      */
-    void add(LogicTuple t) throws InvalidAccessException;
+    void add(LogicTuple t);
 
     /**
      * Begins a transaction section
@@ -86,9 +84,8 @@ public interface ITupleSet {
      *
      * @param t
      *            a {@code LogicTuple} to remove.
-     * @throws InvalidAccessException
      */
-    void remove(LogicTuple t) throws InvalidAccessException;
+    void remove(LogicTuple t);
 
     /**
      * Returns the number of elements in this tuple set.
