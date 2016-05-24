@@ -172,7 +172,6 @@ public abstract class AbstractTupleSet implements ITupleSet {
 
     @Override
     public LogicTuple readMatchingTuple(final LogicTuple templ) {
-        System.out.println("readMatchingTuple) templ = " + templ);
         if (templ == null) {
             return null;
         }
