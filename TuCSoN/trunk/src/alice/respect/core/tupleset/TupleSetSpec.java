@@ -42,13 +42,19 @@ public class TupleSetSpec extends AbstractTupleSet {
 
     @Override
     public String getTupleKey1(final LogicTuple t) {
+        System.out.println("getTupleKey1) t = " + t);
         final TupleArgument event = t.getArg(0);
-        return event.getPredicateIndicator();
+        System.out.println("getTupleKey1) event = " + event);
+        final String predSig = event.getPredicateIndicator();
+        System.out.println("getTupleKey1) predSig = " + predSig);
+        return predSig;
     }
 
     @Override
     public String getTupleKey2(final LogicTuple t) {
+        System.out.println("getTupleKey2) t = " + t);
         final TupleArgument eventArg = t.getArg(0).getArg(0);
+        System.out.println("getTupleKey2) eventArg = " + eventArg);
         if (eventArg.isNumber()) {
             return eventArg.toString();
         } else if (eventArg.isVar()) {
