@@ -33,6 +33,7 @@ import alice.respect.api.ILinkContext;
 import alice.respect.api.IRespectTC;
 import alice.respect.api.RespectSpecification;
 import alice.respect.api.TupleCentreId;
+import alice.respect.api.exceptions.InvalidAccessException;
 import alice.respect.api.exceptions.OperationNotPossibleException;
 import alice.respect.api.geolocation.PlatformUtils;
 import alice.respect.api.geolocation.service.AbstractGeolocationService;
@@ -276,7 +277,12 @@ public class RespectVMContext extends
         LogicTuple toAdd;
         while (!"[]".equals(tuple.toString())) {
             toAdd = new LogicTuple(tuple.getArg(0));
-            this.tSet.add(toAdd);
+            try {
+                this.tSet.add(toAdd);
+            } catch (InvalidAccessException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
             if (this.isPersistent) {
                 this.writePersistencyUpdate(toAdd, ModType.ADD_TUPLE);
             }
@@ -302,7 +308,12 @@ public class RespectVMContext extends
             tuple = t;
         }
         // FIXME LogicTuple > Tuple in all Cicora's API
-        this.tSpecSet.add((LogicTuple) tuple);
+        try {
+            this.tSpecSet.add((LogicTuple) tuple);
+        } catch (InvalidAccessException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         if (this.isPersistent) {
             this.writePersistencyUpdate((LogicTuple) tuple, ModType.ADD_SPEC);
         }
@@ -323,7 +334,12 @@ public class RespectVMContext extends
 
     @Override
     public void addTuple(final Tuple t, final boolean update) {
-        this.tSet.add((LogicTuple) t);
+        try {
+            this.tSet.add((LogicTuple) t);
+        } catch (InvalidAccessException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         if (this.isPersistent && update) {
             this.writePersistencyUpdate((LogicTuple) t, ModType.ADD_TUPLE);
         }
@@ -1709,7 +1725,12 @@ public class RespectVMContext extends
                 while (true) {
                     final alice.tuprolog.Term solution = info.getSolution();
                     st = new LogicTuple(solution);
-                    this.tSpecSet.add(st);
+                    try {
+                        this.tSpecSet.add(st);
+                    } catch (InvalidAccessException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
                     if (this.isPersistent) {
                         this.writePersistencyUpdate(st, ModType.ADD_SPEC);
                     }

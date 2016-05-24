@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import alice.logictuple.LogicTuple;
+import alice.respect.api.exceptions.InvalidAccessException;
 import alice.respect.core.collection.DoubleKeyMVMap;
 import alice.respect.core.collection.MVMap;
 import alice.tuprolog.Var;
@@ -81,7 +82,7 @@ public abstract class AbstractTupleSet implements ITupleSet {
     protected DoubleKeyMVMap<String, String, LogicTuple> tuples;
 
     @Override
-    public void add(final LogicTuple t) {
+    public void add(final LogicTuple t) throws InvalidAccessException {
         final LTEntry e = this.createEntry(t);
         this.tuples.put(e.getKey1(), e.getKey2(), e.getValue());
         if (this.transaction) {
@@ -131,29 +132,42 @@ public abstract class AbstractTupleSet implements ITupleSet {
             return null;
         }
         Iterator<LogicTuple> l;
-        final String key2 = this.getTupleKey2(templ);
-        if ("VAR".equals(key2)) {
-            l = this.tuples.get(this.getTupleKey1(templ)).iterator();
-        } else {
-            final MVMap<String, LogicTuple> map = this.tuples.get(this
-                    .getTupleKey1(templ));
-            if (map.get("VAR").size() > 0) {
-                l = map.iterator();
+        String key2;
+        try {
+            key2 = this.getTupleKey2(templ);
+            if ("VAR".equals(key2)) {
+                l = this.tuples.get(this.getTupleKey1(templ)).iterator();
             } else {
-                l = map.get(key2).iterator();
-            }
-        }
-        while (l.hasNext()) {
-            final LogicTuple tu = l.next();
-            if (templ.match(tu)) {
-                l.remove();
-                if (this.transaction) {
-                    this.tRemoved.add(this.createEntry(tu));
+                final MVMap<String, LogicTuple> map = this.tuples.get(this
+                        .getTupleKey1(templ));
+                if (map.get("VAR").size() > 0) {
+                    l = map.iterator();
+                } else {
+                    l = map.get(key2).iterator();
                 }
-                final AbstractMap<Var, Var> v = new LinkedHashMap<Var, Var>();
-                return new LogicTuple(tu.toTerm().copyGoal(v, 0));
             }
+            while (l.hasNext()) {
+                final LogicTuple tu = l.next();
+                if (templ.match(tu)) {
+                    l.remove();
+                    if (this.transaction) {
+                        try {
+                            this.tRemoved.add(this.createEntry(tu));
+                        } catch (InvalidAccessException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+                    }
+                    final AbstractMap<Var, Var> v = new LinkedHashMap<Var, Var>();
+                    return new LogicTuple(tu.toTerm().copyGoal(v, 0));
+                }
+            }
+            return null;
+        } catch (InvalidAccessException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
         }
+        // TODO temp
         return null;
     }
 
@@ -177,30 +191,56 @@ public abstract class AbstractTupleSet implements ITupleSet {
             return null;
         }
         Iterator<LogicTuple> l;
-        final String key2 = this.getTupleKey2(templ);
-        if ("VAR".equals(key2)) {
-            l = this.tuples.get(this.getTupleKey1(templ)).iterator();
-        } else {
-            final MVMap<String, LogicTuple> map = this.tuples.get(this
-                    .getTupleKey1(templ));
-            if (map.get("VAR").size() > 0) {
-                l = map.iterator();
+        String key;
+        try {
+            key = this.getTupleKey2(templ);
+            if ("VAR".equals(key)) {
+                l = this.tuples.get(this.getTupleKey1(templ)).iterator();
             } else {
-                l = map.get(key2).iterator();
+                final MVMap<String, LogicTuple> map = this.tuples.get(this
+                        .getTupleKey1(templ));
+                if (map.get("VAR").size() > 0) {
+                    l = map.iterator();
+                } else {
+                    l = map.get(key).iterator();
+                }
             }
-        }
-        while (l.hasNext()) {
-            final LogicTuple tu = l.next();
-            if (templ.match(tu)) {
-                final AbstractMap<Var, Var> v = new LinkedHashMap<Var, Var>();
-                return new LogicTuple(tu.toTerm().copyGoal(v, 0));
+            while (l.hasNext()) {
+                final LogicTuple tu = l.next();
+                if (templ.match(tu)) {
+                    final AbstractMap<Var, Var> v = new LinkedHashMap<Var, Var>();
+                    return new LogicTuple(tu.toTerm().copyGoal(v, 0));
+                }
             }
+            return null;
+        } catch (final InvalidAccessException e) {
+            System.out
+                    .println("[AbstractTupleSet]: WARNING! " + e.getMessage());
+            key = this.getTupleKey1(templ);
+            if ("VAR".equals(key)) {
+                l = this.tuples.get(key).iterator();
+            } else {
+                final MVMap<String, LogicTuple> map = this.tuples.get(key);
+                if (map.get("VAR").size() > 0) {
+                    l = map.iterator();
+                } else {
+                    // TODO What to do here?? :/
+                    l = map.get(templ.toString()).iterator();
+                }
+            }
+            while (l.hasNext()) {
+                final LogicTuple tu = l.next();
+                if (templ.match(tu)) {
+                    final AbstractMap<Var, Var> v = new LinkedHashMap<Var, Var>();
+                    return new LogicTuple(tu.toTerm().copyGoal(v, 0));
+                }
+            }
+            return null;
         }
-        return null;
     }
 
     @Override
-    public void remove(final LogicTuple t) {
+    public void remove(final LogicTuple t) throws InvalidAccessException {
         final LTEntry e = this.createEntry(t);
         final boolean res = this.tuples.remove(e.getKey1(), e.getKey2(),
                 e.getValue());
@@ -224,7 +264,8 @@ public abstract class AbstractTupleSet implements ITupleSet {
         return this.tuples.toString();
     }
 
-    private LTEntry createEntry(final LogicTuple t) {
+    private LTEntry createEntry(final LogicTuple t)
+            throws InvalidAccessException {
         return new LTEntry(this.getTupleKey1(t), this.getTupleKey2(t), t);
     }
 
@@ -241,6 +282,8 @@ public abstract class AbstractTupleSet implements ITupleSet {
      * @param t
      *            the LogicTuple whose second key should be retrieved
      * @return the String representation of the retrieved key
+     * @throws InvalidAccessException
      */
-    protected abstract String getTupleKey2(LogicTuple t);
+    protected abstract String getTupleKey2(LogicTuple t)
+            throws InvalidAccessException;
 }
