@@ -78,7 +78,10 @@ public class OrdinarySynchInterface extends RootInterface implements
         }
         final IRespectOperation op = this.getCore().in(ev);
         op.waitForOperationCompletion();
-        return this.unify(t, op.getLogicTupleResult());
+        if (op.getLogicTupleResult() != null) {
+            return this.unify(t, op.getLogicTupleResult());
+        }
+        return null;
     }
 
     @Override

@@ -107,7 +107,7 @@ public final class PersistencyTester {
             }
             acc.exit();
             // give node time to close persistency file
-            Thread.sleep(5000);
+            Thread.sleep(3000);
             tns.shutdown();
         } catch (final TucsonInvalidTupleCentreIdException e) {
             // TODO Auto-generated catch block

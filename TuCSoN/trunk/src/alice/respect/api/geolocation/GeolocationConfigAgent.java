@@ -70,16 +70,16 @@ public class GeolocationConfigAgent extends Thread {
     public void run() {
         try {
             while (true) {
-                LogicTuple cmd;
+                Object cmd;
                 final RespectOperation opRequested = RespectOperation.make(
                         TucsonOperation.inCode(), new LogicTuple("cmd",
                                 new Var("X")), null);
                 final InputEvent ev = new InputEvent(this.nodeManAid,
                         opRequested, this.config, System.currentTimeMillis(),
                         null);
-                cmd = (LogicTuple) TupleCentreContainer.doBlockingOperation(ev);
+                cmd = TupleCentreContainer.doBlockingOperation(ev);
                 if (cmd != null) {
-                    this.execCmd(cmd.getArg(0));
+                    this.execCmd(((LogicTuple)cmd).getArg(0));
                 } else {
                     throw new InterruptedException();
                 }
