@@ -89,7 +89,7 @@ public class TucsonNodeService {
     private static final int MAX_UNBOUND_PORT = 64000;
     private static final Map<Integer, TucsonNodeService> NODES = new HashMap<Integer, TucsonNodeService>();
 
-    private static final String PERSISTENCY_PATH = "./persistent/";
+    private static final String PERSISTENCY_PATH = "persistent/";
 
     public static final synchronized TucsonNodeService getNode(final int port) {
         return TucsonNodeService.NODES.get(port);
