@@ -609,7 +609,7 @@ public final class TupleCentreContainer {
     }
 
     /**
-     * 
+     * CALLED BY UNUSED METHOD ATM
      */
     // why are these methods not implemented yet?
     public static synchronized void enablePersistence() {
@@ -619,7 +619,7 @@ public final class TupleCentreContainer {
     }
 
     /**
-     * 
+     * UNUSED ATM
      */
     public static void loadPersistentInformation() {
         /*
