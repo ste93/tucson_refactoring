@@ -929,7 +929,7 @@ public class RespectOperation extends AbstractTupleCentreOperation implements
             }
             LogicTuple lt = null;
             lt = new LogicTuple(opName, new TupleArgument(this
-                    .getLogicTupleArgument().getArg(0).toTerm()),
+                    .getLogicTupleArgument().toTerm()),
                     new TupleArgument(new Struct(tl)));
             return lt;
         } else if (this.isInAll()) {
@@ -942,7 +942,7 @@ public class RespectOperation extends AbstractTupleCentreOperation implements
             }
             LogicTuple lt = null;
             lt = new LogicTuple(opName, new TupleArgument(this
-                    .getLogicTupleArgument().getArg(0).toTerm()),
+                    .getLogicTupleArgument().toTerm()),
                     new TupleArgument(new Struct(tl)));
             return lt;
         } else if (this.isRdAll()) {
@@ -955,7 +955,7 @@ public class RespectOperation extends AbstractTupleCentreOperation implements
             }
             LogicTuple lt = null;
             lt = new LogicTuple(opName, new TupleArgument(this
-                    .getLogicTupleArgument().getArg(0).toTerm()),
+                    .getLogicTupleArgument().toTerm()),
                     new TupleArgument(new Struct(tl)));
             return lt;
         } else if (this.isNoAll()) {
@@ -968,7 +968,7 @@ public class RespectOperation extends AbstractTupleCentreOperation implements
             }
             LogicTuple lt = null;
             lt = new LogicTuple(opName, new TupleArgument(this
-                    .getLogicTupleArgument().getArg(0).toTerm()),
+                    .getLogicTupleArgument().toTerm()),
                     new TupleArgument(new Struct(tl)));
             return lt;
         } else if (this.isUrd()) {
