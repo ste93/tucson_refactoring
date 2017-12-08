@@ -52,9 +52,13 @@ public class JavaIDE2
     private ToolBar toolBar;
     private TheoryTabbedPane tabbedPane;
     private static ConsoleManager consoleManager;
+    private final String host;
+    private final int port;
 
-    public JavaIDE2() {
+    public JavaIDE2(String host, int port) {
         super("tuProlog "+Prolog.getVersion()+" IDE for TuCSoN");
+        this.host = host;
+        this.port = port;
         initComponents();
     }
 
@@ -260,9 +264,13 @@ public class JavaIDE2
     		agentName = "agent_" + System.getProperty("user.name");
     	}
     	
+    	final String portString = "" + port;
+    	
     	try {
 	    	for (String line = r.readLine(); line != null; line = r.readLine()) {
 	    		line = line.replaceAll("\\$agentName", agentName);
+	    		line = line.replaceAll("\\$nodeAddress", "'" + host + "'");
+	    		line = line.replaceAll("\\$nodePort", portString);
 	    		sb.append(line).append("\n");
 	    	}
     	} catch (IOException e) {

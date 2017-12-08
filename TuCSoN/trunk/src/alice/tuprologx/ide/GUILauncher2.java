@@ -63,8 +63,8 @@ public class GUILauncher2 {
     /**
      * Launch a GUI suitable for the Java2 platform.
      */
-    private void launchJavaGUI() {
-        JavaIDE2 ide = new JavaIDE2();
+    private void launchJavaGUI(String host, int port) {
+        JavaIDE2 ide = new JavaIDE2(host, port);
         //ide.pack();
         ide.setVisible(true);
     }
@@ -72,7 +72,7 @@ public class GUILauncher2 {
     /**
      * Launch a GUI suitable for the .NET platform (Java 1.1 platform).
      */
-    private void launchDotNetGUI() {
+    private void launchDotNetGUI(String host, int port) {
         System.exit(1);
     }
 
@@ -89,12 +89,12 @@ public class GUILauncher2 {
         System.out.println("We are on a J2SE " + versionNumber + "." + subVersionNumber + ".x plaftorm");
         if (versionNumber == 1)
             if (subVersionNumber == 1)
-                launcher.launchDotNetGUI();
+                launcher.launchDotNetGUI("localhost", 20504);
             else {
-                launcher.launchJavaGUI();
+                launcher.launchJavaGUI("localhost", 20504);
             }
         else
-            launcher.launchJavaGUI();
+            launcher.launchJavaGUI("localhost", 20504);
     }
 
 } 

@@ -23,6 +23,7 @@ import alice.tuplecentre.api.exceptions.OperationTimeOutException;
 import alice.tuprolog.Library;
 import alice.tuprolog.Struct;
 import alice.tuprolog.Term;
+import alice.tuprolog.Var;
 
 /**
  * TuCSoN library for tuProlog agents. By loading this library tuProlog agents
@@ -76,7 +77,7 @@ public class Tucson2PLibrary extends Library {
      * @see alice.tucson.api.EnhancedACC EnhancedACC
      * @see alice.tucson.api.TucsonAgentId TucsonAgentId
      */
-    public boolean acquire_acc_1(final Term id)
+    public boolean acquire_acc_3(final Term id, final Term nodeHost, final Term portTerm)
             throws TucsonInvalidAgentIdException {
         TucsonAgentId agentId;
         if (this.context != null) {
@@ -88,7 +89,29 @@ public class Tucson2PLibrary extends Library {
             }
         }
         agentId = new TucsonAgentId(id.getTerm().toString());
-        this.context = TucsonMetaACC.getContext(agentId);
+        
+        if (!nodeHost.isGround() || !portTerm.isGround()) {
+        	return false;
+        }
+        
+        final String netId = nodeHost.getTerm().toString();
+        final String portString = portTerm.getTerm().toString();
+        final int port;
+        
+		try {
+			port = Integer.parseInt(portString);
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+			return false;
+		}
+        this.context = TucsonMetaACC.getContext(agentId, netId, port);
+        try {
+			this.context.enterACC();
+		} catch (UnreachableNodeException | TucsonOperationNotPossibleException
+				| TucsonInvalidTupleCentreIdException e) {
+			e.printStackTrace();
+			return false;
+		}
         return true;
     }
 
@@ -194,6 +217,7 @@ public class Tucson2PLibrary extends Library {
                 + ":- op(550, xfx, '@'). \n"
                 + ":- op(549, xfx, ':'). \n"
                 + ":- op(548, xfx, '.'). \n"
+                + "acquire_acc(Name) :- acquire_acc(Name, localhost, 20504). \n"
                 + "spawn(T) :- spawn(T, default@localhost:20504). \n"
                 + "out(T) :- out(T, default@localhost:20504). \n"
                 + "in(T) :- in(T, default@localhost:20504). \n"
