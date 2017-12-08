@@ -18,6 +18,9 @@ import alice.tucson.api.EnhancedACC;
 import alice.tucson.api.TucsonAgentId;
 import alice.tucson.api.TucsonMetaACC;
 import alice.tucson.api.exceptions.TucsonInvalidAgentIdException;
+import alice.tucson.api.exceptions.TucsonInvalidTupleCentreIdException;
+import alice.tucson.api.exceptions.TucsonOperationNotPossibleException;
+import alice.tucson.api.exceptions.UnreachableNodeException;
 
 /**
  * Command Line Interpreter. Can be booted with a TuCSoN agent ID or using a
@@ -77,7 +80,8 @@ public final class CommandLineInterpreter {
             try {
                 context = TucsonMetaACC.getContext(new TucsonAgentId(aid),
                         node, port);
-            } catch (final TucsonInvalidAgentIdException e) {
+                context.enterACC();
+            } catch (final TucsonInvalidAgentIdException | UnreachableNodeException | TucsonOperationNotPossibleException | TucsonInvalidTupleCentreIdException e) {
                 e.printStackTrace();
                 System.exit(-1);
             }
