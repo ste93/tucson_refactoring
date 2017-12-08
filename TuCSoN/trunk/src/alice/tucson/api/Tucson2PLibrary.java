@@ -59,6 +59,9 @@ public class Tucson2PLibrary extends Library {
     }
 
     private EnhancedACC context;
+    private String aid;
+    private String netid;
+    private int port;
 
     /**
      * To be enabled to interact with any TuCSoN system, an ACC must be acquired
@@ -112,6 +115,12 @@ public class Tucson2PLibrary extends Library {
 			e.printStackTrace();
 			return false;
 		}
+        
+        this.aid = agentId.getAgentName();
+        this.netid = netId;
+        this.netid = this.netid.substring(1,  this.netid.length() - 1);
+        this.port = port;
+        
         return true;
     }
 
@@ -219,34 +228,34 @@ public class Tucson2PLibrary extends Library {
                 + ":- op(548, xfx, '.'). \n"
                 + "acquire_acc(Name) :- acquire_acc(Name, localhost, 20504). \n"
                 + "spawn(T) :- spawn(T, default@localhost:20504). \n"
-                + "out(T) :- out(T, default@localhost:20504). \n"
-                + "in(T) :- in(T, default@localhost:20504). \n"
-                + "inp(T) :- inp(T, default@localhost:20504). \n"
-                + "rd(T) :- rd(T, default@localhost:20504). \n"
-                + "rdp(T) :- rdp(T, default@localhost:20504). \n"
-                + "no(T) :- no(T, default@localhost:20504). \n"
-                + "nop(T) :- nop(T, default@localhost:20504). \n"
-                + "get(T) :- get(T, default@localhost:20504). \n"
-                + "set(T) :- set(T, default@localhost:20504). \n"
-                + "uin(T) :- uin(T, default@localhost:20504). \n"
-                + "uinp(T) :- uinp(T, default@localhost:20504). \n"
-                + "urd(T) :- urd(T, default@localhost:20504). \n"
-                + "urdp(T) :- urdp(T, default@localhost:20504). \n"
-                + "uno(T) :- uno(T, default@localhost:20504). \n"
-                + "unop(T) :- unop(T, default@localhost:20504). \n"
-                + "out_all(L) :- out_all(L, default@localhost:20504). \n"
-                + "in_all(T,L) :- in_all(T, L, default@localhost:20504). \n"
-                + "rd_all(T,L) :- rd_all(T, L, default@localhost:20504). \n"
-                + "no_all(T,L) :- no_all(T, L, default@localhost:20504). \n"
-                + "out_s(E,G,R) :- out_s(E,G,R, default@localhost:20504). \n"
-                + "in_s(E,G,R) :- in_s(E,G,R, default@localhost:20504). \n"
-                + "inp_s(E,G,R) :- inp_s(E,G,R, default@localhost:20504). \n"
-                + "rd_s(E,G,R) :- rd_s(E,G,R, default@localhost:20504). \n"
-                + "rdp_s(E,G,R) :- rdp_s(E,G,R, default@localhost:20504). \n"
-                + "no_s(E,G,R) :- no_s(E,G,R, default@localhost:20504). \n"
-                + "nop_s(E,G,R) :- nop_s(E,G,R, default@localhost:20504). \n"
-                + "get_s(L) :- get_s(L, default@localhost:20504). \n"
-                + "set_s(L) :- set_s(L, default@localhost:20504). \n"
+                + "out(T) :- acc(_, N, P), out(T, default@N:P). \n"
+                + "in(T) :- acc(_, N, P), in(T, default@N:P). \n"
+                + "inp(T) :- acc(_, N, P), inp(T, default@N:P). \n"
+                + "rd(T) :- acc(_, N, P), rd(T, default@N:P). \n"
+                + "rdp(T) :- acc(_, N, P), rdp(T, default@N:P). \n"
+                + "no(T) :- acc(_, N, P), no(T, default@N:P). \n"
+                + "nop(T) :- acc(_, N, P), nop(T, default@N:P). \n"
+                + "get(T) :- acc(_, N, P), get(T, default@N:P). \n"
+                + "set(T) :- acc(_, N, P), set(T, default@N:P). \n"
+                + "uin(T) :- acc(_, N, P), uin(T, default@N:P). \n"
+                + "uinp(T) :- acc(_, N, P), uinp(T, default@N:P). \n"
+                + "urd(T) :- acc(_, N, P), urd(T, default@N:P). \n"
+                + "urdp(T) :- acc(_, N, P), urdp(T, default@N:P). \n"
+                + "uno(T) :- acc(_, N, P), uno(T, default@N:P). \n"
+                + "unop(T) :- acc(_, N, P), unop(T, default@N:P). \n"
+                + "out_all(L) :- acc(_, N, P), out_all(L, default@N:P). \n"
+                + "in_all(T,L) :- acc(_, N, P), in_all(T, L, default@N:P). \n"
+                + "rd_all(T,L) :- acc(_, N, P), rd_all(T, L, default@N:P). \n"
+                + "no_all(T,L) :- acc(_, N, P), no_all(T, L, default@N:P). \n"
+                + "out_s(E,G,R) :- acc(_, N, P), out_s(E,G,R, default@N:P). \n"
+                + "in_s(E,G,R) :- acc(_, N, P), in_s(E,G,R, default@N:P). \n"
+                + "inp_s(E,G,R) :- acc(_, N, P), inp_s(E,G,R, default@N:P). \n"
+                + "rd_s(E,G,R) :- acc(_, N, P), rd_s(E,G,R, default@N:P). \n"
+                + "rdp_s(E,G,R) :- acc(_, N, P), rdp_s(E,G,R, default@N:P). \n"
+                + "no_s(E,G,R) :- acc(_, N, P), no_s(E,G,R, default@N:P). \n"
+                + "nop_s(E,G,R) :- acc(_, N, P), nop_s(E,G,R, default@N:P). \n"
+                + "get_s(L) :- acc(_, N, P), get_s(L, default@N:P). \n"
+                + "set_s(L) :- acc(_, N, P), set_s(L, default@N:P). \n"
                 + "TC@Netid:Port ? spawn(T) :- !, spawn(T, TC@Netid:Port). \n"
                 + "TC@Netid:Port ? out(T) :- !, out(T, TC@Netid:Port). \n"
                 + "TC@Netid:Port ? in(T) :- !, in(T, TC@Netid:Port). \n"
@@ -1104,8 +1113,36 @@ public class Tucson2PLibrary extends Library {
      */
     public boolean release_acc_0() throws TucsonOperationNotPossibleException {
         this.context.exit();
+        this.context = null;
+        this.aid = null;
+        this.netid = null;
+        this.port = 0;
         return true;
     }
+    
+    public boolean acc_3(Term aid, Term netid, Term port) throws TucsonOperationNotPossibleException {
+
+		if (this.aid != null) {
+			this.unify(aid, new Struct(this.aid));
+		} else {
+			return false;
+		}
+		
+		if (this.netid != null) {
+			this.unify(netid, new Struct(this.netid));
+		} else {
+			return false;
+		}
+		
+		if (this.port > 0) {
+			this.unify(port, new alice.tuprolog.Int(this.port));
+		} else {
+			return false;
+		}
+    	
+        return true;
+    }
+
 
     /**
      * <code>set</code> TuCSoN primitive.
