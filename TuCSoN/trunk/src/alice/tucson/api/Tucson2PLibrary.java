@@ -118,7 +118,8 @@ public class Tucson2PLibrary extends Library {
         
         this.aid = agentId.getAgentName();
         this.netid = netId;
-        this.netid = this.netid.substring(1,  this.netid.length() - 1);
+        if (this.netid.charAt(0) == '\'' && this.netid.charAt(this.netid.length() - 1) == '\'')
+        	this.netid = this.netid.substring(1,  this.netid.length() - 1);
         this.port = port;
         
         return true;
