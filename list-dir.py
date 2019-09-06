@@ -17,8 +17,8 @@ def get_list_of_files(dir_name):
         full_path = os.path.join(dir_name, entry)
         if os.path.isdir(full_path):
             if get_list_of_files(full_path):
-                dot.node(dir_name, dir_name, color='red', style='filled', fillcolor='purple')
-                dot.node(full_path, full_path, color='red', style='filled', fillcolor='purple')
+                dot.node(dir_name, dir_name, color='red', style='filled', fillcolor='yellow')
+                dot.node(full_path, full_path, color='red', style='filled', fillcolor='yellow')
                 dot.edge(dir_name, full_path)
         else:
             if "java" in full_path:
