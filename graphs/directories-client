@@ -1,8 +1,0 @@
-digraph {
-	".\\tucson\\client\\src\\main\\java\\alice\\tuplecentre\\tucson" [label=".\\tucson\\client\\src\\main\\java\\alice\\tuplecentre\\tucson" color=red fillcolor=purple style=filled]
-	".\\tucson\\client\\src\\main\\java\\alice\\tuplecentre\\tucson\\api" [label=".\\tucson\\client\\src\\main\\java\\alice\\tuplecentre\\tucson\\api" color=red fillcolor=purple style=filled]
-	".\\tucson\\client\\src\\main\\java\\alice\\tuplecentre\\tucson" -> ".\\tucson\\client\\src\\main\\java\\alice\\tuplecentre\\tucson\\api"
-	".\\tucson\\client\\src\\main\\java\\alice\\tuplecentre\\tucson" [label=".\\tucson\\client\\src\\main\\java\\alice\\tuplecentre\\tucson" color=red fillcolor=purple style=filled]
-	".\\tucson\\client\\src\\main\\java\\alice\\tuplecentre\\tucson\\asynchSupport" [label=".\\tucson\\client\\src\\main\\java\\alice\\tuplecentre\\tucson\\asynchSupport" color=red fillcolor=purple style=filled]
-	".\\tucson\\client\\src\\main\\java\\alice\\tuplecentre\\tucson" -> ".\\tucson\\client\\src\\main\\java\\alice\\tuplecentre\\tucson\\asynchSupport"
-}
