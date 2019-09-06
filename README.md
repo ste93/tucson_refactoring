@@ -7,3 +7,4 @@ There are 3 python programs:
 	- inner_dependencies.py that makes a graph with the dependencies of the classes inside the same package
 	- outer_dependencies.py that makes a graph with the dependencies of the classes outside the package
 	
+	for the outer dependencies graph the color red means that the dependency is outside the package but in another package inside the project. 
