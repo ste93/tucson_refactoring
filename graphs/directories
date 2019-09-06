@@ -1,0 +1,465 @@
+digraph {
+	".\\tucson" [label=".\\tucson" color=red fillcolor=purple style=filled]
+	".\\tucson\\.gradle\\5.4.1\\javaCompile" [label=".\\tucson\\.gradle\\5.4.1\\javaCompile" color=red fillcolor=purple style=filled]
+	".\\tucson\\.gradle\\5.4.1" -> ".\\tucson\\.gradle\\5.4.1\\javaCompile"
+	".\\tucson\\build\\classes\\java" [label=".\\tucson\\build\\classes\\java" color=red fillcolor=purple style=filled]
+	".\\tucson\\build\\classes" -> ".\\tucson\\build\\classes\\java"
+	".\\tucson\\build\\classes\\java\\test" [label=".\\tucson\\build\\classes\\java\\test" color=red fillcolor=purple style=filled]
+	".\\tucson\\build\\classes\\java" -> ".\\tucson\\build\\classes\\java\\test"
+	".\\tucson\\build\\classes\\java\\test\\asynchAPI" [label=".\\tucson\\build\\classes\\java\\test\\asynchAPI" color=red fillcolor=purple style=filled]
+	".\\tucson\\build\\classes\\java\\test" -> ".\\tucson\\build\\classes\\java\\test\\asynchAPI"
+	".\\tucson\\build\\classes\\java\\test\\diningPhilos" [label=".\\tucson\\build\\classes\\java\\test\\diningPhilos" color=red fillcolor=purple style=filled]
+	".\\tucson\\build\\classes\\java\\test" -> ".\\tucson\\build\\classes\\java\\test\\diningPhilos"
+	".\\tucson\\build\\classes\\java\\test\\distributedDiningPhilos" [label=".\\tucson\\build\\classes\\java\\test\\distributedDiningPhilos" color=red fillcolor=purple style=filled]
+	".\\tucson\\build\\classes\\java\\test" -> ".\\tucson\\build\\classes\\java\\test\\distributedDiningPhilos"
+	".\\tucson\\build\\classes\\java\\test\\helloWorld" [label=".\\tucson\\build\\classes\\java\\test\\helloWorld" color=red fillcolor=purple style=filled]
+	".\\tucson\\build\\classes\\java\\test" -> ".\\tucson\\build\\classes\\java\\test\\helloWorld"
+	".\\tucson\\build\\classes\\java\\test\\masterWorkers" [label=".\\tucson\\build\\classes\\java\\test\\masterWorkers" color=red fillcolor=purple style=filled]
+	".\\tucson\\build\\classes\\java\\test" -> ".\\tucson\\build\\classes\\java\\test\\masterWorkers"
+	".\\tucson\\build\\classes\\java\\test\\masterWorkers\\bulk" [label=".\\tucson\\build\\classes\\java\\test\\masterWorkers\\bulk" color=red fillcolor=purple style=filled]
+	".\\tucson\\build\\classes\\java\\test\\masterWorkers" -> ".\\tucson\\build\\classes\\java\\test\\masterWorkers\\bulk"
+	".\\tucson\\build\\classes\\java\\test\\messagePassing" [label=".\\tucson\\build\\classes\\java\\test\\messagePassing" color=red fillcolor=purple style=filled]
+	".\\tucson\\build\\classes\\java\\test" -> ".\\tucson\\build\\classes\\java\\test\\messagePassing"
+	".\\tucson\\build\\classes\\java\\test\\persistency" [label=".\\tucson\\build\\classes\\java\\test\\persistency" color=red fillcolor=purple style=filled]
+	".\\tucson\\build\\classes\\java\\test" -> ".\\tucson\\build\\classes\\java\\test\\persistency"
+	".\\tucson\\build\\classes\\java\\test\\rbac" [label=".\\tucson\\build\\classes\\java\\test\\rbac" color=red fillcolor=purple style=filled]
+	".\\tucson\\build\\classes\\java\\test" -> ".\\tucson\\build\\classes\\java\\test\\rbac"
+	".\\tucson\\build\\classes\\java\\test\\respect" [label=".\\tucson\\build\\classes\\java\\test\\respect" color=red fillcolor=purple style=filled]
+	".\\tucson\\build\\classes\\java\\test" -> ".\\tucson\\build\\classes\\java\\test\\respect"
+	".\\tucson\\build\\classes\\java\\test\\respect\\bagOfTask" [label=".\\tucson\\build\\classes\\java\\test\\respect\\bagOfTask" color=red fillcolor=purple style=filled]
+	".\\tucson\\build\\classes\\java\\test\\respect" -> ".\\tucson\\build\\classes\\java\\test\\respect\\bagOfTask"
+	".\\tucson\\build\\classes\\java\\test\\rpc" [label=".\\tucson\\build\\classes\\java\\test\\rpc" color=red fillcolor=purple style=filled]
+	".\\tucson\\build\\classes\\java\\test" -> ".\\tucson\\build\\classes\\java\\test\\rpc"
+	".\\tucson\\build\\classes\\java\\test\\situatedness" [label=".\\tucson\\build\\classes\\java\\test\\situatedness" color=red fillcolor=purple style=filled]
+	".\\tucson\\build\\classes\\java\\test" -> ".\\tucson\\build\\classes\\java\\test\\situatedness"
+	".\\tucson\\build\\classes\\java\\test\\spawnedWorkers" [label=".\\tucson\\build\\classes\\java\\test\\spawnedWorkers" color=red fillcolor=purple style=filled]
+	".\\tucson\\build\\classes\\java\\test" -> ".\\tucson\\build\\classes\\java\\test\\spawnedWorkers"
+	".\\tucson\\build\\classes\\java\\test\\timedDiningPhilos" [label=".\\tucson\\build\\classes\\java\\test\\timedDiningPhilos" color=red fillcolor=purple style=filled]
+	".\\tucson\\build\\classes\\java\\test" -> ".\\tucson\\build\\classes\\java\\test\\timedDiningPhilos"
+	".\\tucson\\build\\classes\\java\\test\\uniform" [label=".\\tucson\\build\\classes\\java\\test\\uniform" color=red fillcolor=purple style=filled]
+	".\\tucson\\build\\classes\\java\\test" -> ".\\tucson\\build\\classes\\java\\test\\uniform"
+	".\\tucson\\build\\classes\\java\\test\\uniform\\dice" [label=".\\tucson\\build\\classes\\java\\test\\uniform\\dice" color=red fillcolor=purple style=filled]
+	".\\tucson\\build\\classes\\java\\test\\uniform" -> ".\\tucson\\build\\classes\\java\\test\\uniform\\dice"
+	".\\tucson\\build\\classes\\java\\test\\uniform\\loadBalancing" [label=".\\tucson\\build\\classes\\java\\test\\uniform\\loadBalancing" color=red fillcolor=purple style=filled]
+	".\\tucson\\build\\classes\\java\\test\\uniform" -> ".\\tucson\\build\\classes\\java\\test\\uniform\\loadBalancing"
+	".\\tucson\\build\\classes\\java\\test\\uniform\\swarms" [label=".\\tucson\\build\\classes\\java\\test\\uniform\\swarms" color=red fillcolor=purple style=filled]
+	".\\tucson\\build\\classes\\java\\test\\uniform" -> ".\\tucson\\build\\classes\\java\\test\\uniform\\swarms"
+	".\\tucson\\build\\classes\\java\\test\\uniform\\swarms\\ants" [label=".\\tucson\\build\\classes\\java\\test\\uniform\\swarms\\ants" color=red fillcolor=purple style=filled]
+	".\\tucson\\build\\classes\\java\\test\\uniform\\swarms" -> ".\\tucson\\build\\classes\\java\\test\\uniform\\swarms\\ants"
+	".\\tucson\\build\\classes\\java\\test\\uniform\\swarms\\env" [label=".\\tucson\\build\\classes\\java\\test\\uniform\\swarms\\env" color=red fillcolor=purple style=filled]
+	".\\tucson\\build\\classes\\java\\test\\uniform\\swarms" -> ".\\tucson\\build\\classes\\java\\test\\uniform\\swarms\\env"
+	".\\tucson\\build\\classes\\java\\test\\uniform\\swarms\\gui" [label=".\\tucson\\build\\classes\\java\\test\\uniform\\swarms\\gui" color=red fillcolor=purple style=filled]
+	".\\tucson\\build\\classes\\java\\test\\uniform\\swarms" -> ".\\tucson\\build\\classes\\java\\test\\uniform\\swarms\\gui"
+	".\\tucson\\build\\classes\\java\\test\\uniform\\swarms\\launchers" [label=".\\tucson\\build\\classes\\java\\test\\uniform\\swarms\\launchers" color=red fillcolor=purple style=filled]
+	".\\tucson\\build\\classes\\java\\test\\uniform\\swarms" -> ".\\tucson\\build\\classes\\java\\test\\uniform\\swarms\\launchers"
+	".\\tucson\\build\\classes\\java\\test\\uniform\\swarms\\utils" [label=".\\tucson\\build\\classes\\java\\test\\uniform\\swarms\\utils" color=red fillcolor=purple style=filled]
+	".\\tucson\\build\\classes\\java\\test\\uniform\\swarms" -> ".\\tucson\\build\\classes\\java\\test\\uniform\\swarms\\utils"
+	".\\tucson\\build\\generated\\sources\\annotationProcessor\\java" [label=".\\tucson\\build\\generated\\sources\\annotationProcessor\\java" color=red fillcolor=purple style=filled]
+	".\\tucson\\build\\generated\\sources\\annotationProcessor" -> ".\\tucson\\build\\generated\\sources\\annotationProcessor\\java"
+	".\\tucson\\build\\generated\\sources\\annotationProcessor\\java\\test" [label=".\\tucson\\build\\generated\\sources\\annotationProcessor\\java\\test" color=red fillcolor=purple style=filled]
+	".\\tucson\\build\\generated\\sources\\annotationProcessor\\java" -> ".\\tucson\\build\\generated\\sources\\annotationProcessor\\java\\test"
+	".\\tucson\\cli\\build\\classes\\java" [label=".\\tucson\\cli\\build\\classes\\java" color=red fillcolor=purple style=filled]
+	".\\tucson\\cli\\build\\classes" -> ".\\tucson\\cli\\build\\classes\\java"
+	".\\tucson\\cli\\build\\classes\\java\\main" [label=".\\tucson\\cli\\build\\classes\\java\\main" color=red fillcolor=purple style=filled]
+	".\\tucson\\cli\\build\\classes\\java" -> ".\\tucson\\cli\\build\\classes\\java\\main"
+	".\\tucson\\cli\\build\\classes\\java\\main\\alice" [label=".\\tucson\\cli\\build\\classes\\java\\main\\alice" color=red fillcolor=purple style=filled]
+	".\\tucson\\cli\\build\\classes\\java\\main" -> ".\\tucson\\cli\\build\\classes\\java\\main\\alice"
+	".\\tucson\\cli\\build\\classes\\java\\main\\alice\\tuplecentre" [label=".\\tucson\\cli\\build\\classes\\java\\main\\alice\\tuplecentre" color=red fillcolor=purple style=filled]
+	".\\tucson\\cli\\build\\classes\\java\\main\\alice" -> ".\\tucson\\cli\\build\\classes\\java\\main\\alice\\tuplecentre"
+	".\\tucson\\cli\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson" [label=".\\tucson\\cli\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson" color=red fillcolor=purple style=filled]
+	".\\tucson\\cli\\build\\classes\\java\\main\\alice\\tuplecentre" -> ".\\tucson\\cli\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson"
+	".\\tucson\\cli\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\parsing" [label=".\\tucson\\cli\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\parsing" color=red fillcolor=purple style=filled]
+	".\\tucson\\cli\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson" -> ".\\tucson\\cli\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\parsing"
+	".\\tucson\\cli\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\service" [label=".\\tucson\\cli\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\service" color=red fillcolor=purple style=filled]
+	".\\tucson\\cli\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson" -> ".\\tucson\\cli\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\service"
+	".\\tucson\\cli\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\service\\tools" [label=".\\tucson\\cli\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\service\\tools" color=red fillcolor=purple style=filled]
+	".\\tucson\\cli\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\service" -> ".\\tucson\\cli\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\service\\tools"
+	".\\tucson\\cli\\build\\generated\\sources\\annotationProcessor\\java" [label=".\\tucson\\cli\\build\\generated\\sources\\annotationProcessor\\java" color=red fillcolor=purple style=filled]
+	".\\tucson\\cli\\build\\generated\\sources\\annotationProcessor" -> ".\\tucson\\cli\\build\\generated\\sources\\annotationProcessor\\java"
+	".\\tucson\\cli\\build\\generated\\sources\\annotationProcessor\\java\\main" [label=".\\tucson\\cli\\build\\generated\\sources\\annotationProcessor\\java\\main" color=red fillcolor=purple style=filled]
+	".\\tucson\\cli\\build\\generated\\sources\\annotationProcessor\\java" -> ".\\tucson\\cli\\build\\generated\\sources\\annotationProcessor\\java\\main"
+	".\\tucson\\cli\\src\\main\\java" [label=".\\tucson\\cli\\src\\main\\java" color=red fillcolor=purple style=filled]
+	".\\tucson\\cli\\src\\main" -> ".\\tucson\\cli\\src\\main\\java"
+	".\\tucson\\cli\\src\\main\\java\\alice" [label=".\\tucson\\cli\\src\\main\\java\\alice" color=red fillcolor=purple style=filled]
+	".\\tucson\\cli\\src\\main\\java" -> ".\\tucson\\cli\\src\\main\\java\\alice"
+	".\\tucson\\cli\\src\\main\\java\\alice\\tuplecentre" [label=".\\tucson\\cli\\src\\main\\java\\alice\\tuplecentre" color=red fillcolor=purple style=filled]
+	".\\tucson\\cli\\src\\main\\java\\alice" -> ".\\tucson\\cli\\src\\main\\java\\alice\\tuplecentre"
+	".\\tucson\\cli\\src\\main\\java\\alice\\tuplecentre\\tucson" [label=".\\tucson\\cli\\src\\main\\java\\alice\\tuplecentre\\tucson" color=red fillcolor=purple style=filled]
+	".\\tucson\\cli\\src\\main\\java\\alice\\tuplecentre" -> ".\\tucson\\cli\\src\\main\\java\\alice\\tuplecentre\\tucson"
+	".\\tucson\\cli\\src\\main\\java\\alice\\tuplecentre\\tucson\\parsing" [label=".\\tucson\\cli\\src\\main\\java\\alice\\tuplecentre\\tucson\\parsing" color=red fillcolor=purple style=filled]
+	".\\tucson\\cli\\src\\main\\java\\alice\\tuplecentre\\tucson" -> ".\\tucson\\cli\\src\\main\\java\\alice\\tuplecentre\\tucson\\parsing"
+	".\\tucson\\cli\\src\\main\\java\\alice\\tuplecentre\\tucson\\service" [label=".\\tucson\\cli\\src\\main\\java\\alice\\tuplecentre\\tucson\\service" color=red fillcolor=purple style=filled]
+	".\\tucson\\cli\\src\\main\\java\\alice\\tuplecentre\\tucson" -> ".\\tucson\\cli\\src\\main\\java\\alice\\tuplecentre\\tucson\\service"
+	".\\tucson\\cli\\src\\main\\java\\alice\\tuplecentre\\tucson\\service\\tools" [label=".\\tucson\\cli\\src\\main\\java\\alice\\tuplecentre\\tucson\\service\\tools" color=red fillcolor=purple style=filled]
+	".\\tucson\\cli\\src\\main\\java\\alice\\tuplecentre\\tucson\\service" -> ".\\tucson\\cli\\src\\main\\java\\alice\\tuplecentre\\tucson\\service\\tools"
+	".\\tucson\\client\\build\\classes\\java" [label=".\\tucson\\client\\build\\classes\\java" color=red fillcolor=purple style=filled]
+	".\\tucson\\client\\build\\classes" -> ".\\tucson\\client\\build\\classes\\java"
+	".\\tucson\\client\\build\\classes\\java\\main" [label=".\\tucson\\client\\build\\classes\\java\\main" color=red fillcolor=purple style=filled]
+	".\\tucson\\client\\build\\classes\\java" -> ".\\tucson\\client\\build\\classes\\java\\main"
+	".\\tucson\\client\\build\\classes\\java\\main\\alice" [label=".\\tucson\\client\\build\\classes\\java\\main\\alice" color=red fillcolor=purple style=filled]
+	".\\tucson\\client\\build\\classes\\java\\main" -> ".\\tucson\\client\\build\\classes\\java\\main\\alice"
+	".\\tucson\\client\\build\\classes\\java\\main\\alice\\tuplecentre" [label=".\\tucson\\client\\build\\classes\\java\\main\\alice\\tuplecentre" color=red fillcolor=purple style=filled]
+	".\\tucson\\client\\build\\classes\\java\\main\\alice" -> ".\\tucson\\client\\build\\classes\\java\\main\\alice\\tuplecentre"
+	".\\tucson\\client\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson" [label=".\\tucson\\client\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson" color=red fillcolor=purple style=filled]
+	".\\tucson\\client\\build\\classes\\java\\main\\alice\\tuplecentre" -> ".\\tucson\\client\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson"
+	".\\tucson\\client\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\api" [label=".\\tucson\\client\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\api" color=red fillcolor=purple style=filled]
+	".\\tucson\\client\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson" -> ".\\tucson\\client\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\api"
+	".\\tucson\\client\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\asynchSupport" [label=".\\tucson\\client\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\asynchSupport" color=red fillcolor=purple style=filled]
+	".\\tucson\\client\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson" -> ".\\tucson\\client\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\asynchSupport"
+	".\\tucson\\client\\build\\generated\\sources\\annotationProcessor\\java" [label=".\\tucson\\client\\build\\generated\\sources\\annotationProcessor\\java" color=red fillcolor=purple style=filled]
+	".\\tucson\\client\\build\\generated\\sources\\annotationProcessor" -> ".\\tucson\\client\\build\\generated\\sources\\annotationProcessor\\java"
+	".\\tucson\\client\\build\\generated\\sources\\annotationProcessor\\java\\main" [label=".\\tucson\\client\\build\\generated\\sources\\annotationProcessor\\java\\main" color=red fillcolor=purple style=filled]
+	".\\tucson\\client\\build\\generated\\sources\\annotationProcessor\\java" -> ".\\tucson\\client\\build\\generated\\sources\\annotationProcessor\\java\\main"
+	".\\tucson\\client\\src\\main\\java" [label=".\\tucson\\client\\src\\main\\java" color=red fillcolor=purple style=filled]
+	".\\tucson\\client\\src\\main" -> ".\\tucson\\client\\src\\main\\java"
+	".\\tucson\\client\\src\\main\\java\\alice" [label=".\\tucson\\client\\src\\main\\java\\alice" color=red fillcolor=purple style=filled]
+	".\\tucson\\client\\src\\main\\java" -> ".\\tucson\\client\\src\\main\\java\\alice"
+	".\\tucson\\client\\src\\main\\java\\alice\\tuplecentre" [label=".\\tucson\\client\\src\\main\\java\\alice\\tuplecentre" color=red fillcolor=purple style=filled]
+	".\\tucson\\client\\src\\main\\java\\alice" -> ".\\tucson\\client\\src\\main\\java\\alice\\tuplecentre"
+	".\\tucson\\client\\src\\main\\java\\alice\\tuplecentre\\tucson" [label=".\\tucson\\client\\src\\main\\java\\alice\\tuplecentre\\tucson" color=red fillcolor=purple style=filled]
+	".\\tucson\\client\\src\\main\\java\\alice\\tuplecentre" -> ".\\tucson\\client\\src\\main\\java\\alice\\tuplecentre\\tucson"
+	".\\tucson\\client\\src\\main\\java\\alice\\tuplecentre\\tucson\\api" [label=".\\tucson\\client\\src\\main\\java\\alice\\tuplecentre\\tucson\\api" color=red fillcolor=purple style=filled]
+	".\\tucson\\client\\src\\main\\java\\alice\\tuplecentre\\tucson" -> ".\\tucson\\client\\src\\main\\java\\alice\\tuplecentre\\tucson\\api"
+	".\\tucson\\client\\src\\main\\java\\alice\\tuplecentre\\tucson\\asynchSupport" [label=".\\tucson\\client\\src\\main\\java\\alice\\tuplecentre\\tucson\\asynchSupport" color=red fillcolor=purple style=filled]
+	".\\tucson\\client\\src\\main\\java\\alice\\tuplecentre\\tucson" -> ".\\tucson\\client\\src\\main\\java\\alice\\tuplecentre\\tucson\\asynchSupport"
+	".\\tucson\\core\\build\\classes\\java" [label=".\\tucson\\core\\build\\classes\\java" color=red fillcolor=purple style=filled]
+	".\\tucson\\core\\build\\classes" -> ".\\tucson\\core\\build\\classes\\java"
+	".\\tucson\\core\\build\\classes\\java\\main" [label=".\\tucson\\core\\build\\classes\\java\\main" color=red fillcolor=purple style=filled]
+	".\\tucson\\core\\build\\classes\\java" -> ".\\tucson\\core\\build\\classes\\java\\main"
+	".\\tucson\\core\\build\\classes\\java\\main\\alice" [label=".\\tucson\\core\\build\\classes\\java\\main\\alice" color=red fillcolor=purple style=filled]
+	".\\tucson\\core\\build\\classes\\java\\main" -> ".\\tucson\\core\\build\\classes\\java\\main\\alice"
+	".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuple" [label=".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuple" color=red fillcolor=purple style=filled]
+	".\\tucson\\core\\build\\classes\\java\\main\\alice" -> ".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuple"
+	".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuple\\java" [label=".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuple\\java" color=red fillcolor=purple style=filled]
+	".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuple" -> ".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuple\\java"
+	".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuple\\java\\api" [label=".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuple\\java\\api" color=red fillcolor=purple style=filled]
+	".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuple\\java" -> ".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuple\\java\\api"
+	".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuple\\java\\exceptions" [label=".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuple\\java\\exceptions" color=red fillcolor=purple style=filled]
+	".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuple\\java" -> ".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuple\\java\\exceptions"
+	".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuple\\java\\impl" [label=".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuple\\java\\impl" color=red fillcolor=purple style=filled]
+	".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuple\\java" -> ".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuple\\java\\impl"
+	".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuple\\logic" [label=".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuple\\logic" color=red fillcolor=purple style=filled]
+	".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuple" -> ".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuple\\logic"
+	".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuple\\logic\\exceptions" [label=".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuple\\logic\\exceptions" color=red fillcolor=purple style=filled]
+	".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuple\\logic" -> ".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuple\\logic\\exceptions"
+	".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre" [label=".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre" color=red fillcolor=purple style=filled]
+	".\\tucson\\core\\build\\classes\\java\\main\\alice" -> ".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre"
+	".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\api" [label=".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\api" color=red fillcolor=purple style=filled]
+	".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre" -> ".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\api"
+	".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\api\\exceptions" [label=".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\api\\exceptions" color=red fillcolor=purple style=filled]
+	".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\api" -> ".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\api\\exceptions"
+	".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\core" [label=".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\core" color=red fillcolor=purple style=filled]
+	".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre" -> ".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\core"
+	".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\respect" [label=".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\respect" color=red fillcolor=purple style=filled]
+	".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre" -> ".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\respect"
+	".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\respect\\api" [label=".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\respect\\api" color=red fillcolor=purple style=filled]
+	".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\respect" -> ".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\respect\\api"
+	".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\respect\\api\\exceptions" [label=".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\respect\\api\\exceptions" color=red fillcolor=purple style=filled]
+	".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\respect\\api" -> ".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\respect\\api\\exceptions"
+	".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\respect\\api\\geolocation" [label=".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\respect\\api\\geolocation" color=red fillcolor=purple style=filled]
+	".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\respect\\api" -> ".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\respect\\api\\geolocation"
+	".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\respect\\api\\geolocation\\service" [label=".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\respect\\api\\geolocation\\service" color=red fillcolor=purple style=filled]
+	".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\respect\\api\\geolocation" -> ".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\respect\\api\\geolocation\\service"
+	".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\respect\\api\\place" [label=".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\respect\\api\\place" color=red fillcolor=purple style=filled]
+	".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\respect\\api" -> ".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\respect\\api\\place"
+	".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\respect\\core" [label=".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\respect\\core" color=red fillcolor=purple style=filled]
+	".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\respect" -> ".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\respect\\core"
+	".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\respect\\core\\collection" [label=".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\respect\\core\\collection" color=red fillcolor=purple style=filled]
+	".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\respect\\core" -> ".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\respect\\core\\collection"
+	".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\respect\\core\\tupleset" [label=".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\respect\\core\\tupleset" color=red fillcolor=purple style=filled]
+	".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\respect\\core" -> ".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\respect\\core\\tupleset"
+	".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\respect\\situatedness" [label=".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\respect\\situatedness" color=red fillcolor=purple style=filled]
+	".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\respect" -> ".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\respect\\situatedness"
+	".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson" [label=".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson" color=red fillcolor=purple style=filled]
+	".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre" -> ".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson"
+	".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\api" [label=".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\api" color=red fillcolor=purple style=filled]
+	".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson" -> ".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\api"
+	".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\api\\acc" [label=".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\api\\acc" color=red fillcolor=purple style=filled]
+	".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\api" -> ".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\api\\acc"
+	".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\api\\exceptions" [label=".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\api\\exceptions" color=red fillcolor=purple style=filled]
+	".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\api" -> ".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\api\\exceptions"
+	".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\introspection" [label=".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\introspection" color=red fillcolor=purple style=filled]
+	".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson" -> ".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\introspection"
+	".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\network" [label=".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\network" color=red fillcolor=purple style=filled]
+	".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson" -> ".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\network"
+	".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\network\\exceptions" [label=".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\network\\exceptions" color=red fillcolor=purple style=filled]
+	".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\network" -> ".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\network\\exceptions"
+	".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\network\\messages" [label=".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\network\\messages" color=red fillcolor=purple style=filled]
+	".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\network" -> ".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\network\\messages"
+	".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\network\\messages\\events" [label=".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\network\\messages\\events" color=red fillcolor=purple style=filled]
+	".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\network\\messages" -> ".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\network\\messages\\events"
+	".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\network\\messages\\introspection" [label=".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\network\\messages\\introspection" color=red fillcolor=purple style=filled]
+	".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\network\\messages" -> ".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\network\\messages\\introspection"
+	".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\rbac" [label=".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\rbac" color=red fillcolor=purple style=filled]
+	".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson" -> ".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\rbac"
+	".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\service" [label=".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\service" color=red fillcolor=purple style=filled]
+	".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson" -> ".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\service"
+	".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\service\\tools" [label=".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\service\\tools" color=red fillcolor=purple style=filled]
+	".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\service" -> ".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\service\\tools"
+	".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\utilities" [label=".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\utilities" color=red fillcolor=purple style=filled]
+	".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson" -> ".\\tucson\\core\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\utilities"
+	".\\tucson\\core\\build\\generated\\sources\\annotationProcessor\\java" [label=".\\tucson\\core\\build\\generated\\sources\\annotationProcessor\\java" color=red fillcolor=purple style=filled]
+	".\\tucson\\core\\build\\generated\\sources\\annotationProcessor" -> ".\\tucson\\core\\build\\generated\\sources\\annotationProcessor\\java"
+	".\\tucson\\core\\build\\generated\\sources\\annotationProcessor\\java\\main" [label=".\\tucson\\core\\build\\generated\\sources\\annotationProcessor\\java\\main" color=red fillcolor=purple style=filled]
+	".\\tucson\\core\\build\\generated\\sources\\annotationProcessor\\java" -> ".\\tucson\\core\\build\\generated\\sources\\annotationProcessor\\java\\main"
+	".\\tucson\\core\\src\\main\\java" [label=".\\tucson\\core\\src\\main\\java" color=red fillcolor=purple style=filled]
+	".\\tucson\\core\\src\\main" -> ".\\tucson\\core\\src\\main\\java"
+	".\\tucson\\core\\src\\main\\java\\alice" [label=".\\tucson\\core\\src\\main\\java\\alice" color=red fillcolor=purple style=filled]
+	".\\tucson\\core\\src\\main\\java" -> ".\\tucson\\core\\src\\main\\java\\alice"
+	".\\tucson\\core\\src\\main\\java\\alice\\tuple" [label=".\\tucson\\core\\src\\main\\java\\alice\\tuple" color=red fillcolor=purple style=filled]
+	".\\tucson\\core\\src\\main\\java\\alice" -> ".\\tucson\\core\\src\\main\\java\\alice\\tuple"
+	".\\tucson\\core\\src\\main\\java\\alice\\tuple\\java" [label=".\\tucson\\core\\src\\main\\java\\alice\\tuple\\java" color=red fillcolor=purple style=filled]
+	".\\tucson\\core\\src\\main\\java\\alice\\tuple" -> ".\\tucson\\core\\src\\main\\java\\alice\\tuple\\java"
+	".\\tucson\\core\\src\\main\\java\\alice\\tuple\\java\\api" [label=".\\tucson\\core\\src\\main\\java\\alice\\tuple\\java\\api" color=red fillcolor=purple style=filled]
+	".\\tucson\\core\\src\\main\\java\\alice\\tuple\\java" -> ".\\tucson\\core\\src\\main\\java\\alice\\tuple\\java\\api"
+	".\\tucson\\core\\src\\main\\java\\alice\\tuple\\java\\exceptions" [label=".\\tucson\\core\\src\\main\\java\\alice\\tuple\\java\\exceptions" color=red fillcolor=purple style=filled]
+	".\\tucson\\core\\src\\main\\java\\alice\\tuple\\java" -> ".\\tucson\\core\\src\\main\\java\\alice\\tuple\\java\\exceptions"
+	".\\tucson\\core\\src\\main\\java\\alice\\tuple\\java\\impl" [label=".\\tucson\\core\\src\\main\\java\\alice\\tuple\\java\\impl" color=red fillcolor=purple style=filled]
+	".\\tucson\\core\\src\\main\\java\\alice\\tuple\\java" -> ".\\tucson\\core\\src\\main\\java\\alice\\tuple\\java\\impl"
+	".\\tucson\\core\\src\\main\\java\\alice\\tuple\\logic" [label=".\\tucson\\core\\src\\main\\java\\alice\\tuple\\logic" color=red fillcolor=purple style=filled]
+	".\\tucson\\core\\src\\main\\java\\alice\\tuple" -> ".\\tucson\\core\\src\\main\\java\\alice\\tuple\\logic"
+	".\\tucson\\core\\src\\main\\java\\alice\\tuple\\logic\\exceptions" [label=".\\tucson\\core\\src\\main\\java\\alice\\tuple\\logic\\exceptions" color=red fillcolor=purple style=filled]
+	".\\tucson\\core\\src\\main\\java\\alice\\tuple\\logic" -> ".\\tucson\\core\\src\\main\\java\\alice\\tuple\\logic\\exceptions"
+	".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre" [label=".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre" color=red fillcolor=purple style=filled]
+	".\\tucson\\core\\src\\main\\java\\alice" -> ".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre"
+	".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\api" [label=".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\api" color=red fillcolor=purple style=filled]
+	".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre" -> ".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\api"
+	".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\api\\exceptions" [label=".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\api\\exceptions" color=red fillcolor=purple style=filled]
+	".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\api" -> ".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\api\\exceptions"
+	".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\core" [label=".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\core" color=red fillcolor=purple style=filled]
+	".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre" -> ".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\core"
+	".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\respect" [label=".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\respect" color=red fillcolor=purple style=filled]
+	".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre" -> ".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\respect"
+	".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\respect\\api" [label=".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\respect\\api" color=red fillcolor=purple style=filled]
+	".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\respect" -> ".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\respect\\api"
+	".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\respect\\api\\exceptions" [label=".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\respect\\api\\exceptions" color=red fillcolor=purple style=filled]
+	".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\respect\\api" -> ".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\respect\\api\\exceptions"
+	".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\respect\\api\\geolocation" [label=".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\respect\\api\\geolocation" color=red fillcolor=purple style=filled]
+	".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\respect\\api" -> ".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\respect\\api\\geolocation"
+	".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\respect\\api\\geolocation\\service" [label=".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\respect\\api\\geolocation\\service" color=red fillcolor=purple style=filled]
+	".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\respect\\api\\geolocation" -> ".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\respect\\api\\geolocation\\service"
+	".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\respect\\api\\place" [label=".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\respect\\api\\place" color=red fillcolor=purple style=filled]
+	".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\respect\\api" -> ".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\respect\\api\\place"
+	".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\respect\\core" [label=".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\respect\\core" color=red fillcolor=purple style=filled]
+	".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\respect" -> ".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\respect\\core"
+	".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\respect\\core\\collection" [label=".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\respect\\core\\collection" color=red fillcolor=purple style=filled]
+	".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\respect\\core" -> ".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\respect\\core\\collection"
+	".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\respect\\core\\tupleset" [label=".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\respect\\core\\tupleset" color=red fillcolor=purple style=filled]
+	".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\respect\\core" -> ".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\respect\\core\\tupleset"
+	".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\respect\\situatedness" [label=".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\respect\\situatedness" color=red fillcolor=purple style=filled]
+	".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\respect" -> ".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\respect\\situatedness"
+	".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\tucson" [label=".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\tucson" color=red fillcolor=purple style=filled]
+	".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre" -> ".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\tucson"
+	".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\tucson\\api" [label=".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\tucson\\api" color=red fillcolor=purple style=filled]
+	".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\tucson" -> ".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\tucson\\api"
+	".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\tucson\\api\\acc" [label=".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\tucson\\api\\acc" color=red fillcolor=purple style=filled]
+	".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\tucson\\api" -> ".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\tucson\\api\\acc"
+	".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\tucson\\api\\exceptions" [label=".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\tucson\\api\\exceptions" color=red fillcolor=purple style=filled]
+	".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\tucson\\api" -> ".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\tucson\\api\\exceptions"
+	".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\tucson\\introspection" [label=".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\tucson\\introspection" color=red fillcolor=purple style=filled]
+	".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\tucson" -> ".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\tucson\\introspection"
+	".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\tucson\\network" [label=".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\tucson\\network" color=red fillcolor=purple style=filled]
+	".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\tucson" -> ".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\tucson\\network"
+	".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\tucson\\network\\exceptions" [label=".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\tucson\\network\\exceptions" color=red fillcolor=purple style=filled]
+	".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\tucson\\network" -> ".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\tucson\\network\\exceptions"
+	".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\tucson\\network\\messages" [label=".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\tucson\\network\\messages" color=red fillcolor=purple style=filled]
+	".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\tucson\\network" -> ".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\tucson\\network\\messages"
+	".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\tucson\\network\\messages\\events" [label=".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\tucson\\network\\messages\\events" color=red fillcolor=purple style=filled]
+	".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\tucson\\network\\messages" -> ".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\tucson\\network\\messages\\events"
+	".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\tucson\\network\\messages\\introspection" [label=".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\tucson\\network\\messages\\introspection" color=red fillcolor=purple style=filled]
+	".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\tucson\\network\\messages" -> ".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\tucson\\network\\messages\\introspection"
+	".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\tucson\\rbac" [label=".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\tucson\\rbac" color=red fillcolor=purple style=filled]
+	".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\tucson" -> ".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\tucson\\rbac"
+	".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\tucson\\service" [label=".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\tucson\\service" color=red fillcolor=purple style=filled]
+	".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\tucson" -> ".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\tucson\\service"
+	".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\tucson\\service\\tools" [label=".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\tucson\\service\\tools" color=red fillcolor=purple style=filled]
+	".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\tucson\\service" -> ".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\tucson\\service\\tools"
+	".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\tucson\\utilities" [label=".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\tucson\\utilities" color=red fillcolor=purple style=filled]
+	".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\tucson" -> ".\\tucson\\core\\src\\main\\java\\alice\\tuplecentre\\tucson\\utilities"
+	".\\tucson\\inspector\\build\\classes\\java" [label=".\\tucson\\inspector\\build\\classes\\java" color=red fillcolor=purple style=filled]
+	".\\tucson\\inspector\\build\\classes" -> ".\\tucson\\inspector\\build\\classes\\java"
+	".\\tucson\\inspector\\build\\classes\\java\\main" [label=".\\tucson\\inspector\\build\\classes\\java\\main" color=red fillcolor=purple style=filled]
+	".\\tucson\\inspector\\build\\classes\\java" -> ".\\tucson\\inspector\\build\\classes\\java\\main"
+	".\\tucson\\inspector\\build\\classes\\java\\main\\alice" [label=".\\tucson\\inspector\\build\\classes\\java\\main\\alice" color=red fillcolor=purple style=filled]
+	".\\tucson\\inspector\\build\\classes\\java\\main" -> ".\\tucson\\inspector\\build\\classes\\java\\main\\alice"
+	".\\tucson\\inspector\\build\\classes\\java\\main\\alice\\tuplecentre" [label=".\\tucson\\inspector\\build\\classes\\java\\main\\alice\\tuplecentre" color=red fillcolor=purple style=filled]
+	".\\tucson\\inspector\\build\\classes\\java\\main\\alice" -> ".\\tucson\\inspector\\build\\classes\\java\\main\\alice\\tuplecentre"
+	".\\tucson\\inspector\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson" [label=".\\tucson\\inspector\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson" color=red fillcolor=purple style=filled]
+	".\\tucson\\inspector\\build\\classes\\java\\main\\alice\\tuplecentre" -> ".\\tucson\\inspector\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson"
+	".\\tucson\\inspector\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\introspection" [label=".\\tucson\\inspector\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\introspection" color=red fillcolor=purple style=filled]
+	".\\tucson\\inspector\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson" -> ".\\tucson\\inspector\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\introspection"
+	".\\tucson\\inspector\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\introspection\\tools" [label=".\\tucson\\inspector\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\introspection\\tools" color=red fillcolor=purple style=filled]
+	".\\tucson\\inspector\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\introspection" -> ".\\tucson\\inspector\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\introspection\\tools"
+	".\\tucson\\inspector\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\introspection4gui" [label=".\\tucson\\inspector\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\introspection4gui" color=red fillcolor=purple style=filled]
+	".\\tucson\\inspector\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson" -> ".\\tucson\\inspector\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\introspection4gui"
+	".\\tucson\\inspector\\build\\generated\\sources\\annotationProcessor\\java" [label=".\\tucson\\inspector\\build\\generated\\sources\\annotationProcessor\\java" color=red fillcolor=purple style=filled]
+	".\\tucson\\inspector\\build\\generated\\sources\\annotationProcessor" -> ".\\tucson\\inspector\\build\\generated\\sources\\annotationProcessor\\java"
+	".\\tucson\\inspector\\build\\generated\\sources\\annotationProcessor\\java\\main" [label=".\\tucson\\inspector\\build\\generated\\sources\\annotationProcessor\\java\\main" color=red fillcolor=purple style=filled]
+	".\\tucson\\inspector\\build\\generated\\sources\\annotationProcessor\\java" -> ".\\tucson\\inspector\\build\\generated\\sources\\annotationProcessor\\java\\main"
+	".\\tucson\\inspector\\src\\main\\java" [label=".\\tucson\\inspector\\src\\main\\java" color=red fillcolor=purple style=filled]
+	".\\tucson\\inspector\\src\\main" -> ".\\tucson\\inspector\\src\\main\\java"
+	".\\tucson\\inspector\\src\\main\\java\\alice" [label=".\\tucson\\inspector\\src\\main\\java\\alice" color=red fillcolor=purple style=filled]
+	".\\tucson\\inspector\\src\\main\\java" -> ".\\tucson\\inspector\\src\\main\\java\\alice"
+	".\\tucson\\inspector\\src\\main\\java\\alice\\tuplecentre" [label=".\\tucson\\inspector\\src\\main\\java\\alice\\tuplecentre" color=red fillcolor=purple style=filled]
+	".\\tucson\\inspector\\src\\main\\java\\alice" -> ".\\tucson\\inspector\\src\\main\\java\\alice\\tuplecentre"
+	".\\tucson\\inspector\\src\\main\\java\\alice\\tuplecentre\\tucson" [label=".\\tucson\\inspector\\src\\main\\java\\alice\\tuplecentre\\tucson" color=red fillcolor=purple style=filled]
+	".\\tucson\\inspector\\src\\main\\java\\alice\\tuplecentre" -> ".\\tucson\\inspector\\src\\main\\java\\alice\\tuplecentre\\tucson"
+	".\\tucson\\inspector\\src\\main\\java\\alice\\tuplecentre\\tucson\\introspection" [label=".\\tucson\\inspector\\src\\main\\java\\alice\\tuplecentre\\tucson\\introspection" color=red fillcolor=purple style=filled]
+	".\\tucson\\inspector\\src\\main\\java\\alice\\tuplecentre\\tucson" -> ".\\tucson\\inspector\\src\\main\\java\\alice\\tuplecentre\\tucson\\introspection"
+	".\\tucson\\inspector\\src\\main\\java\\alice\\tuplecentre\\tucson\\introspection\\tools" [label=".\\tucson\\inspector\\src\\main\\java\\alice\\tuplecentre\\tucson\\introspection\\tools" color=red fillcolor=purple style=filled]
+	".\\tucson\\inspector\\src\\main\\java\\alice\\tuplecentre\\tucson\\introspection" -> ".\\tucson\\inspector\\src\\main\\java\\alice\\tuplecentre\\tucson\\introspection\\tools"
+	".\\tucson\\inspector\\src\\main\\java\\alice\\tuplecentre\\tucson\\introspection4gui" [label=".\\tucson\\inspector\\src\\main\\java\\alice\\tuplecentre\\tucson\\introspection4gui" color=red fillcolor=purple style=filled]
+	".\\tucson\\inspector\\src\\main\\java\\alice\\tuplecentre\\tucson" -> ".\\tucson\\inspector\\src\\main\\java\\alice\\tuplecentre\\tucson\\introspection4gui"
+	".\\tucson\\service\\build\\classes\\java" [label=".\\tucson\\service\\build\\classes\\java" color=red fillcolor=purple style=filled]
+	".\\tucson\\service\\build\\classes" -> ".\\tucson\\service\\build\\classes\\java"
+	".\\tucson\\service\\build\\classes\\java\\main" [label=".\\tucson\\service\\build\\classes\\java\\main" color=red fillcolor=purple style=filled]
+	".\\tucson\\service\\build\\classes\\java" -> ".\\tucson\\service\\build\\classes\\java\\main"
+	".\\tucson\\service\\build\\classes\\java\\main\\alice" [label=".\\tucson\\service\\build\\classes\\java\\main\\alice" color=red fillcolor=purple style=filled]
+	".\\tucson\\service\\build\\classes\\java\\main" -> ".\\tucson\\service\\build\\classes\\java\\main\\alice"
+	".\\tucson\\service\\build\\classes\\java\\main\\alice\\tuplecentre" [label=".\\tucson\\service\\build\\classes\\java\\main\\alice\\tuplecentre" color=red fillcolor=purple style=filled]
+	".\\tucson\\service\\build\\classes\\java\\main\\alice" -> ".\\tucson\\service\\build\\classes\\java\\main\\alice\\tuplecentre"
+	".\\tucson\\service\\build\\classes\\java\\main\\alice\\tuplecentre\\api" [label=".\\tucson\\service\\build\\classes\\java\\main\\alice\\tuplecentre\\api" color=red fillcolor=purple style=filled]
+	".\\tucson\\service\\build\\classes\\java\\main\\alice\\tuplecentre" -> ".\\tucson\\service\\build\\classes\\java\\main\\alice\\tuplecentre\\api"
+	".\\tucson\\service\\build\\classes\\java\\main\\alice\\tuplecentre\\core" [label=".\\tucson\\service\\build\\classes\\java\\main\\alice\\tuplecentre\\core" color=red fillcolor=purple style=filled]
+	".\\tucson\\service\\build\\classes\\java\\main\\alice\\tuplecentre" -> ".\\tucson\\service\\build\\classes\\java\\main\\alice\\tuplecentre\\core"
+	".\\tucson\\service\\build\\classes\\java\\main\\alice\\tuplecentre\\respect" [label=".\\tucson\\service\\build\\classes\\java\\main\\alice\\tuplecentre\\respect" color=red fillcolor=purple style=filled]
+	".\\tucson\\service\\build\\classes\\java\\main\\alice\\tuplecentre" -> ".\\tucson\\service\\build\\classes\\java\\main\\alice\\tuplecentre\\respect"
+	".\\tucson\\service\\build\\classes\\java\\main\\alice\\tuplecentre\\respect\\api" [label=".\\tucson\\service\\build\\classes\\java\\main\\alice\\tuplecentre\\respect\\api" color=red fillcolor=purple style=filled]
+	".\\tucson\\service\\build\\classes\\java\\main\\alice\\tuplecentre\\respect" -> ".\\tucson\\service\\build\\classes\\java\\main\\alice\\tuplecentre\\respect\\api"
+	".\\tucson\\service\\build\\classes\\java\\main\\alice\\tuplecentre\\respect\\api\\geolocation" [label=".\\tucson\\service\\build\\classes\\java\\main\\alice\\tuplecentre\\respect\\api\\geolocation" color=red fillcolor=purple style=filled]
+	".\\tucson\\service\\build\\classes\\java\\main\\alice\\tuplecentre\\respect\\api" -> ".\\tucson\\service\\build\\classes\\java\\main\\alice\\tuplecentre\\respect\\api\\geolocation"
+	".\\tucson\\service\\build\\classes\\java\\main\\alice\\tuplecentre\\respect\\api\\geolocation\\service" [label=".\\tucson\\service\\build\\classes\\java\\main\\alice\\tuplecentre\\respect\\api\\geolocation\\service" color=red fillcolor=purple style=filled]
+	".\\tucson\\service\\build\\classes\\java\\main\\alice\\tuplecentre\\respect\\api\\geolocation" -> ".\\tucson\\service\\build\\classes\\java\\main\\alice\\tuplecentre\\respect\\api\\geolocation\\service"
+	".\\tucson\\service\\build\\classes\\java\\main\\alice\\tuplecentre\\respect\\core" [label=".\\tucson\\service\\build\\classes\\java\\main\\alice\\tuplecentre\\respect\\core" color=red fillcolor=purple style=filled]
+	".\\tucson\\service\\build\\classes\\java\\main\\alice\\tuplecentre\\respect" -> ".\\tucson\\service\\build\\classes\\java\\main\\alice\\tuplecentre\\respect\\core"
+	".\\tucson\\service\\build\\classes\\java\\main\\alice\\tuplecentre\\respect\\situatedness" [label=".\\tucson\\service\\build\\classes\\java\\main\\alice\\tuplecentre\\respect\\situatedness" color=red fillcolor=purple style=filled]
+	".\\tucson\\service\\build\\classes\\java\\main\\alice\\tuplecentre\\respect" -> ".\\tucson\\service\\build\\classes\\java\\main\\alice\\tuplecentre\\respect\\situatedness"
+	".\\tucson\\service\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson" [label=".\\tucson\\service\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson" color=red fillcolor=purple style=filled]
+	".\\tucson\\service\\build\\classes\\java\\main\\alice\\tuplecentre" -> ".\\tucson\\service\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson"
+	".\\tucson\\service\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\api" [label=".\\tucson\\service\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\api" color=red fillcolor=purple style=filled]
+	".\\tucson\\service\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson" -> ".\\tucson\\service\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\api"
+	".\\tucson\\service\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\api\\actions" [label=".\\tucson\\service\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\api\\actions" color=red fillcolor=purple style=filled]
+	".\\tucson\\service\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\api" -> ".\\tucson\\service\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\api\\actions"
+	".\\tucson\\service\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\api\\actions\\ordinary" [label=".\\tucson\\service\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\api\\actions\\ordinary" color=red fillcolor=purple style=filled]
+	".\\tucson\\service\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\api\\actions" -> ".\\tucson\\service\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\api\\actions\\ordinary"
+	".\\tucson\\service\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\api\\actions\\ordinary\\bulk" [label=".\\tucson\\service\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\api\\actions\\ordinary\\bulk" color=red fillcolor=purple style=filled]
+	".\\tucson\\service\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\api\\actions\\ordinary" -> ".\\tucson\\service\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\api\\actions\\ordinary\\bulk"
+	".\\tucson\\service\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\api\\actions\\ordinary\\uniform" [label=".\\tucson\\service\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\api\\actions\\ordinary\\uniform" color=red fillcolor=purple style=filled]
+	".\\tucson\\service\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\api\\actions\\ordinary" -> ".\\tucson\\service\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\api\\actions\\ordinary\\uniform"
+	".\\tucson\\service\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\api\\actions\\specification" [label=".\\tucson\\service\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\api\\actions\\specification" color=red fillcolor=purple style=filled]
+	".\\tucson\\service\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\api\\actions" -> ".\\tucson\\service\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\api\\actions\\specification"
+	".\\tucson\\service\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\asynchSupport" [label=".\\tucson\\service\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\asynchSupport" color=red fillcolor=purple style=filled]
+	".\\tucson\\service\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson" -> ".\\tucson\\service\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\asynchSupport"
+	".\\tucson\\service\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\introspection" [label=".\\tucson\\service\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\introspection" color=red fillcolor=purple style=filled]
+	".\\tucson\\service\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson" -> ".\\tucson\\service\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\introspection"
+	".\\tucson\\service\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\introspection4gui" [label=".\\tucson\\service\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\introspection4gui" color=red fillcolor=purple style=filled]
+	".\\tucson\\service\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson" -> ".\\tucson\\service\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\introspection4gui"
+	".\\tucson\\service\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\persistency" [label=".\\tucson\\service\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\persistency" color=red fillcolor=purple style=filled]
+	".\\tucson\\service\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson" -> ".\\tucson\\service\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\persistency"
+	".\\tucson\\service\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\rbac" [label=".\\tucson\\service\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\rbac" color=red fillcolor=purple style=filled]
+	".\\tucson\\service\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson" -> ".\\tucson\\service\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\rbac"
+	".\\tucson\\service\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\service" [label=".\\tucson\\service\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\service" color=red fillcolor=purple style=filled]
+	".\\tucson\\service\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson" -> ".\\tucson\\service\\build\\classes\\java\\main\\alice\\tuplecentre\\tucson\\service"
+	".\\tucson\\service\\build\\generated\\sources\\annotationProcessor\\java" [label=".\\tucson\\service\\build\\generated\\sources\\annotationProcessor\\java" color=red fillcolor=purple style=filled]
+	".\\tucson\\service\\build\\generated\\sources\\annotationProcessor" -> ".\\tucson\\service\\build\\generated\\sources\\annotationProcessor\\java"
+	".\\tucson\\service\\build\\generated\\sources\\annotationProcessor\\java\\main" [label=".\\tucson\\service\\build\\generated\\sources\\annotationProcessor\\java\\main" color=red fillcolor=purple style=filled]
+	".\\tucson\\service\\build\\generated\\sources\\annotationProcessor\\java" -> ".\\tucson\\service\\build\\generated\\sources\\annotationProcessor\\java\\main"
+	".\\tucson\\service\\src\\main\\java" [label=".\\tucson\\service\\src\\main\\java" color=red fillcolor=purple style=filled]
+	".\\tucson\\service\\src\\main" -> ".\\tucson\\service\\src\\main\\java"
+	".\\tucson\\service\\src\\main\\java\\alice" [label=".\\tucson\\service\\src\\main\\java\\alice" color=red fillcolor=purple style=filled]
+	".\\tucson\\service\\src\\main\\java" -> ".\\tucson\\service\\src\\main\\java\\alice"
+	".\\tucson\\service\\src\\main\\java\\alice\\tuplecentre" [label=".\\tucson\\service\\src\\main\\java\\alice\\tuplecentre" color=red fillcolor=purple style=filled]
+	".\\tucson\\service\\src\\main\\java\\alice" -> ".\\tucson\\service\\src\\main\\java\\alice\\tuplecentre"
+	".\\tucson\\service\\src\\main\\java\\alice\\tuplecentre\\api" [label=".\\tucson\\service\\src\\main\\java\\alice\\tuplecentre\\api" color=red fillcolor=purple style=filled]
+	".\\tucson\\service\\src\\main\\java\\alice\\tuplecentre" -> ".\\tucson\\service\\src\\main\\java\\alice\\tuplecentre\\api"
+	".\\tucson\\service\\src\\main\\java\\alice\\tuplecentre\\core" [label=".\\tucson\\service\\src\\main\\java\\alice\\tuplecentre\\core" color=red fillcolor=purple style=filled]
+	".\\tucson\\service\\src\\main\\java\\alice\\tuplecentre" -> ".\\tucson\\service\\src\\main\\java\\alice\\tuplecentre\\core"
+	".\\tucson\\service\\src\\main\\java\\alice\\tuplecentre\\respect" [label=".\\tucson\\service\\src\\main\\java\\alice\\tuplecentre\\respect" color=red fillcolor=purple style=filled]
+	".\\tucson\\service\\src\\main\\java\\alice\\tuplecentre" -> ".\\tucson\\service\\src\\main\\java\\alice\\tuplecentre\\respect"
+	".\\tucson\\service\\src\\main\\java\\alice\\tuplecentre\\respect\\api" [label=".\\tucson\\service\\src\\main\\java\\alice\\tuplecentre\\respect\\api" color=red fillcolor=purple style=filled]
+	".\\tucson\\service\\src\\main\\java\\alice\\tuplecentre\\respect" -> ".\\tucson\\service\\src\\main\\java\\alice\\tuplecentre\\respect\\api"
+	".\\tucson\\service\\src\\main\\java\\alice\\tuplecentre\\respect\\api\\geolocation" [label=".\\tucson\\service\\src\\main\\java\\alice\\tuplecentre\\respect\\api\\geolocation" color=red fillcolor=purple style=filled]
+	".\\tucson\\service\\src\\main\\java\\alice\\tuplecentre\\respect\\api" -> ".\\tucson\\service\\src\\main\\java\\alice\\tuplecentre\\respect\\api\\geolocation"
+	".\\tucson\\service\\src\\main\\java\\alice\\tuplecentre\\respect\\api\\geolocation\\service" [label=".\\tucson\\service\\src\\main\\java\\alice\\tuplecentre\\respect\\api\\geolocation\\service" color=red fillcolor=purple style=filled]
+	".\\tucson\\service\\src\\main\\java\\alice\\tuplecentre\\respect\\api\\geolocation" -> ".\\tucson\\service\\src\\main\\java\\alice\\tuplecentre\\respect\\api\\geolocation\\service"
+	".\\tucson\\service\\src\\main\\java\\alice\\tuplecentre\\respect\\core" [label=".\\tucson\\service\\src\\main\\java\\alice\\tuplecentre\\respect\\core" color=red fillcolor=purple style=filled]
+	".\\tucson\\service\\src\\main\\java\\alice\\tuplecentre\\respect" -> ".\\tucson\\service\\src\\main\\java\\alice\\tuplecentre\\respect\\core"
+	".\\tucson\\service\\src\\main\\java\\alice\\tuplecentre\\respect\\situatedness" [label=".\\tucson\\service\\src\\main\\java\\alice\\tuplecentre\\respect\\situatedness" color=red fillcolor=purple style=filled]
+	".\\tucson\\service\\src\\main\\java\\alice\\tuplecentre\\respect" -> ".\\tucson\\service\\src\\main\\java\\alice\\tuplecentre\\respect\\situatedness"
+	".\\tucson\\service\\src\\main\\java\\alice\\tuplecentre\\tucson" [label=".\\tucson\\service\\src\\main\\java\\alice\\tuplecentre\\tucson" color=red fillcolor=purple style=filled]
+	".\\tucson\\service\\src\\main\\java\\alice\\tuplecentre" -> ".\\tucson\\service\\src\\main\\java\\alice\\tuplecentre\\tucson"
+	".\\tucson\\service\\src\\main\\java\\alice\\tuplecentre\\tucson\\api" [label=".\\tucson\\service\\src\\main\\java\\alice\\tuplecentre\\tucson\\api" color=red fillcolor=purple style=filled]
+	".\\tucson\\service\\src\\main\\java\\alice\\tuplecentre\\tucson" -> ".\\tucson\\service\\src\\main\\java\\alice\\tuplecentre\\tucson\\api"
+	".\\tucson\\service\\src\\main\\java\\alice\\tuplecentre\\tucson\\api\\actions" [label=".\\tucson\\service\\src\\main\\java\\alice\\tuplecentre\\tucson\\api\\actions" color=red fillcolor=purple style=filled]
+	".\\tucson\\service\\src\\main\\java\\alice\\tuplecentre\\tucson\\api" -> ".\\tucson\\service\\src\\main\\java\\alice\\tuplecentre\\tucson\\api\\actions"
+	".\\tucson\\service\\src\\main\\java\\alice\\tuplecentre\\tucson\\api\\actions\\ordinary" [label=".\\tucson\\service\\src\\main\\java\\alice\\tuplecentre\\tucson\\api\\actions\\ordinary" color=red fillcolor=purple style=filled]
+	".\\tucson\\service\\src\\main\\java\\alice\\tuplecentre\\tucson\\api\\actions" -> ".\\tucson\\service\\src\\main\\java\\alice\\tuplecentre\\tucson\\api\\actions\\ordinary"
+	".\\tucson\\service\\src\\main\\java\\alice\\tuplecentre\\tucson\\api\\actions\\ordinary\\bulk" [label=".\\tucson\\service\\src\\main\\java\\alice\\tuplecentre\\tucson\\api\\actions\\ordinary\\bulk" color=red fillcolor=purple style=filled]
+	".\\tucson\\service\\src\\main\\java\\alice\\tuplecentre\\tucson\\api\\actions\\ordinary" -> ".\\tucson\\service\\src\\main\\java\\alice\\tuplecentre\\tucson\\api\\actions\\ordinary\\bulk"
+	".\\tucson\\service\\src\\main\\java\\alice\\tuplecentre\\tucson\\api\\actions\\ordinary\\uniform" [label=".\\tucson\\service\\src\\main\\java\\alice\\tuplecentre\\tucson\\api\\actions\\ordinary\\uniform" color=red fillcolor=purple style=filled]
+	".\\tucson\\service\\src\\main\\java\\alice\\tuplecentre\\tucson\\api\\actions\\ordinary" -> ".\\tucson\\service\\src\\main\\java\\alice\\tuplecentre\\tucson\\api\\actions\\ordinary\\uniform"
+	".\\tucson\\service\\src\\main\\java\\alice\\tuplecentre\\tucson\\api\\actions\\specification" [label=".\\tucson\\service\\src\\main\\java\\alice\\tuplecentre\\tucson\\api\\actions\\specification" color=red fillcolor=purple style=filled]
+	".\\tucson\\service\\src\\main\\java\\alice\\tuplecentre\\tucson\\api\\actions" -> ".\\tucson\\service\\src\\main\\java\\alice\\tuplecentre\\tucson\\api\\actions\\specification"
+	".\\tucson\\service\\src\\main\\java\\alice\\tuplecentre\\tucson\\asynchSupport" [label=".\\tucson\\service\\src\\main\\java\\alice\\tuplecentre\\tucson\\asynchSupport" color=red fillcolor=purple style=filled]
+	".\\tucson\\service\\src\\main\\java\\alice\\tuplecentre\\tucson" -> ".\\tucson\\service\\src\\main\\java\\alice\\tuplecentre\\tucson\\asynchSupport"
+	".\\tucson\\service\\src\\main\\java\\alice\\tuplecentre\\tucson\\introspection" [label=".\\tucson\\service\\src\\main\\java\\alice\\tuplecentre\\tucson\\introspection" color=red fillcolor=purple style=filled]
+	".\\tucson\\service\\src\\main\\java\\alice\\tuplecentre\\tucson" -> ".\\tucson\\service\\src\\main\\java\\alice\\tuplecentre\\tucson\\introspection"
+	".\\tucson\\service\\src\\main\\java\\alice\\tuplecentre\\tucson\\introspection4gui" [label=".\\tucson\\service\\src\\main\\java\\alice\\tuplecentre\\tucson\\introspection4gui" color=red fillcolor=purple style=filled]
+	".\\tucson\\service\\src\\main\\java\\alice\\tuplecentre\\tucson" -> ".\\tucson\\service\\src\\main\\java\\alice\\tuplecentre\\tucson\\introspection4gui"
+	".\\tucson\\service\\src\\main\\java\\alice\\tuplecentre\\tucson\\persistency" [label=".\\tucson\\service\\src\\main\\java\\alice\\tuplecentre\\tucson\\persistency" color=red fillcolor=purple style=filled]
+	".\\tucson\\service\\src\\main\\java\\alice\\tuplecentre\\tucson" -> ".\\tucson\\service\\src\\main\\java\\alice\\tuplecentre\\tucson\\persistency"
+	".\\tucson\\service\\src\\main\\java\\alice\\tuplecentre\\tucson\\rbac" [label=".\\tucson\\service\\src\\main\\java\\alice\\tuplecentre\\tucson\\rbac" color=red fillcolor=purple style=filled]
+	".\\tucson\\service\\src\\main\\java\\alice\\tuplecentre\\tucson" -> ".\\tucson\\service\\src\\main\\java\\alice\\tuplecentre\\tucson\\rbac"
+	".\\tucson\\service\\src\\main\\java\\alice\\tuplecentre\\tucson\\service" [label=".\\tucson\\service\\src\\main\\java\\alice\\tuplecentre\\tucson\\service" color=red fillcolor=purple style=filled]
+	".\\tucson\\service\\src\\main\\java\\alice\\tuplecentre\\tucson" -> ".\\tucson\\service\\src\\main\\java\\alice\\tuplecentre\\tucson\\service"
+	".\\tucson\\src\\test\\java" [label=".\\tucson\\src\\test\\java" color=red fillcolor=purple style=filled]
+	".\\tucson\\src\\test" -> ".\\tucson\\src\\test\\java"
+	".\\tucson\\src\\test\\java\\asynchAPI" [label=".\\tucson\\src\\test\\java\\asynchAPI" color=red fillcolor=purple style=filled]
+	".\\tucson\\src\\test\\java" -> ".\\tucson\\src\\test\\java\\asynchAPI"
+	".\\tucson\\src\\test\\java\\diningPhilos" [label=".\\tucson\\src\\test\\java\\diningPhilos" color=red fillcolor=purple style=filled]
+	".\\tucson\\src\\test\\java" -> ".\\tucson\\src\\test\\java\\diningPhilos"
+	".\\tucson\\src\\test\\java\\distributedDiningPhilos" [label=".\\tucson\\src\\test\\java\\distributedDiningPhilos" color=red fillcolor=purple style=filled]
+	".\\tucson\\src\\test\\java" -> ".\\tucson\\src\\test\\java\\distributedDiningPhilos"
+	".\\tucson\\src\\test\\java\\helloWorld" [label=".\\tucson\\src\\test\\java\\helloWorld" color=red fillcolor=purple style=filled]
+	".\\tucson\\src\\test\\java" -> ".\\tucson\\src\\test\\java\\helloWorld"
+	".\\tucson\\src\\test\\java\\masterWorkers" [label=".\\tucson\\src\\test\\java\\masterWorkers" color=red fillcolor=purple style=filled]
+	".\\tucson\\src\\test\\java" -> ".\\tucson\\src\\test\\java\\masterWorkers"
+	".\\tucson\\src\\test\\java\\masterWorkers\\bulk" [label=".\\tucson\\src\\test\\java\\masterWorkers\\bulk" color=red fillcolor=purple style=filled]
+	".\\tucson\\src\\test\\java\\masterWorkers" -> ".\\tucson\\src\\test\\java\\masterWorkers\\bulk"
+	".\\tucson\\src\\test\\java\\messagePassing" [label=".\\tucson\\src\\test\\java\\messagePassing" color=red fillcolor=purple style=filled]
+	".\\tucson\\src\\test\\java" -> ".\\tucson\\src\\test\\java\\messagePassing"
+	".\\tucson\\src\\test\\java\\persistency" [label=".\\tucson\\src\\test\\java\\persistency" color=red fillcolor=purple style=filled]
+	".\\tucson\\src\\test\\java" -> ".\\tucson\\src\\test\\java\\persistency"
+	".\\tucson\\src\\test\\java\\rbac" [label=".\\tucson\\src\\test\\java\\rbac" color=red fillcolor=purple style=filled]
+	".\\tucson\\src\\test\\java" -> ".\\tucson\\src\\test\\java\\rbac"
+	".\\tucson\\src\\test\\java\\respect" [label=".\\tucson\\src\\test\\java\\respect" color=red fillcolor=purple style=filled]
+	".\\tucson\\src\\test\\java" -> ".\\tucson\\src\\test\\java\\respect"
+	".\\tucson\\src\\test\\java\\respect\\bagOfTask" [label=".\\tucson\\src\\test\\java\\respect\\bagOfTask" color=red fillcolor=purple style=filled]
+	".\\tucson\\src\\test\\java\\respect" -> ".\\tucson\\src\\test\\java\\respect\\bagOfTask"
+	".\\tucson\\src\\test\\java\\rpc" [label=".\\tucson\\src\\test\\java\\rpc" color=red fillcolor=purple style=filled]
+	".\\tucson\\src\\test\\java" -> ".\\tucson\\src\\test\\java\\rpc"
+	".\\tucson\\src\\test\\java\\situatedness" [label=".\\tucson\\src\\test\\java\\situatedness" color=red fillcolor=purple style=filled]
+	".\\tucson\\src\\test\\java" -> ".\\tucson\\src\\test\\java\\situatedness"
+	".\\tucson\\src\\test\\java\\spawnedWorkers" [label=".\\tucson\\src\\test\\java\\spawnedWorkers" color=red fillcolor=purple style=filled]
+	".\\tucson\\src\\test\\java" -> ".\\tucson\\src\\test\\java\\spawnedWorkers"
+	".\\tucson\\src\\test\\java\\timedDiningPhilos" [label=".\\tucson\\src\\test\\java\\timedDiningPhilos" color=red fillcolor=purple style=filled]
+	".\\tucson\\src\\test\\java" -> ".\\tucson\\src\\test\\java\\timedDiningPhilos"
+	".\\tucson\\src\\test\\java\\uniform" [label=".\\tucson\\src\\test\\java\\uniform" color=red fillcolor=purple style=filled]
+	".\\tucson\\src\\test\\java" -> ".\\tucson\\src\\test\\java\\uniform"
+	".\\tucson\\src\\test\\java\\uniform\\dice" [label=".\\tucson\\src\\test\\java\\uniform\\dice" color=red fillcolor=purple style=filled]
+	".\\tucson\\src\\test\\java\\uniform" -> ".\\tucson\\src\\test\\java\\uniform\\dice"
+	".\\tucson\\src\\test\\java\\uniform\\loadBalancing" [label=".\\tucson\\src\\test\\java\\uniform\\loadBalancing" color=red fillcolor=purple style=filled]
+	".\\tucson\\src\\test\\java\\uniform" -> ".\\tucson\\src\\test\\java\\uniform\\loadBalancing"
+	".\\tucson\\src\\test\\java\\uniform\\swarms" [label=".\\tucson\\src\\test\\java\\uniform\\swarms" color=red fillcolor=purple style=filled]
+	".\\tucson\\src\\test\\java\\uniform" -> ".\\tucson\\src\\test\\java\\uniform\\swarms"
+	".\\tucson\\src\\test\\java\\uniform\\swarms\\ants" [label=".\\tucson\\src\\test\\java\\uniform\\swarms\\ants" color=red fillcolor=purple style=filled]
+	".\\tucson\\src\\test\\java\\uniform\\swarms" -> ".\\tucson\\src\\test\\java\\uniform\\swarms\\ants"
+	".\\tucson\\src\\test\\java\\uniform\\swarms\\env" [label=".\\tucson\\src\\test\\java\\uniform\\swarms\\env" color=red fillcolor=purple style=filled]
+	".\\tucson\\src\\test\\java\\uniform\\swarms" -> ".\\tucson\\src\\test\\java\\uniform\\swarms\\env"
+	".\\tucson\\src\\test\\java\\uniform\\swarms\\gui" [label=".\\tucson\\src\\test\\java\\uniform\\swarms\\gui" color=red fillcolor=purple style=filled]
+	".\\tucson\\src\\test\\java\\uniform\\swarms" -> ".\\tucson\\src\\test\\java\\uniform\\swarms\\gui"
+	".\\tucson\\src\\test\\java\\uniform\\swarms\\launchers" [label=".\\tucson\\src\\test\\java\\uniform\\swarms\\launchers" color=red fillcolor=purple style=filled]
+	".\\tucson\\src\\test\\java\\uniform\\swarms" -> ".\\tucson\\src\\test\\java\\uniform\\swarms\\launchers"
+	".\\tucson\\src\\test\\java\\uniform\\swarms\\utils" [label=".\\tucson\\src\\test\\java\\uniform\\swarms\\utils" color=red fillcolor=purple style=filled]
+	".\\tucson\\src\\test\\java\\uniform\\swarms" -> ".\\tucson\\src\\test\\java\\uniform\\swarms\\utils"
+}
